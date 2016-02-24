@@ -105,6 +105,7 @@ else {
 
 $nav_area_width = $GLOBALS['athletic_team'] ? '230' : '130';
 if (!empty($GLOBALS['gbl_nav_area_width'])) $nav_area_width = $GLOBALS['gbl_nav_area_width'];
+require_once("tabs/redirect.php");
 ?>
 <html>
 <head>

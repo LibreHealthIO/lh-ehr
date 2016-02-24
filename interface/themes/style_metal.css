@@ -604,7 +604,7 @@ font-weight: bold;
  * CSS BUTTONS
 */
 .css_button_small {
-    background: transparent url( '../../images/bg_button_a_small.gif' ) no-repeat scroll top right;
+    background: lightgray;
     color: #444;
     display: block;
     float: left;
@@ -612,18 +612,19 @@ font-weight: bold;
     height: 19px;
     margin-right: 3px;
     padding-right: 10px; /* sliding doors padding */
+    border: 1px solid black;
+    border-radius: 8px;
     text-decoration: none;
 }
 
 .css_button_small span {
-    background: transparent url( '../../images/bg_button_span_small.gif' ) no-repeat;
     display: block;
     line-height: 20px;
     padding: 0px 0px 0px 10px;
 }
 
 .css_button {
-    background: transparent url( '../../images/bg_button_a.gif' ) no-repeat scroll top right;
+    background: lightgray;
     color: #444;
     display: block;
     float: left;
@@ -631,11 +632,12 @@ font-weight: bold;
     height: 24px;
     margin-right: 3px;
     padding-right: 10px; /* sliding doors padding */
+    border: 1px solid black;
+    border-radius: 8px;
     text-decoration: none;
 }
 
 .css_button span {
-    background: transparent url( '../../images/bg_button_span.gif' ) no-repeat;
     display: block;
     line-height: 14px;
     padding: 5px 0 5px 10px;

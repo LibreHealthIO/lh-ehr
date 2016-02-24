@@ -1,0 +1,92 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 28, 2016, 5:20:30 PM
+    Author     : yehster
+*/
+.appMenu div
+{
+    margin: 3px;
+}
+.appMenu > span
+{
+    float: left;
+}
+.appMenu ul
+{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.appMenu li
+{
+    width: 100%;
+}
+.menuHeader{
+    font-weight: bold;
+}
+.menuSection{
+    position: relative;
+}
+.menuLabel
+{
+    width: 100%;
+}
+.menuSection >.menuLabel
+{
+    font-weight: bold;
+}
+.menuSection > .menuEntries{
+    background-color:lightskyblue;
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index:1000;
+}
+
+.menuSection > .menuEntries .menuEntries {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index:10000;
+}
+.menuSection:hover > .menuEntries{
+    display: block;
+}
+
+.menuLabel
+{
+    cursor: pointer;
+}
+.menuLabel:hover
+{
+    color: red;
+}
+.menuDisabled
+{
+    color:lightgray;
+}
+
+#username
+{
+    cursor: pointer;
+}
+#username > .userfunctions
+{
+    background-color:lightskyblue;
+    display: none;
+}
+#username:hover > .userfunctions
+{
+    display: block;
+}
+
+#username > .userfunctions > div:hover
+{
+    color: red;
+}

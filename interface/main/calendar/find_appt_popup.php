@@ -27,7 +27,9 @@
 
  include_once("../../globals.php");
  include_once("$srcdir/patient.inc");
-
+ ?>
+    <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
+<?php
  // check access controls
  if (!acl_check('patients','appt','',array('write','wsome') ))
   die(xlt('Access not allowed'));
@@ -276,7 +278,8 @@
   }
   if ($ckavail) {
     // The chosen appointment time is available.
-    echo "<html><script language='JavaScript'>\n";
+    echo "<html>"
+      . "<script language='JavaScript'>\n";
     echo "function mytimeout() {\n";
     echo " opener.top.restoreSession();\n";
     echo " opener.document.forms[0].submit();\n";

@@ -153,6 +153,7 @@ function delete_document($document) {
 <?php html_header_show();?>
 <title><?php xl('Delete Patient, Encounter, Form, Issue, Document, Payment, Billing or Transaction','e'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
+<script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 
 <style>
 td { font-size:10pt; }
