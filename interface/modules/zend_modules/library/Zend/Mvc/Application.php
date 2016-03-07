@@ -32,9 +32,9 @@ use Zend\Stdlib\ResponseInterface;
  * The most common workflow is:
  * <code>
  * $services = new Zend\ServiceManager\ServiceManager($servicesConfig);
- * $app      = new Application($appConfig, $services);
- * $app->bootstrap();
- * $response = $app->run();
+ * $bootstrap      = new Application($appConfig, $services);
+ * $bootstrap->bootstrap();
+ * $response = $bootstrap->run();
  * $response->send();
  * </code>
  *

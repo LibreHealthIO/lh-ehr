@@ -997,6 +997,11 @@ function &postcalendar_userapi_pcQueryEvents($args)
     "(a.pc_endDate = '0000-00-00' AND a.pc_eventDate >= '$start' AND " .
     "a.pc_eventDate <= '$end')) ";
 
+    $patient_filter = do_action( 'filter_patient_select_pnuserapi', $_SESSION['authUser'] );
+    if ( $patient_filter ) {
+        $sql .= " AND ".$patient_filter;
+    }
+
   //==================================
   //FACILITY FILTERING (lemonsoftware)(CHEMED)
     if ( $_SESSION['pc_facility'] ) {

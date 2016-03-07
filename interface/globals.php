@@ -455,4 +455,7 @@ if ($fake_register_globals) {
   extract($_GET,EXTR_SKIP);
   extract($_POST,EXTR_SKIP);
 }
+
+
+include_once __DIR__ . '/../library/pluginsystem/bootstrap.php';
 ?>

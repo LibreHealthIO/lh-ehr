@@ -194,6 +194,11 @@ if ($popup) {
     array_push($sqlBindArray, $search_service_code);
   }
 
+  if ( $where ) {
+    $where .= " AND ";
+  }
+  $where = do_action( 'filter_patient_select', $_SESSION['authUser'] );
+
   $sql = "SELECT $given FROM patient_data " .
     "WHERE $where ORDER BY $orderby LIMIT $fstart, $sqllimit";
   $rez = sqlStatement($sql,$sqlBindArray);

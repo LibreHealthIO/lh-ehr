@@ -4,8 +4,8 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 
-require_once("$srcdir/../interface/globals.php");
-require_once("$srcdir/log.inc");
+require_once(__DIR__."/../interface/globals.php");
+require_once("{$GLOBALS['srcdir']}/log.inc");
 
 // Function called to set the global session variable for patient id (pid) number.
 function setpid($new_pid) {

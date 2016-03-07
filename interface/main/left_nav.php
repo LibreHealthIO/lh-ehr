@@ -104,7 +104,7 @@ use ESign\Api;
   'ros' => array(xl('Roster')    , 0, 'reports/players_report.php?embed=1'),
   'cal' => array(xl('Calendar')  , 0, 'main/main_info.php'),
   'pfb' => array(xl('Patient Flow Board')  , 0, '../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1'),
-  'app' => array(xl('Portal Activity')  , 0, '../myportal/index.php'),
+  'bootstrap' => array(xl('Portal Activity')  , 0, '../myportal/index.php'),
   'msg' => array(xl('Messages')  , 0, 'main/messages/messages.php?form_active=1'),
   'pwd' => array(xl('Password')  , 0, 'usergroup/user_info.php'),
   'prf' => array(xl('Preferences')  , 0, 'super/edit_globals.php?mode=user'),
@@ -1267,7 +1267,7 @@ if ($GLOBALS['athletic_team']) {
   <?php if (!$GLOBALS['disable_pat_trkr'] && !$GLOBALS['disable_calendar']) genTreeLink('RTop','pfb',xl('Flow Board')); ?>
   <?php genTreeLink('RBot','msg',xl('Messages')); ?> 
   <?php if ($GLOBALS['lab_exchange_enable']) genTreeLink('RTop', 'lab', xl('Check Lab Results'));?>
-  <?php if($GLOBALS['portal_offsite_enable'] && $GLOBALS['portal_offsite_address'] && acl_check('patientportal','portal'))  genTreeLink('RTop','app',xl('Portal Activity')); ?>
+  <?php if($GLOBALS['portal_offsite_enable'] && $GLOBALS['portal_offsite_address'] && acl_check('patientportal','portal'))  genTreeLink('RTop','bootstrap',xl('Portal Activity')); ?>
   <?php
     if ($GLOBALS['gbl_portal_cms_enable'] && acl_check('patientportal','portal')) {
       // genTreeLink('RTop','ppo',xl('WordPress Portal'));
@@ -1734,4 +1734,5 @@ syncRadios();
 </script>
 
 </body>
+<?php do_action( 'left_nav_before_html_end' ); ?>
 </html>

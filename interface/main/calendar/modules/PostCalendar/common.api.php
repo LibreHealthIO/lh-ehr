@@ -897,7 +897,7 @@ function findFirstInDay($day,$date) {
 
         if ($closest_start > ($intime_sec + 60)) {
             //echo "free time is: " . date("h:i:s A",$free_time) . "<br />";
-            //echo "next app is: " . date("h:i:s A",$closest_start) . "<br />";
+            //echo "next bootstrap is: " . date("h:i:s A",$closest_start) . "<br />";
             $duration = ($closest_start - $free_time);
             //echo "duration is: $duration<br />";
             //we allow for 0 duration events so other things such as overlap and actual times can be calculated

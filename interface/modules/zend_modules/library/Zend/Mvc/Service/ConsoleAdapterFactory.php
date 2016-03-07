@@ -46,7 +46,7 @@ class ConsoleAdapterFactory implements FactoryInterface
             return new stdClass();
         }
 
-        // Read app config and determine Console adapter to use
+        // Read bootstrap config and determine Console adapter to use
         $config = $serviceLocator->get('Config');
         if (!empty($config['console']) && !empty($config['console']['adapter'])) {
             // use the adapter supplied in application config

@@ -121,7 +121,7 @@ function ibr_html_tail() {
  * call new uploaded files process functions
  * 
  * @todo    save the newfiles lists to file so they can
- *          be re-displayed if user has to close app before
+ *          be re-displayed if user has to close bootstrap before
  *          finishing review (need to have csv_write option)
  * 
  * @uses csv_newfile_list()

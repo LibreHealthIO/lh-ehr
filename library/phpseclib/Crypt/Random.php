@@ -49,7 +49,7 @@
  * If $min and $max are farther apart than that then the last ($max - range) numbers.
  *
  * Depending on how this is being used, it may be worth while to write a replacement.  For example,
- * a PHP-based web app that stores its data in an SQL database can collect more entropy than this function
+ * a PHP-based web bootstrap that stores its data in an SQL database can collect more entropy than this function
  * can.
  *
  * @param optional Integer $min

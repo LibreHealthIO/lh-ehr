@@ -1,0 +1,32 @@
+{
+    "name": "tags_filters",
+    "type": "module",
+    "description": "Add tags and filtering to entities",
+    "keywords": ["openemr"],
+    "authors": [
+        {
+            "name": "Ken Chapple",
+            "email": "ken@mi-squared.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "components/jquery": "1.9.*",
+        "twitter/bootstrap": "dev-master"
+    },
+    "autoload": {
+        "classmap": [
+            "./models",
+            "./controllers"
+        ]
+    },
+    "minimum-stability": "stable",
+    "scripts": {
+      "post-update-cmd": [
+        "mkdir -p ./assets/bootstrap",
+        "cp -R ./vendor/twitter/bootstrap/dist/ ./assets/bootstrap/",
+        "mkdir -p ./assets/jquery",
+        "cp -R ./vendor/components/jquery/jquery.js ./assets/jquery/"
+      ]
+    }
+}

@@ -15,7 +15,7 @@ function getRelayHealthLink() {
 		return '<a href="../jump_to_RelayHealth.php" target="_new" class="navitem" id="rh_link">Relay Health</a>';
 	} else {
 		// default link
-		return '<a href="https://app.relayhealth.com/welcome.asp?bid=phyaura" target="_new" class="navitem" id="rh_link">Relay Health</a>';
+		return '<a href="https://bootstrap.relayhealth.com/welcome.asp?bid=phyaura" target="_new" class="navitem" id="rh_link">Relay Health</a>';
 	}
 }
 ?>

@@ -31,7 +31,7 @@
 * LEFT JOIN phone_numbers AS p ON p.type = 2 AND p.foreign_id = i.id
 * ORDER BY i.name, i.id;
 *
-* Then export as a CSV file and read it into your favorite spreadsheet app.
+* Then export as a CSV file and read it into your favorite spreadsheet bootstrap.
 */
 
 require_once("$srcdir/classes/Address.class.php");

@@ -638,7 +638,7 @@ function ibr_271_codes($segment_id, $code) {
 			'AM'=>'Frames',
 			'AO'=>'Lenses',
 			'AP'=>'Routine Eye Exam',
-			'AQ'=>'Nonmedically Necessary Physical (e.g. insurance app, pilot license, employment, or school)',
+			'AQ'=>'Nonmedically Necessary Physical (e.g. insurance bootstrap, pilot license, employment, or school)',
 			'AR'=>'Experimental Drug Therapy',
 			'B1'=>'Burn Care',
 			'B2'=>'Brand Name Prescription Drug - Formulary',

@@ -87,7 +87,7 @@ CKEDITOR.dialog.add( 'checkspell', function( editor )
 
 			lang : editor.config.wsc_lang || LangComparer.getSPLangCode(editor.langCode ),
 			intLang: editor.config.wsc_uiLang || LangComparer.getSPLangCode(editor.langCode ),
-			winType : iframeId,		// If not defined app will run on winpopup.
+			winType : iframeId,		// If not defined bootstrap will run on winpopup.
 
 			// Callback binding section.
 			onCancel : function()

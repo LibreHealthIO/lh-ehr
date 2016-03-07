@@ -514,6 +514,11 @@ if (!isset($phpgacl_location)) {
  <?php if ($phpgacl_location) {
   echo "<a href='../../gacl/admin/acl_admin.php' onclick='top.restoreSession()'><span class='back'>(" . xl('Advanced') . ")</span></a>";
  } ?>
+
+ <a href='../../gacl/admin/acl_vip.php' onclick='top.restoreSession()'><span class='back'>(<?php echo xl('VIP'); ?>)</span></a>
+ <a href='../../gacl/admin/acl_vip.php' onclick='top.restoreSession()'><span class='back'>(<?php echo xl('Filters'); ?>)</span></a>
+ <a href='../../gacl/admin/acl_vip.php' onclick='top.restoreSession()'><span class='back'>(<?php echo xl('Timed Access'); ?>)</span></a>
+
  <br><br>	
  <div id='membership_edit'>
   <span class=bold><input type='checkbox' id='membership_show'><?php xl('User Memberships','e'); ?></span>
