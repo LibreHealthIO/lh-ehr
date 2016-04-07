@@ -13,14 +13,14 @@ if (stripos(PHP_OS,'WIN') === 0)
   $webserver_root = str_replace("\\","/",$webserver_root); 
 $OE_SITES_BASE = "$webserver_root/sites";
 
-function sqlQuery($statement, $link) {
-  $row = mysqli_fetch_array(mysqli_query($link, $statement), MYSQLI_ASSOC);
+function sqlQuery($statement) {
+  $row = @mysql_fetch_array(mysql_query($statement), MYSQL_ASSOC);
   return $row;
 }
 ?>
 <html>
 <head>
-<title>OpenEMR Site Administration</title>
+<title>LibreEHR Site Administration</title>
 <link rel='STYLESHEET' href='interface/themes/style_sky_blue.css'>
 <style>
 tr.head   { font-size:10pt; background-color:#cccccc; text-align:center; font-weight:bold; }
@@ -30,7 +30,7 @@ a, a:visited, a:hover { color:#0000cc; text-decoration:none; }
 </head>
 <body>
 <center>
-<p><span class='title'>OpenEMR Site Administration</span></p>
+<p><span class='title'>LibreEHR Site Administration</span></p>
 <table width='100%' cellpadding='1' cellspacing='2'>
  <tr class='head'>
   <td>Site ID</td>
@@ -68,9 +68,11 @@ foreach ($siteslist as $sfname) {
   include "$sitedir/sqlconf.php";
 
   if ($config) {
-    $dbh = mysqli_connect("$host", "$login", "$pass", $dbase, $port);
-    if (!$dbh)
+    $dbh = mysql_connect("$host:$port", "$login", "$pass");
+    if ($dbh === FALSE)
       $errmsg = "MySQL connect failed";
+    else if (!mysql_select_db($dbase, $dbh))
+      $errmsg = "Access to database failed";
   }
 
   echo "  <td>$sfname</td>\n";
@@ -84,22 +86,22 @@ foreach ($siteslist as $sfname) {
   }
   else {
     // Get site name for display.
-    $row = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = 'openemr_name' LIMIT 1", $dbh);
-    $openemr_name = $row ? $row['gl_value'] : '';
+    $row = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = 'LibreEHR_name' LIMIT 1");
+    $LibreEHR_name = $row ? $row['gl_value'] : '';
 
     // Get version indicators from the database.
-    $row = sqlQuery("SHOW TABLES LIKE 'version'", $dbh);
+    $row = sqlQuery("SHOW TABLES LIKE 'version'");
     if (empty($row)) {
-      $openemr_version = 'Unknown';
+      $LibreEHR_version = 'Unknown';
       $database_version = 0;
     }
     else {
-      $row = sqlQuery("SELECT * FROM version LIMIT 1", $dbh);
+      $row = sqlQuery("SELECT * FROM version LIMIT 1");
       $database_patch_txt = "";
       if ( !(empty($row['v_realpatch'])) && $row['v_realpatch'] != 0 ) {
         $database_patch_txt = " (" . $row['v_realpatch'] .")";
       }
-      $openemr_version = $row['v_major'] . "." . $row['v_minor'] . "." .
+      $LibreEHR_version = $row['v_major'] . "." . $row['v_minor'] . "." .
         $row['v_patch'] . $row['v_tag'] . $database_patch_txt;
       $database_version = 0 + $row['v_database'];
       $database_acl = 0 + $row['v_acl'];
@@ -107,8 +109,8 @@ foreach ($siteslist as $sfname) {
     }
 
     // Display relevant columns.
-    echo "  <td>$openemr_name</td>\n";
-    echo "  <td>$openemr_version</td>\n";
+    echo "  <td>$LibreEHR_name</td>\n";
+    echo "  <td>$LibreEHR_version</td>\n";
     if ($v_database != $database_version) {
       echo "  <td><a href='sql_upgrade.php?site=$sfname'>Upgrade Database</a></td>\n";
     }
@@ -119,12 +121,12 @@ foreach ($siteslist as $sfname) {
       echo "  <td><a href='sql_patch.php?site=$sfname'>Patch Database</a></td>\n";
     }
     else {
-      echo "  <td><a href='interface/login/login_frame.php?site=$sfname'>Log In</a></td>\n";
+      echo "  <td><a href='interface/login/login.php?site=$sfname'>Log In</a></td>\n";
     }
   }
   echo " </tr>\n";
 
-  if ($config && $dbh !== FALSE) mysqli_close($dbh);
+  if ($config && $dbh !== FALSE) mysql_close($dbh);
 }
 ?>
 </table>
