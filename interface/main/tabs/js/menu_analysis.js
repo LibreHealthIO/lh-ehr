@@ -123,11 +123,15 @@ function parse_link(link,entry)
     if(link)
     {
         var parameters=link.substring(link.indexOf('(')+1,link.indexOf(')'));
+        if(parameters==='')
+        {
+            parameters=link;
+        }
         if(link.indexOf("loadFrame2")===-1)
         {
             var url=parameters.replace(/\'/g,"").replace(/\"/g,"").replace("../","/interface/");
             entry.url=url;
-            entry.target="report";
+            entry.target="report";           
         }
         else
         {
@@ -142,6 +146,7 @@ function parse_link(link,entry)
             {
                 entry.target='enc';
             }
+
 
             entry.url=params[2].replace("../","/");
             if(entry.url.indexOf("/")>0)
@@ -261,9 +266,25 @@ function analyze_menu()
                         
                     };
                     menu_entries.push(newEntry);
-                }
                     
+                    
+                }
         );
+        // Scan popup select
+        var popups = jqLeft.find("select[name='popups'] option");
+        var popups_menu_header=new menu_entry("Popups","","popup");
+        menu_entries.push(popups_menu_header);
+        popups.each(function(idx,elem)
+            {
+                var jqElem=$(elem);
+                if(jqElem.val()!=='')
+                {
+                    var popup_entry=new menu_entry(jqElem.text(),jqElem.val(),"Popup:"+jqElem.text());
+                    popup_entry.target="pop";
+                    popup_entry.requirement=1;
+                    popups_menu_header.children.push(popup_entry);
+                }
+            });
         // Process Complete
         
         post_process(menu_entries);
