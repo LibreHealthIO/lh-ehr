@@ -46,6 +46,7 @@ class Installer
     $this->icd9 = dirname(__FILE__) . "/../../sql/icd9.sql";
     $this->cvx = dirname(__FILE__) . "/../../sql/cvx_codes.sql";
     $this->additional_users = dirname(__FILE__) . "/../../sql/official_additional_users.sql";
+    $this->menu_def = dirname(__FILE__) . "/../../sql/menu_definitions.sql";
 
     // Record name of php-gacl installation files
     $this->gaclSetupScript1 = dirname(__FILE__) . "/../../gacl/setup.php";
@@ -498,6 +499,11 @@ $config = 1; /////////////
       // Load CVX codes if present
       if (file_exists( $this->cvx )) {
         $dumpfiles[ $this->cvx ] = "CVX Immunization Codes";
+      }
+      // Load Menu Definitions if present
+      if (file_exists( $this->menu_def))
+      {
+          $dumpfiles[ $this->menu_def] = "Menu Definitions";
       }
       $this->dumpfiles = $dumpfiles;
     }
