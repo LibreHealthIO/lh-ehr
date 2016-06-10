@@ -32,6 +32,7 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/payment_jav.inc.php");
 
 $DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 $curdate = date_create(date("Y-m-d"));
 date_sub($curdate, date_interval_create_from_date_string("7 days"));
 $sub_date = date_format($curdate, 'Y-m-d');
@@ -62,11 +63,6 @@ $display_collapse_msg = "display:inline;";
 <link rel="stylesheet" href='<?php echo $GLOBALS['webroot'] ?>/library/js/qtip/jquery.qtip.min.css' type='text/css'>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.6.custom.min.js"></script>
@@ -159,21 +155,14 @@ $display_collapse_msg = "display:inline;";
 	<table style="margin-left:10px; " width='40%'>
 		<tr>
 			<td scope="row" class='label'><?php echo xlt('From'); ?>:</td>
-			<td><input type='text' name='form_from_doc_date' id="form_from_doc_date"
-				size='10' value='<?php echo attr($form_from_doc_date) ?>' readonly="readonly" title='<?php echo attr($title_tooltip) ?>'> 
-				<img alt="<?php echo xla("Date Selector"); ?>" src='../pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_from_doc_date'
-				border='0' alt='[?]' style='cursor: pointer' title='<?php echo xla('Click here to choose a date'); ?>'></td>
-			<script>
-					Calendar.setup({inputField:"form_from_doc_date", ifFormat:global_date_format, button:"img_from_doc_date"});
-			</script>
+			<td>
+				<input type='text' name='form_from_doc_date' id="form_from_doc_date"
+				size='10' value='<?php echo attr($form_from_doc_date) ?>' title='<?php echo attr($title_tooltip) ?>'>
+			</td>
 			<td class='label'><?php echo xlt('To'); ?>:</td>
-			<td><input type='text' name='form_to_doc_date' id="form_to_doc_date"
-				size='10' value='<?php echo attr($form_to_doc_date) ?>' readonly="readonly" title='<?php echo attr($title_tooltip) ?>'> 
-				<img alt="<?php xla("Date Selector"); ?>" src='../pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_to_doc_date'
-				border='0' alt='[?]' style='cursor: pointer' title='<?php echo xla('Click here to choose a date'); ?>'></td> 
-			<script>
-				Calendar.setup({inputField:"form_to_doc_date", ifFormat:global_date_format, button:"img_to_doc_date"});
-			</script>
+			<td>
+				<input type='text' name='form_to_doc_date' id="form_to_doc_date"
+				size='10' value='<?php echo attr($form_to_doc_date) ?>' title='<?php echo attr($title_tooltip) ?>'>
 			<td>
 				<span style='float: left;' id="docrefresh">
 					<a href='#' class='css_button'  onclick='return validateDate("form_from_doc_date","form_to_doc_date")'> <span><?php echo xlt('Refresh'); ?> </span></a> 
@@ -189,6 +178,7 @@ $display_collapse_msg = "display:inline;";
 	$current_user = $_SESSION["authId"];
 	$date_filter = '';
         $query_array = array();
+
 	if ($form_from_doc_date) {
 		$form_from_doc_date = DateToYYYYMMDD($form_from_doc_date);
 		$date_filter = " DATE(d.date) >= ? ";
@@ -199,6 +189,7 @@ $display_collapse_msg = "display:inline;";
 		$date_filter .= " AND DATE(d.date) <= ? ";
                 array_push($query_array,$form_to_doc_date);
 	}
+
 	// Get the category ID for lab reports.
 	$query = "SELECT rght FROM categories WHERE name = ?";
 	$catIDRs = sqlQuery($query,array($GLOBALS['lab_results_category_name']));
@@ -250,4 +241,19 @@ $display_collapse_msg = "display:inline;";
 	</table>
 </div>
 </body>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+	$(function() {
+		$("#form_from_doc_date").datetimepicker({
+			timepicker: false,
+			format: "<?= $DateFormat; ?>"
+		});
+		$("#form_to_doc_date").datetimepicker({
+			timepicker: false,
+			format: "<?= $DateFormat; ?>"
+		});
+		$.datetimepicker.setLocale('<?= $DateLocale;?>');
+	});
+</script>
 </html>

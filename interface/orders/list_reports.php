@@ -33,6 +33,10 @@ require_once("$srcdir/classes/Document.class.php");
 require_once("./receive_hl7_results.inc.php");
 require_once("./gen_hl7_order.inc.php");
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 /**
  * Get a list item title, translating if required.
  *
@@ -99,13 +103,9 @@ a, a:visited, a:hover { color:#0000cc; }
 
 </style>
 
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script language="JavaScript">
 
@@ -310,22 +310,12 @@ $form_provider = empty($_POST['form_provider']) ? '' : intval($_POST['form_provi
  <tr>
   <td class='text' align='center'>
    &nbsp;<?php echo xlt('From'); ?>:
-   <input type='text' size='6' name='form_from_date' id='form_from_date'
-    value='<?php echo attr($form_from_date); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>' />
+   <input type='text' size='12' name='form_from_date' id='form_from_date'
+    value='<?php echo attr($form_from_date); ?>'/>
 
    &nbsp;<?php echo xlt('To'); ?>:
-   <input type='text' size='6' name='form_to_date' id='form_to_date'
-    value='<?php echo attr($form_to_date); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>' />
+   <input type='text' size='12' name='form_to_date' id='form_to_date'
+    value='<?php echo attr($form_to_date); ?>'/>
 
    &nbsp;
    <input type='checkbox' name='form_patient' value='1'
@@ -400,11 +390,11 @@ $sqlBindArray = array();
 
 if (!empty($form_from_date)) {
   $where .= " AND po.date_ordered >= ?";
-  $sqlBindArray[] = $form_from_date;
+  $sqlBindArray[] = prepareDateBeforeSave($form_from_date);
 }
 if (!empty($form_to_date)) {
   $where .= " AND po.date_ordered <= ?";
-  $sqlBindArray[] = $form_to_date;
+  $sqlBindArray[] = prepareDateBeforeSave($form_to_date);
 }
 
 if ($form_patient) {
@@ -565,17 +555,21 @@ while ($row = sqlFetchArray($res)) {
 <input type='submit' name='form_xmit' value='<?php echo xla('Transmit Selected Orders'); ?>' />
 </p></center>
 <?php } ?>
-
-<script language='JavaScript'>
-
-// Initialize calendar widgets for "from" and "to" dates.
-Calendar.setup({inputField:'form_from_date', ifFormat:'%Y-%m-%d',
- button:'img_from_date'});
-Calendar.setup({inputField:'form_to_date', ifFormat:'%Y-%m-%d',
- button:'img_to_date'});
-
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+  $(function() {
+    $("#form_from_date").datetimepicker({
+      timepicker: false,
+      format: "<?= $DateFormat; ?>"
+    });
+    $("#form_to_date").datetimepicker({
+      timepicker: false,
+      format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
+  });
 </script>
-
 </form>
 </body>
 </html>

@@ -51,7 +51,7 @@ function care_plan_report($pid, $encounter, $cols, $id) {
                 <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo text($value['code']); ?></span></td>
                 <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo text($value['codetext']); ?></span></td>
                 <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo text($value['description']); ?></span></td>
-                <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo text($value['date']); ?></span></td>
+                <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo date(DateFormatRead(true), strtotime(text($value['date']))); ?></span></td>
             </tr>
             <?php
         }

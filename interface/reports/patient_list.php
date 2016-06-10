@@ -6,37 +6,41 @@
  // as published by the Free Software Foundation; either version 2
  // of the License, or (at your option) any later version.
 
- // This report lists patients that were seen within a given date
- // range, or all patients if no date range is entered.
+// This report lists patients that were seen within a given date
+// range, or all patients if no date range is entered.
 
- require_once("../globals.php");
- require_once("$srcdir/patient.inc");
- require_once("$srcdir/formatting.inc.php");
-  require_once("$srcdir/options.inc.php");
+require_once("../globals.php");
+require_once("$srcdir/patient.inc");
+require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/options.inc.php");
+
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 // Prepare a string for CSV export.
-function qescape($str) {
-  $str = str_replace('\\', '\\\\', $str);
-  return str_replace('"', '\\"', $str);
+function qescape($str)
+{
+    $str = str_replace('\\', '\\\\', $str);
+    return str_replace('"', '\\"', $str);
 }
 
- // $from_date = fixDate($_POST['form_from_date'], date('Y-01-01'));
- // $to_date   = fixDate($_POST['form_to_date'], date('Y-12-31'));
- $from_date = fixDate($_POST['form_from_date'], '');
- $to_date   = fixDate($_POST['form_to_date'], '');
- if (empty($to_date) && !empty($from_date)) $to_date = date('Y-12-31');
- if (empty($from_date) && !empty($to_date)) $from_date = date('Y-01-01');
+// $from_date = fixDate($_POST['form_from_date'], date('Y-01-01'));
+// $to_date   = fixDate($_POST['form_to_date'], date('Y-12-31'));
+$from_date = fixDate($_POST['form_from_date'], '');
+$to_date = fixDate($_POST['form_to_date'], '');
+if (empty($to_date) && !empty($from_date)) $to_date = date('Y-12-31');
+if (empty($from_date) && !empty($to_date)) $from_date = date('Y-01-01');
 
 $form_provider = empty($_POST['form_provider']) ? 0 : intval($_POST['form_provider']);
 
 // In the case of CSV export only, a download will be forced.
 if ($_POST['form_csvexport']) {
-  header("Pragma: public");
-  header("Expires: 0");
-  header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  header("Content-Type: application/force-download");
-  header("Content-Disposition: attachment; filename=patient_list.csv");
-  header("Content-Description: File Transfer");
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Content-Type: application/force-download");
+    header("Content-Disposition: attachment; filename=patient_list.csv");
+    header("Content-Description: File Transfer");
 }
 else {
 ?>
@@ -96,80 +100,77 @@ $(document).ready(function() {
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<span class='title'><?php xl('Report','e'); ?> - <?php xl('Patient List','e'); ?></span>
+<span class='title'><?php xl('Report', 'e'); ?> - <?php xl('Patient List', 'e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?= date("d F Y", strtotime(oeFormatDateForPrintReport($form_from_date)))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($form_to_date))); ?>
 </div>
 
 <form name='theform' id='theform' method='post' action='patient_list.php'>
 
-<div id="report_parameters">
+    <div id="report_parameters">
 
-<input type='hidden' name='form_refresh' id='form_refresh' value=''/>
-<input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>
+        <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
+        <input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>
 
-<table>
- <tr>
-  <td width='60%'>
-	<div style='float:left'>
+        <table>
+            <tr>
+                <td width='60%'>
+                    <div style='float:left'>
 
-	<table class='text'>
-		<tr>
-      <td class='label'>
-        <?php xl('Provider','e'); ?>:
-      </td>
-      <td>
-	      <?php
-         generate_form_field(array('data_type' => 10, 'field_id' => 'provider',
-           'empty_title' => '-- All --'), $_POST['form_provider']);
-	      ?>
-      </td>
-			<td class='label'>
-			   <?php xl('Visits From','e'); ?>:
-			</td>
-			<td>
-			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>'
-				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php xl('Click here to choose a date','e'); ?>'>
-			</td>
-			<td class='label'>
-			   <?php xl('To','e'); ?>:
-			</td>
-			<td>
-			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>'
-				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php xl('Click here to choose a date','e'); ?>'>
-			</td>
-		</tr>
-	</table>
+                        <table class='text'>
+                            <tr>
+                                <td class='label'>
+                                    <?php xl('Provider', 'e'); ?>:
+                                </td>
+                                <td>
+                                    <?php
+                                    generate_form_field(array('data_type' => 10, 'field_id' => 'provider',
+                                        'empty_title' => '-- All --'), $_POST['form_provider']);
+                                    ?>
+                                </td>
+                                <td class='label'>
+                                    <?php xl('Visits From', 'e'); ?>:
+                                </td>
+                                <td>
+                                    <input type='text' name='form_from_date' id="form_from_date"
+                                           size='10' value='<?= $form_from_date; ?>' title='yyyy-mm-dd'>
+                                </td>
+                                <td class='label'>
+                                    <?php xl('To', 'e'); ?>:
+                                </td>
+                                <td>
+                                    <input type='text' name='form_to_date' id="form_to_date" size='10'
+                                           value='<?= $form_to_date; ?>' title='yyyy-mm-dd'>
+                                </td>
+                            </tr>
+                        </table>
 
-	</div>
+                    </div>
 
-  </td>
-  <td align='left' valign='middle' height="100%">
-	<table style='border-left:1px solid; width:100%; height:100%' >
-		<tr>
-			<td>
-				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                </td>
+                <td align='left' valign='middle' height="100%">
+                    <table style='border-left:1px solid; width:100%; height:100%'>
+                        <tr>
+                            <td>
+                                <div style='margin-left:15px'>
+                                    <a href='#' class='css_button'
+                                       onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
 					<span>
-						<?php xl('Submit','e'); ?>
+						<?php xl('Submit', 'e'); ?>
 					</span>
-					</a>
-					<a href='#' class='css_button' onclick='$("#form_csvexport").attr("value","true"); $("#theform").submit();'>
+                                    </a>
+                                    <a href='#' class='css_button'
+                                       onclick='$("#form_csvexport").attr("value","true"); $("#theform").submit();'>
 					<span>
-						<?php xl('Export to CSV','e'); ?>
+						<?php xl('Export to CSV', 'e'); ?>
 					</span>
-					</a>
-					<?php if ($_POST['form_refresh']) { ?>
-					<a href='#' id='printbutton' class='css_button'>
+                                    </a>
+                                    <?php if ($_POST['form_refresh']) { ?>
+                                        <a href='#' id='printbutton' class='css_button'>
 						<span>
-							<?php xl('Print','e'); ?>
+							<?php xl('Print', 'e'); ?>
 						</span>
 					</a>
 					<?php } ?>
@@ -353,15 +354,20 @@ if (!$_POST['form_csvexport']) {
 
 </form>
 </body>
-
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </html>
 <?php

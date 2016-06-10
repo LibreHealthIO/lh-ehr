@@ -13,6 +13,7 @@ include_once("$srcdir/lists.inc");
 include_once("$srcdir/acl.inc");
 include_once("$srcdir/options.inc.php");
 include_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/formatting.inc.php");
 ?>
 
 <div id="patient_stats_summary">
@@ -295,12 +296,12 @@ else { ?>
     echo "  <td colspan='$numcols' class='text'>&nbsp;&nbsp;" . htmlspecialchars( xl('None'), ENT_NOQUOTES) . "</td>\n";
     echo " </tr></table>\n";
   }   
-    
+
   while ($row=sqlFetchArray($result)){
     echo "&nbsp;&nbsp;";
     echo "<a class='link'";
     echo "' href='javascript:;' onclick='javascript:load_location(\"immunizations.php?mode=edit&id=".htmlspecialchars($row['id'],ENT_QUOTES) . "\")'>" .
-    htmlspecialchars($row{'immunization_data'},ENT_NOQUOTES);
+    date(DateFormatRead(), strtotime(substr($row{'immunization_data'}, 0, 10))) . '-';
 
     // Figure out which name to use (ie. from cvx list or from the custom list)
     if ($GLOBALS['use_custom_immun_list']) {

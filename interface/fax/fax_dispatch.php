@@ -13,6 +13,10 @@ require_once("$srcdir/forms.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/gprelations.inc.php");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 if ($_GET['file']) {
   $mode = 'fax';
   $filename = $_GET['file'];
@@ -388,15 +392,10 @@ div.section {
 
 </style>
 
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-
 <script type="text/javascript" src="../../library/topdialog.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
 
 <script language="JavaScript">
 
@@ -577,12 +576,7 @@ foreach ($categories as $catkey => $catname) {
        <td class='itemtitle' nowrap><?php xl('Document Date','e'); ?></td>
        <td>
         <input type='text' size='10' name='form_docdate' id='form_docdate'
-        value='<?php echo date('Y-m-d'); ?>'
-        title='<?php xl('yyyy-mm-dd date associated with this document','e'); ?>'
-        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-        <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-        id='img_docdate' border='0' alt='[?]' style='cursor:pointer'
-        title='<?php xl('Click here to choose a date','e'); ?>' />
+        value='<?php echo htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>'/>
        </td>
       </tr>
      </table>
@@ -750,8 +744,16 @@ foreach ($jpgarray as $jfnamebase => $jfname) {
 </center>
 </form>
 
-<script language='JavaScript'>
- Calendar.setup({inputField:"form_docdate", ifFormat:"%Y-%m-%d", button:"img_docdate"});
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_docdate").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 
 </body>

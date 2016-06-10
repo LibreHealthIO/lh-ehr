@@ -52,7 +52,7 @@ function functional_cognitive_status_report($pid, $encounter, $cols, $id) {
                 <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo text($value['code']); ?></span></td>
                 <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo text($value['codetext']); ?></span></td>
                 <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo text($value['description']); ?></span></td>
-                <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo text($value['date']); ?></span></td>
+                <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo date(DateFormatRead(true), strtotime(text($value['date']))); ?></span></td>
                 <td style='border:1px solid #ccc;padding:4px;'><span class=text><?php echo ($value['activity'] == 1)? xlt('Yes'): xlt('No'); ?></span></td>
             </tr>
             <?php

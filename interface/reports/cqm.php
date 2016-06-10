@@ -22,6 +22,9 @@ require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/clinical_rules.php";
 require_once "$srcdir/report_database.inc";
 
+$DateFormat = DateFormatRead(true);
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 // See if showing an old report or creating a new report
 $report_id = (isset($_GET['report_id'])) ? trim($_GET['report_id']) : "";
 
@@ -31,13 +34,13 @@ $back_link = (isset($_GET['back'])) ? trim($_GET['back']) : "";
 // If showing an old report, then collect information
 if (!empty($report_id)) {
   $report_view = collectReportDatabase($report_id);
-  $date_report = $report_view['date_report'];
+  $date_report = date($DateFormat, strtotime($report_view['date_report']));
   $type_report = $report_view['type'];
-  
+
   $type_report = (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014")  || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2") ||
                   ($type_report == "cqm") || ($type_report == "cqm_2011") || ($type_report == "cqm_2014")) ? $type_report : "standard";
   $rule_filter = $report_view['type'];
-  
+
   if (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014")  || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2")) {
     $begin_date = $report_view['date_begin'];
     $labs_manual = $report_view['labs_manual'];
@@ -54,7 +57,7 @@ else {
   // Note that need to convert amc_2011 and amc_2014 to amc and cqm_2011 and cqm_2014 to cqm
   // to simplify for when submitting for a new report.
   $type_report = (isset($_GET['type'])) ? trim($_GET['type']) : "standard";
-  
+
   if ( ($type_report == "cqm_2011") || ($type_report == "cqm_2014") ) {
     $type_report = "cqm";
   }
@@ -66,7 +69,7 @@ else {
     $begin_date = (isset($_POST['form_begin_date'])) ? trim($_POST['form_begin_date']) : "";
     $labs_manual = (isset($_POST['labs_manual_entry'])) ? trim($_POST['labs_manual_entry']) : "0";
   }
-  $target_date = (isset($_POST['form_target_date'])) ? trim($_POST['form_target_date']) : date('Y-m-d H:i:s');
+  $target_date = (isset($_POST['form_target_date'])) ? trim($_POST['form_target_date']) : date($DateFormat);
   $rule_filter = (isset($_POST['form_rule_filter'])) ? trim($_POST['form_rule_filter']) : "";
   $plan_filter = (isset($_POST['form_plan_filter'])) ? trim($_POST['form_plan_filter']) : "";
   $organize_method = (empty($plan_filter)) ? "default" : "plans";
@@ -81,7 +84,7 @@ else {
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-
+    <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <?php if ($type_report == "standard") { ?>
   <title><?php echo xlt('Standard Measures'); ?></title>
 <?php } ?>
@@ -112,7 +115,7 @@ else {
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script LANGUAGE="JavaScript">
 
@@ -135,7 +138,7 @@ else {
    $("#processing").show();
 
    // hide Submit buttons
-   $("#submit_button").hide();   
+   $("#submit_button").hide();
    $("#xmla_button").hide();
    $("#xmlb_button").hide();
    $("#xmlc_button").hide();
@@ -210,7 +213,7 @@ else {
 	  dlgopen(sLoc, '_blank', 600, 500);
 	  return false;
  }
- 
+
  //QRDA I - 2014 Download
  function downloadQRDA() {
 	top.restoreSession();
@@ -237,10 +240,10 @@ else {
      return true;
    <?php } ?>
  }
- 
+
  function Form_Validate() {
-	 <?php if ( (empty($report_id)) && (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2")) ){ ?>	
-		 var d = document.forms[0];		 
+	 <?php if ( (empty($report_id)) && (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2")) ){ ?>
+		 var d = document.forms[0];
 		 FromDate = d.form_begin_date.value;
 		 ToDate = d.form_target_date.value;
 		  if ( (FromDate.length > 0) && (ToDate.length > 0) ) {
@@ -258,7 +261,7 @@ else {
 	$("a").removeAttr("href");
 	<?php }?>
 
-	$("#form_refresh").attr("value","true"); 
+	$("#form_refresh").attr("value","true");
 	runReport();
 	return true;
 }
@@ -298,7 +301,7 @@ else {
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<span class='title'><?php echo xlt('Report'); ?> - 
+<span class='title'><?php echo xlt('Report'); ?> -
 
 <?php if ($type_report == "standard") { ?>
   <?php echo xlt('Standard Measures'); ?>
@@ -355,13 +358,9 @@ else {
                          <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
                       </td>
                       <td>
-                         <input <?php echo $dis_text; ?> type='text' name='form_begin_date' id="form_begin_date" size='20' value='<?php echo htmlspecialchars( $begin_date, ENT_QUOTES); ?>'
-                            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-                          <?php if (empty($report_id)) { ?>
-                           <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                            id='img_begin_date' border='0' alt='[?]' style='cursor:pointer'
-                            title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
-                          <?php } ?>
+                         <input <?php echo $dis_text; ?> type='text' name='form_begin_date' id="form_begin_date" size='20'
+                             value='<?= htmlspecialchars($begin_date); ?>' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
+
                       </td>
                    </tr>
 		<?php } ?>
@@ -375,13 +374,8 @@ else {
                            <?php } ?>
                         </td>
                         <td>
-                           <input <?php echo $dis_text; ?> type='text' name='form_target_date' id="form_target_date" size='20' value='<?php echo htmlspecialchars( $target_date, ENT_QUOTES); ?>'
-                                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-                           <?php if (empty($report_id)) { ?>
-                             <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                                id='img_target_date' border='0' alt='[?]' style='cursor:pointer'
-                                title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
-                           <?php } ?>
+                           <input <?php echo $dis_text; ?> type='text' name='form_target_date' id="form_target_date" size='20' value='<?= htmlspecialchars($target_date); ?>'
+                                   title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
                         </td>
                 </tr>
 
@@ -471,7 +465,7 @@ else {
                     </tr>
                 <?php } ?>
 
-                <tr>      
+                <tr>
 			<td class='label'>
 			   <?php echo htmlspecialchars( xl('Provider'), ENT_NOQUOTES); ?>:
 			</td>
@@ -597,7 +591,7 @@ else {
                                             <?php } ?>
 
                                             <?php if ($back_link == "list") { ?>
-                                               <a href='report_results.php' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt("Return To Report Results"); ?></span></a> 
+                                               <a href='report_results.php' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt("Return To Report Results"); ?></span></a>
                                             <?php } else { ?>
                                                <a href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit();'><span><?php echo xlt("Start Another Report"); ?></span></a>
                                             <?php } ?>
@@ -727,7 +721,7 @@ else {
        if ( !(empty($row['concatenated_label'])) ) {
            echo ", " . htmlspecialchars( xl( $row['concatenated_label'] ), ENT_NOQUOTES) . " ";
        }
-       
+
      }
      else { // isset($row['is_sub'])
        echo generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$row['action_category']);
@@ -839,17 +833,19 @@ else {
 
 </body>
 
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script language="Javascript">
- <?php if ($type_report == "amc" || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2") ) { ?>
-  Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
- <?php } ?>
- Calendar.setup({inputField:"form_target_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_target_date", showsTime:'true'});
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_begin_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_target_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
-
 </html>
 

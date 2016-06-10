@@ -32,6 +32,9 @@ require_once($GLOBALS['srcdir'].'/options.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 require_once($GLOBALS['srcdir'].'/appointments.inc.php');
 
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 $enc_units = $total_units = 0;
 $enc_chg = $total_chg = 0;
 $enc_pmt = $total_pmt = 0;
@@ -279,9 +282,8 @@ if ($_REQUEST['form_csvexport']) {
 <head>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 <script type="text/javascript">
 var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';
 var pt_name;
@@ -405,15 +407,15 @@ function sel_patient() {
 <?php } ?>
       <td colspan="2">
         <?php echo xlt('From'); ?>:&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo attr($form_from_date) ?>' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-        <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_from_date' border='0' alt='[?]' style='cursor:pointer' title='<?php echo xla("Click here to choose a date"); ?>'>
+        <input type='text' name='form_from_date' id="form_from_date" size='10'
+            value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_from_date))) ?>'>
       </td>
       <td class='label'>
         <?php echo xlt('To'); ?>:
       </td>
       <td>
-        <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo attr($form_to_date) ?>' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-        <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_to_date' border='0' alt='[?]' style='cursor:pointer' title='<?php echo xla("Click here to choose a date"); ?>'>
+        <input type='text' name='form_to_date' id="form_to_date" size='10'
+         value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>'>
       </td>
       <?php if($type_form == '0') { ?>
       <td><span class='label'><?php echo xlt('Patient'); ?>:&nbsp;&nbsp;</span></td>
@@ -461,6 +463,7 @@ function sel_patient() {
 } // end not export
   $from_date = $form_from_date . ' 00:00:00';
   $to_date = $form_to_date . ' 23:59:59';
+
 if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
   $rows = array();
   $sqlBindArray = array();
@@ -725,15 +728,23 @@ if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
 
 <!-- stuff for the popup calendar -->
 
-<link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar_setup.js"></script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
  top.restoreSession();
+</script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </html>
 <?php

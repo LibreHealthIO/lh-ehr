@@ -6,6 +6,10 @@ if ($GLOBALS['full_new_patient_form']) {
   exit;
 }
 
+require_once("$srcdir/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 // For a layout field return 0=unused, 1=optional, 2=mandatory.
 function getLayoutUOR($form_id, $field_id) {
   $crow = sqlQuery("SELECT uor FROM layout_options WHERE " .
@@ -32,14 +36,9 @@ $form_regdate   = $_POST['regdate'  ] ? trim($_POST['regdate'  ]) : date('Y-m-d'
 <head>
 <?php html_header_show(); ?>
 <link rel="stylesheet" href="<?php echo xl($css_header,'e');?>" type="text/css">
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
-
 <script LANGUAGE="JavaScript">
 
  var mypcc = '1';
@@ -190,16 +189,7 @@ while ($orow = sqlFetchArray($ores)) {
    <span class='bold'><?php xl('Birth Date','e');?>: </span>
   </td>
   <td>
-   <input type='text' size='10' name='DOB' id='DOB'
-    value='<?php echo $form_dob; ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-    title='yyyy-mm-dd' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_dob' border='0' alt='[?]' style='cursor:pointer'
-    title='Click here to choose a date'>
-   <script LANGUAGE="JavaScript">
-    Calendar.setup({inputField:"DOB", ifFormat:"%Y-%m-%d", button:"img_dob"});
-   </script>
+   <input type='text' size='10' name='DOB' id='DOB' value='<?php echo $form_dob; ?>'/>
   </td>
  </tr>
 
@@ -208,16 +198,7 @@ while ($orow = sqlFetchArray($ores)) {
    <span class='bold'><?php xl('Registration Date','e');?>: </span>
   </td>
   <td>
-   <input type='text' size='10' name='regdate' id='regdate'
-    value='<?php echo $form_regdate; ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-    title='yyyy-mm-dd' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_regdate' border='0' alt='[?]' style='cursor:pointer'
-    title='Click here to choose a date'>
-   <script LANGUAGE="JavaScript">
-    Calendar.setup({inputField:"regdate", ifFormat:"%Y-%m-%d", button:"img_regdate"});
-   </script>
+   <input type='text' size='10' name='regdate' id='regdate' value='<?php echo $form_regdate; ?>'/>
   </td>
  </tr>
 
@@ -245,11 +226,22 @@ while ($orow = sqlFetchArray($ores)) {
 </form>
 <script language="Javascript">
 <?php
-if ($form_pubpid) { 
+if ($form_pubpid) {
   echo "alert('" . xl('This patient ID is already in use!') . "');\n";
 }
 ?>
 </script>
 
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#DOB, #regdate").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
+</script>
 </body>
 </html>

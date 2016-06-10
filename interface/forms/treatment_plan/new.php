@@ -29,6 +29,10 @@ include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 formHeader("Form:Treatment Planning");
 $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
@@ -41,11 +45,6 @@ $obj = $formid ? formFetch("form_treatment_plan", $formid) : array();
 <html><head>
 <?php html_header_show();?>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
-<!-- pop up calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
@@ -110,12 +109,8 @@ echo "<form method='post' name='my_form' " .
 		<td align="left" class="forms"><?php echo xlt('Admit Date'); ?>:</td>
 		<td class="forms">
 			   <input type='text' size='10' name='admit_date' id='admission_date' <?php echo attr($disabled) ?>;
-			   value='<?php echo attr($obj{"admit_date"}); ?>'   
-			   title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-        <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-        id='img_admission_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-        title='<?php echo xla('Click here to choose a date'); ?>'>
+			   value='<?php echo htmlspecialchars(oeFormatShortDate(attr($obj{"admit_date"}))); ?>'
+			   title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'/>
 		</td> 
 		
 		</tr>
@@ -198,10 +193,17 @@ echo "<form method='post' name='my_form' " .
 	</tr>
 </table>
 </form>
-<script language="javascript">
-/* required for popup calendar */
-Calendar.setup({inputField:"admission_date", ifFormat:"%Y-%m-%d", button:"img_admission_date"});
 
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+	$(function() {
+		$("#admission_date").datetimepicker({
+			timepicker: false,
+			format: "<?= $DateFormat; ?>"
+		});
+		$.datetimepicker.setLocale('<?= $DateLocale;?>');
+	});
 </script>
 <?php
 formFooter();

@@ -13,6 +13,10 @@ $fake_register_globals = false;
 include_once("../globals.php");
 include_once($GLOBALS['srcdir'] . "/patient.inc");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 $template_dir = $GLOBALS['OE_SITE_DIR'] . "/letter_templates";
 
 // array of field name tags to allow internationalization
@@ -312,18 +316,14 @@ while ($srow = sqlFetchArray($sres)) {
 <?php html_header_show();?>
 <title><?php xl('Letter Generator','e'); ?></title>
 
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
-
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
-
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/topdialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 
 <script language="JavaScript">
 <?php echo $ulist; ?>
@@ -440,13 +440,7 @@ function insertAtCursor(myField, myValue) {
   </td>
 
   <td>
-   <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo date('Y-m-d'); ?>'
-    title='<?php xl('yyyy-mm-dd date of this letter','e'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>' />
+   <input type='text' size='10' name='form_date' id='form_date' value='<?= htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>' />
   </td>
 
  </tr>
@@ -595,8 +589,11 @@ closedir($dh);
 </body>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
-
+    $("#form_date").datetimepicker({
+        timepicker: false,
+        format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){

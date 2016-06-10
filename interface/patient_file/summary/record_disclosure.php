@@ -35,6 +35,10 @@ $fake_register_globals=false;
 require_once("../../globals.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/formatting.inc.php");
+
+$DateFormat = DateFormatRead(true);
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 //if the edit button for editing disclosure is set.
 if (isset($_GET['editlid'])) 
@@ -45,11 +49,6 @@ if (isset($_GET['editlid']))
 <html>
 <head>
 <link rel='stylesheet' href="<?php echo $css_header;?>" type="text/css">
-<!-- supporting javascript code -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript">
 //function to validate fields in record disclosure page
 function submitform() 
@@ -108,20 +107,25 @@ else {?> <span class="title"><?php echo htmlspecialchars(xl('Record Disclosure')
 		 ?> 
 			<input type=hidden name=disclosure_id value="<?php echo htmlspecialchars($editlid,ENT_QUOTES); ?>"> 
 			<input type=hidden name=updatemode value="disclosure_update"> 
-			<input type='entry' size='20' name='dates' id='dates' readonly='readonly' value='<?php echo htmlspecialchars($disc_date,ENT_QUOTES);?>' style="background-color:white"/>&nbsp; <?php
+			<input type='entry' size='20' name='dates' id='dates' value='<?= date($DateFormat, strtotime(attr($disc_date))); ?>' style="background-color:white"/>&nbsp; <?php
 		}
 		else {
-			?> <input type='entry' size='20' name='dates' id='dates' value='' readonly="readonly" style="background-color:white"/>&nbsp;
+			?> <input type='entry' size='20' name='dates' id='dates' value='' style="background-color:white"/>&nbsp;
 			<?php }
-			?> 
-		<!-- image for date/time picker --> 
-		<img src="../../../interface/pic/show_calendar.gif" id="img_date"
-			width="24" height="22" align="absbottom" style="cursor: pointer;"
-			title="<?php echo htmlspecialchars(xl('Date selector'),ENT_QUOTES);?>" /></td>
+			?>
+		</td>
+		<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+		<script type="text/javascript" src="../../../library/js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 		<script type="text/javascript">
-		Calendar.setup({inputField:'dates', ifFormat:'%Y-%m-%d %H:%M:%S',
-		button:'img_date', showsTime:true});
-</script>
+			$(function() {
+				$("#dates").datetimepicker({
+					timepicker: true,
+					format: "<?= $DateFormat; ?>"
+				});
+				$.datetimepicker.setLocale('<?= $DateLocale;?>');
+			});
+		</script>
 	</tr>
 	<tr>
 		<td><span class=text><?php echo htmlspecialchars(xl('Type of Disclosure'),ENT_NOQUOTES); ?>: </span></TD>

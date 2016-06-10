@@ -3,17 +3,17 @@ include_once("../globals.php");
 include_once("$srcdir/log.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
+
+/** Current format of date  */
+$DateFormat = DateFormatRead(true);
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 ?>
 <html>
 <head>
 <?php html_header_show();?>
-<link rel="stylesheet" href='<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css' type='text/css'>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <style>
 #logview {
@@ -131,14 +131,14 @@ $sortby = formData('sortby','G') ;
 <tr><td>
 <span class="text"><?php  xl('Start Date','e'); ?>: </span>
 </td><td>
-<input type="text" size="18" name="start_date" id="start_date" value="<?php echo $start_date ? $start_date : (date("Y-m-d") . " 00:00:00"); ?>" title="<?php  xl('yyyy-mm-dd H:m Start Date','e'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
-<img src="../pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_begin_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php  xl('Click here to choose date time','e'); ?>">&nbsp;
+<input type="text" size="18" name="start_date" id="start_date"
+       value="<?php echo $start_date ? $start_date : date($DateFormat); ?>"/>&nbsp;
 </td>
 <td>
 <span class="text"><?php  xl('End Date','e'); ?>: </span>
 </td><td>
-<input type="text" size="18" name="end_date" id="end_date" value="<?php echo $end_date ? $end_date : (date("Y-m-d") . " 23:59:00"); ?>" title="<?php  xl('yyyy-mm-dd H:m End Date','e'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
-<img src="../pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_end_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php  xl('Click here to choose date time','e'); ?>">&nbsp;
+<input type="text" size="18" name="end_date" id="end_date"
+       value="<?php echo $end_date ? $end_date : date($DateFormat); ?>" />&nbsp;
 </td>
 <!--VicarePlus :: Feature For Generating Log For The Selected Patient --!>
 <td>
@@ -371,7 +371,8 @@ foreach ($ret as $iter) {
 <?php } ?>
 
 </body>
-
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script language="javascript">
 
 // jQuery stuff to make the page a little easier to use
@@ -396,13 +397,13 @@ $(document).ready(function(){
     $("#sortby_success").click(function() { $("#sortby").val("success"); $("#theform").submit(); });
     $("#sortby_comments").click(function() { $("#sortby").val("comments"); $("#theform").submit(); });
     $("#sortby_checksum").click(function() { $("#sortby").val("checksum"); $("#theform").submit(); });
+
+    $("#start_date, #end_date").datetimepicker({
+        timepicker: true,
+        format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
 });
-
-
-/* required for popup calendar */
-Calendar.setup({inputField:"start_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:true});
-Calendar.setup({inputField:"end_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date", showsTime:true});
-
 </script>
 
 </html>

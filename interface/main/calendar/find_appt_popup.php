@@ -30,6 +30,11 @@
  ?>
     <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <?php
+require_once($GLOBALS['srcdir']."/appointments.inc.php");
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
  // check access controls
  if (!acl_check('patients','appt','',array('write','wsome') ))
   die(xlt('Access not allowed'));
@@ -299,14 +304,8 @@
 <title><?php echo xlt('Find Available Appointments'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
-<!-- for the pop up calendar -->
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
-
 <!-- for ajax-y stuff -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 
 <script language="JavaScript">
 
@@ -382,11 +381,7 @@ form {
 <div id="searchCriteria">
 <form method='post' name='theform' action='find_appt_popup.php?providerid=<?php echo attr($providerid) ?>&catid=<?php echo attr($input_catid) ?>'>
    <?php echo xlt('Start date:'); ?>
-   <input type='text' name='startdate' id='startdate' size='10' value='<?php echo attr($sdate) ?>'
-    title='<?php echo xla('yyyy-mm-dd starting date for search'); ?> '/>
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>'>
+   <input type='text' name='startdate' id='startdate' size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($sdate))) ?>'/>
    <?php echo xlt('for'); ?>
    <input type='text' name='searchdays' size='3' value='<?php echo attr($searchdays) ?>'
     title='<?php echo xla('Number of days to search from the start date'); ?>' />
@@ -471,10 +466,10 @@ form {
 </form>
 </body>
 
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 <!-- for the pop up calendar -->
 <script language='JavaScript'>
- Calendar.setup({inputField:"startdate", ifFormat:"%Y-%m-%d", button:"img_date"});
-
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
@@ -483,6 +478,12 @@ $(document).ready(function(){
     $(".oneresult a").mouseover(function () { $(this).toggleClass("blue_highlight"); $(this).children().toggleClass("blue_highlight"); });
     $(".oneresult a").mouseout(function() { $(this).toggleClass("blue_highlight"); $(this).children().toggleClass("blue_highlight"); });
     //$(".event").dblclick(function() { EditEvent(this); });
+
+    $("#startdate").datetimepicker({
+        timepicker: false,
+        format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
 });
 
 

@@ -15,6 +15,10 @@
  require_once("$srcdir/formdata.inc.php");
  require_once("$srcdir/htmlspecialchars.inc.php");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
  function QuotedOrNull($fld) {
   if ($fld) return "'".add_escape_custom($fld)."'";
   return "NULL";
@@ -38,12 +42,8 @@
 td { font-size:10pt; }
 </style>
 
-<style  type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-
+ <script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
 <script language="JavaScript">
  var mypcc = '<?php  echo $GLOBALS['phone_country_code'] ?>';
 </script>
@@ -113,12 +113,7 @@ td { font-size:10pt; }
   <td valign='top' nowrap><b><?php echo xlt('Date Destroyed'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo $row['destroy_date'] ? attr($row['destroy_date']) : date("Y-m-d"); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-    title='<?php echo xla('yyyy-mm-dd date destroyed'); ?>' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>'>
+    value='<?php echo $row['destroy_date'] ? htmlspecialchars(oeFormatShortDate(attr($row['destroy_date']))) : htmlspecialchars(oeFormatShortDate(date("Y-m-d"))); ?>'/>
   </td>
  </tr>
 
@@ -157,8 +152,14 @@ td { font-size:10pt; }
 
 </center>
 </form>
-<script language='JavaScript'>
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+<script>
+ $(function() {
+     $("#form_date").datetimepicker({
+      timepicker: false,
+      format: "<?= $DateFormat; ?>"
+     });
+  $.datetimepicker.setLocale('<?= $DateLocale;?>');
+ });
 </script>
 </body>
 </html>

@@ -130,13 +130,9 @@ $DateFormat=DateFormatRead();
 <html>
 <head>
 <?php if (function_exists('html_header_show')) html_header_show(); ?>
-
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
+	<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css"
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language='JavaScript'>
  var mypcc = '1';
 </script>
@@ -144,6 +140,7 @@ $DateFormat=DateFormatRead();
  <script type="text/JavaScript" src="../../library/js/jquery121.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
 <script type="text/javascript" src="../../library/js/common.js"></script>
+<script type="text/JavaScript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script LANGUAGE="javascript" TYPE="text/javascript">
 function CancelDistribute()
  {//Used in the cancel button.Helpful while cancelling the distribution.

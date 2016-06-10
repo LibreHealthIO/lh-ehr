@@ -266,6 +266,20 @@ $(document).ready(function() {
     // add drag and drop functionality to fancybox
     $("#fancy_outer").easydrag();
   });
+
+  // Support for beforeunload handler.
+  $('.lbfdata input, .lbfdata select, .lbfdata textarea').change(function() {
+    somethingChanged = true;
+  });
+  window.addEventListener("beforeunload", function (e) {
+    if (somethingChanged && !top.timed_out) {
+
+      var msg = "<?php echo xls('You have unsaved changes.'); ?>";
+      e.returnValue = msg;     // Gecko, Trident, Chrome 34+
+      return msg;              // Gecko, WebKit, Chrome <34
+    }
+  });
+
 });
 
 var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';

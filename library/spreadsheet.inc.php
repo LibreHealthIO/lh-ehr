@@ -10,6 +10,12 @@ include_once(dirname(__FILE__) . '/api.inc');
 include_once(dirname(__FILE__) . '/forms.inc');
 include_once(dirname(__FILE__) . '/../interface/forms/fee_sheet/codes.php');
 
+require_once(dirname(__FILE__) . "/formatting.inc.php");
+
+/** Current format date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 $celltypes = array(
  '0' => 'Unused',
  '1' => 'Static',
@@ -278,10 +284,8 @@ $num_virtual_cols = $num_used_cols ? $num_used_cols + 5 : 10;
  padding: 0 0 0 0;
 }
 </style>
-<script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar_en.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
+<script type="text/javascript" src="textformat.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 
 <script language="JavaScript">
  var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';
@@ -547,14 +551,8 @@ $num_virtual_cols = $num_used_cols ? $num_used_cols + 5 : 10;
   <td>
    <?php xl('Start Date','e'); ?>:
    <input type='text' name='form_start_date' id='form_start_date'
-    size='10' value='<?php echo $start_date; ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'
+    size='10' value='<?php echo $start_date; ?>' title='yyyy-mm-dd'
     <?php if ($formid && $start_date) echo 'disabled '; ?>/>
-<?php if (!$formid || !$start_date) { ?>
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_start_date' border='0' alt='[?]' style='cursor:pointer'
-    title='Click here to choose a date'>
-<?php } ?>
    &nbsp;
    <?php xl('Template:','e') ?>
    <select name='form_template' onchange='newTemplate(this)'<?php if ($formid) echo ' disabled'; ?>>
@@ -684,8 +682,16 @@ for ($i = 0; $i < $num_virtual_rows; ++$i) {
 
 </center>
 </form>
+<link rel="stylesheet" href="css/jquery.datetimepicker.css">
+<script type="text/javascript" src="js/jquery.datetimepicker.full.min.js"></script>
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_start_date", ifFormat:"%Y-%m-%d", button:"img_start_date"});
+    $(function() {
+        $("#form_start_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 <?php
 if ($alertmsg) echo " alert('$alertmsg');\n";
 ?>

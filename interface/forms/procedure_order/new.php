@@ -29,11 +29,15 @@ require_once("../../orders/qoe.inc.php");
 require_once("../../orders/gen_hl7_order.inc.php");
 require_once("../../../custom/code_types.inc.php");
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 // Defaults for new orders.
 $row = array(
   'provider_id' => $_SESSION['authUserID'],
-  'date_ordered' => date('Y-m-d'),
-  'date_collected' => date('Y-m-d H:i'),
+  'date_ordered' => date($DateFormat),
+  'date_collected' => date(DateFormatRead(true)),
 );
 
 if (! $encounter) { // comes from globals.php
@@ -79,10 +83,10 @@ if ($_POST['bn_save'] || $_POST['bn_xmit']) {
   $ppid = formData('form_lab_id') + 0;
 
   $sets =
-    "date_ordered = " . QuotedOrNull(formData('form_date_ordered'))     . ", " .
+    "date_ordered = " . QuotedOrNull(prepareDateBeforeSave(formData('form_date_ordered')))     . ", " .
     "provider_id = " . (formData('form_provider_id') + 0)               . ", " .
     "lab_id = " . $ppid                                                 . ", " .
-    "date_collected = " . QuotedOrNull(formData('form_date_collected')) . ", " .
+    "date_collected = " . QuotedOrNull(prepareDateBeforeSave(formData('form_date_collected'))) . ", " .
     "order_priority = '" . formData('form_order_priority')              . "', " .
     "order_status = '" . formData('form_order_status')                  . "', " .
     "clinical_hx = '" . formData('form_clinical_hx')                    . "', " .
@@ -218,12 +222,8 @@ td {
 
 </style>
 
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-
 <script type="text/javascript" src="../../../library/dialog.js"></script>
+    <script type="text/javascript" src="../../../library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 
 <script language='JavaScript'>
@@ -418,11 +418,7 @@ generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
     echo "<input type='text' size='10' name='form_date_ordered' id='form_date_ordered'" .
       " value='" . $row['date_ordered'] . "'" .
       " title='" . xl('Date of this order') . "'" .
-      " onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'" .
-      " />" .
-      "<img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'" .
-      " id='img_date_ordered' border='0' alt='[?]' style='cursor:pointer'" .
-      " title='" . xl('Click here to choose a date') . "' />";
+      " />";
 ?>
   </td>
  </tr>
@@ -434,11 +430,7 @@ generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
     echo "<input type='text' size='16' name='form_date_collected' id='form_date_collected'" .
       " value='" . substr($row['date_collected'], 0, 16) . "'" .
       " title='" . xl('Date and time that the sample was collected') . "'" .
-      // " onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'" .
-      " />" .
-      "<img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'" .
-      " id='img_date_collected' border='0' alt='[?]' style='cursor:pointer'" .
-      " title='" . xl('Click here to choose a date and time') . "' />";
+      " />";
 ?>
   </td>
  </tr>
@@ -582,13 +574,21 @@ if ($qoe_init_javascript)
 
 </center>
 
-<script language='JavaScript'>
-Calendar.setup({inputField:'form_date_ordered', ifFormat:'%Y-%m-%d',
- button:'img_date_ordered'});
-Calendar.setup({inputField:'form_date_collected', ifFormat:'%Y-%m-%d %H:%M',
- button:'img_date_collected', showsTime:true});
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_date_collected").datetimepicker({
+            timepicker: true,
+            format: "<?= DateFormatRead(true) ?>"
+        });
+        $("#form_date_ordered").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
-
 </form>
 </body>
 </html>

@@ -33,6 +33,8 @@ include_once("$srcdir/sql.inc");
 include_once("$srcdir/options.inc.php");
 
 $DateFormat=DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 if ( isset($_POST['mode'] )) {
 	$currentUser = $_SESSION['authUserID'];
 	$created_time = date('Y-m-d H:i');
@@ -124,13 +126,14 @@ $customAttributes = ( $onlyRead ) ? array("disabled" => "true") : null;
 <?php html_header_show();?>
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
 <!-- page styles -->
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
 <style>
 .highlight {
   color: green;
@@ -145,12 +148,6 @@ tr.selected {
   border: 1px solid #000; 
 }	
 </style>
-		
-<!-- pop up calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 
 <script type="text/javascript">
 
@@ -196,15 +193,17 @@ function formValidation() {
     <table border=0 cellpadding=1 cellspacing=1>
 		<tr>
 			<td><span class=text ><?php echo xlt('Requested Date'); ?></span></td>
-			<td ><input type='text' size='10' name="amendment_date" id="amendment_date" readonly 
+			<td>
+				<input type='text' size='10' name="amendment_date" id="amendment_date"
 						value='<?php echo $amendment_date ? htmlspecialchars( oeFormatShortDate($amendment_date), ENT_QUOTES) : oeFormatShortDate(); ?>'
     		/>
 			<?php if ( ! $onlyRead ) { ?>
-         	<img src='<?php echo $rootdir; ?>/pic/show_calendar.gif' width='24' height='22'
-    			id='img_amendment_date' valign="middle" border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    			title='<?php echo xlt('Click here to choose a date'); ?>'>
 			<script type="text/javascript">
-				Calendar.setup({inputField:"amendment_date", ifFormat:"<?php echo $DateFormat ?>", button:"img_amendment_date"});
+				$("#amendment_date").datetimepicker({
+					timepicker: false,
+					format: "<?= $DateFormat; ?>"
+				});
+				$.datetimepicker.setLocale('<?= $DateLocale;?>');
 			</script>
 			<?php } ?>
 			</td>

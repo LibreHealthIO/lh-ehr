@@ -77,25 +77,23 @@ function era_callback(&$out) {
     rename($tmp_name, $erafullname);
   } // End 835 upload
 //===============================================================================
-$DateFormat=DateFormatRead();
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 //===============================================================================
 ?>
 <html>
 <head>
 <?php if (function_exists('html_header_show')) html_header_show(); ?>
-
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css"
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
+<script type="text/JavaScript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
@@ -202,12 +200,17 @@ document.onclick=HideTheAjaxDivs;
 	  <tr>
 	    <td  align="left"  class="text"></td>
 	    <td  align="left"  class="text"><?php echo htmlspecialchars( xl('Date'), ENT_QUOTES).':' ?></td>
-	    <td  align="left"  class="text"><input type='text' size='6' name='check_date' id='check_date' value="<?php echo formData('check_date') ?>"  class="class1 text " onKeyDown="PreventIt(event)" />
-		<img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='texttop' 
+	    <td  align="left"  class="text"><input type='text' size='8' name='check_date' id='check_date' value="<?php echo formData('check_date') ?>"  class="class1 text " onKeyDown="PreventIt(event)" />
+		<img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='texttop'
 		id='img_checkdate' border='0' alt='[?]' style='cursor:pointer'
 		title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
 	   <script>
-		Calendar.setup({inputField:"check_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_checkdate"});
+		   $(function() {
+			   $("#check_date").datetimepicker({
+				   timepicker: false,
+				   format: "<?= $DateFormat; ?>"
+			   });
+		   });
 	   </script></td>
 	    <td  align="left"  class="text"><input type="hidden" name="MAX_FILE_SIZE" value="5000000" />
    <input name="form_erafile" id="uploadedfile"  type="file" class="text" size="10" style="display:inline" /></td>
@@ -215,24 +218,35 @@ document.onclick=HideTheAjaxDivs;
 	  <tr>
 	    <td  align="left"  class="text"></td>
 	    <td  align="left"  class="text"><?php echo htmlspecialchars( xl('Post To Date'), ENT_QUOTES).':' ?></td>
-	    <td  align="left"  class="text"><input type='text' size='6' name='post_to_date' id='post_to_date'  value="<?php echo formData('post_to_date') ?>" class="class1 text "   onKeyDown="PreventIt(event)"  />
-		<img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='texttop' 
+	    <td  align="left"  class="text"><input type='text' size='8' name='post_to_date' id='post_to_date'  value="<?php echo formData('post_to_date') ?>" class="class1 text "   onKeyDown="PreventIt(event)"  />
+		<img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='texttop'
 		id='img_post_to_date' border='0' alt='[?]' style='cursor:pointer'
 		title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
 	   <script>
-		Calendar.setup({inputField:"post_to_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_post_to_date"});
+		   $(function() {
+			   $("#post_to_date").datetimepicker({
+				   timepicker: false,
+				   format: "<?= $DateFormat; ?>"
+			   });
+		   });
 	   </script></td>
 	    <td  align="left"  class="text"><input type='checkbox' name='form_without' value='1' <?php echo $_REQUEST['form_without']*1==1 || ($_REQUEST['form_without']*1==0 && !isset($_FILES['form_erafile'])) ? "checked" : '' ?>/> <?php echo htmlspecialchars( xl('Without Update'), ENT_QUOTES); ?></td>
 	    </tr>
 	  <tr>
 	    <td  align="left"  class="text"></td>
 	    <td  align="left"  class="text"><?php echo htmlspecialchars( xl('Deposit Date'), ENT_QUOTES).':' ?></td>
-	    <td  align="left"  class="text"><input type='text' size='6' name='deposit_date' id='deposit_date'  onKeyDown="PreventIt(event)"   class="text " value="<?php echo formData('deposit_date') ?>"    />
-		<img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='texttop' 
+	    <td  align="left"  class="text"><input type='text' size='8' name='deposit_date' id='deposit_date'  onKeyDown="PreventIt(event)"   class="text " value="<?php echo formData('deposit_date') ?>"    />
+		<img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='texttop'
 		id='img_depositdate' border='0' alt='[?]' style='cursor:pointer'
 		title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
 	   <script>
-		Calendar.setup({inputField:"deposit_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_depositdate"});
+		   $(function() {
+			   $("#deposit_date").datetimepicker({
+				   timepicker: false,
+				   format: "<?= $DateFormat; ?>"
+			   });
+			   $.datetimepicker.setLocale('<?= $DateLocale;?>');
+		   });
 	   </script></td>
 	    <td  align="left"  class="text"></td>
 	    </tr>

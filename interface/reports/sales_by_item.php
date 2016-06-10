@@ -31,9 +31,13 @@ require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 
+/** Current format date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 $form_provider  = $_POST['form_provider'];
 if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
-  $form_details  = $_POST['form_details']      ? true : false;
+    $form_details  = $_POST['form_details']      ? true : false;
 }
 else
 {
@@ -228,10 +232,12 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
   if (! acl_check('acct', 'rep')) die(xl("Unauthorized access."));
 
+    if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($_POST['form_to_date']) && $_POST['form_from_date']) {
+        $form_from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
+        $form_to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
+    }
 
-  $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-  $form_to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
-  $form_facility  = $_POST['form_facility'];
+    $form_facility  = $_POST['form_facility'];
 
   if ($_POST['form_csvexport']) {
     header("Pragma: public");
@@ -294,6 +300,9 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 }
 </style>
 
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/js/report_helper.js?v=<?php echo $v_js_includes; ?>"></script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <title><?php echo xlt('Sales by Item') ?></title>
 
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
@@ -332,21 +341,13 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
                 <?php echo xlt('From'); ?>:
             </td>
             <td>
-                <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo attr($form_from_date) ?>'
-                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-                <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-                title='<?php echo xla('Click here to choose a date'); ?>'>
+                <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?= oeFormatShortDate(attr($form_from_date)); ?>' />
             </td>
             <td class='label'>
                 <?php echo xlt('To'); ?>:
             </td>
             <td>
-                <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo attr($form_to_date) ?>'
-                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-                <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-                title='<?php echo xla('Click here to choose a date'); ?>'>
+                <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?= oeFormatShortDate(attr($form_to_date))?>' />
             </td>
         </tr>
     </table>
@@ -618,7 +619,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
    <?php text(bucks($grandtotal)); ?>
   </b></td>
  </tr>
- <?php $report_from_date = oeFormatShortDate($form_from_date)  ;
+ <?php $report_from_date = oeFormatShortDate($form_from_date);
        $report_to_date = oeFormatShortDate($form_to_date)  ;
  ?>
 <div align='right'><span class='title' ><?php echo xlt('Report Date'). ' '; ?><?php echo text($report_from_date);?> - <?php echo text($report_to_date);?></span></div>
@@ -642,19 +643,22 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 </form>
 
 </body>
-
 <!-- stuff for the popup calendar -->
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
-
 </html>
 <?php
   } // End not csv export

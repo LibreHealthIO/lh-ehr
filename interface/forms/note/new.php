@@ -26,21 +26,19 @@ formHeader("Form: note");
 $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
 $provider_results = sqlQuery("select fname, lname from users where username=?",array($_SESSION{"authUser"}));
 /* name of this form */
-$form_name = "note"; 
+$form_name = "note";
+
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 
 <html><head>
 <?php html_header_show();?>
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-
-<!-- pop up calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
@@ -93,12 +91,8 @@ var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 <td>
 <span class="text"><?php echo xlt('Date'); ?></span>
    <input type='text' size='10' name='date_of_signature' id='date_of_signature'
-    value='<?php echo date('Y-m-d', time()); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date_of_signature' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    title='<?php echo xla('Click here to choose a date'); ?>'>
+    value='<?php echo htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>'
+    title='<?php echo xla('yyyy-mm-dd'); ?>'/>
 </td>
 </tr>
 </table>
@@ -111,17 +105,20 @@ var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 </form>
 
 </body>
-
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script language="javascript">
-/* required for popup calendar */
-Calendar.setup({inputField:"date_of_signature", ifFormat:"%Y-%m-%d", button:"img_date_of_signature"});
-
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
     $(".save").click(function() { top.restoreSession(); $('#my_form').submit(); });
     $(".dontsave").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$returnurl";?>'; });
     //$("#printform").click(function() { PrintForm(); });
+    $("#date_of_signature").datetimepicker({
+        timepicker: false,
+        format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
 });
 
 </script>

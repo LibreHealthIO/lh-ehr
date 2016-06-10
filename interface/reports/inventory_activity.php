@@ -29,6 +29,9 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
 
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 // Specify if product or warehouse is the first column.
 $product_first = (!empty($_POST['form_by']) && $_POST['form_by'] == 'w') ? 0 : 1;
 
@@ -435,24 +438,14 @@ else {
      </td>
      <td nowrap>
       <input type='text' name='form_from_date' id="form_from_date" size='10'
-       value='<?php echo htmlspecialchars($form_from_date, ENT_QUOTES) ?>'
-       title='<?php echo htmlspecialchars(xl('yyyy-mm-dd'), ENT_QUOTES) ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'>
-      <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-       id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-       title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
+       value='<?php echo htmlspecialchars(oeFormatShortDate($form_from_date), ENT_QUOTES) ?>'/>
      </td>
      <td class='label'>
       <?php echo htmlspecialchars(xl('To')); ?>:
      </td>
      <td nowrap>
       <input type='text' name='form_to_date' id="form_to_date" size='10'
-       value='<?php echo htmlspecialchars($form_to_date, ENT_QUOTES) ?>'
-       title='<?php echo htmlspecialchars(xl('yyyy-mm-dd'), ENT_QUOTES) ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'>
-      <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-       id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-       title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
+       value='<?php echo htmlspecialchars(oeFormatShortDate($form_to_date), ENT_QUOTES) ?>'/>
      </td>
     </tr>
     <tr>
@@ -689,10 +682,20 @@ if ($form_action != 'export') {
 </center>
 </body>
 
-<!-- stuff for the popup calendar -->
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 
 </html>
