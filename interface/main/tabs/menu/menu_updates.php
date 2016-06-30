@@ -10,6 +10,7 @@ include_once("$srcdir/registry.inc");
 $menu_update_map=array();
 $menu_update_map["Visit Forms"]="update_visit_forms";
 $menu_update_map["Modules"]="update_modules_menu";
+do_action( 'menu_update', $menu_update_map );
 
 function update_modules_menu(&$menu_list)
 {

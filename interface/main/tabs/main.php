@@ -109,3 +109,5 @@ var webroot_url="<?php echo $web_root; ?>";
     ko.applyBindings(app_view_model);
 
 </script>
+
+<?php do_action( 'after_main_box' ); ?>

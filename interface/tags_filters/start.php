@@ -39,7 +39,41 @@ function add_tags_filters_navigation()
 {
     include __DIR__."/views/tags_filters_left_nav.php";
 }
-add_action('left_nav_before_html_end', 'add_tags_filters_navigation');
+add_action('after_main_box', 'add_tags_filters_navigation');
+
+function add_tag_filters_menu( &$menu_list )
+{
+    $option_id = 'test';
+    $title = 'Tags';
+    $formEntry=new stdClass();
+    $formEntry->label=xl_form_title($title);
+    $formEntry->url='/interface/tags_filters/index.php?action=tags';
+    $formEntry->requirement=0;
+    $formEntry->target='tags';
+    array_push($menu_list->children,$formEntry);
+
+    $title = 'Patients/Tags';
+    $formEntry=new stdClass();
+    $formEntry->label=xl_form_title($title);
+    $formEntry->url='/interface/tags_filters/index.php?action=patients';
+    $formEntry->requirement=0;
+    $formEntry->target='tags';
+    array_push($menu_list->children,$formEntry);
+
+    $title = 'Filters';
+    $formEntry=new stdClass();
+    $formEntry->label=xl_form_title($title);
+    $formEntry->url='/interface/tags_filters/index.php?action=filters';
+    $formEntry->requirement=0;
+    $formEntry->target='tags';
+    array_push($menu_list->children,$formEntry);
+}
+
+function tag_filters_menu_update( &$menu_update_map )
+{
+    $menu_update_map["Administration"] = 'add_tag_filters_menu';
+}
+add_action('menu_update', 'tag_filters_menu_update');
 
 function add_tags_demographics()
 {
