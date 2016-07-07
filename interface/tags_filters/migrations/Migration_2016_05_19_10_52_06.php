@@ -129,20 +129,6 @@ ALTER TABLE `tf_tags`
 
 #EndIf
 
-#IfNotRow list_options option_id ACLT_Tag_Colors
-INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`) VALUES
-('ACLT_Tag_Colors', 'blue', 'Blue', 0, 1, 0, '', '#90caf9', '', 0, 0, 0),
-('ACLT_Tag_Colors', 'green', 'Green', 0, 0, 0, '', '#a5d6a7', '', 0, 0, 0),
-('ACLT_Tag_Colors', 'orange', 'Orange', 0, 0, 0, '', '#ffb74d', '', 0, 0, 0),
-('ACLT_Tag_Colors', 'purple', 'Purple', 0, 0, 0, '', '#b39ddb', '', 0, 0, 0),
-('ACLT_Tag_Colors', 'red', 'Red', 0, 0, 0, '', '#e57373', '', 0, 0, 0),
-('ACLT_Tag_Colors', 'yellow', 'Yellow', 0, 0, 0, '', '#fff59d', '', 0, 0, 0),
-('ACLT_Tag_Status', 'active', 'Active', 0, 1, 0, '', '', '', 0, 0, 0),
-('ACLT_Tag_Status', 'deleted', 'Deleted', 0, 0, 0, '', '', '', 0, 0, 0),
-('ACLT_Tag_Status', 'suspended', 'Suspended', 0, 0, 0, '', '', '', 0, 0, 0),
-('lists', 'ACLT_Tag_Colors', 'ACLT Tag Colors', 299, 1, 0, '', '', '', 0, 0, 1),
-('lists', 'ACLT_Tag_Status', 'ACLT Tag Status', 298, 1, 0, '', '', '', 0, 0, 1);
-#EndIf
 
 MIGRATION;
 
