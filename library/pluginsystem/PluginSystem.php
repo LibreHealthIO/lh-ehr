@@ -173,7 +173,7 @@ class PluginSystem
 
     public function addAction( $actionKey, $callback, $priority = 0 )
     {
-        if ( !is_array($this->actions[$actionKey]) ) {
+        if ( !isset($this->actions[$actionKey]) ) {
             $this->actions[$actionKey] = array();
         }
         $action = new \stdClass();
