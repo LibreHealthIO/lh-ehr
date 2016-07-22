@@ -79,7 +79,6 @@ if (sqlNumRows($lres)) {
         array_push($menu_list->children,$formEntry);
       }
     }    
-    error_log("Updating Visit Forms");
     
 }
 function menu_update_entries(&$menu_list)
