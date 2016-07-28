@@ -751,6 +751,14 @@ $GLOBALS_METADATA = array(
 		xl('Enable amendments feature')
 	),
 
+    'allow_pat_delete' => array(
+       xl('Allow Administrators to Delete Patients'),
+	   'bool',                           // data type
+	   '1',                              // default = true 
+	   xl('Allow Administrators to Delete Patients')
+
+    ),
+
    ),   
     // Report Tab
     //
@@ -809,6 +817,12 @@ $GLOBALS_METADATA = array(
       '2',                              // default = 2
       xl('This will Display the Invoice Number in the Sales Report or the Patient Name and ID or Patient Name and Invoice Number.')
     ), 
+
+    'cash_receipts_report_invoice' => array(
+      xl('Display Invoice Number or Patient Name in the Cash Receipt Report'),
+      array(
+        '0' => xl('Invoice Number'),
+        '1' => xl('Patient Name'),  
   ),
     
   // Billing Tab
