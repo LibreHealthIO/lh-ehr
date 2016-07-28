@@ -744,6 +744,14 @@ $GLOBALS_METADATA = array(
 		xl('Enable amendments feature')
 	),
 
+    'allow_pat_delete' => array(
+       xl('Allow Administrators to Delete Patients'),
+	   'bool',                           // data type
+	   '1',                              // default = true 
+	   xl('Allow Administrators to Delete Patients')
+
+    ),
+
    ),   
     // Report Tab
     //
