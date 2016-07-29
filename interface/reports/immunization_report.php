@@ -145,8 +145,8 @@ if ($_POST['form_get_hl7']==='true') {
   $res = sqlStatement($query);
 
   while ($r = sqlFetchArray($res)) {
-    $content .= "MSH|^~\&|OPENEMR||||$nowdate||".
-      "VXU^V04^VXU_V04|OPENEMR-110316102457117|P|2.5.1" .
+    $content .= "MSH|^~\&|LIBREEHR||||$nowdate||".
+      "VXU^V04^VXU_V04|LIBREEHR-110316102457117|P|2.5.1" .
       "$D" ;
     if ($r['sex']==='Male') $r['sex'] = 'M';
     if ($r['sex']==='Female') $r['sex'] = 'F';

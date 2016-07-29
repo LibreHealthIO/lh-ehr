@@ -40,8 +40,8 @@ case "$1" in
       CONFIGDIR=/etc/git-libreehr
       CONFIG=$CONFIGDIR/git-libreehr.conf
       WEB=/var/www
-      OPENEMR=$WEB/git-libreehr
-      SITEDIR=$OPENEMR/sites/default
+      LIBREEHR=$WEB/git-libreehr
+      SITEDIR=$LIBREEHR/sites/default
 
       #Standardized echo function to send to only log file
       #  requires one parameter (string)
@@ -142,7 +142,7 @@ case "$1" in
       log_only "Removed LibreEHR etc directory"
 
       #remove web directory
-      rm -rf $OPENEMR
+      rm -rf $LIBREEHR
       log_only "Finished removing LibreEHR web directory"
 
       #remove libreehr mysql database (ensure the database exists)

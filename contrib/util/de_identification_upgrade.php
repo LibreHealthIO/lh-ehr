@@ -177,7 +177,7 @@ function form_validate()
 {
  echo "<p><font color='red'>";
  echo xl("Please set"); echo " 'de_identification_config' "; echo xl("variable to one to run de-identification upgrade script"); echo "</br></br>";
- echo "([OPENEMR]/contrib/util/de_identification_upgrade.php)";
+ echo "([LIBREEHR]/contrib/util/de_identification_upgrade.php)";
 }
 else
 {

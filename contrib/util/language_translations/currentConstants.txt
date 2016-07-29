@@ -1202,7 +1202,7 @@ Configuration saved successfully
 Configure Apache and LibreEHR to use Client side SSL certificates.
 Configure Apache to use Client side SSL certificates
 Configure Apache to use HTTPS.
-Configure Openemr to use Client side SSL certificates
+Configure LIBREEHR to use Client side SSL certificates
 Configure tracks
 Configure Tracks
 Confirm Create New Patient

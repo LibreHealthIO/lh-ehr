@@ -915,7 +915,7 @@ static  public function batch_despatch($var,$func,$data_credentials){
     
   
 //Receive a batch of function calls from portal and execute it through batch despatch Function
-//Any  OpenEmr function can be executed this way, if necessary if clause is written in batch_despatch.
+//Any  LIBREEHR function can be executed this way, if necessary if clause is written in batch_despatch.
 
   public function batch_function($data){
 	if($this->valid($data[0])){

@@ -46,8 +46,8 @@ CONFIGDIR=/etc/libreehr
 CONFIG=$CONFIGDIR/libreehr.conf
 TMPDIR=/tmp/libreehr-tmp
 WEB=/var/www
-OPENEMR=$WEB/libreehr
-SITEDIR=$OPENEMR/sites
+LIBREEHR=$WEB/libreehr
+SITEDIR=$LIBREEHR/sites
 #hardcoded mysql user and database for install (not pertinent for upgrading)
 # upgrading can use whatever is found in libreehr/library/sqlconf.php
 INSTALL_USER=libreehr
@@ -181,9 +181,9 @@ upgrade_prepare_database () {
 upgrade_function () {
 
       #Check for /var/www/libreehr. If does not exist, then exit.
-      if ! [ -d "$OPENEMR" ]; then
+      if ! [ -d "$LIBREEHR" ]; then
          prompt_input libreehr/upgrade_not_installed critical ret_result
-         unable_exit "LibreEHR is not installed ($OPENEMR), so can not upgrade the LibreEHR Package."
+         unable_exit "LibreEHR is not installed ($LIBREEHR), so can not upgrade the LibreEHR Package."
       fi
 
       #collect previous version
@@ -249,10 +249,10 @@ previous_version=$OLD_VERSION\n"
       if [ "$OLD_VERSION" == "3.0.1-1" ] || [ "$OLD_VERSION" == "3.1.0-1" ] || [ "$OLD_VERSION" == "3.2.0-1" ]; then
 
          #check database (will exit upgrade if check fails)
-         upgrade_check_database $OPENEMR/library
+         upgrade_check_database $LIBREEHR/library
 
          #Prepare uprade of database and collect settings that will placed in the config file string
-         DATABASE_CONFIG=$(upgrade_prepare_database $OPENEMR/library default)
+         DATABASE_CONFIG=$(upgrade_prepare_database $LIBREEHR/library default)
          SETTING=$SETTING$DATABASE_CONFIG
 
       else
@@ -273,12 +273,12 @@ previous_version=$OLD_VERSION\n"
       mkdir -p $TMPDIR/libreehr_web_$OLD_VERSION
 
       #backup web directory to tmp
-      cp -fr $OPENEMR/* $TMPDIR/libreehr_web_$OLD_VERSION/
+      cp -fr $LIBREEHR/* $TMPDIR/libreehr_web_$OLD_VERSION/
 
       #clear the temporary libreehr cache directories (no need to keep these during upgrade)
-      rm -fr $OPENEMR/interface/main/calendar/modules/PostCalendar/pntemplates/compiled/*
-      rm -fr $OPENEMR/interface/main/calendar/modules/PostCalendar/pntemplates/cache/*
-      rm -fr $OPENEMR/gacl/admin/templates_c/*
+      rm -fr $LIBREEHR/interface/main/calendar/modules/PostCalendar/pntemplates/compiled/*
+      rm -fr $LIBREEHR/interface/main/calendar/modules/PostCalendar/pntemplates/cache/*
+      rm -fr $LIBREEHR/gacl/admin/templates_c/*
 
       log_only "Upgrading LibreEHR from $OLD_VERSION..."
 
@@ -296,22 +296,22 @@ case "$1" in
       mkdir -p $LOGDIR
 
       #Check for /var/www/libreehr, if exist then see if upgrade is possible
-      if [ -d "$OPENEMR" ]; then
+      if [ -d "$LIBREEHR" ]; then
 
          #collect current version
          #(for post-4.0 release will need to look in version.php file for version)
          #(for post-4.0 release will need to use v_tag rather than tag)
          #(if version.php exists then look there, otherwise get from globals)
-         if [ -e "$OPENEMR/version.php" ]; then
-            v1=$(collect_var \$v_major $OPENEMR/version.php)
-            v2=$(collect_var \$v_minor $OPENEMR/version.php)
-            v3=$(collect_var \$v_patch $OPENEMR/version.php)
-            v4=$(collect_var \$v_tag $OPENEMR//version.php)
+         if [ -e "$LIBREEHR/version.php" ]; then
+            v1=$(collect_var \$v_major $LIBREEHR/version.php)
+            v2=$(collect_var \$v_minor $LIBREEHR/version.php)
+            v3=$(collect_var \$v_patch $LIBREEHR/version.php)
+            v4=$(collect_var \$v_tag $LIBREEHR//version.php)
          else
-            v1=$(collect_var \$v_major $OPENEMR/interface/globals.php)
-            v2=$(collect_var \$v_minor $OPENEMR/interface/globals.php)
-            v3=$(collect_var \$v_patch $OPENEMR/interface/globals.php)
-            v4=$(collect_var \$tag $OPENEMR/interface/globals.php)
+            v1=$(collect_var \$v_major $LIBREEHR/interface/globals.php)
+            v2=$(collect_var \$v_minor $LIBREEHR/interface/globals.php)
+            v3=$(collect_var \$v_patch $LIBREEHR/interface/globals.php)
+            v4=$(collect_var \$tag $LIBREEHR/interface/globals.php)
          fi
          RAWVERSION="$v1.$v2.$v3$v4"
 

@@ -641,7 +641,7 @@ else if ($_POST["mode"] == "download_certificates") {
     SSLVerifyClient require<br>
     SSLVerifyDepth 2<br>
     SSLOptions +StdEnvVars<br>
-    <!--/br> <b><?php xl('Configure Openemr to use Client side SSL certificates', 'e'); ?> </b></br>
+    <!--/br> <b><?php xl('Configure LIBREEHR to use Client side SSL certificates', 'e'); ?> </b></br>
     <input type='hidden' name='clientCertValidity_hidden' value=''>
       <input type='hidden' name='mode' value='save_ssl_settings'></br>
       <table cellpadding=0 cellspacing=0>
@@ -671,7 +671,7 @@ else if ($_POST["mode"] == "download_certificates") {
       </table>
       </br>
       <input type='submit' value='<?php xl('Save Certificate Settings', 'e'); ?>' onclick='return save_click();'-->    
-    </br> <b><?php xl('Configure Openemr to use Client side SSL certificates', 'e'); ?> </b></br>
+    </br> <b><?php xl('Configure LIBREEHR to use Client side SSL certificates', 'e'); ?> </b></br>
       <input type='hidden' name='clientCertValidity_hidden' value=''>
       </br>
            

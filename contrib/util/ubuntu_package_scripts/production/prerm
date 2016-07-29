@@ -44,8 +44,8 @@ case "$1" in
       CONFIG=$CONFIGDIR/libreehr.conf
       TMPDIR=/tmp/libreehr-tmp
       WEB=/var/www
-      OPENEMR=$WEB/libreehr
-      SITEDIR=$OPENEMR/sites
+      LIBREEHR=$WEB/libreehr
+      SITEDIR=$LIBREEHR/sites
 
       #Standardized echo function to send to only log file
       #  requires one parameter (string)
@@ -167,7 +167,7 @@ case "$1" in
       log_only "Removed LibreEHR etc directory"
 
       #remove rest of web directory
-      rm -rf $OPENEMR
+      rm -rf $LIBREEHR
       log_only "Finished removing LibreEHR web directory"
 
       #remove tmp directory

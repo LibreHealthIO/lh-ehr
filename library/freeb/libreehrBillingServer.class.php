@@ -14,7 +14,7 @@ require_once("ClearingHouse.class.php");
 require_once("Diagnosis.class.php");
 require_once("Procedure.class.php");
 
-class OpenemrBillingServer {
+class LIBREEHRBillingServer {
 
 	var $utility;
 	var $payer;
@@ -30,7 +30,7 @@ class OpenemrBillingServer {
 	var $procedure;
 	var $func_map;
 
-	function OpenemrBillingServer($xuser) {
+	function LIBREEHRBillingServer($xuser) {
 
 		$this->utility = new Utility($xuser);
 		$this->payer = new Payer($xuser);
@@ -47,7 +47,7 @@ class OpenemrBillingServer {
 	}
 
 }
-//$o = new Openemr_billing_server($GLOBALS['xmlrpcerruser']);
+//$o = new LIBREEHR_billing_server($GLOBALS['xmlrpcerruser']);
 //print_r($o);
 
 

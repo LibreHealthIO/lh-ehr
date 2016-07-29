@@ -82,7 +82,7 @@ class PluginSystem
 
         // Start explicitly defined plugins
         foreach ( $composer['plugins'] as $explicitPlugin ) {
-            $location = OPENEMR_DIRECTORY."/".$explicitPlugin;
+            $location = LIBREEHR_DIRECTORY."/".$explicitPlugin;
             if ( file_exists( $location."/start.php" ) ) {
                 include_once "$location/start.php";
                 $this->doAction( 'update_plugin', $location );
@@ -97,7 +97,7 @@ class PluginSystem
         // Search for installed plugins
         // Run their start.php scripts
         foreach ( $this->pluginDirs as $pluginDir ) {
-            foreach ( glob( OPENEMR_DIRECTORY."/".$pluginDir . "/*" ) as $location ) {
+            foreach ( glob( LIBREEHR_DIRECTORY."/".$pluginDir . "/*" ) as $location ) {
                 if ( file_exists( "$location/start.php" ) ) {
                     include_once "$location/start.php";
                     $this->doAction( 'update_plugin', $location );

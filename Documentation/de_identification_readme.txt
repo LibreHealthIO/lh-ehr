@@ -7,7 +7,7 @@
 
 3.After successful login to libreehr, create few patients and add issues, prescriptions, immunizations to the patients
 
-4.Set de_identification_config variable to 1 ([OPENEMR]/contrib/util/de_identification_upgrade.php)
+4.Set de_identification_config variable to 1 ([LIBREEHR]/contrib/util/de_identification_upgrade.php)
 and run de_identification_upgrade.php to create procedures, functions, tables needed for de-identification
 (administration -> De identification -> click here to run de_identification_upgrade.php - for first time) 
 or http://HOSTNAME:PORT_NUMBER/contrib/util/de_identification_upgrade.php

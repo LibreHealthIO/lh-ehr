@@ -38,8 +38,8 @@ LOG=$LOGDIR/install
 CONFIGDIR=/etc/git-libreehr
 CONFIG=$CONFIGDIR/git-libreehr.conf
 WEB=/var/www
-OPENEMR=$WEB/git-libreehr
-SITEDIR=$OPENEMR/sites/default
+LIBREEHR=$WEB/git-libreehr
+SITEDIR=$LIBREEHR/sites/default
 INSTALL_USER=gitlibreehr
 INSTALL_DATABASE=gitlibreehr
 
@@ -80,9 +80,9 @@ case "$1" in
       mkdir -p $LOGDIR
 
       #Check for /var/www/git-libreehr, if exist then exit
-      if [ -d "$OPENEMR" ]; then
+      if [ -d "$LIBREEHR" ]; then
          prompt_input git-libreehr/www_path_already_exists critical ret_result
-         unable_exit "LibreEHR is already installed ($OPENEMR), so can not install the LibreEHR Package."
+         unable_exit "LibreEHR is already installed ($LIBREEHR), so can not install the LibreEHR Package."
       fi
 
       #Begin the config file string

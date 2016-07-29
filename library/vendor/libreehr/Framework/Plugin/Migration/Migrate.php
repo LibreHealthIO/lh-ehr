@@ -3,7 +3,7 @@ namespace Framework\Plugin\Migration;
 
 use Plugin;
 
-require_once OPENEMR_DIRECTORY."/library/sql_upgrade_fx.php";
+require_once LIBREEHR_DIRECTORY."/library/sql_upgrade_fx.php";
         
 class Migrate
 {

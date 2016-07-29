@@ -1,4 +1,4 @@
-# THIS PAGE IS DEPRECATED AND NO LONGER USED AS OF OPENEMR VERSION 4.1.2
+# THIS PAGE IS DEPRECATED AND NO LONGER USED AS OF LIBREEHR VERSION 4.1.2
 # (It is being kept indefinitely for upgrading purposes)
 # (This file should never be deleted)
 #

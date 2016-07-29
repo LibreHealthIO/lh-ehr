@@ -30,7 +30,7 @@
 
 # PATH VARIABLES
 WEBROOT=/var/www/html
-OPENEMR=/var/www/html/libreehr
+LIBREEHR=/var/www/html/libreehr
 CVS=/home/libreehr/cvs
 LOG=/var/www/html/log/logSetup.txt
 
@@ -248,10 +248,10 @@ fi
 # Copy LibreEHR and run the install script
 echo 'Installing LibreEHR'
 cp -r $CVS/libreehr $WEBROOT
-chown -Rf root:root $OPENEMR
-chmod +x $OPENEMR/contrib/util/installScripts/cvsDemoInstall
-. $OPENEMR/contrib/util/installScripts/cvsDemoInstall
-chmod -x $OPENEMR/contrib/util/installScripts/cvsDemoInstall
+chown -Rf root:root $LIBREEHR
+chmod +x $LIBREEHR/contrib/util/installScripts/cvsDemoInstall
+. $LIBREEHR/contrib/util/installScripts/cvsDemoInstall
+chmod -x $LIBREEHR/contrib/util/installScripts/cvsDemoInstall
 
 # All done, now set up the introduction screen
 intro_function

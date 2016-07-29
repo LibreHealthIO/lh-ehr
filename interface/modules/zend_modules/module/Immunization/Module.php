@@ -5,8 +5,8 @@ use Immunization\Model\ImmunizationTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\ModuleManager;
-use Zend\View\Helper\Openemr\Emr;
-use Zend\View\Helper\Openemr\Menu;
+use Zend\View\Helper\LIBREEHR\Emr;
+use Zend\View\Helper\LIBREEHR\Menu;
 
 class Module
 {

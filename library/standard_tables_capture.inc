@@ -1,7 +1,7 @@
 <?php
 /**
  * This library contains functions that implement the database load processing
- * of external database files into openEMR
+ * of external database files into LIBREEHR
  *
  * Copyright (C) 2011 Phyaura, LLC <info@phyaura.com>
  *

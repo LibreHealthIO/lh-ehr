@@ -1,7 +1,7 @@
 <?php
 /**
  * This file implements the database load processing when loading external
- * database files into openEMR
+ * database files into LIBREEHR
  *
  * Copyright (C) 2012 Patient Healthcare Analytics, Inc.
  * Copyright (C) 2011 Phyaura, LLC <info@phyaura.com>

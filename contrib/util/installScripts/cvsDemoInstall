@@ -19,7 +19,7 @@ translationServe=true
 
 # PATH VARIABLES
 WEB=/var/www/html
-OPENEMR=$WEB/libreehr
+LIBREEHR=$WEB/libreehr
 LOG=$WEB/log/logSetup.txt
 CVS=/home/libreehr/cvs
 GITMAIN=/home/libreehr/git
@@ -29,8 +29,8 @@ TRANSSERVEDIR=$WEB/translations
 GITTRANS=$GITMAIN/translations_development_libreehr
 
 # PATH OF INSTALL SCRIPT
-INST=$OPENEMR/contrib/util/installScripts/InstallerAuto.php
-INSTTEMP=$OPENEMR/contrib/util/installScripts/InstallerAutoTemp.php
+INST=$LIBREEHR/contrib/util/installScripts/InstallerAuto.php
+INSTTEMP=$LIBREEHR/contrib/util/installScripts/InstallerAutoTemp.php
 
 # Turn off apache to avoid users messing up while setting up
 #  (start it again below after install/configure libreehr
@@ -83,26 +83,26 @@ else
  echo "The LibreEHR git repository already exist" >> $LOG
 fi
 
-# COPY THE GIT REPO OPENEMR COPY TO THE WEB DIRECTOY
+# COPY THE GIT REPO LIBREEHR COPY TO THE WEB DIRECTOY
 echo "Copy git LibreEHR to web directory"
 echo "Copy git LibreEHR to web directory" >> $LOG
-rm -fr $OPENEMR/*
-rsync --recursive --exclude .git $GIT/* $OPENEMR/
+rm -fr $LIBREEHR/*
+rsync --recursive --exclude .git $GIT/* $LIBREEHR/
 
-#INSTALL AND CONFIGURE OPENEMR
+#INSTALL AND CONFIGURE LIBREEHR
 echo "Configuring LibreEHR"
 echo "Configuring LibreEHR" >> $LOG
 #
 # Set file and directory permissions
-chmod 666 $OPENEMR/sites/default/sqlconf.php
-chown -R apache:apache $OPENEMR/sites/default/documents
-chown -R apache:apache $OPENEMR/sites/default/edi
-chown -R apache:apache $OPENEMR/sites/default/era
-chown -R apache:apache $OPENEMR/library/freeb
-chown -R apache:apache $OPENEMR/sites/default/letter_templates
-chown -R apache:apache $OPENEMR/interface/main/calendar/modules/PostCalendar/pntemplates/cache
-chown -R apache:apache $OPENEMR/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
-chown -R apache:apache $OPENEMR/gacl/admin/templates_c
+chmod 666 $LIBREEHR/sites/default/sqlconf.php
+chown -R apache:apache $LIBREEHR/sites/default/documents
+chown -R apache:apache $LIBREEHR/sites/default/edi
+chown -R apache:apache $LIBREEHR/sites/default/era
+chown -R apache:apache $LIBREEHR/library/freeb
+chown -R apache:apache $LIBREEHR/sites/default/letter_templates
+chown -R apache:apache $LIBREEHR/interface/main/calendar/modules/PostCalendar/pntemplates/cache
+chown -R apache:apache $LIBREEHR/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
+chown -R apache:apache $LIBREEHR/gacl/admin/templates_c
 #
 # Run installer class for the demo (note to avoid malicious use, script is activated by removing an exit command,
 #   and the active script is then removed after completion.
@@ -113,24 +113,24 @@ rm -f $INSTTEMP
 # Run the sql_patch.php script. Note that in the main 'master' branch this will do nothing, however in the
 # branches it will install the new Globals and Database modifications (note need to copy to TEMP file etc.
 # in order to work around the site variable that is required)
-cd $OPENEMR
-echo "<?php \$_GET['site'] = 'default'; ?>" > $OPENEMR/TEMPsql_patch.php
-cat $OPENEMR/sql_patch.php >> $OPENEMR/TEMPsql_patch.php
+cd $LIBREEHR
+echo "<?php \$_GET['site'] = 'default'; ?>" > $LIBREEHR/TEMPsql_patch.php
+cat $LIBREEHR/sql_patch.php >> $LIBREEHR/TEMPsql_patch.php
 php -f TEMPsql_patch.php >> $LOG
-rm -f $OPENEMR/TEMPsql_patch.php
+rm -f $LIBREEHR/TEMPsql_patch.php
 #
 #reinstitute file permissions
-chmod 644 $OPENEMR/sites/default/sqlconf.php
+chmod 644 $LIBREEHR/sites/default/sqlconf.php
 echo "Done configuring LibreEHR"
 echo "Done configuring LibreEHR" >> $LOG
 
 #Replace manual with newest version and add the refresh script
 echo "Configuring appliance"
 echo "Configuring appliance" >> $LOG
-cp -f $OPENEMR/contrib/util/installScripts/cvsDemoMisc/developerApplianceManual.txt /home/libreehr/docs/manual.txt
+cp -f $LIBREEHR/contrib/util/installScripts/cvsDemoMisc/developerApplianceManual.txt /home/libreehr/docs/manual.txt
 chown libreehr:libreehr /home/libreehr/docs/manual.txt
-cp -f $OPENEMR/contrib/util/installScripts/cvsDemoMisc/developerApplianceManual.txt $WEB/manual.txt
-cp -f $OPENEMR/contrib/util/installScripts/cvsDemoMisc/refresh /home/libreehr/git/
+cp -f $LIBREEHR/contrib/util/installScripts/cvsDemoMisc/developerApplianceManual.txt $WEB/manual.txt
+cp -f $LIBREEHR/contrib/util/installScripts/cvsDemoMisc/refresh /home/libreehr/git/
 chown libreehr:libreehr /home/libreehr/git/refresh
 chmod +x /home/libreehr/git/refresh
 echo "Done configuring appliance"
