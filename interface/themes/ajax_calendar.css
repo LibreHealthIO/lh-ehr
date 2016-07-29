@@ -77,7 +77,7 @@ div.tiny { width:1px; height:1px; font-size:1px; }
     width:100%;
  }
 #bigCal {
-    overflow: hidden;
+    overflow: scroll;
     background-color: #FFF3D1;
     border-left:1px solid black;
 }

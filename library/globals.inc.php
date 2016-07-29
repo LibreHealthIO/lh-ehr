@@ -262,6 +262,13 @@ $GLOBALS_METADATA = array(
       xl('URL for OpenEMR support.')
     ),
 
+    'support_phone_number' => array(
+      xl('Support Phone Number'),
+      'text',
+      '',
+      xl('Phone Number for Vendor Support that Appears on the About Page.')
+    ),
+
    'drop_bottom' => array(
       xl('Remove Bottom Pane'),
       'bool',                           // data type
@@ -743,6 +750,14 @@ $GLOBALS_METADATA = array(
 		'1',                              // default = true
 		xl('Enable amendments feature')
 	),
+
+    'allow_pat_delete' => array(
+       xl('Allow Administrators to Delete Patients'),
+	   'bool',                           // data type
+	   '1',                              // default = true 
+	   xl('Allow Administrators to Delete Patients')
+
+    ),
 
    ),   
     // Report Tab
