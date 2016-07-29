@@ -823,6 +823,10 @@ $GLOBALS_METADATA = array(
       array(
         '0' => xl('Invoice Number'),
         '1' => xl('Patient Name'),  
+      ),   
+      '0',                              // default = 0
+      xl('Display Invoice Number or Patient Name in the Cash Receipt Report.')
+    ),
   ),
     
   // Billing Tab
