@@ -823,6 +823,7 @@ $GLOBALS_METADATA = array(
       array(
         '0' => xl('Invoice Number'),
         '1' => xl('Patient Name'),  
+        ),
   ),
     
   // Billing Tab
