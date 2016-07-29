@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
- * @package OpenEMR 
+ * @package LibreEHR 
  * @author Terry Hill <terry@lilysystems.com> 
  * @link http://www.open-emr.org 
  *  
- * Please help the overall project by sending changes you make to the author and to the OpenEMR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  * 
  */ 
  
@@ -72,7 +72,7 @@ require_once("$srcdir/patient_tracker.inc.php");
 	 {		
         # Gather information for encounter fields
         $genenc = sqlQuery("select pc_catid as category, pc_hometext as reason, pc_aid as provider, pc_facility as facility, pc_billing_location as billing_facility " .
-                           "from openemr_postcalendar_events where pc_eid =? " , array($pceid));
+                           "from libreehr_postcalendar_events where pc_eid =? " , array($pceid));
         $encounter = todaysEncounterCheck($tkpid, $apptdate, $genenc['reason'], $genenc['facility'], $genenc['billing_facility'], $genenc['provider'], $genenc['category'],false);
         # Capture the appt status and room number for patient tracker. This will map the encounter to it also.
         if (!empty($pceid)) {

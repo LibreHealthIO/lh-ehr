@@ -108,7 +108,7 @@ $
 $
 CREATE PROCEDURE `load_lexical_look_up_table`()
 BEGIN
-#Populate lexical look up table with 18 unique identifiers specified by HIPAA as identifying data from openemr database
+#Populate lexical look up table with 18 unique identifiers specified by HIPAA as identifying data from libreehr database
 
 #The lexical_look_up_table is used to store the text of known patient identifiers, such as patient names (John Smith), telephone numbers (408-111-222), etc.  Later on, during the identification process, these text snippets will be removed from unstructured data, such as patient notes. 
 

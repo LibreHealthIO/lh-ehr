@@ -11,16 +11,16 @@
 // This script creates a backup tarball and sends it to the users's
 // browser for download.  The tarball includes:
 //
-// * an OpenEMR database dump (gzipped)
+// * an LibreEHR database dump (gzipped)
 // * a phpGACL database dump (gzipped), if phpGACL is used and has
 //   its own database
-// * the OpenEMR web directory (.tar.gz)
+// * the LibreEHR web directory (.tar.gz)
 // * the phpGACL web directory (.tar.gz), if phpGACL is used
 //
-// The OpenEMR web directory is important because it includes config-
+// The LibreEHR web directory is important because it includes config-
 // uration files, patient documents, and possible customizations, and
 // also because the database structure is dependent on the installed
-// OpenEMR version.
+// LibreEHR version.
 //
 // This script depends on execution of some external programs:
 // mysqldump & pg_dump.  It has been tested with Debian and Ubuntu
@@ -82,10 +82,10 @@ $auto_continue = false;
 # set up main paths
 $backup_file_prefix = "emr_backup";
 $backup_file_suffix = ".tar";
-$TMP_BASE = $GLOBALS['temporary_files_dir'] . "/openemr_web_backup";
+$TMP_BASE = $GLOBALS['temporary_files_dir'] . "/libreehr_web_backup";
 $BACKUP_DIR = $TMP_BASE . "/emr_backup";
 $TAR_FILE_PATH = $TMP_BASE . DIRECTORY_SEPARATOR . $backup_file_prefix . $backup_file_suffix;
-$EXPORT_FILE = $GLOBALS['temporary_files_dir'] . "/openemr_config.sql";
+$EXPORT_FILE = $GLOBALS['temporary_files_dir'] . "/libreehr_config.sql";
 $MYSQL_PATH = $GLOBALS['mysql_bin_dir'];
 $PERL_PATH = $GLOBALS['perl_bin_dir'];
 
@@ -168,13 +168,13 @@ if ($form_step == 0) {
 }
 
 if ($form_step == 1) {
-  $form_status .= xl('Dumping OpenEMR database') . "...<br />";
+  $form_status .= xl('Dumping LibreEHR database') . "...<br />";
   echo nl2br($form_status);
   if (file_exists($TAR_FILE_PATH))
     if (! unlink($TAR_FILE_PATH)) die(xl("Couldn't remove old backup file:") . " " . $TAR_FILE_PATH);
   if (! obliterate_dir($TMP_BASE)) die(xl("Couldn't remove dir:"). " " . $TMP_BASE);
   if (! mkdir($BACKUP_DIR, 0777, true)) die(xl("Couldn't create backup dir:") . " " . $BACKUP_DIR);
-  $file_to_compress = "$BACKUP_DIR/openemr.sql";   // gzip this file after creation
+  $file_to_compress = "$BACKUP_DIR/libreehr.sql";   // gzip this file after creation
   
   if($GLOBALS['include_de_identification']==1)
   {
@@ -216,7 +216,7 @@ if ($form_step == 2) {
 }
 
 if ($form_step == 3) {
-  $form_status .= xl('Dumping OpenEMR web directory tree') . "...<br />";
+  $form_status .= xl('Dumping LibreEHR web directory tree') . "...<br />";
   echo nl2br($form_status);
   $cur_dir = getcwd();
   chdir($webserver_root);
@@ -238,9 +238,9 @@ if ($form_step == 3) {
   }
   closedir($dh);
 
-  $arch_file = $BACKUP_DIR . DIRECTORY_SEPARATOR . "openemr.tar.gz";
+  $arch_file = $BACKUP_DIR . DIRECTORY_SEPARATOR . "libreehr.tar.gz";
   if (!create_tar_archive($arch_file, "gz", $file_list))
-    die(xl("An error occurred while dumping OpenEMR web directory tree"));
+    die(xl("An error occurred while dumping LibreEHR web directory tree"));
   chdir($cur_dir);
   $auto_continue = true;
 }

@@ -19,7 +19,7 @@
 //
 //
 // A copy of the GNU General Public License is included along with this program:
-// openemr/interface/login/GnuGPL.html
+// libreehr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 //
@@ -46,7 +46,7 @@ require_once("$srcdir/options.inc.php");
 $pid=$_REQUEST['pid'];
 $facility=$_REQUEST['facility'];
 $date=$_REQUEST['date'];
-$q=sqlStatement("SELECT pc_billing_location FROM openemr_postcalendar_events WHERE pc_pid=? AND pc_eventDate=? AND pc_facility=?", array($pid,$date,$facility) );
+$q=sqlStatement("SELECT pc_billing_location FROM libreehr_postcalendar_events WHERE pc_pid=? AND pc_eventDate=? AND pc_facility=?", array($pid,$date,$facility) );
 $row=sqlFetchArray($q);
 billing_facility('billing_facility',$row['pc_billing_location']);
 ?>

@@ -31,7 +31,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Teny <teny@zhservices.com>
@@ -39,7 +39,7 @@
  */
 
 $ISSUE_TYPE_CATEGORIES = array(
-  'default' => xl('Default'),             // Normal OpenEMR use
+  'default' => xl('Default'),             // Normal LibreEHR use
   'athletic_team' => xl('Athletic Team'), // For Sports Team use
   'ippf_specific' => xl('IPPF')           // For IPPF use
 );

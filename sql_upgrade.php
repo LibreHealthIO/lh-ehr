@@ -6,8 +6,8 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 //
-// This may be run after an upgraded OpenEMR has been installed.
-// Its purpose is to upgrade the MySQL OpenEMR database as needed
+// This may be run after an upgraded LibreEHR has been installed.
+// Its purpose is to upgrade the MySQL LibreEHR database as needed
 // for the new release.
 
 // Disable PHP timeout.  This will not work in safe mode.
@@ -38,12 +38,12 @@ ksort($versions);
 ?>
 <html>
 <head>
-<title>OpenEMR Database Upgrade</title>
+<title>LibreEHR Database Upgrade</title>
 <link rel='STYLESHEET' href='interface/themes/style_blue.css'>
 </head>
 <body>
 <center>
-<span class='title'>OpenEMR Database Upgrade</span>
+<span class='title'>LibreEHR Database Upgrade</span>
 <br>
 </center>
 <?php

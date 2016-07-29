@@ -32,21 +32,21 @@ II. Unpacking
 NOTE: Most recent documentation can be found on the online documention at
 http://www.open-emr.org .
 
-The OpenEMR release archive should be named as follows:
+The LibreEHR release archive should be named as follows:
 
-openemr-<version>.tar.gz  -or-  openemr-<version>.zip
+libreehr-<version>.tar.gz  -or-  libreehr-<version>.zip
 
 To extract the archive, use either of the following commands from the command line:
 
-bash# tar -pxvzf openemr-<version>-release.tar.gz
-bash# unzip openemr-<version>-release.tar.gz
+bash# tar -pxvzf libreehr-<version>-release.tar.gz
+bash# unzip libreehr-<version>-release.tar.gz
 
 Be sure to use the -p flag when using tar, as certain permissions must be preserved.
 
-OpenEMR will be extracted into a directory named openemr.
+LibreEHR will be extracted into a directory named libreehr.
 
 Alternatively a Debian package may be available as a file named
-openemr-<version>.deb.  This may work with some other Debian-like
+libreehr-<version>.deb.  This may work with some other Debian-like
 Linux distributions such as Ubuntu.
 
 III. Setup
@@ -54,40 +54,40 @@ III. Setup
 NOTE: Most recent documentation can be found on the online documentation at
 http://www.open-emr.org .
 
-To run OpenEMR, MySQL and Apache or another PHP-capable webserver must be configured.
+To run LibreEHR, MySQL and Apache or another PHP-capable webserver must be configured.
 To download Apache, visit www.apache.org
 For information on how to install MySQL, visit www.mysql.com
 PHP may be downloaded from www.php.net
 
-OpenEMR requires a number of webserver and PHP features which may not be
+LibreEHR requires a number of webserver and PHP features which may not be
 enabled on your system.  These include:
 
 - PHP Index support (ensure that index.php is in your Index path in httpd.conf)
 - Session variables
 - PHP libcurl support (optional for operation, mandatory for billing)
 
-Copy the OpenEMR folder into the root folder of the webserver. On Mandrake
+Copy the LibreEHR folder into the root folder of the webserver. On Mandrake
 Linux, for example, use the command:
 
-  bash# mv openemr /var/www/html/
+  bash# mv libreehr /var/www/html/
 
 Make sure the webserver is running, and point a web-browser to setup.php located
-within the openemr web folder.  If you installed OpenEMR in the root web
-directory, the URL would read: http://localhost/openemr/setup.php.
-The setup script will step you through the configuration of the OpenEMR.
+within the libreehr web folder.  If you installed LibreEHR in the root web
+directory, the URL would read: http://localhost/libreehr/setup.php.
+The setup script will step you through the configuration of the LibreEHR.
 
 The first screen of the setup script will ensure that the webserver user
 (in linux, often is "apache", "www-data", or "nobody") has write privileges on
 certain files and directories. The files include
-openemr/sites/default/sqlconf.php and
-openemr/interface/modules/zend_modules/config/application.config.php.
+libreehr/sites/default/sqlconf.php and
+libreehr/interface/modules/zend_modules/config/application.config.php.
 In linux, these can be set by "chmod a+w filename"
 command to grant global write permissions to the file. The directories include
-openemr/gacl/admin/templates_c, openemr/sites/default/edi,
-openemr/sites/default/era, openemr/sites/default/documents, openemr/library/freeb,
-openemr/custom/letter_templates, 
-openemr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled, and 
-openemr/interface/main/calendar/modules/PostCalendar/pntemplates/cache.  In
+libreehr/gacl/admin/templates_c, libreehr/sites/default/edi,
+libreehr/sites/default/era, libreehr/sites/default/documents, libreehr/library/freeb,
+libreehr/custom/letter_templates, 
+libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled, and 
+libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache.  In
 linux, if the webserver user name is "apache", then the command
 "chown -R apache:apache directory_name" will grant global write permissions
 to the directories, and we recommend making these changes permanent.
@@ -99,7 +99,7 @@ its own, or if you have already created the database.  MySQL root priveleges wil
 be required to create a database.
 
 In step 2, you will be presented with a number of fields which specify the MySQL
-server details and the openemr directory paths.
+server details and the libreehr directory paths.
 
 The "Server Host" field specifies the location of the MySQL server.  If you
 run MySQL and Apache/PHP on the same server, then leave this as 'localhost'. 
@@ -110,7 +110,7 @@ The "Server Port" field specifies the port to use when connecting to the MySQL
 server over TCP/IP.  This should be left as 3306 unless you changed it in your
 MySQL configuration.
 
-The "Database Name" field is the database where OpenEMR will reside.  If you
+The "Database Name" field is the database where LibreEHR will reside.  If you
 selected to have the database created for you, this database will be created,
 along with the user specified in "Login Name".  If this database exists, setup
 will not be able to create it, and will return an error.  If you selected that
@@ -118,7 +118,7 @@ you have already created the database, then setup will use the information you
 provide to connect to the MySQL server.  Note that setup will not accept a
 password that is not at least one (1) character in length.
 
-The "Login Name" field is the MySQL user that will access the OpenEMR database.
+The "Login Name" field is the MySQL user that will access the LibreEHR database.
 If you selected to have the database created for you, this user will be
 created.  If you selected that you have already created the database, 
 then setup will use the information you provide to connect to the MySQL server.
@@ -143,7 +143,7 @@ database.  It is the hostname of the Apache/PHP server from which the user
 up MySQL and Apache/PHP on the same computer, then you can use 'localhost'.  
 
 The "UTF-8 Collation" field is the collation setting for mysql. If the language
-you are planning to use in OpenEMR is in the menu, then you can select it.
+you are planning to use in LibreEHR is in the menu, then you can select it.
 Otherwise, just select 'General'. Choosing 'None' is not recommended and 
 will force latin1 encoding.
 
@@ -164,9 +164,9 @@ will be created.  A user may belong to multiple groups, which again, can be
 altered on the user administration page. It is suggested that no more than
 one group per office be used.
 
-Step 3 is where setup will configure OpenEMR.  It will first create the database
+Step 3 is where setup will configure LibreEHR.  It will first create the database
 and connect to it to create the initial tables.  It will then write the mysql
-database configuration to the openemr/sites/default/sqlconf.php file.
+database configuration to the libreehr/sites/default/sqlconf.php file.
 Should anything fail during step 3, you may have to remove the existing database or
 tables before you can try again. If no errors occur, you will see a "Continue"
 button at the bottom.
@@ -185,7 +185,7 @@ will be displayed in green.  If your php.ini file location is not displayed,
 then you will need to search for it.  The location of the php.ini file is dependent
 on the operating system.  In linux, php.ini is generally found in the /etc/
 directory.  In windows, the XAMPP 1.7.0 package places the php.ini file in
-the xampp\apache\bin\ directory.  To ensure proper functioning of OpenEMR
+the xampp\apache\bin\ directory.  To ensure proper functioning of LibreEHR
 you must make sure that settings in the php.ini file include 
 "short_open_tag = On", "display_errors = Off", "register_globals = Off",
 "max_execution_time" set to at least 60, 
@@ -198,8 +198,8 @@ value that will work on your system.
 
 Step 6 gives instructions on configuring the Apache web server.  We suggest
 you print these instructions for future reference. Instructions are given to
-secure the "openemrwebroot/sites/*/documents",
-"openemrwebroot/sites/*/edi" and "openemrwebroot/sites/*/era"
+secure the "libreehrwebroot/sites/*/documents",
+"libreehrwebroot/sites/*/edi" and "libreehrwebroot/sites/*/era"
 directories, which contain patient information. This can
 be done be either placing pertinent .htaccess files in these directories
 or by editing the apache configuration file.  The location of the apache
@@ -210,21 +210,21 @@ In windows, the XAMPP 1.7.0 package places the configuration file at
 xampp\apache\conf\httpd.conf. To configure Zend and to secure the /documents,
 /edi and /era directories you can paste following to the end of the apache
 configuration file (ensure you put full path to directories):
-<Directory "openemrwebroot">
+<Directory "libreehrwebroot">
 AllowOverride FileInfo
 </Directory>
-<Directory "openemrwebroot/sites">
+<Directory "libreehrwebroot/sites">
 AllowOverride None
 </Directory>
-<Directory "openemrwebroot/sites/*/documents">
+<Directory "libreehrwebroot/sites/*/documents">
 order deny,allow
 Deny from all
 </Directory>
-<Directory "openemrwebroot/sites/*/edi">
+<Directory "libreehrwebroot/sites/*/edi">
 order deny,allow
 Deny from all
 </Directory>
-<Directory "openemrwebroot/sites/*/era">
+<Directory "libreehrwebroot/sites/*/era">
 order deny,allow
 Deny from all
 </Directory>
@@ -237,19 +237,19 @@ webserver where the files are stored with your web browser.  Login to the system
 using the username that you picked (default 'admin' without quotes), and the
 password.  From there, select the "Administration"
 option, and customize the system to your needs.  Add users and groups as is
-needed. For information on using OpenEMR, consult the User Documentation located
+needed. For information on using LibreEHR, consult the User Documentation located
 in the Documentation folder, the documentation at http://www.open-emr.org, and
-the forums at http://sourceforge.net/projects/openemr.
+the forums at http://sourceforge.net/projects/libreehr.
 
-Reading openemr/sites/default/config.php is a good idea. This file contains some
+Reading libreehr/sites/default/config.php is a good idea. This file contains some
 options to choose from including themes.
 
 To create custom encounter forms, see the files
 
-  openemr/Documentation/3rd Party Form API.txt
-  openemr/interface/forms/OpenEMR_form_example-rev2.tar.gz
+  libreehr/Documentation/3rd Party Form API.txt
+  libreehr/interface/forms/LibreEHR_form_example-rev2.tar.gz
 
-and read the included documentation and online documentation at www.openemr.org.
+and read the included documentation and online documentation at www.libreehr.org.
 Many forms exist in contrib/forms as well as in interface/forms and may be used
 as examples.
 
@@ -257,7 +257,7 @@ Other configuration settings are stored under includes/config.php.
 Everything should work out of the installation without touching those, but if 
 you want fax integration you will need to adjust some parameters in that file.
 
-General-purpose fax support requires customization within OpenEMR at
+General-purpose fax support requires customization within LibreEHR at
 Administration->Globals and custom/faxcover.txt; it also requires
 the following utilities:
 
@@ -269,45 +269,45 @@ the following utilities:
 
 IV. Setting Up Access Control
 
-Since OpenEMR version 2.9.0.3, phpGACL access controls are installed and
-configured automatically during OpenEMR setup.  It can be administered
-within OpenEMR in the admin->acl menu.  This is very powerful
+Since LibreEHR version 2.9.0.3, phpGACL access controls are installed and
+configured automatically during LibreEHR setup.  It can be administered
+within LibreEHR in the admin->acl menu.  This is very powerful
 access control software.  To learn more about phpGACL
 (see http://phpgacl.sourceforge.net/), recommend reading the phpGACL manual,
-the /openemr/Documentation/README.phpgacl file, and the online documentation at
+the /libreehr/Documentation/README.phpgacl file, and the online documentation at
 http://www.open-emr.org . Also recommend reading the comments in
-/openemr/library/acl.inc.
+/libreehr/library/acl.inc.
 
 V. Upgrading
 
 NOTE: Most recent documentation can be found on the online documentation at
 http://www.open-emr.org .
 
-Be sure to back up your OpenEMR installation and database before upgrading!
+Be sure to back up your LibreEHR installation and database before upgrading!
 
-Upgrading OpenEMR is currently done by replacing the old openemr directory with
-a newer version. And, ensure you copy your settings from the following old openemr
+Upgrading LibreEHR is currently done by replacing the old libreehr directory with
+a newer version. And, ensure you copy your settings from the following old libreehr
 files to the new configuration files (we do not recommend simply
 copying the entire files):
 
-  openemr/sites/default/sqlconf.php
+  libreehr/sites/default/sqlconf.php
     --Also in this sqlconf.php file, set the $config variable (found near bottom
       of file within bunch of slashes) to 1 ($config = 1;)
-  openemr/sites/default/config.php
+  libreehr/sites/default/config.php
 
 The following directories should be copied from the old version to the
 new version:
 
-  openemr/sites/default/documents 
-  openemr/sites/default/era 
-  openemr/sites/default/edi 
-  openemr/sites/default/letter_templates
+  libreehr/sites/default/documents 
+  libreehr/sites/default/era 
+  libreehr/sites/default/edi 
+  libreehr/sites/default/letter_templates
 
 If there are other files that you have customized, then you will also need
 to treat those carefully.
 
 To upgrade the database, run the sql_upgrade.php script from your web
-browser (for example http://openemr.location/sql_upgrade.php).  It will
+browser (for example http://libreehr.location/sql_upgrade.php).  It will
 prompt you to select the old release number, and will display the SQL
 commands issued as the upgrade occurs.
 

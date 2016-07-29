@@ -3,58 +3,58 @@ INSERT INTO `facility` (name,phone,street,city,state,postal_code,country_code,fe
 #
 # Dumping data for table `groups`
 #
-#openemr setup script creates this user automatically
+#libreehr setup script creates this user automatically
 INSERT INTO `groups` VALUES (1, 'Default', 'admin');
 
 #
-# Dumping data for table `openemr_module_vars`
+# Dumping data for table `libreehr_module_vars`
 #
 
-INSERT INTO `openemr_module_vars` VALUES (234, 'PostCalendar', 'pcNotifyEmail', '');
-INSERT INTO `openemr_module_vars` VALUES (233, 'PostCalendar', 'pcNotifyAdmin', '0');
-INSERT INTO `openemr_module_vars` VALUES (232, 'PostCalendar', 'pcCacheLifetime', '3600');
-INSERT INTO `openemr_module_vars` VALUES (231, 'PostCalendar', 'pcUseCache', '0');
-INSERT INTO `openemr_module_vars` VALUES (230, 'PostCalendar', 'pcDefaultView', 'day');
-INSERT INTO `openemr_module_vars` VALUES (229, 'PostCalendar', 'pcTimeIncrement', '5');
-INSERT INTO `openemr_module_vars` VALUES (228, 'PostCalendar', 'pcAllowUserCalendar', '1');
-INSERT INTO `openemr_module_vars` VALUES (227, 'PostCalendar', 'pcAllowSiteWide', '1');
-INSERT INTO `openemr_module_vars` VALUES (226, 'PostCalendar', 'pcTemplate', 'default');
-INSERT INTO `openemr_module_vars` VALUES (225, 'PostCalendar', 'pcEventDateFormat', '%Y-%m-%d');
-INSERT INTO `openemr_module_vars` VALUES (224, 'PostCalendar', 'pcDisplayTopics', '0');
-INSERT INTO `openemr_module_vars` VALUES (223, 'PostCalendar', 'pcListHowManyEvents', '15');
-INSERT INTO `openemr_module_vars` VALUES (222, 'PostCalendar', 'pcAllowDirectSubmit', '1');
-INSERT INTO `openemr_module_vars` VALUES (221, 'PostCalendar', 'pcUsePopups', '0');
-INSERT INTO `openemr_module_vars` VALUES (220, 'PostCalendar', 'pcDayHighlightColor', '#EEEEEE');
-INSERT INTO `openemr_module_vars` VALUES (219, 'PostCalendar', 'pcFirstDayOfWeek', '1');
-INSERT INTO `openemr_module_vars` VALUES (218, 'PostCalendar', 'pcUseInternationalDates', '0');
-INSERT INTO `openemr_module_vars` VALUES (217, 'PostCalendar', 'pcEventsOpenInNewWindow', '0');
-INSERT INTO `openemr_module_vars` VALUES (216, 'PostCalendar', 'pcTime24Hours', '0');
+INSERT INTO `libreehr_module_vars` VALUES (234, 'PostCalendar', 'pcNotifyEmail', '');
+INSERT INTO `libreehr_module_vars` VALUES (233, 'PostCalendar', 'pcNotifyAdmin', '0');
+INSERT INTO `libreehr_module_vars` VALUES (232, 'PostCalendar', 'pcCacheLifetime', '3600');
+INSERT INTO `libreehr_module_vars` VALUES (231, 'PostCalendar', 'pcUseCache', '0');
+INSERT INTO `libreehr_module_vars` VALUES (230, 'PostCalendar', 'pcDefaultView', 'day');
+INSERT INTO `libreehr_module_vars` VALUES (229, 'PostCalendar', 'pcTimeIncrement', '5');
+INSERT INTO `libreehr_module_vars` VALUES (228, 'PostCalendar', 'pcAllowUserCalendar', '1');
+INSERT INTO `libreehr_module_vars` VALUES (227, 'PostCalendar', 'pcAllowSiteWide', '1');
+INSERT INTO `libreehr_module_vars` VALUES (226, 'PostCalendar', 'pcTemplate', 'default');
+INSERT INTO `libreehr_module_vars` VALUES (225, 'PostCalendar', 'pcEventDateFormat', '%Y-%m-%d');
+INSERT INTO `libreehr_module_vars` VALUES (224, 'PostCalendar', 'pcDisplayTopics', '0');
+INSERT INTO `libreehr_module_vars` VALUES (223, 'PostCalendar', 'pcListHowManyEvents', '15');
+INSERT INTO `libreehr_module_vars` VALUES (222, 'PostCalendar', 'pcAllowDirectSubmit', '1');
+INSERT INTO `libreehr_module_vars` VALUES (221, 'PostCalendar', 'pcUsePopups', '0');
+INSERT INTO `libreehr_module_vars` VALUES (220, 'PostCalendar', 'pcDayHighlightColor', '#EEEEEE');
+INSERT INTO `libreehr_module_vars` VALUES (219, 'PostCalendar', 'pcFirstDayOfWeek', '1');
+INSERT INTO `libreehr_module_vars` VALUES (218, 'PostCalendar', 'pcUseInternationalDates', '0');
+INSERT INTO `libreehr_module_vars` VALUES (217, 'PostCalendar', 'pcEventsOpenInNewWindow', '0');
+INSERT INTO `libreehr_module_vars` VALUES (216, 'PostCalendar', 'pcTime24Hours', '0');
 
 #
-# Dumping data for table `openemr_modules`
+# Dumping data for table `libreehr_modules`
 #
 
-INSERT INTO `openemr_modules` VALUES (46, 'PostCalendar', 2, 'PostCalendar', 'PostNuke Calendar Module', 0, 'PostCalendar', '4.0.0', 1, 1, 3);
+INSERT INTO `libreehr_modules` VALUES (46, 'PostCalendar', 2, 'PostCalendar', 'PostNuke Calendar Module', 0, 'PostCalendar', '4.0.0', 1, 1, 3);
 
 #
-# Dumping data for table `openemr_postcalendar_categories`
+# Dumping data for table `libreehr_postcalendar_categories`
 #
 
-INSERT INTO `openemr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (5, 'Office Visit', '#EEEEEE', 'Normal Office Visit');
-INSERT INTO `openemr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (4, 'Vacation', '#EFEFEF', 'Reserved for use to define Scheduled Vacation Time');
-INSERT INTO `openemr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (1, 'No Show', '#DDDDDD', 'Reserved to define when an event did not occur as specified.');
-INSERT INTO `openemr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (2, 'In Office', '#0000FF', 'Reserved to define when a provider may have available appointments after.');
-INSERT INTO `openemr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (3, 'Out Of Office', '#99FFFF', 'Reserved to define when a provider may not have available appointments after.');
-INSERT INTO `openemr_postcalendar_categories`  (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (8, 'Lunch', '#FFFF33', 'Lunch');
+INSERT INTO `libreehr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (5, 'Office Visit', '#EEEEEE', 'Normal Office Visit');
+INSERT INTO `libreehr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (4, 'Vacation', '#EFEFEF', 'Reserved for use to define Scheduled Vacation Time');
+INSERT INTO `libreehr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (1, 'No Show', '#DDDDDD', 'Reserved to define when an event did not occur as specified.');
+INSERT INTO `libreehr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (2, 'In Office', '#0000FF', 'Reserved to define when a provider may have available appointments after.');
+INSERT INTO `libreehr_postcalendar_categories` (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (3, 'Out Of Office', '#99FFFF', 'Reserved to define when a provider may not have available appointments after.');
+INSERT INTO `libreehr_postcalendar_categories`  (pc_catid,pc_catname,pc_catcolor,pc_catdesc) VALUES (8, 'Lunch', '#FFFF33', 'Lunch');
 
 #
 # Dumping data for table `pma_bookmark`
 #
 
-INSERT INTO `pma_bookmark` VALUES (2, 'openemr', 'openemr', 'Aggregate Race Statistics', 'SELECT ethnoracial as "Race/Ethnicity", count(*) as Count FROM  `patient_data` WHERE 1 group by ethnoracial');
-INSERT INTO `pma_bookmark` VALUES (9, 'openemr', 'openemr', 'Search by Code', 'SELECT  b.code, concat(pd.fname," ", pd.lname) as "Patient Name", concat(u.fname," ", u.lname) as "Provider Name", en.reason as "Encounter Desc.", en.date\r\nFROM billing as b\r\nLEFT JOIN users AS u ON b.user = u.id\r\nLEFT JOIN patient_data as pd on b.pid = pd.pid\r\nLEFT JOIN form_encounter as en on b.encounter = en.encounter and b.pid = en.pid\r\nWHERE 1 /* and b.code like \'%[VARIABLE]%\' */ ORDER BY b.code');
-INSERT INTO `pma_bookmark` VALUES (8, 'openemr', 'openemr', 'Count No Shows By Provider since Interval ago', 'SELECT concat( u.fname,  " ", u.lname )  AS  "Provider Name", u.id AS  "Provider ID", count(  DISTINCT ev.pc_eid )  AS  "Number of No Shows"/* , concat(DATE_FORMAT(NOW(),\'%Y-%m-%d\'), \' and \',DATE_FORMAT(DATE_ADD(now(), INTERVAL [VARIABLE]),\'%Y-%m-%d\') ) as "Between Dates" */ FROM  `openemr_postcalendar_events`  AS ev LEFT  JOIN users AS u ON ev.pc_aid = u.id WHERE ev.pc_catid =1/* and ( ev.pc_eventDate >= DATE_SUB(now(), INTERVAL [VARIABLE]) )  */\r\nGROUP  BY u.id;');
-INSERT INTO `pma_bookmark` VALUES (6, 'openemr', 'openemr', 'Appointments By Race/Ethnicity from today plus interval', 'SELECT  count(pd.ethnoracial) as "Number of Appointments", pd.ethnoracial AS  "Race/Ethnicity" /* , concat(DATE_FORMAT(NOW(),\'%Y-%m-%d\'), \' and \',DATE_FORMAT(DATE_ADD(now(), INTERVAL [VARIABLE]),\'%Y-%m-%d\') ) as "Between Dates" */ FROM openemr_postcalendar_events AS ev LEFT  JOIN   `patient_data`  AS pd ON  pd.pid = ev.pc_pid where ev.pc_eventstatus=1 and ev.pc_catid = 5 and ev.pc_eventDate >= now()  /* and ( ev.pc_eventDate <= DATE_ADD(now(), INTERVAL [VARIABLE]) )  */ group by pd.ethnoracial');
+INSERT INTO `pma_bookmark` VALUES (2, 'libreehr', 'libreehr', 'Aggregate Race Statistics', 'SELECT ethnoracial as "Race/Ethnicity", count(*) as Count FROM  `patient_data` WHERE 1 group by ethnoracial');
+INSERT INTO `pma_bookmark` VALUES (9, 'libreehr', 'libreehr', 'Search by Code', 'SELECT  b.code, concat(pd.fname," ", pd.lname) as "Patient Name", concat(u.fname," ", u.lname) as "Provider Name", en.reason as "Encounter Desc.", en.date\r\nFROM billing as b\r\nLEFT JOIN users AS u ON b.user = u.id\r\nLEFT JOIN patient_data as pd on b.pid = pd.pid\r\nLEFT JOIN form_encounter as en on b.encounter = en.encounter and b.pid = en.pid\r\nWHERE 1 /* and b.code like \'%[VARIABLE]%\' */ ORDER BY b.code');
+INSERT INTO `pma_bookmark` VALUES (8, 'libreehr', 'libreehr', 'Count No Shows By Provider since Interval ago', 'SELECT concat( u.fname,  " ", u.lname )  AS  "Provider Name", u.id AS  "Provider ID", count(  DISTINCT ev.pc_eid )  AS  "Number of No Shows"/* , concat(DATE_FORMAT(NOW(),\'%Y-%m-%d\'), \' and \',DATE_FORMAT(DATE_ADD(now(), INTERVAL [VARIABLE]),\'%Y-%m-%d\') ) as "Between Dates" */ FROM  `libreehr_postcalendar_events`  AS ev LEFT  JOIN users AS u ON ev.pc_aid = u.id WHERE ev.pc_catid =1/* and ( ev.pc_eventDate >= DATE_SUB(now(), INTERVAL [VARIABLE]) )  */\r\nGROUP  BY u.id;');
+INSERT INTO `pma_bookmark` VALUES (6, 'libreehr', 'libreehr', 'Appointments By Race/Ethnicity from today plus interval', 'SELECT  count(pd.ethnoracial) as "Number of Appointments", pd.ethnoracial AS  "Race/Ethnicity" /* , concat(DATE_FORMAT(NOW(),\'%Y-%m-%d\'), \' and \',DATE_FORMAT(DATE_ADD(now(), INTERVAL [VARIABLE]),\'%Y-%m-%d\') ) as "Between Dates" */ FROM libreehr_postcalendar_events AS ev LEFT  JOIN   `patient_data`  AS pd ON  pd.pid = ev.pc_pid where ev.pc_eventstatus=1 and ev.pc_catid = 5 and ev.pc_eventDate >= now()  /* and ( ev.pc_eventDate <= DATE_ADD(now(), INTERVAL [VARIABLE]) )  */ group by pd.ethnoracial');
 
 #
 # Dumping data for table `registry`
@@ -85,7 +85,7 @@ INSERT INTO `users` VALUES (1, 'admin', '9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee68
 # Server version: 4.0.20
 # PHP Version: 4.3.4
 # 
-# Database : `openemr`
+# Database : `libreehr`
 # 
 
 INSERT INTO `categories_seq` VALUES (0);
@@ -424,7 +424,7 @@ UPDATE `categories_seq` SET id=id+1;
 # Server version: 4.0.21
 # PHP Version: 4.3.8-12
 # 
-# Database : `demo_openemr`
+# Database : `demo_libreehr`
 # 
 
 #

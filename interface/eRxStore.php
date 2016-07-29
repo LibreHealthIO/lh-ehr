@@ -15,7 +15,7 @@
  * General Public License along with this program.
  * If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package    OpenEMR
+ * @package    LibreEHR
  * @subpackage NewCrop
  * @author     Sam Likins <sam.likins@wsi-services.com>
  * @link       http://www.open-emr.org
@@ -492,7 +492,7 @@ class eRxStore {
 	 * Return eRx source of specified active allergy for selected patient
 	 * @param  integer $patientId Id of patient to select
 	 * @param  string  $name      Name of active allergy to return
-	 * @return integer            eRx source flag of specified allergy for selected patient: [0 = OpenEMR, 1 = External]
+	 * @return integer            eRx source flag of specified allergy for selected patient: [0 = LibreEHR, 1 = External]
 	 */
 	public function selectAllergyErxSourceByPatientIdName($patientId, $name) {
 		$return = sqlQuery('SELECT erx_source

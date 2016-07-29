@@ -1,6 +1,6 @@
 <?php
 /**
- * The outside frame that holds all of the OpenEMR User Interface.
+ * The outside frame that holds all of the LibreEHR User Interface.
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://www.open-emr.org
  */
@@ -26,11 +26,11 @@ require_once('../globals.php');
 require_once("$srcdir/formdata.inc.php");
 
 // Creates a new session id when load this outer frame
-// (allows creations of separate OpenEMR frames to view patients concurrently
+// (allows creations of separate LibreEHR frames to view patients concurrently
 //  on different browser frame/windows)
 // This session id is used below in the restoreSession.php include to create a
-// session cookie for this specific OpenEMR instance that is then maintained
-// within the OpenEMR instance by calling top.restoreSession() whenever
+// session cookie for this specific LibreEHR instance that is then maintained
+// within the LibreEHR instance by calling top.restoreSession() whenever
 // refreshing or starting a new script.
 if (isset($_POST['new_login_session_management'])) {
   // This is a new login, so create a new session id and remove the old session
@@ -110,7 +110,7 @@ require_once("tabs/redirect.php");
 <html>
 <head>
 <title>
-<?php echo text($openemr_name) ?>
+<?php echo text($libreehr_name) ?>
 </title>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../library/topdialog.js"></script>

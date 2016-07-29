@@ -10,7 +10,7 @@ use strict;
 # of the License, or (at your option) any later version.
 #######################################################################
 # This loads ICD9 codes and descriptions into the "codes" table of
-# OpenEMR, scraping from from www.icd9data.com.
+# LibreEHR, scraping from from www.icd9data.com.
 # Alternatively you can just dump the INSERT statements to stdout.
 #######################################################################
 
@@ -30,7 +30,7 @@ use HTML::TokeParser; # libhtml-parser-perl
 my $START_URL = "http://www.icd9data.com/2010/Volume1/default.htm";
 
 # An empty database name will cause SQL INSERT statements to be dumped
-# to stdout, with no database access.  To update your OpenEMR database
+# to stdout, with no database access.  To update your LibreEHR database
 # directly, specify its name here.
 #
 my $DBNAME = "";

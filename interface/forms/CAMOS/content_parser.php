@@ -8,14 +8,14 @@ function addAppt($days,$time) {
   $days = formDataCore($days);
   $time = formDataCore($time);
 
-  $sql = "insert into openemr_postcalendar_events (pc_pid, pc_eventDate," . 
+  $sql = "insert into libreehr_postcalendar_events (pc_pid, pc_eventDate," . 
     "pc_comments, pc_aid,pc_startTime) values (" . 
     $_SESSION['pid'] . ", date_add(current_date(), interval " . $days . 
     " day),'from CAMOS', " . $_SESSION['authId'] . ",'$time')";
   return sqlInsert($sql);
 }
 function addVitals($weight, $height, $systolic, $diastolic, $pulse, $temp) {
-//This is based on code from /openemr/interface/forms/vitals/C_FormVitals.class.php
+//This is based on code from /libreehr/interface/forms/vitals/C_FormVitals.class.php
 //if it doesn't work, look there for changes.
   $_POST['process'] = 'true';
   $_POST['weight'] = $weight;

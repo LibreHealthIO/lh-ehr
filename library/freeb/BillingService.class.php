@@ -208,7 +208,7 @@ class BillingService Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "1";
 
 		// if we generated an error, create an error return response
@@ -226,7 +226,7 @@ class BillingService Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response

@@ -8,7 +8,7 @@
 //
 // 
 // This file contains functions that service ajax requests for 
-// ACL(php-gacl) administration within OpenEMR. All returns are 
+// ACL(php-gacl) administration within LibreEHR. All returns are 
 // done via xml.
 //
 // Important - Ensure that display_errors=Off in php.ini settings.

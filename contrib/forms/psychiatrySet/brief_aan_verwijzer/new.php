@@ -22,7 +22,7 @@ function getPatientDateOfLastEncounter( $nPid )
 {
   // get date of last encounter no codes
   $strEventDate = sqlQuery("SELECT MAX(pc_eventDate) AS max 
-                  FROM openemr_postcalendar_events 
+                  FROM libreehr_postcalendar_events 
                   WHERE pc_pid = $nPid 
                   AND pc_apptstatus = '@' 
                   AND pc_eventDate >= '2007-01-01'");

@@ -1,15 +1,15 @@
 #!/bin/bash
-# backups an openemr system and burns a cd
+# backups an libreehr system and burns a cd
 
 #vars
 
-db='openemr'
+db='libreehr'
 dbuser='backuper'
 dbpass='bakuper'
 pguser='sql-ledger'
 workdir='/var/tmp/backups/'
 tempdir='/var/tmp/isos/'
-installdir='/var/www/openemr'
+installdir='/var/www/libreehr'
 newerthan='2005-01-01'
 #newerthan is a workaround for when your media gets full,
 #re-edit this file and change the date to the last succesfull cd copy
@@ -31,7 +31,7 @@ bzip2 ${workdir}${file}postgres.bak
 
 # get all the files on the site
 # we are using bzip2 here
-tar -N ${newerthan} -jcf ${workdir}${file}openemr.tar.bzip2 ${installdir}
+tar -N ${newerthan} -jcf ${workdir}${file}libreehr.tar.bzip2 ${installdir}
 
 # create a disk image
 label=`date +%y%m%d`

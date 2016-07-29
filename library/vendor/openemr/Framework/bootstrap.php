@@ -1,6 +1,6 @@
 <?php
 /**
- * Define paths to openemr and vendor dir for use in plugins
+ * Define paths to libreehr and vendor dir for use in plugins
  */
 if ( !defined( 'OPENEMR_DIRECTORY' ) ) {
     define( 'OPENEMR_DIRECTORY', realpath( __DIR__.'/../' ) );

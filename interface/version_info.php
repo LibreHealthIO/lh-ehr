@@ -14,7 +14,7 @@ include_once("globals.php");
 <font class="title"><?php xl('Debug Information','e'); ?></font>
 
 <br>
-<?php echo xl('Pennington Firm OpenEMR  v') . $openemr_version; ?><br>
+<?php echo xl('Pennington Firm LibreEHR  v') . $libreehr_version; ?><br>
 
 </body>
 </html>

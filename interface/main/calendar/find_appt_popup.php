@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @link http://www.open-emr.org
@@ -77,7 +77,7 @@
 
  $catslots = 1;
  if ($input_catid) {
-  $srow = sqlQuery("SELECT pc_duration FROM openemr_postcalendar_categories WHERE pc_catid = ?", array($input_catid) );
+  $srow = sqlQuery("SELECT pc_duration FROM libreehr_postcalendar_categories WHERE pc_catid = ?", array($input_catid) );
   if ($srow['pc_duration']) $catslots = ceil($srow['pc_duration'] / $slotsecs);
  }
 
@@ -136,7 +136,7 @@
   // Note there is no need to sort the query results.
   $query = "SELECT pc_eventDate, pc_endDate, pc_startTime, pc_duration, " .
    "pc_recurrtype, pc_recurrspec, pc_alldayevent, pc_catid, pc_prefcatid " .
-   "FROM openemr_postcalendar_events " .
+   "FROM libreehr_postcalendar_events " .
    "WHERE pc_aid = ? AND " .
    "pc_eid != ? AND " .
    "((pc_endDate >= ? AND pc_eventDate < ? ) OR " .

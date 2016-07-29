@@ -43,10 +43,10 @@
  */
 
 /**
- * Included in OpenEMR package on 2/28/2013:
+ * Included in LibreEHR package on 2/28/2013:
  * No license/copyright/restrictions/conditions included in script or from site it was
  * obtained from. Additionally, the author email address no longer exists. For these
- * reasons, OpenEMR considers this script as public domain.
+ * reasons, LibreEHR considers this script as public domain.
  */
 
 (function($){

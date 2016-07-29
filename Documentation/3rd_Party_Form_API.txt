@@ -1,5 +1,5 @@
 3rd Party Form API
-OpenEMR suite v2.0
+LibreEHR suite v2.0
 doc revision 2
 
 Pennington Firm
@@ -10,9 +10,9 @@ San Diego, California
 
  ******* Introduction *******
 
-OpenEMR is more than a simple EMR suite, it is a modular platform that allows for customized modifications to meet specific needs.
+LibreEHR is more than a simple EMR suite, it is a modular platform that allows for customized modifications to meet specific needs.
 
-To create a set of patient encounter forms for use with OpenEMR, at least a limited knowledge of the PHP scripting language and the MySQL syntax is needed. The script _must_ be stored in the interface/forms/your_script_name/ directory, with at least these four files:
+To create a set of patient encounter forms for use with LibreEHR, at least a limited knowledge of the PHP scripting language and the MySQL syntax is needed. The script _must_ be stored in the interface/forms/your_script_name/ directory, with at least these four files:
 	new.php		<-- will be acessed for new data entry
 	view.php	<-- will be used to view your form
 	print.php	<-- should be used to print your form
@@ -39,7 +39,7 @@ To initialize the 3rd party php library (from interface/forms/your_script_name/m
 
 		$myArray['column_name1']  = 'my column1 value';
 
-The third argument to formSubmit() is a url to redirect to after the data from a form has been saved.  If you set this to "0" (its default) then it will forward back to "openemr/interface/patient_file/encounter/patient_encounter.php". This is the preferred operation, since users expect to be taken back to the Patient Encounter screen after saving a new form.
+The third argument to formSubmit() is a url to redirect to after the data from a form has been saved.  If you set this to "0" (its default) then it will forward back to "libreehr/interface/patient_file/encounter/patient_encounter.php". This is the preferred operation, since users expect to be taken back to the Patient Encounter screen after saving a new form.
 
 
 --->>	formFetch("my_table", 'record id', 'columns wanted', 'activity state')
@@ -52,7 +52,7 @@ The third argument to formSubmit() is a url to redirect to after the data from a
 
 
 --->>	formDisappear("my_table", 'record id')
-	This effectively sets the activity state to 0, causing the records to be invisible during normal suite usage. This is equivalent to letting the user delete a record. However, for maximum legal compliance, all data entered into OpenEMR should be saved. Instead of deleting records then, we merely make them invisible to normal user interface operations.
+	This effectively sets the activity state to 0, causing the records to be invisible during normal suite usage. This is equivalent to letting the user delete a record. However, for maximum legal compliance, all data entered into LibreEHR should be saved. Instead of deleting records then, we merely make them invisible to normal user interface operations.
 
 
 --->>	formReappear("my_table", 'record id)

@@ -6,7 +6,7 @@
  * 2013-03-27 by sunsetsystems: Fixed some weirdness with assigning a message recipient,
  *   and allowing a message to be closed with a new note appended and no recipient.
  *
- * Copyright (c) 2010 OpenEMR Support LLC
+ * Copyright (c) 2010 LibreEHR Support LLC
  *
  * LICENSE: This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License 
@@ -19,8 +19,8 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
- * @author OpenEMR Support LLC
+ * @package LibreEHR
+ * @author LibreEHR Support LLC
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Brady Miller <brady@sparmy.com>

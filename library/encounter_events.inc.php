@@ -16,7 +16,7 @@
 //
 //
 // A copy of the GNU General Public License is included along with this program:
-// openemr/interface/login/GnuGPL.html
+// libreehr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // 
@@ -42,12 +42,12 @@ define('REPEAT_EVERY_WORK_DAY',4);
 function calendar_arrived($form_pid) {
 	$Today=date('Y-m-d');
 	//Take all recurring events relevent for today.
-	$result_event=sqlStatement("SELECT * FROM openemr_postcalendar_events WHERE pc_recurrtype != '0' and pc_pid = ? and pc_endDate != '0000-00-00'
+	$result_event=sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_recurrtype != '0' and pc_pid = ? and pc_endDate != '0000-00-00'
 		and pc_eventDate < ? and pc_endDate >= ? ",
 		array($form_pid,$Today,$Today));
 	if(sqlNumRows($result_event)==0)//no repeating appointment
 	 {
-		$result_event=sqlStatement("SELECT * FROM openemr_postcalendar_events WHERE pc_pid =?	and pc_eventDate = ?",
+		$result_event=sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_pid =?	and pc_eventDate = ?",
 			array($form_pid,$Today));
 		if(sqlNumRows($result_event)==0)//no appointment
 		 {
@@ -58,7 +58,7 @@ function calendar_arrived($form_pid) {
 		 {
 			 $enc = todaysEncounterCheck($form_pid);//create encounter
 			 $zero_enc=0;
-			 sqlStatement("UPDATE openemr_postcalendar_events SET pc_apptstatus ='@' WHERE pc_pid =? and pc_eventDate = ?",
+			 sqlStatement("UPDATE libreehr_postcalendar_events SET pc_apptstatus ='@' WHERE pc_pid =? and pc_eventDate = ?",
 				 array($form_pid,$Today));
 		 }
 	 }
@@ -79,7 +79,7 @@ function calendar_arrived($form_pid) {
 					}
 				 else
 					{
-					 sqlStatement("UPDATE openemr_postcalendar_events SET pc_apptstatus = '@' WHERE pc_eid = ?",
+					 sqlStatement("UPDATE libreehr_postcalendar_events SET pc_apptstatus = '@' WHERE pc_eid = ?",
 						 array($exist_eid));
 					}
 					 $enc = todaysEncounterCheck($form_pid);//create encounter
@@ -222,7 +222,7 @@ function todaysEncounter($patient_id, $reason='') {
 // get the original event's repeat specs
 function update_event($eid)
  {
-	$origEventRes = sqlStatement("SELECT * FROM openemr_postcalendar_events WHERE pc_eid = ?",array($eid));
+	$origEventRes = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = ?",array($eid));
 	$origEvent=sqlFetchArray($origEventRes);
 	$oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
 	$duration=$origEvent['pc_duration'];
@@ -232,7 +232,7 @@ function update_event($eid)
 	if ($oldRecurrspec['exdate'] != "") { $oldRecurrspec['exdate'] .= ",".$selected_date; }
 	else { $oldRecurrspec['exdate'] .= $selected_date; }
 	// mod original event recur specs to exclude this date
-	sqlStatement("UPDATE openemr_postcalendar_events SET pc_recurrspec = ? WHERE pc_eid = ?",array(serialize($oldRecurrspec),$eid));
+	sqlStatement("UPDATE libreehr_postcalendar_events SET pc_recurrspec = ? WHERE pc_eid = ?",array(serialize($oldRecurrspec),$eid));
 	// specify some special variables needed for the INSERT
   // no recurr specs, this is used for adding a new non-recurring event
     $noRecurrspec = array("event_repeat_freq" => "",
@@ -276,7 +276,7 @@ function update_event($eid)
 // check if event exists
 function check_event_exist($eid)
  {
-	$origEventRes = sqlStatement("SELECT * FROM openemr_postcalendar_events WHERE pc_eid = ?",array($eid));
+	$origEventRes = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = ?",array($eid));
 	$origEvent=sqlFetchArray($origEventRes);
 	$pc_catid=$origEvent['pc_catid'];
 	$pc_aid=$origEvent['pc_aid'];
@@ -287,7 +287,7 @@ function check_event_exist($eid)
 	$pc_facility=$origEvent['pc_facility'];
 	$pc_billing_location=$origEvent['pc_billing_location'];
 	$pc_recurrspec_array = unserialize($origEvent['pc_recurrspec']);
-	$origEvent = sqlStatement("SELECT * FROM openemr_postcalendar_events WHERE pc_eid != ? and pc_catid=? and pc_aid=? ".
+	$origEvent = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid != ? and pc_catid=? and pc_aid=? ".
 		"and pc_pid=? and pc_eventDate=? and pc_startTime=? and pc_endTime=? and pc_facility=? and pc_billing_location=?",
 		array($eid,$pc_catid,$pc_aid,$pc_pid,$pc_eventDate,$pc_startTime,$pc_endTime,$pc_facility,$pc_billing_location));
 	if(sqlNumRows($origEvent)>0)
@@ -319,7 +319,7 @@ function InsertEvent($args,$from = 'general') {
   $form_room = empty($args['form_room']) ? '' : $args['form_room'];
 
 	if($from == 'general'){
-    $pc_eid = sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
+    $pc_eid = sqlInsert("INSERT INTO libreehr_postcalendar_events ( " .
 			"pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, " .
 			"pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
 			"pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
@@ -341,7 +341,7 @@ function InsertEvent($args,$from = 'general') {
             return $pc_eid;
 
 	}elseif($from == 'payment'){
-		sqlStatement("INSERT INTO openemr_postcalendar_events ( " .
+		sqlStatement("INSERT INTO libreehr_postcalendar_events ( " .
 			"pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, " .
 			"pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
 			"pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .

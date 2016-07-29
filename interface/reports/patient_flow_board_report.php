@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
- * @package OpenEMR 
+ * @package LibreEHR 
  * @author Terry Hill <terry@lilysystems.com> 
  * @link http://www.open-emr.org 
  *
- * Please help the overall project by sending changes you make to the author and to the OpenEMR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  * 
  */
  

@@ -70,8 +70,8 @@ ALTER TABLE history_data
   ADD `last_psa`        varchar(255) NOT NULL DEFAULT '';
 #EndIf
 
-#IfMissingColumn openemr_postcalendar_events pc_multiple
-ALTER TABLE openemr_postcalendar_events
+#IfMissingColumn libreehr_postcalendar_events pc_multiple
+ALTER TABLE libreehr_postcalendar_events
   ADD `pc_multiple` int(10) unsigned NOT NULL DEFAULT 0;
 #EndIf
 

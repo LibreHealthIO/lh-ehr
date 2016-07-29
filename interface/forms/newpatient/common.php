@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://www.open-emr.org
  */
@@ -189,7 +189,7 @@ function cancelClicked() {
 	<option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
 <?php
  $cres = sqlStatement("SELECT pc_catid, pc_catname " .
-  "FROM openemr_postcalendar_categories ORDER BY pc_catname");
+  "FROM libreehr_postcalendar_categories ORDER BY pc_catname");
  while ($crow = sqlFetchArray($cres)) {
   $catid = $crow['pc_catid'];
   if ($catid < 9 && $catid != 5) continue;

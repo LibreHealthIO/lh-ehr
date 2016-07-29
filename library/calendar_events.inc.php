@@ -7,8 +7,8 @@ function getSquadEvents($date, $squad, $plid) {
     "e.pc_eventDate, e.pc_endDate, e.pc_startTime, " .
     "e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, " .
     "p.pid, p.minutes, p.fitness_related " .
-    "FROM openemr_postcalendar_events AS e " .
-    "JOIN openemr_postcalendar_categories AS c ON " .
+    "FROM libreehr_postcalendar_events AS e " .
+    "JOIN libreehr_postcalendar_categories AS c ON " .
     "c.pc_catdesc LIKE 'Squad=$squad' AND c.pc_catid = e.pc_catid " .
     "LEFT JOIN player_event AS p ON " .
     "p.pid = '$plid' AND p.date = '$date' AND p.pc_eid = e.pc_eid " .

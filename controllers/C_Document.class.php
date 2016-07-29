@@ -323,8 +323,8 @@ class C_Document extends Controller {
 		// Populate the dropdown with patient's encounter list
 		$this->assign("TAG_ACTION",$this->_link("tag") . "document_id=" . $d->get_id() . "&process=true");
 		$encOptions = "<option value='0'>-- " . xlt('Select Encounter') . " --</option>";
-		$result_docs = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe " .
-			"LEFT JOIN openemr_postcalendar_categories ON fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? ORDER BY fe.date desc",array($patient_id));
+		$result_docs = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categories.pc_catname FROM form_encounter AS fe " .
+			"LEFT JOIN libreehr_postcalendar_categories ON fe.pc_catid=libreehr_postcalendar_categories.pc_catid  WHERE fe.pid = ? ORDER BY fe.date desc",array($patient_id));
 		if ( sqlNumRows($result_docs) > 0)
 		while($row_result_docs = sqlFetchArray($result_docs)) {
 		 	$sel_enc = ($row_result_docs['encounter'] == $d->get_encounter_id()) ? ' selected' : ''; 
@@ -334,7 +334,7 @@ class C_Document extends Controller {
 		
 		//Populate the dropdown with category list
 		$visit_category_list = "<option value='0'>-- " . xlt('Select One') . " --</option>";
-		$cres = sqlStatement("SELECT pc_catid, pc_catname FROM openemr_postcalendar_categories ORDER BY pc_catname");
+		$cres = sqlStatement("SELECT pc_catid, pc_catname FROM libreehr_postcalendar_categories ORDER BY pc_catname");
 		while ($crow = sqlFetchArray($cres)) {
 			$catid = $crow['pc_catid'];
 			if ($catid < 9 && $catid != 5) continue; // Applying same logic as in new encounter page.
@@ -987,7 +987,7 @@ class C_Document extends Controller {
                 //increment the counter in filename
                 $fparts[count($fparts) -2] = $fparts[count($fparts) -2] + 1;
             } elseif (is_numeric($fparts[count($fparts) -1]) && $fparts[count($fparts) -1] < 1000) {
-                //increment counter at end of filename (so compatible with previous openemr version files
+                //increment counter at end of filename (so compatible with previous libreehr version files
                 $fparts[count($fparts) -1] = $fparts[count($fparts) -1] + 1;
             } elseif (is_numeric($fparts[count($fparts) -1])) {
                 //leave date at end and place counter in filename

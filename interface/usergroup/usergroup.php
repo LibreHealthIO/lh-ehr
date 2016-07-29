@@ -9,7 +9,7 @@ if (/*$userauthorized*/ true) {
 <HTML>
 <HEAD>
 <TITLE>
-<?php echo $openemr_name ?>
+<?php echo $libreehr_name ?>
 </TITLE>
 
 <script language='JavaScript'>

@@ -122,8 +122,8 @@ $form_by   = $_POST['form_by'];
     "e.pc_eventDate, e.pc_endDate, e.pc_startTime, " .
     "e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, " .
     "c.pc_catdesc " .
-    "FROM openemr_postcalendar_events AS e " .
-    "JOIN openemr_postcalendar_categories AS c ON " .
+    "FROM libreehr_postcalendar_events AS e " .
+    "JOIN libreehr_postcalendar_categories AS c ON " .
     "c.pc_catdesc LIKE 'Squad=%' AND c.pc_catid = e.pc_catid " .
     "WHERE ((e.pc_endDate >= '$from_date' AND e.pc_eventDate <= '$to_date') OR " .
     "(e.pc_endDate = '0000-00-00' AND e.pc_eventDate >= '$from_date' AND " .

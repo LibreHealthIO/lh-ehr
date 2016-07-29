@@ -19,7 +19,7 @@
  * 
  * @author Kevin McCormick
  * @link: http://www.open-emr.org
- * @package OpenEMR
+ * @package LibreEHR
  * @subpackage ediHistory
  */
  
@@ -63,7 +63,7 @@
  * </pre> 
  * 
  *  Key usability issue is the "new" files are in the users home directory -- downloaded there
- *   while the OpenEMR is on the server -- so there is a basic issue of access to the files
+ *   while the LibreEHR is on the server -- so there is a basic issue of access to the files
  * 
  *  The ibr_uploads.php script handles uploads of zip archives or multiple file uploads
  * 
@@ -232,11 +232,11 @@ function csv_notes_file($content='', $open=true) {
  */
 function csv_edih_basedir() {
 	//$GLOBALS['OE_SITE_DIR'] 
-    // should be something like /var/www/htdocs/openemr/sites/default
+    // should be something like /var/www/htdocs/libreehr/sites/default
     if (isset($GLOBALS['OE_SITE_DIR'])) {
         return $GLOBALS['OE_SITE_DIR'].'/edi/history';
     } else {
-        csv_edihist_log("csv_edih_basedir: failed to obtain OpenEMR Site directory"); 
+        csv_edihist_log("csv_edih_basedir: failed to obtain LibreEHR Site directory"); 
         return false;
     }
 }
@@ -282,8 +282,8 @@ function csv_setup(&$out_str) {
         $csv_dir = $edihist_dir.DIRECTORY_SEPARATOR.'csv';
         $archive_dir = $edihist_dir.DIRECTORY_SEPARATOR.'archive';
     } else {
-       //csv_edihist_log("setup: failed to obtain OpenEMR Site directory"); 
-       $out_str .= "setup: failed to obtain OpenEMR Site directory <br />";
+       //csv_edihist_log("setup: failed to obtain LibreEHR Site directory"); 
+       $out_str .= "setup: failed to obtain LibreEHR Site directory <br />";
        return false;
     }
 	//
@@ -441,9 +441,9 @@ function csv_parameters($type="ALL") {
 	//
     $edihist_dir = csv_edih_basedir();  // $GLOBALS['OE_SITES_BASE'].'/edi/history'
 	$p_ar = array();
-	// the batch file directory is a special case - decision is to use OpenEMR batch files so users will not have to
+	// the batch file directory is a special case - decision is to use LibreEHR batch files so users will not have to
     // upload these.  If they are accidentally uploaded, they will be matched and the extra copy will be discarded
-	// OpenEMR copies each batch file to sites/default/edi and this project never reads from or writes to that directory
+	// LibreEHR copies each batch file to sites/default/edi and this project never reads from or writes to that directory
 	// batch reg ex -- '/20[01][0-9]-[01][0-9]-[0-3][0-9]-[0-9]{4}-batch*\.txt/' '/\d{4}-\d{2}-\d{2}-batch*\.txt$/'
     //
  	//$p_ar['csv'] = array("type"=>'csv', "directory"=>$edihist_dir.'/csv', "claims_csv"=>'ibr_parameters.csv',  
@@ -466,7 +466,7 @@ function csv_parameters($type="ALL") {
 						"files_csv"=>'', "datecolumn"=>'1', "fncolumn"=>'5', "regex"=>'/\.dpr$/');						
 	$p_ar['f277'] = array("type"=>'f277', "directory"=>$edihist_dir.'/f277', "claims_csv"=>$edihist_dir.'/csv/claims_277.csv', 
 						"files_csv"=>$edihist_dir.'/csv/files_277.csv', "datecolumn"=>'0', "fncolumn"=>'1', "regex"=>'/\.277([ei]br)?$/');
-	// OpenEMR stores era files, but the naming scheme is confusing, so we will just use our own directory for them 
+	// LibreEHR stores era files, but the naming scheme is confusing, so we will just use our own directory for them 
 	$p_ar['era'] = array("type"=>'era', "directory"=>$edihist_dir.'/era', "claims_csv"=>$edihist_dir.'/csv/claims_era.csv', 
 						"files_csv"=>$edihist_dir.'/csv/files_era.csv', "datecolumn"=>'0', "fncolumn"=>'1', "regex"=>'/835[0-9]{5}\.835*|\.(era|ERA)$/');
 	$p_ar['text'] = array("type"=>'text', "directory"=>$edihist_dir.'/text', "claims_csv"=>'',
@@ -1044,7 +1044,7 @@ function csv_file_by_controlnum($type, $control_num) {
 /**
 * A function to try and assure the pid-encounter is correctly parsed
 * 
-* assume a format of pid-encounter, since that is sent in the OpenEMR x12 837
+* assume a format of pid-encounter, since that is sent in the LibreEHR x12 837
 * however, in case payer mangles the pid-encounter by dropping the separator,
 * check value and use IBR_ENCOUNTER_DIGIT_LENGTH constant 
 * 
@@ -1096,7 +1096,7 @@ function csv_download_file( $filename ){
 	// but a "view file" function will be made, probably as a separate page
 	// links in csv file 
 	// <a href='edi_view_file.php?key=filename' target='_blank'>filename</a>
-	// OpenEMR open log link: <a href='../../library/freeb/process_bills.log' target='_blank' class='link_submit' title=''>[View Log]</a>
+	// LibreEHR open log link: <a href='../../library/freeb/process_bills.log' target='_blank' class='link_submit' title=''>[View Log]</a>
 
 	if( headers_sent() ) {
 	  csv_edihist_log("csv_download_file: error headers already sent");
@@ -1412,7 +1412,7 @@ function csv_to_html($file_type, $csv_type, $row_pct = 1, $datestart='', $dateen
 		$csv_html .= "csv_to_html error: incorrect csv type $csv_type <br />".PHP_EOL;
 		return FALSE;
 	}
-    // for using OpenEMR dynarch calendar, assume format of CCYY-MM-DD
+    // for using LibreEHR dynarch calendar, assume format of CCYY-MM-DD
     if (preg_match('/\d{4}-\d{2}-\d{2}/', $datestart) && preg_match('/\d{4}-\d{2}-\d{2}/', $dateend) ) {
         $ds = str_replace('-', '', $datestart);
         $de = str_replace('-', '', $dateend);

@@ -15,7 +15,7 @@
  * General Public License along with this program.
  * If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package    OpenEMR
+ * @package    LibreEHR
  * @subpackage NewCrop
  * @author     Eldho Chacko <eldho@zhservices.com>
  * @author     Vinish K <vinish@zhservices.com>
@@ -119,12 +119,12 @@ function credentials($doc,$r)
     $b->appendChild( $password );
     $productName = $doc->createElement( "productName" );
     $productName->appendChild(
-        $doc->createTextNode( 'OpenEMR' )
+        $doc->createTextNode( 'LibreEHR' )
     );
     $b->appendChild( $productName );
     $productVersion = $doc->createElement( "productVersion" );
     $productVersion->appendChild(
-        $doc->createTextNode( $GLOBALS['openemr_version'] )
+        $doc->createTextNode( $GLOBALS['libreehr_version'] )
     );
     $b->appendChild( $productVersion );
     $r->appendChild( $b );

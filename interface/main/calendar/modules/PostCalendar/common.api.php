@@ -1256,7 +1256,7 @@ function postcalendar_userapi_buildSubmitForm($args,$admin=false)
                                   'name'=>$cell[1]));
     }
 
-    //pennfirm get list of providers from openemr code in calendar.inc
+    //pennfirm get list of providers from libreehr code in calendar.inc
     $tpl->assign("user",getCalendarProviderInfo());
 
 
@@ -1496,7 +1496,7 @@ function &postcalendar_userapi_pcGetEventDetails($eid)
     $event['duration_minutes'] = substr(sprintf('%.2f','.' . 60*($dmin/100)),2,2);
     //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     $result->Close();
-    //pennfirm fix to reflect openemr user/informant
+    //pennfirm fix to reflect libreehr user/informant
     $userid = pnUserGetVar('uid');
 
     // get the user id of event's author

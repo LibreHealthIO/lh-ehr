@@ -1,8 +1,8 @@
 {
-    "name": "openemr composer",
+    "name": "libreehr composer",
     "type": "module",
     "description": "Autolaod basics",
-    "keywords": ["openemr"],
+    "keywords": ["libreehr"],
     "authors": [
         {
             "name": "Ken Chapple",
@@ -15,7 +15,7 @@
     "autoload": {
         "psr-4": {
             "PluginSystem\\": "pluginsystem/",
-            "Framework\\": "vendor/openemr/Framework/"
+            "Framework\\": "vendor/libreehr/Framework/"
         }
     },
     "plugin-dirs" : [

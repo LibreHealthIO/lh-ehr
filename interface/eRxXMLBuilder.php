@@ -15,7 +15,7 @@
  * General Public License along with this program.
  * If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package    OpenEMR
+ * @package    LibreEHR
  * @subpackage NewCrop
  * @author     Sam Likins <sam.likins@wsi-services.com>
  * @link       http://www.open-emr.org
@@ -95,7 +95,7 @@ class eRxXMLBuilder {
 
 	public function checkError($xml) {
 		$curlHandler = curl_init($xml);
-		$sitePath = $this->getGlobals()->getOpenEMRSiteDirectory();
+		$sitePath = $this->getGlobals()->getLibreEHRSiteDirectory();
 		$data = array('RxInput' => $xml);
 
 		curl_setopt($curlHandler, CURLOPT_URL, $this->getGlobals()->getPath());
@@ -251,8 +251,8 @@ class eRxXMLBuilder {
 		$elemenet->appendChild($this->createElementTextFieldEmpty('partnerName', $eRxCredentials['0'], xl('NewCrop eRx Partner Name')));
 		$elemenet->appendChild($this->createElementTextFieldEmpty('name', $eRxCredentials['1'], xl('NewCrop eRx Account Name')));
 		$elemenet->appendChild($this->createElementTextFieldEmpty('password', $eRxCredentials['2'], xl('NewCrop eRx Password')));
-		$elemenet->appendChild($this->createElementText('productName', 'OpenEMR'));
-		$elemenet->appendChild($this->createElementText('productVersion', $this->getGlobals()->getOpenEMRVersion()));
+		$elemenet->appendChild($this->createElementText('productName', 'LibreEHR'));
+		$elemenet->appendChild($this->createElementText('productVersion', $this->getGlobals()->getLibreEHRVersion()));
 
 		return $elemenet;
 	}

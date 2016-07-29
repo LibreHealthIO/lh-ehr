@@ -12,9 +12,9 @@ require_once("NumberToText.class.php");
 require_once (dirname(__FILE__) . "/../formdata.inc.php");
 
 // Below list of terms are deprecated, but we keep this list
-//   to keep track of the official openemr drugs terms and
+//   to keep track of the official libreehr drugs terms and
 //   corresponding ID's for reference. Official is referring
-//   to the default settings after installing OpenEMR.
+//   to the default settings after installing LibreEHR.
 //
 // define('UNIT_BLANK',0);
 // define('UNIT_MG',1);

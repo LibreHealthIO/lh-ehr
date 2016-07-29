@@ -15,7 +15,7 @@ function setpid($new_pid) {
   $new_pid_int = intval($new_pid);
   // If the $new_pid was not an integer, then send an error to error log
   if (!is_numeric($new_pid)) {
-    error_log("Critical OpenEMR Error: Attempt to set pid to following non-integer value was denied: ".$new_pid,0);
+    error_log("Critical LibreEHR Error: Attempt to set pid to following non-integer value was denied: ".$new_pid,0);
     error_log("Requested pid ".$new_pid,0);
     error_log("Returned pid ".$new_pid_int,0);
   }

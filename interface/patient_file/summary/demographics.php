@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://www.open-emr.org
  */
@@ -455,8 +455,8 @@ function setMyPatient() {
  var Count = 0;
 <?php
   //Encounter details are stored to javacript as array.
-  $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
-    " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
+  $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
+    " left join libreehr_postcalendar_categories on fe.pc_catid=libreehr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
   if(sqlNumRows($result4)>0) {
     while($rowresult4 = sqlFetchArray($result4)) {
 ?>
@@ -1302,7 +1302,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	  echo "   <br />&nbsp;<br />\n";
 	}
 
-	// This stuff only applies to athletic team use of OpenEMR.  The client
+	// This stuff only applies to athletic team use of LibreEHR.  The client
 	// insisted on being able to quickly change fitness and return date here:
 	//
 	if (false && $GLOBALS['athletic_team']) {
@@ -1446,8 +1446,8 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	 $query = "SELECT e.pc_eid, e.pc_aid, e.pc_title, e.pc_eventDate, " .
 	  "e.pc_startTime, e.pc_hometext, u.fname, u.lname, u.mname, " .
 	  "c.pc_catname, e.pc_apptstatus " .
-	  "FROM openemr_postcalendar_events AS e, users AS u, " .
-	  "openemr_postcalendar_categories AS c WHERE " .
+	  "FROM libreehr_postcalendar_events AS e, users AS u, " .
+	  "libreehr_postcalendar_categories AS c WHERE " .
 	  "e.pc_pid = ? AND e.pc_eventDate < CURRENT_DATE AND " .
 	  "u.id = e.pc_aid AND e.pc_catid = c.pc_catid " .
 	  "ORDER BY e.pc_eventDate $direction , e.pc_startTime DESC " . 

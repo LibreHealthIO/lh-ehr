@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License along with
 * this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
 *
-* @package   OpenEMR
+* @package   LibreEHR
 * @author    Rod Roark <rod@sunsetsystems.com>
 */
 
@@ -56,7 +56,7 @@ function myCellText($s) {
   return text($s);
 }
 
-// Get patient name from OpenEMR, or empty if not there.
+// Get patient name from LibreEHR, or empty if not there.
 function patientNameFromLogin($login) {
   $ptname = '';
   if ($login) {
@@ -127,7 +127,7 @@ a, a:visited, a:hover { color:#0000cc; }
 var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 function myRestoreSession() {
- // This works whether we are a popup or in the OpenEMR frameset.
+ // This works whether we are a popup or in the LibreEHR frameset.
  if (top.restoreSession) top.restoreSession(); else opener.top.restoreSession();
  return true;
 }

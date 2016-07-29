@@ -6,7 +6,7 @@ $_SESSION["encounter"] = "";
 <head>
 <?php html_header_show();?>
 <TITLE>
-<?php echo $openemr_name; ?>
+<?php echo $libreehr_name; ?>
 </TITLE>
 
 <script language='JavaScript'>

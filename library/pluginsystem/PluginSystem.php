@@ -88,7 +88,7 @@ class PluginSystem
                 $this->doAction( 'update_plugin', $location );
             } else {
                 // No start file? Probaly mispelled or forgotten
-                error_log("No start.php file found for openemr-plugin $location");
+                error_log("No start.php file found for libreehr-plugin $location");
             }
         }
 
@@ -103,7 +103,7 @@ class PluginSystem
                     $this->doAction( 'update_plugin', $location );
                 } else {
                     // No start file? Probaly mispelled or forgotten
-                    error_log("No start.php file found for openemr-plugin $location");
+                    error_log("No start.php file found for libreehr-plugin $location");
                 }
             }
 

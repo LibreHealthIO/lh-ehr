@@ -114,12 +114,12 @@ closedir($dh);
 ?>
 <html>
 <head>
-<title><?php xl('OpenEMR Database Upgrade','e'); ?></title>
+<title><?php xl('LibreEHR Database Upgrade','e'); ?></title>
 <link rel='STYLESHEET' href='../../interface/themes/style_sky_blue.css'>
 </head>
 <body> <br>
 <center>
-<span class='title'><?php xl('OpenEMR Database Upgrade for De-identification','e'); ?></span>
+<span class='title'><?php xl('LibreEHR Database Upgrade for De-identification','e'); ?></span>
 <br>
 </center>
 <?php
@@ -137,13 +137,13 @@ if (!empty($_POST['form_submit'])) {
   }  $login=$sqlconf["login"];   $loginhost=$sqlconf["host"];
   generic_sql_select_db($sqlconf['dbase']) or die(getSqlLastError());
   if (sqlStatement("GRANT FILE ON *.* TO '$login'@'$loginhost'") == FALSE) {
-		echo xl("Error when granting file privilege to the OpenEMR user."); echo "\n";
+		echo xl("Error when granting file privilege to the LibreEHR user."); echo "\n";
       echo "<p>".getSqlLastError()." (#".getSqlLastErrorNo().")\n";
 		echo xl("Error"); echo "\n";
 		break;
 	}
         else
-  echo "<font color='green'>"; echo xl("File privilege granted to OpenEMR user."); echo "<br></font>\n";
+  echo "<font color='green'>"; echo xl("File privilege granted to LibreEHR user."); echo "<br></font>\n";
 
   echo "<p><font color='green'>"; echo xl("Database upgrade finished."); echo "</font></p>\n";
   echo "<p><font color='red'>"; echo xl("Please restart the apache server before playing with de-identification"); echo "</font></p>\n";
@@ -181,7 +181,7 @@ function form_validate()
 }
 else
 {
-  xl('Upgrades the OpenEMR database to include Procedures, Functions and tables needed for De-identification process','e');?></p></br>
+  xl('Upgrades the LibreEHR database to include Procedures, Functions and tables needed for De-identification process','e');?></p></br>
         <table class="de_id_upgrade_login" align="center">
 	<tr><td>&nbsp;</td><td colspan=3 align=center>&nbsp;</td><td>&nbsp;</td></tr>
 	<tr valign="top">

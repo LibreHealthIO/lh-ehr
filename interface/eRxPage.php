@@ -15,7 +15,7 @@
  * General Public License along with this program.
  * If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package    OpenEMR
+ * @package    LibreEHR
  * @subpackage NewCrop
  * @author     Sam Likins <sam.likins@wsi-services.com>
  * @link       http://www.open-emr.org
@@ -227,7 +227,7 @@ class eRxPage {
 	protected function errorLog($message) {
 		$date = date('Y-m-d');
 		$path = $this->getXMLBuilder()->getGlobals()
-			->getOpenEMRSiteDirectory().'/documents/erx_error';
+			->getLibreEHRSiteDirectory().'/documents/erx_error';
 
 		if(!is_dir($path)) {
 			mkdir($path, 0777, true);

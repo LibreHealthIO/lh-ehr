@@ -1,5 +1,5 @@
 <?php
- // Copyright (C) 2010 OpenEMR Support LLC
+ // Copyright (C) 2010 LibreEHR Support LLC
  //
  // This program is free software; you can redistribute it and/or
  // modify it under the terms of the GNU General Public License
@@ -11,7 +11,7 @@
  //
  // Prescription report written by Rod Roark, 2010
  // Fixed drug name search to work in a broader sense - tony@mi-squared.com, 2010
- // Added five new reports as per EHR certification requirements for Patient Lists - OpenEMR Support LLC, 2010
+ // Added five new reports as per EHR certification requirements for Patient Lists - LibreEHR Support LLC, 2010
 
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;

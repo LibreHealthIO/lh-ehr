@@ -1,6 +1,6 @@
 <?php
 /*
- * Download documents from OpenEMR to the patient portal in a zip file(get_patient_documents.php)
+ * Download documents from LibreEHR to the patient portal in a zip file(get_patient_documents.php)
  *
  * This program is used to download patient documents in a zip file in the Patient Portal.
  * The original author did not pursue this but I thought it would be a good addition to 
@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
- * @package OpenEMR 
+ * @package LibreEHR 
  * @author Terry Hill <terry@lilysystems.com> 
  * @author Giorgos Vasilakos <giorg.vasilakos@gmail.com>
  * @link http://www.open-emr.org 

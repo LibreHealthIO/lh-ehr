@@ -353,7 +353,7 @@ class Patient Extends DataObjectBase {
 
 		$err="";
 
-		//OpenEMR only supports US country code
+		//LibreEHR only supports US country code
 		$pkey = "1";
 
 		// if we generated an error, create an error return response
@@ -371,7 +371,7 @@ class Patient Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by openemr
+		//unimplemented by libreehr
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -518,7 +518,7 @@ class Patient Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = false;
 
 		// if we generated an error, create an error return response
@@ -572,7 +572,7 @@ class Patient Extends DataObjectBase {
 
 		$err="";
 		
-		//Unimplimented by OpenEMR
+		//Unimplimented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -1160,7 +1160,7 @@ class Patient Extends DataObjectBase {
 
 		$err="";
 		
-		//unimplemented in OpenEMR
+		//unimplemented in LibreEHR
 		$pkey = "1";
 
 		// if we generated an error, create an error return response
@@ -1260,7 +1260,7 @@ class Patient Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented in OpenEMR
+		//unimplemented in LibreEHR
 		$pkey = "";
 	
 		/**
@@ -1291,7 +1291,7 @@ class Patient Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented in OpenEMR
+		//unimplemented in LibreEHR
 		$pkey = "";
 		
 		// if we generated an error, create an error return response

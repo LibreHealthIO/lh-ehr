@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://www.open-emr.org
@@ -69,9 +69,9 @@ function escape_sort_order($s) {
  * Escape/sanitize a table sql column name for a sql query..
  *
  * This will escape/sanitize the sql column name for a sql query. It is done by whitelisting
- * all of the current sql column names in the openemr database from a table(s). Note that if
+ * all of the current sql column names in the libreehr database from a table(s). Note that if
  * there is no match, then it will die() and a error message will be sent to the screen and
- * the error log. This function should not be used for escaping tables outside the openemr
+ * the error log. This function should not be used for escaping tables outside the libreehr
  * database (should use escape_identifier() function below for that scenario)
  *
  * @param   string        $s       sql column name variable to be escaped/sanitized.
@@ -120,12 +120,12 @@ function escape_sql_column_name($s,$tables,$long=FALSE) {
  * process tables that contain any upper case letters.
  *
  * This will escape/sanitize the table name for a sql query. It is done by whitelisting
- * all of the current tables in the openemr database. The matching is not case sensitive,
+ * all of the current tables in the libreehr database. The matching is not case sensitive,
  * although it will attempt a case sensitive match before proceeding to a case insensitive
  * match (see below escape_identifier() function for more details on this). Note that if
  * there is no match, then it will die() and a error message will be sent to the screen
  * and the error log. This function should not be used for escaping tables outside the
- * openemr database (should use escape_identifier() function below for that scenario).
+ * libreehr database (should use escape_identifier() function below for that scenario).
  * Another use of this function is to deal with casing issues that arise in tables that
  * contain upper case letter(s) (these tables can be huge issues when transferring databases
  * from Windows to Linux and vice versa); this function can avoid this issues if run the
@@ -200,8 +200,8 @@ function escape_identifier($s,$whitelist_items,$die_if_no_match=FALSE,$case_sens
                     // Still no match
                     if ($die_if_no_match) {
                         // No match and $die_if_no_match is set, so die() and send error messages to screen and log
-                        error_Log("ERROR: OpenEMR SQL Escaping ERROR of the following string: ".$s,0);
-                        die("<br><span style='color:red;font-weight:bold;'>".xlt("There was an OpenEMR SQL Escaping ERROR of the following string")." ".text($s)."</span><br>");
+                        error_Log("ERROR: LibreEHR SQL Escaping ERROR of the following string: ".$s,0);
+                        die("<br><span style='color:red;font-weight:bold;'>".xlt("There was an LibreEHR SQL Escaping ERROR of the following string")." ".text($s)."</span><br>");
                     }
                     else {
                         // Return first token since no match

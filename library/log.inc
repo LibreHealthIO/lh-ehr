@@ -201,16 +201,16 @@ function sql_checksum_of_modified_row($statement)
 	else if ($table == "claims"){
 	    $id = "patient_id";
 	}
-	else if ($table == "openemr_postcalendar_events") {
+	else if ($table == "libreehr_postcalendar_events") {
 	    $id = "pc_eid";
 	}
 	 else if ($table == "lang_languages"){
             $id = "lang_id";
 	 }
-	 else if ($table == "openemr_postcalendar_categories" || $table == "openemr_postcalendar_topics"){
+	 else if ($table == "libreehr_postcalendar_categories" || $table == "libreehr_postcalendar_topics"){
             $id = "pc_catid";
 	 }
-	 else if ($table == "openemr_postcalendar_limits"){
+	 else if ($table == "libreehr_postcalendar_limits"){
             $id = "pc_limitid";
 	 }
          else if($table == "gacl_aco_map" || $table == "gacl_aro_groups_map" || $table == "gacl_aro_map" || $table == "gacl_axo_groups_map" || $table == "gacl_axo_map"){
@@ -270,16 +270,16 @@ function sql_checksum_of_modified_row($statement)
    else if ($table == "claims"){
 		$sql = "select * from $table where patient_id = $rid";
         }
-   else if ($table == "openemr_postcalendar_events") {
+   else if ($table == "libreehr_postcalendar_events") {
             $sql = "select * from $table where pc_eid = $rid";
         }
     else if ($table == "lang_languages") {
             $sql = "select * from $table where lang_id = $rid";
     }
-    else if ($table == "openemr_postcalendar_categories" || $table == "openemr_postcalendar_topics"){
+    else if ($table == "libreehr_postcalendar_categories" || $table == "libreehr_postcalendar_topics"){
 	    $sql = "select * from $table where pc_catid = $rid";
     	 }
-    else if ($table == "openemr_postcalendar_limits"){
+    else if ($table == "libreehr_postcalendar_limits"){
            $sql = "select * from $table where pc_limitid = $rid";
 	 }
     else if ($table ==  "gacl_aco_map" || $table == "gacl_aro_groups_map" || $table == "gacl_aro_map" || $table == "gacl_axo_groups_map" || $table == "gacl_axo_map"){
@@ -340,7 +340,7 @@ function create_rfc3881_msg($user, $group, $event, $patient_id, $outcome, $comme
     /* For EventOutcomeIndicator, 0 = success and 4 = minor error */
     $eventOutcome = ($outcome === 1) ? 0 : 4;
 
-    /* The choice of event codes is up to OpenEMR.
+    /* The choice of event codes is up to LibreEHR.
      * We're using the same event codes as
      * https://iheprofiles.projects.openhealthtools.org/
      */
@@ -379,7 +379,7 @@ function create_rfc3881_msg($user, $group, $event, $patient_id, $outcome, $comme
     /* Variables used in ActiveParticipant section, which identifies
      * the IP address and application of the source and destination.
      */
-    $srcUserID = $_SERVER['SERVER_NAME'] . '|OpenEMR';
+    $srcUserID = $_SERVER['SERVER_NAME'] . '|LibreEHR';
     $srcNetwork = $_SERVER['SERVER_ADDR'];
     $destUserID = $GLOBALS['atna_audit_host'];
     $destNetwork = $GLOBALS['atna_audit_host'];
@@ -628,10 +628,10 @@ function auditSQLEvent($statement, $outcome, $binds=NULL)
                     "registry" => "security-administration", 
                     "users" => "security-administration",
                     "groups" => "security-administration",
-                    "openemr_postcalendar_events" => "scheduling",
-    				"openemr_postcalendar_categories" => "security-administration",
-    				"openemr_postcalendar_limits" => "security-administration",
-    				"openemr_postcalendar_topics" => "security-administration",
+                    "libreehr_postcalendar_events" => "scheduling",
+    				"libreehr_postcalendar_categories" => "security-administration",
+    				"libreehr_postcalendar_limits" => "security-administration",
+    				"libreehr_postcalendar_topics" => "security-administration",
     				"gacl_acl" => "security-administration",
     				"gacl_acl_sections" => "security-administration",
     				"gacl_acl_seq" => "security-administration",

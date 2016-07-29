@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
  * @link    http://www.open-emr.org
  */
@@ -46,9 +46,9 @@ if(($_GET['access_group'][$i] == "Emergency Login") && ($_GET['active'] == 'on')
 	$mail = new MyMailer();
         $mail->SetLanguage("en",$GLOBALS['fileroot'] . "/library/" );
         $mail->From = "admin@".$mail_id[1].".".$mail_id[2];     
-        $mail->FromName = "Administrator OpenEMR";
+        $mail->FromName = "Administrator LibreEHR";
         $text_body  = "Hello Security Admin,\n\n The Emergency Login user ".$uname.
-                                                " was activated at ".date('l jS \of F Y h:i:s A')." \n\nThanks,\nAdmin OpenEMR.";
+                                                " was activated at ".date('l jS \of F Y h:i:s A')." \n\nThanks,\nAdmin LibreEHR.";
         $mail->Body = $text_body;
         $mail->Subject = "Emergency Login User Activated";
         $mail->AddAddress($_GET['admin_id']);

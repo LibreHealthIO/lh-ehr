@@ -11,14 +11,14 @@
 #
 # Debian package pre-installation script steps:
 #  1) Create log dir/file
-#  2) Ensure git-OpenEMR web directory was not previously installed.
+#  2) Ensure git-LibreEHR web directory was not previously installed.
 #  3) Create config dir/file
 #
 # Upgrading is not an option here, since this is for testing/evaluation
-# of the most current unstable development version of OpenEMR.
+# of the most current unstable development version of LibreEHR.
 #
 #  Output log file:
-#   /var/log/git-openemr/install
+#   /var/log/git-libreehr/install
 #
 #
 # summary of how this script can be called:
@@ -33,15 +33,15 @@
 . /usr/share/debconf/confmodule
 
 #constants and paths
-LOGDIR=/var/log/git-openemr
+LOGDIR=/var/log/git-libreehr
 LOG=$LOGDIR/install
-CONFIGDIR=/etc/git-openemr
-CONFIG=$CONFIGDIR/git-openemr.conf
+CONFIGDIR=/etc/git-libreehr
+CONFIG=$CONFIGDIR/git-libreehr.conf
 WEB=/var/www
-OPENEMR=$WEB/git-openemr
+OPENEMR=$WEB/git-libreehr
 SITEDIR=$OPENEMR/sites/default
-INSTALL_USER=gitopenemr
-INSTALL_DATABASE=gitopenemr
+INSTALL_USER=gitlibreehr
+INSTALL_DATABASE=gitlibreehr
 
 #Standardized echo function to send to only log file
 #  requires one parameter (string)
@@ -49,7 +49,7 @@ log_only () {
    echo "`date`: $1" >> $LOG
 }
 
-#Standardized exit function to be used when unable to install the openemr package
+#Standardized exit function to be used when unable to install the libreehr package
 #  requires one parameter (string with reason for exiting)
 unable_exit () {
    echo "`date`: $1" >> $LOG
@@ -79,10 +79,10 @@ case "$1" in
       #create the log file directory
       mkdir -p $LOGDIR
 
-      #Check for /var/www/git-openemr, if exist then exit
+      #Check for /var/www/git-libreehr, if exist then exit
       if [ -d "$OPENEMR" ]; then
-         prompt_input git-openemr/www_path_already_exists critical ret_result
-         unable_exit "OpenEMR is already installed ($OPENEMR), so can not install the OpenEMR Package."
+         prompt_input git-libreehr/www_path_already_exists critical ret_result
+         unable_exit "LibreEHR is already installed ($OPENEMR), so can not install the LibreEHR Package."
       fi
 
       #Begin the config file string
@@ -108,11 +108,11 @@ plan=install"
 
    upgrade)
 
-      #upgrade is not available with the git-openemr package
+      #upgrade is not available with the git-libreehr package
       echo ""
-      log_only "Upgrading is not available with the git-openemr package"
-      log_only "This package is for testing most recent development (unstable) OpenEMR version"
-      prompt_input git-openemr/upgrade_not_supported critical ret_result
+      log_only "Upgrading is not available with the git-libreehr package"
+      log_only "This package is for testing most recent development (unstable) LibreEHR version"
+      prompt_input git-libreehr/upgrade_not_supported critical ret_result
       unable_exit "To upgrade to most recent development version, recommend removing/reinstalling package"
    ;;
 

@@ -16,7 +16,7 @@
 //
 //
 // A copy of the GNU General Public License is included along with this program:
-// openemr/interface/login/GnuGPL.html
+// libreehr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // 
@@ -479,7 +479,7 @@ class UserService extends Userforms
     }
     
  
- //File teceived from the portal  side is saved to OpenEMR
+ //File teceived from the portal  side is saved to LibreEHR
 
   public function store_to_file($data){
 	if($this->valid($data[0])){
@@ -731,7 +731,7 @@ static  public function batch_despatch($var,$func,$data_credentials){
     //appointment update
     
 
-  public function update_openemr_appointment($var)
+  public function update_libreehr_appointment($var)
        {
 	      $data_credentials=$var[0];
 	      if(UserService::valid($data_credentials)=='existingpatient' || UserService::valid($data_credentials)=='newpatient'){
@@ -740,7 +740,7 @@ static  public function batch_despatch($var,$func,$data_credentials){
 			    $eid=explode('_',$var[1][$key]);
 			    if($eid[0]=='calendar')
 			    {
-				   sqlQuery("update openemr_postcalendar_events set pc_apptstatus='x' where pc_eid=?",array($eid[1]));
+				   sqlQuery("update libreehr_postcalendar_events set pc_apptstatus='x' where pc_eid=?",array($eid[1]));
 			    }
 			    elseif($eid[0]=='audit')
 			    {

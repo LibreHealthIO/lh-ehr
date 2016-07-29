@@ -1,10 +1,10 @@
 <?php
 
     // May need to update this for multi-site in the future
-    require_once($openemr_root_dir."/sites/default/sqlconf.php");
-    require_once($openemr_root_dir."/library/adodb/adodb.inc.php");
-    require_once($openemr_root_dir."/library/adodb/drivers/adodb-mysql.inc.php");
-    require_once($openemr_root_dir."/library/htmlspecialchars.inc.php");
+    require_once($libreehr_root_dir."/sites/default/sqlconf.php");
+    require_once($libreehr_root_dir."/library/adodb/adodb.inc.php");
+    require_once($libreehr_root_dir."/library/adodb/drivers/adodb-mysql.inc.php");
+    require_once($libreehr_root_dir."/library/htmlspecialchars.inc.php");
     
     $database = NewADOConnection("mysql"); 
     

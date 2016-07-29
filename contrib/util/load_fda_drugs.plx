@@ -12,7 +12,7 @@ use DBI;
 # of the License, or (at your option) any later version.
 #
 # This loads the FDA Orange Book data for drugs into the "drugs"
-# table of OpenEMR. If a row already exists with the same drug name
+# table of LibreEHR. If a row already exists with the same drug name
 # it is ignored, otherwise a new row is created with the drug
 # trade name provided from the Orange Book data.
 #
@@ -29,7 +29,7 @@ use DBI;
 #               Parameters that you should customize                  #
 #######################################################################
 
-my $DBNAME         = "openemr";  # database name
+my $DBNAME         = "libreehr";  # database name
 
 # You can hard-code the database user name and password (see below),
 # or else put them into the environment with bash commands like these

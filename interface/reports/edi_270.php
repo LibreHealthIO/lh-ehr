@@ -50,7 +50,7 @@
 	$where  = "e.pc_pid IS NOT NULL AND e.pc_eventDate >= ?";
 	array_push($sqlBindArray, $from_date);
 	
-	//$where .="and e.pc_eventDate = (select max(pc_eventDate) from openemr_postcalendar_events where pc_aid = d.id)";
+	//$where .="and e.pc_eventDate = (select max(pc_eventDate) from libreehr_postcalendar_events where pc_aid = d.id)";
 
 	if ($to_date) {
 		$where .= " AND e.pc_eventDate <= ?";
@@ -103,7 +103,7 @@
 								   f.facility_npi,
 								   f.name as facility_name,
 								   c.name as payer_name
-							FROM openemr_postcalendar_events AS e
+							FROM libreehr_postcalendar_events AS e
 							LEFT JOIN users AS d on (e.pc_aid is not null and e.pc_aid = d.id)
 							LEFT JOIN facility AS f on (f.id = e.pc_facility)
 							LEFT JOIN patient_data AS p ON p.pid = e.pc_pid

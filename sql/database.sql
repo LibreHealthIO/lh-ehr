@@ -1,5 +1,5 @@
 --
--- Database: `openemr`
+-- Database: `libreehr`
 -- 
 
 -- --------------------------------------------------------
@@ -117,9 +117,9 @@ CREATE TABLE `audit_master` (
 DROP TABLE IF EXISTS `audit_details`;
 CREATE TABLE `audit_details` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `table_name` VARCHAR(100) NOT NULL COMMENT 'openemr table name',
-  `field_name` VARCHAR(100) NOT NULL COMMENT 'openemr table''s field name',
-  `field_value` TEXT NOT NULL COMMENT 'openemr table''s field value',
+  `table_name` VARCHAR(100) NOT NULL COMMENT 'libreehr table name',
+  `field_name` VARCHAR(100) NOT NULL COMMENT 'libreehr table''s field name',
+  `field_value` TEXT NOT NULL COMMENT 'libreehr table''s field value',
   `audit_master_id` BIGINT(20) NOT NULL COMMENT 'Id of the audit_master table',
   `entry_identification` VARCHAR(255) NOT NULL DEFAULT '1' COMMENT 'Used when multiple entry occurs from the same table.1 means no multiple entry',
   PRIMARY KEY (`id`)
@@ -1092,13 +1092,13 @@ CREATE TABLE `employer_data` (
 --
 -- Table structure for table `enc_category_map`
 --
--- Mapping of rule encounter categories to category ids from the event category in openemr_postcalendar_categories
+-- Mapping of rule encounter categories to category ids from the event category in libreehr_postcalendar_categories
 --
 
 DROP TABLE IF EXISTS `enc_category_map`;
 CREATE TABLE `enc_category_map` (
   `rule_enc_id` varchar(31) NOT NULL DEFAULT '' COMMENT 'encounter id from rule_enc_types list in list_options',
-  `main_cat_id` int(11) NOT NULL DEFAULT 0 COMMENT 'category id from event category in openemr_postcalendar_categories',
+  `main_cat_id` int(11) NOT NULL DEFAULT 0 COMMENT 'category id from event category in libreehr_postcalendar_categories',
   KEY  (`rule_enc_id`,`main_cat_id`)
 ) ENGINE=MyISAM ;
 
@@ -1312,7 +1312,7 @@ CREATE TABLE `form_encounter` (
   `onset_date` datetime default NULL,
   `sensitivity` varchar(30) default NULL,
   `billing_note` text,
-  `pc_catid` int(11) NOT NULL default '5' COMMENT 'event category from openemr_postcalendar_categories',
+  `pc_catid` int(11) NOT NULL default '5' COMMENT 'event category from libreehr_postcalendar_categories',
   `last_level_billed` int  NOT NULL DEFAULT 0 COMMENT '0=none, 1=ins1, 2=ins2, etc',
   `last_level_closed` int  NOT NULL DEFAULT 0 COMMENT '0=none, 1=ins1, 2=ins2, etc',
   `last_stmt_date`    date DEFAULT NULL,
@@ -4472,7 +4472,7 @@ CREATE TABLE `lists` (
   `injury_grade` varchar(31) NOT NULL DEFAULT '',
   `reaction` varchar(255) NOT NULL DEFAULT '',
   `external_allergyid` INT(11) DEFAULT NULL,
-  `erx_source` ENUM('0','1') DEFAULT '0' NOT NULL  COMMENT '0-OpenEMR 1-External',
+  `erx_source` ENUM('0','1') DEFAULT '0' NOT NULL  COMMENT '0-LibreEHR 1-External',
   `erx_uploaded` ENUM('0','1') DEFAULT '0' NOT NULL  COMMENT '0-Pending NewCrop upload 1-Uploaded TO NewCrop',
   `modifydate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `severity_al` VARCHAR( 50 ) DEFAULT NULL,
@@ -4667,11 +4667,11 @@ CREATE TABLE `onotes` (
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `openemr_module_vars`
+-- Table structure for table `libreehr_module_vars`
 -- 
 
-DROP TABLE IF EXISTS `openemr_module_vars`;
-CREATE TABLE `openemr_module_vars` (
+DROP TABLE IF EXISTS `libreehr_module_vars`;
+CREATE TABLE `libreehr_module_vars` (
   `pn_id` int(11) unsigned NOT NULL auto_increment,
   `pn_modname` varchar(64) default NULL,
   `pn_name` varchar(64) default NULL,
@@ -4682,37 +4682,37 @@ CREATE TABLE `openemr_module_vars` (
 ) ENGINE=MyISAM AUTO_INCREMENT=235 ;
 
 -- 
--- Dumping data for table `openemr_module_vars`
+-- Dumping data for table `libreehr_module_vars`
 -- 
 
-INSERT INTO `openemr_module_vars` VALUES (234, 'PostCalendar', 'pcNotifyEmail', '');
-INSERT INTO `openemr_module_vars` VALUES (233, 'PostCalendar', 'pcNotifyAdmin', '0');
-INSERT INTO `openemr_module_vars` VALUES (232, 'PostCalendar', 'pcCacheLifetime', '3600');
-INSERT INTO `openemr_module_vars` VALUES (231, 'PostCalendar', 'pcUseCache', '0');
-INSERT INTO `openemr_module_vars` VALUES (230, 'PostCalendar', 'pcDefaultView', 'day');
-INSERT INTO `openemr_module_vars` VALUES (229, 'PostCalendar', 'pcTimeIncrement', '5');
-INSERT INTO `openemr_module_vars` VALUES (228, 'PostCalendar', 'pcAllowUserCalendar', '1');
-INSERT INTO `openemr_module_vars` VALUES (227, 'PostCalendar', 'pcAllowSiteWide', '1');
-INSERT INTO `openemr_module_vars` VALUES (226, 'PostCalendar', 'pcTemplate', 'default');
-INSERT INTO `openemr_module_vars` VALUES (225, 'PostCalendar', 'pcEventDateFormat', '%Y-%m-%d');
-INSERT INTO `openemr_module_vars` VALUES (224, 'PostCalendar', 'pcDisplayTopics', '0');
-INSERT INTO `openemr_module_vars` VALUES (223, 'PostCalendar', 'pcListHowManyEvents', '15');
-INSERT INTO `openemr_module_vars` VALUES (222, 'PostCalendar', 'pcAllowDirectSubmit', '1');
-INSERT INTO `openemr_module_vars` VALUES (221, 'PostCalendar', 'pcUsePopups', '0');
-INSERT INTO `openemr_module_vars` VALUES (220, 'PostCalendar', 'pcDayHighlightColor', '#EEEEEE');
-INSERT INTO `openemr_module_vars` VALUES (219, 'PostCalendar', 'pcFirstDayOfWeek', '1');
-INSERT INTO `openemr_module_vars` VALUES (218, 'PostCalendar', 'pcUseInternationalDates', '0');
-INSERT INTO `openemr_module_vars` VALUES (217, 'PostCalendar', 'pcEventsOpenInNewWindow', '0');
-INSERT INTO `openemr_module_vars` VALUES (216, 'PostCalendar', 'pcTime24Hours', '0');
+INSERT INTO `libreehr_module_vars` VALUES (234, 'PostCalendar', 'pcNotifyEmail', '');
+INSERT INTO `libreehr_module_vars` VALUES (233, 'PostCalendar', 'pcNotifyAdmin', '0');
+INSERT INTO `libreehr_module_vars` VALUES (232, 'PostCalendar', 'pcCacheLifetime', '3600');
+INSERT INTO `libreehr_module_vars` VALUES (231, 'PostCalendar', 'pcUseCache', '0');
+INSERT INTO `libreehr_module_vars` VALUES (230, 'PostCalendar', 'pcDefaultView', 'day');
+INSERT INTO `libreehr_module_vars` VALUES (229, 'PostCalendar', 'pcTimeIncrement', '5');
+INSERT INTO `libreehr_module_vars` VALUES (228, 'PostCalendar', 'pcAllowUserCalendar', '1');
+INSERT INTO `libreehr_module_vars` VALUES (227, 'PostCalendar', 'pcAllowSiteWide', '1');
+INSERT INTO `libreehr_module_vars` VALUES (226, 'PostCalendar', 'pcTemplate', 'default');
+INSERT INTO `libreehr_module_vars` VALUES (225, 'PostCalendar', 'pcEventDateFormat', '%Y-%m-%d');
+INSERT INTO `libreehr_module_vars` VALUES (224, 'PostCalendar', 'pcDisplayTopics', '0');
+INSERT INTO `libreehr_module_vars` VALUES (223, 'PostCalendar', 'pcListHowManyEvents', '15');
+INSERT INTO `libreehr_module_vars` VALUES (222, 'PostCalendar', 'pcAllowDirectSubmit', '1');
+INSERT INTO `libreehr_module_vars` VALUES (221, 'PostCalendar', 'pcUsePopups', '0');
+INSERT INTO `libreehr_module_vars` VALUES (220, 'PostCalendar', 'pcDayHighlightColor', '#EEEEEE');
+INSERT INTO `libreehr_module_vars` VALUES (219, 'PostCalendar', 'pcFirstDayOfWeek', '1');
+INSERT INTO `libreehr_module_vars` VALUES (218, 'PostCalendar', 'pcUseInternationalDates', '0');
+INSERT INTO `libreehr_module_vars` VALUES (217, 'PostCalendar', 'pcEventsOpenInNewWindow', '0');
+INSERT INTO `libreehr_module_vars` VALUES (216, 'PostCalendar', 'pcTime24Hours', '0');
 
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `openemr_modules`
+-- Table structure for table `libreehr_modules`
 -- 
 
-DROP TABLE IF EXISTS `openemr_modules`;
-CREATE TABLE `openemr_modules` (
+DROP TABLE IF EXISTS `libreehr_modules`;
+CREATE TABLE `libreehr_modules` (
   `pn_id` int(11) unsigned NOT NULL auto_increment,
   `pn_name` varchar(64) default NULL,
   `pn_type` int(6) NOT NULL default '0',
@@ -4728,19 +4728,19 @@ CREATE TABLE `openemr_modules` (
 ) ENGINE=MyISAM AUTO_INCREMENT=47 ;
 
 -- 
--- Dumping data for table `openemr_modules`
+-- Dumping data for table `libreehr_modules`
 -- 
 
-INSERT INTO `openemr_modules` VALUES (46, 'PostCalendar', 2, 'PostCalendar', 'PostNuke Calendar Module', 0, 'PostCalendar', '4.0.0', 1, 1, 3);
+INSERT INTO `libreehr_modules` VALUES (46, 'PostCalendar', 2, 'PostCalendar', 'PostNuke Calendar Module', 0, 'PostCalendar', '4.0.0', 1, 1, 3);
 
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `openemr_postcalendar_categories`
+-- Table structure for table `libreehr_postcalendar_categories`
 -- 
 
-DROP TABLE IF EXISTS `openemr_postcalendar_categories`;
-CREATE TABLE `openemr_postcalendar_categories` (
+DROP TABLE IF EXISTS `libreehr_postcalendar_categories`;
+CREATE TABLE `libreehr_postcalendar_categories` (
   `pc_catid` int(11) unsigned NOT NULL auto_increment,
   `pc_catname` varchar(100) default NULL,
   `pc_catcolor` varchar(50) default NULL,
@@ -4761,27 +4761,27 @@ CREATE TABLE `openemr_postcalendar_categories` (
 ) ENGINE=MyISAM AUTO_INCREMENT=11 ;
 
 -- 
--- Dumping data for table `openemr_postcalendar_categories`
+-- Dumping data for table `libreehr_postcalendar_categories`
 -- 
 
-INSERT INTO `openemr_postcalendar_categories` VALUES (5, 'Office Visit', '#FFFFCC', 'Normal Office Visit', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0,0);
-INSERT INTO `openemr_postcalendar_categories` VALUES (4, 'Vacation', '#EFEFEF', 'Reserved for use to define Scheduled Vacation Time', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 0, 0, 0, 1, 0, 1);
-INSERT INTO `openemr_postcalendar_categories` VALUES (1, 'No Show', '#DDDDDD', 'Reserved to define when an event did not occur as specified.', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `openemr_postcalendar_categories` VALUES (2, 'In Office', '#99CCFF', 'Reserved todefine when a provider may haveavailable appointments after.', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 1, 3, 2, 0, 0, 1);
-INSERT INTO `openemr_postcalendar_categories` VALUES (3, 'Out Of Office', '#99FFFF', 'Reserved to define when a provider may not have available appointments after.', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 1, 3, 2, 0, 0, 1);
-INSERT INTO `openemr_postcalendar_categories` VALUES (8, 'Lunch', '#FFFF33', 'Lunch', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 3600, 0, 3, 2, 0, 0, 1);
-INSERT INTO `openemr_postcalendar_categories` VALUES (9, 'Established Patient', '#CCFF33', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0, 0);
-INSERT INTO `openemr_postcalendar_categories` VALUES (10,'New Patient', '#CCFFFF', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 1800, 0, 0, 0, 0, 0, 0);
-INSERT INTO `openemr_postcalendar_categories` VALUES (11,'Reserved','#FF7777','Reserved',1,NULL,'a:5:{s:17:\"event_repeat_freq\";s:1:\"1\";s:22:\"event_repeat_freq_type\";s:1:\"4\";s:19:\"event_repeat_on_num\";s:1:\"1\";s:19:\"event_repeat_on_day\";s:1:\"0\";s:20:\"event_repeat_on_freq\";s:1:\"0\";}',0,900,0,3,2,0,0, 1);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (5, 'Office Visit', '#FFFFCC', 'Normal Office Visit', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0,0);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (4, 'Vacation', '#EFEFEF', 'Reserved for use to define Scheduled Vacation Time', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 0, 0, 0, 1, 0, 1);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (1, 'No Show', '#DDDDDD', 'Reserved to define when an event did not occur as specified.', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (2, 'In Office', '#99CCFF', 'Reserved todefine when a provider may haveavailable appointments after.', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 1, 3, 2, 0, 0, 1);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (3, 'Out Of Office', '#99FFFF', 'Reserved to define when a provider may not have available appointments after.', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 1, 3, 2, 0, 0, 1);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (8, 'Lunch', '#FFFF33', 'Lunch', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 3600, 0, 3, 2, 0, 0, 1);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (9, 'Established Patient', '#CCFF33', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0, 0);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (10,'New Patient', '#CCFFFF', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 1800, 0, 0, 0, 0, 0, 0);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (11,'Reserved','#FF7777','Reserved',1,NULL,'a:5:{s:17:\"event_repeat_freq\";s:1:\"1\";s:22:\"event_repeat_freq_type\";s:1:\"4\";s:19:\"event_repeat_on_num\";s:1:\"1\";s:19:\"event_repeat_on_day\";s:1:\"0\";s:20:\"event_repeat_on_freq\";s:1:\"0\";}',0,900,0,3,2,0,0, 1);
 
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `openemr_postcalendar_events`
+-- Table structure for table `libreehr_postcalendar_events`
 -- 
 
-DROP TABLE IF EXISTS `openemr_postcalendar_events`;
-CREATE TABLE `openemr_postcalendar_events` (
+DROP TABLE IF EXISTS `libreehr_postcalendar_events`;
+CREATE TABLE `libreehr_postcalendar_events` (
   `pc_eid` int(11) unsigned NOT NULL auto_increment,
   `pc_catid` int(11) NOT NULL default '0',
   `pc_multiple` int(10) unsigned NOT NULL,
@@ -4827,11 +4827,11 @@ CREATE TABLE `openemr_postcalendar_events` (
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `openemr_postcalendar_limits`
+-- Table structure for table `libreehr_postcalendar_limits`
 -- 
 
-DROP TABLE IF EXISTS `openemr_postcalendar_limits`;
-CREATE TABLE `openemr_postcalendar_limits` (
+DROP TABLE IF EXISTS `libreehr_postcalendar_limits`;
+CREATE TABLE `libreehr_postcalendar_limits` (
   `pc_limitid` int(11) NOT NULL auto_increment,
   `pc_catid` int(11) NOT NULL default '0',
   `pc_starttime` time NOT NULL default '00:00:00',
@@ -4843,11 +4843,11 @@ CREATE TABLE `openemr_postcalendar_limits` (
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `openemr_postcalendar_topics`
+-- Table structure for table `libreehr_postcalendar_topics`
 -- 
 
-DROP TABLE IF EXISTS `openemr_postcalendar_topics`;
-CREATE TABLE `openemr_postcalendar_topics` (
+DROP TABLE IF EXISTS `libreehr_postcalendar_topics`;
+CREATE TABLE `libreehr_postcalendar_topics` (
   `pc_catid` int(11) unsigned NOT NULL auto_increment,
   `pc_catname` varchar(100) default NULL,
   `pc_catcolor` varchar(50) default NULL,
@@ -4859,11 +4859,11 @@ CREATE TABLE `openemr_postcalendar_topics` (
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `openemr_session_info`
+-- Table structure for table `libreehr_session_info`
 -- 
 
-DROP TABLE IF EXISTS `openemr_session_info`;
-CREATE TABLE `openemr_session_info` (
+DROP TABLE IF EXISTS `libreehr_session_info`;
+CREATE TABLE `libreehr_session_info` (
   `pn_sessid` varchar(32) NOT NULL default '',
   `pn_ipaddr` varchar(20) default NULL,
   `pn_firstused` int(11) NOT NULL default '0',
@@ -5192,10 +5192,10 @@ CREATE TABLE `pma_bookmark` (
 -- Dumping data for table `pma_bookmark`
 -- 
 
-INSERT INTO `pma_bookmark` VALUES (2, 'openemr', 'openemr', 'Aggregate Race Statistics', 'SELECT ethnoracial as "Race/Ethnicity", count(*) as Count FROM  `patient_data` WHERE 1 group by ethnoracial');
-INSERT INTO `pma_bookmark` VALUES (9, 'openemr', 'openemr', 'Search by Code', 'SELECT  b.code, concat(pd.fname," ", pd.lname) as "Patient Name", concat(u.fname," ", u.lname) as "Provider Name", en.reason as "Encounter Desc.", en.date\r\nFROM billing as b\r\nLEFT JOIN users AS u ON b.user = u.id\r\nLEFT JOIN patient_data as pd on b.pid = pd.pid\r\nLEFT JOIN form_encounter as en on b.encounter = en.encounter and b.pid = en.pid\r\nWHERE 1 /* and b.code like ''%[VARIABLE]%'' */ ORDER BY b.code');
-INSERT INTO `pma_bookmark` VALUES (8, 'openemr', 'openemr', 'Count No Shows By Provider since Interval ago', 'SELECT concat( u.fname,  " ", u.lname )  AS  "Provider Name", u.id AS  "Provider ID", count(  DISTINCT ev.pc_eid )  AS  "Number of No Shows"/* , concat(DATE_FORMAT(NOW(),''%Y-%m-%d''), '' and '',DATE_FORMAT(DATE_ADD(now(), INTERVAL [VARIABLE]),''%Y-%m-%d'') ) as "Between Dates" */ FROM  `openemr_postcalendar_events`  AS ev LEFT  JOIN users AS u ON ev.pc_aid = u.id WHERE ev.pc_catid =1/* and ( ev.pc_eventDate >= DATE_SUB(now(), INTERVAL [VARIABLE]) )  */\r\nGROUP  BY u.id;');
-INSERT INTO `pma_bookmark` VALUES (6, 'openemr', 'openemr', 'Appointments By Race/Ethnicity from today plus interval', 'SELECT  count(pd.ethnoracial) as "Number of Appointments", pd.ethnoracial AS  "Race/Ethnicity" /* , concat(DATE_FORMAT(NOW(),''%Y-%m-%d''), '' and '',DATE_FORMAT(DATE_ADD(now(), INTERVAL [VARIABLE]),''%Y-%m-%d'') ) as "Between Dates" */ FROM openemr_postcalendar_events AS ev LEFT  JOIN   `patient_data`  AS pd ON  pd.pid = ev.pc_pid where ev.pc_eventstatus=1 and ev.pc_catid = 5 and ev.pc_eventDate >= now()  /* and ( ev.pc_eventDate <= DATE_ADD(now(), INTERVAL [VARIABLE]) )  */ group by pd.ethnoracial');
+INSERT INTO `pma_bookmark` VALUES (2, 'libreehr', 'libreehr', 'Aggregate Race Statistics', 'SELECT ethnoracial as "Race/Ethnicity", count(*) as Count FROM  `patient_data` WHERE 1 group by ethnoracial');
+INSERT INTO `pma_bookmark` VALUES (9, 'libreehr', 'libreehr', 'Search by Code', 'SELECT  b.code, concat(pd.fname," ", pd.lname) as "Patient Name", concat(u.fname," ", u.lname) as "Provider Name", en.reason as "Encounter Desc.", en.date\r\nFROM billing as b\r\nLEFT JOIN users AS u ON b.user = u.id\r\nLEFT JOIN patient_data as pd on b.pid = pd.pid\r\nLEFT JOIN form_encounter as en on b.encounter = en.encounter and b.pid = en.pid\r\nWHERE 1 /* and b.code like ''%[VARIABLE]%'' */ ORDER BY b.code');
+INSERT INTO `pma_bookmark` VALUES (8, 'libreehr', 'libreehr', 'Count No Shows By Provider since Interval ago', 'SELECT concat( u.fname,  " ", u.lname )  AS  "Provider Name", u.id AS  "Provider ID", count(  DISTINCT ev.pc_eid )  AS  "Number of No Shows"/* , concat(DATE_FORMAT(NOW(),''%Y-%m-%d''), '' and '',DATE_FORMAT(DATE_ADD(now(), INTERVAL [VARIABLE]),''%Y-%m-%d'') ) as "Between Dates" */ FROM  `libreehr_postcalendar_events`  AS ev LEFT  JOIN users AS u ON ev.pc_aid = u.id WHERE ev.pc_catid =1/* and ( ev.pc_eventDate >= DATE_SUB(now(), INTERVAL [VARIABLE]) )  */\r\nGROUP  BY u.id;');
+INSERT INTO `pma_bookmark` VALUES (6, 'libreehr', 'libreehr', 'Appointments By Race/Ethnicity from today plus interval', 'SELECT  count(pd.ethnoracial) as "Number of Appointments", pd.ethnoracial AS  "Race/Ethnicity" /* , concat(DATE_FORMAT(NOW(),''%Y-%m-%d''), '' and '',DATE_FORMAT(DATE_ADD(now(), INTERVAL [VARIABLE]),''%Y-%m-%d'') ) as "Between Dates" */ FROM libreehr_postcalendar_events AS ev LEFT  JOIN   `patient_data`  AS pd ON  pd.pid = ev.pc_pid where ev.pc_eventstatus=1 and ev.pc_catid = 5 and ev.pc_eventDate >= now()  /* and ( ev.pc_eventDate <= DATE_ADD(now(), INTERVAL [VARIABLE]) )  */ group by pd.ethnoracial');
 
 -- --------------------------------------------------------
 
@@ -5362,7 +5362,7 @@ CREATE TABLE `prescriptions` (
   `user` VARCHAR(50) DEFAULT NULL,
   `site` VARCHAR(50) DEFAULT NULL,
   `prescriptionguid` VARCHAR(50) DEFAULT NULL,
-  `erx_source` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '0-OpenEMR 1-External',
+  `erx_source` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '0-LibreEHR 1-External',
   `erx_uploaded` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '0-Pending NewCrop upload 1-Uploaded to NewCrop',
   `drug_info_erx` TEXT DEFAULT NULL,
   `external_id` VARCHAR(20) DEFAULT NULL,

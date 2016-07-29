@@ -19,7 +19,7 @@
  * 
  * @author Kevin McCormick
  * @link: http://www.open-emr.org
- * @package OpenEMR
+ * @package LibreEHR
  * @subpackage ediHistory
  */
  
@@ -100,7 +100,7 @@ function ibr_277_isa_block($filename, $isa13, $slice_params=false) {
  * these are for initial batch return files, basically saying the claims are accepted
  * for "adjudication" or rejected due to some error or omission 
  * close match to Availity ebr|ibr files, which are derived from these
- * This uses an edit to the OpenEMR billing_process.php script to create
+ * This uses an edit to the LibreEHR billing_process.php script to create
  * a unique BHT03 id number, since that is how the claims are identified
  * 
  * @uses ibr_batch_by_ctln()

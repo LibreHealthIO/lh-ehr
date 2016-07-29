@@ -13,7 +13,7 @@
 // HCFA 1500, UB-92, etc.
 //
 // To implement this feature, rename this file to BillingExport.php.
-// This will cause the FreeB support in OpenEMR to be replaced.
+// This will cause the FreeB support in LibreEHR to be replaced.
 
 require_once (dirname(__FILE__) . "/../library/sql.inc");
 

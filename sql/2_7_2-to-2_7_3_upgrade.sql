@@ -39,7 +39,7 @@ ALTER TABLE insurance_numbers
   ADD rendering_provider_number_type varchar(4) DEFAULT NULL,
   ADD rendering_provider_number varchar(20) DEFAULT NULL;
 
-ALTER TABLE openemr_postcalendar_events
+ALTER TABLE libreehr_postcalendar_events
   -- Appointment status is one of the following:
   --  - = not otherwise applicable
   --  * = reminder call completed

@@ -13,7 +13,7 @@
  * Improved slightly by tony@mi-squared.com 2011, added organization to view
  * and search
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @link    http://open-emr.org
  */

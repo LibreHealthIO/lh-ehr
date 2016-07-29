@@ -6,8 +6,8 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 //
-// This may be run after an upgraded OpenEMR has been installed.
-// Its purpose is to upgrade the MySQL OpenEMR database as needed
+// This may be run after an upgraded LibreEHR has been installed.
+// Its purpose is to upgrade the MySQL LibreEHR database as needed
 // for the new release.
 
 // Disable PHP timeout.  This will not work in safe mode.
@@ -23,19 +23,19 @@ require_once('version.php');
 // Force logging off
 $GLOBALS["enable_auditlog"]=0;
 
-$EMRversion = trim(preg_replace('/\s*\([^)]*\)/', '', $GLOBALS['openemr_version']));
+$EMRversion = trim(preg_replace('/\s*\([^)]*\)/', '', $GLOBALS['libreehr_version']));
 ?>   
 
 
 <html>
 <head>
-<title>OpenEMR <?php echo attr($EMRversion) ?> <?php echo xlt('Database Patch'); ?></title>
+<title>LibreEHR <?php echo attr($EMRversion) ?> <?php echo xlt('Database Patch'); ?></title>
 <link rel='STYLESHEET' href='interface/themes/style_blue.css'>
 </head>
 <body style="color:green;">
 <div style="box-shadow: 3px 3px 5px 6px #ccc; border-radius: 20px; padding: 10px 40px;background-color:#EFEFEF; width:500px; margin:40px auto"> 
   
-  <p style="font-weight:bold; font-size:1.8em; text-align:center">OpenEMR <?php echo text($EMRversion),' ',xlt('Database Patch'),' ',text($v_realpatch) ?></p>      
+  <p style="font-weight:bold; font-size:1.8em; text-align:center">LibreEHR <?php echo text($EMRversion),' ',xlt('Database Patch'),' ',text($v_realpatch) ?></p>      
   <p style="font-weight:bold; text-align:center;"><?php echo xlt('Applying Patch to site'),' : ',text($_SESSION['site_id']) ?></p>
    
   
@@ -64,7 +64,7 @@ $EMRversion = trim(preg_replace('/\s*\([^)]*\)/', '', $GLOBALS['openemr_version'
                   
   echo '<p style="text-align:center; font-size:1.8em;">',xlt('Database Patch'),' ',text($v_realpatch),' ',xlt('finished'),'.</p>'; 
   
-  echo '<p style="text-align:center; font-size:1.8em;">OpenEMR ',xlt('Version'),' = ',text($EMRversion.'('.$v_realpatch.')'),'.</p>';  
+  echo '<p style="text-align:center; font-size:1.8em;">LibreEHR ',xlt('Version'),' = ',text($EMRversion.'('.$v_realpatch.')'),'.</p>';  
    
   echo '<p><a style="border-radius: 10px; padding:5px; width:200px; margin:0 auto; background-color:green; color:white; font-weight:bold; display:block; text-align:center;" href="index.php?site=',attr($_SESSION['site_id']).'">',xlt('Log in'),'</a></p>';  
   

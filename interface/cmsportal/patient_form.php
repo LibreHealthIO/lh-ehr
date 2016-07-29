@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  */
 
@@ -262,7 +262,7 @@ while ($lorow = sqlFetchArray($lores)) {
 $field_id = 'cmsportal_login';
 if (empty($ptrow[$field_id])) {
   if ($result['post']['user'] !== '') {
-    // Registered in portal but still need to record that in openemr.
+    // Registered in portal but still need to record that in libreehr.
     echo "</table>\n";
     echo "<input type='hidden' name='form_$field_id' value='" . attr($result['post']['user']) . "' />\n";
   }
@@ -283,7 +283,7 @@ if (empty($ptrow[$field_id])) {
   }
 }
 else {
-  // Portal login name is already in openemr.
+  // Portal login name is already in libreehr.
   echo "</table>\n";
 }
 ?>

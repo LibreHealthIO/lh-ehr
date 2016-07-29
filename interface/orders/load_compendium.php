@@ -18,7 +18,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
 *
-* @package   OpenEMR
+* @package   LibreEHR
 * @author    Rod Roark <rod@sunsetsystems.com>
 */
 
@@ -65,7 +65,7 @@ if (!empty($_POST['form_import'])) $form_step = 1;
 $auto_continue = false;
 
 // Set up main paths.
-$EXPORT_FILE = $GLOBALS['temporary_files_dir'] . "/openemr_config.sql";
+$EXPORT_FILE = $GLOBALS['temporary_files_dir'] . "/libreehr_config.sql";
 ?>
 <html>
 

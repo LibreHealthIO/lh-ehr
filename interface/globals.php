@@ -38,7 +38,7 @@ if (isset($sanitize_all_escapes) && $sanitize_all_escapes) {
 //
 // The webserver_root and web_root are now automatically collected.
 // If not working, can set manually below.
-// Auto collect the full absolute directory path for openemr.
+// Auto collect the full absolute directory path for libreehr.
 $webserver_root = dirname(dirname(__FILE__));
 if (IS_WINDOWS) {
  //convert windows path separators
@@ -51,11 +51,11 @@ if (IS_WINDOWS) {
  $server_document_root = str_replace("\\","/",$server_document_root);
 }
 // Auto collect the relative html path, i.e. what you would type into the web
-// browser after the server address to get to OpenEMR.
+// browser after the server address to get to LibreEHR.
 // This removes the leading portion of $webserver_root that it has in common with the web server's document
 // root and assigns the result to $web_root. In addition to the common case where $webserver_root is
-// /var/www/openemr and document root is /var/www, this also handles the case where document root is
-// /var/www/html and there is an Apache "Alias" command that directs /openemr to /var/www/openemr.
+// /var/www/libreehr and document root is /var/www, this also handles the case where document root is
+// /var/www/html and there is an Apache "Alias" command that directs /libreehr to /var/www/libreehr.
 $web_root = substr($webserver_root, strspn($webserver_root ^ $server_document_root, "\0"));
 // Ensure web_root starts with a path separator
 if (preg_match("/^[^\/]/",$web_root)) {
@@ -64,8 +64,8 @@ if (preg_match("/^[^\/]/",$web_root)) {
 // The webserver_root and web_root are now automatically collected in
 //  real time per above code. If above is not working, can uncomment and
 //  set manually here:
-//   $webserver_root = "/var/www/openemr";
-//   $web_root =  "/openemr";
+//   $webserver_root = "/var/www/libreehr";
+//   $web_root =  "/libreehr";
 //
 
 // This is the directory that contains site-specific data.  Change this
@@ -75,8 +75,8 @@ $GLOBALS['OE_SITES_BASE'] = "$webserver_root/sites";
 // The session name names a cookie stored in the browser.
 // Now that restore_session() is implemented in javaScript, session IDs are
 // effectively saved in the top level browser window and there is no longer
-// any need to change the session name for different OpenEMR instances.
-session_name("OpenEMR");
+// any need to change the session name for different LibreEHR instances.
+session_name("LibreEHR");
 
 session_start();
 
@@ -94,14 +94,14 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
   if (empty($tmp) || preg_match('/[^A-Za-z0-9\\-.]/', $tmp))
     die("Site ID '". htmlspecialchars($tmp,ENT_NOQUOTES) . "' contains invalid characters.");
   if (isset($_SESSION['site_id']) && ($_SESSION['site_id'] != $tmp)) {
-    // This is to prevent using session to penetrate other OpenEMR instances within same multisite module
+    // This is to prevent using session to penetrate other LibreEHR instances within same multisite module
     session_unset(); // clear session, clean logout
     if (isset($landingpage) && !empty($landingpage)) {
-      // OpenEMR Patient Portal use
+      // LibreEHR Patient Portal use
       header('Location: index.php?site='.$tmp);
     }
     else {
-      // Main OpenEMR use
+      // Main LibreEHR use
       header('Location: ../login/login.php?site='.$tmp); // Assuming in the interface/main directory
     }
     exit;
@@ -153,7 +153,7 @@ $GLOBALS['login_screen'] = $GLOBALS['rootdir'] . "/login_screen.php";
 $GLOBALS['edi_271_file_path'] = $GLOBALS['OE_SITE_DIR'] . "/edi/";
 
 // Include the translation engine. This will also call sql.inc to
-//  open the openemr mysql connection.
+//  open the libreehr mysql connection.
 include_once (dirname(__FILE__) . "/../library/translation.inc.php");
 
 // Include convenience functions with shorter names than "htmlspecialchars" (for security)
@@ -296,7 +296,7 @@ else {
   $GLOBALS['translate_appt_categories'] = true;
   $GLOBALS['concurrent_layout'] = 2;
   $timeout = 7200;
-  $openemr_name = 'OpenEMR';
+  $libreehr_name = 'LibreEHR';
   $css_header = "$rootdir/themes/style_default.css";
   $GLOBALS['css_header'] = $css_header;
   $GLOBALS['schedule_start'] = 8;
@@ -366,7 +366,7 @@ $patch_appending = "";
 if ( ($v_realpatch != '0') && (!(empty($v_realpatch))) ) {
 $patch_appending = " (".$v_realpatch.")";
 }
-$openemr_version = "$v_major.$v_minor.$v_patch".$v_tag.$patch_appending;
+$libreehr_version = "$v_major.$v_minor.$v_patch".$v_tag.$patch_appending;
 
 $srcdir = $GLOBALS['srcdir'];
 $login_screen = $GLOBALS['login_screen'];
@@ -378,7 +378,7 @@ $GLOBALS['backpic'] = $backpic;
 $GLOBALS['Emergency_Login_email'] = $GLOBALS['Emergency_Login_email_id'] ? 1 : 0;
 
 //set include_de_identification to enable De-identification (currently de-identification works fine only with linux machines)
-//Run de_identification_upgrade.php script to upgrade OpenEMR database to include procedures,  
+//Run de_identification_upgrade.php script to upgrade LibreEHR database to include procedures,  
 //functions, tables for de-identification(Mysql root user and password is required for successful
 //execution of the de-identification upgrade script)
 $GLOBALS['include_de_identification']=0;

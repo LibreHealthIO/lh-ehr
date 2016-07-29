@@ -60,7 +60,7 @@ if (isset($_POST['mode'])) {
       header("Pragma: public");
       header("Expires: 0");
       header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-      header("Content-Disposition: attachment; filename=openemr_ofx.ofx");
+      header("Content-Disposition: attachment; filename=libreehr_ofx.ofx");
       header("Content-Type: text/xml");
       echo $ofx->get_OFX();
       exit;
@@ -803,8 +803,8 @@ if(is_array($ret))
         text($iter['enc_encounter']) . ")</span>";
 
          //Encounter details are stored to javacript as array.
-        $result4 = sqlStatement("SELECT fe.encounter,fe.date,fe.billing_note,openemr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
-            " left join openemr_postcalendar_categories on fe.pc_catid=openemr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($iter['enc_pid']) );
+        $result4 = sqlStatement("SELECT fe.encounter,fe.date,fe.billing_note,libreehr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
+            " left join libreehr_postcalendar_categories on fe.pc_catid=libreehr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($iter['enc_pid']) );
            if(sqlNumRows($result4)>0)
             ?>
             <script language='JavaScript'>

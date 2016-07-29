@@ -2,7 +2,7 @@
 require_once("../../../interface/globals.php");
 require_once("./Utils.php");
 
-/* Use this code to identify duplicate patients in OpenEMR
+/* Use this code to identify duplicate patients in LibreEHR
  *
  */
 $parameters = GetParameters();
@@ -98,7 +98,7 @@ if ($parameters['go'] == "Go") {
     // counter that gathers duplicates into groups
     $dupecount = 0;
 
-    // for EACH patient in OpenEMR find potential matches
+    // for EACH patient in LibreEHR find potential matches
     $sqlstmt = "select id, pid, fname, lname, dob, sex, ss from patient_data";
     switch ($parameters['sortby']) {
         case 'dob':
@@ -206,7 +206,7 @@ $(document).ready(function(){
         return true;
     });
 
-    // pop up an OpenEMR window directly to the patient info
+    // pop up an LibreEHR window directly to the patient info
     var moreinfoWin = null; 
     $(".moreinfo").click(function(evt) { 
         if (moreinfoWin) { moreinfoWin.close(); }

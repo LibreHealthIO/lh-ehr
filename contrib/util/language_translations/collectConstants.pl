@@ -10,8 +10,8 @@
 # date   03/25/09
 #
 # This is a perl script that will collect unique constants within
-# OpenEMR source code.
-#  It effectively finds all xl("constants","") within OpenEMR.
+# LibreEHR source code.
+#  It effectively finds all xl("constants","") within LibreEHR.
 #  It will filter out constants found in manuallyRemovedConstants.txt
 #  It will add constants found in (ensure not repeated) manuallyAddedConstants.txt 
 #  It can also compare to a previous list to find new constants.
@@ -21,12 +21,12 @@
 #  -Below command will find all unique constants, filter through the
 #   add/remove files, sort, and dump into file constants.txt. Note this
 #   will remove old constants so the below remove flag must be set:
-#  ./collectConstants /var/www/openemr
+#  ./collectConstants /var/www/libreehr
 #
 #  -Below command will find all unique constants, ensure none are deleted from the
 #   previous listings of constants,
 #   filter through the add/remove files, sort, and dump to file constants.txt:
-#  ./collectConstants /var/www/openemr previousConstants.txt 
+#  ./collectConstants /var/www/libreehr previousConstants.txt 
 #
 #
 

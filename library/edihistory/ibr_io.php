@@ -21,7 +21,7 @@
  * 
  * @author Kevin McCormick
  * @link: http://www.open-emr.org
- * @package OpenEMR
+ * @package LibreEHR
  * @subpackage ediHistory
  */
  
@@ -241,7 +241,7 @@ function ibr_disp_claimst() {
 	}
     // see if we have a usable filename
     if (strpos($filename, 'batch')) {
-        // maybe we have the OpenEMR filename
+        // maybe we have the LibreEHR filename
 		$btname = trim($filename);
      } elseif (strlen($filename) >= 9 && strlen($filename) < 14) {
          // try bht03 number: batch_icn + stnum; not '0123'

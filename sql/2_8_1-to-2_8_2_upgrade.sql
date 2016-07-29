@@ -13,7 +13,7 @@
 ## Server version: 4.1.12
 ## PHP Version: 4.4.0-3ubuntu1
 ##
-## Database: `openemr`
+## Database: `libreehr`
 ##
 
 ##
@@ -84,7 +84,7 @@ INSERT INTO `lang_constants` VALUES (56, 'until');
 # Server version: 4.1.12
 # PHP Version: 4.4.0-3ubuntu1
 # 
-# Database : `openemr`
+# Database : `libreehr`
 # 
 
 #
@@ -353,8 +353,8 @@ INSERT INTO `lang_languages` (`lang_id`, `lang_code`, `lang_description`) VALUES
 INSERT INTO `lang_languages` (`lang_id`, `lang_code`, `lang_description`) VALUES (6, 'he', 'Hebrew');
 #EndIf
 
-#IfMissingColumn openemr_postcalendar_events pc_prefcatid
-ALTER TABLE openemr_postcalendar_events
+#IfMissingColumn libreehr_postcalendar_events pc_prefcatid
+ALTER TABLE libreehr_postcalendar_events
   ADD pc_prefcatid int(11) NOT NULL DEFAULT 0;
 #EndIf
 

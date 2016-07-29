@@ -53,7 +53,7 @@ foreach ($parameters['otherid'] as $otherID) {
     UpdateTable("transactions", "pid", $otherPID, $masterPID);
 
     UpdateTable("chart_tracker", "ct_pid", $otherPID, $masterPID);
-    UpdateTable("openemr_postcalendar_events", "pc_pid", $otherPID, $masterPID);
+    UpdateTable("libreehr_postcalendar_events", "pc_pid", $otherPID, $masterPID);
     UpdateTable("documents", "foreign_id", $otherPID, $masterPID);
    
     // update all the forms* tables

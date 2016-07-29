@@ -40,7 +40,7 @@ function formSubmit ($tableName, $values, $id, $authorized = "0")
 
 	$sql = "insert into " . escape_table_name($tableName) . " set pid ='".add_escape_custom($_SESSION['pid'])."',groupname='".add_escape_custom($_SESSION['authProvider'])."',user='".add_escape_custom($_SESSION['authUser'])."',authorized='".add_escape_custom($authorized)."',activity=1, date = NOW(),";
 	foreach ($values as $key => $value)
-		if (strpos($key,"openemr_net_cpt") === 0) {
+		if (strpos($key,"libreehr_net_cpt") === 0) {
 			//code to auto add cpt code
 			if (!empty($value)) {
 				$code_array = explode(" ",$value,2);

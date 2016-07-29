@@ -19,7 +19,7 @@
  // then set $FTP_SERVER to an empty string.
  //
  $FTP_SERVER = "192.168.0.30";
- $FTP_USER   = "openemr";
+ $FTP_USER   = "libreehr";
  $FTP_PASS   = "secret";
  $FTP_DIR    = "";
 
@@ -138,7 +138,7 @@
  Add($row['postal_code']);         // zip
  Add(Digits($row['phone_home']));  // home phone
 
- // Guarantor Section.  OpenEMR does not have guarantors so we use the primary
+ // Guarantor Section.  LibreEHR does not have guarantors so we use the primary
  // insurance subscriber if there is one, otherwise the patient.
  //
  if (trim($row['lname1'])) {

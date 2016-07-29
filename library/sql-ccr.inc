@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Garden State Health Systems <http://www.gshsys.com/>
  * @link    http://www.open-emr.org
  */
@@ -303,7 +303,7 @@ function getProblemData() {
   #  be easy to upgrade this to other codesets in future (ICD10,SNOMED) by using already
   #  existant flags in the code_types table.
   # Additionally, only using problems that have one diagnosis code set in diagnosis field.
-  #  Note OpenEMR allows multiple codes set per problem, but will limit to showing only
+  #  Note LibreEHR allows multiple codes set per problem, but will limit to showing only
   #  problems with one diagnostic code set in order to maintain previous behavior
   #  (this will likely need to be dealt with at some point; ie. support multiple dx codes per problem).
 

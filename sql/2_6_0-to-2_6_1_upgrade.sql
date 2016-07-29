@@ -9,7 +9,7 @@ ADD `name_2` VARCHAR( 255 ) ,
 ADD `value_2` VARCHAR( 255 ) ,
 ADD `additional_history` TEXT;
 
-CREATE TABLE `openemr_postcalendar_topics` (
+CREATE TABLE `libreehr_postcalendar_topics` (
   `pc_catid` int(11) unsigned NOT NULL auto_increment,
   `pc_catname` varchar(100) NOT NULL default 'Undefined',
   `pc_catcolor` varchar(50) NOT NULL default '#DDDDDD',
@@ -18,7 +18,7 @@ CREATE TABLE `openemr_postcalendar_topics` (
   KEY `basic_cat` (`pc_catname`,`pc_catcolor`)
 ) ENGINE=MyISAM;
 
-UPDATE `openemr_module_vars` SET `pn_value` = '1' WHERE pn_name = 'pcDisplayTopics';
+UPDATE `libreehr_module_vars` SET `pn_value` = '1' WHERE pn_name = 'pcDisplayTopics';
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL default '0',

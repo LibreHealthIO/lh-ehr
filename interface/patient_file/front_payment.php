@@ -396,7 +396,7 @@ $(document).ready(function() {
   topframe.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>
   // Hard-coding of RBot for this purpose is awkward, but since this is a
-  // pop-up and our openemr is left_nav, we have no good clue as to whether
+  // pop-up and our libreehr is left_nav, we have no good clue as to whether
   // the top frame is more appropriate.
   topframe.left_nav.forceDual();
   topframe.left_nav.setEncounter(datestr, enc, '');

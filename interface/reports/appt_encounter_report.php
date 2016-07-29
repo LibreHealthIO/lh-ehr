@@ -20,7 +20,7 @@
  // * Encounters not billed
  //
  // For decent performance the following indexes are highly recommended:
- //   openemr_postcalendar_events.pc_eventDate
+ //   libreehr_postcalendar_events.pc_eventDate
  //   forms.encounter
  //   billing.pid_encounter
 
@@ -93,7 +93,7 @@ function postError($msg) {
    "f.authorized, " .
    "p.fname, p.lname, p.pid, p.pubpid, " .
    "CONCAT( u.lname, ', ', u.fname ) AS docname " .
-   "FROM openemr_postcalendar_events AS e " .
+   "FROM libreehr_postcalendar_events AS e " .
    "LEFT OUTER JOIN form_encounter AS fe " .
    "ON fe.date = e.pc_eventDate AND fe.pid = e.pc_pid " .
    "LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'newpatient' " .
@@ -118,7 +118,7 @@ function postError($msg) {
    "p.fname, p.lname, p.pid, p.pubpid, " .
    "CONCAT( u.lname, ', ', u.fname ) AS docname " .
    "FROM form_encounter AS fe " .
-   "LEFT OUTER JOIN openemr_postcalendar_events AS e " .
+   "LEFT OUTER JOIN libreehr_postcalendar_events AS e " .
    "ON fe.date = e.pc_eventDate AND fe.pid = e.pc_pid AND " .
    // "( e.pc_catid = 5 OR e.pc_catid = 9 OR e.pc_catid = 10 ) " .
    "e.pc_pid != '' AND e.pc_apptstatus != '?' " .

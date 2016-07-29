@@ -1,7 +1,7 @@
 <?php
 
 // EXIT THIS SCRIPT
-// Added by OpenEMR to fix security vulnerability.
+// Added by LibreEHR to fix security vulnerability.
 exit;
 
 //

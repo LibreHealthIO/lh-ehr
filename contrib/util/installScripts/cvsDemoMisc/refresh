@@ -12,41 +12,41 @@
 #  production use.
 #
 # This script will copy the current checked git repository into
-#  the web directory (and remove the currently installed openemr).
-# Place this script in the git directory (one level above the openemr
+#  the web directory (and remove the currently installed libreehr).
+# Place this script in the git directory (one level above the libreehr
 #  directory).
-# Note you need to install openemr with the mysql user 'openemr' and
-#  the mysql database 'openemr' for this script to completely remove
-#  OpenEMR.
+# Note you need to install libreehr with the mysql user 'libreehr' and
+#  the mysql database 'libreehr' for this script to completely remove
+#  LibreEHR.
 # Also note the root mysql password needs to be blank for the mysql
 #  and mysqladmin commands to work.
 #
 # This script can also be used on your cvs checkout if you place it in
-#  the cvs directory (one directory above openemr)
+#  the cvs directory (one directory above libreehr)
 #
 
-# Remove current test copy of openemr
-rm -fr /var/www/html/openemr/*
+# Remove current test copy of libreehr
+rm -fr /var/www/html/libreehr/*
 
-# Remove current openemr mysql database
-mysqladmin -f -h localhost -u root drop openemr
+# Remove current libreehr mysql database
+mysqladmin -f -h localhost -u root drop libreehr
 
-# Remove current openemr mysql user
-mysql -f -u root -h localhost -e "DELETE FROM mysql.user WHERE User = 'openemr';FLUSH PRIVILEGES;"
+# Remove current libreehr mysql user
+mysql -f -u root -h localhost -e "DELETE FROM mysql.user WHERE User = 'libreehr';FLUSH PRIVILEGES;"
 
-# Copy the new openemr version to the web directory (note need to ignore the .git directory)
-rsync --recursive --exclude .git openemr/* /var/www/html/openemr/
+# Copy the new libreehr version to the web directory (note need to ignore the .git directory)
+rsync --recursive --exclude .git libreehr/* /var/www/html/libreehr/
 
 # Prepare file permissions
-chmod 666 /var/www/html/openemr/sites/default/sqlconf.php
-chown -R apache:apache /var/www/html/openemr/sites/default/documents
-chown -R apache:apache /var/www/html/openemr/sites/default/edi
-chown -R apache:apache /var/www/html/openemr/sites/default/era
-chown -R apache:apache /var/www/html/openemr/library/freeb
-chown -R apache:apache /var/www/html/openemr/sites/default/letter_templates
-chown -R apache:apache /var/www/html/openemr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
-chown -R apache:apache /var/www/html/openemr/interface/main/calendar/modules/PostCalendar/pntemplates/cache
-chown -R apache:apache /var/www/html/openemr/gacl/admin/templates_c
+chmod 666 /var/www/html/libreehr/sites/default/sqlconf.php
+chown -R apache:apache /var/www/html/libreehr/sites/default/documents
+chown -R apache:apache /var/www/html/libreehr/sites/default/edi
+chown -R apache:apache /var/www/html/libreehr/sites/default/era
+chown -R apache:apache /var/www/html/libreehr/library/freeb
+chown -R apache:apache /var/www/html/libreehr/sites/default/letter_templates
+chown -R apache:apache /var/www/html/libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
+chown -R apache:apache /var/www/html/libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache
+chown -R apache:apache /var/www/html/libreehr/gacl/admin/templates_c
 
 # Restart the mysql server
 service mysqld restart

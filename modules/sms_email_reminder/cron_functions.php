@@ -208,8 +208,8 @@ function cron_updateentry($type,$pid,$pc_eid)
 	//$set = " pc_apptstatus='*',"; - in this prev version there was a comma - somthing to follow ?
 	//$set = " pc_apptstatus='*' ";
 	
-	//$query="update openemr_postcalendar_events set $set ";
-	$query = "update openemr_postcalendar_events set ";
+	//$query="update libreehr_postcalendar_events set $set ";
+	$query = "update libreehr_postcalendar_events set ";
 	
 	// larry :: and here again same story - this time for sms pc_sendalertsms - no such field in the table
 	if($type=='SMS')
@@ -259,7 +259,7 @@ function cron_getAlertpatientData( $type )
 			ope.pc_hometext,ope.pc_eventDate,ope.pc_endDate,
 			ope.pc_duration,ope.pc_alldayevent,ope.pc_startTime,ope.pc_endTime
 		from 
-			openemr_postcalendar_events as ope ,patient_data as pd 
+			libreehr_postcalendar_events as ope ,patient_data as pd 
 		where 
 			ope.pc_pid=pd.pid $ssql 
 		order by 

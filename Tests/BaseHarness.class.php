@@ -22,7 +22,7 @@ class BaseHarness extends PHPUnit_Framework_TestCase
                             'port'            => '3306',
                             'root'            => 'root',
                             'rootpass'        => getenv('EMR_ROOT_DATABASE_PASSWORD'),
-                            'dbname'          => 'openemr_test_suite',
+                            'dbname'          => 'libreehr_test_suite',
                             'collate'         => 'utf8_general_ci',
 			    'site'            => 'default',
                             );

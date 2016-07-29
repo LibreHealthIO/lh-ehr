@@ -234,7 +234,7 @@ class Installer
         "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
       return FALSE;
     }
-    // Add the official openemr users (services)
+    // Add the official libreehr users (services)
     if ($this->load_file($this->additional_users,"Additional Official Users") == FALSE) return FALSE;
 
     return TRUE;
@@ -265,7 +265,7 @@ class Installer
       return False;
     }
     $string = '<?php
-//  OpenEMR
+//  LibreEHR
 //  MySQL Config
 
 ';
@@ -352,7 +352,7 @@ $config = 1; /////////////
   }
 
   public function quick_install() {
-    // Validation of OpenEMR user settings
+    // Validation of LibreEHR user settings
     //   (applicable if not cloning from another database)
     if (empty($this->clone_database)) {
       if ( ! $this->login_is_valid() ) {

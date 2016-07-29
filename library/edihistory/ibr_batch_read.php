@@ -18,7 +18,7 @@
  * MA 02110-1301, USA.
  *  
  * 
- * This file has functions to deal with OpenEMR batch files when identifying
+ * This file has functions to deal with LibreEHR batch files when identifying
  * rejected claims in .997 files, from the Availity LLC clearinghouse.  
  * The concept is to use a .csv to store batch file names, control id numbers, and claim counts.
  * When the Availity .997 file is read, we can get a control number and claim number for
@@ -36,7 +36,7 @@
  * @link: http://www.open-emr.org
  * @author Kevin McCormick
  * @link: http://www.open-emr.org
- * @package OpenEMR
+ * @package LibreEHR
  * @subpackage ediHistory
  */
   
@@ -45,7 +45,7 @@
 // from admin at rune-city dot com;  found in php manual
 // if (!defined('SITE_IN')) die('Direct access not allowed!');
 
-// these are hardcoded into OpenEMR batch files   
+// these are hardcoded into LibreEHR batch files   
 if (!defined("SEG_ELEM_DELIM")) define( "SEG_ELEM_DELIM" , "*");
 if (!defined("SEG_TERM_DELIM")) define( "SEG_TERM_DELIM" , "~");  	
 //					  
@@ -58,7 +58,7 @@ if (!defined("SEG_TERM_DELIM")) define( "SEG_TERM_DELIM" , "~");
  */
 function ibr_batch_datefromfilename($file_name) {
 	//
-	// this function relies on OpenEMR batch file name convention
+	// this function relies on LibreEHR batch file name convention
 	//
 	$fn = basename($file_name);
 	//
@@ -87,7 +87,7 @@ function ibr_batch_by_ctln($length=20) {
 	// 
 	// read the .csv file into an array 
 	// 
-	// hopefully OpenEMR does not repeat the control_num
+	// hopefully LibreEHR does not repeat the control_num
 	$p = csv_parameters('batch');
 	//$batch_csv_path = dirname(__FILE__).$p['files_csv'];
     $batch_csv_path = $p['files_csv'];
@@ -753,7 +753,7 @@ function ibr_batch_csv_data($batch_file_path) {
 		}
 		// now we need to create a sub array for each ST block
 		if ($seg[0] == "ST" ) { 
-			$st_ct++; 					// OpenEMR 837 places each claim in an ST block
+			$st_ct++; 					// LibreEHR 837 places each claim in an ST block
 			$ln_st = $seg_ct;
 			$st_num = strval($seg[2]); 		    // $ar_data[$st_ct][9] = $st_num;
 			continue;

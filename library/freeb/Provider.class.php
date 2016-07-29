@@ -490,7 +490,7 @@ class Provider Extends DataObjectBase {
 
 		$err="";
 
-		//unimplmented by OpenEMR
+		//unimplmented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response

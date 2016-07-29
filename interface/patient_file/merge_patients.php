@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
 *
-* @package   OpenEMR
+* @package   LibreEHR
 * @author    Rod Roark <rod@sunsetsystems.com>
 */
 
@@ -171,7 +171,7 @@ if (!empty($_POST['form_submit'])) {
     else if ($tblname == 'documents') {
       // Documents already handled.
     }
-    else if ($tblname == 'openemr_postcalendar_events') {
+    else if ($tblname == 'libreehr_postcalendar_events') {
       updateRows($tblname, 'pc_pid', $source_pid, $target_pid);
     }
     else if ($tblname == 'log') {

@@ -29,7 +29,7 @@
 #   a new spreadsheet file will also be created with the corrected
 #   constants to allow downstream modification and re-importing of 
 #   file into Google Docs:
-#  ./buildLanguageDatabase.pl openemr_language_table.tsv constants.txt
+#  ./buildLanguageDatabase.pl libreehr_language_table.tsv constants.txt
 #
 #
 

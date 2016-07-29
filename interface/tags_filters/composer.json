@@ -2,7 +2,7 @@
     "name": "tags_filters",
     "type": "module",
     "description": "Add tags and filtering to entities",
-    "keywords": ["openemr"],
+    "keywords": ["libreehr"],
     "authors": [
         {
             "name": "Ken Chapple",

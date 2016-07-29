@@ -62,7 +62,7 @@ class Diagnosis Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$retval = "";
 
 		// if we generated an error, create an error return response
@@ -78,7 +78,7 @@ class Diagnosis Extends DataObjectBase {
 
 	function isrelatedtootheraccident($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$pkey = false;
 		$retval = "";
 		$obj= $m->getparam(0);
@@ -216,7 +216,7 @@ class Diagnosis Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = false;
 
 		// if we generated an error, create an error return response
@@ -267,7 +267,7 @@ class Diagnosis Extends DataObjectBase {
 
 	function iscantwork($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$pkey = false;
 		$retval = "";
 		$obj= $m->getparam(0);
@@ -300,7 +300,7 @@ class Diagnosis Extends DataObjectBase {
 
 	function dateofcantworkstart($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$retval = "";
 		$obj= $m->getparam(0);
 		$key = $obj->getval();
@@ -334,7 +334,7 @@ class Diagnosis Extends DataObjectBase {
 
 	function dateofcantworkend($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$retval = "";
 		$obj= $m->getparam(0);
 		$key = $obj->getval();
@@ -367,7 +367,7 @@ class Diagnosis Extends DataObjectBase {
 
 	function isrelatedtoemployment($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$pkey = false;
 		$retval = "";
 		$obj= $m->getparam(0);
@@ -400,7 +400,7 @@ class Diagnosis Extends DataObjectBase {
 
 	function isrelatedtoautoaccident($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$pkey = false;
 		$retval = "";
 		$obj= $m->getparam(0);
@@ -437,7 +437,7 @@ class Diagnosis Extends DataObjectBase {
 		$retval = "";
 		$obj= $m->getparam(0);
 		$key = $obj->getval();
-		//Now implemented by OpenEMR with Form: Misc_billing_options
+		//Now implemented by LibreEHR with Form: Misc_billing_options
 		$sql = "SELECT * FROM forms JOIN form_misc_billing_options as fpa on fpa.id = forms.form_id where forms.encounter = '" . $_SESSION['billkey'] . "' and forms.pid = '" . $_SESSION['patient_id'] . "' and forms.formdir = 'misc_billing_options' order by forms.date";
 		//echo $sql;
 		$db = $GLOBALS['adodb']['db'];
@@ -466,7 +466,7 @@ class Diagnosis Extends DataObjectBase {
 	function icd10code($m) {
 
 		$err="";
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response

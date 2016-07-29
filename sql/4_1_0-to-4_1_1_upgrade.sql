@@ -110,8 +110,8 @@ CREATE INDEX `patient_id` ON `extended_log` (`patient_id`);
 CREATE INDEX `patient_id` ON `prescriptions` (`patient_id`);
 #EndIf
 
-#IfNotIndex openemr_postcalendar_events pc_eventDate
-CREATE INDEX `pc_eventDate` ON `openemr_postcalendar_events` (`pc_eventDate`);
+#IfNotIndex libreehr_postcalendar_events pc_eventDate
+CREATE INDEX `pc_eventDate` ON `libreehr_postcalendar_events` (`pc_eventDate`);
 #EndIf
 
 #IfMissingColumn version v_realpatch

@@ -21,7 +21,7 @@ $age = getPatientAge($result["DOB_YMD"]);
 function getPatientDateOfLastEncounter( $nPid )
 {
   $strEventDate = sqlQuery("SELECT MAX(pc_eventDate) AS max 
-                  FROM openemr_postcalendar_events 
+                  FROM libreehr_postcalendar_events 
                   WHERE pc_pid = $nPid 
                   AND pc_apptstatus = '@' 
                   AND ( pc_catid = 12 OR pc_catid = 16 ) 

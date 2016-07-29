@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Ensoftek
  * @link    http://www.open-emr.org
  */
@@ -35,7 +35,7 @@ class NFQ_0002_InitialPatientPopulation implements CqmFilterIF
 			//Children 2-18 years of age who had an outpatient or emergency department (ED) visit with a diagnosis of pharyngitis during the measurement period and an antibiotic ordered on or three days after the visit
 			$pharyngitisArr = array('ICD9:034', 'ICD9:462', 'ICD9:463', 'ICD10:J02.0', 'ICD10:J02.8', 'ICD10:J02.9', 'ICD10:J03.80', 'ICD10:J03.81', 'ICD10:J03.90', 'ICD10:J03.91');
 			$query = "SELECT l.title as drug FROM form_encounter fe ".
-					 "INNER JOIN openemr_postcalendar_categories opc ON fe.pc_catid = opc.pc_catid ".
+					 "INNER JOIN libreehr_postcalendar_categories opc ON fe.pc_catid = opc.pc_catid ".
 					 "INNER JOIN lists l ON l.type = 'medication' AND fe.pid = l.pid ".
 					 "WHERE opc.pc_catname = 'Office Visit' ";
 			$pharyngitisStr = "(";

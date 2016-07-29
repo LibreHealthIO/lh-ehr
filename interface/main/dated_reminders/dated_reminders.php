@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Craig Bezuidenhout <http://www.tajemo.co.za/>
  * @link    http://www.open-emr.org
  */
@@ -126,7 +126,7 @@ require_once("$srcdir/dated_reminder_functions.php");
              }    
              top.restoreSession();
              // Send the skip_timeout_reset parameter to not count this as a manual entry in the
-             //  timing out mechanism in OpenEMR.
+             //  timing out mechanism in LibreEHR.
              $.post("<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders.php",
                { drR: id, skip_timeout_reset: "1" }, 
                function(data) {

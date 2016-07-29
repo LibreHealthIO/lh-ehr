@@ -23,7 +23,7 @@
  // Initial import.
  //
  // Revision 1.1.1.1  2005/03/09 19:59:43  wpennington
- // First import of OpenEMR
+ // First import of LibreEHR
  //
  // Revision 1.2  2002/08/06 13:49:08  rufustfirefly
  // updated rxlist class for changes in RxList.com

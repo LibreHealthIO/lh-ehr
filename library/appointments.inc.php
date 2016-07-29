@@ -86,11 +86,11 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
     "u.fname AS ufname, u.mname AS umname, u.lname AS ulname, u.id AS uprovider_id, " .
     "$tracker_fields" .
     "c.pc_catname, c.pc_catid " .
-    "FROM openemr_postcalendar_events AS e " .
+    "FROM libreehr_postcalendar_events AS e " .
     "$tracker_joins" .
     "LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .
     "LEFT OUTER JOIN users AS u ON u.id = e.pc_aid " .
-    "LEFT OUTER JOIN openemr_postcalendar_categories AS c ON c.pc_catid = e.pc_catid " .
+    "LEFT OUTER JOIN libreehr_postcalendar_categories AS c ON c.pc_catid = e.pc_catid " .
     "WHERE $where " . 
     "ORDER BY $order_by";
 
@@ -547,7 +547,7 @@ function compareAppointmentsByCompletedDrugScreen( $appointment1, $appointment2 
 function fetchAppointmentCategories()
 {
      $catSQL= " SELECT pc_catid as id, pc_catname as category " 
-            . " FROM openemr_postcalendar_categories WHERE pc_recurrtype=0 and pc_cattype=0 ORDER BY category";    
+            . " FROM libreehr_postcalendar_categories WHERE pc_recurrtype=0 and pc_cattype=0 ORDER BY category";    
      return sqlStatement($catSQL);
 }
 ?>

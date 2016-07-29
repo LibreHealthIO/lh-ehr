@@ -1,4 +1,4 @@
 <?php
 $ignoreAuth = true;
-require_once(__DIR__ . "/../../../../../openemr/interface/globals.php");
+require_once(__DIR__ . "/../../../../../libreehr/interface/globals.php");
 do_action( 'migrate_up' );

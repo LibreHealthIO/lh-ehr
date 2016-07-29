@@ -12,7 +12,7 @@ use DBI;
 # of the License, or (at your option) any later version.
 #
 # This loads descriptions of HCPCS codes into the "codes" table of
-# OpenEMR.  Both the long and short descriptions are loaded from the
+# LibreEHR.  Both the long and short descriptions are loaded from the
 # same input file.
 #
 # For 2008, run it like this:
@@ -28,10 +28,10 @@ use DBI;
 #                 Parameters that you may customize                   #
 #######################################################################
 
-my $DBNAME = "openemr";  # database name
+my $DBNAME = "libreehr";  # database name
 
 # To load the short descriptions (SHORTU.txt, not currently used by
-# OpenEMR but probably should), change this to "code_text_short":
+# LibreEHR but probably should), change this to "code_text_short":
 #
 my $TEXT_COL = "code_text";
 
