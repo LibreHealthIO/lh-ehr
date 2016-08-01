@@ -629,7 +629,7 @@ $GLOBALS_METADATA = array(
     ),
 
     'restrict_user_facility' => array(
-      xl('Restrict Users to Facilities'),
+      xl('Restrict Users to Selected Facilities'),
       'bool',                           // data type
       '0',                              // default
       xl('Restrict non-authorized users to the Schedule Facilities set in User admin.')
