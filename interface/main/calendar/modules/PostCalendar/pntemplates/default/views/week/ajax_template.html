@@ -316,8 +316,7 @@ if ($_SESSION['authorizeduser'] == 1) {
 if (count($facilities) > 1) {
     echo "   <select name='pc_facility' id='pc_facility'  class='view1' >\n";
     if ( !$_SESSION['pc_facility'] ) $selected = "selected='selected'";
-    // echo "    <option value='0' $selected>"  .xl('All Facilities'). "</option>\n";
-    if (!$GLOBALS['restrict_user_facility']) echo "    <option value='0' $selected>" . xl('All Facilities') . "</option>\n";
+    echo "    <option value='0' $selected>"  .xl('All Facilities'). "</option>\n";
     foreach ($facilities as $fa) {
         $selected = ( $_SESSION['pc_facility'] == $fa['id']) ? "selected='selected'" : "" ;
         echo "    <option style=background-color:".htmlspecialchars($fa['color'],ENT_QUOTES)." value='" .htmlspecialchars($fa['id'],ENT_QUOTES). "' $selected>"  .htmlspecialchars($fa['name'],ENT_QUOTES). "</option>\n";
