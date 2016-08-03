@@ -169,10 +169,10 @@ $GLOBALS_METADATA = array(
       xl('Width in pixels of the left navigation frame.')
     ),
 
-    'openemr_name' => array(
+    'libreehr_name' => array(
       xl('Application Title'),
       'text',
-      'OpenEMR',
+      'LibreEHR',
       xl('Application name for login page and main window title.')
     ),
 
@@ -258,8 +258,8 @@ $GLOBALS_METADATA = array(
     'online_support_link' => array(
       xl('Online Support Link'),
       'text',                           // data type
-      'http://open-emr.org/',
-      xl('URL for OpenEMR support.')
+      'http://libreehr.github.io',
+      xl('URL for LibreEHR support.')
     ),
 
     'support_phone_number' => array(
@@ -819,12 +819,15 @@ $GLOBALS_METADATA = array(
     ), 
 
     'cash_receipts_report_invoice' => array(
-      xl('Display Invoice Number or Patient Name in the Cash Receipt Report'),
-      array(
-        '0' => xl('Invoice Number'),
-        '1' => xl('Patient Name'),  
-  ),
-    
+  xl('Display Invoice Number or Patient Name in the Cash Receipt Report'),
+  array(
+    '0' => xl('Invoice Number'),
+    '1' => xl('Patient Name'),  
+  ),   
+  '0',                              // default = 0
+  xl('Display Invoice Number or Patient Name in the Cash Receipt Report.')
+), 
+),
   // Billing Tab
     
   'Billing' => array(
@@ -1954,7 +1957,7 @@ $GLOBALS_METADATA = array(
     'portal_onsite_address' => array(
       xl('Onsite Patient Portal Site Address'),
       'text',                           // data type
-      'https://your_web_site.com/openemr/patients',
+      'https://your_web_site.com/libreehr/patients',
       xl('Website link for the Onsite Patient Portal.')
     ),
 
