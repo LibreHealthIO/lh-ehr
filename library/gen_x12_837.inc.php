@@ -367,13 +367,13 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
   //   $log .= "*** CMS ID is missing for payer '" . $claim->payerName() . "'.\n";
   // }
 
-  if (true) { 
-    // The 5010 spec says:
-    // "Required when the payer address is available and the submitter intends
-    // for the claim to be printed on paper at the next EDI location (for example, a
-    // clearinghouse). If not required by this implementation guide, do not send."
-    //this piece needs to be tested against a clearinghouse in test mode.
-
+/*  The next N3 and N4 elements need review.
+    The 5010 spec says:
+    "Required when the payer address is available and the submitter intends
+    for the claim to be printed on paper at the next EDI location (for example, a
+    clearinghouse). If not required by this implementation guide, do not send."
+    this piece needs to be tested against a clearinghouse in test mode.
+*/
     ++$edicount;
     $out .= "N3" .
       "*" . $claim->payerStreet() .
@@ -386,6 +386,7 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
       "*" . stripZipCode($claim->payerZip()) .
       "~\n";
   }
+//End ToDo section
 
   // Segment REF (Payer Secondary Identification) omitted.
   // Segment REF (Billing Provider Secondary Identification) omitted.
