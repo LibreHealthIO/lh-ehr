@@ -218,7 +218,7 @@ function getPatientNotes($pid = '', $limit = '', $offset = 0, $search = '')
     FROM
       pnotes AS p 
       LEFT JOIN patient_data AS pd 
-        ON pd.id = p.pid 
+        ON pd.pid = p.pid 
     WHERE assigned_to = '-patient-' 
       AND p.deleted != 1 
       AND p.pid = ?
@@ -291,7 +291,7 @@ function getPatientSentNotes($pid = '', $limit = '', $offset = 0, $search = '')
     FROM
       pnotes AS p 
       LEFT JOIN patient_data AS pd 
-        ON pd.id = p.pid 
+        ON pd.pid = p.pid 
     WHERE `user` = ?
       AND p.deleted != 1 
       AND p.pid = ?
