@@ -1,6 +1,6 @@
 <script language="javascript">
 <!--//--><H4>Sorry, but you don't seem to have a Javascript capable browser. </H4>
-<!--//-->OpenEMR requires a Javascript capable browser to perform user authentication.<BR><BR><HR>
+<!--//-->LibreEHR requires a Javascript capable browser to perform user authentication.<BR><BR><HR>
 <!--
 /*
  *  md5.jvs 1.0b 27/06/96

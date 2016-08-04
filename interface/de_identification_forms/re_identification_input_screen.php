@@ -53,7 +53,7 @@ function form_validate()
 
 function download_file()
 {
- alert("<?php echo xl('Re-identification files will be saved in'); echo ' `'.$GLOBALS['temporary_files_dir'].'` '; echo xl('location of the openemr machine and may contain sensitive data, so it is recommended to manually delete the files after its use');?>");
+ alert("<?php echo xl('Re-identification files will be saved in'); echo ' `'.$GLOBALS['temporary_files_dir'].'` '; echo xl('location of the libreehr machine and may contain sensitive data, so it is recommended to manually delete the files after its use');?>");
  document.re_identification.submit();
 }
 
@@ -77,7 +77,7 @@ function download_file()
 		<td>&nbsp;</td>
 		<td rowspan="3">
 		<br>
-        <?php echo xl('Please upgrade OpenEMR Database to include De Identification procedures, function, tables'); ?>
+        <?php echo xl('Please upgrade LibreEHR Database to include De Identification procedures, function, tables'); ?>
 	</br></br><a  target="Blank" href="../../contrib/util/de_identification_upgrade.php"><?php echo xl('Click here');?></a>
 	<?php echo xl('to run'); 
     	echo " de_identification_upgrade.php</br>";?><br>

@@ -512,7 +512,7 @@ class Procedure Extends DataObjectBase {
 
 	function dateofhospitalstart($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$retval = "";
 		$obj= $m->getparam(0);
 		$key = $obj->getval();
@@ -547,7 +547,7 @@ class Procedure Extends DataObjectBase {
 
 	function ishospitalized($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$pkey = false;
 		$retval = "";
 		$obj= $m->getparam(0);
@@ -581,7 +581,7 @@ class Procedure Extends DataObjectBase {
 
 	function isoutsidelab($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$pkey = false;
 		$retval = "";
 		$obj= $m->getparam(0);
@@ -616,7 +616,7 @@ class Procedure Extends DataObjectBase {
 
 		$err="";
 
-		//Now implemented by OpenEMR with form_misc_billing_options
+		//Now implemented by LibreEHR with form_misc_billing_options
 		$retval = "";
 		$obj= $m->getparam(0);
 		$key = $obj->getval();
@@ -648,7 +648,7 @@ class Procedure Extends DataObjectBase {
 
 	function dateofhospitalend($m) {
 		$err="";
-		//Now implemented by OpenEMR with Form: Misc Billing Options
+		//Now implemented by LibreEHR with Form: Misc Billing Options
 		$retval = "";
 		$obj= $m->getparam(0);
 		$key = $obj->getval();
@@ -766,7 +766,7 @@ class Procedure Extends DataObjectBase {
 	function weightpounds($m) {
 
 		$err="";
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -1114,7 +1114,7 @@ class Procedure Extends DataObjectBase {
 	function otherinsuredkey($m) {
 
 		$err="";
-		//openemr does not currently implement other insured
+		//libreehr does not currently implement other insured
 		$pkey = 0;
 
 		// if we generated an error, create an error return response
@@ -1164,7 +1164,7 @@ class Procedure Extends DataObjectBase {
 	function secondpayerkey($m) {
 
 		$err="";
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = 0;
 
 		// if we generated an error, create an error return response

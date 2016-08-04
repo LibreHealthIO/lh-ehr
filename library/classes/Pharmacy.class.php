@@ -11,8 +11,8 @@ The original location of this file is /home/duhlman/uml-generated-code/prescript
 //require_once("../../interface/globals.php");
 require_once("PhoneNumber.class.php");
 require_once("Address.class.php");
-//$GLOBALS['fileroot'] = "/var/www/openemr";
-//$GLOBALS['webroot'] = "/openemr";
+//$GLOBALS['fileroot'] = "/var/www/libreehr";
+//$GLOBALS['webroot'] = "/libreehr";
 
 define ("TRANSMIT_PRINT",1);
 define ("TRANSMIT_EMAIL", 2);

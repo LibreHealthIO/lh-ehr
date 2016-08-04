@@ -56,7 +56,7 @@ function xl($constant,$mode='r',$prepend='',$append='') {
 //
 // Use above xl() function the majority of time for translations. The
 //  below wrappers are only for specific situations in order to support
-//  granular control of translations in certain parts of OpenEMR.
+//  granular control of translations in certain parts of LibreEHR.
 //  Wrappers:
 //    xl_list_label()
 //    xl_layout_label()

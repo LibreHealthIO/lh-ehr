@@ -22,7 +22,7 @@
  * @link http://www.wpc-edi.com
  * @author Kevin McCormick
  * @link: http://www.open-emr.org
- * @package OpenEMR
+ * @package LibreEHR
  * @subpackage ediHistory
  */
 

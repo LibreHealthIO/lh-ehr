@@ -411,7 +411,7 @@ class Insured Extends DataObjectBase {
 	function isstudent($m) {
 
 		$err="";
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = false;
 
 		// if we generated an error, create an error return response
@@ -637,7 +637,7 @@ class Insured Extends DataObjectBase {
 	function phonecountry($m) {
 
 		$err="";
-		//Unimplemented by OpenEMR
+		//Unimplemented by LibreEHR
 		$retval = "";
 		// if we generated an error, create an error return response
 		if ($err) {
@@ -653,7 +653,7 @@ class Insured Extends DataObjectBase {
 	function phoneextension($m) {
 
 		$err="";
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response

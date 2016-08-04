@@ -5,9 +5,9 @@
 
 2.Set 'include_de_identification' to 1 in globals.php (currently de-identification works fine only with linux machines)
 
-3.After successful login to openemr, create few patients and add issues, prescriptions, immunizations to the patients
+3.After successful login to libreehr, create few patients and add issues, prescriptions, immunizations to the patients
 
-4.Set de_identification_config variable to 1 ([OPENEMR]/contrib/util/de_identification_upgrade.php)
+4.Set de_identification_config variable to 1 ([LIBREEHR]/contrib/util/de_identification_upgrade.php)
 and run de_identification_upgrade.php to create procedures, functions, tables needed for de-identification
 (administration -> De identification -> click here to run de_identification_upgrade.php - for first time) 
 or http://HOSTNAME:PORT_NUMBER/contrib/util/de_identification_upgrade.php
@@ -20,11 +20,11 @@ Mysql root user and password is required for successful execution of the upgrade
 (administration -> De identification) by providing the inputs to de-identification process
 
 7.Visit de-identification screen after some time, click download button to download the de-identified data
-(De-identification files will be saved in '\tmp' location of the openemr machine and may contain sensitive data, 
+(De-identification files will be saved in '\tmp' location of the libreehr machine and may contain sensitive data, 
 so it is recommended to manually delete the files after its use)
 
 8.For re-identification, provide re-identification code as input and click download button to download the re-identified data
-(Re-identification files will be saved in '\tmp' location of the openemr machine and may contain sensitive data, 
+(Re-identification files will be saved in '\tmp' location of the libreehr machine and may contain sensitive data, 
 so it is recommended to manually delete the files after its use)
 
 9.When current de-identification process got hang in between, run following query in backend 

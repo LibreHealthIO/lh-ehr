@@ -7,7 +7,7 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 //
-// Flexible script for graphing entities in OpenEMR
+// Flexible script for graphing entities in LibreEHR
 
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;

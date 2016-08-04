@@ -13,7 +13,7 @@
  *
  * Type:     function<br>
  * Name:     xl<br>
- * Purpose:  translate in OpenEMR - Smarty templates<br>
+ * Purpose:  translate in LibreEHR - Smarty templates<br>
  * 
  * Examples:
  * 

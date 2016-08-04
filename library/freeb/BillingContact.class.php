@@ -78,7 +78,7 @@ class BillingContact Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -96,7 +96,7 @@ class BillingContact Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -114,7 +114,7 @@ class BillingContact Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -133,7 +133,7 @@ class BillingContact Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -151,7 +151,7 @@ class BillingContact Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -169,7 +169,7 @@ class BillingContact Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -187,7 +187,7 @@ class BillingContact Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "1";
 
 		// if we generated an error, create an error return response
@@ -206,7 +206,7 @@ class BillingContact Extends DataObjectBase {
 		$err="";
 
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response

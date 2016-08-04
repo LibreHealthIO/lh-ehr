@@ -10,7 +10,7 @@ include_once("../globals.php");
 <body class="body_title">
 
 <span class="title_bar">
-<div class="title_name"><?php echo "$openemr_name" ?></div>
+<div class="title_name"><?php echo "$libreehr_name" ?></div>
 
 </span><br>
 

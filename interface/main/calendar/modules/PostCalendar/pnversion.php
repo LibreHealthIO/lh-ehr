@@ -27,7 +27,7 @@
 $modversion['name']             = 'PostCalendar';
 $modversion['id']               = '44';
 $modversion['version']          = '4.0.0';
-$modversion['description']      = 'PostNuke Calendar Module Modified for OpenEMR';
+$modversion['description']      = 'PostNuke Calendar Module Modified for LibreEHR';
 $modversion['credits']          = 'docs/credits.txt';
 $modversion['help']             = 'docs/help.txt';
 $modversion['changelog']        = 'docs/changelog.txt';

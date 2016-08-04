@@ -5,7 +5,7 @@
 <phpunit backupGlobals="false">
 
   <testsuites>
-    <testsuite name="openemr">
+    <testsuite name="libreehr">
       <directory suffix="Test.php">Tests</directory>
     </testsuite>
   </testsuites>

@@ -2,7 +2,7 @@
 /**
  * library/acl.inc 
  * 
- * Functions wrapping php-GACL's functionality, to create a generic OpenEMR access control system.
+ * Functions wrapping php-GACL's functionality, to create a generic LibreEHR access control system.
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,14 @@
  * along with this program. If not, see 
  * http://www.gnu.org/licenses/licenses.html#GPL .
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @license http://www.gnu.org/licenses/licenses.html#GPL GNU GPL V3+
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @link    http://www.open-emr.org
  */
 
-// php-GACL access controls are included in OpenEMR. The below
+// php-GACL access controls are included in LibreEHR. The below
 // function will automatically create the path where gacl.class.php
 // can be found. Note that this path can be manually set below
 // for users who are using an external version of php-GACL.
@@ -740,7 +740,7 @@
   * 
   * Same Functionality in the Zend Module
   * for ACL Check in Zend
-  * Path openemr/interface/modules/zend_modules/module/Application/src/Application/Model/ApplicationTable
+  * Path libreehr/interface/modules/zend_modules/module/Application/src/Application/Model/ApplicationTable
   * Function Name zAclCheck
   * 
   * @param String $user_id Auth user Id

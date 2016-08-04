@@ -16,7 +16,7 @@
 //
 //
 // A copy of the GNU General Public License is included along with this program:
-// openemr/interface/login/GnuGPL.html
+// libreehr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // 
@@ -78,7 +78,7 @@ class UserAudit extends UserMail{
 		        sqlStatement($qry,array($pid));
 			$qry = "DELETE from patient_access_offsite WHERE  pid=? ";
 		        sqlStatement($qry,array($pid));
-			$qry = "DELETE from openemr_postcalendar_events WHERE  pc_pid=? ";// appointments approved, but patient denied case.
+			$qry = "DELETE from libreehr_postcalendar_events WHERE  pc_pid=? ";// appointments approved, but patient denied case.
 		        sqlStatement($qry,array($pid));
 			 $qry = "select * from documents_legal_master,documents_legal_detail   where dld_pid=? 
 				and dlm_document_id=dld_master_docid and  dlm_subcategory   not in (SELECT dlc_id FROM `documents_legal_categories` 
@@ -130,7 +130,7 @@ class UserAudit extends UserMail{
        {
 	      $data_credentials=$var[0];
 				$last_insert_ids = array();
-				$validtables = array("patient_data","employer_data","insurance_data","history_data","openemr_postcalendar_events","ar_session","documents_legal_master","documents_legal_detail","patient_access_offsite");
+				$validtables = array("patient_data","employer_data","insurance_data","history_data","libreehr_postcalendar_events","ar_session","documents_legal_master","documents_legal_detail","patient_access_offsite");
         if(UserService::valid($data_credentials)){
 	      $audit_master_id = $var['audit_master_id'];
 	      $res = sqlStatement("SELECT DISTINCT ad.table_name,am.id,am.pid FROM audit_master as am,audit_details as ad WHERE am.id=ad.audit_master_id and am.approval_status in ('1','4') and am.id=? ORDER BY ad.id",array($audit_master_id));
@@ -168,8 +168,8 @@ class UserAudit extends UserMail{
 					}
 				  }
 				  
-				  if($table=='openemr_postcalendar_events'){
-				    $newdata['openemr_postcalendar_events'][$rowfield['field_name']]=$rowfield['field_value'];
+				  if($table=='libreehr_postcalendar_events'){
+				    $newdata['libreehr_postcalendar_events'][$rowfield['field_name']]=$rowfield['field_value'];
 				  }
 				  
 				  if($table=='ar_session'){
@@ -244,23 +244,23 @@ class UserAudit extends UserMail{
 					      add_escape_custom($newdata[${ins.$i._type}]['accept_assignment']));
 				    }
 			    }
-			    elseif($table=='openemr_postcalendar_events'){
-			      sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
+			    elseif($table=='libreehr_postcalendar_events'){
+			      sqlInsert("INSERT INTO libreehr_postcalendar_events ( " .
 				    "pc_pid,pc_title,pc_time,pc_hometext,pc_eventDate,pc_endDate,pc_startTime,pc_endTime,pc_duration,pc_catid,pc_eventstatus,pc_aid,pc_facility" .
 				    ") VALUES ( " .
 				    "'" . add_escape_custom($pid)             . "', " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_title'])           . "', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_title'])           . "', " .
 				    "NOW(), "                                         .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_hometext']) . "', " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_eventDate'])          . "', " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_endDate'])                        . "', " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_startTime'])     . "', " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_endTime'])                   . "', " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_duration']) . "', " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_catid'])             . "', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_hometext']) . "', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_eventDate'])          . "', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_endDate'])                        . "', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_startTime'])     . "', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_endTime'])                   . "', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_duration']) . "', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_catid'])             . "', " .
 				    "1, " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_aid'])."', " .
-				    "'" . add_escape_custom($newdata['openemr_postcalendar_events']['pc_facility'])               . "')"
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_aid'])."', " .
+				    "'" . add_escape_custom($newdata['libreehr_postcalendar_events']['pc_facility'])               . "')"
 				);
 			    }
 				elseif($table=='ar_session'){

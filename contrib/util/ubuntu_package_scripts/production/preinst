@@ -13,9 +13,9 @@
 #  1) Create log file
 #  2) New install or Upgrade
 #    -Install
-#      a) If OpenEMR web directory already exist, then attempt an upgrade.
+#      a) If LibreEHR web directory already exist, then attempt an upgrade.
 #    -Upgrade (also works for multisite module, so can be mutliple databases)
-#      a) Ensure OpenEMR web directory does exist
+#      a) Ensure LibreEHR web directory does exist
 #      b) Collect package version and ensure appropriate upgrade
 #      c) Collect webpath and sql settings from current version
 #      d) Verify the mysql user(s)/database(s) exist
@@ -25,7 +25,7 @@
 #  3) Create config file
 #
 #  Output log file:
-#   /var/log/openemr/install
+#   /var/log/libreehr/install
 #
 #
 # summary of how this script can be called:
@@ -40,18 +40,18 @@
 . /usr/share/debconf/confmodule
 
 #constants and paths
-LOGDIR=/var/log/openemr
+LOGDIR=/var/log/libreehr
 LOG=$LOGDIR/install
-CONFIGDIR=/etc/openemr
-CONFIG=$CONFIGDIR/openemr.conf
-TMPDIR=/tmp/openemr-tmp
+CONFIGDIR=/etc/libreehr
+CONFIG=$CONFIGDIR/libreehr.conf
+TMPDIR=/tmp/libreehr-tmp
 WEB=/var/www
-OPENEMR=$WEB/openemr
-SITEDIR=$OPENEMR/sites
+LIBREEHR=$WEB/libreehr
+SITEDIR=$LIBREEHR/sites
 #hardcoded mysql user and database for install (not pertinent for upgrading)
-# upgrading can use whatever is found in openemr/library/sqlconf.php
-INSTALL_USER=openemr
-INSTALL_DATABASE=openemr
+# upgrading can use whatever is found in libreehr/library/sqlconf.php
+INSTALL_USER=libreehr
+INSTALL_DATABASE=libreehr
 
 #Standardized echo function to send to only log file
 #  requires one parameter (string)
@@ -59,7 +59,7 @@ log_only () {
    echo "`date`: $1" >> $LOG
 }
 
-#Standardized exit function to be used when unable to install the openemr package
+#Standardized exit function to be used when unable to install the libreehr package
 #  requires one parameter (string with reason for exiting)
 unable_exit () {
    echo "`date`: $1" >> $LOG
@@ -128,7 +128,7 @@ upgrade_check_database () {
    if check_mysql "$SQL_PASSWORD" "$SQL_DATABASE" "$SQL_LOCATION" "$SQL_USER"; then
       log_only "For upgrade, confirmed that the mysql database ($SQL_DATABASE) and mysql user ($SQL_USER) exist"
    else
-      prompt_input openemr/upgrade_not_database critical ret_result
+      prompt_input libreehr/upgrade_not_database critical ret_result
       unable_exit "MySQL '$SQL_DATABASE' database does not exist (or can't be accessed), unable to upgrade."
    fi
 }
@@ -166,10 +166,10 @@ upgrade_prepare_database () {
    TEMP_SETTING=$TEMP_SETTING$SITE_NAME"_sqlutfflag=$SQL_UTFFLAG\n"
 
    #create the tmp sql directory
-   mkdir -p "$TMPDIR/openemr_mysql_${OLD_VERSION}_${SITE_NAME}"
+   mkdir -p "$TMPDIR/libreehr_mysql_${OLD_VERSION}_${SITE_NAME}"
 
    #backup mysql database to tmp
-   mysqldump -u "$SQL_USER" -h "$SQL_LOCATION" --password="$SQL_PASSWORD" "$SQL_DATABASE" > "$TMPDIR/openemr_mysql_${OLD_VERSION}_${SITE_NAME}/openemr_mysql_${OLD_VERSION}_${SITE_NAME}.sql"
+   mysqldump -u "$SQL_USER" -h "$SQL_LOCATION" --password="$SQL_PASSWORD" "$SQL_DATABASE" > "$TMPDIR/libreehr_mysql_${OLD_VERSION}_${SITE_NAME}/libreehr_mysql_${OLD_VERSION}_${SITE_NAME}.sql"
 
    #return the settings (to be used for the config file passed to postinst
    echo $TEMP_SETTING
@@ -180,10 +180,10 @@ upgrade_prepare_database () {
 # 2nd param is whether raw or package upgrade
 upgrade_function () {
 
-      #Check for /var/www/openemr. If does not exist, then exit.
-      if ! [ -d "$OPENEMR" ]; then
-         prompt_input openemr/upgrade_not_installed critical ret_result
-         unable_exit "OpenEMR is not installed ($OPENEMR), so can not upgrade the OpenEMR Package."
+      #Check for /var/www/libreehr. If does not exist, then exit.
+      if ! [ -d "$LIBREEHR" ]; then
+         prompt_input libreehr/upgrade_not_installed critical ret_result
+         unable_exit "LibreEHR is not installed ($LIBREEHR), so can not upgrade the LibreEHR Package."
       fi
 
       #collect previous version
@@ -220,22 +220,22 @@ upgrade_function () {
          elif [ "$OLD_VERSION" == "4.2.0" ]; then
             OLD_VERSION="4.2.0-1"
          else
-            prompt_input openemr/upgrade_not_supported critical ret_result
-            unable_exit "Unable to upgrade from $OLD_VERSION version package with $UPGRADETYPE method, so can not upgrade the OpenEMR Package."
+            prompt_input libreehr/upgrade_not_supported critical ret_result
+            unable_exit "Unable to upgrade from $OLD_VERSION version package with $UPGRADETYPE method, so can not upgrade the LibreEHR Package."
          fi
       fi
       #
       # ONLY acceptable package and converted raw is 3.0.1-1 or 3.1.0-1 or 3.2.0-1 or 4.0.0-1 or 4.1.0-1 or 4.1.1-1 or 4.1.2-1 or 4.1.2-2 or 4.1.2-3 or 4.2.0-1 or 4.2.0-2
       #
       if [ "$OLD_VERSION" != "3.0.1-1" ] && [ "$OLD_VERSION" != "3.1.0-1" ] && [ "$OLD_VERSION" != "3.2.0-1" ] && [ "$OLD_VERSION" != "4.0.0-1" ] && [ "$OLD_VERSION" != "4.1.0-1" ] && [ "$OLD_VERSION" != "4.1.1-1" ] && [ "$OLD_VERSION" != "4.1.2-1" ] && [ "$OLD_VERSION" != "4.1.2-2" ] && [ "$OLD_VERSION" != "4.1.2-3" ] && [ "$OLD_VERSION" != "4.2.0-1" ] && [ "$OLD_VERSION" != "4.2.0-2" ]; then
-         prompt_input openemr/upgrade_not_supported critical ret_result
-         unable_exit "Unable to upgrade from $OLD_VERSION version package with $UPGRADETYPE method, so can not upgrade the OpenEMR Package."
+         prompt_input libreehr/upgrade_not_supported critical ret_result
+         unable_exit "Unable to upgrade from $OLD_VERSION version package with $UPGRADETYPE method, so can not upgrade the LibreEHR Package."
       fi
 
       #Initiate the config file string, which will pass info to postinst script
       #to continue upgrade process.
       SETTING="#Optional settings\n\
-#(currently empty, plan to use in subsequent versions of OpenEMR)\n\
+#(currently empty, plan to use in subsequent versions of LibreEHR)\n\
 \n\
 #Installation settings\n\
 # (DO NOT EDIT below!!!)\n\
@@ -243,16 +243,16 @@ process=pending\n\
 plan=upgrade\n\
 previous_version=$OLD_VERSION\n"
 
-      #collect openemr mysql data
+      #collect libreehr mysql data
       #(will need to look in sites directory if 4.0 or later)
       #Also supports multisite module, which can have multiple separate databases
       if [ "$OLD_VERSION" == "3.0.1-1" ] || [ "$OLD_VERSION" == "3.1.0-1" ] || [ "$OLD_VERSION" == "3.2.0-1" ]; then
 
          #check database (will exit upgrade if check fails)
-         upgrade_check_database $OPENEMR/library
+         upgrade_check_database $LIBREEHR/library
 
          #Prepare uprade of database and collect settings that will placed in the config file string
-         DATABASE_CONFIG=$(upgrade_prepare_database $OPENEMR/library default)
+         DATABASE_CONFIG=$(upgrade_prepare_database $LIBREEHR/library default)
          SETTING=$SETTING$DATABASE_CONFIG
 
       else
@@ -270,17 +270,17 @@ previous_version=$OLD_VERSION\n"
       fi
 
       #create the tmp web directory
-      mkdir -p $TMPDIR/openemr_web_$OLD_VERSION
+      mkdir -p $TMPDIR/libreehr_web_$OLD_VERSION
 
       #backup web directory to tmp
-      cp -fr $OPENEMR/* $TMPDIR/openemr_web_$OLD_VERSION/
+      cp -fr $LIBREEHR/* $TMPDIR/libreehr_web_$OLD_VERSION/
 
-      #clear the temporary openemr cache directories (no need to keep these during upgrade)
-      rm -fr $OPENEMR/interface/main/calendar/modules/PostCalendar/pntemplates/compiled/*
-      rm -fr $OPENEMR/interface/main/calendar/modules/PostCalendar/pntemplates/cache/*
-      rm -fr $OPENEMR/gacl/admin/templates_c/*
+      #clear the temporary libreehr cache directories (no need to keep these during upgrade)
+      rm -fr $LIBREEHR/interface/main/calendar/modules/PostCalendar/pntemplates/compiled/*
+      rm -fr $LIBREEHR/interface/main/calendar/modules/PostCalendar/pntemplates/cache/*
+      rm -fr $LIBREEHR/gacl/admin/templates_c/*
 
-      log_only "Upgrading OpenEMR from $OLD_VERSION..."
+      log_only "Upgrading LibreEHR from $OLD_VERSION..."
 
       #Create the config file, which will pass info to postinst script
       #to continue upgrade process.
@@ -295,31 +295,31 @@ case "$1" in
       #create the log file directory
       mkdir -p $LOGDIR
 
-      #Check for /var/www/openemr, if exist then see if upgrade is possible
-      if [ -d "$OPENEMR" ]; then
+      #Check for /var/www/libreehr, if exist then see if upgrade is possible
+      if [ -d "$LIBREEHR" ]; then
 
          #collect current version
          #(for post-4.0 release will need to look in version.php file for version)
          #(for post-4.0 release will need to use v_tag rather than tag)
          #(if version.php exists then look there, otherwise get from globals)
-         if [ -e "$OPENEMR/version.php" ]; then
-            v1=$(collect_var \$v_major $OPENEMR/version.php)
-            v2=$(collect_var \$v_minor $OPENEMR/version.php)
-            v3=$(collect_var \$v_patch $OPENEMR/version.php)
-            v4=$(collect_var \$v_tag $OPENEMR//version.php)
+         if [ -e "$LIBREEHR/version.php" ]; then
+            v1=$(collect_var \$v_major $LIBREEHR/version.php)
+            v2=$(collect_var \$v_minor $LIBREEHR/version.php)
+            v3=$(collect_var \$v_patch $LIBREEHR/version.php)
+            v4=$(collect_var \$v_tag $LIBREEHR//version.php)
          else
-            v1=$(collect_var \$v_major $OPENEMR/interface/globals.php)
-            v2=$(collect_var \$v_minor $OPENEMR/interface/globals.php)
-            v3=$(collect_var \$v_patch $OPENEMR/interface/globals.php)
-            v4=$(collect_var \$tag $OPENEMR/interface/globals.php)
+            v1=$(collect_var \$v_major $LIBREEHR/interface/globals.php)
+            v2=$(collect_var \$v_minor $LIBREEHR/interface/globals.php)
+            v3=$(collect_var \$v_patch $LIBREEHR/interface/globals.php)
+            v4=$(collect_var \$tag $LIBREEHR/interface/globals.php)
          fi
          RAWVERSION="$v1.$v2.$v3$v4"
 
          #attempt upgrade, if user desires
-         prompt_input openemr/upgrade_confirm critical ret_result
+         prompt_input libreehr/upgrade_confirm critical ret_result
          if [ "$ret_result" == "no" ]; then
-            prompt_input openemr/upgrade_no critical ret_result
-            unable_exit "You have chosen to not install the OpenEMR package."
+            prompt_input libreehr/upgrade_no critical ret_result
+            unable_exit "You have chosen to not install the LibreEHR package."
          fi
          upgrade_function $RAWVERSION "raw"
 
@@ -329,7 +329,7 @@ case "$1" in
       #Create the config file to pass to the postinst script 
       # to signal that this is a new install
       SETTING="#Optional settings\n\
-#(currently empty, plan to use in subsequent versions of OpenEMR)\n\
+#(currently empty, plan to use in subsequent versions of LibreEHR)\n\
 \n\
 #Installation settings\n\
 # (DO NOT EDIT below!!!)\n\

@@ -134,8 +134,8 @@ CREATE TABLE `patient_tracker_element` (
 ) ENGINE=MyISAM;
 #EndIf
 
-#IfMissingColumn openemr_postcalendar_events pc_room
-ALTER TABLE `openemr_postcalendar_events` ADD `pc_room` varchar(20) NOT NULL DEFAULT '' ;
+#IfMissingColumn libreehr_postcalendar_events pc_room
+ALTER TABLE `libreehr_postcalendar_events` ADD `pc_room` varchar(20) NOT NULL DEFAULT '' ;
 #EndIf
 
 #IfMissingColumn list_options toggle_setting_1

@@ -18,11 +18,11 @@
 * You should have received a copy of the GNU General Public License 
 * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
 * 
-* @package OpenEMR 
+* @package LibreEHR 
 * @author Terry Hill <terry@lillysystems.com>
 * @link http://www.open-emr.org 
 *
-* Please help the overall project by sending changes you make to the author and to the OpenEMR community.
+* Please help the overall project by sending changes you make to the author and to the LibreEHR community.
 *
 */
 require_once(dirname(__FILE__) . '/appointments.inc.php');
@@ -189,7 +189,7 @@ if ($enc_yn['encounter'] == '0' || $enc_yn == '0') return(false);
 function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$room='',$enc_id='') {
 
   #First ensure the eid is not a recurrent appointment. If it is, then do not do anything and return false.
-  $pc_appt =  sqlQuery("SELECT `pc_recurrtype` FROM `openemr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
+  $pc_appt =  sqlQuery("SELECT `pc_recurrtype` FROM `libreehr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
   if ($pc_appt['pc_recurrtype'] != 0) {
     return false;
   }
@@ -242,12 +242,12 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
     }  
   }
   #Ensure the entry in calendar appt entry has been updated.
-  $pc_appt =  sqlQuery("SELECT `pc_apptstatus`, `pc_room` FROM `openemr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
+  $pc_appt =  sqlQuery("SELECT `pc_apptstatus`, `pc_room` FROM `libreehr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
   if ($status != $pc_appt['pc_apptstatus']) {
-    sqlStatement("UPDATE `openemr_postcalendar_events` SET `pc_apptstatus` = ? WHERE `pc_eid` = ?", array($status,$eid));
+    sqlStatement("UPDATE `libreehr_postcalendar_events` SET `pc_apptstatus` = ? WHERE `pc_eid` = ?", array($status,$eid));
   }
   if ($room != $pc_appt['pc_room']) {
-    sqlStatement("UPDATE `openemr_postcalendar_events` SET `pc_room` = ? WHERE `pc_eid` = ?", array($room,$eid));
+    sqlStatement("UPDATE `libreehr_postcalendar_events` SET `pc_room` = ? WHERE `pc_eid` = ?", array($room,$eid));
   }
   if( $GLOBALS['drug_screen'] && !empty($status)  && is_checkin($status)) {
     $yearly_limit = $GLOBALS['maximum_drug_test_yearly'];

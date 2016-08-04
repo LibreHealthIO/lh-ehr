@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2010 OpenEMR Support LLC   
+// Copyright (C) 2010 LibreEHR Support LLC   
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
@@ -75,7 +75,7 @@ else {
             //$observationStatus = $resultReport->ObservationStatus; // => procedure_report.report_status
             $observationStatus = $resultReport->OrderResultStatus; // => procedure_report.report_status
             $controlId = $resultReport->ForeignAccId;             // This is the CONTROL ID that is sent back
-            $orderingProviderId = $resultReport->OrderingProviderId; // =>procedure_order.provider_id  But the ID here is NOT the same ID as OpenEMR. You have to match it correctly
+            $orderingProviderId = $resultReport->OrderingProviderId; // =>procedure_order.provider_id  But the ID here is NOT the same ID as LibreEHR. You have to match it correctly
             $orderingProviderLastName = $resultReport->OrderingProviderLastName;  // Use this to match the provider ID
             $orderingProviderFirstName = $resultReport->OrderingProviderFirstName; // Use this to match the provider ID
 

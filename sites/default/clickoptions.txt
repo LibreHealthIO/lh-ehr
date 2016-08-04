@@ -1,9 +1,9 @@
-# THIS PAGE IS DEPRECATED AND NO LONGER USED AS OF OPENEMR VERSION 4.1.2
+# THIS PAGE IS DEPRECATED AND NO LONGER USED AS OF LIBREEHR VERSION 4.1.2
 # (It is being kept indefinitely for upgrading purposes)
 # (This file should never be deleted)
 #
 # CLICKOPTIONS by Mark Leeds
-# This is a new addition to OpenEMR written in April of 2005.
+# This is a new addition to LibreEHR written in April of 2005.
 # The purpose is to minimize typing in places where a select box or drop down menu
 # would be helpful.  For now it is implemented in the medical history section that
 # is reached if you are looking at a patient chart and click 'Summary' at the top
@@ -16,7 +16,7 @@
 # Categories and choices for the select boxes are entered with a '::' separating them. see
 # below for example.  You may add more choices, change them or do away with them alltogether.
 # If a category has no choices assigned in this file, the select box will not appear.
-# The files that had to be altered for this feature to work are in openemr/interface/patient_file/summary.
+# The files that had to be altered for this feature to work are in libreehr/interface/patient_file/summary.
 # Three statements were added to 5 files marked with a clickoptions comment and two files were added
 # to the directory, 'clickoptions1.php' and 'clickoptions2.php'.
 medical_problem::HTN

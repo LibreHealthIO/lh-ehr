@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @link    http://www.open-emr.org
@@ -192,7 +192,7 @@ function popup_close() {
    delete_drug_sales($patient);
    row_delete("payments"       , "pid = '$patient'");
    row_delete("ar_activity"    , "pid = '$patient'");
-   row_delete("openemr_postcalendar_events", "pc_pid = '$patient'");
+   row_delete("libreehr_postcalendar_events", "pc_pid = '$patient'");
    row_delete("immunizations"  , "patient_id = '$patient'");
    row_delete("issue_encounter", "pid = '$patient'");
    row_delete("lists"          , "pid = '$patient'");

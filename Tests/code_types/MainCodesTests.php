@@ -1,6 +1,6 @@
 <?php
-$GLOBALS['OE_SITE_DIR']="/var/www/openemr/sites/default";
-set_include_path(get_include_path() . PATH_SEPARATOR . "/var/www/openemr");
+$GLOBALS['OE_SITE_DIR']="/var/www/libreehr/sites/default";
+set_include_path(get_include_path() . PATH_SEPARATOR . "/var/www/libreehr");
 require_once("library/sql.inc");
 require_once("library/htmlspecialchars.inc.php");
 require_once("library/translation.inc.php");

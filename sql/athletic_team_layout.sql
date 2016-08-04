@@ -62,7 +62,7 @@ INSERT INTO list_options ( list_id, option_id, title, seq ) VALUES ('apptstat','
 INSERT INTO list_options ( list_id, option_id, title, seq ) VALUES ('apptstat','SS','Skills Session' ,3);
 INSERT INTO list_options ( list_id, option_id, title, seq ) VALUES ('apptstat','G' ,'Game'           ,4);
 INSERT INTO list_options ( list_id, option_id, title, seq ) VALUES ('apptstat','O' ,'Off'            ,5);
-ALTER TABLE openemr_postcalendar_events CHANGE pc_apptstatus pc_apptstatus varchar(15) NOT NULL;
+ALTER TABLE libreehr_postcalendar_events CHANGE pc_apptstatus pc_apptstatus varchar(15) NOT NULL;
 
 CREATE TABLE daily_fitness (
   `pid`      int(11)     NOT NULL COMMENT 'references patient_data.pid',
@@ -75,7 +75,7 @@ CREATE TABLE daily_fitness (
 CREATE TABLE player_event (
   `pid`             int(11) NOT NULL COMMENT 'references patient_data.pid',
   `date`            date        NOT NULL,
-  `pc_eid`          int(11) NOT NULL COMMENT 'references openemr_postcalendar_events.pc_eid',
+  `pc_eid`          int(11) NOT NULL COMMENT 'references libreehr_postcalendar_events.pc_eid',
   `minutes`         int(11) NOT NULL COMMENT 'minutes of participation',
   `fitness_related` int(1)  NOT NULL DEFAULT 1 COMMENT 'if non-participation is due to fitness',
   PRIMARY KEY (`pid`,`date`,`pc_eid`)

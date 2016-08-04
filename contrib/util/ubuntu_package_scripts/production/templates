@@ -1,46 +1,46 @@
-Template: openemr/mysql_p_install_1
+Template: libreehr/mysql_p_install_1
 Type: string
 Description: MySQL Root Password:
  If you enter the correct MySQL root password,
- then OpenEMR will be installed and automatically
+ then LibreEHR will be installed and automatically
  configured.
  .
  If you do not enter the correct MySQL root password,
- then OpenEMR will be installed, but will not be
+ then LibreEHR will be installed, but will not be
  automatically configured.
  .
  You will be given 3 attempts to answer this question.
  This is your first attempt.
 
-Template: openemr/mysql_p_install_2
+Template: libreehr/mysql_p_install_2
 Type: string
 Description: MySQL Root Password:
  If you enter the correct MySQL root password,
- then OpenEMR will be installed and automatically
+ then LibreEHR will be installed and automatically
  configured.
  .
  If you do not enter the correct MySQL root password,
- then OpenEMR will be installed, but will not be
+ then LibreEHR will be installed, but will not be
  automatically configured.
  .
  You will be given 3 attempts to answer this question.
  This is your second attempt.
 
-Template: openemr/mysql_p_install_3
+Template: libreehr/mysql_p_install_3
 Type: string
 Description: MySQL Root Password:
  If you enter the correct MySQL root password,
- then OpenEMR will be installed and automatically
+ then LibreEHR will be installed and automatically
  configured.
  .
  If you do not enter the correct MySQL root password,
- then OpenEMR will be installed, but will not be
+ then LibreEHR will be installed, but will not be
  automatically configured.
  .
  You will be given 3 attempts to answer this question.
  This is your last attempt.
 
-Template: openemr/mysql_p_remove_1
+Template: libreehr/mysql_p_remove_1
 Type: string
 Description: MySQL Root Password:
  In order to remove this package, you need to enter
@@ -49,7 +49,7 @@ Description: MySQL Root Password:
  You will be given 3 attempts to answer this question.
  This is your first attempt.
 
-Template: openemr/mysql_p_remove_2
+Template: libreehr/mysql_p_remove_2
 Type: string
 Description: MySQL Root Password:
  In order to remove this package, you need to enter
@@ -58,7 +58,7 @@ Description: MySQL Root Password:
  You will be given 3 attempts to answer this question.
  This is your second attempt.
 
-Template: openemr/mysql_p_remove_3
+Template: libreehr/mysql_p_remove_3
 Type: string
 Description: MySQL Root Password:
  In order to remove this package, you need to enter
@@ -67,48 +67,48 @@ Description: MySQL Root Password:
  You will be given 3 attempts to answer this question.
  This is your last attempt.
 
-Template: openemr/upgrade_confirm
+Template: libreehr/upgrade_confirm
 Type: select
 Choices: yes, no
-Description: Attempt OpenEMR Upgrade?
- Found a version of OpenEMR at /var/www/openemr.
+Description: Attempt LibreEHR Upgrade?
+ Found a version of LibreEHR at /var/www/libreehr.
  Do you want to attempt an upgrade (ensure you have
  a backup before proceeding)?
 
-Template: openemr/confirm_remove
+Template: libreehr/confirm_remove
 Type: select
 Choices: no, yes
-Description: Confirm OpenEMR Removal?
- Are you sure you really want to remove the OpenEMR package?
- All OpenEMR data will be removed if you remove this package!
+Description: Confirm LibreEHR Removal?
+ Are you sure you really want to remove the LibreEHR package?
+ All LibreEHR data will be removed if you remove this package!
 
-Template: openemr/upgrade_no
+Template: libreehr/upgrade_no
 Type: note
 Description: NOTICE
- You have chosen to not install the OpenEMR package.
+ You have chosen to not install the LibreEHR package.
 
-Template: openemr/no_configure_mysql_root
+Template: libreehr/no_configure_mysql_root
 Type: note
 Description: NOTICE
- OpenEMR is going to be installed, however it will
+ LibreEHR is going to be installed, however it will
  not be automatically configured (because you did not
  provide the MySQL root password).
 
-Template: openemr/no_configure_mysql_database
+Template: libreehr/no_configure_mysql_database
 Type: note
 Description: NOTICE
- OpenEMR is going to be installed, however it will
- not be automatically configured (because a openemr
+ LibreEHR is going to be installed, however it will
+ not be automatically configured (because a libreehr
  MySQL database already exists).
 
-Template: openemr/no_configure_mysql_user
+Template: libreehr/no_configure_mysql_user
 Type: note
 Description: NOTICE
- OpenEMR is going to be installed, however it will
- not be automatically configured (because a openemr
+ LibreEHR is going to be installed, however it will
+ not be automatically configured (because a libreehr
  MySQL user already exists).
 
-Template: openemr/apache_configure
+Template: libreehr/apache_configure
 Type: note
 Description: NOTICE
  Entries have been added to your apache configuration
@@ -116,7 +116,7 @@ Description: NOTICE
  backup of your original apache configuration file to
  /etc/apache2/httpd.conf.BAK .
 
-Template: openemr/php_configure
+Template: libreehr/php_configure
 Type: note
 Description: NOTICE
  To ensure compatibility with php, settings have been
@@ -125,71 +125,71 @@ Description: NOTICE
  at /etc/php5/apache2/php.ini.BAK . For more information
  on the php settings that have been modified, please see
  the log file for more information after the installation
- is complete, /var/log/openemr/install .
+ is complete, /var/log/libreehr/install .
 
-Template: openemr/success_install
+Template: libreehr/success_install
 Type: note
 Description: CONGRATULATIONS
- OpenEMR has been successfully installed.
+ LibreEHR has been successfully installed.
  .
- You can now set up OpenEMR by browsing
- to: http://localhost/openemr
+ You can now set up LibreEHR by browsing
+ to: http://localhost/libreehr
 
-Template: openemr/success_install_config
+Template: libreehr/success_install_config
 Type: note
 Description: CONGRATULATIONS
- OpenEMR has been successfully installed and configured.
+ LibreEHR has been successfully installed and configured.
  .
- You can now use OpenEMR by browsing
- to: http://localhost/openemr
+ You can now use LibreEHR by browsing
+ to: http://localhost/libreehr
  .
  (user is 'admin' and password is 'pass')
 
-Template: openemr/success_upgrade
+Template: libreehr/success_upgrade
 Type: note
 Description: CONGRATULATIONS
- OpenEMR has been successfully upgraded.
+ LibreEHR has been successfully upgraded.
  .
  Recommend setting optional configuration settings in
- /var/www/openemr/sites/<sitename>/config.php  (We have
+ /var/www/libreehr/sites/<sitename>/config.php  (We have
  renamed your old configuration file to config.OLD)
  (We recommend you delete the config.OLD file when done)
  .
- We have placed backup of your old OpenEMR in
- /tmp/openemr-tmp/ (We recommend you copy this
+ We have placed backup of your old LibreEHR in
+ /tmp/libreehr-tmp/ (We recommend you copy this
  somewhere protected since it contains confidential
  patient information)
 
-Template: openemr/unable_remove
+Template: libreehr/unable_remove
 Type: error
 Description: ERROR
- Unable to remove the openemr package, because
+ Unable to remove the libreehr package, because
  you did not provide the correct MySQL root password.
  .
  Ensure you know the MySQL root password before
  attempting to remove this package in the future.
 
-Template: openemr/www_path_already_exists
+Template: libreehr/www_path_already_exists
 Type: error
 Description: ERROR
- Unable to install the openemr package, because
- an instance of OpenEMR already exist at /var/www/openemr.
+ Unable to install the libreehr package, because
+ an instance of LibreEHR already exist at /var/www/libreehr.
 
-Template: openemr/upgrade_not_supported
+Template: libreehr/upgrade_not_supported
 Type: error
 Description: ERROR
  This package does not support upgrading your
- current version of OpenEMR.
+ current version of LibreEHR.
 
-Template: openemr/upgrade_not_installed
+Template: libreehr/upgrade_not_installed
 Type: error
 Description: ERROR
- This package can not upgrade OpenEMR, because
- OpenEMR is not installed at /var/www/openemr
+ This package can not upgrade LibreEHR, because
+ LibreEHR is not installed at /var/www/libreehr
 
-Template: openemr/upgrade_not_database
+Template: libreehr/upgrade_not_database
 Type: error
 Description: ERROR
- This package can not upgrade OpenEMR, because
+ This package can not upgrade LibreEHR, because
  unable to confirm presence of a mysql credentials
  and/or database.

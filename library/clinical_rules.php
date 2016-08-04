@@ -21,7 +21,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Medical Information Integration, LLC
  * @author  Ensofttek, LLC
@@ -1801,15 +1801,15 @@ function appointment_check($patient_id,$dateTarget='') {
 
   // Basically, if the appointment is within the current date to the target date,
   //  then return true. (will not send reminders on same day as appointment)
-  $sql = sqlStatementCdrEngine("SELECT openemr_postcalendar_events.pc_eid, " .
-    "openemr_postcalendar_events.pc_title, " .
-    "openemr_postcalendar_events.pc_eventDate, " .
-    "openemr_postcalendar_events.pc_startTime, " .
-    "openemr_postcalendar_events.pc_endTime " .
-    "FROM openemr_postcalendar_events " .
-    "WHERE openemr_postcalendar_events.pc_eventDate > ? " .
-    "AND openemr_postcalendar_events.pc_eventDate <= ? " .
-    "AND openemr_postcalendar_events.pc_pid = ?", array($currentDate,$dateTarget,$patient_id) );
+  $sql = sqlStatementCdrEngine("SELECT libreehr_postcalendar_events.pc_eid, " .
+    "libreehr_postcalendar_events.pc_title, " .
+    "libreehr_postcalendar_events.pc_eventDate, " .
+    "libreehr_postcalendar_events.pc_startTime, " .
+    "libreehr_postcalendar_events.pc_endTime " .
+    "FROM libreehr_postcalendar_events " .
+    "WHERE libreehr_postcalendar_events.pc_eventDate > ? " .
+    "AND libreehr_postcalendar_events.pc_eventDate <= ? " .
+    "AND libreehr_postcalendar_events.pc_pid = ?", array($currentDate,$dateTarget,$patient_id) );
 
   // return results of check
   //

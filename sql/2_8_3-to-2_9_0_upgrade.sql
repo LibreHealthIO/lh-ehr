@@ -9,8 +9,8 @@ ALTER TABLE users
   ADD valedictory  varchar(255) NOT NULL DEFAULT '';
 #EndIf
 
-#IfMissingColumn openemr_postcalendar_events pc_facility
-ALTER TABLE openemr_postcalendar_events
+#IfMissingColumn libreehr_postcalendar_events pc_facility
+ALTER TABLE libreehr_postcalendar_events
   ADD pc_facility smallint(6) NOT NULL default '0' COMMENT 'facility id for this event';
 #EndIf
 
@@ -215,7 +215,7 @@ UPDATE drug_sales
 
 #IfMissingColumn form_encounter pc_catid
 ALTER TABLE form_encounter
-  ADD pc_catid int(11) NOT NULL DEFAULT 5 COMMENT 'event category from openemr_postcalendar_categories';
+  ADD pc_catid int(11) NOT NULL DEFAULT 5 COMMENT 'event category from libreehr_postcalendar_categories';
 #EndIf
 
 #IfNotTable fee_sheet_options

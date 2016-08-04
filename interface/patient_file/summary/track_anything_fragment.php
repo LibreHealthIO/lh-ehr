@@ -16,7 +16,7 @@
  * along with this program; if not,                                             *
  * see <http://opensource.org/licenses/gpl-license.php>                         *
  ********************************************************************************
- * @package OpenEMR
+ * @package LibreEHR
  * @author Joe Slam <joe@produnis.de>
  * @link http://www.open-emr.org
  * 

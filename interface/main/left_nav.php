@@ -402,7 +402,7 @@ function genFindBlock() {
  function getReminderCount(){ 
    top.restoreSession();
    // Send the skip_timeout_reset parameter to not count this as a manual entry in the
-   //  timing out mechanism in OpenEMR.
+   //  timing out mechanism in LibreEHR.
    $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/dated_reminders_counter.php",
      { skip_timeout_reset: "1" }, 
      function(data) {
@@ -949,7 +949,7 @@ function removeOptionSelected(EncounterId)
   if (pid != active_pid) {
    alert('Session patient ID is ' + pid + ', expecting ' + active_pid +
     '. This session is unstable and should be abandoned. Do not use ' +
-    'OpenEMR in multiple browser windows!');
+    'LibreEHR in multiple browser windows!');
    return false;
   }
   return true;
@@ -960,7 +960,7 @@ function removeOptionSelected(EncounterId)
   if (eid != active_encounter) {
    alert('Session encounter ID is ' + eid + ', expecting ' + active_encounter +
     '. This session is unstable and should be abandoned. Do not use ' +
-    'OpenEMR in multiple browser windows!');
+    'LibreEHR in multiple browser windows!');
    return false;
   }
   return true;

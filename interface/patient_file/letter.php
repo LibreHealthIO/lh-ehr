@@ -96,7 +96,7 @@ if ($_POST['formaction']=="generate") {
     }
     if (! fwrite($fh, $temp_bodytext)) {
         echo xl('Error while saving to the file','','',' ') . $template_dir."/autosaved" .
-             xl('Ensure OpenEMR has write privileges to directory','',' . ',' ') . $template_dir  . "/ ." ;
+             xl('Ensure LibreEHR has write privileges to directory','',' . ',' ') . $template_dir  . "/ ." ;
         die;
     }
     fclose($fh);

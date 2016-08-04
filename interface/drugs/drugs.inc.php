@@ -8,9 +8,9 @@
 //
 // Modified 7-2009 by BM in order to migrate using the form,
 // unit, route, and interval lists with the
-// functions in openemr/library/options.inc.php .
+// functions in libreehr/library/options.inc.php .
 // These lists are based on the constants found in the 
-// openemr/library/classes/Prescription.class.php file.
+// libreehr/library/classes/Prescription.class.php file.
 
 $substitute_array = array('', xl('Allowed'), xl('Not Allowed'));
 

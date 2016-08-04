@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  */
 
@@ -88,7 +88,7 @@ function myRestoreSession() {
 }
 
 function openPatient(ptid) {
- // This works whether we are a popup or in the OpenEMR frameset.
+ // This works whether we are a popup or in the LibreEHR frameset.
  myRestoreSession();
  document.location.href = 'patient_form.php?postid=<?php echo xls($postid); ?>&ptid=' + ptid;
 }

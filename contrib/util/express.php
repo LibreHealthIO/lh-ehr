@@ -15,13 +15,13 @@ if (!$_POST['submit']) {
 ?>
 <form method=post>
 <p>
-This script will take the name that you give and create an OpenEMR database with this as the database name, username, password, group name.  It will also rename the directory this OpenEMR installation is under to the new name.  THIS ONLY WORKS WITH XAMPP AND HAS VERY LIMITED TESTING.
+This script will take the name that you give and create an LibreEHR database with this as the database name, username, password, group name.  It will also rename the directory this LibreEHR installation is under to the new name.  THIS ONLY WORKS WITH XAMPP AND HAS VERY LIMITED TESTING.
 </p>
 <p>
 Make sure that you close Text Editors, Windows Explorer, etc... as these things may stop directory rename that occurs in this script.
 </p>
 <p>
-Enter the name you wish to use for this OpenEMR installation.
+Enter the name you wish to use for this LibreEHR installation.
 </p>
 <input type=text name=newname>
 <input type=submit name=submit value=submit>
@@ -171,7 +171,7 @@ if ($fd == FALSE) {
 }
 $string = "<?php
 
-//  OpenEMR
+//  LibreEHR
 //  MySQL Config
 //  Referenced from sql.inc
 

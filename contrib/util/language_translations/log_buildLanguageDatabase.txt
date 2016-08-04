@@ -154,8 +154,8 @@ Following constant not same:
 	original- val:The Source and Date columns are copied from the first page, so normally you will not need to touch those.  You can put a payment amount in the Pay column, an adjustment amount in the Adjust column, or both.  You can also click the "W" on the right to automatically compute an adjustment value that writes off the remainder of the charge for that line item.
 	spreadsheet- ID:6480 val:The Source and Date columns are copied from the first page, so normally you will not need to touch those.  You can put a payment amount in the Pay column, an adjustment amount in the Adjust column, or both.  You can also click the \"W\" on the right to automatically compute an adjustment value that writes off the remainder of the charge for that line item.
 Following constant not same:
-	original- val:The X12 files as well as the resulting HTML output reports are archived in the "era" subdirectory of the main OpenEMR installation directory.  You will want to refer to these archives from time to time.  The URL is 
-	spreadsheet- ID:6491 val:The X12 files as well as the resulting HTML output reports are archived in the \"era\" subdirectory of the main OpenEMR installation directory.  You will want to refer to these archives from time to time.  The URL is
+	original- val:The X12 files as well as the resulting HTML output reports are archived in the "era" subdirectory of the main LibreEHR installation directory.  You will want to refer to these archives from time to time.  The URL is 
+	spreadsheet- ID:6491 val:The X12 files as well as the resulting HTML output reports are archived in the \"era\" subdirectory of the main LibreEHR installation directory.  You will want to refer to these archives from time to time.  The URL is
 Following constant not same:
 	original- val:This will be a "dry run" with no physical data updates.
 	spreadsheet- ID:6605 val:This will be a \"dry run\" with no physical data updates.
@@ -341,8 +341,8 @@ Following constant not same:
 	original- val:The Source and Date columns are copied from the first page, so normally you will not need to touch those.  You can put a payment amount in the Pay column, an adjustment amount in the Adjust column, or both.  You can also click the "W" on the right to automatically compute an adjustment value that writes off the remainder of the charge for that line item.
 	spreadsheet- ID:6480 val:The Source and Date columns are copied from the first page, so normally you will not need to touch those.  You can put a payment amount in the Pay column, an adjustment amount in the Adjust column, or both.  You can also click the \"W\" on the right to automatically compute an adjustment value that writes off the remainder of the charge for that line item.
 Following constant not same:
-	original- val:The X12 files as well as the resulting HTML output reports are archived in the "era" subdirectory of the main OpenEMR installation directory.  You will want to refer to these archives from time to time.  The URL is 
-	spreadsheet- ID:6491 val:The X12 files as well as the resulting HTML output reports are archived in the \"era\" subdirectory of the main OpenEMR installation directory.  You will want to refer to these archives from time to time.  The URL is
+	original- val:The X12 files as well as the resulting HTML output reports are archived in the "era" subdirectory of the main LibreEHR installation directory.  You will want to refer to these archives from time to time.  The URL is 
+	spreadsheet- ID:6491 val:The X12 files as well as the resulting HTML output reports are archived in the \"era\" subdirectory of the main LibreEHR installation directory.  You will want to refer to these archives from time to time.  The URL is
 Following constant not same:
 	original- val:This will be a "dry run" with no physical data updates.
 	spreadsheet- ID:6605 val:This will be a \"dry run\" with no physical data updates.

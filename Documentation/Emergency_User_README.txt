@@ -7,7 +7,7 @@ Break glass refers to a quick means for a person who does not have access privil
 3. Auditing should be enabled to log details of the account usage and details.
 4. Disable or delete the emergency account(s) that were used to prevent re–use.
 
-Emergency Login In OpenEMR:
+Emergency Login In LibreEHR:
 ---------------------------
 
 Emergency Login acl can be assigned to the users in the following screens:-

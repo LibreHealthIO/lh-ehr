@@ -244,7 +244,7 @@ class Practice Extends DataObjectBase {
 
                 $err="";
 
-                //unimplemented by OpenEMR
+                //unimplemented by LibreEHR
                 $pkey = "";
 
                 // if we generated an error, create an error return response
@@ -366,7 +366,7 @@ class Practice Extends DataObjectBase {
 
         /**
         * Returns a federal ein based on practice, payer, provider
-        * @key int practice identifier used in database, in OpenEMR practices are facilities
+        * @key int practice identifier used in database, in LibreEHR practices are facilities
         * @payerkey int database id of the insurance company
         * @providekey int database id of the provider
         */

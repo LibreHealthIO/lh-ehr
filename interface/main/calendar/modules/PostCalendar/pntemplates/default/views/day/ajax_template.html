@@ -615,7 +615,7 @@ foreach ($providers as $provider) {
             }
 
             $eventid = $event['eid'];
-            $eventtype = sqlQuery("SELECT pc_cattype FROM openemr_postcalendar_categories as oc LEFT OUTER JOIN openemr_postcalendar_events as oe ON oe.pc_catid=oc.pc_catid WHERE oe.pc_eid='".$eventid."'");
+            $eventtype = sqlQuery("SELECT pc_cattype FROM libreehr_postcalendar_categories as oc LEFT OUTER JOIN libreehr_postcalendar_events as oe ON oe.pc_catid=oc.pc_catid WHERE oe.pc_eid='".$eventid."'");
             $pccattype = '';
             if($eventtype['pc_cattype']==1)
             $pccattype = 'true';
@@ -636,7 +636,7 @@ foreach ($providers as $provider) {
 
             // the divTitle is what appears when the user hovers the mouse over the DIV
             $divTitle = htmlspecialchars($provider["fname"],ENT_QUOTES)." ".htmlspecialchars($provider["lname"],ENT_QUOTES);
-            $result = sqlStatement("SELECT name,id,color FROM facility WHERE id=(SELECT pc_facility FROM openemr_postcalendar_events WHERE pc_eid=".$eventid.")");
+            $result = sqlStatement("SELECT name,id,color FROM facility WHERE id=(SELECT pc_facility FROM libreehr_postcalendar_events WHERE pc_eid=".$eventid.")");
             $row = sqlFetchArray($result);
             $color=$event["catcolor"];
             if($GLOBALS['event_color']==2)

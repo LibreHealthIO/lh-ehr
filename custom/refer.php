@@ -24,9 +24,9 @@ using a referral management system.  Currently we know of one such system,
 web-based subscription service.</p>
 
 <p>If you subscribe to ReferCare, then simply replace the file
-custom/refer.php in the OpenEMR installation directory with the file
+custom/refer.php in the LibreEHR installation directory with the file
 custom/refercare.php, and you will then be able to initiate referrals
-from within OpenEMR.</p>
+from within LibreEHR.</p>
 
 <p>If you wish to use some other referral management system, then replace
 custom/refer.php with a suitable interface to that system.</p>

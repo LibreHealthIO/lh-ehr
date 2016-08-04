@@ -8,7 +8,7 @@
 
 require_once("cli_header.php");
 
-require_once($openemr_root_dir."/interface/main/tabs/menu/menu_data.php");
+require_once($libreehr_root_dir."/interface/main/tabs/menu/menu_data.php");
 
 
 function db_create_menu_entry(&$entry,$id)

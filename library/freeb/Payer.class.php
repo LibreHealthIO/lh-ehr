@@ -461,7 +461,7 @@ class Payer Extends DataObjectBase {
 	function phoneextension($m) {
 
 		$err="";
-		//unimplemented by openemr
+		//unimplemented by libreehr
 		$pkey = "";
 
 		// if we generated an error, create an error return response
@@ -519,7 +519,7 @@ class Payer Extends DataObjectBase {
 
 		$err="";
 
-		//OpenEMR only supports CPT-4 at this time
+		//LibreEHR only supports CPT-4 at this time
 		//HCPCS support is almost fully developed
 		$pkey = "CPT-4";
 
@@ -539,7 +539,7 @@ class Payer Extends DataObjectBase {
 
 		$err="";
 
-		//OpenEMR only supports ICD9 diagnosis codes
+		//LibreEHR only supports ICD9 diagnosis codes
 		$pkey = "ICD-9";
 		
 		// if we generated an error, create an error return response
@@ -576,7 +576,7 @@ class Payer Extends DataObjectBase {
 
 		$err="";
 
-		//unsupported by OpenEMR
+		//unsupported by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response

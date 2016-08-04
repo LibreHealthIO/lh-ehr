@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  */
 
@@ -35,8 +35,8 @@ if ($result['errmsg']) {
   die(text($result['errmsg']));
 }
 
-// Look up the patient in OpenEMR.
-$ptid = lookup_openemr_patient($result['post']['user']);
+// Look up the patient in LibreEHR.
+$ptid = lookup_libreehr_patient($result['post']['user']);
 ?>
 <html>
 <head>

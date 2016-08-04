@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Tony McCormick <tony@mi-squared.com>
  * @author  Kevin Yeh <kevin.y@integralemr.com>
  * @author  Brady Miller <brady@sparmy.com>

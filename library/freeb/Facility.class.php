@@ -214,7 +214,7 @@ class Facility Extends DataObjectBase {
 
 		$err="";
 
-		//OpenEMR only supports a sinlge coutry code for phones
+		//LibreEHR only supports a sinlge coutry code for phones
 		$pkey = "1";
 
 		// if we generated an error, create an error return response
@@ -232,7 +232,7 @@ class Facility Extends DataObjectBase {
 
 		$err="";
 
-		//unimplemented by OpenEMR
+		//unimplemented by LibreEHR
 		$pkey = "";
 
 		// if we generated an error, create an error return response

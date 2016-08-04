@@ -80,7 +80,7 @@ $ignoreAuth = 1;
 
  $catslots = 1;
  if ($input_catid) {
-  $srow = sqlQuery("SELECT pc_duration FROM openemr_postcalendar_categories WHERE pc_catid = '$input_catid'");
+  $srow = sqlQuery("SELECT pc_duration FROM libreehr_postcalendar_categories WHERE pc_catid = '$input_catid'");
   if ($srow['pc_duration']) $catslots = ceil($srow['pc_duration'] / $slotsecs);
  }
 
@@ -130,7 +130,7 @@ $ignoreAuth = 1;
 //  echo $sdate." -- ".$edate;
   $query = "SELECT pc_eventDate, pc_endDate, pc_startTime, pc_duration, " .
    "pc_recurrtype, pc_recurrspec, pc_alldayevent, pc_catid, pc_prefcatid, pc_title " .
-   "FROM openemr_postcalendar_events " .
+   "FROM libreehr_postcalendar_events " .
    "WHERE pc_aid = '$providerid' AND " .
    "((pc_endDate >= '$sdate' AND pc_eventDate < '$edate') OR " .
    "(pc_endDate = '0000-00-00' AND pc_eventDate >= '$sdate' AND pc_eventDate < '$edate'))";

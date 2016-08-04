@@ -6,7 +6,7 @@
  * The logic will also render the appropriate action button which
  * can be one of the following:
  *      INSTALL - this is rendered when the external database has
- *                not been installed in this openEMR instance
+ *                not been installed in this LIBREEHR instance
  *      UPGRADE - this is rendered when the external database has
  *                been installed and the staged files are more recent
  *                than the instance installed
@@ -27,7 +27,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  (Mac) Kevin McAloon <mcaloon@patienthealthcareanalytics.com>
  * @author  Rohit Kumar <pandit.rohit@netsity.com>
  * @author  Brady Miller <brady@sparmy.com>
@@ -191,7 +191,7 @@ if (is_dir($mainPATH)) {
 	        
     	        $qry_str = "SELECT `load_checksum`,`load_source`,`load_release_date` FROM `supported_external_dataloads` WHERE `load_type` = ? and `load_filename` = ? and `load_checksum` = ? ORDER BY `load_release_date` DESC";
 
-		// this query determines whether you can load the data into openEMR. you must have the correct 
+		// this query determines whether you can load the data into LIBREEHR. you must have the correct 
 		// filename and checksum for each file that are part of the same release. 
 		// 
 		// IMPORTANT: Releases that contain mutliple zip file (e.g. ICD10) are grouped together based 

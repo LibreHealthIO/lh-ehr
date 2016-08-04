@@ -258,7 +258,11 @@ $GLOBALS_METADATA = array(
     'online_support_link' => array(
       xl('Online Support Link'),
       'text',                           // data type
+<<<<<<< HEAD
+      'http://open-emr.org/',
+=======
       'http://libreehr.github.io',
+>>>>>>> refs/remotes/origin/master
       xl('URL for LibreEHR support.')
     ),
 

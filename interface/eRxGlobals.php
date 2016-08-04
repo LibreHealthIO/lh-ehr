@@ -15,7 +15,7 @@
  * General Public License along with this program.
  * If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package    OpenEMR
+ * @package    LibreEHR
  * @subpackage NewCrop
  * @author     Sam Likins <sam.likins@wsi-services.com>
  * @link       http://www.open-emr.org
@@ -57,18 +57,18 @@ class eRxGlobals {
 	}
 
 	/**
-	 * Return the version of OpenEMR
-	 * @return string OpenEMR version
+	 * Return the version of LibreEHR
+	 * @return string LibreEHR version
 	 */
-	public function getOpenEMRVersion() {
-		return $this->getGlobalValue('openemr_version');
+	public function getLibreEHRVersion() {
+		return $this->getGlobalValue('libreehr_version');
 	}
 
 	/**
-	 * Return the OpenEMR site directory
-	 * @return string OpenEMR site directory
+	 * Return the LibreEHR site directory
+	 * @return string LibreEHR site directory
 	 */
-	public function getOpenEMRSiteDirectory() {
+	public function getLibreEHRSiteDirectory() {
 		return $this->getGlobalValue('OE_SITE_DIR');
 	}
 

@@ -1,8 +1,8 @@
 [Desktop Entry]
 Terminal=false
-Exec=sensible-browser http://localhost/openemr
+Exec=sensible-browser http://localhost/libreehr
 Type=Application
 Categories=Application;Office;
 StartupNotify=true
-Name=Electronic Medical Records - OpenEMR
+Name=Electronic Medical Records - LibreEHR
 Comment=Medical Practice Management Application

@@ -23,7 +23,7 @@ class InstallerTest extends PHPUnit_Framework_TestCase
                                    'port'            => '3306',
                                    'root'            => 'root',
                                    'rootpass'        => 'notapass',
-                                   'dbname'          => 'openemr_test_suite',
+                                   'dbname'          => 'libreehr_test_suite',
                                    'collate'         => '',
 				   'site'            => 'default',
                                    );

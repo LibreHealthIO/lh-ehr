@@ -12,12 +12,12 @@
 # Un-install script steps:
 #  1) Warn and confirm the user wants to remove the package (mandatory)
 #  2) Collect the MySQL root user password (mandatory)
-#  3) Remove openemr MySQL database(s)
-#  4) Remove openemr MySQL user(s)
-#  5) Remove OpenEMR etc directory
-#  6) Remove rest of OpenEMR web directory
+#  3) Remove libreehr MySQL database(s)
+#  4) Remove libreehr MySQL user(s)
+#  5) Remove LibreEHR etc directory
+#  6) Remove rest of LibreEHR web directory
 #  7) Remove tmp directory
-#  8) Remove OpenEMR apache configuration
+#  8) Remove LibreEHR apache configuration
 #
 #
 # summary of how this script can be called:
@@ -38,14 +38,14 @@ case "$1" in
    remove)
 
       #constants and paths
-      LOGDIR=/var/log/openemr
+      LOGDIR=/var/log/libreehr
       LOG=$LOGDIR/install
-      CONFIGDIR=/etc/openemr
-      CONFIG=$CONFIGDIR/openemr.conf
-      TMPDIR=/tmp/openemr-tmp
+      CONFIGDIR=/etc/libreehr
+      CONFIG=$CONFIGDIR/libreehr.conf
+      TMPDIR=/tmp/libreehr-tmp
       WEB=/var/www
-      OPENEMR=$WEB/openemr
-      SITEDIR=$OPENEMR/sites
+      LIBREEHR=$WEB/libreehr
+      SITEDIR=$LIBREEHR/sites
 
       #Standardized echo function to send to only log file
       #  requires one parameter (string)
@@ -54,7 +54,7 @@ case "$1" in
       }
 
       #Standardized exit function to be used when unable to uninstall the
-      #openemr package
+      #libreehr package
       #  requires one parameter (string with reason for exiting)
       unable_exit () {
          echo "`date`: $1" >> $LOG
@@ -106,9 +106,9 @@ case "$1" in
       }
 
       #Confirm that user really wants to uninstall
-      prompt_input openemr/confirm_remove critical ret_result
+      prompt_input libreehr/confirm_remove critical ret_result
       if [ "$ret_result" == "no" ]; then
-         unable_exit "You have chosen to not uninstall the OpenEMR package."
+         unable_exit "You have chosen to not uninstall the LibreEHR package."
       fi
 
       #collect the mysql root password
@@ -120,7 +120,7 @@ case "$1" in
          # (will give 3 chances to provide correct password)
          COUNTDOWN=1
          while true; do
-            prompt_input openemr/mysql_p_remove_${COUNTDOWN} critical ret_result
+            prompt_input libreehr/mysql_p_remove_${COUNTDOWN} critical ret_result
             MPASS="$ret_result"
             if check_mysql "$MPASS" "mysql"; then
                #the mysql root password works, so can exit loop
@@ -129,8 +129,8 @@ case "$1" in
             else
                #the mysql root password did not work
                if [ "$COUNTDOWN" -ge "3" ]; then
-                  prompt_input openemr/unable_remove critical ret_result
-                  unable_exit "OpenEMR removal attempt failed (can try again when you know the mysql root password)"
+                  prompt_input libreehr/unable_remove critical ret_result
+                  unable_exit "LibreEHR removal attempt failed (can try again when you know the mysql root password)"
                fi
             fi
             let "COUNTDOWN += 1"
@@ -151,38 +151,38 @@ case "$1" in
          SQLPASSWORD=$(collect_var \$pass $SITEDIR/$SITENAME/sqlconf.php)
          SQLDATABASE=$(collect_var \$dbase $SITEDIR/$SITENAME/sqlconf.php)
 
-         #remove openemr mysql database (ensure the database exists)
+         #remove libreehr mysql database (ensure the database exists)
          if check_mysql "$MPASS" "$SQLDATABASE"; then
             mysqladmin -f -u root -h "$SQLLOCATION" --password="$MPASS" drop "$SQLDATABASE" >> $LOG 2>&1
-            log_only "Removed OpenEMR MySQL database: $SQLDATABASE"
+            log_only "Removed LibreEHR MySQL database: $SQLDATABASE"
          fi
 
-         #remove openemr mysql user
+         #remove libreehr mysql user
          mysql -f -u root -h "$SQLLOCATION" --password="$MPASS" -e "DELETE FROM mysql.user WHERE User = '$SQLUSER';FLUSH PRIVILEGES;" >> $LOG 2>&1
-         log_only "Removed OpenEMR MySQL user: $SQLUSER"
+         log_only "Removed LibreEHR MySQL user: $SQLUSER"
       done
 
       #remove etc directory
       rm -rf $CONFIGDIR
-      log_only "Removed OpenEMR etc directory"
+      log_only "Removed LibreEHR etc directory"
 
       #remove rest of web directory
-      rm -rf $OPENEMR
-      log_only "Finished removing OpenEMR web directory"
+      rm -rf $LIBREEHR
+      log_only "Finished removing LibreEHR web directory"
 
       #remove tmp directory
       rm -fr $TMPDIR
-      log_only "Removed OpenEMR tmp directory"
+      log_only "Removed LibreEHR tmp directory"
 
-      #removes the configuration section for OpenEMR in Apache config file (deprecated, but keeping for older packages)
+      #removes the configuration section for LibreEHR in Apache config file (deprecated, but keeping for older packages)
       if [ -f /etc/apache2/httpd.conf ]; then
-          sed -i '/#This is the start of the Apache configuration for OpenEMR./,/#This is the end of the Apache configuration for OpenEMR./d' /etc/apache2/httpd.conf
-          log_only "Removed OpenEMR Apache configuration in /etc/apache2/httpd.conf"
+          sed -i '/#This is the start of the Apache configuration for LibreEHR./,/#This is the end of the Apache configuration for LibreEHR./d' /etc/apache2/httpd.conf
+          log_only "Removed LibreEHR Apache configuration in /etc/apache2/httpd.conf"
       fi
 
-      #remove OpenEMR apache set up as active config
-      log_only "Turn off apache conf for OpenEMR"
-      a2dissite openemr.conf
+      #remove LibreEHR apache set up as active config
+      log_only "Turn off apache conf for LibreEHR"
+      a2dissite libreehr.conf
 
       #stop db
       db_stop

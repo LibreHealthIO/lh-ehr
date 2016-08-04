@@ -20,7 +20,7 @@ use DBI;
 #               Parameters that you should customize                  #
 #######################################################################
 
-my $DBNAME         = "openemr";  # database name
+my $DBNAME         = "libreehr";  # database name
 
 # Get this language code from the lang_id column of the lang_languages
 # table in the source database.

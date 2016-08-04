@@ -16,7 +16,7 @@
 //
 //
 // A copy of the GNU General Public License is included along with this program:
-// openemr/interface/login/GnuGPL.html
+// libreehr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // 
@@ -149,7 +149,7 @@ class newpatient{
             case 'B5':
             //Existing appointments for a patient 
             array_unshift($data[1],$pid);
-            $query="select pc_eid,pc_eventDate,pc_startTime,pc_endTime,fname,lname,name,pc_apptstatus from openemr_postcalendar_events AS c,
+            $query="select pc_eid,pc_eventDate,pc_startTime,pc_endTime,fname,lname,name,pc_apptstatus from libreehr_postcalendar_events AS c,
             users AS u,facility AS f WHERE pc_pid=? AND pc_aid=u.id AND pc_facility=f.id AND pc_apptstatus!=? order by pc_eventDate desc";
             return array($query,$data[1]);
             break;
@@ -167,7 +167,7 @@ class newpatient{
             case 'B7':
             //patient appointment history  
             array_unshift($data[1],$pid);
-            $query="select pc_eid,pc_eventDate,pc_startTime,pc_endTime,fname,lname,name,pc_apptstatus from openemr_postcalendar_events AS c,
+            $query="select pc_eid,pc_eventDate,pc_startTime,pc_endTime,fname,lname,name,pc_apptstatus from libreehr_postcalendar_events AS c,
             users AS u,facility AS f WHERE pc_pid=? AND pc_aid=u.id AND pc_facility=f.id AND pc_apptstatus=? order by pc_eventDate desc";
             return array($query,$data[1]);
             break;
@@ -187,14 +187,14 @@ class newpatient{
             
             case 'B10':
             //Calendar default visit time for visit category. value for Admin--->others-->calendar
-            $query="select pc_duration from openemr_postcalendar_categories WHERE pc_catid = ?";
+            $query="select pc_duration from libreehr_postcalendar_categories WHERE pc_catid = ?";
             return array($query,$data[1]);
             break;
             
             case 'B11';
             //patient appointment
             $query="select pc_eventDate, pc_endDate, pc_startTime, pc_duration, pc_recurrtype, pc_recurrspec, pc_alldayevent, pc_catid,
-            pc_prefcatid from openemr_postcalendar_events WHERE pc_aid = ? AND ((pc_endDate >= ? AND pc_eventDate < ?) OR
+            pc_prefcatid from libreehr_postcalendar_events WHERE pc_aid = ? AND ((pc_endDate >= ? AND pc_eventDate < ?) OR
             (pc_endDate = '0000-00-00' AND pc_eventDate >= ? AND pc_eventDate < ?)) AND pc_facility = ?";
             return array($query,$data[1]);
             break;

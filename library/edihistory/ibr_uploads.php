@@ -20,14 +20,14 @@
  * 
  * @author Kevin McCormick
  * @link: http://www.open-emr.org
- * @package OpenEMR
+ * @package LibreEHR
  * @subpackage ediHistory
  */
   
 // 
 // handle multiple file uploads of edi files
 // handle a zip archive of edi files
-// we need the OpenEMR $GLOBALS['site_dir'] $site = $GLOBALS['site_dir'] 
+// we need the LibreEHR $GLOBALS['site_dir'] $site = $GLOBALS['site_dir'] 
 // because IMHO it makes sense to store these files under /edi/history  
 // However, the particular location of the files is not important
 // 

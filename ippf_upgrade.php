@@ -83,12 +83,12 @@ function do_visit_form($irow, $encounter, $first) {
 ?>
 <html>
 <head>
-<title>OpenEMR IPPF Upgrade</title>
+<title>LibreEHR IPPF Upgrade</title>
 <link rel='STYLESHEET' href='interface/themes/style_blue.css'>
 </head>
 <body>
 <center>
-<span class='title'>OpenEMR IPPF Upgrade</span>
+<span class='title'>LibreEHR IPPF Upgrade</span>
 <br>
 </center>
 <?php
@@ -148,7 +148,7 @@ if (!empty($_POST['form_submit'])) {
 }
 
 ?>
-<p>This converts your OpenEMR database to UTF-8 encoding if it is not already,
+<p>This converts your LibreEHR database to UTF-8 encoding if it is not already,
 and also converts GCAC issues to the corresponding visit forms.  Both of these
 steps are needed for IPPF sites upgrading from releases prior to 2009-08-27.</p>
 <center>

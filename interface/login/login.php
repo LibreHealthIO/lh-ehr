@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Kevin Yeh <kevin.y@integralemr.com>
@@ -210,11 +210,11 @@ $ip=$_SERVER['REMOTE_ADDR'];
 </div>
 <div style="clear: both;"> </div>
 <div class="version">
-<?php echo "v".text($openemr_version) ?> | <a  href="../../acknowledge_license_cert.html" target="main"><?php echo xlt('Acknowledgments, Licensing and Certification'); ?></a>
+<?php echo "v".text($libreehr_version) ?> | <a  href="../../acknowledge_license_cert.html" target="main"><?php echo xlt('Acknowledgments, Licensing and Certification'); ?></a>
 </div>
 </div>
 <div class="demo">
-		<!-- Uncomment this for the OpenEMR demo installation
+		<!-- Uncomment this for the LibreEHR demo installation
 		<p><center>login = admin
 		<br>password = pass
 		-->

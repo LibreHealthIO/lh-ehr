@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License 
 * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
 * 
-* @package OpenEMR 
+* @package LibreEHR 
 * @author Rod Roark <rod@sunsetsystems.com>
 * @author Terry Hill <terry@lillysystems.com>
 * @link http://www.open-emr.org 
@@ -494,7 +494,7 @@ if (!empty($_POST['pricelevel'])) {
 // Get some info about this visit.
 $visit_row = sqlQuery("SELECT fe.date, opc.pc_catname " .
   "FROM form_encounter AS fe " .
-  "LEFT JOIN openemr_postcalendar_categories AS opc ON opc.pc_catid = fe.pc_catid " .
+  "LEFT JOIN libreehr_postcalendar_categories AS opc ON opc.pc_catid = fe.pc_catid " .
   "WHERE fe.pid = ? AND fe.encounter = ? LIMIT 1", array($pid,$encounter) );
 $visit_date = substr($visit_row['date'], 0, 10);
 

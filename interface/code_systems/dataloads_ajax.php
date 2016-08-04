@@ -1,7 +1,7 @@
 <?php
 /**
  * This file implements the main jquery interface for loading external
- * database files into openEMR
+ * database files into LIBREEHR
  *
  * Copyright (C) 2012 Patient Healthcare Analytics, Inc.
  * Copyright (C) 2011 Phyaura, LLC <info@phyaura.com>
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  (Mac) Kevin McAloon <mcaloon@patienthealthcareanalytics.com>
  * @author  Rohit Kumar <pandit.rohit@netsity.com>
  * @author  Brady Miller <brady@sparmy.com>
@@ -102,7 +102,7 @@ var accOpts = {
     		);
     		$("#" + $(ui.newContent).attr('id') + "_unsupportedmsg").hover(
       		    function() {
-          		$(this).append('<div class="tooltip"><p><?php echo xla("OpenEMR does not recognize the incoming file in the contrib directory. This is most likely because you need to configure the release in the supported_external_dataloads table in the MySQL database."); ?></p></div>');
+          		$(this).append('<div class="tooltip"><p><?php echo xla("LibreEHR does not recognize the incoming file in the contrib directory. This is most likely because you need to configure the release in the supported_external_dataloads table in the MySQL database."); ?></p></div>');
       		    },
       		    function() {
           		$("div.tooltip").remove();

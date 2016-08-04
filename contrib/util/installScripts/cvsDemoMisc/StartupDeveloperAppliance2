@@ -11,17 +11,17 @@
 #
 #
 #Start-up script /etc/rc.d/init.d/rc.StartupDeveloperAppliance2
-# Will download CVS version of OpenEMR.
-# Will place copy of CVS versions in /home/openemr/cvs
-# Then executes openemr/contrib/util/installScripts/cvsDemoInstall script
-# Shows and logs errors if OpenEMR CVS versions are not downloaded
+# Will download CVS version of LibreEHR.
+# Will place copy of CVS versions in /home/libreehr/cvs
+# Then executes libreehr/contrib/util/installScripts/cvsDemoInstall script
+# Shows and logs errors if LibreEHR CVS versions are not downloaded
 # Logs php errors
 
 
 #BELOW IS TO SETUP MANDRIVA STARTUP SCRIPT
 # StartupDeveloperAppliance2  Start/Stop the StartupDeveloperAppliance2 daemon.
 # chkconfig: 345 98 8
-# description: Starts the OpenEMR Developer Appliance
+# description: Starts the LibreEHR Developer Appliance
 # processname: StartupDeveloperAppliance2
 # Source function library.
 . /etc/rc.d/init.d/functions
@@ -30,8 +30,8 @@
 
 # PATH VARIABLES
 WEBROOT=/var/www/html
-OPENEMR=/var/www/html/openemr
-CVS=/home/openemr/cvs
+LIBREEHR=/var/www/html/libreehr
+CVS=/home/libreehr/cvs
 LOG=/var/www/html/log/logSetup.txt
 
 # FUNCTIONS TO DISPLAY INTRODUCTION INSTRUCTIONS
@@ -39,12 +39,12 @@ function intro_function {
 	# (PENDING)Create the login screen (ALSO NEED TO CVS directory??, and rec always use 'root'??):
 	# welcome
 	echo '' > /etc/issue
-	echo 'Welcome to the OpenEMR Developer and Tester Appliance!!' >> /etc/issue
+	echo 'Welcome to the LibreEHR Developer and Tester Appliance!!' >> /etc/issue
 	echo '' >> /etc/issue
 	# link to manual
-	echo 'User Manual can be found at /home/openemr/docs/manual.txt' >> /etc/issue
+	echo 'User Manual can be found at /home/libreehr/docs/manual.txt' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'For Developers: CVS directory is at /home/openemr/cvs' >> /etc/issue
+	echo 'For Developers: CVS directory is at /home/libreehr/cvs' >> /etc/issue
 	echo '' >> /etc/issue
 	# list IP address
 	echo -n 'The IP address of this appliance is: ' >> /etc/issue
@@ -52,10 +52,10 @@ function intro_function {
 	tempy=${tempx#*inet addr:}
 	tempy=${tempy%% *}
 	echo $tempy >> /etc/issue
-	# list links to OpenEMR and logfiles
-	echo -n 'OpenEMR        -> http://' >> /etc/issue
+	# list links to LibreEHR and logfiles
+	echo -n 'LibreEHR        -> http://' >> /etc/issue
 	echo -n $tempy >> /etc/issue
-	echo '/openemr     user: admin    pass: pass' >> /etc/issue
+	echo '/libreehr     user: admin    pass: pass' >> /etc/issue
 	echo -n 'Setup Log File -> http://' >> /etc/issue
 	echo -n $tempy >> /etc/issue
 	echo '/log/logSetup.txt' >> /etc/issue
@@ -69,12 +69,12 @@ function intro_function {
 	# more instructions
 	echo 'The HTTP(80) and SSH(22) ports are both open.' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'Login name is openemr with password openemrcool' >> /etc/issue
+	echo 'Login name is libreehr with password libreehrcool' >> /etc/issue
 	echo 'root password is rootcool' >> /etc/issue
 	echo '' >> /etc/issue
 	echo 'RECOMMEND using 'root' user all the time in this appliance to ensure it functions correctly' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'Software version information: Mandriva 2008, Linux kernel 2.6.22.9, MySQL 5.0.45, PHP 5.2.4 and OpenEMR CVS.' >> /etc/issue
+	echo 'Software version information: Mandriva 2008, Linux kernel 2.6.22.9, MySQL 5.0.45, PHP 5.2.4 and LibreEHR CVS.' >> /etc/issue
 	echo '' >> /etc/issue
 	cp -f /etc/issue /etc/motd
 }
@@ -82,16 +82,16 @@ function intro_cvsconnect_error_function {
 	# Create introduction screen, if user is unable to connect to CVS server
 	# welcome
 	echo '' > /etc/issue
-	echo 'Welcome to the OpenEMR Developer and Tester Appliance!!' >> /etc/issue
+	echo 'Welcome to the LibreEHR Developer and Tester Appliance!!' >> /etc/issue
 	echo '' >> /etc/issue
 	# unable to connect to CVS error report
-	echo 'ERROR, you were unable to download OpenEMR from the CVS server.' >> /etc/issue
+	echo 'ERROR, you were unable to download LibreEHR from the CVS server.' >> /etc/issue
 	echo 'AFTER you set up internet access, RECOMMEND restarting appliance.' >> /etc/issue
 	echo '' >> /etc/issue
 	# link to manual
-	echo 'User Manual can be found at /home/openemr/docs/manual.txt' >> /etc/issue
+	echo 'User Manual can be found at /home/libreehr/docs/manual.txt' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'For Developers: CVS directory is at /home/openemr/cvs' >> /etc/issue
+	echo 'For Developers: CVS directory is at /home/libreehr/cvs' >> /etc/issue
 	echo '' >> /etc/issue
 	# list IP address
 	echo -n 'The IP address of this appliance is: ' >> /etc/issue
@@ -99,10 +99,10 @@ function intro_cvsconnect_error_function {
 	tempy=${tempx#*inet addr:}
 	tempy=${tempy%% *}
 	echo $tempy >> /etc/issue
-	# list links to OpenEMR and logfiles
-	echo -n 'OpenEMR        -> http://' >> /etc/issue
+	# list links to LibreEHR and logfiles
+	echo -n 'LibreEHR        -> http://' >> /etc/issue
 	echo -n $tempy >> /etc/issue
-	echo '/openemr     user: admin    pass: pass' >> /etc/issue
+	echo '/libreehr     user: admin    pass: pass' >> /etc/issue
 	echo -n 'Setup Log File -> http://' >> /etc/issue
 	echo -n $tempy >> /etc/issue
 	echo '/log/logSetup.txt' >> /etc/issue
@@ -116,12 +116,12 @@ function intro_cvsconnect_error_function {
 	# more instructions
 	echo 'The HTTP(80) and SSH(22) ports are both open.' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'Login name is openemr with password openemrcool' >> /etc/issue
+	echo 'Login name is libreehr with password libreehrcool' >> /etc/issue
 	echo 'root password is rootcool' >> /etc/issue
 	echo '' >> /etc/issue
 	echo 'RECOMMEND using 'root' user all the time in this appliance to ensure it functions correctly' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'Software version information: Mandriva 2008, Linux kernel 2.6.22.9, MySQL 5.0.45, PHP 5.2.4, and OpenEMR CVS.' >> /etc/issue
+	echo 'Software version information: Mandriva 2008, Linux kernel 2.6.22.9, MySQL 5.0.45, PHP 5.2.4, and LibreEHR CVS.' >> /etc/issue
 	echo '' >> /etc/issue
 	cp -f /etc/issue /etc/motd
 }
@@ -129,17 +129,17 @@ function intro_network_error_function {
 	# Create introduction screen, if user is unable to connect to CVS server
 	# welcome
 	echo '' > /etc/issue
-	echo 'Welcome to the OpenEMR Developer and Tester Appliance!!' >> /etc/issue
+	echo 'Welcome to the LibreEHR Developer and Tester Appliance!!' >> /etc/issue
 	echo '' >> /etc/issue
 	# unable to connect to CVS error report
-	echo 'ERROR, there was a problem while downloading OpenEMR from the CVS server.'  >> /etc/issue
+	echo 'ERROR, there was a problem while downloading LibreEHR from the CVS server.'  >> /etc/issue
 	echo 'RECOMMEND shutting down appliance, reverting to 'snapshot', and trying again'  >> /etc/issue
 	echo 'RECOMMEND shutting down appliance, reverting to 'snapshot', and trying again'  >> /etc/issue
 	echo '' >> /etc/issue
 	# link to manual
-	echo 'User Manual can be found at /home/openemr/docs/manual.txt' >> /etc/issue
+	echo 'User Manual can be found at /home/libreehr/docs/manual.txt' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'For Developers: CVS directory is at /home/openemr/cvs' >> /etc/issue
+	echo 'For Developers: CVS directory is at /home/libreehr/cvs' >> /etc/issue
 	echo '' >> /etc/issue
 	# list IP address
 	echo -n 'The IP address of this appliance is: ' >> /etc/issue
@@ -147,10 +147,10 @@ function intro_network_error_function {
 	tempy=${tempx#*inet addr:}
 	tempy=${tempy%% *}
 	echo $tempy >> /etc/issue
-	# list links to OpenEMR and logfiles
-	echo -n 'OpenEMR        -> http://' >> /etc/issue
+	# list links to LibreEHR and logfiles
+	echo -n 'LibreEHR        -> http://' >> /etc/issue
 	echo -n $tempy >> /etc/issue
-	echo '/openemr     user: admin    pass: pass' >> /etc/issue
+	echo '/libreehr     user: admin    pass: pass' >> /etc/issue
 	echo -n 'Setup Log File -> http://' >> /etc/issue
 	echo -n $tempy >> /etc/issue
 	echo '/log/logSetup.txt' >> /etc/issue
@@ -164,12 +164,12 @@ function intro_network_error_function {
 	# more instructions
 	echo 'The HTTP(80) and SSH(22) ports are both open.' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'Login name is openemr with password openemrcool' >> /etc/issue
+	echo 'Login name is libreehr with password libreehrcool' >> /etc/issue
 	echo 'root password is rootcool' >> /etc/issue
 	echo '' >> /etc/issue
 	echo 'RECOMMEND using 'root' user all the time in this appliance to ensure it functions correctly' >> /etc/issue
 	echo '' >> /etc/issue
-	echo 'Software version information: Mandriva 2008, Linux kernel 2.6.22.9, MySQL 5.0.45, PHP 5.2.4 and OpenEMR CVS.' >> /etc/issue
+	echo 'Software version information: Mandriva 2008, Linux kernel 2.6.22.9, MySQL 5.0.45, PHP 5.2.4 and LibreEHR CVS.' >> /etc/issue
 	echo '' >> /etc/issue
 	cp -f /etc/issue /etc/motd
 }
@@ -184,74 +184,74 @@ start)
 #Report starting of script
 TEMPDATE=$(date)
 echo -n $TEMPDATE >> $LOG
-echo ': Starting OpenEMR Developer Appliance startup script' >> $LOG
+echo ': Starting LibreEHR Developer Appliance startup script' >> $LOG
 echo ''
-echo 'Starting OpenEMR Developer Appliance startup script:'
+echo 'Starting LibreEHR Developer Appliance startup script:'
 
-# Check whether OpenEMR has been installed yet
-TEMPDIR="$CVS/openemr"
+# Check whether LibreEHR has been installed yet
+TEMPDIR="$CVS/libreehr"
 if [ -d $TEMPDIR ]; then
-	# OpenEMR CVS version already installed and configured
+	# LibreEHR CVS version already installed and configured
 	# First, put entry into logfile
 	TEMPDATE=$(date)
 	echo -n $TEMPDATE >> $LOG
-	echo ': OpenEMR CVS version already installed' >> $LOG
+	echo ': LibreEHR CVS version already installed' >> $LOG
 	# Second, send message to screen
-	echo 'OpenEMR CVS version already installed.'
+	echo 'LibreEHR CVS version already installed.'
 	# Third, configure intro screen, then can exit the script
 	intro_function
 	exit
 else
-	# Install and Configure OpenEMR CVS version.
+	# Install and Configure LibreEHR CVS version.
 	# Put entry in log file
 	TEMPDATE=$(date)
 	echo -n $TEMPDATE >> $LOG
-	echo ': Will attempt to install OpenEMR CVS version' >> $LOG
+	echo ': Will attempt to install LibreEHR CVS version' >> $LOG
 	# Send message to screen
-	echo 'Will attempt to install OpenEMR CVS version'
+	echo 'Will attempt to install LibreEHR CVS version'
 	# Continue script below
 fi
 echo 'Connecting to CVS'
-# Download CVS version of OpenEMR
+# Download CVS version of LibreEHR
 mkdir $CVS
 cd $CVS
-if !(yes "" | cvs -d:pserver:anonymous:@openemr.cvs.sourceforge.net:/cvsroot/openemr login >> $LOG)
+if !(yes "" | cvs -d:pserver:anonymous:@libreehr.cvs.sourceforge.net:/cvsroot/libreehr login >> $LOG)
 then
-	# unable to connect to CVS to download OpenEMR
+	# unable to connect to CVS to download LibreEHR
 	# First, put entry into logfile
 	TEMPDATE=$(date)
 	echo -n $TEMPDATE >> $LOG
-	echo ': Unable to connect to CVS server at Sourceforge, so can not download OpenEMR' >> $LOG
+	echo ': Unable to connect to CVS server at Sourceforge, so can not download LibreEHR' >> $LOG
 	# Second, send message to screen
-	echo 'Unable to connect to CVS server at Sourceforge, so can not download OpenEMR'
+	echo 'Unable to connect to CVS server at Sourceforge, so can not download LibreEHR'
 	# Third, configure intro screen
 	intro_cvsconnect_error_function
 	# Fourth, exit from script
 	exit 1
 fi
-echo 'Downloading OpenEMR from CVS (this could take awhile)'
-if !(cvs -q -z3 -d:pserver:anonymous@openemr.cvs.sourceforge.net:/cvsroot/openemr co -P openemr >> $LOG)
+echo 'Downloading LibreEHR from CVS (this could take awhile)'
+if !(cvs -q -z3 -d:pserver:anonymous@libreehr.cvs.sourceforge.net:/cvsroot/libreehr co -P libreehr >> $LOG)
 then
-	# unable to download OpenEMR
+	# unable to download LibreEHR
 	# First, put entry into logfile
 	TEMPDATE=$(date)
 	echo -n $TEMPDATE >> $LOG
-	echo 'Error while downloading OpenEMR from CVS server at Sourceforge' >> $LOG
+	echo 'Error while downloading LibreEHR from CVS server at Sourceforge' >> $LOG
 	# Second, send message to screen
-	echo 'Error while downloading OpenEMR from CVS server at Sourceforge'
+	echo 'Error while downloading LibreEHR from CVS server at Sourceforge'
 	# Third, configure intro screen
 	intro_network_error_function
 	# Fourth, exit from script
 	exit 1
 fi
 
-# Copy OpenEMR and run the install script
-echo 'Installing OpenEMR'
-cp -r $CVS/openemr $WEBROOT
-chown -Rf root:root $OPENEMR
-chmod +x $OPENEMR/contrib/util/installScripts/cvsDemoInstall
-. $OPENEMR/contrib/util/installScripts/cvsDemoInstall
-chmod -x $OPENEMR/contrib/util/installScripts/cvsDemoInstall
+# Copy LibreEHR and run the install script
+echo 'Installing LibreEHR'
+cp -r $CVS/libreehr $WEBROOT
+chown -Rf root:root $LIBREEHR
+chmod +x $LIBREEHR/contrib/util/installScripts/cvsDemoInstall
+. $LIBREEHR/contrib/util/installScripts/cvsDemoInstall
+chmod -x $LIBREEHR/contrib/util/installScripts/cvsDemoInstall
 
 # All done, now set up the introduction screen
 intro_function

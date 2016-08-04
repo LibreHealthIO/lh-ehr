@@ -10,7 +10,7 @@
 #          Brady Miller <brady@sparmy.com>
 #
 # Un-install script steps:
-#  1) Remove OpenEMR log directory
+#  1) Remove LibreEHR log directory
 #
 # summary of how this script can be called:
 #        * <postrm> `remove'
@@ -31,7 +31,7 @@
 
 #constants
 
-LOGDIR=/var/log/openemr
+LOGDIR=/var/log/libreehr
 
 case "$1" in
    remove)

@@ -2,7 +2,7 @@
 /*
  * Syncronize users with the Active Directory
  * - read user names and info from Active Directory
- * - update the Users table in OpenEMR
+ * - update the Users table in LibreEHR
  * - handles deleted usernames
  * - handles new usernames
  *
@@ -37,7 +37,7 @@ $ldapAttributes = array("givenname", "sn", "displayname",
                         "l", "st", "postalcode"
                         );
 
-// mapping of Active Directory attributes to OpenEMR Users table columns
+// mapping of Active Directory attributes to LibreEHR Users table columns
 $attributeMapping = array (
                         "givenname" => "fname"
                         ,"sn" => "lname"
@@ -62,7 +62,7 @@ $attributeMapping = array (
 // defined in adLDAP_conf.inc 
 $adldap = new adLDAP($adldap_options);
 
-// gather all our known usernames from OpenEMR
+// gather all our known usernames from LibreEHR
 // they will be used to compare what is found in Active Directory
 $oemrUsers = array();
 $sqlH = sqlStatement("select id, username from users");
@@ -101,8 +101,8 @@ $oemrUsers = array();
 $sqlH = sqlStatement("select id, username from users");
 while ($onerow = sqlFetchArray($sqlH)) { array_push($oemrUsers, $onerow); }
 
-// for all the usernames in OpenEMR and NOT IN Active Directory
-// de-activate them in OpenEMR
+// for all the usernames in LibreEHR and NOT IN Active Directory
+// de-activate them in LibreEHR
 foreach ($oemrUsers as $user) {
     $found = false;
     foreach ($adUsers as $adUser) {
@@ -111,8 +111,8 @@ foreach ($oemrUsers as $user) {
     if ($found == false) {
         $sqlstmt = "update users set active=0 where ".
                     "id=".$user['id'];
-        if (sqlStatement($sqlstmt)) { echo "Deactivated ".$user['username']." from OpenEMR\n"; }
-        else { echo "Failed to deactivate ".$user['username']." from OpenEMR\n"; }
+        if (sqlStatement($sqlstmt)) { echo "Deactivated ".$user['username']." from LibreEHR\n"; }
+        else { echo "Failed to deactivate ".$user['username']." from LibreEHR\n"; }
     }
 }
 
@@ -120,7 +120,7 @@ exit;
 
 
 /*=====================================
-  Add a user to the OpenEMR database
+  Add a user to the LibreEHR database
   =====================================*/
 function AddUser($adUsername, $adLDAPinfo) {
     global $attributeMapping;
@@ -151,7 +151,7 @@ function AddUser($adUsername, $adLDAPinfo) {
 
 
 /*=====================================
-  Update and existing user in the OpenEMR database
+  Update and existing user in the LibreEHR database
   =====================================*/
 function UpdateUser($adUsername, $adLDAPinfo) {
     global $attributeMapping;
@@ -171,7 +171,7 @@ function UpdateUser($adUsername, $adLDAPinfo) {
 
 /*=====================================
   Determine if the supplied username
-  exists in the OpenEMR Users table
+  exists in the LibreEHR Users table
   =====================================*/
 function NewUser($username, $oemrUsers) {
     foreach ($oemrUsers as $user) {

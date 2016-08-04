@@ -133,7 +133,7 @@ class WSClaim extends WSWrapper{
       // New as of 2007-06-21: wherever we put a procedure code in the
       // invoice, append a colon and the modifier if there is one.  This way
       // we can better match up payments and adjustments with the billing data
-      // in OpenEMR.
+      // in LibreEHR.
       $codekey = $result->fields['code'];
       if ($result->fields['modifier']) $codekey .= ':' . $result->fields['modifier'];
 

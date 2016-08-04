@@ -20,12 +20,12 @@ $ippf_specific = false;
 if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
   echo "<html>\n";
   echo "<head>\n";
-  echo "<title>OpenEMR Setup Tool</title>\n";
+  echo "<title>LibreEHR Setup Tool</title>\n";
   echo "<link rel='stylesheet' href='interface/themes/style_blue.css'>\n";
   echo "</head>\n";
   echo "<body>\n";
   echo "<p><b>Optional Site ID Selection</b></p>\n";
-  echo "<p>Most OpenEMR installations support only one site.  If that is " .
+  echo "<p>Most LibreEHR installations support only one site.  If that is " .
     "true for you then ignore the rest of this text and just click Continue.</p>\n";
   echo "<p>Otherwise please enter a unique Site ID here.</p>\n";
   echo "<p>A Site ID is a short identifier with no spaces or special " .
@@ -99,7 +99,7 @@ else if ($state > 3) {
 ?>
 <HTML>
 <HEAD>
-<TITLE>OpenEMR Setup Tool</TITLE>
+<TITLE>LibreEHR Setup Tool</TITLE>
 <LINK REL=STYLESHEET HREF="interface/themes/style_sky_blue.css">
 
 <style>
@@ -119,7 +119,7 @@ function cloneClicked() {
 </HEAD>
 <BODY>
 
-<span class="title">OpenEMR Setup</span>
+<span class="title">LibreEHR Setup</span>
 <br><br>
 <span class="text">
 
@@ -136,29 +136,29 @@ function cloneClicked() {
  if ($state == 7) {
 ?>
 
-<p>Congratulations! OpenEMR is now installed.</p>
+<p>Congratulations! LibreEHR is now installed.</p>
 
 <ul>
  <li>Access controls (php-GACL) are installed for fine-grained security, and can be administered in
-     OpenEMR's admin->acl menu.</li>
+     LibreEHR's admin->acl menu.</li>
  <li>Reviewing <?php echo $OE_SITE_DIR; ?>/config.php is a good idea. This file
      contains some settings that you may want to change.</li>
- <li>There's much information and many extra tools bundled within the OpenEMR installation directory. 
-     Please refer to openemr/Documentation. Many forms and other useful scripts can be found at openemr/contrib.</li>
+ <li>There's much information and many extra tools bundled within the LibreEHR installation directory. 
+     Please refer to libreehr/Documentation. Many forms and other useful scripts can be found at libreehr/contrib.</li>
  <li>To ensure a consistent look and feel through out the application using
      <a href='http://www.mozilla.org/products/firefox/'>Firefox</a> is recommended.</li>
- <li>The OpenEMR project home page, documentation, and forums can be found at <a href = "http://www.open-emr.org" target="_blank">http://www.open-emr.org</a></li>
- <li>We pursue grants to help fund the future development of OpenEMR.  To apply for these grants, we need to estimate how many times this program is installed and how many practices are evaluating or using this software.  It would be awesome if you would email us at <a href="mailto:president@oemr.org">president@oemr.org</a> if you have installed this software. The more details about your plans with this software, the better, but even just sending us an email stating you just installed it is very helpful.</li>
+ <li>The LibreEHR project home page, documentation, and forums can be found at <a href = "http://www.open-emr.org" target="_blank">http://www.open-emr.org</a></li>
+ <li>We pursue grants to help fund the future development of LibreEHR.  To apply for these grants, we need to estimate how many times this program is installed and how many practices are evaluating or using this software.  It would be awesome if you would email us at <a href="mailto:president@oemr.org">president@oemr.org</a> if you have installed this software. The more details about your plans with this software, the better, but even just sending us an email stating you just installed it is very helpful.</li>
 </ul>
 <p>
 We recommend you print these instructions for future reference.
 </p>
 <?php if (empty($installer->clone_database)) {
-  echo "<p><b>The initial OpenEMR user is '".$installer->iuser."' and the password is '".$installer->iuserpass."'</b></p>";
-  echo "<p>If you edited the PHP or Apache configuration files during this installation process, then we recommend you restart your Apache server before following below OpenEMR link.</p>";
+  echo "<p><b>The initial LibreEHR user is '".$installer->iuser."' and the password is '".$installer->iuserpass."'</b></p>";
+  echo "<p>If you edited the PHP or Apache configuration files during this installation process, then we recommend you restart your Apache server before following below LibreEHR link.</p>";
 } ?>
 <p>
- <a href='./?site=<?php echo $site_id; ?>'>Click here to start using OpenEMR. </a>
+ <a href='./?site=<?php echo $site_id; ?>'>Click here to start using LibreEHR. </a>
 </p>
 
 <?php
@@ -171,7 +171,7 @@ We recommend you print these instructions for future reference.
 $inst = $_POST["inst"];
 
 if (($config == 1) && ($state < 4)) {
-  echo "OpenEMR has already been installed.  If you wish to force re-installation, then edit $installer->conffile (change the 'config' variable to 0), and re-run this script.<br>\n";
+  echo "LibreEHR has already been installed.  If you wish to force re-installation, then edit $installer->conffile (change the 'config' variable to 0), and re-run this script.<br>\n";
 }
 else {
   switch ($state) {
@@ -202,8 +202,8 @@ else {
 <TR VALIGN='TOP'><TD COLSPAN=2><font color='red'>MYSQL SERVER:</font></TD></TR>
 <TR VALIGN='TOP'><TD><span class='text'>Server Host: </span></TD><TD><INPUT TYPE='TEXT' VALUE='localhost' NAME='server' SIZE='30'></TD><TD><span class='text'>(If you run MySQL and Apache/PHP on the same computer, then leave this as 'localhost'. If they are on separate computers, then enter the IP address of the computer running MySQL.)</span><br></TD></TR>
 <TR VALIGN='TOP'><TD><span class='text'>Server Port: </span></TD><TD><INPUT TYPE='TEXT' VALUE='3306' NAME='port' SIZE='30'></TD><TD><span class='text'>(This is the MySQL port. The default port for MySQL is 3306.)</span><br></TD></TR>
-<TR VALIGN='TOP'><TD><span class='text'>Database Name: </span></TD><TD><INPUT TYPE='TEXT' VALUE='openemr' NAME='dbname' SIZE='30'></TD><TD><span class='text'>(This is the name of the OpenEMR database in MySQL - 'openemr' is the recommended)</span><br></TD></TR>
-<TR VALIGN='TOP'><TD><span class='text'>Login Name: </span></TD><TD><INPUT TYPE='TEXT' VALUE='openemr' NAME='login' SIZE='30'></TD><TD><span class='text'>(This is the name of the OpenEMR login name in MySQL - 'openemr' is the recommended)</span><br></TD></TR>
+<TR VALIGN='TOP'><TD><span class='text'>Database Name: </span></TD><TD><INPUT TYPE='TEXT' VALUE='libreehr' NAME='dbname' SIZE='30'></TD><TD><span class='text'>(This is the name of the LibreEHR database in MySQL - 'libreehr' is the recommended)</span><br></TD></TR>
+<TR VALIGN='TOP'><TD><span class='text'>Login Name: </span></TD><TD><INPUT TYPE='TEXT' VALUE='libreehr' NAME='login' SIZE='30'></TD><TD><span class='text'>(This is the name of the LibreEHR login name in MySQL - 'libreehr' is the recommended)</span><br></TD></TR>
 <TR VALIGN='TOP'><TD><span class='text'>Password: </span></TD><TD><INPUT TYPE='PASSWORD' VALUE='' NAME='pass' SIZE='30'></TD><TD><span class='text'>(This is the Login Password for when PHP accesses MySQL - it should be at least 8 characters long and composed of both numbers and letters)</span><br></TD></TR>\n";
     if ($inst != 2) {
       echo "<TR VALIGN='TOP'><TD><span class='text'>Name for Root Account: </span></TD><TD><INPUT TYPE='TEXT' VALUE='root' NAME='root' SIZE='30'></TD><TD><span class='text'>(This is name for MySQL root account. For localhost, it is usually ok to leave it 'root'.)</span><br></TD></TR>
@@ -234,7 +234,7 @@ else {
   "<option value='utf8_unicode_ci'   >Unicode (German, French, Russian, Armenian, Greek)</option>" .
   "<option value=''                  >None (Do not force UTF-8)</option>" .
   "</select>" .
-  "</TD></TR><TR VALIGN='TOP'><TD>&nbsp;</TD><TD colspan='2'><span class='text'>(This is the collation setting for mysql. Leave as 'General' if you are not sure. If the language you are planning to use in OpenEMR is in the menu, then you can select it. Otherwise, just select 'General'.)</span><br></TD></TR>";
+  "</TD></TR><TR VALIGN='TOP'><TD>&nbsp;</TD><TD colspan='2'><span class='text'>(This is the collation setting for mysql. Leave as 'General' if you are not sure. If the language you are planning to use in LibreEHR is in the menu, then you can select it. Otherwise, just select 'General'.)</span><br></TD></TR>";
 }
     echo "<TR VALIGN='TOP'><TD>&nbsp;</TD></TR>";
 
@@ -275,7 +275,7 @@ else {
       echo "</tr>\n";
     }
     
-    echo "<TR VALIGN='TOP' class='noclone'><TD COLSPAN=2><font color='red'>OPENEMR USER:</font></TD></TR>";
+    echo "<TR VALIGN='TOP' class='noclone'><TD COLSPAN=2><font color='red'>LIBREEHR USER:</font></TD></TR>";
     echo "<TR VALIGN='TOP' class='noclone'><TD><span class='text'>Initial User:</span></TD><TD><INPUT SIZE='30' TYPE='TEXT' NAME='iuser' VALUE='admin'></TD><TD><span class='text'>(This is the login name of user that will be created for you. Limit this to one word.)</span></TD></TR>
 <TR VALIGN='TOP' class='noclone'><TD><span class='text'>Initial User Password:</span></TD><TD><INPUT SIZE='30' TYPE='PASSWORD' NAME='iuserpass' VALUE=''></TD><TD><span class='text'>(This is the password for the initial user account above.)</span></TD></TR>
 <TR VALIGN='TOP' class='noclone'><TD><span class='text'>Initial User's First Name:</span></TD><TD><INPUT SIZE='30' TYPE='TEXT' NAME='iufname' VALUE='Administrator'></TD><TD><span class='text'>(This is the First name of the 'initial user'.)</span></TD></TR>
@@ -317,7 +317,7 @@ else {
     }
     
     echo "<b>Step $state</b><br><br>\n";
-    echo "Configuring OpenEMR...<br><br>\n";
+    echo "Configuring LibreEHR...<br><br>\n";
 
     // Skip below if database shell has already been created.
     if ($inst != 2) {
@@ -527,7 +527,7 @@ else {
         $gotFileFlag = 1;
       }
     }
-echo "<li>To ensure proper functioning of OpenEMR you must make sure that settings in php.ini file include  \"short_open_tag = On\", \"display_errors = Off\", \"register_globals = Off\", \"max_execution_time\" set to at least 60, \"max_input_time\" set to at least 90, \"post_max_size\" set to at least 30M, and \"memory_limit\" set to at least \"128M\".</li>\n";
+echo "<li>To ensure proper functioning of LibreEHR you must make sure that settings in php.ini file include  \"short_open_tag = On\", \"display_errors = Off\", \"register_globals = Off\", \"max_execution_time\" set to at least 60, \"max_input_time\" set to at least 90, \"post_max_size\" set to at least 30M, and \"memory_limit\" set to at least \"128M\".</li>\n";
 echo "<li>In order to take full advantage of the patient documents capability you must make sure that settings in php.ini file include \"file_uploads = On\", that \"upload_max_filesize\" is appropriate for your use and that \"upload_tmp_dir\" is set to a correct value that will work on your system.</li>\n";
 if (!$gotFileFlag) {
     echo "<li>If you are having difficulty finding your php.ini file, then refer to the <a href='INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual for suggestions.</li>\n";
@@ -551,7 +551,7 @@ break;
 echo "<b>Step $state</b><br><br>\n";
 echo "Configuration of Apache web server...<br><br>\n";
 echo "The \"".preg_replace("/${site_id}/","*",realpath($docsDirectory))."\", \"".preg_replace("/${site_id}/","*",realpath($billingDirectory))."\" and \"".preg_replace("/${site_id}/","*",realpath($billingDirectory2))."\" directories contain patient information, and
-it is important to secure these directories. Additionally, some settings are required for the Zend Framework to work in OpenEMR. This can be done by pasting the below to end of your apache configuration file:<br>
+it is important to secure these directories. Additionally, some settings are required for the Zend Framework to work in LibreEHR. This can be done by pasting the below to end of your apache configuration file:<br>
 &nbsp;&nbsp;&lt;Directory \"".realpath(dirname(__FILE__))."\"&gt;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AllowOverride FileInfo<br>
 &nbsp;&nbsp;&lt;/Directory&gt;<br>
@@ -587,7 +587,7 @@ break;
 
 	case 0:
 	default:
-echo "<p>Welcome to OpenEMR.  This utility will step you through the installation and configuration of OpenEMR for your practice.</p>\n";
+echo "<p>Welcome to LibreEHR.  This utility will step you through the installation and configuration of LibreEHR for your practice.</p>\n";
 echo "<ul><li>Before proceeding, be sure that you have a properly installed and configured MySQL server available, and a PHP configured webserver.</li>\n";
 
 echo "<li>Detailed installation instructions can be found in the <a href='INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual file.</li>\n";

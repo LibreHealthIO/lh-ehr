@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Name=Electronic Medical Records - OpenEMR (Developer Version - unstable)
+Name=Electronic Medical Records - LibreEHR (Developer Version - unstable)
 Terminal=false
-Exec=sensible-browser http://localhost/git-openemr
+Exec=sensible-browser http://localhost/git-libreehr
 Type=Application
 Categories=Application;Office;
 StartupNotify=true

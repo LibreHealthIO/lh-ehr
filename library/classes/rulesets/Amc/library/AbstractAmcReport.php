@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Ken Chapple <ken@mi-squared.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://www.open-emr.org
@@ -285,7 +285,7 @@ abstract class AbstractAmcReport implements RsReportIF
 			case "med_orders":
                         // Still TODO
                         // AMC MU2 TODO :
-                        //  Note the cpoe_flag and functionality does not exist in OpenEMR official codebase.
+                        //  Note the cpoe_flag and functionality does not exist in LibreEHR official codebase.
                         //
 				 $sql = "SELECT cpoe_flag as cpoe_stat " .
                        "FROM `prescriptions` " .

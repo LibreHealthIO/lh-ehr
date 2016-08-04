@@ -9,8 +9,8 @@ namespace pcmedics;
      define('IS_WINDOWS', (stripos(PHP_OS,'WIN') === 0));
     
     // root is two levels up from directory containing this header file.
-    $openemr_root_dir = dirname(dirname(dirname(dirname(__FILE__))));
+    $libreehr_root_dir = dirname(dirname(dirname(dirname(__FILE__))));
     
-    require_once($openemr_root_dir."/contrib/util/menu/db_connection.php");
+    require_once($libreehr_root_dir."/contrib/util/menu/db_connection.php");
     ini_set("display_errors","1");
 ?>

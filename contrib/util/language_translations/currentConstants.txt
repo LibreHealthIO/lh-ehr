@@ -354,7 +354,7 @@ Amount:
 Amt Billed
 An end date later than the start date is required for repeated events!
 An error occured signing the form
-An error occurred while dumping OpenEMR web directory tree
+An error occurred while dumping LibreEHR web directory tree
 An error occurred while dumping phpGACL web directory tree
 An error occurred while dumping SQL-Ledger web directory tree
 An incomplete GCAC issue has been created and linked. Someone will need to complete it later.
@@ -1199,10 +1199,10 @@ Config
 Configuration
 Configuration Export/Import
 Configuration saved successfully
-Configure Apache and OpenEMR to use Client side SSL certificates.
+Configure Apache and LibreEHR to use Client side SSL certificates.
 Configure Apache to use Client side SSL certificates
 Configure Apache to use HTTPS.
-Configure Openemr to use Client side SSL certificates
+Configure LIBREEHR to use Client side SSL certificates
 Configure tracks
 Configure Tracks
 Confirm Create New Patient
@@ -1866,8 +1866,8 @@ Due Pt
 Due Soon
 Due Status
 Due Status Update
-Dumping OpenEMR database
-Dumping OpenEMR web directory tree
+Dumping LibreEHR database
+Dumping LibreEHR web directory tree
 Dumping phpGACL database
 Dumping phpGACL web directory tree
 Dumping SQL-Ledger database
@@ -2062,7 +2062,7 @@ Enable Scanner Support
 Enable Standard Report Itemization
 Enable support for the open source WordPress Portal by Sunset Systems
 Enable the Medical Information Integration, LLC Lab Exchange Service.
-Enable the OpenEMR Support LLC Lab Exchange Service.
+Enable the LibreEHR Support LLC Lab Exchange Service.
 Enable User Certificate Authentication
 Enable ZMG, LLC eRx service
 enabled
@@ -2143,7 +2143,7 @@ English
 English (Indian)
 English (Standard)
 Enscript command used by Hylafax.
-Ensure OpenEMR has write privileges to directory
+Ensure LibreEHR has write privileges to directory
 ENT Discharge
 ENT Pain
 Enter a diagnosis code to exclude all invoices not containing it
@@ -2199,7 +2199,7 @@ Error Removing Message
 Error retrieving results from Lab Exchange Network
 Error retrieving values.
 Error saving document
-Error when granting file privilege to the OpenEMR user.
+Error when granting file privilege to the LibreEHR user.
 Error while adding new plan
 Error while deleting the plan
 error while registering form!
@@ -2214,7 +2214,7 @@ Error, unable to create the admin.p12 certificate.
 Error, unable to create the Certificate Authority certificate.
 Error, unable to create the Server certificate.
 Error, unable to open file
-Error, User Certificate Authentication is not enabled in OpenEMR
+Error, User Certificate Authentication is not enabled in LibreEHR
 Error. You need to install the Archive/Tar.php php module.
 ERROR: could not open table.sql, broken form?
 Error: duplicated ID on line
@@ -2450,7 +2450,7 @@ file location
 File management
 File Name
 File path not found.
-File privilege granted to OpenEMR user.
+File privilege granted to LibreEHR user.
 File retrieval from CouchDB failed
 File Room
 File to upload
@@ -2883,7 +2883,7 @@ HPI:
 HT
 HTML
 HTML Output?
-Https link for the OpenEMR Support LLC Lab Exchange Service.
+Https link for the LibreEHR Support LLC Lab Exchange Service.
 Hungarian
 Hylafax Directory
 Hylafax Enscript Command
@@ -3476,7 +3476,7 @@ Local Filesystem
 Locale
 Locality
 Location
-location of the openemr machine and may contain sensitive data, so it is recommended to manually delete the files after its use
+location of the libreehr machine and may contain sensitive data, so it is recommended to manually delete the files after its use
 Location of this lot
 Location unspecified
 Location where Hylafax stores faxes.
@@ -4319,14 +4319,14 @@ Open in New Window
 Open Patient
 Open Patient in New Window
 Open Today`s Visit
-OpenEMR already has a Certificate Authority configured.
-OpenEMR Application Category
-OpenEMR Database Upgrade
-OpenEMR Database Upgrade for De-identification
-OpenEMR does not recognize the incoming file in the contrib directory. This is most likely because you need to configure the release in the supported_external_dataloads table in the MySQL database.
-OpenEMR must be configured to use certificates before it can create client certificates.
-OpenEMR requires Javascript to perform user authentication.
-OpenEMR Users
+LibreEHR already has a Certificate Authority configured.
+LibreEHR Application Category
+LibreEHR Database Upgrade
+LibreEHR Database Upgrade for De-identification
+LibreEHR does not recognize the incoming file in the contrib directory. This is most likely because you need to configure the release in the supported_external_dataloads table in the MySQL database.
+LibreEHR must be configured to use certificates before it can create client certificates.
+LibreEHR requires Javascript to perform user authentication.
+LibreEHR Users
 Openings
 Operator
 Opthalmic
@@ -4681,7 +4681,7 @@ Pending Res
 Pending Review
 Pending Rx Count
 Penicillin Allergy
-Pennington Firm OpenEMR  v
+Pennington Firm LibreEHR  v
 Peptic Ulcer Disease
 Per Encounter
 per min
@@ -4871,7 +4871,7 @@ Please set
 Please set de_identification_config variable back to zero
 Please Specify at least One Direct Address
 Please start new De Identification process
-Please upgrade OpenEMR Database to include De Identification procedures, function, tables
+Please upgrade LibreEHR Database to include De Identification procedures, function, tables
 Please view De Identification error log table for more details
 Please visit De Identification screen after some time
 Please visit Re Identification screen after some time
@@ -5950,7 +5950,7 @@ Sinusitis
 Site
 Site ID
 Site ID for the Medical Information Integration, LLC Lab Exchange Service.
-Site ID for the OpenEMR Support LLC Lab Exchange Service.
+Site ID for the LibreEHR Support LLC Lab Exchange Service.
 Site Worker
 Six Months Ago
 Size
@@ -6488,7 +6488,7 @@ The translation of description in current language
 The translation tables are synchronized.
 The type of this entity
 The vendor-specific code identifying this procedure or result
-The X12 files as well as the resulting HTML output reports are archived in the "era" subdirectory of the main OpenEMR installation directory.  You will want to refer to these archives from time to time.  The URL is 
+The X12 files as well as the resulting HTML output reports are archived in the "era" subdirectory of the main LibreEHR installation directory.  You will want to refer to these archives from time to time.  The URL is 
 The zip file will contain the following items
 Theme
 Then the raw data feed release can be obtained from
@@ -6518,7 +6518,7 @@ There is no parts entry for services ID
 There is no patient with portal login
 There was a problem sending the message.
 There was an error while processing your request.
-There was an OpenEMR SQL Escaping ERROR of the following string
+There was an LibreEHR SQL Escaping ERROR of the following string
 These are the 2012 links
 Thickened Right:
 Thigh
@@ -6721,7 +6721,7 @@ Today\'s Date
 Today\'s Events
 Toggle All
 Token ID for the Medical Information Integration, LLC Lab Exchange Service.
-Token ID for the OpenEMR Support LLC Lab Exchange Service.
+Token ID for the LibreEHR Support LLC Lab Exchange Service.
 Tonga (Tonga Islands)
 Tonsillectomy
 tonsillectomy
@@ -6945,7 +6945,7 @@ Updating version indicators
 UPGRADE
 Upgrade
 Upgrade Database
-Upgrades the OpenEMR database to include Procedures, Functions and tables needed for De-identification process
+Upgrades the LibreEHR database to include Procedures, Functions and tables needed for De-identification process
 Upgrading will continue
 UPIN
 Upload
@@ -6976,7 +6976,7 @@ Urine Stream
 Urine Urgency
 URL
 URL for NewCrop eRx Site Address.
-URL for OpenEMR support.
+URL for LibreEHR support.
 URL for Phone Gateway.
 URL for Phone Gateway. Automated VOIP service provided by Maviq. Please visit http://signup.maviq.com for more information.
 URL for the WordPress site that supports the portal

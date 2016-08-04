@@ -622,7 +622,7 @@ function generate_form_field($frow, $currvalue) {
   // Visit categories.
   else if ($data_type == 18) {
     $cres = sqlStatement("SELECT pc_catid, pc_catname " .
-      "FROM openemr_postcalendar_categories ORDER BY pc_catname");
+      "FROM libreehr_postcalendar_categories ORDER BY pc_catname");
     echo "<select name='form_$field_id_esc' id='form_$field_id_esc' title='$description'" .
       " $lbfonchange $disabled>";
     echo "<option value=''>" . xlt($empty_title) . "</option>";
@@ -1303,7 +1303,7 @@ function generate_print_field($frow, $currvalue) {
     $tmp = '';
     if ($currvalue) {
       $crow = sqlQuery("SELECT pc_catid, pc_catname " .
-        "FROM openemr_postcalendar_categories WHERE pc_catid = ?",
+        "FROM libreehr_postcalendar_categories WHERE pc_catid = ?",
         array($currvalue));
       $tmp = xl_appt_category($crow['pc_catname']);
       if (empty($tmp)) $tmp = "($currvalue)";
@@ -1770,7 +1770,7 @@ function generate_display_field($frow, $currvalue) {
   // visit category
   else if ($data_type == 18) {
     $crow = sqlQuery("SELECT pc_catid, pc_catname " .
-      "FROM openemr_postcalendar_categories WHERE pc_catid = ?",
+      "FROM libreehr_postcalendar_categories WHERE pc_catid = ?",
       array($currvalue));
     $s = htmlspecialchars($crow['pc_catname'],ENT_NOQUOTES);
   }
@@ -2096,7 +2096,7 @@ function generate_plaintext_field($frow, $currvalue) {
   // visit category
   else if ($data_type == 18) {
     $crow = sqlQuery("SELECT pc_catid, pc_catname " .
-      "FROM openemr_postcalendar_categories WHERE pc_catid = ?",
+      "FROM libreehr_postcalendar_categories WHERE pc_catid = ?",
       array($currvalue));
     $s = $crow['pc_catname'];
   }

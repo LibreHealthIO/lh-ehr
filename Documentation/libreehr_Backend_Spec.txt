@@ -2,7 +2,7 @@
 
 ----- library/auth.inc ------
 
-NOTICE: Please note that this Backend Spec is a development document, and was used during the developmental stages of OpenEMR. It was last updated for OpenEMR version 1.3, and therefore does not completely detail all of the newer library functions.
+NOTICE: Please note that this Backend Spec is a development document, and was used during the developmental stages of LibreEHR. It was last updated for LibreEHR version 1.3, and therefore does not completely detail all of the newer library functions.
 
 --------------------------------------------------------
 
@@ -53,7 +53,7 @@ deletes the group from the system
 we will ALWAYS create a connection to sql, and set $GLOBALS['dbh']  to our database connection.
 
 sqlConnect()
-returns a database handle, connected to localhost, user openemr, db openemr
+returns a database handle, connected to localhost, user libreehr, db libreehr
 
 sqlStatement(statement)
 returns the query result resource.
@@ -74,7 +74,7 @@ returns the first result from the database.
 ********** public backend functions **********
 
 ----- library/lists.inc - Matthew Beale -----
-used for accessing openemr.lists in the db, we require_once('sql.inc')
+used for accessing libreehr.lists in the db, we require_once('sql.inc')
 
 getListById(id, columns - default all)
 returns the first record returned, the most recent (although there _should_ only be one.
@@ -92,7 +92,7 @@ reappearList (id)
 returns true
 
 ----- library/transactions.inc - Matt Koch, Matthew Beale ------
-used for accessing openemr.transactions in the db, we require_once('sql.inc')
+used for accessing libreehr.transactions in the db, we require_once('sql.inc')
 
 getTransById(id, columns - default all)
 returns the first record returned, the most recent (although there _should_ only be one.
@@ -107,7 +107,7 @@ authorizeTransaction(id, authorized w/ default '1')
 returns useless data. if you want it to return something let us know.
 
 ----- library/pnotes.inc - Matt Koch, Matthew Beale -----
-used for accessing openemr.pnotes in the db, we require_once('sql.inc')
+used for accessing libreehr.pnotes in the db, we require_once('sql.inc')
 
 getByPnoteId(id, columns - default all)
 returns the first record returned, the most recent (although there _should_ only be one.
@@ -131,7 +131,7 @@ reappearPnote (id)
 returns true
 
 ----- library/onotes.inc - Ted Dziuba, Matthew Beale -----
-used for accessing openemr.onotes, we require('sql.inc')
+used for accessing libreehr.onotes, we require('sql.inc')
 
 getOnoteById(id, cols wanted w/default all)
 returns the first record returned, the most recent

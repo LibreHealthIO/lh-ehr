@@ -1,6 +1,6 @@
 <?php
 /* +-----------------------------------------------------------------------------+
-*    OpenEMR - Open Source Electronic Medical Record
+*    LibreEHR - Open Source Electronic Medical Record
 *    Copyright (C) 2013 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 *
 *    This program is free software: you can redistribute it and/or modify
@@ -75,7 +75,7 @@ class ApplicationTable extends AbstractTableGateway
        * Function auditSQLEvent
        * Logging Mechanism
        * 
-       * using OpenEMR log function (auditSQLEvent)
+       * using LibreEHR log function (auditSQLEvent)
        * Path /library/log.inc
        * Logging, if the $log is true
        */
@@ -89,7 +89,7 @@ class ApplicationTable extends AbstractTableGateway
      * Function errorHandler
      * All error display and log
      * Display the Error, Line and File
-     * Same behavior of HelpfulDie fuction in OpenEMR
+     * Same behavior of HelpfulDie fuction in LibreEHR
      * Path /library/sql.inc
      * 
      * @param type    $e
@@ -155,7 +155,7 @@ class ApplicationTable extends AbstractTableGateway
      * 
      * Same Functionality in the OpemEMR
      * for Left Nav ACL Check
-     * Path openemr/library/acl.inc
+     * Path libreehr/library/acl.inc
      * Function Name zh_acl_check
      * 
      * @param int     $user_id Auth user Id
@@ -399,7 +399,7 @@ class ApplicationTable extends AbstractTableGateway
     }
     
     /*
-    * Using generate id function from OpenEMR sql.inc library file
+    * Using generate id function from LibreEHR sql.inc library file
     * @param  string  $seqname     table name containing sequence (default is adodbseq)
     * @param  integer $startID     id to start with for a new sequence (default is 1)
     * @return integer              returns the sequence integer

@@ -66,7 +66,7 @@ dates of prior payments and adjustments that are put into secondary
 claims.','e') ?>
 
 <p><?php xl('The X12 files as well as the resulting HTML output reports are archived
-in the "era" subdirectory of the main OpenEMR installation directory.  You will
+in the "era" subdirectory of the main LibreEHR installation directory.  You will
 want to refer to these archives from time to time.  The URL is ','e') ?>
 <?php
 $url = ($_SERVER['HTTPS'] == 'on') ? 'https' : 'http';

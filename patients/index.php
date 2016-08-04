@@ -9,7 +9,7 @@
     //setting the session & other config options
     session_start();
 
-    //don't require standard openemr authorization in globals.php
+    //don't require standard libreehr authorization in globals.php
     $ignoreAuth = 1;
 
     //SANITIZE ALL ESCAPES
@@ -209,7 +209,7 @@
             </table>
         </form>
 
-        <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> OpenEMR</div>
+        <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> LibreEHR</div>
       </div>
     <?php } else { ?>
       <div id="wrapper" class="centerwrapper">
@@ -260,7 +260,7 @@
             <?php if (!(empty($hiddenLanguageField))) echo $hiddenLanguageField; ?>
 	</form>
     
-        <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> OpenEMR</div>
+        <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> LibreEHR</div>
       </div>
     <?php } ?>
 

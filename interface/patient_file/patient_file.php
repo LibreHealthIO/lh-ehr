@@ -7,7 +7,7 @@ setpid($_GET["set_pid"]);
 <head>
 <?php html_header_show();?>
 <TITLE>
-<?php echo $openemr_name ?>
+<?php echo $libreehr_name ?>
 </TITLE>
 <script type="text/javascript" src="../../library/topdialog.js"></script>
 

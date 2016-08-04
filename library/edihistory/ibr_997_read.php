@@ -21,7 +21,7 @@
  * 
  * @author Kevin McCormick
  * @link: http://www.open-emr.org
- * @package OpenEMR
+ * @package LibreEHR
  * @subpackage ediHistory
  */
  
@@ -331,7 +331,7 @@ function ibr_997_parse($seg_ar) {
 			
 		if ( $ar_seg[0] == "AK2" ) { 
 			// this segment describes accept/reject status of each claim
-			// if 276 claim status is sent by OpenEMR, 
+			// if 276 claim status is sent by LibreEHR, 
 			// then need to account for that possibility here
 			//   it is probably to sent results to a different csv file
 			//

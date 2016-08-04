@@ -19,7 +19,7 @@
  *
  * Type:     function<br>
  * Name:     amcCollect<br>
- * Purpose:  amcCollect in OpenEMR - Smarty templates<br>
+ * Purpose:  amcCollect in LibreEHR - Smarty templates<br>
  * 
  * @param array
  * @param Smarty

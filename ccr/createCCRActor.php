@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Garden State Health Systems <http://www.gshsys.com/>
  * @link    http://www.open-emr.org
  */
@@ -222,7 +222,7 @@ $row1 = sqlFetchArray($result[1]);
 	$e_Name = $ccr->createElement('Name', 'OEMR');
 	$e_InformationSystem->appendChild($e_Name);
   
-  $e_Type = $ccr->createElement('Type', 'OpenEMR');
+  $e_Type = $ccr->createElement('Type', 'LibreEHR');
 	$e_InformationSystem->appendChild($e_Type);
   
   $e_Version = $ccr->createElement('Version', '4.x');

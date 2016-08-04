@@ -86,7 +86,7 @@ global $ignoreAuth;
 // edit event case - if there is no association made, then insert one with the first facility
 /*if ( $eid ) {
     $selfacil = '';
-    $facility = sqlQuery("SELECT pc_facility, pc_multiple FROM openemr_postcalendar_events WHERE pc_eid = $eid");
+    $facility = sqlQuery("SELECT pc_facility, pc_multiple FROM libreehr_postcalendar_events WHERE pc_eid = $eid");
     if ( !$facility['pc_facility'] ) {
         $qmin = sqlQuery("SELECT MIN(id) as minId FROM facility");
         $min  = $qmin['minId'];
@@ -94,11 +94,11 @@ global $ignoreAuth;
         // multiple providers case
         if ( $GLOBALS['select_multi_providers'] ) {
             $mul  = $facility['pc_multiple'];
-            sqlStatement("UPDATE openemr_postcalendar_events SET pc_facility = $min WHERE pc_multiple = $mul");
+            sqlStatement("UPDATE libreehr_postcalendar_events SET pc_facility = $min WHERE pc_multiple = $mul");
         }
         // EOS multiple
 
-        sqlStatement("UPDATE openemr_postcalendar_events SET pc_facility = $min WHERE pc_eid = $eid");
+        sqlStatement("UPDATE libreehr_postcalendar_events SET pc_facility = $min WHERE pc_eid = $eid");
         $e2f = $minId;
     } else {
         $e2f = $facility['pc_facility'];
@@ -114,8 +114,8 @@ global $ignoreAuth;
 if ( $eid ) {
     $selfacil = '';
     $facility = sqlQuery("SELECT pc_facility, pc_multiple, pc_aid, facility.name
-                            FROM openemr_postcalendar_events
-                              LEFT JOIN facility ON (openemr_postcalendar_events.pc_facility = facility.id)
+                            FROM libreehr_postcalendar_events
+                              LEFT JOIN facility ON (libreehr_postcalendar_events.pc_facility = facility.id)
                               WHERE pc_eid = $eid");
     if ( !$facility['pc_facility'] ) {
         $qmin = sqlQuery("SELECT facility_id as minId, facility FROM users WHERE id = ".$facility['pc_aid']);
@@ -125,11 +125,11 @@ if ( $eid ) {
         // multiple providers case
         if ( $GLOBALS['select_multi_providers'] ) {
             $mul  = $facility['pc_multiple'];
-            sqlStatement("UPDATE openemr_postcalendar_events SET pc_facility = $min WHERE pc_multiple = $mul");
+            sqlStatement("UPDATE libreehr_postcalendar_events SET pc_facility = $min WHERE pc_multiple = $mul");
         }
         // EOS multiple
 
-        sqlStatement("UPDATE openemr_postcalendar_events SET pc_facility = $min WHERE pc_eid = $eid");
+        sqlStatement("UPDATE libreehr_postcalendar_events SET pc_facility = $min WHERE pc_eid = $eid");
         $e2f = $min;
         $e2f_name = $min_name;
     } else {
@@ -307,7 +307,7 @@ if ( $eid ) {
   if ($eid) {
 
     // what is multiple key around this $eid?
-    $row = sqlQuery("SELECT pc_multiple FROM openemr_postcalendar_events WHERE pc_eid = $eid");
+    $row = sqlQuery("SELECT pc_multiple FROM libreehr_postcalendar_events WHERE pc_eid = $eid");
 
     if ($GLOBALS['select_multi_providers'] && $row['pc_multiple']) {
         /* ==========================================
@@ -315,7 +315,7 @@ if ( $eid ) {
         ==========================================*/
 
         // obtain current list of providers regarding the multiple key
-        $up = sqlStatement("SELECT pc_aid FROM openemr_postcalendar_events WHERE pc_multiple={$row['pc_multiple']}");
+        $up = sqlStatement("SELECT pc_aid FROM libreehr_postcalendar_events WHERE pc_multiple={$row['pc_multiple']}");
         while ($current = sqlFetchArray($up)) {
             $providers_current[] = $current['pc_aid'];
         }
@@ -327,7 +327,7 @@ if ( $eid ) {
         $r1 = array_diff ($providers_current, $providers_new);
         if (count ($r1)) {
             foreach ($r1 as $to_be_removed) {
-            sqlQuery("DELETE FROM openemr_postcalendar_events WHERE pc_aid='$to_be_removed' AND pc_multiple={$row['pc_multiple']}");
+            sqlQuery("DELETE FROM libreehr_postcalendar_events WHERE pc_aid='$to_be_removed' AND pc_multiple={$row['pc_multiple']}");
             }
         }
 
@@ -336,7 +336,7 @@ if ( $eid ) {
         $r2 = array_diff ($providers_new, $providers_current);
         if (count ($r2)) {
             foreach ($r2 as $to_be_inserted) {
-                sqlInsert("INSERT INTO openemr_postcalendar_events ( pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility)
+                sqlInsert("INSERT INTO libreehr_postcalendar_events ( pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility)
                 VALUES ( " .
                     "'" . $_POST['form_category']             . "', " .
                     "'" . $row['pc_multiple']             . "', " .
@@ -366,7 +366,7 @@ if ( $eid ) {
     // after the two diffs above, we must update for remaining providers
    // those who are intersected in $providers_current and $providers_new
    foreach ($_POST['form_provider'] as $provider) {
-            sqlStatement("UPDATE openemr_postcalendar_events SET " .
+            sqlStatement("UPDATE libreehr_postcalendar_events SET " .
             "pc_catid = '"       . $_POST['form_category']             . "', " .
             "pc_pid = '"         . $_POST['form_pid']                  . "', " .
             "pc_title = '"       . $_POST['form_title']                . "', " .
@@ -399,7 +399,7 @@ if ( $eid ) {
             }
 
             // simple provider case
-            sqlStatement("UPDATE openemr_postcalendar_events SET " .
+            sqlStatement("UPDATE libreehr_postcalendar_events SET " .
             "pc_catid = '"       . $_POST['form_category']             . "', " .
             "pc_aid = '"         . $prov            . "', " .
             "pc_pid = '"         . $_POST['form_pid']                  . "', " .
@@ -442,12 +442,12 @@ if ( $eid ) {
 if (is_array($_POST['form_provider'])) {
 
     // obtain the next available unique key to group multiple providers around some event
-    $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM openemr_postcalendar_events");
+    $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM libreehr_postcalendar_events");
     $max = sqlFetchArray($q);
     $new_multiple_value = $max['max'] + 1;
 
     foreach ($_POST['form_provider'] as $provider) {
-    sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
+    sqlInsert("INSERT INTO libreehr_postcalendar_events ( " .
     "pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, " .
     "pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
     "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
@@ -478,7 +478,7 @@ if (is_array($_POST['form_provider'])) {
     } // foreach
 
 } else {
-sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
+sqlInsert("INSERT INTO libreehr_postcalendar_events ( " .
     "pc_catid, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, " .
     "pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
     "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
@@ -558,17 +558,17 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
         // =======================================
         if ($GLOBALS['select_multi_providers']) {
              // what is multiple key around this $eid?
-            $row = sqlQuery("SELECT pc_multiple FROM openemr_postcalendar_events WHERE pc_eid = $eid");
+            $row = sqlQuery("SELECT pc_multiple FROM libreehr_postcalendar_events WHERE pc_eid = $eid");
 			if ( $row['pc_multiple'] ) {
-				sqlStatement("DELETE FROM openemr_postcalendar_events WHERE pc_multiple = {$row['pc_multiple']}");
+				sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_multiple = {$row['pc_multiple']}");
 			} else {
-                                sqlStatement("DELETE FROM openemr_postcalendar_events WHERE pc_eid = $eid");
+                                sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_eid = $eid");
                         }
         // =======================================
         //  EOS multi providers case
         // =======================================
         } else {
-            sqlStatement("DELETE FROM openemr_postcalendar_events WHERE pc_eid = '$eid'");
+            sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_eid = '$eid'");
         }
  }
 
@@ -610,7 +610,7 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
 
  // If we are editing an existing event, then get its data.
  if ($eid) {
-  $row = sqlQuery("SELECT * FROM openemr_postcalendar_events WHERE pc_eid = $eid");
+  $row = sqlQuery("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = $eid");
   $date = $row['pc_eventDate'];
   $userid = $row['pc_aid'];
   $patientid = $row['pc_pid'];
@@ -657,7 +657,7 @@ sqlInsert("INSERT INTO openemr_postcalendar_events ( " .
 
  // Get event categories.
  $cres = sqlStatement("SELECT pc_catid, pc_catname, pc_recurrtype, pc_duration, pc_end_all_day " .
-  "FROM openemr_postcalendar_categories ORDER BY pc_catname");
+  "FROM libreehr_postcalendar_categories ORDER BY pc_catname");
 
  // Fix up the time format for AM/PM.
  $startampm = '1';

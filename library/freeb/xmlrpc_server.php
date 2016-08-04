@@ -1,7 +1,7 @@
 <?php
 require_once("xmlrpc.inc");
 require_once("xmlrpcs.inc");
-require_once("OpenemrBillingServer.class.php");
+require_once("LIBREEHRBillingServer.class.php");
 
 require_once(dirname(__FILE__) . "/../../includes/config.php");
 
@@ -14,7 +14,7 @@ if ($_SERVER['PHP_AUTH_USER'] == $GLOBALS['oer_config']['freeb']['username'] && 
 
 session_start();
 
-$oerbill = new OpenemrBillingServer($GLOBALS['xmlrpcerruser']);
+$oerbill = new LIBREEHRBillingServer($GLOBALS['xmlrpcerruser']);
 
 $s=new xmlrpc_server(false,false);
 

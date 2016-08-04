@@ -67,7 +67,7 @@ $GLOBALS['oer_config']['druglabels']['disclaimer'] =
 // Accounts Receivable support. Use one of the following numeric values:
 //   0 = None
 //   1 = Using SQL-Ledger
-//   2 = A/R internal to OpenEMR (recommended)
+//   2 = A/R internal to LibreEHR (recommended)
 //
 $GLOBALS['oer_config']['ws_accounting']['enabled'] = 2;
 

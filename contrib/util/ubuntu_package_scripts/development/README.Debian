@@ -1,18 +1,18 @@
-git-openemr for Debian
+git-libreehr for Debian
 ------------------------
 
 
 About:
 ------
-OpenEMR is a comprehensive Open Source Medical Practice Management
+LibreEHR is a comprehensive Open Source Medical Practice Management
 Application.
 This is a package to allow quick simple testing of most recent
-development code for OpenEMR (considered unstable) for testing purposes.
+development code for LibreEHR (considered unstable) for testing purposes.
 
 
 Instructions for use:
 ---------------------
-To use git-OpenEMR, go to http://localhost/git-openemr :  user is 'admin' and
+To use git-LibreEHR, go to http://localhost/git-libreehr :  user is 'admin' and
 password is 'pass' (recommend changing password after login).
 
 To ensure a consistent look and feel through out the application using
@@ -21,23 +21,23 @@ Firefox is recommended.
 
 Documentation:
 --------------
-The OpenEMR project home page and wiki (documentation) can be found at
+The LibreEHR project home page and wiki (documentation) can be found at
 http://www.open-emr.org .
 
 
 Support Forums:
 ---------------
-The OpenEMR forums can be found at http://www.open-emr.org
+The LibreEHR forums can be found at http://www.open-emr.org
 
 
 Reporting Bugs:
 ---------------
-Report to the OpenEMR forums at http://www.open-emr.org
+Report to the LibreEHR forums at http://www.open-emr.org
 
 
-Send us an email to help support OpenEMR:
+Send us an email to help support LibreEHR:
 -----------------------------------------
-We pursue grants to help fund the future development of OpenEMR.  To
+We pursue grants to help fund the future development of LibreEHR.  To
 apply for these grants, we need to estimate how many times this program 
 is installed and how many practices are evaluating or using this software.
 It would be awesome if you would email us at president@oemr.org if you
@@ -46,7 +46,7 @@ this software, the better, but even just sending us an email stating you
 just installed it is very helpful.
 
 
-Authors of debianized OpenEMR:
+Authors of debianized LibreEHR:
 ------------------------------
 -- Brady Miller <brady@sparmy.com> Tue, 29 Mar 2016 17:29:30 -0700
 -- Amalu Obinna <amaluobinna@aol.com> Tue, 29 Mar 2016 17:29:30 -0700

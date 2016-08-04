@@ -14,7 +14,7 @@ use DBI;
 #######################################################################
 #   This program is to be run frequently via the system crontab.  On
 # each run it will move scanned-in documents from a shared directory
-# into matching locations in the openemr/documents directory, and also
+# into matching locations in the libreehr/documents directory, and also
 # update the database accordingly.
 #  Each scanned-in file must be placed into a directory corresponding
 # to its category, and its name must begin with the patient's pubpid
@@ -23,7 +23,7 @@ use DBI;
 #######################################################################
 # NOTE: This is contributed as-is for the possible benefit of those who
 # may wish to build on it.  As of this writing it is not known how well
-# it works, if at all, with current OpenEMR.
+# it works, if at all, with current LibreEHR.
 #######################################################################
 
 #######################################################################
@@ -32,8 +32,8 @@ use DBI;
 
 # Parameters for MySQL database connections:
 #
-my $DBNAME = "openemr"; # database name
-my $DBUSER = "openemr"; # database user name
+my $DBNAME = "libreehr"; # database name
+my $DBUSER = "libreehr"; # database user name
 my $DBPASS = "secret";  # database user's password
 
 # Log file location:
@@ -44,9 +44,9 @@ my $INSLOG = "/mnt/drive2/emr_scan_load.log";
 #
 my $INPATH = "/mnt/drive2/scan_docs";
 
-# Base directory for OpenEMR documents:
+# Base directory for LibreEHR documents:
 #
-# my $OUTPATH = "/usr/local/apache2/htdocs/openemr/documents";
+# my $OUTPATH = "/usr/local/apache2/htdocs/libreehr/documents";
 my $OUTPATH = "/mnt/drive2/documents";
 
 # This should specify the user and group that the web server runs as:
@@ -129,7 +129,7 @@ sub is_doc_available($$) {
 	my $query = "SELECT " .
     "pc_catid, pc_eventDate, pc_endDate, pc_recurrtype, pc_recurrspec, " .
     "pc_startTime, pc_endTime, pc_alldayevent " .
-    "FROM openemr_postcalendar_events " .
+    "FROM libreehr_postcalendar_events " .
     "WHERE pc_aid = '$docid' AND " .
     "( pc_catid = 2 OR pc_catid = 3 OR pc_duration >= 21600 ) AND " .
     "pc_eventDate <= '$current_date' AND pc_endDate >= '$current_date' " .
@@ -275,7 +275,7 @@ sub generate_note($$$) {
   }
 
   # Build the text of the note including timestamp and addressing.
-  # The document ID is also included, so that OpenEMR can easily
+  # The document ID is also included, so that LibreEHR can easily
   # look up and display the document when the note is viewed.
   #
   my @tm = localtime; $tm[5] += 1900; $tm[4] += 1;

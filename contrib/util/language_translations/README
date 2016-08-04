@@ -1,12 +1,12 @@
 This directory holds the developer tools to maintain the language translations.
-These were created during development of OpenEMR version 3.0.2
+These were created during development of LibreEHR version 3.0.2
 
 The collectConstants.pl script can be used to collect all of the constants
-from the openemr source code.  This script uses the manuallyAddedConstants.txt and 
+from the libreehr source code.  This script uses the manuallyAddedConstants.txt and 
 manuallyRemovedConstants.txt list to manually add or remove constants from
 the final output. Note that it also requires a list of old constants
 (this can be over-rided) to ensure no old constants are lost (ie ensure
-previous versions of openemr are still supported) Instructions are included in
+previous versions of libreehr are still supported) Instructions are included in
 the file.
   -The manuallyRemovedConstants.txt file includes constants to filter out.
    This is a good place to place any 'junk' constants that are erroneously
@@ -65,6 +65,6 @@ The currentLanguage_utf8.sql and currentLanguage_latin1.sql holds current
 sql tables dumpfile.  Latest releases of this are available at:
 http://open-emr.org/wiki/index.php/Install_Translations
 
-To insert these translation tables into your OpenEMR refer to
+To insert these translation tables into your LibreEHR refer to
 instructions at this page in the wiki:
 http://open-emr.org/wiki/index.php/Install_Translations

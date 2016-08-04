@@ -75,7 +75,7 @@ if (!isset($_SESSION["last_update"])) {
 
 function authNewSession ($user, $pass, $provider)
 {
-    // check to see if the user belongs to *any* OpenEMR groups in phpGACL -- JRM
+    // check to see if the user belongs to *any* LibreEHR groups in phpGACL -- JRM
     global $phpgacl_location;
     if (isset ($phpgacl_location)) {
         if (acl_get_group_titles($user) == 0) return false;

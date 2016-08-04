@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Teny <teny@zhservices.com> 
@@ -572,7 +572,7 @@ function writeITLine($it_array) {
   ++$opt_line_no;
   $bgcolor = "#" . (($opt_line_no & 1) ? "ddddff" : "ffdddd");
   echo " <tr bgcolor='$bgcolor'>\n";
-  echo ctSelector($opt_line_no, $it_array, 'category', $ISSUE_TYPE_CATEGORIES, xl('OpenEMR Application Category'));
+  echo ctSelector($opt_line_no, $it_array, 'category', $ISSUE_TYPE_CATEGORIES, xl('LibreEHR Application Category'));
   echo ctGenCBox($opt_line_no, $it_array, 'active', xl('Is this active?'));
   echo ctGenCell($opt_line_no, $it_array, 'ordering' , 10, 10, xl('Order'));
   echo ctGenCell($opt_line_no, $it_array, 'type' , 20, 75, xl('Issue Type'));
@@ -883,7 +883,7 @@ while ($row = sqlFetchArray($res)) {
   <td><b><?php xl('Check Out' ,'e'); ?></b></td>
   <td><b><?php xl('Code(s)'   ,'e');?></b></td>
 <?php } else if ($list_id == 'issue_types') { ?>
-  <td><b><?php echo xlt('OpenEMR Application Category'); ?></b></td>
+  <td><b><?php echo xlt('LibreEHR Application Category'); ?></b></td>
   <td><b><?php echo xlt('Active'); ?></b></td>
   <td><b><?php echo xlt('Order'); ?></b></td>
   <td><b><?php echo xlt('Type'); ?></b></td>

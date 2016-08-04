@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PluginSystem\\' => array($baseDir . '/pluginsystem'),
-    'Framework\\' => array($vendorDir . '/openemr/Framework'),
+    'Framework\\' => array($vendorDir . '/libreehr/Framework'),
 );

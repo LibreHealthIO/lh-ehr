@@ -1,8 +1,8 @@
 <?php
 /**
-* Sql functions/classes for OpenEMR.
+* Sql functions/classes for LibreEHR.
 *
-* Includes classes and functions that OpenEMR uses
+* Includes classes and functions that LibreEHR uses
 * to interact with SQL.
 *
 * LICENSE: This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
 * 
-* @package   OpenEMR
+* @package   LibreEHR
 * @link      http://www.open-emr.org
 */
 
@@ -26,14 +26,14 @@ require_once(dirname(__FILE__) . "/adodb/drivers/adodb-mysqli.inc.php");
 require_once(dirname(__FILE__) . "/log.inc");
 
 /**
-* ADODB_mysql class wrapper to ensure proper auditing in OpenEMR.
+* ADODB_mysql class wrapper to ensure proper auditing in LibreEHR.
 *
 * @author  Kevin Yeh <kevin.y@integralemr.com>
 */
 class ADODB_mysqli_log extends ADODB_mysqli
 {
         /**
-        * ADODB Execute function wrapper to ensure proper auditing in OpenEMR.
+        * ADODB Execute function wrapper to ensure proper auditing in LibreEHR.
         *
         * @param  string  $sql         query
         * @param  array   $inputarr    binded variables array (optional)
@@ -62,9 +62,9 @@ class ADODB_mysqli_log extends ADODB_mysqli
         }
 
         /**
-        * ADODB Execute function wrapper to skip auditing in OpenEMR.
+        * ADODB Execute function wrapper to skip auditing in LibreEHR.
         *
-        * Bypasses the OpenEMR auditing engine.
+        * Bypasses the LibreEHR auditing engine.
         *
         * @param  string  $sql         query
         * @param  array   $inputarr    binded variables array (optional)
@@ -76,10 +76,10 @@ class ADODB_mysqli_log extends ADODB_mysqli
         }
 
         /*
-        * ADODB GenID function wrapper to work with OpenEMR.
+        * ADODB GenID function wrapper to work with LibreEHR.
         *
         * Need to override to fix a bug where call to GenID was updating
-        * sequences table but always returning a zero with the OpenEMR audit
+        * sequences table but always returning a zero with the LibreEHR audit
         * engine both on and off. Note this bug only appears to occur in recent
         * php versions on windows. The fix is to use the ExecuteNoLog() function
         * rather than the Execute() functions within this function (otherwise,
@@ -132,7 +132,7 @@ $GLOBALS['dbh'] = $database->_connectionID;
 if (!$disable_utf8_flag) {
  $success_flag = $database->Execute("SET NAMES 'utf8'");
   if (!$success_flag) {
-   error_log("PHP custom error: from openemr library/sql.inc  - Unable to set up UTF8 encoding with mysql database: ".getSqlLastError(), 0);
+   error_log("PHP custom error: from libreehr library/sql.inc  - Unable to set up UTF8 encoding with mysql database: ".getSqlLastError(), 0);
   }
 }
 
@@ -153,7 +153,7 @@ if (!$GLOBALS['dbh']) {
 }//if no connection
 
 /**
-* Standard sql query in OpenEMR.
+* Standard sql query in LibreEHR.
 *
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection. Will continue to
@@ -183,7 +183,7 @@ function sqlStatement($statement, $binds=false )
 }
 
 /**
-* Specialized sql query in OpenEMR that skips auditing.
+* Specialized sql query in LibreEHR that skips auditing.
 *
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection. Will continue to
@@ -214,7 +214,7 @@ function sqlStatementNoLog($statement, $binds=false )
 }
 
 /**
-* sqlStatement() function wrapper for CDR engine in OpenEMR.
+* sqlStatement() function wrapper for CDR engine in LibreEHR.
 * Allows option to turn on/off auditing specifically for the
 * CDR engine.
 * 
@@ -261,7 +261,7 @@ function sqlFetchArray($r)
 }
 
 /**
-* Standard sql insert query in OpenEMR.
+* Standard sql insert query in LibreEHR.
 *
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection. This function
@@ -290,7 +290,7 @@ function sqlInsert($statement, $binds=false)
 }
 
 /**
-* Specialized sql query in OpenEMR that only returns
+* Specialized sql query in LibreEHR that only returns
 * the first row of query results as an associative array.
 *
 * Function that will allow use of the adodb binding
@@ -319,7 +319,7 @@ function sqlQuery($statement, $binds=false)
 }
 
 /**
-* Specialized sql query in OpenEMR that bypasses the auditing engine
+* Specialized sql query in LibreEHR that bypasses the auditing engine
 * and only returns the first row of query results as an associative array.
 *
 * Function that will allow use of the adodb binding
@@ -351,7 +351,7 @@ function sqlQueryNoLog($statement, $binds=false)
 }
 
 /**
-* Specialized sql query in OpenEMR that ignores sql errors, bypasses the
+* Specialized sql query in LibreEHR that ignores sql errors, bypasses the
 * auditing engine and only returns the first row of query results as an
 * associative array.
 *
@@ -385,7 +385,7 @@ function sqlQueryNoLogIgnoreError($statement, $binds=false)
 }
 
 /**
-* sqlQuery() function wrapper for CDR engine in OpenEMR.
+* sqlQuery() function wrapper for CDR engine in LibreEHR.
 * Allows option to turn on/off auditing specifically for the
 * CDR engine.
 *
@@ -407,7 +407,7 @@ function sqlQueryCdrEngine($statement, $binds=false )
 }
 
 /**
-* Specialized sql query in OpenEMR that skips auditing.
+* Specialized sql query in LibreEHR that skips auditing.
 *
 * This function should only be used in very special situations.
 *
@@ -483,7 +483,7 @@ function sqlNumRows($r)
 }
 
 /**
-* Error function for OpenEMR sql functions
+* Error function for LibreEHR sql functions
 *
 * @param string $statement
 * @param string $sqlerr
@@ -520,7 +520,7 @@ function generate_id () {
 }
 
 /**
-* Deprecated function. Standard sql query in OpenEMR.
+* Deprecated function. Standard sql query in LibreEHR.
 *
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection. Will continue to

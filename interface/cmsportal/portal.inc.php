@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package OpenEMR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  */
 
@@ -43,8 +43,8 @@ function cms_portal_call($args) {
   return unserialize($presult);
 }
 
-// Look up the OpenEMR patient matching this request. More or less than 1 is an error.
-function lookup_openemr_patient($wp_login) {
+// Look up the LibreEHR patient matching this request. More or less than 1 is an error.
+function lookup_libreehr_patient($wp_login) {
   if (empty($wp_login)) die(xlt('The patient was not logged in when submitting this form'));
   $ptres = sqlStatement("SELECT pid FROM patient_data WHERE cmsportal_login = ?", array($wp_login));
   if (sqlNumRows($ptres) < 1) die(xlt('There is no patient with portal login') . " '$wp_login'");

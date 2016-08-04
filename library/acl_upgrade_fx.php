@@ -18,7 +18,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
 *
-* @package   OpenEMR
+* @package   LibreEHR
 * @author    Brady Miller <brady@sparmy.com>
 * @link      http://www.open-emr.org
 */
@@ -187,7 +187,7 @@ function addObjectAcl($section_name, $section_title, $object_name, $object_title
  * @param  string  $section_title  Title of section
  * @param  string  $object_name    Identifier of object
  * @param  string  $object_title   Title of object
- * @param  string  $order_number   number to determine order in list. used in sensitivities to order the choices in openemr
+ * @param  string  $order_number   number to determine order in list. used in sensitivities to order the choices in libreehr
  */
 function addObjectAclWithOrder($section_name, $section_title, $object_name, $object_title, $order_number) {
         global $gacl;
@@ -214,7 +214,7 @@ function addObjectAclWithOrder($section_name, $section_title, $object_name, $obj
  * @param  string  $section_title  Title of section
  * @param  string  $object_name    Identifier of object
  * @param  string  $object_title   Title of object
- * @param  string  $order_number   number to determine order in list. used in sensitivities to order the choices in openemr
+ * @param  string  $order_number   number to determine order in list. used in sensitivities to order the choices in libreehr
  */
 function editObjectAcl($section_name, $section_title, $object_name, $object_title, $order_number) {
         global $gacl;

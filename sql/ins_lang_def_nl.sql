@@ -1,6 +1,6 @@
 -- MySQL dump 10.9
 --
--- Host: localhost    Database: openemrdbc
+-- Host: localhost    Database: libreehrdbc
 -- ------------------------------------------------------
 -- Server version	4.1.20
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;

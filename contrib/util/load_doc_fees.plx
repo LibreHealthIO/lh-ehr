@@ -12,7 +12,7 @@ use DBI;
 # of the License, or (at your option) any later version.
 #
 # This loads CPT codes and their modifiers and fees into the "codes"
-# table of OpenEMR.  If the row already exists then only the fee is
+# table of LibreEHR.  If the row already exists then only the fee is
 # modified, otherwise a new row is created with no description.
 # See also load_cpt_desc.plx which loads the descriptions.
 #
@@ -30,7 +30,7 @@ use DBI;
 #               Parameters that you should customize                  #
 #######################################################################
 
-my $DBNAME         = "openemr";  # database name
+my $DBNAME         = "libreehr";  # database name
 my $CARRIER        = "05440";    # Tennessee
 my $FEE_MULTIPLIER = 1.5;        # fee multiplier
 
