@@ -258,7 +258,11 @@ $GLOBALS_METADATA = array(
     'online_support_link' => array(
       xl('Online Support Link'),
       'text',                           // data type
+<<<<<<< HEAD
       'http://open-emr.org/',
+=======
+      'http://libreehr.github.io',
+>>>>>>> refs/remotes/origin/master
       xl('URL for LibreEHR support.')
     ),
 
@@ -819,12 +823,15 @@ $GLOBALS_METADATA = array(
     ), 
 
     'cash_receipts_report_invoice' => array(
-      xl('Display Invoice Number or Patient Name in the Cash Receipt Report'),
-      array(
-        '0' => xl('Invoice Number'),
-        '1' => xl('Patient Name'),  
-  ),
-    
+  xl('Display Invoice Number or Patient Name in the Cash Receipt Report'),
+  array(
+    '0' => xl('Invoice Number'),
+    '1' => xl('Patient Name'),  
+  ),   
+  '0',                              // default = 0
+  xl('Display Invoice Number or Patient Name in the Cash Receipt Report.')
+), 
+),
   // Billing Tab
     
   'Billing' => array(
