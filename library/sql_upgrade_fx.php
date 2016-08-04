@@ -154,38 +154,7 @@ function listExists($option_id) {
   if (empty($row)) return false;
   return true;  
 }
-/**
-* Function to migrate the Clickoptions settings (if exist) from the codebase into the database.
-*  Note this function is only run once in the sql upgrade script (from 4.1.1 to 4.1.2) if the
-*  issue_types sql table does not exist.
-*/
-function clickOptionsMigrate() {
-  // If the clickoptions.txt file exist, then import it.
-  if (file_exists(dirname(__FILE__)."/../sites/".$_SESSION['site_id']."/clickoptions.txt")) {
-    $file_handle = fopen(dirname(__FILE__)."/../sites/".$_SESSION['site_id']."/clickoptions.txt", "rb");
-    $seq  = 10;
-    $prev = '';
-    echo "Importing clickoption setting<br>";
-    while (!feof($file_handle) ) {
-      $line_of_text = fgets($file_handle);
-      if (preg_match('/^#/', $line_of_text)) continue;
-      if ($line_of_text == "") continue;
-      $parts = explode('::', $line_of_text);
-      $parts[0] = trim(str_replace("\r\n","",$parts[0]));
-      $parts[1] = trim(str_replace("\r\n","",$parts[1]));
-      if ($parts[0] != $prev) {
-        $sql1 = "INSERT INTO list_options (`list_id`,`option_id`,`title`) VALUES (?,?,?)";
-        SqlStatement($sql1, array('lists',$parts[0].'_issue_list',ucwords(str_replace("_"," ",$parts[0])).' Issue List') );
-        $seq = 10;
-      }
-      $sql2 = "INSERT INTO list_options (`list_id`,`option_id`,`title`,`seq`) VALUES (?,?,?,?)";
-      SqlStatement($sql2, array($parts[0].'_issue_list', $parts[1], $parts[1], $seq) );
-      $seq = $seq + 10;
-      $prev = $parts[0];
-    }
-    fclose($file_handle);
-  }
-}
+
 /**
 *  Function to create list Occupation.
 *  Note this function is only run once in the sql upgrade script  if the list Occupation does not exist
@@ -484,17 +453,7 @@ function upgradeFromSqlFile($filename) {
     	}
     	if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
     }
-    else if (preg_match('/^#IfNotMigrateClickOptions/', $line)) {
-      if (tableExists("issue_types")) {
-        $skipping = true;
-      }
-      else {
-        // Create issue_types table and import the Issue Types and clickoptions settings from codebase into the database
-        clickOptionsMigrate(); 
-        $skipping = false;
-      }
-      if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
-    }
+
     else if (preg_match('/^#IfNotListOccupation/', $line)) {
       if ( (listExists("Occupation")) || (!columnExists('patient_data','occupation')) ) {
         $skipping = true;
