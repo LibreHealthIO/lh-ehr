@@ -218,12 +218,6 @@ function popup_close() {
     delete_document($row['id']);
    }
 
-   // This table exists only for athletic teams.
-   $tmp = sqlQuery("SHOW TABLES LIKE 'daily_fitness'");
-   if (!empty($tmp)) {
-    row_delete("daily_fitness", "pid = '$patient'");
-   }
-
    row_delete("patient_data", "pid = '$patient'");
   }
   else if ($encounterid) {
