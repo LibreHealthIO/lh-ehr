@@ -151,7 +151,8 @@ function showDocument(&$drow) {
   echo "<td colspan='3'>".
     htmlspecialchars( xl('Document') . ": " . basename($drow['url']) . ' (' . xl_document_category($drow['name']) . ')', ENT_NOQUOTES) .
     "</td>\n";
-
+  echo "<td colspan=5>&nbsp;</td>\n";
+  echo "</tr>\n";
 function generatePageElement($start,$pagesize,$billing,$issue,$text)
 {
     if($start<0)
