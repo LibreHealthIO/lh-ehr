@@ -147,8 +147,8 @@ function cloneClicked() {
      Please refer to libreehr/Documentation. Many forms and other useful scripts can be found at libreehr/contrib.</li>
  <li>To ensure a consistent look and feel through out the application using
      <a href='http://www.mozilla.org/products/firefox/'>Firefox</a> is recommended.</li>
- <li>The LibreEHR project home page, documentation, and forums can be found at <a href = "http://www.open-emr.org" target="_blank">http://www.open-emr.org</a></li>
- <li>We pursue grants to help fund the future development of LibreEHR.  To apply for these grants, we need to estimate how many times this program is installed and how many practices are evaluating or using this software.  It would be awesome if you would email us at <a href="mailto:president@oemr.org">president@oemr.org</a> if you have installed this software. The more details about your plans with this software, the better, but even just sending us an email stating you just installed it is very helpful.</li>
+ <li>The LibreEHR project home page, documentation, and forums can be found at <a href = "https://libreehr.github.io" target="_blank">LibreEHR</a></li>
+ <li>We pursue grants to help fund the future development of LibreEHR.  Please contact us via our website to let us know how you use LibreEHR.  This information is valuable for evaluating the benefits of LibreEHR to the medical community worldwide, and serves as a great way for you to advise us on how to serve you better.</li>
 </ul>
 <p>
 We recommend you print these instructions for future reference.
