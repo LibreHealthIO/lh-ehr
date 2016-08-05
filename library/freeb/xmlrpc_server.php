@@ -2,9 +2,7 @@
 require_once("xmlrpc.inc");
 require_once("xmlrpcs.inc");
 require_once("LIBREEHRBillingServer.class.php");
-
-require_once(dirname(__FILE__) . "/../../includes/config.php");
-
+require_once $GLOBALS['OE_SITE_DIR'] . "/config.php";
 $auth=false; 
 
 if ($_SERVER['PHP_AUTH_USER'] == $GLOBALS['oer_config']['freeb']['username'] && $_SERVER['PHP_AUTH_PW'] == $GLOBALS['oer_config']['freeb']['password']) {
