@@ -16,17 +16,15 @@ $encdate = SqlFetchArray($datequery);
 $old_date = strtotime($encdate['date']);
 $todays_date = strtotime(date("Ymd"));
 if($old_date+(86400) < $todays_date) {
-echo ("It is not permitted to enter a Review of Systems form in an encounter that is dated earlier than 3 days prior to today's date.");
+echo xlt('It is not permitted to enter a Review of Systems form in an encounter that is dated earlier than 3 days prior to today\'s date.');
 } else {
-
 ?>
-
-<a href="javascript:top.restoreSession();document.my_form.submit();" class="link_submit">[Save]</a>
+<a href="javascript:top.restoreSession();document.my_form.submit();" class="link_submit">[<?php echo xlt('Save');?>]</a>
 <?php echo xlt('You must EDIT the form after saving and reviewing to finalize
 <a href="<?php echo $GLOBALS['form_exit_url']; ?>" class="link_submit"
- onclick="top.restoreSession()">[Don't Save]</a>
+ onclick="top.restoreSession()">[<?php echo xlt('Don\'t Save');?>]</a>
 <br>
-<?php echo xlt('You must EDIT the form after saving and reviewing to finalize.
+<?php echo xlt('You must EDIT the form after saving and reviewing to finalize.');?>
 	
 	<table id='ros'>
 	
