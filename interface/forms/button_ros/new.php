@@ -8,7 +8,9 @@ formHeader("Form: button_ros");
 <form method=post action="<?echo $rootdir;?>/forms/button_ros/save.php?mode=new" name="my_form">
 
  
-<?php $datequery = sqlStatement("SELECT date FROM form_encounter WHERE encounter = $encounter");
+<?php
+$tempquery = "SELECT date FROM form_encounter WHERE encounter = $encounter";
+ $datequery = sqlStatement($tempquery);
 $encdate = SqlFetchArray($datequery);
 
 $old_date = strtotime($encdate['date']);

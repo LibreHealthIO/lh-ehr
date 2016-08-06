@@ -16,19 +16,13 @@ $newid = formSubmit("form_button_ros", $_POST, $_GET["id"], $userauthorized);
 //save the cfars form using the forms api to redirect back to encounter
 addForm($encounter, "ROS", $newid, "button_ros", $pid, $userauthorized);
 }elseif ($_GET["mode"] == "update") {
-sqlInsert("update form_button_ros set pid = {$_SESSION["pid"]},groupname='".$_SESSION["authProvider"]."',user='".$_SESSION["authUser"]."',authorized=$userauthorized,activity=1, date = NOW(),
+$tempquery= ("update form_button_ros set pid = {$_SESSION["pid"]},groupname='".$_SESSION["authProvider"]."',user='".$_SESSION["authUser"]."',authorized=$userauthorized,activity=1, date = NOW(),
 GEN1 ='".$_POST["GEN1"]."',
 GEN2 ='".$_POST["GEN2"]."',
 GEN3 ='".$_POST["GEN3"]."',
 GEN4 ='".$_POST["GEN4"]."',
 GEN5 ='".$_POST["GEN5"]."',
 GEN6 =' ".$_POST["GEN6"]."',
-  
-
-
-
-
-
 GEN_notes ='".$_POST["GEN_notes"]."',
 EYES1 ='".$_POST["EYES1"]."',
 EYES2 ='".$_POST["EYES2"]."',
@@ -125,6 +119,8 @@ DERM5 ='".$_POST["DERM5"]."',
 DERM6 ='".$_POST["DERM6"]."',
 DERM_notes ='".$_POST["DERM_notes"]."',
 finalize ='".$_POST["finalize"]."' where id=$id");
+
+sqlInsert($tempquery);
 }
 
                        

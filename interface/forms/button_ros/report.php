@@ -12,7 +12,8 @@ $obj = formFetch("form_button_ros", $id);
 <br></br>
 
 <?php
- $res1 = sqlStatement("SELECT sex FROM patient_data WHERE pid = $pid");
+$tempquery = "SELECT sex FROM patient_data WHERE pid = $pid";
+ $res1 = sqlStatement($tempquery);
 $result1 = SqlFetchArray($res1); 
 $gender=$result1['sex'];
 
