@@ -1014,3 +1014,58 @@ height: 300px !important;
 .report_search_bar{
 	background-color:#EADDB4;
 }
+
+/*review of systems checkbox buttons*/
+#ros {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#ros td, #ros th {
+    font-size: 1em;
+    padding: 3px 7px 2px 7px;
+}
+
+#ros th {
+    font-size: 1.1em;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #A7C942;
+    color: #ffffff;
+}
+
+#ros tr.alt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+
+.checkbox-button {
+	border: 2px solid grey;
+	padding: .2em;
+  margin: 4pt;
+}
+.checkbox-button input[type=checkbox] {
+	display: none;
+}
+.checkbox-button label {
+	text-size: 16pt;
+	background-color: gray;
+  color: white;
+}
+.checkbox-button input[type=checkbox]:checked + label {
+  XXfont-weight: bold;
+ 	color: black;
+	background-color: white;
+}
+
+label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
