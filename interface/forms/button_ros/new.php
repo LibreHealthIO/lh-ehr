@@ -20,7 +20,6 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 } else {
 ?>
 <a href="javascript:top.restoreSession();document.my_form.submit();" class="link_submit">[<?php echo xlt('Save');?>]</a>
-<?php echo xlt('You must EDIT the form after saving and reviewing to finalize
 <a href="<?php echo $GLOBALS['form_exit_url']; ?>" class="link_submit"
  onclick="top.restoreSession()">[<?php echo xlt('Don\'t Save');?>]</a>
 <br>

@@ -15,7 +15,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 
  <input type=checkbox name='finalize' <? if ($obj{"finalize"} == "on") {echo "checked";};?>>&nbsp;<B><?php echo xlt('Check here to finalize this form:'); ?></B><BR>
  <?}else{
-		 echo xlt('This form has been finalized and may not be edited'); ."!<BR>";?>
+		 echo xlt('This form has been finalized and may not be edited'); echo"!<BR>";?>
  		<a href="<?php echo $GLOBALS['form_exit_url']; ?>" class="link" onclick="top.restoreSession()">[<?php echo xlt('RETURN TO ENCOUNTER'); ?>]</a>
  <?}?>
 <BR>
@@ -657,7 +657,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?>'); ?> 
+		<?php echo xlt('Note abnormalities:'); ?> 
 					<TEXTAREA NAME="DERM_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"DERM_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
