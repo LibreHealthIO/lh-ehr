@@ -77,6 +77,7 @@ else {
   // Everything else
   $mysql_bin_dir       = '/usr/bin';
   $perl_bin_dir        = '/usr/bin';
+  $sql_admin_tool_url  = 'http://localhost/phpmyadmin';
   $temporary_files_dir = '/tmp';
   $backup_log_dir      = '/tmp';
 }
@@ -258,8 +259,8 @@ $GLOBALS_METADATA = array(
     'online_support_link' => array(
       xl('Online Support Link'),
       'text',                           // data type
-      'http://libreehr.github.io',
-      xl('URL for LibreEHR support.')
+      'http://libreehr.org',
+      xl('URL for LibreEHR Website.')
     ),
 
     'support_phone_number' => array(
@@ -557,11 +558,11 @@ $GLOBALS_METADATA = array(
       xl('Removes the Chart Tracker feature')
     ),
 
-    'disable_phpmyadmin_link' => array(
-     xl('Disable phpMyAdmin'),
+    'disable_sql_admin_link' => array(
+     xl('Disable SQL Admin Tool Link'),
      'bool',                            // data type
      '0',                               // default = false
-     xl('Removes support for phpMyAdmin')
+     xl('Removes menu selection for configured SQL Admin Tool')
     ),
 
     'disable_immunizations' => array(
@@ -1806,6 +1807,12 @@ $GLOBALS_METADATA = array(
       $perl_bin_dir,                    // default
       xl('Full path to directory containing Perl executables.')
     ),
+    'sql_admin_tool_url' => array(
+      xl('URL path to SQL Admin Tool'),
+      'text',                         // data type
+      $sql_admin_tool_url,            // default set at top
+        xl('URL path to SQL Admin Tool such as PHPMyAdmin or MySQL WorkBench'),
+    ),
 
     'temporary_files_dir' => array(
       xl('Path to Temporary Files'),
@@ -2050,8 +2057,8 @@ $GLOBALS_METADATA = array(
       xl('Enable NewCrop eRx Service'),
       'bool',
       '0',
-      xl('Enable NewCrop eRx Service.') + ' ' +
-      xl('Contact Medical Information Integration, LLC at http://mi-squared.com or ZH Healthcare at http://zhservices.com for subscribing to the NewCrop eRx service.')
+      xl('Enable NewCrop eRx Service.') . ' ' .
+      xl('Contact Medical Information Integration, LLC at http://mi-squared.com to subscribe.')
     ),
 
     'erx_newcrop_path' => array(

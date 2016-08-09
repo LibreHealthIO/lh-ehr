@@ -147,7 +147,7 @@ function cloneClicked() {
      Please refer to libreehr/Documentation. Many forms and other useful scripts can be found at libreehr/contrib.</li>
  <li>To ensure a consistent look and feel through out the application using
      <a href='http://www.mozilla.org/products/firefox/'>Firefox</a> is recommended.</li>
- <li>The LibreEHR project home page, documentation, and forums can be found at <a href = "https://libreehr.github.io" target="_blank">LibreEHR</a></li>
+ <li>The LibreEHR project home page, documentation, and forums can be found at <a href = "https://libreehr.org" target="_blank">LibreEHR</a></li>
  <li>We pursue grants to help fund the future development of LibreEHR.  Please contact us via our website to let us know how you use LibreEHR.  This information is valuable for evaluating the benefits of LibreEHR to the medical community worldwide, and serves as a great way for you to advise us on how to serve you better.</li>
 </ul>
 <p>
