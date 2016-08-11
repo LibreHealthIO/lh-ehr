@@ -7,7 +7,6 @@
 require_once(dirname(__FILE__) . "/../globals.php");
 require_once $GLOBALS['OE_SITE_DIR'] . "/config.php";
 
-$fconfig = $GLOBALS['oer_config']['freeb'];
 $content_type = "text/plain";
 $claim_file_dir = $GLOBALS['OE_SITE_DIR'] . "/edi/";
 

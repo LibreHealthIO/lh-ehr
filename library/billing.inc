@@ -51,12 +51,10 @@ function clearBilling($id)
     sqlStatement("update billing set justify = '' where id = '$id'");
 }
 
-// This function supports the Billing page (billing_process.php), freeb
-// processing (process_bills.php), and initiation of secondary processing
+// This function supports the Billing page (billing_process.php and initiation of secondary processing
 // (sl_eob.inc.php).  It is called in the following situations:
 //
-// * billing_process.php sets bill_time, bill_process, payer and target on
-//   queueing a claim for freeb processing.  Create claims row.
+
 // * billing_process.php sets claim status to 2, and payer, on marking a
 //   claim as billed without actually generating any billing.  Create a
 //   claims row.  In this case bill_process will remain at 0 and process_time
@@ -66,11 +64,7 @@ function clearBilling($id)
 // * billing_process.php sets claim status to 2 (billed), bill_process to 2,
 //   process_time and process_file after calling gen_x12_837.  Claims row
 //   already exists.
-// * process_bills.php sets bill_process to 2, process_time, and process_file
-//   after invoking freeb to process a claim.  Claims row already exists.
-// * billing_process.php sets claim status to 2 (billed) after creating
-//   an electronic freeb batch (hcfa-only with recent changes).  Claims
-//   row already exists.
+// * process_bills.php sets bill_process to 2, process_time.  Claims row already exists.
 // * EOB posting updates claim status to mark a payer as done.  Claims row
 //   already exists.
 // * EOB posting reopens an encounter for billing a secondary payer.  Create

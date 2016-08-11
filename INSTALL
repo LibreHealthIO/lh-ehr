@@ -84,7 +84,7 @@ libreehr/interface/modules/zend_modules/config/application.config.php.
 In linux, these can be set by "chmod a+w filename"
 command to grant global write permissions to the file. The directories include
 libreehr/gacl/admin/templates_c, libreehr/sites/default/edi,
-libreehr/sites/default/era, libreehr/sites/default/documents, libreehr/library/freeb,
+libreehr/sites/default/era, libreehr/sites/default/documents,
 libreehr/custom/letter_templates, 
 libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled, and 
 libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache.  In
