@@ -1096,7 +1096,7 @@ function csv_download_file( $filename ){
 	// but a "view file" function will be made, probably as a separate page
 	// links in csv file 
 	// <a href='edi_view_file.php?key=filename' target='_blank'>filename</a>
-	// LibreEHR open log link: <a href='../../library/freeb/process_bills.log' target='_blank' class='link_submit' title=''>[View Log]</a>
+
 
 	if( headers_sent() ) {
 	  csv_edihist_log("csv_download_file: error headers already sent");
