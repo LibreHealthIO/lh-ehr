@@ -164,7 +164,7 @@ CREATE TABLE `batchcom` (
   `msg_type` varchar(60) default NULL,
   `msg_subject` varchar(255) default NULL,
   `msg_text` mediumtext,
-  `msg_date_sent` datetime NOT NULL default '0000-00-00 00:00:00',
+  `msg_date_sent` datetime default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
@@ -949,7 +949,7 @@ CREATE TABLE `drug_inventory` (
   `on_hand` int(11) NOT NULL default '0',
   `warehouse_id` varchar(31) NOT NULL DEFAULT '',
   `vendor_id` bigint(20) NOT NULL DEFAULT 0,
-  `last_notify` date NOT NULL default '0000-00-00',
+  `last_notify` date default NULL,
   `destroy_date` date default NULL,
   `destroy_method` varchar(255) default NULL,
   `destroy_witness` varchar(255) default NULL,
@@ -1014,7 +1014,7 @@ CREATE TABLE `drugs` (
   `on_order` int(11) NOT NULL default '0',
   `reorder_point` float NOT NULL DEFAULT 0.0,
   `max_level` float NOT NULL DEFAULT 0.0,
-  `last_notify` date NOT NULL default '0000-00-00',
+  `last_notify` date DEFAULT NULL,
   `reactions` text,
   `form` int(3) NOT NULL default '0',
   `size` float unsigned NOT NULL default '0',
@@ -2170,7 +2170,7 @@ CREATE TABLE `history_data` (
   `name_2` varchar(255) default NULL,
   `value_2` varchar(255) default NULL,
   `additional_history` text,
-  `exams`      text         NOT NULL DEFAULT '',
+  `exams`      TEXT NOT NULL,
   `usertext11` TEXT NOT NULL,
   `usertext12` varchar(255) NOT NULL DEFAULT '',
   `usertext13` varchar(255) NOT NULL DEFAULT '',
@@ -2196,8 +2196,8 @@ CREATE TABLE `history_data` (
   `userdate13` date DEFAULT NULL,
   `userdate14` date DEFAULT NULL,
   `userdate15` date DEFAULT NULL,
-  `userarea11` text NOT NULL DEFAULT '',
-  `userarea12` text NOT NULL DEFAULT '',
+  `userarea11` text NOT NULL,
+  `userarea12` text NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
@@ -2505,7 +2505,7 @@ CREATE TABLE `insurance_data` (
   `subscriber_employer_country` varchar(255) default NULL,
   `subscriber_employer_city` varchar(255) default NULL,
   `copay` varchar(255) default NULL,
-  `date` date NOT NULL default '0000-00-00',
+  `date` date default NULL,
   `pid` bigint(20) NOT NULL default '0',
   `subscriber_sex` varchar(25) default NULL,
   `accept_assignment` varchar(5) NOT NULL DEFAULT 'TRUE',
@@ -2658,8 +2658,8 @@ DROP TABLE IF EXISTS `lang_custom`;
 CREATE TABLE `lang_custom` (
   `lang_description` varchar(100) NOT NULL default '',
   `lang_code` char(2) NOT NULL default '',
-  `constant_name` mediumtext NOT NULL default '',
-  `definition` mediumtext NOT NULL default ''
+  `constant_name` mediumtext NOT NULL,
+  `definition` mediumtext NOT NULL
 ) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
@@ -2688,7 +2688,7 @@ CREATE TABLE `layout_options` (
   `fld_rows` int(11) NOT NULL default '0',
   `list_backup_id` varchar(31) NOT NULL default '',
   `source` char(1) NOT NULL default 'F' COMMENT 'F=Form, D=Demographics, H=History, E=Encounter',
-  `conditions` text NOT NULL DEFAULT '' COMMENT 'serialized array of skip conditions',
+  `conditions` text COMMENT 'serialized array of skip conditions',
   PRIMARY KEY  (`form_id`,`field_id`,`seq`)
 ) ENGINE=MyISAM;
 
@@ -4091,11 +4091,13 @@ insert into `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`
 insert into `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`) values('payment_gateways','authorize_net','Authorize.net','1','0','0','','');
 
 insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('lists','ptlistcols','Patient List Columns','1','0','','');
-insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','name'      ,'Full Name'     ,'10','3','','');
-insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','phone_home','Home Phone'    ,'20','3','','');
-insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','ss'        ,'SSN'           ,'30','3','','');
-insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','DOB'       ,'Date of Birth' ,'40','3','','');
-insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','pubpid'    ,'External ID'   ,'50','3','','');
+insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','lname'     ,'Last Name'     ,'10','3','','');
+insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','fname'     ,'First Name'    ,'20','3','','');
+insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','phone_home','Home Phone'    ,'30','3','','');
+insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','ss'        ,'SSN'           ,'40','3','','');
+insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','DOB'       ,'Date of Birth' ,'50','3','','');
+insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','pubpid'    ,'External ID'   ,'60','3','','');
+insert into list_options (list_id, option_id, title, seq, option_value, mapping, notes) values('ptlistcols','pid'       ,'Patient ID'    ,'70','3','','');
 
 -- Medical Problem Issue List
 INSERT INTO list_options(list_id,option_id,title) VALUES ('lists','medical_problem_issue_list','Medical Problem Issue List');
@@ -4486,8 +4488,8 @@ CREATE TABLE `lists` (
 
 DROP TABLE IF EXISTS `lists_touch`;
 CREATE TABLE `lists_touch` (
-  `pid` bigint(20) default NULL,
-  `type` varchar(255) default NULL,
+  `pid` bigint(20) NOT NULL,
+  `type` varchar(255) NOT NULL,
   `date` datetime default NULL,
   PRIMARY KEY  (`pid`,`type`)
 ) ENGINE=MyISAM ;
@@ -4790,8 +4792,8 @@ CREATE TABLE `libreehr_postcalendar_events` (
   `pc_counter` mediumint(8) unsigned default '0',
   `pc_topic` int(3) NOT NULL default '1',
   `pc_informant` varchar(20) default NULL,
-  `pc_eventDate` date NOT NULL default '0000-00-00',
-  `pc_endDate` date NOT NULL default '0000-00-00',
+  `pc_eventDate` date DEFAULT NULL,
+  `pc_endDate` date DEFAULT NULL,
   `pc_duration` bigint(20) NOT NULL default '0',
   `pc_recurrtype` int(1) NOT NULL default '0',
   `pc_recurrspec` text,
@@ -4933,7 +4935,7 @@ CREATE TABLE `patient_data` (
   `migrantseasonal` varchar(255) NOT NULL default '',
   `family_size` varchar(255) NOT NULL default '',
   `monthly_income` varchar(255) NOT NULL default '',
-  `billing_note` text NOT NULL default '',
+  `billing_note` text,
   `homeless` varchar(255) NOT NULL default '',
   `financial_review` datetime default NULL,
   `pubpid` varchar(255) NOT NULL default '',
@@ -5233,7 +5235,7 @@ CREATE TABLE `prescriptions` (
   `prescriptionguid` VARCHAR(50) DEFAULT NULL,
   `erx_source` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '0-LibreEHR 1-External',
   `erx_uploaded` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '0-Pending NewCrop upload 1-Uploaded to NewCrop',
-  `drug_info_erx` TEXT DEFAULT NULL,
+  `drug_info_erx` TEXT,
   `external_id` VARCHAR(20) DEFAULT NULL,
   `end_date` date default NULL,
   `indication` text,
@@ -5380,7 +5382,7 @@ CREATE TABLE `rule_action_item` (
   `category` varchar(31) NOT NULL DEFAULT '' COMMENT 'Maps to list_options list rule_action_category',
   `item` varchar(31) NOT NULL DEFAULT '' COMMENT 'Maps to list_options list rule_action',
   `clin_rem_link` varchar(255) NOT NULL DEFAULT '' COMMENT 'Custom html link in clinical reminder widget',
-  `reminder_message` text  NOT NULL DEFAULT '' COMMENT 'Custom message in patient reminder',
+  `reminder_message` text  NOT NULL COMMENT 'Custom message in patient reminder',
   `custom_flag` tinyint(1) NOT NULL default 0 COMMENT '1 indexed to rule_patient_data, 0 indexed within main schema',
   PRIMARY KEY  (`category`,`item`)
 ) ENGINE=MyISAM ;
@@ -6278,7 +6280,7 @@ CREATE TABLE `automatic_notification` (
 -- Dumping data for table `automatic_notification`
 -- 
 
-INSERT INTO `automatic_notification` (`notification_id`, `sms_gateway_type`, `next_app_date`, `next_app_time`, `provider_name`, `message`, `email_sender`, `email_subject`, `type`, `notification_sent_date`) VALUES (1, 'CLICKATELL', '0000-00-00', ':', 'EMR GROUP 1 .. SMS', 'Welcome to EMR GROUP 1.. SMS', '', '', 'SMS', '0000-00-00 00:00:00'),
+INSERT INTO `automatic_notification` (`notification_id`, `sms_gateway_type`, `next_app_date`, `next_app_time`, `provider_name`, `message`, `email_sender`, `email_subject`, `type`, `notification_sent_date`) VALUES (1, 'CLICKATELL', NULL, ':', 'EMR GROUP 1 .. SMS', 'Welcome to EMR GROUP 1.. SMS', '', '', 'SMS', '0000-00-00 00:00:00'),
 (2, '', '2007-10-02', '05:50', 'EMR GROUP', 'Welcome to EMR GROUP . Email', 'EMR Group', 'Welcome to EMR GROUP', 'Email', '2007-09-30 00:00:00');
 
 -- --------------------------------------------------------
