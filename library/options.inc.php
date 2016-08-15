@@ -2390,7 +2390,7 @@ function display_layout_rows($formtype, $result1, $result2='') {
 function display_layout_tabs($formtype, $result1, $result2='') {
   global $item_count, $cell_count, $last_group, $CPR;
 
-  $fres = sqlStatement("SELECT distinct group_name FROM layout_options " .
+  $fres = sqlStatement("SELECT distinct group_name,seq FROM layout_options " .
     "WHERE form_id = ? AND uor > 0 " .
     "ORDER BY group_name, seq", array($formtype) );
 
@@ -2412,7 +2412,7 @@ function display_layout_tabs($formtype, $result1, $result2='') {
 function display_layout_tabs_data($formtype, $result1, $result2='') {
   global $item_count, $cell_count, $last_group, $CPR,$condition_str;
 
-  $fres = sqlStatement("SELECT distinct group_name FROM layout_options " .
+  $fres = sqlStatement("SELECT distinct group_name, seq FROM layout_options " .
     "WHERE form_id = ? AND uor > 0 " .
     "ORDER BY group_name, seq", array($formtype));
 
@@ -2548,7 +2548,7 @@ function get_conditions_str($condition_str,$frow){
 function display_layout_tabs_data_editable($formtype, $result1, $result2='') {
   global $item_count, $cell_count, $last_group, $CPR,$condition_str;
 
-  $fres = sqlStatement("SELECT distinct group_name FROM layout_options " .
+  $fres = sqlStatement("SELECT distinct group_name, seq FROM layout_options " .
     "WHERE form_id = ? AND uor > 0 " .
     "ORDER BY group_name, seq", array($formtype) );
 
