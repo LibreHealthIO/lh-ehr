@@ -1,3 +1,4 @@
+# This is only need on existing OpenEMR sites
 RENAME `openemr_module_vars` TO `libreehr_module_vars`;
 RENAME `openemr_modules` TO `libreehr_modules`;
 RENAME `openemr_postcalendar_categories` TO `libreehr_postcalendar_categories`;
