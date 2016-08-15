@@ -153,6 +153,7 @@ function showDocument(&$drow) {
     "</td>\n";
   echo "<td colspan=5>&nbsp;</td>\n";
   echo "</tr>\n";
+}
 function generatePageElement($start,$pagesize,$billing,$issue,$text)
 {
     if($start<0)
