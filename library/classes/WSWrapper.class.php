@@ -1,6 +1,4 @@
 <?php
-require_once(dirname(__FILE__) . "/../freeb/xmlrpc.inc");
-require_once(dirname(__FILE__) . "/../freeb/xmlrpcs.inc");
 
 class WSWrapper {
 	

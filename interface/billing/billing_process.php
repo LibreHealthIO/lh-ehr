@@ -19,7 +19,7 @@ if (file_exists($EXPORT_INC)) {
   $BILLING_EXPORT = true;
 }
 
-$fconfig = $GLOBALS['oer_config']['freeb'];
+
 $bill_info = array();
 
 $bat_type     = ''; // will be edi or hcfa

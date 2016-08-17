@@ -98,7 +98,6 @@ chmod 666 $LIBREEHR/sites/default/sqlconf.php
 chown -R apache:apache $LIBREEHR/sites/default/documents
 chown -R apache:apache $LIBREEHR/sites/default/edi
 chown -R apache:apache $LIBREEHR/sites/default/era
-chown -R apache:apache $LIBREEHR/library/freeb
 chown -R apache:apache $LIBREEHR/sites/default/letter_templates
 chown -R apache:apache $LIBREEHR/interface/main/calendar/modules/PostCalendar/pntemplates/cache
 chown -R apache:apache $LIBREEHR/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
@@ -149,7 +148,6 @@ chmod    a+w $TMPDIR/libreehr/sites/default/sqlconf.php
 chmod -R a+w $TMPDIR/libreehr/sites/default/documents
 chmod -R a+w $TMPDIR/libreehr/sites/default/edi
 chmod -R a+w $TMPDIR/libreehr/sites/default/era
-chmod -R a+w $TMPDIR/libreehr/library/freeb
 chmod -R a+w $TMPDIR/libreehr/sites/default/letter_templates
 chmod -R a+w $TMPDIR/libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache
 chmod -R a+w $TMPDIR/libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
