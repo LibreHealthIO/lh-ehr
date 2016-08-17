@@ -385,7 +385,7 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
       "*" . $claim->payerState() .
       "*" . stripZipCode($claim->payerZip()) .
       "~\n";
-  }
+  
 //End ToDo section
 
   // Segment REF (Payer Secondary Identification) omitted.
@@ -696,7 +696,6 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
       if (!$claim->facilityNPI()) {
         $log .= "*** Service location has no NPI.\n";
       }
-    }
     $out .= "~\n";
     if ($claim->facilityStreet()) {
       ++$edicount;
@@ -1152,5 +1151,5 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
 
   $log .= "\n";
   return $out;
-}
-?>
+
+}?>
