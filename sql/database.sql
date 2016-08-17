@@ -2,8 +2,6 @@
 -- Database: `libreehr`
 -- 
 
--- --------------------------------------------------------
-
 -- 
 -- Table structure for table `addresses`
 -- 
@@ -23,7 +21,6 @@ CREATE TABLE `addresses` (
   KEY `foreign_id` (`foreign_id`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `amc_misc_data`
@@ -40,7 +37,6 @@ CREATE TABLE `amc_misc_data` (
   KEY  (`amc_id`,`pid`,`map_id`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `amendments`
@@ -62,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `amendments` (
   KEY amendment_pid(`pid`)
 ) ENGINE = MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `amendments_history`
@@ -78,7 +73,6 @@ CREATE TABLE IF NOT EXISTS `amendments_history` (
 KEY amendment_history_id(`amendment_id`)
 ) ENGINE = MyISAM;
 	
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `array`
@@ -90,7 +84,6 @@ CREATE TABLE `array` (
   `array_value` longtext
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `audit_master`
@@ -150,7 +143,6 @@ CREATE TABLE `background_services` (
 INSERT INTO `background_services` (`name`, `title`, `execute_interval`, `function`, `require_once`, `sort_order`) VALUES
 ('phimail', 'phiMail Direct Messaging Service', 5, 'phimail_check', '/library/direct_message_check.inc', 100);
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `batchcom`
@@ -168,7 +160,6 @@ CREATE TABLE `batchcom` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `billing`
@@ -207,7 +198,6 @@ CREATE TABLE `billing` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `categories`
@@ -244,7 +234,6 @@ INSERT INTO `categories` VALUES (11, 'CCR', '', 1, 19, 20);
 INSERT INTO `categories` VALUES (12, 'CCD', '', 1, 21, 22);
 INSERT INTO `categories` VALUES (13, 'CCDA', '', 1, 23, 24);
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `categories_seq`
@@ -262,7 +251,6 @@ CREATE TABLE `categories_seq` (
 
 INSERT INTO `categories_seq` VALUES (13);
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `categories_to_documents`
@@ -275,7 +263,6 @@ CREATE TABLE `categories_to_documents` (
   PRIMARY KEY  (`category_id`,`document_id`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `claims`
@@ -298,7 +285,6 @@ CREATE TABLE `claims` (
   PRIMARY KEY  (`patient_id`,`encounter_id`,`version`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `clinical_plans`
@@ -340,7 +326,6 @@ INSERT INTO `clinical_plans` ( `id`, `pid`, `normal_flag`, `cqm_flag`, `cqm_2011
 INSERT INTO `clinical_plans` ( `id`, `pid`, `normal_flag`, `cqm_flag`, `cqm_measure_group` ) VALUES ('dm_plan', 0, 1, 0, '');
 INSERT INTO `clinical_plans` ( `id`, `pid`, `normal_flag`, `cqm_flag`, `cqm_measure_group` ) VALUES ('prevent_plan', 0, 1, 0, '');
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `clinical_plans_rules`
@@ -410,7 +395,6 @@ INSERT INTO `clinical_plans_rules` ( `plan_id`, `rule_id` ) VALUES ('prevent_pla
 --   Cancer Screening: Prostate Cancer Screening
 INSERT INTO `clinical_plans_rules` ( `plan_id`, `rule_id` ) VALUES ('prevent_plan', 'rule_cs_prostate');
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `clinical_rules`
@@ -654,7 +638,6 @@ INSERT INTO `clinical_rules`
 ('e_prescribe_2_stage2_amc', 0, 0, 0, 0, '', '', 1, '170.304(b)', 0, 0, 1, '170.314(g)(1)/(2)–8', 0, 0, 0, 1);
 
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `clinical_rules_log
@@ -676,7 +659,6 @@ CREATE TABLE `clinical_rules_log` (
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `codes`
@@ -703,7 +685,6 @@ CREATE TABLE `codes` (
   KEY `code` (`code`),
   KEY `code_type` (`code_type`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `syndromic_surveillance`
@@ -719,7 +700,6 @@ CREATE TABLE `syndromic_surveillance` (
   KEY (`lists_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `config`
@@ -738,7 +718,6 @@ CREATE TABLE `config` (
   KEY `lft` (`lft`,`rght`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `config_seq`
@@ -756,7 +735,6 @@ CREATE TABLE `config_seq` (
 
 INSERT INTO `config_seq` VALUES (0);
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `dated_reminders`
@@ -778,7 +756,6 @@ CREATE TABLE `dated_reminders` (
   KEY `dr_from_ID` (`dr_from_ID`,`dr_message_due_date`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `dated_reminders_link`
@@ -794,7 +771,6 @@ CREATE TABLE `dated_reminders_link` (
   KEY `dr_id` (`dr_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `direct_message_log`
@@ -818,7 +794,6 @@ CREATE TABLE `direct_message_log` (
   KEY `patient_id` (`patient_id`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `documents`
@@ -855,7 +830,6 @@ CREATE TABLE `documents` (
   KEY `owner` (`owner`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `documents_legal_detail`
@@ -883,7 +857,6 @@ CREATE TABLE `documents_legal_detail` (
   PRIMARY KEY (`dld_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `documents_legal_master`
@@ -910,7 +883,6 @@ CREATE TABLE `documents_legal_master` (
   PRIMARY KEY (`dlm_document_id`)
 ) ENGINE=MyISAM COMMENT='List of Master Docs to be signed' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `documents_legal_categories`
@@ -957,7 +929,6 @@ CREATE TABLE `drug_inventory` (
   PRIMARY KEY  (`inventory_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `drug_sales`
@@ -982,7 +953,6 @@ CREATE TABLE `drug_sales` (
   PRIMARY KEY  (`sale_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `drug_templates`
@@ -1000,7 +970,6 @@ CREATE TABLE `drug_templates` (
   PRIMARY KEY  (`drug_id`,`selector`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `drugs`
@@ -1029,7 +998,6 @@ CREATE TABLE `drugs` (
   PRIMARY KEY  (`drug_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `eligibility_response`
@@ -1046,7 +1014,6 @@ CREATE TABLE `eligibility_response` (
   PRIMARY KEY  (`response_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `eligibility_verification`
@@ -1066,7 +1033,6 @@ CREATE TABLE `eligibility_verification` (
   KEY `insurance_id` (`insurance_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `employer_data`
@@ -1087,7 +1053,6 @@ CREATE TABLE `employer_data` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `enc_category_map`
@@ -1154,7 +1119,6 @@ INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_inf
 INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_influenza', 9);
 INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_influenza', 10);
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `erx_ttl_touch`
@@ -1170,7 +1134,6 @@ CREATE  TABLE `erx_ttl_touch` (
   PRIMARY KEY (`patient_id`, `process`)
 ) ENGINE = InnoDB COMMENT = 'Store records last update per patient data process' ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `standardized_tables_track`
@@ -1187,7 +1150,6 @@ CREATE TABLE `standardized_tables_track` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `facility`
@@ -1229,7 +1191,6 @@ CREATE TABLE `facility` (
 INSERT INTO `facility` VALUES (3, 'Your Clinic Name Here', '000-000-0000', '000-000-0000', '', '', '', '', '', '', NULL, NULL, 1, 1, 0, NULL, '', '', '', '', '','#99FFFF','0', '');
 
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `facility_user_ids`
@@ -1246,7 +1207,6 @@ CREATE TABLE  `facility_user_ids` (
   KEY `uid` (`uid`,`facility_id`,`field_id`)
 ) ENGINE=MyISAM  AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `fee_sheet_options`
@@ -1274,7 +1234,6 @@ INSERT INTO `fee_sheet_options` VALUES ('2Established Patient', '3Detailed', 'CP
 INSERT INTO `fee_sheet_options` VALUES ('2Established Patient', '4Extended', 'CPT4|99214|');
 INSERT INTO `fee_sheet_options` VALUES ('2Established Patient', '5Comprehensive', 'CPT4|99215|');
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `form_dictation`
@@ -1294,7 +1253,6 @@ CREATE TABLE `form_dictation` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `form_encounter`
@@ -1328,7 +1286,6 @@ CREATE TABLE `form_encounter` (
   KEY `encounter_date` (`date`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `form_misc_billing_options`
@@ -1366,7 +1323,6 @@ CREATE TABLE `form_misc_billing_options` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `form_reviewofs`
@@ -1492,7 +1448,6 @@ CREATE TABLE `form_reviewofs` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `form_ros`
@@ -1645,7 +1600,6 @@ CREATE TABLE `form_ros` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `form_soap`
@@ -1667,7 +1621,6 @@ CREATE TABLE `form_soap` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `form_vitals`
@@ -1701,7 +1654,6 @@ CREATE TABLE `form_vitals` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `forms`
@@ -1725,7 +1677,6 @@ CREATE TABLE `forms` (
   KEY `form_id` (`form_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `geo_country_reference`
@@ -1985,7 +1936,6 @@ INSERT INTO `geo_country_reference` VALUES (237, 'Zaire', 'ZR', 'ZAR');
 INSERT INTO `geo_country_reference` VALUES (238, 'Zambia', 'ZM', 'ZMB');
 INSERT INTO `geo_country_reference` VALUES (239, 'Zimbabwe', 'ZW', 'ZWE');
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `geo_zone_reference`
@@ -2087,7 +2037,6 @@ INSERT INTO `geo_zone_reference` VALUES (80, 61, 'SA', 'South Australia');
 INSERT INTO `geo_zone_reference` VALUES (81, 61, 'ACT', 'Australian Capital Territory');
 INSERT INTO `geo_zone_reference` VALUES (82, 61, 'VIC', 'Victoria');
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `groups`
@@ -2101,7 +2050,6 @@ CREATE TABLE `groups` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `history_data`
@@ -2202,7 +2150,6 @@ CREATE TABLE `history_data` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd9_dx_code`
@@ -2222,7 +2169,6 @@ CREATE TABLE `icd9_dx_code` (
   KEY `active` (`active`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd9_sg_code`
@@ -2242,7 +2188,6 @@ CREATE TABLE `icd9_sg_code` (
   KEY `active` (`active`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd9_dx_long_code`
@@ -2257,7 +2202,6 @@ CREATE TABLE `icd9_dx_long_code` (
   `revision` int default 0
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd9_sg_long_code`
@@ -2272,7 +2216,6 @@ CREATE TABLE `icd9_sg_long_code` (
   `revision` int default 0
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd10_dx_order_code`
@@ -2292,7 +2235,6 @@ CREATE TABLE `icd10_dx_order_code` (
   KEY `active` (`active`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd10_pcs_order_code`
@@ -2311,7 +2253,6 @@ CREATE TABLE `icd10_pcs_order_code` (
   KEY `active` (`active`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd10_gem_pcs_9_10`
@@ -2327,7 +2268,6 @@ CREATE TABLE `icd10_gem_pcs_9_10` (
   `revision` int default 0
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd10_gem_pcs_10_9`
@@ -2343,7 +2283,6 @@ CREATE TABLE `icd10_gem_pcs_10_9` (
   `revision` int default 0
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd10_gem_dx_9_10`
@@ -2359,7 +2298,6 @@ CREATE TABLE `icd10_gem_dx_9_10` (
   `revision` int default 0
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd10_gem_dx_10_9`
@@ -2375,7 +2313,6 @@ CREATE TABLE `icd10_gem_dx_10_9` (
   `revision` int default 0
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd10_reimbr_dx_9_10`
@@ -2396,7 +2333,6 @@ CREATE TABLE `icd10_reimbr_dx_9_10` (
   `revision` int default 0
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `icd10_reimbr_pcs_9_10`
@@ -2417,7 +2353,6 @@ CREATE TABLE `icd10_reimbr_pcs_9_10` (
   `revision` int default 0
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `immunizations`
@@ -2453,7 +2388,6 @@ CREATE TABLE `immunizations` (
   KEY `patient_id` (`patient_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `insurance_companies`
@@ -2472,7 +2406,6 @@ CREATE TABLE `insurance_companies` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `insurance_data`
@@ -2514,7 +2447,6 @@ CREATE TABLE `insurance_data` (
   UNIQUE KEY `pid_type_date` (`pid`,`type`,`date`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `insurance_numbers`
@@ -2533,7 +2465,6 @@ CREATE TABLE `insurance_numbers` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `integration_mapping`
@@ -2550,7 +2481,6 @@ CREATE TABLE `integration_mapping` (
   UNIQUE KEY `foreign_id` (`foreign_id`,`foreign_table`,`local_id`,`local_table`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `issue_encounter`
@@ -2565,7 +2495,6 @@ CREATE TABLE `issue_encounter` (
   PRIMARY KEY  (`pid`,`list_id`,`encounter`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `issue_types`
@@ -2601,7 +2530,6 @@ INSERT INTO issue_types(`ordering`,`category`,`type`,`plural`,`singular`,`abbrev
 INSERT INTO issue_types(`ordering`,`category`,`type`,`plural`,`singular`,`abbreviation`,`style`,`force_show`) VALUES ('50','ippf_specific','ippf_gcac','Abortions','Abortion','A','3','0');
 INSERT INTO issue_types(`ordering`,`category`,`type`,`plural`,`singular`,`abbreviation`,`style`,`force_show`) VALUES ('60','ippf_specific','contraceptive','Contraception','Contraception','C','4','0');
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `lang_constants`
@@ -2648,7 +2576,6 @@ CREATE TABLE `lang_languages` (
 
 INSERT INTO `lang_languages` VALUES (1, 'en', 'English', 0);
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `lang_custom`
@@ -2662,7 +2589,6 @@ CREATE TABLE `lang_custom` (
   `definition` mediumtext NOT NULL default ''
 ) ENGINE=MyISAM ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `layout_options`
@@ -2850,7 +2776,6 @@ INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`d
 
 INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('FACUSR', 'provider_id', '1General', 'Provider ID', 1, 2, 1, 15, 63, '', 1, 1, '', '', 'Provider ID at Specified Facility', 0);
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `list_options`
@@ -4436,7 +4361,6 @@ INSERT INTO list_options (list_id, option_id, title, notes, seq) VALUES ('Immuni
 INSERT INTO list_options (list_id, option_id, title, notes, seq) VALUES ('Immunization_Completion_Status','Not_Administered','Not Administered','NA', '30');
 INSERT INTO list_options (list_id, option_id, title, notes, seq) VALUES ('Immunization_Completion_Status','Partially_Administered','Partially Administered','PA', '40');
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `lists`
@@ -4480,21 +4404,19 @@ CREATE TABLE `lists` (
   KEY `type` (`type`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `lists_touch`
 --
 
-DROP TABLE IF EXISTS `lists_touch`;
-CREATE TABLE `lists_touch` (
-  `pid` bigint(20) default NULL,
-  `type` varchar(255) default NULL,
-  `date` datetime default NULL,
-  PRIMARY KEY  (`pid`,`type`)
+DROP TABLE IF EXISTS lists_touch;
+CREATE TABLE lists_touch (
+  pid bigint(20) NOT NULL default '0',
+  type varchar(255) NOT NULL default '',
+  date datetime default NULL,
+  PRIMARY KEY (pid,type)
 ) ENGINE=MyISAM ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `log`
@@ -4520,11 +4442,11 @@ CREATE TABLE `log` (
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `modules`
 --
+DROP TABLE IF EXISTS `modules`;
 CREATE TABLE `modules` (
   `mod_id` INT(11) NOT NULL AUTO_INCREMENT,
   `mod_name` VARCHAR(64) NOT NULL DEFAULT '0',
@@ -4547,11 +4469,11 @@ CREATE TABLE `modules` (
   PRIMARY KEY (`mod_id`,`mod_directory`)
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `module_acl_group_settings`
 --
+DROP TABLE IF EXISTS `module_acl_group_settings`;
 CREATE TABLE `module_acl_group_settings` (
   `module_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
@@ -4560,11 +4482,11 @@ CREATE TABLE `module_acl_group_settings` (
   PRIMARY KEY (`module_id`,`group_id`,`section_id`)
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `module_acl_sections`
 --
+DROP TABLE IF EXISTS `module_acl_sections`;
 CREATE TABLE `module_acl_sections` (
   `section_id` int(11) DEFAULT NULL,
   `section_name` varchar(255) DEFAULT NULL,
@@ -4573,11 +4495,11 @@ CREATE TABLE `module_acl_sections` (
   `module_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `module_acl_user_settings`
 --
+DROP TABLE IF EXISTS `module_acl_user_settings`;
 CREATE TABLE `module_acl_user_settings` (
   `module_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -4586,11 +4508,11 @@ CREATE TABLE `module_acl_user_settings` (
   PRIMARY KEY (`module_id`,`user_id`,`section_id`)
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `module_configuration`
 --
+DROP TABLE IF EXISTS `module_configuration`;
 CREATE TABLE `module_configuration` (
   `module_config_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `module_id` int(10) unsigned NOT NULL,
@@ -4599,11 +4521,11 @@ CREATE TABLE `module_configuration` (
   PRIMARY KEY (`module_config_id`)
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `modules_hooks_settings`
 --
+DROP TABLE IF EXISTS `modules_hooks_settings`;
 CREATE TABLE `modules_hooks_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mod_id` int(11) DEFAULT NULL,
@@ -4612,11 +4534,11 @@ CREATE TABLE `modules_hooks_settings` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `modules_settings`
 --
+DROP TABLE IF EXISTS `modules_settings`;
 CREATE TABLE `modules_settings` (
   `mod_id` INT(11) DEFAULT NULL,
   `fld_type` SMALLINT(6) DEFAULT NULL COMMENT '1=>ACL,2=>preferences,3=>hooks',
@@ -4625,7 +4547,6 @@ CREATE TABLE `modules_settings` (
   `path` VARCHAR(255) DEFAULT NULL
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `notes`
@@ -4645,7 +4566,6 @@ CREATE TABLE `notes` (
   KEY `date` (`date`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `onotes`
@@ -4662,7 +4582,6 @@ CREATE TABLE `onotes` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `libreehr_module_vars`
@@ -4703,7 +4622,6 @@ INSERT INTO `libreehr_module_vars` VALUES (218, 'PostCalendar', 'pcUseInternatio
 INSERT INTO `libreehr_module_vars` VALUES (217, 'PostCalendar', 'pcEventsOpenInNewWindow', '0');
 INSERT INTO `libreehr_module_vars` VALUES (216, 'PostCalendar', 'pcTime24Hours', '0');
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `libreehr_modules`
@@ -4731,7 +4649,6 @@ CREATE TABLE `libreehr_modules` (
 
 INSERT INTO `libreehr_modules` VALUES (46, 'PostCalendar', 2, 'PostCalendar', 'PostNuke Calendar Module', 0, 'PostCalendar', '4.0.0', 1, 1, 3);
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `libreehr_postcalendar_categories`
@@ -4772,7 +4689,6 @@ INSERT INTO `libreehr_postcalendar_categories` VALUES (9, 'Established Patient',
 INSERT INTO `libreehr_postcalendar_categories` VALUES (10,'New Patient', '#CCFFFF', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 1800, 0, 0, 0, 0, 0, 0);
 INSERT INTO `libreehr_postcalendar_categories` VALUES (11,'Reserved','#FF7777','Reserved',1,NULL,'a:5:{s:17:\"event_repeat_freq\";s:1:\"1\";s:22:\"event_repeat_freq_type\";s:1:\"4\";s:19:\"event_repeat_on_num\";s:1:\"1\";s:19:\"event_repeat_on_day\";s:1:\"0\";s:20:\"event_repeat_on_freq\";s:1:\"0\";}',0,900,0,3,2,0,0, 1);
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `libreehr_postcalendar_events`
@@ -4822,7 +4738,6 @@ CREATE TABLE `libreehr_postcalendar_events` (
   KEY `pc_eventDate` (`pc_eventDate`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `libreehr_postcalendar_limits`
@@ -4838,7 +4753,6 @@ CREATE TABLE `libreehr_postcalendar_limits` (
   PRIMARY KEY  (`pc_limitid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `libreehr_postcalendar_topics`
@@ -4854,7 +4768,6 @@ CREATE TABLE `libreehr_postcalendar_topics` (
   KEY `basic_cat` (`pc_catname`,`pc_catcolor`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `libreehr_session_info`
@@ -4871,7 +4784,6 @@ CREATE TABLE `libreehr_session_info` (
   PRIMARY KEY  (`pn_sessid`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `patient_access_onsite`
@@ -4888,7 +4800,6 @@ CREATE TABLE `patient_access_onsite`(
   PRIMARY KEY (`id`)
 )ENGINE=MyISAM AUTO_INCREMENT=1;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `patient_data`
@@ -4990,12 +4901,11 @@ CREATE TABLE `patient_data` (
   UNIQUE KEY `pid` (`pid`),
   KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
--- --------------------------------------------------------
 
 --
 -- Table structure for table `patient_portal_menu`
 --
-
+DROP TABLE IF EXISTS `patient_portal_menu`;
 CREATE TABLE `patient_portal_menu` (
   `patient_portal_menu_id` INT(11) NOT NULL AUTO_INCREMENT,
   `patient_portal_menu_group_id` INT(11) DEFAULT NULL,
@@ -5018,7 +4928,6 @@ INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu
 INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (11,1,'View Health Information',33,1);
 INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (12,1,'Download Health Information',36,1);
 INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (13,1,'Transmit Health Information',39,1);
--- --------------------------------------------------------
 
 --
 -- Table structure for table `patient_reminders`
@@ -5045,7 +4954,6 @@ CREATE TABLE `patient_reminders` (
   KEY (`category`,`item`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `patient_access_offsite`
@@ -5122,11 +5030,11 @@ CREATE TABLE `payments` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `payment_gateway_details`
 --
+DROP TABLE IF EXISTS `payment_gateway_details`;
 CREATE TABLE `payment_gateway_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `service_name` varchar(100) DEFAULT NULL,
@@ -5136,7 +5044,6 @@ CREATE TABLE `payment_gateway_details` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `pharmacies`
@@ -5151,7 +5058,6 @@ CREATE TABLE `pharmacies` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `phone_numbers`
@@ -5195,7 +5101,6 @@ CREATE TABLE `pnotes` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `prescriptions`
@@ -5244,7 +5149,6 @@ CREATE TABLE `prescriptions` (
   KEY `patient_id` (`patient_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `prices`
@@ -5259,7 +5163,6 @@ CREATE TABLE `prices` (
   PRIMARY KEY  (`pr_id`,`pr_selector`,`pr_level`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `registry`
@@ -5298,7 +5201,6 @@ INSERT INTO `registry` VALUES ('Care Plan', 1, 'care_plan', 18, 1, 1, '2015-09-0
 INSERT INTO `registry` VALUES ('Functional and Cognitive Status', 1, 'functional_cognitive_status', 19, 1, 1, '2015-09-09 00:00:00', 0, 'Clinical', '');
 INSERT INTO `registry` VALUES ('Clinical Instructions', 1, 'clinical_instructions', 20, 1, 1, '2015-09-09 00:00:00', 0, 'Clinical', '');
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `report_itemized`
@@ -5314,7 +5216,6 @@ CREATE TABLE `report_itemized` (
   KEY (`report_id`,`itemized_test_id`,`numerator_label`,`pass`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `report_results`
@@ -5328,7 +5229,6 @@ CREATE TABLE `report_results` (
   PRIMARY KEY (`report_id`,`field_id`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `rule_action`
@@ -5371,7 +5271,6 @@ INSERT INTO `rule_action` ( `id`, `group_id`, `category`, `item` ) VALUES ('rule
 INSERT INTO `rule_action` ( `id`, `group_id`, `category`, `item` ) VALUES ('rule_blood_pressure', 1, 'act_cat_measure', 'act_bp');
 INSERT INTO `rule_action` ( `id`, `group_id`, `category`, `item` ) VALUES ('rule_inr_measure', 1, 'act_cat_measure', 'act_lab_inr');
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `rule_action_item`
@@ -5409,7 +5308,6 @@ INSERT INTO `rule_action_item` ( `category`, `item`, `clin_rem_link`, `reminder_
 INSERT INTO `rule_action_item` ( `category`, `item`, `clin_rem_link`, `reminder_message`, `custom_flag` ) VALUES ('act_cat_assess', 'act_soc_sec', '', '', 0);
 INSERT INTO `rule_action_item` ( `category`, `item`, `clin_rem_link`, `reminder_message`, `custom_flag` ) VALUES ('act_cat_assess', 'act_penicillin_allergy', '', '', 1);
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `rule_filter`
@@ -5739,7 +5637,6 @@ INSERT INTO `rule_filter` ( `id`, `include_flag`, `required_flag`, `method`, `me
 -- Penicillin Allergy Assessment
 INSERT INTO `rule_filter` ( `id`, `include_flag`, `required_flag`, `method`, `method_detail`, `value` ) VALUES ('rule_penicillin_allergy', 1, 0, 'filt_lists', 'allergy', 'penicillin');
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `rule_patient_data`
@@ -5759,7 +5656,6 @@ CREATE TABLE `rule_patient_data` (
   KEY (`category`,`item`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `rule_reminder`
@@ -5875,7 +5771,6 @@ INSERT INTO `rule_reminder` ( `id`, `method`, `method_detail`, `value` ) VALUES 
 INSERT INTO `rule_reminder` ( `id`, `method`, `method_detail`, `value` ) VALUES ('rule_inr_measure', 'patient_reminder_pre', 'week', '2');
 INSERT INTO `rule_reminder` ( `id`, `method`, `method_detail`, `value` ) VALUES ('rule_inr_measure', 'patient_reminder_post', 'month', '1');
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `rule_target`
@@ -5976,7 +5871,6 @@ INSERT INTO `rule_target` ( `id`, `group_id`, `include_flag`, `required_flag`, `
 -- INR Measurement
 INSERT INTO `rule_target` ( `id`, `group_id`, `include_flag`, `required_flag`, `method`, `value`, `interval` ) VALUES ('rule_inr_measure', 1, 1, 1, 'target_proc', 'INR::CPT4:85610::::::ge::1', 0);
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `sequences`
@@ -5993,7 +5887,6 @@ CREATE TABLE `sequences` (
 
 INSERT INTO `sequences` VALUES (1);
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `supported_external_dataloads`
@@ -6079,7 +5972,6 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 ('ICD10', 'CMS', '2015-10-01', 'Reimbursement_Mapping_dx_2016.zip', '1b53b512e10c1fdf7ae4cfd1baa8dfbb');
 INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES 
 ('ICD10', 'CMS', '2015-10-01', 'Reimbursement_Mapping_pr_2016.zip', '3c780dd103d116aa57980decfddd4f19');
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `transactions`
@@ -6098,7 +5990,6 @@ CREATE TABLE `transactions` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `users`
@@ -6172,11 +6063,11 @@ CREATE TABLE `users` (
 --  (so these inserts can be found in the sql/official_additional_users.sql script)
 
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `user_secure`
 --
+DROP TABLE IF EXISTS `users_secure`;
 CREATE TABLE `users_secure` (
   `id` bigint(20) NOT NULL,
   `username` varchar(255) DEFAULT NULL,
@@ -6191,12 +6082,11 @@ CREATE TABLE `users_secure` (
   UNIQUE KEY `USERNAME_ID` (`id`,`username`)
 ) ENGINE=InnoDb;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `user_settings`
 --
-
+DROP TABLE IF EXISTS `user_settings`;
 CREATE TABLE `user_settings` (
   `setting_user`  bigint(20)   NOT NULL DEFAULT 0,
   `setting_label` varchar(63)  NOT NULL,
@@ -6228,7 +6118,6 @@ INSERT INTO user_settings ( setting_user, setting_label, setting_value ) VALUES 
 INSERT INTO user_settings ( setting_user, setting_label, setting_value ) VALUES (0, 'gacl_protect', '0');
 INSERT INTO user_settings ( setting_user, setting_label, setting_value ) VALUES (1, 'gacl_protect', '1');
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `x12_partners`
@@ -6283,7 +6172,6 @@ CREATE TABLE `automatic_notification` (
 INSERT INTO `automatic_notification` (`notification_id`, `sms_gateway_type`, `next_app_date`, `next_app_time`, `provider_name`, `message`, `email_sender`, `email_subject`, `type`, `notification_sent_date`) VALUES (1, 'CLICKATELL', '0000-00-00', ':', 'EMR GROUP 1 .. SMS', 'Welcome to EMR GROUP 1.. SMS', '', '', 'SMS', '0000-00-00 00:00:00'),
 (2, '', '2007-10-02', '05:50', 'EMR GROUP', 'Welcome to EMR GROUP . Email', 'EMR Group', 'Welcome to EMR GROUP', 'Email', '2007-09-30 00:00:00');
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `notification_log`
@@ -6309,7 +6197,6 @@ CREATE TABLE `notification_log` (
   PRIMARY KEY  (`iLogId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 ;
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `notification_settings`
@@ -6334,61 +6221,64 @@ CREATE TABLE `notification_settings` (
 INSERT INTO `notification_settings` (`SettingsId`, `Send_SMS_Before_Hours`, `Send_Email_Before_Hours`, `SMS_gateway_username`, `SMS_gateway_password`, `SMS_gateway_apikey`, `type`) VALUES (1, 150, 150, 'sms username', 'sms password', 'sms api key', 'SMS/Email Settings');
 
 -- -------------------------------------------------------------------
-
-CREATE TABLE chart_tracker (
-  ct_pid            int(11)       NOT NULL,
-  ct_when           datetime      NOT NULL,
-  ct_userid         bigint(20)    NOT NULL DEFAULT 0,
-  ct_location       varchar(31)   NOT NULL DEFAULT '',
+DROP TABLE IF EXISTS `chart_tracker`;
+CREATE TABLE `chart_tracker` (
+  `ct_pid`            int(11)       NOT NULL,
+  `ct_when`           datetime      NOT NULL,
+  `ct_userid`         bigint(20)    NOT NULL DEFAULT 0,
+  `ct_location`       varchar(31)   NOT NULL DEFAULT '',
   PRIMARY KEY (ct_pid, ct_when)
 ) ENGINE=MyISAM;
 
-CREATE TABLE ar_session (
-  session_id     int unsigned  NOT NULL AUTO_INCREMENT,
-  payer_id       int(11)       NOT NULL            COMMENT '0=pt else references insurance_companies.id',
-  user_id        int(11)       NOT NULL            COMMENT 'references users.id for session owner',
-  closed         tinyint(1)    NOT NULL DEFAULT 0  COMMENT '0=no, 1=yes',
-  reference      varchar(255)  NOT NULL DEFAULT '' COMMENT 'check or EOB number',
-  check_date     date          DEFAULT NULL,
-  deposit_date   date          DEFAULT NULL,
-  pay_total      decimal(12,2) NOT NULL DEFAULT 0,
-  created_time timestamp NOT NULL default CURRENT_TIMESTAMP,
-  modified_time datetime NOT NULL,
-  global_amount decimal( 12, 2 ) NOT NULL ,
-  payment_type varchar( 50 ) NOT NULL ,
-  description text NOT NULL ,
-  adjustment_code varchar( 50 ) NOT NULL ,
-  post_to_date date NOT NULL ,
-  patient_id int( 11 ) NOT NULL ,
-  payment_method varchar( 25 ) NOT NULL,
+DROP TABLE IF EXISTS `ar_session`;
+CREATE TABLE `ar_session` (
+  `session_id`     int unsigned  NOT NULL AUTO_INCREMENT,
+  `payer_id`       int(11)       NOT NULL            COMMENT '0=pt else references insurance_companies.id',
+  `user_id`        int(11)       NOT NULL            COMMENT 'references users.id for session owner',
+  `closed`         tinyint(1)    NOT NULL DEFAULT 0  COMMENT '0=no, 1=yes',
+  `reference`      varchar(255)  NOT NULL DEFAULT '' COMMENT 'check or EOB number',
+  `check_date`     date          DEFAULT NULL,
+  `deposit_date`   date          DEFAULT NULL,
+  `pay_total`      decimal(12,2) NOT NULL DEFAULT 0,
+  `created_time` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `modified_time` datetime NOT NULL,
+  `global_amount` decimal( 12, 2 ) NOT NULL ,
+  `payment_type` varchar( 50 ) NOT NULL ,
+  `description` text NOT NULL ,
+  `adjustment_code` varchar( 50 ) NOT NULL ,
+  `post_to_date` date NOT NULL ,
+  `patient_id` int( 11 ) NOT NULL ,
+  `payment_method` varchar( 25 ) NOT NULL,
   PRIMARY KEY (session_id),
   KEY user_closed (user_id, closed),
   KEY deposit_date (deposit_date)
 ) ENGINE=MyISAM;
 
-CREATE TABLE ar_activity (
-  pid            int(11)       NOT NULL,
-  encounter      int(11)       NOT NULL,
-  sequence_no    int unsigned  NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `ar_activity`;
+CREATE TABLE `ar_activity` (
+  `pid`            int(11)       NOT NULL,
+  `encounter`      int(11)       NOT NULL,
+  `sequence_no`    int unsigned  NOT NULL AUTO_INCREMENT,
   `code_type`    varchar(12)   NOT NULL DEFAULT '',
-  code           varchar(20)   NOT NULL            COMMENT 'empty means claim level',
-  modifier       varchar(12)   NOT NULL DEFAULT '',
-  payer_type     int           NOT NULL            COMMENT '0=pt, 1=ins1, 2=ins2, etc',
-  post_time      datetime      NOT NULL,
-  post_user      int(11)       NOT NULL            COMMENT 'references users.id',
-  session_id     int unsigned  NOT NULL            COMMENT 'references ar_session.session_id',
-  memo           varchar(255)  NOT NULL DEFAULT '' COMMENT 'adjustment reasons go here',
-  pay_amount     decimal(12,2) NOT NULL DEFAULT 0  COMMENT 'either pay or adj will always be 0',
-  adj_amount     decimal(12,2) NOT NULL DEFAULT 0,
-  modified_time datetime NOT NULL,
-  follow_up char(1) NOT NULL,
-  follow_up_note text NOT NULL,
-  account_code varchar(15) NOT NULL,
-  reason_code varchar(255) DEFAULT NULL COMMENT 'Use as needed to show the primary payer adjustment reason code',
+  `code`           varchar(20)   NOT NULL            COMMENT 'empty means claim level',
+  `modifier`       varchar(12)   NOT NULL DEFAULT '',
+  `payer_type`     int           NOT NULL            COMMENT '0=pt, 1=ins1, 2=ins2, etc',
+  `post_time`      datetime      NOT NULL,
+  `post_user`      int(11)       NOT NULL            COMMENT 'references users.id',
+  `session_id`     int unsigned  NOT NULL            COMMENT 'references ar_session.session_id',
+  `memo`           varchar(255)  NOT NULL DEFAULT '' COMMENT 'adjustment reasons go here',
+  `pay_amount`     decimal(12,2) NOT NULL DEFAULT 0  COMMENT 'either pay or adj will always be 0',
+  `adj_amount`     decimal(12,2) NOT NULL DEFAULT 0,
+  `modified_time` datetime NOT NULL,
+  `follow_up` char(1) NOT NULL,
+  `follow_up_note` text NOT NULL,
+  `account_code` varchar(15) NOT NULL,
+  `reason_code` varchar(255) DEFAULT NULL COMMENT 'Use as needed to show the primary payer adjustment reason code',
   PRIMARY KEY (pid, encounter, sequence_no),
   KEY session_id (session_id)
 ) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `users_facility`;
 CREATE TABLE `users_facility` (
   `tablename` varchar(64) NOT NULL,
   `table_id` int(11) NOT NULL,
@@ -6396,6 +6286,7 @@ CREATE TABLE `users_facility` (
   PRIMARY KEY (`tablename`,`table_id`,`facility_id`)
 ) ENGINE=InnoDB COMMENT='joins users or patient_data to facility table';
 
+DROP TABLE IF EXISTS `lbf_data`;
 CREATE TABLE `lbf_data` (
   `form_id`     int(11)      NOT NULL AUTO_INCREMENT COMMENT 'references forms.form_id',
   `field_id`    varchar(31)  NOT NULL COMMENT 'references layout_options.field_id',
@@ -6403,6 +6294,7 @@ CREATE TABLE `lbf_data` (
   PRIMARY KEY (`form_id`,`field_id`)
 ) ENGINE=MyISAM COMMENT='contains all data from layout-based forms';
 
+DROP TABLE IF EXISTS `lbt_data`;
 CREATE TABLE `lbt_data` (
   `form_id`     bigint(20)   NOT NULL COMMENT 'references transactions.id',
   `field_id`    varchar(31)  NOT NULL COMMENT 'references layout_options.field_id',
@@ -6410,15 +6302,17 @@ CREATE TABLE `lbt_data` (
   PRIMARY KEY (`form_id`,`field_id`)
 ) ENGINE=MyISAM COMMENT='contains all data from layout-based transactions';
 
-CREATE TABLE gprelations (
-  type1 int(2)     NOT NULL,
-  id1   bigint(20) NOT NULL,
-  type2 int(2)     NOT NULL,
-  id2   bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `gprelations`;
+CREATE TABLE `gprelations` (
+  `type1` int(2)     NOT NULL,
+  `id1`   bigint(20) NOT NULL,
+  `type2` int(2)     NOT NULL,
+  `id2`   bigint(20) NOT NULL,
   PRIMARY KEY (type1,id1,type2,id2),
   KEY key2  (type2,id2)
 ) ENGINE=MyISAM COMMENT='general purpose relations';
 
+DROP TABLE IF EXISTS `procedure_providers`;
 CREATE TABLE `procedure_providers` (
   `ppid`         bigint(20)   NOT NULL auto_increment,
   `name`         varchar(255) NOT NULL DEFAULT '',
@@ -6440,6 +6334,7 @@ CREATE TABLE `procedure_providers` (
   PRIMARY KEY (`ppid`)
 ) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `procedure_type`;
 CREATE TABLE `procedure_type` (
   `procedure_type_id`   bigint(20)   NOT NULL AUTO_INCREMENT,
   `parent`              bigint(20)   NOT NULL DEFAULT 0  COMMENT 'references procedure_type.procedure_type_id',
@@ -6463,6 +6358,7 @@ CREATE TABLE `procedure_type` (
   KEY parent (parent)
 ) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `procedure_questions`;
 CREATE TABLE `procedure_questions` (
   `lab_id`              bigint(20)   NOT NULL DEFAULT 0   COMMENT 'references procedure_providers.ppid to identify the lab',
   `procedure_code`      varchar(31)  NOT NULL DEFAULT ''  COMMENT 'references procedure_type.procedure_code to identify this order type',
@@ -6478,6 +6374,7 @@ CREATE TABLE `procedure_questions` (
   PRIMARY KEY (`lab_id`, `procedure_code`, `question_code`)
 ) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `procedure_order`;
 CREATE TABLE `procedure_order` (
   `procedure_order_id`     bigint(20)   NOT NULL AUTO_INCREMENT,
   `provider_id`            bigint(20)   NOT NULL DEFAULT 0  COMMENT 'references users.id, the ordering provider',
@@ -6502,6 +6399,7 @@ CREATE TABLE `procedure_order` (
   KEY `patient_id` (`patient_id`)
 ) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `procedure_order_code`;
 CREATE TABLE `procedure_order_code` (
   `procedure_order_id`  bigint(20)  NOT NULL                COMMENT 'references procedure_order.procedure_order_id',
   `procedure_order_seq` int(11)     NOT NULL AUTO_INCREMENT COMMENT 'supports multiple tests per order',
@@ -6514,6 +6412,7 @@ CREATE TABLE `procedure_order_code` (
   PRIMARY KEY (`procedure_order_id`, `procedure_order_seq`)
 ) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `procedure_answers`;
 CREATE TABLE `procedure_answers` (
   `procedure_order_id`  bigint(20)   NOT NULL DEFAULT 0  COMMENT 'references procedure_order.procedure_order_id',
   `procedure_order_seq` int(11)      NOT NULL DEFAULT 0  COMMENT 'references procedure_order_code.procedure_order_seq',
@@ -6523,6 +6422,7 @@ CREATE TABLE `procedure_answers` (
   PRIMARY KEY (`procedure_order_id`, `procedure_order_seq`, `question_code`, `answer_seq`)
 ) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `procedure_report`;
 CREATE TABLE `procedure_report` (
   `procedure_report_id` bigint(20)     NOT NULL AUTO_INCREMENT,
   `procedure_order_id`  bigint(20)     DEFAULT NULL   COMMENT 'references procedure_order.procedure_order_id',
@@ -6538,8 +6438,9 @@ CREATE TABLE `procedure_report` (
   `report_notes`        text           NOT NULL DEFAULT '' COMMENT 'notes from the lab',
   PRIMARY KEY (`procedure_report_id`),
   KEY procedure_order_id (procedure_order_id)
-) ENGINE=MyISAM; 
+) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `procedure_result`;
 CREATE TABLE `procedure_result` (
   `procedure_result_id` bigint(20)   NOT NULL AUTO_INCREMENT,
   `procedure_report_id` bigint(20)   NOT NULL            COMMENT 'references procedure_report.procedure_report_id',
@@ -6557,34 +6458,36 @@ CREATE TABLE `procedure_result` (
   `result_status`       varchar(31)  NOT NULL DEFAULT '' COMMENT 'preliminary, cannot be done, final, corrected, incompete...etc.',
   PRIMARY KEY (`procedure_result_id`),
   KEY procedure_report_id (procedure_report_id)
-) ENGINE=MyISAM; 
+) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `globals`;
 CREATE TABLE `globals` (
   `gl_name`             varchar(63)    NOT NULL,
   `gl_index`            int(11)        NOT NULL DEFAULT 0,
   `gl_value`            varchar(255)   NOT NULL DEFAULT '',
   PRIMARY KEY (`gl_name`, `gl_index`)
-) ENGINE=MyISAM; 
+) ENGINE=MyISAM;
 
-CREATE TABLE code_types (
-  ct_key  varchar(15) NOT NULL           COMMENT 'short alphanumeric name',
-  ct_id   int(11)     UNIQUE NOT NULL    COMMENT 'numeric identifier',
-  ct_seq  int(11)     NOT NULL DEFAULT 0 COMMENT 'sort order',
-  ct_mod  int(11)     NOT NULL DEFAULT 0 COMMENT 'length of modifier field',
-  ct_just varchar(15) NOT NULL DEFAULT ''COMMENT 'ct_key of justify type, if any',
-  ct_mask varchar(9)  NOT NULL DEFAULT ''COMMENT 'formatting mask for code values',
-  ct_fee  tinyint(1)  NOT NULL default 0 COMMENT '1 if fees are used',
-  ct_rel  tinyint(1)  NOT NULL default 0 COMMENT '1 if can relate to other code types',
-  ct_nofs tinyint(1)  NOT NULL default 0 COMMENT '1 if to be hidden in the fee sheet',
-  ct_diag tinyint(1)  NOT NULL default 0 COMMENT '1 if this is a diagnosis type',
-  ct_active tinyint(1) NOT NULL default 1 COMMENT '1 if this is active',
-  ct_label varchar(31) NOT NULL default '' COMMENT 'label of this code type',
-  ct_external tinyint(1) NOT NULL default 0 COMMENT '0 if stored codes in codes tables, 1 or greater if codes stored in external tables',
-  ct_claim tinyint(1) NOT NULL default 0 COMMENT '1 if this is used in claims',
-  ct_proc tinyint(1) NOT NULL default 0 COMMENT '1 if this is a procedure type',
-  ct_term tinyint(1) NOT NULL default 0 COMMENT '1 if this is a clinical term',
-  ct_problem tinyint(1) NOT NULL default 0 COMMENT '1 if this code type is used as a medical problem',
-  ct_drug tinyint(1) NOT NULL default 0 COMMENT '1 if this code type is used as a medication',
+DROP TABLE IF EXISTS `code_types`;
+CREATE TABLE `code_types` (
+  `ct_key`      varchar(15) NOT NULL           COMMENT 'short alphanumeric name',
+  `ct_id`       int(11)     UNIQUE NOT NULL    COMMENT 'numeric identifier',
+  `ct_seq`      int(11)     NOT NULL DEFAULT 0 COMMENT 'sort order',
+  `ct_mod`      int(11)     NOT NULL DEFAULT 0 COMMENT 'length of modifier field',
+  `ct_just`     varchar(15) NOT NULL DEFAULT ''COMMENT 'ct_key of justify type, if any',
+  `ct_mask`     varchar(9)  NOT NULL DEFAULT ''COMMENT 'formatting mask for code values',
+  `ct_fee`      tinyint(1)  NOT NULL default 0 COMMENT '1 if fees are used',
+  `ct_rel`      tinyint(1)  NOT NULL default 0 COMMENT '1 if can relate to other code types',
+  `ct_nofs`     tinyint(1)  NOT NULL default 0 COMMENT '1 if to be hidden in the fee sheet',
+  `ct_diag`     tinyint(1)  NOT NULL default 0 COMMENT '1 if this is a diagnosis type',
+  `ct_active`   tinyint(1)  NOT NULL default 1 COMMENT '1 if this is active',
+  `ct_label`    varchar(31) NOT NULL default '' COMMENT 'label of this code type',
+  `ct_external` tinyint(1)  NOT NULL default 0 COMMENT '0 if stored codes in codes tables, 1 or greater if codes stored in external tables',
+  `ct_claim`    tinyint(1)  NOT NULL default 0 COMMENT '1 if this is used in claims',
+  `ct_proc`     tinyint(1)  NOT NULL default 0 COMMENT '1 if this is a procedure type',
+  `ct_term`     tinyint(1)  NOT NULL default 0 COMMENT '1 if this is a clinical term',
+  `ct_problem`  tinyint(1)  NOT NULL default 0 COMMENT '1 if this code type is used as a medical problem',
+  `ct_drug`     tinyint(1)  NOT NULL default 0 COMMENT '1 if this code type is used as a medication',
   PRIMARY KEY (ct_key)
 ) ENGINE=MyISAM;
 
@@ -7554,7 +7457,6 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('payment_date', 'date_val', 'Date', 10, 0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('payment_date', 'post_to_date', 'Post To Date', 20, 0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('payment_date', 'deposit_date', 'Deposit Date', 30, 0);
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table `extended_log`
@@ -7573,22 +7475,23 @@ CREATE TABLE `extended_log` (
   KEY `patient_id` (`patient_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
-CREATE TABLE version (
-  v_major    int(11)     NOT NULL DEFAULT 0,
-  v_minor    int(11)     NOT NULL DEFAULT 0,
-  v_patch    int(11)     NOT NULL DEFAULT 0,
-  v_realpatch int(11)    NOT NULL DEFAULT 0,
-  v_tag      varchar(31) NOT NULL DEFAULT '',
-  v_database int(11)     NOT NULL DEFAULT 0,
-  v_acl      int(11)     NOT NULL DEFAULT 0
+DROP TABLE IF EXISTS `version`;
+CREATE TABLE `version` (
+  `v_major`     int(11)     NOT NULL DEFAULT 0,
+  `v_minor`     int(11)     NOT NULL DEFAULT 0,
+  `v_patch`     int(11)     NOT NULL DEFAULT 0,
+  `v_realpatch` int(11)     NOT NULL DEFAULT 0,
+  `v_tag`       varchar(31) NOT NULL DEFAULT '',
+  `v_database`  int(11)     NOT NULL DEFAULT 0,
+  `v_acl`       int(11)     NOT NULL DEFAULT 0
 ) ENGINE=MyISAM;
 INSERT INTO version (v_major, v_minor, v_patch, v_realpatch, v_tag, v_database, v_acl) VALUES (0, 0, 0, 0, '', 0, 0);
--- --------------------------------------------------------
 
 --
 -- Table structure for table `customlists`
 --
 
+DROP TABLE IF EXISTS `customlists`;
 CREATE TABLE `customlists` (
   `cl_list_slno` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cl_list_id` int(10) unsigned NOT NULL COMMENT 'ID OF THE lIST FOR NEW TAKE SELECT MAX(cl_list_id)+1',
@@ -7606,12 +7509,12 @@ INSERT INTO customlists(cl_list_id,cl_list_type,cl_list_item_long) VALUES (1,2,'
 INSERT INTO customlists(cl_list_id,cl_list_type,cl_list_item_long) VALUES (2,2,'Objective');
 INSERT INTO customlists(cl_list_id,cl_list_type,cl_list_item_long) VALUES (3,2,'Assessment');
 INSERT INTO customlists(cl_list_id,cl_list_type,cl_list_item_long) VALUES (4,2,'Plan');
--- --------------------------------------------------------
 
 --
 -- Table structure for table `template_users`
 --
 
+DROP TABLE IF EXISTS `template_users`;
 CREATE TABLE `template_users` (
   `tu_id` int(11) NOT NULL AUTO_INCREMENT,
   `tu_user_id` int(11) DEFAULT NULL,
@@ -7622,6 +7525,7 @@ CREATE TABLE `template_users` (
   UNIQUE KEY `templateuser` (`tu_user_id`,`tu_template_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1;
 
+DROP TABLE IF EXISTS `product_warehouse`;
 CREATE TABLE `product_warehouse` (
   `pw_drug_id`   int(11) NOT NULL,
   `pw_warehouse` varchar(31) NOT NULL,
@@ -7630,12 +7534,12 @@ CREATE TABLE `product_warehouse` (
   PRIMARY KEY  (`pw_drug_id`,`pw_warehouse`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `misc_address_book`
 --
 
+DROP TABLE IF EXISTS `misc_address_book`;
 CREATE TABLE `misc_address_book` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `fname` varchar(255) DEFAULT NULL,
@@ -7649,13 +7553,12 @@ CREATE TABLE `misc_address_book` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------
 
--- --------------------------------------------------------
 --
 -- Table structure for table `esign_signatures`
 --
 
+DROP TABLE IF EXISTS `esign_signatures`;
 CREATE TABLE `esign_signatures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tid` int(11) NOT NULL COMMENT 'Table row ID for signature',
@@ -7684,6 +7587,7 @@ CREATE TABLE IF NOT EXISTS `log_comment_encrypt` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS `shared_attributes`;
 CREATE TABLE `shared_attributes` (
   `pid`          bigint(20)   NOT NULL,
   `encounter`    bigint(20)   NOT NULL COMMENT '0 if patient attribute, else encounter attribute',
@@ -7694,17 +7598,15 @@ CREATE TABLE `shared_attributes` (
   PRIMARY KEY (`pid`, `encounter`, `field_id`)
 );
 
--- --------------------------------------------------------
-
--- --------------------------------------------------------
 --
 -- Table structure for table `ccda_components`
 --
-CREATE TABLE ccda_components (
-  ccda_components_id int(11) NOT NULL AUTO_INCREMENT,
-  ccda_components_field varchar(100) DEFAULT NULL,
-  ccda_components_name varchar(100) DEFAULT NULL,
-  ccda_type int(11) NOT NULL COMMENT '0=>sections,1=>components',
+DROP TABLE IF EXISTS `ccda_components`;
+CREATE TABLE `ccda_components` (
+  `ccda_components_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ccda_components_field` varchar(100) DEFAULT NULL,
+  `ccda_components_name` varchar(100) DEFAULT NULL,
+  `ccda_type` int(11) NOT NULL COMMENT '0=>sections,1=>components',
   PRIMARY KEY (ccda_components_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 ;
 insert into ccda_components (ccda_components_id, ccda_components_field, ccda_components_name, ccda_type) values ('1','progress_note','Progress Notes',0);
@@ -7729,21 +7631,20 @@ insert into ccda_components (ccda_components_id, ccda_components_field, ccda_com
 insert into ccda_components (ccda_components_id, ccda_components_field, ccda_components_name, ccda_type) values ('20','functional_status','Functional Status',1);
 insert into ccda_components (ccda_components_id, ccda_components_field, ccda_components_name, ccda_type) values ('21','referral','Reason for Referral',1);
 insert into ccda_components (ccda_components_id, ccda_components_field, ccda_components_name, ccda_type) values ('22','instructions','Instructions',1);
--- --------------------------------------------------------
 
-
--- --------------------------------------------------------
 --
 -- Table structure for table `ccda_sections`
 --
-CREATE TABLE ccda_sections (
-  ccda_sections_id int(11) NOT NULL AUTO_INCREMENT,
-  ccda_components_id int(11) DEFAULT NULL,
-  ccda_sections_field varchar(100) DEFAULT NULL,
-  ccda_sections_name varchar(100) DEFAULT NULL,
-  ccda_sections_req_mapping tinyint(4) NOT NULL DEFAULT '1',
+DROP TABLE IF EXISTS `ccda_sections`;
+CREATE TABLE `ccda_sections` (
+  `ccda_sections_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ccda_components_id` int(11) DEFAULT NULL,
+  `ccda_sections_field` varchar(100) DEFAULT NULL,
+  `ccda_sections_name` varchar(100) DEFAULT NULL,
+  `ccda_sections_req_mapping` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (ccda_sections_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 ;
+
 insert into ccda_sections (ccda_sections_id, ccda_components_id, ccda_sections_field, ccda_sections_name, ccda_sections_req_mapping) values('1','1','assessment_plan','Assessment and Plan','1');
 insert into ccda_sections (ccda_sections_id, ccda_components_id, ccda_sections_field, ccda_sections_name, ccda_sections_req_mapping) values('2','2','assessment_plan','Assessment and Plan','1');
 insert into ccda_sections (ccda_sections_id, ccda_components_id, ccda_sections_field, ccda_sections_name, ccda_sections_req_mapping) values('3','2','history_of_present_illness','History of Present Illness','1');
@@ -7786,68 +7687,61 @@ insert into ccda_sections (ccda_sections_id, ccda_components_id, ccda_sections_f
 insert into ccda_sections (ccda_sections_id, ccda_components_id, ccda_sections_field, ccda_sections_name, ccda_sections_req_mapping) values('43','8','procedure_description','Procedure Description','0');
 insert into ccda_sections (ccda_sections_id, ccda_components_id, ccda_sections_field, ccda_sections_name, ccda_sections_req_mapping) values('44','8','procedure_indications','Procedure Indications','0');
 insert into ccda_sections (ccda_sections_id, ccda_components_id, ccda_sections_field, ccda_sections_name, ccda_sections_req_mapping) values('45','9','unstructured_doc','Document','0');
--- --------------------------------------------------------
 
-
--- --------------------------------------------------------
 --
 -- Table structure for table `ccda_field_mapping`
 --
-CREATE TABLE ccda_field_mapping (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  table_id int(11) DEFAULT NULL,
-  ccda_field varchar(100) DEFAULT NULL,
+DROP TABLE IF EXISTS `ccda_field_mapping`;
+CREATE TABLE `ccda_field_mapping` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `table_id` int(11) DEFAULT NULL,
+  `ccda_field` varchar(100) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
--- --------------------------------------------------------
 
-
--- --------------------------------------------------------
 --
 -- Table structure for table `ccda`
 --
-CREATE TABLE ccda (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  pid BIGINT(20) DEFAULT NULL,
-  encounter BIGINT(20) DEFAULT NULL,
-  ccda_data MEDIUMTEXT,
-  time VARCHAR(50) DEFAULT NULL,
-  status SMALLINT(6) DEFAULT NULL,
-  updated_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  user_id VARCHAR(50) null,
-  couch_docid VARCHAR(100) NULL,
-  couch_revid VARCHAR(100) NULL,
+DROP TABLE IF EXISTS `ccda`;
+CREATE TABLE `ccda` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `pid` BIGINT(20) DEFAULT NULL,
+  `encounter` BIGINT(20) DEFAULT NULL,
+  `ccda_data` MEDIUMTEXT,
+  `time` VARCHAR(50) DEFAULT NULL,
+  `status` SMALLINT(6) DEFAULT NULL,
+  `updated_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `user_id` VARCHAR(50) null,
+  `couch_docid` VARCHAR(100) NULL,
+  `couch_revid` VARCHAR(100) NULL,
   `view` tinyint(4) NOT NULL DEFAULT '0',
   `transfer` tinyint(4) NOT NULL DEFAULT '0',
   `emr_transfer` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (id),
   UNIQUE KEY unique_key (pid,encounter,time)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
--- --------------------------------------------------------
 
-
--- --------------------------------------------------------
 --
 -- Table structure for table `ccda_table_mapping`
 --
-CREATE TABLE ccda_table_mapping (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  ccda_component varchar(100) DEFAULT NULL,
-  ccda_component_section varchar(100) DEFAULT NULL,
-  form_dir varchar(100) DEFAULT NULL,
-  form_type smallint(6) DEFAULT NULL,
-  form_table varchar(100) DEFAULT NULL,
-  user_id int(11) DEFAULT NULL,
-  deleted tinyint(4) NOT NULL DEFAULT '0',
-  timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+DROP TABLE IF EXISTS `ccda_table_mapping`;
+CREATE TABLE `ccda_table_mapping` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ccda_component` varchar(100) DEFAULT NULL,
+  `ccda_component_section` varchar(100) DEFAULT NULL,
+  `form_dir` varchar(100) DEFAULT NULL,
+  `form_type` smallint(6) DEFAULT NULL,
+  `form_table` varchar(100) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
--- --------------------------------------------------------
 
--- --------------------------------------------------------
 --
 -- Table structure for table `external_procedures`
 --
+DROP TABLE IF EXISTS `external_procedures`;
 CREATE TABLE `external_procedures` (
   `ep_id` int(11) NOT NULL AUTO_INCREMENT,
   `ep_date` date DEFAULT NULL,
@@ -7860,12 +7754,11 @@ CREATE TABLE `external_procedures` (
   `ep_external_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ep_id`)
 ) ENGINE=InnoDB;
--- --------------------------------------------------------
 
--- --------------------------------------------------------
 --
 -- Table structure for table `external_encounters`
 --
+DROP TABLE IF EXISTS `external_encounters`;
 CREATE TABLE `external_encounters` (
   `ee_id` int(11) NOT NULL AUTO_INCREMENT,
   `ee_date` date DEFAULT NULL,
@@ -7876,12 +7769,11 @@ CREATE TABLE `external_encounters` (
   `ee_external_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ee_id`)
 ) ENGINE=InnoDB;
--- --------------------------------------------------------
 
--- --------------------------------------------------------
 --
 -- Table structure for table `form_care_plan`
 --
+DROP TABLE IF EXISTS `form_care_plan`;
 CREATE TABLE `form_care_plan` (
   `id` bigint(20) NOT NULL,
   `date` date DEFAULT NULL,
@@ -7896,12 +7788,11 @@ CREATE TABLE `form_care_plan` (
   `description` text,
   `external_id` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB;
--- --------------------------------------------------------
 
--- --------------------------------------------------------
 --
 -- Table structure for table `form_functional_cognitive_status`
 --
+DROP TABLE IF EXISTS `form_functional_cognitive_status`;
 CREATE TABLE `form_functional_cognitive_status` (
   `id` bigint(20) NOT NULL,
   `date` date DEFAULT NULL,
@@ -7916,12 +7807,11 @@ CREATE TABLE `form_functional_cognitive_status` (
   `description` text,
   `external_id` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB;
--- --------------------------------------------------------
 
--- --------------------------------------------------------
 --
 -- Table structure for table `form_observation`
 --
+DROP TABLE IF EXISTS `form_observation`;
 CREATE TABLE `form_observation` (
   `id` bigint(20) NOT NULL,
   `date` DATE DEFAULT NULL,
@@ -7939,12 +7829,11 @@ CREATE TABLE `form_observation` (
   `code_type` varchar(255),
   `table_code` varchar(255)
 ) ENGINE=InnoDB;
--- --------------------------------------------------------
 
--- --------------------------------------------------------
 --
 -- Table structure for table `form_clinical_instructions`
 --
+DROP TABLE IF EXISTS `form_clinical_instructions`;
 CREATE TABLE `form_clinical_instructions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pid` bigint(20) DEFAULT NULL,
@@ -7955,4 +7844,3 @@ CREATE TABLE `form_clinical_instructions` (
   `activity` TINYINT DEFAULT 1 NULL,
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB;
--- --------------------------------------------------------
