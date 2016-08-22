@@ -283,7 +283,7 @@ CREATE TABLE `claims` (
   `target` varchar(30) default NULL,
   `x12_partner_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`patient_id`,`encounter_id`,`version`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
 --
@@ -6254,7 +6254,7 @@ CREATE TABLE `ar_session` (
   PRIMARY KEY (session_id),
   KEY user_closed (user_id, closed),
   KEY deposit_date (deposit_date)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `ar_activity`;
 CREATE TABLE `ar_activity` (
@@ -6278,7 +6278,7 @@ CREATE TABLE `ar_activity` (
   `reason_code` varchar(255) DEFAULT NULL COMMENT 'Use as needed to show the primary payer adjustment reason code',
   PRIMARY KEY (pid, encounter, sequence_no),
   KEY session_id (session_id)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `users_facility`;
 CREATE TABLE `users_facility` (
@@ -6412,7 +6412,7 @@ CREATE TABLE `procedure_order_code` (
   `do_not_send`         tinyint(1)  NOT NULL DEFAULT '0'    COMMENT '0 = normal, 1 = do not transmit to lab',
   `procedure_order_title` varchar( 255 ) NULL DEFAULT NULL,
   PRIMARY KEY (`procedure_order_id`, `procedure_order_seq`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `procedure_answers`;
 CREATE TABLE `procedure_answers` (
@@ -6422,7 +6422,7 @@ CREATE TABLE `procedure_answers` (
   `answer_seq`          int(11)      NOT NULL AUTO_INCREMENT COMMENT 'supports multiple-choice questions',
   `answer`              varchar(255) NOT NULL DEFAULT '' COMMENT 'answer data',
   PRIMARY KEY (`procedure_order_id`, `procedure_order_seq`, `question_code`, `answer_seq`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `procedure_report`;
 CREATE TABLE `procedure_report` (
