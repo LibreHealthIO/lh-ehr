@@ -1659,3 +1659,4 @@ RENAME `openemr_session_info` TO `libreehr_session_info`;
 
 #IfTable openemr_module_vars
 RENAME `openemr_module_vars` TO `libreehr_module_vars`;
+#EndIf
