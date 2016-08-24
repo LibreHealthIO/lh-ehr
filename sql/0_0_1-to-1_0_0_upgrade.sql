@@ -71,6 +71,38 @@
 --  #IfNotListOccupation
 --    Custom function for creating Occupation List
 
+#IfTable
+RENAME `openemr_module_vars` TO `libreehr_module_vars`;
+#EndIf
+
+#IfTable openemr_modules
+RENAME `openemr_modules` TO `libreehr_modules`;
+#EndIf
+
+#IfTable openemr_postcalendar_categories
+RENAME `openemr_postcalendar_categories` TO `libreehr_postcalendar_categories`;
+#EndIf
+
+#IfTable openemr_postcalendar_events
+RENAME `openemr_postcalendar_events` TO `libreehr_postcalendar_events`;
+#EndIf
+
+#IfTable openemr_postcalendar_limits
+RENAME `openemr_postcalendar_limits` TO `libreehr_postcalendar_limits`;
+#EndIf
+
+#IfTable openemr_postcalendar_topics
+RENAME `openemr_postcalendar_topics` TO `libreehr_postcalendar_topics`;
+#EndIf
+
+#IfTable openemr_session_info
+RENAME `openemr_session_info` TO `libreehr_session_info`;
+#EndIf
+
+#IfTable openemr_module_vars
+RENAME `openemr_module_vars` TO `libreehr_module_vars`;
+#EndIf
+
 #IfNotIndex form_encounter encounter_date
     CREATE INDEX encounter_date on form_encounter (`date`);
 #EndIf
@@ -1627,36 +1659,4 @@ INSERT INTO list_options (list_id, option_id,title, seq) VALUES ('issue_subtypes
 #IfTable clinical_rules
 UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` = 1 WHERE `id` = 'med_reconc_amc' AND `pid` = 0;
 UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` = 1 WHERE `id` = 'med_reconc_amc' AND `pid` = 0;
-#EndIf
-
-#IfTable
-RENAME `openemr_module_vars` TO `libreehr_module_vars`;
-#EndIf
-
-#IfTable openemr_modules
-RENAME `openemr_modules` TO `libreehr_modules`;
-#EndIf
-
-#IfTable openemr_postcalendar_categories
-RENAME `openemr_postcalendar_categories` TO `libreehr_postcalendar_categories`;
-#EndIf
-
-#IfTable openemr_postcalendar_events
-RENAME `openemr_postcalendar_events` TO `libreehr_postcalendar_events`;
-#EndIf
-
-#IfTable openemr_postcalendar_limits
-RENAME `openemr_postcalendar_limits` TO `libreehr_postcalendar_limits`;
-#EndIf
-
-#IfTable openemr_postcalendar_topics
-RENAME `openemr_postcalendar_topics` TO `libreehr_postcalendar_topics`;
-#EndIf
-
-#IfTable openemr_session_info
-RENAME `openemr_session_info` TO `libreehr_session_info`;
-#EndIf
-
-#IfTable openemr_module_vars
-RENAME `openemr_module_vars` TO `libreehr_module_vars`;
 #EndIf
