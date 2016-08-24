@@ -71,7 +71,7 @@
 --  #IfNotListOccupation
 --    Custom function for creating Occupation List
 
-#IfTable
+#IfTable openemr_module_vars
 RENAME `openemr_module_vars` TO `libreehr_module_vars`;
 #EndIf
 
