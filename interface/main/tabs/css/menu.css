@@ -20,6 +20,8 @@ and open the template in the editor.
     list-style:none;
     margin:0;
     padding:0;
+    border: black solid 1px;
+    border-bottom: 0px;
 }
 .appMenu li
 {
@@ -46,6 +48,7 @@ and open the template in the editor.
     left: 0;
     top: 100%;
     z-index:1000;
+    border: black solid 1px;
 }
 
 .menuSection > .menuEntries .menuEntries {
