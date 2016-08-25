@@ -864,37 +864,31 @@ class C_Prescription extends Controller {
 			if(empty($cmd))
 			{
 				$err .= " Send fax not set in includes/config.php";
-				break;
 			}
 			else
 			{
 				//generate file to fax
 				$faxFile = "Failed";
 				$this->_print_prescription($p, $faxFile);
-				if(empty($faxFile))
-				{
+				if (empty($faxFile)) {
 					$err .= " _print_prescription returned empty file";
-					break;
+				} else {
+					$fileName = $GLOBALS['OE_SITE_DIR'] . "/documents/" . $p->get_id() .
+						$p->get_patient_id() . "_fax_.pdf";
+					//print "filename is $fileName";
+					touch($fileName); // php bug
+					$handle = fopen($fileName, "w");
+					if (!$handle) {
+						$err .= " Failed to open file $fileName to write fax to";
+					}
+					if (fwrite($handle, $faxFile) === false) {
+						$err .= " Failed to write data to $fileName";
+					}
+					fclose($handle);
+					$args = " -n -d $faxNum $fileName";
+					//print "command is $cmd $args<br>";
+					exec($cmd . $args);
 				}
-        $fileName = $GLOBALS['OE_SITE_DIR'] . "/documents/" . $p->get_id() .
-          $p->get_patient_id() . "_fax_.pdf";
-				//print "filename is $fileName";
-				touch($fileName); // php bug
-				$handle = fopen($fileName,"w");
-				if(!$handle)
-				{
-					$err .= " Failed to open file $fileName to write fax to";
-					break;
-				}
-				if(fwrite($handle, $faxFile) === false)
-				{
-					$err .= " Failed to write data to $fileName";
-					break;
-				}
-				fclose($handle);
-				$args = " -n -d $faxNum $fileName";
-				//print "command is $cmd $args<br>";
-				exec($cmd . $args);
 			}
 
 		}
