@@ -640,6 +640,7 @@ if ($GLOBALS['patient_id_category_name']) {
     <div style='float:left; margin-right:20px'>
      <table cellspacing=0 cellpadding=0>
       <?php do_action( 'demographics_before_first_table_row' ); ?>
+	  <?php if (!$GLOBALS['hide_billing_widget'])  { ?>
       <tr>
        <td>
 <?php
@@ -670,7 +671,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 		//Debit the patient balance from insurance balance
 		$insurancebalance = get_patient_balance($pid, true) - $patientbalance;
 	   $totalbalance=$patientbalance + $insurancebalance;
- if ($GLOBALS['oer_config']['ws_accounting']['enabled']) {
+
  // Show current balance and billing note, if any.
   echo "<table border='0'><tr><td>" .
   "<table ><tr><td><span class='bold'><font color='red'>" .
@@ -705,11 +706,12 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
     "</span></td></tr>";
   }
   echo "</table></td></tr></td></tr></table><br>";
- }
+
 ?>
         </div> <!-- required for expand_collapse_widget -->
        </td>
       </tr>
+	 <?php } ?>
       <tr>
        <td>
 <?php

@@ -10,7 +10,6 @@ include_once("$srcdir/billrep.inc");
 include_once("$srcdir/billing.inc");
 include_once("$srcdir/gen_x12_837.inc.php");
 include_once("$srcdir/gen_hcfa_1500.inc.php");
-include_once(dirname(__FILE__) . "/../../library/classes/WSClaim.class.php");
 require_once("$srcdir/classes/class.ezpdf.php");
 
 $EXPORT_INC = "$webserver_root/custom/BillingExport.php";
@@ -18,7 +17,6 @@ if (file_exists($EXPORT_INC)) {
   include_once($EXPORT_INC);
   $BILLING_EXPORT = true;
 }
-
 
 $bill_info = array();
 
