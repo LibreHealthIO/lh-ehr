@@ -1,0 +1,31 @@
+{
+    "name": "LibreEHR",
+    "type": "project",
+    "description": "LibreEHR - Free Open Source Electronic Health Records based on OpenEMR",
+    "keywords": ["libreehr", "openemr"],
+    "authors": [
+        {
+            "name": "Ken Chapple",
+            "email": "ken@mi-squared.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PluginSystem\\": "library/pluginsystem/",
+            "Framework\\": "library/vendor/libreehr/Framework/"
+        }
+    },
+    "plugin-dirs" : [
+      "interface/plugins/"
+    ],
+    "plugins" : [
+      "interface/tags_filters"
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "vendor-dir": "library/vendor"
+    }
+}
