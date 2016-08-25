@@ -1345,12 +1345,14 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
             if ($row['pc_hometext']) echo "<font color='green'> CMT</font>";
             echo "<br>" . htmlspecialchars(xl_appt_category($row['pc_catname']),ENT_NOQUOTES) . "<br>\n";
             echo htmlspecialchars($row['ufname'] . " " . $row['ulname'],ENT_NOQUOTES) . "</a><br>\n";
+            do_action( 'demographics_after_appointment', $row );
         }
         if ($resNotNull) { //////
             if ( $count < 1 ) { 
                 echo "&nbsp;&nbsp;" . htmlspecialchars(xl('None'),ENT_NOQUOTES); 
             }
             echo "</div>";
+            do_action( 'demographics_after_get_appointments' );
         }
       }
             
@@ -1414,7 +1416,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
            if ( $count < 1 ) { 
                echo "&nbsp;&nbsp;" . htmlspecialchars(xl('None'),ENT_NOQUOTES);          
            }
-        echo "</div>";
+            echo "</div>";
         }
     }
 // END of past appointments            
