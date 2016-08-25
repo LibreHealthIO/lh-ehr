@@ -72,35 +72,35 @@
 --    Custom function for creating Occupation List
 
 #IfTable openemr_module_vars
-RENAME `openemr_module_vars` TO `libreehr_module_vars`;
+RENAME TABLE `openemr_module_vars` TO `libreehr_module_vars`;
 #EndIf
 
 #IfTable openemr_modules
-RENAME `openemr_modules` TO `libreehr_modules`;
+RENAME TABLE `openemr_modules` TO `libreehr_modules`;
 #EndIf
 
 #IfTable openemr_postcalendar_categories
-RENAME `openemr_postcalendar_categories` TO `libreehr_postcalendar_categories`;
+RENAME TABLE `openemr_postcalendar_categories` TO `libreehr_postcalendar_categories`;
 #EndIf
 
 #IfTable openemr_postcalendar_events
-RENAME `openemr_postcalendar_events` TO `libreehr_postcalendar_events`;
+RENAME TABLE `openemr_postcalendar_events` TO `libreehr_postcalendar_events`;
 #EndIf
 
 #IfTable openemr_postcalendar_limits
-RENAME `openemr_postcalendar_limits` TO `libreehr_postcalendar_limits`;
+RENAME TABLE `openemr_postcalendar_limits` TO `libreehr_postcalendar_limits`;
 #EndIf
 
 #IfTable openemr_postcalendar_topics
-RENAME `openemr_postcalendar_topics` TO `libreehr_postcalendar_topics`;
+RENAME TABLE `openemr_postcalendar_topics` TO `libreehr_postcalendar_topics`;
 #EndIf
 
 #IfTable openemr_session_info
-RENAME `openemr_session_info` TO `libreehr_session_info`;
+RENAME TABLE `openemr_session_info` TO `libreehr_session_info`;
 #EndIf
 
 #IfTable openemr_module_vars
-RENAME `openemr_module_vars` TO `libreehr_module_vars`;
+RENAME TABLE `openemr_module_vars` TO `libreehr_module_vars`;
 #EndIf
 
 #IfNotIndex form_encounter encounter_date
