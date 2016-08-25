@@ -873,10 +873,6 @@ function removeOptionSelected(EncounterId)
     width  = 500;
     height = 400;
    }
-   else if (opt.text == 'Refer') {
-    width  = 700;
-    height = 500;
-   }
    dlgopen(opt.value, '_blank', width, height);
   }
   selobj.selectedIndex = 0;

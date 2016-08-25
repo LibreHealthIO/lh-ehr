@@ -1660,3 +1660,7 @@ INSERT INTO list_options (list_id, option_id,title, seq) VALUES ('issue_subtypes
 UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` = 1 WHERE `id` = 'med_reconc_amc' AND `pid` = 0;
 UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` = 1 WHERE `id` = 'med_reconc_amc' AND `pid` = 0;
 #EndIf
+
+#IfColumn transactions                                
+ ALTER TABLE `users` DROP COLUMN `ssi_relayhealth`;
+#EndIf
