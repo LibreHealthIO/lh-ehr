@@ -1982,48 +1982,6 @@ $GLOBALS_METADATA = array(
       xl('Enables the ability to download documents in the Onsite Patient Portal by the user.')
     ),
     
-    'portal_offsite_enable' => array(
-      xl('Enable Offsite Patient Portal'),
-      'bool',                           // data type
-      '0',
-      xl('Enable Offsite Patient Portal.')
-    ),
-
-    'portal_offsite_providerid' => array(
-      xl('Offsite Patient Portal Provider ID'),
-      'text',                           // data type
-      '',
-      xl('Offsite Patient Portal Provider ID(Put Blank If not Registered).')
-    ),    
-
-    'portal_offsite_username' => array(
-      xl('Offsite Patient Portal Username'),
-      'text',                           // data type
-      '',
-      xl('Offsite Patient Portal Username(Put Blank If not Registered).')
-    ),
-
-    'portal_offsite_password' => array(
-      xl('Offsite Patient Portal Password'),
-      'pwd',                           // data type
-      '',
-      xl('Offsite Patient Portal Password(Put Blank If not Registered).')
-    ),
-
-    'portal_offsite_address' => array(
-      xl('Offsite Patient Portal Site Address'),
-      'text',                           // data type
-      'https://ssh.mydocsportal.com/provider.php',
-      xl('Offsite Https link for the Patient Portal.')
-    ),
-
-    'portal_offsite_address_patient_link' => array(
-      xl('Offsite Patient Portal Site Address (Patient Link)'),
-      'text',                           // data type
-      'https://ssh.mydocsportal.com',
-      xl('Offsite Https link for the Patient Portal.(Patient Link)')
-    ),
-
     // Currently the "CMS Portal" supports WordPress.  Other Content Management
     // Systems may be supported in the future.
 
