@@ -635,10 +635,6 @@ INSERT INTO list_options ( list_id, option_id, title, seq ) VALUES ('Occupation'
 UPDATE layout_options SET list_id='Occupation', data_type='26', fld_length='0', max_length='0', edit_options='' WHERE field_id='occupation' AND form_id='DEM';
 #EndIf
 
-#IfMissingColumn patient_access_offsite portal_relation
-ALTER TABLE patient_access_offsite ADD COLUMN portal_relation VARCHAR(100) NULL;
-#EndIf
-
 #IfMissingColumn pnotes portal_relation
 ALTER TABLE pnotes ADD COLUMN `portal_relation` VARCHAR(100) NULL;
 #EndIf
@@ -1663,4 +1659,8 @@ UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` =
 
 #IfColumn transactions                                
  ALTER TABLE `users` DROP COLUMN `ssi_relayhealth`;
+#EndIf
+
+#IfTable patient_access_offsite
+ DROP TABLE `patient_access_offsite`;
 #EndIf

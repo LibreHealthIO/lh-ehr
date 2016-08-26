@@ -525,22 +525,6 @@ $(window).load(function() {
       $portalUserSetting = false;
     }
   }
-  if($GLOBALS['portal_offsite_enable'] && $GLOBALS['portal_offsite_address']){
-    $portalStatus = sqlQuery("SELECT allow_patient_portal FROM patient_data WHERE pid=?",array($pid));
-    if ($portalStatus['allow_patient_portal']=='YES') {
-      $portalLogin = sqlQuery("SELECT pid FROM `patient_access_offsite` WHERE `pid`=?", array($pid));
-      echo "<td style='padding-left:1em;'><a class='css_button iframe small_modal' href='create_portallogin.php?portalsite=off&patient=" . htmlspecialchars($pid,ENT_QUOTES) . "' onclick='top.restoreSession()'>";
-      if (empty($portalLogin)) {
-        echo "<span>".htmlspecialchars(xl('Create Offsite Portal Credentials'),ENT_NOQUOTES)."</span></a></td>";
-      }
-      else {
-        echo "<span>".htmlspecialchars(xl('Reset Offsite Portal Credentials'),ENT_NOQUOTES)."</span></a></td>";
-      }
-    }
-    else {
-      $portalUserSetting = false;
-    }
-  }
   if (!($portalUserSetting)) {
     // Show that the patient has not authorized portal access
     echo "<td style='padding-left:1em;'>" . htmlspecialchars( xl('Patient has not authorized the Patient Portal.'), ENT_NOQUOTES) . "</td>";

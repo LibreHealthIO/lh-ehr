@@ -39,8 +39,8 @@ $fake_register_globals=false;
  require_once("$srcdir/classes/postmaster.php");
 
 // Collect portalsite parameter (either off for offsite or on for onsite); only allow off or on
-$portalsite = isset($_GET['portalsite']) ? $_GET['portalsite'] : $portalsite = "off";
-if ($portalsite != "off" && $portalsite != "on") $portalsite = "off";
+
+$portalsite = "on";
 
  $row = sqlQuery("SELECT pd.*,pao.portal_username,pao.portal_pwd,pao.portal_pwd_status FROM patient_data AS pd LEFT OUTER JOIN patient_access_" . add_escape_custom($portalsite) . "site AS pao ON pd.pid=pao.pid WHERE pd.pid=?",array($pid));
  
@@ -77,13 +77,6 @@ function messageCreate($uname,$pass,$site){
         $message .= "<a href='" . htmlspecialchars($GLOBALS['portal_onsite_address'],ENT_QUOTES) . "'>" .
                     htmlspecialchars($GLOBALS['portal_onsite_address'],ENT_NOQUOTES) . "</a><br><br>";
     } // $site == "off"
-    else {
-	$offsite_portal_patient_link = $GLOBALS['portal_offsite_address_patient_link'] ?  htmlspecialchars($GLOBALS['portal_offsite_address_patient_link'],ENT_QUOTES) : htmlspecialchars("https://mydocsportal.com",ENT_QUOTES);
-        $message .= "<a href='" . $offsite_portal_patient_link . "'>" .
-                    $offsite_portal_patient_link . "</a><br><br>";
-	$message .= htmlspecialchars(xl("Provider Id"),ENT_NOQUOTES) . ": " .
-		    htmlspecialchars($GLOBALS['portal_offsite_providerid'],ENT_NOQUOTES) . "<br><br>";		    
-    }
     
         $message .= htmlspecialchars(xl("User Name"),ENT_NOQUOTES) . ": " .
                     htmlspecialchars($uname,ENT_NOQUOTES) . "<br><br>" .
@@ -152,12 +145,7 @@ if(isset($_REQUEST['form_save']) && $_REQUEST['form_save']=='SUBMIT'){
         $salt_clause = ",portal_salt=? ";
         array_push($query_parameters,oemr_password_hash($clear_pass,$new_salt),$new_salt);
     }
-    else
-    {
-        // For offsite portal still create and SHA1 hashed password
-        // When offsite portal is updated to handle blowfish, then both portals can use the same execution path.
-        array_push($query_parameters,SHA1($clear_pass));
-    }
+
     array_push($query_parameters,$pid);
     if(sqlNumRows($res)){
     sqlStatement("UPDATE patient_access_" . add_escape_custom($portalsite) . "site SET portal_username=?,portal_pwd=?,portal_pwd_status=0 " . $salt_clause . " WHERE pid=?",$query_parameters);
@@ -200,16 +188,6 @@ function transmit(){
         <tr class="text">
             <th colspan="5" align="center"><?php echo htmlspecialchars(xl("Generate Username And Password For")." ".$row['fname'],ENT_QUOTES);?></th>
         </tr>
-	<?php
-		if($portalsite == 'off'){
-	?>
-        <tr class="text">
-            <td><?php echo htmlspecialchars(xl('Provider Id').':',ENT_QUOTES);?></td>
-            <td><span><?php echo htmlspecialchars($GLOBALS['portal_offsite_providerid'],ENT_QUOTES);?></span></td>
-        </tr>			
-	<?php		
-		}
-	?>
         <tr class="text">
             <td><?php echo htmlspecialchars(xl('User Name').':',ENT_QUOTES);?></td>
             <td><input type="text" name="uname" value="<?php if($row['portal_username']) echo htmlspecialchars($row['portal_username'],ENT_QUOTES); else echo htmlspecialchars($row['fname'].$row['id'],ENT_QUOTES);?>" size="10" readonly></td>
