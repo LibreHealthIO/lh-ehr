@@ -16,19 +16,7 @@ function newEvent($event, $user, $groupname, $success, $comments="", $patient_id
         }
     }
     
-    if ($log_from == 'patient-portal') {
-        $sqlMenuItems = "SELECT * FROM patient_portal_menu";
-
-        $resMenuItems = sqlStatement($sqlMenuItems);
-        for($iter=0; $rowMenuItem=sqlFetchArray($resMenuItems); $iter++) {
-            $menuItems[$rowMenuItem['patient_portal_menu_id']] = $rowMenuItem['menu_name'];
-        }
-
-        $menuItemId = array_search($menu_item, $menuItems);
-        $sql = "insert into log ( date, event, user, patient_id, groupname, success, comments, 
-                log_from, menu_item_id, crt_user, ccda_doc_id) values ( NOW(), ?, ?, ?, ?, ?, ?, ?, ?,?, ?)";
-        $ret = sqlStatementNoLog($sql, array($event, $user, $patient_id, $groupname, $success, $comments,$log_from, $menuItemId,$crt_user, $ccda_doc_id));
-    } else {    
+    
     /* More details added to the log */
     $sql = "insert into log ( date, event, user, groupname, success, comments, crt_user, patient_id) " .
             "values ( NOW(), " . $adodb->qstr($event) . "," . $adodb->qstr($user) .
@@ -37,7 +25,6 @@ function newEvent($event, $user, $groupname, $success, $comments="", $patient_id
             $adodb->qstr($crt_user) ."," . $adodb->qstr($patient_id). ")";
 
     $ret = sqlInsertClean_audit($sql);
-    }
 
     // Send item to log_comment_encrypt for comment encyption tracking
     $last_log_id = $GLOBALS['adodb']['db']->Insert_ID();

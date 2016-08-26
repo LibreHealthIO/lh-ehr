@@ -53,7 +53,6 @@ Access Control List Administration
 Access date
 Access not allowed
 Access Not Authorized
-Access Your Patient Portal
 Accident
 Account Id issued for NewCrop eRx service, used to separate multi-facility accounts.
 Account Name
@@ -1116,14 +1115,6 @@ CMS 1500 Paper Form Format
 CMS 1500: Box 31 Format
 CMS 1500: Date in Box 31 (Signature)
 CMS ID
-CMS Portal
-CMS Portal Login
-CMS Portal Login ID
-CMS Portal not enabled!
-CMS Portal Password
-CMS Portal Request
-CMS Portal Site Address
-CMS Portal Username
 CN2-12 intact
 Co Pay
 Co Pay Paid
@@ -1339,8 +1330,6 @@ Create Eventlog Backup
 Create new issue
 Create New Patient
 Create new Track
-Create Offsite Portal Credentials
-Create Onsite Portal Credentials
 Create Patient Note
 Create the SSL Certificate Authority and Server certificates.
 Create Visit
@@ -1820,7 +1809,6 @@ Download document template for this patient and visit
 download encrypted file
 Download Fax
 Download HL7 file
-Download Offsite Portal Connection Files
 Download or Delete a Template
 Download PDF
 Download QRDA Category III File
@@ -2022,7 +2010,6 @@ Enable Clinical Passive Reminder Widget
 Enable Clinical Quality Measure (CQM) Reporting
 Enable Clinical Reminder Popup
 Enable Clinical Reminder Widget
-Enable CMS Portal
 Enable CQM Report Itemization
 Enable CQM Reporting
 Enable EDI History In Left Menu
@@ -2048,8 +2035,6 @@ Enable logging of security and administration activities.
 Enable NewCrop eRx import status message
 Enable NewCrop eRx Service
 Enable NewCrop eRx Service.
-Enable Offsite Patient Portal
-Enable Offsite Patient Portal.
 Enable Onsite Patient Portal
 Enable Onsite Patient Portal Document Download
 Enable Onsite Patient Portal.
@@ -2060,7 +2045,6 @@ Enable Random Drug Testing
 Enable Reporting of Tracking Date For Automated Measure Calculations (AMC)
 Enable Scanner Support
 Enable Standard Report Itemization
-Enable support for the open source WordPress Portal by Sunset Systems
 Enable the Medical Information Integration, LLC Lab Exchange Service.
 Enable the LibreEHR Support LLC Lab Exchange Service.
 Enable User Certificate Authentication
@@ -2374,7 +2358,6 @@ FAIL
 failed
 Failed
 Failed Patients
-Failed to add patient to portal
 Failed to compute a unique filename
 Failed to create
 Failed to create temporary folder. CouchDB will not work.
@@ -2430,7 +2413,6 @@ Female P
 Female Symptoms
 Female VSC
 Fetch
-Fetching following file from portal
 Fever
 Fever:
 FH Blood Problems
@@ -3499,7 +3481,6 @@ Logged out.
 Logging
 Login
 login
-Login name of WordPress user for portal access
 Login to remote host
 Login to this remote host failed
 Logout
@@ -4249,17 +4230,6 @@ Off
 Office Notes
 Office Visit
 Official Clinical Quality Measures (CQM) Measure Groups
-Offsite Https link for the Patient Portal.
-Offsite Https link for the Patient Portal.(Patient Link)
-Offsite Patient Portal Password
-Offsite Patient Portal Password(Put Blank If not Registered).
-Offsite Patient Portal Provider ID
-Offsite Patient Portal Provider ID(Put Blank If not Registered).
-Offsite Patient Portal Site Address
-Offsite Patient Portal Site Address (Patient Link)
-Offsite Patient Portal Username
-Offsite Patient Portal Username(Put Blank If not Registered).
-Offsite Portal web Service Failed
 Offspring
 Offspring History
 ointment
@@ -4908,11 +4878,6 @@ Pop ups need to be enabled to see these reports
 Populate the year view with events?
 Popups
 Portal
-Portal Activity
-Portal ID
-Portal ID does not match request from portal!
-Portal password is missing
-Portal Requests
 Portrait
 Portuguese
 Portuguese (Brazilian)
@@ -5489,7 +5454,6 @@ Reserved to define when a provider may not have available appointments after.
 Reserved to define when an event did not occur as specified.
 Reserved todefine when a provider may haveavailable appointments after.
 Reset
-Reset Offsite Portal Credentials
 Reset Onsite Portal Credentials
 Resident physician
 Resn
@@ -5783,8 +5747,6 @@ Send To
 SEND TO
 Send to all
 Send To HIE failed
-Send to portal
-Send to Portal
 Sender
 Sender ID
 Sender ID (ISA06)
@@ -6470,7 +6432,6 @@ The patient reminders have been sent
 The patient reminders have been updated
 The patient was not logged in when submitting this form
 The payments posted cannot go below this date.This ensures that after taking the final report nobody post for previous dates.
-The portal has data for this patient and form. Load it now?
 The raw data feed release can be obtained from
 The remaining information below applies only if you are posting manually, or if you are doing manual corrections.
 The requested document is not present at the expected location on the filesystem or there are not sufficient permissions to access it
@@ -6979,7 +6940,6 @@ URL for NewCrop eRx Site Address.
 URL for LibreEHR support.
 URL for Phone Gateway.
 URL for Phone Gateway. Automated VOIP service provided by Maviq. Please visit http://signup.maviq.com for more information.
-URL for the WordPress site that supports the portal
 URLs for NewCrop eRx Service Address, separated by a semi-colon.
 USA
 Usage
@@ -7236,7 +7196,6 @@ WNL
 Wolof
 Women
 Women Only
-WordPress Portal
 Work
 WORK NOTE
 Work Phone
