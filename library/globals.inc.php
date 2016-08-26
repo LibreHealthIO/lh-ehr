@@ -891,7 +891,28 @@ $GLOBALS_METADATA = array(
       xl('Use Custom Statement'),
       'bool',                           // data type
       '0',                              // default = false
-      xl('This will use the custom Statment showing the description instead of the codes.')
+      xl('This will use the custom Statement showing the description instead of the codes.')
+    ),
+	 
+    'show_aging_on_custom_statement' => array(
+      xl('Show Aging on Custom Statement'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('This will Show Aging on the custom Statement.')
+    ),
+
+    'use_statement_print_exclusion' => array(
+      xl('Allow Statement to be Excluded from Printing'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('This will enable the Ability to Exclude Certain Patient Statements from Printing.')
+    ),
+    
+    'minimum_amount_to_print' => array(
+      xl('Total Minimum Amount of Statement to Allow Printing'),
+      'num',                           // data type
+      '1.00',
+      xl('Total Minimum Dollar Amount of Statement to Allow Printing.(only applicable if Allow Statement to be Excluded from Printing is enabled)')
     ),
 	 
   	'statement_bill_note_print' => array(
@@ -900,6 +921,27 @@ $GLOBALS_METADATA = array(
       '0',                              // default = false
       xl('This will allow printing of the Patient Billing Note on the statements.')
     ),  
+	
+    'number_appointments_on_statement' => array(
+      xl('Number of Appointments on Statement'),
+      'num',                           // data type
+      '2',                              // default = 2
+      xl('The Number of Future Appointments to Display on the Statement.')
+    ),
+
+  	'statement_message_to_patient' => array(
+      xl('Print Custom Message'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('This will allow printing of a custom Message on the statements.')
+    ),    
+    
+    'statement_msg_text' => array(
+      xl('Custom Statement message'),
+      'text',                           // data type
+      '',
+      xl('Text for Custom statement message.')
+    ),
 	
   	'use_dunning_message' => array(
       xl('Use Custom Dunning Messages'),
