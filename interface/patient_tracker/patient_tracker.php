@@ -48,9 +48,7 @@ $appointments = sortAppointments( $appointments, 'time' );
 $chk_prov = array();  // list of providers with appointments
 // Scan appointments for additional info
 foreach ( $appointments as $apt ) {
-  $chk_prov['uprovider_id'] = $apt['ulname'] . ', ' . $apt['ufname'] . ' ' . $apt['umname'];
-  $chk_prov_all[] = $apt['ulname'] . ', ' . $apt['ufname'] . ' ' . $apt['umname'];
-  $chk_prov_count = count(array_count_values($chk_prov_all));
+  $chk_prov[$apt['uprovider_id']] = $apt['ulname'] . ', ' . $apt['ufname'] . ' ' . $apt['umname'];
 }
 
 ?>
@@ -158,8 +156,8 @@ function openNewTopWindow(newpid,newencounterid) {
  }
  ?>
 <div>
-  <?php if ($chk_prov_count == 1) {?>
-  <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. reset($chk_prov) ?></span></h2>
+  <?php if (count($chk_prov) == 1) {?>
+  <h2><span style='float: left'><?php echo xl('Appointments for'). ' : '. text(reset($chk_prov)) ?></span></h2>
   <?php } ?>
  <span style='float: right'>
  <input type='hidden' name='setting_new_window' value='1' />
@@ -216,7 +214,7 @@ function openNewTopWindow(newpid,newencounterid) {
   <td class="dehead" align="center">
    <?php  echo xlt('Visit Type'); ?>
   </td>
-  <?php if ($chk_prov_count > 1) { ?>
+  <?php if (count($chk_prov) > 1) { ?>
   <td class="dehead" align="center">
    <?php  echo xlt('Provider'); ?>
   </td>
@@ -249,12 +247,7 @@ function openNewTopWindow(newpid,newencounterid) {
                 $date_squash = str_replace("-","",$date_appt);
 
                 # Collect variables and do some processing
-                #$docname  = $chk_prov_all[0];
-				if ($chk_prov_count > 1) {
-				  $docname  = $appointment['ulname'] . ', ' . $appointment['ufname'] . ' ' . $appointment['umname'];
-				} else {
-                $docname  = $chk_prov['uprovider_id'];
-				}
+                $docname  = $chk_prov[$appointment['uprovider_id']];
                 if (strlen($docname)<= 3 ) continue;
                 $ptname = $appointment['lname'] . ', ' . $appointment['fname'] . ' ' . $appointment['mname'];
                 $appt_enc = $appointment['encounter'];
