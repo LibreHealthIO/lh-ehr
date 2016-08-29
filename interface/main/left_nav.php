@@ -44,7 +44,6 @@ use ESign\Api;
  $primary_docs = array(
   'cal' => array(xl('Calendar')  , 0, 'main/main_info.php'),
   'pfb' => array(xl('Patient Flow Board')  , 0, '../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1'),
-  'bootstrap' => array(xl('Portal Activity')  , 0, '../myportal/index.php'),
   'msg' => array(xl('Messages')  , 0, 'main/messages/messages.php?form_active=1'),
   'pwd' => array(xl('Password')  , 0, 'usergroup/user_info.php'),
   'prf' => array(xl('Preferences')  , 0, 'super/edit_globals.php?mode=user'),
@@ -58,7 +57,6 @@ use ESign\Api;
   'orc' => array(xl('Proc Load') , 0, 'orders/load_compendium.php'),
   'orb' => array(xl('Proc Bat')  , 0, 'orders/orders_results.php?batch=1'),
   'ore' => array(xl('E-Reports') , 0, 'orders/list_reports.php'),
-  'ppo' => array(xl('CMS Portal'), 0, 'cmsportal/list_requests.php'),
   'cht' => array(xl('Chart Trk') , 0, '../custom/chart_tracker.php'),
   'imp' => array(xl('Import')    , 0, '../custom/import.php'),
   'bil' => array(xl('Billing')   , 0, 'billing/billing_report.php'),
@@ -978,10 +976,6 @@ $(document).ready(function(){
   <?php genTreeLink('RBot','msg',xl('Messages')); ?> 
   <?php if ($GLOBALS['lab_exchange_enable']) genTreeLink('RTop', 'lab', xl('Check Lab Results'));?>
   <?php
-    if ($GLOBALS['gbl_portal_cms_enable'] && acl_check('patientportal','portal')) {
-      // genTreeLink('RTop','ppo',xl('WordPress Portal'));
-      genPopLink(xl('CMS Portal'),'../cmsportal/list_requests.php','ppo0');
-    }
   ?>
 
   <li class="open"><a class="expanded" id="patimg" ><span><?php xl('Patient/Client','e') ?></span></a>

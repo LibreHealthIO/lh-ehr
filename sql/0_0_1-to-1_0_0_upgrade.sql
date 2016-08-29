@@ -651,31 +651,6 @@ ALTER TABLE `log` ADD `log_from` VARCHAR(20) DEFAULT 'open-emr';
 ALTER TABLE `log` ADD `menu_item_id` INT(11) DEFAULT NULL;
 #EndIf
 
-#IfNotTable patient_portal_menu
-CREATE TABLE `patient_portal_menu` (
-  `patient_portal_menu_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `patient_portal_menu_group_id` INT(11) DEFAULT NULL,
-  `menu_name` VARCHAR(40) DEFAULT NULL,
-  `menu_order` SMALLINT(4) DEFAULT NULL,
-  `menu_status` TINYINT(2) DEFAULT '1',
-  PRIMARY KEY (`patient_portal_menu_id`)
-) ENGINE=INNODB AUTO_INCREMENT=14;
-
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (1,1,'Dashboard',3,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (2,1,'My Profile',6,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (3,1,'Appointments',9,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (4,1,'Documents',12,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (5,1,'Med Records',15,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (6,1,'My Account',18,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (7,1,'Mailbox',21,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (8,1,'Password',24,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (9,1,'View Log',27,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (10,1,'Logout',30,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (11,1,'View Health Information',33,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (12,1,'Download Health Information',36,1);
-INSERT  INTO `patient_portal_menu`(`patient_portal_menu_id`,`patient_portal_menu_group_id`,`menu_name`,`menu_order`,`menu_status`) VALUES (13,1,'Transmit Health Information',39,1);
-#Endif
-
 #IfMissingColumn log ccda_doc_id
 ALTER TABLE `log` ADD `ccda_doc_id` INT(11) DEFAULT NULL COMMENT 'CCDA document id from ccda';
 #Endif
@@ -1663,4 +1638,12 @@ UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` =
 
 #IfTable patient_access_offsite
  DROP TABLE `patient_access_offsite`;
+#EndIf
+
+#IfTable patient_portal_menu
+ DROP TABLE `patient_portal_menu`;
+#EndIf
+
+#IfColumn patient_data cmsportal_login
+ DROP COLUMN `cmsportal_login`;
 #EndIf

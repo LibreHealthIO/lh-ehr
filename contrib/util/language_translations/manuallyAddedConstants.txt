@@ -92,8 +92,6 @@ Clinical Rules Reminder Inactivation Options
 Clinical Rules Reminder Intervals
 Clinical Rules Reminder Methods
 Clinical Rules Target Intervals
-CMS Portal Login
-CMS Portal Login ID
 Code Types
 Colon Cancer Screening
 Community health physician

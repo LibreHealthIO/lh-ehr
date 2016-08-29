@@ -31,9 +31,6 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
-if ($GLOBALS['gbl_portal_cms_enable']) {
-  require_once("$include_root/cmsportal/portal.inc.php");
-}
 
 $CPR = 4; // cells per row
 
@@ -95,7 +92,6 @@ function end_group() {
 
 $formname = isset($_GET['formname']) ? $_GET['formname'] : '';
 $formid   = isset($_GET['id']      ) ? intval($_GET['id']) : 0;
-$portalid = isset($_GET['portalid']) ? intval($_GET['portalid']) : 0;
 
 // Get title and number of history columns for this form.
 $tmp = sqlQuery("SELECT title, option_value FROM list_options WHERE " .
@@ -197,14 +193,6 @@ if ($_POST['bn_save']) {
           "( form_id, field_id, field_value ) VALUES ( ?, ?, ? )",
           array($newid, $field_id, $value));
       }
-    }
-  }
-
-  if ($portalid) {
-    // Delete the request from the portal.
-    $result = cms_portal_call(array('action' => 'delpost', 'postid' => $portalid));
-    if ($result['errmsg']) {
-      die(text($result['errmsg']));
     }
   }
 
@@ -355,13 +343,11 @@ function validate(f) {
 
 <?php
   echo "<form method='post' " .
-       "action='$rootdir/forms/LBF/new.php?formname=$formname&id=$formid&portalid=$portalid' " .
+       "action='$rootdir/forms/LBF/new.php?formname=$formname&id=$formid' " .
        "onsubmit='return validate(this)'>\n";
 
-  $cmsportal_login = '';
-  $portalres = FALSE;
   if (empty($is_lbf)) {
-    $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, p.cmsportal_login, " .
+    $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, " .
       "fe.date FROM " .
       "form_encounter AS fe, forms AS f, patient_data AS p WHERE " .
       "p.pid = ? AND f.pid = p.pid AND f.encounter = ? AND " .
@@ -372,15 +358,8 @@ function validate(f) {
     echo text($enrow['fname']) . ' ' . text($enrow['mname']) . ' ' . text($enrow['lname']);
     echo ' ' . xlt('on') . ' ' . text(oeFormatShortDate(substr($enrow['date'], 0, 10)));
     echo "</p>\n";
-    $cmsportal_login = $enrow['cmsportal_login'];
   }
-  // If loading data from portal, get the data.
-  if ($GLOBALS['gbl_portal_cms_enable'] && $portalid) {
-    $portalres = cms_portal_call(array('action' => 'getpost', 'postid' => $portalid));
-    if ($portalres['errmsg']) {
-      die(text($portalres['errmsg']));
-    }
-  }
+
 ?>
 
 <!-- This is where a chart might display. -->
@@ -443,10 +422,6 @@ function validate(f) {
       // This data comes from static history
       if (isset($shrow[$field_id])) $currvalue = $shrow[$field_id];
     } else {
-      if (!$formid && $portalres) {
-        // Copying CMS Portal form data into this field if appropriate.
-        $currvalue = cms_field_to_lbf($data_type, $field_id, $portalres['fields']);
-      }
       if ($currvalue === '') {
         $currvalue = lbf_current_value($frow, $formid, $is_lbf ? 0 : $encounter);
       }
@@ -653,21 +628,6 @@ if (function_exists($formname . '_javascript_onload')) {
 
 // TBD: If $alertmsg, display it with a JavaScript alert().
 
-// New form and this patient has a portal login and we have not loaded portal data.
-// Check if there is portal data pending for this patient and form type.
-if (!$formid && $GLOBALS['gbl_portal_cms_enable'] && $cmsportal_login && !$portalid) {
-  $portalres = cms_portal_call(array('action' => 'checkptform', 'form' => $formname, 'patient' => $cmsportal_login));
-  if ($portalres['errmsg']) {
-    die(text($portalres['errmsg'])); // TBD: Change to alertmsg
-  }
-  $portalid = $portalres['postid'];
-  if ($portalid) {
-    echo "if (confirm('" . xls('The portal has data for this patient and form. Load it now?') . "')) {\n";
-    echo " top.restoreSession();\n";
-    echo " document.location.href = 'load_form.php?formname=$formname&portalid=$portalid';\n";
-    echo "}\n";
-  }
-}
 ?>
 </script>
 
