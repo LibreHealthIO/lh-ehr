@@ -6,7 +6,7 @@
  *  allowing the user to change status and view those changed here and in the Calendar
  *  Will allow the collection of length of time spent in each status
  * 
- * Copyright (C) 2015 Terry Hill <terry@lillysystems.com> 
+ * Copyright (C) 2015-2016 Terry Hill <terry@lillysystems.com> 
  * 
  * LICENSE: This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License 
@@ -35,6 +35,21 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient_tracker.inc.php");
+#define variables, future enhancement allow changing the to_date and from_date 
+#to allow picking a date to review
+ 
+$appointments = array();
+$from_date = date("Y-m-d");
+$to_date = date("Y-m-d");
+$datetime = date("Y-m-d H:i:s");
+# go get the information and process it
+$appointments = fetch_Patient_Tracker_Events($from_date, $to_date);
+$appointments = sortAppointments( $appointments, 'time' );
+$chk_prov = array();  // list of providers with appointments
+// Scan appointments for additional info
+foreach ( $appointments as $apt ) {
+  $chk_prov[$apt['uprovider_id']] = $apt['ulname'] . ', ' . $apt['ufname'] . ' ' . $apt['umname'];
+}
 
 ?>
 <html>
@@ -140,9 +155,16 @@ function openNewTopWindow(newpid,newencounterid) {
    }
  }
  ?>
+<div>
+  <?php if (count($chk_prov) == 1) {?>
+  <h2><span style='float: left'><?php echo xl('Appointments for'). ' : '. text(reset($chk_prov)) ?></span></h2>
+  <?php } ?>
+ <span style='float: right'>
  <input type='hidden' name='setting_new_window' value='1' />
  <input type='checkbox' name='form_new_window' value='1'<?php echo $new_window_checked; ?> /><?php
   echo xlt('Open Patient in New Window'); ?>
+ </span>
+ </div>
 <?php if ($GLOBALS['pat_trkr_timer'] =='0') { ?>
 <table border='0' cellpadding='5' cellspacing='0'>
  <tr>
@@ -192,9 +214,11 @@ function openNewTopWindow(newpid,newencounterid) {
   <td class="dehead" align="center">
    <?php  echo xlt('Visit Type'); ?>
   </td>
+  <?php if (count($chk_prov) > 1) { ?>
   <td class="dehead" align="center">
    <?php  echo xlt('Provider'); ?>
   </td>
+  <?php } ?>
  <td class="dehead" align="center">
    <?php  echo xlt('Total Time'); ?>
   </td>
@@ -215,17 +239,6 @@ function openNewTopWindow(newpid,newencounterid) {
  </tr>
 
 <?php
-#define variables, future enhancement allow changing the to_date and from_date 
-#to allow picking a date to review
- 
-$appointments = array();
-$from_date = date("Y-m-d");
-$to_date = date("Y-m-d");
-$datetime = date("Y-m-d H:i:s");
-
-# go get the information and process it
-$appointments = fetch_Patient_Tracker_Events($from_date, $to_date);
-$appointments = sortAppointments( $appointments, 'time' );
 
 	foreach ( $appointments as $appointment ) {
 
@@ -234,7 +247,7 @@ $appointments = sortAppointments( $appointments, 'time' );
                 $date_squash = str_replace("-","",$date_appt);
 
                 # Collect variables and do some processing
-                $docname  = $appointment['ulname'] . ', ' . $appointment['ufname'] . ' ' . $appointment['umname'];
+                $docname  = $chk_prov[$appointment['uprovider_id']];
                 if (strlen($docname)<= 3 ) continue;
                 $ptname = $appointment['lname'] . ', ' . $appointment['fname'] . ' ' . $appointment['mname'];
                 $appt_enc = $appointment['encounter'];
@@ -287,10 +300,10 @@ $appointments = sortAppointments( $appointments, 'time' );
          <?php echo getListItemTitle('patient_flow_board_rooms', $appt_room);?>
          </td>
          <td class="detail" align="center">
-         <?php echo text($appt_time) ?>
+         <?php echo oeFormatTime($appt_time) ?>
          </td>
          <td class="detail" align="center">
-        <?php echo text(substr($newarrive,11)); ?>
+        <?php echo ($newarrive ? oeFormatTime($newarrive) : '&nbsp;') ?>
          </td>
          <td class="detail" align="center"> 
          <?php if (empty($tracker_id)) { #for appt not yet with tracker id and for recurring appt ?>
@@ -334,9 +347,11 @@ $appointments = sortAppointments( $appointments, 'time' );
          <td class="detail" align="center">
          <?php echo text(xl_appt_category($appointment['pc_title'])) ?>
          </td>
+         <?php if (count($chk_prov) > 1) { ?>
          <td class="detail" align="center">
          <?php echo text($docname); ?>
          </td>
+         <?php } ?>
          <td class="detail" align="center"> 
          <?php		 
 		 
@@ -361,7 +376,7 @@ $appointments = sortAppointments( $appointments, 'time' );
         <td class="detail" align="center">
          <?php 
 		 if (strtotime($newend) != '') {
-		    echo text(substr($newend,11)) ;
+		    echo oeFormatTime($newend,11) ;
 		 }
 		 ?>
          </td>
