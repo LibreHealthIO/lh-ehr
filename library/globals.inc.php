@@ -257,9 +257,9 @@ $GLOBALS_METADATA = array(
     ),
     //
     'online_support_link' => array(
-      xl('Online Support Link'),
+      xl('Online Forum Support Link'),
       'text',                           // data type
-      'http://libreehr.org',
+      'https://forums.librehealth.io/c/7-support',
       xl('URL for LibreEHR Website.')
     ),
 
