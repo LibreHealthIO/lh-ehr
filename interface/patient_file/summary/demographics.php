@@ -1264,17 +1264,6 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	  echo "   <br />&nbsp;<br />\n";
 	}
 
-	// Show current and upcoming appointments.
-	if (isset($pid) && !$GLOBALS['disable_calendar']) {
-        // 
-        $current_date2 = date('Y-m-d');
-        $events = array();
-        $apptNum = (int)$GLOBALS['number_of_appts_to_show'];
-        if($apptNum != 0) $apptNum2 = abs($apptNum);
-        else $apptNum2 = 10;
-        $events = fetchNextXAppts($current_date2, $pid, $apptNum2);
-        $events = sortAppointments($events);
-        //////
 
      // Show Clinical Reminders for any user that has rules that are permitted.
      $clin_rem_check = resolve_rules_sql('','0',TRUE,'',$_SESSION['authUser']); 
@@ -1294,6 +1283,87 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
         echo "<div style='margin-left:10px' class='text'><image src='../../pic/ajax-loader.gif'/></div><br/>";
         echo "</div>";
         } // end if crw
+      // Show current and upcoming appointments.
+      //
+      // Recurring appointment support and Appointment Display Sets
+      // added to Appointments by Ian Jardine ( epsdky ).
+      //
+      if (isset($pid) && !$GLOBALS['disable_calendar']) {
+      //
+        $current_date2 = date('Y-m-d');
+        $events = array();
+        $apptNum = (int)$GLOBALS['number_of_appts_to_show'];
+        if($apptNum != 0) $apptNum2 = abs($apptNum);
+        else $apptNum2 = 10;
+        //
+        $mode1 = !$GLOBALS['appt_display_sets_option'];
+        $colorSet1 = $GLOBALS['appt_display_sets_color_1'];
+        $colorSet2 = $GLOBALS['appt_display_sets_color_2'];
+        $colorSet3 = $GLOBALS['appt_display_sets_color_3'];
+        $colorSet4 = $GLOBALS['appt_display_sets_color_4'];
+        //
+        if($mode1) $extraAppts = 1;
+        else $extraAppts = 6;
+        $events = fetchNextXAppts($current_date2, $pid, $apptNum2 + $extraAppts);
+        //////
+        if($events) {
+          $selectNum = 0;
+          $apptNumber = count($events);
+          //
+          if($apptNumber <= $apptNum2) {
+            $extraApptDate = '';
+            //
+          } else if($mode1 && $apptNumber == $apptNum2 + 1) {
+            $extraApptDate = $events[$apptNumber - 1]['pc_eventDate'];
+            array_pop($events);
+            --$apptNumber;
+            $selectNum = 1;
+            //
+          } else if($apptNumber == $apptNum2 + 6) {
+            $extraApptDate = $events[$apptNumber - 1]['pc_eventDate'];
+            array_pop($events);
+            --$apptNumber;
+            $selectNum = 2;
+            //
+          } else { // mode 2 - $apptNum2 < $apptNumber < $apptNum2 + 6
+            $extraApptDate = '';
+            $selectNum = 2;
+            //
+          }
+          //
+          $limitApptIndx = $apptNum2 - 1;
+          $limitApptDate = $events[$limitApptIndx]['pc_eventDate'];
+          //
+          switch ($selectNum) {
+            //
+            case 2:
+              $lastApptIndx = $apptNumber - 1;
+              $thisNumber = $lastApptIndx - $limitApptIndx;
+              for($i = 1; $i <= $thisNumber; ++$i) {
+                if($events[$limitApptIndx + $i]['pc_eventDate'] != $limitApptDate) {
+                  $extraApptDate = $events[$limitApptIndx + $i]['pc_eventDate'];
+                  $events = array_slice($events, 0, $limitApptIndx + $i);
+                  break;
+                }
+              }
+              //
+              case 1:
+                $firstApptIndx = 0;
+                for($i = 1; $i <= $limitApptIndx; ++$i) {
+                  if($events[$limitApptIndx - $i]['pc_eventDate'] != $limitApptDate) {
+                    $firstApptIndx = $apptNum2 - $i;
+                    break;
+                  }
+                }
+                //
+          }
+          //
+          if($extraApptDate) {
+            if($extraApptDate != $limitApptDate) $apptStyle2 = " style='background-color:" . attr($colorSet3) . ";'";
+            else $apptStyle2 = " style='background-color:" . attr($colorSet4) . ";'";
+          }
+        }
+        //////
 
 	// appointments expand collapse widget
         $widgetTitle = xl("Appointments");
@@ -1303,13 +1373,17 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
         $widgetButtonClass = "";
         $linkMethod = "javascript";
         $bodyClass = "summary_item small";
-        $widgetAuth = $resNotNull; // $resNotNull refects state of query (appts) in fetchAppointments()
+        $widgetAuth = $resNotNull; // $resNotNull reflects state of query in fetchAppointments
         $fixedWidth = false;
         expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
         $count = 0;
+        //
+        $toggleSet = true;
+        $priorDate = "";
+        //
         foreach($events as $row) { //////
             $count++;
-            $dayname = date("D", strtotime($row['pc_eventDate'])); //////
+            $dayname = date("l", strtotime($row['pc_eventDate'])); //////
             $dispampm = "am";
             $disphour = substr($row['pc_startTime'], 0, 2) + 0;
             $dispmin  = substr($row['pc_startTime'], 3, 2);
@@ -1321,26 +1395,41 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
             if ($row['pc_hometext'] != "") {
                 $etitle = xl('Comments').": ".($row['pc_hometext'])."\r\n".$etitle;
             }
-            ////////////
+            //////
+            if($extraApptDate && $count > $firstApptIndx) {
+              $apptStyle = $apptStyle2;
+            } else {
+              if($row['pc_eventDate'] != $priorDate) {
+                $priorDate = $row['pc_eventDate'];
+                $toggleSet = !$toggleSet;
+              }
+              if($toggleSet) $apptStyle = " style='background-color:" . attr($colorSet2) . ";'";
+              else $apptStyle = " style='background-color:" . attr($colorSet1) . ";'";
+            }
+            //////
+            echo "<div " . $apptStyle . ">";
             echo "<a href='javascript:oldEvt(" . htmlspecialchars(preg_replace("/-/", "", $row['pc_eventDate']),ENT_QUOTES) . ', ' . htmlspecialchars($row['pc_eid'],ENT_QUOTES) . ")' title='" . htmlspecialchars($etitle,ENT_QUOTES) . "'>";
-            ////////////
-            echo "<b>" . htmlspecialchars($row['pc_eventDate'] . " (" . xl($dayname),ENT_NOQUOTES) . ")</b><br>";
-            echo htmlspecialchars("$disphour:$dispmin " . xl($dispampm),ENT_NOQUOTES) . " ";
+            echo "<b>" . htmlspecialchars($row['pc_eventDate'],ENT_NOQUOTES) . ", ";
+            echo htmlspecialchars(sprintf("%02d", $disphour) .":$dispmin " . xl($dispampm) . " (" . xl($dayname),ENT_NOQUOTES)  . ")</b> ";
             if ($row['pc_recurrtype']) echo "<img src='" . $GLOBALS['webroot'] . "/interface/main/calendar/modules/PostCalendar/pntemplates/default/images/repeating8.png' border='0' style='margin:0px 2px 0px 2px;' title='".htmlspecialchars(xl("Repeating event"),ENT_QUOTES)."' alt='".htmlspecialchars(xl("Repeating event"),ENT_QUOTES)."'>";
-            echo "<span title='" . generate_display_field(array('data_type'=>'1','list_id'=>'apptstat'),$row['pc_apptstatus']) . "'> ( " . htmlspecialchars($row['pc_apptstatus'],ENT_NOQUOTES) . " )</span>";
-            if ($row['pc_hometext']) echo "<font color='green'> CMT</font>";
-            echo "<br>" . htmlspecialchars(xl_appt_category($row['pc_catname']),ENT_NOQUOTES) . "<br>\n";
-            echo htmlspecialchars($row['ufname'] . " " . $row['ulname'],ENT_NOQUOTES) . "</a><br>\n";
-            do_action( 'demographics_after_appointment', $row );
+            echo "<span title='" . generate_display_field(array('data_type'=>'1','list_id'=>'apptstat'),$row['pc_apptstatus']) . "'>";
+            echo "<br>" . xlt('Status') . "( " . htmlspecialchars($row['pc_apptstatus'],ENT_NOQUOTES) . " ) </span>";
+            echo htmlspecialchars(xl_appt_category($row['pc_catname']),ENT_NOQUOTES) . "\n";
+            if ($row['pc_hometext']) echo " <span style='color:green'> Com</span>";
+            echo "<br>" . htmlspecialchars($row['ufname'] . " " . $row['ulname'],ENT_NOQUOTES) . "</a></div>\n";
+            //////
         }
         if ($resNotNull) { //////
             if ( $count < 1 ) { 
                 echo "&nbsp;&nbsp;" . htmlspecialchars(xl('None'),ENT_NOQUOTES); 
+            } else { //////
+              if($extraApptDate) echo "<div style='color:#0000cc;'><b>" . attr($extraApptDate) . " ( + ) </b></div>";
+              else echo "<div><hr></div>";
             }
             echo "</div>";
             do_action( 'demographics_after_get_appointments' );
         }
-      }
+      } // End of Appointments.
             
 	// Show PAST appointments.
 	// added by Terry Hill to allow reverse sorting of the appointments
