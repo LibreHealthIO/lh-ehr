@@ -765,7 +765,6 @@ Calendar View
 Call to addForm() goes here.<br>
 Calories
 Cambodian
-CAMOS
 Can not set this unless the Summary of Care Sent toggle is set.
 Can't find file!
 Can't upload
@@ -5680,7 +5679,6 @@ Select a User
 Select All
 Select Amendment Date
 Select amendments to print
-Select CAMOS Entries for Printing
 Select category
 Select Communication Preferences
 Select corresponding checkboxes to delete

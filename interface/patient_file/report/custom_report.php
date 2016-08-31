@@ -127,10 +127,7 @@ function postToGet($arin) {
 <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/ESign/css/esign_report.css" />
 <?php } ?>
 
-<?php // do not show stuff from report.php in forms that is encaspulated
-      // by div of navigateLink class. Specifically used for CAMOS, but
-      // can also be used by other forms that require output in the 
-      // encounter listings output, but not in the custom report. ?>
+
 <style>
   div.navigateLink {display:none;}
   .hilite {background-color: #FFFF00;}

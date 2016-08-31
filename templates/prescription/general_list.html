@@ -131,11 +131,6 @@ $(document).ready(function(){
                         <td style="border-style:none;">
                             <a id="multiprintToFax" href="{$CONTROLLER}prescription&multiprintfax&id={$printm}" onclick="top.restoreSession()" class="css_button"><span>{xl t='Download'} ({xl t='Fax'})</span></a>
                         </td>
-                        {if $CAMOS_FORM == true}
-                        <td>
-                            <a id="four_panel_rx" href="{$WEBROOT}/interface/forms/CAMOS/rx_print.php?sigline=plain" onclick="top.restoreSession()" class="css_button"><span>{xl t='View Four Panel'}</span></a>
-                        </td>
-                        {/if}
                     </tr>
                 </table>
             </td>
