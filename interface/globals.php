@@ -177,6 +177,10 @@ $GLOBALS['cene_specific'] = false;
 $GLOBALS['inhouse_pharmacy'] = false;
 $GLOBALS['sell_non_drug_products'] = 0;
 
+#Use this to turn on and off the development mode 
+#mainly to keep left_nave untill it is dumped
+$GLOBALS['development_flag'] = false;
+
 $glrow = sqlQuery("SHOW TABLES LIKE 'globals'");
 if (!empty($glrow)) {
   // Collect user specific settings from user_settings table.
