@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Craig Bezuidenhout <http://www.tajemo.co.za/>
- * @link    http://www.open-emr.org
+ * @link    http://libreehr.org
  */
                                   
   $fake_register_globals=false;
@@ -51,6 +51,7 @@
   $dateRanges['7_month'] = xl('7 Months From Now'); 
   $dateRanges['8_month'] = xl('8 Months From Now'); 
   $dateRanges['9_month'] = xl('9 Months From Now');  
+  $dateRanges['10_month'] = xl('10 Months From Now'); 
   $dateRanges['1_year'] = xl('1 Year From Now');   
   $dateRanges['2_year'] = xl('2 Years From Now');
   
@@ -292,14 +293,14 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
     <fieldset>          
          <table style="width:100%;" cellpadding="5px">
           <tr>
-            <td style="width:20%; text-align:right" valign="top"> 
+            <td style="width:20%; text-align:right" valign="top" size=8> 
               <?php echo xlt('Send to') ?> :  <br /><?php echo xlt('([ctrl] + click to select multiple recipients)'); ?> 
             </td> 
              <td  style="width:60%;">     
               <select style="width:100%" id="sendTo" name="sendTo[]" multiple="multiple">
                 <option value="<?php echo attr(intval($_SESSION['authId'])); ?>"><?php echo xlt('Myself') ?></option>
                 <?php //     
-                    $uSQL = sqlStatement('SELECT id, fname,	mname, lname  FROM  `users` WHERE  `active` = 1 AND `facility_id` > 0 AND id != ?',array(intval($_SESSION['authId'])));
+                    $uSQL = sqlStatement('SELECT id, fname,	mname, lname  FROM  `users` WHERE  `active` = 1 AND `facility_id` > 0 AND `username` != ? AND `cal_ui`>1  ORDER BY lname',array(intval($_SESSION['authId'])));
                     for($i=2; $uRow=sqlFetchArray($uSQL); $i++){  
                       echo '<option value="',attr($uRow['id']),'">',text($uRow['fname'].' '.$uRow['mname'].' '.$uRow['lname']),'</option>';  
                     }
