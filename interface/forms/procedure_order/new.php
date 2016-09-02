@@ -196,7 +196,7 @@ if ($formid) {
 $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
   "form_encounter AS fe, forms AS f, patient_data AS p WHERE " .
   "p.pid = ? AND f.pid = p.pid AND f.encounter = ? AND " .
-  "f.formdir = 'newpatient' AND f.deleted = 0 AND " .
+  "f.formdir = 'patient_encounter' AND f.deleted = 0 AND " .
   "fe.id = f.form_id LIMIT 1",
   array($pid, $encounter));
 ?>

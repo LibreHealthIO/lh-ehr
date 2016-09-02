@@ -15,7 +15,7 @@ $menu_json="
   {\"label\":\"New/Search\",\"menu_id\":\"new0\",\"target\":\"pat\",\"url\":\"/interface/new/new.php\",\"children\":[],\"requirement\":0},
   {\"label\":\"Summary\",\"menu_id\":\"dem1\",\"target\":\"pat\",\"url\":\"/interface/patient_file/summary/demographics.php\",\"children\":[],\"requirement\":1},
   {\"label\":\"Visits\",\"children\":[
-    {\"label\":\"Create Visit\",\"menu_id\":\"nen1\",\"target\":\"enc\",\"url\":\"/interface/forms/newpatient/new.php?autoloaded=1&calenc=\",\"children\":[],\"requirement\":1},
+    {\"label\":\"Create Visit\",\"menu_id\":\"nen1\",\"target\":\"enc\",\"url\":\"/interface/forms/patient_encounter/new.php?autoloaded=1&calenc=\",\"children\":[],\"requirement\":1},
     {\"label\":\"Current\",\"menu_id\":\"enc2\",\"target\":\"enc\",\"url\":\"/interface/patient_file/encounter/encounter_top.php\",\"children\":[],\"requirement\":3},
     {\"label\":\"Visit History\",\"menu_id\":\"ens1\",\"target\":\"enc\",\"url\":\"/interface/patient_file/history/encounters.php\",\"children\":[],\"requirement\":1}],
   \"requirement\":0},

@@ -2508,7 +2508,7 @@ class CarecoordinationTable extends AbstractTableGateway
                 $enc_id = $res_enc_cur['id'];
             }
             $q_ins_forms = "INSERT INTO forms (date,encounter,form_name,form_id,pid,user,groupname,deleted,formdir) VALUES (?,?,?,?,?,?,?,?,?)";
-            $appTable->zQuery($q_ins_forms, array($encounter_date_value, $encounter_id, 'New Patient Encounter', $enc_id, $pid, $_SESSION["authProvider"], 'Default', 0, 'newpatient'));
+            $appTable->zQuery($q_ins_forms, array($encounter_date_value, $encounter_id, 'Patient Encounter', $enc_id, $pid, $_SESSION["authProvider"], 'Default', 0, 'patient_encounter'));
             if ($value['encounter_diagnosis_issue'] != '') {
                 $query_select = "SELECT * FROM lists WHERE begdate = ? AND title = ? AND pid = ?";
                 $result = $appTable->zQuery($query_select, array($value['encounter_diagnosis_date'], $value['encounter_diagnosis_issue'], $pid));

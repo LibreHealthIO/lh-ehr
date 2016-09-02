@@ -67,7 +67,7 @@ if (sqlNumRows($lres)) {
         $option_id = $entry['directory'];
               $title = trim($entry['nickname']);
         if ($option_id == 'fee_sheet' ) continue;
-        if ($option_id == 'newpatient') continue;
+        if ($option_id == 'patient_encounter') continue;
         if (empty($title)) $title = $entry['name'];
         
         $formURL=$baseURL . urlencode($option_id);

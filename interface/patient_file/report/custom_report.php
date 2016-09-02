@@ -642,13 +642,13 @@ foreach ($ar as $key => $val) {
             echo "<hr />";
             echo "<div class='text billing'>";
             print "<h1>".xl('Billing Information').":</h1>";
-            if (count($ar['newpatient']) > 0) {
+            if (count($ar['patient_encounter']) > 0) {
                 $billings = array();
                 echo "<table>";
                 echo "<tr><td width='400' class='bold'>Code</td><td class='bold'>".xl('Fee')."</td></tr>\n";
                 $total = 0.00;
                 $copays = 0.00;
-                foreach ($ar['newpatient'] as $be) {
+                foreach ($ar['patient_encounter'] as $be) {
                     $ta = explode(":",$be);
                     $billing = getPatientBillingEncounter($pid,$ta[1]);
                     $billings[] = $billing;
@@ -972,7 +972,7 @@ foreach ($ar as $key => $val) {
                 $dateres = getEncounterDateByEncounter($form_encounter);
                 $formId = getFormIdByFormdirAndFormid($res[1], $form_id);
 
-                if ($res[1] == 'newpatient') {
+                if ($res[1] == 'patient_encounter') {
                     echo "<div class='text encounter'>\n";
                     echo "<h1>" . xl($formres["form_name"]) . "</h1>";
                 }
@@ -983,7 +983,7 @@ foreach ($ar as $key => $val) {
 
                 // show the encounter's date
                 echo "(" . oeFormatSDFT(strtotime($dateres["date"])) . ") ";
-                if ($res[1] == 'newpatient') {
+                if ($res[1] == 'patient_encounter') {
                     // display the provider info
                     echo ' '. xl('Provider') . ': ' . text(getProviderName(getProviderIdOfEncounter($form_encounter)));
                 }
@@ -1007,7 +1007,7 @@ foreach ($ar as $key => $val) {
                 </div>
                 <?php
 
-                if ($res[1] == 'newpatient') {
+                if ($res[1] == 'patient_encounter') {
                     // display billing info
                     $bres = sqlStatement("SELECT b.date, b.code, b.code_text " .
                       "FROM billing AS b, code_types AS ct WHERE " .

@@ -87,7 +87,7 @@ function newEncounter() {
  top.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>
  parent.left_nav.setRadio(window.name, 'nen');
- location.href='../../forms/newpatient/new.php?autoloaded=1&calenc=';
+ location.href='../../forms/patient_encounter/new.php?autoloaded=1&calenc=';
 <?php } else { ?>
  top.Title.location.href='../encounter/encounter_title.php';
  top.Main.location.href='../encounter/patient_encounter.php?mode=new';

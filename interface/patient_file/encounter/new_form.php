@@ -20,7 +20,7 @@ function openNewForm(sel) {
  top.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>
   FormNameValueArray = sel.split('formname=');
-  if(FormNameValueArray[1] == 'newpatient')
+  if(FormNameValueArray[1] == 'patient_encounter')
    {
     parent.location.href = sel
    }

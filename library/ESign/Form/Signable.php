@@ -112,7 +112,7 @@ class Form_Signable extends DbRow_Signable implements SignableIF
         // but this may not always be the case. TODO In the future, 
         // create a list in the list_options for formdir => table mapping
         $table = "form_".$this->_formDir;
-        if ( $this->_formDir == 'newpatient' ) {
+        if ( $this->_formDir == 'patient_encounter' ) {
             $table = "form_encounter";
         }
 	if( $this->_formDir == 'procedure_order' ) {

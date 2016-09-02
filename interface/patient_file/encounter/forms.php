@@ -486,7 +486,7 @@ if ( $esign->isButtonViewable() ) {
                   'id="'.$formdir.'~'.$iter['form_id'].'" class="text onerow">';
         $user = getNameFromUsername($iter['user']);
 
-        $form_name = ($formdir == 'newpatient') ? xl('Patient Encounter') : xl_form_title($iter['form_name']);
+        $form_name = ($formdir == 'patient_encounter') ? xl('Patient Encounter') : xl_form_title($iter['form_name']);
 
         // Create the ESign instance for this form
         $esign = $esignApi->createFormESign( $iter['id'], $formdir, $encounter );
@@ -512,7 +512,7 @@ if ( $esign->isButtonViewable() ) {
         }
 
         if (acl_check('admin', 'super') ) {
-            if ( $formdir != 'newpatient') {
+            if ( $formdir != 'patient_encounter') {
                 // a link to delete the form from the encounter
                 echo "<a target='".
                     ($GLOBALS['concurrent_layout'] ? "_parent" : "Main") .
@@ -531,7 +531,7 @@ if ( $esign->isButtonViewable() ) {
 
         // Figure out the correct author (encounter authors are the '$providerNameRes', while other
         // form authors are the '$user['fname'] . "  " . $user['lname']').
-        if ($formdir == 'newpatient') {
+        if ($formdir == 'patient_encounter') {
           $form_author = $providerNameRes;
         }
         else {

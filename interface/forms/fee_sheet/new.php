@@ -687,7 +687,7 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
   /*******************************************************************
   sqlStatement("UPDATE forms, users SET forms.user = users.username WHERE " .
     "forms.pid = '$pid' AND forms.encounter = '$encounter' AND " .
-    "forms.formdir = 'newpatient' AND users.id = '$provid'");
+    "forms.formdir = 'patient_encounter' AND users.id = '$provid'");
   *******************************************************************/
   sqlStatement("UPDATE form_encounter SET provider_id = ?, " .
     "supervisor_id = ?  WHERE " .

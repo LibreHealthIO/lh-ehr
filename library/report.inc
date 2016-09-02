@@ -316,7 +316,7 @@ function printPatientForms($pid, $cols) {
 	
     $res = sqlStatement("select * from forms where pid='$pid' AND deleted=0 order by date");
     while($result = sqlFetchArray($res)) {
-        if ($result{"form_name"} == "New Patient Encounter") {
+        if ($result{"form_name"} == "Patient Encounter") {
             echo "<div class='text encounter'>\n";
             echo "<h1>" . $result["form_name"] . "</h1>";
 
@@ -324,7 +324,7 @@ function printPatientForms($pid, $cols) {
             $tmp = sqlQuery("SELECT u.title, u.fname, u.mname, u.lname " .
                                     "FROM forms AS f, users AS u WHERE " .
                                     "f.pid = '$pid' AND f.encounter = ".$result['encounter']." AND " .
-                                    "f.formdir = 'newpatient' AND u.username = f.user " .
+                                    "f.formdir = 'patient_encounter' AND u.username = f.user " .
                                     " AND f.deleted=0 ". //--JRM--
                                     "ORDER BY f.id LIMIT 1");
             echo " ".xl('Provider').": ".$tmp['title']." ".
@@ -338,7 +338,7 @@ function printPatientForms($pid, $cols) {
         echo "(" . oeFormatSDFT(strtotime($result["date"])) . ") ";
 
         if (acl_check('acct', 'rep') || acl_check('acct', 'eob') || acl_check('acct', 'bill')) {
-            if ($result{"form_name"} == "New Patient Encounter") {
+            if ($result{"form_name"} == "Patient Encounter") {
                 // display billing info
                 echo "<br/>";
                 $bres = sqlStatement("SELECT b.date, b.code, b.code_text " .

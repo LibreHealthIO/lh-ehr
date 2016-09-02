@@ -1,9 +1,6 @@
 <?php
 /**
- *
- * AMC 314g_1_2_22 STAGE1 Numerator
- *
- * Copyright (C) 2015 Ensoftek, Inc
+ * Encounter form report function.
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,28 +14,20 @@
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
  * @package LibreEHR
- * @author  Ensoftek
+ * @author  Brady Miller <brady@sparmy.com>
  * @link    http://www.open-emr.org
  */
-class AMC_314g_1_2_22_Numerator implements AmcFilterIF
-{
-    public function getTitle()
-    {
-        return "AMC_314g_1_2_22 Numerator";
-    }
-    
-    public function test( AmcPatient $patient, $beginDate, $endDate ) 
-    {
-		$encQry = "SELECT * FROM forms f ".
-				  "INNER JOIN form_encounter fe ON f.encounter = fe.encounter ".
-				  "WHERE  f.formdir != 'patient_encounter' AND f.deleted = 0 AND f.pid = ? AND (f.date BETWEEN ? AND ?) ";
-		
-		$check = sqlQuery( $encQry, array($patient->id, $beginDate, $endDate) );   
-		if (!(empty($check))){
-			return true;
-		}else{
-			return false;
-		}
-    }
+
+include_once(dirname(__file__)."/../../globals.php");
+
+function patient_encounter_report( $pid, $encounter, $cols, $id) {
+	$res = sqlStatement("select * from form_encounter where pid=? and id=?", array($pid,$id) );
+	print "<table><tr><td>\n";
+	while($result = sqlFetchArray($res)) {
+		print "<span class=bold>" . xlt('Facility') . ": </span><span class=text>" . text($result{"facility"}) . "</span><br>\n";
+		print "<span class=bold>" . xlt('Reason') . ": </span><span class=text>" . nl2br(text($result{"reason"})) . "</span><br>\n";
+	}
+	print "</td></tr></table>\n";
 }
+
 ?>

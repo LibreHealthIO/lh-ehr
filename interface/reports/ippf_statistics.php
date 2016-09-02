@@ -1377,7 +1377,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
         "b.code_type, b.code, c.related_code, lo.title AS lo_title " .
         "FROM form_encounter AS fe " .
         "JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND " .
-        "f.formdir = 'newpatient' AND f.form_id = fe.id AND f.deleted = 0 " .
+        "f.formdir = 'patient_encounter' AND f.form_id = fe.id AND f.deleted = 0 " .
         "JOIN patient_data AS pd ON pd.pid = fe.pid $sexcond" .
         "LEFT OUTER JOIN billing AS b ON " .
         "b.pid = fe.pid AND b.encounter = fe.encounter AND b.activity = 1 " .

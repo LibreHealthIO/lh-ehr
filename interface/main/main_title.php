@@ -29,7 +29,7 @@ function toencounter(rawdata) {
 	 }
 	else if(rawdata=='New Encounter')
 	 {
-	 	top.window.parent.left_nav.loadFrame2('nen1','RBot','forms/newpatient/new.php?autoloaded=1&calenc=')
+	 	top.window.parent.left_nav.loadFrame2('nen1','RBot','forms/patient_encounter/new.php?autoloaded=1&calenc=')
 		return true;
 	 }
 	else if(rawdata=='Past Encounter List')

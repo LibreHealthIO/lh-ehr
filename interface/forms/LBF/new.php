@@ -351,7 +351,7 @@ function validate(f) {
       "fe.date FROM " .
       "form_encounter AS fe, forms AS f, patient_data AS p WHERE " .
       "p.pid = ? AND f.pid = p.pid AND f.encounter = ? AND " .
-      "f.formdir = 'newpatient' AND f.deleted = 0 AND " .
+      "f.formdir = 'patient_encounter' AND f.deleted = 0 AND " .
       "fe.id = f.form_id LIMIT 1", array($pid, $encounter));
     echo "<p class='title' style='margin-top:8px;margin-bottom:8px;text-align:center'>\n";
     echo text($formtitle) . " " . xlt('for') . ' ';

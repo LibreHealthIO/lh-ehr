@@ -16,7 +16,7 @@ else {
 		$pid = $_GET['pid'];
 		$encounter = $_GET['encounter'];
 	 }
-         if($_GET["formname"] != "newpatient" ){
+         if($_GET["formname"] != "patient_encounter" ){
             include_once("$incdir/patient_file/encounter/new_form.php");
          }
 
