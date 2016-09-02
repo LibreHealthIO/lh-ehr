@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Craig Bezuidenhout <http://www.tajemo.co.za/>
- * @link    http://www.open-emr.org
+ * @link    http://libreehr.org
  */
  
 // removed as jquery is already called in messages page (if you need to use jQuery, uncomment it futher down)
@@ -29,7 +29,7 @@ require_once("$srcdir/htmlspecialchars.inc.php");
 require_once("$srcdir/dated_reminder_functions.php");
 
         $days_to_show = 5;
-        $alerts_to_show = 5;
+        $alerts_to_show = 15;
         $updateDelay = 60; // time is seconds 
         
         
