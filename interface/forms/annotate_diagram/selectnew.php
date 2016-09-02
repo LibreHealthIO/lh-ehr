@@ -1,6 +1,44 @@
 <?php 
- /*
- * copyright by sjpadgett@gmail.com Padgetts Consulting 2016.
+/**
+ * Annotate Diagram (forms)
+ *
+ * This program is used to allow the selection of the forms in the Annotate Diagram form. 
+ *
+ * Copyright (C) 2016 Jerry Padgett sjpadgett@gmail.com
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0 and the following 
+ * Healthcare Disclaimer
+ *  
+ * In the United States, or any other jurisdictions where they may apply, the following additional disclaimer of 
+ * warranty and limitation of liability are hereby incorporated into the terms and conditions of MPL 2.0:
+ *
+ * No warranties of any kind whatsoever are made as to the results that You will obtain from relying upon the covered code
+ *(or any information or content obtained by way of the covered code), including but not limited to compliance with privacy
+ * laws or regulations or clinical care industry standards and protocols. Use of the covered code is not a substitute for a
+ * health care provider’s standard practice or professional judgment. Any decision with regard to the appropriateness of treatment,
+ * or the validity or reliability of information or content made available by the covered code, is the sole responsibility
+ * of the health care provider. Consequently, it is incumbent upon each health care provider to verify all medical history
+ * and treatment plans with each patient.
+ *
+ * Under no circumstances and under no legal theory, whether tort (including negligence), contract, or otherwise, 
+ * shall any Contributor, or anyone who distributes Covered Software as permitted by the license, 
+ * be liable to You for any indirect, special, incidental, consequential damages of any character including, 
+ * without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, 
+ * or any and all other damages or losses, of any nature whatsoever (direct or otherwise) 
+ * on account of or associated with the use or inability to use the covered content (including, without limitation, 
+ * the use of information or content made available by the covered code, all documentation associated therewith, 
+ * and the failure of the covered code to comply with privacy laws and regulations or clinical care industry 
+ * standards and protocols), even if such party shall have been informed of the possibility of such damages.
+ *
+ * See the Mozilla Public License for more details. 
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * Rewrite and modifications by sjpadgett@gmail.com Padgetts Consulting 2016.
+ *
+ * @package LibreEHR
+ * @author  Jerry Padgett <sjpadgett@gmail.com> 
+ * @author  Terry Hill <terry@lillysystems.com>
+ * @link    http://www.libreehr.org
  */
 
 include_once("../../globals.php");
@@ -107,7 +145,7 @@ function getFrmTitle(iname) {
 	iname = iname.split('.');
 	iname = iname[0].charAt(0).toUpperCase() + iname[0].slice(1);
 	
-   	var fTitle = prompt("Please enter this form name or clink OK for highlighted title", iname.replace(/[_-]/g, " "));
+   	var fTitle = prompt("Please enter this form name or click OK for highlighted title", iname.replace(/[_-]/g, " "));
     if ( fTitle != "") {
         return fTitle;
     }
