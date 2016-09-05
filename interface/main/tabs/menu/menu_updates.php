@@ -92,7 +92,13 @@ function menu_update_entries(&$menu_list)
         {
             if(isset($menu_update_map[$entry->label]))
             {
-                $menu_update_map[$entry->label]($entry);
+                if ( is_array( $menu_update_map[$entry->label] ) ) {
+                    foreach ( $menu_update_map[$entry->label] as $callback ) {
+                        $callback($entry);
+                    }
+                } else {
+                    $menu_update_map[$entry->label]($entry);
+                }
             }                
         }
         // Translate the labels 

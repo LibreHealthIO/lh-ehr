@@ -20,7 +20,7 @@ class UserGroup
     {
         if ( count( $this->fields ) ) {
             $binds = array();
-            $statement .= "UPDATE users SET ";
+            $statement = "UPDATE users SET ";
             $count = 0;
             foreach ( $this->fields as $field ) {
                 $statement .= "{$field->getName()} = ? ";
@@ -33,6 +33,21 @@ class UserGroup
             $statement .= "WHERE id = ?";
             $binds[]= $this->id;
             sqlStatement( $statement, $binds );
+        }
+    }
+
+    /*
+     * Save the fields as user_settings, not in users table
+     */
+    public function saveAsUserSettings()
+    {
+        if ( count( $this->fields ) ) {
+            foreach ( $this->fields as $field ) {
+                $ds = "DELETE FROM user_settings WHERE setting_user = ? AND setting_label = ?";
+                sqlStatement( $ds, [ $this->id, $field->getName() ] );
+                $statement = "INSERT INTO user_settings ( setting_user, setting_label, setting_value ) VALUES ( ?, ?, ? ) ";
+                sqlStatement( $statement, [ $this->id, $field->getName(), $field->getValue() ] );
+            }
         }
     }
     

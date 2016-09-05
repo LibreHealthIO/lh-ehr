@@ -76,7 +76,7 @@ class PluginSystem
         $composerJsonPath = realpath( __DIR__."/../../composer.json" );
         $composerJson = file_get_contents( $composerJsonPath );
         if ( $composerJson === false ) {
-            throw new Exception( "$composerJsonPath/composer.json is not readable" );
+            throw new \Exception( "$composerJsonPath/composer.json is not readable" );
         }
         $composer = json_decode( $composerJson, true );
 

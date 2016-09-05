@@ -526,6 +526,8 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
   <td><span class=text><?php xl('Additional Info','e'); ?>:</span></td>
   <td><textarea style="width:150px;" name="comments" wrap=auto rows=4 cols=25><?php echo $iter["info"];?></textarea></td>
 
+  <?php do_action( 'usergroup_admin_edit', $iter ); ?>
+
   </tr>
   <tr height="20" valign="bottom">
   <td colspan="4" class="text">

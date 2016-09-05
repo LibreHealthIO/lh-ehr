@@ -71,7 +71,11 @@ function add_tag_filters_menu( &$menu_list )
 
 function tag_filters_menu_update( &$menu_update_map )
 {
-    $menu_update_map["Administration"] = 'add_tag_filters_menu';
+    if ( !is_array( $menu_update_map["Administration"] ) ) {
+        $menu_update_map["Administration"] = array( 'add_tag_filters_menu' );
+    } else {
+        $menu_update_map["Administration"] []= 'add_tag_filters_menu';
+    }
 }
 add_action('menu_update', 'tag_filters_menu_update');
 

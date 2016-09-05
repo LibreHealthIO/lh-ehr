@@ -559,6 +559,12 @@ if ($_POST['form_action'] == "save") {
                     "pc_facility = '" . add_escape_custom((int)$_POST['facility']) ."' ,"  . // FF stuff
                     "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  . 
                     "WHERE pc_eid = '" . add_escape_custom($eid) . "'");
+
+                do_action( 'after_update_event',
+                    $data = [ 'id' => $eid, 'pid' => $_POST['form_pid'],
+                        'provider' => $_POST['form_provider'], 'date' => $event_date, 'starttime' => $starttime,
+                        'category' => $_POST['form_category'], 'status' => $_POST['form_apptstatus'], 'title' => $_POST['form_title'],
+                        ] );
             }
         }
 
