@@ -316,6 +316,8 @@ echo generate_select_list('irnpool', 'irnpool', '',
   <td><span class="text"><?php xl('Additional Info','e'); ?>: </span></td>
   <td><textarea name=info style="width:120px;" cols=27 rows=4 wrap=auto></textarea></td>
 
+  <?php do_action( 'usergroup_admin_add' ); ?>
+
   </tr>
   <tr height="25"><td colspan="4">&nbsp;</td></tr>
 <?php
