@@ -1417,6 +1417,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
             echo htmlspecialchars(xl_appt_category($row['pc_catname']),ENT_NOQUOTES) . "\n";
             if ($row['pc_hometext']) echo " <span style='color:green'> Com</span>";
             echo "<br>" . htmlspecialchars($row['ufname'] . " " . $row['ulname'],ENT_NOQUOTES) . "</a></div>\n";
+            do_action( 'demographics_after_appointment', $row );
             //////
         }
         if ($resNotNull) { //////
