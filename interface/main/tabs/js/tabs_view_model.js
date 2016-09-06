@@ -203,8 +203,15 @@ function menuActionClick(data,evt)
                 alert("This encounter is locked. No new forms can be added.");
                 return;
             }
-        }        
-        navigateTab(webroot_url+data.url(),data.target);
+        }
+        if (data.url().match(/http.*/))
+        {        
+        navigateTab(data.url(),data.target);
+         }
+         else
+         {
+         navigateTab(webroot_url+data.url(),data.target);
+         }
         activateTabByName(data.target,true);        
     }
     else
