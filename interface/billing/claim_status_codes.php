@@ -1,4 +1,6 @@
+
 <?php
+// Note, these are not the official x12 claim status codes, but an in-house version only.
 $claim_status_codes = array(
  '1'  => 'Processed as Primary',
  '2'  => 'Processed as Secondary',
@@ -19,3 +21,4 @@ $claim_status_codes = array(
  '27' => 'Reviewed',
 );
 ?>
+
