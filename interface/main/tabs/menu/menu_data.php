@@ -3,6 +3,10 @@
 # insert a line like this {\"label\":\"Visit Forms\",\"children\":[],\"requirement\":0},
 # Then edit the information needed
 #
+
+// Pull in globals settings
+$SQL_ADMIN = $GLOBALS['sql_admin_tool_url'];
+
 $menu_json="
 [{\"label\":\"Calendar\",\"menu_id\":\"cal0\",\"target\":\"lst\",\"url\":\"/interface/main/main_info.php\",\"children\":[],\"requirement\":0},
 
@@ -74,7 +78,7 @@ $menu_json="
        {\"label\":\"Forms\",\"menu_id\":\"adm0\",\"target\":\"adm\",\"url\":\"/interface/forms_admin/forms_admin.php\",\"children\":[],\"requirement\":0,\"acl_req\":[\"admin\",\"forms\"]},
        {\"label\":\"Calendar\",\"menu_id\":\"adm0\",\"target\":\"lst\",\"url\":\"/interface/main/calendar/index.php?module=PostCalendar&type=admin&func=modifyconfig\",\"children\":[],\"requirement\":0,\"acl_req\":[\"admin\",\"calendar\"]},
        {\"label\":\"Logs\",\"menu_id\":\"adm0\",\"target\":\"adm\",\"url\":\"/interface/logview/logview.php\",\"children\":[],\"requirement\":0,\"acl_req\":[\"admin\",\"users\"]},
-       {\"label\":\"Database\",\"menu_id\":\"adm0\",\"target\":\"adm\",\"url\":\"/phpmyadmin/index.php\",\"children\":[],\"requirement\":0,\"acl_req\":[\"admin\",\"database\"],\"global_req\":\"!disable_sql_admin_link\"},
+       {\"label\":\"Database\",\"menu_id\":\"adm0\",\"target\":\"adm\",\"url\":\"$SQL_ADMIN\",\"children\":[],\"requirement\":0,\"acl_req\":[\"admin\",\"database\"],\"global_req\":\"!disable_sql_admin_link\"},
        {\"label\":\"Certificates\",\"menu_id\":\"adm0\",\"target\":\"adm\",\"url\":\"/interface/usergroup/ssl_certificates_admin.php\",\"children\":[],\"requirement\":0,\"acl_req\":[\"admin\",\"users\"]},
        {\"label\":\"Native Data Loads\",\"menu_id\":\"adm0\",\"target\":\"adm\",\"url\":\"/interface/super/load_codes.php\",\"children\":[],\"requirement\":0,\"acl_req\":[\"admin\",\"super\"]},
        {\"label\":\"External Data Loads\",\"menu_id\":\"adm0\",\"target\":\"adm\",\"url\":\"/interface/code_systems/dataloads_ajax.php\",\"children\":[],\"requirement\":0,\"acl_req\":[\"admin\",\"super\"]},
