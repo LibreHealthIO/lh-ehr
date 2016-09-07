@@ -43,9 +43,9 @@ class EncounterccdadispatchTable extends AbstractTableGateway
 			$pres = $appTable->zQuery("SELECT * FROM patient_access_offsite WHERE portal_username=?",array($credentials[6]));
             $prow = $pres->current();
             
-			$patient_encounter_to_approve = 0;
+			$newpatient_to_approve = 0;
 			if(!$prow['portal_pwd']){
-				$patient_encounter_to_approve = 1;
+				$newpatient_to_approve = 1;
 				$pres = $appTable->zQuery("
 					SELECT 
 						ad2.field_value AS portal_pwd
@@ -65,21 +65,21 @@ class EncounterccdadispatchTable extends AbstractTableGateway
                 $prow = $pres->current();
 			}
 			if(sha1($prow['portal_pwd'].date("Y-m-d H",$tim).$credentials[8])==$credentials[7]){
-				if($patient_encounter_to_approve){
+				if($newpatient_to_approve){
 					return 2;
 				}else{
 					return true;
 				}
 			}
 			elseif(sha1($prow['portal_pwd'].date("Y-m-d H",($tim-3600)).$credentials[8])==$credentials[7]){
-				if($patient_encounter_to_approve){
+				if($newpatient_to_approve){
 					return 2;
 				}else{
 					return true;
 				}
 			}
 			elseif(sha1($prow['portal_pwd'].date("Y-m-d H",($tim+3600)).$credentials[8])==$credentials[7]){
-				if($patient_encounter_to_approve){
+				if($newpatient_to_approve){
 					return 2;
 				}else{
 					return true;
@@ -150,7 +150,7 @@ class EncounterccdadispatchTable extends AbstractTableGateway
 				$prow = $pres->current();
 				$okO = 1;
             }
-            elseif($credentials[4] == 'patient_encounter'){
+            elseif($credentials[4] == 'newpatient'){
 				if($this->validcredential($credentials) === 2){
 					$okN = 3;
 				}
@@ -219,13 +219,13 @@ class EncounterccdadispatchTable extends AbstractTableGateway
 				return 'existingpatient';
             }
             elseif($okE == 2){
-				return 'patient_encountertoapprove';
+				return 'newpatienttoapprove';
             }
             elseif($okN == 1 || $okN == 2){
-				return 'patient_encounter';
+				return 'newpatient';
             }
             elseif($okN == 3){
-				return 'patient_encountertoapprove';
+				return 'newpatienttoapprove';
             }
             return false;
         }
