@@ -94,7 +94,7 @@ $encounter . "' and pid='$pid'"))
  $printed = false;
 
  foreach ($ar as $key => $val) {
-  if (!$printed && strpos($key, "newpatient_") === 0) {
+  if (!$printed && strpos($key, "patient_encounter_") === 0) {
    $billing = getPatientBillingEncounter($pid, $val);
    foreach ($billing as $b) {
     if(!empty($b['provider_name'])) {
@@ -110,8 +110,8 @@ $encounter . "' and pid='$pid'"))
 
   /****
   // WTF??  Redo this.
-  if (!empty($ar['newpatient'])){
-   foreach ($ar['newpatient'] as $be) {
+  if (!empty($ar['patient_encounter'])){
+   foreach ($ar['patient_encounter'] as $be) {
     $ta = split(":", $be);
     $billing = getPatientBillingEncounter($pid, $ta[1]);
     if(!$printed) {
@@ -157,13 +157,13 @@ $encounter . "' and pid='$pid'"))
    } elseif ($val == "billing") {
 
     print "<br><font class=bold>".xl('Billing Information').":</font><br>";
-    if (count($ar['newpatient']) > 0) {
+    if (count($ar['patient_encounter']) > 0) {
      $billings = array();
      echo "<table>";
      echo "<tr><td width=\"400\" class=bold>Code</td><td class=bold>".xl('Fee')."</td></tr>\n";
      $total = 0.00;
      $copays = 0.00;
-     foreach ($ar['newpatient'] as $be) {
+     foreach ($ar['patient_encounter'] as $be) {
       $ta = explode(":",$be);
       $billing = getPatientBillingEncounter($pid,$ta[1]);
       $billings[] = $billing;
@@ -300,12 +300,12 @@ $encounter . "' and pid='$pid'"))
     $form_id = $res[2];
     $formres = getFormNameByFormdir($res[1]);
     $dateres = getEncounterDateByEncounter($form_encounter);
-    if ($res[1] == 'newpatient') print "<br>\n";
+    if ($res[1] == 'patient_encounter') print "<br>\n";
     print "<span class='bold'>" . $formres{"form_name"} .
      "</span><span class=text>(" . oeFormatShortDate(strtotime($dateres{"date"})) .
      ")" . "</span><br>\n";
     call_user_func($res[1] . "_report", $pid, $form_encounter, $N, $form_id);
-    if ($res[1] == 'newpatient') {
+    if ($res[1] == 'patient_encounter') {
      $bres = sqlStatement("SELECT date, code, code_text FROM billing WHERE " .
       "encounter = '$form_encounter' AND activity = 1 AND " .
       "(code_type = 'CPT4' OR code_type = 'OPCS') " .

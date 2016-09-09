@@ -5127,7 +5127,7 @@ CREATE TABLE `registry` (
 -- Dumping data for table `registry`
 -- 
 
-INSERT INTO `registry` VALUES ('New Encounter Form', 1, 'newpatient', 1, 1, 1, '2003-09-14 15:16:45', 0, 'Administrative', '');
+INSERT INTO `registry` VALUES ('New Encounter Form', 1, 'patient_encounter', 1, 1, 1, '2003-09-14 15:16:45', 0, 'Administrative', '');
 INSERT INTO `registry` VALUES ('Review of Systems Checks', 1, 'reviewofs', 9, 1, 1, '2003-09-14 15:16:45', 0, 'Clinical', '');
 INSERT INTO `registry` VALUES ('Speech Dictation', 1, 'dictation', 10, 1, 1, '2003-09-14 15:16:45', 0, 'Clinical', '');
 INSERT INTO `registry` VALUES ('SOAP', 1, 'soap', 11, 1, 1, '2005-03-03 00:16:35', 0, 'Clinical', '');

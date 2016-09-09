@@ -31,7 +31,7 @@ class AMC_314g_1_2_22_Numerator implements AmcFilterIF
     {
 		$encQry = "SELECT * FROM forms f ".
 				  "INNER JOIN form_encounter fe ON f.encounter = fe.encounter ".
-				  "WHERE  f.formdir != 'newpatient' AND f.deleted = 0 AND f.pid = ? AND (f.date BETWEEN ? AND ?) ";
+				  "WHERE  f.formdir != 'patient_encounter' AND f.deleted = 0 AND f.pid = ? AND (f.date BETWEEN ? AND ?) ";
 		
 		$check = sqlQuery( $encQry, array($patient->id, $beginDate, $endDate) );   
 		if (!(empty($check))){

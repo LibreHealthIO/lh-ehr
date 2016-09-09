@@ -7,3 +7,5 @@ RENAME TABLE `openemr_postcalendar_limits` TO `libreehr_postcalendar_limits`;
 RENAME TABLE `openemr_postcalendar_topics` TO `libreehr_postcalendar_topics`;
 RENAME TABLE `openemr_session_info` TO `libreehr_session_info`;
 RENAME TABLE `openemr_module_vars` TO `libreehr_module_vars`;
+UPDATE `forms` SET `form_name` = 'Patient Encounter' WHERE `form_name` = 'New Patient Encounter';
+UPDATE `registry` SET `name` = 'Patient Encounter', `directory` = 'patient_encounter' WHERE `directory` = 'newpatient';

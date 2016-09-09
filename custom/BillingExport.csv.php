@@ -137,7 +137,7 @@ class BillingExport {
       "f.street, f.city, f.state, f.postal_code, f.pos_code, " .
       "f.domain_identifier AS clia_code " .
       "FROM form_encounter AS e " .
-      "LEFT OUTER JOIN forms ON forms.formdir = 'newpatient' AND " .
+      "LEFT OUTER JOIN forms ON forms.formdir = 'patient_encounter' AND " .
       "forms.form_id = e.id AND forms.pid = '$patient_id' " .
       "LEFT OUTER JOIN users AS u ON u.username = forms.user " .
       "LEFT OUTER JOIN facility AS f ON f.name = e.facility " .

@@ -397,7 +397,7 @@ $sqlBindArray = array();
 
 $from = "FROM form_encounter AS fe " .
   "JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND " .
-  "f.formdir = 'newpatient' AND f.deleted = 0 ";
+  "f.formdir = 'patient_encounter' AND f.deleted = 0 ";
 if ($issue) {
   $from .= "JOIN issue_encounter AS ie ON ie.pid = ? AND " .
     "ie.list_id = ? AND ie.encounter = fe.encounter ";
@@ -544,7 +544,7 @@ while ($result4 = sqlFetchArray($res4)) {
             // see this encounter's notes.
 
             foreach ($encarr as $enc) {
-                if ($enc['formdir'] == 'newpatient') continue;
+                if ($enc['formdir'] == 'patient_encounter') continue;
             
                 // skip forms whose 'deleted' flag is set to 1 --JRM--
                 if ($enc['deleted'] == 1) continue;

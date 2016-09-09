@@ -165,7 +165,7 @@ function clickNewEncounter(data,evt)
 
 function newEncounter()
 {
-    var url=webroot_url+'/interface/forms/newpatient/new.php?autoloaded=1&calenc='
+    var url=webroot_url+'/interface/forms/patient_encounter/new.php?autoloaded=1&calenc='
     navigateTab(url,"enc");
     activateTabByName("enc",true);    
 

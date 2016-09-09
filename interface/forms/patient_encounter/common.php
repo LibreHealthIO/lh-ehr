@@ -136,7 +136,7 @@ function cancelClicked() {
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<form id="new-encounter-form" method='post' action="<?php echo $rootdir ?>/forms/newpatient/save.php" name='new_encounter'
+<form id="new-encounter-form" method='post' action="<?php echo $rootdir ?>/forms/patient_encounter/save.php" name='new_encounter'
  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?>>
 
 <div style='float:left'>
@@ -395,7 +395,7 @@ if (!$viewmode) { ?>
     " AND fe.date >= ? " . 
     " AND fe.date <= ? " .
     " AND " .
-    "f.formdir = 'newpatient' AND f.form_id = fe.id AND f.deleted = 0 " .
+    "f.formdir = 'patient_encounter' AND f.form_id = fe.id AND f.deleted = 0 " .
     "ORDER BY fe.encounter DESC LIMIT 1",array($pid,date('Y-m-d 00:00:00'),date('Y-m-d 23:59:59')));
 
   if (!empty($erow['encounter'])) {

@@ -52,7 +52,7 @@ INSERT INTO `libreehr_postcalendar_categories`  (pc_catid,pc_catname,pc_catcolor
 # Dumping data for table `registry`
 #
 
-INSERT INTO `registry` VALUES ('New Encounter Form', 1, 'newpatient', 1, 1, 1, '2003-09-14 15:16:45');
+INSERT INTO `registry` VALUES ('Encounter Coversheet', 1, 'patient_encounter', 1, 1, 1, '2003-09-14 15:16:45');
 INSERT INTO `registry` VALUES ('Review of Systems Checks', 1, 'reviewofs', 9, 1, 1, '2003-09-14 15:16:45');
 INSERT INTO `registry` VALUES ('Speech Dictation', 1, 'dictation', 10, 1, 1, '2003-09-14 15:16:45');
 

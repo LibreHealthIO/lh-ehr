@@ -154,7 +154,7 @@ function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id
 	$visit_cat = $cat ? $cat : '(NULL)';
   $conn = $GLOBALS['adodb']['db'];
   $encounter = $conn->GenID("sequences");
-  addForm($encounter, "New Patient Encounter",
+  addForm($encounter, "Patient Encounter",
     sqlInsert("INSERT INTO form_encounter SET " .
       "date = ?, " .
       "reason = ?, " .
@@ -167,7 +167,7 @@ function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id
 			"pc_catid = ?",
 			array($dos,$visit_reason,$facility,$facility_id,$billing_facility,$visit_provider,$patient_id,$encounter,$visit_cat)
     ),
-    "newpatient", $patient_id, "1", "NOW()", $username
+    "patient_encounter", $patient_id, "1", "NOW()", $username
   );
   return $encounter;
 }
@@ -207,14 +207,14 @@ function todaysEncounter($patient_id, $reason='') {
   $conn = $GLOBALS['adodb']['db'];
   $encounter = $conn->GenID("sequences");
   $provider_id = $userauthorized ? $_SESSION['authUserID'] : 0;
-  addForm($encounter, "New Patient Encounter",
+  addForm($encounter, "Patient Encounter",
     sqlInsert("INSERT INTO form_encounter SET date = ?, onset_date = ?, "  .
       "reason = ?, facility = ?, facility_id = ?, pid = ?, encounter = ?, " .
       "provider_id = ?",
       array($today, $today, $reason, $facility, $facility_id, $patient_id,
         $encounter, $provider_id)
     ),
-    "newpatient", $patient_id, $userauthorized, "NOW()", $username
+    "patient_encounter", $patient_id, $userauthorized, "NOW()", $username
   );
   return $encounter;
 }

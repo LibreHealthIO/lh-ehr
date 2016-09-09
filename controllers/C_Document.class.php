@@ -1182,7 +1182,7 @@ function tag_action_process($patient_id="", $document_id) {
 						encounter = ?";
 			$bindArray = array($event_date,$file_name,$facility,$_POST['visit_category_id'],(int)$facility_id,(int)$billingFacilityID,(int)$provider_id,$patient_id,$encounter);
 			$formID = sqlInsert($query,$bindArray);
-			addForm($encounter, "New Patient Encounter",$formID,"newpatient", $patient_id, "1", date("Y-m-d H:i:s"), $username );	            
+			addForm($encounter, "Patient Encounter",$formID,"patient_encounter", $patient_id, "1", date("Y-m-d H:i:s"), $username );	            
 			$d->set_encounter_id($encounter);
 			
 		} else {

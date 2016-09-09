@@ -341,7 +341,7 @@ function sel_diagnosis() {
           "fe.date, fe.id AS trans_id, u.id AS docid " .
           "FROM billing AS b " .
           "JOIN form_encounter AS fe ON fe.pid = b.pid AND fe.encounter = b.encounter " .
-          "JOIN forms AS f ON f.pid = b.pid AND f.encounter = b.encounter AND f.formdir = 'newpatient' " .
+          "JOIN forms AS f ON f.pid = b.pid AND f.encounter = b.encounter AND f.formdir = 'patient_encounter' " .
           "LEFT OUTER JOIN users AS u ON u.username = f.user " .
           "WHERE b.code_type = 'COPAY' AND b.activity = 1 AND " .
           "fe.date >= '$form_from_date 00:00:00' AND fe.date <= '$form_to_date 23:59:59'";
@@ -419,7 +419,7 @@ function sel_diagnosis() {
         "fe.date, fe.id AS trans_id, u.id AS docid, s.deposit_date, s.payer_id " .
         "FROM ar_activity AS a " .
         "JOIN form_encounter AS fe ON fe.pid = a.pid AND fe.encounter = a.encounter " .
-        "JOIN forms AS f ON f.pid = a.pid AND f.encounter = a.encounter AND f.formdir = 'newpatient' " .
+        "JOIN forms AS f ON f.pid = a.pid AND f.encounter = a.encounter AND f.formdir = 'patient_encounter' " .
         "LEFT OUTER JOIN users AS u ON u.username = f.user " .
         "LEFT OUTER JOIN ar_session AS s ON s.session_id = a.session_id " .
         "WHERE a.pay_amount != 0 AND ( " .

@@ -280,7 +280,7 @@ if( !(empty($_POST['start']) || empty($_POST['end']))) {
     }
 		$sqlBindArray = array();
 		$res_query = 	"select * from forms where " .
-                        "form_name = 'New Patient Encounter' and " .
+                        "form_name = 'Patient Encounter' and " .
                         "date between ? and ? " ;
                 array_push($sqlBindArray,$startdate,$enddate);
 		if($form_pid) {
@@ -291,25 +291,25 @@ if( !(empty($_POST['start']) || empty($_POST['end']))) {
 		$res =sqlStatement($res_query,$sqlBindArray);
 	
     while($result = sqlFetchArray($res)) {
-        if ($result{"form_name"} == "New Patient Encounter") {
-            $newpatient[] = $result{"form_id"}.":".$result{"encounter"};
+        if ($result{"form_name"} == "Patient Encounter") {
+            $patient_encounter[] = $result{"form_id"}.":".$result{"encounter"};
 			$pids[] = $result{"pid"};	
         }
     }
     $N = 6;
 
-    function postToGet($newpatient, $pids) {
+    function postToGet($patient_encounter, $pids) {
         $getstring="";
-        $serialnewpatient = serialize($newpatient);
+        $serialpatient_encounter = serialize($patient_encounter);
         $serialpids = serialize($pids);
-        $getstring = "newpatient=".urlencode($serialnewpatient)."&pids=".urlencode($serialpids);
+        $getstring = "patient_encounter=".urlencode($serialpatient_encounter)."&pids=".urlencode($serialpids);
 
         return $getstring;
     }
 
     $iCounter = 0;
-    if(empty($newpatient)){ $newpatient = array(); }
-    foreach($newpatient as $patient){
+    if(empty($patient_encounter)){ $patient_encounter = array(); }
+    foreach($patient_encounter as $patient){
         /*
         $inclookupres = sqlStatement("select distinct formdir from forms where pid='".$pids[$iCounter]."'");
         while($result = sqlFetchArray($inclookupres)) {

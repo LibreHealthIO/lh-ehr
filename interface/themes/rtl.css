@@ -319,7 +319,7 @@ form#new_note div{
     float:none !important;
     
 }
-/* newpatient/common.php  */
+/* patient_encounter/common.php  */
 form#new-encounter-form div{
     
     float: none !important;

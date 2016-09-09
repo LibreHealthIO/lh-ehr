@@ -56,7 +56,7 @@ if ($mode == 'new')
 {
   $provider_id = $userauthorized ? $_SESSION['authUserID'] : 0;
   $encounter = generate_id();
-  addForm($encounter, "New Patient Encounter",
+  addForm($encounter, "Patient Encounter",
     sqlInsert("INSERT INTO form_encounter SET " .
       "date = '" . add_escape_custom($date) . "', " .
       "onset_date = '" . add_escape_custom($onset_date) . "', " .
@@ -70,7 +70,7 @@ if ($mode == 'new')
       "pid = '" . add_escape_custom($pid) . "', " .
       "encounter = '" . add_escape_custom($encounter) . "', " .
       "provider_id = '" . add_escape_custom($provider_id) . "'"),
-    "newpatient", $pid, $userauthorized, $date);
+    "patient_encounter", $pid, $userauthorized, $date);
 }
 else if ($mode == 'update')
 {

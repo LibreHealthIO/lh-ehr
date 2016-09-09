@@ -42,7 +42,7 @@ if (isset($mode)) {
 		// it's the logged-in user.
 		$tmp = sqlQuery("SELECT users.id FROM forms, users WHERE " .
 			"forms.pid = '$pid' AND forms.encounter = '$encounter' AND " .
-			"forms.formdir='newpatient' AND users.username = forms.user AND " .
+			"forms.formdir='patient_encounter' AND users.username = forms.user AND " .
 			"users.authorized = 1");
 		$provid = $tmp['id'] ? $tmp['id'] : $_SESSION["authUserID"];
 
@@ -168,7 +168,7 @@ function validate(f) {
  $thisauth = acl_check('encounters', 'coding_a');
  if (!$thisauth) {
   $erow = sqlQuery("SELECT user FROM forms WHERE " .
-   "encounter = '$encounter' AND formdir = 'newpatient' LIMIT 1");
+   "encounter = '$encounter' AND formdir = 'patient_encounter' LIMIT 1");
   if ($erow['user'] == $_SESSION['authUser'])
    $thisauth = acl_check('encounters', 'coding');
  }

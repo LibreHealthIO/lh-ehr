@@ -535,7 +535,7 @@ sqlInsert("INSERT INTO libreehr_postcalendar_events ( " .
       $facility_id = $tmprow['facility_id'];
       $conn = $GLOBALS['adodb']['db'];
       $encounter = $conn->GenID("sequences");
-      addForm($encounter, "New Patient Encounter",
+      addForm($encounter, "Patient Encounter",
         sqlInsert("INSERT INTO form_encounter SET " .
           "date = '$event_date', " .
           "onset_date = '$event_date', " .
@@ -545,7 +545,7 @@ sqlInsert("INSERT INTO libreehr_postcalendar_events ( " .
           "pid = '" . $_POST['form_pid'] . "', " .
           "encounter = '$encounter'"
         ),
-        "newpatient", $_POST['form_pid'], "1", "NOW()", $username
+        "patient_encounter", $_POST['form_pid'], "1", "NOW()", $username
       );
       $info_msg .= "New encounter $encounter was created. ";
     }

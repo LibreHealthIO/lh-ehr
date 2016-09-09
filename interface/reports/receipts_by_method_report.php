@@ -428,7 +428,7 @@ if ($_POST['form_refresh']) {
       "fe.invoice_refno, s.deposit_date, s.payer_id, s.reference, i.name " .
       "FROM ar_activity AS a " .
       "JOIN form_encounter AS fe ON fe.pid = a.pid AND fe.encounter = a.encounter " .
-      "JOIN forms AS f ON f.pid = a.pid AND f.encounter = a.encounter AND f.formdir = 'newpatient' " .
+      "JOIN forms AS f ON f.pid = a.pid AND f.encounter = a.encounter AND f.formdir = 'patient_encounter' " .
       "LEFT JOIN ar_session AS s ON s.session_id = a.session_id " .
       "LEFT JOIN insurance_companies AS i ON i.id = s.payer_id " .
       "WHERE ( a.pay_amount != 0 OR a.adj_amount != 0 )";

@@ -397,7 +397,7 @@ foreach ($pid_list as $pid) {
                         "FROM forms AS f " .
                         "JOIN form_encounter AS fe ON fe.id = f.form_id " .
                         "LEFT JOIN users AS u ON u.username = f.user " .
-                        "WHERE f.pid = '$pid' AND f.encounter = '$encounter' AND f.formdir = 'newpatient' AND f.deleted = 0 " .
+                        "WHERE f.pid = '$pid' AND f.encounter = '$encounter' AND f.formdir = 'patient_encounter' AND f.deleted = 0 " .
                         "ORDER BY f.id LIMIT 1";
                 $encdata = sqlQuery($query);
                 if (!empty($encdata['username'])) {

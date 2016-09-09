@@ -18,7 +18,7 @@ function getFormInfoById ($id, $cols = "*")
 	$sql = "select $cols from forms where id='$id' order by date DESC limit 0,1";
 	//echo $sql . "<br />";
 	$result =  sqlQuery($sql);
-	if ($result['formdir'] == "newpatient") {
+	if ($result['formdir'] == "patient_encounter") {
 		$result['formdir'] = "encounter";
 	}
 	$sql = "select * from form_" . $result['formdir'] . " where id='" . $result['form_id']  . "'";
@@ -42,7 +42,7 @@ function getFormByEncounter($pid,$encounter, $cols="form_id, form_name", $name="
 		$sql .= "and form_name=? ";
 		array_push($arraySqlBind,$name);
 	}
-  // This puts vitals first in the list, and newpatient last:
+  // This puts vitals first in the list, and patient_encounter last:
   $sql .= "ORDER BY FIND_IN_SET(formdir,'vitals') DESC, date DESC";
 
 	$res = sqlStatement($sql,$arraySqlBind);

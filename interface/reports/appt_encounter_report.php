@@ -96,7 +96,7 @@ function postError($msg) {
    "FROM libreehr_postcalendar_events AS e " .
    "LEFT OUTER JOIN form_encounter AS fe " .
    "ON fe.date = e.pc_eventDate AND fe.pid = e.pc_pid " .
-   "LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'newpatient' " .
+   "LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'patient_encounter' " .
    "LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .
    // "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
    "LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";
@@ -122,7 +122,7 @@ function postError($msg) {
    "ON fe.date = e.pc_eventDate AND fe.pid = e.pc_pid AND " .
    // "( e.pc_catid = 5 OR e.pc_catid = 9 OR e.pc_catid = 10 ) " .
    "e.pc_pid != '' AND e.pc_apptstatus != '?' " .
-   "LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'newpatient' " .
+   "LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'patient_encounter' " .
    "LEFT OUTER JOIN patient_data AS p ON p.pid = fe.pid " .
    // "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
    "LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";

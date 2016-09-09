@@ -94,7 +94,7 @@ top.Main.location.href  = '../encounter/patient_encounter.php?set_encounter=' + 
 else { // if not $createvisit
   if ($GLOBALS['concurrent_layout']) {
 ?>
-top.left_nav.loadFrame2('nen1','RBot','forms/newpatient/new.php?autoloaded=1&calenc=&issue=<?php echo $issue; ?>');
+top.left_nav.loadFrame2('nen1','RBot','forms/patient_encounter/new.php?autoloaded=1&calenc=&issue=<?php echo $issue; ?>');
 <?php
   }
   else {

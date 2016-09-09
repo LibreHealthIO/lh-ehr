@@ -77,11 +77,11 @@ if (isset($_GET["mode"])  && $_GET["mode"] == "new") {
 <head>
 <?php html_header_show();?>
 <TITLE>
-<?php xl('New Patient Encounter','e'); ?>
+<?php xl('Patient Encounter','e'); ?>
 </TITLE>
 </HEAD>
 <frameset rows="60%,40%" cols="*">
-	<frame src="<?php echo "$rootdir/forms/newpatient/new.php?autoloaded=1&calenc=".$_GET["calenc"].""; ?>" name="New" scrolling="auto">
+	<frame src="<?php echo "$rootdir/forms/patient_encounter/new.php?autoloaded=1&calenc=".$_GET["calenc"].""; ?>" name="New" scrolling="auto">
 	<frame src="<?php echo "$rootdir/patient_file/history/encounters.php";?>" name="Diagnosis" scrolling="auto">
 </frameset>
 <noframes><body bgcolor="#FFFFFF">
