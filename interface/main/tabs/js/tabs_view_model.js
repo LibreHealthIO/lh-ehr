@@ -203,9 +203,16 @@ function menuActionClick(data,evt)
                 alert("This encounter is locked. No new forms can be added.");
                 return;
             }
-        }        
-        navigateTab(webroot_url+data.url(),data.target);
-        activateTabByName(data.target,true);        
+        }
+        if (data.url().indexOf("http")===0)
+        {
+            window.open(data.url(),data.description,"resizable,scrollbars=yes,status=1" );
+        }
+         else
+        {
+            navigateTab(webroot_url+data.url(),data.target);
+        }
+        activateTabByName(data.target,true);
     }
     else
     {
