@@ -29,7 +29,7 @@
 		</div>
 
 		<div class="esign-signature-form-element">
-		      <label for='password'><?php echo xlt('Password');?></label> 
+		      <label for='password'><?php echo xlt('Pass Phrase');?></label> 
 		      <input type='password' id='password' name='password' size='10' />
 		</div>
 		

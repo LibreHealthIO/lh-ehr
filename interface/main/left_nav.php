@@ -45,7 +45,7 @@ use ESign\Api;
   'cal' => array(xl('Calendar')  , 0, 'main/main_info.php'),
   'pfb' => array(xl('Patient Flow Board')  , 0, '../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1'),
   'msg' => array(xl('Messages')  , 0, 'main/messages/messages.php?form_active=1'),
-  'pwd' => array(xl('Password')  , 0, 'usergroup/user_info.php'),
+  'pwd' => array(xl('Pass Phrase')  , 0, 'usergroup/user_info.php'),
   'prf' => array(xl('Preferences')  , 0, 'super/edit_globals.php?mode=user'),
   'adm' => array(xl('Admin')     , 0, 'usergroup/admin_frameset.php'),
   'rep' => array(xl('Reports')   , 0, 'reports/index.php'),
@@ -1344,7 +1344,7 @@ if (!empty($reg)) {
       <?php genMiscLink('RTop','adm','0',xl('BatchCom'),'batchcom/batchcom.php'); ?>
       <?php $myrow = sqlQuery("SELECT state FROM registry WHERE directory = 'track_anything'");
       if($myrow['state']=='1') { genTreeLink('RTop','tan',xl('Configure Tracks')); } ?>
-      <?php genTreeLink('RTop','pwd',xl('Password')); ?>
+      <?php genTreeLink('RTop','pwd',xl('Pass Phrase')); ?>
       <?php genMiscLink('RTop','prf','0',xl('Preferences'),'super/edit_globals.php?mode=user'); ?>
       <?php if(acl_check('patients','docs')) genMiscLink('RTop','adm','0',xl('New Documents'),'../controller.php?document&list&patient_id=00'); ?>
       <?php if (acl_check('patients','docs')) genMiscLink('RTop','adm','0',xl('Document Templates'),'super/manage_document_templates.php'); ?>

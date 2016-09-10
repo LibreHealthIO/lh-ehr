@@ -186,14 +186,14 @@ function transmit(){
     <form name="portallogin" action="" method="POST">
     <table align="center" style="margin-top:10px">
         <tr class="text">
-            <th colspan="5" align="center"><?php echo htmlspecialchars(xl("Generate Username And Password For")." ".$row['fname'],ENT_QUOTES);?></th>
+            <th colspan="5" align="center"><?php echo htmlspecialchars(xl("Generate Username And Pass Phrase For")." ".$row['fname'],ENT_QUOTES);?></th>
         </tr>
         <tr class="text">
             <td><?php echo htmlspecialchars(xl('User Name').':',ENT_QUOTES);?></td>
             <td><input type="text" name="uname" value="<?php if($row['portal_username']) echo htmlspecialchars($row['portal_username'],ENT_QUOTES); else echo htmlspecialchars($row['fname'].$row['id'],ENT_QUOTES);?>" size="10" readonly></td>
         </tr>
         <tr class="text">
-            <td><?php echo htmlspecialchars(xl('Password').':',ENT_QUOTES);?></td>
+            <td><?php echo htmlspecialchars(xl('Pass Phrase').':',ENT_QUOTES);?></td>
             <?php
             $pwd = generatePassword();
             ?>

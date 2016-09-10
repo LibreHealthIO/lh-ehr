@@ -148,13 +148,13 @@ else {
 
 <?php if (isset($_SESSION['loginfailure']) && ($_SESSION['loginfailure'] == 1)): ?>
 <tr><td colspan='2' class='text' style='color:red'>
-<?php echo xlt('Invalid username or password'); ?>
+<?php echo xlt('Invalid username or pass phrase'); ?>
 </td></tr>
 <?php endif; ?>
 
 <?php if (isset($_SESSION['relogin']) && ($_SESSION['relogin'] == 1)): ?>
 <tr><td colspan='2' class='text' style='color:red;background-color:#dfdfdf;border:solid 1px #bfbfbf;text-align:center'>
-<b><?php echo xlt('Password security has recently been upgraded.'); ?><br>
+<b><?php echo xlt('Pass Phrase security has recently been upgraded.'); ?><br>
 <?php echo xlt('Please login again.'); ?></b>
 <?php unset($_SESSION['relogin']); ?>
 </td></tr>
@@ -163,11 +163,11 @@ else {
 <tr>
 <td><span class="text"><?php echo xlt('Username:'); ?></span></td>
 <td>
-<input class="entryfield" type="text" size="10" name="authUser">
+<input class="entryfield" type="text" size="20" name="authUser">
 </td></tr><tr>
-<td><span class="text"><?php echo xlt('Password:'); ?></span></td>
+<td><span class="text"><?php echo xlt('Pass Phrase:'); ?></span></td>
 <td>
-<input class="entryfield" type="password" size="10" name="clearPass">
+<input class="entryfield" type="password" size="20" name="clearPass">
 </td></tr>
 
 <?php
@@ -215,8 +215,8 @@ $ip=$_SERVER['REMOTE_ADDR'];
 </div>
 <div class="demo">
 		<!-- Uncomment this for the LibreEHR demo installation
-		<p><center>login = admin
-		<br>password = pass
+		<p><center>login = demo
+		<br>pass phrase = I am Free!
 		-->
 </div>
 </td>

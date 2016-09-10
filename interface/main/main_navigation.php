@@ -45,7 +45,7 @@ include_once("../../library/acl.inc");
 
 <td align="center" nowrap>
 &nbsp;<a href="../usergroup/user_info.php" target="Main" class="menu" onclick="top.restoreSession()">
-<?php xl('Password','e'); ?></a>&nbsp;
+<?php xl('Pass Phrase Update','e'); ?></a>&nbsp;
 </td>
 
 <td align="center" nowrap>

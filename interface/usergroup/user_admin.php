@@ -213,7 +213,7 @@ function submitform() {
                     var pwdresult = passwordvalidate(document.forms[0].clearPass.value);
                     if(pwdresult == 0) {
                             flag=1;
-                            alert("<?php echo xl('The password must be at least eight characters, and should'); echo '\n'; echo xl('contain at least three of the four following items:'); echo '\n'; echo xl('A number'); echo '\n'; echo xl('A lowercase letter'); echo '\n'; echo xl('An uppercase letter'); echo '\n'; echo xl('A special character');echo '('; echo xl('not a letter or number'); echo ').'; echo '\n'; echo xl('For example:'); echo ' healthCare@09'; ?>");
+                            alert("<?php echo xl('The pass phrase must be at least eight characters, and should'); echo '\n'; echo xl('contain at least three of the four following items:'); echo '\n'; echo xl('A number'); echo '\n'; echo xl('A lowercase letter'); echo '\n'; echo xl('An uppercase letter'); echo '\n'; echo xl('A special character');echo '('; echo xl('not a letter or number'); echo ').'; echo '\n'; echo xl('For example:'); echo ' healthCare@09'; ?>");
                             return false;
                     }
 		}
@@ -224,7 +224,7 @@ function submitform() {
 		if((document.forms[0].user_type.value != "Emergency Login") && (document.forms[0].pre_active.value == 0) && (document.forms[0].active.checked == 1) && (document.forms[0].grace_time.value != "") && (document.forms[0].current_date.value) > (document.forms[0].grace_time.value))
 		{
 			flag=1;
-			document.getElementById('error_message').innerHTML="<?php xl('Please reset the password.','e') ?>";
+			document.getElementById('error_message').innerHTML="<?php xl('Please reset the pass phrase.','e') ?>";
 		}
 	}
 
@@ -354,13 +354,13 @@ $bg_count=count($acl_name);
 <TR>
     <TD style="width:180px;"><span class=text><?php xl('Username','e'); ?>: </span></TD>
     <TD style="width:270px;"><input type=entry name=username style="width:150px;" value="<?php echo $iter["username"]; ?>" disabled></td>
-    <TD style="width:200px;"><span class=text><?php xl('Your Password','e'); ?>: </span></TD>
+    <TD style="width:200px;"><span class=text><?php xl('Your Pass Phrase','e'); ?>: </span></TD>
     <TD class='text' style="width:280px;"><input type='password' name=adminPass style="width:150px;"  value="" autocomplete='off'><font class="mandatory">*</font></TD>
 </TR>
 <TR>
     <TD style="width:180px;"><span class=text></span></TD>
     <TD style="width:270px;"></td>
-    <TD style="width:200px;"><span class=text><?php xl('User\'s New Password','e'); ?>: </span></TD>
+    <TD style="width:200px;"><span class=text><?php xl('User\'s New Pass Phrase','e'); ?>: </span></TD>
     <TD class='text' style="width:280px;">    <input type=text name=clearPass style="width:150px;"  value=""><font class="mandatory">*</font></td>
 </TR>
 
@@ -531,7 +531,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
   </tr>
   <tr height="20" valign="bottom">
   <td colspan="4" class="text">
-  <font class="mandatory">*</font> <?php xl('You must enter your own password to change user passwords. Leave blank to keep password unchanged.','e'); ?>
+  <font class="mandatory">*</font> <?php xl('You must enter your own pass phrase to change user pass phrases. Leave this blank to keep it unchanged.','e'); ?>
 <!--
 Display red alert if entered password matched one of last three passwords/Display red alert if user password was expired and the user was inactivated previously
 -->
