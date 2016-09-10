@@ -15,8 +15,8 @@ $menu_json="
 {\"label\":\"Messages \",\"menu_id\":\"msg0\",\"target\":\"pat\",\"url\":\"/interface/main/messages/messages.php?form_active=1\",\"children\":[],\"requirement\":0},
 
 {\"label\":\"Patient/Client\",\"menu_id\":\"patimg\",\"children\":[
-  {\"label\":\"Patients\",\"menu_id\":\"fin0\",\"target\":\"lst\",\"url\":\"/interface/main/finder/dynamic_finder.php\",\"children\":[],\"requirement\":0},
-  {\"label\":\"New/Search\",\"menu_id\":\"new0\",\"target\":\"pat\",\"url\":\"/interface/new/new.php\",\"children\":[],\"requirement\":0},
+  {\"label\":\"Finder\",\"menu_id\":\"fin0\",\"target\":\"lst\",\"url\":\"/interface/main/finder/dynamic_finder.php\",\"children\":[],\"requirement\":0},
+  {\"label\":\"Add New/Search\",\"menu_id\":\"new0\",\"target\":\"pat\",\"url\":\"/interface/new/new.php\",\"children\":[],\"requirement\":0},
   {\"label\":\"Summary\",\"menu_id\":\"dem1\",\"target\":\"pat\",\"url\":\"/interface/patient_file/summary/demographics.php\",\"children\":[],\"requirement\":1},
   {\"label\":\"Visits\",\"children\":[
     {\"label\":\"Create Visit\",\"menu_id\":\"nen1\",\"target\":\"enc\",\"url\":\"/interface/forms/patient_encounter/new.php?autoloaded=1&calenc=\",\"children\":[],\"requirement\":1},
