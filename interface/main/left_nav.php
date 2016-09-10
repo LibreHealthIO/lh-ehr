@@ -980,8 +980,8 @@ $(document).ready(function(){
 
   <li class="open"><a class="expanded" id="patimg" ><span><?php xl('Patient/Client','e') ?></span></a>
     <ul>
-      <?php genMiscLink('RTop','fin','0',xl('Patients'),'main/finder/dynamic_finder.php'); ?>
-      <?php genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('New/Search') : xl('New'))); ?>
+      <?php genMiscLink('RTop','fin','0',xl('Finder'),'main/finder/dynamic_finder.php'); ?>
+      <?php genTreeLink('RTop','new',($GLOBALS['full_new_patient_form'] ? xl('Add New/Search') : xl('New'))); ?>
       <?php genTreeLink('RTop','dem',xl('Summary')); ?>
       <li class="open"><a class="expanded_lv2"><span><?php xl('Visits','e') ?></span></a>
         <ul>
