@@ -272,7 +272,7 @@ DROP TABLE IF EXISTS `claims`;
 CREATE TABLE `claims` (
   `patient_id` int(11) NOT NULL,
   `encounter_id` int(11) NOT NULL,
-  `version` int(10) unsigned NOT NULL auto_increment,
+  `version` tinyint(2) unsigned NOT NULL,
   `payer_id` int(11) NOT NULL default '0',
   `status` tinyint(2) NOT NULL default '0',
   `payer_type` tinyint(4) NOT NULL default '0',
@@ -283,7 +283,7 @@ CREATE TABLE `claims` (
   `target` varchar(30) default NULL,
   `x12_partner_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`patient_id`,`encounter_id`,`version`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB;
 
 
 --

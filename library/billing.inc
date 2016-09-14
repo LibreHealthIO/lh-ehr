@@ -166,11 +166,15 @@ function updateClaim($newversion, $patient_id, $encounter_id, $payer_id=-1, $pay
       "target = '$target', " .
       "x12_partner_id = '$partner_id'";
     ****/
+    $inc_version = sqlQuery("SELECT MAX(version)+1 FROM claims ".
+      "WHERE patient_id = '$patient_id' ".
+      "AND encounter_id = '$encounter_id';");
     if($crossover<>1)
     {
     $sql = "INSERT INTO claims SET " .
       "patient_id = '$patient_id', " .
       "encounter_id = '$encounter_id', " .
+      "version = '$inc_version', ".
       "bill_time = NOW() $claimset";
       }
      else
@@ -179,6 +183,7 @@ function updateClaim($newversion, $patient_id, $encounter_id, $payer_id=-1, $pay
      $sql = "INSERT INTO claims SET " .
       "patient_id = '$patient_id', " .
       "encounter_id = '$encounter_id', " .
+      "version = '$inc_version', ".
       "bill_time = NOW(), status=$status";
      
      }
