@@ -39,7 +39,7 @@ function update_password()
 </head>
 <body class="body_top">
 
-<span class="title"><?php echo xlt('Password Change'); ?></span>
+<span class="title"><?php echo xlt('Pass Phrase Change'); ?></span>
 <br><br>
 
 <?php
@@ -67,16 +67,16 @@ $row = sqlFetchArray($res);
 </TR>
 
 <TR>
-<TD><span class=text><?php xl('Current Password','e'); ?>: </span></TD>
+<TD><span class=text><?php xl('Current Pass Phrase','e'); ?>: </span></TD>
 <TD><input type=password name=curPass size=20 value="" autocomplete='off'></td>
 </TR>
 
 <TR>
-<TD><span class=text><?php xl('New Password','e'); ?>: </span></TD>
+<TD><span class=text><?php xl('New Pass Phrase','e'); ?>: </span></TD>
 <TD><input type=password name=newPass size=20 value="" autocomplete='off'></td>
 </TR>
 <TR>
-<TD><span class=text><?php xl('Repeat New Password','e'); ?>: </span></TD>
+<TD><span class=text><?php xl('Repeat New Pass Phrase','e'); ?>: </span></TD>
 <TD><input type=password name=newPass2 size=20 value="" autocomplete='off'></td>
 </TR>
 

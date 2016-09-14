@@ -25,12 +25,12 @@
 	<form id='esign-signature-form' method='post' action='<?php echo attr( $this->form->action ); ?>'>
 		
         <div class="esign-signature-form-element">
-		      <span id='esign-signature-form-prompt'><?php echo xlt("Your password is your signature" ); ?></span> 
+		      <span id='esign-signature-form-prompt'><?php echo xlt("Your passphrase is your signature" ); ?></span> 
 		</div>
 
 		<div class="esign-signature-form-element">
-		      <label for='password'><?php echo xlt('Password');?></label> 
-		      <input type='password' id='password' name='password' size='10' />
+		      <label for='password'><?php echo xlt('Pass Phrase');?></label> 
+		      <input type='password' id='password' name='password' size='15' />
 		</div>
 		
 		<?php if ( $this->form->showLock ) { ?>

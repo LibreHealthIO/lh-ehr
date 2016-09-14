@@ -41,24 +41,24 @@ $msg_alert = "";
 
 // Determine the expiration message to display
 if (($pwd_expires == "0000-00-00") or ($pwd_expires == "")) { 
-  $msg_alert = xl("Your Password Expired. Please change your password.");
+  $msg_alert = xl("Your Pass Phrase Expired. Please change your password.");
   $case="alertmsg1";
 }  
 else if ((strtotime($current_date) > strtotime($pwd_expires)) && ($grace_time != "") && 
          ($pwd_expires != "") && (strtotime($current_date) < strtotime($grace_time)))  {
 
   //display warning if user is in grace period to change password
-  $msg_alert = xl("You are in Grace Login period. Change your password before")." ".$grace_time;
+  $msg_alert = xl("You are in Grace Login period. Change your pass phrase before")." ".$grace_time;
   $case="alertmsg1";
 }
 else if (strtotime($pwd_expires) == strtotime($current_date)) {
   // Display warning if password expires on current day
-  $msg_alert = xl("Your Password Expires today. Please change your password.");
+  $msg_alert = xl("Your Pass Phrase Expires today. Please change your password.");
   $case="alertmsg2";
 }
 else if ((strtotime($current_date) >= strtotime($pwd_alert)) && strtotime($pwd_alert) != "") {
   // Display a notice that password expires soon
-  $msg_alert = xl("Your Password Expires on")." ".$pwd_expires.". ".xl("Please change your password.");
+  $msg_alert = xl("Your Pass Phrase Expires on")." ".$pwd_expires.". ".xl("Please change your password.");
   $case="alertmsg3";
 }
 ?>

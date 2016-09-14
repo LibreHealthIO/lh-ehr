@@ -100,7 +100,7 @@ class Encounter_Controller extends Abstract_Controller
                 $message = xlt( "An error occured signing the form" );
             }
         } else {
-            $message = xlt( "The password you entered is invalid" );
+            $message = xlt( "The passphrase you entered is invalid" );
         }
         $response = new Response( $status, $message );
         $response->encounterId = $encounterId;

@@ -259,7 +259,7 @@ foreach(array(
  </tr>
 
  <tr>
-  <td nowrap><b><?php echo xlt('Password'); ?>:</b></td>
+  <td nowrap><b><?php echo xlt('Pass Phrase'); ?>:</b></td>
   <td>
    <input type='text' size='20' name='form_password' maxlength='255'
     value='<?php echo attr($row['password']); ?>' class='inputtext' />

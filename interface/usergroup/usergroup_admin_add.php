@@ -112,7 +112,7 @@ function submitform() {
        if (document.forms[0].stiltskin.value.length<=0)
        {
           document.forms[0].stiltskin.style.backgroundColor="red";
-          alert("<?php echo xl('Please enter the password'); ?>");
+          alert("<?php echo xl('Please enter the pass phrase'); ?>");
           document.forms[0].stiltskin.focus();
           return false;
        }
@@ -168,11 +168,11 @@ function authorized_clicked() {
 <table border=0 cellpadding=0 cellspacing=0 style="width:600px;">
 <tr>
 <td style="width:150px;"><span class="text"><?php xl('Username','e'); ?>: </span></td><td  style="width:220px;"><input type=entry name=rumple style="width:120px;"> <span class="mandatory">&nbsp;*</span></td>
-<td style="width:150px;"><span class="text"><?php xl('Password','e'); ?>: </span></td><td style="width:250px;"><input type="entry" style="width:120px;" name=stiltskin><span class="mandatory">&nbsp;*</span></td>
+<td style="width:150px;"><span class="text"><?php xl('Pass Phrase','e'); ?>: </span></td><td style="width:250px;"><input type="entry" style="width:120px;" name=stiltskin><span class="mandatory">&nbsp;*</span></td>
 </tr>
 <tr>
     <td style="width:150px;"></td><td  style="width:220px;"></span></td>
-    <TD style="width:200px;"><span class=text><?php xl('Your Password','e'); ?>: </span></TD>
+    <TD style="width:200px;"><span class=text><?php xl('Your Pass Phrase','e'); ?>: </span></TD>
     <TD class='text' style="width:280px;"><input type='password' name=adminPass style="width:120px;"  value="" autocomplete='off'><font class="mandatory">*</font></TD>
 
 </tr>

@@ -8,7 +8,7 @@
 			    <?php if ($GLOBALS['development_flag'] ) { ?>
                 <div data-bind="click: framesMode"><?php echo xlt("Frames Mode");?></div>
 				<?php } ?>
-                <div data-bind="click: changePassword"><?php echo xlt("Change Password");?></div>
+                <div data-bind="click: changePassword"><?php echo xlt("Change Pass Phrase");?></div>
                 <div data-bind="click: logout"><?php echo xlt("Logout");?></div>
                 
             </div>
