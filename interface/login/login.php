@@ -128,7 +128,7 @@ else {
 <table width="100%" height="90%">
 <td align='center' valign='middle' width='34%'>
 <div class="login-box">
-<img src="<?php echo $GLOBALS['webroot']?>/interface/pic/logo.gif" />
+<img src="<?php echo $GLOBALS['webroot']?>/interface/pic/LEHR_logo.png" />
 
 <div class="table-right">
 <table width="100%">

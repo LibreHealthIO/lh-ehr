@@ -53,7 +53,7 @@ require_once("$srcdir/formatting.inc.php");
   $facility = $results->fields;
  }
 
- $practice_logo = "../../../custom/practice_logo.gif";
+ $practice_logo = "../../../custom/practice_logo.png";
  if (file_exists($practice_logo)) {
   echo "<img src='$practice_logo' align='left'>\n";
  }

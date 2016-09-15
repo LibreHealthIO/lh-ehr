@@ -46,7 +46,7 @@ $GLOBALS['oer_config']['druglabels']['left']   = 18;
 $GLOBALS['oer_config']['druglabels']['right']  = 18;
 $GLOBALS['oer_config']['druglabels']['top']    = 18;
 $GLOBALS['oer_config']['druglabels']['bottom'] = 18;
-$GLOBALS['oer_config']['druglabels']['logo_pic'] = 'druglogo.png';
+$GLOBALS['oer_config']['druglabels']['logo_pic'] = 'druglogo.gif';
 $GLOBALS['oer_config']['druglabels']['disclaimer'] =
   'Caution: Federal law prohibits dispensing without a prescription. ' .
   'Use only as directed.';
