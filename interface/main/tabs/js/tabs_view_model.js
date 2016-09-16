@@ -21,8 +21,8 @@ function tabStatus(title,url,name,closable,visible,locked)
 function tabs_view_model()
 {
     this.tabsList=ko.observableArray();
-    this.tabsList.push(new tabStatus("One",webroot_url+"/interface/main/main_info.php","lst",false,true,false));
-    this.tabsList.push(new tabStatus("Two",webroot_url+"/interface/main/messages/messages.php?form_active=1","pat",false,false,false));
+    this.tabsList.push(new tabStatus("One",webroot_url+"/interface/main/main_info.php","lst",true,true,true));
+    this.tabsList.push(new tabStatus("Two",webroot_url+"/interface/main/messages/messages.php?form_active=1","pat",true,true,true));
 //    this.tabsList.push(new tabStatus("Three"));
     this.text=ko.observable("Test");
     return this;
@@ -105,7 +105,7 @@ function navigateTab(url,name)
     }
     else
     {
-        curTab=new tabStatus("New",url,name,true,false,false);
+        curTab=new tabStatus("New",url,name,true,false,true);
         app_view_model.application_data.tabs.tabsList.push(curTab);
     }
 }

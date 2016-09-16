@@ -2,7 +2,7 @@
   {
     "label": "Calendar",
     "menu_id": "cal0",
-    "target": "lst",
+    "target": "cal",
     "url": "/interface/main/main_info.php",
     "children": [],
     "requirement": 0
@@ -10,7 +10,7 @@
   {
     "label": "Flow Board",
     "menu_id": "pfb0",
-    "target": "lst",
+    "target": "flb",
     "url": "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1",
     "children": [],
     "requirement": 0
@@ -30,7 +30,7 @@
       {
         "label": "Finder",
         "menu_id": "fin0",
-        "target": "lst",
+        "target": "fin",
         "url": "/interface/main/finder/dynamic_finder.php",
         "children": [],
         "requirement": 0
