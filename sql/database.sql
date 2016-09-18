@@ -2606,7 +2606,7 @@ CREATE TABLE `layout_options` (
 -- Loading table `layout_options`.  Demographics section first.
 -- 
 
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES
+INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`, `source`, `conditions`) VALUES
 ('DEM', 'fname', '1Face Sheet', 'NAME',5,2,2,10,63, '',1,1, '', 'CD', 'First Name',0, '', 'F', ''),
 ('DEM', 'mname', '1Face Sheet', '',10,2,1,2,63, '',0,0, '', 'C', 'Middle Name',0, '', 'F', ''),
 ('DEM', 'lname', '1Face Sheet', '',15,2,2,10,63, '',0,0, '', 'CD', 'Last Name',0, '', 'F', ''),
@@ -2632,7 +2632,7 @@ INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`d
 ('DEM', 'phone_home', '2Contact', 'Home Phone',35,2,1,20,63, '',1,1, '', 'P', 'Home Phone Number',0, '', 'F', ''),
 ('DEM', 'phone_biz', '2Contact', 'Work Phone',40,2,1,20,63, '',1,1, '', 'P', 'Work Phone Number',0, '', 'F', ''),
 ('DEM', 'email_direct', '2Contact', 'Trusted Email',45,2,1,30,95, '',1,1, '', '', 'Trusted Direct Email Address',0, '', 'F', ''),
-('DEM', 'deceased_date', '3HIPAA', 'Date Deceased',1,4,1,0,20, '',1,3, '', 'D', 'If person is deceased, then enter date of death.',0, '', 'F', '')
+('DEM', 'deceased_date', '3HIPAA', 'Date Deceased',1,4,1,0,20, '',1,3, '', 'D', 'If person is deceased, then enter date of death.',0, '', 'F', ''),
 ('DEM', 'providerID', '3HIPAA', 'Provider',1,11,1,0,0, '',1,3, '', '', 'Provider',0, '', 'F', ''),
 ('DEM', 'deceased_reason', '3HIPAA', 'Reason Deceased',2,2,1,30,255, '',1,3, '', '', 'Reason for Death',0, '', 'F', ''),
 ('DEM', 'ref_providerID', '3HIPAA', 'Referring Provider',2,11,1,0,0, '',1,3, '', '', 'Referring Provider',0, '', 'F', ''),
@@ -2666,7 +2666,7 @@ INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`d
 ('DEM', 'migrantseasonal', '5Social Statistics', 'Migrant/Seasonal',8,2,1,20,63, '',1,1, '', '', 'Migrant or seasonal worker?',0, '', 'F', ''),
 ('DEM', 'contrastart', '5Social Statistics', 'Contraceptives Start',9,4,0,0,10, '',1,1, '', '', 'Date contraceptive services initially provided',0, '', 'F', ''),
 ('DEM', 'referral_source', '5Social Statistics', 'Referral Source',10,26,1,0,0, 'refsource',1,1, '', '', 'How did they hear about us',0, '', 'F', NULL),
-('DEM', 'vfc', '5Social Statistics', 'VFC',12,1,1,20,0, 'eligibility',1,1, '', '', 'Eligibility status for Vaccine for Children supplied vaccine',0, '', 'F', NULL);,
+('DEM', 'vfc', '5Social Statistics', 'VFC',12,1,1,20,0, 'eligibility',1,1, '', '', 'Eligibility status for Vaccine for Children supplied vaccine',0, '', 'F', NULL),
 ('DEM', 'religion', '5Social Statistics', 'Religion',13,1,1,0,0, 'religious_affiliation',1,3, '', '', 'Patient Religion',0, '', 'F', NULL),
 ('DEM', 'homeless', '5Social Statistics', 'Homeless, etc.',6,2,1,20,63, '',1,1, '', '', 'Homeless or similar?',0, '', 'F', '');
 
