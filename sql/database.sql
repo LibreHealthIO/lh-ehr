@@ -6193,7 +6193,7 @@ CREATE TABLE `ar_activity` (
   `follow_up_note` text,
   `account_code` varchar(15) NOT NULL,
   `reason_code` varchar(255) DEFAULT NULL COMMENT 'Use as needed to show the primary payer adjustment reason code',
-  PRIMARY KEY (pid, encounter, sequence_no),
+  PRIMARY KEY (sequence_no, pid, encounter),
   KEY session_id (session_id)
 ) ENGINE=InnoDB;
 
@@ -6328,7 +6328,7 @@ CREATE TABLE `procedure_order_code` (
   `diagnoses`           text                                COMMENT 'diagnoses and maybe other coding (e.g. ICD9:111.11)',
   `do_not_send`         tinyint(1)  NOT NULL DEFAULT '0'    COMMENT '0 = normal, 1 = do not transmit to lab',
   `procedure_order_title` varchar( 255 ) NULL DEFAULT NULL,
-  PRIMARY KEY (`procedure_order_id`, `procedure_order_seq`)
+  PRIMARY KEY (`procedure_order_seq`,`procedure_order_id`)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `procedure_answers`;
@@ -6338,7 +6338,7 @@ CREATE TABLE `procedure_answers` (
   `question_code`       varchar(31)  NOT NULL DEFAULT '' COMMENT 'references procedure_questions.question_code',
   `answer_seq`          int(11)      NOT NULL AUTO_INCREMENT COMMENT 'supports multiple-choice questions',
   `answer`              varchar(255) NOT NULL DEFAULT '' COMMENT 'answer data',
-  PRIMARY KEY (`procedure_order_id`, `procedure_order_seq`, `question_code`, `answer_seq`)
+  PRIMARY KEY (`answer_seq`,`procedure_order_id`, `procedure_order_seq`, `question_code`)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `procedure_report`;
