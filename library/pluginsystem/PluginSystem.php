@@ -189,14 +189,18 @@ class PluginSystem
      */
     public function doAction( $actionKey, & $args = null )
     {
-        $actions = $this->actions[$actionKey];
-        if ( count( $actions ) ) {
-            // sort actions by priority
-            usort( $actions, array( "\\PluginSystem\\PluginSystem", "comparePriority" ) );
-            foreach ( $actions as $action ) {
-                $callback = $action->callback;
-                $ret = $callback( $args, $actionKey );
-                ob_flush();
+        $ret = null;
+        // Check to see if we have any subscribers to this action
+        if ( isset($this->actions[$actionKey]) ) {
+            $actions = $this->actions[$actionKey];
+            if (count($actions)) {
+                // sort actions by priority
+                usort($actions, array("\\PluginSystem\\PluginSystem", "comparePriority"));
+                foreach ($actions as $action) {
+                    $callback = $action->callback;
+                    $ret = $callback($args, $actionKey);
+                    // ob_flush();
+                }
             }
         }
 
