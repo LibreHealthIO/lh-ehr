@@ -58,7 +58,7 @@ function showhideMenu() {
 	var m = parent.document.getElementById("fsbody");
 	var targetWidth = '<?php echo $_SESSION['language_direction'] == 'ltr' ? '0,*' : '*,0'; ?>';
 	if (m.cols == targetWidth) {
-		m.cols = '<?php echo $_SESSION['language_direction'] == 'ltr' ?  $GLOBALS['gbl_nav_area_width'] .',*' : '*,' . $GLOBALS['gbl_nav_area_width'] ?>';
+		m.cols = '<?php echo $_SESSION['language_direction'] == 'ltr' ?  '130,*' : '*,130' ?>';
 		document.getElementById("showMenuLink").innerHTML = '<?php echo htmlspecialchars( xl('Hide Menu'), ENT_QUOTES); ?>';
 	} else {
 		m.cols = targetWidth;
