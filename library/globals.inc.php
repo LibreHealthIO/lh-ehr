@@ -98,7 +98,6 @@ $USER_SPECIFIC_TABS = array('Appearance',
                             'Calendar',
                             'Connectors');
 $USER_SPECIFIC_GLOBALS = array('default_top_pane',
-                               'concurrent_layout',
                                'css_header',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
@@ -135,18 +134,6 @@ $GLOBALS_METADATA = array(
       xl('Type of screen layout')
     ),
 
-    'concurrent_layout' => array(
-      xl('Layout Style'),               // descriptive name
-      array(
-        '0' => xl('Old style layout with no left menu'),
-        '1' => xl('Navigation menu consists of pairs of radio buttons'),
-        '2' => xl('Navigation menu is a tree view'),
-        '3' => xl('Navigation uses a sliding menu'),
-      ),
-      '3',                              // default = tree menu
-      xl('Type of screen layout')
-    ),
-      
     'default_encounter_view' => array(
       xl('Default Encounter View'),               // descriptive name
       array(
@@ -162,13 +149,6 @@ $GLOBALS_METADATA = array(
       'css',
       'style_light.css',
       xl('Pick a CSS theme.')
-    ),
-
-    'gbl_nav_area_width' => array(
-      xl('Navigation Area Width'),
-      'num',
-      '150',
-      xl('Width in pixels of the left navigation frame.')
     ),
 
     'libreehr_name' => array(
