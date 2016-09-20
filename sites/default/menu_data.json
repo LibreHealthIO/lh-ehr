@@ -194,21 +194,6 @@
     "requirement": 0
   },
   {
-    "label": "Modules",
-    "menu_id": "modimg",
-    "children": [
-      {
-        "label": "Manage Modules",
-        "menu_id": "adm0",
-        "target": "pat",
-        "url": "/interface/modules/zend_modules/public/Installer",
-        "children": [],
-        "requirement": 0
-      }
-    ],
-    "requirement": 0
-  },
-  {
     "label": "Procedures",
     "menu_id": "proimg",
     "children": [
