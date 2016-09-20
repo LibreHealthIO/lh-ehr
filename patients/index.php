@@ -94,7 +94,7 @@
 <head>
     <title><?php echo xlt('Patient Portal Login'); ?></title>
 
-    <script type="text/javascript" src="../library/js/jquery-1.5.js"></script>
+    <script type="text/javascript" src="../library/js/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="../library/js/jquery.gritter.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/jquery.gritter.css" />
