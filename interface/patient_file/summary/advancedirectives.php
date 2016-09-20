@@ -15,7 +15,7 @@ include_once("$srcdir/formdata.inc.php");
 <script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-3.1.0.min.js"></script>
 <SCRIPT LANGUAGE="JavaScript">
 var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 function validate(f) {

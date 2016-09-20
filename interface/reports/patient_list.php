@@ -47,7 +47,7 @@ else {
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-3.1.0.min.js"></script>
 
 <script language="JavaScript">
  var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
