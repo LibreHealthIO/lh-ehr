@@ -147,7 +147,7 @@ function postToGet($arin) {
 
 <?php if (!$PDF_OUTPUT) { ?>
 
-<script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/library/js/jquery-1.5.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/library/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/library/js/SearchHighlight.js"></script>
 <script type="text/javascript">var $j = jQuery.noConflict();</script>
 

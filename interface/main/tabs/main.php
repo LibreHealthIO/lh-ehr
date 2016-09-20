@@ -57,7 +57,7 @@ var webroot_url="<?php echo $web_root; ?>";
 <link rel="stylesheet" type="text/css" href="css/menu.css"/>
 
 <?php include_js_library("knockout/knockout-3.4.0.js"); ?>
-<?php include_js_library("jquery-2.2.0.min.js"); ?>
+<?php include_js_library("jquery-3.1.0.min.js"); ?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>
 

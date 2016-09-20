@@ -179,7 +179,7 @@ if ($result3['provider']) {   // Use provider in case there is an ins record w/ 
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="../../../library/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <script type="text/javascript" language="JavaScript">
