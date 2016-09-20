@@ -2623,121 +2623,113 @@ INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq
 ('DEM', 'email', '1Face Sheet', 'Contact Email',70,2,1,30,95, '',1,1, '', '', 'Contact Email Address',0, '', 'F', ''),
 ('DEM', 'pricelevel', '1Face Sheet', 'Price Level',75,1,0,0,0, 'pricelevel',1,1, '', '', 'Discount Level',0, '', 'F', ''),
 ('DEM', 'billing_note', '1Face Sheet', 'Billing Note',80,2,1,60,0, '',1,3, '', '', 'Patient Level Billing Note (Collections)',0, '', 'F', ''),
-('DEM', 'county', '2Contact', 'County',5,26,1,0,0, 'county',1,1, '', '', 'County',0, '', 'F', ''),
-('DEM', 'country_code', '2Contact', 'Country',10,26,1,0,0, 'country',1,1, '', '', 'Country',0, '', 'F', ''),
-('DEM', 'mothersname', '2Contact', 'Mother''s Name',15,2,1,20,63, '',1,1, '', '', '',0, '', 'F', ''),
-('DEM', 'guardiansname', '2Contact', 'Guardian''s Name',20,2,1,20,63, '',1,1, '', '', '',0, '', 'F', ''),
-('DEM', 'contact_relationship', '2Contact', 'Emergency Contact',25,2,1,10,63, '',1,1, '', 'C', 'Emergency Contact Person',0, '', 'F', ''),
-('DEM', 'phone_contact', '2Contact', 'Emergency Phone',30,2,1,20,63, '',1,1, '', 'P', 'Emergency Contact Phone Number',0, '', 'F', ''),
-('DEM', 'phone_home', '2Contact', 'Home Phone',35,2,1,20,63, '',1,1, '', 'P', 'Home Phone Number',0, '', 'F', ''),
-('DEM', 'phone_biz', '2Contact', 'Work Phone',40,2,1,20,63, '',1,1, '', 'P', 'Work Phone Number',0, '', 'F', ''),
-('DEM', 'email_direct', '2Contact', 'Trusted Email',45,2,1,30,95, '',1,1, '', '', 'Trusted Direct Email Address',0, '', 'F', ''),
-('DEM', 'deceased_date', '3HIPAA', 'Date Deceased',1,4,1,0,20, '',1,3, '', 'D', 'If person is deceased, then enter date of death.',0, '', 'F', ''),
-('DEM', 'providerID', '3HIPAA', 'Provider',1,11,1,0,0, '',1,3, '', '', 'Provider',0, '', 'F', ''),
-('DEM', 'deceased_reason', '3HIPAA', 'Reason Deceased',2,2,1,30,255, '',1,3, '', '', 'Reason for Death',0, '', 'F', ''),
-('DEM', 'ref_providerID', '3HIPAA', 'Referring Provider',2,11,1,0,0, '',1,3, '', '', 'Referring Provider',0, '', 'F', ''),
-('DEM', 'pharmacy_id', '3HIPAA', 'Pharmacy',3,12,1,0,0, '',1,3, '', '', 'Preferred Pharmacy',0, '', 'F', ''),
-('DEM', 'hipaa_notice', '3HIPAA', 'HIPAA Notice Received',4,1,1,0,0, 'yesno',1,1, '', '', 'Did you receive a copy of the HIPAA Notice?',0, '', 'F', ''),
-('DEM', 'hipaa_voice', '3HIPAA', 'Allow Voice Message',5,1,1,0,0, 'yesno',1,1, '', '', 'Allow telephone messages?',0, '', 'F', ''),
-('DEM', 'hipaa_message', '3HIPAA', 'Leave Message With',6,2,1,20,63, '',1,1, '', '', 'With whom may we leave a message?',0, '', 'F', ''),
-('DEM', 'hipaa_mail', '3HIPAA', 'Allow Mail Message',7,1,1,0,0, 'yesno',1,1, '', '', 'Allow email messages?',0, '', 'F', ''),
-('DEM', 'hipaa_allowsms', '3HIPAA', 'Allow SMS',8,1,1,0,0, 'yesno',1,1, '', '', 'Allow SMS (text messages)?',0, '', 'F', ''),
-('DEM', 'hipaa_allowemail', '3HIPAA', 'Allow Email',9,1,1,0,0, 'yesno',1,1, '', '', 'Allow Email?',0, '', 'F', ''),
-('DEM', 'allow_imm_reg_use', '3HIPAA', 'Allow Immunization Registry Use',10,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
-('DEM', 'allow_imm_info_share', '3HIPAA', 'Allow Immunization Info Sharing',11,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
-('DEM', 'allow_health_info_ex', '3HIPAA', 'Allow Health Information Exchange',12,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
-('DEM', 'allow_patient_portal', '3HIPAA', 'Allow Patient Portal',13,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
-('DEM', 'care_team', '3HIPAA', 'Care Team',14,11,1,0,0, '',1,1, '', '', '',0, '', 'F', ''),
-('DEM', 'industry', '4Employer', 'Industry',1,26,1,0,0, 'Industry',1,1, '', '', 'Industry',0, '', 'F', ''),
-('DEM', 'occupation', '4Employer', 'Occupation',1,26,1,0,0, 'Occupation',1,1, '', '', 'Occupation',0, '', 'F', ''),
-('DEM', 'em_name', '4Employer', 'Employer Name',2,2,1,20,63, '',1,1, '', 'C', 'Employer Name',0, '', 'F', ''),
-('DEM', 'em_street', '4Employer', 'Employer Address',3,2,1,25,63, '',1,1, '', 'C', 'Street and Number',0, '', 'F', ''),
-('DEM', 'em_city', '4Employer', 'City',4,2,1,15,63, '',1,1, '', 'C', 'City Name',0, '', 'F', ''),
-('DEM', 'em_state', '4Employer', 'State',5,26,1,0,0, 'state',1,1, '', '', 'State/Locality',0, '', 'F', ''),
-('DEM', 'em_postal_code', '4Employer', 'Postal Code',6,2,1,6,63, '',1,1, '', '', 'Postal Code',0, '', 'F', ''),
-('DEM', 'em_country', '4Employer', 'Country',7,26,1,0,0, 'country',1,1, '', '', 'Country',0, '', 'F', ''),
-('DEM', 'language', '5Social Statistics', 'Language',1,1,1,0,0, 'language',1,3, '', '', 'Preferred Language',0, '', 'F', ''),
-('DEM', 'ethnicity', '5Social Statistics', 'Ethnicity',2,33,1,0,0, 'ethnicity',1,1, '', '', 'Ethnicity',0, 'ethrace', 'F', ''),
-('DEM', 'race', '5Social Statistics', 'Race',3,36,1,0,0, 'race',1,1, '', '', 'Race',0, 'ethrace', 'F', ''),
-('DEM', 'family_size', '5Social Statistics', 'Family Size',4,2,1,20,63, '',1,1, '', '', 'Family Size',0, '', 'F', ''),
-('DEM', 'financial_review', '5Social Statistics', 'Financial Review Date',4,2,1,10,20, '',1,1, '', 'D', 'Financial Review Date',0, '', 'F', ''),
-('DEM', 'monthly_income', '5Social Statistics', 'Monthly Income',5,2,1,20,63, '',1,1, '', '', 'Monthly Income',0, '', 'F', ''),
+('DEM', 'providerID', '2Contacts', 'Provider',5,11,1,0,0, '',1,3, '', '', 'Provider',0, '', 'F', ''),
+('DEM', 'ref_providerID', '2Contacts', 'Referring Provider',10,11,1,0,0, '',1,3, '', '', 'Referring Provider',0, '', 'F', ''),
+('DEM', 'pharmacy_id', '2Contacts', 'Pharmacy',15,12,1,0,0, '',1,3, '', '', 'Preferred Pharmacy',0, '', 'F', ''),
+('DEM', 'phone_home', '2Contacts', 'Home Phone',20,2,1,20,63, '',1,1, '', 'P', 'Home Phone Number',0, '', 'F', ''),
+('DEM', 'phone_biz', '2Contacts', 'Work Phone',25,2,1,20,63, '',1,1, '', 'P', 'Work Phone Number',0, '', 'F', ''),
+('DEM', 'contact_relationship', '2Contacts', 'Emergency Contact',30,2,1,10,63, '',1,1, '', 'C', 'Emergency Contact Person',0, '', 'F', ''),
+('DEM', 'phone_contact', '2Contacts', 'Emergency Phone',35,2,1,20,63, '',1,1, '', 'P', 'Emergency Contact Phone Number',0, '', 'F', ''),
+('DEM', 'mothersname', '2Contacts', 'Name of Mother',40,2,1,20,63, '',1,1, '', '', '',0, '', 'F', ''),
+('DEM', 'guardiansname', '2Contacts', 'Name of Guardian',45,2,1,20,63, '',1,1, '', '', '',0, '', 'F', ''),
+('DEM', 'county', '2Contacts', 'County',50,26,1,0,0, 'county',1,1, '', '', 'County',0, '', 'F', ''),
+('DEM', 'country_code', '2Contacts', 'Country',55,26,1,0,0, 'country',1,1, '', '', 'Country',0, '', 'F', ''),
+('DEM', 'referral_source', '2Contacts', 'Referral Source',60,26,1,0,0, 'refsource',1,1, '', '', 'How did they hear about us',0, '', 'F', NULL),
+('DEM', 'deceased_date', '2Privacy', 'Date Deceased',1,4,1,0,20, '',1,3, '', 'D', 'If person is deceased then enter date of death.',0, '', 'F', ''),
+('DEM', 'allow_patient_portal', '2Privacy', 'Allow Patient Portal',1,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
+('DEM', 'deceased_reason', '2Privacy', 'Reason Deceased',2,2,1,30,255, '',1,3, '', '', 'Reason for Death',0, '', 'F', ''),
+('DEM', 'email_direct', '2Privacy', 'Trusted Email',3,2,1,30,95, '',1,1, '', '', 'Trusted Direct Email Address',0, '', 'F', ''),
+('DEM', 'hipaa_notice', '2Privacy', 'Privacy Notice Received',5,1,1,0,0, 'yesno',1,1, '', '', 'Did you receive a copy of the HIPAA Notice?',0, '', 'F', ''),
+('DEM', 'hipaa_voice', '2Privacy', 'Allow Voice Message',10,1,1,0,0, 'yesno',1,1, '', '', 'Allow telephone messages?',0, '', 'F', ''),
+('DEM', 'hipaa_message', '2Privacy', 'Leave Message With',15,2,1,20,63, '',1,1, '', '', 'With whom may we leave a message?',0, '', 'F', ''),
+('DEM', 'hipaa_mail', '2Privacy', 'Allow Mail Message',20,1,1,0,0, 'yesno',1,1, '', '', 'Allow email messages?',0, '', 'F', ''),
+('DEM', 'hipaa_allowsms', '2Privacy', 'Allow SMS',25,1,1,0,0, 'yesno',1,1, '', '', 'Allow SMS (text messages)?',0, '', 'F', ''),
+('DEM', 'hipaa_allowemail', '2Privacy', 'Allow Email',30,1,1,0,0, 'yesno',1,1, '', '', 'Allow Email?',0, '', 'F', ''),
+('DEM', 'allow_imm_reg_use', '2Privacy', 'Allow Immunization Registry Use',35,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
+('DEM', 'allow_imm_info_share', '2Privacy', 'Allow Immunization Info Sharing',40,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
+('DEM', 'allow_health_info_ex', '2Privacy', 'Allow Health Information Exchange',45,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
+('DEM', 'contrastart', '2Privacy', 'Contraceptives Start',50,4,0,0,10, '',1,1, '', '', 'Date contraceptive services initially provided',0, '', 'F', ''),
+('DEM', 'vfc', '2Privacy', 'VFC',55,1,1,20,0, 'eligibility',1,1, '', '', 'Eligibility status for Vaccine for Children supplied vaccine',0, '', 'F', NULL),
+('DEM', 'industry', '4Employer', 'Industry',5,26,1,0,0, 'Industry',1,1, '', '', 'Industry',0, '', 'F', ''),
+('DEM', 'occupation', '4Employer', 'Occupation',10,26,1,0,0, 'Occupation',1,1, '', '', 'Occupation',0, '', 'F', ''),
+('DEM', 'em_name', '4Employer', 'Employer Name',15,2,1,20,63, '',1,1, '', 'C', 'Employer Name',0, '', 'F', ''),
+('DEM', 'em_street', '4Employer', 'Employer Address',20,2,1,25,63, '',1,1, '', 'C', 'Street and Number',0, '', 'F', ''),
+('DEM', 'em_city', '4Employer', 'City',25,2,1,15,63, '',1,1, '', 'C', 'City Name',0, '', 'F', ''),
+('DEM', 'em_state', '4Employer', 'State',30,26,1,0,0, 'state',1,1, '', '', 'State/Locality',0, '', 'F', ''),
+('DEM', 'em_postal_code', '4Employer', 'Postal Code',35,2,1,6,63, '',1,1, '', '', 'Postal Code',0, '', 'F', ''),
+('DEM', 'em_country', '4Employer', 'Country',40,26,1,0,0, 'country',1,1, '', '', 'Country',0, '', 'F', ''),
+('DEM', 'language', '5Social Statistics', 'Language',5,1,1,0,0, 'language',1,3, '', '', 'Preferred Language',0, '', 'F', ''),
 ('DEM', 'interpretter', '5Social Statistics', 'Interpreter',7,2,1,20,63, '',1,1, '', '', 'Interpreter needed?',0, '', 'F', ''),
-('DEM', 'migrantseasonal', '5Social Statistics', 'Migrant/Seasonal',8,2,1,20,63, '',1,1, '', '', 'Migrant or seasonal worker?',0, '', 'F', ''),
-('DEM', 'contrastart', '5Social Statistics', 'Contraceptives Start',9,4,0,0,10, '',1,1, '', '', 'Date contraceptive services initially provided',0, '', 'F', ''),
-('DEM', 'referral_source', '5Social Statistics', 'Referral Source',10,26,1,0,0, 'refsource',1,1, '', '', 'How did they hear about us',0, '', 'F', NULL),
-('DEM', 'vfc', '5Social Statistics', 'VFC',12,1,1,20,0, 'eligibility',1,1, '', '', 'Eligibility status for Vaccine for Children supplied vaccine',0, '', 'F', NULL),
-('DEM', 'religion', '5Social Statistics', 'Religion',13,1,1,0,0, 'religious_affiliation',1,3, '', '', 'Patient Religion',0, '', 'F', NULL),
-('DEM', 'homeless', '5Social Statistics', 'Homeless, etc.',6,2,1,20,63, '',1,1, '', '', 'Homeless or similar?',0, '', 'F', '');
+('DEM', 'ethnicity', '5Social Statistics', 'Ethnicity',10,33,1,0,0, 'ethnicity',1,1, '', '', 'Ethnicity',0, 'ethrace', 'F', ''),
+('DEM', 'family_size', '5Social Statistics', 'Family Size',15,2,1,20,63, '',1,1, '', '', 'Family Size',0, '', 'F', ''),
+('DEM', 'financial_review', '5Social Statistics', 'Financial Review Date',20,2,1,10,20, '',1,1, '', 'D', 'Financial Review Date',0, '', 'F', ''),
+('DEM', 'monthly_income', '5Social Statistics', 'Monthly Income',25,2,1,20,63, '',1,1, '', '', 'Monthly Income',0, '', 'F', ''),
+('DEM', 'homeless', '5Social Statistics', 'Homeless',30,2,1,20,63, '',1,1, '', '', 'Homeless or similar?',0, '', 'F', ''),
+('DEM', 'migrantseasonal', '5Social Statistics', 'Migrant/Seasonal',35,2,1,20,63, '',1,1, '', '', 'Migrant or seasonal worker?',0, '', 'F', ''),
+('DEM', 'religion', '5Social Statistics', 'Religion',45,1,1,0,0, 'religious_affiliation',1,3, '', '', 'Patient Religion',0, '', 'F', NULL);
 
 
-
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','refer_date'      ,'1Referral','Referral Date'                  , 1, 4,2, 0,  0,''         ,1,1,'C','D','Date of referral', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','refer_from'      ,'1Referral','Refer By'                       , 2,10,2, 0,  0,''         ,1,1,'' ,'' ,'Referral By', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','refer_external'  ,'1Referral','External Referral'              , 3, 1,1, 0,  0,'boolean'  ,1,1,'' ,'' ,'External referral?', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','refer_to'        ,'1Referral','Refer To'                       , 4,14,2, 0,  0,''         ,1,1,'' ,'' ,'Referral To', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','body'            ,'1Referral','Reason'                         , 5, 3,2,30,  0,''         ,1,1,'' ,'' ,'Reason for referral', 3);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','refer_diag'      ,'1Referral','Referrer Diagnosis'             , 6, 2,1,30,255,''         ,1,1,'' ,'X','Referrer diagnosis', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','refer_risk_level','1Referral','Risk Level'                     , 7, 1,1, 0,  0,'risklevel',1,1,'' ,'' ,'Level of urgency', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','refer_vitals'    ,'1Referral','Include Vitals'                 , 8, 1,1, 0,  0,'boolean'  ,1,1,'' ,'' ,'Include vitals data?', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','refer_related_code','1Referral','Requested Service'            , 9,15,1,30,255,''         ,1,1,'' ,'' ,'Billing Code for Requested Service', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_date'      ,'2Counter-Referral','Reply Date'             ,10, 4,1, 0,  0,''         ,1,1,'' ,'D','Date of reply', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_from'      ,'2Counter-Referral','Reply From'             ,11, 2,1,30,255,''         ,1,1,'' ,'' ,'Who replied?', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_init_diag' ,'2Counter-Referral','Presumed Diagnosis'     ,12, 2,1,30,255,''         ,1,1,'' ,'' ,'Presumed diagnosis by specialist', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_final_diag','2Counter-Referral','Final Diagnosis'        ,13, 2,1,30,255,''         ,1,1,'' ,'' ,'Final diagnosis by specialist', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_documents' ,'2Counter-Referral','Documents'              ,14, 2,1,30,255,''         ,1,1,'' ,'' ,'Where may related scanned or paper documents be found?', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_findings'  ,'2Counter-Referral','Findings'               ,15, 3,1,30,  0,''         ,1,1,'' ,'' ,'Findings by specialist', 3);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_services'  ,'2Counter-Referral','Services Provided'      ,16, 3,1,30,  0,''         ,1,1,'' ,'' ,'Service provided by specialist', 3);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_recommend' ,'2Counter-Referral','Recommendations'        ,17, 3,1,30,  0,''         ,1,1,'' ,'' ,'Recommendations by specialist', 3);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTref','reply_rx_refer'  ,'2Counter-Referral','Prescriptions/Referrals',18, 3,1,30,  0,''         ,1,1,'' ,'' ,'Prescriptions and/or referrals by specialist', 3);
-
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTptreq','body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5);
-
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTphreq','body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5);
-
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTlegal','body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5);
-
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('LBTbill' ,'body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5);
-
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','usertext11'       ,'1General'       ,'Risk Factors',1,21,1,0,0,'riskfactors',1,1,'','' ,'Risk Factors', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','exams'            ,'1General'       ,'Exams/Tests' ,2,23,1,0,0,'exams'      ,1,1,'','' ,'Exam and test results', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','history_father'   ,'2Family History','Father'                 , 1, 2,1,20,  0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','dc_father'        ,'2Family History','Diagnosis Code'         , 2,15,1, 0,255,'',1,1,'','', '', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','history_mother'   ,'2Family History','Mother'                 , 3, 2,1,20,  0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','dc_mother'        ,'2Family History','Diagnosis Code'         , 4,15,1, 0,255,'',1,1,'','', '', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','history_siblings' ,'2Family History','Siblings'               , 5, 2,1,20,  0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','dc_siblings'      ,'2Family History','Diagnosis Code'         , 6,15,1, 0,255,'',1,1,'','', '', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','history_spouse'   ,'2Family History','Spouse'                 , 7, 2,1,20,  0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','dc_spouse'        ,'2Family History','Diagnosis Code'         , 8,15,1, 0,255,'',1,1,'','', '', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','history_offspring','2Family History','Offspring'              , 9, 2,1,20,  0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','dc_offspring'     ,'2Family History','Diagnosis Code'         ,10,15,1, 0,255,'',1,1,'','', '', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_cancer'             ,'3Relatives','Cancer'             ,1, 2,1,20,0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_tuberculosis'       ,'3Relatives','Tuberculosis'       ,2, 2,1,20,0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_diabetes'           ,'3Relatives','Diabetes'           ,3, 2,1,20,0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_high_blood_pressure','3Relatives','High Blood Pressure',4, 2,1,20,0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_heart_problems'     ,'3Relatives','Heart Problems'     ,5, 2,1,20,0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_stroke'             ,'3Relatives','Stroke'             ,6, 2,1,20,0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_epilepsy'           ,'3Relatives','Epilepsy'           ,7, 2,1,20,0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_mental_illness'     ,'3Relatives','Mental Illness'     ,8, 2,1,20,0,'',1,1,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','relatives_suicide'            ,'3Relatives','Suicide'            ,9, 2,1,20,0,'',1,3,'','' ,'', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','coffee'              ,'4Lifestyle','Coffee'              ,2,28,1,20,0,'',1,3,'','' ,'Caffeine consumption', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','tobacco'             ,'4Lifestyle','Tobacco'             ,1,32,1,0,0,'smoking_status',1,3,'','' ,'Tobacco use', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','alcohol'             ,'4Lifestyle','Alcohol'             ,3,28,1,20,0,'',1,3,'','' ,'Alcohol consumption', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','recreational_drugs'  ,'4Lifestyle','Recreational Drugs'  ,4,28,1,20,0,'',1,3,'','' ,'Recreational drug use', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','counseling'          ,'4Lifestyle','Counseling'          ,5,28,1,20,0,'',1,3,'','' ,'Counseling activities', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','exercise_patterns'   ,'4Lifestyle','Exercise Patterns'   ,6,28,1,20,0,'',1,3,'','' ,'Exercise patterns', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','hazardous_activities','4Lifestyle','Hazardous Activities',7,28,1,20,0,'',1,3,'','' ,'Hazardous activities', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','sleep_patterns'      ,'4Lifestyle','Sleep Patterns'      ,8, 2,1,20,0,'',1,3,'','' ,'Sleep patterns', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','seatbelt_use'        ,'4Lifestyle','Seatbelt Use'        ,9, 2,1,20,0,'',1,3,'','' ,'Seatbelt use', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','name_1'            ,'5Other','Name/Value'        ,1, 2,1,10,255,'',1,1,'','' ,'Name 1', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','value_1'           ,'5Other',''                  ,2, 2,1,10,255,'',0,0,'','' ,'Value 1', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','name_2'            ,'5Other','Name/Value'        ,3, 2,1,10,255,'',1,1,'','' ,'Name 2', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','value_2'           ,'5Other',''                  ,4, 2,1,10,255,'',0,0,'','' ,'Value 2', 0);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','additional_history','5Other','Additional History',5, 3,1,30,  0,'',1,3,'' ,'' ,'Additional history notes', 3);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','userarea11'        ,'5Other','User Defined Area 11',6,3,0,30,0,'',1,3,'','','User Defined', 3);
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('HIS','userarea12'        ,'5Other','User Defined Area 12',7,3,0,30,0,'',1,3,'','','User Defined', 3);
-
-INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES ('FACUSR', 'provider_id', '1General', 'Provider ID', 1, 2, 1, 15, 63, '', 1, 1, '', '', 'Provider ID at Specified Facility', 0);
+INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`data_type`,`uor`,`fld_length`,`max_length`,`list_id`,`titlecols`,`datacols`,`default_value`,`edit_options`,`description`,`fld_rows`) VALUES
+('LBTref','refer_date'      ,'1Referral','Referral Date'                  , 1, 4,2, 0,  0,''         ,1,1,'C','D','Date of referral', 0),
+('LBTref','refer_from'      ,'1Referral','Refer By'                       , 2,10,2, 0,  0,''         ,1,1,'' ,'' ,'Referral By', 0),
+('LBTref','refer_external'  ,'1Referral','External Referral'              , 3, 1,1, 0,  0,'boolean'  ,1,1,'' ,'' ,'External referral?', 0),
+('LBTref','refer_to'        ,'1Referral','Refer To'                       , 4,14,2, 0,  0,''         ,1,1,'' ,'' ,'Referral To', 0),
+('LBTref','body'            ,'1Referral','Reason'                         , 5, 3,2,30,  0,''         ,1,1,'' ,'' ,'Reason for referral', 3),
+('LBTref','refer_diag'      ,'1Referral','Referrer Diagnosis'             , 6, 2,1,30,255,''         ,1,1,'' ,'X','Referrer diagnosis', 0),
+('LBTref','refer_risk_level','1Referral','Risk Level'                     , 7, 1,1, 0,  0,'risklevel',1,1,'' ,'' ,'Level of urgency', 0),
+('LBTref','refer_vitals'    ,'1Referral','Include Vitals'                 , 8, 1,1, 0,  0,'boolean'  ,1,1,'' ,'' ,'Include vitals data?', 0),
+('LBTref','refer_related_code','1Referral','Requested Service'            , 9,15,1,30,255,''         ,1,1,'' ,'' ,'Billing Code for Requested Service', 0),
+('LBTref','reply_date'      ,'2Counter-Referral','Reply Date'             ,10, 4,1, 0,  0,''         ,1,1,'' ,'D','Date of reply', 0),
+('LBTref','reply_from'      ,'2Counter-Referral','Reply From'             ,11, 2,1,30,255,''         ,1,1,'' ,'' ,'Who replied?', 0),
+('LBTref','reply_init_diag' ,'2Counter-Referral','Presumed Diagnosis'     ,12, 2,1,30,255,''         ,1,1,'' ,'' ,'Presumed diagnosis by specialist', 0),
+('LBTref','reply_final_diag','2Counter-Referral','Final Diagnosis'        ,13, 2,1,30,255,''         ,1,1,'' ,'' ,'Final diagnosis by specialist', 0),
+('LBTref','reply_documents' ,'2Counter-Referral','Documents'              ,14, 2,1,30,255,''         ,1,1,'' ,'' ,'Where may related scanned or paper documents be found?', 0),
+('LBTref','reply_findings'  ,'2Counter-Referral','Findings'               ,15, 3,1,30,  0,''         ,1,1,'' ,'' ,'Findings by specialist', 3),
+('LBTref','reply_services'  ,'2Counter-Referral','Services Provided'      ,16, 3,1,30,  0,''         ,1,1,'' ,'' ,'Service provided by specialist', 3),
+('LBTref','reply_recommend' ,'2Counter-Referral','Recommendations'        ,17, 3,1,30,  0,''         ,1,1,'' ,'' ,'Recommendations by specialist', 3),
+('LBTref','reply_rx_refer'  ,'2Counter-Referral','Prescriptions/Referrals',18, 3,1,30,  0,''         ,1,1,'' ,'' ,'Prescriptions and/or referrals by specialist', 3),
+('LBTptreq','body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5),
+('LBTphreq','body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5),
+('LBTlegal','body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5),
+('LBTbill' ,'body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5),
+('HIS','usertext11'       ,'1General'       ,'Risk Factors',1,21,1,0,0,'riskfactors',1,1,'','' ,'Risk Factors', 0),
+('HIS','exams'            ,'1General'       ,'Exams/Tests' ,2,23,1,0,0,'exams'      ,1,1,'','' ,'Exam and test results', 0),
+('HIS','history_father'   ,'2Family History','Father'                 , 1, 2,1,20,  0,'',1,1,'','' ,'', 0),
+('HIS','dc_father'        ,'2Family History','Diagnosis Code'         , 2,15,1, 0,255,'',1,1,'','', '', 0),
+('HIS','history_mother'   ,'2Family History','Mother'                 , 3, 2,1,20,  0,'',1,1,'','' ,'', 0),
+('HIS','dc_mother'        ,'2Family History','Diagnosis Code'         , 4,15,1, 0,255,'',1,1,'','', '', 0),
+('HIS','history_siblings' ,'2Family History','Siblings'               , 5, 2,1,20,  0,'',1,1,'','' ,'', 0),
+('HIS','dc_siblings'      ,'2Family History','Diagnosis Code'         , 6,15,1, 0,255,'',1,1,'','', '', 0),
+('HIS','history_spouse'   ,'2Family History','Spouse'                 , 7, 2,1,20,  0,'',1,1,'','' ,'', 0),
+('HIS','dc_spouse'        ,'2Family History','Diagnosis Code'         , 8,15,1, 0,255,'',1,1,'','', '', 0),
+('HIS','history_offspring','2Family History','Offspring'              , 9, 2,1,20,  0,'',1,1,'','' ,'', 0),
+('HIS','dc_offspring'     ,'2Family History','Diagnosis Code'         ,10,15,1, 0,255,'',1,1,'','', '', 0),
+('HIS','relatives_cancer'             ,'3Relatives','Cancer'             ,1, 2,1,20,0,'',1,1,'','' ,'', 0),
+('HIS','relatives_tuberculosis'       ,'3Relatives','Tuberculosis'       ,2, 2,1,20,0,'',1,1,'','' ,'', 0),
+('HIS','relatives_diabetes'           ,'3Relatives','Diabetes'           ,3, 2,1,20,0,'',1,1,'','' ,'', 0),
+('HIS','relatives_high_blood_pressure','3Relatives','High Blood Pressure',4, 2,1,20,0,'',1,1,'','' ,'', 0),
+('HIS','relatives_heart_problems'     ,'3Relatives','Heart Problems'     ,5, 2,1,20,0,'',1,1,'','' ,'', 0),
+('HIS','relatives_stroke'             ,'3Relatives','Stroke'             ,6, 2,1,20,0,'',1,1,'','' ,'', 0),
+('HIS','relatives_epilepsy'           ,'3Relatives','Epilepsy'           ,7, 2,1,20,0,'',1,1,'','' ,'', 0),
+('HIS','relatives_mental_illness'     ,'3Relatives','Mental Illness'     ,8, 2,1,20,0,'',1,1,'','' ,'', 0),
+('HIS','relatives_suicide'            ,'3Relatives','Suicide'            ,9, 2,1,20,0,'',1,3,'','' ,'', 0),
+('HIS','coffee'              ,'4Lifestyle','Coffee'              ,2,28,1,20,0,'',1,3,'','' ,'Caffeine consumption', 0),
+('HIS','tobacco'             ,'4Lifestyle','Tobacco'             ,1,32,1,0,0,'smoking_status',1,3,'','' ,'Tobacco use', 0),
+('HIS','alcohol'             ,'4Lifestyle','Alcohol'             ,3,28,1,20,0,'',1,3,'','' ,'Alcohol consumption', 0),
+('HIS','recreational_drugs'  ,'4Lifestyle','Recreational Drugs'  ,4,28,1,20,0,'',1,3,'','' ,'Recreational drug use', 0),
+('HIS','counseling'          ,'4Lifestyle','Counseling'          ,5,28,1,20,0,'',1,3,'','' ,'Counseling activities', 0),
+('HIS','exercise_patterns'   ,'4Lifestyle','Exercise Patterns'   ,6,28,1,20,0,'',1,3,'','' ,'Exercise patterns', 0),
+('HIS','hazardous_activities','4Lifestyle','Hazardous Activities',7,28,1,20,0,'',1,3,'','' ,'Hazardous activities', 0),
+('HIS','sleep_patterns'      ,'4Lifestyle','Sleep Patterns'      ,8, 2,1,20,0,'',1,3,'','' ,'Sleep patterns', 0),
+('HIS','seatbelt_use'        ,'4Lifestyle','Seatbelt Use'        ,9, 2,1,20,0,'',1,3,'','' ,'Seatbelt use', 0),
+('HIS','name_1'            ,'5Other','Name/Value'        ,1, 2,1,10,255,'',1,1,'','' ,'Name 1', 0),
+('HIS','value_1'           ,'5Other',''                  ,2, 2,1,10,255,'',0,0,'','' ,'Value 1', 0),
+('HIS','name_2'            ,'5Other','Name/Value'        ,3, 2,1,10,255,'',1,1,'','' ,'Name 2', 0),
+('HIS','value_2'           ,'5Other',''                  ,4, 2,1,10,255,'',0,0,'','' ,'Value 2', 0),
+('HIS','additional_history','5Other','Additional History',5, 3,1,30,  0,'',1,3,'' ,'' ,'Additional history notes', 3),
+('HIS','userarea11'        ,'5Other','User Defined Area 11',6,3,0,30,0,'',1,3,'','','User Defined', 3),
+('HIS','userarea12'        ,'5Other','User Defined Area 12',7,3,0,30,0,'',1,3,'','','User Defined', 3),
+('FACUSR', 'provider_id', '1General', 'Provider ID', 1, 2, 1, 15, 63, '', 1, 1, '', '', 'Provider ID at Specified Facility', 0);
 
 
 -- 
