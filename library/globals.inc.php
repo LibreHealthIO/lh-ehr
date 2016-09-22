@@ -151,6 +151,13 @@ $GLOBALS_METADATA = array(
       xl('Pick a CSS theme.')
     ),
 
+    'gbl_nav_area_width' => array(
+      xl('Navigation Area Width'),
+      'num',
+      '150',
+      xl('Width in pixels of the left navigation frame.')
+    ),
+
     'libreehr_name' => array(
       xl('Application Title'),
       'text',
