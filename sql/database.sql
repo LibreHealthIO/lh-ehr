@@ -2,6 +2,8 @@
 -- Database: `libreehr`
 -- 
 
+set sql_mode='';
+
 -- 
 -- Table structure for table `addresses`
 -- 
