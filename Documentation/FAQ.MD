@@ -1,18 +1,5 @@
 Frequently Asked Questions
-version 1.1
-
-
-* After installation and setup, I get errors from login.php at lines 3 and 4 about failing to opening md5.js and sql.inc.
-
-Please check the libreehr/interface/globals.php file and edit the line that sets $webserver_root.
-$webserver_root = "/var/www/html/libreehr";
-It should be set to the absolute path of the libreehr web directory, as shown above.
-
-
-* During installation of setup.php, I see ';?> at the top of each step.
-
-PHP can be called from within Apache with either long tags: <?php or short tags: <?php 
-LibreEHR uses short tags throughout its program code, though some default installations have short tags disabled. If you see this error, short tags are not enabled. Please consult PHP's documentation at: http://www.zend.com/manual/language.basic-syntax.php. The solution is to enable the short_open_tag configuration flag in the PHP config file, or by compiling PHP with the --enable-short-tags option to configure. (Zend PHP Website)
+version 1.0.0
 
 
 * How do I implement my own encounter forms into LibreEHR?
