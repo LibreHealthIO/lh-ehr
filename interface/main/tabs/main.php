@@ -1,9 +1,8 @@
 <?php
 Use Esign\Api;
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2016 Kevin Yeh <kevin.y@integralemr.com>.
+ * Licensed to the public under the MPL-HD license at www.librehealth.io.
  */
 $fake_register_globals=false;
 $sanitize_all_escapes=true;

@@ -1,3 +1,12 @@
+<?php
+
+/* 
+ * Copyright (C) 2016 Kevin Yeh <kevin.y@integralemr.com>.
+ * Licensed to the public under the MPL-HD license at www.librehealth.io.
+ */
+
+?>
+
 <script type="text/html" id="tabs-controls">
     <div class="tabControls" data-bind="with: tabs">
         <!-- ko  foreach: tabsList -->
