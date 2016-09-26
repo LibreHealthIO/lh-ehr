@@ -1,4 +1,9 @@
 <?php
+/* 
+ * Copyright (C) 2016 Kevin Yeh <kevin.y@integralemr.com>.
+ * Licensed to the public under the MPL-HD license at www.librehealth.io.
+ */
+
 # The extra lines are the menu blocks on the screen/
 # insert a line like this {\"label\":\"Visit Forms\",\"children\":[],\"requirement\":0},
 # Then edit the information needed
