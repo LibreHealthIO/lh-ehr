@@ -249,21 +249,7 @@ function icd_import($type) {
     // followed by the field name, position and length of each fixed length text record in the incoming
     // flat files. There are separate definitions for ICD 9 and 10 based on the type passed in
     $incoming = array();
-    if ($type == 'ICD9') {
-        $incoming['SHORT_DX'] = array('#TABLENAME#' => "icd9_dx_code", 
-		'#FLD1#' => "dx_code", '#POS1#' => 1, '#LEN1#' => 5, 
-		'#FLD2#' => "short_desc", '#POS2#' => 7, '#LEN2#' => 60);
-        $incoming['SHORT_SG'] = array('#TABLENAME#' => "icd9_sg_code", 
-		'#FLD1#' => "sg_code", '#POS1#' => 1, '#LEN1#' => 4, 
-		'#FLD2#' => "short_desc", '#POS2#' => 6, '#LEN2#' => 60);
-        $incoming['LONG_SG'] = array('#TABLENAME#' => "icd9_sg_long_code", 
-		'#FLD1#' => "sg_code", '#POS1#' => 1, '#LEN1#' => 4, 
-		'#FLD2#' => "long_desc", '#POS2#' => 6, '#LEN2#' => 300);
-        $incoming['LONG_DX'] = array('#TABLENAME#' => "icd9_dx_long_code", 
-		'#FLD1#' => "dx_code", '#POS1#' => 1, '#LEN1#' => 5, 
-		'#FLD2#' => "long_desc", '#POS2#' => 7, '#LEN2#' => 300);
-    } else {
-
+    if ($type == 'ICD10') {
         $incoming['icd10pcs_order_'] = array('#TABLENAME#' => "icd10_pcs_order_code", 
 		'#FLD1#' => "pcs_code", '#POS1#' => 7, '#LEN1#' => 7,
 		'#FLD2#' => "valid_for_coding", '#POS2#' => 15, '#LEN2#' => 1,
@@ -374,15 +360,7 @@ function icd_import($type) {
     }
 
     // now update the tables where necessary
-    if ($type == 'ICD9') {
-        sqlStatement("update `icd9_dx_code` SET formatted_dx_code = dx_code");
-        sqlStatement("update `icd9_dx_code` SET formatted_dx_code = concat(concat(left(dx_code, 3), '.'), substr(dx_code, 4)) WHERE dx_code RLIKE '^[V0-9]{1}.*' AND LENGTH(dx_code) > 3");
-        sqlStatement("update `icd9_dx_code` SET formatted_dx_code = concat(concat(left(dx_code, 4), '.'), substr(dx_code, 5)) WHERE dx_code RLIKE '^[E]{1}.*' AND LENGTH(dx_code) > 4");
-        sqlStatement("update `icd9_sg_code` SET formatted_sg_code = concat(concat(left(sg_code, 2), '.'), substr(sg_code, 3))");
-        sqlStatement("update `icd9_dx_code` A, `icd9_dx_long_code` B set A.long_desc = B.long_desc where A.dx_code = B.dx_code and A.active = 1 and A.long_desc is NULL");
-        sqlStatement("update `icd9_sg_code` A, `icd9_sg_long_code` B set A.long_desc = B.long_desc where A.sg_code = B.sg_code and A.active = 1 and A.long_desc is NULL");
-    }
-    else { // ICD 10
+    if ($type == 'ICD10') {
         sqlStatement("update `icd10_dx_order_code` SET formatted_dx_code = dx_code");
         sqlStatement("update `icd10_dx_order_code` SET formatted_dx_code = concat(concat(left(dx_code, 3), '.'), substr(dx_code, 4)) WHERE LENGTH(dx_code) > 3");
     }
@@ -407,10 +385,6 @@ function update_tracker_table($type,$revision,$version,$file_checksum) {
     }
     else if ($type == 'SNOMED') {
         sqlStatement("INSERT INTO `standardized_tables_track` (`imported_date`,`name`,`revision_date`, `revision_version`, `file_checksum`) VALUES (NOW(),'SNOMED',?,?,?)", array($revision, $version, $file_checksum) );
-        return true;
-    }
-    else if ($type == 'ICD9') {
-        sqlStatement("INSERT INTO `standardized_tables_track` (`imported_date`,`name`,`revision_date`, `revision_version`, `file_checksum`) VALUES (NOW(),'ICD9',?,?,?)", array($revision, $version, $file_checksum) );
         return true;
     }
     else { // $type == 'ICD10') 
