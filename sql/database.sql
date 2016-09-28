@@ -1159,6 +1159,7 @@ DROP TABLE IF EXISTS `facility`;
 CREATE TABLE `facility` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) default NULL,
+  `alias varchar(60) default NULL,
   `phone` varchar(30) default NULL,
   `fax` varchar(30) default NULL,
   `street` varchar(255) default NULL,

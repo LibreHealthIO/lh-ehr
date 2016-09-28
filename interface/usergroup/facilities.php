@@ -10,6 +10,7 @@ $alertmsg = '';
 if (isset($_POST["mode"]) && $_POST["mode"] == "facility" && $_POST["newmode"] != "admin_facility") {
   $insert_id=sqlInsert("INSERT INTO facility SET " .
   "name = '"         . trim(formData('facility'    )) . "', " .
+  "alias = '"         . trim(formData('alias'    )) . "', " .
   "phone = '"        . trim(formData('phone'       )) . "', " .
   "fax = '"          . trim(formData('fax'         )) . "', " .
   "street = '"       . trim(formData('street'      )) . "', " .
@@ -37,6 +38,7 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 {
 	sqlStatement("update facility set
 		name='" . trim(formData('facility')) . "',
+		alias = '" . trim(formData('alias')) . "',
 		phone='" . trim(formData('phone')) . "',
 		fax='" . trim(formData('fax')) . "',
 		street='" . trim(formData('street')) . "',
