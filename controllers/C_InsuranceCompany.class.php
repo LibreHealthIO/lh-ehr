@@ -2,7 +2,7 @@
 
 require_once($GLOBALS['fileroot'] . "/library/classes/Controller.class.php");
 require_once($GLOBALS['fileroot'] . "/library/classes/InsuranceCompany.class.php");
-require_once($GLOBALS['fileroot'] . "/library/classes/WSWrapper.class.php");
+require_once($GLOBALS['fileroot'] . "/library/classes/X12Partner.class.php");
 
 class C_InsuranceCompany extends Controller {
 
