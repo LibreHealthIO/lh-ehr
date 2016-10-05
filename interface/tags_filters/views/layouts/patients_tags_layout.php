@@ -225,7 +225,7 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
     </style>
 
     <link href="./assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <script src="./assets/jquery/jquery.js"></script>
+    <script src="./assets/jquery/jquery-3.1.0.min.js"></script>
     <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/datatables/media/js/jquery.dataTables.js"></script>
