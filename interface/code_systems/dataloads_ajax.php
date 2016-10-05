@@ -60,8 +60,8 @@ $activeAccordionSection = isset($_GET['aas']) ? $_GET['aas'] : '0';
 <script>
 
 // placemaker for when support DSMIV
-// var db_list = [ "DSMIV", "ICD9", "ICD10", "RXNORM", "SNOMED"];
-var db_list = [ "ICD9", "ICD10", "RXNORM", "SNOMED"];
+// var db_list = [ "DSMIV", "ICD10", "RXNORM", "SNOMED"];
+var db_list = [ "ICD10", "RXNORM", "SNOMED"];
 var accOpts = {
     header: "h3", 
     autoHeight: false,
@@ -269,8 +269,8 @@ div.tooltip p {
 // setup the divs for each supported external dataload
 //
 // placemaker for when support DSMIV
-//$db_list = array("DSMIV", "ICD9", "ICD10", "RXNORM", "SNOMED");
-$db_list = array("ICD9", "ICD10", "RXNORM", "SNOMED");
+//$db_list = array("DSMIV", "ICD10", "RXNORM", "SNOMED");
+$db_list = array("ICD10", "RXNORM", "SNOMED");
 foreach ($db_list as $db) {
     ?>
     <h3><a href="#"><?php echo attr($db); ?></a></h3>
