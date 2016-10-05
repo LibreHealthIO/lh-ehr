@@ -1,10 +1,10 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2016 Kevin Yeh <kevin.y@integralemr.com>.
+ * Licensed to the public under the MPL-HD license at www.librehealth.io.
  */
+
 require_once("menu_data.php");
 require_once("menu_updates.php");
 require_once("menu_db.php");

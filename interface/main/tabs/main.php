@@ -1,9 +1,8 @@
 <?php
 Use Esign\Api;
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2016 Kevin Yeh <kevin.y@integralemr.com>.
+ * Licensed to the public under the MPL-HD license at www.librehealth.io.
  */
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
@@ -57,7 +56,7 @@ var webroot_url="<?php echo $web_root; ?>";
 <link rel="stylesheet" type="text/css" href="css/menu.css"/>
 
 <?php include_js_library("knockout/knockout-3.4.0.js"); ?>
-<?php include_js_library("jquery-2.2.0.min.js"); ?>
+<?php include_js_library("jquery-3.1.0.min.js"); ?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>
 

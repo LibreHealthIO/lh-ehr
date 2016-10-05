@@ -34,11 +34,11 @@ $orderid = empty($_REQUEST['orderid']) ? 0 : intval($_REQUEST['orderid']);
 
 $patient_id = $pid;
 if ($docid) {
-  $row = sqlQuery("SELECT foreign_id FROM documents WHERE id = ?", array($docid)); 
+  $row = sqlQuery("SELECT foreign_id FROM documents WHERE id = ?", array($docid));
   $patient_id = intval($row['foreign_id']);
 }
 else if ($orderid) {
-  $row = sqlQuery("SELECT patient_id FROM procedure_order WHERE procedure_order_id = ?", array($orderid)); 
+  $row = sqlQuery("SELECT patient_id FROM procedure_order WHERE procedure_order_id = ?", array($orderid));
   $patient_id = intval($row['patient_id']);
 }
 
@@ -152,10 +152,9 @@ $result = getPnotesByDate("", $active, 'id,date,body,user,activity,title,assigne
 <link rel='stylesheet' href="<?php echo $css_header;?>" type="text/css">
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-3.1.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 <script type="text/javascript" src="../../../library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/js/jquery.1.3.2.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <script type="text/javascript">
@@ -173,7 +172,7 @@ document.forms[0].submit();
 $title_docname = "";
 if ($docid) {
   $title_docname .= " " . xl("linked to document") . " ";
-  $d = new Document($docid);	
+  $d = new Document($docid);
   $title_docname .= $d->get_url_file();
 }
 if ($orderid) {
@@ -216,7 +215,7 @@ $urlparms = "docid=$docid&orderid=$orderid";
     <?php
      if ($noteid) {
        // Modified 6/2009 by BM to incorporate the patient notes into the list_options listings
-       echo htmlspecialchars( xl('Amend Existing Note'), ENT_NOQUOTES) . 
+       echo htmlspecialchars( xl('Amend Existing Note'), ENT_NOQUOTES) .
          "<b> &quot;" . generate_display_field(array('data_type'=>'1','list_id'=>'note_type'), $title) . "&quot;</b>\n";
      } else {
        echo htmlspecialchars( xl('Add New Note'), ENT_NOQUOTES) . "\n";

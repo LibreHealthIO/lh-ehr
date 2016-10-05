@@ -1,3 +1,3 @@
 The LibreEHR System Architecture Description page can be found here:
-http://open-emr.org/wiki/index.php/LibreEHR_System_Architecture
+http://libreehr.org
 
