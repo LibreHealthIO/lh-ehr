@@ -51,7 +51,7 @@ if ($is_lbf) {
   }
 </style>
 
-<script type="text/javascript" src="../../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../../library/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="../../../library/openflashchart/js/json/json2.js"></script>
 <script type="text/javascript" src="../../../library/openflashchart/js/swfobject.js"></script>
 <script type="text/javascript">
