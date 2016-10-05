@@ -7,7 +7,7 @@ include_once("../../../custom/code_types.inc.php");
 <?php html_header_show();?>
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
-<script type="text/javascript" src="../../../library/js/jquery.js"></script>
+<script type="text/javascript" src="../../../library/js/jquery-3.1.0.min.js"></script>
 
 <!-- DBC STUFF ================ -->
 

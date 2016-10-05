@@ -117,7 +117,7 @@ EOT;
             'extra' => array(
                 'component' => array(
                     'scripts' => array(
-                        'jquery.js',
+                        'jquery-3.1.0.min.js',
                     )
                 )
             )

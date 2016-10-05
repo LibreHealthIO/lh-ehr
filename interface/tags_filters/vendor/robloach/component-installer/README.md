@@ -43,7 +43,7 @@ The easiest approach is to use the Component statically. Just reference the
 Components manually using a `script` or `link` tag:
 
 ``` html
-<script src="components/jquery/jquery.js"></script>
+<script src="components/jquery/jquery-3.1.0.min.js"></script>
 <link href="components/normalize/normalize.css" rel="stylesheet">
 ```
 
