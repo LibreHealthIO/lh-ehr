@@ -181,7 +181,7 @@
  // configured properly.
  //
  if (false) { // if PDF output is desired
-  $pdf =& new Cezpdf($dconfig['paper_size']);
+  $pdf = new Cezpdf($dconfig['paper_size']);
   $pdf->ezSetMargins($dconfig['top'],$dconfig['bottom'],$dconfig['left'],$dconfig['right']);
   $pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Helvetica.afm");
   $pdf->ezSetDy(20); // dunno why we have to do this...

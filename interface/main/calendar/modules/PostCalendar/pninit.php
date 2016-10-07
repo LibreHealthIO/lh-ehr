@@ -604,7 +604,7 @@ function postcalendar_upgrade($oldversion)
 	if(!pnModAPILoad(__POSTCALENDAR__,'user')) {
 		return false;
 	}
-	$tpl =& new pcSmarty();
+	$tpl = new pcSmarty();
 	$tpl->clear_all_cache();
 	$tpl->clear_compiled_tpl();
 	return true;

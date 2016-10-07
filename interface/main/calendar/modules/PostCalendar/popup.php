@@ -28,7 +28,7 @@
 /**
  *  popup view for events displayed in a new window  
  */
-$output =& new pnHTML();
+$output = new pnHTML();
 $output->SetInputMode(_PNH_VERBATIMINPUT);
 
 // let's load the User API so we can use it :)
