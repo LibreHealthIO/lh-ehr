@@ -34,7 +34,7 @@ $print  		= pnVarCleanFromInput('print');
 $uid 			= pnUserGetVar('uid');
 $pc_username 	= pnVarCleanFromInput('pc_username');
 
-$output =& new pnHTML();
+$output = new pnHTML();
 $output->SetInputMode(_PNH_VERBATIMINPUT);
 if(!pnModAPILoad('postcalendar','user')) { die('Could not load PostCalendar user API'); }
 $theme = pnUserGetTheme();
