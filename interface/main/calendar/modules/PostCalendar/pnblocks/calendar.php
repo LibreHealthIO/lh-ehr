@@ -106,7 +106,7 @@ function postcalendar_calendarblock_display($blockinfo)
 	unset($pcModInfo);
 	
 	// set up Smarty
-	$tpl =& new pcSmarty();
+	$tpl = new pcSmarty();
 	
 	// setup the Smarty cache id
 	$templates_cached = true;
@@ -307,7 +307,7 @@ function postcalendar_calendarblock_modify($blockinfo)
     }
     
 	// Create output object
-    $output =& new pnHTML();
+    $output = new pnHTML();
     // Get variables from content block
     $vars = unserialize($blockinfo['content']);
     $i=0;    
@@ -373,7 +373,7 @@ function postcalendar_calendarblock_update($blockinfo)
 	if(!isset($vars['pcbeventsrange']))   { $vars['pcbeventsrange']   = 6; }
     if(!isset($vars['pcbshowsslinks']))   { $vars['pcbshowsslinks']   = 0; }
     
-    $tpl =& new pcSmarty();
+    $tpl = new pcSmarty();
 	$tpl->clear_all_cache();
 	$blockinfo['content'] = serialize($vars);
     return $blockinfo;
