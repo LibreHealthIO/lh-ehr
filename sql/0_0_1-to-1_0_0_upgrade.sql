@@ -603,7 +603,7 @@ SET @group_name = (SELECT group_name FROM layout_options WHERE field_id='occupat
 SET @backup_group_name = (SELECT group_name FROM layout_options WHERE field_id='DOB' AND form_id='DEM');
 SET @seq = (SELECT MAX(seq) FROM layout_options WHERE group_name = IFNULL(@group_name,@backup_group_name) AND form_id='DEM');
 INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`) VALUES ('DEM', 'industry', IFNULL(@group_name,@backup_group_name), 'Industry', @seq+1, 1, 1, 0, 0, 'Industry', 1, 1, '', '', 'Industry' ) ;
-ALTER TABLE patient_data ADD COLUMN industry TEXT NOT NULL;
+ALTER TABLE patient_data ADD COLUMN `industry` TEXT NOT NULL;
 #EndIf
 
 #IfNotRow2D list_options list_id lists option_id Industry
@@ -1632,7 +1632,7 @@ UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` =
 UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` = 1 WHERE `id` = 'med_reconc_amc' AND `pid` = 0;
 #EndIf
 
-#IfColumn transactions                                
+#IfColumn users transactions                                
  ALTER TABLE `users` DROP COLUMN `ssi_relayhealth`;
 #EndIf
 
