@@ -91,7 +91,9 @@ function InsertEventFull()
             // obtain the next available unique key to group multiple providers around some event
             $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM libreehr_postcalendar_events");
             $max = sqlFetchArray($q);
-            $new_multiple_value = $max['max'] + 1;
+            if (!$max['max']){$new_multiple_value = $max['max'] + 1;
+        		}else{
+	        		$new_multiple_value = 1;}
 
             foreach ($_POST['form_provider'] as $provider) {
                 $args = $_POST;
@@ -343,10 +345,13 @@ if ($_POST['form_action'] == "save") {
                         " WHERE pc_aid = ? AND pc_multiple=?", array(serialize($oldRecurrspec),$provider,$row['pc_multiple']) );
                 }
 
-                // obtain the next available unique key to group multiple providers around some event
-                $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM libreehr_postcalendar_events");
-                $max = sqlFetchArray($q);
-                $new_multiple_value = $max['max'] + 1;
+                
+                    // obtain the next available unique key to group multiple providers around some event
+            		$q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM libreehr_postcalendar_events");
+            		$max = sqlFetchArray($q);
+            		if (!$max['max']){$new_multiple_value = $max['max'] + 1;
+        				}else{
+	        		$new_multiple_value = 1;}
 
                 // insert a new event record for each provider selected on the form
                 foreach ($providers_new as $provider) {
@@ -380,10 +385,12 @@ if ($_POST['form_action'] == "save") {
                         " WHERE pc_aid = ? AND pc_multiple=?", array($selected_date,$provider,$row['pc_multiple']) );
                 }
 
-                // obtain the next available unique key to group multiple providers around some event
-                $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM libreehr_postcalendar_events");
-                $max = sqlFetchArray($q);
-                $new_multiple_value = $max['max'] + 1;
+            // obtain the next available unique key to group multiple providers around some event
+            $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM libreehr_postcalendar_events");
+            $max = sqlFetchArray($q);
+            if (!$max['max']){$new_multiple_value = $max['max'] + 1;
+        		}else{
+	        		$new_multiple_value = 1;}
 
                 // insert a new event record for each provider selected on the form
                 foreach ($providers_new as $provider) {
