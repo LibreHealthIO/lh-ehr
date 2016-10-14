@@ -867,6 +867,23 @@ $GLOBALS_METADATA = array(
       '3',
      xl('Display the Encounter Billing Note or Patient Billing Note or Both in the Billing Screen.')
     ),
+ 
+    'payment_delete_begin_date' => array(
+      xl('Do Not Delete Payment older than'),
+      array(
+        'N0' => xl('Allow All Deletes'),
+        'Y1' => xl('One Year'),
+        'M6' => xl('Six Months'),
+        'M5' => xl('Five Months'),
+        'M4' => xl('Four Months'),
+        'M3' => xl('Three Months'),
+        'M2' => xl('Two Months'),
+        'M1' => xl('One Month'),
+        'D1' => xl('One Day'),        
+      ),                       
+      'N0',                     // default = Allow All
+      xl('Do not Allow Deletion of Payments older that this selection.')
+    ),
   
   	'use_custom_statement' => array(
       xl('Use Custom Statement'),

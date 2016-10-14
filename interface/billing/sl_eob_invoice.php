@@ -39,7 +39,12 @@
 
  
   // If we permit deletion of transactions.  Might change this later.
+
+  if (substr($GLOBALS['payment_delete_begin_date'],0,1) == 'N') {
   $ALLOW_DELETE = true;
+  }else{
+      $ALLOW_DELETE = false;
+  }
 
   $info_msg = "";
 
