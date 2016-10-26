@@ -539,6 +539,10 @@ ALTER TABLE users ADD COLUMN physician_type VARCHAR(50) DEFAULT NULL;
 ALTER TABLE facility ADD COLUMN facility_code VARCHAR(31) default NULL;
 #EndIf
 
+#IfMissingColumn facility alias
+ALTER TABLE facility ADD COLUMN alias VARCHAR(60) default NULL;
+#EndIf
+
 #IfMissingColumn documents audit_master_approval_status
 ALTER TABLE documents ADD COLUMN audit_master_approval_status TINYINT DEFAULT 1 NOT NULL COMMENT 'approval_status from audit_master table';
 #EndIf

@@ -203,7 +203,7 @@ class Claim {
     // try the first (and hopefully only) facility marked as a billing location.
     if (empty($this->encounter['billing_facility'])) {
       $sql = "SELECT * FROM facility " .
-        "ORDER BY billing_location DESC, id ASC LIMIT 1";
+        "ORDER BY billing_location, primary_business_entity DESC, id ASC LIMIT 1";
     }
     else {
       $sql = "SELECT * FROM facility " .
@@ -582,7 +582,7 @@ class Claim {
   }
 
   function billingFacilityName() {
-    return x12clean(trim($this->billing_facility['name']));
+    return x12clean(trim($this->billing_facility['alias']));
   }
 
   function billingFacilityStreet() {
