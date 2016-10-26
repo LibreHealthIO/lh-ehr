@@ -581,9 +581,24 @@ document.onclick=HideTheAjaxDivs;
 									 {
 										$bgcolor='#ffdddd';
 									 }
+
+                                     if (substr($GLOBALS['payment_delete_begin_date'],0,1) == 'Y') {
+                                        $payment_delete_time = substr($GLOBALS['payment_delete_begin_date'],1,1);
+                                        $last_year = mktime(0,0,0,date('m'),date('d'),date('Y')-$payment_delete_time);
+                                     }
+                                     elseif (substr($GLOBALS['payment_delete_begin_date'],0,1) == 'M') {
+                                        $payment_delete_time = substr($GLOBALS['payment_delete_begin_date'],1,1); 
+                                        $last_year = mktime(0,0,0,date('m')-$payment_delete_time ,date('d'),date('Y'));
+                                     }
+                                     elseif (substr($GLOBALS['payment_delete_begin_date'],0,1) == 'D') {
+                                        $payment_delete_time = substr($GLOBALS['payment_delete_begin_date'],1,1); 
+                                        $last_year = mktime(0,0,0,date('m') ,date('d')-$payment_delete_time,date('Y'));
+                                     }
+                                     
+                                     $payment_delete_from_date = date('Y-m-d', $last_year);
 								?>
 							  <tr class="text"  bgcolor='<?php echo $bgcolor; ?>'>
-								<td class="<?php echo $StringClass; ?>" ><a href="#" onClick="javascript:return DeletePayments(<?php echo htmlspecialchars($RowSearch['session_id']); ?>);" ><img src="../pic/Delete.gif" border="0"/></a></td>
+								<td class="<?php echo $StringClass; ?>" ><?php if ((acl_check('acct', 'bill') && (strtotime($payment_delete_from_date) < strtotime($RowSearch['check_date']))) || (substr($GLOBALS['payment_delete_begin_date'],0,1) == 'N')){?><a href="#" onClick="javascript:return DeletePayments(<?php echo htmlspecialchars($RowSearch['session_id']); ?>);" ><img src="../pic/Delete.gif" border="0"/></a><?php }?></td>
 								<td class="<?php echo $StringClass; ?>" ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal' ><?php echo htmlspecialchars($RowSearch['session_id']); ?></a></td>
 								<td class="<?php echo $StringClass; ?>" ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal' ><?php echo $RowSearch['check_date']=='0000-00-00' ? '&nbsp;' : htmlspecialchars(oeFormatShortDate($RowSearch['check_date'])); ?></a></td>
 								<td class="<?php echo $StringClass; ?>" ><a href="edit_payment.php?payment_id=<?php echo htmlspecialchars($RowSearch['session_id']); ?>"  class='iframe medium_modal'  ><?php
