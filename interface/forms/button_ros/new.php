@@ -16,7 +16,7 @@ $encdate = SqlFetchArray($datequery);
 $old_date = strtotime($encdate['date']);
 $todays_date = strtotime(date("Ymd"));
 if($old_date+(86400) < $todays_date) {
-echo xlt('It is not permitted to enter a Review of Systems form in an encounter that is dated earlier than 3 days prior to today\'s date.');
+echo xlt('It is not permitted to enter a Review of Systems form in an encounter that is dated earlier than 3 days prior to today\'s date.');//This is a sentence.  Leaving punctuation as is.
 } else {
 ?>
 <a href="javascript:top.restoreSession();document.my_form.submit();" class="link_submit">[<?php echo xlt('Save');?>]</a>
@@ -28,11 +28,11 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 	<table id='ros'>
 	
 	<TR>
-		<TD> <?php echo xlt('REVIEW of SYSTEMS:');?></TD>
+		<TD> <?php echo xlt('REVIEW of SYSTEMS');?></TD>
 	</TR>
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('GEN:');?></B>
+	<B><?php echo xlt('GEN');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -71,14 +71,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="GEN_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>	
 
 		<TR class="alt">
 	<TD>
-	<B><?php echo xlt('EYES:');?> </B>
+	<B><?php echo xlt('EYES');?> </B>
 	</TD>
 	</TR>
 	<TR>
@@ -121,7 +121,7 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="EYES_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>	
@@ -130,7 +130,7 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 	
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('ENT:');?></B>
+	<B><?php echo xlt('ENT');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -193,14 +193,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="ENT_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>	
 	
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('RESP:');?></B>
+	<B><?php echo xlt('RESP');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -243,14 +243,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="RESP_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>
 
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('CVS:');?></B>
+	<B><?php echo xlt('CVS');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -273,14 +273,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="CVS_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>		
 		
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('GI:');?></B>
+	<B><?php echo xlt('GI');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -344,14 +344,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="GI_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>	
 
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('GU:');?></B>
+	<B><?php echo xlt('GU');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -399,14 +399,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="GU_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>
 
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('MSK:');?></B>
+	<B><?php echo xlt('MSK');?></B>
 	</TD>
 	</TR>
 	
@@ -450,14 +450,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="MSK_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>
 
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('NEURO:');?></B>
+	<B><?php echo xlt('NEURO');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -526,14 +526,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="NEURO_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>	
 		
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('HEME:');?></B>
+	<B><?php echo xlt('HEME');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -571,14 +571,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="HEME_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>	
 	
 	<TR class="alt">
 	<TD>
-			<B><?php echo xlt('ENDO:');?></B>
+			<B><?php echo xlt('ENDO');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -611,14 +611,14 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="ENDO_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>	
 	
 	<TR class="alt">
 	<TD>
-		<B><?php echo xlt('DERM:');?></B>
+		<B><?php echo xlt('DERM');?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -656,7 +656,7 @@ echo xlt('It is not permitted to enter a Review of Systems form in an encounter 
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="DERM_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"></TEXTAREA>
 					</TD>
 	</TR>	

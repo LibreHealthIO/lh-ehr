@@ -13,7 +13,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 <a href="<?php echo $GLOBALS['form_exit_url']; ?>" class="link" onclick="top.restoreSession()">[<?php echo xlt('Don\'t Save Changes'); ?>]</a>
 <BR>
 
- <input type=checkbox name='finalize' <? if ($obj{"finalize"} == "on") {echo "checked";};?>>&nbsp;<B><?php echo xlt('Check here to finalize this form:'); ?></B><BR>
+ <input type=checkbox name='finalize' <? if ($obj{"finalize"} == "on") {echo "checked";};?>>&nbsp;<B><?php echo xlt('Check here to finalize this form'); ?></B><BR>
  <?}else{
 		 echo xlt('This form has been finalized and may not be edited'); echo"!<BR>";?>
  		<a href="<?php echo $GLOBALS['form_exit_url']; ?>" class="link" onclick="top.restoreSession()">[<?php echo xlt('RETURN TO ENCOUNTER'); ?>]</a>
@@ -22,11 +22,11 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 
 	<table id='ros'>
 	<TR>
-		<TD> <?php echo xlt('REVIEW of SYSTEMS:'); ?></TD>
+		<TD> <?php echo xlt('REVIEW of SYSTEMS'); ?></TD>
 	</TR>
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('GEN:'); ?></B>
+	<B><?php echo xlt('GEN'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -65,14 +65,14 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="GEN_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"GEN_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
 
 		<TR class="alt">
 	<TD>
-	<B><?php echo xlt('EYES:'); ?></B>
+	<B><?php echo xlt('EYES'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -115,7 +115,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="EYES_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"EYES_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
@@ -124,7 +124,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 	
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('ENT:'); ?></B>
+	<B><?php echo xlt('ENT'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -187,7 +187,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="ENT_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"ENT_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
@@ -196,7 +196,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 	
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('RESP:'); ?></B>
+	<B><?php echo xlt('RESP'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -239,14 +239,14 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="RESP_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"RESP_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>
 
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('CVS:'); ?></B>
+	<B><?php echo xlt('CVS'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -269,7 +269,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="CVS_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"CVS_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>		
@@ -278,7 +278,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 	
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('GI:'); ?></B>
+	<B><?php echo xlt('GI'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -342,7 +342,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="GI_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"GI_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
@@ -352,7 +352,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 	
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('GU:'); ?></B>
+	<B><?php echo xlt('GU'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -400,14 +400,14 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="GU_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"GU_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>
 
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('MSK:'); ?></B>
+	<B><?php echo xlt('MSK'); ?></B>
 	</TD>
 	</TR>
 	
@@ -451,14 +451,14 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="MSK_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"MSK_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>
 
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('NEURO:'); ?></B>
+	<B><?php echo xlt('NEURO'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -527,14 +527,14 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="NEURO_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"NEURO_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
 		
 	<TR class="alt">
 	<TD>
-	<B><?php echo xlt('HEME:'); ?></B>
+	<B><?php echo xlt('HEME'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -572,14 +572,14 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="HEME_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"HEME_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
 	
 	<TR class="alt">
 	<TD>
-			<B><?php echo xlt('ENDO:'); ?></B>
+			<B><?php echo xlt('ENDO'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -612,14 +612,14 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:');?> 
+		<?php echo xlt('Note abnormalities');?> 
 					<TEXTAREA NAME="ENDO_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"ENDO_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
 	
 	<TR class="alt">
 	<TD>
-		<B><?php echo xlt('DERM:'); ?></B>
+		<B><?php echo xlt('DERM'); ?></B>
 	</TD>
 	</TR>
 	<TR>
@@ -657,7 +657,7 @@ $obj = formFetch("form_button_ros", $_GET["id"]);
 		</TR>
 		<TR>
 		<TD>
-		<?php echo xlt('Note abnormalities:'); ?> 
+		<?php echo xlt('Note abnormalities'); ?> 
 					<TEXTAREA NAME="DERM_notes" ROWS=3 COLS=25 WRAP=SOFT STYLE="width: 2in; height: 0.21in"><? echo stripslashes($obj{"DERM_notes"});?></TEXTAREA></FONT>
 					</TD>
 	</TR>	
