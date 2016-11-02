@@ -403,7 +403,7 @@ function collectItemizedPatientsCdrReport($report_id,$itemized_test_id,$pass='al
 	
     if(count($exlPidArr) > 0){
       $exlPids = implode(",", $exlPidArr);
-      $sql_where .= " AND patient_data.pid NOT IN(add_escape_custom($exlPids)) ";
+      $sql_where .= " AND patient_data.pid NOT IN(".add_escape_custom($exlPids).") ";
     }
     array_push($sqlParameters,$pass_sql);
   }
