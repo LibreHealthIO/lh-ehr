@@ -131,7 +131,7 @@
     "children": [
       {
         "label": "Fee Sheet",
-        "menu_id": "cod2",
+        "menu_id": "bil0",
         "target": "enc",
         "url": "/interface/patient_file/encounter/load_form.php?formname=fee_sheet",
         "children": [],
@@ -139,7 +139,7 @@
       },
       {
         "label": "Payment",
-        "menu_id": "pay1",
+        "menu_id": "bil1",
         "target": "enc",
         "url": "/interface/patient_file/front_payment.php",
         "children": [],
@@ -147,7 +147,7 @@
       },
       {
         "label": "Checkout",
-        "menu_id": "bil1",
+        "menu_id": "bil2",
         "target": "enc",
         "url": "/interface/patient_file/pos_checkout.php?framed=1",
         "children": [],
@@ -155,7 +155,7 @@
       },
       {
         "label": "Billing",
-        "menu_id": "bil0",
+        "menu_id": "bil3",
         "target": "pat",
         "url": "/interface/billing/billing_report.php",
         "children": [],
@@ -163,7 +163,7 @@
       },
       {
         "label": "Posting",
-        "menu_id": "bil0",
+        "menu_id": "bil4",
         "target": "pat",
         "url": "/interface/billing/sl_eob_search.php",
         "children": [],
@@ -171,7 +171,7 @@
       },
       {
         "label": "Batch Payments",
-        "menu_id": "npa0",
+        "menu_id": "npa5",
         "target": "pat",
         "url": "/interface/billing/new_payment.php",
         "children": [],
@@ -290,7 +290,7 @@
       },
       {
         "label": "Facilities",
-        "menu_id": "adm0",
+        "menu_id": "adm1",
         "target": "adm",
         "url": "/interface/usergroup/facilities.php",
         "children": [],
@@ -302,7 +302,7 @@
       },
       {
         "label": "Users",
-        "menu_id": "adm0",
+        "menu_id": "adm2",
         "target": "adm",
         "url": "/interface/usergroup/usergroup_admin.php",
         "children": [],
@@ -314,7 +314,7 @@
       },
       {
         "label": "Addr Book",
-        "menu_id": "adb0",
+        "menu_id": "adb3",
         "target": "adm",
         "url": "/interface/usergroup/addrbook_list.php",
         "children": [],
@@ -326,7 +326,7 @@
       },
       {
         "label": "Practice",
-        "menu_id": "adm0",
+        "menu_id": "adm4",
         "target": "adm",
         "url": "/controller.php?practice_settings&pharmacy&action=list",
         "children": [],
@@ -338,7 +338,7 @@
       },
       {
         "label": "Codes",
-        "menu_id": "sup0",
+        "menu_id": "adm5",
         "target": "adm",
         "url": "/interface/patient_file/encounter/superbill_custom_full.php",
         "children": [],
@@ -350,7 +350,7 @@
       },
       {
         "label": "Layouts",
-        "menu_id": "adm0",
+        "menu_id": "adm6",
         "target": "adm",
         "url": "/interface/super/edit_layout.php",
         "children": [],
@@ -362,7 +362,7 @@
       },
       {
         "label": "Lists",
-        "menu_id": "adm0",
+        "menu_id": "adm7",
         "target": "adm",
         "url": "/interface/super/edit_list.php",
         "children": [],
@@ -374,7 +374,7 @@
       },
       {
         "label": "ACL",
-        "menu_id": "adm0",
+        "menu_id": "adm8",
         "target": "adm",
         "url": "/interface/usergroup/adminacl.php",
         "children": [],
@@ -386,7 +386,7 @@
       },
       {
         "label": "Files",
-        "menu_id": "adm0",
+        "menu_id": "adm9",
         "target": "adm",
         "url": "/interface/super/manage_site_files.php",
         "children": [],
@@ -398,7 +398,7 @@
       },
       {
         "label": "Backup",
-        "menu_id": "adm0",
+        "menu_id": "adm10",
         "target": "adm",
         "url": "/interface/main/backup.php",
         "children": [],
@@ -410,7 +410,7 @@
       },
       {
         "label": "Rules",
-        "menu_id": "adm0",
+        "menu_id": "adm11",
         "target": "adm",
         "url": "/interface/super/rules/index.php?action=browse!list",
         "children": [],
@@ -423,7 +423,7 @@
       },
       {
         "label": "Alerts",
-        "menu_id": "adm0",
+        "menu_id": "adm12",
         "target": "adm",
         "url": "/interface/super/rules/index.php?action=alerts!listactmgr",
         "children": [],
@@ -436,7 +436,7 @@
       },
       {
         "label": "Patient Reminders",
-        "menu_id": "adm0",
+        "menu_id": "adm13",
         "target": "adm",
         "url": "/interface/patient_file/reminder/patient_reminders.php?mode=admin&patient_id=",
         "children": [],
@@ -452,7 +452,7 @@
         "children": [
           {
             "label": "Language",
-            "menu_id": "adm0",
+            "menu_id": "adm14",
             "target": "adm",
             "url": "/interface/language/language.php",
             "children": [],
@@ -464,7 +464,7 @@
           },
           {
             "label": "Forms",
-            "menu_id": "adm0",
+            "menu_id": "adm15",
             "target": "adm",
             "url": "/interface/forms_admin/forms_admin.php",
             "children": [],
@@ -476,7 +476,7 @@
           },
           {
             "label": "Calendar",
-            "menu_id": "adm0",
+            "menu_id": "adm16",
             "target": "lst",
             "url": "/interface/main/calendar/index.php?module=PostCalendar&type=admin&func=modifyconfig",
             "children": [],
@@ -488,7 +488,7 @@
           },
           {
             "label": "Logs",
-            "menu_id": "adm0",
+            "menu_id": "adm17",
             "target": "adm",
             "url": "/interface/logview/logview.php",
             "children": [],
@@ -500,7 +500,7 @@
           },
           {
             "label": "Database",
-            "menu_id": "adm0",
+            "menu_id": "adm18",
             "target": "adm",
             "url": "##SQL_ADMIN##",
             "children": [],
@@ -513,7 +513,7 @@
           },
           {
             "label": "Certificates",
-            "menu_id": "adm0",
+            "menu_id": "adm19",
             "target": "adm",
             "url": "/interface/usergroup/ssl_certificates_admin.php",
             "children": [],
@@ -525,7 +525,7 @@
           },
           {
             "label": "Native Data Loads",
-            "menu_id": "adm0",
+            "menu_id": "adm20",
             "target": "adm",
             "url": "/interface/super/load_codes.php",
             "children": [],
@@ -537,7 +537,7 @@
           },
           {
             "label": "External Data Loads",
-            "menu_id": "adm0",
+            "menu_id": "adm21",
             "target": "adm",
             "url": "/interface/code_systems/dataloads_ajax.php",
             "children": [],
@@ -549,7 +549,7 @@
           },
           {
             "label": "Merge Patients",
-            "menu_id": "adm0",
+            "menu_id": "adm22",
             "target": "adm",
             "url": "/interface/patient_file/merge_patients.php",
             "children": [],
@@ -578,7 +578,7 @@
           },
           {
             "label": "Rx",
-            "menu_id": "rep0",
+            "menu_id": "rep1",
             "target": "rep",
             "url": "/interface/reports/prescriptions_report.php",
             "children": [],
@@ -586,7 +586,7 @@
           },
           {
             "label": "Patient List Creation",
-            "menu_id": "rep0",
+            "menu_id": "rep2",
             "target": "rep",
             "url": "/interface/reports/patient_list_creation.php",
             "children": [],
@@ -594,7 +594,7 @@
           },
           {
             "label": "Clinical",
-            "menu_id": "rep0",
+            "menu_id": "rep3",
             "target": "rep",
             "url": "/interface/reports/clinical_reports.php",
             "children": [],
@@ -602,7 +602,7 @@
           },
           {
             "label": "Referrals",
-            "menu_id": "rep0",
+            "menu_id": "rep4",
             "target": "rep",
             "url": "/interface/reports/referrals_report.php",
             "children": [],
@@ -610,7 +610,7 @@
           },
           {
             "label": "Immunization Registry",
-            "menu_id": "rep0",
+            "menu_id": "rep5",
             "target": "rep",
             "url": "/interface/reports/immunization_report.php",
             "children": [],
@@ -624,7 +624,7 @@
         "children": [
           {
             "label": "Report Results",
-            "menu_id": "rep0",
+            "menu_id": "rep6",
             "target": "rep",
             "url": "/interface/reports/report_results.php",
             "children": [],
@@ -632,7 +632,7 @@
           },
           {
             "label": "Standard Measures",
-            "menu_id": "rep0",
+            "menu_id": "rep7",
             "target": "rep",
             "url": "/interface/reports/cqm.php?type=standard",
             "children": [],
@@ -640,7 +640,7 @@
           },
           {
             "label": "Quality Measures (CQM)",
-            "menu_id": "rep0",
+            "menu_id": "rep8",
             "target": "rep",
             "url": "/interface/reports/cqm.php?type=cqm",
             "children": [],
@@ -648,7 +648,7 @@
           },
           {
             "label": "Automated Measures (AMC)",
-            "menu_id": "rep0",
+            "menu_id": "rep9",
             "target": "rep",
             "url": "/interface/reports/cqm.php?type=amc",
             "children": [],
@@ -656,7 +656,7 @@
           },
           {
             "label": "AMC Tracking",
-            "menu_id": "rep0",
+            "menu_id": "rep10",
             "target": "rep",
             "url": "/interface/reports/amc_tracking.php",
             "children": [],
@@ -664,7 +664,7 @@
           },
           {
             "label": "Alerts Log",
-            "menu_id": "rep0",
+            "menu_id": "rep11",
             "target": "rep",
             "url": "/interface/reports/cdr_log.php",
             "children": [],
@@ -678,7 +678,7 @@
         "children": [
           {
             "label": "Appointments",
-            "menu_id": "rep0",
+            "menu_id": "rep12",
             "target": "rep",
             "url": "/interface/reports/appointments_report.php",
             "children": [],
@@ -686,7 +686,7 @@
           },
           {
             "label": "Patient Flow Board",
-            "menu_id": "rep0",
+            "menu_id": "rep13",
             "target": "rep",
             "url": "/interface/reports/patient_flow_board_report.php",
             "children": [],
@@ -694,7 +694,7 @@
           },
           {
             "label": "Encounters",
-            "menu_id": "rep0",
+            "menu_id": "rep14",
             "target": "rep",
             "url": "/interface/reports/encounters_report.php",
             "children": [],
@@ -702,7 +702,7 @@
           },
           {
             "label": "Appt-Enc",
-            "menu_id": "rep0",
+            "menu_id": "rep15",
             "target": "rep",
             "url": "/interface/reports/appt_encounter_report.php",
             "children": [],
@@ -710,7 +710,7 @@
           },
           {
             "label": "Superbill",
-            "menu_id": "rep0",
+            "menu_id": "rep16",
             "target": "rep",
             "url": "/interface/reports/custom_report_range.php",
             "children": [],
@@ -718,7 +718,7 @@
           },
           {
             "label": "Eligibility",
-            "menu_id": "rep0",
+            "menu_id": "rep17",
             "target": "rep",
             "url": "/interface/reports/edi_270.php",
             "children": [],
@@ -726,7 +726,7 @@
           },
           {
             "label": "Eligibility Response",
-            "menu_id": "rep0",
+            "menu_id": "rep18",
             "target": "rep",
             "url": "/interface/reports/edi_271.php",
             "children": [],
@@ -734,7 +734,7 @@
           },
           {
             "label": "Chart Activity",
-            "menu_id": "rep0",
+            "menu_id": "rep19",
             "target": "rep",
             "url": "/interface/reports/chart_location_activity.php",
             "children": [],
@@ -742,7 +742,7 @@
           },
           {
             "label": "Charts Out",
-            "menu_id": "rep0",
+            "menu_id": "rep20",
             "target": "rep",
             "url": "/interface/reports/charts_checked_out.php",
             "children": [],
@@ -750,7 +750,7 @@
           },
           {
             "label": "Services",
-            "menu_id": "rep0",
+            "menu_id": "rep21",
             "target": "rep",
             "url": "/interface/reports/services_by_category.php",
             "children": [],
@@ -758,7 +758,7 @@
           },
           {
             "label": "Syndromic Surveillance",
-            "menu_id": "rep0",
+            "menu_id": "rep22",
             "target": "rep",
             "url": "/interface/reports/non_reported.php",
             "children": [],
@@ -772,7 +772,7 @@
         "children": [
           {
             "label": "Sales",
-            "menu_id": "rep0",
+            "menu_id": "rep23",
             "target": "rep",
             "url": "/interface/reports/sales_by_item.php",
             "children": [],
@@ -780,7 +780,7 @@
           },
           {
             "label": "Cash Rec",
-            "menu_id": "rep0",
+            "menu_id": "rep24",
             "target": "rep",
             "url": "/interface/billing/sl_receipts_report.php",
             "children": [],
@@ -788,7 +788,7 @@
           },
           {
             "label": "Front Rec",
-            "menu_id": "rep0",
+            "menu_id": "rep25",
             "target": "rep",
             "url": "/interface/reports/front_receipts_report.php",
             "children": [],
@@ -796,7 +796,7 @@
           },
           {
             "label": "Pmt Method",
-            "menu_id": "rep0",
+            "menu_id": "rep26",
             "target": "rep",
             "url": "/interface/reports/receipts_by_method_report.php",
             "children": [],
@@ -804,7 +804,7 @@
           },
           {
             "label": "Collections",
-            "menu_id": "rep0",
+            "menu_id": "rep27",
             "target": "rep",
             "url": "/interface/reports/collections_report.php",
             "children": [],
@@ -812,7 +812,7 @@
           },
           {
             "label": "Pat Ledger",
-            "menu_id": "rep0",
+            "menu_id": "rep28",
             "target": "rep",
             "url": "/interface/reports/pat_ledger.php?form=0",
             "children": [],
@@ -820,7 +820,7 @@
           },
           {
             "label": "Financial Summary by Service Code",
-            "menu_id": "rep0",
+            "menu_id": "rep29",
             "target": "rep",
             "url": "/interface/reports/svc_code_financial_report.php",
             "children": [],
@@ -854,7 +854,7 @@
         "children": [
           {
             "label": "Distribution",
-            "menu_id": "rep0",
+            "menu_id": "rep30",
             "target": "rep",
             "url": "/interface/reports/insurance_allocation_report.php",
             "children": [],
@@ -862,7 +862,7 @@
           },
           {
             "label": "Indigents",
-            "menu_id": "rep0",
+            "menu_id": "rep31",
             "target": "rep",
             "url": "/interface/billing/indigent_patients_report.php",
             "children": [],
@@ -870,7 +870,7 @@
           },
           {
             "label": "Unique SP",
-            "menu_id": "rep0",
+            "menu_id": "rep32",
             "target": "rep",
             "url": "/interface/reports/unique_seen_patients_report.php",
             "children": [],
@@ -911,7 +911,7 @@
         "children": [
           {
             "label": "Background Services",
-            "menu_id": "rep0",
+            "menu_id": "rep32",
             "target": "rep",
             "url": "/interface/reports/background_services.php",
             "children": [],
@@ -919,7 +919,7 @@
           },
           {
             "label": "Direct Message Log",
-            "menu_id": "rep0",
+            "menu_id": "rep33",
             "target": "rep",
             "url": "/interface/reports/direct_message_log.php",
             "children": [],
@@ -989,7 +989,7 @@
       },
       {
         "label": "BatchCom",
-        "menu_id": "adm0",
+        "menu_id": "com0",
         "target": "msc",
         "url": "/interface/batchcom/batchcom.php",
         "children": [],
@@ -1013,7 +1013,7 @@
       },
       {
         "label": "New Documents",
-        "menu_id": "adm0",
+        "menu_id": "adm40",
         "target": "msc",
         "url": "/controller.php?document&list&patient_id=00",
         "children": [],
@@ -1021,7 +1021,7 @@
       },
       {
         "label": "Document Templates",
-        "menu_id": "adm0",
+        "menu_id": "adm41",
         "target": "msc",
         "url": "/interface/super/manage_document_templates.php",
         "children": [],
@@ -1131,7 +1131,7 @@
     "children": [
       {
         "label": "About",
-        "menu_id": "adm0",
+        "menu_id": "adm50",
         "target": "pat",
         "url": "/interface/main/about_page.php",
         "children": [],
