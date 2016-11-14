@@ -1024,6 +1024,8 @@ function updatePatientData($pid, $new, $create=false)
     return sqlInsert($sql);
   *******************************************************************/
 
+    do_action( 'update_patient_data_before_save', $new );
+
   // The above was broken, though seems intent to insert a new patient_data
   // row for each update.  A good idea, but nothing is doing that yet so
   // the code below does not yet attempt it.
@@ -1054,6 +1056,8 @@ function updatePatientData($pid, $new, $create=false)
     $sql .= " WHERE id = '$db_id'";
     sqlStatement($sql);
   }
+
+  do_action( 'update_patient_data_after_save', $new );
 
   return $db_id;
 }

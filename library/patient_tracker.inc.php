@@ -227,7 +227,7 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
     $tracker_id = $tracker['id'];
     if (($status != $tracker['laststatus']) || ($room != $tracker['lastroom'])) {
       #Status or room has changed, so need to update tracker.
-      #Update lastseq in tracker.	  
+      #Update lastseq in tracker.
 	   sqlStatement("UPDATE `patient_tracker` SET  `lastseq` = ? WHERE `id` = ?",
                    array(($tracker['lastseq']+1),$tracker_id));
       #Add a tracker item.
@@ -235,12 +235,14 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
                 "(`pt_tracker_id`, `start_datetime`, `user`, `status`, `room`, `seq`) " .
                 "VALUES (?,?,?,?,?,?)",
                 array($tracker_id,$datetime,$user,$status,$room,($tracker['lastseq']+1)));
+        do_action( 'tracker_status_changed', $args = [ 'tracker_id' => $tracker_id, 'current_status' => $status, 'last_status' => $tracker['laststatus'] ] );
     }
     if (!empty($enc_id)) {
       #enc_id (encounter number) is not blank, so update this in tracker.
       sqlStatement("UPDATE `patient_tracker` SET `encounter` = ? WHERE `id` = ?", array($enc_id,$tracker_id));
     }  
   }
+
   #Ensure the entry in calendar appt entry has been updated.
   $pc_appt =  sqlQuery("SELECT `pc_apptstatus`, `pc_room` FROM `libreehr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
   if ($status != $pc_appt['pc_apptstatus']) {

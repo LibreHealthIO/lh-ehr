@@ -542,6 +542,12 @@ if ($_POST['form_action'] == "save") {
         $event_date = fixDate($_POST['event_start_date']);
     }
 
+                do_action( 'before_update_event',
+                    $data = [ 'id' => $eid, 'pid' => $_POST['form_pid'],
+                        'provider' => $_POST['form_provider'], 'date' => $event_date, 'starttime' => $starttime,
+                        'category' => $_POST['form_category'], 'status' => $_POST['form_apptstatus'], 'title' => $_POST['form_title'],
+                    ] );
+
                 // mod the SINGLE event or ALL EVENTS in a repeating series
                 // simple provider case
                 sqlStatement("UPDATE libreehr_postcalendar_events SET " .
