@@ -2,7 +2,7 @@
 /*
  * ibr_status_code_arrays.php
  * 
- * Copyright 2012 Kevin McCormick Longview, Texas
+ * @copyright Copyright 2012 Kevin McCormick Longview, Texas
  * 
  * 
  * This program is distributed in the hope that it will be useful,
@@ -21,7 +21,7 @@
  * 
  * @link http://www.wpc-edi.com
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
+ * @link: http://www.libreehr.org
  * @package LibreEHR
  * @subpackage ediHistory
  */

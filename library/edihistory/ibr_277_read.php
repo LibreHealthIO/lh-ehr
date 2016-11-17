@@ -3,6 +3,8 @@
  * ibr_277_read.php
  * 
  * read x12 277 claim status responses, especially the 277CA variety
+ *
+ * @copyright Copyright 2012 Kevin McCormick, Longview, Texas
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +20,7 @@
  * <http://opensource.org/licenses/gpl-license.php>
  * 
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
+ * @link: http://www.libreehr.org
  * @package LibreEHR
  * @subpackage ediHistory
  */

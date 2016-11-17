@@ -77,6 +77,13 @@ function append_claim(&$segs) {
       $bat_content .= "~";
       continue;
     }
+    // add this mod 
+    if ($elems[0] == 'BHT') {
+       // give each claim a unique BHT number,: isa-control-num and st-num are concatenated
+       //  
+       $bat_content .= str_replace("*0123*", sprintf("*%s%04d*", $bat_icn, $bat_stcount), $seg) . "~"; 
+       continue;
+    }
     if ($elems[0] == 'SE') {
       $bat_content .= sprintf("SE*%d*%04d~", $elems[1], $bat_stcount);
       continue;

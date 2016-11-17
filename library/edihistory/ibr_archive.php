@@ -2,7 +2,7 @@
 /*************  ibr_archive.php
  * Author:  Kevin McCormick   Longview Texas  
  * 
- * Copyright 2012 Kevin McCormick    Longview, Texas
+ * @copyright Copyright 2012 Kevin McCormick    Longview, Texas
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  * Purpose: to archive old entries in the csv files and old files
  * 
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
+ * @link: http://www.libreehr.org
  * @package LibreEHR
  * @subpackage ediHistory
  */

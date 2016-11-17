@@ -2,6 +2,8 @@
 /**
  *  ibr_batch_read.php
  * 
+ * @copyright Copyright 2012 Kevin McCormick
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 or later.
@@ -33,9 +35,8 @@
  * 
  * Also functions to output the text of a particular claim
  * 
- * @link: http://www.open-emr.org
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
+ * @link: http://www.libreehr.org
  * @package LibreEHR
  * @subpackage ediHistory
  */

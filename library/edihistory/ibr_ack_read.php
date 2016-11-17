@@ -2,7 +2,7 @@
 /**
  * ibr_ack_read.php, read and process ack files
  * 
- * Copyright 2012 Kevin McCormick
+ * @copyright Copyright 2012 Kevin McCormick
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,7 @@
  *  <http://opensource.org/licenses/gpl-license.php> 
  *
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
+ * @link: http://www.libreehr.org
  * @package LibreEHR
  * @subpackage ediHistory
  */

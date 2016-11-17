@@ -1,7 +1,7 @@
 <?PHP
 /** 
  * ibr_uploads.php
- * Copyright 2012 Kevin McCormick
+ * @copyright Copyright 2012 Kevin McCormick
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +19,7 @@
  * 
  * 
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
+ * @link: http://www.libreehr.org
  * @package LibreEHR
  * @subpackage ediHistory
  */
