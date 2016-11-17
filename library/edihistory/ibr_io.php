@@ -2,7 +2,7 @@
 /*
  * ibr_io.php
  * 
- * Copyright 2012 Kevin McCormick Longview, Texas
+ * @copyright Copyright 2012 Kevin McCormick Longview, Texas
  * 
  * 
  * This program is distributed in the hope that it will be useful,
@@ -20,7 +20,7 @@
  * 
  * 
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
+ * @link: http://www.libreehr.org
  * @package LibreEHR
  * @subpackage ediHistory
  */
@@ -121,7 +121,7 @@ function ibr_html_tail() {
  * call new uploaded files process functions
  * 
  * @todo    save the newfiles lists to file so they can
- *          be re-displayed if user has to close bootstrap before
+ *          be re-displayed if user has to close app before
  *          finishing review (need to have csv_write option)
  * 
  * @uses csv_newfile_list()

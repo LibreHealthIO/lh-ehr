@@ -2,6 +2,7 @@
 /*
  * edih_997_error.php
  * 
+ * @copyright Copyright 2016 Kevin McCormick Longview, Texas
  * 
  * 
  * This program is distributed in the hope that it will be useful,
@@ -19,6 +20,8 @@
  * 
  * 
  * @author Kevin McCormick
+ * @link: http://www.libreehr.org
+ * @package LibreEHR
  * @subpackage ediHistory
  */
  

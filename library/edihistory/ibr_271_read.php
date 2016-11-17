@@ -2,6 +2,8 @@
 /**
  * ibr_271_read.php
  * 
+ * @copyright Copyright 2012 Kevin McCormick, Longview, Texas
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,7 +20,7 @@
  * Strictly pre-alpha script to read x12 271 eligibility inquiry response files
  * 
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
+ * @link: http://www.libreehr.org
  * @package LibreEHR
  * @subpackage ediHistory
  */
@@ -638,7 +640,7 @@ function ibr_271_codes($segment_id, $code) {
 			'AM'=>'Frames',
 			'AO'=>'Lenses',
 			'AP'=>'Routine Eye Exam',
-			'AQ'=>'Nonmedically Necessary Physical (e.g. insurance bootstrap, pilot license, employment, or school)',
+			'AQ'=>'Nonmedically Necessary Physical (e.g. insurance app, pilot license, employment, or school)',
 			'AR'=>'Experimental Drug Therapy',
 			'B1'=>'Burn Care',
 			'B2'=>'Brand Name Prescription Drug - Formulary',
