@@ -2701,8 +2701,13 @@ $GLOBALS_METADATA = array(
     ),
 	
    ),
-   
+
 
    
 );
+
+if ( function_exists( 'do_action' ) ) {
+    do_action( GLOBALS_INIT, $GLOBALS_METADATA );
+}
+
 ?>
