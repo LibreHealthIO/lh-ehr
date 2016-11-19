@@ -20,7 +20,8 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
 
   // This is true for the 5010 standard, the only one that matters anymore.
   // x12gsversionstring() should be "005010X222A1".  Preserving the version ID check for future.
-  $CMS_5010 = strpos($claim->x12gsversionstring(), '5010') !== false;
+  //$CMS_5010 = strpos($claim->x12gsversionstring(), '5010') !== false;
+$CMS_5010 = true;
 
   $log .= "Generating claim $pid-$encounter for " .
     $claim->patientFirstName()  . ' ' .
@@ -536,7 +537,18 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
       "~\n";
   }
 
-  // Segment REF*F8 (Payer Claim Control Number) omitted.
+  // Segment REF*F8 Payer Claim Control Number for claim re-submission.icn_resubmission_number
+
+  #if($claim->billing_options['replacement_claim'] == '1'){
+  if(trim($claim->billing_options['icn_resubmission_number']) > 3){
+    ++$edicount;
+    error_log("Method 1: ".$claim->billing_options['icn_resubmission_number'], 0);
+    $out .= "REF" . 
+      "*F8" .
+      "*" . $claim->icnResubmissionNumber() .
+      "~\n";       
+  }   
+
 
   if ($claim->cliaCode()) {
     // Required by Medicare when in-house labs are done.
@@ -570,7 +582,16 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
   // Segment CRC (Ambulance Certification) omitted.
   // Segment CRC (Patient Condition Information: Vision) omitted.
   // Segment CRC (Homebound Indicator) omitted.
-  // Segment CRC (EPSDT Referral) omitted.
+
+  // Segment CRC (EPSDT Referral).
+   if($claim->epsdtFlag()) {
+      ++$edicount;
+    $out .= "CRC" . 
+      "*ZZ" . 
+      "*Y" .
+      "*" . $claim->medicaidReferralCode() .
+      "~\n";
+  }
 
   // Diagnoses, up to $max_per_seg per HI segment.
   $max_per_seg =  12;
@@ -925,7 +946,18 @@ function gen_x12_837($pid, $encounter, &$log, $encounter_claim=false) {
       $out .= $dindex;
       if (++$i >= 4) break;
     }
+    # needed for epstd 
+  if($claim->epsdtFlag()) {
+    $out .= "*" .
+    "*" .
+    "*" .
+    "*Y" .    
+    "~\n";
+  }
+  else
+  {      
     $out .= "~\n";
+  }
 
     if (!$claim->cptCharges($prockey)) {
       $log .= "*** Procedure '" . $claim->cptKey($prockey) . "' has no charges!\n";

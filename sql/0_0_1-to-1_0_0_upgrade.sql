@@ -1651,3 +1651,23 @@ UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` =
 #IfColumn patient_data cmsportal_login
  DROP COLUMN `cmsportal_login`;
 #EndIf
+
+#IfMissingColumn form_misc_billing_options medicaid_referral_code
+  ALTER TABLE form_misc_billing_options ADD COLUMN medicaid_referral_code varchar(2) default NULL;
+#EndIf
+
+#IfMissingColumn form_misc_billing_options epsdt_flag
+  ALTER TABLE form_misc_billing_options ADD COLUMN epsdt_flag tinyint(1) NOT NULL default 0;
+#EndIf
+
+#IfMissingColumn form_misc_billing_options provider_qualifier_code
+  ALTER TABLE form_misc_billing_options ADD COLUMN provider_qualifier_code varchar(2) default NULL;
+#EndIf
+
+#IfMissingColumn form_misc_billing_options provider_id
+  ALTER TABLE form_misc_billing_options ADD COLUMN provider_id int(11) default NULL;
+#EndIf
+
+#IfMissingColumn form_misc_billing_options icn_resubmission_number
+  ALTER TABLE form_misc_billing_options ADD COLUMN icn_resubmission_number int(35) default NULL;
+#EndIf
