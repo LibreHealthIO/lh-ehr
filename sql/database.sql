@@ -193,6 +193,7 @@ CREATE TABLE `billing` (
   `x12_partner_id` int(11) default NULL,
   `ndc_info` varchar(255) default NULL,
   `notecodes` varchar(25) NOT NULL default '',
+  `exclude_from_insurance_billing` TINYINT(1) NOT NULL DEFAULT '0',
   `external_id` VARCHAR(20) DEFAULT NULL,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
@@ -679,6 +680,7 @@ CREATE TABLE `codes` (
   `taxrates` varchar(255) NOT NULL default '',
   `cyp_factor` float NOT NULL DEFAULT 0 COMMENT 'quantity representing a years supply',
   `active` TINYINT(1) DEFAULT 1 COMMENT '0 = inactive, 1 = active',
+  `exclude_from_insurance_billing` TINYINT(1) NOT NULL DEFAULT '0',
   `reportable` TINYINT(1) DEFAULT 0 COMMENT '0 = non-reportable, 1 = reportable',
   `financial_reporting` TINYINT(1) DEFAULT 0 COMMENT '0 = negative, 1 = considered important code in financial reporting',
   PRIMARY KEY  (`id`),

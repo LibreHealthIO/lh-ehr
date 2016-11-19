@@ -868,6 +868,12 @@ $GLOBALS_METADATA = array(
       '0',                              // default = false
       xl('Automatically replicate justification codes in Fee Sheet (basically fills in the blanks with the justification code above it).')
     ),
+    'bill_to_patient' => array(
+       xl('Allows Fee Sheet Items to be excluded from Insurance Billing'),
+	   'bool',                           // data type
+	   '0',                              // default = false
+	   xl('Allows Fee Sheet Items to be excluded from Insurance Billing')
+    ),
  
     'display_units_in_billing' => array(
       xl('Display the Units Column on the Billing Screen'),
