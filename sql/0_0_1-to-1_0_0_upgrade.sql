@@ -1671,3 +1671,9 @@ UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` =
 #IfMissingColumn form_misc_billing_options icn_resubmission_number
   ALTER TABLE form_misc_billing_options ADD COLUMN icn_resubmission_number int(35) default NULL;
 #EndIf
+
+#IfNotRow2D list_options list_id lists option_id provider_qualifier_code
+	INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists','provider_qualifier_code','Provider Qualifier Code', 1,0);
+	INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dk','DK',10,0);
+	INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dn','DN',20,0);
+#EndIf
