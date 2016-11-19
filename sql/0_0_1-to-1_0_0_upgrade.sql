@@ -1651,3 +1651,24 @@ UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` =
 #IfColumn patient_data cmsportal_login
  DROP COLUMN `cmsportal_login`;
 #EndIf
+
+#IfMissingColumn insurance_data inactive
+ALTER TABLE insurance_data ADD COLUMN inactive tinyint(1) DEFAULT 0;
+#EndIf
+
+#IfMissingColumn insurance_data inactive_time
+ALTER TABLE insurance_data ADD COLUMN inactive_time datetime DEFAULT NULL;
+#EndIf
+
+#IfIndex insurance_data pid_type_date
+ALTER TABLE insurance_data DROP KEY pid_type_date;
+#EndIf
+
+#IfNotIndex insurance_data pid_type_date_inactivetime
+ALTER TABLE insurance_data ADD UNIQUE KEY pid_type_date_inactivetime (pid,type,date,inactive_time);
+#EndIf
+
+#IfMissingColumn insurance_data eDate
+ALTER TABLE insurance_data ADD COLUMN eDate date NOT NULL default '0000-00-00' AFTER `date`;
+#EndIf
+
