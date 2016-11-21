@@ -1305,6 +1305,10 @@ CREATE TABLE `form_misc_billing_options` (
   `auto_accident` tinyint(1) default NULL,
   `accident_state` varchar(2) default NULL,
   `other_accident` tinyint(1) default NULL,
+  `medicaid_referral_code` varchar(2)   default NULL,
+  `epsdt_flag` tinyint(1) default NULL,
+  `provider_qualifier_code` varchar(2) default NULL,
+  `provider_id` int(11) default NULL,
   `outside_lab` tinyint(1) default NULL,
   `lab_amount` decimal(5,2) default NULL,
   `is_unable_to_work` tinyint(1) default NULL,
@@ -1319,6 +1323,7 @@ CREATE TABLE `form_misc_billing_options` (
   `prior_auth_number` varchar(20) default NULL,
   `comments` varchar(255) default NULL,
   `replacement_claim` tinyint(1) default 0,
+  `icn_resubmission_number` varchar(35) default NULL,
   `box_14_date_qual` char(3) default NULL,
   `box_15_date_qual` char(3) default NULL,
   PRIMARY KEY  (`id`)
@@ -4317,6 +4322,11 @@ INSERT INTO list_options (list_id, option_id, title, notes, seq) VALUES ('Immuni
 INSERT INTO list_options (list_id, option_id, title, notes, seq) VALUES ('Immunization_Completion_Status','Not_Administered','Not Administered','NA', '30');
 INSERT INTO list_options (list_id, option_id, title, notes, seq) VALUES ('Immunization_Completion_Status','Partially_Administered','Partially Administered','PA', '40');
 
+-- provider_qualifier_code
+
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists','provider_qualifier_code','Provider Qualifier Code', 1,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dk','DK',10,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dn','DN',20,0);
 
 -- 
 -- Table structure for table `lists`
