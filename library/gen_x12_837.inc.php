@@ -172,7 +172,14 @@ $CMS_5010 = true;
 
   $HLBillingPayToProvider = $HLcount++;
 
-  // Situational PRV segment (for provider taxonomy code) omitted here.
+  // Situational PRV segment for provider taxonomy code for Medicaid.
+    if ($claim->claimType() == 'MC') {
+        ++$edicount;
+        $out .= "PRV*BI*ZZ" .
+        "*" . $claim->providerTaxonomy() .
+        "~\n";
+    }
+    
   // Situational CUR segment (foreign currency information) omitted here.
 
   ++$edicount;
@@ -657,8 +664,8 @@ $CMS_5010 = true;
     if ($claim->providerTaxonomy()) {
         ++$edicount;
         $out .= "PRV" .
-        "*PE" . // PErforming provider
-        "*PXC" .
+        "*PE" . // Performing provider
+        "*" .($claim->claimType() != 'MC' ? "PXC" : "ZZ") .
         "*" . $claim->providerTaxonomy() .
         "~\n";
     }

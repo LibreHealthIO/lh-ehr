@@ -385,6 +385,10 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
       put_hcfa(33, 33, 15, $claim->referrerUPIN());
     }
     *****************************************************************/
+  if ($claim->claimType() == 'MC') {
+    put_hcfa(33, 30,  2, 'ZZ');
+    put_hcfa(33, 33, 14, $claim->referrerTaxonomy());
+  }
 
 
 
@@ -543,6 +547,10 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
     else if ($claim->providerNumber($hcfa_proc_index)) {
       put_hcfa($lino, 65,  2, $claim->providerNumberType($hcfa_proc_index));
       put_hcfa($lino, 68, 10, $claim->providerNumber($hcfa_proc_index));
+    }
+    else if ($claim->claimType() == 'MC') {
+     put_hcfa($lino, 65,  2, 'ZZ');
+     put_hcfa($lino, 68, 14, $claim->providerTaxonomy());
     }
 
     ++$lino;
@@ -743,6 +751,10 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
 
   // 33b. Billing Facility Other ID
   // Note that Medicare does NOT want this any more.
+  if ($claim->claimType() == 'MC') {
+    put_hcfa(61, 63,  2, 'ZZ');
+    put_hcfa(61, 65, 14, $claim->providerTaxonomy());
+  }
   if ($claim->providerGroupNumber() && $claim->claimType() != 'MB') {
     put_hcfa(61, 63,  2, $claim->providerNumberType());
     put_hcfa(61, 65, 14, $claim->providerGroupNumber());
