@@ -720,38 +720,6 @@ $GLOBALS_METADATA = array(
       '0',                              // default = true
       xl('This will use the custom immunizations list rather than the standard CVX immunization list.')
     ),
-    
-      'cms_1500' => array(
-      xl('CMS 1500 Paper Form Format'),
-      array(
-        '0' => xl('08/05{{CMS 1500 format date revision setting in globals}}'),
-        '1' => xl('02/12{{CMS 1500 format date revision setting in globals}}'),
-      ),
-      '1',                              // default
-      xl('This specifies which revision of the form the billing module should generate')
-    ),
-     
-      'cms_1500_box_31_format' => array(
-      xl('CMS 1500: Box 31 Format'),
-      array(
-        '0' => xl('Signature on File'),
-        '1' => xl('Firstname Lastname'),
-        '2' => xl('None'),
-      ),
-      '0',                              // default
-      xl('This specifies whether to include date in Box 31.')
-    ),
-
-     'cms_1500_box_31_date' => array(
-      xl('CMS 1500: Date in Box 31 (Signature)'),
-      array(
-        '0' => xl('None'),
-        '1' => xl('Date of Service'),
-        '2' => xl('Today'),
-      ),
-      '0',                              // default
-      xl('This specifies whether to include date in Box 31.')
-    ),
 	  
 	'amendments' => array (
 		xl('Amendments'),
@@ -1044,7 +1012,50 @@ $GLOBALS_METADATA = array(
       xl('Text for fifth account message.')
     ),
   ),
+
+      // Claims Tab
+    
+  'Claim' => array(	
   
+    'preprinted_cms_1500' => array(
+      xl('Prints the CMS 1500 on the Preprinted form.'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Prints the CMS 1500 on the Preprinted form.')
+    ),
+    
+    'cms_1500' => array(
+      xl('CMS 1500 Paper Form Format'),
+      array(
+        '0' => xl('08/05{{CMS 1500 format date revision setting in globals}}'),
+        '1' => xl('02/12{{CMS 1500 format date revision setting in globals}}'),
+      ),
+      '1',                              // default
+      xl('This specifies which revision of the form the billing module should generate')
+    ),
+     
+    'cms_1500_box_31_format' => array(
+      xl('CMS 1500: Box 31 Format'),
+      array(
+        '0' => xl('Signature on File'),
+        '1' => xl('Firstname Lastname'),
+        '2' => xl('None'),
+      ),
+      '0',                              // default
+      xl('This specifies whether to include date in Box 31.')
+    ),
+     'cms_1500_box_31_date' => array(
+      xl('CMS 1500: Date in Box 31 (Signature)'),
+      array(
+        '0' => xl('None'),
+        '1' => xl('Date of Service'),
+        '2' => xl('Today'),
+      ),
+      '0',                              // default
+      xl('This specifies whether to include date in Box 31.')
+    ),
+  ),  
+ 
     // E-Sign Tab
     //
     'E-Sign' => array(
