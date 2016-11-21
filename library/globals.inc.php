@@ -118,9 +118,7 @@ $USER_SPECIFIC_GLOBALS = array('default_top_pane',
                                'erx_import_status_message',
                                'floating_message_alerts',
                                'floating_message_alerts_timer',
-                               'floating_message_alerts_allergies',
-                               'cms_top_margin_default',
-                               'cms_left_margin_default');
+                               'floating_message_alerts_allergies');
 
 $GLOBALS_METADATA = array(
 
