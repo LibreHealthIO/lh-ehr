@@ -115,7 +115,10 @@ $USER_SPECIFIC_GLOBALS = array('default_top_pane',
                                'ptkr_visit_reason',
                                'checkout_roll_off',
                                'ptkr_pt_list_new_window',                               
-                               'erx_import_status_message');
+                               'erx_import_status_message',
+                               'floating_message_alerts',
+                               'floating_message_alerts_timer',
+                               'floating_message_alerts_allergies');
 
 $GLOBALS_METADATA = array(
 
@@ -816,6 +819,32 @@ $GLOBALS_METADATA = array(
       xl('The default code type to search for in the Fee Sheet.')
     ),
     
+    'floating_message_alerts' => array(
+      xl('Show Floating Alerts for User Messages'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Timed Floating Message Notices for any Unread Messages Addressed to the User When in the Demographics Summary.')
+    ),
+    
+    'floating_message_alerts_allergies' => array(
+      xl('Show Floating Alerts for Patient Allergies'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Timed Floating Message Notices for Patient Allergies to the User When in the Demographics Summary.')
+    ),   
+    
+    'floating_message_alerts_timer' => array(
+      xl('Re-Display Floating Alerts Timer'),
+      array(
+       '0:20' => '20',
+       '0:30' => '30',
+       '0:40' => '40',
+       '0:50' => '50',
+      ),
+      '0:20',                              // default
+      xl('The Re-Display Time in Seconds for the Floating Alerts.')
+    ),
+    
     'support_fee_sheet_line_item_provider' => array(
        xl('Support provider in line item in fee sheet'),
 	   'bool',                           // data type
@@ -1016,12 +1045,24 @@ $GLOBALS_METADATA = array(
       // Claims Tab
     
   'Claim' => array(	
-  
     'preprinted_cms_1500' => array(
       xl('Prints the CMS 1500 on the Preprinted form.'),
       'bool',                           // data type
       '0',                              // default = false
       xl('Prints the CMS 1500 on the Preprinted form.')
+    ),
+    'cms_top_margin_default' => array(
+      xl('Default top print margin for CMS 1500'),
+      'num', // data type
+      '24', // default
+      xl('This is the default top print margin for CMS 1500. It will adjust the final printed output up or down.')
+    ),
+	
+    'cms_left_margin_default' => array(
+      xl('Default left print margin for CMS 1500'),
+      'num', // data type 
+      '20', // default
+      xl('his is the default left print margin for CMS 1500. It will adjust the final printed output left or right.')
     ),
     
     'cms_1500' => array(
@@ -1054,8 +1095,7 @@ $GLOBALS_METADATA = array(
       '0',                              // default
       xl('This specifies whether to include date in Box 31.')
     ),
-  ),  
- 
+  ),
     // E-Sign Tab
     //
     'E-Sign' => array(
