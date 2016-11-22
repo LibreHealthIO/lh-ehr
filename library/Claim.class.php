@@ -1,10 +1,40 @@
 <?php
-// Copyright (C) 2007-2009 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ *  Claim Class php
+ *
+ *  claim.class.php contains function for processing claims
+ *
+ *  The changes to this file as of November 16 2016 to include the exclusion of information from claims
+ *  are covered under the terms of the Mozilla Public License, v. 2.0
+ *
+ * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ *
+ * Copyright (C) 2007-2009 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Terry Hill <terry@lilysystems.com>
+ * no other authors present in header file
+ * @link http://www.libreehr.org
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 require_once(dirname(__FILE__) . "/classes/Address.class.php");
 require_once(dirname(__FILE__) . "/classes/InsuranceCompany.class.php");
@@ -136,7 +166,7 @@ class Claim {
       "b.user, b.groupname, b.authorized, b.encounter, b.code_text, b.billed, " .
       "b.activity, b.payer_id, b.bill_process, b.bill_date, b.process_date, " .
       "b.process_file, b.modifier, b.units, b.fee, b.justify, b.target, b.x12_partner_id, " .
-      "b.ndc_info, b.notecodes, ct.ct_diag " .
+      "b.ndc_info, b.notecodes, ct.ct_diag, b.exclude_from_insurance_billing " .
       "FROM billing as b INNER JOIN code_types as ct " .
       "ON b.code_type = ct.ct_key " .
       "WHERE ct.ct_claim = '1' AND ct.ct_active = '1' AND " .
@@ -146,6 +176,7 @@ class Claim {
     while ($row = sqlFetchArray($res)) {
       // Save all diagnosis codes.
       if ($row['ct_diag'] == '1') {
+        if($row['exclude_from_insurance_billing'] == 1)continue;
         $this->diags[$row['code']] = $row['code'];
         continue;
       }
@@ -243,6 +274,11 @@ class Claim {
     $sql = "SELECT * FROM users WHERE id = '$supervisor_id'";
     $this->supervisor = sqlQuery($sql);
     if (!$this->supervisor) $this->supervisor = array();
+    
+    $billing_options_id = $this->billing_options['provider_id'];
+    $sql = "SELECT * FROM users WHERE id = ?";
+    $this->billing_prov_id = sqlQuery($sql, array($billing_options_id));
+    if (!$this->billing_prov_id) $this->billing_prov_id = array();
 
     $sql = "SELECT * FROM insurance_numbers WHERE " .
       "(insurance_company_id = '" . $this->procs[0]['payer_id'] .
@@ -608,6 +644,12 @@ class Claim {
   function billingFacilityNPI() {
     return x12clean(trim($this->billing_facility['facility_npi']));
   }
+  
+  function excludeEntry($prockey = 0)
+  {
+      return $this->procs[$prockey]['exclude_from_insurance_billing'];
+      
+  }  
   
   function federalIdType() {
 	if ($this->billing_facility['tax_id_type'])
@@ -1053,6 +1095,14 @@ class Claim {
     return sprintf('%.2f', 0 + $this->billing_options['lab_amount']);
   }
 
+   function medicaidReferralCode() {
+    return x12clean(trim($this->billing_options['medicaid_referral_code']));
+  }
+  
+  function epsdtFlag() {
+    return x12clean(trim($this->billing_options['epsdt_flag']));
+  }
+
   function medicaidResubmissionCode() {
     return x12clean(trim($this->billing_options['medicaid_resubmission_code']));
   }
@@ -1063,6 +1113,10 @@ class Claim {
 
   function frequencyTypeCode() {
     return ($this->billing_options['replacement_claim'] == 1) ? '7' : '1';
+  }
+
+   function icnResubmissionNumber() {
+    return x12clean($this->billing_options['icn_resubmission_number']);
   }
 
   function additionalNotes() {
@@ -1303,6 +1357,35 @@ class Claim {
 
   function supervisorNumber() {
     return x12clean(trim(str_replace('-', '', $this->supervisor_numbers['provider_number'])));
+  }
+  
+  function billingProviderLastName() {
+    return x12clean(trim($this->billing_prov_id['lname']));
+  }
+
+  function billingProviderFirstName() {
+    return x12clean(trim($this->billing_prov_id['fname']));
+  }
+
+  function billingProviderMiddleName() {
+    return x12clean(trim($this->billing_prov_id['mname']));
+  }
+
+  function billingProviderNPI() {
+    return x12clean(trim($this->billing_prov_id['npi']));
+  }
+
+  function billingProviderUPIN() {
+    return x12clean(trim($this->billing_prov_id['upin']));
+  }
+
+  function billingProviderSSN() {
+    return x12clean(trim(str_replace('-', '', $this->billing_prov_id['federaltaxid'])));
+  }
+
+  function billingProviderTaxonomy() {
+    if (empty($this->billing_prov_id['taxonomy'])) return '207Q00000X';
+    return x12clean(trim($this->billing_prov_id['taxonomy']));
   }
 
 }

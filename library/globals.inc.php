@@ -115,7 +115,10 @@ $USER_SPECIFIC_GLOBALS = array('default_top_pane',
                                'ptkr_visit_reason',
                                'checkout_roll_off',
                                'ptkr_pt_list_new_window',                               
-                               'erx_import_status_message');
+                               'erx_import_status_message',
+                               'floating_message_alerts',
+                               'floating_message_alerts_timer',
+                               'floating_message_alerts_allergies');
 
 $GLOBALS_METADATA = array(
 
@@ -720,38 +723,6 @@ $GLOBALS_METADATA = array(
       '0',                              // default = true
       xl('This will use the custom immunizations list rather than the standard CVX immunization list.')
     ),
-    
-      'cms_1500' => array(
-      xl('CMS 1500 Paper Form Format'),
-      array(
-        '0' => xl('08/05{{CMS 1500 format date revision setting in globals}}'),
-        '1' => xl('02/12{{CMS 1500 format date revision setting in globals}}'),
-      ),
-      '1',                              // default
-      xl('This specifies which revision of the form the billing module should generate')
-    ),
-     
-      'cms_1500_box_31_format' => array(
-      xl('CMS 1500: Box 31 Format'),
-      array(
-        '0' => xl('Signature on File'),
-        '1' => xl('Firstname Lastname'),
-        '2' => xl('None'),
-      ),
-      '0',                              // default
-      xl('This specifies whether to include date in Box 31.')
-    ),
-
-     'cms_1500_box_31_date' => array(
-      xl('CMS 1500: Date in Box 31 (Signature)'),
-      array(
-        '0' => xl('None'),
-        '1' => xl('Date of Service'),
-        '2' => xl('Today'),
-      ),
-      '0',                              // default
-      xl('This specifies whether to include date in Box 31.')
-    ),
 	  
 	'amendments' => array (
 		xl('Amendments'),
@@ -848,6 +819,32 @@ $GLOBALS_METADATA = array(
       xl('The default code type to search for in the Fee Sheet.')
     ),
     
+    'floating_message_alerts' => array(
+      xl('Show Floating Alerts for User Messages'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Timed Floating Message Notices for any Unread Messages Addressed to the User When in the Demographics Summary.')
+    ),
+    
+    'floating_message_alerts_allergies' => array(
+      xl('Show Floating Alerts for Patient Allergies'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Timed Floating Message Notices for Patient Allergies to the User When in the Demographics Summary.')
+    ),   
+    
+    'floating_message_alerts_timer' => array(
+      xl('Re-Display Floating Alerts Timer'),
+      array(
+       '0:20' => '20',
+       '0:30' => '30',
+       '0:40' => '40',
+       '0:50' => '50',
+      ),
+      '0:20',                              // default
+      xl('The Re-Display Time in Seconds for the Floating Alerts.')
+    ),
+    
     'support_fee_sheet_line_item_provider' => array(
        xl('Support provider in line item in fee sheet'),
 	   'bool',                           // data type
@@ -867,6 +864,12 @@ $GLOBALS_METADATA = array(
       'bool',                           // data type
       '0',                              // default = false
       xl('Automatically replicate justification codes in Fee Sheet (basically fills in the blanks with the justification code above it).')
+    ),
+    'bill_to_patient' => array(
+       xl('Allows Fee Sheet Items to be excluded from Insurance Billing'),
+	   'bool',                           // data type
+	   '0',                              // default = false
+	   xl('Allows Fee Sheet Items to be excluded from Insurance Billing')
     ),
  
     'display_units_in_billing' => array(
@@ -1038,7 +1041,61 @@ $GLOBALS_METADATA = array(
       xl('Text for fifth account message.')
     ),
   ),
-  
+
+      // Claims Tab
+    
+  'Claim' => array(	
+    'preprinted_cms_1500' => array(
+      xl('Prints the CMS 1500 on the Preprinted form.'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Prints the CMS 1500 on the Preprinted form.')
+    ),
+    'cms_top_margin_default' => array(
+      xl('Default top print margin for CMS 1500'),
+      'num', // data type
+      '24', // default
+      xl('This is the default top print margin for CMS 1500. It will adjust the final printed output up or down.')
+    ),
+	
+    'cms_left_margin_default' => array(
+      xl('Default left print margin for CMS 1500'),
+      'num', // data type 
+      '20', // default
+      xl('his is the default left print margin for CMS 1500. It will adjust the final printed output left or right.')
+    ),
+    
+    'cms_1500' => array(
+      xl('CMS 1500 Paper Form Format'),
+      array(
+        '0' => xl('08/05{{CMS 1500 format date revision setting in globals}}'),
+        '1' => xl('02/12{{CMS 1500 format date revision setting in globals}}'),
+      ),
+      '1',                              // default
+      xl('This specifies which revision of the form the billing module should generate')
+    ),
+     
+    'cms_1500_box_31_format' => array(
+      xl('CMS 1500: Box 31 Format'),
+      array(
+        '0' => xl('Signature on File'),
+        '1' => xl('Firstname Lastname'),
+        '2' => xl('None'),
+      ),
+      '0',                              // default
+      xl('This specifies whether to include date in Box 31.')
+    ),
+     'cms_1500_box_31_date' => array(
+      xl('CMS 1500: Date in Box 31 (Signature)'),
+      array(
+        '0' => xl('None'),
+        '1' => xl('Date of Service'),
+        '2' => xl('Today'),
+      ),
+      '0',                              // default
+      xl('This specifies whether to include date in Box 31.')
+    ),
+  ),
     // E-Sign Tab
     //
     'E-Sign' => array(

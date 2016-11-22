@@ -204,6 +204,9 @@ font-size:10pt;
 <script type="text/javascript" src="../../../library/js/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.gritter.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/interface/main/messages/hoverover.js.php"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot']; ?>/patients/css/jquery.gritter.css" />
 <script type="text/javascript" language="JavaScript">
 
  var mypcc = '<?php echo htmlspecialchars($GLOBALS['phone_country_code'],ENT_QUOTES); ?>';

@@ -1672,3 +1672,36 @@ ALTER TABLE insurance_data ADD UNIQUE KEY pid_type_date_inactivetime (pid,type,d
 ALTER TABLE insurance_data ADD COLUMN eDate date NOT NULL default '0000-00-00' AFTER `date`;
 #EndIf
 
+#IfMissingColumn form_misc_billing_options medicaid_referral_code
+  ALTER TABLE form_misc_billing_options ADD COLUMN medicaid_referral_code varchar(2) default NULL;
+#EndIf
+
+#IfMissingColumn form_misc_billing_options epsdt_flag
+  ALTER TABLE form_misc_billing_options ADD COLUMN epsdt_flag tinyint(1) NOT NULL default 0;
+#EndIf
+
+#IfMissingColumn form_misc_billing_options provider_qualifier_code
+  ALTER TABLE form_misc_billing_options ADD COLUMN provider_qualifier_code varchar(2) default NULL;
+#EndIf
+
+#IfMissingColumn form_misc_billing_options provider_id
+  ALTER TABLE form_misc_billing_options ADD COLUMN provider_id int(11) default NULL;
+#EndIf
+
+#IfMissingColumn form_misc_billing_options icn_resubmission_number
+  ALTER TABLE form_misc_billing_options ADD COLUMN icn_resubmission_number int(35) default NULL;
+#EndIf
+
+#IfNotRow2D list_options list_id lists option_id provider_qualifier_code
+	INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists','provider_qualifier_code','Provider Qualifier Code', 1,0);
+	INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dk','DK',10,0);
+	INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dn','DN',20,0);
+#EndIf
+
+#IfMissingColumn billing exclude_from_insurance_billing
+  ALTER TABLE billing ADD COLUMN exclude_from_insurance_billing tinyint(1) NOT NULL default 0;
+#EndIf
+ 
+#IfMissingColumn codes exclude_from_insurance_billing
+  ALTER TABLE codes ADD COLUMN exclude_from_insurance_billing tinyint(1) NOT NULL default 0;
+#EndIf
