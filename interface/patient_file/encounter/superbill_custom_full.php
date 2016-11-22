@@ -1,8 +1,39 @@
 <?php
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ *  superbill custom full
+ *
+ *  superbill_custom_full.php allows the entry and editing of service codes
+ *
+ *  The changes to this file as of November 16 2016 to include the exclusion of information from claims
+ *  are covered under the terms of the Mozilla Public License, v. 2.0
+ *
+ * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ *
+ * No previous copyright in header. This is an original OpenEMR program.
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Terry Hill <terry@lilysystems.com>
+ * no other authors present in header file
+ * @link http://www.libreehr.org
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
@@ -36,6 +67,7 @@ $mode = $_POST['mode'];
 $code_id = 0;
 $related_code = '';
 $active = 1;
+$exclude = 0;
 $reportable = 0;
 $financial_reporting = 0;
 
@@ -49,6 +81,7 @@ if (isset($mode)) {
   $related_code = $_POST['related_code'];
   $cyp_factor = $_POST['cyp_factor'] + 0;
   $active     = empty($_POST['active']) ? 0 : 1;
+  $exclude    = empty($_POST['exclude']) ? 0 : 1;
   $reportable = empty($_POST['reportable']) ? 0 : 1; // dx reporting
   $financial_reporting = empty($_POST['financial_reporting']) ? 0 : 1; // financial service reporting
 
@@ -83,6 +116,7 @@ if (isset($mode)) {
         "cyp_factor = '"   . ffescape($cyp_factor)   . "', " .
         "taxrates = '"     . ffescape($taxrates)     . "', " .
         "active = "        . add_escape_custom($active) . ", " .
+        "exclude_from_insurance_billing = "        . add_escape_custom($exclude) . ", " .
         "financial_reporting = " . add_escape_custom($financial_reporting) . ", " .
         "reportable = "    . add_escape_custom($reportable);
       if ($code_id) {
@@ -109,6 +143,7 @@ if (isset($mode)) {
         $cyp_factor = 0;
         $taxrates = '';
         $active = 1;
+        $exclude = 0;
         $reportable = 0;
       }
     }
@@ -127,6 +162,7 @@ if (isset($mode)) {
       $cyp_factor   = $row['cyp_factor'];
       $taxrates     = $row['taxrates'];
       $active       = 0 + $row['active'];
+      $exclude      = 0 + $row['exclude_from_insurance_billing'];
       $reportable   = 0 + $row['reportable'];
       $financial_reporting  = 0 + $row['financial_reporting'];
     }
@@ -149,6 +185,7 @@ if (isset($mode)) {
       $cyp_factor   = $row['cyp_factor'];
       $taxrates     = $row['taxrates'];
       $active       = $row['active'];
+      $exclude      = $row['exclude_from_insurance_billing'];
       $reportable   = $row['reportable'];
       $financial_reporting  = $row['financial_reporting'];
     }
@@ -407,7 +444,12 @@ foreach ($code_types as $key => $value) {
 
    &nbsp;&nbsp;
    <input type='checkbox' name='active' value='1'<?php if (!empty($active) || ($mode == 'modify' && $active == NULL) ) echo ' checked'; ?> />
-   <?php echo xlt('Active'); ?>
+   <?php echo xlt('Active');
+   if($GLOBALS['bill_to_patient'] ==1) {?>
+   &nbsp;&nbsp;
+   <input type='checkbox' name='exclude' value='1'<?php if (!empty($exclude) || ($mode == 'modify' && $exclude == NULL) ) echo ' checked'; ?> />
+   <?php echo xlt('Exclude');
+   }?>
   </td>
  </tr>
 
@@ -567,6 +609,9 @@ foreach ($code_types as $key => $value) {
   <td><span class='bold'><?php echo xlt('Code'); ?></span></td>
   <td><span class='bold'><?php echo xlt('Mod'); ?></span></td>
   <td><span class='bold'><?php echo xlt('Act'); ?></span></td>
+  <?php if($GLOBALS['bill_to_patient'] ==1) { ?>
+     <td><span class='bold'><?php echo xlt('Exclude'); ?></span></td>
+  <?php } ?>
   <td><span class='bold'><?php echo xlt('Dx Rep'); ?></span></td>
   <td><span class='bold'><?php echo xlt('Serv Rep'); ?></span></td>
   <td><span class='bold'><?php echo xlt('Type'); ?></span></td>
@@ -617,6 +662,7 @@ if (!empty($all)) {
     else {
       echo "  <td class='text'>" . ( ($iter["active"]) ? xlt('Yes') : xlt('No')) . "</td>\n";
     }
+    echo "  <td class='text'>" . ($iter["exclude_from_insurance_billing"] ? xlt('Yes') : xlt('No')) . "</td>\n";
     echo "  <td class='text'>" . ($iter["reportable"] ? xlt('Yes') : xlt('No')) . "</td>\n";
     echo "  <td class='text'>" . ($iter["financial_reporting"] ? xlt('Yes') : xlt('No')) . "</td>\n";
     echo "  <td class='text'>" . text($iter['code_type_name']) . "</td>\n";

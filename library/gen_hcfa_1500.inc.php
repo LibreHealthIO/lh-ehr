@@ -490,6 +490,8 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
   for ($svccount = 0; $svccount < 6 && $hcfa_proc_index < $proccount; ++$hcfa_proc_index) {
     $dia = $claim->diagIndexArray($hcfa_proc_index);
 
+    if ($claim->excludeEntry($hcfa_proc_index) == 1) continue;
+
     if (!$claim->cptCharges($hcfa_proc_index)) {
       $log .= "*** Procedure '" . $claim->cptKey($hcfa_proc_index) .
         "' has no charges!\n";

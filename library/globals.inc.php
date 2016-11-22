@@ -865,6 +865,12 @@ $GLOBALS_METADATA = array(
       '0',                              // default = false
       xl('Automatically replicate justification codes in Fee Sheet (basically fills in the blanks with the justification code above it).')
     ),
+    'bill_to_patient' => array(
+       xl('Allows Fee Sheet Items to be excluded from Insurance Billing'),
+	   'bool',                           // data type
+	   '0',                              // default = false
+	   xl('Allows Fee Sheet Items to be excluded from Insurance Billing')
+    ),
  
     'display_units_in_billing' => array(
       xl('Display the Units Column on the Billing Screen'),
@@ -1035,18 +1041,16 @@ $GLOBALS_METADATA = array(
       xl('Text for fifth account message.')
     ),
   ),
-  
+
       // Claims Tab
     
   'Claim' => array(	
-  
     'preprinted_cms_1500' => array(
       xl('Prints the CMS 1500 on the Preprinted form.'),
       'bool',                           // data type
       '0',                              // default = false
       xl('Prints the CMS 1500 on the Preprinted form.')
     ),
-
     'cms_top_margin_default' => array(
       xl('Default top print margin for CMS 1500'),
       'num', // data type
@@ -1081,7 +1085,6 @@ $GLOBALS_METADATA = array(
       '0',                              // default
       xl('This specifies whether to include date in Box 31.')
     ),
-
      'cms_1500_box_31_date' => array(
       xl('CMS 1500: Date in Box 31 (Signature)'),
       array(
@@ -1093,7 +1096,6 @@ $GLOBALS_METADATA = array(
       xl('This specifies whether to include date in Box 31.')
     ),
   ),
-  
     // E-Sign Tab
     //
     'E-Sign' => array(

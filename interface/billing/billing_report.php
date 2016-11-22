@@ -1110,6 +1110,10 @@ if(is_array($ret))
     if ($iter['id'] && $iter['authorized'] != 1) {
       $rhtml .= "<td><span class=alert>".xlt("Note: This code has not been authorized.")."</span></td>\n";
     }
+    # This will check if an item is excluded and will tell the user if it is the case.
+    else if ($iter['id'] && $iter['authorized'] == 1 && $iter['exclude_from_insurance_billing'] == 1) {
+      $rhtml .= "<td><span class=alert>".xlt("Note: Excluded from X12 and CMS1500.")."</span></td>\n";
+    }
     else {
       $rhtml .= "<td></td>\n";
     }

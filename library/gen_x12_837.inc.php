@@ -454,6 +454,7 @@ $CMS_5010 = true;
 
   $clm_total_charges = 0;
   for ($prockey = 0; $prockey < $proccount; ++$prockey) {
+    if ($claim->excludeEntry($prockey) == 1) continue;
     $clm_total_charges += $claim->cptCharges($prockey);
   }
 
@@ -930,6 +931,7 @@ $CMS_5010 = true;
   // Procedure loop starts here.
   //
   for ($prockey = 0; $prockey < $proccount; ++$prockey) {
+         if ($claim->excludeEntry($prockey) == 1) continue;
     ++$loopcount;
 
     ++$edicount;
