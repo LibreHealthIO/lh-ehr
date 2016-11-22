@@ -1,27 +1,41 @@
 <?php
-/**
- * patient.inc includes functions for manipulating patient information.
+/*
+ *  patient.inc
  *
- * This program is free software; you can redistribute it and/or
+ *  This program patient.inc includes functions for manipulating patient information.
+ *
+ *  The changes to this file as of November 16 2016  to include the insurance inactivate
+ *  are covered under the terms of the Mozilla Public License, v. 2.0
+ *
+ * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ * No previous copyright information. This is an original OpenEMR program.
+ *
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
+ * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Terry Hill <terry@lilysystems.com>
+ * @link http://www.libreehr.org
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 
 require_once("{$GLOBALS['srcdir']}/sql.inc");
 require_once("{$GLOBALS['srcdir']}/formdata.inc.php");
-
-// These are for sports team use:
-$PLAYER_FITNESSES = array(
-  xl('Full Play'),
-  xl('Full Training'),
-  xl('Restricted Training'),
-  xl('Injured Out'),
-  xl('Rehabilitation'),
-  xl('Illness'),
-  xl('International Duty')
-);
-$PLAYER_FITCOLORS = array('#6677ff', '#00cc00', '#ffff00', '#ff3333', '#ff8800', '#ffeecc', '#ffccaa');
 
 // Hard-coding this array because its values and meanings are fixed by the 837p
 // standard and we don't want people messing with them.
@@ -401,6 +415,45 @@ function getInsuranceData($pid, $type = "primary", $given = "insd.*, ic.name as 
     "left join insurance_companies as ic on ic.id = insd.provider " .
     "where pid = ? and type = ? order by date DESC limit 1";
   return sqlQuery($sql, array($pid, $type) );
+}
+function getInsuranceDataInfo(){
+  $insurances = array();
+  $sql = "select insd.id insurance_id,insd.*,ic.* from insurance_data as insd left join insurance_companies as ic on ic.id = insd.provider where pid = ? order by type ASC,inactive DESC, date DESC";
+ $insurance = sqlStatement($sql,array($_SESSION['pid']));
+ while($ins = sqlFetchArray($insurance)){
+	$insurances[] = $ins;
+ }
+ return $insurances;
+}
+function getActiveInsuranceData(){
+$sql = "select insd.id insurance_id,insd.*,ic.* from insurance_data as insd left join insurance_companies as ic on ic.id = insd.provider where pid = ? and inactive=0 order by type ASC, date DESC";
+$insurance_types = array("primary","secondary","tertiary");
+$current_insurance_types = array();
+$total_available_insurances = array();
+ $insurance = sqlStatement($sql,array($_SESSION['pid']));
+ while($ins = sqlFetchArray($insurance)){
+        $insurances[] = $ins;
+	$current_insurance_types[] = $ins['type'];
+ }
+$unavailable = array_diff($insurance_types,$current_insurance_types);
+for($i=0,$j=0;$i<3;$i++){
+if(isset($unavailable[$i])){
+$total_available_insurances[] = array(); 
+}
+else{
+$total_available_insurances[] = $insurances[$j];
+$j++;
+}
+}
+ return $total_available_insurances;
+}
+function getInactiveInsuranceData(){
+$sql = "select insd.id insurance_id,insd.*,ic.* from insurance_data as insd left join insurance_companies as ic on ic.id = insd.provider where pid = ? and inactive=1 order by type ASC, date DESC";
+ $insurance = sqlStatement($sql,array($_SESSION['pid']));
+ while($ins = sqlFetchArray($insurance)){
+        $insurances[] = $ins;
+ }
+ return $insurances;
 }
 
 function getInsuranceDataByDate($pid, $date, $type,
@@ -1149,16 +1202,20 @@ function newInsuranceData(
   $copay = "",
   $subscriber_sex = "",
   $effective_date = "0000-00-00",
+  $termination_date = "0000-00-00",
   $accept_assignment = "TRUE",
-  $policy_type = "")
+  $policy_type = "",
+  $inactive = 0,
+  $inactive_time = 0)
 {
   if (strlen($type) <= 0) return FALSE;
 
   // If a bad date was passed, err on the side of caution.
   $effective_date = fixDate($effective_date, date('Y-m-d'));
+  $termination_date = fixDate($termination_date, date('Y-m-d'));
 
   $idres = sqlStatement("SELECT * FROM insurance_data WHERE " .
-    "pid = '$pid' AND type = '$type' ORDER BY date DESC");
+    "pid = '$pid' AND type = '$type' AND inactive=0 ORDER BY date DESC");
   $idrow = sqlFetchArray($idres);
 
   // Replace the most recent entry in any of the following cases:
@@ -1168,10 +1225,12 @@ function newInsuranceData(
   //   on or after the old effective date.
   // Otherwise insert a new entry.
 
-  $replace = false;
+  $replace = false;$make_inactive = false;
   if ($idrow) {
     if (strcmp($idrow['date'], $effective_date) > 0) {
-      $replace = true;
+      $replace = true;$make_inactive = true;
+      //for avoiding the insurance deletion 
+	//$replace = false;
     }
     else {
       if (!$idrow['provider'] && !sqlFetchArray($idres)) {
@@ -1191,9 +1250,15 @@ function newInsuranceData(
     // TBD: This is a bit dangerous in that a typo in entering the effective
     // date can wipe out previous insurance history.  So we want some data
     // entry validation somewhere.
+    if($make_inactive==false){
     sqlStatement("DELETE FROM insurance_data WHERE " .
-      "pid = '$pid' AND type = '$type' AND date >= '$effective_date' AND " .
+      "pid = '$pid' AND type = '$type' AND date >= '$effective_date' AND inactive=0 AND " .
       "id != " . $idrow['id']);
+    }
+    else{
+    //sqlStatement("update insurance_data set inactive = 1 WHERE pid = '$pid' AND type = '$type' AND date >= '$effective_date' AND id!=".$idrow['id']);    
+    //addActiveInsurance($pid,$effective_date,$type);
+    }
 
     $data = array();
     $data['type'] = $type;
@@ -1223,12 +1288,16 @@ function newInsuranceData(
     $data['subscriber_sex'] = $subscriber_sex;
     $data['pid'] = $pid;
     $data['date'] = $effective_date;
+    $data['eDate'] = $termination_date; 
     $data['accept_assignment'] = $accept_assignment;
     $data['policy_type'] = $policy_type;
+    $data['inactive'] = $inactive;
+    $data['inactive_time'] = ($inactive_time==1)?"NOW()":"";
     updateInsuranceData($idrow['id'], $data);
     return $idrow['id'];
   }
   else {
+       $inactive_entry = ($inactive_time==1)?",inactive_time=NOW()":"";
     return sqlInsert("INSERT INTO insurance_data SET
       type = '$type',
       provider = '$provider',
@@ -1257,8 +1326,11 @@ function newInsuranceData(
       subscriber_sex = '$subscriber_sex',
       pid = '$pid',
       date = '$effective_date',
+      eDate = '$termination_date', 
       accept_assignment = '$accept_assignment',
-      policy_type = '$policy_type'
+      policy_type = '$policy_type',
+      inactive = '$inactive'
+      $inactive_entry
     ");
   }
 }
@@ -1276,11 +1348,32 @@ function updateInsuranceData($id, $new)
   }
 
   $sql = "UPDATE insurance_data SET ";
-  while(list($key, $value) = each($use))
-    $sql .= "`$key` = '$value', ";
+  while(list($key, $value) = each($use)){
+    if($key=="inactive_time"&&$value==''){continue;}
+    else if($key=="inactive_time"&&$value=="NOW()"){$sql .= "`$key` = NOW()  ";}
+    else{$sql .= "`$key` = '$value', ";}
+}
   $sql = substr($sql, 0, -2) . " WHERE id = '$id'";
 
   sqlStatement($sql);
+}
+
+function addActiveInsurance($pid,$date,$type){
+if($date!='0000-00-00'){
+$date = date("Y-m-d",strtotime($date."+1 days"));
+}
+else{
+$date = date("Y-m-d");
+}
+$insurance = sqlQuery("select count(*) count from insurance_data where type='$type' and date = '$date' and pid='$pid'");
+if($insurance['count']==0){
+sqlQuery("INSERT INTO insurance_data (type,provider,plan_name,policy_number,group_number,subscriber_lname,subscriber_mname,subscriber_fname,subscriber_relationship,subscriber_ss,subscriber_street,subscriber_postal_code,subscriber_city,subscriber_state,subscriber_country,subscriber_phone,subscriber_employer,subscriber_employer_street,subscriber_employer_postal_code,subscriber_employer_state,subscriber_employer_country,subscriber_employer_city,copay,date,pid,subscriber_sex,policy_type) values ('$type','','','','','','','','','','','','','','','','','','','','','','','$date',$pid,'','')");
+}
+else{
+$insurance_dates = sqlQuery("select date from insurance_data where type='$type' and pid = '$pid' order by date desc limit 1");
+$date = date("Y-m-d",strtotime($insurance_dates['date']."+1 days"));
+sqlQuery("INSERT INTO insurance_data (type,provider,plan_name,policy_number,group_number,subscriber_lname,subscriber_mname,subscriber_fname,subscriber_relationship,subscriber_ss,subscriber_street,subscriber_postal_code,subscriber_city,subscriber_state,subscriber_country,subscriber_phone,subscriber_employer,subscriber_employer_street,subscriber_employer_postal_code,subscriber_employer_state,subscriber_employer_country,subscriber_employer_city,copay,date,pid,subscriber_sex,policy_type) values ('$type','','','','','','','','','','','','','','','','','','','','','','','$date',$pid,'','')");
+}
 }
 
 function newHistoryData($pid, $new=false) {

@@ -2447,12 +2447,15 @@ CREATE TABLE `insurance_data` (
   `subscriber_employer_city` varchar(255) default NULL,
   `copay` varchar(255) default NULL,
   `date` date NOT NULL default '0000-00-00',
+  `eDate` date NOT NULL default '0000-00-00',
   `pid` bigint(20) NOT NULL default '0',
   `subscriber_sex` varchar(25) default NULL,
   `accept_assignment` varchar(5) NOT NULL DEFAULT 'TRUE',
   `policy_type` varchar(25) NOT NULL default '',
+  `inactive` tinyint(1) DEFAULT 0,
+  `inactive_time` datetime DEFAULT NULL,
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `pid_type_date` (`pid`,`type`,`date`)
+  UNIQUE KEY `pid_type_date_inactivetime` (pid,type,date,inactive_time)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
