@@ -115,7 +115,10 @@ $USER_SPECIFIC_GLOBALS = array('default_top_pane',
                                'ptkr_visit_reason',
                                'checkout_roll_off',
                                'ptkr_pt_list_new_window',                               
-                               'erx_import_status_message');
+                               'erx_import_status_message',
+                               'floating_message_alerts',
+                               'floating_message_alerts_timer',
+                               'floating_message_alerts_allergies');
 
 $GLOBALS_METADATA = array(
 
@@ -814,6 +817,32 @@ $GLOBALS_METADATA = array(
       'all_code_types',                           // data type
       'ICD10',                 // default
       xl('The default code type to search for in the Fee Sheet.')
+    ),
+    
+    'floating_message_alerts' => array(
+      xl('Show Floating Alerts for User Messages'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Timed Floating Message Notices for any Unread Messages Addressed to the User When in the Demographics Summary.')
+    ),
+    
+    'floating_message_alerts_allergies' => array(
+      xl('Show Floating Alerts for Patient Allergies'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Timed Floating Message Notices for Patient Allergies to the User When in the Demographics Summary.')
+    ),   
+    
+    'floating_message_alerts_timer' => array(
+      xl('Re-Display Floating Alerts Timer'),
+      array(
+       '0:20' => '20',
+       '0:30' => '30',
+       '0:40' => '40',
+       '0:50' => '50',
+      ),
+      '0:20',                              // default
+      xl('The Re-Display Time in Seconds for the Floating Alerts.')
     ),
     
     'support_fee_sheet_line_item_provider' => array(
