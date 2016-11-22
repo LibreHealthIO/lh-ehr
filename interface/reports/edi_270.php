@@ -1,12 +1,39 @@
 <?php
-// Copyright (C) 2010 MMF Systems, Inc>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-
-	/** This report is the batch report required for batch eligibility verification. **/
+/*
+ *  main file for the 270 batch creation.
+ *  This report is the batch report required for batch eligibility verification.
+ *
+ *  This program creates the batch for the x12 270 eligibility file
+ *  The changes to this file as of November 16 2016  to bring it to the 5010 standard
+ *  are covered under the terms of the Mozilla Public License, v. 2.0
+ *
+ * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ *
+ * Copyright (C) 2010 MMF Systems, Inc>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Terry Hill <terry@lilysystems.com>
+ * No other authors mentioned in the previous header file.
+ * @link http://www.libreehr.org
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 	//SANITIZE ALL ESCAPES
 	$sanitize_all_escapes=true;
@@ -99,8 +126,8 @@
 								   d.fname as provider_fname,
 								   d.npi as provider_npi,
 								   d.upin as provider_pin,
-								   f.federal_ein,
-								   f.facility_npi,
+								   f.federal_ein as federal_ein,
+								   f.facility_npi as facility_npi,
 								   f.name as facility_name,
 								   c.name as payer_name
 							FROM libreehr_postcalendar_events AS e

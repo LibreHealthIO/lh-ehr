@@ -1,10 +1,39 @@
 <?php
-// Copyright (C) 2010 MMF Systems, Inc>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ *  Inc file for the 270 / 271 creation and uploading
+ *
+ *  This program creates the segments for the x12 270 eligibility file
+ *  It also allows the reading and storing of the x12 271 file
+ *  The changes to this file as of November 16 2016  to bring it to the 5010 standard
+ *  are covered under the terms of the Mozilla Public License, v. 2.0
+ *
+ * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ *
+ * Copyright (C) 2010 MMF Systems, Inc>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Terry Hill <terry@lilysystems.com>
+ * No other authors mentioned in the previous header file.
+ * @link http://www.libreehr.org
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 // SEGMENT FUNCTION START 
 
@@ -40,9 +69,9 @@ function create_ISA($row,$X12info,$segTer,$compEleSep) {
 	
 	$ISA[10] = str_pad(date('Hi'),4," ");		// Interchange Time (HHMM) 
 	
-	$ISA[11] = "U";								// Interchange Control Standards Identifier 
+	$ISA[11] = "^";								// Interchange Control Standards Identifier 
 	
-	$ISA[12] = str_pad("00401",5," ");			// Interchange Control Version Number 
+	$ISA[12] = str_pad("00501",5," ");			// Interchange Control Version Number 
 	
 	$ISA[13] = str_pad("000000001",9," ");		// INTERCHANGE CONTROL NUMBER   
 	
@@ -54,7 +83,7 @@ function create_ISA($row,$X12info,$segTer,$compEleSep) {
 
 	$ISA['Created'] = $ISA['Created'] ."*";
 
-	$ISA['Created'] = $ISA ['Created'] . $segTer . $compEleSep; 
+	$ISA['Created'] = $ISA ['Created'] . $segTer; 
 	
 	return trim($ISA['Created']);
 	
@@ -78,15 +107,15 @@ function create_GS($row,$X12info,$segTer,$compEleSep) {
 	
 	$GS[5] = date('His');				// Time [HHMM] Group Creation Time  
 	
-	$GS[6] = "000000002";				// Group Control Number 
+	$GS[6] = "2";                       // Group Control Number No zeros for 5010
 	
 	$GS[7] = "X";					// Responsible Agency Code Accredited Standards Committee X12 ] 
 	
-	$GS[8] = "004010X092A1";			// Version Release / Industry[ Identifier Code Query 
+	$GS[8] = "005010X279A1";			// Version Release / Industry[ Identifier Code Query 005010X279A1
 
 	$GS['Created'] = implode('*', $GS);		// Data Element Separator 
 
-	$GS['Created'] = $GS ['Created'] . $compEleSep; 
+	$GS['Created'] = $GS ['Created'] . $segTer;  // change the information in the tag or change the tag
 	 
 	return trim($GS['Created']);
 	
@@ -103,10 +132,12 @@ function create_ST($row,$X12info,$segTer,$compEleSep) {
 	$ST[1] = "270";								// Transaction Set Identifier Code (Inquiry Request) 
 	
 	$ST[2] = "000000003";						// Transaction Set Control Number - Must match SE's 
+    
+    $ST[3] = "005010X279A1";                    // Standard 005010X279A1 in $ST[3]
 	
 	$ST['Created'] = implode('*', $ST);			// Data Element Separator 
 
-	$ST['Created'] = $ST ['Created'] . $compEleSep; 
+	$ST['Created'] = $ST ['Created'] . $segTer; 
 	 
 	return trim($ST['Created']);
 			
@@ -131,11 +162,11 @@ function create_BHT($row,$X12info,$segTer,$compEleSep) {
 
 	$BHT[4] = str_pad(date('Ymd'),8," ");			// Date Transaction Set Created 
 	
-	$BHT[5] = str_pad(date('His'),8," ");			// Time Transaction Set Created 
+	$BHT[5] = str_pad(date('Hi'),4," ");			// Time Transaction Set Created no space after and 1300 is plenty
 
 	$BHT['Created'] = implode('*', $BHT);			// Data Element Separator 
 
-	$BHT['Created'] = $BHT ['Created'] . $compEleSep; 
+	$BHT['Created'] = $BHT ['Created'] . $segTer; 
 	 
 	return trim($BHT['Created']);
 	
@@ -173,7 +204,7 @@ function create_HL($row, $nHlCounter,$X12info,$segTer,$compEleSep) {
 	
 	$HL['Created'] = implode('*', $HL);		// Data Element Separator 
 
-	$HL['Created'] = $HL ['Created'] . $compEleSep; 
+	$HL['Created'] = $HL ['Created'] . $segTer; 
 	 
 	return trim($HL['Created']);
 
@@ -199,17 +230,17 @@ function create_NM1($row,$nm1Cast,$X12info,$segTer,$compEleSep) {
 		$NM1[8] = "46";						// 46 - Electronic Transmitter Identification Number (ETIN) 
 		$NM1[9] = $X12info[3];				// Application Sender's ID 
 	}
-	else if($nm1Cast == '1P')
+	else if($nm1Cast == 'FA')
 	{
-		$NM1[1] = "IP";						// Entity ID Code - Provider [1P Provider]
-		$NM1[2] = "1";						// Entity Type - Person 
+		$NM1[1] = "FA";						// Entity ID Code - Facility [FA Facility]    
+		$NM1[2] = "2";						// Entity Type - Non-Person 
 		$NM1[3] = $row['facility_name'];			// Organizational Name 
-		$NM1[4] = $row['provider_lname'];			// Data Element not required.
-		$NM1[5] = $row['provider_fname'];			// Data Element not required.
+		$NM1[4] = "";			// Data Element not required.
+		$NM1[5] = "";			// Data Element not required.
 		$NM1[6] = "";						// Data Element not required.
 		$NM1[7] = "";						// Data Element not required.
-		$NM1[8] = "XX";						
-		$NM1[9] = $row['provider_npi'];		
+		$NM1[8] = "FI";						
+		$NM1[9] = $row['facility_npi'];		
 	}
 	else if($nm1Cast == 'IL')
 	{
@@ -226,7 +257,7 @@ function create_NM1($row,$nm1Cast,$X12info,$segTer,$compEleSep) {
 	
 	$NM1['Created'] = implode('*', $NM1);				// Data Element Separator 
 
-	$NM1['Created'] = $NM1['Created'] . $compEleSep; 
+	$NM1['Created'] = $NM1['Created'] . $segTer; 
 	 
 	return trim($NM1['Created']);
 
@@ -238,7 +269,7 @@ function create_REF($row,$ref,$X12info,$segTer,$compEleSep) {
 
 	$REF	=	array();
 
-	$REF[0] = "REF";						// Subscriber Additional Identification 
+	$REF[0] = "REF";						// Subscriber Additional Identification    does not want this for anything
 
 	if($ref == '1P')
 	{
@@ -247,12 +278,12 @@ function create_REF($row,$ref,$X12info,$segTer,$compEleSep) {
 	}
 	else
 	{
-		$REF[1] = "EJ";						// 'EJ' for Patient Account Number 
+		$REF[1] = "EJ";						// 'EJ' for Patient Account Number     does not want this for patient
 		$REF[2] = $row['pid'];					// Patient Account No. 
 	}
 	$REF['Created'] = implode('*', $REF);				// Data Element Separator 
 
-	$REF['Created'] = $REF['Created'] . $compEleSep; 
+	$REF['Created'] = $REF['Created'] . $segTer; 
 	 
 	return trim($REF['Created']);
   
@@ -276,7 +307,7 @@ function create_TRN($row,$tracno,$refiden,$X12info,$segTer,$compEleSep) {
 
 	$TRN['Created'] = implode('*', $TRN);				// Data Element Separator 
 
-	$TRN['Created'] = $TRN['Created'] . $compEleSep; 
+	$TRN['Created'] = $TRN['Created'] . $segTer; 
 	 
 	return trim($TRN['Created']);
   
@@ -296,7 +327,7 @@ function create_DMG($row,$X12info,$segTer,$compEleSep) {
 
 	$DMG['Created'] = implode('*', $DMG);		// Data Element Separator 
 
-	$DMG['Created'] = $DMG['Created'] .  $compEleSep; 
+	$DMG['Created'] = $DMG['Created'] .  $segTer; 
 	 
 	return trim($DMG['Created']);			
 }
@@ -320,7 +351,7 @@ function create_DTP($row,$qual,$X12info,$segTer,$compEleSep) {
 	}
 	$DTP['Created'] = implode('*', $DTP);	// Data Element Separator 
 
-	$DTP['Created'] = $DTP['Created'] .  $compEleSep; 
+	$DTP['Created'] = $DTP['Created'] .  $segTer; 
 	 
 	return trim($DTP['Created']);
 }
@@ -337,7 +368,7 @@ function create_EQ($row,$X12info,$segTer,$compEleSep) {
 	
 	$EQ['Created'] = implode('*', $EQ);				// Data Element Separator 
 
-	$EQ['Created'] = $EQ['Created'] . $compEleSep; 
+	$EQ['Created'] = $EQ['Created'] . $segTer; 
 	 
 	return trim($EQ['Created']);
 }
@@ -356,7 +387,7 @@ function create_SE($row,$segmentcount,$X12info,$segTer,$compEleSep) {
 
 	$SE['Created'] = implode('*', $SE);			// Data Element Separator 
 
-	$SE['Created'] = $SE['Created'] . $compEleSep; 
+	$SE['Created'] = $SE['Created'] . $segTer; 
 	 
 	return trim($SE['Created']);
 }
@@ -371,11 +402,11 @@ function create_GE($row,$X12info,$segTer,$compEleSep) {
 
 	$GE[1]	= "1";							// Number of included Transaction Sets 
 
-	$GE[2]	= "000000002";						// Group Control Number 
+	$GE[2]	= "2";                          // Group Control Number 
 
 	$GE['Created'] = implode('*', $GE);				// Data Element Separator 
 
-	$GE['Created'] = $GE['Created'] . $compEleSep; 
+	$GE['Created'] = $GE['Created'] . $segTer; 
 	 
 	return trim($GE['Created']);
 }
@@ -394,7 +425,7 @@ function create_IEA($row,$X12info,$segTer,$compEleSep) {
 
 	$IEA['Created'] = implode('*', $IEA);
 
-	$IEA['Created'] = $IEA['Created'] .  $compEleSep; 
+	$IEA['Created'] = $IEA['Created'] .  $segTer; 
 	 
 	return trim($IEA['Created']);
 }
@@ -453,8 +484,7 @@ function print_elig($res,$X12info,$segTer,$compEleSep){
 			// For Provider Segment 				
 					
 			$PATEDI  .= create_HL($row,2,$X12info,$segTer,$compEleSep);
-			$PATEDI  .= create_NM1($row,'1P',$X12info,$segTer,$compEleSep);
-			$PATEDI  .= create_REF($row,'1P',$X12info,$segTer,$compEleSep);
+			$PATEDI  .= create_NM1($row,'FA',$X12info,$segTer,$compEleSep);
 
 			$nHlCounter = $nHlCounter + 2;	
 			$segmentcount = 7; // segement counts - start from ST 
@@ -463,12 +493,8 @@ function print_elig($res,$X12info,$segTer,$compEleSep){
 		// For Subscriber Segment 				
 		
 		$PATEDI  .= create_HL($row,$nHlCounter,$X12info,$segTer,$compEleSep);
-		$PATEDI  .= create_TRN($row,$trcNo,$refiden,$X12info,$segTer,$compEleSep);
 		$PATEDI  .= create_NM1($row,'IL',$X12info,$segTer,$compEleSep);
-		$PATEDI  .= create_REF($row,'IL',$X12info,$segTer,$compEleSep);
 		$PATEDI  .= create_DMG($row,$X12info,$segTer,$compEleSep);
-		
-		//	$PATEDI  .= create_DTP($row,'102',$X12info,$segTer,$compEleSep);
 		
 		$PATEDI  .= create_DTP($row,'472',$X12info,$segTer,$compEleSep);
 		$PATEDI  .= create_EQ($row,$X12info,$segTer,$compEleSep);
