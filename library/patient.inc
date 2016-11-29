@@ -4,9 +4,6 @@
  *
  *  This program patient.inc includes functions for manipulating patient information.
  *
- *  The changes to this file as of November 16 2016  to include the insurance inactivate
- *  are covered under the terms of the Mozilla Public License, v. 2.0
- *
  * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
  * No previous copyright information. This is an original OpenEMR program.
  *
@@ -80,11 +77,11 @@ function getLanguages() {
 }
 
 function getInsuranceProvider($ins_id) {
-    
+
     $sql = "select name from insurance_companies where id=?";
     $row = sqlQuery($sql,array($ins_id));
     return $row['name'];
-    
+
 }
 
 function getInsuranceProviders() {
@@ -123,7 +120,7 @@ function getInsuranceProviders() {
 
 function getInsuranceProvidersExtra() {
     $returnval = array();
-// add a global and if for where to allow inactive inscompanies
+     // added a global control to allow additional address information for insurance companies 
 
         $sql = "select insurance_companies.name, insurance_companies.id, " .
           "addresses.zip, addresses.line1, addresses.state " .
@@ -134,7 +131,7 @@ function getInsuranceProvidersExtra() {
         $rez = sqlStatement($sql);
 
         for($iter=0; $row=sqlFetchArray($rez); $iter++) {
-    switch ($GLOBALS['insurance_information']) {
+        switch ($GLOBALS['insurance_information']) {
         case $GLOBALS['insurance_information'] = '0':
             $returnval[$row['id']] = $row['name'];
         break;
@@ -1830,7 +1827,8 @@ function getEffectiveInsurances($patient_id, $encdate) {
 /**
  * Get the patient's balance due. Normally this excludes amounts that are out
  * to insurance.  If you want to include what insurance owes, set the second
- * parameter to true.
+ * parameter to true. Removed $insarr[0]['copay'] form $ptbal calculation and
+ * committed this to the LiberEHR codebase Terry Hill 11 28 2016
  *
  * @param int     The PID of the patient.
  * @param boolean Indicates if amounts owed by insurance are to be included.
@@ -1856,7 +1854,7 @@ function get_patient_balance($pid, $with_insurance=false) {
           "FROM ar_activity WHERE " .
           "pid = ? AND encounter = ? AND payer_type = 0",
           array($pid, $encounter));
-        $ptbal = $insarr[0]['copay'] + $brow['amount'] - $drow['payments'];
+        $ptbal = $brow['amount'] - $drow['payments'];
         if ($ptbal > 0) $balance += $ptbal;
       }
       else {
