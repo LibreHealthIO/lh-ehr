@@ -1,5 +1,36 @@
 <?php
-
+/*
+ *  This file contains settings for the software.
+ *
+ *
+ * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ *
+ * No header existed on this file so no other copyright information 
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Terry Hill <terry@lilysystems.com>
+ * No other authors mentioned in the previous header file.
+ * @link http://www.libreehr.org
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
+ 
 // Is this windows or non-windows? Create a boolean definition.
 if (!defined('IS_WINDOWS'))
  define('IS_WINDOWS', (stripos(PHP_OS,'WIN') === 0));
@@ -234,6 +265,10 @@ if (!empty($glrow)) {
       $GLOBALS[$gl_name] = $gl_value;
     }
   }
+  
+  # Put this here to default the globals entry for concurrent_layout while that code is being removed 
+  $GLOBALS['concurrent_layout'] = 3;
+
   // Language cleanup stuff.
   $GLOBALS['language_menu_login'] = false;
   if ((count($GLOBALS['language_menu_show']) >= 1) || $GLOBALS['language_menu_showall']) {
