@@ -83,7 +83,7 @@ function create_ISA($row,$X12info,$segTer,$compEleSep) {
 
 	$ISA['Created'] = $ISA['Created'] ."*";
 
-	$ISA['Created'] = $ISA ['Created'] . $segTer; 
+	$ISA['Created'] = $ISA ['Created'] . $compEleSep . $segTer; 
 	
 	return trim($ISA['Created']);
 	
@@ -496,7 +496,7 @@ function print_elig($res,$X12info,$segTer,$compEleSep){
 		$PATEDI  .= create_NM1($row,'IL',$X12info,$segTer,$compEleSep);
 		$PATEDI  .= create_DMG($row,$X12info,$segTer,$compEleSep);
 		
-		$PATEDI  .= create_DTP($row,'472',$X12info,$segTer,$compEleSep);
+		$PATEDI  .= create_DTP($row,'291',$X12info,$segTer,$compEleSep);
 		$PATEDI  .= create_EQ($row,$X12info,$segTer,$compEleSep);
 								
 		$segmentcount	= $segmentcount + 7;

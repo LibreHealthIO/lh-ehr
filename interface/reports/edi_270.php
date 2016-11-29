@@ -60,7 +60,7 @@
 	$segTer			= "~"; 	
 
 	// Component Element seperator
-	$compEleSep		= "^"; 	
+	$compEleSep		= ":"; 	
 	
 	// filter conditions for the report and batch creation 
 
