@@ -93,14 +93,23 @@
 			$("#processing").show();
 			return true;
 		}
-		
 		</script>
 		<script type="text/javascript" src="../../library/dialog.js"></script>
 		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-		<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.5.custom.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery-ui-1.8.21.custom.css" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.6.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.patched.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+		<style type="text/css">		
+		</script>
+		<script type="text/javascript" src="../../library/dialog.js"></script>
+		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+		<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery-ui-1.8.21.custom.css" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
 		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-3.1.0.min.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.5.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.6.custom.min.js"></script>
 		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.patched.js"></script>
 		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 		<style type="text/css">
