@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
  * @package LibreEHR
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 	//SANITIZE ALL ESCAPES
@@ -34,6 +34,7 @@
 	require_once("$srcdir/payment_jav.inc.php");
 	
 	$DateFormat=DateFormatRead();
+	//search options should read from database or layout
 	$search_options = array("Demographics"=>xl("Demographics"),"Problems"=>xl("Problems"),"Medications"=>xl("Medications"),"Allergies"=>xl("Allergies"),"Lab results"=>xl("Lab Results"),"Communication"=>xl("Communication"));
 	$comarr = array("allow_sms"=>xl("Allow SMS"),"allow_voice"=>xl("Allow Voice Message"),"allow_mail"=>xl("Allow Mail Message"),"allow_email"=>xl("Allow Email"));
 	$_POST['form_details'] = true;
@@ -77,6 +78,15 @@
 		<script type="text/javascript" src="../../library/overlib_mini.js"></script>
 		<script type="text/javascript" src="../../library/dialog.js"></script>
 		<script type="text/javascript" src="../../library/js/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.6.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.patched.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+		<!--CSS for UI and fancybox.  This page has a lot of junk and needs review in greater detail-->
+		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+		<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery-ui-1.8.21.custom.css" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
+	
+
 		<script language="JavaScript">
 		var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 		var global_date_format = '%Y-%m-%d';				
@@ -93,25 +103,8 @@
 			$("#processing").show();
 			return true;
 		}
-		</script>
-		<script type="text/javascript" src="../../library/dialog.js"></script>
-		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-		<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery-ui-1.8.21.custom.css" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.6.custom.min.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.patched.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-		<style type="text/css">		
-		</script>
-		<script type="text/javascript" src="../../library/dialog.js"></script>
-		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-		<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery-ui-1.8.21.custom.css" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-3.1.0.min.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.6.custom.min.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.patched.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+
+
 		<style type="text/css">
 			/* specifically include & exclude from printing */
 			@media print {
