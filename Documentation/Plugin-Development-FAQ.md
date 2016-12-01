@@ -33,14 +33,16 @@ each appointment on the patient's demographics screen.
 If a developer wants to add a custom bit of code at this point, they would
 register a listener for that action inside a plugin's start.php file like this:
 
-`// In interface/plugins/provider_appointments/start.php`
-``
-`function custom_after_appointment( $row )`
-`{`
-`    $providerName = get_provider_name_by_id( $row['pc_aid'] );`
-`   echo 'Your Dr. for this appointment is' . $providerName;`
-`}`
-`add_action( 'demographics_after_appointment', 'custom_after_appointment' );`
+~~~
+// In interface/plugins/provider_appointments/start.php
+
+function custom_after_appointment( $row )
+{
+    $providerName = get_provider_name_by_id( $row['pc_aid'] );
+   echo 'Your Dr. for this appointment is' . $providerName;
+}
+add_action( 'demographics_after_appointment', 'custom_after_appointment' );
+~~~
 
 In your start.php file, you call add_action() with the name of the action hook
 and the name of the function you would like to call when that action occurs. This
