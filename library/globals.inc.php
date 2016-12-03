@@ -160,7 +160,7 @@ $GLOBALS_METADATA = array(
     'css_header' => array(
       xl('Theme'),
       'css',
-      'style_light.css',
+      'style_purple.css',
       xl('Pick a CSS theme.')
     ),
 
