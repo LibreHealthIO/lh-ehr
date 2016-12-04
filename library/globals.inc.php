@@ -2688,4 +2688,9 @@ $GLOBALS_METADATA = array(
 
    
 );
+
+if ( function_exists( 'do_action' ) ) {
+    do_action( 'globals_init', $GLOBALS_METADATA );
+}
+
 ?>
