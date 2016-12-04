@@ -106,13 +106,13 @@ function topatient(newpid, enc) {
    top.restoreSession();
    <?php if ($GLOBALS['concurrent_layout']) { ?>
      if (enc > 0) {
-       top.RTop.location= "../patient_file/summary/demographics.php?set_pid=" + newpid + "&set_encounterid=" + enc;
+       top.RTop.location= "<?php echo $GLOBALS['webroot']; ?>/interface/patient_file/summary/demographics.php?set_pid=" + newpid + "&set_encounterid=" + enc;
      }
      else {
-       top.RTop.location = "../patient_file/summary/demographics.php?set_pid=" + newpid; 
+       top.RTop.location = "<?php echo $GLOBALS['webroot']; ?>/interface/patient_file/summary/demographics.php?set_pid=" + newpid;
      }
    <?php } else { ?>
-     top.RTop.location = "../patient_file/patient_file.php?set_pid=" + newpid;
+     top.RTop.location = "<?php echo $GLOBALS['webroot']; ?>/interface/patient_file/patient_file.php?set_pid=" + newpid;
    <?php } ?>
  }
 }
