@@ -25,6 +25,9 @@ namespace PluginSystem;
 
 require_once(__DIR__ . "/helpers.php");
 
+use Framework\Plugin\Migration\Migrate;
+use Framework\Plugin\Migration\Migration;
+
 /**
  *  Implementation of plugin system
  *
@@ -85,7 +88,10 @@ class PluginSystem
             $location = LIBREEHR_DIRECTORY."/".$explicitPlugin;
             if ( file_exists( $location."/start.php" ) ) {
                 include_once "$location/start.php";
-                $this->doAction( 'update_plugin', $location );
+                $migrationLocation = $location.'/migrations';
+                // Plugin can override migration location
+                $this->doAction( 'migration_location', $migrationLocation );
+                $this->migrate( $migrationLocation );
             } else {
                 // No start file? Probaly mispelled or forgotten
                 error_log("No start.php file found for libreehr-plugin $location");
@@ -100,7 +106,10 @@ class PluginSystem
             foreach ( glob( LIBREEHR_DIRECTORY."/".$pluginDir . "/*" ) as $location ) {
                 if ( file_exists( "$location/start.php" ) ) {
                     include_once "$location/start.php";
-                    $this->doAction( 'update_plugin', $location );
+                    $migrationLocation = $location.'/migrations';
+                    // Plugin can override migration location
+                    $this->doAction( 'migration_location', $migrationLocation = $location.'/migrations' );
+                    $this->migrate( $migrationLocation );
                 } else {
                     // No start file? Probaly mispelled or forgotten
                     error_log("No start.php file found for libreehr-plugin $location");
@@ -111,6 +120,52 @@ class PluginSystem
 
         // Notify observers that the plugins have all been started
         $this->doAction( 'plugins_started', $components );
+    }
+
+    public function migrate( $location )
+    {
+        $migrate = new Migrate();
+
+        $lastBatchNumber = $migrate->getLastBatchNumber();
+        $nextBatchNumber = $lastBatchNumber + 1;
+
+        // All of the migration files have been collected and sorted
+        // Iterate over them and execute the directives
+        $migrated = array();
+        foreach ( $this->getMigrations( $location ) as $migration ) {
+            $class = str_replace( ".php", "", $migration );
+            $mObj = new $class();
+            if ( $mObj instanceof Migration ) {
+                $directive = $mObj->up();
+                $migrate->upgradeFromDirective( $directive );
+                $migrate->insertMigration( $migration, $nextBatchNumber );
+                $migrated[]= $migration;
+            }
+        }
+    }
+
+    /**
+     * Get an array of available migrations for this plugin
+     *
+     * @return multitype:string
+     */
+    public function getMigrations( $location )
+    {
+        $migrate = new Migrate();
+        $migrationsRun = $migrate->getMigrationsRun();
+
+        $migrations = array();
+        if ( file_exists( "$location" ) ) {
+            foreach ( glob( "$location/*.php" ) as $migrationFile ) {
+                $filename = basename( $migrationFile );
+                if ( !isset( $migrationsRun[$filename] ) ) {
+                    include_once "$location/$filename";
+                    $migrations[]= $filename;
+                }
+            }
+        }
+
+        return $migrations;
     }
 
     public function getPluginPath( $name )
