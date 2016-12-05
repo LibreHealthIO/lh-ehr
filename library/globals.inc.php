@@ -909,7 +909,11 @@ $GLOBALS_METADATA = array(
       xl('Do not Allow Deletion of Payments older that this selection.')
     ),
 
-      'use_custom_statement' => array(
+  ),
+  // Statement Tab
+  //
+  'Statement' => array(
+    'use_custom_statement' => array(
       xl('Use Custom Statement'),
        'bool',                          // data type
        '0',                             // default = false
@@ -1064,7 +1068,7 @@ $GLOBALS_METADATA = array(
       xl('Default left print margin for CMS 1500'),
        'num',                           // data type
        '20',                            // default
-      xl('his is the default left print margin for CMS 1500. It will adjust the final printed output left or right.')
+      xl('This is the default left print margin for CMS 1500. It will adjust the final printed output left or right.')
     ),
 
     'cms_1500' => array(
