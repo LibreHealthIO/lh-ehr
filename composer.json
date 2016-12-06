@@ -22,7 +22,8 @@
       "interface/plugins/"
     ],
     "plugins" : [
-      "interface/tags_filters"
+      "interface/tags_filters",
+        "interface/vidyo"
     ],
     "minimum-stability": "stable",
     "config": {
