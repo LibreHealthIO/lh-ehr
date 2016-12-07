@@ -1649,7 +1649,7 @@ UPDATE `clinical_rules` SET `amc_2014_stage1_flag` = 1, `amc_2014_stage2_flag` =
 #EndIf
 
 #IfColumn patient_data cmsportal_login
- DROP COLUMN `cmsportal_login`;
+ ALTER TABLE `patient_data` DROP COLUMN `cmsportal_login`;
 #EndIf
 
 #IfMissingColumn insurance_data inactive
