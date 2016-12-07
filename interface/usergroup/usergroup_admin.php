@@ -234,8 +234,9 @@ if (isset($_POST["mode"])) {
     if($GLOBALS['password_expiration_days'] != 0){
     $exp_days = $GLOBALS['password_expiration_days'];
     $exp_date = date('Y-m-d', strtotime("+$exp_days days"));
-    }else{
-	    $exp_date = date('Y-m-d'));}
+    } else {
+        $exp_date = date('Y-m-d');
+	}
     
     $insertUserSQL=            
             "insert into users set " .
