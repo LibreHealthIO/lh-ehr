@@ -1,4 +1,4 @@
-  <?php
+<?php
 /** 
 * library/patient_tracker.inc.php Functions used in the Patient Flow Board. 
 * 
@@ -355,4 +355,3 @@ function random_drug_test($tracker_id,$percentage,$yearly_limit) {
                  "WHERE id =? ", array($drugtest,$tracker_id)); 
   }
 }
-?>
