@@ -15,7 +15,7 @@
  *
  * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
- * @author  Terry Hill <terry@lillysystems.com>
+ * @author  Terry Hill <teryhill@librehealth.io>
  * @link    http://libreehr.github.io
  */
 

@@ -4,6 +4,7 @@
  * sl_eob_search.php.  For automated (X12 835) remittance posting
  * see sl_eob_process.php.
  *
+ * Copyright (C) 2014-2017 Terry Hill <teryhill@librehealth.io> 
  * Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
  * 
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -20,8 +21,8 @@
  * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
- * @author  Terry Hill <terry@lillysystems.com>
- * @link    http://www.open-emr.org
+ * @author  Terry Hill <teryhill@librehealth.io>
+ * @link    http://www.libreehr.org
  */
 
  

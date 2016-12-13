@@ -3,7 +3,7 @@
  *  This file contains settings for the software.
  *
  *
- * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ * @copyright Copyright (C) 2016 Terry Hill <teryhill@librehealth.io>
  *
  * No header existed on this file so no other copyright information 
  *
@@ -23,7 +23,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreEHR
- * @author Terry Hill <terry@lilysystems.com>
+ * @author Terry Hill <teryhill@librehealth.io>
  * No other authors mentioned in the previous header file.
  * @link http://www.libreehr.org
  *

@@ -1,6 +1,6 @@
 <?php
 /*
-* Copyright (C) 2015-2016 Tony McCormick <tony@mi-squared.com>
+* Copyright (C) 2015-2017 Tony McCormick <tony@mi-squared.com>
 *
 * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
 * See the Mozilla Public License for more details. 
@@ -8,7 +8,7 @@
 *
 * @package LibreEHR
 * @author  Tony McCormick <tony@mi-squared.com>
-* @author  Terry Hill <terry@lillysystems.com>
+* @author  Terry Hill <teryhill@librehealth.io>
 * @link    http://www.libreehr.org
 *
 * add a switch to the encounter const and make the query before assigning it to the const.

@@ -1,15 +1,31 @@
 <?php
-// Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-
-// This report shows upcoming appointments with filtering and
-// sorting by patient, practitioner, appointment type, and date.
-// 2012-01-01 - Added display of home and cell phone and fixed header
-// 2015-06-19 - brought up to security standards terry@lillysystems.com
+/*
+ * Appointments report
+ *
+ * This report shows upcoming appointments with filtering and
+ * sorting by patient, practitioner, appointment type, and date.
+ * 2012-01-01 - Added display of home and cell phone and fixed header
+ * 2015-06-19 - brought up to security standards teryhill@librehealth.io
+ *
+ * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * @package LibreEHR 
+ * @author Rod Roark <rod@sunsetsystems.com> 
+ * @author Terry Hill <teryhill@librehealth.io> 
+ * @link http://www.libreehr.org 
+ */
 
 $fake_register_globals=false;
 $sanitize_all_escapes=true;

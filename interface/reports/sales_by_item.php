@@ -2,7 +2,7 @@
 /**
  * This is a report of sales by item description. 
  *
- * Copyright (C) 2015-2016 Terry Hill <terry@lillysystems.com>
+ * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
  *
  * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
- * @author  Terry Hill <terry@lillysystems.com>
- * @link    http://www.open-emr.org
+ * @author  Terry Hill <teryhill@librehealth.io>
+ * @link    http://www.libreehr.org
  */
 $sanitize_all_escapes=true;
 $fake_register_globals=false;

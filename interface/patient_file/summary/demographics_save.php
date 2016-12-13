@@ -4,10 +4,7 @@
  *
  *  This program demographics_save.php is the Patient summary screen data save program.
  *
- *  The changes to this file as of November 16 2016 to include the insurance inactivate enhancement
- *  are covered under the terms of the Mozilla Public License, v. 2.0
- *
- * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  * No previous copyright information. This is an original OpenEMR program.
  *
  *
@@ -27,7 +24,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreEHR
- * @author Terry Hill <terry@lilysystems.com>
+ * @author Terry Hill <teryhill@librehealth.io>
  * No other authors listed in original program header.
  * @link http://www.libreehr.org
  *

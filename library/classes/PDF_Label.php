@@ -29,7 +29,7 @@
 // 1.5: + Added 3422 format
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Modified to function in Open-emr 8-19-2014 Terry Hill terry@lillysystems.com
+// Modified to function in Open-emr 8-19-2014 Terry Hill <teryhill@librehealth.io> 
 
 /**
  * PDF_Label - PDF label editing

@@ -1,26 +1,19 @@
 <?php
 /** 
 * interface/billing/print_daysheet_report.php Genetating an end of day report. 
-* 
+*
 * Program for Generating an End of Day report
-* 
-* 
-* Copyright (C) 2014 Terry Hill <terry@lillysystems.com> 
-* 
-* LICENSE: This program is free software; you can redistribute it and/or 
-* modify it under the terms of the GNU General Public License 
-* as published by the Free Software Foundation; either version 3 
-* of the License, or (at your option) any later version. 
-* This program is distributed in the hope that it will be useful, 
-* but WITHOUT ANY WARRANTY; without even the implied warranty of 
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-* GNU General Public License for more details. 
-* You should have received a copy of the GNU General Public License 
-* along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
-* 
+*
+*
+* Copyright (C) 2014-2017 Terry Hill <teryhill@librehealth.io> 
+*
+* LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+* See the Mozilla Public License for more details. 
+* If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+*
 * @package LibreEHR 
-* @author Terry Hill <terry@lillysystems.com>
-* @link http://www.open-emr.org 
+* @author Terry Hill <teryhill@librehealth.io>
+* @link http://www.lbreehr.org 
 */
 
 $fake_register_globals=false;

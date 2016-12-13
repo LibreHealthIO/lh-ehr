@@ -7,7 +7,7 @@
  *  The changes to this file as of November 16 2016 to include the insurance inactivate enhancement
  *  are covered under the terms of the Mozilla Public License, v. 2.0
  *
- * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  * No previous copyright information. This is an original OpenEMR program.
  *
  *
@@ -27,7 +27,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreEHR
- * @author Terry Hill <terry@lilysystems.com>
+ * @author Terry Hill <teryhill@librehealth.io>
  * No other authors listed in original program header
  * @link http://www.libreehr.org
  *
@@ -113,7 +113,7 @@ $(document).ready(function(){
 
 });
 
-var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
+var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';
 
 //code used from http://tech.irt.org/articles/js037/
 function replace(string,text,by) {
@@ -380,7 +380,6 @@ for ($i=0;$i<count($insurance);$i++) { ?>
 
 });
 function insurance_active(current){
-//    var ins_id = 0,pid = 0,type="make_active";
     if($(current).is(":checked")){
     $(current).val(1);
     $("#i"+$(current).attr("data-id")+"inactive_value").val(1);
@@ -389,15 +388,6 @@ function insurance_active(current){
     $(current).val(0);
     $("#i"+$(current).attr("data-id")+"inactive_value").val(0);
     }
-/*    ins_id = $(current).attr("data-id");
-    pid = <?php echo $_SESSION['pid']; ?>;
-    $.ajax({
-    url : "../../../library/ajax/ajax.php",
-    data : {type:type,pid:pid,ins_id:ins_id},
-    success : function(data){
-    alert("The insurance has been made inactive.");
-    }
-    });*/
 }
 
 </script>
@@ -511,12 +501,6 @@ $group_seq=0; // this gives the DIV blocks unique IDs
      <div class="section-header">
          <span class="text"><b><?php xl("Insurance", "e" )?></b></span>
      </div>
-    <!--select name="create_insurance" id="create_insurance" onchange="addinsurance(this)">
-    <option value="">Select</option>
-    <option data-inactive=<?php echo $inactive['primary'];?> value="primary">Primary</option>
-    <option data-inactive=<?php echo $inactive['secondary'];?> value="secondary">Secondary</option>
-    <option data-inactive=<?php echo $inactive['tertiary'];?> value="tertiary">Tertiary</option>
-    </select-->
     <div id="INSURANCE" >
         <ul class="tabNav">
         <?php
@@ -797,8 +781,6 @@ $group_seq=0; // this gives the DIV blocks unique IDs
     <div class="tab" style='height:auto;width:auto'>
     <?php for($i=0;$i<count($insurance_info_inactive);$i++) {?>
     <table border="0">
-      <!--tr-->
-    <?php //echo "<br> Insurance type :  ".ucfirst($insurance_info_inactive[$i]['type']);?>
     <br><?php echo "<br> This" . " " . ucfirst($insurance_info_inactive[$i]['type']) . " " . "Insurance Was Inactivated on" . " " . substr($insurance_info_inactive[$i]['inactive_time'],0,10)."<br>" ;?>
     <span><?php echo "This Insurance is Valid for Claims Dated From". " " . substr($insurance_info_inactive[$i]['date'],0,10) . " To " . substr($insurance_info_inactive[$i]['eDate'],0,10)  ;?></span>     
  <td valign=top width="600">
@@ -878,8 +860,6 @@ $group_seq=0; // this gives the DIV blocks unique IDs
        <td class='bold'>:</td>
        <td><?php echo $insurance_info_inactive[$i]['subscriber_employer_country']; ?></td>
     </tr>
-        <!--/tr-->
-    <!--tr-->
           <tr>
            <td>
            <span class=bold><?php echo xlt('Relationship'); ?></span>
@@ -889,7 +869,6 @@ $group_seq=0; // this gives the DIV blocks unique IDs
        <td>
        <?php echo $insurance_info_inactive[$i]['subscriber_relationship'];?>    
        </td>
-    <!--/tr-->
      </tr>
     <tr>
          <td width=120><span class=bold><?php echo xlt('Subscriber'); ?> </span></td>
@@ -970,7 +949,6 @@ $group_seq=0; // this gives the DIV blocks unique IDs
     </tr>
     </table>
     </td>
-    <!--/tr-->
     </table>
     
     <?php echo "<span width:auto>".str_repeat("_",135)."</span>"; } ?>
@@ -1000,8 +978,6 @@ $insurance_count = getActiveInsuranceData();
 for($i=0;$i<count($insurance_count);$i++){
 ?>
  phonekeyup(f.i<?php echo $i;?>subscriber_phone,mypcc);
- //phonekeyup(f.i2subscriber_phone,mypcc);
- //phonekeyup(f.i3subscriber_phone,mypcc);
 <?php }} ?>
 
 <?php if ($GLOBALS['concurrent_layout'] && $set_pid) { ?>
