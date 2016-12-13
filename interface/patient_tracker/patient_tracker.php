@@ -8,16 +8,9 @@
  * 
  * Copyright (C) 2015-2017  Terry Hill <teryhill@librehealth.io> 
  * 
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details. 
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  * 
  * @package LibreEHR 
  * @author Terry Hill <teryhill@librehealth.io> 
@@ -35,16 +28,56 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient_tracker.inc.php");
+require_once("$srcdir/user.inc");
 #define variables, future enhancement allow changing the to_date and from_date 
 #to allow picking a date to review
+
+if (!is_null($_POST['form_provider'])) {
+  $provider = $_POST['form_provider'];
+}
+else if ($_SESSION['userauthorized']) {
+  $provider = $_SESSION['authUserID'];
+}
+else {
+  $provider = null;
+}
+$facility  = !is_null($_POST['form_facility']) ? $_POST['form_facility'] : null;
+$form_apptstatus = !is_null($_POST['form_apptstatus']) ? $_POST['form_apptstatus'] : null;
+$form_apptcat=null;
+if(isset($_POST['form_apptcat']))
+{
+    if($form_apptcat!="ALL")
+    {
+        $form_apptcat=intval($_POST['form_apptcat']);
+    }
+}
  
 $appointments = array();
 $from_date = date("Y-m-d");
 $to_date = date("Y-m-d");
 $datetime = date("Y-m-d H:i:s");
 # go get the information and process it
-$appointments = fetch_Patient_Tracker_Events($from_date, $to_date);
+$appointments = fetch_Patient_Tracker_Events($from_date, $to_date, $provider, $facility, $form_apptstatus, $form_apptcat);
 $appointments = sortAppointments( $appointments, 'time' );
+
+//grouping of the count of every status
+$appointments_status = getApptStatus($appointments);
+
+
+$lres = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
+while ( $lrow = sqlFetchArray ( $lres ) ) {
+    // if exists, remove the legend character
+    if($lrow['title'][1] == ' '){
+        $splitTitle = explode(' ', $lrow['title']);
+        array_shift($splitTitle);
+        $title = implode(' ', $splitTitle);
+    }else{
+        $title = $lrow['title'];
+    }
+
+    $statuses_list[$lrow['option_id']] = $title;
+}
+
 $chk_prov = array();  // list of providers with appointments
 // Scan appointments for additional info
 foreach ( $appointments as $apt ) {
@@ -62,10 +95,11 @@ foreach ( $appointments as $apt ) {
 <script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
 
 <script language="JavaScript">
-$(document).ready(function(){
-  refreshbegin('1');
-  $('.js-blink-infinite').modernBlink();
-});
+// Refresh self
+function refreshme() {
+  top.restoreSession();
+  document.pattrk.submit();
+}
  
 // popup for patient tracker status 
 function bpopup(tkid) {
@@ -88,8 +122,7 @@ function refreshbegin(first){
     var parsetime=reftime.split(":");
     parsetime=(parsetime[0]*60)+(parsetime[1]*1)*1000;
     if (first != '1') {
-      top.restoreSession();
-      document.pattrk.submit();
+      refreshme();
     }
     setTimeout("refreshbegin('0')",parsetime);
   <?php } else { ?>
@@ -104,16 +137,12 @@ function topatient(newpid, enc) {
  }
  else {
    top.restoreSession();
-   <?php if ($GLOBALS['concurrent_layout']) { ?>
      if (enc > 0) {
        top.RTop.location= "<?php echo $GLOBALS['webroot']; ?>/interface/patient_file/summary/demographics.php?set_pid=" + newpid + "&set_encounterid=" + enc;
      }
      else {
        top.RTop.location = "<?php echo $GLOBALS['webroot']; ?>/interface/patient_file/summary/demographics.php?set_pid=" + newpid;
      }
-   <?php } else { ?>
-     top.RTop.location = "<?php echo $GLOBALS['webroot']; ?>/interface/patient_file/patient_file.php?set_pid=" + newpid;
-   <?php } ?>
  }
 }
 
@@ -129,41 +158,100 @@ function openNewTopWindow(newpid,newencounterid) {
 
 </head>
 
-<body class="body_top" >
-
-<?php if ($GLOBALS['pat_trkr_timer'] == '0') { # if the screen is not set up for auto refresh it can be closed by auto log off ?>
-<form name='pattrk' id='pattrk' method='post' action='patient_tracker.php' onsubmit='return top.restoreSession()' enctype='multipart/form-data'>
-<?php } else { # if the screen is set up for auto refresh this will not allow it to be closed by auto logoff ?>
-<form name='pattrk' id='pattrk' method='post' action='patient_tracker.php?skip_timeout_reset=1' onsubmit='return top.restoreSession()' enctype='multipart/form-data'>
-<?php } ?>
 
  <?php
- if (isset($_POST['setting_new_window'])) {
-   if (isset($_POST['form_new_window'])) {
-     $new_window_checked = " checked";
+  if ($GLOBALS['pat_trkr_timer'] == '0') {
+    // if the screen is not set up for auto refresh, use standard page call
+    $action_page = "patient_tracker.php";
    }
    else {
-     $new_window_checked = '';
+    // if the screen is set up for auto refresh, this will allow it to be closed by auto logoff
+    $action_page = "patient_tracker.php?skip_timeout_reset=1";
    }
+
+?>
+<span class="title"><?php echo xlt("Flow Board") ?></span>
+<body class="body_top" >
+<form method='post' name='theform' id='theform' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()'>
+    <div id="flow_board_parameters">
+        <table>
+            <tr class="text">
+                <td class='label'><?php echo xlt('Provider'); ?>:</td>
+                <td><?php
+
+                    # Build a drop-down list of providers.
+
+                    $query = "SELECT id, lname, fname FROM users WHERE ".
+                        "authorized = 1  ORDER BY lname, fname"; #(CHEMED) facility filter
+
+                    $ures = sqlStatement($query);
+
+                    echo "   <select name='form_provider'>\n";
+                    echo "    <option value='ALL'>-- " . xlt('All') . " --\n";
+
+                    while ($urow = sqlFetchArray($ures)) {
+                        $provid = $urow['id'];
+                        echo "    <option value='" . attr($provid) . "'";
+                        if (isset($_POST['form_provider']) && $provid == $_POST['form_provider']){
+                            echo " selected";
+                        } elseif(!isset($_POST['form_provider'])&& $_SESSION['userauthorized'] && $provid == $_SESSION['authUserID']){
+                            echo " selected";
  }
- else {
-   if ($GLOBALS['ptkr_pt_list_new_window']) {
-     $new_window_checked = " checked";
+                        echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
    }
-   else {
-     $new_window_checked = '';
+
+                    echo "   </select>\n";
+
+                    ?>
+                </td>
+                <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
+                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$_POST['form_apptstatus']);?></td>
+                <td><?php echo xlt('Category') #category drop down creation ?>:</td>
+                <td>
+                    <select id="form_apptcat" name="form_apptcat">
+                        <?php
+                        $categories=fetchAppointmentCategories();
+                        echo "<option value='ALL'>".xlt("All")."</option>";
+                        while($cat=sqlFetchArray($categories))
+                        {
+                            echo "<option value='".attr($cat['id'])."'";
+                            if($cat['id']==$_POST['form_apptcat'])
+                            {
+                                echo " selected='true' ";
    }
+                            echo    ">".text(xl_appt_category($cat['category']))."</option>";
  }
  ?>
+                    </select>
+                </td>
+                <td style="border-left: 1px solid;">
+                    <div style='margin-left: 15px'>
+                        <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                            <span> <?php echo xlt('Submit'); ?> </span> </a>
+                        <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
+                            <a href='#' class='css_button' id='printbutton'>
+                                <span> <?php echo xlt('Print'); ?> </span> </a>
+                        <?php } ?>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+<form name='pattrk' id='pattrk' method='post' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()' enctype='multipart/form-data'>
+
 <div>
   <?php if (count($chk_prov) == 1) {?>
-  <h2><span style='float: left'><?php echo xl('Appointments for'). ' : '. text(reset($chk_prov)) ?></span></h2>
+  <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) ?></span></h2>
   <?php } ?>
+ <div id= 'inanewwindow' class='inanewwindow'>
  <span style='float: right'>
  <input type='hidden' name='setting_new_window' value='1' />
  <input type='checkbox' name='form_new_window' value='1'<?php echo $new_window_checked; ?> /><?php
   echo xlt('Open Patient in New Window'); ?>
  </span>
+ </div>
  </div>
 <?php if ($GLOBALS['pat_trkr_timer'] =='0') { ?>
 <table border='0' cellpadding='5' cellspacing='0'>
@@ -176,6 +264,20 @@ function openNewTopWindow(newpid,newencounterid) {
 <?php } ?>
 
 <table border='0' cellpadding='1' cellspacing='2' width='100%'>
+ <tr>
+     <td colspan="12">
+         <b><small>
+             <?php
+             $statuses_output =  xlt('Total patients')  . ':' . text($appointments_status['count_all']);
+             unset($appointments_status['count_all']);
+             foreach($appointments_status as $status_symbol => $count){
+                 $statuses_output .= " | " . text(xl_list_label($statuses_list[$status_symbol]))  .":" . $count;
+             }
+             echo $statuses_output;
+             ?>
+         </small></b>
+     </td>
+ </tr>
 
  <tr bgcolor="#cccff">
   <?php if ($GLOBALS['ptkr_show_pid']) { ?>
@@ -376,7 +478,7 @@ function openNewTopWindow(newpid,newencounterid) {
         <td class="detail" align="center">
          <?php 
 		 if (strtotime($newend) != '') {
-		    echo oeFormatTime($newend,11) ;
+		    echo oeFormatTime($newend) ;
 		 }
 		 ?>
          </td>
@@ -404,11 +506,31 @@ function openNewTopWindow(newpid,newencounterid) {
 	} //end for
 ?>
 
+<?php
+//saving the filter for auto refresh
+if(!is_null($_POST['form_provider']) ){
+    echo "<input type='hidden' name='form_provider' value='" . attr($_POST['form_provider']) . "'>";
+}
+if(!is_null($_POST['form_facility']) ){
+    echo "<input type='hidden' name='form_facility' value='" . attr($_POST['form_facility']) . "'>";
+}
+if(!is_null($_POST['form_apptstatus']) ){
+    echo "<input type='hidden' name='form_apptstatus' value='" . attr($_POST['form_apptstatus']) . "'>";
+}
+if(!is_null($_POST['form_apptcat']) ){
+    echo "<input type='hidden' name='form_apptcat' value='" . attr($_POST['form_apptcat']) . "'>";
+}
+?>
+
 </table>
 </form>
 
 <script type="text/javascript">
   $(document).ready(function() { 
+	  $('#settings').css("display","none");
+	  refreshbegin('1');
+	  $('.js-blink-infinite').modernBlink();
+
   // toggle of the check box status for drug screen completed and ajax call to update the database
  $(".drug_screen_completed").change(function() {
       top.restoreSession();
