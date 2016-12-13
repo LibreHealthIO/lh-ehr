@@ -15,7 +15,7 @@
  *
  * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 // AJAX handler for logging a printing action.

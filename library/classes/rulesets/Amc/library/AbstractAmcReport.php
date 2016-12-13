@@ -19,7 +19,7 @@
  * @package LibreEHR
  * @author  Ken Chapple <ken@mi-squared.com>
  * @author  Brady Miller <brady@sparmy.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 require_once( 'AmcFilterIF.php' );

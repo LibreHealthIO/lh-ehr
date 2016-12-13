@@ -16,7 +16,7 @@
  *
  * @package LibreEHR
  * @author  Naina Mohamed <naina@capminds.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
  
 

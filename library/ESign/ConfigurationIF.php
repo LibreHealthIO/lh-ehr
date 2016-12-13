@@ -20,7 +20,7 @@
  * @package LibreEHR
  * @author  Ken Chapple <ken@mi-squared.com>
  * @author  Medical Information Integration, LLC
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  **/
 
 namespace ESign;

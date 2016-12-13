@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Kevin Yeh <kevin.y@integralemr.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 

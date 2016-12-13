@@ -18,7 +18,7 @@
  *
  * @package LibreEHR
  * @author  Kevin Yeh <kevin.y@integralemr.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 require_once('fee_sheet_classes.php');
 require_once("$srcdir/../custom/code_types.inc.php");

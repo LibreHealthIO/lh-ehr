@@ -20,7 +20,7 @@
  * @author  Rohit Kumar <pandit.rohit@netsity.com>
  * @author  (Mac) Kevin McAloon <mcaloon@patienthealthcareanalytics.com>
  * @author  Brady Miller <brady@sparmy.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 

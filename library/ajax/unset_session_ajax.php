@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Visolve <services@visolve.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 $fake_register_globals=false;
 $sanitize_all_escapes=true;

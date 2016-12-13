@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
  * @package LibreEHR
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 	//SANITIZE ALL ESCAPES

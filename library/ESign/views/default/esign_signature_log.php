@@ -18,7 +18,7 @@
  * @package LibreEHR
  * @author  Ken Chapple <ken@mi-squared.com>
  * @author  Medical Information Integration, LLC
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  **/
 ?>
 <div id='esign-signature-log-<?php echo attr( $this->logId ); ?>' class='esign-signature-log-container'>

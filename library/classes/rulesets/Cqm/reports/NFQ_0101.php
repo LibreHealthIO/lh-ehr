@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 class NFQ_0101 extends AbstractCqmReport
 {   

@@ -23,7 +23,7 @@
  *
  * @package LibreEHR
  * @author  Visolve
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 $sanitize_all_escapes=true;

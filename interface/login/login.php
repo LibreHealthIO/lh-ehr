@@ -22,7 +22,7 @@
  * @author  Julia Longtin <julialongtin@diasp.org>
  * @author  cfapress
  * @author  markleeds
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 $fake_register_globals=false;

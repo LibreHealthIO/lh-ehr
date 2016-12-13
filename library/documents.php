@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 require_once($GLOBALS['fileroot']."/controllers/C_Document.class.php");
