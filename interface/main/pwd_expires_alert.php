@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  ViCarePlus Team, Visolve <vicareplus_engg@visolve.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 $fake_register_globals=false;

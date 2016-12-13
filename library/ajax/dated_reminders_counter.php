@@ -18,7 +18,7 @@
  * @package LibreEHR
  * @author  Craig Bezuidenhout <http://www.tajemo.co.za/>
  * @author  Brady Miller <brady@sparmy.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 //SANITIZE ALL ESCAPES

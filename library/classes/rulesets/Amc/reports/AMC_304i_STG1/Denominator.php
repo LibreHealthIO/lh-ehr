@@ -18,7 +18,7 @@
  *
  * @package LibreEHR
  * @author  Ensoftek
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 class AMC_304i_STG1_Denominator implements AmcFilterIF

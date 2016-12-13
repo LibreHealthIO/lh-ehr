@@ -17,7 +17,7 @@
  * @package LibreEHR
  * @author  Kevin Yeh <kevin.y@integralemr.com>
  * @author  Rod Roark <rod@sunsetsystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 function refresh_codes()

@@ -24,7 +24,7 @@
  *
  * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 /**

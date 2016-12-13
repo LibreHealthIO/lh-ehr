@@ -18,7 +18,7 @@
  * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 //SANITIZE ALL ESCAPES

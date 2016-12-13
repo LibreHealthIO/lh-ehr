@@ -18,7 +18,7 @@
  *
  * @package LibreEHR
  * @author  Ensoftek
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
  
 class NFQ_0101_InitialPatientPopulation implements CqmFilterIF

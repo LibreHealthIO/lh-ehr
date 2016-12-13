@@ -20,7 +20,7 @@
  * @package LibreEHR
  * @author  Ensoftek
  * @author  Brady Miller <brady@sparmy.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 class AMC_314g_1_2_14_STG2_Denominator implements AmcFilterIF

@@ -14,7 +14,7 @@
  *
  * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
  // The event editor looks something like this:

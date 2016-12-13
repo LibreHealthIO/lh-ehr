@@ -18,7 +18,7 @@
  *
  * @package LibreEHR
  * @author  Ensoftek
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 require_once("XmlWriterOemr.class.php");

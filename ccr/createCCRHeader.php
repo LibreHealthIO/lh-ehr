@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Garden State Health Systems <http://www.gshsys.com/>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 

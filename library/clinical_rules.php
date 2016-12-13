@@ -25,7 +25,7 @@
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Medical Information Integration, LLC
  * @author  Ensofttek, LLC
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 require_once(dirname(__FILE__) . "/patient.inc");

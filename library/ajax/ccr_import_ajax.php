@@ -20,7 +20,7 @@
  * @package LibreEHR
  * @author  Eldho Chacko <eldho@zhservices.com>
  * @author  Ajil P M <ajilpm@zhservices.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 //SANITIZE ALL ESCAPES

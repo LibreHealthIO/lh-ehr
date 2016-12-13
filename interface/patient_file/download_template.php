@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 // This module downloads a specified document template to the browser after
