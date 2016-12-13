@@ -1,6 +1,6 @@
 <?php
 /*
- * Inc file for the 276 Claim Status file creation
+ * File for the 276 Claim Status file creation
  *
  * This program creates the segments for the x12 276 Claim Status file
  *

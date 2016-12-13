@@ -50,7 +50,7 @@
 	require_once "$srcdir/options.inc.php";
 	require_once "$srcdir/formdata.inc.php";
 	include_once("$srcdir/calendar.inc");
-	include_once("$srcdir/edi_libre.inc");
+	include_once("$srcdir/edi_276.inc.php");
 
 	// Element data seperator
 	$eleDataSep		= "*";
