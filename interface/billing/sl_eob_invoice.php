@@ -21,7 +21,7 @@
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
  * @author  Terry Hill <terry@lillysystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
  

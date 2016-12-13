@@ -20,7 +20,7 @@
  *
  * @package LibreEHR
  * @author  EMR Direct <http://www.emrdirect.com/>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 require_once(dirname(__FILE__) . "/log.inc");

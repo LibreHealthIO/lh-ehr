@@ -21,7 +21,7 @@ namespace ESign;
  * @author  Ken Chapple <ken@mi-squared.com>
  * @author  Medical Information Integration, LLC
  * @author  Brady Miller <brady@sparmy.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  **/
 
 include_once $GLOBALS['srcdir'].'/sql.inc';

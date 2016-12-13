@@ -19,7 +19,7 @@
  * @author  Kevin Yeh <kevin.y@integralemr.com>
  * @author  ViCarePlus <visolve_emr@visolve.com>
  * @author  cfapress
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 //----------THINGS WE ALWAYS DO

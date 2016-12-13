@@ -18,7 +18,7 @@
 *
 * @package LibreEHR
 * @author  Roberto Vasquez <robertogagliotta@gmail.com>
-* @link    http://www.open-emr.org 
+* @link    http://librehealth.io 
 */ 
 include_once("../../globals.php");
 include_once("$srcdir/api.inc");

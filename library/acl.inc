@@ -20,7 +20,7 @@
  * @license http://www.gnu.org/licenses/licenses.html#GPL GNU GPL V3+
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Rod Roark <rod@sunsetsystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 // php-GACL access controls are included in LibreEHR. The below

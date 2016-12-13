@@ -19,7 +19,7 @@
  * @package LibreEHR
  * @author  WMT
  * @author  Terry Hill <terry@lillysystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 $sanitize_all_escapes=true;

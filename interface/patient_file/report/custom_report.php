@@ -19,7 +19,7 @@ use ESign\Api;
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Ken Chapple <ken@mi-squared.com>
  * @author  Tony McCormick <tony@mi-squared.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 require_once("../../globals.php");

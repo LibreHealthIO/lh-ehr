@@ -17,7 +17,7 @@
  * @package LibreEHR
  * 
  * @author  Terry Hill <terry@lillysystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *

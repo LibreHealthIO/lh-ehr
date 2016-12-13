@@ -17,7 +17,7 @@
  *
  * @package LibreEHR
  * @author  Craig Bezuidenhout <http://www.tajemo.co.za/>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 
 /**

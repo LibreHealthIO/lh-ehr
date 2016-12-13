@@ -19,7 +19,7 @@
  * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Terry Hill <terry@lillysystems.com>
- * @link    http://www.open-emr.org
+ * @link    http://librehealth.io
  */
 $sanitize_all_escapes=true;
 $fake_register_globals=false;
