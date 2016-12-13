@@ -3,6 +3,7 @@
  * This is a report to create a patient ledger of charges with payments
  * applied.
  *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2015 Rich Genandt <rgenandt@gmail.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -18,8 +19,8 @@
  *
  * @package LibreEHR
  * @author  WMT
- * @author  Terry Hill <terry@lillysystems.com>
- * @link    http://www.open-emr.org
+ * @author  Terry Hill <teryhill@librehealth.io>
+ * @link    http://www.libreehr.org
  */
 
 $sanitize_all_escapes=true;

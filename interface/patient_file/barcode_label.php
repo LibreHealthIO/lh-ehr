@@ -5,7 +5,7 @@
  * Program for displaying Barcode Label
  * via the popups on the left nav screen
  * 
- * Copyright (C) 2014 Terry Hill <terry@lillysystems.com> 
+ * Copyright (C) 2014-2017 Terry Hill <teryhill@librehealth.io> 
  * 
  * LICENSE: This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License 
@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
  * @package LibreEHR 
- * @author Terry Hill <terry@lillysystems.com>
- * @link http://www.open-emr.org 
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @link http://www.libreehr.org 
  *
  * this is from the barcode-coder and FPDF website I used the examples and code snippets listed on the sites
  * to create this program

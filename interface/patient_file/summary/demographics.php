@@ -7,7 +7,7 @@
  *  The changes to this file as of November 16 2016 to include the insurance inactivate enhancement
  *  are covered under the terms of the Mozilla Public License, v. 2.0
  *
- * @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+ * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  * No previous copyright information. This is an original OpenEMR program.
  *
  *
@@ -28,7 +28,7 @@
  *
  * @package LibreEHR
  * @author Brady Miller <brady@sparmy.com>
- * @author Terry Hill <terry@lilysystems.com>
+ * @author Terry Hill <teryhill@librehealth.io>
  * @link http://www.libreehr.org
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
@@ -963,9 +963,6 @@ if ( $insurance_count > 0 ) {
                         $icobj = new InsuranceCompany($insurance_info_inactive[$i]['provider']);
                         $adobj = $icobj->get_address();
                         $insco_name = trim($icobj->get_name());
-                        #$inscompobj = new InsuranceCompany($insurance_info_inactive[$i]['provider']);
-                        #$insaddobj = $insurance_company->get_address();
-
                     ?>
 <table border='0' cellpadding='0' width='100%'>
       <!--tr-->

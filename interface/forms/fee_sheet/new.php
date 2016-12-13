@@ -6,7 +6,7 @@
 * The changes to this file as of November 16 2016 to include the exclusion of information from claims
 * are covered under the terms of the Mozilla Public License, v. 2.0
 * 
-* @copyright Copyright (C) 2016 Terry Hill <terry@lillysystems.com>
+* @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
 * Copyright (C) 2005-2015 Rod Roark <rod@sunsetsystems.com>
 * 
 * LICENSE: This program is free software; you can redistribute it and/or 
@@ -26,7 +26,7 @@
 *
 * @package LibreEHR 
 * @author Rod Roark <rod@sunsetsystems.com>
-* @author Terry Hill <terry@lillysystems.com>
+* @author Terry Hill <teryhill@librehealth.io>
 * @link http://www.libreehr.org
 *
 * Please help the overall project by sending changes you make to the author and to the LibreEHR community.

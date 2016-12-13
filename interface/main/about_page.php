@@ -5,7 +5,7 @@
  * This Displays an About page for LibreEHR Displaying Version Number, Support Phone Number
  * If it have been entered in Globals along with the Manual and On Line Support Links
  * 
- * Copyright (C) 2016 Terry Hill <terry@lillysystems.com> 
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
  * 
  * LICENSE: This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License 
@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
  * @package LibreEHR 
- * @author Terry Hill <terry@lilysystems.com> 
- * @link http://www.open-emr.org 
+ * @author Terry Hill <teryhill@librehealth.io> 
+ * @link http://www.libreehr.org 
  *  
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  * 

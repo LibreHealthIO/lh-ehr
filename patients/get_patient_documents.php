@@ -6,7 +6,7 @@
  * The original author did not pursue this but I thought it would be a good addition to 
  * the patient portal 
  * 
- * Copyright (C) 2015 Terry Hill <terry@lillysystems.com> 
+ * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
  * Copyright (C) 2012 Giorgos Vasilakos <giorg.vasilakos@gmail.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or 
@@ -21,9 +21,9 @@
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
  * @package LibreEHR 
- * @author Terry Hill <terry@lilysystems.com> 
+ * @author Terry Hill <teryhill@librehealth.io> 
  * @author Giorgos Vasilakos <giorg.vasilakos@gmail.com>
- * @link http://www.open-emr.org 
+ * @link http://www.libreehr.org 
  * 
  */
     

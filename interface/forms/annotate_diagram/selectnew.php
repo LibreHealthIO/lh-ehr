@@ -37,7 +37,7 @@
  *
  * @package LibreEHR
  * @author  Jerry Padgett <sjpadgett@gmail.com> 
- * @author  Terry Hill <terry@lillysystems.com>
+ * @author  Terry Hill <teryhill@librehealth.io>
  * @link    http://www.libreehr.org
  */
 

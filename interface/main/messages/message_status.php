@@ -5,7 +5,7 @@
  * This file is included as an invisible iframe by forms that want to be
  * notified when a new message for the user comes in.
  *
- * Copyright (C) 2015-2016 Tony McCormick <tony@mi-squared.com> 
+ * Copyright (C) 2015-2017 Tony McCormick <tony@mi-squared.com> 
  * Copyright (C) 2012 Julia Longtin <julialongtin@diasp.org>
  *
  *
@@ -16,13 +16,13 @@
  * @package LibreEHR
  * @author  Julia Longtin <julialongtin@diasp.org>
  * @author  Tony McCormick <tony@mi-squared.com>
- * @author  Terry Hill <terry@lillysystems.com>
+ * @author  Terry Hill <teryhill@librehealth.io>
  * @link    http://www.libreehr.org
  *
  * This file is included as an invisible iframe by forms that want to be
  * notified when a new message for the user comes in.
  *
- * Added globals for the messages and the display interval 2016 Terry Hill <terry@lillysystems.com>
+ * Added globals for the messages and the display interval 2016 Terry Hill <teryhill@librehealth.io>
  */
 /* Sanitize All Escapes */
 $fake_register_globals = false;
