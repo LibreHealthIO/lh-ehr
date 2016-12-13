@@ -733,6 +733,14 @@
             "requirement": 0
           },
           {
+            "label": "Claim Status Request",
+            "menu_id": "rep0",
+            "target": "rep",
+            "url": "/interface/reports/edi_276.php",
+            "children": [],
+            "requirement": 0
+          },
+          {
             "label": "Chart Activity",
             "menu_id": "rep0",
             "target": "rep",
