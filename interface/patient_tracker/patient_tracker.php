@@ -610,9 +610,9 @@ if(!is_null($_POST['form_to_date']) ){
 <script language="javascript">
 /* required for popup calendar */
  Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- if($GLOBALS['ptkr_date_range']) { 
+ <?php if ($GLOBALS['ptkr_date_range']) { ?>
    Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
- }
+ <?php } ?>
 </script>
 </body>
 </html>
