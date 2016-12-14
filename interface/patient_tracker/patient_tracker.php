@@ -231,7 +231,7 @@ function openNewTopWindow(newpid,newencounterid) {
                     </select>
                 </td>
                 <td><?php echo xlt('Date') #appointment date ?>:
-                <input type=text style="width: 70px;" size=10 name='appt_date' id='appt_date'
+                <input type=text style="width: 75px;" size=10 name='appt_date' id='appt_date'
                        value='<?php echo attr($appt_date); ?>'
                        title='<?php echo xla('yyyy-mm-dd'); ?>'
                        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
