@@ -7,16 +7,9 @@
 * 
 * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
 * 
-* LICENSE: This program is free software; you can redistribute it and/or 
-* modify it under the terms of the GNU General Public License 
-* as published by the Free Software Foundation; either version 3 
-* of the License, or (at your option) any later version. 
-* This program is distributed in the hope that it will be useful, 
-* but WITHOUT ANY WARRANTY; without even the implied warranty of 
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-* GNU General Public License for more details. 
-* You should have received a copy of the GNU General Public License 
-* along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+* LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+* See the Mozilla Public License for more details. 
+* If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 * 
 * @package LibreEHR 
 * @author Terry Hill <teryhill@librehealth.io>
@@ -143,14 +136,14 @@ function get_Tracker_Time_Interval ($tracker_from_time, $tracker_to_time, $allow
     return $tracker_time ;
 } 
 
-function fetch_Patient_Tracker_Events($from_date, $to_date) 
+function fetch_Patient_Tracker_Events($from_date, $to_date, $provider_id = null, $facility_id = null, $form_apptstatus = null, $form_apptcat =null)
 {
     # used to determine which providers to display in the Patient Tracker
+    if ($provider_id == 'ALL'){
+      //set null to $provider id if it's 'all'
     $provider_id = null;
-    if ($_SESSION['userauthorized'] && $GLOBALS['docs_see_entire_calendar'] !='1') {
-      $provider_id = $_SESSION[authUserID];
     }
-    $events = fetchAppointments( $from_date, $to_date, null, $provider_id, null, null, null, null, null, true );
+    $events = fetchAppointments( $from_date, $to_date, null, $provider_id, $facility_id, $form_apptstatus, null, null, $form_apptcat, true );
     return $events;
 }
 
@@ -355,3 +348,16 @@ function random_drug_test($tracker_id,$percentage,$yearly_limit) {
                  "WHERE id =? ", array($drugtest,$tracker_id)); 
   }
 }
+
+/* get information the statuses of the appointments*/
+function getApptStatus($appointments){
+
+    $astat = array();
+    $astat['count_all'] = count($appointments);
+    //group the appointment by status
+    foreach($appointments as $appointment){
+        $astat[$appointment['pc_apptstatus']] += 1;
+    }
+    return $astat;
+}
+?>
