@@ -235,7 +235,7 @@ function openNewTopWindow(newpid,newencounterid) {
  ?>
                     </select>
                 </td>
-                <td class='label'><?php echo xlt('From'); ?>:</td>
+                <td class='label'><?php if($GLOBALS['ptkr_date_range']) { echo xlt('From'); } else { echo xlt('Date'); }?></td>
                 <td><input type='text' name='form_from_date' id="form_from_date"
                     size='10' value='<?php echo attr($from_date) ?>'
                     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
