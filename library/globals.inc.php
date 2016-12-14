@@ -1419,6 +1419,13 @@ $GLOBALS_METADATA = array(
       xl('When Checked, Patient Encounter Number Will Show in Patient Flow Board.')
     ),
 
+    'ptkr_date_range' => array(
+      xl('Allow Date Range in Patient Flow Board'),
+       'bool',                          // data type
+       '0',                             // default = false
+      xl('This Allows a Date Range to be Selected in Patient Flow Board.')
+    ),
+
     'pat_trkr_timer' => array(
       xl('Patient Flow Board Timer Interval'),
       array(

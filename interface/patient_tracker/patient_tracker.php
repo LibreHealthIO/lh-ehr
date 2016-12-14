@@ -42,7 +42,12 @@ else {
 $facility  = !is_null($_POST['form_facility']) ? $_POST['form_facility'] : null;
 $form_apptstatus = !is_null($_POST['form_apptstatus']) ? $_POST['form_apptstatus'] : null;
 $form_apptcat=null;
-$appt_date = !is_null($_POST['appt_date']) ? $_POST['appt_date'] : date("Y-m-d");
+$form_from_date = !is_null($_POST['form_from_date']) ? $_POST['form_from_date'] : date("Y-m-d");
+if($GLOBALS['ptkr_date_range']) {
+   $form_to_date = !is_null($_POST['form_to_date']) ? $_POST['form_to_date'] : date("Y-m-d");
+} else {
+   $form_to_date = !is_null($_POST['form_from_date']) ? $_POST['form_from_date'] : date("Y-m-d"); 
+}
 if(isset($_POST['form_apptcat']))
 {
     if($form_apptcat!="ALL")
@@ -54,12 +59,12 @@ if(isset($_POST['form_apptcat']))
 $appointments = array();
 #define variables, allow changing the to_date and from_date 
 #to allow picking a date to review
-$from_date = $appt_date; 
-$to_date = $appt_date;
+$from_date = $form_from_date; 
+$to_date = $form_to_date;
 $datetime = date("Y-m-d H:i:s");
 # go get the information and process it
 $appointments = fetch_Patient_Tracker_Events($from_date, $to_date, $provider, $facility, $form_apptstatus, $form_apptcat);
-$appointments = sortAppointments( $appointments, 'time' );
+$appointments = sortAppointments( $appointments, 'date','time' );
 
 //grouping of the count of every status
 $appointments_status = getApptStatus($appointments);
@@ -230,14 +235,24 @@ function openNewTopWindow(newpid,newencounterid) {
  ?>
                     </select>
                 </td>
-                <td><?php echo xlt('Date') #appointment date ?>:
-                <input type=text size=10 name='appt_date' id='appt_date'
-                       value='<?php echo attr($appt_date); ?>'
-                       title='<?php echo xla('yyyy-mm-dd'); ?>'
-                       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-                <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                       id='img_appt_date' border='0' alt='[?]' style='cursor:pointer'
-                       title='<?php echo xla("Click here to choose a date"); ?>'></td>
+                <td class='label'><?php echo xlt('From'); ?>:</td>
+                <td><input type='text' name='form_from_date' id="form_from_date"
+                    size='10' value='<?php echo attr($from_date) ?>'
+                    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
+                    title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
+                    align='absbottom' width='24' height='22' id='img_from_date'
+                    border='0' alt='[?]' style='cursor: pointer'
+                    title='<?php echo xlt('Click here to choose a date'); ?>'></td>
+                <?php if($GLOBALS['ptkr_date_range']) { ?>
+                <td class='label'><?php echo xlt('To'); ?>:</td>
+                <td><input type='text' name='form_to_date' id="form_to_date"
+                    size='10' value='<?php echo attr($to_date) ?>'
+                    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
+                    title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
+                    align='absbottom' width='24' height='22' id='img_to_date'
+                    border='0' alt='[?]' style='cursor: pointer'
+                    title='<?php echo xlt('Click here to choose a date'); ?>'></td>
+                <?php } ?>
 
                 <td style="border-left: 1px solid;">
                     <div style='margin-left: 15px'>
@@ -258,9 +273,17 @@ function openNewTopWindow(newpid,newencounterid) {
 
 <div>
   <?php if (count($chk_prov) == 1) {?>
-  <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' '. xlt('on') . ' : ' . text(oeFormatShortDate($appt_date)) ?></span></h2>
+    <?php if($GLOBALS['ptkr_date_range']) { ?>
+      <h2><span style='float: left'><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text(oeFormatShortDate($from_date)) . ' ' . xlt('to'). ' ' . text(oeFormatShortDate($to_date)) ?></span></h2>
+    <?php } else { ?>
+      <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' : '. xlt('Date') . ' ' . text(oeFormatShortDate($from_date)) ?></span></h2>
+    <?php } ?>
   <?php } else { ?>
-  <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : ' . text(oeFormatShortDate($appt_date)) ?></span></h2>
+    <?php if($GLOBALS['ptkr_date_range']) { ?>
+      <h2><span style='float: left'><?php echo xlt('Appointments Date Range'). ' : ' . text(oeFormatShortDate($from_date)) . ' ' . xlt('to'). ' ' . text(oeFormatShortDate($to_date)) ?></span></h2>
+  <?php } else { ?>
+      <h2><span style='float: left'><?php echo xlt('Appointment Date'). ' : ' . text(oeFormatShortDate($from_date)) ?></span></h2>
+  <?php } ?>
   <?php } ?>
  <div id= 'inanewwindow' class='inanewwindow'>
  <span style='float: right'>
@@ -318,6 +341,11 @@ function openNewTopWindow(newpid,newencounterid) {
   <td class="dehead" align="center">
    <?php  echo xlt('Exam Room #'); ?>
   </td>
+  <?php if($GLOBALS['ptkr_date_range']) { ?>
+  <td class="dehead" align="center">
+   <?php  echo xlt('Appt Date'); ?>
+  </td>
+  <?php } ?>
   <td class="dehead" align="center">
    <?php  echo xlt('Appt Time'); ?>
   </td>
@@ -418,6 +446,11 @@ function openNewTopWindow(newpid,newencounterid) {
          <td class="detail" align="center">
          <?php echo getListItemTitle('patient_flow_board_rooms', $appt_room);?>
          </td>
+         <?php if($GLOBALS['ptkr_date_range']) { ?>
+         <td class="detail" align="center">
+         <?php echo oeFormatShortDate($date_appt) ?>
+         </td>
+         <?php } ?>
          <td class="detail" align="center">
          <?php echo oeFormatTime($appt_time) ?>
          </td>
@@ -537,8 +570,11 @@ if(!is_null($_POST['form_apptstatus']) ){
 if(!is_null($_POST['form_apptcat']) ){
     echo "<input type='hidden' name='form_apptcat' value='" . attr($_POST['form_apptcat']) . "'>";
 }
-if(!is_null($_POST['appt_date']) ){
-    echo "<input type='hidden' name='appt_date' value='" . attr($_POST['appt_date']) . "'>";
+if(!is_null($_POST['form_from_date']) ){
+    echo "<input type='hidden' name='form_from_date' value='" . attr($_POST['form_from_date']) . "'>";
+}
+if(!is_null($_POST['form_to_date']) ){
+    echo "<input type='hidden' name='form_to_date' value='" . attr($_POST['form_to_date']) . "'>";
 }
 ?>
 
@@ -573,7 +609,10 @@ if(!is_null($_POST['appt_date']) ){
 </form>
 <script language="javascript">
 /* required for popup calendar */
-Calendar.setup({inputField:"appt_date", ifFormat:"%Y-%m-%d", button:"img_appt_date"});
+ Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
+ if($GLOBALS['ptkr_date_range']) { 
+   Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+ }
 </script>
 </body>
 </html>
