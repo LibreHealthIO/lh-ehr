@@ -242,7 +242,7 @@ function openNewTopWindow(newpid,newencounterid) {
                     title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
                     align='absbottom' width='24' height='22' id='img_from_date'
                     border='0' alt='[?]' style='cursor: pointer'
-                    title='<?php echo xlt('Click here to choose a date'); ?>'></td>
+                    title='<?php echo xla('Click here to choose a date'); ?>'></td>
                 <?php if($GLOBALS['ptkr_date_range']) { ?>
                 <td class='label'><?php echo xlt('To'); ?>:</td>
                 <td><input type='text' name='form_to_date' id="form_to_date"
@@ -251,7 +251,7 @@ function openNewTopWindow(newpid,newencounterid) {
                     title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
                     align='absbottom' width='24' height='22' id='img_to_date'
                     border='0' alt='[?]' style='cursor: pointer'
-                    title='<?php echo xlt('Click here to choose a date'); ?>'></td>
+                    title='<?php echo xla('Click here to choose a date'); ?>'></td>
                 <?php } ?>
 
                 <td style="border-left: 1px solid;">
