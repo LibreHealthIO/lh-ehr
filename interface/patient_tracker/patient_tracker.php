@@ -29,8 +29,6 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient_tracker.inc.php");
 require_once("$srcdir/user.inc");
-#define variables, future enhancement allow changing the to_date and from_date 
-#to allow picking a date to review
 
 if (!is_null($_POST['form_provider'])) {
   $provider = $_POST['form_provider'];
@@ -44,6 +42,7 @@ else {
 $facility  = !is_null($_POST['form_facility']) ? $_POST['form_facility'] : null;
 $form_apptstatus = !is_null($_POST['form_apptstatus']) ? $_POST['form_apptstatus'] : null;
 $form_apptcat=null;
+$appt_date = !is_null($_POST['appt_date']) ? $_POST['appt_date'] : date("Y-m-d");
 if(isset($_POST['form_apptcat']))
 {
     if($form_apptcat!="ALL")
@@ -53,8 +52,10 @@ if(isset($_POST['form_apptcat']))
 }
  
 $appointments = array();
-$from_date = date("Y-m-d");
-$to_date = date("Y-m-d");
+#define variables, allow changing the to_date and from_date 
+#to allow picking a date to review
+$from_date = $appt_date; 
+$to_date = $appt_date;
 $datetime = date("Y-m-d H:i:s");
 # go get the information and process it
 $appointments = fetch_Patient_Tracker_Events($from_date, $to_date, $provider, $facility, $form_apptstatus, $form_apptcat);
@@ -93,6 +94,11 @@ foreach ( $appointments as $apt ) {
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
+<!-- pop up calendar -->
+<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_en.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 
 <script language="JavaScript">
 // Refresh self
@@ -224,6 +230,15 @@ function openNewTopWindow(newpid,newencounterid) {
  ?>
                     </select>
                 </td>
+                <td><?php echo xlt('Date') #appointment date ?>:
+                <input type=text style="width: 70px;" size=10 name='appt_date' id='appt_date'
+                       value='<?php echo attr($appt_date); ?>'
+                       title='<?php echo xla('yyyy-mm-dd'); ?>'
+                       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
+                <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+                       id='img_appt_date' border='0' alt='[?]' style='cursor:pointer'
+                       title='<?php echo xla("Click here to choose a date"); ?>'></td>
+
                 <td style="border-left: 1px solid;">
                     <div style='margin-left: 15px'>
                         <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
@@ -243,7 +258,9 @@ function openNewTopWindow(newpid,newencounterid) {
 
 <div>
   <?php if (count($chk_prov) == 1) {?>
-  <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) ?></span></h2>
+  <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' '. xlt('on') . ' : ' . text(oeFormatShortDate($appt_date)) ?></span></h2>
+  <?php } else { ?>
+  <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : ' . text(oeFormatShortDate($appt_date)) ?></span></h2>
   <?php } ?>
  <div id= 'inanewwindow' class='inanewwindow'>
  <span style='float: right'>
@@ -520,6 +537,9 @@ if(!is_null($_POST['form_apptstatus']) ){
 if(!is_null($_POST['form_apptcat']) ){
     echo "<input type='hidden' name='form_apptcat' value='" . attr($_POST['form_apptcat']) . "'>";
 }
+if(!is_null($_POST['appt_date']) ){
+    echo "<input type='hidden' name='appt_date' value='" . attr($_POST['appt_date']) . "'>";
+}
 ?>
 
 </table>
@@ -551,5 +571,9 @@ if(!is_null($_POST['form_apptcat']) ){
 <input type='hidden' name='patientID'      value='0' />
 <input type='hidden' name='encounterID'    value='0' />
 </form>
+<script language="javascript">
+/* required for popup calendar */
+Calendar.setup({inputField:"appt_date", ifFormat:"%Y-%m-%d", button:"img_appt_date"});
+</script>
 </body>
 </html>
