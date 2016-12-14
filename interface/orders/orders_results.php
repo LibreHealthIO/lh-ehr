@@ -38,7 +38,7 @@ if ($_GET['set_pid'] && $form_review) {
   $result = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
   ?>
   <script language='JavaScript'>
-    parent.left_nav.setPatient(<?php echo "'" . addslashes($result['fname']) . " " . addslashes($result['lname']) . "',$pid,'" . addslashes($result['pubpid']) . "','', ' " . xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAge($result['DOB_YMD']) . "'"; ?>);
+    parent.left_nav.setPatient(<?php echo "'" . addslashes($result['fname']) . " " . addslashes($result['lname']) . "',$pid,'" . addslashes($result['pid']) . "','', ' " . xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAge($result['DOB_YMD']) . "'"; ?>);
     parent.left_nav.setRadio(window.name, 'orp');
   </script>
   <?php
@@ -400,7 +400,7 @@ $where = "1 = 1";
 
 if ($form_batch) {
   $query = "SELECT po.patient_id, " .
-  "pd.fname, pd.mname, pd.lname, pd.pubpid, $selects " .
+  "pd.fname, pd.mname, pd.lname, pd.pid, $selects " .
   "FROM procedure_order AS po " .
   "LEFT JOIN patient_data AS pd ON pd.pid = po.patient_id $joins " .
   "WHERE pt1.procedure_type_id = '$form_proc_type' AND " .
@@ -526,7 +526,7 @@ while ($row = sqlFetchArray($res)) {
           if ($row['fname'] || $row['mname'])
             $tmp .= ', ' . $row['fname'] . ' ' . $row['mname'];
           echo "  <td>" . text($tmp) . "</td>\n";
-          echo "  <td>" . text($row['pubpid']) . "</td>\n";
+          echo "  <td>" . text($row['pid']) . "</td>\n";
         }
         else {
           echo "  <td colspan='2' style='background-color:transparent'>&nbsp;</td>";

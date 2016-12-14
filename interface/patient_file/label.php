@@ -34,7 +34,7 @@ require_once("$srcdir/formatting.inc.php");
 //Get the data to place on labels
 //
 $patdata = sqlQuery("SELECT " .
-  "p.fname, p.mname, p.lname, p.pubpid, p.DOB, " .
+  "p.fname, p.mname, p.lname, p.DOB, " .
   "p.street, p.city, p.state, p.postal_code, p.pid " .
   "FROM patient_data AS p " .
   "WHERE p.pid = ? LIMIT 1", array($pid));

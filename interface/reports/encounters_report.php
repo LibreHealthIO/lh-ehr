@@ -42,7 +42,7 @@ $alertmsg = ''; // not used yet but maybe later
 $ORDERHASH = array(
   'doctor'  => 'lower(u.lname), lower(u.fname), fe.date',
   'patient' => 'lower(p.lname), lower(p.fname), fe.date',
-  'pubpid'  => 'lower(p.pubpid), fe.date',
+  'pid'  => 'lower(p.pid), fe.date',
   'time'    => 'fe.date, lower(u.lname), lower(u.fname)',
   'encounter'    => 'fe.encounter, fe.date, lower(u.lname), lower(u.fname)',
 );
@@ -345,8 +345,8 @@ $res = sqlStatement($query);
    <?php if ($form_orderby == "patient") echo " style=\"color:#00cc00\"" ?>><?php echo xlt('Patient'); ?></a>
   </th>
   <th>
-   <a href="nojs.php" onclick="return dosort('pubpid')"
-   <?php if ($form_orderby == "pubpid") echo " style=\"color:#00cc00\"" ?>><?php echo xlt('ID'); ?></a>
+   <a href="nojs.php" onclick="return dosort('pid')"
+   <?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>><?php echo xlt('ID'); ?></a>
   </th>
   <th>
    <?php echo xlt('Status'); ?>
@@ -439,7 +439,7 @@ if ($res) {
    <?php echo text($row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname']); ?>&nbsp;
   </td>
   <td>
-   <?php echo text($row['pubpid']); ?>&nbsp;
+   <?php echo text($row['pid']); ?>&nbsp;
   </td>
   <td>
    <?php echo text($status); ?>&nbsp;

@@ -1489,8 +1489,10 @@ function &postcalendar_userapi_pcGetEventDetails($eid)
          $event['startTime'],  $event['recurrtype'],  $event['recurrfreq'],
          $event['recurrspec'], $event['topic'],       $event['alldayevent'],
          $event['location'],   $event['conttel'],     $event['contname'],
-         $event['contemail'],  $event['website'],     $event['fee'], $event['sharing'],
-         $event['catcolor'],   $event['catname'],     $event['catdesc'], $event['pid'], $event['aid'],$event['pubpid']) = $result->fields;
+         $event['contemail'],  $event['website'],     $event['fee'],
+         $event['sharing'],	   $event['catcolor'],    $event['catname'],
+         $event['catdesc'],    $event['pid'],         $event['aid'],
+         $event['pubpid']) = $result->fields;
     // there has to be a more intelligent way to do this
     @list($event['duration_hours'],$dmin) = @explode('.',($event['duration']/60/60));
     $event['duration_minutes'] = substr(sprintf('%.2f','.' . 60*($dmin/100)),2,2);

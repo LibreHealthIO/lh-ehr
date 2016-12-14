@@ -16,11 +16,11 @@ require_once("$srcdir/classes/Pharmacy.class.php");
 <body class="body_title">
 
 <?php
- $result = getPatientData($pid, "fname,lname,pid,pubpid,phone_home,pharmacy_id,DOB,DATE_FORMAT(DOB,'%Y%m%d') as DOB_YMD");
+ $result = getPatientData($pid, "fname,lname,pid,phone_home,pharmacy_id,DOB,DATE_FORMAT(DOB,'%Y%m%d') as DOB_YMD");
  $provider_results = sqlQuery("select * from users where username='" . $_SESSION{"authUser"} . "'");
  $age = getPatientAge($result["DOB_YMD"]);
 
- $info = 'ID: ' . $result['pubpid'];
+ $info = 'ID: ' . $result['pid'];
  if ($result['DOB']) $info .= ', DOB: ' . $result['DOB'] . ', Age: ' . $age;
  if ($result['phone_home']) $info .= ', Home: ' . $result['phone_home'];
 

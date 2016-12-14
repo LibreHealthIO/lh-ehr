@@ -320,8 +320,8 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
      <?php if ($form_orderby == "patient") echo " style=\"color:#00cc00\"" ?>>&nbsp;&nbsp;&nbsp;<?php  echo xlt('Patient'); ?></a>
         </th>
 
-        <th><a href="nojs.php" onclick="return dosort('pubpid')"
-     <?php if ($form_orderby == "pubpid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
+        <th><a href="nojs.php" onclick="return dosort('pid')"
+     <?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
         </th>
 
         <th><a href="nojs.php" onclick="return dosort('type')"
@@ -378,12 +378,12 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         </th>
 
      <?php if (!$chk_show_completed_drug_screens) { ?>
-        <th><a href="nojs.php" onclick="return dosort('pubpid')"
-      <?php if ($form_orderby == "pubpid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
+        <th><a href="nojs.php" onclick="return dosort('pid')"
+      <?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
         </th>
       <?php } else { ?>       
-        <th><a href="nojs.php" onclick="return dosort('pubpid')"
-      <?php if ($form_orderby == "pubpid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
+        <th><a href="nojs.php" onclick="return dosort('pid')"
+      <?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
         </th>    
      <?php } ?>
     
@@ -481,7 +481,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td class="detail">&nbsp;<?php echo text($appointment['fname'] . " " . $appointment['lname']) ?>
         </td>
 
-        <td class="detail">&nbsp;<?php echo text($appointment['pubpid']) ?>
+        <td class="detail">&nbsp;<?php echo text($appointment['pid']) ?>
         </td>
 
         <td class="detail">&nbsp;<?php echo text(xl_appt_category($appointment['pc_catname'])) ?>
@@ -608,7 +608,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td class="detail">&nbsp;<?php echo text($appointment['fname'] . " " . $appointment['lname']) ?>
         </td>
 
-        <td class="detail">&nbsp;<?php echo text($appointment['pubpid']) ?></td>
+        <td class="detail">&nbsp;<?php echo text($appointment['pid']) ?></td>
 
         <td class="detail" align = >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if ($appointment['random_drug_test'] == '1') {  echo xlt('Yes'); }  else { echo xlt('No'); }?></td>
  

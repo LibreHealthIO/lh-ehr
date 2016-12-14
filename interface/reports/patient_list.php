@@ -222,7 +222,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   $totalpts = 0;
   $query = "SELECT " .
    "p.fname, p.mname, p.lname, p.street, p.city, p.state, " .
-   "p.postal_code, p.phone_home, p.phone_biz, p.pid, p.pubpid, " .
+   "p.postal_code, p.phone_home, p.phone_biz, p.pid, " .
    "count(e.date) AS ecount, max(e.date) AS edate, " .
    "i1.date AS idate1, i2.date AS idate2, " .
    "c1.name AS cname1, c2.name AS cname2 " .
@@ -279,7 +279,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     echo '"' . qescape($row['lname']) . '",';
     echo '"' . qescape($row['fname']) . '",';
     echo '"' . qescape($row['mname']) . '",';
-    echo '"' . qescape($row['pubpid']) . '",';
+    echo '"' . qescape($row['pid']) . '",';
     echo '"' . qescape($row['street']) . '",';
     echo '"' . qescape($row['city']) . '",';
     echo '"' . qescape($row['state']) . '",';
@@ -297,7 +297,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     <?php echo htmlspecialchars( $row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname'] ) ?>
   </td>
   <td>
-   <?php echo $row['pubpid'] ?>
+   <?php echo $row['pid'] ?>
   </td>
   <td>
    <?php echo $row['street'] ?>

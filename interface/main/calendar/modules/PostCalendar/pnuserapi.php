@@ -986,7 +986,7 @@ function &postcalendar_userapi_pcQueryEvents($args)
     "concat(u.fname,' ',u.lname) as provider_name, " .
     "concat(pd.lname,', ',pd.fname) as patient_name, " .
     "concat(u2.fname, ' ', u2.lname) as owner_name, " .
-    "DOB as patient_dob, a.pc_facility, pd.pubpid " .
+    "DOB as patient_dob, a.pc_facility, pd.pid " .
     "FROM  ( $table AS a ) " .
     "LEFT JOIN $cattable AS b ON b.pc_catid = a.pc_catid ".
     "LEFT JOIN users as u ON a.pc_aid = u.id " .

@@ -257,7 +257,7 @@ function generate_order_report($orderid, $input_form=false, $genstyles=true, $fi
   $orow = sqlQuery("SELECT " .
     "po.procedure_order_id, po.date_ordered, po.control_id, " .
     "po.order_status, po.specimen_type, po.patient_id, " .
-    "pd.pubpid, pd.lname, pd.fname, pd.mname, pd.language, " .
+    "pd.pid, pd.lname, pd.fname, pd.mname, pd.language, " .
     "fe.date, " .
     "pp.name AS labname, " .
     "u.lname AS ulname, u.fname AS ufname, u.mname AS umname " .
@@ -375,7 +375,7 @@ function educlick(codetype, codevalue) {
 <table width='100%' cellpadding='2' cellspacing='0'>
  <tr>
   <td class="td-label" width='5%' nowrap><?php echo xlt('Patient ID'); ?></td>
-  <td width='45%'><?php echo myCellText($orow['pubpid']); ?></td>
+  <td width='45%'><?php echo myCellText($orow['pid']); ?></td>
   <td class="td-label" width='5%' nowrap><?php echo xlt('Order ID'); ?></td>
   <td width='45%'>
 <?php

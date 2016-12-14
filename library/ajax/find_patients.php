@@ -33,14 +33,14 @@ function myQueryPatients($where) {
 $fname  = myGetValue('fname');
 $mname  = myGetValue('mname');
 $lname  = myGetValue('lname');
-$pubpid = myGetValue('pubpid');
+$pid = myGetValue('pid');
 $ss     = myGetValue('ss');
 
 $error = 0;
 $message = '';
 
-if ($pubpid) {
-  if (myQueryPatients("pubpid LIKE '$pubpid'")) {
+if ($pid) {
+  if (myQueryPatients("pid LIKE '$pid'")) {
     $error = 2;
     $message = xl('A patient with this ID already exists.');
     $fname = $mname = $lname = $ss = '';
@@ -51,7 +51,7 @@ if (!$error && $ss) {
   if (myQueryPatients("ss LIKE '$ss'")) {
     $error = 2;
     $message = xl('A patient with this SS already exists.');
-    $fname = $mname = $lname = $pubpid = '';
+    $fname = $mname = $lname = $pid = '';
   }
 }
 
@@ -62,7 +62,7 @@ if (!$error && ($fname || $lname || $mname)) {
   if (myQueryPatients("$nametest")) {
     $error = 1;
     $message = xl('A patient with this name already exists.');
-    $pubpid = $ss = '';
+    $pid = $ss = '';
   }
 }
 
@@ -72,7 +72,7 @@ if ($error) {
     echo "f.create.value = '" . xl('Force Create New Patient') . "';\n";
   }
   $message = addslashes($message);
-  echo "show_matches('$fname', '$mname', '$lname', '$pubpid', '$ss', '$message')\n";
+  echo "show_matches('$fname', '$mname', '$lname', '$pid', '$ss', '$message')\n";
 }
 else {
   echo "f.submit()\n";

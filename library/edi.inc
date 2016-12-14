@@ -572,7 +572,7 @@ function show_elig($res,$X12info,$segTer,$compEleSep){
 		$elig[15] = substr($row['sex'], 0, 1);				// Dependent Sex 
 		$elig[16] = $row['pc_eventDate'];				// Date of service 
 		$elig[17] = "30";						// Service Type 
-		$elig[18] = $row['pubpid'];					// Patient Account Number pubpid  
+		$elig[18] = $row['pid'];					// Patient Account Number pid  
 
 		echo "	<tr id='PR".$i."_". htmlspecialchars( $row['policy_number'], ENT_QUOTES)."'>
 				<td class ='detail' style='width:12%;'>". htmlspecialchars( $row['facility_name'], ENT_NOQUOTES) ."</td>

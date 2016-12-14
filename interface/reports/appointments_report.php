@@ -341,8 +341,8 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
 	<?php if ($form_orderby == "patient") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Patient'); ?></a>
 		</th>
 
-		<th><a href="nojs.php" onclick="return dosort('pubpid')"
-	<?php if ($form_orderby == "pubpid") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('ID'); ?></a>
+		<th><a href="nojs.php" onclick="return dosort('pid')"
+	<?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('ID'); ?></a>
 		</th>
 
          	<th><?php echo xlt('Home'); //Sorting by phone# not really useful ?></th>
@@ -418,7 +418,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
 		<td class="detail">&nbsp;<?php echo text($appointment['fname'] . " " . $appointment['lname']) ?>
 		</td>
 
-		<td class="detail">&nbsp;<?php echo text($appointment['pubpid']) ?></td>
+		<td class="detail">&nbsp;<?php echo text($appointment['pid']) ?></td>
 
         <td class="detail">&nbsp;<?php echo text($appointment['phone_home']) ?></td>
 

@@ -59,7 +59,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
   if ($is_ins_summary) {
     $form_cb_ssn      = false;
     $form_cb_dob      = false;
-    $form_cb_pubpid   = false;
+    $form_cb_pid   = false;
     $form_cb_adate    = false;
     $form_cb_policy   = false;
     $form_cb_phone    = false;
@@ -71,7 +71,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
   } else {
     $form_cb_ssn      = $_POST['form_cb_ssn']      ? true : false;
     $form_cb_dob      = $_POST['form_cb_dob']      ? true : false;
-    $form_cb_pubpid   = $_POST['form_cb_pubpid']   ? true : false;
+    $form_cb_pid   = $_POST['form_cb_pid']   ? true : false;
     $form_cb_adate    = $_POST['form_cb_adate']    ? true : false;
     $form_cb_policy   = $_POST['form_cb_policy']   ? true : false;
     $form_cb_phone    = $_POST['form_cb_phone']    ? true : false;
@@ -84,7 +84,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
 } else {
   $form_cb_ssn      = true;
   $form_cb_dob      = false;
-  $form_cb_pubpid   = false;
+  $form_cb_pid   = false;
   $form_cb_adate    = false;
   $form_cb_policy   = false;
   $form_cb_phone    = true;
@@ -107,7 +107,7 @@ $initial_colspan = 1;
 if ($is_due_ins      ) ++$initial_colspan;
 if ($form_cb_ssn     ) ++$initial_colspan;
 if ($form_cb_dob     ) ++$initial_colspan;
-if ($form_cb_pubpid  ) ++$initial_colspan;
+if ($form_cb_pid  ) ++$initial_colspan;
 if ($form_cb_policy  ) ++$initial_colspan;
 if ($form_cb_phone   ) ++$initial_colspan;
 if ($form_cb_city    ) ++$initial_colspan;
@@ -351,7 +351,7 @@ function checkAll(checked) {
 						   <?php echo xlt('DOB') ?>&nbsp;</label>
 						</td>
 						<td>
-						   <label><input type='checkbox' name='form_cb_pubpid'<?php if ($form_cb_pubpid) echo ' checked'; ?>>
+						   <label><input type='checkbox' name='form_cb_pid'<?php if ($form_cb_pid) echo ' checked'; ?>>
 						   <?php echo xlt('ID') ?>&nbsp;</label>
 						</td>
 						<td>
@@ -613,7 +613,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
       "f.last_level_closed, f.last_stmt_date, f.stmt_count, f.invoice_refno, " .
       "p.fname, p.mname, p.lname, p.street, p.city, p.state, " .
       "p.postal_code, p.phone_home, p.ss, p.billing_note, " .
-      "p.pubpid, p.DOB, CONCAT(u.lname, ', ', u.fname) AS referrer, " .
+      "p.pid, p.DOB, CONCAT(u.lname, ', ', u.fname) AS referrer, " .
       "( SELECT SUM(b.fee) FROM billing AS b WHERE " .
       "b.pid = f.pid AND b.encounter = f.encounter AND " .
       "b.activity = 1 AND b.code_type != 'COPAY' ) AS charges, " .
@@ -700,7 +700,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
       $row['dos']       = $svcdate;
       $row['ss']        = $erow['ss'];
       $row['DOB']       = $erow['DOB'];
-      $row['pubpid']    = $erow['pubpid'];
+      $row['pid']    = $erow['pid'];
       $row['billnote']  = $erow['billing_note'];
       $row['referrer']  = $erow['referrer'];
       $row['provider']  = $erow['provider_id'];
@@ -855,7 +855,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
 <?php if ($form_cb_dob) { ?>
   <th>&nbsp;<?php echo xlt('DOB')?></th>
 <?php } ?>
-<?php if ($form_cb_pubpid) { ?>
+<?php if ($form_cb_pid) { ?>
   <th>&nbsp;<?php echo xlt('ID')?></th>
 <?php } ?>
 <?php if ($form_cb_policy) { ?>
@@ -981,8 +981,8 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
         if ($form_cb_dob) {
           echo "  <td class='detail'>&nbsp;" . attr(oeFormatShortDate($row['DOB'])) . "</td>\n";
         }
-        if ($form_cb_pubpid) {
-          echo "  <td class='detail'>&nbsp;" . attr($row['pubpid']) . "</td>\n";
+        if ($form_cb_pid) {
+          echo "  <td class='detail'>&nbsp;" . attr($row['pid']) . "</td>\n";
         }
         if ($form_cb_policy) {
           echo "  <td class='detail'>&nbsp;" . attr($row['policy']) . "</td>\n";
@@ -1090,7 +1090,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
       } 
       if ($form_cb_pubid) 
       {
-        echo '"' . $row['pubpid']                       . '",';        
+        echo '"' . $row['pid']                       . '",';        
       }
       if ($form_cb_policy) 
       {

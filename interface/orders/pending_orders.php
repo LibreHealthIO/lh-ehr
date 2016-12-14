@@ -24,7 +24,7 @@ function thisLineItem($row) {
 
   if ($_POST['form_csvexport']) {
     echo '"' . addslashes($row['patient_name'  ]) . '",';
-    echo '"' . addslashes($row['pubpid'        ]) . '",';
+    echo '"' . addslashes($row['pid'        ]) . '",';
     echo '"' . addslashes(oeFormatShortDate($row['date_ordered'  ])) . '",';
     echo '"' . addslashes($row['organization'  ]) . '",';
     echo '"' . addslashes($provname             ) . '",';
@@ -35,7 +35,7 @@ function thisLineItem($row) {
 ?>
  <tr>
   <td class="detail"><?php echo $row['patient_name'  ]; ?></td>
-  <td class="detail"><?php echo $row['pubpid'        ]; ?></td>
+  <td class="detail"><?php echo $row['pid'        ]; ?></td>
   <td class="detail"><?php echo oeFormatShortDate($row['date_ordered'  ]); ?></td>
   <td class="detail"><?php echo $row['organization'  ]; ?></td>
   <td class="detail"><?php echo $provname; ?></td>
@@ -148,7 +148,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   $to_date   = $form_to_date;
 
   $query = "SELECT po.patient_id, po.date_ordered, " .
-    "pd.pubpid, " .
+    "pd.pid, " .
     "CONCAT(pd.lname, ', ', pd.fname, ' ', pd.mname) AS patient_name, " .
     "u1.lname AS provider_lname, u1.fname AS provider_fname, u1.mname AS provider_mname, " .
     "pp.name AS organization, " .

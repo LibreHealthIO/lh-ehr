@@ -664,7 +664,7 @@ function clearactive() {
  // of the frame that the call came from, so we know to only reload content
  // from the *other* frame if it is patient-specific.
  function setPatient(pname, pid, pubpid, frname, str_dob) {
-  var str = '<a href=\'javascript:;\' onclick="parent.left_nav.loadCurrentPatientFromTitle()" title="PID = ' + pid + '"><b>' + pname + ' (' + pubpid + ')<br /></b></a>';
+  var str = '<a href=\'javascript:;\' onclick="parent.left_nav.loadCurrentPatientFromTitle()" title="PID = ' + pid + '"><b>' + pname + ' (' + pid + ')<br /></b></a>';
   setDivContent('current_patient', str);
   setTitleContent('current_patient', str + str_dob);
   if (pid == active_pid) return;

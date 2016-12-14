@@ -69,8 +69,8 @@ $form_patient_id = trim($_POST['form_patient_id']);
 $curr_pid = $pid;
 $ptrow = array();
 if (!empty($form_patient_id)) {
-  $query = "SELECT pid, pubpid, fname, mname, lname FROM patient_data WHERE " .
-    "pubpid = ? ORDER BY pid LIMIT 1";
+  $query = "SELECT pid, fname, mname, lname FROM patient_data WHERE " .
+    "pid = ? ORDER BY pid LIMIT 1";
   $ptrow = sqlQuery($query,array($form_patient_id));
   if (empty($ptrow)) {
     $curr_pid = 0;
@@ -81,15 +81,15 @@ if (!empty($form_patient_id)) {
   }
 }
 else if (!empty($curr_pid)) {
-  $query = "SELECT pid, pubpid, fname, mname, lname FROM patient_data WHERE " .
+  $query = "SELECT pid, fname, mname, lname FROM patient_data WHERE " .
     "pid = ?";
   $ptrow = sqlQuery($query,array($curr_pid));
-  $form_patient_id = $ptrow['pubpid'];
+  $form_patient_id = $ptrow['pid'];
 }
 if (!empty($ptrow)) {
   echo '<span class="title">' . text(xl('for','','',' '));
   echo text($ptrow['lname']) . ', ' . text($ptrow['fname']) . ' ' . text($ptrow['mname']) . ' ';
-  echo "(" . text($ptrow['pubpid']) . ")";
+  echo "(" . text($ptrow['pid']) . ")";
   echo "</span>\n";
 }
 ?>

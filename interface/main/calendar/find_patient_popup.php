@@ -236,7 +236,7 @@ foreach ($result as $iter) {
     echo "  <td class='srPhone'>" . htmlspecialchars( $iter['phone_home'], ENT_NOQUOTES) . "</td>\n"; //(CHEMED) Search by phone number
     echo "  <td class='srSS'>" . htmlspecialchars( $iter['ss'], ENT_NOQUOTES) . "</td>\n";
     echo "  <td class='srDOB'>" . htmlspecialchars( $iter['DOB'], ENT_NOQUOTES) . "</td>\n";
-    echo "  <td class='srID'>" . htmlspecialchars( $iter['pubpid'], ENT_NOQUOTES) . "</td>\n";
+    echo "  <td class='srID'>" . htmlspecialchars( $iter['pid'], ENT_NOQUOTES) . "</td>\n";
     echo " </tr>";
 }
 ?>

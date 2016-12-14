@@ -117,7 +117,7 @@ function doSubs($s) {
     }
 
     else if (keySearch($s, '{PatientID}')) {
-      $s = keyReplace($s, dataFixup($ptrow['pubpid'], xl('Chart ID')));
+      $s = keyReplace($s, dataFixup($ptrow['pid'], xl('Chart ID')));
     }
 
     else if (keySearch($s, '{Address}')) {

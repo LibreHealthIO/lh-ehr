@@ -211,7 +211,7 @@
   $where = "r.date_modified >= '$form_from_date' AND " .
    "r.date_modified <= '$form_to_date'";
   //if ($form_patient_id) $where .= " AND r.patient_id = '$form_patient_id'";
-  if ($form_patient_id) $where .= " AND p.pubpid = '$form_patient_id'";
+  if ($form_patient_id) $where .= " AND p.pid = '$form_patient_id'";
   if ($form_drug_name ) $where .= " AND (d.name LIKE '$form_drug_name' OR r.drug LIKE '$form_drug_name')";
   if ($form_lot_number) $where .= " AND i.lot_number LIKE '$form_lot_number'";
 
@@ -220,7 +220,7 @@
    "d.name, d.ndc_number, d.form, d.size, d.unit, d.reactions, " .
    "s.sale_id, s.sale_date, s.quantity, " .
    "i.manufacturer, i.lot_number, i.expiration, " .
-   "p.pubpid, ".
+   "p.pid, ".
    "p.fname, p.lname, p.mname, u.facility_id " .
    "FROM prescriptions AS r " .
    "LEFT OUTER JOIN drugs AS d ON d.drug_id = r.drug_id " .
@@ -230,7 +230,7 @@
    "LEFT OUTER JOIN users AS u ON u.id = r.provider_id " .
    "WHERE $where " .
    //"ORDER BY p.lname, p.fname, r.patient_id, r.id, s.sale_id";
-   "ORDER BY p.lname, p.fname, p.pubpid, r.id, s.sale_id";
+   "ORDER BY p.lname, p.fname, p.pid, r.id, s.sale_id";
 
   // echo "<!-- $query -->\n"; // debugging
   $res = sqlStatement($query);
@@ -249,7 +249,7 @@
    }
    $patient_name    = $row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname'];
    //$patient_id      = $row['patient_id'];
-   $patient_id      = $row['pubpid'];
+   $patient_id      = $row['pid'];
    $prescription_id = $row['id'];
    $drug_name       = empty($row['name']) ? $row['drug'] : $row['name'];
    $ndc_number      = $row['ndc_number'];
@@ -262,7 +262,7 @@
 	               ' ' .
                        generate_display_field(array('data_type'=>'1','list_id'=>'drug_interval'), $row['interval']);
    //if ($row['patient_id'] == $last_patient_id) {
-   if (strcmp($row['pubpid'], $last_patient_id) == 0) {
+   if (strcmp($row['pid'], $last_patient_id) == 0) {
     $patient_name = '&nbsp;';
     $patient_id   = '&nbsp;';
     if ($row['id'] == $last_prescription_id) {
@@ -323,7 +323,7 @@
 <?php
    $last_prescription_id = $row['id'];
    //$last_patient_id = $row['patient_id'];
-   $last_patient_id = $row['pubpid'];
+   $last_patient_id = $row['pid'];
   } // end while
  } // end if
 ?>

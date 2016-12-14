@@ -431,7 +431,7 @@ else if ($form_reviewed == 5) {
 }
 
 $query = "SELECT " .
-  "pd.fname, pd.mname, pd.lname, pd.pubpid, $selects " .
+  "pd.fname, pd.mname, pd.lname, pd.pid, $selects " .
   "FROM procedure_order AS po " .
   "LEFT JOIN procedure_order_code AS pc ON pc.procedure_order_id = po.procedure_order_id " .
   "LEFT JOIN patient_data AS pd ON pd.pid = po.patient_id $joins " .
@@ -482,7 +482,7 @@ while ($row = sqlFetchArray($res)) {
     echo "  <td onclick='openPatient($patient_id)' style='cursor:pointer;color:blue'>";
     echo text($ptname);
     echo "</td>\n";
-    echo "  <td>" . text($row['pubpid']) . "</td>\n";
+    echo "  <td>" . text($row['pid']) . "</td>\n";
   }
   else {
     echo "  <td colspan='2' style='background-color:transparent'>&nbsp;</td>";

@@ -17,7 +17,7 @@ require_once("Provider.class.php");
 
 class Patient extends ORDataObject{
 	var $id;
-	var $pubpid;
+	var $pid;
 	var $lname;
 	var $mname;
 	var $fname;
@@ -30,7 +30,7 @@ class Patient extends ORDataObject{
 	function __construct($id = "")	{
 		$this->id = $id;
 		$this->_table = "patient_data";
-		$this->pubpid = "";
+		$this->pid = "";
 		$this->lname = "";
 		$this->mname = "";
 		$this->fname = "";
@@ -44,10 +44,10 @@ class Patient extends ORDataObject{
 		if (!empty($this->id)) {
 			$res = sqlQuery("SELECT providerID,fname,lname,mname ".
                                         ", DATE_FORMAT(DOB,'%m/%d/%Y') as date_of_birth ".
-                                        ", pubpid ".
+                                        ", pid ".
                                         " from " . $this->_table ." where pid =". add_escape_custom($this->id));
 			if (is_array($res)) {
-				$this->pubpid = $res['pubpid'];
+				$this->pid = $res['pid'];
 				$this->lname = $res['lname'];
 				$this->mname = $res['mname'];
 				$this->fname = $res['fname'];
@@ -57,7 +57,7 @@ class Patient extends ORDataObject{
 		}
 	}
 	function get_id() { return $this->id; }
-	function get_pubpid() { return $this->pubpid; }
+	function get_pid() { return $this->pid; }
 	function get_lname() { return $this->lname; }
 	function get_name_display() { return $this->fname . " " . $this->lname; }
 	function get_provider_id() { return $this->provider->id; }

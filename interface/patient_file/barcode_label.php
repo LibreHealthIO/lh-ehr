@@ -39,7 +39,7 @@ require_once("$srcdir/classes/php-barcode.php");
 //Get the data to place on labels
  
 $patdata = sqlQuery("SELECT " .
-  "p.fname, p.mname, p.lname, p.pubpid, p.DOB, " .
+  "p.fname, p.mname, p.lname, p.pid, p.DOB, " .
   "p.street, p.city, p.state, p.postal_code, p.pid " .
   "FROM patient_data AS p " .
   "WHERE p.pid = ? LIMIT 1", array($pid));
@@ -55,7 +55,7 @@ $dob   = substr($patdata['DOB'],5,2) ."/". Substr($patdata['DOB'],8,2) ."/". Sub
 //            BARCODE DATA AND TYPE
 // -------------------------------------------------- //
   
-$code     = $patdata['pubpid']; // what is wanted as the barcode
+$code     = $patdata['pid']; // what is wanted as the barcode
 $bartype = $GLOBALS['barcode_label_type'] ; // Get barcode type
 
  switch($bartype){

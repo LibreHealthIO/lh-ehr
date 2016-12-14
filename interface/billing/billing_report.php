@@ -801,7 +801,7 @@ if(is_array($ret))
         }
       }
 
-      $name = getPatientData($iter['enc_pid'], "fname, mname, lname, pubpid, billing_note, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
+      $name = getPatientData($iter['enc_pid'], "fname, mname, lname, pid, billing_note, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
 
       # Check if patient has primary insurance and a subscriber exists for it.
       # If not we will highlight their name in red.
@@ -858,7 +858,7 @@ if(is_array($ret))
             //  Not sure why the next section seems to do nothing except post "To Encounter" button 2/17/09  JCH
       $lhtml .= "&nbsp;&nbsp;&nbsp;<a class=\"link_submit\" " .
         "href=\"javascript:window.toencounter(" . $iter['enc_pid'] .
-        ",'" . addslashes($name['pubpid']) .
+        ",'" . addslashes($name['pid']) .
         "','" . addslashes($ptname) . "'," . $iter['enc_encounter'] .
         ",'" . oeFormatShortDate($raw_encounter_date) . "',' " . 
         xl('DOB') . ": " . oeFormatShortDate($name['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAge($name['DOB_YMD']) . "');
@@ -869,7 +869,7 @@ if(is_array($ret))
             //  Changed "To xxx" buttons to allow room for encounter date display 2/17/09  JCH
       $lhtml .= "&nbsp;&nbsp;&nbsp;<a class=\"link_submit\" " .
         "href=\"javascript:window.topatient(" . $iter['enc_pid'] .
-        ",'" . addslashes($name['pubpid']) .
+        ",'" . addslashes($name['pid']) .
         "','" . addslashes($ptname) . "'," . $iter['enc_encounter'] .
         ",'" . oeFormatShortDate($raw_encounter_date) . "',' " . 
         xl('DOB') . ": " . oeFormatShortDate($name['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAge($name['DOB_YMD']) . "');
