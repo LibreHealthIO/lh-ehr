@@ -387,6 +387,21 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       echo "  </select>\n";
     }
 
+    else if ($fldtype == 'status') {
+      $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
+      echo "  <select name='form_$i' id='form_$i'>\n";
+      
+      while ($row = sqlFetchArray($res)) {
+        $title = $row['title'];
+        echo "   <option value='" . attr($title) . "'";
+        if ($title == $fldvalue) echo " selected";
+        echo ">";
+        echo xlt($title);
+        echo "</option>\n";
+      }
+      echo "  </select>\n";
+    }
+
     else if ($fldtype == 'all_code_types') {
       global $code_types;
       echo "  <select name='form_$i' id='form_$i'>\n";

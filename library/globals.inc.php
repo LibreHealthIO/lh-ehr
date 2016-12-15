@@ -124,6 +124,8 @@ $USER_SPECIFIC_GLOBALS = array('default_top_pane',
                                'event_color',
                                'pat_trkr_timer',
                                'ptkr_visit_reason',
+                               'ptkr_end_date',
+                               'status_default',
                                'checkout_roll_off',
                                'ptkr_pt_list_new_window',
                                'erx_import_status_message',
@@ -1426,6 +1428,20 @@ $GLOBALS_METADATA = array(
       xl('This Allows a Date Range to be Selected in Patient Flow Board.')
     ),
 
+    'ptkr_end_date' => array(
+      xl('Ending Date for Patient Flow Board'),
+      array(
+        'Y1' => xl('One Year Ahead'),
+        'Y2' => xl('Two Years Ahead'),
+        'M6' => xl('Six Months Ahead'),
+        'M3' => xl('Three Months Ahead'),
+        'M1' => xl('One Month Ahead'),
+        'D1' => xl('One Day Ahead'),        
+      ),                       
+      'Y1',                     // default = One Year
+      xl('This is the Ending date for the Patient Flow Board Date Range. (only applicable if Allow Date Range in option above is Enabled)')
+    ),
+
     'pat_trkr_timer' => array(
       xl('Patient Flow Board Timer Interval'),
       array(
@@ -1439,6 +1455,13 @@ $GLOBALS_METADATA = array(
       ),
        '0:20',                          // default
       xl('The screen refresh time in Seconds for the Patient Flow Board Screen.')
+    ),
+
+    'status_default' => array(
+      xl('Default Status'),
+      'status',                           // data type
+      '',                                 // default = none
+      xl('Default Status for the Patient Flow Board Screen.')
     ),
 
     'checkout_roll_off' => array(
