@@ -39,12 +39,32 @@ else if ($_SESSION['userauthorized']) {
 else {
   $provider = null;
 }
+
+if (substr($GLOBALS['ptkr_end_date'],0,1) == 'Y') {
+   $ptkr_time = substr($GLOBALS['ptkr_end_date'],1,1);
+   $ptkr_future_time = mktime(0,0,0,date('m'),date('d'),date('Y')+$ptkr_time);
+}
+elseif (substr($GLOBALS['ptkr_end_date'],0,1) == 'M') {
+   $ptkr_time = substr($GLOBALS['ptkr_end_date'],1,1); 
+   $ptkr_future_time = mktime(0,0,0,date('m')+$ptkr_time ,date('d'),date('Y'));
+}
+elseif (substr($GLOBALS['ptkr_end_date'],0,1) == 'D') {
+   $ptkr_time = substr($GLOBALS['ptkr_end_date'],1,1); 
+   $lptkr_future_time = mktime(0,0,0,date('m') ,date('d')+$ptkr_time,date('Y'));
+}
+
+$form_to_date = date('Y-m-d', $ptkr_future_time);
+# This needs some more thought.
+if ($GLOBALS['status_default']) {
+    $stat_default = substr($GLOBALS['status_default'],0,1);
+}
+
 $facility  = !is_null($_POST['form_facility']) ? $_POST['form_facility'] : null;
-$form_apptstatus = !is_null($_POST['form_apptstatus']) ? $_POST['form_apptstatus'] : null;
+$form_apptstatus = !is_null($_POST['form_apptstatus']) ? $_POST['form_apptstatus'] : $stat_default;
 $form_apptcat=null;
 $form_from_date = !is_null($_POST['form_from_date']) ? $_POST['form_from_date'] : date("Y-m-d");
 if($GLOBALS['ptkr_date_range']) {
-   $form_to_date = !is_null($_POST['form_to_date']) ? $_POST['form_to_date'] : date("Y-m-d");
+   $form_to_date = !is_null($_POST['form_to_date']) ? $_POST['form_to_date'] : $form_to_date;
 } else {
    $form_to_date = !is_null($_POST['form_from_date']) ? $_POST['form_from_date'] : date("Y-m-d"); 
 }
@@ -216,7 +236,7 @@ function openNewTopWindow(newpid,newencounterid) {
                     ?>
                 </td>
                 <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
-                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$_POST['form_apptstatus']);?></td>
+                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);?></td>
                 <td><?php echo xlt('Category') #category drop down creation ?>:</td>
                 <td>
                     <select id="form_apptcat" name="form_apptcat">
