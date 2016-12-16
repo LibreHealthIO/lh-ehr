@@ -50,7 +50,7 @@ elseif (substr($GLOBALS['ptkr_end_date'],0,1) == 'M') {
 }
 elseif (substr($GLOBALS['ptkr_end_date'],0,1) == 'D') {
    $ptkr_time = substr($GLOBALS['ptkr_end_date'],1,1); 
-   $lptkr_future_time = mktime(0,0,0,date('m') ,date('d')+$ptkr_time,date('Y'));
+   $ptkr_future_time = mktime(0,0,0,date('m') ,date('d')+$ptkr_time,date('Y'));
 }
 
 $form_to_date = date('Y-m-d', $ptkr_future_time);
