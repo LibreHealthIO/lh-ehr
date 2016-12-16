@@ -1,10 +1,31 @@
 <?php
-// Copyright (C) 2010 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/** 
+ * Edit Globals
+ *
+ * This program allows the editing of the system Globals
+ *
+ * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * Copyright (C) 2010 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
+ * @package LibreEHR
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @link http://www.libreehr.org
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 require_once("../globals.php");
 require_once("../../custom/code_types.inc.php");
@@ -393,7 +414,8 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       }
       $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
       echo "  <select name='form_$i' id='form_$i'>\n";
-      
+      $top_choice = "All";
+      echo "    <option value=''>" . text($top_choice) . "\n";      
       while ($row = sqlFetchArray($res)) {
         $title = $row['title'];
         echo "   <option value='" . attr($title) . "'";

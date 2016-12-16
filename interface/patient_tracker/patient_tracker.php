@@ -58,7 +58,9 @@ $form_to_date = date('Y-m-d', $ptkr_future_time);
 if ($GLOBALS['status_default']) {
     $stat_default = substr($GLOBALS['status_default'],0,1);
 }
-
+If ($GLOBALS['status_default'] == 'All') {
+    $stat_default = null;
+}
 $facility  = !is_null($_POST['form_facility']) ? $_POST['form_facility'] : null;
 $form_apptstatus = !is_null($_POST['form_apptstatus']) ? $_POST['form_apptstatus'] : $stat_default;
 $form_apptcat=null;
