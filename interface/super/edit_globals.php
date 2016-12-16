@@ -388,6 +388,9 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     }
 
     else if ($fldtype == 'status') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
       $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
       echo "  <select name='form_$i' id='form_$i'>\n";
       
