@@ -1,4 +1,5 @@
 <?php
+# The JSON file is located in the sites/* directories,
 # The extra lines are the menu blocks on the screen/
 # insert a line like this {\"label\":\"Visit Forms\",\"children\":[],\"requirement\":0},
 # Then edit the information needed

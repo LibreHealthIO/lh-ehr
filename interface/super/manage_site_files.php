@@ -29,6 +29,7 @@ $my_files = array(
   'referral_template.html',
   'statement.inc.php',
   'letter_templates/custom_pdf.php',
+  'menu_data.json',
 );
 // Append LBF plugin filenames to the array.
 $lres = sqlStatement('SELECT * FROM list_options ' .

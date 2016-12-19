@@ -16,7 +16,7 @@ $esignApi = new Api();
 
 ?>
 <!DOCTYPE html>
-<title>LibreEHR Tabs</title>
+<title>LibreHealth EHR</title>
 <script type="text/javascript">
 <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
 
