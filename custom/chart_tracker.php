@@ -97,11 +97,11 @@ $row = array();
 
 if ($form_newid) {
   // Find out where the chart is now.
-  $query = "SELECT pd.pid, pd.pubpid, pd.fname, pd.mname, pd.lname, " .
+  $query = "SELECT pd.pid, pd.fname, pd.mname, pd.lname, " .
     "pd.ss, pd.DOB, ct.ct_userid, ct.ct_location, ct.ct_when " .
     "FROM patient_data AS pd " .
     "LEFT OUTER JOIN chart_tracker AS ct ON ct.ct_pid = pd.pid " .
-    "WHERE pd.pubpid = ? " .
+    "WHERE pd.pid = ? " .
     "ORDER BY pd.pid ASC, ct.ct_when DESC LIMIT 1";
   $row = sqlQuery($query, array($form_newid) );
   if (empty($row)) {
@@ -127,9 +127,9 @@ if (!empty($row)) {
 
   echo " <tr>\n";
   echo "  <td class='bold'>" . xlt('Patient ID') . ":</td>\n";
-  echo "  <td class='text'>" . text($row['pubpid']) .
+  echo "  <td class='text'>" . text($row['pid']) .
        "<input type='hidden' name='form_curpid' value='" . attr($row['pid']) . "' />" .
-       "<input type='hidden' name='form_curid' value='" . attr($row['pubpid']) . "' /></td>\n";
+       "<input type='hidden' name='form_curid' value='" . attr($row['pid']) . "' /></td>\n";
   echo " </tr>\n";
 
   echo " <tr>\n";

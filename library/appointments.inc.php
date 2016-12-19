@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/../interface/main/calendar/modules/PostCalendar
 $COMPARE_FUNCTION_HASH = array(
     'doctor' => 'compareAppointmentsByDoctorName',
     'patient' => 'compareAppointmentsByPatientName',
-    'pubpid' => 'compareAppointmentsByPatientId',
+    'pid' => 'compareAppointmentsByPatientId',
     'date' => 'compareAppointmentsByDate',
     'time' => 'compareAppointmentsByTime',
     'type' => 'compareAppointmentsByType',
@@ -33,7 +33,7 @@ $COMPARE_FUNCTION_HASH = array(
 $ORDERHASH = array(
   	'doctor' => array( 'doctor', 'date', 'time' ),
   	'patient' => array( 'patient', 'date', 'time' ),
-  	'pubpid' => array( 'pubpid', 'date', 'time' ),
+  	'pid' => array( 'pid', 'date', 'time' ),
   	'date' => array( 'date', 'time', 'type', 'patient' ),
   	'time' => array( 'time', 'date', 'patient' ),
   	'type' => array( 'type', 'date', 'time', 'patient' ),
@@ -82,7 +82,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
     $query = "SELECT " .
     "e.pc_eventDate, e.pc_endDate, e.pc_startTime, e.pc_endTime, e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, e.pc_recurrfreq, e.pc_catid, e.pc_eid, " .
     "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, " .
-    "p.fname, p.mname, p.lname, p.pid, p.pubpid, p.phone_home, p.phone_cell, " .
+    "p.fname, p.mname, p.lname, p.pid, p.phone_home, p.phone_cell, " .
     "u.fname AS ufname, u.mname AS umname, u.lname AS ulname, u.id AS uprovider_id, " .
     "$tracker_fields" .
     "c.pc_catname, c.pc_catid " .
@@ -511,8 +511,8 @@ function compareAppointmentsByType( $appointment1, $appointment2 )
 
 function compareAppointmentsByPatientId( $appointment1, $appointment2 )
 {
-	$id1 = $appointment1['pubpid'];
-	$id2 = $appointment2['pubpid'];
+	$id1 = $appointment1['pid'];
+	$id2 = $appointment2['pid'];
 	return compareBasic( $id1, $id2 );
 }
 

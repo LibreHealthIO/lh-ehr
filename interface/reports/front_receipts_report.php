@@ -178,7 +178,7 @@ require_once("$srcdir/formatting.inc.php");
     "MAX(r.method) AS method, " .
     "MAX(r.source) AS source, " .
     "MAX(r.user) AS user, " .
-    "p.fname, p.mname, p.lname, p.pubpid " .
+    "p.fname, p.mname, p.lname, p.pid " .
     "FROM payments AS r " .
     "LEFT OUTER JOIN patient_data AS p ON " .
     "p.pid = r.pid " .
@@ -204,7 +204,7 @@ require_once("$srcdir/formatting.inc.php");
    <?php echo $row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname'] ?>
   </td>
   <td>
-   <?php echo $row['pubpid'] ?>
+   <?php echo $row['pid'] ?>
   </td>
   <td>
    <?php echo $row['method'] ?>

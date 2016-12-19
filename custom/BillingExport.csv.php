@@ -101,7 +101,7 @@ class BillingExport {
 
     // Patient information:
 
-    $query = "SELECT p.pubpid, p.ss, p.lname, p.fname, p.mname, p.DOB, " .
+    $query = "SELECT p.pid, p.ss, p.lname, p.fname, p.mname, p.DOB, " .
       "p.street, p.city, p.state, p.postal_code, p.phone_home, p.phone_biz, " .
       "p.status, p.sex, e.name " .
       "FROM patient_data AS p " .
@@ -112,7 +112,7 @@ class BillingExport {
 
     // Patient line.
     fwrite($this->tmpfh, 'PT' .
-      ',"' . $this->fixString($prow['pubpid'])      . '"' .
+      ',"' . $this->fixString($prow['pid'])      . '"' .
       ',"' . $this->fixString($prow['lname'])       . '"' .
       ',"' . $this->fixString($prow['fname'])       . '"' .
       ',"' . $this->fixMI($prow['mname'])           . '"' .

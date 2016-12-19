@@ -68,7 +68,7 @@ function generate_order_summary($orderid) {
   $orow = sqlQuery("SELECT " .
     "po.procedure_order_id, po.patient_id, po.date_ordered, po.order_status, " .
     "po.date_collected, po.specimen_type, po.specimen_location, po.lab_id, po.clinical_hx, " .
-    "pd.pubpid, pd.lname, pd.fname, pd.mname, pd.DOB, pd.sex, " .
+    "pd.pid, pd.lname, pd.fname, pd.mname, pd.DOB, pd.sex, " .
     "pd.street, pd.city, pd.state, pd.postal_code, " .
     "fe.date, " .
     "pp.name AS labname, " .

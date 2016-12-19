@@ -26,7 +26,7 @@ left_nav.setPatient = function(pname, pid, pubpid, frname, str_dob)
         && (pid===app_view_model.application_data.patient().pid()))
     {
         app_view_model.application_data.patient().pname(pname);
-        app_view_model.application_data.patient().pubpid(pubpid);
+        app_view_model.application_data.patient().pid(pid);
         app_view_model.application_data.patient().str_dob(str_dob);
         
         return;

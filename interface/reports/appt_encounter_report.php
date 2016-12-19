@@ -91,7 +91,7 @@ function postError($msg) {
    "e.pc_eventDate, e.pc_startTime, " .
    "fe.encounter, fe.date AS encdate, " .
    "f.authorized, " .
-   "p.fname, p.lname, p.pid, p.pubpid, " .
+   "p.fname, p.lname, p.pid, " .
    "CONCAT( u.lname, ', ', u.fname ) AS docname " .
    "FROM libreehr_postcalendar_events AS e " .
    "LEFT OUTER JOIN form_encounter AS fe " .
@@ -115,7 +115,7 @@ function postError($msg) {
    "e.pc_eventDate, e.pc_startTime, " .
    "fe.encounter, fe.date AS encdate, " .
    "f.authorized, " .
-   "p.fname, p.lname, p.pid, p.pubpid, " .
+   "p.fname, p.lname, p.pid, " .
    "CONCAT( u.lname, ', ', u.fname ) AS docname " .
    "FROM form_encounter AS fe " .
    "LEFT OUTER JOIN libreehr_postcalendar_events AS e " .
@@ -448,7 +448,7 @@ function postError($msg) {
    &nbsp;<?php  echo $row['fname'] . " " . $row['lname'] ?>
   </td>
   <td>
-   &nbsp;<?php  echo $row['pubpid'] ?>
+   &nbsp;<?php  echo $row['pid'] ?>
   </td>
   <td align='right'>
    <?php  echo $row['pid'] ?>&nbsp;

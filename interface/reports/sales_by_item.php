@@ -58,7 +58,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
   $rowamount = sprintf('%01.2f', $amount);
   
    $patdata = sqlQuery("SELECT " .
-  "p.fname, p.mname, p.lname, p.pubpid, p.DOB, " .
+  "p.fname, p.mname, p.lname, p.pid, p.DOB, " .
   "p.street, p.city, p.state, p.postal_code, " .
   "p.ss, p.sex, p.status, p.phone_home, " .
   "p.phone_biz, p.phone_cell, p.hipaa_notice " .

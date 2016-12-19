@@ -29,7 +29,7 @@ function thisLineItem($row, $codetype, $code) {
 
   if ($_POST['form_csvexport']) {
     echo '"' . addslashes($row['patient_name'  ]) . '",';
-    echo '"' . addslashes($row['pubpid'        ]) . '",';
+    echo '"' . addslashes($row['pid'        ]) . '",';
     echo '"' . addslashes($row['date_ordered'  ]) . '",';
     echo '"' . addslashes($row['procedure_name']) . '",';
     echo '"' . addslashes($provname             ) . '",';
@@ -40,7 +40,7 @@ function thisLineItem($row, $codetype, $code) {
 ?>
  <tr>
   <td class="detail"><?php echo $row['patient_name'  ]; ?></td>
-  <td class="detail"><?php echo $row['pubpid'        ]; ?></td>
+  <td class="detail"><?php echo $row['pid'        ]; ?></td>
   <td class="detail"><?php echo $row['date_ordered'  ]; ?></td>
   <td class="detail"><?php echo $row['procedure_name']; ?></td>
   <td class="detail"><?php echo $provname;              ?></td>
@@ -164,7 +164,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   $to_date   = $form_to_date;
 
   $query = "SELECT po.patient_id, po.encounter_id, po.date_ordered, " .
-    "pd.pubpid, " .
+    "pd.pid, " .
     "CONCAT(pd.lname, ', ', pd.fname, ' ', pd.mname) AS patient_name, " .
     "pto.name AS procedure_name, " .
     "pts.related_code, " .

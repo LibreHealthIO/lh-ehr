@@ -323,7 +323,7 @@ class C_Prescription extends Controller {
 		$pdf->ezText('');
 		$pdf->line($pdf->ez['leftMargin'],$pdf->y,$pdf->ez['pageWidth']-$pdf->ez['rightMargin'],$pdf->y);
 		$pdf->ezText('<b>' . xl('Medical Record #') . '</b>',6);
-		$pdf->ezText(str_pad($p->patient->get_pubpid(), 10, "0", STR_PAD_LEFT),10);
+		$pdf->ezText(str_pad($p->patient->get_pid(), 10, "0", STR_PAD_LEFT),10);
 		$pdf->ezColumnsStop();
 		if ($my_y < $pdf->y){
 			$pdf->ezSetY($my_y);
@@ -399,7 +399,7 @@ class C_Prescription extends Controller {
 	        echo ("<tr>\n");
 	        echo ("<td class='bordered'>\n");
                 echo ('<b><span class="small">' . xl('Medical Record #') . '</span></b>' . '<br>');
-                echo (str_pad($p->patient->get_pubpid(), 10, "0", STR_PAD_LEFT));
+                echo (str_pad($p->patient->get_pid(), 10, "0", STR_PAD_LEFT));
 	        echo ("</td>\n");
 	        echo ("</tr>\n");
 	        echo ("<tr>\n");

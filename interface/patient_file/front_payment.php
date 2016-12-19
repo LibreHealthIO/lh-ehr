@@ -117,10 +117,10 @@ $today = date('Y-m-d', $now);
 $timestamp = date('Y-m-d H:i:s', $now);
 
 
-// $patdata = getPatientData($pid, 'fname,lname,pubpid');
+
 
 $patdata = sqlQuery("SELECT " .
-  "p.fname, p.mname, p.lname, p.pubpid,p.pid, i.copay " .
+  "p.fname, p.mname, p.lname,p.pid, i.copay " .
   "FROM patient_data AS p " .
   "LEFT OUTER JOIN insurance_data AS i ON " .
   "i.pid = p.pid AND i.type = 'primary' " .
@@ -133,7 +133,7 @@ if ($_POST['form_save']) {
   $form_pid = $_POST['form_pid'];
   $form_method = trim($_POST['form_method']);
   $form_source = trim($_POST['form_source']);
-  $patdata = getPatientData($form_pid, 'fname,mname,lname,pubpid');
+  $patdata = getPatientData($form_pid, 'fname,mname,lname,pid');
   $NameNew=$patdata['fname'] . " " .$patdata['lname']. " " .$patdata['mname'];
 
 	if($_REQUEST['radio_type_of_payment']=='pre_payment')
@@ -332,7 +332,7 @@ if ($_POST['form_save'] || $_REQUEST['receipt']) {
     "ORDER BY billing_location DESC, accepts_assignment DESC, id LIMIT 1");
 
   // Get the patient's name and chart number.
-  $patdata = getPatientData($form_pid, 'fname,mname,lname,pubpid');
+  $patdata = getPatientData($form_pid, 'fname,mname,lname,pid');
 
   // Re-fetch payment info.
   $payrow = sqlQuery("SELECT " .
@@ -431,7 +431,7 @@ $(document).ready(function() {
  <tr>
   <td><?php echo xlt('Patient'); ?>:</td>
   <td><?php echo text($patdata['fname']) . " " . text($patdata['mname']) . " " .
-       text($patdata['lname']) . " (" . text($patdata['pubpid']) . ")" ?></td>
+       text($patdata['lname']) . " (" . text($patdata['pid']) . ")" ?></td>
  </tr>
  <tr>
   <td><?php echo xlt('Paid Via'); ?>:</td>

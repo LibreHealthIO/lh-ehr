@@ -382,7 +382,7 @@ foreach ($pid_list as $pid) {
             $html .= ":<br />";
 
             if ($form_fill)
-                $html .= $patdata['pubpid'];
+                $html .= $patdata['pid'];
 
             $html .= "</td>
 </tr>

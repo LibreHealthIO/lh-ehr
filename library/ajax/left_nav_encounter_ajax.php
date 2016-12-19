@@ -67,7 +67,7 @@ if ($pid != $thispid) {
 ?>
 // The JavaScript part of switching to the new pid. Cloned from demographics.php.
 top.left_nav.setPatient(<?php echo "'" . htmlspecialchars(($prow['fname']) . " " . ($prow['lname']),ENT_QUOTES) .
-  "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($prow['pubpid']),ENT_QUOTES) .
+  "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($prow['pid']),ENT_QUOTES) .
   "','', ' " . htmlspecialchars(xl('DOB') . ": " . oeFormatShortDate($prow['DOB_YMD']) . " " .
   xl('Age') . ": " . getPatientAge($prow['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
 // TBD: ForceDual? Maybe load demographics.php into the top frame?

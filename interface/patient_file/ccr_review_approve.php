@@ -36,7 +36,7 @@ require_once(dirname(__FILE__) . "/../../library/parse_patient_xml.php");
 
 $patient_data = array(
 	'sex'			 			=> 'Sex',
-	'pubpid' 				=> 'External ID',
+	'pid' 				=> 'ID',
 	'street' 				=> 'Street',
 	'city' 					=> 'City',
 	'state'					=> 'State',

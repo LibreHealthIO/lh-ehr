@@ -138,8 +138,8 @@ $where = "1 = 0";
 foreach ($_REQUEST as $key => $value) {
   if (substr($key, 0, 3) != 'mf_') continue; // "match field"
   $fldname = substr($key, 3);
-  // pubpid requires special treatment.  Match on that is fatal.
-  if ($fldname == 'pubpid') {
+  // pid requires special treatment.  Match on that is fatal.
+  if ($fldname == 'pid') {
     $relevance .= " + 1000 * ( ".add_escape_custom($fldname)." LIKE ? )";
     array_push($sqlBindArray, $value);
   }
@@ -230,13 +230,13 @@ while ($trow = sqlFetchArray($tres)) {
 <table>
 <tr>
 <?php
-$pubpid_matched = false;
+$pid_matched = false;
 if ($result) {
   foreach ($result as $iter) {
     $relevance = $iter['relevance'];
     if ($relevance > 999) {
       $relevance -= 999;
-      $pubpid_matched = true;
+      $pid_matched = true;
     }
     echo "<tr id='" . htmlspecialchars( $iter['pid'], ENT_QUOTES) . "' class='oneresult";
     // Highlight entries where all fields matched.
@@ -254,7 +254,7 @@ if ($result) {
 </div>  <!-- end searchResults DIV -->
 
 <center>
-<?php if ($pubpid_matched) { ?>
+<?php if ($pid_matched) { ?>
 <input type='button' value='<?php echo htmlspecialchars( xl('Cancel'), ENT_QUOTES); ?>'
  onclick='window.close();' />
 <?php } else { ?>
@@ -295,7 +295,7 @@ else {
 }
 
 var f = opener.document.forms[0];
-<?php if ($pubpid_matched) { ?>
+<?php if ($pid_matched) { ?>
 alert('<?php echo htmlspecialchars( xl('A patient with this ID already exists.'), ENT_QUOTES); ?>')
 <?php } else { ?>
 opener.force_submit = true;

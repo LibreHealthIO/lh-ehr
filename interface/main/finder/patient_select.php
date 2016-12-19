@@ -167,7 +167,7 @@ if ($popup) {
         $where .= " AND $field_id = ?";
         array_push($sqlBindArray,$value);
       }
-      else if ($field_id == 'pubpid') {
+      else if ($field_id == 'pid') {
         $where .= " AND $field_id LIKE ?";
         array_push($sqlBindArray,$value);
       }
@@ -371,7 +371,7 @@ else {
     "field_id NOT LIKE 'title' AND " .
     "field_id NOT LIKE 'ss' AND " .
     "field_id NOT LIKE 'DOB' AND " .
-    "field_id NOT LIKE 'pubpid' " .
+    "field_id NOT LIKE 'pid' " .
     "ORDER BY group_name, seq LIMIT 5");
   while ($trow = sqlFetchArray($tres)) {
     $extracols[$trow['field_id']] = $trow;
@@ -420,7 +420,7 @@ if ($result) {
             echo "<td class='srDOB'>&nbsp;</td>";
         }
         
-        echo "<td class='srID'>" . htmlspecialchars( $iter['pubpid'], ENT_NOQUOTES) . "</td>";
+        echo "<td class='srID'>" . htmlspecialchars( $iter['pid'], ENT_NOQUOTES) . "</td>";
 
         if (empty($GLOBALS['patient_search_results_style'])) {
 

@@ -190,7 +190,7 @@
 <?php
  if ($_POST['form_refresh']) {
   $query = "SELECT t.id, t.refer_date, t.reply_date, t.body, " .
-    "ut.organization, uf.facility_id, p.pubpid, " .
+    "ut.organization, uf.facility_id, p.pid, " .
     "CONCAT(uf.fname,' ', uf.lname) AS referer_name, " .
     "CONCAT(ut.fname,' ', ut.lname) AS referer_to, " .
     "CONCAT(p.fname,' ', p.lname) AS patient_name " .
@@ -240,7 +240,7 @@
    <?php echo $row['patient_name'] ?>
   </td>
   <td>
-   <?php echo $row['pubpid'] ?>
+   <?php echo $row['pid'] ?>
   </td>
   <td>
    <?php echo text($row['body']) ?>

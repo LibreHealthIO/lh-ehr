@@ -61,7 +61,7 @@ $pdf->AddPage();
 foreach ($pid_list as $pid) {
 
 $patdata = sqlQuery("SELECT " .
-  "p.fname, p.mname, p.lname, p.pubpid, p.DOB, " .
+  "p.fname, p.mname, p.lname, p.pid, p.DOB, " .
   "p.street, p.city, p.state, p.postal_code, p.pid " .
   "FROM patient_data AS p " .
   "WHERE p.pid = ? LIMIT 1", array($pid));

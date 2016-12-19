@@ -70,7 +70,7 @@ $details = empty($_GET['details']) ? 0 : 1;
 $patient_id = empty($_GET['ptid']) ? $pid : 0 + $_GET['ptid'];
 
 // Get the patient's name and chart number.
-$patdata = getPatientData($patient_id, 'fname,mname,lname,pubpid,street,city,state,postal_code');
+$patdata = getPatientData($patient_id, 'fname,mname,lname,pid,street,city,state,postal_code');
 
 // Get the "next invoice reference number" from this user's pool.
 //
@@ -144,7 +144,7 @@ function generate_receipt($patient_id, $encounter=0) {
   $frow = sqlQuery("SELECT * FROM facility " .
     "ORDER BY billing_location DESC, accepts_assignment DESC, id LIMIT 1");
 
-  $patdata = getPatientData($patient_id, 'fname,mname,lname,pubpid,street,city,state,postal_code,providerID');
+  $patdata = getPatientData($patient_id, 'fname,mname,lname,pid,street,city,state,postal_code,providerID');
 
   // Get the most recent invoice data or that for the specified encounter.
   //
@@ -753,7 +753,7 @@ while ($urow = sqlFetchArray($ures)) {
  <tr>
   <td colspan='3' align='center'>
    <b><?php echo xlt('Patient Checkout for '); ?><?php echo text($patdata['fname']) . " " .
-    text($patdata['lname']) . " (" . text($patdata['pubpid']) . ")" ?></b>
+    text($patdata['lname']) . " (" . text($patdata['pid']) . ")" ?></b>
   </td>
  </tr>
  <tr>

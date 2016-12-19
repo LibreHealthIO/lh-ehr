@@ -60,7 +60,7 @@ $FIELD_TAG = array(
 );
 
 $patdata = sqlQuery("SELECT " .
-  "p.fname, p.mname, p.lname, p.pubpid, p.DOB, " .
+  "p.fname, p.mname, p.lname, p.pid, p.DOB, " .
   "p.street, p.city, p.state, p.phone_home, p.phone_cell, p.ss, p.email, p.postal_code " .
   "FROM patient_data AS p " .
   "WHERE p.pid = '$pid' LIMIT 1");
@@ -418,7 +418,7 @@ function insertAtCursor(myField, myValue) {
   <td colspan='4' align='center'>
    &nbsp;<br>
    <b><?php xl('Generate Letter regarding ','e','',' '); echo $patdata['fname'] . " " .
-    $patdata['lname'] . " (" . $patdata['pubpid'] . ")" ?></b>
+    $patdata['lname'] . " (" . $patdata['pid'] . ")" ?></b>
     <br>&nbsp;
   </td>
  </tr>

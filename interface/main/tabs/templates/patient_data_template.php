@@ -8,7 +8,7 @@
                     <b>
                     <!-- ko if: patient -->
                         <a data-bind="click:refreshPatient,with: patient" href="#">
-                            <span data-bind="text: pname()"></span>(<span data-bind="text: pubpid"></span>)
+                            <span data-bind="text: pname()"></span>(<span data-bind="text: pid"></span>)
                         </a>
                     <!-- /ko -->
                     <!-- ko ifnot: patient -->

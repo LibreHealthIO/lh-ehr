@@ -630,7 +630,7 @@ function getPatientId($pid = "%", $given = "pid, id, lname, fname, mname, provid
 {
 
     $sqlBindArray = array();
-    $where = "pubpid LIKE ? ";
+    $where = "pid LIKE ? ";
     $patient_filter = do_action( 'filter_patient_select', $_SESSION['authUser'] );
     if ( $patient_filter ) {
         $where .= " AND ".$patient_filter;

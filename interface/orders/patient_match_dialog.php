@@ -125,6 +125,8 @@ if ($form_key) {
     $clarr[] = $form_DOB;
   }
   // SSN match is worth a lot and we allow for matching on last 4 digits.
+  // SSN is useless and mostly not a collected or dependably entered data field.
+  // Review this for removal.
   if (strlen($form_ss) > 3) {
     $clsql .= " + ((ss IS NOT NULL AND ss LIKE ?) * 10)";
     $clarr[] = "%$form_ss";

@@ -35,11 +35,11 @@ if ($result = sqlQuery("select * from patient_data where lower(fname)=lower('".$
     if($pid == NULL) { $pid = 0; }
 
     //what do we set for the public pid?
-    if (isset($_POST["pubpid"]) && ($_POST["pubpid"] != "")) {
-        $mypubpid = $_POST["pubpid"];
-    } else {
+    // if (isset($_POST["pubpid"]) && ($_POST["pubpid"] != "")) {
+    //     $mypubpid = $_POST["pubpid"];
+    //  } else {
         $mypubpid = $pid;
-    }
+    // }
 
     newPatientData($_POST["db_id"],
                     $_POST["title"],
