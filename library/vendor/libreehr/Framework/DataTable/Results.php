@@ -46,7 +46,7 @@ class Results extends AbstractModel
         for ( $i = 0; $i < intval( $options['iSortingCols'] ); ++$i ) {
             $iSortCol = intval( $options["iSortCol_$i"] );
             if ( $options["bSortable_$iSortCol"] == "true" ) {
-                $sSortDir = mysql_real_escape_string( $options["sSortDir_$i"] ); // ASC or DESC
+                $sSortDir = mysqli_real_escape_string( $options["sSortDir_$i"] ); // ASC or DESC
                 $order = ( $sSortDir == 'desc' ) ? SortOrder::SORT_DESC : SortOrder::SORT_ASC;
                 $column = $this->findColumn( $sql->getColumns(), $iSortCol );
                 if ( $column instanceof Column ) {
