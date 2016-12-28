@@ -29,7 +29,7 @@
  * @package LibreEHR
  * @author Brady Miller <brady@sparmy.com>
  * @author Terry Hill <teryhill@librehealth.io>
- * @link http://www.librehealth.io
+ * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *

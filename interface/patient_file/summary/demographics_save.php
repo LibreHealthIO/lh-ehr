@@ -26,7 +26,7 @@
  * @package LibreEHR
  * @author Terry Hill <teryhill@librehealth.io>
  * No other authors listed in original program header.
- * @link http://www.librehealth.io
+ * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
