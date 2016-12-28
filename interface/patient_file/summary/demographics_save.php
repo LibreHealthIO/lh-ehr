@@ -26,7 +26,7 @@
  * @package LibreEHR
  * @author Terry Hill <teryhill@librehealth.io>
  * No other authors listed in original program header.
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
@@ -83,17 +83,24 @@ $total_insurances = $_REQUEST['total_insurances'];
 for($i = 0;$i<$total_insurances;$i++){
 $idob = fixDate(formData("i".$i."subscriber_DOB"));
 $idate = fixDate(formData("i".$i."effective_date"), date('Y-m-d'));
-$edate = fixDate(formData("i".$i."termination_date"), date('Y-m-d'));
-$type = formData("i".$i."insurance_type");
+
+$edate = formData("i".$i."termination_date");
+If ($i == 0) {
+    $type = "primary";
+} elseif ($i == 1) {
+    $type = "secondary";
+} else if ($i == 2) {
+    $type = "tertiary";
+}
+
+
 $inactive = formData('i'.$i.'inactive_value');
 $inactive_time = 0;
 
-if($edate != '0000-00-00') {
+
+if($edate != '0000-00-00' && strlen(trim($edate != 0))) {
     $inactive_time = 1;
     $inactive = 1;
-    error_log("eDate: ".$edate, 0);
-    error_log("inactive time: ".$inactive_time, 0);
-    error_log("inactive: ".$inactive, 0);
 }
 
 newInsuranceData(
@@ -131,9 +138,6 @@ newInsuranceData(
   $inactive_time
 );
 
-  if(isset($inactive)&&$inactive==1){
-    addActiveInsurance($pid,$edate,$type);
-  }
 }
 
 if ($GLOBALS['concurrent_layout']) {
