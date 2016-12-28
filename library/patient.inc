@@ -25,7 +25,7 @@
  *
  * @package LibreEHR
  * @author Terry Hill <teryhill@librehealth.io>
- * @link http://www.libreehr.org
+ * @link http://www.librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
@@ -1209,7 +1209,6 @@ function newInsuranceData(
 
   // If a bad date was passed, err on the side of caution.
   $effective_date = fixDate($effective_date, date('Y-m-d'));
-  $termination_date = fixDate($termination_date, date('Y-m-d'));
 
   $idres = sqlStatement("SELECT * FROM insurance_data WHERE " .
     "pid = '$pid' AND type = '$type' AND inactive=0 ORDER BY date DESC");
@@ -1247,15 +1246,10 @@ function newInsuranceData(
     // TBD: This is a bit dangerous in that a typo in entering the effective
     // date can wipe out previous insurance history.  So we want some data
     // entry validation somewhere.
-    if($make_inactive==false){
+
     sqlStatement("DELETE FROM insurance_data WHERE " .
       "pid = '$pid' AND type = '$type' AND date >= '$effective_date' AND inactive=0 AND " .
       "id != " . $idrow['id']);
-    }
-    else{
-    //sqlStatement("update insurance_data set inactive = 1 WHERE pid = '$pid' AND type = '$type' AND date >= '$effective_date' AND id!=".$idrow['id']);    
-    //addActiveInsurance($pid,$effective_date,$type);
-    }
 
     $data = array();
     $data['type'] = $type;
