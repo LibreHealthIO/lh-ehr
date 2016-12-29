@@ -192,7 +192,7 @@ CREATE TABLE `billing` (
   `target` varchar(30) default NULL,
   `x12_partner_id` int(11) default NULL,
   `ndc_info` varchar(255) default NULL,
-  `notecodes` varchar(25) NOT NULL default '',
+  `notecodes` varchar(50) NOT NULL default '',
   `exclude_from_insurance_billing` TINYINT(1) NOT NULL DEFAULT '0',
   `external_id` VARCHAR(20) DEFAULT NULL,
   PRIMARY KEY  (`id`),

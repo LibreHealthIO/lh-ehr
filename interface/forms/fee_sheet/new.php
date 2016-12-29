@@ -314,7 +314,7 @@ function echoLine($lino, $codetype, $code, $modifier, $ndc_info='',
 
     if ($code_types[$codetype]['claim'] && !$code_types[$codetype]['diag']) {
       echo "  <td class='billcell' align='center'$usbillstyle><input type='text' name='bill[".attr($lino)."][notecodes]' " .
-        "value='" . htmlspecialchars($notecodes, ENT_QUOTES) . "' maxlength='10' size='8' /></td>\n";
+        "value='" . htmlspecialchars($notecodes, ENT_QUOTES) . "' maxlength='50' size='8' /></td>\n";
     }
     else {
       echo "  <td class='billcell' align='center'$usbillstyle></td>\n";
