@@ -31,3 +31,9 @@ function framesMode()
 {
     top.window.location=webroot_url+"/interface/main/main_screen.php?tabs=false";
 }
+
+function userPrefs()
+{
+    navigateTab(webroot_url+"/interface/super/edit_globals.php?mode=user","msc");
+    activateTabByName("msc",true);
+}
