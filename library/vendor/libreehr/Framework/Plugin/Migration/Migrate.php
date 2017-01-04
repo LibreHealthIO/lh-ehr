@@ -219,8 +219,9 @@ class Migrate
             } else if ( preg_match( '/#EndIf/', $line ) ) {
                 $skipping = false;
             }
-            
-            if ( preg_match( '/\s*#/', $line ) )
+
+            $line = ltrim($line);
+            if ( $line[0] == '#' )
                 continue;
             if ( $skipping )
                 continue;
