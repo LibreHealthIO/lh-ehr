@@ -4406,7 +4406,7 @@ CREATE TABLE `log` (
   `success` tinyint(1) default 1,
   `checksum` longtext,
   `crt_user` varchar(255) default NULL,
-  `log_from` VARCHAR(20) DEFAULT 'open-emr',
+  `log_from` VARCHAR(20) DEFAULT 'LibreEHR',
   `menu_item_id` INT(11) DEFAULT NULL,
   `ccda_doc_id` INT(11) DEFAULT NULL COMMENT 'CCDA document id from ccda',
   PRIMARY KEY  (`id`)
