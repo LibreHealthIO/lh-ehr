@@ -226,7 +226,7 @@ class Migrate
             if ( $skipping )
                 continue;
             
-            $query = $query . $line;
+            $query = $query.' '.$line;
             if ( substr( $query, - 1 ) == ';' ) {
                 $query = rtrim( $query, ';' );
                 $messages[]= "$query<br />\n";
