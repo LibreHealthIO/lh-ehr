@@ -2829,7 +2829,10 @@ $GLOBALS_METADATA = array(
 );
 
 if ( function_exists( 'do_action' ) ) {
-    do_action( 'globals_init', $GLOBALS_METADATA );
+    do_action( 'globals_init', $args = [
+        'global_metadata' => $GLOBALS_METADATA,
+        'user_specific_globals' => $USER_SPECIFIC_GLOBALS,
+        'user_specific_tabs' => $USER_SPECIFIC_TABS ] );
 }
 
 ?>
