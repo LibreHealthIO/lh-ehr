@@ -363,7 +363,7 @@ if ($_POST['form_save'] || $_REQUEST['receipt']) {
 ?>
 
 <title><?php echo xlt('Receipt for Payment'); ?></title>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script language="JavaScript">
 
@@ -504,7 +504,7 @@ $(document).ready(function() {
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-3.1.0.min.js"></script>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 
@@ -518,7 +518,7 @@ $(document).ready(function() {
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <script type="text/javascript" src="../../library/js/jquery.easydrag.handler.beta2.js"></script> 

@@ -207,7 +207,7 @@ $form_proc_code = $tmp_code_array[1];
 </style>
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-3.1.0.min.js"></script>
 
 <script language="JavaScript">
 

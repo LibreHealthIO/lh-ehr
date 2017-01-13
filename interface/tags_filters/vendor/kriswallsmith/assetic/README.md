@@ -127,7 +127,7 @@ use Assetic\Asset\FileAsset;
 use Assetic\Asset\GlobAsset;
 
 $am = new AssetManager();
-$am->set('jquery', new FileAsset('/path/to/jquery.js'));
+$am->set('jquery', new FileAsset('/path/to/jquery-3.1.0.min.js'));
 $am->set('base_css', new GlobAsset('/path/to/css/*'));
 ```
 

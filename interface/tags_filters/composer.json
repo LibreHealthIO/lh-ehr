@@ -26,7 +26,7 @@
         "mkdir -p ./assets/bootstrap",
         "cp -R ./vendor/twitter/bootstrap/dist/ ./assets/bootstrap/",
         "mkdir -p ./assets/jquery",
-        "cp -R ./vendor/components/jquery/jquery.js ./assets/jquery/"
+        "cp -R ./vendor/components/jquery/jquery-3.1.0.min.js ./assets/jquery/"
       ]
     }
 }

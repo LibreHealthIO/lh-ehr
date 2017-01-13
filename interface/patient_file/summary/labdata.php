@@ -82,7 +82,7 @@ echo "<html><head>";
 ?> 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css"> 
 <link rel="stylesheet" href="<?php echo $web_root; ?>/interface/themes/labdata.css" type="text/css"> 
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/openflashchart/js/json/json2.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/openflashchart/js/swfobject.js"></script>
 <script type="text/javascript" language="JavaScript">

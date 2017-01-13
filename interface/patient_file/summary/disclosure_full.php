@@ -58,7 +58,7 @@ if (isset($_POST["mode"]) and  $_POST["mode"] == "disclosure"){
 if (isset($_GET['deletelid']))
 {
 $deletelid=$_GET['deletelid'];
-//function to delete the recorded disclosures  
+//function to delete the recorded disclosures
 deleteDisclosure($deletelid);
 }
 ?>
@@ -66,10 +66,9 @@ deleteDisclosure($deletelid);
 <head>
 <link rel='stylesheet' href="<?php echo $css_header;?>" type="text/css">
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-3.1.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 <script type="text/javascript" src="../../../library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/js/jquery.1.3.2.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 </head>
@@ -115,7 +114,7 @@ if ($n>0){?>
 		<td colspan='5' style="padding: 5px;"><a href="disclosure_full.php" class="" id='Submit' onclick="top.restoreSession()"><span><?php echo xlt('Refresh'); ?></span></a></td>
 		</tr>
 	</table>
-<div id='pnotes'>	
+<div id='pnotes'>
 	<table border='0' cellpadding="1" width='80%'>
 		<tr class="showborder_head" align='left' height="22">
 			<th style='width: 120px';>&nbsp;</th>
@@ -135,7 +134,7 @@ if ($n>0){?>
 		$description =nl2br(text($iter{description})); //for line break if there is any new lines in the input text area field.
 		?>
 		<!-- List the recipient name, description, date and edit and delete options-->
-		<tr  class="noterow" height='25'>		
+		<tr  class="noterow" height='25'>
 			<!--buttons for edit and delete.-->
 			<td valign='top'><a href='record_disclosure.php?editlid=<?php echo text($iter{id}); ?>'
 			class='css_button_small iframe' onclick='top.restoreSession()'><span><?php echo xlt('Edit');?></span></a>
@@ -161,18 +160,18 @@ else
 <table width='400' border='0' cellpadding='0' cellspacing='0'>
  <tr>
   <td>
-<?php 
+<?php
 if ($offset > ($N-1) && $n!=0) {
   echo "   <a class='link' href='disclosure_full.php?active=" . $active .
     "&offset=" . ($offset-$N) . "' onclick='top.restoreSession()'>[" .
     xlt('Previous') . "]</a>\n";
 }
 ?>
-  
-<?php 
+
+<?php
 
 if ($n >= $N && $noOfRecordsLeft!=$N) {
-  echo "&nbsp;&nbsp;   <a class='link' href='disclosure_full.php?active=" . $active. 
+  echo "&nbsp;&nbsp;   <a class='link' href='disclosure_full.php?active=" . $active.
     "&offset=" . ($offset+$N)  ."&leftrecords=".$noOfRecordsLeft."' onclick='top.restoreSession()'>[" .
     xlt('Next') . "]</a>\n";
 }
@@ -186,25 +185,23 @@ if ($n >= $N && $noOfRecordsLeft!=$N) {
 <script type="text/javascript">
 $(document).ready(function()
         {
-/// todo, move this to a common library  
-	//for row highlight.	
+/// todo, move this to a common library
+	//for row highlight.
 	 $(".noterow").mouseover(function() { $(this).toggleClass("highlight"); });
 	 $(".noterow").mouseout(function() { $(this).toggleClass("highlight"); });
-	 //fancy box  
+	 //fancy box
     	enable_modals();
     	//for deleting the disclosures
     	$(".deletenote").click(function() { DeleteNote(this); });
-	
-      	var DeleteNote = function(logevent) 
+
+      	var DeleteNote = function(logevent)
 		{
-		if (confirm("<?php echo htmlspecialchars(xl('Are you sure you want to delete this disclosure?','','','\n ') . xl('This action CANNOT be undone.'),ENT_QUOTES); ?>")) 
+		if (confirm("<?php echo htmlspecialchars(xl('Are you sure you want to delete this disclosure?','','','\n ') . xl('This action CANNOT be undone.'),ENT_QUOTES); ?>"))
 			{
 	                top.restoreSession();
-                        window.location.replace("disclosure_full.php?deletelid="+logevent.id)                         
+                        window.location.replace("disclosure_full.php?deletelid="+logevent.id)
          		}
-       		}	
+       		}
        });
 </script>
 </html>
-
-

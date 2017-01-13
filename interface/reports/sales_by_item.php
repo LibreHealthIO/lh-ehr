@@ -296,7 +296,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
 <title><?php echo xlt('Sales by Item') ?></title>
 
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-3.1.0.min.js"></script>
 
 <script language="JavaScript">
  $(document).ready(function() {
