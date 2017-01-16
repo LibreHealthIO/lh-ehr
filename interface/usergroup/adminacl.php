@@ -28,7 +28,7 @@ if (!isset($phpgacl_location)) {
 		
 <html>
 <head>
- <script type="text/JavaScript" src="../../library/js/jquery121.js"></script>
+ <script type="text/JavaScript" src="../../library/js/jquery-3.1.0.min.js"></script>
  <script type="text/JavaScript" src="../../library/js/jquery.livequery101.js"></script>	
  <script type="text/JavaScript">
 	

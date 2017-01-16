@@ -141,7 +141,7 @@ $DateFormat=DateFormatRead();
  var mypcc = '1';
 </script>
 <?php include_once("{$GLOBALS['srcdir']}/payment_jav.inc.php"); ?>
- <script type="text/JavaScript" src="../../library/js/jquery121.js"></script>
+ <script type="text/JavaScript" src="../../library/js/jquery-3.1.0.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script LANGUAGE="javascript" TYPE="text/javascript">

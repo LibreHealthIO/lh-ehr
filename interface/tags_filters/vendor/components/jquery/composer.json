@@ -23,7 +23,7 @@
     "extra": {
         "component": {
             "scripts": [
-                "jquery.js"
+                "jquery-3.1.0.min.js"
             ],
             "files": [
                 "jquery.min.js",

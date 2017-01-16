@@ -50,7 +50,7 @@ $form_patient_id = trim($_POST['form_patient_id']);
 
 </style>
 
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-3.1.0.min.js"></script>
 
 <script language="JavaScript">
  $(document).ready(function() {

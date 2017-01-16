@@ -261,7 +261,7 @@ $ignoreAuth = 1;
 <script type="text/javascript" src="../library/dynarch_calendar_setup.js"></script>
 
 <!-- for ajax-y stuff -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-3.1.0.min.js"></script>
 
 <script language="JavaScript">
 

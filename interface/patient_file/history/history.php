@@ -20,7 +20,7 @@ $fake_register_globals=false;
 <head>
 <?php html_header_show();?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<script type="text/javascript" src="../../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../../library/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 
 <script type="text/javascript">

@@ -173,7 +173,7 @@ function postError($msg) {
 </style>
 <title><?php  xl('Appointments and Encounters','e'); ?></title>
 
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-3.1.0.min.js"></script>
 
 <script language="JavaScript">
 

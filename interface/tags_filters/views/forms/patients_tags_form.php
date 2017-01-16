@@ -1,6 +1,6 @@
 
 <!--<link href="--><?php //echo $GLOBALS['webroot'] ?><!--/interface/tags_filters/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
-<script src="<?php echo $GLOBALS['webroot'] ?>/interface/tags_filters/assets/jquery/jquery.js"></script>
+<script src="<?php echo $GLOBALS['webroot'] ?>/interface/tags_filters/assets/jquery/jquery-3.1.0.min.js"></script>
 <script src="<?php echo $GLOBALS['webroot'] ?>/interface/tags_filters/assets/bootstrap/js/bootstrap.min.js"></script>
 <link href="<?php echo $GLOBALS['webroot'] ?>/interface/tags_filters/assets/js/bootstrap-tagsinput.css" rel="stylesheet">
 <link href="<?php echo $GLOBALS['webroot'] ?>/interface/tags_filters/assets/js/bootstrap-tagsinput-typeahead.css" rel="stylesheet">
