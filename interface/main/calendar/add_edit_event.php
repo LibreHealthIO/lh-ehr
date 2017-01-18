@@ -542,11 +542,7 @@ if ($_POST['form_action'] == "save") {
         $event_date = fixDate($_POST['event_start_date']);
     }
 
-                do_action( 'before_update_event',
-                    $data = [ 'id' => $eid, 'pid' => $_POST['form_pid'],
-                        'provider' => $_POST['form_provider'], 'date' => $event_date, 'starttime' => $starttime,
-                        'category' => $_POST['form_category'], 'status' => $_POST['form_apptstatus'], 'title' => $_POST['form_title'],
-                    ] );
+                do_action( 'before_update_event',  $data = [ 'pc_eid' => $eid, ] );
 
                 // mod the SINGLE event or ALL EVENTS in a repeating series
                 // simple provider case
@@ -574,9 +570,9 @@ if ($_POST['form_action'] == "save") {
                     "WHERE pc_eid = '" . add_escape_custom($eid) . "'");
 
                 do_action( 'after_update_event',
-                    $data = [ 'id' => $eid, 'pid' => $_POST['form_pid'],
-                        'provider' => $_POST['form_provider'], 'date' => $event_date, 'starttime' => $starttime,
-                        'category' => $_POST['form_category'], 'status' => $_POST['form_apptstatus'], 'title' => $_POST['form_title'],
+                    $data = [ 'pc_eid' => $eid, 'pc_pid' => $_POST['form_pid'],
+                        'pc_aid' => $_POST['form_provider'], 'pc_eventDate' => $event_date, 'pc_startTime' => $starttime,
+                        'pc_catid' => $_POST['form_category'], 'pc_apptstatus' => $_POST['form_apptstatus'], 'pc_title' => $_POST['form_title'],
                         ] );
             }
         }
