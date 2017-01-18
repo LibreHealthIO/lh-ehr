@@ -1414,6 +1414,18 @@ $GLOBALS_METADATA = array(
        '1',                             // default = true
       xl('When Checked, Patient ID Will Show in Patient Flow Board.')
     ),
+    'ptkr_show_room' => array(
+      xl('Show Exam Room Patient Flow Board'),
+      'bool',                          // data type
+      '1',                             // default = true
+      xl('When Checked, Exam Room Will Show in Patient Flow Board.')
+    ),
+    'ptkr_show_visit_type' => array(
+      xl('Show Visit Type in Patient Flow Board'),
+      'bool',                          // data type
+      '1',                             // default = true
+      xl('When Checked, Visit Type Will Show in Patient Flow Board.')
+    ),
 
     'ptkr_show_encounter' => array(
       xl('Show Patient Encounter Number in Patient Flow Board'),
