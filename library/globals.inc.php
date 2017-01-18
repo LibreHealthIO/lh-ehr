@@ -5,65 +5,16 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-
-// $GLOBALS['print_command'] is the
-// Print command for spooling to printers, used by statements.inc.php
-// This is the command to be used for printing (without the filename).
-// The word following "-P" should be the name of your printer.  This
-// example is designed for 8.5x11-inch paper with 1-inch margins,
-// 10 CPI, 6 LPI, 65 columns, 54 lines per page.
 //
-// IF lpr services are installed on Windows this setting will be similar
-// Otherwise configure it as needed (print /d:PRN) might be an option for Windows parallel printers
+// Modified by dozens of contributors
 
-//  Current supported languages:    // Allow capture of term for translation:
-//   Albanian                       // xl('Albanian')
-//   Amharic                        // xl('Amharic')
-//   Arabic                         // xl('Arabic')
-//   Armenian                       // xl('Armenian')
-//   Bahasa Indonesia               // xl('Bahasa Indonesia')
-//   Bengali                        // xl('Bengali')
-//   Bosnian                        // xl('Bosnian')
-//   Chinese (Simplified)           // xl('Chinese (Simplified)')
-//   Chinese (Traditional)          // xl('Chinese (Traditional)')
-//   Croatian                       // xl('Croatian')
-//   Czech                          // xl('Czech')
-//   Danish                         // xl('Danish')
-//   Dutch                          // xl('Dutch')
-//   English (Indian)               // xl('English (Indian)')
-//   English (Standard)             // xl('English (Standard)')
-//   Estonian                       // xl('Estonian')
-//   Finnish                        // xl('Finnish')
-//   French                         // xl('French (Standard)')
-//   French                         // xl('French (Canadian)')
-//   Georgian                       // xl('Georgian')
-//   German                         // xl('German')
-//   Greek                          // xl('Greek')
-//   Hebrew                         // xl('Hebrew')
-//   Hindi                          // xl('Hindi')
-//   Hungarian                      // xl('Hungarian')
-//   Italian                        // xl('Italian')
-//   Japanese                       // xl('Japanese')
-//   Korean                         // xl('Korean')
-//   Lithuanian                     // xl('Lithuanian')
-//   Marathi                        // xl('Marathi')
-//   Norwegian                      // xl('Norwegian')
-//   Persian                        // xl('Persian')
-//   Polish                         // xl('Polish')
-//   Portuguese (Brazilian)         // xl('Portuguese (Brazilian)')
-//   Portuguese (European)          // xl('Portuguese (European)')
-//   Romanian                       // xl('Romanian')
-//   Russian                        // xl('Russian')
-//   Serbian                        // xl('Serbian')
-//   Sinhala                        // xl('Sinhala')
-//   Slovak                         // xl('Slovak')
-//   Somali                         // xl('Somali')
-//   Spanish (Latin American)       // xl('Spanish (Latin American)')
-//   Spanish (Spain)                // xl('Spanish (Spain)')
-//   Swedish                        // xl('Swedish')
-//   Turkish                        // xl('Turkish')
-//   Ukrainian                      // xl('Ukrainian')
-//   Vietnamese                     // xl('Vietnamese')
+/* @package LibreEHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Tony McCormick <tony@mi-squared.com>
+ *
+ * @link http://www.libreehr.org
+ */
+
 
 // OS-dependent stuff.
 if (stristr(PHP_OS, 'WIN')) {
@@ -82,26 +33,6 @@ else {
   $backup_log_dir      = '/tmp';
 }
 
-// Language constant declarations:
-// xl('Appearance')
-// xl('Locale')
-// xl('Features')
-// xl('Report')
-// xl('Billing')
-// xl('Claim')
-// xl('Esign')
-// xl('Documents')
-// xl('Calendar')
-// xl('Security')
-// xl('Notifications')
-// xl('CDR')
-// xl('Logging')
-// xl('Miscellaneous')
-// xl('Portal')
-// xl('Connectors')
-// xl('RX')
-// xl('PDF')
-
 // List of user specific tabs and globals
 $USER_SPECIFIC_TABS = array('Appearance',
                             'Locale',
@@ -109,7 +40,8 @@ $USER_SPECIFIC_TABS = array('Appearance',
                             'Claim',
                             'Calendar',
                             'Connectors');
-$USER_SPECIFIC_GLOBALS = array('default_top_pane',
+$USER_SPECIFIC_GLOBALS = array('default_tab_1',
+                               'default_tab_2',
                                'css_header',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
@@ -142,17 +74,31 @@ $GLOBALS_METADATA = array(
   //
   'Appearance' => array(
 
-    'default_top_pane' => array(
-      xl('Main Top Pane Screen'),       // descriptive name
+    'default_tab_1' => array(
+      xl('Default First Tab'),       // descriptive name
       array(
-        'main_info.php' => xl('Calendar Screen'),
+        '../../interface/main/main_info.php' => xl('Calendar Screen'),
         '../../interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
         '../new/new.php' => xl('Patient Add/Search'),
         '../../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
+        '../../interface/main/messages/messages.php?form_active=1' => xl("Messages"),
       ),
-       'main_info.php',                 // default = calendar
-      xl('Type of screen layout')
+       '../../interface/main/main_info.php',                 // default = calendar
+      xl('First TAB on the left')
     ),
+
+    'default_tab_2' => array(
+      xl('Default Second Tab'),       // descriptive name
+      array(
+        '../../interface/main/messages/messages.php?form_active=1' => xl("Messages"),
+        '../../interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
+        '../new/new.php' => xl('Patient Add/Search'),
+        '../../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
+        '../../interface/main/main_info.php' => xl('Calendar Screen'),
+      ),
+      '../../interface/main/finder/dynamic_finder.php',    //Finder
+      xl('Second TAB on the left')
+  ),
 
     'default_encounter_view' => array(
       xl('Default Encounter View'),     // descriptive name
