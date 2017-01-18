@@ -85,6 +85,12 @@ var webroot_url="<?php echo $web_root; ?>";
             app_view_model.application_data.tabs.tabsList()[0].url(<?php echo json_encode("../".urldecode($_REQUEST['url'])); ?>);
         <?php 
         }
+        if(isset($GLOBALS['default_tab_2']))
+        {
+        ?>
+            app_view_model.application_data.tabs.tabsList()[1].url(<?php echo json_encode("../".$GLOBALS['default_tab_2']); ?>);
+        <?php
+        }
     ?>
     app_view_model.application_data.user(new user_data_view_model(<?php echo json_encode($_SESSION{"authUser"})
                                                                   .',' . json_encode($userQuery['fname'])
