@@ -16,6 +16,9 @@ require_once("../../globals.php");
 require_once("$srcdir/formdata.inc.php");
 
 $popup = empty($_REQUEST['popup']) ? 0 : 1;
+$defaultFilterName = empty($_REQUEST['defaultFilterName']) ? null : $_REQUEST['defaultFilterName'];
+$defaultFilterValue = empty($_REQUEST['defaultFilterValue']) ? null : $_REQUEST['defaultFilterValue'];
+$defaultFilterIndex = null;
 
 // Generate some code based on the list of columns.
 //
@@ -35,6 +38,9 @@ while ($row = sqlFetchArray($res)) {
   $header0 .= "value='' class='search_init' /></td>\n";
   if ($coljson) $coljson .= ", ";
   $coljson .= "{\"sName\": \"" . addcslashes($colname, "\t\r\n\"\\") . "\"}";
+  if ( $colname == $defaultFilterName ) {
+      $defaultFilterIndex = $colcount;
+  }
   ++$colcount;
 }
 ?>
@@ -102,6 +108,10 @@ $(document).ready(function() {
   // Filter on the column (the index) of this element
 	oTable.fnFilter( this.value, $("thead input").index(this) );
  });
+
+ <?php if ( $defaultFilterValue && $defaultFilterIndex ) { ?>
+    oTable.fnFilter( "<?php echo $defaultFilterValue; ?>", <?php echo $defaultFilterIndex; ?> );
+ <?php } ?>
 
  // OnClick handler for the rows
  $('#pt_table tbody tr').live('click', function () {

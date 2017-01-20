@@ -1,6 +1,6 @@
 <script type="text/html" id="patient-data-template">
-        <divs>
-            <span class="patientDataColumn">
+        <div>
+            <span class="patientDataColumn" id="patient_data_column_left">
                 <div class="patientInfo">
                     <span>
                             <?php echo xlt("Patient"); ?>:
@@ -28,10 +28,10 @@
                     </b>
                 </div>
             </span>
-            <span class="patientDataColumn">
+            <span class="patientDataColumn" id="patient_data_column_middle">
                 &nbsp;
             </span>
-            <span class="patientDataColumn patientEncountersColumn">
+            <span class="patientDataColumn patientEncountersColumn" id="patient_data_column_right">
                 <!-- ko if: patient -->                
                 <!-- ko with: patient -->                
                 <div>
