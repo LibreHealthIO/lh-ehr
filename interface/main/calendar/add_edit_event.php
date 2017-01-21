@@ -229,8 +229,10 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
         $duration = abs($_POST['form_duration']); // fixes #395
     }
+    $tmph = sprintf( "%02d", $tmph );
+    $tmpm = sprintf( "%02d", $tmpm );
     $starttime = "$tmph:$tmpm:00";
-    //
+    //$tmph
     $tmpm += $duration;
     while ($tmpm >= 60) {
         $tmpm -= 60;
