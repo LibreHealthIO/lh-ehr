@@ -1011,18 +1011,3 @@ height: 300px !important;
 	background-color:#E1E4E9;
 }
 
-/* flow board filters*/
- #flow_board_parameters{
-     width: 1041px;
-     margin: 25px auto;
-     background-color: #ececec;
- }
- #flow_board_parameters td{
-     padding: 10px;
- }
- #flow_board_parameters table {
-     border: solid 1px;
-     width: 100%;
-     border-collapse: collapse;
-  }
-  

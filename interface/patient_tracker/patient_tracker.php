@@ -204,7 +204,7 @@ function openNewTopWindow(newpid,newencounterid) {
 <span class="title"><?php echo xlt("Flow Board") ?></span>
 <body class="body_top" >
 <form method='post' name='theform' id='theform' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()'>
-    <div>
+    <div id="flow_board_parameters">
         <table>
             <tr>
                 <td class='label'><?php echo xlt('Provider'); ?>:</td>
@@ -296,7 +296,7 @@ function openNewTopWindow(newpid,newencounterid) {
 
 <form name='pattrk' id='pattrk' method='post' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()' enctype='multipart/form-data'>
 
-<div>
+<div id="flowboard_header">
   <?php if (count($chk_prov) == 1) {?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>
       <h2><span style='float: left'><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text(oeFormatShortDate($from_date)) . ' ' . xlt('to'). ' ' . text(oeFormatShortDate($to_date)) ?></span></h2>
@@ -343,7 +343,7 @@ function openNewTopWindow(newpid,newencounterid) {
          </small></b>
      </td>
  </tr>
-
+<div id="flowboard_details">
  <tr bgcolor="#cccff">
   <?php if ($GLOBALS['ptkr_show_pid']) { ?>
    <td class="dehead" align="center">
@@ -415,7 +415,7 @@ function openNewTopWindow(newpid,newencounterid) {
  </tr>
 
 <?php
-
+    $prev_appt_date_time = "";
 	foreach ( $appointments as $appointment ) {
 
                 # Collect appt date and set up squashed date for use below
@@ -433,6 +433,7 @@ function openNewTopWindow(newpid,newencounterid) {
                 $status = (!empty($appointment['status'])) ? $appointment['status'] : $appointment['pc_apptstatus'];
                 $appt_room = (!empty($appointment['room'])) ? $appointment['room'] : $appointment['pc_room'];
                 $appt_time = (!empty($appointment['appttime'])) ? $appointment['appttime'] : $appointment['pc_startTime'];
+                $appt_date_time = $date_appt .' '. $appt_time;  // used to find flag double booked
                 $tracker_id = $appointment['id'];
                 # reason for visit
                 if ($GLOBALS['ptkr_visit_reason']) {
@@ -481,9 +482,17 @@ function openNewTopWindow(newpid,newencounterid) {
          <td class="detail" align="center">
          <?php echo oeFormatShortDate($date_appt) ?>
          </td>
-         <?php } ?>
-         <td class="detail" align="center">
-         <?php echo oeFormatTime($appt_time) ?>
+         <?php }
+            $apptflagtd = '<td class="detail" align="center">';
+            if ($GLOBALS['ptkr_flag_dblbook']) {
+                if ($appt_date_time === $prev_appt_date_time) {
+                    $apptflagtd = '<td class="detail" align="center" bgcolor="orange">';
+                }
+                $prev_appt_date_time = $appt_date_time;
+            }
+         echo $apptflagtd;  // <TD ..>
+            echo oeFormatTime($appt_time);
+         ?>
          </td>
          <td class="detail" align="center">
         <?php echo ($newarrive ? oeFormatTime($newarrive) : '&nbsp;') ?>
@@ -587,7 +596,7 @@ function openNewTopWindow(newpid,newencounterid) {
         <?php
 	} //end for
 ?>
-
+</div>
 <?php
 //saving the filter for auto refresh
 if(!is_null($_POST['form_provider']) ){

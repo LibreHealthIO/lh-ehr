@@ -31,11 +31,12 @@ require_once("$srcdir/patient_tracker.inc.php");
 <html>
 <head>
     <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
-    <link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen"/>
-    <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<!--    <link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen"/>
+-->
+    <script type="text/javascript" src="../../library/js/jquery.1.9.1.js"></script>
     <script type="text/javascript" src="../../library/js/common.js"></script>
-    <script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-
+<!--    <script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+-->
     <?php
     # Get the information for fields
     $tracker_id = $_GET['tracker_id'];
@@ -110,8 +111,8 @@ require_once("$srcdir/patient_tracker.inc.php");
                 # Generate drop down list for room number.
                 echo generate_select_list('roomnum', 'patient_flow_board_rooms', $trow['lastroom'], xl('Exam Room Number'));
                 ?>
-                <br><br>
-            <?php } // end of room includ check?>
+            <?php } // end of room include check?>
+            <br><br>
             <tr>
                 <td>
                     <a href='javascript:;' class='css_button_small' style='color:gray'
