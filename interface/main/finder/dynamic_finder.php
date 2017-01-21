@@ -34,13 +34,15 @@ while ($row = sqlFetchArray($res)) {
   $header .= "   <th>";
   $header .= text($title);
   $header .= "</th>\n";
+  $headerValue = "";
+  if ( $colname == $defaultFilterName ) {
+    $defaultFilterIndex = $colcount;
+    $headerValue = $defaultFilterValue;
+  }
   $header0 .= "   <td align='center'><input type='text' size='10' ";
-  $header0 .= "value='' class='search_init' /></td>\n";
+  $header0 .= "value='$headerValue' class='search_init' /></td>\n";
   if ($coljson) $coljson .= ", ";
   $coljson .= "{\"sName\": \"" . addcslashes($colname, "\t\r\n\"\\") . "\"}";
-  if ( $colname == $defaultFilterName ) {
-      $defaultFilterIndex = $colcount;
-  }
   ++$colcount;
 }
 ?>
