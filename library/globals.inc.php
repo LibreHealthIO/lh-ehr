@@ -124,8 +124,13 @@ $USER_SPECIFIC_GLOBALS = array('default_top_pane',
                                'event_color',
                                'pat_trkr_timer',
                                'ptkr_visit_reason',
+                               'ptkr_show_pid',
+                               'ptkr_show_room',
                                'ptkr_date_range',
                                'ptkr_end_date',
+                               'ptkr_show_visit_type',
+                               'ptkr_show_encounter',
+                               'ptkr_flag_dblbook',
                                'status_default',
                                'checkout_roll_off',
                                'ptkr_pt_list_new_window',
@@ -1414,21 +1419,36 @@ $GLOBALS_METADATA = array(
        '1',                             // default = true
       xl('When Checked, Patient ID Will Show in Patient Flow Board.')
     ),
-
+    'ptkr_show_room' => array(
+      xl('Show Exam Room Patient Flow Board'),
+      'bool',                          // data type
+      '1',                             // default = true
+      xl('When Checked, Exam Room Will Show in Patient Flow Board.')
+    ),
+    'ptkr_show_visit_type' => array(
+      xl('Show Visit Type in Patient Flow Board'),
+      'bool',                          // data type
+      '1',                             // default = true
+      xl('When Checked, Visit Type Will Show in Patient Flow Board.')
+    ),
     'ptkr_show_encounter' => array(
       xl('Show Patient Encounter Number in Patient Flow Board'),
        'bool',                          // data type
        '1',                             // default = true
       xl('When Checked, Patient Encounter Number Will Show in Patient Flow Board.')
     ),
-
+      'ptkr_flag_dblbook' => array(
+          xl('Flag Double Booked Appt in Flow Board'),
+          'bool',                          // data type
+          '1',                             // default = true
+          xl('When Checked, double booked appointments will be flagged in orange in Patient Flow Board.')
+    ),
     'ptkr_date_range' => array(
       xl('Allow Date Range in Patient Flow Board'),
        'bool',                          // data type
        '0',                             // default = false
       xl('This Allows a Date Range to be Selected in Patient Flow Board.')
     ),
-
     'ptkr_end_date' => array(
       xl('Ending Date for Patient Flow Board'),
       array(
@@ -1442,7 +1462,6 @@ $GLOBALS_METADATA = array(
       'Y1',                     // default = One Year
       xl('This is the Ending date for the Patient Flow Board Date Range. (only applicable if Allow Date Range in option above is Enabled)')
     ),
-
     'pat_trkr_timer' => array(
       xl('Patient Flow Board Timer Interval'),
       array(
