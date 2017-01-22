@@ -90,8 +90,8 @@ else if (isset($_GET['mode']) && $_GET['mode'] == "loadcalendar") {
 }
 else if ($GLOBALS['concurrent_layout']) {
   // new layout
-  if ($GLOBALS['default_top_pane']) {
-    $frame1url=attr($GLOBALS['default_top_pane']);
+  if ($GLOBALS['default_tab_1']) {
+    $frame1url=attr($GLOBALS['default_tab_1']);
   } else {
     $frame1url = "main_info.php";
   }
