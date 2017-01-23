@@ -45,13 +45,13 @@ CREATE TABLE `amc_misc_data` (
 DROP TABLE IF EXISTS `amendments`;
 CREATE TABLE IF NOT EXISTS `amendments` (
   `amendment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Amendment ID',
-  `amendment_date` date	NOT NULL COMMENT 'Amendement request date',
+  `amendment_date` date NOT NULL COMMENT 'Amendement request date',
   `amendment_by` varchar(50) NOT NULL COMMENT 'Amendment requested from',
   `amendment_status` varchar(50) NULL COMMENT 'Amendment status accepted/rejected/null',
   `pid` int(11) NOT NULL COMMENT 'Patient ID from patient_data',
   `amendment_desc` TEXT COMMENT 'Amendment Details',
   `created_by` int(11) NOT NULL COMMENT 'references users.id for session owner',
-  `modified_by`	int(11) NULL COMMENT 'references users.id for session owner',
+  `modified_by` int(11) NULL COMMENT 'references users.id for session owner',
   `created_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'created time',
   `modified_time` timestamp NULL COMMENT 'modified time',
   PRIMARY KEY amendments_id(`amendment_id`),
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `amendments_history` (
   `created_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'created time',
 KEY amendment_history_id(`amendment_id`)
 ) ENGINE = MyISAM;
-	
+    
 
 -- 
 -- Table structure for table `array`
@@ -192,7 +192,7 @@ CREATE TABLE `billing` (
   `target` varchar(30) default NULL,
   `x12_partner_id` int(11) default NULL,
   `ndc_info` varchar(255) default NULL,
-  `notecodes` varchar(50) NOT NULL default '',
+  `notecodes` varchar(80) NOT NULL default '',
   `exclude_from_insurance_billing` TINYINT(1) NOT NULL DEFAULT '0',
   `external_id` VARCHAR(20) DEFAULT NULL,
   PRIMARY KEY  (`id`),
@@ -480,7 +480,7 @@ INSERT INTO `clinical_rules` ( `id`, `pid`, `active_alert_flag`, `passive_alert_
 -- Clinical Quality Measure (CQM) rules
 --
 -- NQF 0013 Hypertension: Blood Pressure Measurement
-INSERT INTO `clinical_rules` ( `id`, `pid`, `active_alert_flag`, `passive_alert_flag`, `cqm_flag`, `cqm_2011_flag`, `cqm_nqf_code`, `cqm_pqri_code`, `amc_flag`, `amc_code`, `patient_reminder_flag`, `cqm_2014_flag` ) VALUES ('rule_htn_bp_measure_cqm', 0, 0, 0, 1, 1, '0013', '', 0, '', 0, 1);
+INSERT INTO `clinical_rules` ( `id`, `pid`, `active_alert_flag`, `passive_alert_flag`, `cqm_flag`, `cqm_2011_flag`, `cqm_nqf_code`, `cqm_pqri_code`, `amc_flag`, `amc_code`, `patient_reminder_flag`, `cqm_2014_flag` ) VALUES ('rule_htn_bp_measure_cqm', 0, 0, 0, 1, 1, '0018', '', 0, '', 0, 1);
 -- NQF 0028a Tobacco Use Assessment
 INSERT INTO `clinical_rules` ( `id`, `pid`, `active_alert_flag`, `passive_alert_flag`, `cqm_flag`, `cqm_2011_flag`, `cqm_nqf_code`, `cqm_pqri_code`, `amc_flag`, `amc_code`, `patient_reminder_flag` ) VALUES ('rule_tob_use_assess_cqm', 0, 0, 0, 1, 1, '0028a', '', 0, '', 0);
 -- NQF 0028b Tobacco Cessation Intervention
@@ -680,7 +680,7 @@ CREATE TABLE `codes` (
   `taxrates` varchar(255) NOT NULL default '',
   `cyp_factor` float NOT NULL DEFAULT 0 COMMENT 'quantity representing a years supply',
   `active` TINYINT(1) DEFAULT 1 COMMENT '0 = inactive, 1 = active',
-  `exclude_from_insurance_billing` TINYINT(1) NOT NULL DEFAULT '0',
+  `exclude_from_insurance_billing` TINYINT(1) DEFAULT '0' COMMENT '0 = include, 1 = exclude',
   `reportable` TINYINT(1) DEFAULT 0 COMMENT '0 = non-reportable, 1 = reportable',
   `financial_reporting` TINYINT(1) DEFAULT 0 COMMENT '0 = negative, 1 = considered important code in financial reporting',
   PRIMARY KEY  (`id`),
@@ -822,7 +822,7 @@ CREATE TABLE `documents` (
   `path_depth` TINYINT DEFAULT '1' COMMENT 'Depth of path to use in url to find document. Not applicable for CouchDB.',
   `imported` TINYINT DEFAULT 0 NULL COMMENT 'Parsing status for CCR/CCD/CCDA importing',
   `encounter_id` bigint(20) NOT NULL DEFAULT '0' COMMENT 'Encounter id if tagged',
-  `encounter_check`	TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'If encounter is created while tagging',
+  `encounter_check` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'If encounter is created while tagging',
   `audit_master_approval_status` TINYINT NOT NULL DEFAULT 1 COMMENT 'approval_status from audit_master table',
   `audit_master_id` int(11) default NULL,
   `documentationOf` varchar(255) DEFAULT NULL,
@@ -997,6 +997,7 @@ CREATE TABLE `drugs` (
   `active` TINYINT(1) DEFAULT 1 COMMENT '0 = inactive, 1 = active',
   `allow_combining` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1 = allow filling an order from multiple lots',
   `allow_multiple`  tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 = allow multiple lots at one warehouse',
+  `drug_code` varchar(25) NULL,
   PRIMARY KEY  (`drug_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -1120,7 +1121,7 @@ INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_non
 INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_influenza', 5);
 INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_influenza', 9);
 INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_influenza', 10);
-
+INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_ophthal_serv', 14);
 
 --
 -- Table structure for table `erx_ttl_touch`
@@ -2384,14 +2385,17 @@ CREATE TABLE `immunizations` (
   `update_date` timestamp NOT NULL,
   `created_by` bigint(20) default NULL,
   `updated_by` bigint(20) default NULL,
-  `amount_administered` float DEFAULT NULL,			
-  `amount_administered_unit` varchar(50) DEFAULT NULL,			
-  `expiration_date` date DEFAULT NULL,			
-  `route` varchar(100) DEFAULT NULL,			
-  `administration_site` varchar(100) DEFAULT NULL,			
+  `amount_administered` float DEFAULT NULL,         
+  `amount_administered_unit` varchar(50) DEFAULT NULL,          
+  `expiration_date` date DEFAULT NULL,          
+  `route` varchar(100) DEFAULT NULL,            
+  `administration_site` varchar(100) DEFAULT NULL,          
   `added_erroneously` tinyint(1) NOT NULL DEFAULT '0',  
   `external_id` VARCHAR(20) DEFAULT NULL,
   `completion_status` VARCHAR(50) DEFAULT NULL,
+  `information_source` VARCHAR(31) DEFAULT NULL,
+  `refusal_reason` VARCHAR(31) DEFAULT NULL,
+  `ordering_provider` INT(11) DEFAULT NULL,
   PRIMARY KEY  (`id`),
   KEY `patient_id` (`patient_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -2769,8 +2773,8 @@ CREATE TABLE `list_options` (
 -- Dumping data for table `list_options`
 -- 
 
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('yesno', 'NO', 'NO', 1, 0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('yesno', 'YES', 'YES', 2, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('yesno', 'NO', 'NO', 1, 0, 'N');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('yesno', 'YES', 'YES', 2, 0, 'Y');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('titles', 'Mr.', 'Mr.', 1, 0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('titles', 'Mrs.', 'Mrs.', 2, 0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('titles', 'Ms.', 'Ms.', 3, 0);
@@ -3121,19 +3125,20 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('exams' ,'hem','Hemoglobin'           ,14,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('exams' ,'psa','PSA'                  ,15,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','0',''           ,0,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','1','suspension' ,1,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','2','tablet'     ,2,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','3','capsule'    ,3,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','4','solution'   ,4,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','5','tsp'        ,5,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','6','ml'         ,6,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','7','units'      ,7,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','8','inhalations',8,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','9','gtts(drops)',9,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','10','cream'   ,10,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_form','11','ointment',11,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','1','suspension' ,1,0,'NCI-CONCEPT-ID:C60928');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','2','tablet'     ,2,0,'NCI-CONCEPT-ID:C42998');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','3','capsule'    ,3,0,'NCI-CONCEPT-ID:C25158');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','4','solution'   ,4,0,'NCI-CONCEPT-ID:C42986');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','5','tsp'        ,5,0,'NCI-CONCEPT-ID:C48544');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','6','ml'         ,6,0,'NCI-CONCEPT-ID:C28254');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','7','units'      ,7,0,'NCI-CONCEPT-ID:C44278');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','8','inhalations',8,0,'NCI-CONCEPT-ID:C42944');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','9','gtts(drops)',9,0,'NCI-CONCEPT-ID:C48491');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','10','cream'   ,10,0,'NCI-CONCEPT-ID:C28944');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','11','ointment',11,0,'NCI-CONCEPT-ID:C42966');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_form','12','puff',12,0,'NCI-CONCEPT-ID:C42944');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','0',''          ,0,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','1','mg'    ,1,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, codes ) VALUES ('drug_units','1','mg'    ,1,0,'NCI-CONCEPT-ID:C28253');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','2','mg/1cc',2,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','3','mg/2cc',3,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','4','mg/3cc',4,0);
@@ -3141,8 +3146,9 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','6','mg/5cc',6,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','7','mcg'   ,7,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','8','grams' ,8,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_units','9','mL' ,9,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_route', '0',''                 , 0,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('drug_route', '1','Per Oris'         , 1,0, 'PO');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes, codes ) VALUES ('drug_route', '1','Per Oris'         , 1,0, 'PO', 'NCI-CONCEPT-ID:C38288');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('drug_route', '2','Per Rectum'       , 2,0, 'OTH');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('drug_route', '3','To Skin'          , 3,0, 'OTH');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('drug_route', '4','To Affected Area' , 4,0, 'OTH');
@@ -3160,6 +3166,8 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) V
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('drug_route', 'intradermal', 'Intradermal', 16, 0, 'ID');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('drug_route', 'other', 'Other/Miscellaneous', 18, 0, 'OTH');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('drug_route', 'transdermal', 'Transdermal', 19, 0, 'TD');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes, codes ) VALUES ('drug_route','intramuscular','Intramuscular' ,20, 0, 'IM', 'NCI-CONCEPT-ID:C28161');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes, codes ) VALUES ('drug_route','inhale','Inhale' ,16, 0, 'RESPIR', 'NCI-CONCEPT-ID:C38216');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_interval','0',''      ,0,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_interval','1','b.i.d.',1,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('drug_interval','2','t.i.d.',2,0);
@@ -3318,6 +3326,7 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) V
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes, toggle_setting_2 ) VALUES ('apptstat','>'       ,'> Checked out'       ,55,0,'FEFDCF|0','1');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','$'       ,'$ Coding done'       ,60,0,'C0FF96|0');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','%'       ,'% Canceled < 24h'    ,65,0,'BFBFBF|0');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','^'       ,'^ Pending'    ,70,0,'ADBBFF|0');
 
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists'    ,'warehouse','Warehouses',21,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('warehouse','onsite'   ,'On Site'   , 5,0);
@@ -3628,6 +3637,7 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('order_type','risk_category','Risk Category Assessment',50,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('order_type','patient_characteristics','Patient Characteristics',60,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('order_type','imaging','Imaging',70,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('order_type','enc_checkup_procedure','Encounter Checkup Procedure',80,0);
 
 -- Clinical Rule Target Methods
 INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('lists' ,'rule_targets', 'Clinical Rule Target Methods', 3, 0);
@@ -4048,7 +4058,7 @@ INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`) VALUES ('ins
 INSERT INTO list_options(list_id,option_id,title) VALUES ('lists' ,'amendment_status','Amendment Status');
 INSERT INTO list_options(list_id,option_id,title,seq) VALUES ('amendment_status' ,'approved','Approved', 10);
 INSERT INTO list_options(list_id,option_id,title,seq) VALUES ('amendment_status' ,'rejected','Rejected', 20);
-	
+    
 -- Amendment request from
 INSERT INTO list_options(list_id,option_id,title) VALUES ('lists' ,'amendment_from','Amendment From');
 INSERT INTO list_options(list_id,option_id,title,seq) VALUES ('amendment_from' ,'patient','Patient', 10);
@@ -4238,6 +4248,7 @@ INSERT INTO `list_options` (`list_id`, `option_id`, `title`) VALUES('lists','rea
 INSERT INTO list_options ( list_id, option_id, title, seq, codes ) VALUES ('reaction', 'unassigned', 'Unassigned', 10, '');
 INSERT INTO list_options ( list_id, option_id, title, seq, codes ) VALUES ('reaction', 'hives', 'Hives', 20, 'SNOMED-CT:247472004');
 INSERT INTO list_options ( list_id, option_id, title, seq, codes ) VALUES ('reaction', 'nausea', 'Nausea', 30, 'SNOMED-CT:422587007');
+INSERT INTO list_options ( list_id, option_id, title, seq, codes ) VALUES ('reaction', 'shortness_of_breath', 'Shortness of Breath', 40, 'SNOMED-CT:267036007');
 
 -- County
 
@@ -4642,6 +4653,8 @@ CREATE TABLE `libreehr_postcalendar_categories` (
   `pc_end_all_day` tinyint(1) NOT NULL default '0',
   `pc_dailylimit` int(2) NOT NULL default '0',
   `pc_cattype` INT( 11 ) NOT NULL COMMENT 'Used in grouping categories',
+  `pc_active` tinyint(1) NOT NULL default 1,
+  `pc_seq` int(11) NOT NULL default '0',
   PRIMARY KEY  (`pc_catid`),
   KEY `basic_cat` (`pc_catname`,`pc_catcolor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 ;
@@ -4650,17 +4663,21 @@ CREATE TABLE `libreehr_postcalendar_categories` (
 -- Dumping data for table `libreehr_postcalendar_categories`
 -- 
 
-INSERT INTO `libreehr_postcalendar_categories` VALUES (1, 'No Show', '#DDDDDD', 'Reserved to define when an event did not occur as specified.', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `libreehr_postcalendar_categories` VALUES (2, 'In Office', '#99CCFF', 'Reserved todefine when a provider may haveavailable appointments after.', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 1, 3, 2, 0, 0, 1);
-INSERT INTO `libreehr_postcalendar_categories` VALUES (3, 'Out Of Office', '#99FFFF', 'Reserved to define when a provider may not have available appointments after.', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 1, 3, 2, 0, 0, 1);
-INSERT INTO `libreehr_postcalendar_categories` VALUES (4, 'Vacation', '#EFEFEF', 'Reserved for use to define Scheduled Vacation Time', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 0, 0, 0, 1, 0, 1);
-INSERT INTO `libreehr_postcalendar_categories` VALUES (5, 'Office Visit', '#FFFFCC', 'Normal Office Visit', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0,0);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (1, 'No Show', '#DDDDDD', 'Reserved to define when an event did not occur as specified.', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 0, 0, 0, 0, 0, 0,1,1);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (2, 'In Office', '#99CCFF', 'Reserved todefine when a provider may haveavailable appointments after.', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 1, 3, 2, 0, 0, 1,1,2);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (3, 'Out Of Office', '#99FFFF', 'Reserved to define when a provider may not have available appointments after.', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 1, 3, 2, 0, 0, 1,1,3);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (4, 'Vacation', '#EFEFEF', 'Reserved for use to define Scheduled Vacation Time', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 0, 0, 0, 0, 1, 0, 1,1,4);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (5, 'Office Visit', '#FFFFCC', 'Normal Office Visit', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0,0,1,5);
 INSERT INTO `libreehr_postcalendar_categories` VALUES (6, 'Holidays','#9676DB','Clinic holiday',0,NULL,'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}',0,86400,1,3,2,0,0,2,1,6);
 INSERT INTO `libreehr_postcalendar_categories` VALUES (7, 'Closed','#2374AB','Clinic closed',0,NULL,'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}',0,86400,1,3,2,0,0,2,1,7);
-INSERT INTO `libreehr_postcalendar_categories` VALUES (8, 'Lunch', '#FFFF33', 'Lunch', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 3600, 0, 3, 2, 0, 0, 1);
-INSERT INTO `libreehr_postcalendar_categories` VALUES (9, 'Established Patient', '#CCFF33', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0, 0);
-INSERT INTO `libreehr_postcalendar_categories` VALUES (10,'New Patient', '#CCFFFF', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 1800, 0, 0, 0, 0, 0, 0);
-INSERT INTO `libreehr_postcalendar_categories` VALUES (11,'Reserved','#FF7777','Reserved',1,NULL,'a:5:{s:17:\"event_repeat_freq\";s:1:\"1\";s:22:\"event_repeat_freq_type\";s:1:\"4\";s:19:\"event_repeat_on_num\";s:1:\"1\";s:19:\"event_repeat_on_day\";s:1:\"0\";s:20:\"event_repeat_on_freq\";s:1:\"0\";}',0,900,0,3,2,0,0, 1);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (8, 'Lunch', '#FFFF33', 'Lunch', 1, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"1";s:22:"event_repeat_freq_type";s:1:"4";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 3600, 0, 3, 2, 0, 0, 1,1,8);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (9, 'Established Patient', '#CCFF33', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0, 0,1,9);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (10,'New Patient', '#CCFFFF', '', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 1800, 0, 0, 0, 0, 0, 0,1,10);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (11,'Reserved','#FF7777','Reserved',1,NULL,'a:5:{s:17:\"event_repeat_freq\";s:1:\"1\";s:22:\"event_repeat_freq_type\";s:1:\"4\";s:19:\"event_repeat_on_num\";s:1:\"1\";s:19:\"event_repeat_on_day\";s:1:\"0\";s:20:\"event_repeat_on_freq\";s:1:\"0\";}',0,900,0,3,2,0,0, 1,1,11);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (12, 'Health and Behavioral Assessment', '#C7C7C7', 'Health and Behavioral Assessment', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0,0,1,12);
+INSERT INTO `libreehr_postcalendar_categories` VALUES (13, 'Preventive Care Services', '#CCCCFF', 'Preventive Care Services', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0,0,1,13);
+
+INSERT INTO `libreehr_postcalendar_categories` VALUES (14, 'Ophthalmological Services', '#F89219', 'Ophthalmological Services', 0, NULL, 'a:5:{s:17:"event_repeat_freq";s:1:"0";s:22:"event_repeat_freq_type";s:1:"0";s:19:"event_repeat_on_num";s:1:"1";s:19:"event_repeat_on_day";s:1:"0";s:20:"event_repeat_on_freq";s:1:"0";}', 0, 900, 0, 0, 0, 0, 0,0,1,14);
 
 
 -- 
@@ -5977,6 +5994,7 @@ CREATE TABLE `users` (
   `newcrop_user_role` VARCHAR(30) DEFAULT NULL,
   `cpoe` tinyint(1) NULL DEFAULT NULL,
   `physician_type` VARCHAR(50) DEFAULT NULL,
+  `suffix` varchar(255) DEFAULT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
