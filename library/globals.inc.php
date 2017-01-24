@@ -5,16 +5,65 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-//
 // Modified by dozens of contributors
 
 /* @package LibreEHR
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Tony McCormick <tony@mi-squared.com>
+ * @author Terry Hill <terryhill@librehealth.io>
  *
  * @link http://www.libreehr.org
  */
 
+// REQUIRED FOR TRANSLATION ENGINE.  DO NOT REMOVE
+//  Current supported languages:    // Allow capture of term for translation:
+//   Albanian                       // xl('Albanian')
+//   Amharic                        // xl('Amharic')
+//   Arabic                         // xl('Arabic')
+//   Armenian                       // xl('Armenian')
+//   Bahasa Indonesia               // xl('Bahasa Indonesia')
+//   Bengali                        // xl('Bengali')
+//   Bosnian                        // xl('Bosnian')
+//   Chinese (Simplified)           // xl('Chinese (Simplified)')
+//   Chinese (Traditional)          // xl('Chinese (Traditional)')
+//   Croatian                       // xl('Croatian')
+//   Czech                          // xl('Czech')
+//   Danish                         // xl('Danish')
+//   Dutch                          // xl('Dutch')
+//   English (Indian)               // xl('English (Indian)')
+//   English (Standard)             // xl('English (Standard)')
+//   Estonian                       // xl('Estonian')
+//   Finnish                        // xl('Finnish')
+//   French                         // xl('French (Standard)')
+//   French                         // xl('French (Canadian)')
+//   Georgian                       // xl('Georgian')
+//   German                         // xl('German')
+//   Greek                          // xl('Greek')
+//   Hebrew                         // xl('Hebrew')
+//   Hindi                          // xl('Hindi')
+//   Hungarian                      // xl('Hungarian')
+//   Italian                        // xl('Italian')
+//   Japanese                       // xl('Japanese')
+//   Korean                         // xl('Korean')
+//   Lithuanian                     // xl('Lithuanian')
+//   Marathi                        // xl('Marathi')
+//   Norwegian                      // xl('Norwegian')
+//   Persian                        // xl('Persian')
+//   Polish                         // xl('Polish')
+//   Portuguese (Brazilian)         // xl('Portuguese (Brazilian)')
+//   Portuguese (European)          // xl('Portuguese (European)')
+//   Romanian                       // xl('Romanian')
+//   Russian                        // xl('Russian')
+//   Serbian                        // xl('Serbian')
+//   Sinhala                        // xl('Sinhala')
+//   Slovak                         // xl('Slovak')
+//   Somali                         // xl('Somali')
+//   Spanish (Latin American)       // xl('Spanish (Latin American)')
+//   Spanish (Spain)                // xl('Spanish (Spain)')
+//   Swedish                        // xl('Swedish')
+//   Turkish                        // xl('Turkish')
+//   Ukrainian                      // xl('Ukrainian')
+//   Vietnamese                     // xl('Vietnamese')
 
 // OS-dependent stuff.
 if (stristr(PHP_OS, 'WIN')) {
@@ -33,6 +82,26 @@ else {
   $backup_log_dir      = '/tmp';
 }
 
+// REQUIRED FOR TRANSLATION ENGINE.  DO NOT REMOVE
+// Language constant declarations:
+// xl('Appearance')
+// xl('Locale')
+// xl('Features')
+// xl('Report')
+// xl('Billing')
+// xl('Claim')
+// xl('Esign')
+// xl('Documents')
+// xl('Calendar')
+// xl('Security')
+// xl('Notifications')
+// xl('CDR')
+// xl('Logging')
+// xl('Miscellaneous')
+// xl('Portal')
+// xl('Connectors')
+// xl('RX')
+// xl('PDF')
 // List of user specific tabs and globals
 $USER_SPECIFIC_TABS = array('Appearance',
                             'Locale',
@@ -101,7 +170,7 @@ $GLOBALS_METADATA = array(
         '../../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
         '../../interface/main/main_info.php' => xl('Calendar Screen'),
       ),
-      '../../interface/main/finder/dynamic_finder.php',    //Finder
+      '../../interface/main/messages/messages.php?form_active=1',    //default = messages
       xl('Second TAB on the left')
   ),
 

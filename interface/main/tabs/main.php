@@ -80,15 +80,30 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php $userQuery = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"); ?>
 <script type="text/javascript">
     <?php if(isset($_REQUEST['url']))
-        {
+        {   
+        
+            $tab_one_default=$web_root.$GLOBALS['default_tab_1'];
+            if($_REQUEST['url']==='TAB_ONE_DEFAULT')
+            {
+                $tab_one_contents=$tab_one_default;
+            }
+            else
+            {
+                $tab_one_contents="../".urldecode($_REQUEST['url']);
+            }
+            $tab_one_contents=json_encode($tab_one_contents);
+            $tab_one_default=json_encode($tab_one_default);
         ?>
-            app_view_model.application_data.tabs.tabsList()[0].url(<?php echo json_encode("../".urldecode($_REQUEST['url'])); ?>);
+            tab_defaults=[];
+            tab_defaults[0]=<?php echo $tab_one_default; ?>;
+            app_view_model.application_data.tabs.tabsList()[0].url(<?php echo $tab_one_contents; ?>);
         <?php 
         }
         if(isset($GLOBALS['default_tab_2']))
         {
         ?>
-            app_view_model.application_data.tabs.tabsList()[1].url(<?php echo json_encode("../".$GLOBALS['default_tab_2']); ?>);
+            tab_defaults[1]=<?php echo json_encode($web_root.$GLOBALS['default_tab_2']); ?>;
+            app_view_model.application_data.tabs.tabsList()[1].url(tab_defaults[1]);
         <?php
         }
     ?>
