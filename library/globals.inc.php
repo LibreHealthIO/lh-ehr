@@ -151,26 +151,26 @@ $GLOBALS_METADATA = array(
     'default_tab_1' => array(
       xl('Default First Tab'),       // descriptive name
       array(
-        '../../interface/main/main_info.php' => xl('Calendar Screen'),
-        '../../interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
-        '../new/new.php' => xl('Patient Add/Search'),
-        '../../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
-        '../../interface/main/messages/messages.php?form_active=1' => xl("Messages"),
+        '/interface/main/main_info.php' => xl('Calendar Screen'),
+        '/interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
+        '/interface/new/new.php' => xl('Patient Add/Search'),
+        '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
+        '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
       ),
-       '../../interface/main/main_info.php',                 // default = calendar
+       '/interface/main/main_info.php',                 // default = calendar
       xl('First TAB on the left')
     ),
 
     'default_tab_2' => array(
       xl('Default Second Tab'),       // descriptive name
       array(
-        '../../interface/main/messages/messages.php?form_active=1' => xl("Messages"),
-        '../../interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
-        '../new/new.php' => xl('Patient Add/Search'),
-        '../../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
-        '../../interface/main/main_info.php' => xl('Calendar Screen'),
+        '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
+        '/interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
+        '/interface/new/new.php' => xl('Patient Add/Search'),
+        '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
+        '/interface/main/main_info.php' => xl('Calendar Screen'),
       ),
-      '../../interface/main/messages/messages.php?form_active=1',    //default = messages
+      '/interface/main/messages/messages.php?form_active=1',    // default = Messages
       xl('Second TAB on the left')
   ),
 
