@@ -1275,20 +1275,6 @@ $GLOBALS_METADATA = array(
       xl('Optional category name for photo images that can be viewed from the patient summary page.')
     ),
 
-    'lab_results_category_name' => array(
-      xl('Lab Results Category Name'),
-      'text',                           // data type
-      'Lab Report',                     // default
-      xl('Document category name for storage of electronically received lab results.')
-    ),
-
-    'gbl_mdm_category_name' => array(
-      xl('MDM Document Category Name'),
-       'text',                          // data type
-       'Lab Report',                    // default
-      xl('Document category name for storage of electronically received MDM documents.')
-    ),
-
     'hide_document_encryption' => array(
       xl('Hide Encryption/Decryption Options In Document Management'),
       'bool',                           // data type
@@ -1975,6 +1961,19 @@ $GLOBALS_METADATA = array(
   //
   'Lab' => array(
 
+    'lab_results_category_name' => array(
+      xl('Lab Results Category Name'),
+      'text',                           // data type
+      'Lab Report',                     // default
+      xl('Document category name for storage of electronically received lab results.')
+    ),
+
+    'gbl_mdm_category_name' => array(
+      xl('MDM Document Category Name'),
+       'text',                          // data type
+       'Lab Report',                    // default
+      xl('Document category name for storage of electronically received MDM documents.')
+    ),
 
     ),
   
@@ -2115,62 +2114,6 @@ $GLOBALS_METADATA = array(
       '50',                             // default
       xl('Number of hours in advance to send email notifications.')
     ),
-
-    'SMS_NOTIFICATION_HOUR' => array(
-      xl('SMS Notification Hours'),
-      'num',                            // data type
-      '50',                             // default
-      xl('Number of hours in advance to send SMS notifications.')
-    ),
-
-    'SMS_GATEWAY_USENAME' => array(
-      xl('SMS Gateway Username'),
-      'text',                           // data type
-      '',                               // default
-      xl('Username for SMS Gateway.')
-    ),
-
-    'SMS_GATEWAY_PASSWORD' => array(
-      xl('SMS Gateway Password'),
-      'text',                           // data type
-      '',                               // default
-      xl('Password for SMS Gateway.')
-    ),
-
-    'SMS_GATEWAY_APIKEY' => array(
-      xl('SMS Gateway API Key'),
-      'text',                           // data type
-      '',                               // default
-      xl('API key for SMS Gateway.')
-    ),
-
-    'phone_notification_hour' => array(
-      xl('Phone Notification Hour'),
-      'num',                            // data type
-      '50',                             // default
-      xl('Number of hours in advance to send Phone notification.')
-    ),
-    
-    'phone_gateway_username' => array(
-      xl('Phone Gateway Username'),
-      'text',                           // data type
-      '',                               // default
-      xl('Username for Phone Gateway. Automated VOIP service provided by Maviq. Please visit http://signup.maviq.com for more information.')
-    ),
-    
-    'phone_gateway_password' => array(
-      xl('Phone Gateway Password'),
-      'text',                           // data type
-      '',                               // default
-      xl('Password for Phone Gateway. Automated VOIP service provided by Maviq. Please visit http://signup.maviq.com for more information.')
-    ),
-    
-    'phone_gateway_url' => array(
-      xl('Phone Gateway URL'),
-      'text',                           // data type
-      '',                               // default
-      xl('URL for Phone Gateway. Automated VOIP service provided by Maviq. Please visit http://signup.maviq.com for more information.')
-    ),
     
   ),
 
@@ -2310,7 +2253,7 @@ $GLOBALS_METADATA = array(
       'bool',
       '0',
       xl('Enable NewCrop eRx Service.') + ' ' +
-      xl('Contact Medical Information Integration, LLC at http://mi-squared.com or ZH Healthcare at http://zhservices.com for subscribing to the NewCrop eRx service.')
+      xl('Contact the community for information on subscribing to the NewCrop eRx service.')
   ),
 
     'erx_newcrop_path' => array(
@@ -2851,6 +2794,12 @@ $GLOBALS_METADATA = array(
       xl('Shell command for printing from the server.')
     ),
     
+  ),
+  
+    // Fax Tab
+    //
+    'Fax' => array(
+    
     'enable_hylafax' => array(
       xl('Enable Hylafax Support'),
       'bool',                           // data type
@@ -2879,6 +2828,12 @@ $GLOBALS_METADATA = array(
       xl('Enscript command used by Hylafax.')
     ),
 
+  ),
+
+    // Scanner Tab
+    //
+    'Scanner' => array(
+    
     'enable_scanner' => array(
       xl('Enable Scanner Support'),
       'bool',                           // data type
@@ -2894,7 +2849,7 @@ $GLOBALS_METADATA = array(
     ),
     
   ),
-   
+  
 );
 
 if ( function_exists( 'do_action' ) ) {
