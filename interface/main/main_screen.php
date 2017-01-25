@@ -89,12 +89,10 @@ else if (isset($_GET['mode']) && $_GET['mode'] == "loadcalendar") {
   if (isset($_GET['date'])) $frame1url .= "&date=" . attr($_GET['date']);
 }
 else if ($GLOBALS['concurrent_layout']) {
-  // new layout
-  if ($GLOBALS['default_top_pane']) {
-    $frame1url=attr($GLOBALS['default_top_pane']);
-  } else {
-    $frame1url = "main_info.php";
-  }
+  // This is not meant to be a valid URL, it is a place holder so that the default can be loaded after the user specific globals have been loaded
+  // The default for the tab will be set in tabs/main.php where there will be a check for this placeholder of "TAB_ONE_DEFAULT"
+  // When globals are loaded at the top of this page, the user hasn't been established yet, so user specific settings don't work
+  $frame1url = "TAB_ONE_DEFAULT"; 
 }
 else {
   // old layout

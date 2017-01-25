@@ -5,17 +5,17 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
+// Modified by dozens of contributors
 
-// $GLOBALS['print_command'] is the
-// Print command for spooling to printers, used by statements.inc.php
-// This is the command to be used for printing (without the filename).
-// The word following "-P" should be the name of your printer.  This
-// example is designed for 8.5x11-inch paper with 1-inch margins,
-// 10 CPI, 6 LPI, 65 columns, 54 lines per page.
-//
-// IF lpr services are installed on Windows this setting will be similar
-// Otherwise configure it as needed (print /d:PRN) might be an option for Windows parallel printers
+/* @package LibreEHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Tony McCormick <tony@mi-squared.com>
+ * @author Terry Hill <terryhill@librehealth.io>
+ *
+ * @link http://www.libreehr.org
+ */
 
+// REQUIRED FOR TRANSLATION ENGINE.  DO NOT REMOVE
 //  Current supported languages:    // Allow capture of term for translation:
 //   Albanian                       // xl('Albanian')
 //   Amharic                        // xl('Amharic')
@@ -82,6 +82,7 @@ else {
   $backup_log_dir      = '/tmp';
 }
 
+// REQUIRED FOR TRANSLATION ENGINE.  DO NOT REMOVE
 // Language constant declarations:
 // xl('Appearance')
 // xl('Locale')
@@ -101,7 +102,6 @@ else {
 // xl('Connectors')
 // xl('RX')
 // xl('PDF')
-
 // List of user specific tabs and globals
 $USER_SPECIFIC_TABS = array('Appearance',
                             'Locale',
@@ -112,7 +112,8 @@ $USER_SPECIFIC_TABS = array('Appearance',
                             'Demographic',
                             'Calendar',
                             'Connectors');
-$USER_SPECIFIC_GLOBALS = array('default_top_pane',
+$USER_SPECIFIC_GLOBALS = array('default_tab_1',
+                               'default_tab_2',
                                'css_header',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
@@ -151,18 +152,32 @@ $GLOBALS_METADATA = array(
   //
   'Appearance' => array(
 
-    'default_top_pane' => array(
-      xl('Main Top Pane Screen'),       // descriptive name
+    'default_tab_1' => array(
+      xl('Default First Tab'),       // descriptive name
       array(
-        'main_info.php' => xl('Calendar Screen'),
-        '../../interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
-        '../new/new.php' => xl('Patient Add/Search'),
-        '../../interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
+        '/interface/main/main_info.php' => xl('Calendar Screen'),
+        '/interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
+        '/interface/new/new.php' => xl('Patient Add/Search'),
+        '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
+        '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
       ),
-       'main_info.php',                 // default = calendar
-      xl('Type of screen layout')
+       '/interface/main/main_info.php',                 // default = calendar
+      xl('First TAB on the left')
     ),
 
+
+    'default_tab_2' => array(
+      xl('Default Second Tab'),       // descriptive name
+      array(
+        '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
+        '/interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
+        '/interface/new/new.php' => xl('Patient Add/Search'),
+        '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
+        '/interface/main/main_info.php' => xl('Calendar Screen'),
+      ),
+      '/interface/main/messages/messages.php?form_active=1',    // default = Messages
+      xl('Second TAB on the left')
+  ),
 
     'css_header' => array(
       xl('Theme'),
