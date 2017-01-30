@@ -762,6 +762,14 @@ $GLOBALS_METADATA = array(
 
   ),
 
+
+    'hide_billing_widget' => array(
+      xl('Hide Billing Widget'),
+       'bool',                          // data type
+       '0',                             // default = false
+      xl('This will hide the Billing Widget in the Patient Summary screen')
+    ),
+
     'force_billing_widget_open' => array(
       xl('Force Billing Widget Open'),
       'bool',                           // data type
