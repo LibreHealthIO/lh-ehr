@@ -502,7 +502,7 @@ $(window).load(function() {
 
 <body class="body_top">
 
-<a href='../reminder/active_reminder_popup.php' id='reminder_popup_link' style='visibility: false;' class='iframe' onclick='top.restoreSession()'></a>
+<a href='../reminder/active_reminder_popup.php' id='reminder_popup_link' style='visibility: hidden;' class='iframe' onclick='top.restoreSession()'></a>
 
 <?php
  $thisauth = acl_check('patients', 'demo');
@@ -572,30 +572,30 @@ if ($GLOBALS['patient_id_category_name']) {
 }
 
 ?>
-<table cellspacing='0' cellpadding='0' border='0'>
+<table id="demo_hdr_links" cellspacing='0' cellpadding='0' border='0'>
  <tr>
   <td class="small" colspan='4'>
-<a href="../history/history.php" onclick='top.restoreSession()'>
+<a href="../history/history.php" id="history_link" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('History'),ENT_NOQUOTES); ?></a>
 |
 <?php //note that we have temporarily removed report screen from the modal view ?>
-<a href="../report/patient_report.php" onclick='top.restoreSession()'>
+<a href="../report/patient_report.php" id="report_link" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Report'),ENT_NOQUOTES); ?></a>
 |
 <?php //note that we have temporarily removed document screen from the modal view ?>
-<a href="../../../controller.php?document&list&patient_id=<?php echo $pid;?>" onclick='top.restoreSession()'>
+<a href="../../../controller.php?document&list&patient_id=<?php echo $pid;?>" id="documents_link" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Documents'),ENT_NOQUOTES); ?></a>
 |
-<a href="../transaction/transactions.php" class='iframe large_modal' onclick='top.restoreSession()'>
+<a href="../transaction/transactions.php" class='iframe large_modal' id="transactions_link" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Transactions'),ENT_NOQUOTES); ?></a>
 |
 <a href="stats_full.php?active=all" onclick='top.restoreSession()'>
 <?php echo htmlspecialchars(xl('Issues'),ENT_NOQUOTES); ?></a>
 |
-<a href="../../reports/pat_ledger.php?form=1&patient_id=<?php echo attr($pid);?>" onclick='top.restoreSession()'>
+<a href="../../reports/pat_ledger.php?form=1&patient_id=<?php echo attr($pid);?>" id="ledger_link" onclick='top.restoreSession()'>
 <?php echo xlt('Ledger'); ?></a>
 
-<!-- DISPLAYING HOOKS STARTS HERE -->
+<!-- DISPLAYING ZEND MODULE HOOKS STARTS HERE -->
 <?php
     $module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh
                     LEFT OUTER JOIN modules_settings AS ms ON obj_name=enabled_hooks AND ms.mod_id=msh.mod_id
@@ -680,23 +680,23 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 
  // Show current balance and billing note, if any.
   echo "<table border='0'><tr><td>" .
-  "<table ><tr><td><span class='bold'><font color='red'>" .
+      "<table ><tr><td><span class='bold'><span style=\"color: red; \">" .
    xlt('Patient Balance Due') .
    " : " . text(oeFormatMoney($patientbalance)) .
-   "</font></span></td></tr>".
-     "<tr><td><span class='bold'><font color='red'>" .
+      "</span></span></td></tr>" .
+      "<tr><td><span class='bold'><span style=\"color: red; \">" .
    xlt('Insurance Balance Due') .
    " : " . text(oeFormatMoney($insurancebalance)) .
-   "</font></span></td></tr>".
-   "<tr><td><span class='bold'><font color='red'>" .
+      "</span></span></td></tr>" .
+      "<tr><td><span class='bold'><span style=\"color: red; \">" .
    xlt('Total Balance Due').
    " : " . text(oeFormatMoney($totalbalance)) .
-   "</font></span></td></td></tr>";
+      "</span></span></td></td></tr>";
  if (!empty($result['billing_note'])) {
-   echo "<tr><td><span class='bold'><font color='red'>" .
+   echo "<tr><td><span class='bold'><span style=\"color: red; \">" .
     xlt('Billing Note') . ":" .
     text($result['billing_note']) .
-    "</font></span></td></tr>";
+       "</span></span></td></tr>";
   } 
   if ($result3['provider']) {   // Use provider in case there is an ins record w/ unassigned insco
    echo "<tr><td><span class='bold'>" .
@@ -751,16 +751,16 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
        <td>
 <?php
 $insurance_count = 0;
-foreach (array('primary','secondary','tertiary') as $instype) {
-  $enddate = 'Present';
-  $query = "SELECT * FROM insurance_data WHERE " .
-    "pid = ? AND type = ? AND inactive=0 " .
-    "ORDER BY date DESC";
-  $res = sqlStatement($query, array($pid, $instype) );
-  while( $row = sqlFetchArray($res) ) {
-    if ($row['provider'] ) $insurance_count++;
-  }
-}
+    foreach (array('primary', 'secondary', 'tertiary') as $instype) {
+        $enddate = 'Present';
+        $query = "SELECT * FROM insurance_data WHERE " .
+            "pid = ? AND type = ? AND inactive=0 " .
+            "ORDER BY date DESC";
+        $res = sqlStatement($query, array($pid, $instype));
+        while ($row = sqlFetchArray($res)) {
+            if ($row['provider']) $insurance_count++;
+        }
+    }
 
 if ( $insurance_count > 0 ) {
   // Insurance expand collapse widget
@@ -1393,33 +1393,6 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
       </div>
  <?php  }  // close advanced dir block
  
-    // This is a feature for a specific client.  -- Rod
-    if ($GLOBALS['cene_specific']) {
-      echo "   <br />\n";
-
-          $imagedir  = $GLOBALS['OE_SITE_DIR'] . "/documents/$pid/demographics";
-          $imagepath = "$web_root/sites/" . $_SESSION['site_id'] . "/documents/$pid/demographics";
-
-      echo "   <a href='' onclick=\"return sendimage($pid, 'photo');\" " .
-        "title='Click to attach patient image'>\n";
-      if (is_file("$imagedir/photo.jpg")) {
-        echo "   <img src='$imagepath/photo.jpg' /></a>\n";
-      } else {
-        echo "   Attach Patient Image</a><br />\n";
-      }
-      echo "   <br />&nbsp;<br />\n";
-
-      echo "   <a href='' onclick=\"return sendimage($pid, 'fingerprint');\" " .
-        "title='Click to attach fingerprint'>\n";
-      if (is_file("$imagedir/fingerprint.jpg")) {
-        echo "   <img src='$imagepath/fingerprint.jpg' /></a>\n";
-      } else {
-        echo "   Attach Biometric Fingerprint</a><br />\n";
-      }
-      echo "   <br />&nbsp;<br />\n";
-    }
-
-
      // Show Clinical Reminders for any user that has rules that are permitted.
      $clin_rem_check = resolve_rules_sql('','0',TRUE,'',$_SESSION['authUser']); 
      if ( (!empty($clin_rem_check)) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_crw']) ) {
