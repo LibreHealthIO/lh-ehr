@@ -76,69 +76,68 @@ while ($frow = sqlFetchArray($fres)) {
 
   $newdata[$table][$colname] = $value;
 }
+
 updatePatientData($pid, $newdata['patient_data']);
-updateEmployerData($pid, $newdata['employer_data']);
+    updateEmployerData($pid, $newdata['employer_data']);
 
-$total_insurances = $_REQUEST['total_insurances'];
-for($i = 0;$i<$total_insurances;$i++){
-$idob = fixDate(formData("i".$i."subscriber_DOB"));
-$idate = fixDate(formData("i".$i."effective_date"), date('Y-m-d'));
+    $total_insurances = $_REQUEST['total_insurances'];
+    for ($i = 0; $i < $total_insurances; $i++) {
+        $idob = fixDate(formData("i" . $i . "subscriber_DOB"));
+        $idate = fixDate(formData("i" . $i . "effective_date"), date('Y-m-d'));
 
-$edate = formData("i".$i."termination_date");
-If ($i == 0) {
-    $type = "primary";
-} elseif ($i == 1) {
-    $type = "secondary";
-} else if ($i == 2) {
-    $type = "tertiary";
-}
+        $edate = formData("i" . $i . "termination_date");
+        If ($i == 0) {
+            $type = "primary";
+        } elseif ($i == 1) {
+            $type = "secondary";
+        } else if ($i == 2) {
+            $type = "tertiary";
+        }
 
+        $inactive = formData('i' . $i . 'inactive_value');
+        $inactive_time = 0;
 
-$inactive = formData('i'.$i.'inactive_value');
-$inactive_time = 0;
+        if ($edate != '0000-00-00' && strlen(trim($edate != 0))) {
+            $inactive_time = 1;
+            $inactive = 1;
+        }
 
+        newInsuranceData(
+            $pid,
+            $type,
+            formData("i" . $i . "provider"),
+            formData("i" . $i . "policy_number"),
+            formData("i" . $i . "group_number"),
+            formData("i" . $i . "plan_name"),
+            formData("i" . $i . "subscriber_lname"),
+            formData("i" . $i . "subscriber_mname"),
+            formData("i" . $i . "subscriber_fname"),
+            formData("form_i" . $i . "subscriber_relationship"),
+            formData("i" . $i . "subscriber_ss"),
+            $idob,
+            formData("i" . $i . "subscriber_street"),
+            formData("i" . $i . "subscriber_postal_code"),
+            formData("i" . $i . "subscriber_city"),
+            formData("form_i" . $i . "subscriber_state"),
+            formData("form_i" . $i . "subscriber_country"),
+            formData("i" . $i . "subscriber_phone"),
+            formData("i" . $i . "subscriber_employer"),
+            formData("i" . $i . "subscriber_employer_street"),
+            formData("i" . $i . "subscriber_employer_city"),
+            formData("i" . $i . "subscriber_employer_postal_code"),
+            formData("form_i" . $i . "subscriber_employer_state"),
+            formData("form_i" . $i . "subscriber_employer_country"),
+            formData('i' . $i . 'copay'),
+            formData('form_i' . $i . 'subscriber_sex'),
+            $idate,
+            $edate,
+            formData('i' . $i . 'accept_assignment'),
+            formData('i' . $i . 'policy_type'),
+            $inactive,
+            $inactive_time
+        );
 
-if($edate != '0000-00-00' && strlen(trim($edate != 0))) {
-    $inactive_time = 1;
-    $inactive = 1;
-}
-
-newInsuranceData(
-  $pid,
-  $type,
-  formData("i".$i."provider"),
-  formData("i".$i."policy_number"),
-  formData("i".$i."group_number"),
-  formData("i".$i."plan_name"),
-  formData("i".$i."subscriber_lname"),
-  formData("i".$i."subscriber_mname"),
-  formData("i".$i."subscriber_fname"),
-  formData("form_i".$i."subscriber_relationship"),
-  formData("i".$i."subscriber_ss"),
-  $idob,
-  formData("i".$i."subscriber_street"),
-  formData("i".$i."subscriber_postal_code"),
-  formData("i".$i."subscriber_city"),
-  formData("form_i".$i."subscriber_state"),
-  formData("form_i".$i."subscriber_country"),
-  formData("i".$i."subscriber_phone"),
-  formData("i".$i."subscriber_employer"),
-  formData("i".$i."subscriber_employer_street"),
-  formData("i".$i."subscriber_employer_city"),
-  formData("i".$i."subscriber_employer_postal_code"),
-  formData("form_i".$i."subscriber_employer_state"),
-  formData("form_i".$i."subscriber_employer_country"),
-  formData('i'.$i.'copay'),
-  formData('form_i'.$i.'subscriber_sex'),
-  $idate,
-  $edate,
-  formData('i'.$i.'accept_assignment'),
-  formData('i'.$i.'policy_type'),
-  $inactive,
-  $inactive_time
-);
-
-}
+    }
 
 if ($GLOBALS['concurrent_layout']) {
  include_once("demographics.php");

@@ -68,11 +68,11 @@ $CPR = 4; // cells per row
 // $langi = getLanguages();
 // $ethnoraciali = getEthnoRacials();
 // $provideri = getProviderInfo();
-if ($GLOBALS['insurance_information'] != '0') {
-    $insurancei = getInsuranceProvidersExtra();
-}else{
-    $insurancei = getInsuranceProviders();
-}
+    if ($GLOBALS['insurance_information'] != '0') {
+        $insurancei = getInsuranceProvidersExtra();
+    } else {
+        $insurancei = getInsuranceProviders();
+    }
 
 $fres = sqlStatement("SELECT * FROM layout_options " .
   "WHERE form_id = 'DEM' AND uor > 0 " .
@@ -373,12 +373,13 @@ function policykeyup(e) {
 $(document).ready(function() {
 
  <?php 
-$insurance = getActiveInsuranceData();
-for ($i=0;$i<count($insurance);$i++) { ?>
+    $insurance = getActiveInsuranceData();
+    for ($i = 0;$i < count($insurance);$i++) { ?>
   $("#form_i<?php echo $i?>subscriber_relationship").change(function() { auto_populate_employer_address<?php echo $i?>(); });
  <?php } ?>
 
 });
+
 function insurance_active(current){
     if($(current).is(":checked")){
     $(current).val(1);
