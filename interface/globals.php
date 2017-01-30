@@ -342,6 +342,8 @@ else {
   $GLOBALS['phone_country_code'] = '1';
   $GLOBALS['disable_non_default_groups'] = true;
   $GLOBALS['ippf_specific'] = false;
+  $GLOBALS['default_tab_1'] = "/interface/main/finder/dynamic_finder.php";
+  $GLOBALS['default_tab_2'] = "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1";  
 }
 
 // If >0 this will enforce a separate PHP session for each top-level
