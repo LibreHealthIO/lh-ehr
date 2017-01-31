@@ -2928,7 +2928,8 @@ function expand_collapse_widget($title, $label, $buttonLabel, $buttonLink, $butt
   else {
     echo "<div class='section-header-dynamic'>";
   }
-  echo "<table><tr>";
+  $widgetId = str_replace( " ", "_", $label ) . "_widget";
+  echo "<table><tr id='$widgetId'>";
   if ($auth) {
     // show button, since authorized
     // first prepare class string
