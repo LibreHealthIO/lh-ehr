@@ -647,7 +647,7 @@ if ($GLOBALS['patient_id_category_name']) {
      <table cellspacing=0 cellpadding=0>
       <?php do_action( 'demographics_before_first_table_row' ); ?>
       <?php if (!$GLOBALS['hide_billing_widget'])  { ?>
-      <tr>
+      <tr id="billing_widget_row">
        <td>
 <?php
 // Billing expand collapse widget
@@ -1084,7 +1084,7 @@ if ( $insurance_count > 0 ) {
             </td>
         </tr>
 
-        <tr>
+        <tr id="pnotes_widget_row">
             <td width='650px'>
 
 <?php
@@ -1109,7 +1109,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
             </td>
         </tr>
                 <?php if ( (acl_check('patients', 'med')) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_prw']) ) {
-                echo "<tr><td width='650px'>";
+                echo "<tr id='patient_reminders_widget_row'><td width='650px'>";
                 // patient reminders collapse widget
                 $widgetTitle = xl("Patient Reminders");
                 $widgetLabel = "patient_reminders";
@@ -1128,7 +1128,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                 </tr>
                 <?php } //end if prw is activated  ?>
               
-       <tr>
+       <tr id="disclosures_widget_row">
        <td width='650px'>
 <?php
 // disclosures expand collapse widget
@@ -1151,7 +1151,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
      </td>
     </tr>        
 <?php if ($GLOBALS['amendments']) { ?>
-  <tr>
+  <tr id="amendments_widget_row">
        <td width='650px'>
            <?php // Amendments widget
            $widgetTitle = xlt('Amendments');
@@ -1184,7 +1184,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
     </tr>
 <?php } ?>            
  <?php // labdata ?>
-    <tr>
+    <tr id="labs_widget_row">
      <td width='650px'>
 <?php // labdata expand collapse widget
   $widgetTitle = xl("Labs");
@@ -1223,7 +1223,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 
 
 <?php if ($vitals_is_registered && acl_check('patients', 'med')) { ?>
-    <tr>
+    <tr id="vitals_widget_row">
      <td width='650px'>
 <?php // vitals expand collapse widget
   $widgetTitle = xl("Vitals");
@@ -1690,4 +1690,5 @@ checkSkipConditions();
 </script>
 
 </body>
+<?php do_action( 'demographics_before_html_end', $args = [ 'pid' => $pid ] ); ?>
 </html>
