@@ -39,7 +39,7 @@ class ADODB_mysqli_log extends ADODB_mysqli
         * @param  array   $inputarr    binded variables array (optional)
         * @return boolean              returns false if error
         */
-    	function Execute($sql,$inputarr=false)
+        function Execute($sql,$inputarr=false)
         {
             $retval= parent::Execute($sql,$inputarr);
             if ($retval === false) {
@@ -261,7 +261,24 @@ function sqlFetchArray($r)
 }
 
 /**
-* Standard sql insert query in LibreEHR.
+ * Wrapper for ADODB getAssoc
+ * 
+ * @see http://adodb.org/dokuwiki/doku.php?id=v5:reference:connection:getassoc
+ * 
+ * @param string $sql
+ * @param string[] $bindvars
+ * @param boolean $forceArray
+ * @param boolean $first2Cols
+ * @return array
+ */
+function sqlGetAssoc( $sql, $bindvars=false, $forceArray=false, $first2Cols=false ) {
+  
+  return $GLOBALS['adodb']['db']->getAssoc( $sql, $bindvars, $forceArray, $first2Cols  );
+  
+}
+
+/**
+* Standard sql insert query in OpenEMR.
 *
 * Function that will allow use of the adodb binding
 * feature to prevent sql-injection. This function
@@ -638,10 +655,37 @@ function generic_sql_affected_rows()
  * Generic mysql insert id function
  * Used when converted to mysqli to centralize special circumstances.
  *
-				 */
+                 */
 function generic_sql_insert_id()
 {
   return mysqli_insert_id($GLOBALS['dbh']);
+}
+
+
+/**
+ * Begin a Transaction.
+ */
+function sqlBeginTrans()
+{
+    $GLOBALS['adodb']['db']->BeginTrans();
+}
+
+
+/**
+ * Commit a transaction
+ */
+function sqlCommitTrans($ok=true)
+{
+    $GLOBALS['adodb']['db']->CommitTrans();
+}
+
+
+/**
+ * Rollback a transaction
+ */
+function sqlRollbackTrans()
+{
+    $GLOBALS['adodb']['db']->RollbackTrans();
 }
 
 ?>
