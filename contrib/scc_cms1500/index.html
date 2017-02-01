@@ -1,0 +1,1413 @@
+<!DOCTYPE html >
+<?php
+/* LibreHealthEHR CMS-1500 form.
+*
+*  Copyright LibreHealth 2016
+*  @author Art Eaton
+*  @package LibreHealthEHR
+*  Except where otherwise noted,
+*  this code is Licensed under Mozilla Public License Version 2
+*  Image sources derived from distributable content.
+*/
+<html lang="en">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta charset="utf-8" />
+<link rel="stylesheet" href="hcfa.css">
+<style>body{padding:0px;margin:0px;background-color:#65c59c;}
+#FDFXFA_Menu{text-align:center;width:100%;z-index:9999;color:white;font-size:18px;background-color:#33966d;position:fixed;margin:0px;opacity:0.8;top:0px;min-width:300px;}
+#FDFXFA_Menu a{padding:10px 20px 10px 20px;cursor:pointer;}
+#FDFXFA_Menu a:hover{background-color:darkgreen;}
+@media print {#FDFXFA_Menu a{display:none}}#FDFXFA_PageLabel{min-width:20px;display:inline-block;}
+#FDFXFA_Processing{width:100%;height:100%;z-index:10000;position:fixed;background-color:black;opacity:0.8;color:white;top:0px;text-align: center; font-size:100px;}
+#FDFXFA_Processing span{top:50%;left:50%;position:absolute;margin:-50px 0 0 -50px}
+#FDFXFA_FormType,#FDFXFA_Form,#FDFXFA_PDFName,#FDFXFA_FormSubmitURL{display:none;}</style>
+</head>
+
+<body style="margin: 0;" onload='updateFDFXFA()'>
+<script type="text/javascript" src="js/EcmaJSAPI.js"></script>
+<script type="text/javascript" src="js/EcmaParser.js"></script>
+<form id='FDFXFA_Form' method='post' action=''><textarea name='pdfdata' id='FDFXFA_Textarea'></textarea></form>
+<div id='FDFXFA_Processing'><span class="fa fa-spinner fa-spin"></span></div>
+<div id='FDFXFA_FormType'>FDF</div>
+<div id='FDFXFA_PDFName'>LibreHealthEHR_CMS1500.pdf</div>
+<div id='FDFXFA_Menu'><a title='Submit Form' style='float:left;' class="fa  fa-check-square-o" onclick="app.activeDocs[0].submitForm('')">Submit</a>
+<a title='Go To FirstPage' class="fa fa-fast-backward" onclick="app.execMenuItem('FirstPage')"></a>
+<a title='Go To PrevPage' class="fa fa-backward" onclick="app.execMenuItem('PrevPage')"></a>
+<label id='FDFXFA_PageLabel'>1</label> / <label id='FDFXFA_PageCount'>1</label>
+<a title='Go To NextPage' class="fa fa-forward" onclick="app.execMenuItem('NextPage')"></a>
+<a title='Go To LastPage' class="fa fa-fast-forward" onclick="app.execMenuItem('LastPage')"></a>
+<a title='Save As Editable PDF' style='float:right;' class="fa fa-floppy-o" onclick="app.execMenuItem('SaveAs')"></a>
+</div>
+
+<div id="p1" class="pageArea" style="overflow: hidden; position: relative; width: 990px; height: 1320px; margin-top:20px; margin-left:auto; margin-right:auto; ">
+<script type="text/javascript">
+//global variables that can be used by ALL the functions on this page.
+var inputs;
+var imgOff = 'Off.png';
+var imgOn = 'On.png';
+var imgDownOff = 'DownOff.png';
+var imgDownOn = 'DownOn.png';
+var imgRollOff = 'RollOff.png';
+var imgRollOn = 'RollOn.png';
+
+function replaceChecks() {
+
+	//get all the input fields on the page
+	inputs = document.getElementsByTagName('input');
+
+	//cycle trough the input fields
+	for(var i=0; i<inputs.length; i++) {
+		if(inputs[i].hasAttribute('images'))
+
+			//check if the input is a checkbox
+			if(inputs[i].getAttribute('class') != 'hidden' && inputs[i].getAttribute('data-imageAdded') !== 'true' &&(inputs[i].getAttribute('type') == 'checkbox' || inputs[i].getAttribute('type') == 'radio')) {
+
+				//create a new image
+				var img = document.createElement('img');
+
+				//check if the checkbox is checked
+				if(inputs[i].checked) {
+					if(inputs[i].getAttribute('images').charAt(0) == '1')
+						img.src = inputs[i].getAttribute('imageName')+imgOn;
+				} else {
+					if(inputs[i].getAttribute('images').charAt(1) == '1')
+						img.src = inputs[i].getAttribute('imageName')+imgOff;
+				}
+
+				//set image ID
+				img.id = inputs[i].getAttribute('id') ;
+
+				//set action associations
+				img.onclick = new Function('checkClick('+i+')');
+				img.onmousedown = new Function('checkDown('+i+')');
+				img.onmouseover = new Function('checkOver('+i+')');
+				img.onmouseup = new Function('checkRelease('+i+')');
+				img.onmouseout = new Function('checkRelease('+i+')');
+
+				//place image in front of the checkbox
+				inputs[i].parentNode.insertBefore(img, inputs[i]);
+                           inputs[i].setAttribute('data-imageAdded','true');
+
+				//hide the checkbox
+				inputs[i].style.display='none';
+			}
+	}
+}
+
+//change the checkbox status and the replacement image
+function checkClick(i) {
+	if(!inputs[i].hasAttribute('images')) return;
+	if(inputs[i].checked) {
+		inputs[i].checked = '';
+		if(inputs[i].getAttribute('images').charAt(1) == '1')
+			document.getElementById(inputs[i].getAttribute('id')).src=inputs[i].getAttribute('imageName')+imgOff;
+	} else {
+		inputs[i].checked = 'checked';
+
+		if(inputs[i].getAttribute('images').charAt(0) == '1')
+			document.getElementById(inputs[i].getAttribute('id')).src=inputs[i].getAttribute('imageName')+imgOn;
+
+		if(inputs[i].getAttribute('name') != null){
+			for(var index=0; index<inputs.length; index++) {
+				if(index!=i && inputs[index].getAttribute('name') == inputs[i].getAttribute('name')){
+					inputs[index].checked = '';
+					if(inputs[index].getAttribute('images').charAt(1) == '1')
+						document.getElementById(inputs[index].getAttribute('id')).src=inputs[index].getAttribute('imageName')+imgOff;
+				}
+			}
+		}
+	}
+}
+
+function checkRelease(i) {
+	if(!inputs[i].hasAttribute('images')) return;
+	if(inputs[i].checked) {
+		if(inputs[i].getAttribute('images').charAt(0) == '1')
+			document.getElementById(inputs[i].getAttribute('id')).src=inputs[i].getAttribute('imageName')+imgOn;
+	} else {
+		if(inputs[i].getAttribute('images').charAt(1) == '1')
+			document.getElementById(inputs[i].getAttribute('id')).src=inputs[i].getAttribute('imageName')+imgOff;
+	}
+}
+
+function checkDown(i) {
+	if(!inputs[i].hasAttribute('images')) return;
+	if(inputs[i].checked) {
+		if(inputs[i].getAttribute('images').charAt(2) == '1')
+			document.getElementById(inputs[i].getAttribute('id')).src=inputs[i].getAttribute('imageName')+imgDownOn;
+	} else {
+		if(inputs[i].getAttribute('images').charAt(3) == '1')
+			document.getElementById(inputs[i].getAttribute('id')).src=inputs[i].getAttribute('imageName')+imgDownOff;
+	}
+}
+
+function checkOver(i) {
+	if(!inputs[i].hasAttribute('images')) return;
+	if(inputs[i].checked) {
+		if(inputs[i].getAttribute('images').charAt(4) == '1')
+			document.getElementById(inputs[i].getAttribute('id')).src=inputs[i].getAttribute('imageName')+imgRollOn;
+	} else {
+		if(inputs[i].getAttribute('images').charAt(5) == '1')
+			document.getElementById(inputs[i].getAttribute('id')).src=inputs[i].getAttribute('imageName')+imgRollOff;
+	}
+}
+
+</script>
+
+
+<!-- Begin shared CSS values -->
+<style type="text/css" >
+.t {
+	-webkit-transform-origin: top left;
+	-moz-transform-origin: top left;
+	-o-transform-origin: top left;
+	-ms-transform-origin: top left;
+	-webkit-transform: scale(0.25);
+	-moz-transform: scale(0.25);
+	-o-transform: scale(0.25);
+	-ms-transform: scale(0.25);
+	z-index: 2;
+	position: absolute;
+	white-space: pre;
+	overflow: visible;
+}
+</style>
+<!-- End shared CSS values -->
+
+
+<!-- Begin inline CSS -->
+<style type="text/css" >
+
+#t1_1{left:80px;top:129px;}
+#t2_1{left:242px;top:774px;}
+#t3_1{left:230px;top:786px;}
+#t4_1{left:232px;top:797px;}
+#t5_1{left:579px;top:152px;}
+#t6_1{left:786px;top:153px;}
+#t7_1{left:579px;top:189px;}
+#t8_1{left:579px;top:224px;}
+#t9_1{left:579px;top:261px;}
+#ta_1{left:838px;top:261px;}
+#tb_1{left:579px;top:295px;}
+#tc_1{left:720px;top:295px;}
+#td_1{left:579px;top:334px;}
+#te_1{left:588px;top:369px;}
+#tf_1{left:579px;top:407px;}
+#tg_1{left:579px;top:481px;}
+#th_1{left:578px;top:518px;}
+#ti_1{left:594px;top:529px;}
+#tj_1{left:594px;top:539px;}
+#tk_1{left:805px;top:369px;}
+#tl_1{left:38px;top:92px;}
+#tm_1{left:537px;top:153px;}
+#tn_1{left:44px;top:152px;}
+#to_1{left:58px;top:152px;}
+#tp_1{left:133px;top:152px;}
+#tq_1{left:211px;top:152px;}
+#tr_1{left:310px;top:153px;}
+#ts_1{left:149px;top:518px;}
+#tt_1{left:41px;top:528px;}
+#tu_1{left:294px;top:528px;}
+#tv_1{left:57px;top:539px;}
+#tw_1{left:56px;top:550px;}
+#tx_1{left:58px;top:568px;}
+#ty_1{left:396px;top:568px;}
+#tz_1{left:55px;top:598px;}
+#t10_1{left:88px;top:598px;}
+#t11_1{left:127px;top:598px;}
+#t12_1{left:335px;top:590px;}
+#t13_1{left:439px;top:596px;}
+#t14_1{left:475px;top:596px;}
+#t15_1{left:511px;top:596px;}
+#t16_1{left:42px;top:590px;}
+#t17_1{left:43px;top:666px;}
+#t18_1{left:42px;top:699px;}
+#t19_1{left:287px;top:699px;}
+#t1a_1{left:76px;top:785px;}
+#t1b_1{left:45px;top:795px;}
+#t1c_1{left:75px;top:795px;}
+#t1d_1{left:108px;top:795px;}
+#t1e_1{left:174px;top:785px;}
+#t1f_1{left:139px;top:795px;}
+#t1g_1{left:173px;top:795px;}
+#t1h_1{left:208px;top:795px;}
+#t1i_1{left:26px;top:814px;}
+#t1j_1{left:26px;top:851px;}
+#t1k_1{left:26px;top:888px;}
+#t1l_1{left:27px;top:924px;}
+#t1m_1{left:27px;top:962px;}
+#t1n_1{left:27px;top:999px;}
+#t1o_1{left:43px;top:1029px;}
+#t1p_1{left:218px;top:1029px;}
+#t1q_1{left:242px;top:1029px;}
+#t1r_1{left:286px;top:1029px;}
+#t1s_1{left:443px;top:1029px;}
+#t1t_1{left:456px;top:1037px;}
+#t1u_1{left:42px;top:1066px;}
+#t1v_1{left:57px;top:1077px;}
+#t1w_1{left:57px;top:1088px;}
+#t1x_1{left:57px;top:1098px;}
+#t1y_1{left:44px;top:1143px;}
+#t1z_1{left:200px;top:1143px;}
+#t20_1{left:604px;top:569px;}
+#t21_1{left:612px;top:377px;}
+#t22_1{left:647px;top:378px;}
+#t23_1{left:688px;top:377px;}
+#t24_1{left:589px;top:608px;}
+#t25_1{left:754px;top:607px;}
+#t26_1{left:589px;top:646px;}
+#t27_1{left:754px;top:646px;}
+#t28_1{left:627px;top:599px;}
+#t29_1{left:660px;top:599px;}
+#t2a_1{left:696px;top:599px;}
+#t2b_1{left:778px;top:599px;}
+#t2c_1{left:814px;top:599px;}
+#t2d_1{left:850px;top:599px;}
+#t2e_1{left:624px;top:634px;}
+#t2f_1{left:657px;top:634px;}
+#t2g_1{left:695px;top:634px;}
+#t2h_1{left:778px;top:634px;}
+#t2i_1{left:814px;top:634px;}
+#t2j_1{left:850px;top:634px;}
+#t2k_1{left:594px;top:707px;}
+#t2l_1{left:720px;top:705px;}
+#t2m_1{left:598px;top:795px;}
+#t2n_1{left:583px;top:1029px;}
+#t2o_1{left:704px;top:1029px;}
+#t2p_1{left:805px;top:1029px;}
+#t2q_1{left:584px;top:1049px;}
+#t2r_1{left:809px;top:1049px;}
+#t2s_1{left:843px;top:129px;}
+#t2t_1{left:44px;top:189px;}
+#t2u_1{left:44px;top:225px;}
+#t2v_1{left:44px;top:262px;}
+#t2w_1{left:315px;top:262px;}
+#t2x_1{left:44px;top:295px;}
+#t2y_1{left:184px;top:295px;word-spacing:-0.6px;}
+#t2z_1{left:44px;top:334px;word-spacing:-0.3px;}
+#t30_1{left:44px;top:370px;}
+#t31_1{left:44px;top:405px;}
+#t32_1{left:44px;top:443px;}
+#t33_1{left:44px;top:480px;}
+#t34_1{left:466px;top:1047px;}
+#t35_1{left:523px;top:1047px;}
+#t36_1{left:189px;top:311px;}
+#t37_1{left:227px;top:311px;}
+#t38_1{left:707px;top:501px;}
+#t39_1{left:731px;top:501px;}
+#t3a_1{left:579px;top:590px;}
+#t3b_1{left:577px;top:627px;}
+#t3c_1{left:578px;top:666px;}
+#t3d_1{left:744px;top:666px;}
+#t3e_1{left:579px;top:699px;}
+#t3f_1{left:579px;top:737px;}
+#t3g_1{left:908px;top:120px;}
+#t3h_1{left:910px;top:1017px;}
+#t3i_1{left:211px;top:169px;}
+#t3j_1{left:760px;top:388px;}
+#t3k_1{left:840px;top:389px;}
+#t3l_1{left:616px;top:501px;}
+#t3m_1{left:671px;top:501px;}
+#t3n_1{left:617px;top:684px;}
+#t3o_1{left:673px;top:684px;}
+#t3p_1{left:91px;top:774px;}
+#t3q_1{left:313px;top:774px;}
+#t3r_1{left:335px;top:785px;}
+#t3s_1{left:314px;top:795px;}
+#t3t_1{left:520px;top:785px;}
+#t3u_1{left:525px;top:795px;}
+#t3v_1{left:533px;top:208px;}
+#t3w_1{left:475px;top:208px;}
+#t3x_1{left:511px;top:186px;}
+#t3y_1{left:375px;top:195px;}
+#t3z_1{left:410px;top:195px;}
+#t40_1{left:446px;top:195px;}
+#t41_1{left:431px;top:465px;}
+#t42_1{left:498px;top:464px;}
+#t43_1{left:431px;top:426px;}
+#t44_1{left:498px;top:426px;}
+#t45_1{left:431px;top:390px;}
+#t46_1{left:498px;top:390px;}
+#t47_1{left:509px;top:408px;}
+#t48_1{left:386px;top:152px;}
+#t49_1{left:386px;top:161px;}
+#t4a_1{left:473px;top:152px;}
+#t4b_1{left:473px;top:161px;}
+#t4c_1{left:359px;top:186px;}
+#t4d_1{left:359px;top:225px;}
+#t4e_1{left:357px;top:262px;}
+#t4f_1{left:361px;top:334px;}
+#t4g_1{left:359px;top:371px;}
+#t4h_1{left:359px;top:409px;}
+#t4i_1{left:359px;top:445px;}
+#t4j_1{left:359px;top:480px;}
+#t4k_1{left:369px;top:245px;}
+#t4l_1{left:410px;top:245px;}
+#t4m_1{left:465px;top:245px;}
+#t4n_1{left:516px;top:245px;}
+#t4o_1{left:60px;top:169px;}
+#t4p_1{left:133px;top:169px;}
+#t4q_1{left:177px;top:169px;}
+#t4r_1{left:309px;top:170px;}
+#t4s_1{left:386px;top:171px;}
+#t4t_1{left:472px;top:171px;}
+#t4u_1{left:541px;top:168px;}
+#t4v_1{left:737px;top:310px;}
+#t4w_1{left:684px;top:782px;}
+#t4x_1{left:689px;top:790px;}
+#t4y_1{left:683px;top:797px;}
+#t4z_1{left:620px;top:774px;}
+#t50_1{left:724px;top:773px;}
+#t51_1{left:754px;top:773px;}
+#t52_1{left:838px;top:773px;}
+#t53_1{left:44px;top:773px;word-spacing:8.4px;}
+#t54_1{left:277px;top:774px;}
+#t55_1{left:541px;top:774px;}
+#t56_1{left:807px;top:795px;}
+#t57_1{left:43px;top:626px;}
+#t58_1{left:334px;top:629px;}
+#t59_1{left:271px;top:795px;}
+#t5a_1{left:814px;top:784px;}
+#t5b_1{left:286px;top:1066px;}
+#t5c_1{left:583px;top:1066px;}
+#t5d_1{left:39px;top:1159px;}
+#t5e_1{left:579px;top:442px;}
+#t5f_1{left:334px;top:646px;}
+#t5g_1{left:359px;top:646px;}
+#t5h_1{left:287px;top:1141px;}
+#t5i_1{left:407px;top:1141px;}
+#t5j_1{left:582px;top:1140px;}
+#t5k_1{left:709px;top:1140px;}
+#t5l_1{left:747px;top:826px;}
+#t5m_1{left:38px;top:113px;}
+#t5n_1{left:691px;top:773px;}
+#t5o_1{left:718px;top:783px;}
+#t5p_1{left:719px;top:791px;}
+#t5q_1{left:722px;top:798px;}
+#t5r_1{left:751px;top:785px;}
+#t5s_1{left:745px;top:796px;}
+#t5t_1{left:754px;top:1064px;}
+#t5u_1{left:790px;top:1064px;}
+#t5v_1{left:605px;top:1158px;}
+#t5w_1{left:425px;top:795px;}
+#t5x_1{left:393px;top:26px;}
+#t5y_1{left:776px;top:310px;}
+#t5z_1{left:747px;top:862px;}
+#t60_1{left:747px;top:899px;}
+#t61_1{left:747px;top:935px;}
+#t62_1{left:747px;top:972px;}
+#t63_1{left:747px;top:1009px;}
+#t64_1{left:709px;top:1049px;}
+#t65_1{left:910px;top:493px;}
+#t66_1{left:49px;top:723px;}
+#t67_1{left:49px;top:742px;}
+#t68_1{left:48px;top:761px;}
+#t69_1{left:190px;top:723px;}
+#t6a_1{left:190px;top:742px;}
+#t6b_1{left:189px;top:760px;}
+#t6c_1{left:396px;top:1159px;}
+#t6d_1{left:333px;top:723px;}
+#t6e_1{left:333px;top:742px;}
+#t6f_1{left:332px;top:760px;}
+#t6g_1{left:477px;top:723px;}
+#t6h_1{left:477px;top:742px;}
+#t6i_1{left:476px;top:761px;}
+#t6j_1{left:173px;top:612px;}
+#t6k_1{left:338px;top:611px;}
+#t6l_1{left:455px;top:702px;}
+
+.s8_1{
+	FONT-SIZE: 30.6px;
+	FONT-FAMILY: ArialMT__7;
+	color: rgb(220,48,61);
+}
+
+.s14_1{
+	FONT-SIZE: 30.6px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+}
+
+.s16_1{
+	FONT-SIZE: 42.8px;
+	FONT-FAMILY: ArialMT__7;
+	color: rgb(220,48,61);
+}
+
+.s19_1{
+	FONT-SIZE: 97.8px;
+	FONT-FAMILY: Arial-BoldMT__i;
+	color: rgb(0,0,0);
+}
+
+.s7_1{
+	FONT-SIZE: 61.1px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+}
+
+.s9_1{
+	FONT-SIZE: 61.1px;
+	FONT-FAMILY: ArialMT__7;
+	color: rgb(220,48,61);
+}
+
+.s4_1{
+	FONT-SIZE: 61.1px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+	FONT-WEIGHT: bold;
+}
+
+.s13_1{
+	FONT-SIZE: 36.7px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+	FONT-STYLE: italic;
+}
+
+.s1_1{
+	FONT-SIZE: 36.7px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+}
+
+.s3_1{
+	FONT-SIZE: 36.7px;
+	FONT-FAMILY: ArialMT__7;
+	color: rgb(220,48,61);
+}
+
+.s10_1{
+	FONT-SIZE: 36.7px;
+	FONT-FAMILY: Arial-BoldItalicMT__d;
+	color: rgb(220,48,61);
+}
+
+.s18_1{
+	FONT-SIZE: 48.9px;
+	FONT-FAMILY: ArialMT__7;
+	color: rgb(220,48,61);
+}
+
+.s5_1{
+	FONT-SIZE: 36.7px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+	FONT-WEIGHT: bold;
+}
+
+.s11_1{
+	FONT-SIZE: 48.9px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+	FONT-WEIGHT: bold;
+}
+
+.s12_1{
+	FONT-SIZE: 36.7px;
+	FONT-FAMILY: Arial-ItalicMT__e;
+	color: rgb(220,48,61);
+}
+
+.s20_1{
+	FONT-SIZE: 48.9px;
+	FONT-FAMILY: Arial-BoldItalicMT__d;
+	color: rgb(220,48,61);
+}
+
+.s15_1{
+	FONT-SIZE: 48.9px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+}
+
+.s17_1{
+	FONT-SIZE: 25.1px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+}
+
+.s6_1{
+	FONT-SIZE: 35.4px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+}
+
+.s2_1{
+	FONT-SIZE: 27.5px;
+	FONT-FAMILY: Helvetica, Arial, sans-serif;
+	color: rgb(220,48,61);
+}
+
+.t.m1_1{
+	-webkit-transform: matrix(0,-1,1,0,0, 0) scale(0.25);
+	-ms-transform: matrix(0,-1,1,0,0, 0) scale(0.25);
+	-moz-transform: matrix(0,-1,1,0,0, 0) scale(0.25);
+	-o-transform: matrix(0,-1,1,0,0, 0) scale(0.25);
+}
+
+#form1_1{	z-index:2;	position: absolute;	left:391px;	top:66px;	width:433px;	height:15px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form2_1{	z-index:2;	position: absolute;	left:391px;	top:86px;	width:433px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form3_1{	z-index:2;	position: absolute;	left:391px;	top:106px;	width:433px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form4_1{	z-index:2;	position: absolute;	left:391px;	top:124px;	width:433px;	height:15px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form5_1{	z-index:2;	border-style:none;	position: absolute;	left:367px;	top:168px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form6_1{	z-index:2;	border-style:none;	position: absolute;	left:40px;	top:168px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form7_1{	z-index:2;	border-style:none;	position: absolute;	left:113px;	top:168px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form8_1{	z-index:2;	border-style:none;	position: absolute;	left:191px;	top:168px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form9_1{	z-index:2;	border-style:none;	position: absolute;	left:290px;	top:168px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form10_1{	z-index:2;	border-style:none;	position: absolute;	left:455px;	top:168px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form11_1{	z-index:2;	border-style:none;	position: absolute;	left:521px;	top:168px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form12_1{	z-index:2;	position: absolute;	left:578px;	top:171px;	width:304px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form13_1{	z-index:2;	border-style:none;	position: absolute;	left:541px;	top:205px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form14_1{	z-index:2;	border-style:none;	position: absolute;	left:486px;	top:205px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form15_1{	z-index:2;	position: absolute;	left:579px;	top:205px;	width:303px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form16_1{	z-index:2;	position: absolute;	left:44px;	top:206px;	width:303px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form17_1{	z-index:2;	position: absolute;	left:365px;	top:206px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form18_1{	z-index:2;	position: absolute;	left:399px;	top:206px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form19_1{	z-index:2;	position: absolute;	left:433px;	top:206px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form20_1{	z-index:2;	border-style:none;	position: absolute;	left:388px;	top:242px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form21_1{	z-index:2;	border-style:none;	position: absolute;	left:486px;	top:242px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form22_1{	z-index:2;	border-style:none;	position: absolute;	left:541px;	top:242px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form23_1{	z-index:2;	position: absolute;	left:44px;	top:243px;	width:303px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form24_1{	z-index:2;	border-style:none;	position: absolute;	left:443px;	top:243px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form25_1{	z-index:2;	position: absolute;	left:579px;	top:243px;	width:303px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form26_1{	z-index:2;	position: absolute;	left:579px;	top:277px;	width:249px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form27_1{	z-index:2;	position: absolute;	left:837px;	top:277px;	width:44px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form28_1{	z-index:2;	position: absolute;	left:315px;	top:277px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form29_1{	z-index:2;	position: absolute;	left:44px;	top:277px;	width:258px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form30_1{	z-index:2;	position: absolute;	left:579px;	top:313px;	width:132px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form31_1{	z-index:2;	position: absolute;	left:744px;	top:313px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form32_1{	z-index:2;	position: absolute;	left:792px;	top:313px;	width:90px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form33_1{	z-index:2;	position: absolute;	left:44px;	top:316px;	width:132px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form34_1{	z-index:2;	position: absolute;	left:196px;	top:316px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form35_1{	z-index:2;	position: absolute;	left:235px;	top:316px;	width:110px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form36_1{	z-index:2;	position: absolute;	left:44px;	top:350px;	width:303px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form37_1{	z-index:2;	position: absolute;	left:578px;	top:350px;	width:304px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form38_1{	z-index:2;	position: absolute;	left:43px;	top:387px;	width:304px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form39_1{	z-index:2;	border-style:none;	position: absolute;	left:773px;	top:388px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form40_1{	z-index:2;	border-style:none;	position: absolute;	left:850px;	top:388px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form41_1{	z-index:2;	border-style:none;	position: absolute;	left:477px;	top:388px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form42_1{	z-index:2;	border-style:none;	position: absolute;	left:411px;	top:388px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form43_1{	z-index:2;	position: absolute;	left:607px;	top:390px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form44_1{	z-index:2;	position: absolute;	left:640px;	top:390px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form45_1{	z-index:2;	position: absolute;	left:675px;	top:390px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form46_1{	z-index:2;	position: absolute;	left:520px;	top:420px;	width:31px;	height:15px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 15px Arial, Helvetica, sans-serif;}
+#form47_1{	z-index:2;	position: absolute;	left:578px;	top:423px;	width:304px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form48_1{	z-index:2;	border-style:none;	position: absolute;	left:411px;	top:425px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form49_1{	z-index:2;	border-style:none;	position: absolute;	left:477px;	top:425px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form50_1{	z-index:2;	position: absolute;	left:579px;	top:460px;	width:303px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form51_1{	z-index:2;	border-style:none;	position: absolute;	left:477px;	top:462px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form52_1{	z-index:2;	border-style:none;	position: absolute;	left:411px;	top:462px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form53_1{	z-index:2;	border-style:none;	position: absolute;	left:598px;	top:497px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form54_1{	z-index:2;	border-style:none;	position: absolute;	left:653px;	top:497px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form55_1{	z-index:2;	position: absolute;	left:43px;	top:498px;	width:304px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form56_1{	z-index:2;	position: absolute;	left:359px;	top:498px;	width:211px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form57_1{	z-index:2;	position: absolute;	left:425px;	top:567px;	width:141px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form58_1{	z-index:2;	position: absolute;	left:96px;	top:569px;	width:268px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form59_1{	z-index:2;	position: absolute;	left:645px;	top:569px;	width:234px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form60_1{	z-index:2;	position: absolute;	left:48px;	top:608px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form61_1{	z-index:2;	position: absolute;	left:81px;	top:608px;	width:28px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form62_1{	z-index:2;	position: absolute;	left:113px;	top:608px;	width:38px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form63_1{	z-index:2;	position: absolute;	left:205px;	top:608px;	width:38px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form64_1{	z-index:2;	position: absolute;	left:368px;	top:608px;	width:38px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form65_1{	z-index:2;	position: absolute;	left:431px;	top:610px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form66_1{	z-index:2;	position: absolute;	left:465px;	top:610px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form67_1{	z-index:2;	position: absolute;	left:498px;	top:610px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form68_1{	z-index:2;	position: absolute;	left:617px;	top:610px;	width:26px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form69_1{	z-index:2;	position: absolute;	left:648px;	top:610px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form70_1{	z-index:2;	position: absolute;	left:685px;	top:610px;	width:37px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form71_1{	z-index:2;	position: absolute;	left:773px;	top:610px;	width:26px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form72_1{	z-index:2;	position: absolute;	left:802px;	top:610px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form73_1{	z-index:2;	position: absolute;	left:836px;	top:610px;	width:35px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form74_1{	z-index:2;	position: absolute;	left:358px;	top:628px;	width:23px;	height:14px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form75_1{	z-index:2;	position: absolute;	left:385px;	top:628px;	width:182px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form76_1{	z-index:2;	position: absolute;	left:617px;	top:645px;	width:26px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form77_1{	z-index:2;	position: absolute;	left:648px;	top:645px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form78_1{	z-index:2;	position: absolute;	left:685px;	top:645px;	width:37px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form79_1{	z-index:2;	position: absolute;	left:773px;	top:645px;	width:26px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form80_1{	z-index:2;	position: absolute;	left:802px;	top:645px;	width:31px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form81_1{	z-index:2;	position: absolute;	left:836px;	top:645px;	width:35px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form82_1{	z-index:2;	position: absolute;	left:43px;	top:642px;	width:286px;	height:15px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form83_1{	z-index:2;	position: absolute;	left:385px;	top:645px;	width:182px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form84_1{	z-index:2;	border-style:none;	position: absolute;	left:599px;	top:680px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form85_1{	z-index:2;	border-style:none;	position: absolute;	left:653px;	top:680px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form86_1{	z-index:2;	position: absolute;	left:43px;	top:682px;	width:524px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form87_1{	z-index:2;	position: absolute;	left:706px;	top:682px;	width:99px;	height:13px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form88_1{	z-index:2;	position: absolute;	left:494px;	top:701px;	width:15px;	height:12px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 12px Arial, Helvetica, sans-serif;}
+#form89_1{	z-index:2;	position: absolute;	left:64px;	top:715px;	width:75px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form90_1{	z-index:2;	position: absolute;	left:206px;	top:715px;	width:75px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form91_1{	z-index:2;	position: absolute;	left:349px;	top:715px;	width:75px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form92_1{	z-index:2;	position: absolute;	left:494px;	top:715px;	width:74px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form93_1{	z-index:2;	position: absolute;	left:579px;	top:718px;	width:118px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form94_1{	z-index:2;	position: absolute;	left:706px;	top:718px;	width:179px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form95_1{	z-index:2;	position: absolute;	left:206px;	top:734px;	width:75px;	height:15px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form96_1{	z-index:2;	position: absolute;	left:349px;	top:734px;	width:75px;	height:15px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form97_1{	z-index:2;	position: absolute;	left:64px;	top:735px;	width:75px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form98_1{	z-index:2;	position: absolute;	left:494px;	top:735px;	width:74px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form99_1{	z-index:2;	position: absolute;	left:579px;	top:753px;	width:303px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form100_1{	z-index:2;	position: absolute;	left:64px;	top:753px;	width:75px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form101_1{	z-index:2;	position: absolute;	left:206px;	top:753px;	width:74px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form102_1{	z-index:2;	position: absolute;	left:349px;	top:753px;	width:75px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form103_1{	z-index:2;	position: absolute;	left:492px;	top:753px;	width:75px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form104_1{	z-index:2;	position: absolute;	left:717px;	top:810px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form105_1{	z-index:2;	position: absolute;	left:775px;	top:810px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form106_1{	z-index:2;	position: absolute;	left:41px;	top:810px;	width:674px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form107_1{	z-index:2;	position: absolute;	left:741px;	top:810px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form108_1{	z-index:2;	position: absolute;	left:69px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form109_1{	z-index:2;	position: absolute;	left:101px;	top:827px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form110_1{	z-index:2;	position: absolute;	left:301px;	top:827px;	width:75px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form111_1{	z-index:2;	position: absolute;	left:422px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form112_1{	z-index:2;	position: absolute;	left:454px;	top:827px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form113_1{	z-index:2;	position: absolute;	left:486px;	top:827px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form114_1{	z-index:2;	position: absolute;	left:518px;	top:827px;	width:54px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form115_1{	z-index:2;	position: absolute;	left:775px;	top:827px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form116_1{	z-index:2;	position: absolute;	left:41px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form117_1{	z-index:2;	position: absolute;	left:135px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form118_1{	z-index:2;	position: absolute;	left:168px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form119_1{	z-index:2;	position: absolute;	left:202px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form120_1{	z-index:2;	position: absolute;	left:234px;	top:827px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form121_1{	z-index:2;	position: absolute;	left:269px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form122_1{	z-index:2;	position: absolute;	left:385px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form123_1{	z-index:2;	position: absolute;	left:578px;	top:827px;	width:63px;	height:13px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form124_1{	z-index:2;	position: absolute;	left:646px;	top:827px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form125_1{	z-index:2;	position: absolute;	left:674px;	top:827px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form126_1{	z-index:2;	position: absolute;	left:717px;	top:827px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form127_1{	z-index:2;	position: absolute;	left:41px;	top:845px;	width:674px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form128_1{	z-index:2;	position: absolute;	left:717px;	top:845px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form129_1{	z-index:2;	position: absolute;	left:775px;	top:845px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form130_1{	z-index:2;	position: absolute;	left:741px;	top:845px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form131_1{	z-index:2;	position: absolute;	left:69px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form132_1{	z-index:2;	position: absolute;	left:101px;	top:863px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form133_1{	z-index:2;	position: absolute;	left:301px;	top:863px;	width:75px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form134_1{	z-index:2;	position: absolute;	left:422px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form135_1{	z-index:2;	position: absolute;	left:454px;	top:863px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form136_1{	z-index:2;	position: absolute;	left:486px;	top:863px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form137_1{	z-index:2;	position: absolute;	left:518px;	top:863px;	width:54px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form138_1{	z-index:2;	position: absolute;	left:717px;	top:863px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form139_1{	z-index:2;	position: absolute;	left:775px;	top:863px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form140_1{	z-index:2;	position: absolute;	left:41px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form141_1{	z-index:2;	position: absolute;	left:135px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form142_1{	z-index:2;	position: absolute;	left:168px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form143_1{	z-index:2;	position: absolute;	left:202px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form144_1{	z-index:2;	position: absolute;	left:234px;	top:863px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form145_1{	z-index:2;	position: absolute;	left:269px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form146_1{	z-index:2;	position: absolute;	left:385px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form147_1{	z-index:2;	position: absolute;	left:578px;	top:863px;	width:63px;	height:13px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form148_1{	z-index:2;	position: absolute;	left:646px;	top:863px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form149_1{	z-index:2;	position: absolute;	left:674px;	top:863px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form150_1{	z-index:2;	position: absolute;	left:775px;	top:882px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form151_1{	z-index:2;	position: absolute;	left:41px;	top:882px;	width:674px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form152_1{	z-index:2;	position: absolute;	left:717px;	top:882px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form153_1{	z-index:2;	position: absolute;	left:741px;	top:882px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form154_1{	z-index:2;	position: absolute;	left:41px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form155_1{	z-index:2;	position: absolute;	left:69px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form156_1{	z-index:2;	position: absolute;	left:101px;	top:900px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form157_1{	z-index:2;	position: absolute;	left:135px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form158_1{	z-index:2;	position: absolute;	left:168px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form159_1{	z-index:2;	position: absolute;	left:202px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form160_1{	z-index:2;	position: absolute;	left:234px;	top:900px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form161_1{	z-index:2;	position: absolute;	left:301px;	top:900px;	width:75px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form162_1{	z-index:2;	position: absolute;	left:422px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form163_1{	z-index:2;	position: absolute;	left:454px;	top:900px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form164_1{	z-index:2;	position: absolute;	left:486px;	top:900px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form165_1{	z-index:2;	position: absolute;	left:518px;	top:900px;	width:54px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form166_1{	z-index:2;	position: absolute;	left:674px;	top:900px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form167_1{	z-index:2;	position: absolute;	left:717px;	top:900px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form168_1{	z-index:2;	position: absolute;	left:269px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form169_1{	z-index:2;	position: absolute;	left:385px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form170_1{	z-index:2;	position: absolute;	left:578px;	top:900px;	width:63px;	height:13px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form171_1{	z-index:2;	position: absolute;	left:646px;	top:900px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form172_1{	z-index:2;	position: absolute;	left:775px;	top:900px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form173_1{	z-index:2;	position: absolute;	left:717px;	top:918px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form174_1{	z-index:2;	position: absolute;	left:775px;	top:918px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form175_1{	z-index:2;	position: absolute;	left:741px;	top:918px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form176_1{	z-index:2;	position: absolute;	left:41px;	top:918px;	width:674px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form177_1{	z-index:2;	position: absolute;	left:41px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form178_1{	z-index:2;	position: absolute;	left:69px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form179_1{	z-index:2;	position: absolute;	left:101px;	top:937px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form180_1{	z-index:2;	position: absolute;	left:135px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form181_1{	z-index:2;	position: absolute;	left:168px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form182_1{	z-index:2;	position: absolute;	left:202px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form183_1{	z-index:2;	position: absolute;	left:234px;	top:937px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form184_1{	z-index:2;	position: absolute;	left:301px;	top:937px;	width:75px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form185_1{	z-index:2;	position: absolute;	left:422px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form186_1{	z-index:2;	position: absolute;	left:454px;	top:937px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form187_1{	z-index:2;	position: absolute;	left:486px;	top:937px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form188_1{	z-index:2;	position: absolute;	left:518px;	top:937px;	width:54px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form189_1{	z-index:2;	position: absolute;	left:674px;	top:937px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form190_1{	z-index:2;	position: absolute;	left:717px;	top:937px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form191_1{	z-index:2;	position: absolute;	left:269px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form192_1{	z-index:2;	position: absolute;	left:385px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form193_1{	z-index:2;	position: absolute;	left:578px;	top:937px;	width:63px;	height:13px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form194_1{	z-index:2;	position: absolute;	left:646px;	top:937px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form195_1{	z-index:2;	position: absolute;	left:775px;	top:937px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form196_1{	z-index:2;	position: absolute;	left:41px;	top:955px;	width:674px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form197_1{	z-index:2;	position: absolute;	left:717px;	top:955px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form198_1{	z-index:2;	position: absolute;	left:741px;	top:955px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form199_1{	z-index:2;	position: absolute;	left:775px;	top:955px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form200_1{	z-index:2;	position: absolute;	left:41px;	top:973px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form201_1{	z-index:2;	position: absolute;	left:69px;	top:973px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form202_1{	z-index:2;	position: absolute;	left:101px;	top:973px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form203_1{	z-index:2;	position: absolute;	left:135px;	top:973px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form204_1{	z-index:2;	position: absolute;	left:168px;	top:973px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form205_1{	z-index:2;	position: absolute;	left:202px;	top:973px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form206_1{	z-index:2;	position: absolute;	left:234px;	top:973px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form207_1{	z-index:2;	position: absolute;	left:269px;	top:973px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form208_1{	z-index:2;	position: absolute;	left:301px;	top:973px;	width:75px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form209_1{	z-index:2;	position: absolute;	left:385px;	top:973px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form210_1{	z-index:2;	position: absolute;	left:422px;	top:973px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form211_1{	z-index:2;	position: absolute;	left:454px;	top:973px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form212_1{	z-index:2;	position: absolute;	left:486px;	top:973px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form213_1{	z-index:2;	position: absolute;	left:518px;	top:973px;	width:54px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form214_1{	z-index:2;	position: absolute;	left:578px;	top:973px;	width:63px;	height:13px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form215_1{	z-index:2;	position: absolute;	left:646px;	top:973px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form216_1{	z-index:2;	position: absolute;	left:674px;	top:973px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form217_1{	z-index:2;	position: absolute;	left:717px;	top:973px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form218_1{	z-index:2;	position: absolute;	left:775px;	top:973px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form219_1{	z-index:2;	position: absolute;	left:41px;	top:993px;	width:674px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form220_1{	z-index:2;	position: absolute;	left:717px;	top:993px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form221_1{	z-index:2;	position: absolute;	left:741px;	top:993px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form222_1{	z-index:2;	position: absolute;	left:775px;	top:993px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form223_1{	z-index:2;	position: absolute;	left:69px;	top:1010px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form224_1{	z-index:2;	position: absolute;	left:101px;	top:1010px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form225_1{	z-index:2;	position: absolute;	left:301px;	top:1010px;	width:75px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form226_1{	z-index:2;	position: absolute;	left:422px;	top:1010px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form227_1{	z-index:2;	position: absolute;	left:454px;	top:1010px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form228_1{	z-index:2;	position: absolute;	left:486px;	top:1010px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form229_1{	z-index:2;	position: absolute;	left:518px;	top:1010px;	width:54px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form230_1{	z-index:2;	position: absolute;	left:717px;	top:1010px;	width:20px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form231_1{	z-index:2;	position: absolute;	left:775px;	top:1010px;	width:130px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form232_1{	z-index:2;	position: absolute;	left:41px;	top:1010px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form233_1{	z-index:2;	position: absolute;	left:135px;	top:1010px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form234_1{	z-index:2;	position: absolute;	left:168px;	top:1010px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form235_1{	z-index:2;	position: absolute;	left:202px;	top:1010px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form236_1{	z-index:2;	position: absolute;	left:234px;	top:1010px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form237_1{	z-index:2;	position: absolute;	left:269px;	top:1010px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form238_1{	z-index:2;	position: absolute;	left:385px;	top:1010px;	width:25px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form239_1{	z-index:2;	position: absolute;	left:578px;	top:1010px;	width:63px;	height:13px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form240_1{	z-index:2;	position: absolute;	left:646px;	top:1010px;	width:23px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form241_1{	z-index:2;	position: absolute;	left:674px;	top:1010px;	width:40px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form242_1{	z-index:2;	border-style:none;	position: absolute;	left:448px;	top:1045px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form243_1{	z-index:2;	border-style:none;	position: absolute;	left:501px;	top:1045px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form244_1{	z-index:2;	position: absolute;	left:43px;	top:1045px;	width:158px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form245_1{	z-index:2;	border-style:none;	position: absolute;	left:219px;	top:1045px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form246_1{	z-index:2;	border-style:none;	position: absolute;	left:242px;	top:1045px;	width:17px;	height:17px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	font:normal 15px Wingdings, 'Zapf Dingbats';}
+#form247_1{	z-index:2;	position: absolute;	left:877px;	top:1045px;	width:22px;	height:14px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form248_1{	z-index:2;	position: absolute;	left:286px;	top:1045px;	width:150px;	height:15px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form249_1{	z-index:2;	position: absolute;	left:591px;	top:1045px;	width:74px;	height:15px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form250_1{	z-index:2;	position: absolute;	left:671px;	top:1045px;	width:23px;	height:15px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form251_1{	z-index:2;	position: absolute;	left:717px;	top:1045px;	width:57px;	height:15px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form252_1{	z-index:2;	position: absolute;	left:779px;	top:1045px;	width:20px;	height:15px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form253_1{	z-index:2;	position: absolute;	left:816px;	top:1045px;	width:57px;	height:15px;	color: rgb(0,0,0); 	text-align:right;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form254_1{	z-index:2;	position: absolute;	left:759px;	top:1067px;	width:29px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form255_1{	z-index:2;	position: absolute;	left:798px;	top:1067px;	width:107px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form256_1{	z-index:2;	resize:none;
+	position: absolute;	left:286px;	top:1085px;	width:284px;	height:46px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form257_1{	z-index:2;	resize:none;
+	position: absolute;	left:582px;	top:1085px;	width:323px;	height:46px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form258_1{	z-index:2;	position: absolute;	left:423px;	top:1138px;	width:144px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form259_1{	z-index:2;	position: absolute;	left:593px;	top:1138px;	width:103px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form260_1{	z-index:2;	position: absolute;	left:724px;	top:1138px;	width:145px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form261_1{	z-index:2;	position: absolute;	left:295px;	top:1138px;	width:104px;	height:13px;	color: rgb(0,0,0); 	text-align:center;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form262_1{	z-index:2;	position: absolute;	left:86px;	top:1138px;	width:106px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form263_1{	z-index:2;	position: absolute;	left:234px;	top:1138px;	width:46px;	height:13px;	color: rgb(0,0,0); 	text-align:left;	background: transparent;	border-color:transparent;	font:normal 13px Arial, Helvetica, sans-serif;}
+#form49_1 { z-index:3; }
+#form48_1 { z-index:2; }
+#form52_1 { z-index:3; }
+#form51_1 { z-index:2; }
+#form246_1 { z-index:3; }
+#form245_1 { z-index:2; }
+#form85_1 { z-index:3; }
+#form84_1 { z-index:2; }
+#form54_1 { z-index:3; }
+#form53_1 { z-index:2; }
+#form14_1 { z-index:3; }
+#form13_1 { z-index:2; }
+#form243_1 { z-index:3; }
+#form242_1 { z-index:2; }
+#form40_1 { z-index:3; }
+#form39_1 { z-index:2; }
+#form6_1 { z-index:8; }
+#form7_1 { z-index:7; }
+#form8_1 { z-index:6; }
+#form9_1 { z-index:5; }
+#form10_1 { z-index:4; }
+#form11_1 { z-index:3; }
+#form5_1 { z-index:2; }
+#form42_1 { z-index:3; }
+#form41_1 { z-index:2; }
+#form21_1 { z-index:5; }
+#form22_1 { z-index:4; }
+#form24_1 { z-index:3; }
+#form20_1 { z-index:2; }
+
+</style>
+<!-- End inline CSS -->
+
+<!-- Begin embedded font definitions -->
+<style id="fonts1" type="text/css" >
+
+@font-face {
+	font-family: Arial-ItalicMT__e;
+	src: url("fonts/Arial-ItalicMT__e.woff") format("woff");
+}
+
+@font-face {
+	font-family: ArialMT__7;
+	src: url("fonts/ArialMT__7.woff") format("woff");
+}
+
+@font-face {
+	font-family: Arial-BoldItalicMT__d;
+	src: url("fonts/Arial-BoldItalicMT__d.woff") format("woff");
+}
+
+@font-face {
+	font-family: Arial-BoldMT__i;
+	src: url("fonts/Arial-BoldMT__i.woff") format("woff");
+}
+
+</style>
+<!-- End embedded font definitions -->
+
+<!-- Begin text definitions (Positioned/styled in CSS) -->
+<div id="t1_1" class="t s1_1">PICA</div>
+<div id="t2_1" class="t s1_1">B.</div>
+<div id="t3_1" class="t s2_1">PLACE OF</div>
+<div id="t4_1" class="t s2_1">SERVICE</div>
+<div id="t5_1" class="t s3_1">1a. INSURED’S I.D. NUMBER</div>
+<div id="t6_1" class="t s3_1">(For Program in Item 1)</div>
+<div id="t7_1" class="t s3_1">4. INSURED’S NAME (Last Name, First Name, Middle Initial)</div>
+<div id="t8_1" class="t s1_1">7. INSURED’S ADDRESS (No., Street)</div>
+<div id="t9_1" class="t s1_1">CITY</div>
+<div id="ta_1" class="t s1_1">STATE</div>
+<div id="tb_1" class="t s1_1">ZIP CODE</div>
+<div id="tc_1" class="t s3_1">TELEPHONE (Include Area Code)</div>
+<div id="td_1" class="t s1_1">11. INSURED’S POLICY GROUP OR FECA NUMBER</div>
+<div id="te_1" class="t s3_1">a. INSURED’S DATE OF BIRTH</div>
+<div id="tf_1" class="t s3_1">b. OTHER CLAIM ID (Designated by NUCC)</div>
+<div id="tg_1" class="t s3_1">d. IS THERE ANOTHER HEALTH BENEFIT PLAN?</div>
+<div id="th_1" class="t s1_1">13. INSURED’S OR AUTHORIZED PERSON’S SIGNATURE I authorize</div>
+<div id="ti_1" class="t s1_1">payment of medical benefits to the undersigned physician or supplier for</div>
+<div id="tj_1" class="t s1_1">services described below.</div>
+<div id="tk_1" class="t s1_1">SEX</div>
+<div id="tl_1" class="t s4_1">HEALTH INSURANCE CLAIM FORM</div>
+<div id="tm_1" class="t s3_1">OTHER</div>
+<div id="tn_1" class="t s1_1">1. </div>
+<div id="to_1" class="t s1_1">MEDICARE </div>
+<div id="tp_1" class="t s3_1">MEDICAID</div>
+<div id="tq_1" class="t s3_1">TRICARE</div>
+<div id="tr_1" class="t s3_1">CHAMPVA</div>
+<div id="ts_1" class="t s5_1">READ BACK OF FORM BEFORE COMPLETING &amp; SIGNING THIS FORM.</div>
+<div id="tt_1" class="t s3_1">12. PATIENT’S OR AUTHORIZED PERSON’S SIGNATURE </div>
+<div id="tu_1" class="t s3_1">I authorize the release of any medical or other information necessary </div>
+<div id="tv_1" class="t s6_1">to process this claim. I also request payment of government benefits either to myself or to the party who accepts assignment</div>
+<div id="tw_1" class="t s6_1">below.</div>
+<div id="tx_1" class="t s1_1">SIGNED</div>
+<div id="ty_1" class="t s1_1">DATE</div>
+<div id="tz_1" class="t s3_1">MM </div>
+<div id="t10_1" class="t s3_1">DD </div>
+<div id="t11_1" class="t s3_1">YY</div>
+<div id="t12_1" class="t s3_1">15.OTHER DATE</div>
+<div id="t13_1" class="t s3_1">MM </div>
+<div id="t14_1" class="t s3_1">DD </div>
+<div id="t15_1" class="t s3_1">YY</div>
+<div id="t16_1" class="t s3_1">14. DATE OF CURRENT ILLNESS, INJURY, or PREGNANCY (LMP)</div>
+<div id="t17_1" class="t s3_1">19. ADDITIONAL CLAIM INFORMATION (Designated by NUCC)</div>
+<div id="t18_1" class="t s3_1">21. DIAGNOSIS OR NATURE OF ILLNESS OR INJURY </div>
+<div id="t19_1" class="t s3_1">Relate A-L to service line below (24E)</div>
+<div id="t1a_1" class="t s1_1">From</div>
+<div id="t1b_1" class="t s3_1">MM</div>
+<div id="t1c_1" class="t s3_1">DD</div>
+<div id="t1d_1" class="t s3_1">YY</div>
+<div id="t1e_1" class="t s1_1">To</div>
+<div id="t1f_1" class="t s3_1">MM</div>
+<div id="t1g_1" class="t s3_1">DD</div>
+<div id="t1h_1" class="t s3_1">YY</div>
+<div id="t1i_1" class="t s7_1">1</div>
+<div id="t1j_1" class="t s7_1">2</div>
+<div id="t1k_1" class="t s7_1">3</div>
+<div id="t1l_1" class="t s7_1">4</div>
+<div id="t1m_1" class="t s7_1">5</div>
+<div id="t1n_1" class="t s7_1">6</div>
+<div id="t1o_1" class="t s1_1">25. FEDERAL TAX I.D. NUMBER</div>
+<div id="t1p_1" class="t s1_1">SSN </div>
+<div id="t1q_1" class="t s1_1">EIN</div>
+<div id="t1r_1" class="t s3_1">26. PATIENT’S ACCOUNT NO.</div>
+<div id="t1s_1" class="t s3_1">27. ACCEPT ASSIGNMENT?</div>
+<div id="t1t_1" class="t s8_1">(For govt. claims, see back)</div>
+<div id="t1u_1" class="t s1_1">31. SIGNATURE OF PHYSICIAN OR SUPPLIER</div>
+<div id="t1v_1" class="t s1_1">INCLUDING DEGREES OR CREDENTIALS</div>
+<div id="t1w_1" class="t s1_1">(I certify that the statements on the reverse</div>
+<div id="t1x_1" class="t s1_1">apply to this bill and are made a part thereof.)</div>
+<div id="t1y_1" class="t s1_1">SIGNED</div>
+<div id="t1z_1" class="t s1_1">DATE</div>
+<div id="t20_1" class="t s1_1">SIGNED</div>
+<div id="t21_1" class="t s1_1">MM </div>
+<div id="t22_1" class="t s3_1">DD</div>
+<div id="t23_1" class="t s1_1">YY</div>
+<div id="t24_1" class="t s1_1">FROM</div>
+<div id="t25_1" class="t s1_1">TO</div>
+<div id="t26_1" class="t s1_1">FROM</div>
+<div id="t27_1" class="t s1_1">TO</div>
+<div id="t28_1" class="t s3_1">MM </div>
+<div id="t29_1" class="t s3_1">DD </div>
+<div id="t2a_1" class="t s3_1">YY</div>
+<div id="t2b_1" class="t s3_1">MM </div>
+<div id="t2c_1" class="t s3_1">DD </div>
+<div id="t2d_1" class="t s3_1">YY</div>
+<div id="t2e_1" class="t s3_1">MM </div>
+<div id="t2f_1" class="t s3_1">DD </div>
+<div id="t2g_1" class="t s3_1">YY</div>
+<div id="t2h_1" class="t s3_1">MM </div>
+<div id="t2i_1" class="t s3_1">DD </div>
+<div id="t2j_1" class="t s3_1">YY</div>
+<div id="t2k_1" class="t s1_1">CODE</div>
+<div id="t2l_1" class="t s1_1">ORIGINAL REF. NO.</div>
+<div id="t2m_1" class="t s1_1">$ CHARGES</div>
+<div id="t2n_1" class="t s1_1">28. TOTAL CHARGE</div>
+<div id="t2o_1" class="t s1_1">29. AMOUNT PAID</div>
+<div id="t2p_1" class="t s1_1">30. BALANCE DUE</div>
+<div id="t2q_1" class="t s3_1">$</div>
+<div id="t2r_1" class="t s1_1">$</div>
+<div id="t2s_1" class="t s1_1">PICA</div>
+<div id="t2t_1" class="t s1_1">2. PATIENT’S NAME (Last Name, First Name, Middle Initial)</div>
+<div id="t2u_1" class="t s1_1">5. PATIENT’S ADDRESS (No., Street)</div>
+<div id="t2v_1" class="t s1_1">CITY</div>
+<div id="t2w_1" class="t s1_1">STATE</div>
+<div id="t2x_1" class="t s1_1">ZIP CODE</div>
+<div id="t2y_1" class="t s1_1">TELEPHONE (Include Area Code)</div>
+<div id="t2z_1" class="t s1_1">9. OTHER INSURED’S NAME (Last Name, First Name, Middle Initial)</div>
+<div id="t30_1" class="t s3_1">a. OTHER INSURED’S POLICY OR GROUP NUMBER</div>
+<div id="t31_1" class="t s3_1">b. RESERVED FOR NUCC USE</div>
+<div id="t32_1" class="t s3_1">c. RESERVED FOR NUCC USE</div>
+<div id="t33_1" class="t s3_1">d. INSURANCE PLAN NAME OR PROGRAM NAME</div>
+<div id="t34_1" class="t s1_1">YES </div>
+<div id="t35_1" class="t s3_1">NO</div>
+<div id="t36_1" class="t s9_1">(</div>
+<div id="t37_1" class="t s9_1">)</div>
+<div id="t38_1" class="t s10_1">If yes</div>
+<div id="t39_1" class="t s3_1">, complete items 9, 9a and 9d.</div>
+<div id="t3a_1" class="t s1_1">16. DATES PATIENT UNABLE TO WORK IN CURRENT OCCUPATION</div>
+<div id="t3b_1" class="t s1_1">18. HOSPITALIZATION DATES RELATED TO CURRENT SERVICES</div>
+<div id="t3c_1" class="t s1_1">20. OUTSIDE LAB?</div>
+<div id="t3d_1" class="t s3_1">$ CHARGES</div>
+<div id="t3e_1" class="t s3_1">22. RESUBMISSION</div>
+<div id="t3f_1" class="t s1_1">23. PRIOR AUTHORIZATION NUMBER</div>
+<div id="t3g_1" class="t m1_1 s11_1">CARRIER</div>
+<div id="t3h_1" class="t m1_1 s11_1">PHYSICIAN OR SUPPLIER INFORMATION</div>
+<div id="t3i_1" class="t s12_1">(ID#/DoD#)</div>
+<div id="t3j_1" class="t s1_1">M</div>
+<div id="t3k_1" class="t s3_1">F</div>
+<div id="t3l_1" class="t s1_1">YES </div>
+<div id="t3m_1" class="t s1_1">NO</div>
+<div id="t3n_1" class="t s1_1">YES </div>
+<div id="t3o_1" class="t s1_1">NO</div>
+<div id="t3p_1" class="t s1_1">DATE(S) OF SERVICE</div>
+<div id="t3q_1" class="t s3_1">D.PROCEDURES, SERVICES, OR SUPPLIES</div>
+<div id="t3r_1" class="t s1_1">(Explain Unusual Circumstances)</div>
+<div id="t3s_1" class="t s3_1">CPT/HCPCS</div>
+<div id="t3t_1" class="t s1_1">DIAGNOSIS</div>
+<div id="t3u_1" class="t s1_1">POINTER</div>
+<div id="t3v_1" class="t s1_1">F</div>
+<div id="t3w_1" class="t s1_1">M</div>
+<div id="t3x_1" class="t s1_1">SEX</div>
+<div id="t3y_1" class="t s3_1">MM </div>
+<div id="t3z_1" class="t s3_1">DD </div>
+<div id="t40_1" class="t s3_1">YY</div>
+<div id="t41_1" class="t s3_1">YES</div>
+<div id="t42_1" class="t s3_1">NO</div>
+<div id="t43_1" class="t s3_1">YES</div>
+<div id="t44_1" class="t s3_1">NO</div>
+<div id="t45_1" class="t s3_1">YES</div>
+<div id="t46_1" class="t s3_1">NO</div>
+<div id="t47_1" class="t s1_1">PLACE (State)</div>
+<div id="t48_1" class="t s1_1">GROUP</div>
+<div id="t49_1" class="t s1_1">HEALTH PLAN</div>
+<div id="t4a_1" class="t s1_1">FECA</div>
+<div id="t4b_1" class="t s1_1">BLK LUNG</div>
+<div id="t4c_1" class="t s1_1">3. PATIENT’S BIRTH DATE</div>
+<div id="t4d_1" class="t s1_1">6. PATIENT RELATIONSHIP TO INSURED</div>
+<div id="t4e_1" class="t s3_1">8. RESERVED FOR NUCC USE</div>
+<div id="t4f_1" class="t s1_1">10. IS PATIENT’S CONDITION RELATED TO:</div>
+<div id="t4g_1" class="t s3_1">a. EMPLOYMENT? (Current or Previous)</div>
+<div id="t4h_1" class="t s3_1">b. AUTO ACCIDENT?</div>
+<div id="t4i_1" class="t s1_1">c. OTHER ACCIDENT?</div>
+<div id="t4j_1" class="t s1_1">10d. RESERVED FOR LOCAL USE</div>
+<div id="t4k_1" class="t s1_1">Self </div>
+<div id="t4l_1" class="t s1_1">Spouse </div>
+<div id="t4m_1" class="t s1_1">Child </div>
+<div id="t4n_1" class="t s1_1">Other</div>
+<div id="t4o_1" class="t s12_1">(Medicare #)</div>
+<div id="t4p_1" class="t s12_1">(Medicaid </div>
+<div id="t4q_1" class="t s12_1">#)</div>
+<div id="t4r_1" class="t s13_1">(Member ID#)</div>
+<div id="t4s_1" class="t s12_1">(ID#)</div>
+<div id="t4t_1" class="t s12_1">(ID#) </div>
+<div id="t4u_1" class="t s12_1">(ID#)</div>
+<div id="t4v_1" class="t s9_1">(</div>
+<div id="t4w_1" class="t s14_1">DAYS</div>
+<div id="t4x_1" class="t s14_1">OR</div>
+<div id="t4y_1" class="t s14_1">UNITS</div>
+<div id="t4z_1" class="t s1_1">F.</div>
+<div id="t50_1" class="t s1_1">H.</div>
+<div id="t51_1" class="t s1_1">I.</div>
+<div id="t52_1" class="t s1_1">J.</div>
+<div id="t53_1" class="t s1_1">24. A.</div>
+<div id="t54_1" class="t s1_1">C.</div>
+<div id="t55_1" class="t s1_1">E.</div>
+<div id="t56_1" class="t s1_1">PROVIDER ID. #</div>
+<div id="t57_1" class="t s1_1">17. NAME OF REFERRING PROVIDER OR OTHER SOURCE</div>
+<div id="t58_1" class="t s3_1">17a.</div>
+<div id="t59_1" class="t s1_1">EMG</div>
+<div id="t5a_1" class="t s1_1">RENDERING</div>
+<div id="t5b_1" class="t s1_1">32. SERVICE FACILITY LOCATION INFORMATION</div>
+<div id="t5c_1" class="t s1_1">33. BILLING PROVIDER INFO &amp; PH #</div>
+<div id="t5d_1" class="t s15_1">NUCC Instruction Manual available at: www.nucc.org</div>
+<div id="t5e_1" class="t s1_1">c. INSURANCE PLAN NAME OR PROGRAM NAME</div>
+<div id="t5f_1" class="t s3_1">71b.</div>
+<div id="t5g_1" class="t s1_1">NPI</div>
+<div id="t5h_1" class="t s1_1">a.</div>
+<div id="t5i_1" class="t s1_1">b.</div>
+<div id="t5j_1" class="t s1_1">a.</div>
+<div id="t5k_1" class="t s1_1">b.</div>
+<div id="t5l_1" class="t s16_1">NPI</div>
+<div id="t5m_1" class="t s3_1">APPROVED BY NATIONAL UNIFORM CLAIM COMMITTEE (NUCC) 02/12</div>
+<div id="t5n_1" class="t s1_1">G.</div>
+<div id="t5o_1" class="t s17_1">EPSDT</div>
+<div id="t5p_1" class="t s17_1">Family</div>
+<div id="t5q_1" class="t s17_1">Plan</div>
+<div id="t5r_1" class="t s14_1">ID.</div>
+<div id="t5s_1" class="t s14_1">QUAL.</div>
+<div id="t5t_1" class="t s9_1">(</div>
+<div id="t5u_1" class="t s9_1">)</div>
+<div id="t5v_1" class="t s18_1">APPROVED OMB-0938-1197 FORM CMS-1500 (02-12)</div>
+<div id="t5w_1" class="t s3_1">MODIFIER</div>
+<div id="t5x_1" class="t s19_1">SunCoastConnection.com</div>
+<div id="t5y_1" class="t s9_1">)</div>
+<div id="t5z_1" class="t s16_1">NPI</div>
+<div id="t60_1" class="t s16_1">NPI</div>
+<div id="t61_1" class="t s16_1">NPI</div>
+<div id="t62_1" class="t s16_1">NPI</div>
+<div id="t63_1" class="t s16_1">NPI</div>
+<div id="t64_1" class="t s3_1">$</div>
+<div id="t65_1" class="t m1_1 s11_1">PATIENT AND INSURED INFORMATION</div>
+<div id="t66_1" class="t s3_1">A.</div>
+<div id="t67_1" class="t s3_1">E.</div>
+<div id="t68_1" class="t s3_1">I.</div>
+<div id="t69_1" class="t s3_1">B.</div>
+<div id="t6a_1" class="t s3_1">F.</div>
+<div id="t6b_1" class="t s3_1">J.</div>
+<div id="t6c_1" class="t s20_1">PLEASE PRINT OR TYPE</div>
+<div id="t6d_1" class="t s3_1">C.</div>
+<div id="t6e_1" class="t s3_1">G.</div>
+<div id="t6f_1" class="t s3_1">K.</div>
+<div id="t6g_1" class="t s3_1">D.</div>
+<div id="t6h_1" class="t s3_1">H.</div>
+<div id="t6i_1" class="t s3_1">L.</div>
+<div id="t6j_1" class="t s3_1">QUAL.</div>
+<div id="t6k_1" class="t s3_1">QUAL.</div>
+<div id="t6l_1" class="t s3_1">ICD Ind.</div>
+
+<!-- End text definitions -->
+
+
+<!-- Begin Form Data -->
+<form>
+<input type="text"   maxlength="41"  id="form1_1" value="" data-objref="1185 0 R" title="Carrier Name"  data-field-name="topmostSubform[0].CMS1500Form[0].InsuranceCompanyName[0]"/>
+<input type="text"   maxlength="41"  id="form2_1" value="" data-objref="1182 0 R" title="Carrier - first line of address"  data-field-name="topmostSubform[0].CMS1500Form[0].InsCompanyAddress1[0]"/>
+<input type="text"   maxlength="41"  id="form3_1" value="" data-objref="1183 0 R" title="Carrier - second line of address"  data-field-name="topmostSubform[0].CMS1500Form[0].InsCompanyAddress2[0]"/>
+<input type="text"   maxlength="41"  id="form4_1" value="" data-objref="1184 0 R" title="Carrier - City, State(2 characters) and Zip code"  data-field-name="topmostSubform[0].CMS1500Form[0].InsCompanyCityStateZip[0]"/>
+<input type="radio"    id="form5_1" data-objref="1080 0 R" title="Type of health insurance coverage"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[0]" value="4"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form6_1" data-objref="1064 0 R" title="Type of health insurance coverage"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[0]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form7_1" data-objref="1068 0 R" title="Type of health insurance coverage"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[0]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form8_1" data-objref="1072 0 R" title="Type of health insurance coverage"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[0]" value="2"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form9_1" data-objref="1076 0 R" title="Type of health insurance coverage"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[0]" value="3"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form10_1" data-objref="1084 0 R" title="Type of health insurance coverage"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[0]" value="5"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form11_1" data-objref="1088 0 R" title="Type of health insurance coverage"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[0]" value="6"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="29"  id="form12_1" value="" data-objref="1192 0 R" title="Insured’s ID Number"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientAddress[1]"/>
+<input type="radio"    id="form13_1" data-objref="1092 0 R" title="Patient’s Sex"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[1]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form14_1" data-objref="1096 0 R" title="Patient’s Sex"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[1]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="29"  id="form15_1" value="" data-objref="1194 0 R" title="Insured's name"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[2]"/>
+<input type="text"   maxlength="28"  id="form16_1" value="" data-objref="1063 0 R" title="Patient’s Name"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientName[0]"/>
+<input type="text"   maxlength="2"  id="form17_1" value="" data-objref="1211 0 R" title="Patient’s Birth Date (Month)"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[5]"/>
+<input type="text"   maxlength="2"  id="form18_1" value="" data-objref="1210 0 R" title="Patient’s Birth Date (Date)"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[4]"/>
+<input type="text"   maxlength="4"  id="form19_1" value="" data-objref="1209 0 R" title="Patient’s Birth Date (Year)"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[3]"/>
+<input type="radio"    id="form20_1" data-objref="1104 0 R" title="Patient Relationship to Insured"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[2]" value="1"  imageName="1/form/1104 0 R" images="110100"/>
+<input type="radio"    id="form21_1" data-objref="1112 0 R" title="Patient Relationship to Insured"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[2]" value="3"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form22_1" data-objref="1100 0 R" title="Patient Relationship to Insured"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[2]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="28"  id="form23_1" value="" data-objref="1180 0 R" title="Patient’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientAddress[0]"/>
+<input type="radio"    id="form24_1" data-objref="1108 0 R" title="Patient Relationship to Insured"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[2]" value="2"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="29"  id="form25_1" value="" data-objref="1195 0 R" title="Insured’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[3]"/>
+<input type="text"   maxlength="24"  id="form26_1" value="" data-objref="1200 0 R" title="Insured’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientCity[1]"/>
+<input type="text"   maxlength="3"  id="form27_1" value="" data-objref="1199 0 R" title="Insured’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientStatefieldxmlnshttpwww\.xfa\.orgschemaxfa-template2\.5namePatientCityy0\.0001mmx0inw58\.65mmh4\.6609mmuitextEdithScrollPolicyoffborderpresencehiddentemplateDesignerStyleIDaped0bordermargintextEdituifontsize8pttypefaceMyriadPromargintopInset0\.508mmbottomInset0mmleftInset0mmrightInset0mmparavAlignmiddlecaptionreserve0infontsize8pttypefaceMyriadProparavAlignmiddlecaptionvaluetextmaxChars24valuefield[1]"/>
+<input type="text"   maxlength="3"  id="form28_1" value="" data-objref="1186 0 R" title="Patient’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientStatefieldxmlnshttpwww\.xfa\.orgschemaxfa-template2\.5namePatientCityy0\.0001mmx0inw58\.65mmh4\.6609mmuitextEdithScrollPolicyoffborderpresencehiddentemplateDesignerStyleIDaped0bordermargintextEdituifontsize8pttypefaceMyriadPromargintopInset0\.508mmbottomInset0mmleftInset0mmrightInset0mmparavAlignmiddlecaptionreserve0infontsize8pttypefaceMyriadProparavAlignmiddlecaptionvaluetextmaxChars24valuefield[0]"/>
+<input type="text"   maxlength="24"  id="form29_1" value="" data-objref="1181 0 R" title="Patient’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientCity[0]"/>
+<input type="text"   maxlength="12"  id="form30_1" value="" data-objref="1198 0 R" title="Insured’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientZip[1]"/>
+<input type="text"   maxlength="3"  id="form31_1" value="" data-objref="1197 0 R" title="Insured’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientPhone1[1]"/>
+<input type="text"   maxlength="10"  id="form32_1" value="" data-objref="1196 0 R" title="Insured’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientPhone2[1]"/>
+<input type="text"   maxlength="12"  id="form33_1" value="" data-objref="1187 0 R" title="Patient’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientZip[0]"/>
+<input type="text"   maxlength="3"  id="form34_1" value="" data-objref="1188 0 R" title="Patient’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientPhone1[0]"/>
+<input type="text"   maxlength="10"  id="form35_1" value="" data-objref="1189 0 R" title="Patient’s Address (multiple fields)"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientPhone2[0]"/>
+<input type="text"   maxlength="28"  id="form36_1" value="" data-objref="1190 0 R" title="Other Insured’s Name"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredName[0]"/>
+<input type="text"   maxlength="29"  id="form37_1" value="" data-objref="1201 0 R" title="Insured’s Policy, Group, or FECA Number"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientAddress[2]"/>
+<input type="text"   maxlength="28"  id="form38_1" value="" data-objref="1191 0 R" title="Other Insured’s Policy or Group Number"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[0]"/>
+<input type="radio"    id="form39_1" data-objref="1140 0 R" title="Insured’s Sex"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[6]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form40_1" data-objref="1144 0 R" title="Insured’s Sex"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[6]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form41_1" data-objref="1120 0 R" title="Is Patient’s Condition Related To:"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[3]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form42_1" data-objref="1116 0 R" title="Is Patient’s Condition Related To:"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[3]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="2"  id="form43_1" value="" data-objref="1204 0 R" title="Insured’s Date of Birth"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[2]"/>
+<input type="text"   maxlength="2"  id="form44_1" value="" data-objref="1203 0 R" title="Insured’s Date of Birth"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[1]"/>
+<input type="text"   maxlength="4"  id="form45_1" value="" data-objref="1202 0 R" title="Insured’s Date of Birth"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[0]"/>
+<input type="text"   maxlength="2"  id="form46_1" value="" data-objref="1382 0 R" title="Is Patient’s Condition Related To:"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[160]"/>
+<input type="text"   maxlength="29"  id="form47_1" value="" data-objref="1205 0 R" title="Insured’s Employer’s Name or School Name"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientCity[2]"/>
+<input type="radio"    id="form48_1" data-objref="1124 0 R" title="Is Patient’s Condition Related To:"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[4]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form49_1" data-objref="1128 0 R" title="Is Patient’s Condition Related To:"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[4]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="29"  id="form50_1" value="" data-objref="1206 0 R" title="Insurance Plan Name or Program Name"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientCity[3]"/>
+<input type="radio"    id="form51_1" data-objref="1136 0 R" title="Is Patient’s Condition Related To:"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[5]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form52_1" data-objref="1132 0 R" title="Is Patient’s Condition Related To:"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[5]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form53_1" data-objref="1164 0 R" title="Is there another Health Benefit Plan?"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[9]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form54_1" data-objref="1168 0 R" title="Is there another Health Benefit Plan?"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[9]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="28"  id="form55_1" value="" data-objref="1193 0 R" title="Insurance Plan Name or Program Name"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[1]"/>
+<input type="text"   maxlength="19"  id="form56_1" value="" data-objref="1383 0 R" title="Reserved for Local Use"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientZip[2]"/>
+<input type="text"   maxlength="29"  id="form57_1" value="" data-objref="1207 0 R" title="Date"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientCity[4]"/>
+<input type="text"    id="form58_1" value="" data-objref="1208 0 R" title="Patient’s or Authorized Person’s Signature"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientCity[5]"/>
+<input type="text"    id="form59_1" value="" data-objref="1224 0 R" title="Insured’s or Authorized Person’s Signature"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientCity[6]"/>
+<input type="text"   maxlength="2"  id="form60_1" value="" data-objref="1227 0 R" title="Date of Current Illness, Injury, Pregnancy"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[20]"/>
+<input type="text"   maxlength="2"  id="form61_1" value="" data-objref="1226 0 R" title="Date of Current Illness, Injury, Pregnancy"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[19]"/>
+<input type="text"   maxlength="4"  id="form62_1" value="" data-objref="1225 0 R" title="Date of Current Illness, Injury, Pregnancy"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[18]"/>
+<input type="text"   maxlength="3"  id="form63_1" value="" data-objref="1408 0 R" title="Date of Current Illness, Injury, Pregnancy"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[170]"/>
+<input type="text"   maxlength="3"  id="form64_1" value="" data-objref="1409 0 R" title="Date of Current Illness, Injury, Pregnancy"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[171]"/>
+<input type="text"   maxlength="2"  id="form65_1" value="" data-objref="1394 0 R" title="If Patient Has Had Same or Similar Illness"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[168]"/>
+<input type="text"   maxlength="2"  id="form66_1" value="" data-objref="1393 0 R" title="If Patient Has Had Same or Similar Illness"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[167]"/>
+<input type="text"   maxlength="4"  id="form67_1" value="" data-objref="1392 0 R" title="If Patient Has Had Same or Similar Illness"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[166]"/>
+<input type="text"   maxlength="2"  id="form68_1" value="" data-objref="1214 0 R" title="Dates Patient Unable to Work in Current Occupation"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[8]"/>
+<input type="text"   maxlength="2"  id="form69_1" value="" data-objref="1213 0 R" title="Dates Patient Unable to Work in Current Occupation"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[7]"/>
+<input type="text"   maxlength="4"  id="form70_1" value="" data-objref="1212 0 R" title="Dates Patient Unable to Work in Current Occupation"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[6]"/>
+<input type="text"   maxlength="2"  id="form71_1" value="" data-objref="1222 0 R" title="Dates Patient Unable to Work in Current Occupation"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[16]"/>
+<input type="text"   maxlength="2"  id="form72_1" value="" data-objref="1223 0 R" title="Dates Patient Unable to Work in Current Occupation"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[17]"/>
+<input type="text"   maxlength="4"  id="form73_1" value="" data-objref="1221 0 R" title="Dates Patient Unable to Work in Current Occupation"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[15]"/>
+<input type="text"   maxlength="2"  id="form74_1" value="" data-objref="1229 0 R" title="Other ID#"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[21]"/>
+<input type="text"   maxlength="17"  id="form75_1" value="" data-objref="1230 0 R" title="Other ID#"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[22]"/>
+<input type="text"   maxlength="2"  id="form76_1" value="" data-objref="1215 0 R" title="Hospitalization Dates Related to Current Services"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[9]"/>
+<input type="text"   maxlength="2"  id="form77_1" value="" data-objref="1216 0 R" title="Hospitalization Dates Related to Current Services"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[10]"/>
+<input type="text"   maxlength="4"  id="form78_1" value="" data-objref="1217 0 R" title="Hospitalization Dates Related to Current Services"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[11]"/>
+<input type="text"   maxlength="2"  id="form79_1" value="" data-objref="1219 0 R" title="Hospitalization Dates Related to Current Services"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[13]"/>
+<input type="text"   maxlength="2"  id="form80_1" value="" data-objref="1220 0 R" title="Hospitalization Dates Related to Current Services"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[14]"/>
+<input type="text"   maxlength="4"  id="form81_1" value="" data-objref="1218 0 R" title="Hospitalization Dates Related to Current Services"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[12]"/>
+<input type="text"   maxlength="26"  id="form82_1" value="" data-objref="1228 0 R" title="Name of Referring Provider or Other Source"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[4]"/>
+<input type="text"   maxlength="10"  id="form83_1" value="" data-objref="1231 0 R" title="NPI #"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[23]"/>
+<input type="radio"    id="form84_1" data-objref="1172 0 R" title="Outside Lab? $Charges"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[10]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form85_1" data-objref="1176 0 R" title="Outside Lab? $Charges"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[10]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="83"  id="form86_1" value="" data-objref="1232 0 R" title="Reserved for local use"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[5]"/>
+<input type="text"   maxlength="8"  id="form87_1" value="" data-objref="1233 0 R" title="Outside Lab? $Charges"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientCity[7]"/>
+<input type="text"   maxlength="1"  id="form88_1" value="" data-objref="1412 0 R" title="Date of Current Illness, Injury, Pregnancy"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[172]"/>
+<input type="text"   maxlength="8"  id="form89_1" value="" data-objref="1396 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[0]"/>
+<input type="text"   maxlength="8"  id="form90_1" value="" data-objref="1399 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[3]"/>
+<input type="text"   maxlength="8"  id="form91_1" value="" data-objref="1402 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[6]"/>
+<input type="text"   maxlength="8"  id="form92_1" value="" data-objref="1405 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[9]"/>
+<input type="text"   maxlength="11"  id="form93_1" value="" data-objref="1234 0 R" title="Medicaid Resubmission"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[6]"/>
+<input type="text"   maxlength="18"  id="form94_1" value="" data-objref="1235 0 R" title="Medicaid Resubmission"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[7]"/>
+<input type="text"   maxlength="8"  id="form95_1" value="" data-objref="1400 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[4]"/>
+<input type="text"   maxlength="8"  id="form96_1" value="" data-objref="1403 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[7]"/>
+<input type="text"   maxlength="8"  id="form97_1" value="" data-objref="1397 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[1]"/>
+<input type="text"   maxlength="8"  id="form98_1" value="" data-objref="1406 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[10]"/>
+<input type="text"   maxlength="29"  id="form99_1" value="" data-objref="1236 0 R" title="Prior Authorization Number"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[8]"/>
+<input type="text"   maxlength="8"  id="form100_1" value="" data-objref="1398 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[2]"/>
+<input type="text"   maxlength="8"  id="form101_1" value="" data-objref="1401 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[5]"/>
+<input type="text"   maxlength="8"  id="form102_1" value="" data-objref="1404 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[8]"/>
+<input type="text"   maxlength="8"  id="form103_1" value="" data-objref="1407 0 R" title="Diagnosis or Nature of Illness or Injury (relate items 1, 2, 3, or 4 to 24E by line)"  data-field-name="topmostSubform[0].CMS1500Form[0].Diagnosis1[11]"/>
+<input type="text"   maxlength="2"  id="form104_1" value="" data-objref="1258 0 R" title="OtherInsuredDOBMMMPatientPhone1"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[45]"/>
+<input type="text"   maxlength="11"  id="form105_1" value="" data-objref="1257 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[44]"/>
+<input type="text"   maxlength="128"  id="form106_1" value="" data-objref="1384 0 R" title="Supplemental Information for Anesthesia Services [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[161]"/>
+<input type="text"   maxlength="2"  id="form107_1" value="" data-objref="1256 0 R" title="ID Qualifier [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[43]"/>
+<input type="text"   maxlength="2"  id="form108_1" value="" data-objref="1238 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[25]"/>
+<input type="text"   maxlength="2"  id="form109_1" value="" data-objref="1239 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[26]"/>
+<input type="text"   maxlength="6"  id="form110_1" value="" data-objref="1245 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[32]"/>
+<input type="text"   maxlength="2"  id="form111_1" value="" data-objref="1247 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[34]"/>
+<input type="text"   maxlength="2"  id="form112_1" value="" data-objref="1248 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[35]"/>
+<input type="text"   maxlength="2"  id="form113_1" value="" data-objref="1249 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[36]"/>
+<input type="text"   maxlength="4"  id="form114_1" value="" data-objref="1250 0 R" title="Diagnosis Pointer [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[37]"/>
+<input type="text"   maxlength="10"  id="form115_1" value="" data-objref="1255 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[42]"/>
+<input type="text"   maxlength="2"  id="form116_1" value="" data-objref="1237 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[24]"/>
+<input type="text"   maxlength="2"  id="form117_1" value="" data-objref="1240 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[27]"/>
+<input type="text"   maxlength="2"  id="form118_1" value="" data-objref="1241 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[28]"/>
+<input type="text"   maxlength="2"  id="form119_1" value="" data-objref="1242 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[29]"/>
+<input type="text"   maxlength="2"  id="form120_1" value="" data-objref="1243 0 R" title="Place of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[30]"/>
+<input type="text"   maxlength="2"  id="form121_1" value="" data-objref="1244 0 R" title="Emergency Indicator [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[31]"/>
+<input type="text"   maxlength="2"  id="form122_1" value="" data-objref="1246 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[33]"/>
+<input type="text"   maxlength="6"  id="form123_1" value="" data-objref="1251 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[38]"/>
+<input type="text"   maxlength="2"  id="form124_1" value="" data-objref="1252 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[39]"/>
+<input type="text"   maxlength="3"  id="form125_1" value="" data-objref="1253 0 R" title="Days or Units [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[40]"/>
+<input type="text"   maxlength="1"  id="form126_1" value="" data-objref="1254 0 R" title="EPSDT/Family Plan [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[41]"/>
+<input type="text"   maxlength="128"  id="form127_1" value="" data-objref="1395 0 R" title="Supplemental Information for Anesthesia Services [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[169]"/>
+<input type="text"   maxlength="2"  id="form128_1" value="" data-objref="1259 0 R" title="OtherInsuredDOBMMMPatientPhone1"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[46]"/>
+<input type="text"   maxlength="11"  id="form129_1" value="" data-objref="1261 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[48]"/>
+<input type="text"   maxlength="2"  id="form130_1" value="" data-objref="1260 0 R" title="ID Qualifier [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[47]"/>
+<input type="text"   maxlength="2"  id="form131_1" value="" data-objref="1279 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[66]"/>
+<input type="text"   maxlength="2"  id="form132_1" value="" data-objref="1278 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[65]"/>
+<input type="text"   maxlength="6"  id="form133_1" value="" data-objref="1272 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[59]"/>
+<input type="text"   maxlength="2"  id="form134_1" value="" data-objref="1270 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[57]"/>
+<input type="text"   maxlength="2"  id="form135_1" value="" data-objref="1269 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[56]"/>
+<input type="text"   maxlength="2"  id="form136_1" value="" data-objref="1268 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[55]"/>
+<input type="text"   maxlength="4"  id="form137_1" value="" data-objref="1267 0 R" title="Diagnosis Pointer [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[54]"/>
+<input type="text"   maxlength="1"  id="form138_1" value="" data-objref="1263 0 R" title="EPSDT/Family Plan [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[50]"/>
+<input type="text"   maxlength="10"  id="form139_1" value="" data-objref="1262 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[49]"/>
+<input type="text"   maxlength="2"  id="form140_1" value="" data-objref="1280 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[67]"/>
+<input type="text"   maxlength="2"  id="form141_1" value="" data-objref="1277 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[64]"/>
+<input type="text"   maxlength="2"  id="form142_1" value="" data-objref="1276 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[63]"/>
+<input type="text"   maxlength="2"  id="form143_1" value="" data-objref="1275 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[62]"/>
+<input type="text"   maxlength="2"  id="form144_1" value="" data-objref="1274 0 R" title="Place of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[61]"/>
+<input type="text"   maxlength="2"  id="form145_1" value="" data-objref="1273 0 R" title="Emergency Indicator [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[60]"/>
+<input type="text"   maxlength="2"  id="form146_1" value="" data-objref="1271 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[58]"/>
+<input type="text"   maxlength="6"  id="form147_1" value="" data-objref="1266 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[53]"/>
+<input type="text"   maxlength="2"  id="form148_1" value="" data-objref="1265 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[52]"/>
+<input type="text"   maxlength="3"  id="form149_1" value="" data-objref="1264 0 R" title="Days or Units [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[51]"/>
+<input type="text"   maxlength="11"  id="form150_1" value="" data-objref="1283 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[70]"/>
+<input type="text"   maxlength="128"  id="form151_1" value="" data-objref="1385 0 R" title="Supplemental Information for Anesthesia Services [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[162]"/>
+<input type="text"   maxlength="2"  id="form152_1" value="" data-objref="1281 0 R" title="OtherInsuredDOBMMMPatientPhone1"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[68]"/>
+<input type="text"   maxlength="2"  id="form153_1" value="" data-objref="1282 0 R" title="ID Qualifier [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[69]"/>
+<input type="text"   maxlength="2"  id="form154_1" value="" data-objref="1302 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[89]"/>
+<input type="text"   maxlength="2"  id="form155_1" value="" data-objref="1301 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[88]"/>
+<input type="text"   maxlength="2"  id="form156_1" value="" data-objref="1300 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[87]"/>
+<input type="text"   maxlength="2"  id="form157_1" value="" data-objref="1299 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[86]"/>
+<input type="text"   maxlength="2"  id="form158_1" value="" data-objref="1298 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[85]"/>
+<input type="text"   maxlength="2"  id="form159_1" value="" data-objref="1297 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[84]"/>
+<input type="text"   maxlength="2"  id="form160_1" value="" data-objref="1296 0 R" title="Place of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[83]"/>
+<input type="text"   maxlength="6"  id="form161_1" value="" data-objref="1294 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[81]"/>
+<input type="text"   maxlength="2"  id="form162_1" value="" data-objref="1292 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[79]"/>
+<input type="text"   maxlength="2"  id="form163_1" value="" data-objref="1291 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[78]"/>
+<input type="text"   maxlength="2"  id="form164_1" value="" data-objref="1290 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[77]"/>
+<input type="text"   maxlength="4"  id="form165_1" value="" data-objref="1289 0 R" title="Diagnosis Pointer [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[76]"/>
+<input type="text"   maxlength="3"  id="form166_1" value="" data-objref="1286 0 R" title="Days or Units [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[73]"/>
+<input type="text"   maxlength="1"  id="form167_1" value="" data-objref="1285 0 R" title="EPSDT/Family Plan [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[72]"/>
+<input type="text"   maxlength="2"  id="form168_1" value="" data-objref="1295 0 R" title="Emergency Indicator [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[82]"/>
+<input type="text"   maxlength="2"  id="form169_1" value="" data-objref="1293 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[80]"/>
+<input type="text"   maxlength="6"  id="form170_1" value="" data-objref="1288 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[75]"/>
+<input type="text"   maxlength="2"  id="form171_1" value="" data-objref="1287 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[74]"/>
+<input type="text"   maxlength="10"  id="form172_1" value="" data-objref="1284 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[71]"/>
+<input type="text"   maxlength="2"  id="form173_1" value="" data-objref="1303 0 R" title="OtherInsuredDOBMMMPatientPhone1"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[90]"/>
+<input type="text"   maxlength="11"  id="form174_1" value="" data-objref="1305 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[92]"/>
+<input type="text"   maxlength="2"  id="form175_1" value="" data-objref="1304 0 R" title="ID Qualifier [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[91]"/>
+<input type="text"   maxlength="128"  id="form176_1" value="" data-objref="1386 0 R" title="Supplemental Information for Anesthesia Services [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[163]"/>
+<input type="text"   maxlength="2"  id="form177_1" value="" data-objref="1324 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[111]"/>
+<input type="text"   maxlength="2"  id="form178_1" value="" data-objref="1323 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[110]"/>
+<input type="text"   maxlength="2"  id="form179_1" value="" data-objref="1322 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[109]"/>
+<input type="text"   maxlength="2"  id="form180_1" value="" data-objref="1321 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[108]"/>
+<input type="text"   maxlength="2"  id="form181_1" value="" data-objref="1320 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[107]"/>
+<input type="text"   maxlength="2"  id="form182_1" value="" data-objref="1319 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[106]"/>
+<input type="text"   maxlength="2"  id="form183_1" value="" data-objref="1318 0 R" title="Place of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[105]"/>
+<input type="text"   maxlength="6"  id="form184_1" value="" data-objref="1316 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[103]"/>
+<input type="text"   maxlength="2"  id="form185_1" value="" data-objref="1314 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[101]"/>
+<input type="text"   maxlength="2"  id="form186_1" value="" data-objref="1313 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[100]"/>
+<input type="text"   maxlength="2"  id="form187_1" value="" data-objref="1312 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[99]"/>
+<input type="text"   maxlength="4"  id="form188_1" value="" data-objref="1311 0 R" title="Diagnosis Pointer [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[98]"/>
+<input type="text"   maxlength="3"  id="form189_1" value="" data-objref="1308 0 R" title="Days or Units [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[95]"/>
+<input type="text"   maxlength="1"  id="form190_1" value="" data-objref="1307 0 R" title="EPSDT/Family Plan [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[94]"/>
+<input type="text"   maxlength="2"  id="form191_1" value="" data-objref="1317 0 R" title="Emergency Indicator [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[104]"/>
+<input type="text"   maxlength="2"  id="form192_1" value="" data-objref="1315 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[102]"/>
+<input type="text"   maxlength="6"  id="form193_1" value="" data-objref="1310 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[97]"/>
+<input type="text"   maxlength="2"  id="form194_1" value="" data-objref="1309 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[96]"/>
+<input type="text"   maxlength="10"  id="form195_1" value="" data-objref="1306 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[93]"/>
+<input type="text"   maxlength="128"  id="form196_1" value="" data-objref="1387 0 R" title="Supplemental Information for Anesthesia Services [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[164]"/>
+<input type="text"   maxlength="2"  id="form197_1" value="" data-objref="1325 0 R" title="OtherInsuredDOBMMMPatientPhone1"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[112]"/>
+<input type="text"   maxlength="2"  id="form198_1" value="" data-objref="1326 0 R" title="ID Qualifier [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[113]"/>
+<input type="text"   maxlength="11"  id="form199_1" value="" data-objref="1327 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[114]"/>
+<input type="text"   maxlength="2"  id="form200_1" value="" data-objref="1346 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[133]"/>
+<input type="text"   maxlength="2"  id="form201_1" value="" data-objref="1345 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[132]"/>
+<input type="text"   maxlength="2"  id="form202_1" value="" data-objref="1344 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[131]"/>
+<input type="text"   maxlength="2"  id="form203_1" value="" data-objref="1343 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[130]"/>
+<input type="text"   maxlength="2"  id="form204_1" value="" data-objref="1342 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[129]"/>
+<input type="text"   maxlength="2"  id="form205_1" value="" data-objref="1341 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[128]"/>
+<input type="text"   maxlength="2"  id="form206_1" value="" data-objref="1340 0 R" title="Place of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[127]"/>
+<input type="text"   maxlength="2"  id="form207_1" value="" data-objref="1339 0 R" title="Emergency Indicator [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[126]"/>
+<input type="text"   maxlength="6"  id="form208_1" value="" data-objref="1338 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[125]"/>
+<input type="text"   maxlength="2"  id="form209_1" value="" data-objref="1337 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[124]"/>
+<input type="text"   maxlength="2"  id="form210_1" value="" data-objref="1336 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[123]"/>
+<input type="text"   maxlength="2"  id="form211_1" value="" data-objref="1335 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[122]"/>
+<input type="text"   maxlength="2"  id="form212_1" value="" data-objref="1334 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[121]"/>
+<input type="text"   maxlength="4"  id="form213_1" value="" data-objref="1333 0 R" title="Diagnosis Pointer [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[120]"/>
+<input type="text"   maxlength="6"  id="form214_1" value="" data-objref="1332 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[119]"/>
+<input type="text"   maxlength="2"  id="form215_1" value="" data-objref="1331 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[118]"/>
+<input type="text"   maxlength="3"  id="form216_1" value="" data-objref="1330 0 R" title="Days or Units [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[117]"/>
+<input type="text"   maxlength="1"  id="form217_1" value="" data-objref="1329 0 R" title="EPSDT/Family Plan [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[116]"/>
+<input type="text"   maxlength="10"  id="form218_1" value="" data-objref="1328 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[115]"/>
+<input type="text"   maxlength="128"  id="form219_1" value="" data-objref="1388 0 R" title="Supplemental Information for Anesthesia Services [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[165]"/>
+<input type="text"   maxlength="2"  id="form220_1" value="" data-objref="1347 0 R" title="OtherInsuredDOBMMMPatientPhone1"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[134]"/>
+<input type="text"   maxlength="2"  id="form221_1" value="" data-objref="1348 0 R" title="ID Qualifier [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[135]"/>
+<input type="text"   maxlength="11"  id="form222_1" value="" data-objref="1349 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[136]"/>
+<input type="text"   maxlength="2"  id="form223_1" value="" data-objref="1367 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[154]"/>
+<input type="text"   maxlength="2"  id="form224_1" value="" data-objref="1366 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[153]"/>
+<input type="text"   maxlength="6"  id="form225_1" value="" data-objref="1360 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[147]"/>
+<input type="text"   maxlength="2"  id="form226_1" value="" data-objref="1358 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[145]"/>
+<input type="text"   maxlength="2"  id="form227_1" value="" data-objref="1357 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[144]"/>
+<input type="text"   maxlength="2"  id="form228_1" value="" data-objref="1356 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[143]"/>
+<input type="text"   maxlength="4"  id="form229_1" value="" data-objref="1355 0 R" title="Diagnosis Pointer [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[142]"/>
+<input type="text"   maxlength="1"  id="form230_1" value="" data-objref="1351 0 R" title="EPSDT/Family Plan [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[138]"/>
+<input type="text"   maxlength="10"  id="form231_1" value="" data-objref="1350 0 R" title="Rendering Provider ID # [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[137]"/>
+<input type="text"   maxlength="2"  id="form232_1" value="" data-objref="1368 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[155]"/>
+<input type="text"   maxlength="2"  id="form233_1" value="" data-objref="1365 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[152]"/>
+<input type="text"   maxlength="2"  id="form234_1" value="" data-objref="1364 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[151]"/>
+<input type="text"   maxlength="2"  id="form235_1" value="" data-objref="1363 0 R" title="Date(s) of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[150]"/>
+<input type="text"   maxlength="2"  id="form236_1" value="" data-objref="1362 0 R" title="Place of Service [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[149]"/>
+<input type="text"   maxlength="2"  id="form237_1" value="" data-objref="1361 0 R" title="Emergency Indicator [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[148]"/>
+<input type="text"   maxlength="2"  id="form238_1" value="" data-objref="1359 0 R" title="Procedures, Services, or Supplies [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[146]"/>
+<input type="text"   maxlength="6"  id="form239_1" value="" data-objref="1354 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[141]"/>
+<input type="text"   maxlength="2"  id="form240_1" value="" data-objref="1353 0 R" title="$ Charges [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[140]"/>
+<input type="text"   maxlength="3"  id="form241_1" value="" data-objref="1352 0 R" title="Days or Units [lines 1–6]"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[139]"/>
+<input type="radio"    id="form242_1" data-objref="1148 0 R" title="Accept Assignment?"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[7]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form243_1" data-objref="1152 0 R" title="Accept Assignment?"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[7]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="15"  id="form244_1" value="" data-objref="1369 0 R" title="Federal Tax ID Number"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[9]"/>
+<input type="radio"    id="form245_1" data-objref="1156 0 R" title="Federal Tax ID Number Type"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[8]" value="0"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="radio"    id="form246_1" data-objref="1160 0 R" title="Federal Tax ID Number Type"  data-field-name="topmostSubform[0].CMS1500Form[0].RadioButtonList[8]" value="1"  imageName="1/form/1080 0 R" images="110100"/>
+<input type="text"   maxlength="2"  id="form247_1" value="" data-objref="1375 0 R" title="Balance Due"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[15]"/>
+<input type="text"   maxlength="14"  id="form248_1" value="" data-objref="1370 0 R" title="Patient’s Account No."  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[10]"/>
+<input type="text"   maxlength="7"  id="form249_1" value="" data-objref="1371 0 R" title="Total Charge"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[11]"/>
+<input type="text"   maxlength="2"  id="form250_1" value="" data-objref="1372 0 R" title="Total Charge"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[12]"/>
+<input type="text"   maxlength="6"  id="form251_1" value="" data-objref="1373 0 R" title="Amount Paid"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[13]"/>
+<input type="text"   maxlength="2"  id="form252_1" value="" data-objref="1374 0 R" title="Amount Paid"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[14]"/>
+<input type="text"   maxlength="6"  id="form253_1" value="" data-objref="1376 0 R" title="Balance Due"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[16]"/>
+<input type="text"   maxlength="3"  id="form254_1" value="" data-objref="1390 0 R" title="Billing Provider Info &amp; Ph #"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientPhone1[2]"/>
+<input type="text"   maxlength="10"  id="form255_1" value="" data-objref="1389 0 R" title="Billing Provider Info &amp; Ph #"  data-field-name="topmostSubform[0].CMS1500Form[0].PatientPhone2[2]"/>
+<textarea  maxlength="78"  id="form256_1" data-objref="1377 0 R" title="Service Facility Location Information"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[17]"></textarea>
+<textarea  maxlength="78"  id="form257_1" data-objref="1391 0 R" title="Billing Provider Info &amp; Ph #"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[18]"></textarea>
+<input type="text"   maxlength="14"  id="form258_1" value="" data-objref="1380 0 R" title="Service Facility Other ID#"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[158]"/>
+<input type="text"   maxlength="10"  id="form259_1" value="" data-objref="1379 0 R" title="Billing Provider NPI#"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[157]"/>
+<input type="text"   maxlength="14"  id="form260_1" value="" data-objref="1381 0 R" title="Billing Provider Other ID#"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[159]"/>
+<input type="text"   maxlength="10"  id="form261_1" value="" data-objref="1378 0 R" title="Service Facility NPI#"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredDOBMMMPatientPhone1[156]"/>
+<input type="text"   maxlength="15"  id="form262_1" value="" data-objref="1410 0 R" title="Federal Tax ID Number"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[19]"/>
+<input type="text"   maxlength="10"  id="form263_1" value="" data-objref="1411 0 R" title="Federal Tax ID Number"  data-field-name="topmostSubform[0].CMS1500Form[0].OtherInsuredPolicyNumber[20]"/>
+
+</form>
+<!-- End Form Data -->
+
+<!-- call to setup Radio and Checkboxes as images, without this call images dont work for them -->
+<script type="text/javascript">
+replaceChecks();
+</script>
+<!-- Begin page background -->
+<div id="pg1Overlay" style="width:100%; height:100%; position:absolute; z-index:1; background-color:rgba(0,0,0,0); -webkit-user-select: none;"></div>
+<div id="pg1"><object width="990" height="1320" data="1/1.svg" type="image/svg+xml" id="pdf1" style="width:990px; height:1320px; background-color:white; -moz-transform:scale(1); z-index: 0;"></object></div>
+<!-- End page background -->
+
+<!--[if lt IE 9]><script type="text/javascript">
+(function(divCount, pageNum) {
+for (var i = 1; i < divCount; i++) {
+    var div = document.getElementById('t' + i.toString(36) + '_' + pageNum);
+    if (div !== null) {
+        div.style.top = (div.offsetTop * 4) + 'px';
+        div.style.left = (div.offsetLeft * 4) + 'px';
+        div.style.zoom = '25%';
+    }
+}
+})(238, 1);
+</script><![endif]-->
+
+</div>
+<?php
+    include("pdfdump.html");
+?>
+</body>
+</html>
