@@ -1030,13 +1030,6 @@ function generate_form_field($frow, $currvalue) {
   // Race and Ethnicity. After added support for backup lists, this is now the same as datatype 1; so have migrated it there.
   //$data_type == 33
 
-  else if($data_type == 34){
-    $arr = explode("|*|*|*|",$currvalue);
-    echo "<a href='../../../library/custom_template/custom_template.php?type=form_{$field_id}&contextName=".htmlspecialchars($list_id_esc,ENT_QUOTES)."' class='iframe_medium' style='text-decoration:none;color:black;'>";
-    echo "<div id='form_{$field_id}_div' class='text-area'>".htmlspecialchars($arr[0],ENT_QUOTES)."</div>";
-    echo "<div style='display:none'><textarea name='form_{$field_id}' id='form_{$field_id}' style='display:none' $lbfonchange $disabled>" . $currvalue . "</textarea></div>";
-    echo "</a>";
-  }
 
   //facilities drop-down list
   else if ($data_type == 35) {   
@@ -1583,12 +1576,6 @@ function generate_print_field($frow, $currvalue) {
     echo nl2br($frow['description']);
   }
   
-  else if($data_type == 34){
-    echo "<a href='../../../library/custom_template/custom_template.php?type=form_{$field_id}&contextName=".htmlspecialchars($list_id_esc,ENT_QUOTES)."' class='iframe_medium' style='text-decoration:none;color:black;'>";
-    echo "<div id='form_{$field_id}_div' class='text-area'></div>";
-    echo "<div style='display:none'><textarea name='form_{$field_id}' id='form_{$field_id}' stye='display:none'></textarea></div>";
-    echo "</a>";
-  }
 
   //facilities drop-down list
   else if ($data_type == 35) {
@@ -1959,12 +1946,6 @@ function generate_display_field($frow, $currvalue) {
     $s .= nl2br($frow['description']);
   }
   
-  else if($data_type == 34){
-    $arr = explode("|*|*|*|",$currvalue);
-    for($i=0;$i<sizeof($arr);$i++){
-      $s.=$arr[$i];
-    }
-  }
 
   // facility
   else if ($data_type == 35) {

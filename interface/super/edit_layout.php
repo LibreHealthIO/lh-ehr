@@ -72,7 +72,6 @@ $datatypes = array(
   "31" => xl("Static Text"),
   "32" => xl("Smoking Status"),
   "33" => xl("Race and Ethnicity"),
-  "34" => xl("NationNotes"),
   "35" => xl("Facilities"),
   "36" => xl("Multiple Select List")
 );
@@ -145,7 +144,6 @@ if ($_POST['formaction'] == "save" && $layout_id) {
         $iter = $fld[$lino];
         $field_id = formTrim($iter['id']);
         $data_type = formTrim($iter['data_type']);
-        $listval = $data_type == 34 ? formTrim($iter['contextName']) : formTrim($iter['list_id']);
 
         // Skip conditions for the line are stored as a serialized array.
         $condarr = array();
@@ -174,7 +172,7 @@ if ($_POST['formaction'] == "save" && $layout_id) {
                 "titlecols = '"     . formTrim($iter['titlecols']) . "', " .
                 "datacols = '"      . formTrim($iter['datacols'])  . "', " .
                 "data_type= '$data_type', "                                .
-                "list_id= '"        . $listval   . "', " .
+                "list_id= '"        . formTrim($iter['list_id'])   . "', " .
                 "list_backup_id= '"        . formTrim($iter['list_backup_id'])   . "', " .
                 "edit_options = '"  . formTrim($iter['edit_options']) . "', " .
                 "default_value = '" . formTrim($iter['default'])   . "', " .
@@ -211,7 +209,7 @@ else if ($_POST['formaction'] == "addfield" && $layout_id) {
       ",'" . formTrim($_POST['newdefault']     ) . "'" .
       ",'" . formTrim($_POST['newdesc']        ) . "'" .
       ",'"    . formTrim($_POST['newmaxSize'])    . "'"                                 .
-      ",'" . $listval . "'" .
+      ",'" . formTrim($_POST['newlistid']      ) . "'" .
       ",'" . formTrim($_POST['newbackuplistid']) . "'" .
       " )");
     addOrDeleteColumn($layout_id, formTrim($_POST['newid']), TRUE);
@@ -267,7 +265,7 @@ else if ($_POST['formaction'] == "addgroup" && $layout_id) {
 
     $data_type = formTrim($_POST['gnewdatatype']);
     $max_length = $data_type == 3 ? 3 : 255;
-    $listval = $data_type == 34 ? formTrim($_POST['gcontextName']) : formTrim($_POST['gnewlistid']);
+
     // add a new group to the layout, with the defined field
     sqlStatement("INSERT INTO layout_options (" .
       " form_id, source, field_id, title, group_name, seq, uor, fld_length, fld_rows" .
@@ -290,7 +288,7 @@ else if ($_POST['formaction'] == "addgroup" && $layout_id) {
       ",'" . formTrim($_POST['gnewdefault']     ) . "'" .
       ",'" . formTrim($_POST['gnewdesc']        ) . "'" .
       ",'"    . formTrim($_POST['gnewmaxSize'])    . "'"                                  .
-      ",'" . $listval       . "'" .
+      ",'" . formTrim($_POST['gnewlistid']      ) . "'" .
       ",'" . formTrim($_POST['gnewbackuplistid']        ) . "'" .
       " )");
     addOrDeleteColumn($layout_id, formTrim($_POST['gnewid']), TRUE);
@@ -431,12 +429,7 @@ function writeFieldLine($linedata) {
     echo "<input type='text' name='fld[$fld_line_no][id]' value='" .
          htmlspecialchars($linedata['field_id'], ENT_QUOTES) . "' size='15' maxlength='63'
          class='optin noselect' style='width:100%' />";
-         // class='optin noselect' onclick='FieldIDClicked(this)' />";
-    /*
-    echo "<input type='hidden' name='fld[$fld_line_no][id]' value='" .
-         htmlspecialchars($linedata['field_id'], ENT_QUOTES) . "' />";
-    echo htmlspecialchars($linedata['field_id'], ENT_QUOTES);
-    */
+
     echo "</td>\n";
   
     echo "  <td align='center' class='optcell' style='width:12%'>";
@@ -460,7 +453,7 @@ function writeFieldLine($linedata) {
     echo "</td>\n";
   
     echo "  <td align='center' class='optcell' style='width:8%'>";
-    echo "<select name='fld[$fld_line_no][data_type]' id='fld[$fld_line_no][data_type]' onchange=NationNotesContext('".$fld_line_no."',this.value)>";
+    echo "<select name='fld[$fld_line_no][data_type]' id='fld[$fld_line_no][data_type]'>";
     echo "<option value=''></option>";
     GLOBAL $datatypes;
     foreach ($datatypes as $key=>$value) {
@@ -513,29 +506,15 @@ function writeFieldLine($linedata) {
       $linedata['data_type'] == 22 || $linedata['data_type'] == 23 ||
       $linedata['data_type'] == 25 || $linedata['data_type'] == 26 ||
       $linedata['data_type'] == 27 || $linedata['data_type'] == 32 ||
-      $linedata['data_type'] == 33 || $linedata['data_type'] == 34 ||
+      $linedata['data_type'] == 33 || 
       $linedata['data_type'] == 36)
     {
-      $type = "";
-      $disp = "style='display:none'";
-      if($linedata['data_type'] == 34){
-        $type = "style='display:none'";
-        $disp = "";
-      }
-      echo "<input type='text' name='fld[$fld_line_no][list_id]'  id='fld[$fld_line_no][list_id]' value='" .
-        htmlspecialchars($linedata['list_id'], ENT_QUOTES) . "'".$type.
-        " size='6' maxlength='30' class='optin listid' style='width:100%;cursor:pointer'".
+     echo "<input type='text' name='fld[$fld_line_no][list_id]' value='" .
+        htmlspecialchars($linedata['list_id'], ENT_QUOTES) . "'".
+        "size='6' maxlength='30' class='optin listid' style='cursor: pointer'".
         "title='". xl('Choose list') . "' />";
     
-      echo "<select name='fld[$fld_line_no][contextName]' id='fld[$fld_line_no][contextName]' ".$disp.">";
-        $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
-          $sel = '';
-          if ($linedata['list_id'] == $row['cl_list_item_long'])
-          $sel = 'selected';
-          echo "<option value='".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."' ".$sel.">".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."</option>";
-        }
-      echo "</select>";
+
     }
     else {
       // all other data_types
@@ -1122,14 +1101,6 @@ foreach ($datatypes as $key=>$value) {
     <input type="textbox" name="gnewlengthHeight" id="gnewlengthHeight" value="" size="1" maxlength="3" title="<?php echo xla('Height'); ?>"></td>
 <td><input type="textbox" name="gnewmaxSize" id="gnewmaxSize" value="" size="1" maxlength="3" title="<?php echo xla('Maximum Size (entering 0 will allow any size)'); ?>"></td>
 <td><input type="textbox" name="gnewlistid" id="gnewlistid" value="" size="8" maxlength="31" class="listid">
-    <select name='gcontextName' id='gcontextName' style='display:none'>
-        <?php
-        $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
-          echo "<option value='".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."'>".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."</option>";
-        }
-        ?>
-    </select>
 </td>
 <td><input type="textbox" name="gnewbackuplistid" id="gnewbackuplistid" value="" size="8" maxlength="31" class="listid"></td>
 <td><input type="textbox" name="gnewtitlecols" id="gnewtitlecols" value="" size="3" maxlength="3"> </td>
@@ -1205,14 +1176,6 @@ foreach ($datatypes as $key=>$value) {
        <input type="textbox" name="newlengthHeight" id="newlengthHeight" value="" size="1" maxlength="3" title="<?php echo xla('Height'); ?>"></td>
    <td><input type="textbox" name="newmaxSize" id="newmaxSize" value="" size="1" maxlength="3" title="<?php echo xla('Maximum Size (entering 0 will allow any size)'); ?>"></td>
    <td><input type="textbox" name="newlistid" id="newlistid" value="" size="8" maxlength="31" class="listid">
-       <select name='contextName' id='contextName' style='display:none'>
-        <?php
-        $res = sqlStatement("SELECT * FROM customlists WHERE cl_list_type=2 AND cl_deleted=0");
-        while($row = sqlFetchArray($res)){
-          echo "<option value='".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."'>".htmlspecialchars($row['cl_list_item_long'],ENT_QUOTES)."</option>";
-        }
-        ?>
-       </select>
    </td>
    <td><input type="textbox" name="newbackuplistid" id="newbackuplistid" value="" size="8" maxlength="31" class="listid"></td>
    <td><input type="textbox" name="newtitlecols" id="newtitlecols" value="" size="3" maxlength="3"> </td>
@@ -1294,8 +1257,6 @@ $(document).ready(function(){
     $(".savenewfield").click(function() { SaveNewField(this); });
     $(".cancelnewfield").click(function() { CancelNewField(this); });
     $("#newtitle").blur(function() { if ($("#newid").val() == "") $("#newid").val($("#newtitle").val()); });
-    $("#newdatatype").change(function() { ChangeList(this.value);});
-    $("#gnewdatatype").change(function() { ChangeListg(this.value);}); 
     $(".listid").click(function() { ShowLists(this); });
 
     // special class that skips the element
@@ -1555,27 +1516,7 @@ $(document).ready(function(){
         window.open("./show_groups_popup.php?layout_id=<?php echo $layout_id;?>", "groups", "width=300,height=300,scrollbars=yes");
     };
     
-    // Show context DD for NationNotes
-    var ChangeList = function(btnObj){
-      if(btnObj==34){
-        $('#newlistid').hide();
-        $('#contextName').show();
-      }
-      else{
-        $('#newlistid').show();
-        $('#contextName').hide();
-      }
-    };
-    var ChangeListg = function(btnObj){
-      if(btnObj==34){
-        $('#gnewlistid').hide();
-        $('#gcontextName').show();
-      }
-      else{
-        $('#gnewlistid').show();
-        $('#gcontextName').hide();
-      }
-    };
+
 
     // Initialize the list item selectors in skip conditions.
     var f = document.forms[0];
@@ -1587,18 +1528,6 @@ $(document).ready(function(){
 
 });
 
-function NationNotesContext(lineitem,val){
-  if(val==34){
-    document.getElementById("fld["+lineitem+"][contextName]").style.display='';
-    document.getElementById("fld["+lineitem+"][list_id]").style.display='none';
-    document.getElementById("fld["+lineitem+"][list_id]").value='';
-  }
-  else{
-    document.getElementById("fld["+lineitem+"][list_id]").style.display='';
-    document.getElementById("fld["+lineitem+"][contextName]").style.display='none';
-    document.getElementById("fld["+lineitem+"][list_id]").value='';
-  }
-}
 
 function SetList(listid) {
   $(selectedfield).val(listid);

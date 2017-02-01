@@ -229,44 +229,15 @@ div.section {
 </style>
 
 <style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
-
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
 <script type="text/javascript" src="../../../library/textformat.js"></script>
 <script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
+<script type="text/javascript" src="../../../library/js/jquery.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
 
 <script language="JavaScript">
-$(document).ready(function() {
-  // fancy box
-  if (window.enable_modals) {
-    enable_modals();
-  }
-  if(window.tabbify){
-    tabbify();
-  }
-  if (window.checkSkipConditions) {
-    checkSkipConditions();
-  }
-  // special size for
-  $(".iframe_medium").fancybox({
-    'overlayOpacity' : 0.0,
-    'showCloseButton' : true,
-    'frameHeight' : 580,
-    'frameWidth' : 900
-  });
-  $(function() {
-    // add drag and drop functionality to fancybox
-    $("#fancy_outer").easydrag();
-  });
-});
 
 var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
@@ -472,7 +443,6 @@ function validate(f) {
         echo " /><b>" . text(xl_layout_label($group_name)) . "</b></span>\n";
         echo "<div id='div_" . attr($group_seq) . "' class='section' style='display:" . attr($display_style) . ";'>\n";
       }
-      // echo " <table border='0' cellpadding='0' width='100%'>\n";
       echo " <table border='0' cellspacing='0' cellpadding='0' width='100%'>\n";
       $display_style = 'none';
 

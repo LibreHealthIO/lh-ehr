@@ -106,9 +106,6 @@
   // Section "placeholder" (Placeholder):
   //   filler     Placeholder (Maintains empty ACLs)
   //
-  // Section "nationnotes" (Nation Notes):
-  //   nn_configure     Nation Notes
-  //
   // Section "patientportal" (Patient Portal):
   //   portal     Patient Portal
   // Section "menus" (Menus):
