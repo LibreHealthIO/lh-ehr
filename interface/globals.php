@@ -364,7 +364,7 @@ if ($GLOBALS['concurrent_layout']) {
 } else {
  $top_bg_line = ' bgcolor="#94d6e7" ';
  $GLOBALS['style']['BGCOLOR2'] = "#94d6e7";
- $bottom_bg_line = ' background="'.$rootdir.'/pic/aquabg.gif" ';
+ $bottom_bg_line = ' background="'.$rootdir.'/themes/theme_assets/aquabg.gif" ';
  $title_bg_line = ' bgcolor="#aaffff" ';
  $nav_bg_line = ' bgcolor="#94d6e7" ';
 }
