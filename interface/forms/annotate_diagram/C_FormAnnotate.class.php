@@ -41,7 +41,7 @@ class C_FormAnnotate extends C_AbstractAnnotate {
 
     /* initializer, just calls parent's initializer. */
     public function C_FormAnnotate() {
-    	parent::C_AbstractAnnotate();
+        parent::C_AbstractAnnotate();
     }
 
     /**
@@ -62,66 +62,66 @@ class C_FormAnnotate extends C_AbstractAnnotate {
      * @brief return the path to the backing image relative to the webroot.
      */
 
-	function getImage() {
-		//really now just a default image
-		return ($GLOBALS['webroot'] . "/interface/forms/" . C_FormAnnotate::$FORM_CODE ."/diagram/default.png");
-	}
+    function getImage() {
+        //really now just a default image
+        return ($GLOBALS['webroot'] . "/interface/forms/" . C_FormAnnotate::$FORM_CODE ."/diagram/default.png");
+    }
 
     /**
      * @brief return a n array containing the options for the dropdown box.
      */
     function getOptionList() {
         return array(  "0" => '',
-					   "1" => "None",
-                       "2" => "Severity 1",
-                       "3" => "Severity 2",
-                       "4" => "Severity 3",
-                       "5" => "Severity 4",
-                       "6" => "Moderate",
-                       "7" => "Severity 6",
-                       "8" => "Severity 7",
-                       "9" => "Severity 8",
-                       "10" => "Severity 9",
-                       "11" => "Worst Possible",
-					   "apq2" => "Sharp",
-					   "apq3" => "Dull",
-					   "apq4" => "Stabbing",
-					   "apq5" => "Burning",
-					   "apq6" => "Constant",
-					   "apq7" => "Intermettent",
-					   "bpf2" => "Laceration",
-					   "bpf3" => "Hemotoma",
-					   "bpf4" => "Tenderness",
-					   "bpf5" => "Ecchymosis",
-					   "bpf6" => "Deformity",
-					   "bpf7" => "Swelling",
-					   "bpf8" => "Contusion",
-					   "bpf9" => "Abrasion",
-					   "bpf10" => "Muscle spasm",
-					   "e1" => "Corneal Abrasion",
-					   "e2" => "Corneal Ulceration",
-                       "e3" => "Foreign Body",
-                       "e4" => "Punctate Lesions",
-					   "e5" => "Fluorescein Uptate",
-                       "e6" => "Subconjuntival Hemporrhage",
-					   "f1" => "Redness",
-					   "f2" => "Normal Overall",
-                       "f3" => "Callous",
-                       "f4" => "Pre Ulcer",
-                       "f5" => "Ulcer",
-                       "f6" => "Maceration",
-                       "f7" => "Dryness",
-                       "f8" => "Tinea",
-                       "f9" => "Can feel the 5.07 filament",
-                       "f10" => "Can't feel the 5.07 filament",
-                       "f11" => "Odor");
+                       "1" => xl("None"),
+                       "2" => xl("Severity 1"),
+                       "3" => xl("Severity 2"),
+                       "4" => xl("Severity 3"),
+                       "5" => xl("Severity 4"),
+                       "6" => xl("Moderate"),
+                       "7" => xl("Severity 6"),
+                       "8" => xl("Severity 7"),
+                       "9" => xl("Severity 8"),
+                       "10" => xl("Severity 9"),
+                       "11" => xl("Worst Possible"),
+                       "apq2" => xl("Sharp"),
+                       "apq3" => xl("Dull"),
+                       "apq4" => xl("Stabbing"),
+                       "apq5" => xl("Burning"),
+                       "apq6" => xl("Constant"),
+                       "apq7" => xl("Intermettent"),
+                       "bpf2" => xl("Laceration"),
+                       "bpf3" => xl("Hemotoma"),
+                       "bpf4" => xl("Tenderness"),
+                       "bpf5" => xl("Ecchymosis"),
+                       "bpf6" => xl("Deformity"),
+                       "bpf7" => xl("Swelling"),
+                       "bpf8" => xl("Contusion"),
+                       "bpf9" => xl("Abrasion"),
+                       "bpf10" => xl("Muscle spasm"),
+                       "e1" => xl("Corneal Abrasion"),
+                       "e2" => xl("Corneal Ulceration"),
+                       "e3" => xl("Foreign Body"),
+                       "e4" => xl("Punctate Lesions"),
+                       "e5" => xl("Fluorescein Uptate"),
+                       "e6" => xl("Subconjuntival Hemporrhage"),
+                       "f1" => xl("Redness"),
+                       "f2" => xl("Normal Overall"),
+                       "f3" => xl("Callous"),
+                       "f4" => xl("Pre Ulcer"),
+                       "f5" => xl("Ulcer"),
+                       "f6" => xl("Maceration"),
+                       "f7" => xl("Dryness"),
+                       "f8" => xl("Tinea"),
+                       "f9" => xl("Can feel the 5.07 filament"),
+                       "f10" => xl("Can't feel the 5.07 filament"),
+                       "f11" => xl("Odor"));
     }
 
     /**
      * @brief return a label for the dropdown boxes on the form, as a string.
      */
     function getOptionsLabel() {
-        return "Observations List";
+        return xl("Observations List");
     }
 }
 ?>
