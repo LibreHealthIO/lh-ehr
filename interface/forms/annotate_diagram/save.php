@@ -1,12 +1,22 @@
 <?php
-/*
+ /**
   *  Copyright Medical Information Integration,LLC info@mi-squared.com
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
+ * 
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * Rewrite and modifications by sjpadgett@gmail.com Padgetts Consulting 2016.
+ *
+ * @package LibreEHR
+ * @author  Medical Information Integration,LLC <info@mi-squared.com>
+ * @author  Terry Hill <teryhill@librehealth.io>
+ * @link    http://librehealth.io
   */
 
+$sanitize_all_escapes=true;
+$fake_register_globals=false;
+  
 /* include globals.php, required. */
 require_once('../../globals.php');
 

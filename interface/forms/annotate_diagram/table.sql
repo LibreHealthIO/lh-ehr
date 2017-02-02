@@ -6,7 +6,7 @@ CREATE TABLE `form_annotate_diagram` (
   `groupname` varchar(255) DEFAULT NULL,
   `authorized` tinyint(4) DEFAULT NULL,
   `activity` tinyint(4) DEFAULT '1',
-  `data` text DEFAULT '' NULL,
+  `data` text ,
   `imagedata` varchar(255) DEFAULT 'NEW',
   `dyntitle` varchar(255) DEFAULT 'Annotated Diagram',
   PRIMARY KEY (`id`)

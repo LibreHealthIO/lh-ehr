@@ -1,1 +1,1 @@
-Annotate Diagram
+Annotatable Diagrams
