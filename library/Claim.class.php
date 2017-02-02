@@ -7,7 +7,7 @@
  *  The changes to this file as of November 16 2016 to include the exclusion of information from claims
  *  are covered under the terms of the Mozilla Public License, v. 2.0
  *
- * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * @copyright Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
  *
  * Copyright (C) 2007-2009 Rod Roark <rod@sunsetsystems.com>
  *
@@ -326,7 +326,7 @@ class Claim {
       $coinsurance = 0;
       $inslabel = ($this->payerSequence($ins) == 'S') ? 'Ins2' : 'Ins1';
       $insnumber = substr($inslabel, 3);
-	  
+      
       // Compute this procedure's patient responsibility amount as of this
       // prior payer, which is the original charge minus all insurance
       // payments and "hard" adjustments up to this payer.
@@ -652,13 +652,13 @@ class Claim {
   }  
   
   function federalIdType() {
-	if ($this->billing_facility['tax_id_type'])
-	{
-	return $this->billing_facility['tax_id_type'];
-	}
-	else{
-	return null;
-	}
+    if ($this->billing_facility['tax_id_type'])
+    {
+    return $this->billing_facility['tax_id_type'];
+    }
+    else{
+    return null;
+    }
   }
 
   # The billing facility and the patient must both accept for this to return true.
@@ -1109,6 +1109,10 @@ class Claim {
 
   function medicaidOriginalReference() {
     return x12clean(trim($this->billing_options['medicaid_original_reference']));
+  }
+  
+  function providerQualifierCode() {
+    return x12clean(trim($this->billing_options['provider_qualifier_code']));
   }
 
   function frequencyTypeCode() {
