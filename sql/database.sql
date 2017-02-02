@@ -1292,6 +1292,25 @@ CREATE TABLE `form_encounter` (
 
 
 -- 
+-- Table structure for table `form_annotate_diagram`
+-- 
+
+DROP TABLE IF EXISTS `form_annotate_diagram`;
+CREATE TABLE `form_annotate_diagram` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `date` datetime DEFAULT NULL,
+  `pid` bigint(20) DEFAULT NULL,
+  `user` varchar(255) DEFAULT NULL,
+  `groupname` varchar(255) DEFAULT NULL,
+  `authorized` tinyint(4) DEFAULT NULL,
+  `activity` tinyint(4) DEFAULT '1',
+  `data` text ,
+  `imagedata` varchar(255) DEFAULT 'NEW',
+  `dyntitle` varchar(255) DEFAULT 'Annotated Diagram',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB
+
+-- 
 -- Table structure for table `form_misc_billing_options`
 -- 
 
@@ -4890,6 +4909,22 @@ CREATE TABLE `patient_data` (
   `care_team` int(11) DEFAULT NULL,
   `county` varchar(40) NOT NULL default '',
   `industry` TEXT,
+  `imm_reg_status` TEXT,
+  `imm_reg_stat_effdate` TEXT,
+  `publicity_code` TEXT,
+  `publ_code_eff_date` TEXT,
+  `protect_indicator` TEXT,
+  `prot_indi_effdate` TEXT,
+  `guardianrelationship` TEXT,
+  `guardiansex` TEXT,
+  `guardianaddress` TEXT,
+  `guardiancity` TEXT,
+  `guardianstate` TEXT,
+  `guardianpostalcode` TEXT,
+  `guardiancountry` TEXT,
+  `guardianphone` TEXT,
+  `guardianworkphone` TEXT,
+  `guardianemail` TEXT,
   UNIQUE KEY `pid` (`pid`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -5144,6 +5179,7 @@ INSERT INTO `registry` VALUES ('Review Of Systems', 1, 'ros', 13, 1, 1, '2005-03
 INSERT INTO `registry` VALUES ('Fee Sheet', 1, 'fee_sheet', 14, 1, 1, '2007-07-28 00:00:00', 0, 'Administrative', '');
 INSERT INTO `registry` VALUES ('Misc Billing Options HCFA', 1, 'misc_billing_options', 15, 1, 1, '2007-07-28 00:00:00', 0, 'Administrative', '');
 INSERT INTO `registry` VALUES ('Procedure Order', 1, 'procedure_order', 16, 1, 1, '2010-02-25 00:00:00', 0, 'Administrative', '');
+INSERT INTO `registry` VALUES ('Annotatable Diagrams', 1, 'annotate_diagram', 17, 1, 1, '2017-02-02 00:00:00', 0, 'Clinical', '');
 INSERT INTO `registry` VALUES ('Clinical Instructions', 1, 'clinical_instructions', 20, 1, 1, '2015-09-09 00:00:00', 0, 'Clinical', '');
 
 
