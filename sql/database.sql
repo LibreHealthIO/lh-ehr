@@ -273,7 +273,7 @@ DROP TABLE IF EXISTS `claims`;
 CREATE TABLE `claims` (
   `patient_id` int(11) NOT NULL,
   `encounter_id` int(11) NOT NULL,
-  `version` tinyint(2) unsigned NOT NULL,
+  `version` int(10) unsigned NOT NULL COMMENT 'Claim version, incremented in code',
   `payer_id` int(11) NOT NULL default '0',
   `status` tinyint(2) NOT NULL default '0',
   `payer_type` tinyint(4) NOT NULL default '0',
@@ -480,7 +480,7 @@ INSERT INTO `clinical_rules` ( `id`, `pid`, `active_alert_flag`, `passive_alert_
 -- Clinical Quality Measure (CQM) rules
 --
 -- NQF 0013 Hypertension: Blood Pressure Measurement
-INSERT INTO `clinical_rules` ( `id`, `pid`, `active_alert_flag`, `passive_alert_flag`, `cqm_flag`, `cqm_2011_flag`, `cqm_nqf_code`, `cqm_pqri_code`, `amc_flag`, `amc_code`, `patient_reminder_flag`, `cqm_2014_flag` ) VALUES ('rule_htn_bp_measure_cqm', 0, 0, 0, 1, 1, '0018', '', 0, '', 0, 1);
+INSERT INTO `clinical_rules` ( `id`, `pid`, `active_alert_flag`, `passive_alert_flag`, `cqm_flag`, `cqm_2011_flag`, `cqm_nqf_code`, `cqm_pqri_code`, `amc_flag`, `amc_code`, `patient_reminder_flag`, `cqm_2014_flag` ) VALUES ('rule_htn_bp_measure_cqm', 0, 0, 0, 1, 1, '0013', '', 0, '', 0, 1);
 -- NQF 0028a Tobacco Use Assessment
 INSERT INTO `clinical_rules` ( `id`, `pid`, `active_alert_flag`, `passive_alert_flag`, `cqm_flag`, `cqm_2011_flag`, `cqm_nqf_code`, `cqm_pqri_code`, `amc_flag`, `amc_code`, `patient_reminder_flag` ) VALUES ('rule_tob_use_assess_cqm', 0, 0, 0, 1, 1, '0028a', '', 0, '', 0);
 -- NQF 0028b Tobacco Cessation Intervention
@@ -3327,6 +3327,8 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes, to
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','$'       ,'$ Coding done'       ,60,0,'C0FF96|0');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','%'       ,'% Canceled < 24h'    ,65,0,'BFBFBF|0');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','^'       ,'^ Pending'    ,70,0,'ADBBFF|0');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','='       ,'= Rescheduled'    ,75,0,'BFBFBF|0');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','&'       ,'& Rescheduled < 24h'    ,80,0,'BFBFBF|0');
 
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists'    ,'warehouse','Warehouses',21,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('warehouse','onsite'   ,'On Site'   , 5,0);
@@ -4343,6 +4345,7 @@ INSERT INTO list_options (list_id, option_id, title, notes, seq) VALUES ('Immuni
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists','provider_qualifier_code','Provider Qualifier Code', 1,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dk','DK',10,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dn','DN',20,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('provider_qualifier_code','dq','DQ',30,0);
 
 -- 
 -- Table structure for table `lists`
