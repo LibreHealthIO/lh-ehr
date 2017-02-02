@@ -1,4 +1,7 @@
 <?php
+if ($GLOBALS['mod_nn'] == true){
+		require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_library_options.inc");}
+else{
 // Copyright (C) 2007-2014 Rod Roark <rod@sunsetsystems.com>
 // Copyright © 2010 by Andrew Moore <amoore@cpan.org>
 // Copyright © 2010 by "Boyd Stephen Smith Jr." <bss@iguanasuicide.net>
@@ -3104,5 +3107,5 @@ function lbf_current_value($frow, $formid, $encounter) {
   }
   return $currvalue;
 }
-
+}
 ?>

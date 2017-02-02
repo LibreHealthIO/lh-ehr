@@ -1,4 +1,7 @@
 <?php
+if ($GLOBALS['mod_nn'] == true){
+		require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_lbf_new.inc");}
+else{
 /**
  * Copyright (C) 2009-2014 Rod Roark <rod@sunsetsystems.com>
  *
@@ -603,3 +606,4 @@ if (function_exists($formname . '_javascript_onload')) {
 
 </body>
 </html>
+<?php}?>

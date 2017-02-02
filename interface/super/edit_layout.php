@@ -1,4 +1,7 @@
 <?php
+if ($GLOBALS['mod_nn'] == true){
+		require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_super_edit_layout.inc");}
+else{
 /**
  * Copyright (C) 2014-2015 Rod Roark <rod@sunsetsystems.com>
  *
@@ -1645,3 +1648,4 @@ function IsN(num) { return !/\D/.test(num); }
 </script>
 
 </html>
+<?php}?>
