@@ -54,6 +54,7 @@
                         <!-- ko  foreach:encounterArray -->
                             <tr >
                                 <td data-bind="click: chooseEncounterEvent">
+                                <span data-bind="text:id"></span>
                                     <span data-bind="text:date"></span>
                                     <span data-bind="text:category"></span>
                                 </td>
