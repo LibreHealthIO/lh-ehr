@@ -401,11 +401,8 @@ if (!empty($special_timeout)) {
 
 //Version tag
 require_once(dirname(__FILE__) . "/../version.php");
-$patch_appending = "";
-if ( ($v_realpatch != '0') && (!(empty($v_realpatch))) ) {
-$patch_appending = " (".$v_realpatch.")";
-}
-$libreehr_version = "$v_major.$v_minor.$v_patch".$v_tag.$patch_appending;
+
+$libreehr_version = "$v_major.$v_minor.$v_patch".$v_tag;
 
 $srcdir = $GLOBALS['srcdir'];
 $login_screen = $GLOBALS['login_screen'];
