@@ -1308,7 +1308,7 @@ CREATE TABLE `form_annotate_diagram` (
   `imagedata` varchar(255) DEFAULT 'NEW',
   `dyntitle` varchar(255) DEFAULT 'Annotated Diagram',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 -- 
 -- Table structure for table `form_misc_billing_options`
