@@ -235,6 +235,7 @@ function clearPatient()
     tabCloseByName('enc');
     tabCloseByName('rev');
     tabCloseByName('pop');
+    tabCloseByName('pat');
     navigateTab(tab_defaults[0],'lst');
     navigateTab(tab_defaults[1],'pat');
     activateTabByName('lst',true);    
