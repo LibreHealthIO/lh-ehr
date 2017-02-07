@@ -1,10 +1,33 @@
 <?php
- // Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
- //
- // This program is free software; you can redistribute it and/or
- // modify it under the terms of the GNU General Public License
- // as published by the Free Software Foundation; either version 2
- // of the License, or (at your option) any later version.
+/*
+ *  addrbook_edit.php for the editing of the address book information
+ *
+ * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
  //SANITIZE ALL ESCAPES
  $sanitize_all_escapes=true;
@@ -144,7 +167,7 @@ td { font-size:10pt; }
     "upin = "         . invalue('form_upin')         . ", " .
     "npi = "          . invalue('form_npi')          . ", " .
     "taxonomy = "     . invalue('form_taxonomy')     . ", " .
-	"cpoe = "         . invalue('form_cpoe')         . ", " .    
+    "cpoe = "         . invalue('form_cpoe')         . ", " .    
     "email = "        . invalue('form_email')        . ", " .
     "email_direct = " . invalue('form_email_direct') . ", " .
     "url = "          . invalue('form_url')          . ", " .
@@ -195,7 +218,7 @@ td { font-size:10pt; }
     "1, "                                . // active
     invalue('form_npi')           . ", " .
     invalue('form_taxonomy')      . ", " .
-	invalue('form_cpoe')          . ", " .
+    invalue('form_cpoe')          . ", " .
     invalue('form_specialty')     . ", " .
     invalue('form_organization')  . ", " .
     invalue('form_valedictory')   . ", " .
@@ -312,9 +335,9 @@ td { font-size:10pt; }
    <input type='text' size='40' name='form_organization' maxlength='250'
     value='<?php echo attr($row['organization']); ?>'
     style='width:100%' class='inputtext' />
-	<span id='cpoe_span' style="display:none;">
-		<input type='checkbox' title="<?php echo xla('CPOE'); ?>" name='form_cpoe' id='form_cpoe' value='1' <?php if($row['cpoe']=='1') echo "CHECKED"; ?>/>
-		<label for='form_cpoe'><b><?php echo xlt('CPOE'); ?></b></label>
+    <span id='cpoe_span' style="display:none;">
+        <input type='checkbox' title="<?php echo xla('CPOE'); ?>" name='form_cpoe' id='form_cpoe' value='1' <?php if($row['cpoe']=='1') echo "CHECKED"; ?>/>
+        <label for='form_cpoe'><b><?php echo xlt('CPOE'); ?></b></label>
    </span>
   </td>
  </tr>

@@ -3,6 +3,7 @@
  * The address book entry editor.
  * Available from Administration->Addr Book in the concurrent layout.
  *
+ * Copyright (C) 2011-2017 Tony McCormick <tony@mi-squared.com>
  * Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -15,7 +16,7 @@
  *
  * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
- * @link    http://open-emr.org
+ * @link    http://librehealth.io
  */
 
  //SANITIZE ALL ESCAPES

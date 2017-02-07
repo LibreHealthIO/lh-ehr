@@ -1,8 +1,39 @@
 <?php
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ *  user_admin.php for the editing of the user information
+ *
+ *  This program is used to edit the users
+ *
+ * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ *
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
+ 
+$fake_register_globals=false;
+$sanitize_all_escapes=true;
+
+ 
 require_once("../globals.php");
 require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
@@ -63,15 +94,15 @@ if ($_GET["mode"] == "update") {
           //END (CHEMED)
   }
   if ($GLOBALS['restrict_user_facility'] && $_GET["schedule_facility"]) {
-	  sqlStatement("delete from users_facility
-	    where tablename='users'
-	    and table_id={$_GET["id"]}
-	    and facility_id not in (" . implode(",", $_GET['schedule_facility']) . ")");
-	  foreach($_GET["schedule_facility"] as $tqvar) {
+      sqlStatement("delete from users_facility
+        where tablename='users'
+        and table_id={$_GET["id"]}
+        and facility_id not in (" . implode(",", $_GET['schedule_facility']) . ")");
+      foreach($_GET["schedule_facility"] as $tqvar) {
       sqlStatement("replace into users_facility set
-		    facility_id = '$tqvar',
-		    tablename='users',
-		    table_id = {$_GET["id"]}");
+            facility_id = '$tqvar',
+            tablename='users',
+            table_id = {$_GET["id"]}");
     }
   }
   if ($_GET["fname"]) {
@@ -84,10 +115,10 @@ if ($_GET["mode"] == "update") {
           sqlStatement("update users set cal_ui = '$tqvar' where id = {$_GET["id"]}");
 
           // added by bgm to set this session variable if the current user has edited
-	  //   their own settings
-	  if ($_SESSION['authId'] == $_GET["id"]) {
-	    $_SESSION['cal_ui'] = $tqvar;
-	  }
+      //   their own settings
+      if ($_SESSION['authId'] == $_GET["id"]) {
+        $_SESSION['cal_ui'] = $tqvar;
+      }
   }
   //END (CHEMED) Calendar UI preference
 
@@ -133,14 +164,14 @@ if ($_GET["mode"] == "update") {
   // On a successful update, return to the users list.
   include("usergroup_admin.php");
   exit(0);
-  */  	echo '
+  */    echo '
 <script type="text/javascript">
 <!--
 parent.$.fn.fancybox.close();
 //-->
 </script>
 
-	';
+    ';
 }
 
 $res = sqlStatement("select * from users where id=?",array($_GET["id"]));
@@ -150,14 +181,14 @@ $iter = $result[0];
 
 ///
 if (isset($_POST["mode"])) {
-  	echo '
+    echo '
 <script type="text/javascript">
 <!--
 parent.$.fn.fancybox.close();
 //-->
 </script>
 
-	';
+    ';
 }
 ///
 
@@ -179,54 +210,54 @@ function checkChange()
   alert("<?php echo addslashes(xl('If you change e-RX Role for ePrescription, it may affect the ePrescription workflow. If you face any difficulty, contact your ePrescription vendor.'));?>");
 }
 function submitform() {
-	top.restoreSession();
-	var flag=0;
-	function trimAll(sString)
-	{
-		while (sString.substring(0,1) == ' ')
-		{
-			sString = sString.substring(1, sString.length);
-		}
-		while (sString.substring(sString.length-1, sString.length) == ' ')
-		{
-			sString = sString.substring(0,sString.length-1);
-		}
-		return sString;
-	}
-	if(trimAll(document.getElementById('fname').value) == ""){
-		alert("<?php xl('Required field missing: Please enter the First name','e');?>");
-		document.getElementById('fname').style.backgroundColor="red";
-		document.getElementById('fname').focus();
-		return false;
-	}
-	if(trimAll(document.getElementById('lname').value) == ""){
-		alert("<?php xl('Required field missing: Please enter the Last name','e');?>");
-		document.getElementById('lname').style.backgroundColor="red";
-		document.getElementById('lname').focus();
-		return false;
-	}
-	if(document.forms[0].clearPass.value!="")
-	{
-		//Checking for the strong password if the 'secure password' feature is enabled
-		if(document.forms[0].secure_pwd.value == 1)
-		{
+    top.restoreSession();
+    var flag=0;
+    function trimAll(sString)
+    {
+        while (sString.substring(0,1) == ' ')
+        {
+            sString = sString.substring(1, sString.length);
+        }
+        while (sString.substring(sString.length-1, sString.length) == ' ')
+        {
+            sString = sString.substring(0,sString.length-1);
+        }
+        return sString;
+    }
+    if(trimAll(document.getElementById('fname').value) == ""){
+        alert("<?php xl('Required field missing: Please enter the First name','e');?>");
+        document.getElementById('fname').style.backgroundColor="red";
+        document.getElementById('fname').focus();
+        return false;
+    }
+    if(trimAll(document.getElementById('lname').value) == ""){
+        alert("<?php xl('Required field missing: Please enter the Last name','e');?>");
+        document.getElementById('lname').style.backgroundColor="red";
+        document.getElementById('lname').focus();
+        return false;
+    }
+    if(document.forms[0].clearPass.value!="")
+    {
+        //Checking for the strong password if the 'secure password' feature is enabled
+        if(document.forms[0].secure_pwd.value == 1)
+        {
                     var pwdresult = passwordvalidate(document.forms[0].clearPass.value);
                     if(pwdresult == 0) {
                             flag=1;
                             alert("<?php echo xl('The pass phrase must be at least eight characters, and should'); echo '\n'; echo xl('contain at least three of the four following items:'); echo '\n'; echo xl('A number'); echo '\n'; echo xl('A lowercase letter'); echo '\n'; echo xl('An uppercase letter'); echo '\n'; echo xl('A special character');echo '('; echo xl('not a letter or number'); echo ').'; echo '\n'; echo xl('For example:'); echo ' healthCare@09'; ?>");
                             return false;
                     }
-		}
+        }
 
-	}//If pwd null ends here
-	//Request to reset the user password if the user was deactived once the password expired.
-	if((document.forms[0].pwd_expires.value != 0) && (document.forms[0].clearPass.value == "")) {
-		if((document.forms[0].user_type.value != "Emergency Login") && (document.forms[0].pre_active.value == 0) && (document.forms[0].active.checked == 1) && (document.forms[0].grace_time.value != "") && (document.forms[0].current_date.value) > (document.forms[0].grace_time.value))
-		{
-			flag=1;
-			document.getElementById('error_message').innerHTML="<?php xl('Please reset the pass phrase.','e') ?>";
-		}
-	}
+    }//If pwd null ends here
+    //Request to reset the user password if the user was deactived once the password expired.
+    if((document.forms[0].pwd_expires.value != 0) && (document.forms[0].clearPass.value == "")) {
+        if((document.forms[0].user_type.value != "Emergency Login") && (document.forms[0].pre_active.value == 0) && (document.forms[0].active.checked == 1) && (document.forms[0].grace_time.value != "") && (document.forms[0].current_date.value) > (document.forms[0].grace_time.value))
+        {
+            flag=1;
+            document.getElementById('error_message').innerHTML="<?php xl('Please reset the pass phrase.','e') ?>";
+        }
+    }
 
   if (document.forms[0].access_group_id) {
     var sel = getSelected(document.forms[0].access_group_id.options);
@@ -237,49 +268,49 @@ function submitform() {
     }
   }
 
-	  <?php if($GLOBALS['erx_enable']){ ?>
-	alertMsg='';
-	f=document.forms[0];
-	for(i=0;i<f.length;i++){
-	  if(f[i].type=='text' && f[i].value)
-	  {
-	    if(f[i].name == 'fname' || f[i].name == 'mname' || f[i].name == 'lname')
-	    {
-	      alertMsg += checkLength(f[i].name,f[i].value,35);
-	      alertMsg += checkUsername(f[i].name,f[i].value);
-	    }
-	    else if(f[i].name == 'taxid')
-	    {
-	      alertMsg += checkLength(f[i].name,f[i].value,10);
-	      alertMsg += checkFederalEin(f[i].name,f[i].value);
-	    }
-	    else if(f[i].name == 'state_license_number')
-	    {
-	      alertMsg += checkLength(f[i].name,f[i].value,10);
-	      alertMsg += checkStateLicenseNumber(f[i].name,f[i].value);
-	    }
-	    else if(f[i].name == 'npi')
-	    {
-	      alertMsg += checkLength(f[i].name,f[i].value,10);
-	      alertMsg += checkTaxNpiDea(f[i].name,f[i].value);
-	    }
-	    else if(f[i].name == 'drugid')
-	    {
-	      alertMsg += checkLength(f[i].name,f[i].value,30);
-	      alertMsg += checkAlphaNumeric(f[i].name,f[i].value);
-	    }
-	  }
-	}
-	if(alertMsg)
-	{
-	  alert(alertMsg);
-	  return false;
-	}
-	<?php } ?>
-	if(flag == 0){
+      <?php if($GLOBALS['erx_enable']){ ?>
+    alertMsg='';
+    f=document.forms[0];
+    for(i=0;i<f.length;i++){
+      if(f[i].type=='text' && f[i].value)
+      {
+        if(f[i].name == 'fname' || f[i].name == 'mname' || f[i].name == 'lname')
+        {
+          alertMsg += checkLength(f[i].name,f[i].value,35);
+          alertMsg += checkUsername(f[i].name,f[i].value);
+        }
+        else if(f[i].name == 'taxid')
+        {
+          alertMsg += checkLength(f[i].name,f[i].value,10);
+          alertMsg += checkFederalEin(f[i].name,f[i].value);
+        }
+        else if(f[i].name == 'state_license_number')
+        {
+          alertMsg += checkLength(f[i].name,f[i].value,10);
+          alertMsg += checkStateLicenseNumber(f[i].name,f[i].value);
+        }
+        else if(f[i].name == 'npi')
+        {
+          alertMsg += checkLength(f[i].name,f[i].value,10);
+          alertMsg += checkTaxNpiDea(f[i].name,f[i].value);
+        }
+        else if(f[i].name == 'drugid')
+        {
+          alertMsg += checkLength(f[i].name,f[i].value,30);
+          alertMsg += checkAlphaNumeric(f[i].name,f[i].value);
+        }
+      }
+    }
+    if(alertMsg)
+    {
+      alert(alertMsg);
+      return false;
+    }
+    <?php } ?>
+    if(flag == 0){
                     document.forms[0].submit();
                     parent.$.fn.fancybox.close(); 
-	}
+    }
 }
 //Getting the list of selected item in ACL
 function getSelected(opt) {
@@ -312,10 +343,10 @@ function authorized_clicked() {
 </head>
 <body class="body_top">
 <table><tr><td>
-<span class="title"><?php xl('Edit User','e'); ?></span>&nbsp;
+<span class="title"><?php echo xlt('Edit User'); ?></span>&nbsp;
 </td><td>
-    <a class="css_button" name='form_save' id='form_save' href='#' onclick='return submitform()'> <span><?php xl('Save','e');?></span> </a>
-	<a class="css_button" id='cancel' href='#'><span><?php xl('Cancel','e');?></span></a>
+    <a class="css_button" name='form_save' id='form_save' href='#' onclick='return submitform()'> <span><?php echo xlt('Save');?></span> </a>
+    <a class="css_button" id='cancel' href='#'><span><?php echo xlt('Cancel');?></span></a>
 </td></tr>
 </table>
 <br>
@@ -352,42 +383,42 @@ $bg_count=count($acl_name);
 
 <TABLE border=0 cellpadding=0 cellspacing=0>
 <TR>
-    <TD style="width:180px;"><span class=text><?php xl('Username','e'); ?>: </span></TD>
+    <TD style="width:180px;"><span class=text><?php echo xlt('Username'); ?>: </span></TD>
     <TD style="width:270px;"><input type=entry name=username style="width:150px;" value="<?php echo $iter["username"]; ?>" disabled></td>
-    <TD style="width:200px;"><span class=text><?php xl('Your Pass Phrase','e'); ?>: </span></TD>
+    <TD style="width:200px;"><span class=text><?php echo xlt('Your Pass Phrase'); ?>: </span></TD>
     <TD class='text' style="width:280px;"><input type='password' name=adminPass style="width:150px;"  value="" autocomplete='off'><font class="mandatory">*</font></TD>
 </TR>
 <TR>
     <TD style="width:180px;"><span class=text></span></TD>
     <TD style="width:270px;"></td>
-    <TD style="width:200px;"><span class=text><?php xl('User\'s New Pass Phrase','e'); ?>: </span></TD>
+    <TD style="width:200px;"><span class=text><?php echo xlt('User\'s New Pass Phrase'); ?>: </span></TD>
     <TD class='text' style="width:280px;">    <input type=text name=clearPass style="width:150px;"  value=""><font class="mandatory">*</font></td>
 </TR>
 
 
 <TR height="30" style="valign:middle;">
 <td><span class="text">&nbsp;</span></td><td>&nbsp;</td>
-<td colspan="2"><span class=text><?php xl('Provider','e'); ?>:
+<td colspan="2"><span class=text><?php echo xlt('Provider'); ?>:
  <input type="checkbox" name="authorized" onclick="authorized_clicked()"<?php
   if ($iter["authorized"]) echo " checked"; ?> />
- &nbsp;&nbsp;<span class='text'><?php xl('Calendar','e'); ?>:
+ &nbsp;&nbsp;<span class='text'><?php echo xlt('Calendar'); ?>:
  <input type="checkbox" name="calendar"<?php
   if ($iter["calendar"]) echo " checked";
   if (!$iter["authorized"]) echo " disabled"; ?> />
- &nbsp;&nbsp;<span class='text'><?php xl('Active','e'); ?>:
+ &nbsp;&nbsp;<span class='text'><?php echo xlt('Active'); ?>:
  <input type="checkbox" name="active"<?php if ($iter["active"]) echo " checked"; ?> />
 </TD>
 </TR>
 
 <TR>
-<TD><span class=text><?php xl('First Name','e'); ?>: </span></TD>
+<TD><span class=text><?php echo xlt('First Name'); ?>: </span></TD>
 <TD><input type=entry name=fname id=fname style="width:150px;" value="<?php echo $iter["fname"]; ?>"><span class="mandatory">&nbsp;*</span></td>
-<td><span class=text><?php xl('Middle Name','e'); ?>: </span></TD><td><input type=entry name=mname style="width:150px;"  value="<?php echo $iter["mname"]; ?>"></td>
+<td><span class=text><?php echo xlt('Middle Name'); ?>: </span></TD><td><input type=entry name=mname style="width:150px;"  value="<?php echo $iter["mname"]; ?>"></td>
 </TR>
 
 <TR>
-<td><span class=text><?php xl('Last Name','e'); ?>: </span></td><td><input type=entry name=lname id=lname style="width:150px;"  value="<?php echo $iter["lname"]; ?>"><span class="mandatory">&nbsp;*</span></td>
-<td><span class=text><?php xl('Default Facility','e'); ?>: </span></td><td><select name=facility_id style="width:150px;" >
+<td><span class=text><?php echo xlt('Last Name'); ?>: </span></td><td><input type=entry name=lname id=lname style="width:150px;"  value="<?php echo $iter["lname"]; ?>"><span class="mandatory">&nbsp;*</span></td>
+<td><span class=text><?php echo xlt('Default Facility'); ?>: </span></td><td><select name=facility_id style="width:150px;" >
 <?php
 $fres = sqlStatement("select * from facility where service_location != 0 order by name");
 if ($fres) {
@@ -405,7 +436,7 @@ foreach($result as $iter2) {
 
 <tr>
  <td colspan=2>&nbsp;</td>
- <td><span class=text><?php xl('Schedule Facilities:', 'e');?></td>
+ <td><span class=text><?php echo xlt('Schedule Facilities:');?></td>
  <td>
   <select name="schedule_facility[]" multiple style="width:150px;" >
 <?php
@@ -428,13 +459,13 @@ foreach($result as $iter2) {
 </tr>
 
 <TR>
-<TD><span class=text><?php xl('Federal Tax ID','e'); ?>: </span></TD><TD><input type=text name=taxid style="width:150px;"  value="<?php echo $iter["federaltaxid"]?>"></td>
-<TD><span class=text><?php xl('Federal Drug ID','e'); ?>: </span></TD><TD><input type=text name=drugid style="width:150px;"  value="<?php echo $iter["federaldrugid"]?>"></td>
+<TD><span class=text><?php echo xlt('Federal Tax ID'); ?>: </span></TD><TD><input type=text name=taxid style="width:150px;"  value="<?php echo $iter["federaltaxid"]?>"></td>
+<TD><span class=text><?php echo xlt('DEA Number'); ?>: </span></TD><TD><input type=text name=drugid style="width:150px;"  value="<?php echo $iter["federaldrugid"]?>"></td>
 </TR>
 
 <tr>
-<td><span class="text"><?php xl('UPIN','e'); ?>: </span></td><td><input type="text" name="upin" style="width:150px;" value="<?php echo $iter["upin"]?>"></td>
-<td class='text'><?php xl('See Authorizations','e'); ?>: </td>
+<td><span class="text"><?php echo xlt('UPIN'); ?>: </span></td><td><input type="text" name="upin" style="width:150px;" value="<?php echo $iter["upin"]?>"></td>
+<td class='text'><?php echo xlt('See Authorizations'); ?>: </td>
 <td><select name="see_auth" style="width:150px;" >
 <?php
  foreach (array(1 => xl('None'), 2 => xl('Only Mine'), 3 => xl('All')) as $key => $value)
@@ -448,15 +479,15 @@ foreach($result as $iter2) {
 </tr>
 
 <tr>
-<td><span class="text"><?php xl('NPI','e'); ?>: </span></td><td><input type="text" name="npi" style="width:150px;"  value="<?php echo $iter["npi"]?>"></td>
-<td><span class="text"><?php xl('Job Description','e'); ?>: </span></td><td><input type="text" name="job" style="width:150px;"  value="<?php echo $iter["specialty"]?>"></td>
+<td><span class="text"><?php echo xlt('NPI'); ?>: </span></td><td><input type="text" name="npi" style="width:150px;"  value="<?php echo $iter["npi"]?>"></td>
+<td><span class="text"><?php echo xlt('Job Description'); ?>: </span></td><td><input type="text" name="job" style="width:150px;"  value="<?php echo $iter["specialty"]?>"></td>
 </tr>
 
 <!-- (CHEMED) Calendar UI preference -->
 <tr>
-<td><span class="text"><?php xl('Taxonomy','e'); ?>: </span></td>
+<td><span class="text"><?php echo xlt('Taxonomy'); ?>: </span></td>
 <td><input type="text" name="taxonomy" style="width:150px;"  value="<?php echo $iter["taxonomy"]?>"></td>
-<td><span class="text"><?php xl('Calendar UI','e'); ?>: </span></td><td><select name="cal_ui" style="width:150px;" >
+<td><span class="text"><?php echo xlt('Calendar UI'); ?>: </span></td><td><select name="cal_ui" style="width:150px;" >
 <?php
  foreach (array(3 => xl('Outlook'), 1 => xl('Original'), 2 => xl('Fancy')) as $key => $value)
  {
@@ -470,28 +501,28 @@ foreach($result as $iter2) {
 <!-- END (CHEMED) Calendar UI preference -->
 
 <tr>
-<td><span class="text"><?php xl('State License Number','e'); ?>: </span></td>
+<td><span class="text"><?php echo xlt('State License Number'); ?>: </span></td>
 <td><input type="text" name="state_license_number" style="width:150px;"  value="<?php echo $iter["state_license_number"]?>"></td>
-<td class='text'><?php xl('NewCrop eRX Role','e'); ?>:</td>
+<td class='text'><?php echo xlt('NewCrop eRX Role'); ?>:</td>
 <td>
   <?php echo generate_select_list("erxrole", "newcrop_erx_role", $iter['newcrop_user_role'],'',xl('Select Role'),'','','',array('style'=>'width:150px')); ?>
 </td>
 </tr>
 
 <tr>
-  <td><span class="text"><?php xl('Provider Type','e'); ?>: </span></td>
+  <td><span class="text"><?php echo xlt('Provider Type'); ?>: </span></td>
   <td><?php echo generate_select_list("physician_type", "physician_type", $iter['physician_type'],'',xl('Select Type'),'physician_type_class','','',''); ?></td>
 </tr>
 <?php if ($GLOBALS['inhouse_pharmacy']) { ?>
 <tr>
- <td class="text"><?php xl('Default Warehouse','e'); ?>: </td>
+ <td class="text"><?php echo xlt('Default Warehouse'); ?>: </td>
  <td class='text'>
 <?php
 echo generate_select_list('default_warehouse', 'warehouse',
   $iter['default_warehouse'], '');
 ?>
  </td>
- <td class="text"><?php xl('Invoice Refno Pool','e'); ?>: </td>
+ <td class="text"><?php echo xlt('Invoice Refno Pool'); ?>: </td>
  <td class='text'>
 <?php
 echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
@@ -506,7 +537,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
  if (isset($phpgacl_location) && acl_check('admin', 'acl')) {
 ?>
   <tr>
-  <td class='text'><?php xl('Access Control','e'); ?>:</td>
+  <td class='text'><?php echo xlt('Access Control'); ?>:</td>
   <td><select id="access_group_id" name="access_group[]" multiple style="width:150px;" >
   <?php
    $list_acl_groups = acl_get_group_title_list();
@@ -523,7 +554,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
    }
   ?>
   </select></td>
-  <td><span class=text><?php xl('Additional Info','e'); ?>:</span></td>
+  <td><span class=text><?php echo xlt('Additional Info'); ?>:</span></td>
   <td><textarea style="width:150px;" name="comments" wrap=auto rows=4 cols=25><?php echo $iter["info"];?></textarea></td>
 
   <?php do_action( 'usergroup_admin_edit', $iter ); ?>
@@ -531,7 +562,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
   </tr>
   <tr height="20" valign="bottom">
   <td colspan="4" class="text">
-  <font class="mandatory">*</font> <?php xl('You must enter your own pass phrase to change user pass phrases. Leave this blank to keep it unchanged.','e'); ?>
+  <font class="mandatory">*</font> <?php echo xlt('You must enter your own pass phrase to change user pass phrases. Leave this blank to keep it unchanged.'); ?>
 <!--
 Display red alert if entered password matched one of last three passwords/Display red alert if user password was expired and the user was inactivated previously
 -->
@@ -552,8 +583,8 @@ Display red alert if entered password matched one of last three passwords/Displa
 <script language="JavaScript">
 $(document).ready(function(){
     $("#cancel").click(function() {
-		  parent.$.fn.fancybox.close();
-	 });
+          parent.$.fn.fancybox.close();
+     });
 
 });
 </script>
