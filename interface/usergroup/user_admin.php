@@ -4,8 +4,7 @@
  *
  *  This program is used to edit the users
  *
- * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
- *
+ * Copyright (C) 2016-2017 
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +22,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreEHR
- * @author Terry Hill <teryhill@librehealth.io>
+ *  
  * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.

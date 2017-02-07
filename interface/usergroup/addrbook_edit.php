@@ -2,7 +2,7 @@
 /*
  *  addrbook_edit.php for the editing of the address book information
  *
- * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * Copyright (C) 2016-2017 
  * Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreEHR
- * @author Terry Hill <teryhill@librehealth.io>
  * @author Rod Roark <rod@sunsetsystems.com>
  * @link http://librehealth.io
  *
