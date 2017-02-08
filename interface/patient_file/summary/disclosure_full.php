@@ -33,13 +33,14 @@ $fake_register_globals=false;
 require_once("../../globals.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/log.inc");
+require_once("$srcdir/formatting.inc.php");
 
 //retrieve the user name
 $res = sqlQuery("select username from users where username=?", array($_SESSION{"authUser"}) );
 $uname=$res{"username"};
 //if the mode variable is set to disclosure, retrieve the values from 'disclosure_form ' in record_disclosure.php to store it in database.
 if (isset($_POST["mode"]) and  $_POST["mode"] == "disclosure"){
-	$dates=trim($_POST['dates']);
+	$dates = prepareDateBeforeSave(trim($_POST['dates']), true);
 	$event=trim($_POST['form_disclosure_type']);
 	$recipient_name=trim($_POST['recipient_name']);
 	$disclosure_desc=trim($_POST['desc_disc']);
@@ -143,7 +144,7 @@ if ($n>0){?>
 			id='<?php echo text($iter{id}); ?>' onclick='top.restoreSession()'><span><?php echo xlt('Delete');?></span></a></td>
 			<td class="text" valign='top'><?php echo text($iter{recipient});?>&nbsp;</td>
 			<td class='text' valign='top'><?php if($event[1]=='healthcareoperations'){ echo xlt('health care operations'); } else echo text($event[1]); ?>&nbsp;</td>
-			<td class='text'><?php echo text($iter{date})." ".$description;?>&nbsp;</td>
+			<td class='text'><?php echo text(date(DateFormatRead(true) . ' H:i:s', strtotime($iter{date})))." ".$description;?>&nbsp;</td>
 			<td class='text'><?php echo text($iter{user_fullname});?></td>
 		</tr>
 		<?php

@@ -35,8 +35,13 @@ include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/formatting.inc.php");
 require_once($GLOBALS['srcdir'] . '/csv_like_join.php');
 require_once($GLOBALS['fileroot'] . '/custom/code_types.inc.php');
+
+/** Current format date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 formHeader("Form:Observation Form");
 $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
@@ -57,13 +62,11 @@ $check_res = $formid ? $check_res : array();
 <html>
     <head>
         <?php html_header_show(); ?>
-        <!-- pop up calendar -->
-        <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-        <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-        <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-        <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+        <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
+        <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
         <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
     </head>
 
@@ -117,7 +120,10 @@ $check_res = $formid ? $check_res : array();
                     }
                     if (class_val == 'code_date')
                     {
-                        Calendar.setup({inputField: class_val + "_" + index, ifFormat: "%Y-%m-%d", button: "img_code_date_" + index});
+                        $("#" + class_val + "_" + index).datetimepicker({
+                            timepicker: false,
+                            format: "<?= $DateFormat; ?>"
+                        });
                     }
                 }
             }
@@ -262,16 +268,21 @@ $check_res = $formid ? $check_res : array();
                         </td>
                         <td align="left" class="forms"><?php echo xlt('Date'); ?>:</td>
                         <td class="forms">
-                            <input type='text' id="code_date_<?php echo $key + 1; ?>" size='10' name='code_date[]' class="code_date" <?php echo attr($disabled) ?> value='<?php echo attr($obj{"date"}); ?>' title='<?php echo xla('yyyy-mm-dd Date of service'); ?>' onkeyup='datekeyup(this, mypcc)' onblur='dateblur(this, mypcc)' />
-                            <img src='../../pic/show_calendar.gif' align='absbottom' id="img_code_date_<?php echo $key + 1; ?>" width='24' height='22' class="img_code_date" border='0' alt='[?]' style='cursor:pointer;cursor:hand' title='<?php echo xla('Click here to choose a date'); ?>'>
+                            <input type='text' id="code_date_<?php echo $key + 1; ?>" size='10' name='code_date[]' class="code_date"
+                                <?php echo attr($disabled) ?> value='<?php echo attr($obj{"date"}); ?>'
+                                   title='<?php echo xla('yyyy-mm-dd Date of service'); ?>' />
                         </td>
                         <td>
                             <img src='../../pic/add.png' onclick="duplicateRow(this.parentElement.parentElement);" align='absbottom' width='27' height='24' border='0' style='cursor:pointer;cursor:hand' title='<?php echo xla('Click here to duplicate the row'); ?>'>
                             <img src='../../pic/remove.png' onclick="deleteRow(this.parentElement.parentElement.id);" align='absbottom' width='24' height='22' border='0' style='cursor:pointer;cursor:hand' title='<?php echo xla('Click here to delete the row'); ?>'>
                         </td>
                     <script language="javascript">
-                        /* required for popup calendar */
-                        Calendar.setup({inputField: "code_date_<?php echo $key + 1; ?>", ifFormat: "%Y-%m-%d", button: "img_code_date_<?php echo $key + 1; ?>"});
+                        $(function() {
+                            $("#code_date_<?php echo $key + 1; ?>").datetimepicker({
+                                timepicker: false,
+                                format: "<?= $DateFormat; ?>"
+                            });
+                        });
                     </script>
                 </tr>
                 <?php
@@ -329,16 +340,22 @@ $check_res = $formid ? $check_res : array();
                 </td>
                 <td align="left" class="forms"><?php echo xlt('Date'); ?>:</td>
                 <td class="forms">
-                    <input type='text' id="code_date_1" size='10' name='code_date[]' class="code_date" <?php echo attr($disabled) ?> value='<?php echo attr($obj{"date"}); ?>' title='<?php echo xla('yyyy-mm-dd Date of service'); ?>' onkeyup='datekeyup(this, mypcc)' onblur='dateblur(this, mypcc)' />
-                    <img src='../../pic/show_calendar.gif' align='absbottom' id="img_code_date_<?php echo $key + 1; ?>" width='24' height='22' class="img_code_date" border='0' alt='[?]' style='cursor:pointer;cursor:hand' title='<?php echo xla('Click here to choose a date'); ?>'>
+                    <input type='text' id="code_date_1" size='10' name='code_date[]' class="code_date"
+                        <?php echo attr($disabled) ?> value='<?php echo attr($obj{"date"}); ?>' title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
+                    />
                 </td>
                 <td>
                     <img src='../../pic/add.png' onclick="duplicateRow(this.parentElement.parentElement);" align='absbottom' width='27' height='24' border='0' style='cursor:pointer;cursor:hand' title='<?php echo xla('Click here to duplicate the row'); ?>'>
                     <img src='../../pic/remove.png' onclick="deleteRow(this.parentElement.parentElement.id);" align='absbottom' width='24' height='22' border='0' style='cursor:pointer;cursor:hand' title='<?php echo xla('Click here to delete the row'); ?>'>
                 </td>
             <script language="javascript">
-                /* required for popup calendar */
-                Calendar.setup({inputField: "code_date_1", ifFormat: "%Y-%m-%d", button: "img_code_date_1"});
+                $(function() {
+                    $("#code_date_1").datetimepicker({
+                        timepicker: false,
+                        format: "<?= $DateFormat; ?>"
+                    });
+                    $.datetimepicker.setLocale('<?= $DateLocale;?>');
+                });
             </script>
         </tr>
     <?php }

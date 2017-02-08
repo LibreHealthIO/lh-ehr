@@ -166,17 +166,17 @@ function ValidateDateGreaterThanNow(DateValue,DateFormat)
  }
 function DateCheckGreater(DateValue1,DateValue2,DateFormat)
  {//Checks which date is greater.The 3 formats of date is taken care of.
-  if(DateFormat=='%Y-%m-%d')
+  if(DateFormat=='Y-m-d')
    {
     DateValueArray=DateValue1.split('-');
 	DateValue1=DateValueArray[1]+'/'+DateValueArray[2]+'/'+DateValueArray[0];
     DateValueArray=DateValue2.split('-');
 	DateValue2=DateValueArray[1]+'/'+DateValueArray[2]+'/'+DateValueArray[0];
    }
-  else if(DateFormat=='%m/%d/%Y')
+  else if(DateFormat=='m/d/Y')
    {
    }
-  else if(DateFormat=='%d/%m/%Y')
+  else if(DateFormat=='d/m/Y')
    {
     DateValueArray=DateValue1.split('/');
 	DateValue1=DateValueArray[1]+'/'+DateValueArray[0]+'/'+DateValueArray[2];

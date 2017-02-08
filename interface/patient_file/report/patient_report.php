@@ -7,6 +7,9 @@ require_once("$srcdir/forms.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 // get various authorization levels
 $auth_notes_a  = acl_check('encounters', 'notes_a');
 $auth_notes    = acl_check('encounters', 'notes');
@@ -22,15 +25,11 @@ $auth_demo     = acl_check('patients'  , 'demo');
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
-
 <!-- include jQuery support -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
-
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
 <script language='JavaScript'>
 
 function checkAll(check) {
@@ -78,14 +77,12 @@ function show_date_fun(){
         <span class='bold'><?php xl('Start Date','e');?>: </span>
       </td>
       <td>
-        <input type='text' size='10' name='Start' id='Start'
-         onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-         title='<?php xl('yyyy-mm-dd','e'); ?>' />
-        <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-         id='img_start' border='0' alt='[?]' style='cursor:pointer'
-         title='<?php xl('Click here to choose a date','e'); ?>' >
-        <script LANGUAGE="JavaScript">
-         Calendar.setup({inputField:"Start", ifFormat:"%Y-%m-%d", button:"img_start"});
+        <input type='text' size='10' name='Start' id='Start' />
+        <script>
+            $("#Start").datetimepicker({
+                timepicker: false,
+                format: "<?= $DateFormat; ?>"
+            });
         </script>
       </td>
       <td>
@@ -93,14 +90,13 @@ function show_date_fun(){
         <span class='bold'><?php xl('End Date','e');?>: </span>
       </td>
       <td>
-        <input type='text' size='10' name='End' id='End'
-         onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-         title='<?php xl('yyyy-mm-dd','e'); ?>' />
-        <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-         id='img_end' border='0' alt='[?]' style='cursor:pointer'
-         title='<?php xl('Click here to choose a date','e'); ?>' >
-        <script LANGUAGE="JavaScript">
-         Calendar.setup({inputField:"End", ifFormat:"%Y-%m-%d", button:"img_end"});
+        <input type='text' size='10' name='End' id='End'/>
+        <script>
+            $("#End").datetimepicker({
+                timepicker: false,
+                format: "<?= $DateFormat; ?>"
+            });
+            $.datetimepicker.setLocale('<?= $DateLocale;?>');
         </script>
       </td>
     </tr>
@@ -276,9 +272,9 @@ while ($prow = sqlFetchArray($pres)) {
         echo $ierow['encounter'] . "/";
     }
     echo "' />$disptitle</td>\n";
-    echo "     <td>" . $prow['begdate'];
+    echo "     <td>" . htmlspecialchars(oeFormatShortDate($prow['begdate']));
 
-    if ($prow['enddate']) { echo " - " . $prow['enddate']; }
+    if ($prow['enddate']) { echo " - " . htmlspecialchars(oeFormatShortDate($prow['enddate'])); }
     else { echo " Active"; }
 
     echo "</td>\n";
@@ -351,7 +347,7 @@ while($result = sqlFetchArray($res)) {
         }
 
         echo $result{"reason"}. 
-                " (" . date("Y-m-d",strtotime($result{"date"})) .
+                " (" . htmlspecialchars(oeFormatShortDate(date("Y-m-d",strtotime($result{"date"})))) .
                 ")\n";
         echo "<div class='encounter_forms'>\n";
     } 

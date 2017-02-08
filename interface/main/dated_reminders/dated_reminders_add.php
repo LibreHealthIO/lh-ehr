@@ -23,10 +23,14 @@
   $fake_register_globals=false;
   $sanitize_all_escapes=true;     
     
-    require_once("../../globals.php"); 
-    require_once("$srcdir/htmlspecialchars.inc.php");  
-    require_once("$srcdir/dated_reminder_functions.php"); 
-  
+  require_once("../../globals.php");
+  require_once("$srcdir/htmlspecialchars.inc.php");
+  require_once("$srcdir/dated_reminder_functions.php");
+  require_once("$srcdir/formatting.inc.php");
+
+  $DateFormat = DateFormatRead();
+  $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
   $dateRanges = array();
 // $dateranges = array ( number_period => text to display ) == period is always in the singular 
 // eg. $dateRanges['4_week'] = '4 Weeks From Now';  
@@ -155,7 +159,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/topdialog.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>  
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>    
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.4.3.min.js"></script>   
+    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-calendar.js"></script>
     <script language="JavaScript"> 
       $(document).ready(function (){   
@@ -317,7 +321,8 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
       <br />   
        
     <fieldset>          
-            <?php echo xlt('Due Date') ?> : <input type='text' name='dueDate' id="dueDate" size='20' value="<?php echo ($this_message['dueDate'] == '' ? date('Y-m-d') : attr($this_message['dueDate'])); ?>" onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>' />      
+            <?php echo xlt('Due Date') ?> : <input type='text' name='dueDate' id="dueDate" size='20'
+                                                   value="<?php echo ($this_message['dueDate'] == '' ? date(str_replace('%','',$DateFormat)) : htmlspecialchars(oeFormatShortDate(attr($this_message['dueDate'])))); ?>"/>
             <?php echo xlt('OR') ?> 
             <?php echo xlt('Select a Time Span') ?> : <select id="timeSpan">
                                       <option value="__BLANK__"> -- <?php echo xlt('Select a Time Span') ?> -- </option>
@@ -408,13 +413,16 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
         }
         echo '</tbody></table>'; 
     ?>
-  </body>  
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-<script language="Javascript"> 
-  Calendar.setup({inputField:"dueDate", ifFormat:"%Y-%m-%d", button:"img_begin_date", showsTime:'false'}); 
+  </body>
+<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+  $(function() {
+      $("#dueDate").datetimepicker({
+          timepicker: false,
+          format: "<?= $DateFormat; ?>"
+      });
+      $.datetimepicker.setLocale('<?= $DateLocale;?>');
+  });
 </script>
 </html>

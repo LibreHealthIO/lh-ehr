@@ -63,6 +63,10 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("../../custom/code_types.inc.php");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 $currdecimals = $GLOBALS['currency_decimals'];
 
 $details = empty($_GET['details']) ? 0 : 1;
@@ -644,15 +648,11 @@ while ($urow = sqlFetchArray($ures)) {
 <head>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <title><?php echo xlt('Patient Checkout'); ?></title>
-<style>
-</style>
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
+  <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script language="JavaScript">
  var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
@@ -931,13 +931,7 @@ if ($inv_encounter) {
    <?php echo xlt('Posting Date'); ?>:
   </td>
   <td>
-   <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo attr($inv_date) ?>'
-    title='yyyy-mm-dd date of service'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla("Click here to choose a date"); ?>'>
+   <input type='text' size='10' name='form_date' id='form_date' value='<?= htmlspecialchars(oeFormatShortDate(attr($inv_date))) ?>'/>
   </td>
  </tr>
 
@@ -994,7 +988,11 @@ else if (!empty($GLOBALS['gbl_mask_invoice_number'])) {
 </form>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+  $("#form_date").datetimepicker({
+    timepicker: false,
+    format: "<?= $DateFormat; ?>"
+  });
+  $.datetimepicker.setLocale('<?= $DateLocale;?>');
  computeTotals();
 <?php
 

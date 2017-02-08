@@ -35,6 +35,12 @@ $ignoreAuth = 1;
  include_once("../interface/globals.php");
  include_once("$srcdir/patient.inc");
 
+ require_once("$srcdir/formatting.inc.php");
+
+/** Current format of date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
  // Exit if the modify calendar for portal flag is not set
  if (!($GLOBALS['portal_onsite_appt_modify'])) {
    echo htmlspecialchars( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
@@ -254,14 +260,8 @@ $ignoreAuth = 1;
 <title><?php xl('Find Available Appointments','e'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
-<!-- for the pop up calendar -->
-<style type="text/css">@import url(../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../library/dynarch_calendar.js"></script>
-<script type="text/javascript" src="../library/dynarch_calendar_en.js"></script>
-<script type="text/javascript" src="../library/dynarch_calendar_setup.js"></script>
-
 <!-- for ajax-y stuff -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 
 <script language="JavaScript">
 
@@ -341,14 +341,8 @@ form {
 
    <?php xl('Start date:','e'); ?>
 
-
    <input type='text' name='startdate' id='startdate' size='10' value='<?php echo $sdate ?>'
     title='yyyy-mm-dd starting date for search'/>
-    
-   <img src='../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>'>
-
 
    <?php xl('for','e'); ?>
    <input type='text' name='searchdays' size='3' value='<?php echo $searchdays ?>'
@@ -433,19 +427,22 @@ form {
 
 </form>
 </body>
+<link rel="stylesheet" href="../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../library/js/jquery.datetimepicker.full.min.js"></script>
 
-<!-- for the pop up calendar -->
 <script language='JavaScript'>
- Calendar.setup({inputField:"startdate", ifFormat:"%Y-%m-%d", button:"img_date"});
-
 // jQuery stuff to make the page a little easier to use
-
 $(document).ready(function(){
     $(".oneresult").mouseover(function() { $(this).toggleClass("highlight"); });
     $(".oneresult").mouseout(function() { $(this).toggleClass("highlight"); });
     $(".oneresult a").mouseover(function () { $(this).toggleClass("blue_highlight"); $(this).children().toggleClass("blue_highlight"); });
     $(".oneresult a").mouseout(function() { $(this).toggleClass("blue_highlight"); $(this).children().toggleClass("blue_highlight"); });
     //$(".event").dblclick(function() { EditEvent(this); });
+    $("#startdate").datetimepicker({
+        timepicker: false,
+        format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
 });
 
 </script>

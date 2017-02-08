@@ -184,22 +184,38 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
 	  <tr>
 	    <td align="left" class='text'></td>
 		<td align="left" class='text'><?php echo htmlspecialchars( xl('Date'), ENT_QUOTES).':' ?></td>
-		<td align="left" class="text" ><input type='text' size='9' name='check_date' id='check_date' class="class1 text "  value="<?php echo htmlspecialchars(oeFormatShortDate($CheckDate));?>"/></td>
-		<td><img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='absbottom'
-		id='img_checkdate' border='0' alt='[?]' style='cursor:pointer'
-		title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
-	   <script>
-		Calendar.setup({inputField:"check_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_checkdate"});
-	   </script></td>
+		<td align="left" class="text" >
+			<input type='text' size='9' name='check_date' id='check_date' class="class1 text "
+				   value="<?php echo htmlspecialchars(oeFormatShortDate($CheckDate));?>"/>
+		</td>
+		<td>
+			<img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='absbottom'
+				id='img_checkdate' border='0' alt='[?]' style='cursor:pointer'
+				title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
+		   <script>
+			   $(function() {
+				   $("#check_date").datetimepicker({
+					   timepicker: false,
+					   format: "<?= $DateFormat; ?>"
+				   });
+			   });
+		   </script>
+		</td>
 		<td></td>
 	    <td align="left" class='text'><?php echo htmlspecialchars( xl('Post To Date'), ENT_QUOTES).':' ?></td>
-	    <td align="left" class="text"><input type='text' size='9' name='post_to_date' id='post_to_date' class="class1 text "   value="<?php echo $screen=='new_payment'?htmlspecialchars(oeFormatShortDate(date('Y-m-d'))):htmlspecialchars(oeFormatShortDate($PostToDate));?>"  readonly="" /></td>
+	    <td align="left" class="text"><input type='text' size='9' name='post_to_date' id='post_to_date' class="class1 text "   value="<?php echo $screen=='new_payment'?htmlspecialchars(oeFormatShortDate(date('Y-m-d'))):htmlspecialchars(oeFormatShortDate($PostToDate));?>"/></td>
 	    <td><img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='absbottom'
 		id='img_post_to_date' border='0' alt='[?]' style='cursor:pointer'
 		title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
-	   <script>
-		Calendar.setup({inputField:"post_to_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_post_to_date"});
-	   </script></td>
+		   <script>
+			   $(function() {
+				   $("#post_to_date").datetimepicker({
+					   timepicker: false,
+					   format: "<?= $DateFormat; ?>"
+				   });
+			   });
+		   </script>
+	  	</td>
 	    <td></td>
 	    <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment Method'), ENT_QUOTES).':' ?></td>
 	    <td align="left">
@@ -286,13 +302,24 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
 	  <tr>
 	    <td align="left" class='text'></td>
 		<td align="left" class='text'><?php echo htmlspecialchars( xl('Deposit Date'), ENT_QUOTES).':' ?></td>
-		<td align="left"><input type='text' size='9' name='deposit_date' id='deposit_date'  onKeyDown="PreventIt(event)"   class="class1 text " value="<?php echo htmlspecialchars(oeFormatShortDate($DepositDate));?>"    />	   </td>
-		<td><img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='absbottom'
-		id='img_depositdate' border='0' alt='[?]' style='cursor:pointer'
-		title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
-	   <script>
-		Calendar.setup({inputField:"deposit_date", ifFormat:"<?php echo $DateFormat; ?>", button:"img_depositdate"});
-	   </script></td>
+		<td align="left">
+			<input type='text' size='9' name='deposit_date' id='deposit_date' class="class1 text "
+				   value="<?php echo htmlspecialchars(oeFormatShortDate($DepositDate));?>"/>
+		</td>
+		<td>
+			<img src='../../interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg' align='absbottom'
+				id='img_depositdate' border='0' alt='[?]' style='cursor:pointer'
+				title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
+		    <script>
+				$(function() {
+					$("#deposit_date").datetimepicker({
+						timepicker: false,
+						format: "<?= $DateFormat; ?>"
+					});
+					$.datetimepicker.setLocale('<?= $DateLocale;?>');
+				});
+		    </script>
+		</td>
 		<td></td>
 	    <td align="left" class="text"><?php echo htmlspecialchars( xl('Description'), ENT_QUOTES).':' ?></td>
 	    <td colspan="6" align="left"><input type="text" name="description"  id="description"   onKeyDown="PreventIt(event)"   value="<?php echo htmlspecialchars($Description);?>"   style="width:396px" class="text "   /></td>

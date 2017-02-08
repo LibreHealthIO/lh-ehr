@@ -35,6 +35,11 @@ require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <?php
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 if (isset($ISSUE_TYPES['football_injury'])) {
   if ($ISSUE_TYPES['football_injury']) {
     // Most of the logic for the "football injury" issue type comes from this
@@ -247,8 +252,8 @@ if ($_POST['form_save']) {
    if ($i++ == $_POST['form_type']) $text_type = $key;
   }
 
-  $form_begin = fixDate($_POST['form_begin'], '');
-  $form_end   = fixDate($_POST['form_end'], '');
+  $form_begin = $_POST['form_begin'];
+  $form_end   = $_POST['form_end'];
 
   if ($text_type == 'football_injury') {
     $form_injury_part = $_POST['form_injury_part'];
@@ -260,13 +265,12 @@ if ($_POST['form_save']) {
   }
 
   if ($issue) {
-
    $query = "UPDATE lists SET " .
     "type = '"        . add_escape_custom($text_type)                  . "', " .
     "title = '"       . add_escape_custom($_POST['form_title'])        . "', " .
     "comments = '"    . add_escape_custom($_POST['form_comments'])     . "', " .
-    "begdate = "      . QuotedOrNull($form_begin)   . ", "  .
-    "enddate = "      . QuotedOrNull($form_end)     . ", "  .
+    "begdate = "      . QuotedOrNull(prepareDateBeforeSave($form_begin)) . ", "  .
+    "enddate = "      . QuotedOrNull(prepareDateBeforeSave($form_end))    . ", "  .
     "returndate = "   . QuotedOrNull($form_return)  . ", "  .
     "diagnosis = '"   . add_escape_custom($_POST['form_diagnosis'])    . "', " .
     "occurrence = '"  . add_escape_custom($_POST['form_occur'])        . "', " .
@@ -305,8 +309,8 @@ if ($_POST['form_save']) {
     "'" . add_escape_custom($_POST['form_title'])       . "', " .
     "1, "                            .
     "'" . add_escape_custom($_POST['form_comments'])    . "', " .
-    QuotedOrNull($form_begin)        . ", "  .
-    QuotedOrNull($form_end)        . ", "  .
+    QuotedOrNull(prepareDateBeforeSave($form_begin))       . ", "  .
+    QuotedOrNull(prepareDateBeforeSave($form_end))     . ", "  .
     QuotedOrNull($form_return)       . ", "  .
     "'" . add_escape_custom($_POST['form_diagnosis'])   . "', " .
     "'" . add_escape_custom($_POST['form_occur'])       . "', " .
@@ -398,12 +402,9 @@ div.section {
 
 </style>
 
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.js"></script>
-<?php require_once($GLOBALS['srcdir'].'/dynarch_calendar_en.inc.php'); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js"></script>
 
 <script language="JavaScript">
 
@@ -691,12 +692,8 @@ function divclick(cb, divid) {
   <td>
 
    <input type='text' size='10' name='form_begin' id='form_begin'
-    value='<?php echo attr($irow['begdate']) ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['begdate']))) ?>'
     title='<?php echo xla('yyyy-mm-dd date of onset, surgery or start of medication'); ?>' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_begin' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>' />
   </td>
  </tr>
 
@@ -704,12 +701,8 @@ function divclick(cb, divid) {
   <td valign='top' nowrap><b><?php echo xlt('End Date'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_end' id='form_end'
-    value='<?php echo attr($irow['enddate']) ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['enddate']))) ?>'
     title='<?php echo xla('yyyy-mm-dd date of recovery or end of medication'); ?>' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_end' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>' />
     &nbsp;(<?php echo xlt('leave blank if still active'); ?>)
   </td>
  </tr>
@@ -723,14 +716,7 @@ function divclick(cb, divid) {
   </td>
  </tr>
 
- <tr id='row_returndate'>
-   <td>
-   <input type='hidden'  name='form_return' id='form_return' />
-   <input type='hidden'  name='row_reinjury_id' id='row_reinjury_id' />
-  <img  
-    id='img_return'/>
-  </td>
- </tr>
+<~-- removed some athletic team junk here-->
  
  <tr id='row_occurrence'>
   <td valign='top' nowrap><b><?php echo xlt('Occurrence'); ?>:</b></td>
@@ -843,11 +829,17 @@ function divclick(cb, divid) {
 </center>
 
 </form>
-<script language='JavaScript'>
- newtype(<?php echo $type_index ?>);
- Calendar.setup({inputField:"form_begin", ifFormat:"%Y-%m-%d", button:"img_begin"});
- Calendar.setup({inputField:"form_end", ifFormat:"%Y-%m-%d", button:"img_end"});
- Calendar.setup({inputField:"form_return", ifFormat:"%Y-%m-%d", button:"img_return"});
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    newtype(<?php echo $type_index ?>);
+    $(function() {
+        $("#form_begin, #form_end, #form_return").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </body>
 </html>

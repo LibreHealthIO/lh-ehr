@@ -926,6 +926,43 @@ function cidChanged(lino, seq) {
   setListItemOptions(lino, seq, false);
 }
 
+// This is called whenever a validation rule field ID selection is changed.
+function valChanged(lino) {
+    changeColor(lino);
+}
+
+function changeColor(lino){
+    var thisid = document.forms[0]['fld[' + lino + '][condition_id][0]'].value;
+    var thisValId = document.forms[0]['fld[' + lino + '][validation]'].value;
+    var thistd = document.getElementById("querytd_" + lino);
+    if(thisid !='' || thisValId!='') {
+        thistd.style.backgroundColor = '#77ff77';
+    }else{
+        thistd.style.backgroundColor ='';
+    }
+}
+
+
+// Call this to disable the warning about unsaved changes and submit the form.
+function mySubmit() {
+ somethingChanged = false;
+ top.restoreSession();
+ document.forms[0].submit();
+}
+
+// User is about to do something that would discard any unsaved changes.
+// Return true if that is OK.
+function myChangeCheck() {
+  if (somethingChanged) {
+    if (!confirm('<?php echo xls('You have unsaved changes. Abandon them?'); ?>')) {
+      return false;
+    }
+    // Do not set somethingChanged to false here because if they cancel the
+    // action then the previously changed values will still be of interest.
+  }
+  return true;
+}
+
 </script>
 
 </head>
@@ -1585,6 +1622,19 @@ $(document).ready(function(){
       }
     }
 
+  // Support for beforeunload handler.
+  $('tbody input, tbody select, tbody textarea').not('.selectfield').change(function() {
+    somethingChanged = true;
+  });
+  window.addEventListener("beforeunload", function (e) {
+
+    if (somethingChanged && !top.timed_out) {
+
+      var msg = "<?php echo xls('You have unsaved changes.'); ?>";
+      e.returnValue = msg;     // Gecko, Trident, Chrome 34+
+      return msg;              // Gecko, WebKit, Chrome <34
+    }
+  });
 });
 
 function NationNotesContext(lineitem,val){

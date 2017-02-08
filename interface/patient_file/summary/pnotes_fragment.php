@@ -96,7 +96,7 @@ $fake_register_globals=false;
 
         // Modified 6/2009 by BM to incorporate the patient notes into the list_options listings
         echo "<td valign='top' class='text'>".htmlspecialchars($iter['user'],ENT_NOQUOTES)."</td>\n";
-        echo "<td valign='top' class='text'>".htmlspecialchars($iter['date'],ENT_NOQUOTES)."</td>\n";
+        echo "<td valign='top' class='text'>".date(DateFormatRead(true) . 'H:i:s', strtotime(htmlspecialchars($iter['date'],ENT_NOQUOTES)))."</td>\n";
         echo "  <td valign='top' class='text'><b>";
         echo generate_display_field(array('data_type'=>'1','list_id'=>'note_type'), $iter['title']);
         echo "</b></td>\n";

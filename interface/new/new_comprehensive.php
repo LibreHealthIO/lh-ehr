@@ -18,6 +18,9 @@ if (!acl_check('patients','demo','',array('write','addonly') ))
 
 $CPR = 4; // cells per row
 
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 $searchcolor = empty($GLOBALS['layout_search_color']) ?
   '#ffff55' : $GLOBALS['layout_search_color'];
 
@@ -84,18 +87,21 @@ div.section {
 
 </style>
 
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
+
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
 <link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <SCRIPT LANGUAGE="JavaScript"><!--
 //Visolve - sync the radio buttons - Start
@@ -558,21 +564,15 @@ if (! $GLOBALS['simplified_demographics']) {
       <span class='required'><?php xl('Effective Date','e'); ?>: </span>
      </td>
      <td>
-      <input type='entry' size='11' name='i<?php echo $i ?>effective_date'
-       id='i<?php echo $i ?>effective_date'
-       value='<?php echo $result3['date'] ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-       title='yyyy-mm-dd' />
-
-      <img src='../../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
-      id='img_i<?php echo $i ?>effective_date' border='0' alt='[?]' style='cursor:pointer'
-      title='<?php xl('Click here to choose a date','e'); ?>'>
-
-      <script LANGUAGE="JavaScript">
-      Calendar.setup({inputField:"i<?php echo $i ?>effective_date", ifFormat:"%Y-%m-%d", button:"img_i<?php echo $i; ?>effective_date"});
+      <input type='entry' size='11' name='i<?php echo $i ?>effective_date' id='i<?php echo $i ?>effective_date' value='<?php echo $result3['date'] ?>'/>
+      <script>
+         $(function() {
+             $("#i<?php echo $i ?>effective_date").datetimepicker({
+                 timepicker: false,
+                 format: "<?= $DateFormat; ?>"
+             });
+         });
       </script>
-
-
      </td>
     </tr>
 
@@ -655,21 +655,16 @@ if (! $GLOBALS['simplified_demographics']) {
    <a href="javascript:popUp('../../interface/patient_file/summary/browse.php?browsenum=<?php echo $i?>')" class=text>(<?php xl('Browse','e'); ?>)</a><br />
 
    <span class=bold><?php xl('D.O.B.','e'); ?>: </span>
-   <input type='entry' size='11' name='i<?php echo $i?>subscriber_DOB'
-    id='i<?php echo $i?>subscriber_DOB'
-    value='<?php echo $result3['subscriber_DOB'] ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-    title='yyyy-mm-dd' />
-
-   <img src='../../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_i<?php echo $i; ?>dob_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>'>
-
-    <script LANGUAGE="JavaScript">
-    Calendar.setup({inputField:"i<?php echo $i?>subscriber_DOB", ifFormat:"%Y-%m-%d", button:"img_i<?php echo $i; ?>dob_date"});
-    </script>
-
-
+   <input type='entry' size='11' name='i<?php echo $i?>subscriber_DOB' id='i<?php echo $i?>subscriber_DOB' value='<?php echo $result3['subscriber_DOB'] ?>'/>
+  <script>
+      $(function() {
+          $("#i<?php echo $i?>subscriber_DOB").datetimepicker({
+              timepicker: false,
+              format: "<?= $DateFormat; ?>"
+          });
+          $.datetimepicker.setLocale('<?= $DateLocale;?>');
+      });
+  </script>
    <span class=bold><?php xl('S.S.','e'); ?>: </span><input type=entry size=11 name=i<?php echo $i?>subscriber_ss value="<?php echo $result3{"subscriber_ss"}?>">&nbsp;
    <span class=bold><?php xl('Sex','e'); ?>: </span>
    <?php

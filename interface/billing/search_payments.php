@@ -218,26 +218,24 @@ if (isset($_POST["mode"]))
  }
 //===============================================================================
 $DateFormat=DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 <html>
 <head>
 <?php if (function_exists('html_header_show')) html_header_show(); ?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css"
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 
 <?php include_once("{$GLOBALS['srcdir']}/payment_jav.inc.php"); ?>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
+<script type="text/JavaScript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
@@ -440,7 +438,12 @@ document.onclick=HideTheAjaxDivs;
 						id='img_FromDate' border='0' alt='[?]' style='cursor:pointer'
 						title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
 					   <script>
-						Calendar.setup({inputField:"FromDate", ifFormat:"<?php echo $DateFormat; ?>", button:"img_FromDate"});
+						   $(function() {
+							   $("#FromDate").datetimepicker({
+								   timepicker: false,
+								   format: "<?= $DateFormat; ?>"
+							   });
+						   });
 					   </script></td>
 					<td width="53">&nbsp;</td>
 					<td align="left" class="text"><?php echo htmlspecialchars( xl('To'), ENT_QUOTES).':' ?></td>
@@ -449,7 +452,13 @@ document.onclick=HideTheAjaxDivs;
 						id='img_ToDate' border='0' alt='[?]' style='cursor:pointer'
 						title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
 					   <script>
-						Calendar.setup({inputField:"ToDate", ifFormat:"<?php echo $DateFormat; ?>", button:"img_ToDate"});
+						   $(function() {
+							   $("#ToDate").datetimepicker({
+								   timepicker: false,
+								   format: "<?= $DateFormat; ?>"
+							   });
+							   $.datetimepicker.setLocale('<?= $DateLocale;?>');
+						   });
 					   </script></td>
 				  </tr>
 				</table>	   

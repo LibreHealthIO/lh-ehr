@@ -31,11 +31,14 @@ require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/classes/Note.class.php");
 require_once("$srcdir/formatting.inc.php");
 
+$DateFormat = DateFormatRead(true);
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 $startdate = $enddate = "";
 if(empty($_POST['start']) || empty($_POST['end'])) {
     // set some default dates
-    $startdate = date('Y-m-d', (time() - 30*24*60*60));
-    $enddate = date('Y-m-d', time());
+    $startdate = date($DateFormat, (time() - 30*24*60*60));
+    $enddate = date($DateFormat, time());
 }
 else {
     // set dates
@@ -54,6 +57,7 @@ if ($form_patient == '' ) $form_pid = '';
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+    <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <style>
 
 @media print {
@@ -152,7 +156,7 @@ if ($form_patient == '' ) $form_pid = '';
 }
 </style>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script language="Javascript">
  $(document).ready(function() {
@@ -198,21 +202,13 @@ if ($form_patient == '' ) $form_pid = '';
 			   <?php echo xlt('Start Date'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='start' id="form_from_date" size='10' value='<?php echo attr($startdate) ?>'
-				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php echo xla('Click here to choose a date'); ?>'>
+			   <input type='text' name='start' id="form_from_date" size='10' value='<?= htmlspecialchars($startdate); ?>'>
 			</td>
 			<td class='label'>
 			   <?php echo xlt('End Date'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='end' id="form_to_date" size='10' value='<?php echo attr($enddate) ?>'
-				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php echo xla('Click here to choose a date'); ?>'>
+			   <input type='text' name='end' id="form_to_date" size='10' value='<?= htmlspecialchars($enddate); ?>'>
 			</td>
 
 			<td>
@@ -282,7 +278,7 @@ if( !(empty($_POST['start']) || empty($_POST['end']))) {
 		$res_query = 	"select * from forms where " .
                         "form_name = 'Patient Encounter' and " .
                         "date between ? and ? " ;
-                array_push($sqlBindArray,$startdate,$enddate);
+                array_push($sqlBindArray, prepareDateBeforeSave($startdate), prepareDateBeforeSave($enddate));
 		if($form_pid) {
 		$res_query.= " and pid=? ";	
 		array_push($sqlBindArray,$form_pid);
@@ -390,15 +386,18 @@ if( !(empty($_POST['start']) || empty($_POST['end']))) {
 
     </body>
 
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
-
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </html>

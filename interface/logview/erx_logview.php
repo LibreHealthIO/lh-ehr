@@ -31,6 +31,9 @@ require_once(__DIR__.'/../globals.php');
 require_once($srcdir.'/log.inc');
 require_once($srcdir.'/formdata.inc.php');
 require_once($srcdir.'/formatting.inc.php');
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $error_log_path = $GLOBALS['OE_SITE_DIR'].'/documents/erx_error';
 
@@ -75,12 +78,8 @@ if($filename) {
 	<head>
 		<?php html_header_show(); ?>
 		<link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
-		<link rel="stylesheet" href="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.css" type="text/css">
 		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.js"></script>
-		<?php include_once($GLOBALS['srcdir'].'/dynarch_calendar_en.inc.php'); ?>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar_setup.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.2.2.min.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js"></script>
 	</head>
 	<body class="body_top">
 		<form method="post">
@@ -91,8 +90,9 @@ if($filename) {
 					<span class="text"><?php echo xlt('Date'); ?>: </span>
 				</td>
 				<td>
-					<input type="text" size="10" name="start_date" id="start_date" value="<?php echo $start_date ? substr($start_date, 0, 10) : date('Y-m-d'); ?>" title="<?php echo xlt('yyyy-mm-dd Date of service'); ?>" onkeyup="datekeyup(this, mypcc)" onblur="dateblur(this, mypcc)" />
-					<img src="<?php echo $GLOBALS['webroot']; ?>/interface/pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_begin_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php echo xlt('Click here to choose a date'); ?>">&nbsp;
+					<input type="text" size="10" name="start_date" id="start_date"
+						   value="<?php echo $start_date ? substr($start_date, 0, 10) : htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>"/>
+					&nbsp;
 				</td>
 				<td>
 					<input type="submit" name="search_logs" value="<?php echo xlt('Search'); ?>">
@@ -126,7 +126,15 @@ if($filename) {
 
 ?>
 	</body>
-	<script type="text/javascript">
-		Calendar.setup({inputField:"start_date", ifFormat:"%Y-%m-%d", button:"img_begin_date"});
+	<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+	<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+	<script>
+		$(function() {
+			$("#start_date").datetimepicker({
+				timepicker: false,
+				format: "<?= $DateFormat; ?>"
+			});
+			$.datetimepicker.setLocale('<?= $DateLocale;?>');
+		});
 	</script>
 </html>

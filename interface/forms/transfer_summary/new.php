@@ -34,16 +34,15 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
 $obj = $formid ? formFetch("form_transfer_summary", $formid) : array();
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 ?>
 <html>
 <head>
 <?php html_header_show();?>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
-<!-- pop up calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
@@ -95,20 +94,14 @@ echo "<form method='post' name='my_form' " .
 	<td align="left" class="forms"><?php echo xlt('Transfer to'); ?>:</td>
 	
 	 <td class="forms">
-		 <input type="text" name="transfer_to" id="transfer_to" 
-		value="<?php echo text($obj{"transfer_to"});?>"></td>
+		 <input type="text" name="transfer_to" id="transfer_to" value="<?php echo text($obj{"transfer_to"});?>"></td>
 		 
 		<td align="left" class="forms"><?php echo xlt('Transfer date'); ?>:</td>
 	   	<td class="forms">
 			   <input type='text' size='10' name='transfer_date' id='transfer_date' <?php echo attr ($disabled)?>;
-       value='<?php echo attr($obj{"transfer_date"}); ?>' 
-       title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-        <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-        id='img_transfer_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-        title='<?php echo xla('Click here to choose a date'); ?>'>
+			   value='<?php echo htmlspecialchars(oeFormatShortDate(attr($obj{"transfer_date"}))); ?>'
+			   title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'/>
 		</td>
-
 	</tr>
 		
 	<tr>
@@ -159,11 +152,16 @@ echo "<form method='post' name='my_form' " .
 	</tr>
 </table>
 </form>
-
-<script language="javascript">
-/* required for popup calendar */
-Calendar.setup({inputField:"transfer_date", ifFormat:"%Y-%m-%d", button:"img_transfer_date"});
-
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+	$(function() {
+		$("#transfer_date").datetimepicker({
+			timepicker: false,
+			format: "<?= $DateFormat; ?>"
+		});
+		$.datetimepicker.setLocale('<?= $DateLocale;?>');
+	});
 </script>
 <?php
 formFooter();

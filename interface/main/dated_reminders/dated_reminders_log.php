@@ -26,10 +26,13 @@
   require_once("../../globals.php");
   require_once("$srcdir/htmlspecialchars.inc.php");
   require_once("$srcdir/acl.inc");    
-  require_once("$srcdir/dated_reminder_functions.php"); 
-  
-  
-  $isAdmin =acl_check('admin', 'users'); 
+  require_once("$srcdir/dated_reminder_functions.php");
+  require_once("$srcdir/formatting.inc.php");
+
+  $DateFormat = DateFormatRead();
+  $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
+  $isAdmin =acl_check('admin', 'users');
 ?>
 <?php
   /*
@@ -89,7 +92,7 @@
 <html>
   <head>                                    
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css"> 
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>  
+    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-calendar.js"></script>   
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.grouprows.js"></script>     
     <script src="<?php echo $GLOBALS['webroot'] ?>/library/js/grouprows.js"></script> 
@@ -128,9 +131,9 @@
       <h2><?php echo xlt('filters') ?> :</h2>
       <blockquote><?php echo xlt('Date The Message Was Sent') ?><br />
 <!----------------------------------------------------------------------------------------------------------------------------------------------------->  
-      <?php echo xlt('Start Date') ?> : <input id="sd" type="text" name="sd" value="" onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo xla('yyyy-mm-dd'); ?>' />   &nbsp;&nbsp;&nbsp;  
+      <?php echo xlt('Start Date') ?> : <input id="sd" type="text" name="sd" value=""title='<?php echo xla('yyyy-mm-dd'); ?>' />   &nbsp;&nbsp;&nbsp;
 <!----------------------------------------------------------------------------------------------------------------------------------------------------->   
-      <?php echo xlt('End Date') ?> : <input id="ed" type="text" name="ed" value="" onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo xla('yyyy-mm-dd'); ?>' />   <br /><br />
+      <?php echo xlt('End Date') ?> : <input id="ed" type="text" name="ed" value="" title='<?php echo xla('yyyy-mm-dd'); ?>' />   <br /><br />
 <!----------------------------------------------------------------------------------------------------------------------------------------------------->   
       </blockquote>
       <table style="width:100%">
@@ -170,14 +173,16 @@
     
     <div id="resultsDiv"></div> 
  
-  </body> 
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-<script language="Javascript"> 
-  Calendar.setup({inputField:"sd", ifFormat:"%Y-%m-%d", button:"img_begin_date", showsTime:'false'});  
-  Calendar.setup({inputField:"ed", ifFormat:"%Y-%m-%d", button:"img_begin_date", showsTime:'false'}); 
+  </body>
+<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+  $(function() {
+      $("#sd, #ed").datetimepicker({
+        timepicker: false,
+        format: "<?= $DateFormat; ?>"
+      });
+      $.datetimepicker.setLocale('<?= $DateLocale;?>');
+  });
 </script>
 </html> 

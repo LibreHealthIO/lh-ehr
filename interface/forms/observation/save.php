@@ -102,7 +102,7 @@ if (!empty($code_desc)) {
             table_code  = '" . add_escape_custom($table_code[$key]) . "',
             ob_value    = '" . add_escape_custom($ob_value[$key]) . "',
             ob_unit     = '" . add_escape_custom($ob_unit_value) . "',
-            date        = '" . add_escape_custom($code_date[$key]) . "'";
+            date        = '" . add_escape_custom(prepareDateBeforeSave($code_date[$key])) . "'";
         sqlInsert("INSERT INTO form_observation SET $sets");
     endforeach;
 }

@@ -143,293 +143,305 @@
 																	)
 																)
 							LEFT JOIN insurance_companies as c ON (c.id = i.provider)
-							WHERE %s ",	$where );
+							WHERE %s ", $where);
 
-	// Run the query 
-	$res			= sqlStatement($query, $sqlBindArray);
-	
-	// Get the facilities information 
-	$facilities		= getUserFacilities($_SESSION['authId']);
+// Run the query
+$res = sqlStatement($query, $sqlBindArray);
 
-	// Get the Providers information 
-	$providers		= getUsernames();
+// Get the facilities information
+$facilities = getUserFacilities($_SESSION['authId']);
 
-	//Get the x12 partners information 
-	$clearinghouses	= getX12Partner();
-		
-		
-	if (isset($_POST['form_savefile']) && !empty($_POST['form_savefile']) && $res) {
-		header('Content-Type: text/plain');
-		header(sprintf('Content-Disposition: attachment; filename="elig-270..%s.%s.txt"',
-			$from_date,
-			$to_date
-		));
-		print_elig($res,$X12info,$segTer,$compEleSep);
-		exit; 
-	}
+// Get the Providers information
+$providers = getUsernames();
+
+//Get the x12 partners information
+$clearinghouses = getX12Partner();
+
+
+if (isset($_POST['form_savefile']) && !empty($_POST['form_savefile']) && $res) {
+    header('Content-Type: text/plain');
+    header(sprintf('Content-Disposition: attachment; filename="elig-270..%s.%s.txt"',
+        $from_date,
+        $to_date
+    ));
+    print_elig($res, $X12info, $segTer, $compEleSep);
+    exit;
+}
 ?>
 
 <html>
 
-	<head>
+<head>
 
-		<?php html_header_show();?>
+    <?php html_header_show(); ?>
 
-		<title><?php echo htmlspecialchars( xl('Eligibility 270 Inquiry Batch'), ENT_NOQUOTES); ?></title>
+    <title><?php echo htmlspecialchars(xl('Eligibility 270 Inquiry Batch'), ENT_NOQUOTES); ?></title>
+    <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+    <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 
-		<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
+    <link rel=stylesheet href="<?php echo $css_header; ?>" type="text/css">
 
-		<link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
+    <style type="text/css">
 
-		<style type="text/css">
+        /* specifically include & exclude from printing */
+        @media print {
+            #report_parameters {
+                visibility: hidden;
+                display: none;
+            }
 
-			/* specifically include & exclude from printing */
-			@media print {
-				#report_parameters {
-					visibility: hidden;
-					display: none;
-				}
-				#report_parameters_daterange {
-					visibility: visible;
-					display: inline;
-				}
-				#report_results table {
-				   margin-top: 0px;
-				}
-			}
+            #report_parameters_daterange {
+                visibility: visible;
+                display: inline;
+            }
 
-			/* specifically exclude some from the screen */
-			@media screen {
-				#report_parameters_daterange {
-					visibility: hidden;
-					display: none;
-				}
-			}
+            #report_results table {
+                margin-top: 0px;
+            }
+        }
 
-		</style>
+        /* specifically exclude some from the screen */
+        @media screen {
+            #report_parameters_daterange {
+                visibility: hidden;
+                display: none;
+            }
+        }
 
-		<script type="text/javascript" src="../../library/textformat.js"></script>
-		<script type="text/javascript" src="../../library/dialog.js"></script>
-		<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-		<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-		<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-		<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+    </style>
 
-		<script type="text/javascript">
+    <script type="text/javascript" src="../../library/textformat.js"></script>
+    <script type="text/javascript" src="../../library/dialog.js"></script>
+    <script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
+    <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
+    <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
+    <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
-			var mypcc = "<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QUOTES); ?>";
-			var stringDelete = "<?php echo htmlspecialchars( xl('Do you want to remove this record?'), ENT_QUOTES); ?>?";
-			var stringBatch	 = "<?php echo htmlspecialchars( xl('Please select X12 partner, required to create the 270 batch'), ENT_QUOTES); ?>";
+    <script type="text/javascript">
 
-			// for form refresh 
+        var mypcc = "<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QUOTES); ?>";
+        var stringDelete = "<?php echo htmlspecialchars( xl('Do you want to remove this record?'), ENT_QUOTES); ?>?";
+        var stringBatch = "<?php echo htmlspecialchars( xl('Please select X12 partner, required to create the 270 batch'), ENT_QUOTES); ?>";
 
-			function refreshme() {
-				document.forms[0].submit();
-			}
+        // for form refresh
 
-			//  To delete the row from the reports section 
-			function deletetherow(id){
-				var suredelete = confirm(stringDelete);
-				if(suredelete == true){
-					document.getElementById('PR'+id).style.display="none";
-					if(document.getElementById('removedrows').value == ""){
-						document.getElementById('removedrows').value = "'" + id + "'"; 
-					}else{
-						document.getElementById('removedrows').value = document.getElementById('removedrows').value + ",'" + id + "'"; 
-					
-					}
-				}
-				
-			}
+        function refreshme() {
+            document.forms[0].submit();
+        }
 
-			//  To validate the batch file generation - for the required field [clearing house/x12 partner] 
-			function validate_batch()
-			{
-				if(document.getElementById('form_x12').value=='')
-				{
-					alert(stringBatch);
-					return false;
-				}
-				else
-				{
-					document.getElementById('form_savefile').value = "true";
-					document.theform.submit();
-					
-				}
+        //  To delete the row from the reports section
+        function deletetherow(id) {
+            var suredelete = confirm(stringDelete);
+            if (suredelete == true) {
+                document.getElementById('PR' + id).style.display = "none";
+                if (document.getElementById('removedrows').value == "") {
+                    document.getElementById('removedrows').value = "'" + id + "'";
+                } else {
+                    document.getElementById('removedrows').value = document.getElementById('removedrows').value + ",'" + id + "'";
+
+                }
+            }
+
+        }
+
+        //  To validate the batch file generation - for the required field [clearing house/x12 partner]
+        function validate_batch() {
+            if (document.getElementById('form_x12').value == '') {
+                alert(stringBatch);
+                return false;
+            }
+            else {
+                document.getElementById('form_savefile').value = "true";
+                document.theform.submit();
+
+            }
 
 
-			}
+        }
 
-			// To Clear the hidden input field 
+        // To Clear the hidden input field
 
-			function validate_policy()
-			{
-				document.getElementById('removedrows').value = "";
-				document.getElementById('form_savefile').value = "";
-				return true;
-			}
+        function validate_policy() {
+            document.getElementById('removedrows').value = "";
+            document.getElementById('form_savefile').value = "";
+            return true;
+        }
 
-			// To toggle the clearing house empty validation message 
-			function toggleMessage(id,x12){
-				
-				var spanstyle = new String();
+        // To toggle the clearing house empty validation message
+        function toggleMessage(id, x12) {
 
-				spanstyle		= document.getElementById(id).style.visibility;
-				selectoption	= document.getElementById(x12).value;
-				
-				if(selectoption != '')
-				{
-					document.getElementById(id).style.visibility = "hidden";
-				}
-				else
-				{
-					document.getElementById(id).style.visibility = "visible";
-					document.getElementById(id).style.display = "inline";
-				}
-				return true;
+            var spanstyle = new String();
 
-			}
+            spanstyle = document.getElementById(id).style.visibility;
+            selectoption = document.getElementById(x12).value;
 
-		</script>
+            if (selectoption != '') {
+                document.getElementById(id).style.visibility = "hidden";
+            }
+            else {
+                document.getElementById(id).style.visibility = "visible";
+                document.getElementById(id).style.display = "inline";
+            }
+            return true;
 
-	</head>
-	<body class="body_top">
+        }
 
-		<!-- Required for the popup date selectors -->
-		<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
+    </script>
 
-		<span class='title'><?php echo htmlspecialchars( xl('Report'), ENT_NOQUOTES); ?> - <?php echo htmlspecialchars( xl('Eligibility 270 Inquiry Batch'), ENT_NOQUOTES); ?></span>
+</head>
+<body class="body_top">
 
-		<div id="report_parameters_daterange">
-			<?php echo htmlspecialchars( date("d F Y", strtotime($form_from_date)), ENT_NOQUOTES) .
-				" &nbsp; " . htmlspecialchars( xl('to'), ENT_NOQUOTES) . 
-				"&nbsp; ". htmlspecialchars( date("d F Y", strtotime($form_to_date)), ENT_NOQUOTES); ?>
-		</div>
+<!-- Required for the popup date selectors -->
+<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-		<form method='post' name='theform' id='theform' action='edi_270.php' onsubmit="return top.restoreSession()">
-			<input type="hidden" name="removedrows" id="removedrows" value="">
-			<div id="report_parameters">
-				<table>
-					<tr>
-						<td width='550px'>
-							<div style='float:left'>
-								<table class='text'>
-									<tr>
-										<td class='label'>
-										   <?php xl('From','e'); ?>:
-										</td>
-										<td>
-										   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo htmlspecialchars( $from_date, ENT_QUOTES) ?>' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-										   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-											id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-											title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
-										</td>
-										<td class='label'>
-										   <?php echo htmlspecialchars( xl('To'), ENT_NOQUOTES); ?>:
-										</td>
-										<td>
-										   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo htmlspecialchars( $to_date, ENT_QUOTES) ?>'
-											onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-										   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-											id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-											title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
-										</td>
-										<td>&nbsp;</td>
-									</tr>
-									
-									<tr>
-										<td class='label'>
-											<?php echo htmlspecialchars( xl('Facility'), ENT_NOQUOTES); ?>:
-										</td>
-										<td>
-											<?php dropdown_facility($form_facility,'form_facility',false);	?>
-										</td>
-										<td class='label'>
-										   <?php echo htmlspecialchars( xl('Provider'), ENT_NOQUOTES); ?>:
-										</td>
-										<td>
-											<select name='form_users' onchange='form.submit();'>
-												<option value=''>-- <?php echo htmlspecialchars( xl('All'), ENT_NOQUOTES); ?> --</option>
-												<?php foreach($providers as $user): ?>
-													<option value='<?php echo htmlspecialchars( $user['id'], ENT_QUOTES); ?>'
-														<?php echo $form_provider == $user['id'] ? " selected " : null; ?>
-													><?php echo htmlspecialchars( $user['fname']." ".$user['lname'], ENT_NOQUOTES); ?></option>
-												<?php endforeach; ?>
-											</select>
-										</td>
-										<td>&nbsp;
-										</td>
-									</tr>
-									
-									<tr>
-										<td class='label'>
-											<?php echo htmlspecialchars( xl('X12 Partner'), ENT_NOQUOTES); ?>:
-										</td>
-										<td colspan='5'>
-											<select name='form_x12' id='form_x12' onchange='return toggleMessage("emptyVald","form_x12");' >
-														<option value=''>--<?php echo htmlspecialchars( xl('select'), ENT_NOQUOTES); ?>--</option>
-														<?php 
-															if(isset($clearinghouses) && !empty($clearinghouses))
-															{
-																foreach($clearinghouses as $clearinghouse): ?>
-																	<option value='<?php echo htmlspecialchars( $clearinghouse['id']."|".$clearinghouse['id_number']."|".$clearinghouse['x12_sender_id']."|".$clearinghouse['x12_receiver_id']."|".$clearinghouse['x12_version']."|".$clearinghouse['processing_format'], ENT_QUOTES); ?>'
-																		<?php echo $clearinghouse['id'] == $X12info[0] ? " selected " : null; ?>
-																	><?php echo htmlspecialchars( $clearinghouse['name'], ENT_NOQUOTES); ?></option>
-														<?php	endforeach; 
-															}
-															
-														?>
-												</select> 
-												<span id='emptyVald' style='color:red;font-size:12px;'> * <?php echo htmlspecialchars( xl('Clearing house info required for EDI 270 batch creation.'), ENT_NOQUOTES); ?></span>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</td>
-						<td align='left' valign='middle' height="100%">
-							<table style='border-left:1px solid; width:100%; height:100%' >
-								<tr>
-									<td>
-										<div style='margin-left:15px'>
-											<a href='#' class='css_button' onclick='validate_policy(); $("#theform").submit();'>
+<span class='title'><?php echo htmlspecialchars(xl('Report'), ENT_NOQUOTES); ?>
+    - <?php echo htmlspecialchars(xl('Eligibility 270 Inquiry Batch'), ENT_NOQUOTES); ?></span>
+
+<div id="report_parameters_daterange">
+    <?php echo htmlspecialchars(date("d F Y", strtotime($form_from_date)), ENT_NOQUOTES) .
+        " &nbsp; " . htmlspecialchars(xl('to'), ENT_NOQUOTES) .
+        "&nbsp; " . htmlspecialchars(date("d F Y", strtotime($form_to_date)), ENT_NOQUOTES); ?>
+</div>
+
+<form method='post' name='theform' id='theform' action='edi_270.php' onsubmit="return top.restoreSession()">
+    <input type="hidden" name="removedrows" id="removedrows" value="">
+
+    <div id="report_parameters">
+        <table>
+            <tr>
+                <td width='550px'>
+                    <div style='float:left'>
+                        <table class='text'>
+                            <tr>
+                                <td class='label'>
+                                    <?php xl('From', 'e'); ?>:
+                                </td>
+                                <td>
+                                    <input type='text' name='form_from_date' id="form_from_date" size='10'
+                                           value='<?php echo htmlspecialchars(oeFormatShortDate($from_date), ENT_QUOTES) ?>'>
+                                </td>
+                                <td class='label'>
+                                    <?php echo htmlspecialchars(xl('To'), ENT_NOQUOTES); ?>:
+                                </td>
+                                <td>
+                                    <input type='text' name='form_to_date' id="form_to_date" size='10'
+                                           value='<?php echo htmlspecialchars(oeFormatShortDate($to_date), ENT_QUOTES) ?>'>
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td class='label'>
+                                    <?php echo htmlspecialchars(xl('Facility'), ENT_NOQUOTES); ?>:
+                                </td>
+                                <td>
+                                    <?php dropdown_facility($form_facility, 'form_facility', false); ?>
+                                </td>
+                                <td class='label'>
+                                    <?php echo htmlspecialchars(xl('Provider'), ENT_NOQUOTES); ?>:
+                                </td>
+                                <td>
+                                    <select name='form_users' onchange='form.submit();'>
+                                        <option value=''>-- <?php echo htmlspecialchars(xl('All'), ENT_NOQUOTES); ?>
+                                            --
+                                        </option>
+                                        <?php foreach ($providers as $user): ?>
+                                            <option value='<?php echo htmlspecialchars($user['id'], ENT_QUOTES); ?>'
+                                                <?php echo $form_provider == $user['id'] ? " selected " : null; ?>
+                                            ><?php echo htmlspecialchars($user['fname'] . " " . $user['lname'], ENT_NOQUOTES); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                                <td>&nbsp;
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class='label'>
+                                    <?php echo htmlspecialchars(xl('X12 Partner'), ENT_NOQUOTES); ?>:
+                                </td>
+                                <td colspan='5'>
+                                    <select name='form_x12' id='form_x12'
+                                            onchange='return toggleMessage("emptyVald","form_x12");'>
+                                        <option value=''>--<?php echo htmlspecialchars(xl('select'), ENT_NOQUOTES); ?>
+                                            --
+                                        </option>
+                                        <?php
+                                        if (isset($clearinghouses) && !empty($clearinghouses)) {
+                                            foreach ($clearinghouses as $clearinghouse): ?>
+                                                <option
+                                                    value='<?php echo htmlspecialchars($clearinghouse['id'] . "|" . $clearinghouse['id_number'] . "|" . $clearinghouse['x12_sender_id'] . "|" . $clearinghouse['x12_receiver_id'] . "|" . $clearinghouse['x12_version'] . "|" . $clearinghouse['processing_format'], ENT_QUOTES); ?>'
+                                                    <?php echo $clearinghouse['id'] == $X12info[0] ? " selected " : null; ?>
+                                                ><?php echo htmlspecialchars($clearinghouse['name'], ENT_NOQUOTES); ?></option>
+                                            <?php endforeach;
+                                        }
+
+                                        ?>
+                                    </select>
+                                    <span id='emptyVald'
+                                          style='color:red;font-size:12px;'> * <?php echo htmlspecialchars(xl('Clearing house info required for EDI 270 batch creation.'), ENT_NOQUOTES); ?></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td align='left' valign='middle' height="100%">
+                    <table style='border-left:1px solid; width:100%; height:100%'>
+                        <tr>
+                            <td>
+                                <div style='margin-left:15px'>
+                                    <a href='#' class='css_button' onclick='validate_policy(); $("#theform").submit();'>
 											<span>
-												<?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
+												<?php echo htmlspecialchars(xl('Refresh'), ENT_NOQUOTES); ?>
 											</span>
-											</a>
-																						
-											<a href='#' class='css_button' onclick='return validate_batch();'>
+                                    </a>
+
+                                    <a href='#' class='css_button' onclick='return validate_batch();'>
 												<span>
-													<?php echo htmlspecialchars( xl('Create batch'), ENT_NOQUOTES); ?>
-													<input type='hidden' name='form_savefile' id='form_savefile' value=''></input>
+													<?php echo htmlspecialchars(xl('Create batch'), ENT_NOQUOTES); ?>
+                                                    <input type='hidden' name='form_savefile' id='form_savefile'
+                                                           value=''></input>
 												</span>
-											</a>
-											
-										</div>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-			</div> 
+                                    </a>
 
-			<div class='text'>
-				<?php echo htmlspecialchars( xl('Please choose date range criteria above, and click Refresh to view results.'), ENT_NOQUOTES); ?>
-			</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-		</form>
+    <div class='text'>
+        <?php echo htmlspecialchars(xl('Please choose date range criteria above, and click Refresh to view results.'), ENT_NOQUOTES); ?>
+    </div>
 
-		<?php
-			if ($res){
-				show_elig($res,$X12info,$segTer,$compEleSep);
-			}
-		?>
-	</body>
+</form>
 
-	<script language='JavaScript'>
-		Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
-		Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
-		<?php if ($alertmsg) { echo " alert('$alertmsg');\n"; } ?>
-	</script>
+<?php
+if ($res) {
+    show_elig($res, $X12info, $segTer, $compEleSep);
+}
+?>
+</body>
+
+<script language='JavaScript'>
+    <?php if ($alertmsg) { echo " alert('$alertmsg');\n"; } ?>
+</script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
+</script>
 
 </html>

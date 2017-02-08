@@ -5,6 +5,10 @@ include_once("../globals.php");
 include_once("../../library/patient.inc");
 include_once("../../library/acl.inc");
 
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 // Might want something different here.
 //
 if (! acl_check('acct', 'rep')) die("Unauthorized access.");
@@ -92,16 +96,13 @@ else { // not export
 <head>
 <?php html_header_show(); ?>
 <title><?php echo $report_title; ?></title>
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <style type="text/css">
  body       { font-family:sans-serif; font-size:10pt; font-weight:normal }
  .dehead    { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:bold }
  .detail    { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:normal }
 </style>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script language="JavaScript">
  var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 </script>
@@ -140,11 +141,8 @@ else { // not export
   </td>
   <td colspan='2' class='detail' nowrap>
    <?php xl('Date','e'); ?>
-   <input type='text' name='form_from_date' id='form_from_date' size='10' value='<?php echo $from_date ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='Report date yyyy-mm-dd' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>' />
+   <input type='text' name='form_from_date' id='form_from_date' size='10'
+          value='<?php echo htmlspecialchars(oeFormatShortDate($from_date)) ?>'/>
   </td>
   <td valign='top' class='dehead' nowrap>
    <?php xl('To','e'); ?>:
@@ -336,11 +334,21 @@ if ($form_output != 3) {
 </center>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
 <?php if ($form_output == 2) { ?>
  var win = top.printLogPrint ? top : opener.top;
  win.printLogPrint(window);
 <?php } ?>
+</script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+  $(function() {
+    $("#form_from_date").datetimepicker({
+      timepicker: false,
+      format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
+  });
 </script>
 
 </body>

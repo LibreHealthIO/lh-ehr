@@ -2,6 +2,7 @@
 require_once (dirname(__FILE__) . "/../sql.inc");
 require_once (dirname(__FILE__) . "/../lists.inc");
 require_once (dirname(__FILE__) . "/../formdata.inc.php");
+require_once (dirname(__FILE__) . "/../formatting.inc.php");
 require_once("ORDataObject.class.php");
 require_once("Patient.class.php");
 require_once("Person.class.php");
@@ -629,6 +630,14 @@ class Prescription extends ORDataObject {
         while ($row = sqlFetchArray($results) ) {
             $prescriptions[] = new Prescription($row['id']);
         }
+
+        foreach ($prescriptions as $prescription) {
+            $prescription->date_added    = date(DateFormatRead(true), strtotime($prescription->date_added));
+            $prescription->date_modified = date(DateFormatRead(true), strtotime($prescription->date_modified));
+            $prescription->start_date    = date(DateFormatRead(true), strtotime($prescription->start_date));
+        }
+
+
         return $prescriptions;
     }
     

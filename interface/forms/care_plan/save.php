@@ -36,6 +36,7 @@ include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 include_once("$srcdir/forms.inc");
 require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/formatting.inc.php");
 
 if (!$encounter) { // comes from globals.php
     die(xlt("Internal error: we do not seem to be in an encounter!"));
@@ -78,7 +79,7 @@ if (!empty($count)) {
             code       = '" . add_escape_custom($code_val) . "',
             codetext   = '" . add_escape_custom($codetext_val) . "',
             description= '" . add_escape_custom($description_val) . "',
-            date       =  '" . add_escape_custom($code_date[$key]) . "'";
+            date       =  '" . add_escape_custom(prepareDateBeforeSave($code_date[$key])) . "'";
         sqlInsert("INSERT INTO form_care_plan SET $sets");
     endforeach;
 }

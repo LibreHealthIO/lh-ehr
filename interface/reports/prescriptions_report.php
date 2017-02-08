@@ -18,8 +18,12 @@
  require_once("$srcdir/formatting.inc.php");
  require_once "$srcdir/formdata.inc.php";
 
- $form_from_date  = fixDate($_POST['form_from_date'], date('Y-01-01'));
- $form_to_date    = fixDate($_POST['form_to_date']  , date('Y-m-d'));
+ /** Current format date */
+ $DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
+ $from_date  = fixDate($_POST['form_from_date'], date('Y-m-d'));
+ $to_date    = fixDate($_POST['form_to_date'], date('Y-m-d'));
  $form_patient_id = trim($_POST['form_patient_id']);
  $form_drug_name  = trim($_POST['form_drug_name']);
  $form_lot_number = trim($_POST['form_lot_number']);
@@ -29,6 +33,7 @@
 <head>
 <?php html_header_show();?>
 <title><?php xl('Prescriptions and Dispensations','e'); ?></title>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
@@ -88,7 +93,8 @@
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Prescriptions and Dispensations','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+<?= date("d F Y", strtotime(oeFormatDateForPrintReport($form_from_date)))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($form_to_date))); ?>
 </div>
 
 <form name='theform' id='theform' method='post' action='prescriptions_report.php'>
@@ -113,21 +119,13 @@
 			   <?php xl('From','e'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>'
-				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php xl('Click here to choose a date','e'); ?>'>
+			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>' title='yyyy-mm-dd'>
 			</td>
 			<td class='label'>
 			   <?php xl('To','e'); ?>:
 			</td>
 			<td>
-			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>'
-				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php xl('Click here to choose a date','e'); ?>'>
+			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>' title='yyyy-mm-dd'>
 			</td>
 		</tr>
 		<tr>
@@ -208,8 +206,8 @@
  <tbody>
 <?php
  if ($_POST['form_refresh']) {
-  $where = "r.date_modified >= '$form_from_date' AND " .
-   "r.date_modified <= '$form_to_date'";
+  $where = "r.date_modified >= '" . prepareDateBeforeSave($form_from_date) . "' AND " .
+   "r.date_modified <= '" . prepareDateBeforeSave($form_to_date) . "'";
   //if ($form_patient_id) $where .= " AND r.patient_id = '$form_patient_id'";
   if ($form_patient_id) $where .= " AND p.pid = '$form_patient_id'";
   if ($form_drug_name ) $where .= " AND (d.name LIKE '$form_drug_name' OR r.drug LIKE '$form_drug_name')";
@@ -338,13 +336,19 @@
 </form>
 </body>
 
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </html>

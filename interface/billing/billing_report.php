@@ -56,6 +56,8 @@ $daysheet = false;
 $daysheet_total = false;
 $provider_run = false;
 
+$DateFormat = DateFormatRead();
+
 if ($GLOBALS['use_custom_daysheet'] != 0) { 
   $daysheet = true;
   if ($GLOBALS['daysheet_provider_totals'] == 1) {
@@ -361,7 +363,9 @@ function MarkAsCleared(Type)
 <!-- ================================================== -->
 <!-- =============Included for Insurance ajax criteria==== -->
 <!-- ================================================== -->
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <style>
@@ -396,12 +400,8 @@ document.onclick=TakeActionOnHide;
 
 <form name='the_form' method='post' action='billing_report.php' onsubmit='return top.restoreSession()' style="display:inline">
 
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language='JavaScript'>
  var mypcc = '1';
 </script>
@@ -479,8 +479,8 @@ if(!isset($_REQUEST['mode']))//default case
   $_REQUEST['final_this_page_criteria_text'][1]=xl("Billing Status = Unbilled");
   
   $_REQUEST['date_master_criteria_form_encounter_date']="today";
-  $_REQUEST['master_from_date_form_encounter_date']=date("Y-m-d");
-  $_REQUEST['master_to_date_form_encounter_date']=date("Y-m-d");
+  $_REQUEST['master_from_date_form_encounter_date']=date($DateFormat);
+  $_REQUEST['master_to_date_form_encounter_date']=date($DateFormat);
   
   $_REQUEST['radio_billing_billed']=0;
  

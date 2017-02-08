@@ -49,22 +49,25 @@ global $ignoreAuth;
  require_once("$srcdir/edi.inc");
  include_once("$srcdir/lists.inc");
 
+/** Current format of date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 ?>
 <html>
 <head>
 <title><?php echo xlt('Patient Information'); ?></title>
 <?php html_header_show(); ?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <link rel="stylesheet" type="text/css" href="<?php echo $web_root; ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="<?php echo $web_root; ?>/library/dynarch_calendar.css">
+
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/js/common.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+<script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery.datetimepicker.full.min.js"></script>
 <link rel="stylesheet" href="css/base.css" type="text/css"/>
 <link rel="stylesheet" href="css/tables.css" type="text/css"/>
 <script type="text/javascript" language="JavaScript">
@@ -433,11 +436,13 @@ $(document).ready(function(){
                  <input type='text' size='10' name='Start' id='Start'
                  onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
                  title='<?php echo xla('yyyy-mm-dd'); ?>' />
-                 <img src='../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                 id='img_start' border='0' alt='[?]' style='cursor:pointer'
-                 title='<?php echo xla('Click here to choose a date'); ?>' >
                  <script LANGUAGE="JavaScript">
-                  Calendar.setup({inputField:"Start", ifFormat:"%Y-%m-%d", button:"img_start"});
+                     $(function() {
+                         $("#Start").datetimepicker({
+                             timepicker: false,
+                             format: "<?= $DateFormat; ?>"
+                         });
+                     });
                  </script>
                 </td>
                 <td>
@@ -448,12 +453,15 @@ $(document).ready(function(){
                  <input type='text' size='10' name='End' id='End'
                  onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
                  title='<?php echo xla('yyyy-mm-dd'); ?>' />
-                 <img src='../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                 id='img_end' border='0' alt='[?]' style='cursor:pointer'
-                 title='<?php echo xla('Click here to choose a date'); ?>' >
-                 <script LANGUAGE="JavaScript">
-                  Calendar.setup({inputField:"End", ifFormat:"%Y-%m-%d", button:"img_end"});
-                 </script>
+                <script LANGUAGE="JavaScript">
+                    $(function() {
+                        $("#End").datetimepicker({
+                            timepicker: false,
+                            format: "<?= $DateFormat; ?>"
+                        });
+                        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+                    });
+                </script>
                 </td>
                </tr>
               </table>

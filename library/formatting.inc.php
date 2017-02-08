@@ -17,6 +17,41 @@ function oeFormatMoney($amount, $symbol=false) {
   return $s;
 }
 
+function oeFormatDateForPrintReport($date)
+{
+    if ($date) {
+        $dmy = preg_split("'[/.-]'", $date);
+        if ($GLOBALS['date_display_format'] == 2) {
+            $date = sprintf("%02u-%02u-%04u", $dmy[0], $dmy[1], $dmy[2]);
+        }
+        return $date;
+    }
+}
+
+function prepareDateBeforeSave($date, $withTime = false)
+{
+    if (!$withTime) {
+        $dmy = preg_split("'[/.-]'", $date);
+        if ($GLOBALS['date_display_format'] == 1) {
+            return sprintf("%04u-%02u-%02u", $dmy[2], $dmy[0], $dmy[1]);
+        } elseif ($GLOBALS['date_display_format'] == 2) {
+            return sprintf("%04u-%02u-%02u", $dmy[2], $dmy[1], $dmy[0]);
+        } else {
+            return $date;
+        }
+    } else {
+        $dmy = preg_split("'[/.: -]'", $date);
+        if ($GLOBALS['date_display_format'] == 1) {
+            return sprintf("%04u-%02u-%02u %02u:%02u:%02u", $dmy[2], $dmy[0], $dmy[1], $dmy[3], $dmy[4], $dmy[5]);
+        } elseif ($GLOBALS['date_display_format'] == 2) {
+            return sprintf("%04u-%02u-%02u %02u:%02u:%02u", $dmy[2], $dmy[1], $dmy[0], $dmy[3], $dmy[4], $dmy[5]);
+        } else {
+            return $date;
+        }
+    }
+
+}
+
 function oeFormatShortDate($date='today') {
   if ($date === 'today') $date = date('Y-m-d');
   if (strlen($date) == 10) {
@@ -25,6 +60,18 @@ function oeFormatShortDate($date='today') {
       $date = substr($date, 5, 2) . '/' . substr($date, 8, 2) . '/' . substr($date, 0, 4);
     else if ($GLOBALS['date_display_format'] == 2) // dd/mm/yyyy
       $date = substr($date, 8, 2) . '/' . substr($date, 5, 2) . '/' . substr($date, 0, 4);
+  }
+  return $date;
+}
+
+function oeFormatDateTime($date='today') {
+  if ($date === 'today') $date = date('Y-m-d H:i:s');
+  if (strlen($date) == 19) {
+    // assume input is yyyy-mm-dd hh:mm:ss
+    if ($GLOBALS['date_display_format'] == 1)      // mm/dd/yyyy hh:mm:ss
+      $date = substr($date, 5, 2) . '/' . substr($date, 8, 2) . '/' . substr($date, 0, 4) . substr($date, 10, 9);
+    else if ($GLOBALS['date_display_format'] == 2) // dd/mm/yyyy hh:mm:ss
+      $date = substr($date, 8, 2) . '/' . substr($date, 5, 2) . '/' . substr($date, 0, 4) . substr($date, 10, 9);
   }
   return $date;
 }
@@ -72,23 +119,219 @@ function oeFormatClientID($id) {
   return $id;
 }
 //----------------------------------------------------
-function DateFormatRead()
- {//For the 3 supported date format,the javascript code also should be twicked to display the date as per it.
-  //Output of this function is given to 'ifFormat' parameter of the 'Calendar.setup'.
-  //This will show the date as per the global settings.
-	if($GLOBALS['date_display_format']==0)
-	 {
-	  return "%Y-%m-%d";
-	 }
-	else if($GLOBALS['date_display_format']==1)
-	 {
-	  return "%m/%d/%Y";
-	 }
-	else if($GLOBALS['date_display_format']==2)
-	 {
-	  return "%d/%m/%Y";
-	 }
+/**
+ * Ger format of date according with global configuration
+ *
+ * @param bool $withTime
+ * @return string
+ */
+function DateFormatRead($withTime = false)
+ {
+     // For the 3 supported date format,the javascript code also should be twicked to display the date as per it.
+     // Output of this function is given to 'ifFormat' parameter of the 'Calendar.setup'.
+     // This will show the date as per the global settings.
+     if ($GLOBALS['date_display_format'] == 0) {
+         return ($withTime) ? "Y-m-d H:i" : "Y-m-d";
+     } else if ($GLOBALS['date_display_format'] == 1) {
+         return ($withTime) ? "m/d/Y H:i" : "m/d/Y";
+     } else if ($GLOBALS['date_display_format'] == 2) {
+         return ($withTime) ? "d/m/Y H:i" : "d/m/Y";
+     }
  }
+
+function getLocaleCodeForDisplayLanguage($name){
+    if(preg_match('/\s/', $name)){
+        $name = substr($name, 0, strrpos($name, ' '));
+    }
+    $languageCodes = array(
+        "aa" => "Afar",
+        "ab" => "Abkhazian",
+        "ae" => "Avestan",
+        "af" => "Afrikaans",
+        "ak" => "Akan",
+        "am" => "Amharic",
+        "an" => "Aragonese",
+        "ar" => "Arabic",
+        "as" => "Assamese",
+        "av" => "Avaric",
+        "ay" => "Aymara",
+        "az" => "Azerbaijani",
+        "ba" => "Bashkir",
+        "be" => "Belarusian",
+        "bg" => "Bulgarian",
+        "bh" => "Bihari",
+        "bi" => "Bislama",
+        "bm" => "Bambara",
+        "bn" => "Bengali",
+        "bo" => "Tibetan",
+        "br" => "Breton",
+        "bs" => "Bosnian",
+        "ca" => "Catalan",
+        "ce" => "Chechen",
+        "ch" => "Chamorro",
+        "co" => "Corsican",
+        "cr" => "Cree",
+        "cs" => "Czech",
+        "cu" => "Church Slavic",
+        "cv" => "Chuvash",
+        "cy" => "Welsh",
+        "da" => "Danish",
+        "de" => "German",
+        "dv" => "Divehi",
+        "dz" => "Dzongkha",
+        "ee" => "Ewe",
+        "el" => "Greek",
+        "en" => "English",
+        "eo" => "Esperanto",
+        "es" => "Spanish",
+        "et" => "Estonian",
+        "eu" => "Basque",
+        "fa" => "Persian",
+        "ff" => "Fulah",
+        "fi" => "Finnish",
+        "fj" => "Fijian",
+        "fo" => "Faroese",
+        "fr" => "French",
+        "fy" => "Western Frisian",
+        "ga" => "Irish",
+        "gd" => "Scottish Gaelic",
+        "gl" => "Galician",
+        "gn" => "Guarani",
+        "gu" => "Gujarati",
+        "gv" => "Manx",
+        "ha" => "Hausa",
+        "he" => "Hebrew",
+        "hi" => "Hindi",
+        "ho" => "Hiri Motu",
+        "hr" => "Croatian",
+        "ht" => "Haitian",
+        "hu" => "Hungarian",
+        "hy" => "Armenian",
+        "hz" => "Herero",
+        "ia" => "Interlingua (International Auxiliary Language Association)",
+        "id" => "Indonesian",
+        "ie" => "Interlingue",
+        "ig" => "Igbo",
+        "ii" => "Sichuan Yi",
+        "ik" => "Inupiaq",
+        "io" => "Ido",
+        "is" => "Icelandic",
+        "it" => "Italian",
+        "iu" => "Inuktitut",
+        "ja" => "Japanese",
+        "jv" => "Javanese",
+        "ka" => "Georgian",
+        "kg" => "Kongo",
+        "ki" => "Kikuyu",
+        "kj" => "Kwanyama",
+        "kk" => "Kazakh",
+        "kl" => "Kalaallisut",
+        "km" => "Khmer",
+        "kn" => "Kannada",
+        "ko" => "Korean",
+        "kr" => "Kanuri",
+        "ks" => "Kashmiri",
+        "ku" => "Kurdish",
+        "kv" => "Komi",
+        "kw" => "Cornish",
+        "ky" => "Kirghiz",
+        "la" => "Latin",
+        "lb" => "Luxembourgish",
+        "lg" => "Ganda",
+        "li" => "Limburgish",
+        "ln" => "Lingala",
+        "lo" => "Lao",
+        "lt" => "Lithuanian",
+        "lu" => "Luba-Katanga",
+        "lv" => "Latvian",
+        "mg" => "Malagasy",
+        "mh" => "Marshallese",
+        "mi" => "Maori",
+        "mk" => "Macedonian",
+        "ml" => "Malayalam",
+        "mn" => "Mongolian",
+        "mr" => "Marathi",
+        "ms" => "Malay",
+        "mt" => "Maltese",
+        "my" => "Burmese",
+        "na" => "Nauru",
+        "nb" => "Norwegian Bokmal",
+        "nd" => "North Ndebele",
+        "ne" => "Nepali",
+        "ng" => "Ndonga",
+        "nl" => "Dutch",
+        "nn" => "Norwegian Nynorsk",
+        "no" => "Norwegian",
+        "nr" => "South Ndebele",
+        "nv" => "Navajo",
+        "ny" => "Chichewa",
+        "oc" => "Occitan",
+        "oj" => "Ojibwa",
+        "om" => "Oromo",
+        "or" => "Oriya",
+        "os" => "Ossetian",
+        "pa" => "Panjabi",
+        "pi" => "Pali",
+        "pl" => "Polish",
+        "ps" => "Pashto",
+        "pt" => "Portuguese",
+        "qu" => "Quechua",
+        "rm" => "Raeto-Romance",
+        "rn" => "Kirundi",
+        "ro" => "Romanian",
+        "ru" => "Russian",
+        "rw" => "Kinyarwanda",
+        "sa" => "Sanskrit",
+        "sc" => "Sardinian",
+        "sd" => "Sindhi",
+        "se" => "Northern Sami",
+        "sg" => "Sango",
+        "si" => "Sinhala",
+        "sk" => "Slovak",
+        "sl" => "Slovenian",
+        "sm" => "Samoan",
+        "sn" => "Shona",
+        "so" => "Somali",
+        "sq" => "Albanian",
+        "sr" => "Serbian",
+        "ss" => "Swati",
+        "st" => "Southern Sotho",
+        "su" => "Sundanese",
+        "sv" => "Swedish",
+        "sw" => "Swahili",
+        "ta" => "Tamil",
+        "te" => "Telugu",
+        "tg" => "Tajik",
+        "th" => "Thai",
+        "ti" => "Tigrinya",
+        "tk" => "Turkmen",
+        "tl" => "Tagalog",
+        "tn" => "Tswana",
+        "to" => "Tonga",
+        "tr" => "Turkish",
+        "ts" => "Tsonga",
+        "tt" => "Tatar",
+        "tw" => "Twi",
+        "ty" => "Tahitian",
+        "ug" => "Uighur",
+        "uk" => "Ukrainian",
+        "ur" => "Urdu",
+        "uz" => "Uzbek",
+        "ve" => "Venda",
+        "vi" => "Vietnamese",
+        "vo" => "Volapuk",
+        "wa" => "Walloon",
+        "wo" => "Wolof",
+        "xh" => "Xhosa",
+        "yi" => "Yiddish",
+        "yo" => "Yoruba",
+        "za" => "Zhuang",
+        "zh" => "Chinese",
+        "zu" => "Zulu"
+    );
+    return array_search($name, $languageCodes);
+}
+
 function DateToYYYYMMDD($DateValue)
  {//With the help of function DateFormatRead() now the user can enter date is any of the 3 formats depending upon the global setting.
  //But in database the date can be stored only in the yyyy-mm-dd format.

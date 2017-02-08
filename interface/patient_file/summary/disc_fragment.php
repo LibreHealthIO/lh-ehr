@@ -27,6 +27,7 @@ $fake_register_globals=false;
 
 require_once("../../globals.php");
 require_once("$srcdir/sql.inc");
+require_once("$srcdir/formatting.inc.php");
 
 ?>
 <?php
@@ -78,7 +79,7 @@ if ($result != null){
 			echo "</td>";
 			echo "<td>".text($iter['user_fullname'])."</td>";
 			echo "<td  valign='top'class='text'>";
-			echo htmlspecialchars($iter{"date"}." (".xl('Recipient').":".$iter{"recipient"}.")",ENT_NOQUOTES);
+			echo htmlspecialchars(date(DateFormatRead(true), strtotime($iter{"date"}))." (".xl('Recipient').":".$iter{"recipient"}.")",ENT_NOQUOTES);
 	                echo " ".$description;
 			echo "</td>";
 		echo "</tr>";

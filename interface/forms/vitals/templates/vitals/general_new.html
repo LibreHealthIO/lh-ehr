@@ -2,13 +2,11 @@
 <head>
 {php}html_header_show();{/php}
 
-<style type="text/css">@import url({$FORM_ACTION}/library/dynarch_calendar.css);</style>
+<link rel="stylesheet" href="{$FORM_ACTION}/library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="{$FORM_ACTION}/library/dialog.js"></script>
 <script type="text/javascript" src="{$FORM_ACTION}/library/textformat.js"></script>
-<script type="text/javascript" src="{$FORM_ACTION}/library/dynarch_calendar.js"></script>
-{php} include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); {/php}
-<script type="text/javascript" src="{$FORM_ACTION}/library/dynarch_calendar_setup.js"></script>
-
+<script type="text/javascript" src="{$FORM_ACTION}/library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="{$FORM_ACTION}/library/js/jquery.datetimepicker.full.min.js"></script>
 <script type="text/javascript">
 var mypcc = '{php} echo $GLOBALS['phone_country_code'] {/php}';
 {literal}
@@ -126,10 +124,7 @@ td,th {
 	<tr><th align="left">{xl t="Name"}</th><th align="left">{xl t="Unit"}</th>
 	<th class='currentvalues' title='{xl t='Date and time of this observation'}'>
     <input type='text' size='14' name='date' id='date'
-     value='{$vitals->get_date()|date_format:"%Y-%m-%d %H:%M"}'
-     onkeyup='datekeyup(this,mypcc,true)' onblur='dateblur(this,mypcc,true)' />
-    <img src='{$FORM_ACTION}/interface/pic/show_calendar.gif' id='img_date' align='absbottom'
-     width='24' height='22' border='0' alt='[?]' style='cursor:pointer' />
+     value='{$vitals->get_date()|date_format:"%Y-%m-%d %H:%M"}'/>
 </th>
 	{foreach item=result from=$results}
 		<th class='historicalvalues'>{$result.date|date_format:"%Y-%m-%d %H:%M"}</th>
@@ -551,9 +546,12 @@ function calculateBMI() {
         $("#BMI_input").val("");
     }
 }
-
-Calendar.setup({inputField:"date", ifFormat:"%Y-%m-%d %H:%M", button:"img_date", showsTime:true});
-
+$(function() {
+    $("#date").datetimepicker({
+        timepicker: true,
+        format: "Y-m-d H:i"
+    });
+});
 </script>
 {/literal}
 

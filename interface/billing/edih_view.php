@@ -31,6 +31,11 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 //
 //include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php");
 //
+
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -41,17 +46,12 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
     
     <link rel="stylesheet" href="<?php echo $css_header?>" type="text/css" />
-    <link rel="stylesheet" href="<?php echo $web_root?>/library/dynarch_calendar.css" type="text/css" />
+
 
     <link rel="stylesheet" href="<?php echo $web_root?>/library/css/jquery-ui-1.8.21.custom.css" type="text/css" />
     <!-- <link rel="stylesheet" href="<?php echo $web_root?>/library/css/jquery.dataTables.css" type="text/css" /> -->
     <link rel="stylesheet" href="<?php echo $web_root?>/library/css/edi_history.css" type="text/css" />
-
-    <script type="text/javascript" src="<?php echo $web_root?>/library/dynarch_calendar.js"></script>
-    <script type="text/javascript" src="<?php echo $web_root?>/library/dynarch_calendar_setup.js"></script>
     <script type="text/javascript" src="<?php echo $web_root?>/library/textformat.js"></script>
-    
-    <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 </head>
 <body>
 
@@ -147,18 +147,8 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
                         <!-- datekeyup(e, defcc, withtime)  dateblur(e, defcc, withtime) -->
                         <td align='left'>
 						   <input type='text' size='8' name='csv_date_start' id='caldte1' value='' title='yyyy-mm-dd Start Date' />
-                           <img src="<?php echo $web_root?>/interface/pic/show_calendar.gif" align='absbottom' width='24' height='22'
-                              id='csvdate1_cal' border='0' alt='[?]' style='cursor:pointer;cursor:hand' title='Start date'>
-                        
                            <input type='text' size='8' name='csv_date_end' id='caldte2' value='' title='yyyy-mm-dd End Date' />
-                           <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                              id='csvdate2_cal' border='0' alt='[?]' style='cursor:pointer;cursor:hand' title='End date'>
                         </td>
-                        
-                        <script type="text/javascript"> 
-                            Calendar.setup({inputField:"caldte1", ifFormat:"%Y-%m-%d", button:"csvdate1_cal"});
-                            Calendar.setup({inputField:"caldte2", ifFormat:"%Y-%m-%d", button:"csvdate2_cal"});
-                        </script>
                         <!--
 						<td align='left'>
 							<input id="dte1" type="text" size=10 name="csv_date_start" value="" />
@@ -331,7 +321,7 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 </div> 
 <!-- End tabs section -->
 <!-- the jquery.dataTables.min.js possibly should be moved to library/js ? -->
-<script src="<?php echo $web_root?>/library/js/jquery-1.7.2.min.js" type="text/javascript"></script> 
+<script src="<?php echo $web_root?>/library/js/jquery-1.7.2.min.js" type="text/javascript"></script>
 <script src="<?php echo $web_root?>/library/js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script> 
 <script src="<?php echo $web_root?>/library/js/datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script> 
 
@@ -584,5 +574,19 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 </script>     
 
 </body>
-
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+	$(function() {
+		$("#caldte1").datetimepicker({
+			timepicker: false,
+			format: "<?= $DateFormat; ?>"
+		});
+		$("#caldte2").datetimepicker({
+			timepicker: false,
+			format: "<?= $DateFormat; ?>"
+		});
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+	});
+</script>
 </html>
