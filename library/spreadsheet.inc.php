@@ -285,7 +285,7 @@ $num_virtual_cols = $num_used_cols ? $num_used_cols + 5 : 10;
 }
 </style>
 <script type="text/javascript" src="textformat.js"></script>
-<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 
 <script language="JavaScript">
  var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';

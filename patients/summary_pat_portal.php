@@ -64,7 +64,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/js/common.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery.datetimepicker.full.min.js"></script>

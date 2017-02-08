@@ -93,7 +93,7 @@ $communication = trim($_POST["communication"]);
 	</title>
 	<script type="text/javascript" src="../../library/overlib_mini.js"></script>
 	<script type="text/javascript" src="../../library/dialog.js"></script>
-	<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../../library/js/jquery-ui-1.8.21.custom.min.js"></script>
 	<script language="JavaScript">
 		var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';

@@ -321,7 +321,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 </div> 
 <!-- End tabs section -->
 <!-- the jquery.dataTables.min.js possibly should be moved to library/js ? -->
-<script src="<?php echo $web_root?>/library/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script src="<?php echo $web_root?>/library/js/jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="<?php echo $web_root?>/library/js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script> 
 <script src="<?php echo $web_root?>/library/js/datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script> 
 

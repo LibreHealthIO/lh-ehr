@@ -43,7 +43,7 @@ td { font-size:10pt; }
 </style>
 
 <script type="text/javascript" src="../../library/textformat.js"></script>
- <script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
+ <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script language="JavaScript">
  var mypcc = '<?php  echo $GLOBALS['phone_country_code'] ?>';
 </script>

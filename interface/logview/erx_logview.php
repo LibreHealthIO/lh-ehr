@@ -79,7 +79,7 @@ if($filename) {
 		<?php html_header_show(); ?>
 		<link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
 		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
-		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.9.1.min.js"></script>
 	</head>
 	<body class="body_top">
 		<form method="post">

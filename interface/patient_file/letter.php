@@ -319,7 +319,7 @@ while ($srow = sqlFetchArray($sres)) {
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/topdialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
