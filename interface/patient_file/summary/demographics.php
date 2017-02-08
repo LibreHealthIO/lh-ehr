@@ -201,7 +201,7 @@ font-size:10pt;
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 <script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="../../../library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.gritter.min.js"></script>

@@ -39,7 +39,7 @@ include_once("$srcdir/sql.inc");
     <link rel=stylesheet href="<?php echo $css_header; ?>" type="text/css">
     <link rel=stylesheet href="../themes/login.css" type="text/css">
 
-    <script language='JavaScript' src="../../library/js/jquery-1.4.3.min.js"></script>
+    <script language='JavaScript' src="../../library/js/jquery-1.9.1.min.js"></script>
     <script language='JavaScript'>
         function transmit_form() {
             document.forms[0].submit();
