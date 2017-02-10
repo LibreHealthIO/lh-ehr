@@ -1,4 +1,5 @@
 <?php
+// Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
 // Copyright (C) 2007-2014 Rod Roark <rod@sunsetsystems.com>
 // Copyright © 2010 by Andrew Moore <amoore@cpan.org>
 // Copyright © 2010 by "Boyd Stephen Smith Jr." <bss@iguanasuicide.net>
@@ -3159,5 +3160,32 @@ function lbf_current_value($frow, $formid, $encounter) {
   }
   return $currvalue;
 }
-
+# Generates a dropdown list for providers. This Code added by Terry Hill teryhill@librehealth.io
+# If you specify the $allprov it will list everyone that has an entry in the NPI field.
+function genProviderSelect($selname, $toptext, $default=0, $disabled=false, $allprov=false) 
+{
+  if($allprov == 1) {
+  $query = "SELECT id, lname, mname, fname FROM users WHERE " .
+    "( authorized = 1 OR npi != '' ) " .
+    "AND active = 1 " .
+    "ORDER BY lname, fname";
+  } else { 
+     $query = "SELECT id, lname, mname, fname FROM users WHERE " .
+    "authorized = 1 AND username != '' " .
+    "AND active = 1 " .
+    "ORDER BY lname, fname";
+  }
+  $res = sqlStatement($query);
+  echo "   <select name='" . attr($selname) . "'";
+  if ($disabled) echo " disabled";
+  echo ">\n";
+  echo "    <option value=''>" . text($toptext) . "\n";
+  while ($row = sqlFetchArray($res)) {
+    $provid = $row['id'];
+    echo "    <option value='" . attr($provid) . "'";
+    if ($provid == $default) echo " selected";
+    echo ">" . text($row['lname'] . ", " . $row['fname'] . " " . $row['mname']) . "\n";
+  }
+  echo "   </select>\n";
+}
 ?>
