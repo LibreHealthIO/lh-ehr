@@ -1,4 +1,39 @@
 <?php
+/*
+ *  usergroup_admin_add.php for the adding of the user information
+ *
+ *  This program is used to add the users
+ *
+ * Copyright (C) 2016-2017 
+ *
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * 
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
+ 
+
+$fake_register_globals=false;
+$sanitize_all_escapes=true;
+
 require_once("../globals.php");
 require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
@@ -25,15 +60,15 @@ $alertmsg = '';
 <script language="JavaScript">
 function trimAll(sString)
 {
-	while (sString.substring(0,1) == ' ')
-	{
-		sString = sString.substring(1, sString.length);
-	}
-	while (sString.substring(sString.length-1, sString.length) == ' ')
-	{
-		sString = sString.substring(0,sString.length-1);
-	}
-	return sString;
+    while (sString.substring(0,1) == ' ')
+    {
+        sString = sString.substring(1, sString.length);
+    }
+    while (sString.substring(sString.length-1, sString.length) == ' ')
+    {
+        sString = sString.substring(0,sString.length-1);
+    }
+    return sString;
 } 
 
 function submitform() {
@@ -118,13 +153,13 @@ function submitform() {
        }
        if(trimAll(document.getElementById('fname').value) == ""){
           document.getElementById('fname').style.backgroundColor="red";
-          alert("<?php xl('Required field missing: Please enter the First name','e');?>");
+          alert("<?php echo xl('Required field missing: Please enter the First name');?>");
           document.getElementById('fname').focus();
           return false;
        }
        if(trimAll(document.getElementById('lname').value) == ""){
           document.getElementById('lname').style.backgroundColor="red";
-          alert("<?php xl('Required field missing: Please enter the Last name','e');?>");
+          alert("<?php echo xl('Required field missing: Please enter the Last name');?>");
           document.getElementById('lname').focus();
           return false;
        }
@@ -145,12 +180,12 @@ function authorized_clicked() {
 </head>
 <body class="body_top">
 <table><tr><td>
-<span class="title"><?php xl('Add User','e'); ?></span>&nbsp;</td>
+<span class="title"><?php echo xlt('Add User'); ?></span>&nbsp;</td>
 <td>
 <a class="css_button" name='form_save' id='form_save' href='#' onclick="return submitform()">
-	<span><?php xl('Save','e');?></span></a>
+    <span><?php echo xlt('Save');?></span></a>
 <a class="css_button large_button" id='cancel' href='#'>
-	<span class='css_button_span large_button_span'><?php xl('Cancel','e');?></span>
+    <span class='css_button_span large_button_span'><?php echo xlt('Cancel');?></span>
 </a>
 </td></tr></table>
 <br><br>
@@ -167,12 +202,12 @@ function authorized_clicked() {
 </td><td>
 <table border=0 cellpadding=0 cellspacing=0 style="width:600px;">
 <tr>
-<td style="width:150px;"><span class="text"><?php xl('Username','e'); ?>: </span></td><td  style="width:220px;"><input type=entry name=rumple style="width:120px;"> <span class="mandatory">&nbsp;*</span></td>
-<td style="width:150px;"><span class="text"><?php xl('Pass Phrase','e'); ?>: </span></td><td style="width:250px;"><input type="entry" style="width:120px;" name=stiltskin><span class="mandatory">&nbsp;*</span></td>
+<td style="width:150px;"><span class="text"><?php echo xlt('Username'); ?>: </span></td><td  style="width:220px;"><input type=entry name=rumple style="width:120px;"> <span class="mandatory">&nbsp;*</span></td>
+<td style="width:150px;"><span class="text"><?php echo xlt('Pass Phrase'); ?>: </span></td><td style="width:250px;"><input type="entry" style="width:120px;" name=stiltskin><span class="mandatory">&nbsp;*</span></td>
 </tr>
 <tr>
     <td style="width:150px;"></td><td  style="width:220px;"></span></td>
-    <TD style="width:200px;"><span class=text><?php xl('Your Pass Phrase','e'); ?>: </span></TD>
+    <TD style="width:200px;"><span class=text><?php echo xlt('Your Pass Phrase'); ?>: </span></TD>
     <TD class='text' style="width:280px;"><input type='password' name=adminPass style="width:120px;"  value="" autocomplete='off'><font class="mandatory">*</font></TD>
 
 </tr>
@@ -219,7 +254,7 @@ if ($fres) {
 </tr>
 <tr>
 <td><span class="text"><?php xl('Federal Tax ID','e'); ?>: </span></td><td><input type=entry name='federaltaxid' style="width:120px;"></td>
-<td><span class="text"><?php xl('Federal Drug ID','e'); ?>: </span></td><td><input type=entry name='federaldrugid' style="width:120px;"></td>
+<td><span class="text"><?php xl('DEA Number','e'); ?>: </span></td><td><input type=entry name='federaldrugid' style="width:120px;"></td>
 </tr>
 <tr>
 <td><span class="text"><?php xl('UPIN','e'); ?>: </span></td><td><input type="entry" name="upin" style="width:120px;"></td>
@@ -240,12 +275,12 @@ if ($fres) {
 </tr>
 
 <tr>
-	<td>
-		<span class="text"><?php xl('Provider Type','e'); ?>: </span>
-	</td>
-	<td>
-		<?php echo generate_select_list("physician_type", "physician_type", '','',xl('Select Type'),'physician_type_class','','',''); ?>
-	</td>
+    <td>
+        <span class="text"><?php xl('Provider Type','e'); ?>: </span>
+    </td>
+    <td>
+        <?php echo generate_select_list("physician_type", "physician_type", '','',xl('Select Type'),'physician_type_class','','',''); ?>
+    </td>
 </tr>
 
 <!-- (CHEMED) Calendar UI preference -->
@@ -431,8 +466,8 @@ if (empty($GLOBALS['disable_non_default_groups'])) {
 ?>
 $(document).ready(function(){
     $("#cancel").click(function() {
-		  parent.$.fn.fancybox.close();
-	 });
+          parent.$.fn.fancybox.close();
+     });
 
 });
 </script>
