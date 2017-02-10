@@ -61,25 +61,6 @@ function generateDateQualifierSelect($name,$options,$obj)
     echo     "</select>";
 
 }
-function genProviderSelect($selname, $toptext, $default=0, $disabled=false) {
-  $query = "SELECT id, lname, fname FROM users WHERE " .
-    "( authorized = 1 OR info LIKE '%provider%' ) AND username != '' " .
-    "AND active = 1 AND ( info IS NULL OR info NOT LIKE '%Inactive%' ) " .
-    "ORDER BY lname, fname";
-  $res = sqlStatement($query);
-  echo "   <select name='" . attr($selname) . "'";
-  if ($disabled) echo " disabled";
-  echo ">\n";
-  echo "    <option value=''>" . text($toptext) . "\n";
-  while ($row = sqlFetchArray($res)) {
-    $provid = $row['id'];
-    echo "    <option value='" . attr($provid) . "'";
-    if ($provid == $default) echo " selected";
-    echo ">" . text($row['lname'] . ", " . $row['fname']) . "\n";
-  }
-  echo text($provid);
-  echo "   </select>\n";
-}
 ?>
 <html>
 <head>
@@ -139,12 +120,12 @@ function genProviderSelect($selname, $toptext, $default=0, $disabled=false) {
     <td class='label'><?php echo xlt('BOX 17. Provider') ?>:</td>
     <td><?php  # Build a drop-down list of providers. # Added (TLH)
                genProviderSelect('provider_id', '-- '.xl("Please Select").' --',$obj{"provider_id"});
-		?></td>&nbsp;&nbsp;
-	<td><span class=text><?php  echo xlt('BOX 17. Provider Qualifier'); ?>: </span>
-	<tr><td><?php
+        ?></td>&nbsp;&nbsp;
+    <td><span class=text><?php  echo xlt('BOX 17. Provider Qualifier'); ?>: </span>
+    <tr><td><?php
                 echo generate_select_list('provider_qualifier_code', 'provider_qualifier_code',$obj{"provider_qualifier_code"}, 'Provider Qualifier Code');
             ?></td>
-	</tr></td>
+    </tr></td>
 <br><br>
 <tr>
  <td><span class=text><?php echo xlt('BOX 18. Hospitalization date from');?>:</span></td>
