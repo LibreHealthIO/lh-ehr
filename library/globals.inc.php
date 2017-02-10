@@ -1,4 +1,5 @@
 <?php
+// Copyright (C) 2016-2017 Tony McCormick <tony@mi-squared.com>
 // Copyright (C) 2010-2015 Rod Roark <rod@sunsetsystems.com>
 //
 // This program is free software; you can redistribute it and/or
@@ -12,7 +13,7 @@
  * @author Tony McCormick <tony@mi-squared.com>
  * @author Terry Hill <terryhill@librehealth.io>
  *
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  */
 
 // REQUIRED FOR TRANSLATION ENGINE.  DO NOT REMOVE
@@ -47,6 +48,7 @@
 //   Korean                         // xl('Korean')
 //   Lithuanian                     // xl('Lithuanian')
 //   Marathi                        // xl('Marathi')
+//   Mongolian                      // xl('Mongolian')
 //   Norwegian                      // xl('Norwegian')
 //   Persian                        // xl('Persian')
 //   Polish                         // xl('Polish')
@@ -2800,6 +2802,16 @@ $GLOBALS_METADATA = array(
       'text',                           // data type
       'lpr -P HPLaserjet6P -o cpi=10 -o lpi=6 -o page-left=72 -o page-top=72',
       xl('Shell command for printing from the server.')
+    ),
+    
+    'gb_how_sort_list' => array(
+      xl('How to sort the lists and categories'),
+      array(
+        '0' => 'Sort by seq',
+        '1' => 'Sort alphabetically'
+      ),
+      '0',
+      xl('What kind of sorting will be used for the lists and categories.')
     ),
     
   ),
