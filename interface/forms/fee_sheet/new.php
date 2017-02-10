@@ -125,7 +125,7 @@ function findProvider() {
   }
   if($providerid == 0) {
     $find_provider = sqlQuery("SELECT providerID FROM patient_data " .
-		"WHERE pid = ? ", array($pid) );
+        "WHERE pid = ? ", array($pid) );
     $providerid = $find_provider['providerID'];
   }  
   return $providerid;
@@ -446,29 +446,6 @@ function echoProdLine($lino, $drug_id, $del = FALSE, $units = NULL,
   if ($fee != 0) $hasCharges = true;
 }
 
-// Build a drop-down list of providers.  This includes users who
-// have the word "provider" anywhere in their "additional info"
-// field, so that we can define providers (for billing purposes)
-// who do not appear in the calendar.
-//
-function genProviderSelect($selname, $toptext, $default=0, $disabled=false) {
-  $query = "SELECT id, lname, fname FROM users WHERE " .
-    "( authorized = 1 OR info LIKE '%provider%' ) AND username != '' " .
-    "AND active = 1 AND ( info IS NULL OR info NOT LIKE '%Inactive%' ) " .
-    "ORDER BY lname, fname";
-  $res = sqlStatement($query);
-  echo "   <select name='" . attr($selname) . "'";
-  if ($disabled) echo " disabled";
-  echo ">\n";
-  echo "    <option value=''>" . text($toptext) . "\n";
-  while ($row = sqlFetchArray($res)) {
-    $provid = $row['id'];
-    echo "    <option value='" . attr($provid) . "'";
-    if ($provid == $default) echo " selected";
-    echo ">" . text($row['lname'] . ", " . $row['fname']) . "\n";
-  }
-  echo "   </select>\n";
-}
 
 // Compute a current checksum of Fee Sheet data from the database.
 //
