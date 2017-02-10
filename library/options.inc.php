@@ -3167,12 +3167,12 @@ function genProviderSelect($selname, $toptext, $default=0, $disabled=false, $all
   if($allprov == 1) {
   $query = "SELECT id, lname, mname, fname FROM users WHERE " .
     "( authorized = 1 OR npi != '' ) " .
-    "AND active = 1 AND ( info IS NULL OR info NOT LIKE '%Inactive%' ) " .
+    "AND active = 1 " .
     "ORDER BY lname, fname";
   } else { 
      $query = "SELECT id, lname, mname, fname FROM users WHERE " .
-    "( authorized = 1 OR info LIKE '%provider%' ) AND username != '' " .
-    "AND active = 1 AND ( info IS NULL OR info NOT LIKE '%Inactive%' ) " .
+    "authorized = 1 AND username != '' " .
+    "AND active = 1 " .
     "ORDER BY lname, fname";
   }
   $res = sqlStatement($query);
