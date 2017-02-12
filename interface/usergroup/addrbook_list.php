@@ -45,7 +45,7 @@
 $sqlBindArray = array();
 $query = "SELECT u.*, lo.option_id AS ab_name, lo.option_value as ab_option FROM users AS u " .
   "LEFT JOIN list_options AS lo ON " .
-  "list_id = 'abook_type' AND option_id = u.abook_type " .
+  "list_id = 'abook_type' AND option_id = u.abook_type AND activity = 1 " .
   "WHERE u.active = 1 AND ( u.authorized = 1 OR u.username = '' ) ";
 if ($form_organization) {
  $query .= "AND u.organization LIKE ? ";
@@ -151,7 +151,7 @@ $res = sqlStatement($query,$sqlBindArray);
   $username = $row['username'];
   if (! $row['active']) $username = '--';
 
-  $displayName = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname']; // Person Name
+  $displayName = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . ' ' . $row['suffix']; // Person Name
 
   if ( acl_check('admin', 'practice' ) || (empty($username) && empty($row['ab_name'])) ) {
    // Allow edit, since have access or (no item type and not a local user)

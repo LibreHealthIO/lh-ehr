@@ -138,7 +138,7 @@ var mypcc = '1';
     <td class='label'><?php echo xlt('BOX 17. Provider') ?>:</td>
      <td>
       <?php  # Build a drop-down list of providers. # Added (TLH)
-               genProviderSelect('provider_id', '-- '.xl("Please Select").' --',$obj{"provider_id"});
+               genProviderSelect('provider_id', '-- '.xl("Please Select").' --',$obj{"provider_id"}, false, true);
       ?>
      </td>
     &nbsp;&nbsp;

@@ -87,7 +87,7 @@ td { font-size:10pt; }
   // 2 = Person Centric
   // 3 = Company Centric
   $sql = sqlStatement("SELECT option_id, option_value FROM list_options WHERE " .
-   "list_id = 'abook_type'");
+   "list_id = 'abook_type' AND activity = 1");
   while ($row_query = sqlFetchArray($sql)) {
    echo "type_options_js"."['" . attr($row_query['option_id']) . "']=" . attr($row_query['option_value']) . ";\n";
   }
@@ -141,6 +141,7 @@ td { font-size:10pt; }
   $form_fname = invalue('form_director_fname');
   $form_lname = invalue('form_director_lname');
   $form_mname = invalue('form_director_mname');
+  $form_suffix = invalue('form_director_suffix');
  }
  else {
   // Person centric
@@ -148,6 +149,7 @@ td { font-size:10pt; }
   $form_fname = invalue('form_fname');
   $form_lname = invalue('form_lname');
   $form_mname = invalue('form_mname');
+  $form_suffix = invalue('form_suffix');
  }
 
   if ($userid) {
@@ -158,6 +160,7 @@ td { font-size:10pt; }
     "fname = "        . $form_fname                  . ", " .
     "lname = "        . $form_lname                  . ", " .
     "mname = "        . $form_mname                  . ", " .
+    "suffix = "       . $form_suffix                 . ", " .
     "specialty = "    . invalue('form_specialty')    . ", " .
     "organization = " . invalue('form_organization') . ", " .
     "valedictory = "  . invalue('form_valedictory')  . ", " .
@@ -193,7 +196,7 @@ td { font-size:10pt; }
 
    $userid = sqlInsert("INSERT INTO users ( " .
     "username, password, authorized, info, source, " .
-    "title, fname, lname, mname,  " .
+    "title, fname, lname, mname, suffix,  " .
     "federaltaxid, federaldrugid, upin, facility, see_auth, active, npi, taxonomy, cpoe, " .
     "specialty, organization, valedictory, assistant, billname, email, email_direct, url, " .
     "street, streetb, city, state, zip, " .
@@ -209,6 +212,7 @@ td { font-size:10pt; }
     $form_fname                   . ", " .
     $form_lname                   . ", " .
     $form_mname                   . ", " .
+    $form_suffix                   . ", " .
     invalue('form_federaltaxid')  . ", " .
     "'', "                               . // federaldrugid
     invalue('form_upin')          . ", " .
@@ -316,6 +320,8 @@ td { font-size:10pt; }
      maxlength='50' value='<?php echo attr($row['fname']); ?>' />&nbsp;
    <b><?php echo xlt('Middle'); ?>:</b> <input type='text' size='4' name='form_mname' class='inputtext'
      maxlength='50' value='<?php echo attr($row['mname']); ?>' />
+   <b><?php echo xlt('Suffix'); ?>:</b> <input type='text' size='4' name='form_suffix' class='inputtext'
+     maxlength='50' value='<?php echo attr($row['suffix']); ?>' />
   </td>
  </tr>
 
@@ -353,6 +359,8 @@ td { font-size:10pt; }
      maxlength='50' value='<?php echo attr($row['fname']); ?>' />&nbsp;
    <b><?php echo xlt('Middle'); ?>:</b> <input type='text' size='4' name='form_director_mname' class='inputtext'
      maxlength='50' value='<?php echo attr($row['mname']); ?>' />
+   <b><?php echo xlt('Suffix'); ?>:</b> <input type='text' size='4' name='form_director_suffix' class='inputtext'
+     maxlength='50' value='<?php echo attr($row['suffix']); ?>' />
   </td>
  </tr>
 

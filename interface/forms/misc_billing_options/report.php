@@ -53,9 +53,9 @@ function misc_billing_options_report( $pid, $encounter, $cols, $id) {
             if($key==='provider_id')
             {
                 
-                $trow = sqlQuery("SELECT id, lname, mname, fname FROM users WHERE ".
+                $trow = sqlQuery("SELECT id, lname, mname, fname, suffix FROM users WHERE ".
                          "id = ? ",array($value));
-                $value=$trow['fname'] . ' ' . $trow['mname'] . ' ' . $trow['lname'];
+                $value=$trow['fname'] . ' ' . $trow['mname'] . ' ' . $trow['lname'] . ' ' . $trow['suffix'];
                 
             }
             $key=ucwords(str_replace("_"," ",$key));

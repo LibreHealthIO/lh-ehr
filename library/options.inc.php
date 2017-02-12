@@ -3165,12 +3165,12 @@ function lbf_current_value($frow, $formid, $encounter) {
 function genProviderSelect($selname, $toptext, $default=0, $disabled=false, $allprov=false) 
 {
   if($allprov == 1) {
-  $query = "SELECT id, lname, mname, fname FROM users WHERE " .
+  $query = "SELECT id, lname, mname, fname, suffix FROM users WHERE " .
     "( authorized = 1 OR npi != '' ) " .
     "AND active = 1 " .
     "ORDER BY lname, fname";
   } else { 
-     $query = "SELECT id, lname, mname, fname FROM users WHERE " .
+     $query = "SELECT id, lname, mname, fname, suffix FROM users WHERE " .
     "authorized = 1 AND username != '' " .
     "AND active = 1 " .
     "ORDER BY lname, fname";
@@ -3184,7 +3184,7 @@ function genProviderSelect($selname, $toptext, $default=0, $disabled=false, $all
     $provid = $row['id'];
     echo "    <option value='" . attr($provid) . "'";
     if ($provid == $default) echo " selected";
-    echo ">" . text($row['lname'] . ", " . $row['fname'] . " " . $row['mname']) . "\n";
+    echo ">" . text($row['lname'] . ", " . $row['fname'] . " " . $row['mname'] . " " . $row['suffix']) . "\n";
   }
   echo "   </select>\n";
 }
