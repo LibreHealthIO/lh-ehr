@@ -100,17 +100,17 @@ $res = sqlStatement($query,$sqlBindArray);
  <tr class='search'> <!-- bgcolor='#ddddff' -->
   <td>
    <?php echo xlt('Organization')?>:
-   <input type='text' name='form_organization' size='10' value='<?php echo attr($_POST['form_organization']); ?>'
-    class='inputtext' title='<?php echo xla("All or part of the organization") ?>' />&nbsp;
+   <input type='entry' name='form_organization' size='10' value='<?php echo attr($_POST['form_organization']); ?>'
+    class='text' title='<?php echo xla("All or part of the organization") ?>' />&nbsp;
    <?php echo xlt('First Name')?>:
-   <input type='text' name='form_fname' size='10' value='<?php echo attr($_POST['form_fname']); ?>'
-    class='inputtext' title='<?php echo xla("All or part of the first name") ?>' />&nbsp;
+   <input type='entry' name='form_fname' size='10' value='<?php echo attr($_POST['form_fname']); ?>'
+    class='text' title='<?php echo xla("All or part of the first name") ?>' />&nbsp;
    <?php echo xlt('Last Name')?>:
-   <input type='text' name='form_lname' size='10' value='<?php echo attr($_POST['form_lname']); ?>'
-    class='inputtext' title='<?php echo xla("All or part of the last name") ?>' />&nbsp;
+   <input type='entry' name='form_lname' size='10' value='<?php echo attr($_POST['form_lname']); ?>'
+    class='text' title='<?php echo xla("All or part of the last name") ?>' />&nbsp;
    <?php echo xlt('Specialty')?>:
-   <input type='text' name='form_specialty' size='10' value='<?php echo attr($_POST['form_specialty']); ?>'
-    class='inputtext' title='<?php echo xla("Any part of the desired specialty") ?>' />&nbsp;
+   <input type='entry' name='form_specialty' size='10' value='<?php echo attr($_POST['form_specialty']); ?>'
+    class='text' title='<?php echo xla("Any part of the desired specialty") ?>' />&nbsp;
 <?php
   echo xlt('Type') . ": ";
   // Generates a select list named form_abook_type:

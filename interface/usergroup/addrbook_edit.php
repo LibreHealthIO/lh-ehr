@@ -314,13 +314,13 @@ td { font-size:10pt; }
 <?php
  generate_form_field(array('data_type'=>1,'field_id'=>'title','list_id'=>'titles','empty_title'=>' '), $row['title']);
 ?>
-   <b><?php echo xlt('Last'); ?>:</b><input type='text' size='10' name='form_lname' class='inputtext'
-     maxlength='50' value='<?php echo attr($row['lname']); ?>'/>&nbsp;
-   <b><?php echo xlt('First'); ?>:</b> <input type='text' size='10' name='form_fname' class='inputtext'
-     maxlength='50' value='<?php echo attr($row['fname']); ?>' />&nbsp;
-   <b><?php echo xlt('Middle'); ?>:</b> <input type='text' size='4' name='form_mname' class='inputtext'
-     maxlength='50' value='<?php echo attr($row['mname']); ?>' />
-   <b><?php echo xlt('Suffix'); ?>:</b> <input type='text' size='4' name='form_suffix' class='inputtext'
+   &nbsp;&nbsp;&nbsp;<b><?php echo xlt('Last'); ?>:</b>&nbsp;&nbsp;&nbsp;<input type='entry' size='10' name='form_lname' class='inputtext'
+     maxlength='50' value='<?php echo attr($row['lname']); ?>'/>&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('First'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_fname' class='inputtext'
+     maxlength='50' value='<?php echo attr($row['fname']); ?>' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('Middle'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='4' name='form_mname' class='inputtext'
+     maxlength='50' value='<?php echo attr($row['mname']); ?>' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('Suffix'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='8' name='form_suffix' class='inputtext'
      maxlength='50' value='<?php echo attr($row['suffix']); ?>' />
   </td>
  </tr>
@@ -328,7 +328,7 @@ td { font-size:10pt; }
  <tr id="specialtyRow">
   <td nowrap><b><?php echo xlt('Specialty'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_specialty' maxlength='250'
+   <input type='entry' size='40' name='form_specialty' maxlength='250'
     value='<?php echo attr($row['specialty']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -337,7 +337,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Organization'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_organization' maxlength='250'
+   <input type='entry' size='40' name='form_organization' maxlength='250'
     value='<?php echo attr($row['organization']); ?>'
     style='width:100%' class='inputtext' />
     <span id='cpoe_span' style="display:none;">
@@ -353,13 +353,13 @@ td { font-size:10pt; }
 <?php
  generate_form_field(array('data_type'=>1,'field_id'=>'director_title','list_id'=>'titles','empty_title'=>' '), $row['title']);
 ?>
-   <b><?php echo xlt('Last'); ?>:</b><input type='text' size='10' name='form_director_lname' class='inputtext'
+   <b><?php echo xlt('Last'); ?>:</b><input type='entry' size='10' name='form_director_lname' class='inputtext'
      maxlength='50' value='<?php echo attr($row['lname']); ?>'/>&nbsp;
-   <b><?php echo xlt('First'); ?>:</b> <input type='text' size='10' name='form_director_fname' class='inputtext'
+   <b><?php echo xlt('First'); ?>:</b> <input type='entry' size='10' name='form_director_fname' class='inputtext'
      maxlength='50' value='<?php echo attr($row['fname']); ?>' />&nbsp;
-   <b><?php echo xlt('Middle'); ?>:</b> <input type='text' size='4' name='form_director_mname' class='inputtext'
+   <b><?php echo xlt('Middle'); ?>:</b> <input type='entry' size='4' name='form_director_mname' class='inputtext'
      maxlength='50' value='<?php echo attr($row['mname']); ?>' />
-   <b><?php echo xlt('Suffix'); ?>:</b> <input type='text' size='4' name='form_director_suffix' class='inputtext'
+   <b><?php echo xlt('Suffix'); ?>:</b> <input type='entry' size='8' name='form_director_suffix' class='inputtext'
      maxlength='50' value='<?php echo attr($row['suffix']); ?>' />
   </td>
  </tr>
@@ -367,7 +367,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Valedictory'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_valedictory' maxlength='250'
+   <input type='entry' size='40' name='form_valedictory' maxlength='250'
     value='<?php echo attr($row['valedictory']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -376,29 +376,29 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Home Phone'); ?>:</b></td>
   <td>
-   <input type='text' size='11' name='form_phone' value='<?php echo attr($row['phone']); ?>'
-    maxlength='30' class='inputtext' />&nbsp;
-   <b><?php echo xlt('Mobile'); ?>:</b><input type='text' size='11' name='form_phonecell'
-    maxlength='30' value='<?php echo attr($row['phonecell']); ?>' class='inputtext' />
+   <input type='entry' size='15' name='form_phone' value='<?php echo attr($row['phone']); ?>'
+    title='<?php echo xla("Example (123)456-7890") #at some point we need to make these phone number tips a settable variable ?>' maxlength='30' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('Mobile'); ?>:</b> &nbsp;&nbsp;&nbsp;<input type='entry' size='15' name='form_phonecell'
+    title='<?php echo xla("Example (123)456-7890") ?>' maxlength='30' value='<?php echo attr($row['phonecell']); ?>' class='inputtext' />
   </td>
  </tr>
 
  <tr>
   <td nowrap><b><?php echo xlt('Work Phone'); ?>:</b></td>
   <td>
-   <input type='text' size='11' name='form_phonew1' value='<?php echo attr($row['phonew1']); ?>'
-    maxlength='30' class='inputtext' />&nbsp;
-   <b><?php echo xlt('2nd'); ?>:</b><input type='text' size='11' name='form_phonew2' value='<?php echo attr($row['phonew2']); ?>'
-    maxlength='30' class='inputtext' />&nbsp;
-   <b><?php echo xlt('Fax'); ?>:</b> <input type='text' size='11' name='form_fax' value='<?php echo attr($row['fax']); ?>'
-    maxlength='30' class='inputtext' />
+   <input type='entry' size='15' name='form_phonew1' value='<?php echo attr($row['phonew1']); ?>'
+    title='<?php echo xla("Example (123)456-7890") ?>' maxlength='30' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('2nd'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='15' name='form_phonew2' value='<?php echo attr($row['phonew2']); ?>'
+    title='<?php echo xla("Example (123)456-7890") ?>' maxlength='30' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('Fax'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='15' name='form_fax' value='<?php echo attr($row['fax']); ?>'
+    title='<?php echo xla("Example (123)456-7890") #at some point we need to make these phone number tips a settable variable ?>' maxlength='30' class='inputtext' />
   </td>
  </tr>
 
  <tr>
   <td nowrap><b><?php echo xlt('Assistant'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_assistant' maxlength='250'
+   <input type='entry' size='40' name='form_assistant' maxlength='250'
     value='<?php echo attr($row['assistant']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -407,7 +407,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Email'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_email' maxlength='250'
+   <input type='entry' size='40' name='form_email' maxlength='250'
     value='<?php echo attr($row['email']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -416,7 +416,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Trusted Email'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_email_direct' maxlength='250'
+   <input type='entry' size='40' name='form_email_direct' maxlength='250'
     value='<?php echo attr($row['email_direct']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -425,7 +425,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Website'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_url' maxlength='250'
+   <input type='entry' size='40' name='form_url' maxlength='250'
     value='<?php echo attr($row['url']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -434,7 +434,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Main Address'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_street' maxlength='60'
+   <input type='entry' size='40' name='form_street' maxlength='60'
     value='<?php echo attr($row['street']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -443,7 +443,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap>&nbsp;</td>
   <td>
-   <input type='text' size='40' name='form_streetb' maxlength='60'
+   <input type='entry' size='40' name='form_streetb' maxlength='60'
     value='<?php echo attr($row['streetb']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -452,11 +452,11 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('City'); ?>:</b></td>
   <td>
-   <input type='text' size='10' name='form_city' maxlength='30'
-    value='<?php echo attr($row['city']); ?>' class='inputtext' />&nbsp;
-   <b><?php echo xlt('State')."/".xlt('county'); ?>:</b> <input type='text' size='10' name='form_state' maxlength='30'
-    value='<?php echo attr($row['state']); ?>' class='inputtext' />&nbsp;
-   <b><?php echo xlt('Postal code'); ?>:</b> <input type='text' size='10' name='form_zip' maxlength='20'
+   <input type='entry' size='10' name='form_city' maxlength='30'
+    value='<?php echo attr($row['city']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('State')."/".xlt('county'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_state' maxlength='30'
+    value='<?php echo attr($row['state']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('Postal code'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_zip' maxlength='20'
     value='<?php echo attr($row['zip']); ?>' class='inputtext' />
   </td>
  </tr>
@@ -464,7 +464,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Alt Address'); ?>:</b></td>
   <td>
-   <input type='text' size='40' name='form_street2' maxlength='60'
+   <input type='entry' size='40' name='form_street2' maxlength='60'
     value='<?php echo attr($row['street2']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -473,7 +473,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap>&nbsp;</td>
   <td>
-   <input type='text' size='40' name='form_streetb2' maxlength='60'
+   <input type='entry' size='40' name='form_streetb2' maxlength='60'
     value='<?php echo attr($row['streetb2']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -482,25 +482,23 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('City'); ?>:</b></td>
   <td>
-   <input type='text' size='10' name='form_city2' maxlength='30'
-    value='<?php echo attr($row['city2']); ?>' class='inputtext' />&nbsp;
-   <b><?php echo xlt('State')."/".xlt('county'); ?>:</b> <input type='text' size='10' name='form_state2' maxlength='30'
-    value='<?php echo attr($row['state2']); ?>' class='inputtext' />&nbsp;
-   <b><?php echo xlt('Postal code'); ?>:</b> <input type='text' size='10' name='form_zip2' maxlength='20'
+   <input type='entry' size='10' name='form_city2' maxlength='30'
+    value='<?php echo attr($row['city2']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('State')."/".xlt('county'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_state2' maxlength='30'
+    value='<?php echo attr($row['state2']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('Postal code'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_zip2' maxlength='20'
     value='<?php echo attr($row['zip2']); ?>' class='inputtext' />
   </td>
  </tr>
 
  <tr>
-  <td nowrap><b><?php echo xlt('UPIN'); ?>:</b></td>
+  <td nowrap><b><?php echo xlt('NPI'); ?>:</b></td>
   <td>
-   <input type='text' size='6' name='form_upin' maxlength='6'
-    value='<?php echo attr($row['upin']); ?>' class='inputtext' />&nbsp;
-   <b><?php echo xlt('NPI'); ?>:</b> <input type='text' size='10' name='form_npi' maxlength='10'
-    value='<?php echo attr($row['npi']); ?>' class='inputtext' />&nbsp;
-   <b><?php echo xlt('TIN'); ?>:</b> <input type='text' size='10' name='form_federaltaxid' maxlength='10'
-    value='<?php echo attr($row['federaltaxid']); ?>' class='inputtext' />&nbsp;
-   <b><?php echo xlt('Taxonomy'); ?>:</b> <input type='text' size='10' name='form_taxonomy' maxlength='10'
+   <input type='entry' size='10' name='form_npi' maxlength='10'
+    value='<?php echo attr($row['npi']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('TIN'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_federaltaxid' maxlength='10'
+    value='<?php echo attr($row['federaltaxid']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
+   <b><?php echo xlt('Taxonomy'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_taxonomy' maxlength='10'
     value='<?php echo attr($row['taxonomy']); ?>' class='inputtext' />
   </td>
  </tr>
