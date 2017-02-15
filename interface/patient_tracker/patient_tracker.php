@@ -387,7 +387,7 @@ function openNewTopWindow(newpid,newencounterid) {
   </td>
    <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
    <td class="dehead" align="center">
-   <?php  echo xlt('Visit Type'); ?>
+   <?php  echo xlt('Category'); ?>
   </td>
   <?php } ?>
   <?php if (count($chk_prov) > 1) { ?>
