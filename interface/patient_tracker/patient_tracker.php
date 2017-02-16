@@ -12,7 +12,7 @@
  * See the Mozilla Public License for more details. 
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  * 
- * @package LibreEHR 
+ * @package Librehealth EHR 
  * @author Terry Hill <teryhill@librehealth.io> 
  * @link http://librehealth.io
  *  
@@ -30,13 +30,13 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient_tracker.inc.php");
 require_once("$srcdir/user.inc");
 
-if (!is_null($_POST['form_provider'])) {
+if (!is_null($_POST['form_provider']) && ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0' )) {
   $provider = $_POST['form_provider'];
 }
 else if ($_SESSION['userauthorized']) {
   $provider = $_SESSION['authUserID'];
 }
-else {
+else if ($GLOBALS['docs_see_entire_calendar'] =='1') {
   $provider = null;
 }
 
@@ -211,14 +211,22 @@ function openNewTopWindow(newpid,newencounterid) {
                 <td><?php
 
                     # Build a drop-down list of providers.
+                    $uid = $_SESSION['authUserID'];
+                    if ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0') {
+                      $query = "SELECT id, lname, fname FROM users WHERE ".
+                        "authorized = 1  ORDER BY lname, fname"; 
+                    }else{
 
                     $query = "SELECT id, lname, fname FROM users WHERE ".
-                        "authorized = 1  ORDER BY lname, fname"; #(CHEMED) facility filter
+                        "authorized = 1 AND id = $uid ORDER BY lname, fname";                       
+                    }
 
                     $ures = sqlStatement($query);
 
                     echo "   <select name='form_provider'>\n";
+                    if ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0') {
                     echo "    <option value='ALL'>-- " . xlt('All') . " --\n";
+                    }
 
                     while ($urow = sqlFetchArray($ures)) {
                         $provid = $urow['id'];
@@ -236,7 +244,8 @@ function openNewTopWindow(newpid,newencounterid) {
                     ?>
                 </td>
                 <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
-                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);?></td>
+                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);
+                ?></td>
                 <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
                 <td>
                 <?php echo xlt('Category') #category drop down creation ?>:</td>
