@@ -156,7 +156,7 @@
                     <li data-toggle="pill"><a href="#messagespanel" data-toggle="collapse"
                         data-parent="#panelgroup"> <i class="fa fa-envelope"></i> <span><?php echo xlt("Secure Chat"); ?></span>
                     </a></li>
-                    <li><a href="./ccda_build.php"><i class="fa fa-envelope" aria-hidden="true"></i><span><?php echo xlt('Ccda View'); ?></span></a></li><!-- -->
+                    <!--<li><a href="./ccda_build.php"><i class="fa fa-envelope" aria-hidden="true"></i><span><?php //echo xlt('Ccda View'); ?></span></a></li><!-- -->
                     <!-- <li><a href="./bb_ccda_build.php"><i class="fa fa-envelope" aria-hidden="true"></i>
                             <span>BB Testing</span>
                     </a></li> -->
