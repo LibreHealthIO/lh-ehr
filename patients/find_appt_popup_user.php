@@ -57,10 +57,10 @@ $ignoreAuth = 1;
  include_once("$srcdir/patient.inc");
 
  // Exit if the modify calendar for portal flag is not set
- /* if (!($GLOBALS['portal_onsite_appt_modify'])) {
+  if (!($GLOBALS['portal_onsite_appt_modify'])) {
    echo htmlspecialchars( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
    exit;
- } */
+ } 
 
  $input_catid = $_REQUEST['catid'];
 

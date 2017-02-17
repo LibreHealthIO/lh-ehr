@@ -60,11 +60,6 @@ $auth_relaxed  = true; //acl_check('encounters', 'relaxed');
 $auth_med      = true; //acl_check('patients'  , 'med');
 $auth_demo     = true; //acl_check('patients'  , 'demo');
 
-$cmsportal = false;
-if ($GLOBALS['gbl_portal_cms_enable']) {
-  $ptdata = getPatientData($pid, 'cmsportal_login');
-  $cmsportal = $ptdata['cmsportal_login'] !== '';
-}
 $ignoreAuth = 1;
 ?>
 <script type="text/javascript" src="../library/textformat.js"></script>
@@ -593,9 +588,6 @@ while ($result && !$result->EOF) {
 
 <input type="button" class="genreport" value="<?php echo xlt('Generate Report'); ?>" />&nbsp;
 <input type="button" class="genpdfrep" value="<?php echo xlt('Download PDF'); ?>" />&nbsp;
-<?php if ($cmsportal) { ?>
-<input type="button" class="genportal" value="<?php echo xlt('Send to Portal'); ?>" />
-<?php } ?>
 
 </div>  <!-- close patient_reports DIV -->
 

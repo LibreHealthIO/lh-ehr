@@ -121,7 +121,6 @@ class PatientReporter extends Reporter
     public $DeceasedDate;
     public $DeceasedReason;
     public $SoapImportStatus;
-    public $CmsportalLogin;
     public $CareTeam;
     public $County;
     public $Industry;
@@ -225,7 +224,6 @@ class PatientReporter extends Reporter
             ,`patient_data`.`deceased_date` as DeceasedDate
             ,`patient_data`.`deceased_reason` as DeceasedReason
             ,`patient_data`.`soap_import_status` as SoapImportStatus
-            ,`patient_data`.`cmsportal_login` as CmsportalLogin
             ,`patient_data`.`care_team` as CareTeam
             ,`patient_data`.`county` as County
             ,`patient_data`.`industry` as Industry
