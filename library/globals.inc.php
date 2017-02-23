@@ -1547,7 +1547,7 @@ $GLOBALS_METADATA = array(
     ),
 
     'status_default' => array(
-      xl('Default Status'),
+      xl('Default Status for the Patient Flow Board'),
       'status',                           // data type
       '',                                 // default = none
       xl('Default Status for the Patient Flow Board Screen.')
@@ -2829,6 +2829,16 @@ $GLOBALS_METADATA = array(
       ),
       '0',
       xl('What kind of sorting will be used for the lists and categories.')
+    ),
+ 
+    'gb_how_sort_categories' => array(
+      xl('How to sort the categories'),
+      array(
+        '0' => 'Sort by seq',
+        '1' => 'Sort alphabetically'
+      ),
+      '1',
+      xl('What kind of sorting will be used for the categories.')
     ),
     
   ),

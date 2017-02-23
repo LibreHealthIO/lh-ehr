@@ -544,7 +544,7 @@ function compareAppointmentsByCompletedDrugScreen( $appointment1, $appointment2 
 
 function fetchAppointmentCategories( $appt_prov_inc = false )
 {
-    if($GLOBALS['gb_how_sort_list'] == '0') {
+    if($GLOBALS['gb_how_sort_categories'] == '0') {
         $order = "id";
     } else {
         $order = "category";
