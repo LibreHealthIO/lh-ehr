@@ -18,8 +18,8 @@
  *  <http://opensource.org/licenses/gpl-license.php>
  * 
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
- * @package LibreEHR
+ * @link: http://librehealth.io
+ * @package LibreHealth EHR
  * @subpackage ediHistory
  */
 
@@ -31,27 +31,26 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 //
 //include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php");
 //
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-	<title><?php echo xlt("edi history"); ?></title>
-	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title><?php echo xlt("edi history"); ?></title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
     
     <link rel="stylesheet" href="<?php echo $css_header?>" type="text/css" />
-    <link rel="stylesheet" href="<?php echo $web_root?>/library/dynarch_calendar.css" type="text/css" />
 
     <link rel="stylesheet" href="<?php echo $web_root?>/library/css/jquery-ui-1.8.21.custom.css" type="text/css" />
     <!-- <link rel="stylesheet" href="<?php echo $web_root?>/library/css/jquery.dataTables.css" type="text/css" /> -->
     <link rel="stylesheet" href="<?php echo $web_root?>/library/css/edi_history.css" type="text/css" />
 
-    <script type="text/javascript" src="<?php echo $web_root?>/library/dynarch_calendar.js"></script>
-    <script type="text/javascript" src="<?php echo $web_root?>/library/dynarch_calendar_setup.js"></script>
     <script type="text/javascript" src="<?php echo $web_root?>/library/textformat.js"></script>
     
-    <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
 </head>
 <body>
 
@@ -63,7 +62,7 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
    <li><a href="#erafiles" id="btn-erafiles"><?php echo xlt("ERA Files"); ?></a></li>
    <li><a href="#x12text" id="btn-x12text"><?php echo xlt("x12 Text"); ?></a></li>
    <li><a href="#edinotes" id="btn-edinotes"><?php echo xlt("Notes"); ?></a></li>
-  </ul> 	
+  </ul>     
 
 
     <div id="newfiles">
@@ -101,115 +100,107 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
     </div> 
     
     <div id="csvdatatables">
-		<table cols='2'>
-		<tr>
-		<td colspan='4'>
-		
-		<form id="formcsvtables" name="view_csv" action="edi_history_main.php" target="_blank" method="post">
-			<fieldset style='float:left'>
-				<legend><?php echo xlt("View CSV tables"); ?>:</legend>
-				<table cols='4'>
-					<tr>
-						<td colspan='4'>
-							<?php echo xlt("Select a percentage of the rows or or select dates"); ?>
-						</td>
-					</tr>
-					<tr>
-						<td align='center'>
-							<?php echo xlt("Select CSV table"); ?>:
-						</td>
-						<td align='center'>
-							<?php echo xlt("Pct (%) of rows"); ?>
-						</td>
-						<td align='left'>
-							<?php echo xlt("Start Date"); ?>: &nbsp;&nbsp;&nbsp;&nbsp; <?php echo xlt("End Date"); ?>:
-						</td>
-						<td align='center'>
-							<?php echo xlt("Submit"); ?>
-						</td>
-					</tr>
-					<tr height='1.5em'>
-						<td align='center'>					
-							<select id='csvselect' name="csvtables"> 
-							</select>				
-						</td>						
-							
-						<td align='center'>
-							<select id="csvpct" name="csvpctrows">
-								<option value="5" selected="selected">5%</option>
-								<option value="10">10%</option>
-								<option value="25">25%</option>
-								<option value="50">50%</option>
-								<option value="75">75%</option>
-								<option value="100">100%</option>	
-							</select>
-						</td>
+        <table cols='2'>
+        <tr>
+        <td colspan='4'>
+        
+        <form id="formcsvtables" name="view_csv" action="edi_history_main.php" target="_blank" method="post">
+            <fieldset style='float:left'>
+                <legend><?php echo xlt("View CSV tables"); ?>:</legend>
+                <table cols='4'>
+                    <tr>
+                        <td colspan='4'>
+                            <?php echo xlt("Select a percentage of the rows or or select dates"); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align='center'>
+                            <?php echo xlt("Select CSV table"); ?>:
+                        </td>
+                        <td align='center'>
+                            <?php echo xlt("Pct (%) of rows"); ?>
+                        </td>
+                        <td align='left'>
+                            <?php echo xlt("Start Date"); ?>: &nbsp;&nbsp;&nbsp;&nbsp; <?php echo xlt("End Date"); ?>:
+                        </td>
+                        <td align='center'>
+                            <?php echo xlt("Submit"); ?>
+                        </td>
+                    </tr>
+                    <tr height='1.5em'>
+                        <td align='center'>                 
+                            <select id='csvselect' name="csvtables"> 
+                            </select>               
+                        </td>                       
+                            
+                        <td align='center'>
+                            <select id="csvpct" name="csvpctrows">
+                                <option value="5" selected="selected">5%</option>
+                                <option value="10">10%</option>
+                                <option value="25">25%</option>
+                                <option value="50">50%</option>
+                                <option value="75">75%</option>
+                                <option value="100">100%</option>   
+                            </select>
+                        </td>
                         <!-- datekeyup(e, defcc, withtime)  dateblur(e, defcc, withtime) -->
                         <td align='left'>
-						   <input type='text' size='8' name='csv_date_start' id='caldte1' value='' title='yyyy-mm-dd Start Date' />
-                           <img src="<?php echo $web_root?>/interface/pic/show_calendar.gif" align='absbottom' width='24' height='22'
-                              id='csvdate1_cal' border='0' alt='[?]' style='cursor:pointer;cursor:hand' title='Start date'>
+                           <input type='text' size='8' name='csv_date_start' id='caldte1' value='' title='yyyy-mm-dd Start Date' />
                         
                            <input type='text' size='8' name='csv_date_end' id='caldte2' value='' title='yyyy-mm-dd End Date' />
-                           <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                              id='csvdate2_cal' border='0' alt='[?]' style='cursor:pointer;cursor:hand' title='End date'>
                         </td>
                         
-                        <script type="text/javascript"> 
-                            Calendar.setup({inputField:"caldte1", ifFormat:"%Y-%m-%d", button:"csvdate1_cal"});
-                            Calendar.setup({inputField:"caldte2", ifFormat:"%Y-%m-%d", button:"csvdate2_cal"});
-                        </script>
                         <!--
-						<td align='left'>
-							<input id="dte1" type="text" size=10 name="csv_date_start" value="" />
-							<input id="dte2" type="text" size=10 name="csv_date_end" value="" /> 
-						</td>
+                        <td align='left'>
+                            <input id="dte1" type="text" size=10 name="csv_date_start" value="" />
+                            <input id="dte2" type="text" size=10 name="csv_date_end" value="" /> 
+                        </td>
                         -->
-						<td align='center'>
-							<input type="hidden" name="csvshowtable" value="gettable">
-							<input id="showtable" type="button" value="<?php echo xla("Submit"); ?>" />
-						</td>
+                        <td align='center'>
+                            <input type="hidden" name="csvshowtable" value="gettable">
+                            <input id="showtable" type="button" value="<?php echo xla("Submit"); ?>" />
+                        </td>
                         
-					</tr>
+                    </tr>
                 </table>
            </fieldset>
         </form> 
         
         </td>
         <td colspan='2'>
-			
+            
         <form id="formcsvhist" name="csv_ch" action="edi_history_main.php" target="_blank" method="get">
            <fieldset style='float:left'>
-			  <legend><?php echo xlt("Per Encounter"); ?></legend>
-			  <table cols='2'> 
-			        <tr>
-						<td colspan='2'>
-							<?php echo xlt("Enter Encounter Number"); ?>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo xlt("Encounter"); ?>
-						</td>
-						<td>
-							<?php echo xlt("Submit"); ?>
-						</td>	
-					</tr>
-					<tr>
-						<td>
-							<input id="csvenctr" type="text" size=7 name="chenctr" value="" />
-						</td>
-						<td>
-							<input id="showhistory" type="button" value="<?php echo xla("Submit"); ?>" />
-						</td>
-					</tr>
-			  </table>
-			</fieldset>
-		</form>
-		        
-		</td></tr> 
-		</table>
-		
+              <legend><?php echo xlt("Per Encounter"); ?></legend>
+              <table cols='2'> 
+                    <tr>
+                        <td colspan='2'>
+                            <?php echo xlt("Enter Encounter Number"); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo xlt("Encounter"); ?>
+                        </td>
+                        <td>
+                            <?php echo xlt("Submit"); ?>
+                        </td>   
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="csvenctr" type="text" size=7 name="chenctr" value="" />
+                        </td>
+                        <td>
+                            <input id="showhistory" type="button" value="<?php echo xla("Submit"); ?>" />
+                        </td>
+                    </tr>
+              </table>
+            </fieldset>
+        </form>
+                
+        </td></tr> 
+        </table>
+        
         <div id='tblshow'></div>
         <div id='tbclmstat'></div>
         <div id='tbbatchclm'></div> 
@@ -219,112 +210,112 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
     </div>
     
     <div id='erafiles'>
-		<table cols=2>
-		<tr>
-		<td>
-	 		<form name="view_835" action="edi_history_main.php" target="_blank" enctype="multipart/form-data" method="post">
-			<fieldset style='float:left'>
-				<legend><?php echo xlt("View an x12-835 ERA file"); ?>:</legend>
-				<label for="era_file"><?php echo xlt("Filename"); ?>:</label>
-				<input id="era_file" type="file" size=20 name="fileUplEra"  />
-				<input type="submit" name="fileERA" value="<?php echo xla("Submit"); ?>" />	
-			</fieldset>
-			</form>	
-		</td>
-		<td>
-		<form name="view_ra" action="edi_history_main.php" target="_blank" method="post">
-		<fieldset style='float:left'>
-		  <legend><?php echo xlt("RA for Patient, Encounter, or Trace"); ?>:</legend>
-			<label for="pid835"><?php echo xlt("Patient ID"); ?>:</label>
-			<input type="text" size=10 name="pid835" value="" />	
-			<input type="submit" name="subpid835" value="<?php echo xla("Submit"); ?>" /> <br />
-			<label for="enctr835"><?php echo xlt("Encounter"); ?>:</label>
-			<input type="text" size=10 name="enctr835" value="" />
-			<input type="submit" name="subenctr835" value="<?php echo xla("Submit"); ?>" /> <br />
-			<label for="trace835"><?php echo xlt("Check No"); ?>:</label>
-			<input type="text" size=10 name="trace835" value="" />
-			<input type="submit" name="subtrace835" value="<?php echo xla("Submit"); ?>" />
-		</fieldset>
-		</form> 
-		</td>
-		</tr>
-		</table>  
+        <table cols=2>
+        <tr>
+        <td>
+            <form name="view_835" action="edi_history_main.php" target="_blank" enctype="multipart/form-data" method="post">
+            <fieldset style='float:left'>
+                <legend><?php echo xlt("View an x12-835 ERA file"); ?>:</legend>
+                <label for="era_file"><?php echo xlt("Filename"); ?>:</label>
+                <input id="era_file" type="file" size=20 name="fileUplEra"  />
+                <input type="submit" name="fileERA" value="<?php echo xla("Submit"); ?>" /> 
+            </fieldset>
+            </form> 
+        </td>
+        <td>
+        <form name="view_ra" action="edi_history_main.php" target="_blank" method="post">
+        <fieldset style='float:left'>
+          <legend><?php echo xlt("RA for Patient, Encounter, or Trace"); ?>:</legend>
+            <label for="pid835"><?php echo xlt("Patient ID"); ?>:</label>
+            <input type="text" size=10 name="pid835" value="" />    
+            <input type="submit" name="subpid835" value="<?php echo xla("Submit"); ?>" /> <br />
+            <label for="enctr835"><?php echo xlt("Encounter"); ?>:</label>
+            <input type="text" size=10 name="enctr835" value="" />
+            <input type="submit" name="subenctr835" value="<?php echo xla("Submit"); ?>" /> <br />
+            <label for="trace835"><?php echo xlt("Check No"); ?>:</label>
+            <input type="text" size=10 name="trace835" value="" />
+            <input type="submit" name="subtrace835" value="<?php echo xla("Submit"); ?>" />
+        </fieldset>
+        </form> 
+        </td>
+        </tr>
+        </table>  
     </div>
     
-	<div id="x12text" >
-		<table cols='2'>
-			<tr>
-			  <td align='center'>
-				<form name="view_claim" action="edi_history_main.php" target="_blank" method="post">
-					<fieldset>
-						<legend><?php echo xlt("View Batch Claim x12 text"); ?>:</legend>
-						<label for="enctr"><?php echo xlt("Enter Encounter"); ?>:</label>
-						<input type="text" name="enctrbatch" size=10 value="" /> 
-						<input type="submit" name="Batch-enctr" value="<?php echo xla("Submit"); ?>" />
-					</fieldset>
-				</form>
-			  </td>
-			  <td align='center'>
-				<form name="view_ansi" action="edi_history_main.php" target="_blank" method="post">
-				<fieldset>
-					<legend><?php echo xlt("View ERA x12 text"); ?></legend>
-					<label for="enctrERA"><?php echo xlt("Enter Encounter"); ?>:</label>
-					<input type="text" name="enctrEra" size=10 value="" />
-					<input type="submit" name="eraText" value="<?php echo xla("Submit"); ?>" />
-				</fieldset>
-				</form>
-			  </td>
-			</tr> 
-			<tr>
-			  <td align='center' colspan='2'>
-				<form name="view_x12" action="edi_history_main.php" target="_blank" enctype="multipart/form-data" method="post">
-				<fieldset>
-					<legend><?php echo xlt("View local x12 file"); ?>:</legend>
-					<label for="x12file"><?php echo xlt("Choose File"); ?>:</label>
-					<input id="x12file" type="file" name="fileUplx12" />
-					<input type="submit" name="fileX12" value="<?php echo xla("Submit"); ?>" />	
-				</fieldset>
-				</form>
-			</td> 
-		</table>
-		<div id='txtclmstat'></div>
+    <div id="x12text" >
+        <table cols='2'>
+            <tr>
+              <td align='center'>
+                <form name="view_claim" action="edi_history_main.php" target="_blank" method="post">
+                    <fieldset>
+                        <legend><?php echo xlt("View Batch Claim x12 text"); ?>:</legend>
+                        <label for="enctr"><?php echo xlt("Enter Encounter"); ?>:</label>
+                        <input type="text" name="enctrbatch" size=10 value="" /> 
+                        <input type="submit" name="Batch-enctr" value="<?php echo xla("Submit"); ?>" />
+                    </fieldset>
+                </form>
+              </td>
+              <td align='center'>
+                <form name="view_ansi" action="edi_history_main.php" target="_blank" method="post">
+                <fieldset>
+                    <legend><?php echo xlt("View ERA x12 text"); ?></legend>
+                    <label for="enctrERA"><?php echo xlt("Enter Encounter"); ?>:</label>
+                    <input type="text" name="enctrEra" size=10 value="" />
+                    <input type="submit" name="eraText" value="<?php echo xla("Submit"); ?>" />
+                </fieldset>
+                </form>
+              </td>
+            </tr> 
+            <tr>
+              <td align='center' colspan='2'>
+                <form name="view_x12" action="edi_history_main.php" target="_blank" enctype="multipart/form-data" method="post">
+                <fieldset>
+                    <legend><?php echo xlt("View local x12 file"); ?>:</legend>
+                    <label for="x12file"><?php echo xlt("Choose File"); ?>:</label>
+                    <input id="x12file" type="file" name="fileUplx12" />
+                    <input type="submit" name="fileX12" value="<?php echo xla("Submit"); ?>" /> 
+                </fieldset>
+                </form>
+            </td> 
+        </table>
+        <div id='txtclmstat'></div>
         <div id='txtbatchclm'></div> 
         <div id='txtera'></div> 
     
-	</div> 
+    </div> 
         
     <div id="edinotes">
-		<table cols='2'>
-			<tr>
-				<td colspan='2'><a href="<?php echo $web_root?>/Documentation/Readme_edihistory.html" target="_blank"><?php echo xlt("View the README file"); ?></a></td>
-			</tr>
-			<tr>
-				<td>
-					<form name="viewlog" action="edi_history_main.php" enctype="multipart/form-data" method="post">
-					<fieldset><legend><?php echo xlt("Inspect the log"); ?></legend>
-					<label for="logfile"><?php echo xlt("View Log"); ?>:</label>
-			        <input id="logfile" type="button" value="<?php echo xla("Open"); ?>" />
-					<input id="logClear" type="button" value="<?php echo xla("Close"); ?>" />
-					<input id="logArchive" type="button" value="<?php echo xla("Archive"); ?>" />
-					</fieldset>
-					</form>
-				</td>
-				<td><form name="viewnotes" action="edi_history_main.php" enctype="multipart/form-data" method="post">
-					<fieldset><legend><?php echo xlt("Notes"); ?></legend>
-					<label for="getnotes"><?php echo xlt("Notes"); ?></label>
-					<input id="getnotes" type="button" value="<?php echo xla("Open"); ?>" />
-					<label for="savenotes"><?php echo xlt("Save"); ?></label>
-					<input id="savenotes" type="button" value="<?php echo xla("Save"); ?>" />
-					<label for="closenotes"><?php echo xlt("Close"); ?></label>
-					<input id="closenotes" type="button" value="<?php echo xla("Close"); ?>" />
-					</fieldset>
-					</form>
-				</td>
-			</tr>
-		</table>
+        <table cols='2'>
+            <tr>
+                <td colspan='2'><a href="<?php echo $web_root?>/Documentation/Readme_edihistory.html" target="_blank"><?php echo xlt("View the README file"); ?></a></td>
+            </tr>
+            <tr>
+                <td>
+                    <form name="viewlog" action="edi_history_main.php" enctype="multipart/form-data" method="post">
+                    <fieldset><legend><?php echo xlt("Inspect the log"); ?></legend>
+                    <label for="logfile"><?php echo xlt("View Log"); ?>:</label>
+                    <input id="logfile" type="button" value="<?php echo xla("Open"); ?>" />
+                    <input id="logClear" type="button" value="<?php echo xla("Close"); ?>" />
+                    <input id="logArchive" type="button" value="<?php echo xla("Archive"); ?>" />
+                    </fieldset>
+                    </form>
+                </td>
+                <td><form name="viewnotes" action="edi_history_main.php" enctype="multipart/form-data" method="post">
+                    <fieldset><legend><?php echo xlt("Notes"); ?></legend>
+                    <label for="getnotes"><?php echo xlt("Notes"); ?></label>
+                    <input id="getnotes" type="button" value="<?php echo xla("Open"); ?>" />
+                    <label for="savenotes"><?php echo xlt("Save"); ?></label>
+                    <input id="savenotes" type="button" value="<?php echo xla("Save"); ?>" />
+                    <label for="closenotes"><?php echo xlt("Close"); ?></label>
+                    <input id="closenotes" type="button" value="<?php echo xla("Close"); ?>" />
+                    </fieldset>
+                    </form>
+                </td>
+            </tr>
+        </table>
         
-		<div id='logshow'></div> 
-		<div id='mynotes'></div>   
+        <div id='logshow'></div> 
+        <div id='mynotes'></div>   
 
     </div>
    
@@ -341,7 +332,7 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
         $("#tabs").tabs();
         $("#tabs").tabs().css('visibility','visible');
         $("#tabs").tabs({
-            select: function() {	
+            select: function() {    
                 //Reset all these text fields to their default
                 $("input:text, input:file").val(function() { 
                     return this.defaultValue;
@@ -362,9 +353,9 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
                 data: { srvinfo: 'yes' }, 
                 dataType: 'json',
                 success: function(rsp){ 
-					$('#srvvals').data("mf", rsp.mfuploads); 
-					$('#srvvals').html('');
-				}
+                    $('#srvvals').data("mf", rsp.mfuploads); 
+                    $('#srvvals').html('');
+                }
             }); 
         });
         $(function() {
@@ -435,7 +426,7 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 
     $('#logClear').click(function() {
         $("#logshow").html('');
-    });	
+    }); 
 
     $('#logArchive').click(function() {
         $.ajax({
@@ -477,7 +468,7 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
                 $('#txtnotes').val($.trim(data));
             }
         });
-    });	
+    }); 
 
     $('#savenotes').click(function() {
         var notetxt = $("#txtnotes").val();
@@ -517,66 +508,66 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
    // the csv tables are displayed using jquery dataTables plugin
    // here, the 'success' action is to execute an array of functions 
    // calls the helper function bindlinks() which applies jquery .on method
-	$('#showtable').click(function() {
-		// verify a csv file is selected
-		if ($('#csvselect').val() == '') {
-			$("#tblshow").html('<?php echo xla("No table selected! Select a table."); ?>');
-			return false;
-		}
-		$.ajax({
-			type:'POST',
-			url: "edi_history_main.php", 
-			data: $('#formcsvtables').serialize(), 
-			dataType: "html",
-			success: [ 
-				function(data){ 
+    $('#showtable').click(function() {
+        // verify a csv file is selected
+        if ($('#csvselect').val() == '') {
+            $("#tblshow").html('<?php echo xla("No table selected! Select a table."); ?>');
+            return false;
+        }
+        $.ajax({
+            type:'POST',
+            url: "edi_history_main.php", 
+            data: $('#formcsvtables').serialize(), 
+            dataType: "html",
+            success: [ 
+                function(data){ 
                     var tbltl = "<div class='csvcptn'>" + $(data).filter('#dttl').html() + "</div>";
-					var mytbl = "<table id='csvTable' class='csvDisplay'>" + $(data).not('#dttl').html() + "</table>";
-					$("#tblshow").html($.trim(mytbl)); 
-					$('#csvTable').dataTable({
-						DisplayLength: 10,    
-						bJQueryUI: true, 
-						bScrollInfinite: true,
-						bScrollCollapse: true,
+                    var mytbl = "<table id='csvTable' class='csvDisplay'>" + $(data).not('#dttl').html() + "</table>";
+                    $("#tblshow").html($.trim(mytbl)); 
+                    $('#csvTable').dataTable({
+                        DisplayLength: 10,    
+                        bJQueryUI: true, 
+                        bScrollInfinite: true,
+                        bScrollCollapse: true,
                         iScrollLoadGap: 20,
-						sScrollY: '240px',
-						sScrollX: '90%',
-						sScrollXInner: '100%'
-					});
+                        sScrollY: '240px',
+                        sScrollX: '90%',
+                        sScrollXInner: '100%'
+                    });
                     $("#csvTable_filter").before(tbltl);
-				},
-				bindlinks('#tblshow', 'click', '.clmstatus', 'click', '#tbclmstat', '<?php echo xla("Claim Status"); ?>'),
-				bindlinks('#tblshow', 'click', '.btclm', 'click', '#tbbatchclm', '<?php echo xla("Batch Claim"); ?>'),
-				bindlinks('#tblshow', 'click', '.codeval', 'click', '#tbcodetxt', '<?php echo xla("Code Text"); ?>')				
-			]              
-		});
-	}); 
-	
-	// csv encounter history
-	$('#showhistory').click(function() {
-		$('#tbcsvhist').html('');
-		var chenctr = $('#chenctr').value;
-		var encrecord = $('#tbcsvhist').dialog({
-					buttons: [{ text: "Close", click: function() { $(this).dialog("close"); } }], 
-					modal: false,
-					title: "<?php echo xla("Encounter EDI Record"); ?>",
-					height: 416,
-					width: 'auto'
-				});
-		$.ajax({
-			type: "GET",
-			url: "edi_history_main.php", 
-			data: $('#formcsvhist').serialize(), //{ csvenctr: chenctr },
-			dataType: "html",
-			success: [
-				function(data){ $('#tbcsvhist').html($.trim(data)); },
-				bindlinks('#tbcsvhist', 'click', '.clmstatus', 'click', '#tbclmstat', '<?php echo xla("Claim Status"); ?>'),
-				bindlinks('#tbcsvhist', 'click', '.btclm', 'click', '#tbbatchclm', '<?php echo xla("Batch Claim"); ?>'),
-				bindlinks('#tbcsvhist', 'click', '.codeval', 'click', '#tbcodetxt', '<?php echo xla("Code Text"); ?>'),
-				encrecord.dialog('open')
-			]				
-		});
-    });	
+                },
+                bindlinks('#tblshow', 'click', '.clmstatus', 'click', '#tbclmstat', '<?php echo xla("Claim Status"); ?>'),
+                bindlinks('#tblshow', 'click', '.btclm', 'click', '#tbbatchclm', '<?php echo xla("Batch Claim"); ?>'),
+                bindlinks('#tblshow', 'click', '.codeval', 'click', '#tbcodetxt', '<?php echo xla("Code Text"); ?>')                
+            ]              
+        });
+    }); 
+    
+    // csv encounter history
+    $('#showhistory').click(function() {
+        $('#tbcsvhist').html('');
+        var chenctr = $('#chenctr').value;
+        var encrecord = $('#tbcsvhist').dialog({
+                    buttons: [{ text: "Close", click: function() { $(this).dialog("close"); } }], 
+                    modal: false,
+                    title: "<?php echo xla("Encounter EDI Record"); ?>",
+                    height: 416,
+                    width: 'auto'
+                });
+        $.ajax({
+            type: "GET",
+            url: "edi_history_main.php", 
+            data: $('#formcsvhist').serialize(), //{ csvenctr: chenctr },
+            dataType: "html",
+            success: [
+                function(data){ $('#tbcsvhist').html($.trim(data)); },
+                bindlinks('#tbcsvhist', 'click', '.clmstatus', 'click', '#tbclmstat', '<?php echo xla("Claim Status"); ?>'),
+                bindlinks('#tbcsvhist', 'click', '.btclm', 'click', '#tbbatchclm', '<?php echo xla("Batch Claim"); ?>'),
+                bindlinks('#tbcsvhist', 'click', '.codeval', 'click', '#tbcodetxt', '<?php echo xla("Code Text"); ?>'),
+                encrecord.dialog('open')
+            ]               
+        });
+    }); 
 
 /* ************ 
  * end of javascript block
@@ -584,5 +575,20 @@ if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 </script>     
 
 </body>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#caldte1").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#caldte2").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
+</script>
 
 </html>

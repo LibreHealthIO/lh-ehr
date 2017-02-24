@@ -15,10 +15,10 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Terry Hill <teryhill@librehealth.io>
- * @link    http://www.libreehr.org
+ * @link    http://librehealth.io
  */
  
 $sanitize_all_escapes=true;
@@ -31,6 +31,8 @@ require_once($GLOBALS['srcdir'].'/formatting.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
   // This determines if a particular procedure code corresponds to receipts
   // for the "Clinic" column as opposed to receipts for the practitioner.  Each
@@ -154,125 +156,119 @@ function sel_diagnosis() {
 <table>
  <tr>
   <td width='660px'>
-	<div style='float:left'>
+    <div style='float:left'>
 
-	<table class='text'>
-		<tr>
-			<td class='label'>
-				<?php echo xlt('Facility'); ?>:
-			</td>
-			<td>
-			<?php dropdown_facility($form_facility, 'form_facility'); ?>
-			</td>
-			<td class='label'>
-			   <?php echo xlt('Provider'); ?>:
-			</td>
-			<td>
-				<?php
-				if (acl_check('acct', 'rep_a')) {
-					// Build a drop-down list of providers.
-					//
-					$query = "select id, lname, fname from users where " .
-						"authorized = 1 order by lname, fname";
-					$res = sqlStatement($query);
-					echo "   &nbsp;<select name='form_doctor'>\n";
-					echo "    <option value=''>-- " . xlt('All Providers') . " --\n";
-					while ($row = sqlFetchArray($res)) {
-						$provid = $row['id'];
+    <table class='text'>
+        <tr>
+            <td class='label'>
+                <?php echo xlt('Facility'); ?>:
+            </td>
+            <td>
+            <?php dropdown_facility($form_facility, 'form_facility'); ?>
+            </td>
+            <td class='label'>
+               <?php echo xlt('Provider'); ?>:
+            </td>
+            <td>
+                <?php
+                if (acl_check('acct', 'rep_a')) {
+                    // Build a drop-down list of providers.
+                    //
+                    $query = "select id, lname, fname from users where " .
+                        "authorized = 1 order by lname, fname";
+                    $res = sqlStatement($query);
+                    echo "   &nbsp;<select name='form_doctor'>\n";
+                    echo "    <option value=''>-- " . xlt('All Providers') . " --\n";
+                    while ($row = sqlFetchArray($res)) {
+                        $provid = $row['id'];
                         echo "    <option value='". attr($provid) ."'";
-						if ($provid == $_POST['form_doctor']) echo " selected";
-						echo ">" . text($row['lname']) . ", " . text($row['fname']) . "\n";
-					}
-					echo "   </select>\n";
-				} else {
-					echo "<input type='hidden' name='form_doctor' value='" . attr($_SESSION['authUserID']) . "'>";
-				}
-			?>
-			</td>
-			<td>
-			   <select name='form_use_edate'>
-				<option value='0'><?php echo xlt('Payment Date'); ?></option>
-				<option value='1'<?php if ($form_use_edate) echo ' selected' ?>><?php echo xlt('Invoice Date'); ?></option>
-			   </select>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'>
-			   <?php echo xlt('From'); ?>:
-			</td>
-			<td>
-			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php  echo attr($form_from_date); ?>'
-				title='<?php echo xla('Date of appointments mm/dd/yyyy'); ?>' >
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php echo xla('Click here to choose a date'); ?>'>
-			</td>
-			<td class='label'>
-			   <?php echo xlt('To'); ?>:
-			</td>
-			<td>
-			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php  echo attr($form_to_date); ?>'
-				title='<?php echo xla('Optional end date mm/dd/yyyy'); ?>' >
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php echo xla('Click here to choose a date'); ?>'>
-			</td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td>
-				<?php if (!$GLOBALS['simplified_demographics']) echo '&nbsp;' . xlt('Procedure/Service') . ':'; ?>
-			</td>
-			<td>
-			   <input type='text' name='form_proc_codefull' size='11' value='<?php echo attr($form_proc_codefull); ?>' onclick='sel_procedure()'
-				title='<?php echo xla('Optional procedure/service code'); ?>' 
-				<?php if ($GLOBALS['simplified_demographics']) echo "style='display:none'"; ?>>
-			</td>
+                        if ($provid == $_POST['form_doctor']) echo " selected";
+                        echo ">" . text($row['lname']) . ", " . text($row['fname']) . "\n";
+                    }
+                    echo "   </select>\n";
+                } else {
+                    echo "<input type='hidden' name='form_doctor' value='" . attr($_SESSION['authUserID']) . "'>";
+                }
+            ?>
+            </td>
+            <td>
+               <select name='form_use_edate'>
+                <option value='0'><?php echo xlt('Payment Date'); ?></option>
+                <option value='1'<?php if ($form_use_edate) echo ' selected' ?>><?php echo xlt('Invoice Date'); ?></option>
+               </select>
+            </td>
+        </tr>
+        <tr>
+            <td class='label'>
+               <?php echo xlt('From'); ?>:
+            </td>
+            <td>
+               <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php  echo attr($form_from_date); ?>'
+                title='<?php echo xla('Date of appointments mm/dd/yyyy'); ?>' >
+            </td>
+            <td class='label'>
+               <?php echo xlt('To'); ?>:
+            </td>
+            <td>
+               <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php  echo attr($form_to_date); ?>'
+                title='<?php echo xla('Optional end date mm/dd/yyyy'); ?>' >
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <?php if (!$GLOBALS['simplified_demographics']) echo '&nbsp;' . xlt('Procedure/Service') . ':'; ?>
+            </td>
+            <td>
+               <input type='text' name='form_proc_codefull' size='11' value='<?php echo attr($form_proc_codefull); ?>' onclick='sel_procedure()'
+                title='<?php echo xla('Optional procedure/service code'); ?>' 
+                <?php if ($GLOBALS['simplified_demographics']) echo "style='display:none'"; ?>>
+            </td>
 
-			<td>
-			   <?php if (!$GLOBALS['simplified_demographics']) echo '&nbsp;' . xlt('Diagnosis') . ':'; ?>
-			</td>
-			<td>
-			   <input type='text' name='form_dx_codefull' size='11' value='<?php echo attr($form_dx_codefull); ?>' onclick='sel_diagnosis()'
-				title='<?php echo xla('Enter a diagnosis code to exclude all invoices not containing it'); ?>'
-				<?php if ($GLOBALS['simplified_demographics']) echo "style='display:none'"; ?>>
-			</td>
+            <td>
+               <?php if (!$GLOBALS['simplified_demographics']) echo '&nbsp;' . xlt('Diagnosis') . ':'; ?>
+            </td>
+            <td>
+               <input type='text' name='form_dx_codefull' size='11' value='<?php echo attr($form_dx_codefull); ?>' onclick='sel_diagnosis()'
+                title='<?php echo xla('Enter a diagnosis code to exclude all invoices not containing it'); ?>'
+                <?php if ($GLOBALS['simplified_demographics']) echo "style='display:none'"; ?>>
+            </td>
 
-			<td>
-			   <input type='checkbox' name='form_details' value='1'<?php if ($_POST['form_details']) echo " checked"; ?>><? echo xlt('Details')?>
-			   <input type='checkbox' name='form_procedures' value='1'<?php if ($form_procedures) echo " checked"; ?>><? echo xlt('Procedures')?>
-			</td>
-		</tr>
+            <td>
+               <input type='checkbox' name='form_details' value='1'<?php if ($_POST['form_details']) echo " checked"; ?>><?php echo xlt('Details')?>
+               <input type='checkbox' name='form_procedures' value='1'<?php if ($form_procedures) echo " checked"; ?>><?php echo xlt('Procedures')?>
+            </td>
+        </tr>
         
-	</table>
+    </table>
 
-	</div>
+    </div>
 
   </td>
   
   <td align='left' valign='middle' height="100%">
   
-	<table style='border-left:1px solid; width:100%; height:100%' >
-		<tr>
-			<td>
-				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-					<span>
-						<?php echo xlt('Submit'); ?>
-					</span>
-					</a>
+    <table style='border-left:1px solid; width:100%; height:100%' >
+        <tr>
+            <td>
+                <div style='margin-left:15px'>
+                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                    <span>
+                        <?php echo xlt('Submit'); ?>
+                    </span>
+                    </a>
 
-					<?php if ($_POST['form_refresh']) { ?>
-					<a href='#' class='css_button' id='printbutton'>
-						<span>
-							<?php echo xlt('Print'); ?>
-						</span>
-					</a>
-					<?php } ?>
-				</div>
-			</td>
-		</tr>
-	</table>
+                    <?php if ($_POST['form_refresh']) { ?>
+                    <a href='#' class='css_button' id='printbutton'>
+                        <span>
+                            <?php echo xlt('Print'); ?>
+                        </span>
+                    </a>
+                    <?php } ?>
+                </div>
+            </td>
+        </tr>
+    </table>
   </td>
  </tr>
 </table>
@@ -578,7 +574,7 @@ function sel_diagnosis() {
    <?php echo text($docnameleft); $docnameleft = " " ?>
   </td>
   <td class="detail">
-   <?php echo oeFormatShortDate($row['transdate']) ?>
+   <?php date(DateFormatRead(true) . ' H:i:s', $row['transdate']); ?>
   </td>
 <?php if ($form_procedures) { ?>
   <td class="detail">
@@ -664,7 +660,7 @@ function sel_diagnosis() {
 </div>
 <?php } else { ?>
 <div class='text'>
- 	<?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>
+    <?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>
 </div>
 <?php } ?>
 
@@ -673,14 +669,20 @@ function sel_diagnosis() {
 
 <!-- stuff for the popup calendar -->
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar.js"></script>
-<?php require_once($GLOBALS['srcdir'].'/dynarch_calendar_en.inc.php'); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dynarch_calendar_setup.js"></script>
-
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 
 </html>
