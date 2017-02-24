@@ -20,9 +20,9 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
- * @package LibreEHR 
+ * @package LibreHealth EHR 
  * @author Terry Hill <teryhill@librehealth.io> 
- * @link http://www.libreehr.org 
+ * @link http://librehealth.io 
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  * 
@@ -38,6 +38,8 @@ require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/appointments.inc.php";
 require_once("$srcdir/patient_tracker.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $patient = $_REQUEST['patient'];
 
@@ -84,13 +86,14 @@ if ($form_patient == '' ) $form_pid = '';
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <title><?php echo xlt('Patient Flow Board Report'); ?></title>
 
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script type="text/javascript">
 
@@ -161,7 +164,9 @@ if ($form_patient == '' ) $form_pid = '';
 <?php } ?>
 
 
-<div id="report_parameters_daterange"><?php echo date("d F Y", strtotime($from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($to_date)); #sets date range for calendars ?>
+<div id="report_parameters_daterange">
+    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
 <form method='post' name='theform' id='theform' action='patient_flow_board_report.php' onsubmit='return top.restoreSession()'>
@@ -207,21 +212,15 @@ if ($form_patient == '' ) $form_pid = '';
 
             <tr>
                 <td class='label'><?php echo xlt('From'); ?>:</td>
-                <td><input type='text' name='form_from_date' id="form_from_date"
-                    size='10' value='<?php echo attr($from_date) ?>'
-                    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-                    title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
-                    align='absbottom' width='24' height='22' id='img_from_date'
-                    border='0' alt='[?]' style='cursor: pointer'
-                    title='<?php echo xlt('Click here to choose a date'); ?>'></td>
+                <td>
+                    <input type='text' name='form_from_date' id="form_from_date"
+                        size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($from_date))) ?>' />
+                </td>
                 <td class='label'><?php echo xlt('To'); ?>:</td>
-                <td><input type='text' name='form_to_date' id="form_to_date"
-                    size='10' value='<?php echo attr($to_date) ?>'
-                    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-                    title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
-                    align='absbottom' width='24' height='22' id='img_to_date'
-                    border='0' alt='[?]' style='cursor: pointer'
-                    title='<?php echo xlt('Click here to choose a date'); ?>'></td>
+                <td>
+                    <input type='text' name='form_to_date' id="form_to_date"
+                    size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($to_date))) ?>' />
+                </td>
             </tr>
 
             <tr>
@@ -247,21 +246,21 @@ if ($form_patient == '' ) $form_pid = '';
                 </td>
             </tr>
             <tr>
-			<td>
-			&nbsp;&nbsp;<span class='text'><?php echo xlt('Patient'); ?>: </span>
-			</td>
-			<td>
-			<input type='text' size='20' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' value='<?php echo attr($form_patient) ? attr($form_patient) : xla('Click To Select'); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' />
-			<input type='hidden' name='form_pid' value='<?php echo attr($form_pid); ?>' />
-			</td>
-			
+            <td>
+            &nbsp;&nbsp;<span class='text'><?php echo xlt('Patient'); ?>: </span>
+            </td>
+            <td>
+            <input type='text' size='20' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' value='<?php echo attr($form_patient) ? attr($form_patient) : xla('Click To Select'); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' />
+            <input type='hidden' name='form_pid' value='<?php echo attr($form_pid); ?>' />
+            </td>
+            
                 <td colspan="2"><label><input type="checkbox" name="show_details" id="show_details" <?php if($chk_show_details) echo "checked";?>>&nbsp;<?php echo xlt('Show Details'); ?></label></td>
-            </tr>  			
+            </tr>           
             <tr>
  
             </tr>
             <?php if ($GLOBALS['drug_screen']) { ?>
-           	<tr>
+            <tr>
             <?php # these two selects will are for the drug screen entries the Show Selected for Drug Screens will show all
                   # that have a yes for selected. If you just check the Show Status of Drug Screens all drug screens will be displayed
                   # if both are selected then only completed drug screens will be displayed. ?>
@@ -302,7 +301,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
 <div id="report_results">
 <table>
 
-	<thead>
+    <thead>
     <?php if (!$chk_show_drug_screens && !$chk_show_completed_drug_screens) { # the first part of this block is for the Patient Flow Board report ?>
         <th><a href="nojs.php" onclick="return dosort('doctor')"
      <?php if ($form_orderby == "doctor") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Provider'); ?>
@@ -404,7 +403,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
     <tbody>
         <!-- added for better print-ability -->
     <?php
-	
+    
     $lastdocname = "";
     #Appointment Status Checking
         $form_apptstatus = $_POST['form_apptstatus'];
@@ -472,7 +471,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td class="detail">&nbsp;<?php echo ($docname == $lastdocname) ? "" : $docname ?>
         </td>
 
-        <td class="detail"><?php echo text(oeFormatShortDate($appointment['pc_eventDate'])) ?>
+        <td class="detail"><?= text(date(DateFormatRead(true), strtotime($appointment['pc_eventDate']))); ?>
         </td>
         
         <td class="detail"><?php echo text(oeFormatTime($appointment['pc_startTime'])) ?>
@@ -522,8 +521,8 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
               $k = '0';
               for ($x = 1; $x <= $last_seq; $x++) {   
         ?>
-	    <tr valign='top' class="detail" >
-	      <td colspan="6" class="detail" align='left'>
+        <tr valign='top' class="detail" >
+          <td colspan="6" class="detail" align='left'>
           
             <?php
                 # get the verbiage for the status code            
@@ -599,7 +598,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td class="detail">&nbsp;<?php echo ($docname == $lastdocname) ? "" : $docname ?>
         </td>
 
-        <td class="detail"><?php echo text(oeFormatShortDate($appointment['pc_eventDate'])) ?>
+        <td class="detail"><?= text(date(DateFormatRead(true), strtotime($appointment['pc_eventDate']))); ?>
         </td>
 
         <td class="detail"><?php echo text(oeFormatTime($appointment['pc_startTime'])) ?>
@@ -651,17 +650,19 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
 
 </body>
 
-<!-- stuff for the popup calendar -->
-<style type="text/css">
-    @import url(../../library/dynarch_calendar.css);
-</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript"
-    src="../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 
 </html>

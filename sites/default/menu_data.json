@@ -169,7 +169,7 @@
         "url" : "/interface/drugs/drug_inventory.php",
         "children" : [ ],
         "requirement" : 0,
-        "acl_req" : [ [ "admin", "super" ], [ "admin", "drugs" ] ]
+        "acl_req" : [ "admin", "drugs" ]
     }, { 
         "label" : "Destroyed",
         "menu_id" : "adm0",
@@ -704,6 +704,30 @@
             "requirement" : 0
         } ],
         "requirement" : 0
+    }, { 
+        "label" : "Inventory",
+        "icon" : "fa-caret-right",
+        "children" : [ { 
+            "label" : "List",
+            "url" : "/interface/reports/inventory_list.php",
+            "target" : "rep",
+            "children" : [ ],
+            "requirement" : 0
+        }, { 
+            "label" : "Activity",
+            "url" : "/interface/reports/inventory_activity.php",
+            "target" : "rep",
+            "children" : [ ],
+            "requirement" : 0
+        }, { 
+            "label" : "Transactions",
+            "url" : "/interface/reports/inventory_transactions.php",
+            "target" : "rep",
+            "children" : [ ],
+            "requirement" : 0
+        } ],
+        "requirement" : 0,
+        "global_req" : "inhouse_pharmacy"
     }, { 
         "label" : "Procedures",
         "children" : [ { 
