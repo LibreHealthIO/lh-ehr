@@ -15,7 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
  * @author  Anil N <aniln@ensoftek.com>
  * @link    http://librehealth.io
  */
@@ -32,17 +36,15 @@ include_once("../globals.php");
 include_once("$srcdir/log.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
+$DateFormat = DateFormatRead(true);
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 <html>
 <head>
 <?php html_header_show();?>
-<link rel="stylesheet" href='<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css' type='text/css'>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <style>
 #logview {
@@ -72,7 +74,7 @@ require_once("$srcdir/formatting.inc.php");
     color: #336699;
 }
 .tamperColor{
-	color:red;
+    color:red;
 }
 </style>
 <script>
@@ -120,11 +122,11 @@ $form_patient = $_GET['form_patient'];
  */
 if ($start_date && $end_date)
 {
-	if($start_date > $end_date){
-		echo "<table><tr class='alert'><td colspan=7>"; echo xlt('Start Date should not be greater than End Date');
-		echo "</td></tr></table>"; 
-		$err_message=1;	
-	}
+    if($start_date > $end_date){
+        echo "<table><tr class='alert'><td colspan=7>"; echo xlt('Start Date should not be greater than End Date');
+        echo "</td></tr></table>"; 
+        $err_message=1; 
+    }
 }
 
 ?>
@@ -149,14 +151,12 @@ $sortby = $_GET['sortby'];
 <tr><td>
 <span class="text"><?php echo xlt('Start Date'); ?>: </span>
 </td><td>
-<input type="text" size="18" name="start_date" id="start_date" value="<?php echo $start_date ? $start_date : date('Y-m-d H:i:s'); ?>" title="<?php echo xla('yyyy-mm-dd H:m Start date'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
-<img src="../pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_begin_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php echo xla('Click here to choose date time'); ?>">&nbsp;
+<input type="text" size="18" name="start_date" id="start_date" value="<?php echo $start_date ? htmlspecialchars(oeFormatShortDate($start_date)) : date($DateFormat); ?>"/>
 </td>
 <td>
 <span class="text"><?php echo xlt('End Date'); ?>: </span>
 </td><td>
-<input type="text" size="18" name="end_date" id="end_date" value="<?php echo $end_date ? $end_date : date('Y-m-d H:i:s'); ?>" title="<?php echo xla('yyyy-mm-dd H:m End date'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
-<img src="../pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_end_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php echo xla('Click here to choose date time'); ?>">&nbsp;
+<input type="text" size="18" name="end_date" id="end_date" value="<?php echo $end_date ? $end_date : date($DateFormat); ?>"/>
 </td>
 
 <td>
@@ -211,17 +211,17 @@ $type_event = "update";
 $tevent=""; 
 $gev="";
 if($eventname != "" && $type_event != ""){
-	$getevent=$eventname."-".$type_event;
+    $getevent=$eventname."-".$type_event;
 }
       
-if(($eventname == "") && ($type_event != "")){	
-	$tevent=$type_event;   	
+if(($eventname == "") && ($type_event != "")){  
+    $tevent=$type_event;    
 }else if($type_event =="" && $eventname != ""){
-	$gev=$eventname;
+    $gev=$eventname;
 }else if ($eventname == ""){
-	$gev = "";
+    $gev = "";
 }else{
-	$gev = $getevent;
+    $gev = $getevent;
 }
 
 $dispArr = array();
@@ -230,67 +230,67 @@ if ($ret = getEvents(array('sdate' => $get_sdate,'edate' => $get_edate, 'user' =
   foreach ($ret as $iter) {
     //translate comments
     $patterns = array ('/^success/','/^failure/','/ encounter/');
-	$replace = array ( xl('success'), xl('failure'), xl('encounter','',' '));
-	
-	$dispCheck = false;
-	$log_id = $iter['id'];
-	$commentEncrStatus = "No";
-	$logEncryptData = logCommentEncryptData($log_id);
-	
-	if(count($logEncryptData) > 0){
-		$commentEncrStatus = $logEncryptData['encrypt'];
-		$checkSumOld = $logEncryptData['checksum'];
-		$concatLogColumns = $iter['date'].$iter['event'].$iter['user'].$iter['groupname'].$iter['comments'].$iter['patient_id'].$iter['success'].$iter['checksum'].$iter['crt_user'];
-		$checkSumNew = sha1($concatLogColumns);
-		
-		if($checkSumOld != $checkSumNew){
-			$dispCheck = true;
-		}else{
-			$dispCheck = false;
-			continue;
-		}
-	}else{
-		continue;
-	}
-	
-	if($commentEncrStatus == "Yes"){
-		$decrypt_comment =  trim(aes256Decrypt($iter["comments"]));
-		$trans_comments = preg_replace($patterns, $replace, $decrypt_comment);
-	}else{
-		$comments = trim($iter["comments"]);
-		$trans_comments = preg_replace($patterns, $replace, $comments);
-	}
-	
-	//Alter Checksum value records only display here
-	if($dispCheck){
-		$dispArr[] = $icnt++;
+    $replace = array ( xl('success'), xl('failure'), xl('encounter','',' '));
+    
+    $dispCheck = false;
+    $log_id = $iter['id'];
+    $commentEncrStatus = "No";
+    $logEncryptData = logCommentEncryptData($log_id);
+    
+    if(count($logEncryptData) > 0){
+        $commentEncrStatus = $logEncryptData['encrypt'];
+        $checkSumOld = $logEncryptData['checksum'];
+        $concatLogColumns = $iter['date'].$iter['event'].$iter['user'].$iter['groupname'].$iter['comments'].$iter['patient_id'].$iter['success'].$iter['checksum'].$iter['crt_user'];
+        $checkSumNew = sha1($concatLogColumns);
+        
+        if($checkSumOld != $checkSumNew){
+            $dispCheck = true;
+        }else{
+            $dispCheck = false;
+            continue;
+        }
+    }else{
+        continue;
+    }
+    
+    if($commentEncrStatus == "Yes"){
+        $decrypt_comment =  trim(aes256Decrypt($iter["comments"]));
+        $trans_comments = preg_replace($patterns, $replace, $decrypt_comment);
+    }else{
+        $comments = trim($iter["comments"]);
+        $trans_comments = preg_replace($patterns, $replace, $comments);
+    }
+    
+    //Alter Checksum value records only display here
+    if($dispCheck){
+        $dispArr[] = $icnt++;
 ?>
-	 <TR class="oneresult">
-		  <TD class="text tamperColor"><?php echo oeFormatShortDate(substr($iter["date"], 0, 10)) . substr($iter["date"], 10) ?></TD>
-		  <TD class="text tamperColor"><?php echo text($iter["user"]); ?></TD>
-		  <TD class="text tamperColor"><?php echo text($iter["patient_id"]);?></TD>
-		  <TD class="text tamperColor"><?php echo text($trans_comments);?></TD>
-		  <?php  if($check_sum) { ?>
-		  <TD class="text tamperColor"><?php echo text($checkSumNew);?></TD>
-		  <TD class="text tamperColor"><?php echo text($checkSumOld);?></TD>
-		  <?php } ?>
-	 </TR>
+     <TR class="oneresult">
+          <TD class="text tamperColor"><?php echo oeFormatShortDate(substr($iter["date"], 0, 10)) . substr($iter["date"], 10) ?></TD>
+          <TD class="text tamperColor"><?php echo text($iter["user"]); ?></TD>
+          <TD class="text tamperColor"><?php echo text($iter["patient_id"]);?></TD>
+          <TD class="text tamperColor"><?php echo text($trans_comments);?></TD>
+          <?php  if($check_sum) { ?>
+          <TD class="text tamperColor"><?php echo text($checkSumNew);?></TD>
+          <TD class="text tamperColor"><?php echo text($checkSumOld);?></TD>
+          <?php } ?>
+     </TR>
 <?php
       }
     }
   }
   
   if( count($dispArr) == 0 ){?>
-	 <TR class="oneresult">
-		 <?php 
-			$colspan = 4;
-			if($check_sum) $colspan=6;
-		 ?>
-		<TD class="text" colspan="<?php echo $colspan;?>" align="center"><?php echo xlt('No audit log tampering detected in the selected date range.'); ?></TD>
-	 </TR>
+     <TR class="oneresult">
+         <?php 
+            $colspan = 4;
+            if($check_sum) $colspan=6;
+         ?>
+        <TD class="text" colspan="<?php echo $colspan;?>" align="center"><?php echo xlt('No audit log tampering detected in the selected date range.'); ?></TD>
+     </TR>
 <?php
   }else{?>
-	<script type="text/javascript">$('#display_tamper').css('display', 'block');</script>
+    <script type="text/javascript">$('#display_tamper').css('display', 'block');</script>
   <?php
   }
   
@@ -323,13 +323,25 @@ $(document).ready(function(){
     $("#sortby_success").click(function() { $("#sortby").val("success"); $("#theform").submit(); });
     $("#sortby_comments").click(function() { $("#sortby").val("comments"); $("#theform").submit(); });
     $("#sortby_oldchecksum").click(function() { $("#sortby").val("checksum"); $("#theform").submit(); });
-	$("#sortby_newchecksum").click(function() { $("#sortby").val("checksum"); $("#theform").submit(); });
+    $("#sortby_newchecksum").click(function() { $("#sortby").val("checksum"); $("#theform").submit(); });
 });
 
 
-/* required for popup calendar */
-Calendar.setup({inputField:"start_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:true});
-Calendar.setup({inputField:"end_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date", showsTime:true});
+
+</script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#start_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#end_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 
 </script>
 

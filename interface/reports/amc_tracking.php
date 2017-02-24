@@ -1,10 +1,28 @@
 <?php
- // Copyright (C) 2011 Brady Miller <brady@sparmy.com>
- //
- // This program is free software; you can redistribute it and/or
- // modify it under the terms of the GNU General Public License
- // as published by the Free Software Foundation; either version 2
- // of the License, or (at your option) any later version.
+/*
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2011 Brady Miller <brady@sparmy.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * 
+ * @package LibreHealth EHR 
+ * @author Brady Miller <brady@sparmy.com> 
+ * @link http://librehealth.io 
+ */
 
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
@@ -20,6 +38,8 @@ require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/amc.php";
+$DateFormat = DateFormatRead(true);
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 // Collect form parameters (set defaults if empty)
 $begin_date = (isset($_POST['form_begin_date'])) ? trim($_POST['form_begin_date']) : "";
@@ -37,11 +57,12 @@ $provider  = trim($_POST['form_provider']);
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
 <title><?php echo htmlspecialchars( xl('Automated Measure Calculations (AMC) Tracking'), ENT_NOQUOTES); ?></title>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script LANGUAGE="JavaScript">
 
@@ -178,20 +199,16 @@ $provider  = trim($_POST['form_provider']);
 <table>
  <tr>
   <td width='470px'>
-	<div style='float:left'>
+    <div style='float:left'>
 
-	<table class='text'>
+    <table class='text'>
 
                  <tr>
                       <td class='label'>
                         <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
                       </td>
                       <td>
-                         <input type='text' name='form_begin_date' id="form_begin_date" size='20' value='<?php echo htmlspecialchars( $begin_date, ENT_QUOTES); ?>'
-                            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-                         <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                            id='img_begin_date' border='0' alt='[?]' style='cursor:pointer'
-                            title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
+                         <input type='text' name='form_begin_date' id="form_begin_date" size='20' value='<?= htmlspecialchars($begin_date); ?>'/>
                       </td>
                  </tr>
 
@@ -200,11 +217,7 @@ $provider  = trim($_POST['form_provider']);
                            <?php echo htmlspecialchars( xl('End Date'), ENT_NOQUOTES); ?>:
                         </td>
                         <td>
-                           <input type='text' name='form_end_date' id="form_end_date" size='20' value='<?php echo htmlspecialchars( $end_date, ENT_QUOTES); ?>'
-                                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-                           <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                                id='img_end_date' border='0' alt='[?]' style='cursor:pointer'
-                                title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
+                           <input type='text' name='form_end_date' id="form_end_date" size='20' value='<?= htmlspecialchars($end_date); ?>'/>
                         </td>
                 </tr>
 
@@ -225,61 +238,61 @@ $provider  = trim($_POST['form_provider']);
                 </tr>
 
                 <tr>      
-			<td class='label'>
-			   <?php echo htmlspecialchars( xl('Provider'), ENT_NOQUOTES); ?>:
-			</td>
-			<td>
-				<?php
+            <td class='label'>
+               <?php echo htmlspecialchars( xl('Provider'), ENT_NOQUOTES); ?>:
+            </td>
+            <td>
+                <?php
 
-				 // Build a drop-down list of providers.
-				 //
+                 // Build a drop-down list of providers.
+                 //
 
-				 $query = "SELECT id, lname, fname FROM users WHERE ".
-				  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
+                 $query = "SELECT id, lname, fname FROM users WHERE ".
+                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
 
-				 $ures = sqlStatement($query);
+                 $ures = sqlStatement($query);
 
-				 echo "   <select name='form_provider'>\n";
-				 echo "    <option value=''>-- " . htmlspecialchars( xl('All'), ENT_NOQUOTES) . " --\n";
+                 echo "   <select name='form_provider'>\n";
+                 echo "    <option value=''>-- " . htmlspecialchars( xl('All'), ENT_NOQUOTES) . " --\n";
 
-				 while ($urow = sqlFetchArray($ures)) {
-				  $provid = $urow['id'];
-				  echo "    <option value='".htmlspecialchars( $provid, ENT_QUOTES)."'";
-				  if ($provid == $_POST['form_provider']) echo " selected";
-				  echo ">" . htmlspecialchars( $urow['lname'] . ", " . $urow['fname'], ENT_NOQUOTES) . "\n";
-				 }
+                 while ($urow = sqlFetchArray($ures)) {
+                  $provid = $urow['id'];
+                  echo "    <option value='".htmlspecialchars( $provid, ENT_QUOTES)."'";
+                  if ($provid == $_POST['form_provider']) echo " selected";
+                  echo ">" . htmlspecialchars( $urow['lname'] . ", " . $urow['fname'], ENT_NOQUOTES) . "\n";
+                 }
 
-				 echo "   </select>\n";
+                 echo "   </select>\n";
 
-				?>
+                ?>
                         </td>
-		</tr>
-	</table>
+        </tr>
+    </table>
 
-	</div>
+    </div>
 
   </td>
   <td align='left' valign='middle' height="100%">
-	<table style='border-left:1px solid; width:100%; height:100%' >
-		<tr>
-			<td>
-				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); top.restoreSession(); $("#theform").submit();'>
-					<span>
-						<?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
-					</span>
-					</a>
+    <table style='border-left:1px solid; width:100%; height:100%' >
+        <tr>
+            <td>
+                <div style='margin-left:15px'>
+                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); top.restoreSession(); $("#theform").submit();'>
+                    <span>
+                        <?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
+                    </span>
+                    </a>
                                         <?php if ($_POST['form_refresh']) { ?>
-					<a href='#' class='css_button' id='printbutton'>
-						<span>
-							<?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
-						</span>
-					</a>
-					<?php } ?>
-				</div>
-			</td>
-		</tr>
-	</table>
+                    <a href='#' class='css_button' id='printbutton'>
+                        <span>
+                            <?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
+                        </span>
+                    </a>
+                    <?php } ?>
+                </div>
+            </td>
+        </tr>
+    </table>
   </td>
  </tr>
 </table>
@@ -368,7 +381,7 @@ $provider  = trim($_POST['form_provider']);
      echo "<tr bgcolor='" . $bgcolor ."'>";
      echo "<td>" . htmlspecialchars($result['lname'].",".$result['fname'], ENT_NOQUOTES) . "</td>";
      echo "<td>" . htmlspecialchars($result['pid'],ENT_NOQUOTES) . "</td>";
-     echo "<td>" . htmlspecialchars($result['date'],ENT_NOQUOTES) . "</td>";
+     echo "<td>" . date($DateFormat, strtotime(attr($result['date']))) . "</td>";
      if ($rule == "send_sum_amc" || $rule == "provide_sum_pat_amc") {
        echo "<td>" . htmlspecialchars($result['id'],ENT_NOQUOTES) . "</td>";
      }
@@ -395,7 +408,7 @@ $provider  = trim($_POST['form_provider']);
 </div>  <!-- end of search results -->
 <?php } else { ?>
 <div class='text'>
- 	<?php echo htmlspecialchars( xl('Please input search criteria above, and click Submit to view results.'), ENT_NOQUOTES); ?>
+    <?php echo htmlspecialchars( xl('Please input search criteria above, and click Submit to view results.'), ENT_NOQUOTES); ?>
 </div>
 <?php } ?>
 
@@ -405,14 +418,19 @@ $provider  = trim($_POST['form_provider']);
 
 </body>
 
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script language="Javascript">
- Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
- Calendar.setup({inputField:"form_end_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date", showsTime:'true'});
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_begin_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_end_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 
 </script>
 
