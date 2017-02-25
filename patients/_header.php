@@ -44,7 +44,7 @@
 </head>
 <body class="skin-blue fixed">
     <header class="header">
-        <a href="home.php" class="logo"><img src='./images/logo-full-con.png'/></a>
+        <a href="home.php" class="logo"><img src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/></a>
         <nav class="navbar navbar-static-top" role="navigation">
             <!-- Sidebar toggle button-->
             <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas"

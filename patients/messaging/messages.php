@@ -85,7 +85,7 @@ function getAuthPortalUsers(){
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<title>Secure Messaging</title>
+<title><?php echo xlt("Secure Messaging"?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="Mail Application" />
 <link href="<?php echo $GLOBALS['fonts_path']; ?>/font-awesome-4-6-3/css/font-awesome.min.css" type="text/css" rel="stylesheet">
@@ -389,7 +389,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
                 $('#inputBody').summernote({focus:true,height:'225px'});
                 var mode = $(e.relatedTarget).attr('data-mode');
             if(mode == 'reply'){
-                $('#modalCompose .modal-header .modal-title').html("Compose Reply Message");
+                $('#modalCompose .modal-header .modal-title').html("<?php echo xla("Compose Reply Message"); ?>");
                  $scope.compose.task = mode;
                 //get data attributes of the clicked element (selected recipient) for replies only
                 var chain = $(e.relatedTarget).attr('data-mailchain');
@@ -412,7 +412,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
             }
             else{
                 //$scope.compose.noteid = chain;
-                $('#modalCompose .modal-header .modal-title').html("Compose New Message");
+                $('#modalCompose .modal-header .modal-title').html("<?php echo xla("Compose New Message"); ?>");
                 $scope.compose.task = 'add';
                 $(e.currentTarget).find('select[id="selSendto"]').prop( "disabled", false );
                 $(e.currentTarget).find('input[name="title"]').prop( "disabled", false );
@@ -468,7 +468,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
     <ng ng-app="emrMessageApp">
     <div class="container" id='main' style="display:none">
         <div class='header logo'>
-        <h2><img style='width:25%;height:auto;' class='logo' src='<?php echo $GLOBALS['images_static_relative']; ?>/logo-full-con.png'/>  <?php echo xlt('Patient Messaging'); ?></h2>
+        <h2><img style='width:25%;height:auto;' class='logo' src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/>  <?php echo xlt('Patient Messaging'); ?></h2>
         </div>
         <div class="row" ng-controller="inboxCtrl">
             <aside class="col-md-1" style='padding:0 0;margin:0 0;text-align:left;'>
@@ -491,7 +491,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
                             onclick='window.location.replace("./messages.php")'> <span
                             class="fa fa-refresh fa-lg"></span>
                         </a>
-                        <button class="btn btn-default btn-lg" title="New Note"
+                        <button class="btn btn-default btn-lg" title="<?php echo xla("New Note"); ?>"
                             data-mode="add" data-toggle="modal" data-target="#modalCompose">
                             <span class="fa fa-edit fa-lg"></span>
                         </button>
@@ -559,7 +559,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
                                     <button ng-show="selected.sender_id != cUserId" class="btn btn-primary" title="<?php echo xla('Reply to this message'); ?>" data-toggle="modal" data-mode="reply" data-noteid={{selected.id}}
                                         data-whoto={{selected.sender_id}} data-mtitle={{selected.title}} data-username={{selected.sender_name}} data-mailchain={{selected.mail_chain}} data-target="#modalCompose">
                                         <i class="fa fa-reply"></i> <?php echo xlt('Reply'); ?></button>
-                                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="More options"><i class="fa fa-angle-down"></i></button>
+                                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="<?php echo xla("More options"); ?>"><i class="fa fa-angle-down"></i></button>
                                     <ul class="dropdown-menu pull-right">
                                         <li><a href="javascript:;"><i class="fa fa-reply"></i> <?php echo xlt('Reply'); ?></a></li>
                                         <li><a href="javascript:;"><i class="fa fa-mail-forward"></i><?php echo xlt('Forward'); ?></a></li>

@@ -1283,7 +1283,7 @@ if (typeof jsondata !== 'undefined') {
                                                 title="<?php echo xla('Three or four digits at back of your card'); ?>" required value="" />
                                         </div>
                                         <div class="col-md-3">
-                                            <img src='./images/img_cvc.png' style='height: 58px; width: auto'>
+                                            <img src='<?php echo $GLOBALS['images_path']; ?>/img_cvc.png' style='height: 58px; width: auto'>
                                         </div>
                                     </div>
                                 </div>

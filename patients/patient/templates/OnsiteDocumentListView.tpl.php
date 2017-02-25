@@ -44,9 +44,6 @@
 <meta name="description" content="Developed By sjpadgett@gmail.com">
 
         <link href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <?php if ($_SESSION['language_direction'] == 'rtl') { ?>
-            <link href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-rtl-3-3-4/dist/css/bootstrap-rtl.min.css" rel="stylesheet" type="text/css" />
-        <?php } ?>
 
         <link href="../assets/css/style.css" rel="stylesheet" />
         <link href="<?php echo $GLOBALS['fonts_path']; ?>/font-awesome-4-6-3/css/font-awesome.min.css" rel="stylesheet" />

@@ -285,7 +285,7 @@
     </form>
     
         <div class="copyright"><?php echo xlt('Powered by');?> LibreHealth EHR</div>
-      </div><div><img src='./images/logo-full-con.png'/></div>
+      </div><div><img src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/></div>
     <?php } ?>
 
     </center>

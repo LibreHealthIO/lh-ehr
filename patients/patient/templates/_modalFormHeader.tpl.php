@@ -28,6 +28,7 @@
 <link href="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-datetimepicker-2-5-4/build/jquery.datetimepicker.min.css"  rel="stylesheet" />
   
 <link href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-11-3/index.js"></script>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/moment-2-13-0/moment.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-datetimepicker-2-5-4/build/jquery.datetimepicker.full.min.js"></script>
