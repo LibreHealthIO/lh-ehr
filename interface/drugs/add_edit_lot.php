@@ -1,10 +1,29 @@
 <?php
-// Copyright (C) 2006, 2010 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ * Add Edit Lot
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2006, 2010 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @link http://librehealth.io 
+ */
 
 $sanitize_all_escapes  = true;
 $fake_register_globals = false;
@@ -15,6 +34,9 @@ require_once("drugs.inc.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 function QuotedOrNull($fld) {
   if ($fld) return "'".add_escape_custom($fld)."'";
@@ -106,15 +128,10 @@ td { font-size:10pt; }
 </style>
 
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
-<style  type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
 
 <script language="JavaScript">
-
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
  function validate() {
   var f = document.forms[0];
@@ -340,12 +357,7 @@ if ($_POST['form_save'] || $_POST['form_delete']) {
   <td valign='top' nowrap><b><?php echo xlt('Expiration'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_expiration' id='form_expiration'
-    value='<?php echo attr($row['expiration']) ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-    title='<?php echo xla('yyyy-mm-dd date of expiration'); ?>' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_expiration' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>'>
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($row['expiration']))) ?>'/>
   </td>
  </tr>
 
@@ -423,12 +435,7 @@ generate_form_field(array('data_type' => 14, 'field_id' => 'distributor_id',
   <td valign='top' nowrap><b><?php echo xlt('Date'); ?>:</b></td>
   <td>
    <input type='text' size='10' name='form_sale_date' id='form_sale_date'
-    value='<?php echo attr(date('Y-m-d')) ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-    title='<?php echo xla('yyyy-mm-dd date of purchase or transfer'); ?>' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_sale_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla('Click here to choose a date'); ?>'>
+    value='<?php echo htmlspecialchars(oeFormatShortDate(attr(date('Y-m-d')))) ?>'/>
   </td>
  </tr>
 
@@ -496,9 +503,16 @@ while ($lrow = sqlFetchArray($lres)) {
 
 </center>
 </form>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_expiration", ifFormat:"%Y-%m-%d", button:"img_expiration"});
- Calendar.setup({inputField:"form_sale_date", ifFormat:"%Y-%m-%d", button:"img_sale_date"});
+ $(function() {
+     $("#form_expiration, #form_sale_date").datetimepicker({
+         timepicker: false,
+         format: "<?= $DateFormat; ?>"
+     });
+     $.datetimepicker.setLocale('<?= $DateLocale;?>');
+ });
 <?php
 if ($info_msg) {
   echo " alert('".addslashes($info_msg)."');\n";
