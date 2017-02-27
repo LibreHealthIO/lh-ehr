@@ -77,6 +77,10 @@ if ($_GET["mode"] == "update") {
     $tqvar = formData('lname','G');
     sqlStatement("update users set lname='$tqvar' where id={$_GET["id"]}");
   }
+  if ($_GET["suffix"]) {
+    $tqvar = formData('suffix','G');
+    sqlStatement("update users set suffix='$tqvar' where id={$_GET["id"]}");
+  }
   if ($_GET["job"]) {
     $tqvar = formData('job','G');
     sqlStatement("update users set specialty='$tqvar' where id={$_GET["id"]}");
@@ -391,7 +395,7 @@ $bg_count=count($acl_name);
     <TD style="width:180px;"><span class=text></span></TD>
     <TD style="width:270px;"></td>
     <TD style="width:200px;"><span class=text><?php echo xlt('User\'s New Pass Phrase'); ?>: </span></TD>
-    <TD class='text' style="width:280px;">    <input type=text name=clearPass style="width:150px;"  value=""><font class="mandatory">*</font></td>
+    <TD class='text' style="width:280px;">    <input type=entry name=clearPass style="width:150px;"  value=""><font class="mandatory">*</font></td>
 </TR>
 
 
@@ -434,7 +438,8 @@ foreach($result as $iter2) {
 </tr>
 
 <tr>
- <td colspan=2>&nbsp;</td>
+<td><span class=text><?php echo xlt('Suffix'); ?>: </span></td><td><input type=entry name=suffix id=suffix style="width:150px;"  title ="<?php echo xla("Please Change this Information in the Address Book"); ?>" value="<?php echo $iter["suffix"]; ?>" readonly> </td>
+
  <td><span class=text><?php echo xlt('Schedule Facilities:');?></td>
  <td>
   <select name="schedule_facility[]" multiple style="width:150px;" >
@@ -458,12 +463,13 @@ foreach($result as $iter2) {
 </tr>
 
 <TR>
-<TD><span class=text><?php echo xlt('Federal Tax ID'); ?>: </span></TD><TD><input type=text name=taxid style="width:150px;"  value="<?php echo $iter["federaltaxid"]?>"></td>
-<TD><span class=text><?php echo xlt('DEA Number'); ?>: </span></TD><TD><input type=text name=drugid style="width:150px;"  value="<?php echo $iter["federaldrugid"]?>"></td>
+<TD><span class=text><?php echo xlt('Federal Tax ID'); ?>: </span></TD><TD><input type=entry name=taxid style="width:150px;"  value="<?php echo $iter["federaltaxid"]?>"></td>
+<TD><span class=text><?php echo xlt('DEA Number'); ?>: </span></TD><TD><input type=entry name=drugid style="width:150px;"  value="<?php echo $iter["federaldrugid"]?>"></td>
 </TR>
 
 <tr>
-<td><span class="text"><?php echo xlt('UPIN'); ?>: </span></td><td><input type="text" name="upin" style="width:150px;" value="<?php echo $iter["upin"]?>"></td>
+  <td><span class="text"><?php echo xlt('Provider Type'); ?>: </span></td>
+  <td><?php echo generate_select_list("physician_type", "physician_type", $iter['physician_type'],'',xl('Select Type'),'physician_type_class','','',''); ?></td>
 <td class='text'><?php echo xlt('See Authorizations'); ?>: </td>
 <td><select name="see_auth" style="width:150px;" >
 <?php
@@ -478,14 +484,14 @@ foreach($result as $iter2) {
 </tr>
 
 <tr>
-<td><span class="text"><?php echo xlt('NPI'); ?>: </span></td><td><input type="text" name="npi" style="width:150px;"  value="<?php echo $iter["npi"]?>"></td>
-<td><span class="text"><?php echo xlt('Job Description'); ?>: </span></td><td><input type="text" name="job" style="width:150px;"  value="<?php echo $iter["specialty"]?>"></td>
+<td><span class="text"><?php echo xlt('NPI'); ?>: </span></td><td><input type="entry" name="npi" style="width:150px;"  value="<?php echo $iter["npi"]?>"></td>
+<td><span class="text"><?php echo xlt('Job Description'); ?>: </span></td><td><input type="entry" name="job" style="width:150px;"  value="<?php echo $iter["specialty"]?>"></td>
 </tr>
 
 <!-- (CHEMED) Calendar UI preference -->
 <tr>
 <td><span class="text"><?php echo xlt('Taxonomy'); ?>: </span></td>
-<td><input type="text" name="taxonomy" style="width:150px;"  value="<?php echo $iter["taxonomy"]?>"></td>
+<td><input type="entry" name="taxonomy" style="width:150px;"  value="<?php echo $iter["taxonomy"]?>"></td>
 <td><span class="text"><?php echo xlt('Calendar UI'); ?>: </span></td><td><select name="cal_ui" style="width:150px;" >
 <?php
  foreach (array(3 => xl('Outlook'), 1 => xl('Original'), 2 => xl('Fancy')) as $key => $value)
@@ -501,7 +507,7 @@ foreach($result as $iter2) {
 
 <tr>
 <td><span class="text"><?php echo xlt('State License Number'); ?>: </span></td>
-<td><input type="text" name="state_license_number" style="width:150px;"  value="<?php echo $iter["state_license_number"]?>"></td>
+<td><input type="entry" name="state_license_number" style="width:150px;"  value="<?php echo $iter["state_license_number"]?>"></td>
 <td class='text'><?php echo xlt('NewCrop eRX Role'); ?>:</td>
 <td>
   <?php echo generate_select_list("erxrole", "newcrop_erx_role", $iter['newcrop_user_role'],'',xl('Select Role'),'','','',array('style'=>'width:150px')); ?>
@@ -509,8 +515,6 @@ foreach($result as $iter2) {
 </tr>
 
 <tr>
-  <td><span class="text"><?php echo xlt('Provider Type'); ?>: </span></td>
-  <td><?php echo generate_select_list("physician_type", "physician_type", $iter['physician_type'],'',xl('Select Type'),'physician_type_class','','',''); ?></td>
 </tr>
 <?php if ($GLOBALS['inhouse_pharmacy']) { ?>
 <tr>

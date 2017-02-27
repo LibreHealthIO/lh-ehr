@@ -26,7 +26,7 @@
  *
  * @package LibreEHR
  * @author Terry Hill <teryhill@librehealth.io>
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
@@ -41,12 +41,12 @@ if (! $encounter) { // comes from globals.php
 }
 
 if ($_POST["off_work_from"] == "0000-00-00" || $_POST["off_work_from"] == "") 
-	{ $_POST["is_unable_to_work"] = "0"; $_POST["off_work_to"] = "";} 
-	else {$_POST["is_unable_to_work"] = "1";}
+    { $_POST["is_unable_to_work"] = "0"; $_POST["off_work_to"] = "";} 
+    else {$_POST["is_unable_to_work"] = "1";}
 
 if ($_POST["hospitalization_date_from"] == "0000-00-00" || $_POST["hospitalization_date_from"] == "") 
-	{ $_POST["is_hospitalized"] = "0"; $_POST["hospitalization_date_to"] = "";} 
-	else {$_POST["is_hospitalized"] = "1";}
+    { $_POST["is_hospitalized"] = "0"; $_POST["hospitalization_date_to"] = "";} 
+    else {$_POST["is_hospitalized"] = "1";}
 
 $id = formData('id','G') + 0;
 

@@ -186,7 +186,7 @@ $GLOBALS['images_path'] = "$web_root/assets/images";
 $GLOBALS['css_path'] = "$webserver_root/assets/css";
 
 // font directory
-$GLOBALS['fonts_path'] = "$webserver_root/assets/fontsr";
+$GLOBALS['fonts_path'] = "$webserver_root/assets/fonts";
 
 $GLOBALS['template_dir'] = $GLOBALS['fileroot'] . "/templates/";
 $GLOBALS['incdir'] = $include_root;

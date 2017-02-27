@@ -26,7 +26,7 @@
  *
  * @package LibreEHR
  * @author Terry Hill <teryhill@librehealth.io>
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
@@ -44,7 +44,7 @@ function misc_billing_options_report( $pid, $encounter, $cols, $id) {
                 continue;
             }
             if ($value == "1") {
-                $value = "yes"; 
+                $value = "Yes"; 
             }
             if(($key==='box_14_date_qual')||$key==='box_15_date_qual')
             {
@@ -53,9 +53,9 @@ function misc_billing_options_report( $pid, $encounter, $cols, $id) {
             if($key==='provider_id')
             {
                 
-                $trow = sqlQuery("SELECT id, lname, fname FROM users WHERE ".
+                $trow = sqlQuery("SELECT id, lname, mname, fname, suffix FROM users WHERE ".
                          "id = ? ",array($value));
-                $value=$trow['fname'] . ' ' . $trow['lname'];
+                $value=$trow['fname'] . ' ' . $trow['mname'] . ' ' . $trow['lname'] . ' ' . $trow['suffix'];
                 
             }
             $key=ucwords(str_replace("_"," ",$key));
