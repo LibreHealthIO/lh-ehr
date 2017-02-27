@@ -134,9 +134,6 @@ function fetch_reminders($pid, $appt_date) {
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script type="text/javascript">
-
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
-
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));

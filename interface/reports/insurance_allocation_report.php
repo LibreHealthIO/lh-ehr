@@ -69,7 +69,6 @@ else {
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script language="JavaScript">
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;

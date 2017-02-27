@@ -1,11 +1,28 @@
 <?php
-/**
+/*
+ * Orders Results
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
  * Copyright (C) 2010-2013 Rod Roark <rod@sunsetsystems.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @link http://librehealth.io 
  */
 
 require_once("../globals.php");
@@ -14,6 +31,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("../orders/lab_exchange_tools.php");
+$DateFormat = DateFormatRead();
 
 // Indicates if we are entering in batch mode.
 $form_batch = empty($_GET['batch']) ? 0 : 1;
@@ -184,13 +202,11 @@ a, a:visited, a:hover { color:#0000cc; }
 
 </style>
 
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script language="JavaScript">
 
@@ -318,22 +334,10 @@ if ($form_batch) {
    <input type='hidden' name='form_proc_type' value='<?php echo $form_proc_type ?>' />
 
    &nbsp;<?php xl('From','e'); ?>:
-   <input type='text' size='10' name='form_from_date' id='form_from_date'
-    value='<?php echo $form_from_date ?>'
-    title='<?php xl('yyyy-mm-dd','e'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>' />
+   <input type='text' size='10' name='form_from_date' id='form_from_date' value='<?php echo $form_from_date ?>'/>
 
    &nbsp;<?php xl('To','e'); ?>:
-   <input type='text' size='10' name='form_to_date' id='form_to_date'
-    value='<?php echo $form_to_date ?>'
-    title='<?php xl('yyyy-mm-dd','e'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>' />
+   <input type='text' size='10' name='form_to_date' id='form_to_date' value='<?php echo $form_to_date ?>'/>
 
    &nbsp;
 <?php
@@ -655,11 +659,11 @@ while ($row = sqlFetchArray($res)) {
       "<tr><td class='bold' width='1%' nowrap>" . xlt('Status') . ": </td>" .
       "<td>" . generate_select_list("form_result_status[$lino]", 'proc_res_status',
         $result_status, xl('Result Status'), '') . "</td></tr>\n" .
-	  "<tr><td class='bold' nowrap>" . xlt('Facility') . ": </td>" .     // Ensoftek: Changed Facility to Text Area as the field procedure_result-->facility is now multi-line
+      "<tr><td class='bold' nowrap>" . xlt('Facility') . ": </td>" .     // Ensoftek: Changed Facility to Text Area as the field procedure_result-->facility is now multi-line
       "<td><textarea rows='3' cols='15' name='form_facility[$lino]'" .
       " title='" . xla('Supplier facility name') . "'" .
       " style='width:100%' />" . htmlspecialchars($result_facility) .
-      "</textarea></td></tr>\n" .	  
+      "</textarea></td></tr>\n" .     
       "<tr><td class='bold' nowrap>" . xlt('Comments') . ": </td>" .
       "<td><textarea rows='3' cols='15' name='form_comments[$lino]'" .
       " title='" . xla('Comments for this result or recommendation') . "'" .
@@ -735,25 +739,36 @@ else {
 <?php } ?>
 
 <?php echo $extra_html; ?>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language='JavaScript'>
 
 <?php if ($form_batch) { ?>
-// Initialize calendar widgets for "from" and "to" dates.
-Calendar.setup({inputField:'form_from_date', ifFormat:'%Y-%m-%d',
- button:'img_from_date'});
-Calendar.setup({inputField:'form_to_date', ifFormat:'%Y-%m-%d',
- button:'img_to_date'});
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+    });
 <?php } ?>
 
 // Initialize calendar widgets for report dates and collection dates.
 var f = document.forms[0];
 for (var lino = 0; f['form_line['+lino+']']; ++lino) {
  if (f['form_date_report['+lino+']']) {
-  Calendar.setup({inputField:'form_date_report['+lino+']', ifFormat:'%Y-%m-%d %H:%M',
-   button:'q_date_report['+lino+']', showsTime:true});
-  Calendar.setup({inputField:'form_date_collected['+lino+']', ifFormat:'%Y-%m-%d %H:%M',
-   button:'q_date_collected['+lino+']', showsTime:true});
+        $('#form_date_report[' + lino + ']').datetimepicker({
+            timepicker: true,
+            format: "<?= DateFormatRead(true); ?>"
+        });
+        $('#form_date_collected[' + lino + ']').datetimepicker({
+            timepicker: true,
+            format: "<?= DateFormatRead(true);  ?>"
+        });
+        $.datetimepicker.setLocale('<?= getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);?>');
  }
 }
 

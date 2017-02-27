@@ -92,7 +92,6 @@ if ($_POST['date_to'] != "") {
         <script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="../../library/js/jquery-ui-1.8.21.custom.min.js"></script>
         <script language="JavaScript">
-        var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
         var global_date_format = '%Y-%m-%d';                
         function Form_Validate() {
             var d = document.forms[0];       

@@ -72,7 +72,6 @@ else {
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <script language="JavaScript">
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 $(document).ready(function() {
  top.printLogSetup(document.getElementById('printbutton'));

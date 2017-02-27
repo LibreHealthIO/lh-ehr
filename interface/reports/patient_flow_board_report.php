@@ -97,8 +97,6 @@ if ($form_patient == '' ) $form_pid = '';
 
 <script type="text/javascript">
 
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
-
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));

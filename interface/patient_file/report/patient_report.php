@@ -1,4 +1,29 @@
 <?php
+/*
+ * Patient report
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * No other information in the previous header
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Terry Hill <teryhill@librehealth.io> 
+ * @link http://librehealth.io 
+ */
 
 require_once("../../globals.php");
 require_once("$srcdir/lists.inc");
@@ -6,6 +31,8 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 // get various authorization levels
 $auth_notes_a  = acl_check('encounters', 'notes_a');
@@ -22,14 +49,12 @@ $auth_demo     = acl_check('patients'  , 'demo');
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
 
 <!-- include jQuery support -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language='JavaScript'>
 
@@ -78,14 +103,12 @@ function show_date_fun(){
         <span class='bold'><?php xl('Start Date','e');?>: </span>
       </td>
       <td>
-        <input type='text' size='10' name='Start' id='Start'
-         onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-         title='<?php xl('yyyy-mm-dd','e'); ?>' />
-        <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-         id='img_start' border='0' alt='[?]' style='cursor:pointer'
-         title='<?php xl('Click here to choose a date','e'); ?>' >
-        <script LANGUAGE="JavaScript">
-         Calendar.setup({inputField:"Start", ifFormat:"%Y-%m-%d", button:"img_start"});
+        <input type='text' size='10' name='Start' id='Start' />
+        <script>
+            $("#Start").datetimepicker({
+                timepicker: false,
+                format: "<?= $DateFormat; ?>"
+            });
         </script>
       </td>
       <td>
@@ -93,14 +116,13 @@ function show_date_fun(){
         <span class='bold'><?php xl('End Date','e');?>: </span>
       </td>
       <td>
-        <input type='text' size='10' name='End' id='End'
-         onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-         title='<?php xl('yyyy-mm-dd','e'); ?>' />
-        <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-         id='img_end' border='0' alt='[?]' style='cursor:pointer'
-         title='<?php xl('Click here to choose a date','e'); ?>' >
-        <script LANGUAGE="JavaScript">
-         Calendar.setup({inputField:"End", ifFormat:"%Y-%m-%d", button:"img_end"});
+        <input type='text' size='10' name='End' id='End'/>
+        <script>
+            $("#End").datetimepicker({
+                timepicker: false,
+                format: "<?= $DateFormat; ?>"
+            });
+            $.datetimepicker.setLocale('<?= $DateLocale;?>');
         </script>
       </td>
     </tr>
@@ -150,7 +172,7 @@ function show_date_fun(){
                 <td>
                  <span class='bold'><?php echo htmlspecialchars( xl('Enter Recipient\'s Direct Address'), ENT_NOQUOTES);?>: </span>
                 <input type="text" size="64" name="ccd_send_to" id="ccd_send_to" value="">
-		<input type="hidden" name="ccd_sent_by" id="ccd_sent_by" value="user">
+        <input type="hidden" name="ccd_sent_by" id="ccd_sent_by" value="user">
                 <input type="button" class="viewCCD_transmit" value="<?php echo htmlspecialchars( xl('Send', ENT_QUOTES)); ?>" />
                 <div id="ccd_send_result" style="display:none" >
                  <span class="text" id="ccd_send_message"></span>
@@ -276,9 +298,8 @@ while ($prow = sqlFetchArray($pres)) {
         echo $ierow['encounter'] . "/";
     }
     echo "' />$disptitle</td>\n";
-    echo "     <td>" . $prow['begdate'];
-
-    if ($prow['enddate']) { echo " - " . $prow['enddate']; }
+    echo "     <td>" . htmlspecialchars(oeFormatShortDate($prow['begdate']));
+    if ($prow['enddate']) { echo " - " . htmlspecialchars(oeFormatShortDate($prow['enddate'])); }
     else { echo " Active"; }
 
     echo "</td>\n";
@@ -351,7 +372,7 @@ while($result = sqlFetchArray($res)) {
         }
 
         echo $result{"reason"}. 
-                " (" . date("Y-m-d",strtotime($result{"date"})) .
+                " (" . htmlspecialchars(oeFormatShortDate(date("Y-m-d",strtotime($result{"date"})))) .
                 ")\n";
         echo "<div class='encounter_forms'>\n";
     } 
@@ -453,7 +474,7 @@ while ($result && !$result->EOF) {
     echo '&nbsp;&nbsp;<i>' .  xl_document_category($result->fields['name']) . "</i>";
     echo '&nbsp;&nbsp;' . xl('Name') . ': <i>' . basename($result->fields['url']) . "</i>";
     echo '</li>';
-    $result->MoveNext();	
+    $result->MoveNext();    
 }
 ?>
 </ul>
@@ -478,7 +499,7 @@ $(document).ready(function(){
     // check/uncheck all Forms of an encounter
     $(".encounter").click(function() { SelectForms($(this)); });
 
-	$(".generateCCR").click(
+    $(".generateCCR").click(
         function() {
                 if(document.getElementById('show_date').checked == true){
                         if(document.getElementById('Start').value == '' || document.getElementById('End').value == ''){
@@ -486,15 +507,15 @@ $(document).ready(function(){
                                 return false;
                         }
                 }
-		var ccrAction = document.getElementsByName('ccrAction');
-		ccrAction[0].value = 'generate';
+        var ccrAction = document.getElementsByName('ccrAction');
+        ccrAction[0].value = 'generate';
                 var raw = document.getElementsByName('raw');
                 raw[0].value = 'no';
-		top.restoreSession();
-		ccr_form.setAttribute("target", "_blank");
-		$("#ccr_form").submit();
+        top.restoreSession();
+        ccr_form.setAttribute("target", "_blank");
+        $("#ccr_form").submit();
                 ccr_form.setAttribute("target", "");
-	});
+    });
         $(".generateCCR_raw").click(
         function() {
                 var ccrAction = document.getElementsByName('ccrAction');
@@ -530,17 +551,17 @@ $(document).ready(function(){
                 top.restoreSession();
                 $("#ccr_form").submit();
         });
-	$(".viewCCD").click(
-	function() { 
-		var ccrAction = document.getElementsByName('ccrAction');
-		ccrAction[0].value = 'viewccd';
+    $(".viewCCD").click(
+    function() { 
+        var ccrAction = document.getElementsByName('ccrAction');
+        ccrAction[0].value = 'viewccd';
                 var raw = document.getElementsByName('raw');
                 raw[0].value = 'no';
-		top.restoreSession();
+        top.restoreSession();
                 ccr_form.setAttribute("target", "_blank"); 
-		$("#ccr_form").submit();
+        $("#ccr_form").submit();
                 ccr_form.setAttribute("target", "");
-	});
+    });
         $(".viewCCD_raw").click(
         function() {
                 var ccrAction = document.getElementsByName('ccrAction');

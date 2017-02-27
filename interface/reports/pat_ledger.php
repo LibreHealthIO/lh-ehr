@@ -285,7 +285,6 @@ if ($_REQUEST['form_csvexport']) {
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 <script type="text/javascript">
-var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';
 var pt_name;
 var pt_id;
 function checkSubmit() {

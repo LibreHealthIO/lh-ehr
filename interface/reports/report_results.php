@@ -62,13 +62,6 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
-
-<script LANGUAGE="JavaScript">
-
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
-
-</script>
-
 <style type="text/css">
 
 /* specifically include & exclude from printing */

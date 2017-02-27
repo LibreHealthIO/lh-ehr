@@ -1,11 +1,32 @@
 <?php
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-
-// add_transaction is a misnomer, as this script will now also edit
-// existing transactions.
+/*
+ * Add Transaction
+ * 
+ * add_transaction is a misnomer, as this script will now also edit
+ * existing transactions.
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * No other information in the previous header
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Terry Hill <teryhill@librehealth.io> 
+ * @link http://librehealth.io 
+ */
 
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
@@ -136,20 +157,17 @@ $trow = $transid ? getTransById($transid) : array();
 <?php html_header_show(); ?>
 
 <link rel='stylesheet' href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
 <link rel="stylesheet" type="text/css" href="../../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../../library/textformat.js"></script>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
 
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -166,9 +184,6 @@ $(document).ready(function() {
 </script>
 
 <script language="JavaScript">
-
-var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QUOTES); ?>';
-
 $(document).ready(function(){
   $("#send_sum_flag").click(function() {
     if ( $('#send_sum_flag').attr('checked') ) {
@@ -257,12 +272,12 @@ function validate(f) {
  var msg = "";
  msg += "<?php echo htmlspecialchars( xl('The following fields are required'), ENT_QUOTES); ?>:\n\n";
  for ( var i = 0; i < errMsgs.length; i++ ) {
-	msg += errMsgs[i] + "\n";
+    msg += errMsgs[i] + "\n";
  }
  msg += "\n<?php echo htmlspecialchars( xl('Please fill them in before continuing.'), ENT_QUOTES); ?>";
 
  if ( errMsgs.length > 0 ) {
-	alert(msg);
+    alert(msg);
  }
 
  return errMsgs.length < 1;
@@ -282,8 +297,8 @@ function submitme() {
 
 <style type="text/css">
 div.tab {
-	height: auto;
-	width: auto;
+    height: auto;
+    width: auto;
 }
 </style>
 
@@ -292,8 +307,8 @@ div.tab {
 <form name='new_transaction' method='post' action='add_transaction.php?transid=<?php echo htmlspecialchars( $transid, ENT_QUOTES); ?>' onsubmit='return validate(this)'>
 <input type='hidden' name='mode' value='add'>
 
-	<table>
-	    <tr>
+    <table>
+        <tr>
             <td>
                 <b><?php echo htmlspecialchars( xl('Add/Edit Patient Transaction'), ENT_NOQUOTES); ?></b>&nbsp;</td><td>
                  <a href="javascript:;"  <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="submitme();">
@@ -306,14 +321,14 @@ div.tab {
                 </a>
             </td>
         </tr>
-	</table>
+    </table>
 
-	<table class="text">
-	    <tr><td>
+    <table class="text">
+        <tr><td>
         <?php echo htmlspecialchars( xl('Transaction Type'), ENT_NOQUOTES); ?>:&nbsp;</td><td>
-	<?php echo generate_select_list('title','transactions',$form_id,'','','','titleChanged()'); ?>
+    <?php echo generate_select_list('title','transactions',$form_id,'','','','titleChanged()'); ?>
         </td></tr>
-	</table>
+    </table>
 
 <div id='referdiv'>
 
@@ -348,8 +363,8 @@ div.tab {
         </div>
     <?php } ?>
 
-					<div id="DEM">
-						<ul class="tabNav">
+                    <div id="DEM">
+                        <ul class="tabNav">
 <?php
 $fres = sqlStatement("SELECT * FROM layout_options " .
   "WHERE form_id = ? AND uor > 0 " .
@@ -376,10 +391,10 @@ while ($frow = sqlFetchArray($fres)) {
   }
 }
 ?>
-						</ul>
-						<div class="tabContainer">
+                        </ul>
+                        <div class="tabContainer">
 
-								<?php
+                                <?php
 $fres = sqlStatement("SELECT * FROM layout_options " .
   "WHERE form_id = ? AND uor > 0 " .
   "ORDER BY group_name, seq", array($form_id));
@@ -423,7 +438,7 @@ while ($frow = sqlFetchArray($fres)) {
       $currvalue = date('Y-m-d');
     }
     else if ($field_id == 'body' && $transid > 0 ) {
-	   $tmp = sqlQuery("SELECT reason FROM form_encounter WHERE " .
+       $tmp = sqlQuery("SELECT reason FROM form_encounter WHERE " .
         "pid = ? ORDER BY date DESC LIMIT 1", array($pid) );
       if (!empty($tmp)) $currvalue = $tmp['reason'];
     }
@@ -436,7 +451,7 @@ while ($frow = sqlFetchArray($fres)) {
     $group_name = substr($this_group, 1);
     $last_group = $this_group;
     $group_seq_esc = htmlspecialchars( $group_seq, ENT_QUOTES);
-    if($group_seq == 1)	echo "<div class='tab current' id='div_$group_seq_esc'>";
+    if($group_seq == 1) echo "<div class='tab current' id='div_$group_seq_esc'>";
     else echo "<div class='tab' id='div_$group_seq_esc'>";
     echo " <table border='0' cellpadding='0'>\n";
     $display_style = 'none';
