@@ -210,7 +210,6 @@ a, a:visited, a:hover { color:#0000cc; }
 
 <script language="JavaScript">
 
-var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 // This invokes the find-procedure-type popup.
 var ptvarname;

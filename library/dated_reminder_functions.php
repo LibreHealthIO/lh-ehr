@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Craig Bezuidenhout <http://www.tajemo.co.za/>
  * @link    http://librehealth.io
  */
@@ -56,20 +56,20 @@ function RemindersArray($days_to_show,$today,$alerts_to_show,$userID = false){
            }
                
 // --------- fill the $reminders array 
-      		$reminders[$i]['messageID'] = $drRow['dr_id'];  
+            $reminders[$i]['messageID'] = $drRow['dr_id'];  
           $reminders[$i]['PatientID'] = $drRow['pid'];
           
 // -------------------------------------  if there was a patient linked, set the name, else set it to blank          
           $reminders[$i]['PatientName'] = (empty($pRow) ? '' : $pRow['ptitle'].' '.$pRow['pfname'].' '.$pRow['pmname'].' '.$pRow['plname']);  
 // -------------------------------------
           
-      		$reminders[$i]['message'] = $drRow['dr_message_text'];             
-      		$reminders[$i]['dueDate'] = $drRow['dr_message_due_date'];  
-      		$reminders[$i]['fromName'] = $drRow['ffname'].' '.$drRow['fmname'].' '.$drRow['flname'];     
+            $reminders[$i]['message'] = $drRow['dr_message_text'];             
+            $reminders[$i]['dueDate'] = $drRow['dr_message_due_date'];  
+            $reminders[$i]['fromName'] = $drRow['ffname'].' '.$drRow['fmname'].' '.$drRow['flname'];     
            
 // --------- if the message is due or overdue set $hasAlerts to true, this will stop autohiding of reminders
           if(strtotime($drRow['dr_message_due_date']) <= $today) $hasAlerts = true;  
-      	} 
+        } 
 // --------- END OF loop through the results
          
         return $reminders;
@@ -334,7 +334,7 @@ function logRemindersArray(){
           }  
           if(isset($_GET['ed']) and $_GET['ed'] != ''){  
             $where = ($where == '' ? 'dr.dr_message_sent_date <= ?' : $where.' AND dr.dr_message_sent_date <= ?'); 
-            $input[] = $_GET['ed'].' 24:00:00';
+            $input[] = $_GET['ed'].' 23:59:59';
           }      
 //------------------------------------------  
           
@@ -367,22 +367,22 @@ function logRemindersArray(){
           $prRow = sqlFetchArray($prSQL );
           
 // --------- fill the $reminders array 
-      		$reminders[$i]['messageID'] = $drRow['dr_id'];
+            $reminders[$i]['messageID'] = $drRow['dr_id'];
           $reminders[$i]['PatientID'] = $drRow['pid'];
           
           $reminders[$i]['pDate'] = ($drRow['processedDate'] == '0000-00-00 00:00:00' ? 'N/A' : $drRow['processedDate']);              
-      		$reminders[$i]['sDate'] = $drRow['sDate'];                    
-      		$reminders[$i]['dDate'] = $drRow['dDate'];               
+            $reminders[$i]['sDate'] = $drRow['sDate'];                    
+            $reminders[$i]['dDate'] = $drRow['dDate'];               
           
 // -------------------------------------  if there was a patient linked, set the name, else set it to blank          
           $reminders[$i]['PatientName'] = (empty($pRow) ? 'N/A' : $pRow['ptitle'].' '.$pRow['pfname'].' '.$pRow['pmname'].' '.$pRow['plname']);  
 // -------------------------------------
           
-      		$reminders[$i]['message'] = $drRow['dr_message_text'];      
-      		$reminders[$i]['fromName'] = $drRow['ffname'].' '.$drRow['fmname'].' '.$drRow['flname']; 
+            $reminders[$i]['message'] = $drRow['dr_message_text'];      
+            $reminders[$i]['fromName'] = $drRow['ffname'].' '.$drRow['fmname'].' '.$drRow['flname']; 
           $reminders[$i]['ToName'] = $drRow['tfname'].' '.$drRow['tmname'].' '.$drRow['tlname'];  
           $reminders[$i]['processedByName'] = (empty($prRow) ? 'N/A' : $prRow['ptitle'].' '.$prRow['pfname'].' '.$prRow['pmname'].' '.$prRow['plname']);  
-      	} 
+        } 
 // --------- END OF loop through the results
 
         return $reminders;
