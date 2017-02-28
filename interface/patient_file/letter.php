@@ -1,10 +1,29 @@
 <?php
-// Copyright (C) 2007-2011 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ * Letter
+ *
+ * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2007-2011 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @link http://librehealth.io 
+ */
 
 // Undo magic quotes and do not allow fake register globals.
 $sanitize_all_escapes  = true;
@@ -12,6 +31,9 @@ $fake_register_globals = false;
 
 include_once("../globals.php");
 include_once($GLOBALS['srcdir'] . "/patient.inc");
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $template_dir = $GLOBALS['OE_SITE_DIR'] . "/letter_templates";
 
@@ -161,48 +183,48 @@ if ($_POST['formaction']=="generate") {
     }
     else { // $form_format = html
         $cpstring = text($cpstring); //escape to prevent stored cross script attack
-	$cpstring = str_replace("\n", "<br>", $cpstring);
-	$cpstring = str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cpstring);
+    $cpstring = str_replace("\n", "<br>", $cpstring);
+    $cpstring = str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $cpstring);
     ?>
         <html>
         <head>
         <style>
         body {
-	 font-family: sans-serif;
-	 font-weight: normal;
-	 font-size: 12pt;
-	 background: white;
-	 color: black;
-	}	
-	.paddingdiv {
-	 width: 524pt;
-	 padding: 0pt;
-	 margin-top: 50pt;
-	}
-	.navigate {
-	 margin-top: 2.5em;
-	}	
-	@media print {
-	 .navigate {
-	  display: none;
-	 }	
-	}	
-	</style>	
-	<title><?php xl('Letter','e'); ?></title>
-	</head>
+     font-family: sans-serif;
+     font-weight: normal;
+     font-size: 12pt;
+     background: white;
+     color: black;
+    }   
+    .paddingdiv {
+     width: 524pt;
+     padding: 0pt;
+     margin-top: 50pt;
+    }
+    .navigate {
+     margin-top: 2.5em;
+    }   
+    @media print {
+     .navigate {
+      display: none;
+     }  
+    }   
+    </style>    
+    <title><?php xl('Letter','e'); ?></title>
+    </head>
         <body>
-	<div class='paddingdiv'>
-	<?php echo $cpstring; ?>
+    <div class='paddingdiv'>
+    <?php echo $cpstring; ?>
         <div class="navigate">
-	<a href="<?php echo $GLOBALS['rootdir'] . '/patient_file/letter.php?template=autosaved'; ?>">(<?php xl('Back','e'); ?>)</a>
-	</div>
-	<script language='JavaScript'>
-	window.print();
-	</script>
-	</body>
-	</div>
-	<?php
-	exit;
+    <a href="<?php echo $GLOBALS['rootdir'] . '/patient_file/letter.php?template=autosaved'; ?>">(<?php xl('Back','e'); ?>)</a>
+    </div>
+    <script language='JavaScript'>
+    window.print();
+    </script>
+    </body>
+    </div>
+    <?php
+    exit;
     }
 }
 else if (isset($_GET['template']) && $_GET['template'] != "") {
@@ -223,7 +245,7 @@ else if ($_POST['formaction'] == "loadtemplate" && $_POST['form_template'] != ""
     fclose($fh);
     // translate from constant to the definition
     foreach ($FIELD_TAG as $key => $value) {
-        $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);	
+        $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);   
     } 
 }
 else if ($_POST['formaction'] == "newtemplate" && $_POST['newtemplatename'] != "") {
@@ -312,18 +334,16 @@ while ($srow = sqlFetchArray($sres)) {
 <?php html_header_show();?>
 <title><?php xl('Letter Generator','e'); ?></title>
 
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/topdialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 
 <script language="JavaScript">
 <?php echo $ulist; ?>
@@ -440,13 +460,7 @@ function insertAtCursor(myField, myValue) {
   </td>
 
   <td>
-   <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo date('Y-m-d'); ?>'
-    title='<?php xl('yyyy-mm-dd date of this letter','e'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>' />
+   <input type='text' size='10' name='form_date' id='form_date' value='<?= htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>' />
   </td>
 
  </tr>
@@ -595,7 +609,11 @@ closedir($dh);
 </body>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+    $("#form_date").datetimepicker({
+        timepicker: false,
+        format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
 
 // jQuery stuff to make the page a little easier to use
 

@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Craig Bezuidenhout <http://www.tajemo.co.za/>
- * @link    http://libreehr.org
+ * @link    http://librehealth.io
  */
                                   
   $fake_register_globals=false;
@@ -26,6 +26,9 @@
     require_once("../../globals.php"); 
     require_once("$srcdir/htmlspecialchars.inc.php");  
     require_once("$srcdir/dated_reminder_functions.php"); 
+  require_once("$srcdir/formatting.inc.php");
+  $DateFormat = DateFormatRead();
+  $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   
   $dateRanges = array();
 // $dateranges = array ( number_period => text to display ) == period is always in the singular 
@@ -60,6 +63,9 @@
 // default values for $this_message    
     $this_message = array('message'=>'','message_priority'=>3,'dueDate'=>'');
     $forwarding = false;
+
+// default values for Max words to input in a reminder
+  $max_reminder_words=160;
     
 // ---------------- FOR FORWARDING MESSAGES ------------->
 if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
@@ -93,8 +99,8 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
            isset($_POST['dueDate']) and preg_match('/\d{4}[-]\d{2}[-]\d{2}/',$_POST['dueDate']) and     
 // ------- check priority, only allow 1-3 
            isset($_POST['priority']) and intval($_POST['priority']) <= 3 and       
-// ------- check message, only up to 255 characters
-           isset($_POST['message']) and strlen($_POST['message']) <= 255 and strlen($_POST['message']) > 0 and 
+// ------- check message, only up to 160 characters limited by Db
+           isset($_POST['message']) and strlen($_POST['message']) <= $max_reminder_words and strlen($_POST['message']) > 0 and
 // ------- check if PatientID is set and in numeric
            isset($_POST['PatientID']) and is_numeric($_POST['PatientID'])                 
          ){   
@@ -155,7 +161,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/topdialog.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>  
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>    
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.4.3.min.js"></script>   
+    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-calendar.js"></script>
     <script language="JavaScript"> 
       $(document).ready(function (){   
@@ -241,6 +247,9 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
           $(this).hide();
           return false;
         })
+          // update word counter
+          var messegeTextarea=$("#message")[0];
+          limitText(messegeTextarea.form.message,messegeTextarea.form.countdown,<?php echo $max_reminder_words ?>);
       })       
     
         function sel_patient(){ 
@@ -255,11 +264,11 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
         } 
         
         function limitText(limitField, limitCount, limitNum) {
-        	if (limitField.value.length > limitNum) {
-        		limitField.value = limitField.value.substring(0, limitNum);
-        	} else {
-        		limitCount.value = limitNum - limitField.value.length;
-        	}
+            if (limitField.value.length > limitNum) {
+                limitField.value = limitField.value.substring(0, limitNum);
+            } else {
+                limitCount.value = limitNum - limitField.value.length;
+            }
         }
         
         function selectAll(){
@@ -300,7 +309,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
               <select style="width:100%" id="sendTo" name="sendTo[]" multiple="multiple">
                 <option value="<?php echo attr(intval($_SESSION['authId'])); ?>"><?php echo xlt('Myself') ?></option>
                 <?php //     
-                    $uSQL = sqlStatement('SELECT id, fname,	mname, lname  FROM  `users` WHERE  `active` = 1 AND `facility_id` > 0 AND `username` != ? AND `cal_ui`>1  ORDER BY lname',array(intval($_SESSION['authId'])));
+                    $uSQL = sqlStatement('SELECT id, fname, mname, lname  FROM  `users` WHERE  `active` = 1 AND `facility_id` > 0 AND id != ?',array(intval($_SESSION['authId'])));
                     for($i=2; $uRow=sqlFetchArray($uSQL); $i++){  
                       echo '<option value="',attr($uRow['id']),'">',text($uRow['fname'].' '.$uRow['mname'].' '.$uRow['lname']),'</option>';  
                     }
@@ -317,7 +326,8 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
       <br />   
        
     <fieldset>          
-            <?php echo xlt('Due Date') ?> : <input type='text' name='dueDate' id="dueDate" size='20' value="<?php echo ($this_message['dueDate'] == '' ? date('Y-m-d') : attr($this_message['dueDate'])); ?>" onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd'), ENT_QUOTES); ?>' />      
+            <?php echo xlt('Due Date') ?> : <input type='text' name='dueDate' id="dueDate" size='20'
+                                                   value="<?php echo ($this_message['dueDate'] == '' ? date(str_replace('%','',$DateFormat)) : htmlspecialchars(oeFormatShortDate(attr($this_message['dueDate'])))); ?>"/>
             <?php echo xlt('OR') ?> 
             <?php echo xlt('Select a Time Span') ?> : <select id="timeSpan">
                                       <option value="__BLANK__"> -- <?php echo xlt('Select a Time Span') ?> -- </option>
@@ -353,14 +363,14 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
         <tr>
           <td valign="top" style="width:25%">
             <?php echo xlt('Type Your message here') ?> :<br /><br /> 
-            <font size="1">(<?php echo xlt('Maximum characters') ?>: 255)<br />
+            <font size="1">(<?php echo xlt('Maximum characters') ?>: <?php echo $max_reminder_words ?>)<br />
           </td>  
           <td valign="top" style="width:75%">
-                <textarea onKeyDown="limitText(this.form.message,this.form.countdown,255);" 
-                onKeyUp="limitText(this.form.message,this.form.countdown,255);" 
+                <textarea onKeyDown="limitText(this.form.message,this.form.countdown,<?php echo $max_reminder_words ?>);"
+                onKeyUp="limitText(this.form.message,this.form.countdown,<?php echo $max_reminder_words ?>);"
                 style="width:100%; height:50px" name="message" id="message"><?php echo text($this_message['message']); ?></textarea>  
                 <br />
-                <?php echo xlt('Characters Remaining') ?> : <input style="border:0; background:none;" readonly type="text" name="countdown" size="3" value="255"> </font>   
+                <?php echo xlt('Characters Remaining') ?> : <input style="border:0; background:none;" readonly type="text" name="countdown" size="3" value="<?php echo $max_reminder_words ?>"> </font>
           </td>  
         </tr>
       </table> 
@@ -409,12 +419,16 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
         echo '</tbody></table>'; 
     ?>
   </body>  
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-<script language="Javascript"> 
-  Calendar.setup({inputField:"dueDate", ifFormat:"%Y-%m-%d", button:"img_begin_date", showsTime:'false'}); 
+
+<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+  $(function() {
+      $("#dueDate").datetimepicker({
+          timepicker: false,
+          format: "<?= $DateFormat; ?>"
+      });
+      $.datetimepicker.setLocale('<?= $DateLocale;?>');
+  });
 </script>
 </html>

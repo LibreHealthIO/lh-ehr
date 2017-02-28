@@ -19,10 +19,10 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
- * @package LibreEHR 
+ * @package LibreHealth EHR 
  * @author Rod Roark <rod@sunsetsystems.com> 
  * @author Terry Hill <teryhill@librehealth.io> 
- * @link http://www.libreehr.org 
+ * @link http://librehealth.io
  */
  
 $fake_register_globals=false;
@@ -35,6 +35,8 @@ require_once("../../library/sl_eob.inc.php");
 require_once("../../library/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 
 $alertmsg = '';
@@ -295,7 +297,7 @@ else {
 
 </style>
 
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script language="JavaScript">
 
@@ -332,108 +334,102 @@ function checkAll(checked) {
 <table>
  <tr>
   <td width='610px'>
-	<div style='float:left'>
+    <div style='float:left'>
 
-	<table class='text'>
-		<tr>
-			<td class='label'>
-				<table>
-					<tr>
-						<td><?php echo xlt('Displayed Columns') ?>:</td>
-					</tr>
-					<tr>
-						<td>
-						   <label><input type='checkbox' name='form_cb_ssn'<?php if ($form_cb_ssn) echo ' checked'; ?>>
-						   <?php echo xlt('SSN') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_dob'<?php if ($form_cb_dob) echo ' checked'; ?>>
-						   <?php echo xlt('DOB') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_pid'<?php if ($form_cb_pid) echo ' checked'; ?>>
-						   <?php echo xlt('ID') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_policy'<?php if ($form_cb_policy) echo ' checked'; ?>>
-						   <?php echo xlt('Policy') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_phone'<?php if ($form_cb_phone) echo ' checked'; ?>>
-						   <?php echo xlt('Phone') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_city'<?php if ($form_cb_city) echo ' checked'; ?>>
-						   <?php echo xlt('City') ?>&nbsp;</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-						   <label><input type='checkbox' name='form_cb_ins1'<?php if ($form_cb_ins1) echo ' checked'; ?>>
-						   <?php echo xlt('Primary Ins') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_referrer'<?php if ($form_cb_referrer) echo ' checked'; ?>>
-						   <?php echo xlt('Referrer') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_adate'<?php if ($form_cb_adate) echo ' checked'; ?>>
-						   <?php echo xlt('Act Date') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_idays'<?php if ($form_cb_idays) echo ' checked'; ?>>
-						   <?php echo xlt('Inactive Days') ?>&nbsp;</label>
-						</td>
-						<td>
-						   <label><input type='checkbox' name='form_cb_err'<?php if ($form_cb_err) echo ' checked'; ?>>
-						   <?php echo xlt('Errors') ?></label>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		</tr>
-			<td>
-				<table>
+    <table class='text'>
+        <tr>
+            <td class='label'>
+                <table>
+                    <tr>
+                        <td><?php echo xlt('Displayed Columns') ?>:</td>
+                    </tr>
+                    <tr>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_ssn'<?php if ($form_cb_ssn) echo ' checked'; ?>>
+                           <?php echo xlt('SSN') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_dob'<?php if ($form_cb_dob) echo ' checked'; ?>>
+                           <?php echo xlt('DOB') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_pid'<?php if ($form_cb_pid) echo ' checked'; ?>>
+                           <?php echo xlt('ID') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_policy'<?php if ($form_cb_policy) echo ' checked'; ?>>
+                           <?php echo xlt('Policy') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_phone'<?php if ($form_cb_phone) echo ' checked'; ?>>
+                           <?php echo xlt('Phone') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_city'<?php if ($form_cb_city) echo ' checked'; ?>>
+                           <?php echo xlt('City') ?>&nbsp;</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_ins1'<?php if ($form_cb_ins1) echo ' checked'; ?>>
+                           <?php echo xlt('Primary Ins') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_referrer'<?php if ($form_cb_referrer) echo ' checked'; ?>>
+                           <?php echo xlt('Referrer') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_adate'<?php if ($form_cb_adate) echo ' checked'; ?>>
+                           <?php echo xlt('Act Date') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_idays'<?php if ($form_cb_idays) echo ' checked'; ?>>
+                           <?php echo xlt('Inactive Days') ?>&nbsp;</label>
+                        </td>
+                        <td>
+                           <label><input type='checkbox' name='form_cb_err'<?php if ($form_cb_err) echo ' checked'; ?>>
+                           <?php echo xlt('Errors') ?></label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        </tr>
+            <td>
+                <table>
 
-					<tr>
-						<td class='label'>
-						   <?php echo xlt('Service Date'); ?>:
-						</td>
-						<td>
-						   <input type='text' name='form_date' id="form_date" size='10' value='<?php echo attr($form_date) ?>'
-							onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-						   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-							id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-							title='<?php echo xla('Click here to choose a date'); ?>'>
-						</td>
-						<td class='label'>
-						   <?php echo xlt('To'); ?>:
-						</td>
-						<td>
-						   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo attr($form_to_date) ?>'
-							onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-						   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-							id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-							title='<?php echo xla('Click here to choose a date'); ?>'>
-						</td>
-						<td>
-						   <select name='form_category'>
-						<?php
-						 foreach (array('Open' => xl('Open'),'Due Pt' => xl('Due Pt'),'Due Ins' => xl('Due Ins'),'Ins Summary' => xl('Ins Summary'),'Credits' => xl('Credits'),'All' => xl('All')) as $key => $value) {
-						  echo "    <option value='" . attr($key) . "'";
-						  if ($_POST['form_category'] == $key) echo " selected";
-						  echo ">" . text($value) . "</option>\n";
-						 }
-						?>
-						   </select>
-						</td>
+                    <tr>
+                        <td class='label'>
+                           <?php echo xlt('Service Date'); ?>:
+                        </td>
+                        <td>
+                           <input type='text' name='form_date' id="form_date" size='10'
+                                value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_date))) ?>' />
+                        </td>
+                        <td class='label'>
+                           <?php echo xlt('To'); ?>:
+                        </td>
+                        <td>
+                           <input type='text' name='form_to_date' id="form_to_date" size='10'
+                            value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>' />
+                        </td>
+                        <td>
+                           <select name='form_category'>
+                        <?php
+                         foreach (array('Open' => xl('Open'),'Due Pt' => xl('Due Pt'),'Due Ins' => xl('Due Ins'),'Ins Summary' => xl('Ins Summary'),'Credits' => xl('Credits'),'All' => xl('All')) as $key => $value) {
+                          echo "    <option value='" . attr($key) . "'";
+                          if ($_POST['form_category'] == $key) echo " selected";
+                          echo ">" . text($value) . "</option>\n";
+                         }
+                        ?>
+                           </select>
+                        </td>
 
-					</tr>
+                    </tr>
 
 
-					<tr>
-						<td class='label'>
+                    <tr>
+                        <td class='label'>
                         <?php echo xlt('Facility'); ?>:
                         </td>
                         <td>
@@ -442,9 +438,9 @@ function checkAll(checked) {
                         
                         <td class='label'>
                         <?php echo xlt('Payor'); ?>:
-						</td>
-						<td>
-						<?php  # added dropdown for payors (TLH)
+                        </td>
+                        <td>
+                        <?php  # added dropdown for payors (TLH)
                                $insurancei = getInsuranceProviders();
                                echo "   <select name='form_payer_id'>\n";
                                echo "    <option value='0'>-- " . xlt('All') . " --</option>\n";
@@ -456,30 +452,30 @@ function checkAll(checked) {
                                }
                                echo "   </select>\n";
                         ?>            
-						</td>
-					</tr>
+                        </td>
+                    </tr>
 
-					<tr>
-						<td class='label'>
-						   <?php echo xlt('Age By') ?>:
-						</td>
-						<td>
-						   <select name='form_ageby'>
-						<?php
-						 foreach (array( 'Service Date'=>xl('Service Date'), 'Last Activity Date'=>xl('Last Activity Date')) as $key => $value) {
-						  echo "    <option value='" . attr($key) . "'";
-						  if ($_POST['form_ageby'] == $value) echo " selected";
-						  echo ">" . text($value) . "</option>\n";
-						 }
-						?>
-						   </select>
-						</td>
+                    <tr>
+                        <td class='label'>
+                           <?php echo xlt('Age By') ?>:
+                        </td>
+                        <td>
+                           <select name='form_ageby'>
+                        <?php
+                         foreach (array( 'Service Date'=>xl('Service Date'), 'Last Activity Date'=>xl('Last Activity Date')) as $key => $value) {
+                          echo "    <option value='" . attr($key) . "'";
+                          if ($_POST['form_ageby'] == $value) echo " selected";
+                          echo ">" . text($value) . "</option>\n";
+                         }
+                        ?>
+                           </select>
+                        </td>
                         
                         <td class='label'>
-						   <?php echo xlt('Provider') ?>:
-						</td>
-						<td>
-						<?php  # Build a drop-down list of providers.
+                           <?php echo xlt('Provider') ?>:
+                        </td>
+                        <td>
+                        <?php  # Build a drop-down list of providers.
                                # Added (TLH)
 
                                $query = "SELECT id, lname, fname FROM users WHERE ".
@@ -499,55 +495,55 @@ function checkAll(checked) {
                                }
 
                                echo "   </select>\n";
-						?>
-						</td>
-					</tr>
-					</tr>
-						<td class='label'>
-						   <?php echo xlt('Aging Columns') ?>:
-						</td>
-						<td>
-						   <input type='text' name='form_age_cols' size='2' value='<?php echo attr($form_age_cols); ?>' />
-						</td>
-						<td class='label'>
-						   <?php echo xlt('Days/Col') ?>:
-						</td>
-						<td>
-						   <input type='text' name='form_age_inc' size='3' value='<?php echo attr($form_age_inc); ?>' />
-						</td>
-					</tr>
+                        ?>
+                        </td>
+                    </tr>
+                    </tr>
+                        <td class='label'>
+                           <?php echo xlt('Aging Columns') ?>:
+                        </td>
+                        <td>
+                           <input type='text' name='form_age_cols' size='2' value='<?php echo attr($form_age_cols); ?>' />
+                        </td>
+                        <td class='label'>
+                           <?php echo xlt('Days/Col') ?>:
+                        </td>
+                        <td>
+                           <input type='text' name='form_age_inc' size='3' value='<?php echo attr($form_age_inc); ?>' />
+                        </td>
+                    </tr>
 
 
-				</table>
-			</td>
-		</tr>
-	</table>
+                </table>
+            </td>
+        </tr>
+    </table>
 
-	</div>
+    </div>
 
   </td>
   <td align='left' valign='middle' height="100%">
-	<table style='border-left:1px solid; width:100%; height:100%' >
-		<tr>
-			<td>
-				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-					<span>
-						<?php echo xlt('Submit'); ?>
-					</span>
-					</a>
+    <table style='border-left:1px solid; width:100%; height:100%' >
+        <tr>
+            <td>
+                <div style='margin-left:15px'>
+                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                    <span>
+                        <?php echo xlt('Submit'); ?>
+                    </span>
+                    </a>
 
-					<?php if ($_POST['form_refresh']) { ?>
-					<a href='#' class='css_button' onclick='window.print()'>
-						<span>
-							<?php echo xlt('Print'); ?>
-						</span>
-					</a>
-					<?php } ?>
-				</div>
-			</td>
-		</tr>
-	</table>
+                    <?php if ($_POST['form_refresh']) { ?>
+                    <a href='#' class='css_button' onclick='window.print()'>
+                        <span>
+                            <?php echo xlt('Print'); ?>
+                        </span>
+                    </a>
+                    <?php } ?>
+                </div>
+            </td>
+        </tr>
+    </table>
   </td>
  </tr>
 </table>
@@ -979,7 +975,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
           echo "  <td class='detail'>&nbsp;" . attr($row['ss']) . "</td>\n";
         }
         if ($form_cb_dob) {
-          echo "  <td class='detail'>&nbsp;" . attr(oeFormatShortDate($row['DOB'])) . "</td>\n";
+          echo "  <td class='detail'>&nbsp;" . attr(date(DateFormatRead(true), strtotime($row['DOB']))) . "</td>\n";
         }
         if ($form_cb_pid) {
           echo "  <td class='detail'>&nbsp;" . attr($row['pid']) . "</td>\n";
@@ -1179,7 +1175,7 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
     if ($form_cb_err) echo "  <td class='detail'>&nbsp;</td>\n";
     echo " </tr>\n";
     echo "</table>\n";
-	echo "</div>\n";
+    echo "</div>\n";
   }
 } // end if form_refresh
 
@@ -1193,10 +1189,10 @@ if (!$_POST['form_csvexport']) {
 <a href='javascript:;' class='css_button'  onclick='checkAll(true)'><span><?php echo xlt('Select All'); ?></span></a>
 <a href='javascript:;' class='css_button'  onclick='checkAll(false)'><span><?php echo xlt('Clear All'); ?></span></a>
 <a href='javascript:;' class='css_button' onclick='$("#form_csvexport").attr("value","true"); $("#theform").submit();'>
-	<span><?php echo xlt('Export Selected as CSV'); ?></span>
+    <span><?php echo xlt('Export Selected as CSV'); ?></span>
 </a>
 <a href='javascript:;' class='css_button' onclick='$("#form_export").attr("value","true"); $("#theform").submit();'>
-	<span><?php echo xlt('Export Selected to Collections'); ?></span>
+    <span><?php echo xlt('Export Selected to Collections'); ?></span>
 </a>
 </div>
 
@@ -1221,14 +1217,20 @@ if (!$_POST['form_csvexport']) {
 ?>
 </script>
 </body>
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script language="Javascript">
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </html>
 <?php

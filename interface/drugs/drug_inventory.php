@@ -61,9 +61,19 @@ $orderby = $ORDERHASH[$form_orderby];
 tr.head   { font-size:10pt; background-color:#cccccc; text-align:center; }
 tr.detail { font-size:10pt; }
 a, a:visited, a:hover { color:#0000cc; }
+
+table.mymaintable, table.mymaintable td {
+ border: 1px solid #aaaaaa;
+ border-collapse: collapse;
+}
+table.mymaintable td {
+ padding: 1pt 4pt 1pt 4pt;
+}
 </style>
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/js/report_helper.js"></script>
 
 <script language="JavaScript">
 
@@ -98,7 +108,8 @@ function dosort(orderby) {
 <body class="body_top">
 <form method='post' action='drug_inventory.php'>
 
-<table width='100%' cellpadding='1' cellspacing='2'>
+<table width='100%' id='mymaintable' class='mymaintable'>
+ <thead>
  <tr class='head'>
   <td title='<?php echo xla('Click to edit'); ?>'>
    <a href="#" onclick="return dosort('prod')"
@@ -148,6 +159,8 @@ function dosort(orderby) {
    <?php echo xlt('Expires'); ?> </a>
   </td>
  </tr>
+ </thead>
+ <tbody>
 <?php 
  $lastid = "";
  $encount = 0;
@@ -163,12 +176,12 @@ function dosort(orderby) {
    echo "  <td>" . ($row['active'] ? xlt('Yes') : xlt('No')) . "</td>\n";
    echo "  <td>" . text($row['ndc_number']) . "</td>\n";
    echo "  <td>" . 
-	generate_display_field(array('data_type'=>'1','list_id'=>'drug_form'), $row['form']) .
-	"</td>\n";
+    generate_display_field(array('data_type'=>'1','list_id'=>'drug_form'), $row['form']) .
+    "</td>\n";
    echo "  <td>" . text($row['size']) . "</td>\n";
    echo "  <td>" .
-	generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['unit']) .
-	"</td>\n";
+    generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['unit']) .
+    "</td>\n";
    echo "  <td onclick='doiclick(".attr($lastid).",0)' title='" . xla('Add new lot and transaction') . "'>" .
     "<a href='' onclick='return false'>" . xlt('New') . "</a></td>\n";
   } else {
@@ -187,10 +200,11 @@ function dosort(orderby) {
   echo " </tr>\n";
  } // end while
 ?>
+ </tbody>
 </table>
 
 <center><p>
- <input type='button' value='<?php echo xla('Add Drug'); ?>' onclick='dodclick(0)' style='background-color:transparent' />
+ <input type='button' value='<?php echo xla('Add Drug'); ?>' onclick='dodclick(0)' />
 </p></center>
 
 <input type="hidden" name="form_orderby" value="<?php echo attr($form_orderby) ?>" />

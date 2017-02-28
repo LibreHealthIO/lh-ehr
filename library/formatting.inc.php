@@ -1,10 +1,31 @@
 <?php
-// Copyright (C) 2010-2014 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * Copyright (C) 2010-2014 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
+ *
+ */
 
 function oeFormatMoney($amount, $symbol=false) {
   $s = number_format($amount,
@@ -16,6 +37,38 @@ function oeFormatMoney($amount, $symbol=false) {
     $s = $GLOBALS['gbl_currency_symbol'] . " $s";
   return $s;
 }
+function oeFormatDateForPrintReport($date)
+{
+    if ($date) {
+        $dmy = preg_split("'[/.-]'", $date);
+        if ($GLOBALS['date_display_format'] == 2) {
+            $date = sprintf("%02u-%02u-%04u", $dmy[0], $dmy[1], $dmy[2]);
+        }
+        return $date;
+    }
+}
+function prepareDateBeforeSave($date, $withTime = false)
+{
+    if (!$withTime) {
+        $dmy = preg_split("'[/.-]'", $date);
+        if ($GLOBALS['date_display_format'] == 1) {
+            return sprintf("%04u-%02u-%02u", $dmy[2], $dmy[0], $dmy[1]);
+        } elseif ($GLOBALS['date_display_format'] == 2) {
+            return sprintf("%04u-%02u-%02u", $dmy[2], $dmy[1], $dmy[0]);
+        } else {
+            return $date;
+        }
+    } else {
+        $dmy = preg_split("'[/.: -]'", $date);
+        if ($GLOBALS['date_display_format'] == 1) {
+            return sprintf("%04u-%02u-%02u %02u:%02u:%02u", $dmy[2], $dmy[0], $dmy[1], $dmy[3], $dmy[4], $dmy[5]);
+        } elseif ($GLOBALS['date_display_format'] == 2) {
+            return sprintf("%04u-%02u-%02u %02u:%02u:%02u", $dmy[2], $dmy[1], $dmy[0], $dmy[3], $dmy[4], $dmy[5]);
+        } else {
+            return $date;
+        }
+    }
+}
 
 function oeFormatShortDate($date='today') {
   if ($date === 'today') $date = date('Y-m-d');
@@ -25,6 +78,17 @@ function oeFormatShortDate($date='today') {
       $date = substr($date, 5, 2) . '/' . substr($date, 8, 2) . '/' . substr($date, 0, 4);
     else if ($GLOBALS['date_display_format'] == 2) // dd/mm/yyyy
       $date = substr($date, 8, 2) . '/' . substr($date, 5, 2) . '/' . substr($date, 0, 4);
+  }
+  return $date;
+}
+function oeFormatDateTime($date='today') {
+  if ($date === 'today') $date = date('Y-m-d H:i:s');
+  if (strlen($date) == 19) {
+    // assume input is yyyy-mm-dd hh:mm:ss
+    if ($GLOBALS['date_display_format'] == 1)      // mm/dd/yyyy hh:mm:ss
+      $date = substr($date, 5, 2) . '/' . substr($date, 8, 2) . '/' . substr($date, 0, 4) . substr($date, 10, 9);
+    else if ($GLOBALS['date_display_format'] == 2) // dd/mm/yyyy hh:mm:ss
+      $date = substr($date, 8, 2) . '/' . substr($date, 5, 2) . '/' . substr($date, 0, 4) . substr($date, 10, 9);
   }
   return $date;
 }

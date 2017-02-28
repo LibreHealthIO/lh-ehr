@@ -78,7 +78,7 @@ function observation_report($pid, $encounter, $cols, $id) {
                         <td style='border:1px solid #ccc;padding:4px;'><span class=text>".text($value['table_code'])."</span></td>
                         <td style='border:1px solid #ccc;padding:4px;'><span class=text>".text($value['ob_value'])."</span></td>
                         <td style='border:1px solid #ccc;padding:4px;'><span class=text>".text($value['ob_unit'])."</span></td>
-                        <td style='border:1px solid #ccc;padding:4px;'><span class=text>".text($value['date'])."</span></td>
+                        <td style='border:1px solid #ccc;padding:4px;'><span class=text>".date(DateFormatRead(true), strtotime(text($value['date'])))."</span></td>
                     </tr>";
             print "\n";
         }

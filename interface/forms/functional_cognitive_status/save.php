@@ -74,7 +74,7 @@ if (!empty($code_text)) {
             code       = '" . add_escape_custom($code[$key]) . "',
             codetext   = '" . add_escape_custom($code_text[$key]) . "',
             description= '" . add_escape_custom($code_des[$key]) . "',
-            date       =  '" . add_escape_custom($code_date[$key]) . "'";
+            date       =  '" . add_escape_custom(prepareDateBeforeSave($code_date[$key])) . "'";
         sqlInsert("INSERT INTO form_functional_cognitive_status SET $sets");
     endforeach;
 }

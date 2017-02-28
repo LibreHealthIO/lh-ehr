@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Craig Bezuidenhout <http://www.tajemo.co.za/>
- * @link    http://libreehr.org
+ * @link    http://librehealth.io
  */
  
 // removed as jquery is already called in messages page (if you need to use jQuery, uncomment it futher down)
@@ -126,7 +126,7 @@ require_once("$srcdir/dated_reminder_functions.php");
              }    
              top.restoreSession();
              // Send the skip_timeout_reset parameter to not count this as a manual entry in the
-             //  timing out mechanism in LibreEHR.
+             //  timing out mechanism in LibreHealth EHR.
              $.post("<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders.php",
                { drR: id, skip_timeout_reset: "1" }, 
                function(data) {
@@ -152,13 +152,8 @@ require_once("$srcdir/dated_reminder_functions.php");
             function goPid(pid) {
               top.restoreSession();
               <?php 
-                if ($GLOBALS['concurrent_layout']){ 
                   echo "  top.RTop.location = '../../patient_file/summary/demographics.php' " .
                   "+ '?set_pid=' + pid;\n"; 
-                } else{
-                  echo "  top.location = '../../patient_file/patient_file.php' " .
-                  "+ '?set_pid=' + pid + '&pid=' + pid;\n";
-                }
               ?>
 }
       </script>

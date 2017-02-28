@@ -1,10 +1,29 @@
 <?php
-// Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ * Fax Dispatch 
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @link http://librehealth.io 
+ */
 
 require_once("../globals.php");
 require_once("$srcdir/patient.inc");
@@ -12,6 +31,9 @@ require_once("$srcdir/pnotes.inc");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/gprelations.inc.php");
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 if ($_GET['file']) {
   $mode = 'fax';
@@ -388,15 +410,11 @@ div.section {
 
 </style>
 
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 
 <script type="text/javascript" src="../../library/topdialog.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
 
 <script language="JavaScript">
 
@@ -577,12 +595,7 @@ foreach ($categories as $catkey => $catname) {
        <td class='itemtitle' nowrap><?php xl('Document Date','e'); ?></td>
        <td>
         <input type='text' size='10' name='form_docdate' id='form_docdate'
-        value='<?php echo date('Y-m-d'); ?>'
-        title='<?php xl('yyyy-mm-dd date associated with this document','e'); ?>'
-        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-        <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-        id='img_docdate' border='0' alt='[?]' style='cursor:pointer'
-        title='<?php xl('Click here to choose a date','e'); ?>' />
+        value='<?php echo htmlspecialchars(oeFormatShortDate(date('Y-m-d'))); ?>'/>
        </td>
       </tr>
      </table>
@@ -750,8 +763,16 @@ foreach ($jpgarray as $jfnamebase => $jfname) {
 </center>
 </form>
 
-<script language='JavaScript'>
- Calendar.setup({inputField:"form_docdate", ifFormat:"%Y-%m-%d", button:"img_docdate"});
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_docdate").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 
 </body>

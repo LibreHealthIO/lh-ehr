@@ -1,9 +1,13 @@
 <?php
 /*
- * Insurance Summary report
+ * Insurance Allocation report
  *
- * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io> 
- * No other information in the previous header
+ * This module shows relative insurance usage by unique patients
+ * that are seen within a given time period.  Each patient that had
+ * a visit is counted only once, regardless of how many visits.
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * 
  *
  * LICENSE: This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License 
@@ -29,6 +33,8 @@
  include_once("../../library/patient.inc");
  include_once("../../library/acl.inc");
  require_once("../../library/formatting.inc.php");
+ $DateFormat = DateFormatRead();
+ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 
  $from_date = fixDate($_POST['form_from_date']);
@@ -61,9 +67,8 @@ else {
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/calendar.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script language="JavaScript">
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
@@ -109,7 +114,8 @@ else {
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Patient Insurance Distribution','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
 <form name='theform' method='post' action='insurance_allocation_report.php' id='theform'>
@@ -129,21 +135,13 @@ else {
                <?php xl('From','e'); ?>:
             </td>
             <td>
-               <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>'
-                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-               <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-                title='<?php xl('Click here to choose a date','e'); ?>'>
+               <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>'>
             </td>
             <td class='label'>
                <?php xl('To','e'); ?>:
             </td>
             <td>
-               <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>'
-                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-               <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-                title='<?php xl('Click here to choose a date','e'); ?>'>
+               <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>'>
             </td>
         </tr>
     </table>
@@ -296,14 +294,20 @@ if (! $_POST['form_csvexport']) {
 
 </body>
 
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </html>
 <?php

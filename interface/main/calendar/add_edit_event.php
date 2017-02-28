@@ -12,7 +12,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @link    http://librehealth.io
  */
@@ -42,6 +42,9 @@ require_once($GLOBALS['srcdir'].'/options.inc.php');
 require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  //Check access control
  if (!acl_check('patients','appt','',array('write','wsome') ))
    die(xl('Access not allowed'));
@@ -76,7 +79,7 @@ require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 
  ?>
  <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
- <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+ <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 
  <?php
 
@@ -836,22 +839,18 @@ if ($_POST['form_action'] == "save") {
 <?php html_header_show(); ?>
 <title><?php echo $eid ? xlt('Edit') : xlt('Add New') ?> <?php echo xlt('Event');?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
 
 <style>
 td { font-size:0.8em; }
 </style>
 
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../../library/topdialog.js"></script>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
 <script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
 
 <script language="JavaScript">
 
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
  var durations = new Array();
  // var rectypes  = new Array();
@@ -992,7 +991,6 @@ td { font-size:0.8em; }
   f.form_enddate.disabled = isdisabled;
   document.getElementById('tdrepeat1').style.color = mycolor;
   document.getElementById('tdrepeat2').style.color = mycolor;
-  document.getElementById('img_enddate').style.visibility = myvisibility;
  }
 
  // Constants used by dateChanged() function.
@@ -1159,12 +1157,9 @@ $classpati='';
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo attr($date) ?>'
-    title='<?php echo xla('yyyy-mm-dd event date or starting date'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' onchange='dateChanged()' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    title='<?php echo xla('Click here to choose a date'); ?>'>
+    value='<?php date($DateFormat, strtotime(attr($date)));  ?>'/   
+    
+
   </td>
   <td nowrap>
    &nbsp;&nbsp;
@@ -1453,10 +1448,8 @@ generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'ap
   <td nowrap id='tdrepeat2'><?php echo xlt('until'); ?>
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_enddate' id='form_enddate' value='<?php echo attr($row['pc_endDate']) ?>' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo xla('yyyy-mm-dd last date of this event');?>' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_enddate' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    title='<?php echo xla('Click here to choose a date');?>'>
+   <input type='text' size='10' name='form_enddate' id='form_enddate'
+          value='<?php date($DateFormat, strtotime(attr($row['pc_endDate'])));  ?>'/>
 <?php
 if ($repeatexdate != "") {
     $tmptitle = "The following dates are excluded from the repeating series";
@@ -1508,10 +1501,7 @@ if ($repeatexdate != "") {
    <b><font color='red'><?php echo xlt('DOB is missing, please enter if possible'); ?>:</font></b>
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_dob' id='form_dob' title='<?php echo xla('yyyy-mm-dd date of birth');?>' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_dob' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
-    title='<?php echo xla('Click here to choose a date');?>'>
+   <input type='text' size='10' name='form_dob' id='form_dob' />
   </td>
  </tr>
 
@@ -1547,6 +1537,7 @@ if ($repeatexdate != "") {
 </div>
 
 </body>
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language='JavaScript'>
 <?php if ($eid) { ?>
@@ -1557,9 +1548,13 @@ if ($repeatexdate != "") {
  set_allday();
  set_repeat();
 
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
- Calendar.setup({inputField:"form_enddate", ifFormat:"%Y-%m-%d", button:"img_enddate"});
- Calendar.setup({inputField:"form_dob", ifFormat:"%Y-%m-%d", button:"img_dob"});
+$(function() {
+    $("#form_date, #form_enddate, #form_dob").datetimepicker({
+        timepicker: false,
+        format: "<?= $DateFormat; ?>"
+    });
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
+});
 </script>
 
 <script language="javascript">

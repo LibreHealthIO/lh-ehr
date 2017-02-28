@@ -1,19 +1,25 @@
 <?php
-/**
+/*
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
  * Copyright (C) 2009-2014 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
+ * as published by the Free Software Foundation; either version 3 
  * of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>.
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR 
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @link    http://librehealth.io
  */
@@ -265,6 +271,17 @@ $(document).ready(function() {
   $(function() {
     // add drag and drop functionality to fancybox
     $("#fancy_outer").easydrag();
+  });
+  // Support for beforeunload handler.
+  $('.lbfdata input, .lbfdata select, .lbfdata textarea').change(function() {
+    somethingChanged = true;
+});
+  window.addEventListener("beforeunload", function (e) {
+    if (somethingChanged && !top.timed_out) {
+      var msg = "<?php echo xls('You have unsaved changes.'); ?>";
+      e.returnValue = msg;     // Gecko, Trident, Chrome 34+
+      return msg;              // Gecko, WebKit, Chrome <34
+    }
   });
 });
 

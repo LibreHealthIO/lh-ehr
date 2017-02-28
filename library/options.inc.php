@@ -256,6 +256,7 @@ function generate_select_list($tag_name, $list_id, $currvalue, $title, $empty_na
 //
 function generate_form_field($frow, $currvalue) {
   global $rootdir, $date_init, $ISSUE_TYPES, $code_types,$condition_str;
+  $DateFormat = DateFormatRead();
 
   $currescaped = htmlspecialchars($currvalue, ENT_QUOTES);
 
@@ -367,23 +368,17 @@ function generate_form_field($frow, $currvalue) {
     if ($agestr) {
       echo "<table cellpadding='0' cellspacing='0'><tr><td class='text'>";
     }
+    $formDate = ($currescaped) ? date($DateFormat, strtotime(htmlspecialchars($currescaped))) : '';
     echo "<input type='text' size='10' name='form_$field_id_esc' id='form_$field_id_esc'" .
-      " value='" . substr($currescaped, 0, 10) . "'";
-    if (!$agestr) echo " title='$description'";
-    echo " $lbfonchange onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' $disabled />";
+      " value='" . $formDate . "' $disabled />";
     if (!$disabled) {
-      echo "<img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'" .
-      " id='img_$field_id_esc' border='0' alt='[?]' style='cursor:pointer'" .
-      " title='" . htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES) . "' />";
-      $date_init .= " Calendar.setup({" .
-        "inputField:'form_$field_id', " .
-        "ifFormat:'%Y-%m-%d', ";
+       $selector = "#form_{$field_id}";
+       $date_init .= "$('" . $selector . "').datetimepicker({timepicker: false,  format:'" . $DateFormat . "'});";
       if ($agestr) {
         $date_init .= "onUpdate: function() {" .
           "if (typeof(updateAgeString) == 'function') updateAgeString('$field_id','$age_asof_date', $age_format);" .
         "}, ";
       }
-      $date_init .= "button:'img_$field_id'})\n";
     }
     // Optional display of age or gestational age.
     if ($agestr) {
@@ -1028,14 +1023,12 @@ function generate_form_field($frow, $currvalue) {
     echo " $disabled />" . xlt('Quit') . "&nbsp;</td>";
     // quit date
     echo "<td class='text'><input type='text' size='6' name='date_$field_id_esc' id='date_$field_id_esc'" .
-      " value='$resdate'" .
+      " value='" . date($DateFormat, strtotime(htmlspecialchars($resdate))) . "'" .
       " title='$description'" .
-      " onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' $disabled />";
+      " $disabled />";
     if (!$disabled) {
-      echo "<img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'" .
-      " id='img_$field_id_esc' border='0' alt='[?]' style='cursor:pointer'" .
-      " title='" . htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES) . "' />";
-      $date_init .= " Calendar.setup({inputField:'date_$field_id', ifFormat:'%Y-%m-%d', button:'img_$field_id'});\n";
+        $selector = "#date_{$field_id}";
+        $date_init .= "$('" . $selector . "').datetimepicker({timepicker: false,  format:'" . $DateFormat . "'});";
     }
     echo "&nbsp;</td>";
     // never
@@ -1200,7 +1193,7 @@ function generate_print_field($frow, $currvalue) {
       echo '&nbsp;';
     }
     else {
-      echo text(oeFormatShortDate($currvalue));
+        echo text(date(DateFormatRead(), strtotime($currvalue)));
     }
     // Optional display of age or gestational age.
     if ($agestr) {
@@ -1729,7 +1722,7 @@ function generate_display_field($frow, $currvalue) {
       $s .= '&nbsp;';
     }
     else {
-      $s .= text(oeFormatShortDate($currvalue));
+      $s .= text(date(DateFormatRead(), strtotime($currvalue)));
     }
     // Optional display of age or gestational age.
     if ($agestr) {
@@ -2526,14 +2519,14 @@ function display_layout_tabs_data($formtype, $result1, $result2='') {
                       disp_end_cell();
                       $titlecols_esc = htmlspecialchars( $titlecols, ENT_QUOTES);
                       $field_id_label = 'label_'.$group_fields['field_id'];
-                      echo "<td class='label' colspan='$titlecols_esc' id='$field_id_label'";
+                      echo "<td class='label' colspan='$titlecols_esc' id='" . attr($field_id_label) . "'";
                       echo ">";
                       $cell_count += $titlecols;
                     }
                     ++$item_count;
 
                     $field_id_label = 'label_'.$group_fields['field_id'];
-                    echo "<span id='".$field_id_label."'>";
+                    echo "<span id='".attr($field_id_label)."'>";
                     // Added 5-09 by BM - Translate label if applicable
                     if ($group_fields['title']) echo htmlspecialchars(xl_layout_label($group_fields['title']).":",ENT_NOQUOTES); else echo "&nbsp;";
                     echo "</span>";
@@ -2543,12 +2536,12 @@ function display_layout_tabs_data($formtype, $result1, $result2='') {
                       disp_end_cell();
                       $datacols_esc = htmlspecialchars( $datacols, ENT_QUOTES);
                       $field_id = 'text_'.$group_fields['field_id'];
-                      echo "<td class='text data' colspan='$datacols_esc' id='$field_id'  data-value='$currvalue'";
+                      echo "<td class='text data' colspan='$datacols_esc' id='" . attr($field_id) . "'  data-value='" . attr($currvalue) . "'";
                       echo ">";
                       $cell_count += $datacols;
                     } else {
                       $field_id = 'text_'.$group_fields['field_id'];
-                      echo "<span id='".$field_id."' style='display:none'>$currvalue</span>";
+                      echo "<span id='".attr($field_id)."' style='display:none'>" . text($currvalue) . "</span>";
                     }
 
                     ++$item_count;
