@@ -47,6 +47,8 @@ require_once("$srcdir/erx_javascript.inc.php");
  if ($set_pid && $set_pid != $_SESSION["pid"]) {
   setpid($set_pid);
  }
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
  include_once("$srcdir/patient.inc");
 
@@ -83,15 +85,13 @@ $fres = sqlStatement("SELECT * FROM layout_options " .
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
+<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
 
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
 
 <script type="text/javascript" src="../../../library/dialog.js"></script>
 <script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="../../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
@@ -401,11 +401,7 @@ function insurance_active(current){
 <table cellpadding='0' cellspacing='0' border='0'>
     <tr>
         <td>
-            <?php if ($GLOBALS['concurrent_layout']) { ?>
             <a href="demographics.php" onclick="top.restoreSession()">
-            <?php } else { ?>
-            <a href="patient_summary.php" target="Main" onclick="top.restoreSession()">
-            <?php } ?>
             <font class=title><?php xl('Current Patient','e'); ?></font>
             </a>
             &nbsp;&nbsp;
@@ -416,11 +412,7 @@ function insurance_active(current){
             </a>
         </td>
         <td>
-            <?php if ($GLOBALS['concurrent_layout']) { ?>
             <a class="css_button" href="demographics.php" onclick="top.restoreSession()">
-            <?php } else { ?>
-            <a href="patient_summary.php" target="Main" onclick="top.restoreSession()">
-            <?php } ?>
             <span><?php xl('Cancel','e'); ?></span>
             </a>
         </td>
@@ -577,11 +569,15 @@ $group_seq=0; // this gives the DIV blocks unique IDs
              </td>
              <td class='required'>:</td>
              <td>
-              <input type='entry' size='16' id='i<?php echo $i ?>effective_date' name='i<?php echo $i ?>effective_date'
-               value='<?php echo $result3['date'] ?>'
-               onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-               title='yyyy-mm-dd' />
-                          <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_i<?php echo $i ?>effective_date' border='0' alt='[?]' style='cursor:pointer' title='<?php xl('Click here to choose a date','e'); ?>'>
+              <input type='entry' size='16' id='i<?php echo $i ?>effective_date' name='i<?php echo $i ?>effective_date' value='<?php echo $result3['date'] ?>'/>
+             <script>
+              $(function() {
+                $("#i<?php echo $i ?>effective_date").datetimepicker({
+                 timepicker: false,
+                 format: "<?= $DateFormat; ?>"
+                });
+              });
+            </script>            
              </td>
             </tr>
 
@@ -591,11 +587,15 @@ $group_seq=0; // this gives the DIV blocks unique IDs
              </td>
              <td class='required'>:</td>
              <td>
-              <input type='entry' size='16' id='i<?php echo $i ?>termination_date' name='i<?php echo $i ?>termination_date'
-               value='<?php echo $result3['eDate'] ?>'
-               onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-               title='yyyy-mm-dd Report use only' />
-                          <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_i<?php echo $i ?>termination_date' border='0' alt='[?]' style='cursor:pointer' title='<?php xl('Click here to choose a date','e'); ?>'>
+              <input type='entry' size='16' id='i<?php echo $i ?>termination_date' name='i<?php echo $i ?>termination_date' value='<?php echo $result3['eDate'] ?>'/>
+              <script>
+              $(function() {
+                $("#i<?php echo $i ?>termination_date").datetimepicker({
+                 timepicker: false,
+                 format: "<?= $DateFormat; ?>"
+                });
+              });
+             </script>
              </td>
             </tr>
             <tr>
@@ -686,7 +686,16 @@ $group_seq=0; // this gives the DIV blocks unique IDs
             <tr>
                 <td><span class=bold><?php xl('D.O.B.','e'); ?> </span></td>
                 <td class=required>:</td>
-                <td><input type='entry' size='11' id='i<?php echo $i?>subscriber_DOB' name='i<?php echo $i?>subscriber_DOB' value='<?php echo $result3['subscriber_DOB'] ?>' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd' <?php echo $inactive_element; ?> /><img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22' id='img_i<?php echo $i; ?>dob_date' border='0' alt='[?]' style='cursor:pointer' title='<?php xl('Click here to choose a date','e'); ?>'></td>
+                <td><input type='entry' size='11' id='i<?php echo $i?>subscriber_DOB' name='i<?php echo $i?>subscriber_DOB' value='<?php echo $result3['subscriber_DOB'] ?>' />
+                <script>
+                  $(function() {
+                    $("#i<?php echo $i ?>subscriber_DOB").datetimepicker({
+                     timepicker: false,
+                     format: "<?= $DateFormat; ?>"
+                    });
+                  });
+             </script>            
+               </td>
 
                 <td><span class=bold><?php xl('Sex','e'); ?>: </span></td>
                 <td><?php
@@ -976,24 +985,12 @@ $group_seq=0; // this gives the DIV blocks unique IDs
 
 <?php if (! $GLOBALS['simplified_demographics']) { 
 $insurance_count = getActiveInsuranceData();
-for($i=0;$i<count($insurance_count);$i++){
-?>
- phonekeyup(f.i<?php echo $i;?>subscriber_phone,mypcc);
-<?php }} ?>
-
-<?php if ($GLOBALS['concurrent_layout'] && $set_pid) { ?>
- parent.left_nav.setPatient(<?php echo "'" . addslashes($result['fname']) . " " . addslashes($result['lname']) . "',$pid,'" . addslashes($result['pubpid']) . "','', ' " . xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']) . "'"; ?>);
- parent.left_nav.setRadio(window.name, 'dem');
-<?php } ?>
+ } ?>
 
 <?php echo $date_init; ?>
 <?php if (! $GLOBALS['simplified_demographics']) { 
 $insurance_count = getActiveInsuranceData();
-for ($i=0; $i<count($insurance_count); $i++){ ?>
- Calendar.setup({inputField:"i<?php echo $i;?>effective_date", ifFormat:"%Y-%m-%d", button:"img_i<?php echo $i;?>effective_date"});
- Calendar.setup({inputField:"i<?php echo $i;?>termination_date", ifFormat:"%Y-%m-%d", button:"img_i<?php echo $i;?>termination_date"});
- Calendar.setup({inputField:"i<?php echo $i;?>subscriber_DOB", ifFormat:"%Y-%m-%d", button:"img_i<?php echo $i;?>dob_date"});
- <?php } } ?>
+} ?>
 </script>
 
 <!-- include support for the list-add selectbox feature -->
