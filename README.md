@@ -21,4 +21,29 @@ Tax deductible Donations can be made to the project through the SFC.
  
 ***Thank you for your support!***
 
+# Contributing code
+Code contributions are very welcome! Browse the [Issue tracker](https://github.com/LibreHealthIO/LibreEHR/issues) for issues that need code and/or come up with your own ideas & code. Please open a Pull Request to contribute your own code.
+
+## Local Development
+
+Windows :: 
+
+You can fork & clone the repository for local development. To get started you need to:
+ - Clone the repository
+ - Make sure you have disabled strict mode in Mysql . For doing that, you can look for instructions below. 
+ 
+ Sometimes , installation may take more time than usual on some systems. In that case, you would need to increase "max_execution_time" in your php.ini file .
+
+## How to disable Mysql strict mode?
+
+Make the following changes in the "my.ini/my.cnf":
+
+    1.  Look for the following line:
+        sql-mode = "STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+
+    2.  Change it to:
+        sql-mode="" (Blank)
+
+    3. Restart the MySQL service.
+
 
