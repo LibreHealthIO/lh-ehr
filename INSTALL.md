@@ -246,24 +246,24 @@ To upgrade the database, run the `sql_upgrade.php` script from your web browser 
 An easy way would be to install the [XAMPP Package](https://www.apachefriends.org/index.html). Make sure to copy the LibreEHR files to the `htdocs` folder.
 
 
-**How can I install Apache, MySQL, and PHP on Linux?**
+**Q. How can I install Apache, MySQL, and PHP on Linux?**
 
 Follow the instructions [here](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
 
 
-**I'm getting `table doesn't exist` error!**
+**Q. I'm getting `table doesn't exist` error!**
 
 This is because MySQL versions 5.7 and above have `strict mode` on default which needs to be disabled. This can be done by editing the MySQL configuration file and appending `sql_mode = ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION` at the end (if it is already present, modify it).
 
 In Linux, this file is located in `/etc/mysql/mysql.conf.d/mysqld.cnf`. In Windows, it is usually located in `C:\ProgramData\MySQL\MySQL Server 5.6\my.ini`
 
 
-**How do I restart the apache service?**
+**Q. How do I restart the apache service?**
 
 Restart apache service by using `sudo apache2ctl restart` on a terminal for Linux.
 For Windows, use the XAMPP interface (or the Services manager in case XAMPP isn't installed).
 
 
-**I need help! How do I reach you?**
+**Q. I need help! How do I reach you?**
 
 Feel free to drop by the [LibreHealth chat channel](https://chat.librehealth.io)!
