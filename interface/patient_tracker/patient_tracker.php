@@ -30,6 +30,9 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient_tracker.inc.php");
 require_once("$srcdir/user.inc");
 
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
 if (!is_null($_POST['form_provider']) && ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0' )) {
   $provider = $_POST['form_provider'];
 }
@@ -270,22 +273,12 @@ function openNewTopWindow(newpid,newencounterid) {
             </tr>
             <tr>
                 <td class='label'><?php if($GLOBALS['ptkr_date_range']) { echo xlt('From'); } else { echo xlt('Date'); }?>:</td>
-                <td><input type='text' name='form_from_date' id="form_from_date"
-                    size='10' value='<?php echo attr($from_date) ?>'
-                    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-                    title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
-                    align='absbottom' width='24' height='22' id='img_from_date'
-                    border='0' alt='[?]' style='cursor: pointer'
-                    title='<?php echo xla('Click here to choose a date'); ?>'></td>
+                <td><input type='text' size='9' name='form_from_date' id="form_from_date"
+                           value='<?php echo (oeFormatShortDate(attr($form_from_date))) ?>'>                
                 <?php if($GLOBALS['ptkr_date_range']) { ?>
                 <td class='label'><?php echo xlt('To'); ?>:</td>
-                <td><input type='text' name='form_to_date' id="form_to_date"
-                    size='10' value='<?php echo attr($to_date) ?>'
-                    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-                    title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
-                    align='absbottom' width='24' height='22' id='img_to_date'
-                    border='0' alt='[?]' style='cursor: pointer'
-                    title='<?php echo xla('Click here to choose a date'); ?>'>
+                <td><input type='text' size='9' name='form_to_date' id="form_to_date"
+                           value='<?php echo (oeFormatShortDate(attr($form_to_date))) ?>'>
                 </td>
                 <?php } ?>
                 </tr>
@@ -657,12 +650,23 @@ if(!is_null($_POST['form_to_date']) ){
 <input type='hidden' name='patientID'      value='0' />
 <input type='hidden' name='encounterID'    value='0' />
 </form>
-<script language="javascript">
-/* required for popup calendar */
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
+</body>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
  <?php if ($GLOBALS['ptkr_date_range']) { ?>
-   Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
  <?php } ?>
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </body>
 </html>

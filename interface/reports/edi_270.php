@@ -31,7 +31,7 @@
  * No other authors mentioned in the previous header file.
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 
@@ -53,7 +53,7 @@
     include_once("$srcdir/calendar.inc");
     include_once("$srcdir/edi.inc");
 
-    $DateFormat = DateFormatRead(true);
+    $DateFormat = DateFormatRead();
     $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
     // Element data seperator       
