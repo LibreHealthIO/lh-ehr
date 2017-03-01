@@ -37,16 +37,16 @@ In case of WAMP :
 Make the following changes in your php.ini file :
 (Search for the following and make necessary changes)
 
-* short_open_tag = On
-* max_execution_time = 600
-* max_input_time = 600
-* max_input_vars = 5000
-* memory_limit = 1024M
-* error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
-* register_argc_argv = On
-* post_max_size = 32M
-* upload_max_filesize = 16M
-* session.gc_maxlifetime = 14400
+* `short_open_tag` = On
+* `max_execution_time` = 600
+* `max_input_time` = 600
+* `max_input_vars` = 5000
+* `memory_limit` = 1024M
+* `error_reporting` = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
+* `register_argc_argv` = On
+* `post_max_size` = 32M
+* `upload_max_filesize` = 16M
+* `session.gc_maxlifetime` = 14400
 
 Make sure you have disabled strict mode in Mysql . 
 
