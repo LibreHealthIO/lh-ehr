@@ -21,6 +21,7 @@ Tax deductible Donations can be made to the project through the SFC.
  
 ***Thank you for your support!***
 
+
 # Contributing code
 Code contributions are very welcome! Browse the [Issue tracker](https://github.com/LibreHealthIO/LibreEHR/issues) for issues that need code and/or come up with your own ideas & code. Please open a Pull Request to contribute your own code.
 
@@ -28,11 +29,25 @@ Code contributions are very welcome! Browse the [Issue tracker](https://github.c
 
 Windows :: 
 
-You can fork & clone the repository for local development. To get started you need to:
- - Clone the repository
- - Make sure you have disabled strict mode in Mysql . For doing that, you can look for instructions below. 
- 
- Sometimes , installation may take more time than usual on some systems. In that case, you would need to increase "max_execution_time" in your php.ini file .
+Firstly make sure that you have WAMP/XAMPP server installed and the time zone is set correctly.
+Make the following changes in php.ini file. You can find the php.ini file by looking at the following destination :
+In case of WAMP : "C:/WAMP/BIN/PHP/php.ini".
+
+Make the following changes in your php.ini file :
+(Search for the following and make necessary changes)
+
+short_open_tag = On
+max_execution_time = 600
+max_input_time = 600
+max_input_vars = 5000
+memory_limit = 1024M
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
+register_argc_argv = On
+post_max_size = 32M
+upload_max_filesize = 16M
+session.gc_maxlifetime = 14400
+
+Make sure you have disabled strict mode in Mysql . 
 
 ## How to disable Mysql strict mode?
 
@@ -45,5 +60,16 @@ Make the following changes in the "my.ini/my.cnf":
         sql-mode="" (Blank)
 
     3. Restart the MySQL service.
+    
+
+Restart Apache Server.
+
+You can fork & clone the repository for local development. To get started you need to:
+ - Clone the repository
+ - Run index.php file which then redirects to setup page! Follow the instructions and you are done!!
+ 
+Sometimes , installation may take more time than usual on some systems. In that case, you would need to increase "max_execution_time" in your php.ini file and then restart your server.
+
+
 
 
