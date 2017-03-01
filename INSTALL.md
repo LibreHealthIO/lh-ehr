@@ -4,13 +4,17 @@ OSI Certified Open Source Software
 
 -------------------------------------
 
-#### Table of Contents
+### Table of Contents
 
-[Overview of Directories](#overview-of-directories)
-[Unpacking](#unpacking)
-[Setup](#setup)
-[Setting up Access Control](#setting-up-access-control)
-[Upgrading](#upgrading)
+**[Overview of Directories](#overview-of-directories)**
+
+**[Unpacking](#unpacking)**
+
+**[Setup](#setup)**
+
+**[Setting up Access Control](#setting-up-access-control)**
+
+**[Upgrading](#upgrading)**
 
 
 ##  Overview of Directories
@@ -61,9 +65,9 @@ If you don't already have it, download and install [Apache](www.apache.org), [My
 2. MySQL versions 5.7+ have strict mode enabled by default and must be disabled. Instructions on how to disable it are given in the FAQs section.
 
 3. LibreEHR requires a number of webserver and PHP features which may not be enabled on your system.  These include:
-..* PHP Index support (ensure that index.php is in your Index path in httpd.conf)
-..* Session variables
-..* PHP libcurl support (optional for operation, mandatory for billing)
+  * PHP Index support (ensure that index.php is in your Index path in httpd.conf)
+  * Session variables
+  * PHP libcurl support (optional for operation, mandatory for billing)
 
 
 Copy the LibreEHR folder into the root folder of the webserver. On Mandrake Linux, for example, use the command:
