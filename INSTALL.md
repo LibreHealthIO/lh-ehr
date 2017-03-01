@@ -16,6 +16,8 @@ OSI Certified Open Source Software
 
 **[Upgrading](#upgrading)**
 
+**[FAQ](#faq)**
+
 
 ##  Overview of Directories
 
@@ -149,6 +151,8 @@ To ensure proper functioning of LibreEHR you must make sure that settings in the
 
 In order to take full advantage of the patient documents capability you must make sure that settings in `php.ini` file include `file_uploads = On`, that `upload_max_filesize"` is appropriate for your use, and that `upload_tmp_dir` is set to a correct value that will work on your system.
 
+Restart apache service. Instructions on doing that are given in the FAQ section.
+
 
 #### Step 6
 You will be given instructions on configuring the Apache web server.  We suggest you print these instructions for future reference. Instructions are given to secure the`libreehrwebroot/sites/*/documents`, `libreehrwebroot/sites/*/edi` and `libreehrwebroot/sites/*/era` directories, which contain patient information. This can be done be either placing pertinent `.htaccess` files in these directories or by editing the apache configuration file. 
@@ -235,3 +239,31 @@ If there are other files that you have customized, then you will also need to tr
 
 To upgrade the database, run the `sql_upgrade.php` script from your web browser (for example: `http://libreehr.location/sql_upgrade.php`).  It will prompt you to select the old release number, and will display the SQL commands issued as the upgrade occurs.
 
+## FAQ
+
+**How can I install Apache, MySQL, and PHP on Windows?**
+
+An easy way would be to install the [XAMPP Package](https://www.apachefriends.org/index.html). Make sure to copy the LibreEHR files to the `htdocs` folder.
+
+
+**How can I install Apache, MySQL, and PHP on Linux?**
+
+Follow the instructions [here](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04)
+
+
+**I'm getting `table doesn't exist` error!**
+
+This is because MySQL versions 5.7 and above have `strict mode` on default which needs to be disabled. This can be done by editing the MySQL configuration file and appending `sql_mode = ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION` at the end (if it is already present, modify it).
+
+In Linux, this file is located in `/etc/mysql/mysql.conf.d/mysqld.cnf`. In Windows, it is usually located in `C:\ProgramData\MySQL\MySQL Server 5.6\my.ini`
+
+
+**How do I restart the apache service?**
+
+Restart apache service by using `sudo apache2ctl restart` on a terminal for Linux.
+For Windows, use the XAMPP interface (or the Services manager in case XAMPP isn't installed).
+
+
+**I need help! How do I reach you?**
+
+Feel free to drop by the [LibreHealth chat channel](https://chat.librehealth.io)!
