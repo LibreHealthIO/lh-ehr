@@ -502,13 +502,6 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Referrals",
-            "menu_id" : "rep0",
-            "target" : "rep",
-            "url" : "/interface/reports/referrals_report.php",
-            "children" : [ ],
-            "requirement" : 0
-        }, { 
             "label" : "Immunization Registry",
             "menu_id" : "rep0",
             "target" : "rep",
