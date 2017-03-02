@@ -1,5 +1,5 @@
 <?php
- // Copyright (C) 2010-2017 LibreEHR Support LLC
+ // Copyright (C) 2010-2017 LibreHealth EHR Support LLC
  //
  // This program is free software; you can redistribute it and/or
  // modify it under the terms of the GNU General Public License
