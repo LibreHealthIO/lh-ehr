@@ -1,4 +1,4 @@
-**Welcome to LibreHealth EHR!!!**
+# Welcome to LibreHealth EHR!!!
 
 LibreHealth EHR is a free and open-source electronic health records and
 medical practice management application. 
@@ -16,8 +16,6 @@ Our project is primarily licensed under Mozilla Public License Version 2.
 Code inherited from OpenEMR is licensed under GPL 2 or higher.
 
 The project is part of the Software Freedom Conservancy family [sfconservancy.org](http://sfconservancy.org)  
-
-Tax deductible Donations can be made to the project through the SFC. 
  
 ***Thank you for your support!***
 
