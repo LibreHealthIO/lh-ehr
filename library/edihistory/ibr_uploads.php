@@ -19,8 +19,8 @@
  * 
  * 
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
- * @package LibreEHR
+ * @link: http://librehealth.io
+ * @package LibreHealth EHR
  * @subpackage ediHistory
  */
   
@@ -58,21 +58,21 @@
 //
 // Magic numbers from Wikipedia
 // and http://www.garykessler.net/library/file_sigs.html
-// GIF87a 	47 49 46 38 37 61 	
-// GIF89b 	47 49 46 38 39 61 	
-// exe 		4D 5A 				
-// zip (PK) 	50 4B 03 04 			
-// .png 	89 50 4E 47 0D 0A 1A 0A 	
-// ï»¿ UTF-8		EF BB BF
-// 0 		FF FE  Byte-order mark for text file encoded in little-endian 16-bit Unicode Transfer Format
-// 0 		FF FE 00 00  Byte-order mark for text file encoded in little-endian 32-bit Unicode Transfer Format
-// 			00 00 FE FF  Byte-order mark for 32-bit Unicode Transformation Format big-endian files
+// GIF87a   47 49 46 38 37 61   
+// GIF89b   47 49 46 38 39 61   
+// exe      4D 5A               
+// zip (PK)     50 4B 03 04             
+// .png     89 50 4E 47 0D 0A 1A 0A     
+// ï»¿ UTF-8        EF BB BF
+// 0        FF FE  Byte-order mark for text file encoded in little-endian 16-bit Unicode Transfer Format
+// 0        FF FE 00 00  Byte-order mark for text file encoded in little-endian 32-bit Unicode Transfer Format
+//          00 00 FE FF  Byte-order mark for 32-bit Unicode Transformation Format big-endian files
 // MZ (4Dh 5Ah) DR DOS 6.0
-// C9h 	CP/M 3, first byte of a COM file
-// %PDF 	25 50 44 46 	PDF, FDF Adobe Portable Document Format and Forms Document file
+// C9h  CP/M 3, first byte of a COM file
+// %PDF     25 50 44 46     PDF, FDF Adobe Portable Document Format and Forms Document file
 // 
-// ÿØÿà..JF 	FF D8 FF E0 xx xx 4A 46  JPEG/JFIF graphics file
-// 49 46 00 	  	IFF.  JFIF, JPE, JPEG, JPG 	  Trailer: FF D9 (ÿÙ)
+// ÿØÿà..JF     FF D8 FF E0 xx xx 4A 46  JPEG/JFIF graphics file
+// 49 46 00         IFF.  JFIF, JPE, JPEG, JPG    Trailer: FF D9 (ÿÙ)
 // 
 ////*************///
 
@@ -89,8 +89,8 @@
  * @return array
  */
 function ibr_upload_multiple(array $_files, $top = TRUE) {
-	// from php documentation for $_FILES predefined variable BigShark666 at gmail
-	
+    // from php documentation for $_FILES predefined variable BigShark666 at gmail
+    
     $files = array();
     foreach($_files as $name=>$file){
         if($top) $sub_name = $file['name'];
@@ -130,30 +130,30 @@ function ibr_upload_multiple(array $_files, $top = TRUE) {
  * @return array|bool
  */
 function ibr_upload_match_file($param_ar, $fidx, &$html_str) {
-	//
-	if (is_array($fidx) && isset($fidx['name']) ) {
-		$fn = basename($fidx['name']);
-		$ftmp = $fidx['tmp_name'];
-	} else {
-		$html_str .= "Error: invalid file argument <br />" . PHP_EOL;
-		return FALSE;
-	}
-	//
-	if ( is_array($param_ar) && count($param_ar)) {
-		$p = $param_ar;          // csv_parameters("ALL");
-	} else {
-		$html_str .= "Error: invalid parameters <br />" . PHP_EOL;
-		return FALSE;
-	}
+    //
+    if (is_array($fidx) && isset($fidx['name']) ) {
+        $fn = basename($fidx['name']);
+        $ftmp = $fidx['tmp_name'];
+    } else {
+        $html_str .= "Error: invalid file argument <br />" . PHP_EOL;
+        return FALSE;
+    }
+    //
+    if ( is_array($param_ar) && count($param_ar)) {
+        $p = $param_ar;          // csv_parameters("ALL");
+    } else {
+        $html_str .= "Error: invalid parameters <br />" . PHP_EOL;
+        return FALSE;
+    }
     //
     $ibr_upldir = csv_edih_tmpdir();
-	//
-	$ar_fn = array();
-	//
-	foreach ($p as $ky=>$par) { 
-		//
-		if ( !$p[$ky]['regex'] ) { continue; }
-		if (!preg_match($p[$ky]['regex'], $fn) ) { continue; } 
+    //
+    $ar_fn = array();
+    //
+    foreach ($p as $ky=>$par) { 
+        //
+        if ( !$p[$ky]['regex'] ) { continue; }
+        if (!preg_match($p[$ky]['regex'], $fn) ) { continue; } 
         // file name has matched an allowed extension; now, we scan the file 
         //$is_tp = TRUE;
         // 
@@ -212,8 +212,8 @@ function ibr_upload_match_file($param_ar, $fidx, &$html_str) {
         } 
         // quit the extension check loop
         break;
-	}
-	return $ar_fn;
+    }
+    return $ar_fn;
 } 
 
 
@@ -231,50 +231,50 @@ function ibr_upload_match_file($param_ar, $fidx, &$html_str) {
  * @return array $f_ar -- paths to unpacked files accepted by this function
  */
 function ibr_ziptoarray($zipfilename, $param_ar, &$html_str) {
-	//
-	// note that this function moves files and set permissions, so platform issues may occur
-	//
-	// zerr array is probably not needed, use $zip_obj->getStatusString  
-	$zerr = array('0'=> 'ER_OK N No error',
-				'1'=>'ER_MULTIDISK N Multi-disk zip archives not supported',
-				'2'=>'ER_RENAME S Renaming temporary file failed',
-				'3'=>'ER_CLOSE S Closing zip archive failed',
-				'4'=>'ER_SEEK S Seek error',
-				'5'=>'ER_READ S Read error',
-				'6'=>'ER_WRITE S Write error',
-				'7'=>'ER_CRC N CRC error',
-				'8'=>'ER_ZIPCLOSED N Containing zip archive was closed',
-				'9'=>'ER_NOENT N No such file',
-				'10'=>'ER_EXISTS N File already exists',
-				'11'=>'ER_OPEN S Can not open file',
-				'12'=>'ER_TMPOPEN S Failure to create temporary file',
-				'13'=>'ER_ZLIB Z Zlib error',
-				'14'=>'ER_MEMORY N Malloc failure',
-				'15'=>'ER_CHANGED N Entry has been changed',
-				'16'=>'ER_COMPNOTSUPP N Compression method not supported',
-				'17'=>'ER_EOF N Premature EOF',
-				'18'=>'ER_INVAL N Invalid argument',
-				'19'=>'ER_NOZIP N Not a zip archive',
-				'20'=>'ER_INTERNAL N Internal error',
-				'21'=>'ER_INCONS N Zip archive inconsistent',
-				'22'=>'ER_REMOVE S Can not remove file',
-				'23'=>'ER_DELETED N Entry has been deleted'
-				);
-	//	
+    //
+    // note that this function moves files and set permissions, so platform issues may occur
+    //
+    // zerr array is probably not needed, use $zip_obj->getStatusString  
+    $zerr = array('0'=> 'ER_OK N No error',
+                '1'=>'ER_MULTIDISK N Multi-disk zip archives not supported',
+                '2'=>'ER_RENAME S Renaming temporary file failed',
+                '3'=>'ER_CLOSE S Closing zip archive failed',
+                '4'=>'ER_SEEK S Seek error',
+                '5'=>'ER_READ S Read error',
+                '6'=>'ER_WRITE S Write error',
+                '7'=>'ER_CRC N CRC error',
+                '8'=>'ER_ZIPCLOSED N Containing zip archive was closed',
+                '9'=>'ER_NOENT N No such file',
+                '10'=>'ER_EXISTS N File already exists',
+                '11'=>'ER_OPEN S Can not open file',
+                '12'=>'ER_TMPOPEN S Failure to create temporary file',
+                '13'=>'ER_ZLIB Z Zlib error',
+                '14'=>'ER_MEMORY N Malloc failure',
+                '15'=>'ER_CHANGED N Entry has been changed',
+                '16'=>'ER_COMPNOTSUPP N Compression method not supported',
+                '17'=>'ER_EOF N Premature EOF',
+                '18'=>'ER_INVAL N Invalid argument',
+                '19'=>'ER_NOZIP N Not a zip archive',
+                '20'=>'ER_INTERNAL N Internal error',
+                '21'=>'ER_INCONS N Zip archive inconsistent',
+                '22'=>'ER_REMOVE S Can not remove file',
+                '23'=>'ER_DELETED N Entry has been deleted'
+                );
+    //  
     $ibr_upldir = csv_edih_tmpdir();
     //
-	$zip_obj = new ZipArchive();  
-	// open archive (the ZIPARCHIVE::CREATE is supposedly necessary for microsoft)
-	if ($zip_obj->open($zipfilename, ZIPARCHIVE::CREATE) !== TRUE) {
-		// 
-		$html_str .= "Error: Could not open archive $zipfilename <br />" . PHP_EOL;
-		return FALSE;
-	}
-	if ($zip_obj->status != 0) {
-		//
-		$html_str .= "Error code: " . $zip_obj->status ." ". $zip_obj->getStatusString() . "<br />" . PHP_EOL;
-		return FALSE;
-	}
+    $zip_obj = new ZipArchive();  
+    // open archive (the ZIPARCHIVE::CREATE is supposedly necessary for microsoft)
+    if ($zip_obj->open($zipfilename, ZIPARCHIVE::CREATE) !== TRUE) {
+        // 
+        $html_str .= "Error: Could not open archive $zipfilename <br />" . PHP_EOL;
+        return FALSE;
+    }
+    if ($zip_obj->status != 0) {
+        //
+        $html_str .= "Error code: " . $zip_obj->status ." ". $zip_obj->getStatusString() . "<br />" . PHP_EOL;
+        return FALSE;
+    }
     // initialize output array and counter
     $f_zr = array();
     $p_ct = 0;
@@ -282,72 +282,72 @@ function ibr_ziptoarray($zipfilename, $param_ar, &$html_str) {
     $f_ct = $zip_obj->numFiles;
     // get the file names
     for ($i=0; $i<$f_ct; $i++) {
-		//
-		$isOK = TRUE;
-		$fstr = "";
-		$file = $zip_obj->statIndex($i);
-		$name = $file['name'];
-		$oldCrc = $file['crc']; 
-		// get file contents
-		$fstr = stream_get_contents($zip_obj->getStream($name));
-		// file -bi  277-201203140830-001.277ibr --> 'text/plain'; charset=us-ascii 
-		// for linux servers: echo system("file -b '<file path>'");
-		if ($fstr) { 
-			// use only the file name
-			$bnm = basename($name);
-			//
-			// $newname = tempnam (IBR_UPLOAD_DIR , "edi"); --won't work since we need the file name to classify
-			// the scheme of inserting "ediz" into the name allows us to do the CRC test and then
-			// rename the file, all in the temporary directory
-			// Note that BCBS files have no extension, just a name scheme (recently changed)			
-			if (strpos($bnm, "835") === 0) { 
+        //
+        $isOK = TRUE;
+        $fstr = "";
+        $file = $zip_obj->statIndex($i);
+        $name = $file['name'];
+        $oldCrc = $file['crc']; 
+        // get file contents
+        $fstr = stream_get_contents($zip_obj->getStream($name));
+        // file -bi  277-201203140830-001.277ibr --> 'text/plain'; charset=us-ascii 
+        // for linux servers: echo system("file -b '<file path>'");
+        if ($fstr) { 
+            // use only the file name
+            $bnm = basename($name);
+            //
+            // $newname = tempnam (IBR_UPLOAD_DIR , "edi"); --won't work since we need the file name to classify
+            // the scheme of inserting "ediz" into the name allows us to do the CRC test and then
+            // rename the file, all in the temporary directory
+            // Note that BCBS files have no extension, just a name scheme (recently changed)            
+            if (strpos($bnm, "835") === 0) { 
                 $newname = $ibr_upldir.DIRECTORY_SEPARATOR.$bnm."ediz";
-			} else {
+            } else {
                 $newname = $ibr_upldir.DIRECTORY_SEPARATOR."ediz".$bnm;
-			}
-			//
-			// extract the file to unzip tmp dir with read/write access
-			$chrs = file_put_contents($newname, $fstr); 
-			// test crc
-			$newCrc = hexdec(hash_file("crc32b",$newname) );
-			// is this the best way to do this test?
-			if($newCrc !== $oldCrc && ($oldCrc + 4294967296) !== $newCrc) { 
-				// failure case, mismatched crc file integrity values
-				$html_str .= "CRC error: The files don't match! Removing file $bnm <br />" . PHP_EOL;
-				$isGone = unlink($newname);
-				if ($isGone) { 
-					$is_tmpzip = FALSE;
-					$html_str .= "File Removed $bnm<br />".PHP_EOL; 
-				} else {
-					$html_str .= "Failed to removed file $bnm<br />".PHP_EOL;
-				}
-			} else {
-				// passed the CRC test, now type and verify file
-				$fzp['name'] = $bnm;
-				$fzp['tmp_name'] = $newname;		// tmp/edihist/ediz.$bnm or 83511111---ediz
-				// verification checks special to our application
-				$f_uplz = ibr_upload_match_file($param_ar, $fzp, $html_str);
-				//
-				if (is_array($f_uplz) && count($f_uplz) > 0 ) { 
-					$t = $f_uplz['type'];
-					$n = $f_uplz['name'];
-					$f_zr[$t][] = $n;
-					$p_ct++; 
-				} else {
-					// verification failed
-					$f_zr['reject'][] = $fzp['name'];
-				}
-			}
-			//				
-		} else {
-			$html_str .= "Did not get file contents $name" . PHP_EOL;
-			$isOK = FALSE;
-		} 
-	} // end for ($i=0; $i<$numFiles; $i++)
-	//
-	$html_str .= "Accepted $p_ct of $f_ct files from $zipfilename <br />" .PHP_EOL;
-	//
-	return $f_zr;
+            }
+            //
+            // extract the file to unzip tmp dir with read/write access
+            $chrs = file_put_contents($newname, $fstr); 
+            // test crc
+            $newCrc = hexdec(hash_file("crc32b",$newname) );
+            // is this the best way to do this test?
+            if($newCrc !== $oldCrc && ($oldCrc + 4294967296) !== $newCrc) { 
+                // failure case, mismatched crc file integrity values
+                $html_str .= "CRC error: The files don't match! Removing file $bnm <br />" . PHP_EOL;
+                $isGone = unlink($newname);
+                if ($isGone) { 
+                    $is_tmpzip = FALSE;
+                    $html_str .= "File Removed $bnm<br />".PHP_EOL; 
+                } else {
+                    $html_str .= "Failed to removed file $bnm<br />".PHP_EOL;
+                }
+            } else {
+                // passed the CRC test, now type and verify file
+                $fzp['name'] = $bnm;
+                $fzp['tmp_name'] = $newname;        // tmp/edihist/ediz.$bnm or 83511111---ediz
+                // verification checks special to our application
+                $f_uplz = ibr_upload_match_file($param_ar, $fzp, $html_str);
+                //
+                if (is_array($f_uplz) && count($f_uplz) > 0 ) { 
+                    $t = $f_uplz['type'];
+                    $n = $f_uplz['name'];
+                    $f_zr[$t][] = $n;
+                    $p_ct++; 
+                } else {
+                    // verification failed
+                    $f_zr['reject'][] = $fzp['name'];
+                }
+            }
+            //              
+        } else {
+            $html_str .= "Did not get file contents $name" . PHP_EOL;
+            $isOK = FALSE;
+        } 
+    } // end for ($i=0; $i<$numFiles; $i++)
+    //
+    $html_str .= "Accepted $p_ct of $f_ct files from $zipfilename <br />" .PHP_EOL;
+    //
+    return $f_zr;
 }
 
 /**
@@ -364,43 +364,43 @@ function ibr_ziptoarray($zipfilename, $param_ar, &$html_str) {
  * @return array             array of files that pass the checks and scans
  */
 function ibr_upload_files(&$html_str) {
-	//
-	// from php manual ling 03-Nov-2010 08:35
-	if (empty($_FILES) && empty($_POST) && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) == 'post') {    
-		$pmax = ini_get('post_max_size'); 
-		//
-		$html_str .= "Error: upload too large, maximum allowed size is $pmax <br />". PHP_EOL;
-		return FALSE;
-	} 
-	if (empty($_FILES) ) {
-		$html_str .= "Error: upload files indicated, but none received. <br />". PHP_EOL;
-		return FALSE;
-	}
-	// only one is expected 
-	$fkey = array_key_exists("fileUplEra", $_FILES) ? "fileUplEra" : "";
-	//$fkey = array_key_exists("fileUplZIP", $_FILES) ? "fileUplZIP" : $fkey; // fileUplMulti does zip files
-	$fkey = array_key_exists("fileUplMulti", $_FILES) ? "fileUplMulti" : $fkey;
-	$fkey = array_key_exists("fileUplx12", $_FILES) ? "fileUplx12" : $fkey;
-	//
-	if (!$fkey) {
-		$html_str .= "Error: file array name error <br />" . PHP_EOL;
-		return FALSE;	
-	}
-	// these are the mime-types that we will accept -- however, mime-type is not reliable
-	// for linux, system("file -bi -- ".escapeshellarg($uploadedfile)) gives mime-type and character encoding
-	// 
-	$m_types = array('application/octet-stream', 'text/plain', 'application/zip', 'application/x-zip-compressed');
-	//
-	// to give informative error message
-	$upload_err = array('0' => array('UPLOAD_ERR_OK', 'There is no error, the file uploaded with success.'), 
-						'1' => array('UPLOAD_ERR_INI_SIZE',  'The uploaded file too large.'), 
-						'2' => array('UPLOAD_ERR_FORM_SIZE', 'The uploaded file too large'), 
-						'3' => array('UPLOAD_ERR_PARTIAL', 'The uploaded file was only partially uploaded.'), 
-						'4' => array('UPLOAD_ERR_NO_FILE', 'No file was uploaded.'), 
-						'6' => array('UPLOAD_ERR_NO_TMP_DIR', 'Missing a temporary folder.'),
-						'7' => array('UPLOAD_ERR_CANT_WRITE', 'Failed to write file to disk.'), 
-						'8' => array('UPLOAD_ERR_EXTENSION', 'A PHP extension stopped the file upload.')
-						);
+    //
+    // from php manual ling 03-Nov-2010 08:35
+    if (empty($_FILES) && empty($_POST) && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) == 'post') {    
+        $pmax = ini_get('post_max_size'); 
+        //
+        $html_str .= "Error: upload too large, maximum allowed size is $pmax <br />". PHP_EOL;
+        return FALSE;
+    } 
+    if (empty($_FILES) ) {
+        $html_str .= "Error: upload files indicated, but none received. <br />". PHP_EOL;
+        return FALSE;
+    }
+    // only one is expected 
+    $fkey = array_key_exists("fileUplEra", $_FILES) ? "fileUplEra" : "";
+    //$fkey = array_key_exists("fileUplZIP", $_FILES) ? "fileUplZIP" : $fkey; // fileUplMulti does zip files
+    $fkey = array_key_exists("fileUplMulti", $_FILES) ? "fileUplMulti" : $fkey;
+    $fkey = array_key_exists("fileUplx12", $_FILES) ? "fileUplx12" : $fkey;
+    //
+    if (!$fkey) {
+        $html_str .= "Error: file array name error <br />" . PHP_EOL;
+        return FALSE;   
+    }
+    // these are the mime-types that we will accept -- however, mime-type is not reliable
+    // for linux, system("file -bi -- ".escapeshellarg($uploadedfile)) gives mime-type and character encoding
+    // 
+    $m_types = array('application/octet-stream', 'text/plain', 'application/zip', 'application/x-zip-compressed');
+    //
+    // to give informative error message
+    $upload_err = array('0' => array('UPLOAD_ERR_OK', 'There is no error, the file uploaded with success.'), 
+                        '1' => array('UPLOAD_ERR_INI_SIZE',  'The uploaded file too large.'), 
+                        '2' => array('UPLOAD_ERR_FORM_SIZE', 'The uploaded file too large'), 
+                        '3' => array('UPLOAD_ERR_PARTIAL', 'The uploaded file was only partially uploaded.'), 
+                        '4' => array('UPLOAD_ERR_NO_FILE', 'No file was uploaded.'), 
+                        '6' => array('UPLOAD_ERR_NO_TMP_DIR', 'Missing a temporary folder.'),
+                        '7' => array('UPLOAD_ERR_CANT_WRITE', 'Failed to write file to disk.'), 
+                        '8' => array('UPLOAD_ERR_EXTENSION', 'A PHP extension stopped the file upload.')
+                        );
     // we get the parameters here to send to ibr_upload_match_file()
     $param_ar = csv_parameters("ALL");
     $paramtypes = array_keys($param_ar);
@@ -408,153 +408,153 @@ function ibr_upload_files(&$html_str) {
     // initialize retained files array and counter
     $f_ar = array();
     $p_ct = 0;
-	
-	// here send the $_FILES array to ibr_upload_multiple for "fileUplMulti"
-	// instead of $_FILES[$fkey] ["name"][$i] ["tmp_name"][$i] ["type"][$i] ["error"][$i] ["size"][$i] 
-	// we will have $files[$fkey][$i] ["name"]["tmp_name"]["type"]["error"]["size"]
-	if ($fkey == "fileUplMulti") {
-		$files = ibr_upload_multiple($_FILES);
-	} else {
-		$files[$fkey][] = $_FILES[$fkey];
-	}
-	//
-	$f_ct = count($files[$fkey]);
-	//begin the check and processing loop
-	foreach($files[$fkey] as $idx=>$fa) {
-		// verify that we have a usable name
-		if (is_string($fa['name'])) {
-			// check for null byte in file name, linux hidden file, directory
-			if (strpos($fa['name'], '.') === 0 || strpos($fa['name'], "\0") || strpos($fa['name'], "./") ) {
-				$html_str .= "Error: uploaded_file error for " . $fa['name'] . "<br />". PHP_EOL;
-				unset($files[$fkey][$idx]);
-				continue;
-			}
-			// replace spaces in file names -- should not happen, but response files from payers might have spaces
-			// $fname = preg_replace("/[^a-zA-Z0-9_.-]/","_",$fname);
-			$fa['name'] = str_replace(' ', '_', $fa['name']);
-		} else {
-			// name is not a string
-			$html_str .= "Error: uploaded_file error for " . $fa['tmp_name'] . "<br />". PHP_EOL;
-			unset($files[$fkey][$idx]);
-			continue;
-		}
-		// basic php verification checks
-		if ($fa['error'] !== UPLOAD_ERR_OK ) {
-			$html_str .= "Error: code " . $fa['error'] ." ". $fa['name'] ." ". $upload_err[$fa['error']][1] . "<br />" . PHP_EOL;
-			unset($files[$fkey][$idx]);
-			continue;
-		}
-		
-		if ( !$fa['tmp_name'] || !$fa['size'] ) {
-			$html_str .= "Error: file name or size error <br />" . PHP_EOL;
-			unset($files[$fkey][$idx]);
-			continue;
-		}
-		
-		if ( !is_uploaded_file($fa['tmp_name']) ) {
-			$html_str .= "Error: uploaded_file error for " . $fa['tmp_name'] . "<br />". PHP_EOL;
-			unset($files[$fkey][$idx]);
-			continue;
-		}
+    
+    // here send the $_FILES array to ibr_upload_multiple for "fileUplMulti"
+    // instead of $_FILES[$fkey] ["name"][$i] ["tmp_name"][$i] ["type"][$i] ["error"][$i] ["size"][$i] 
+    // we will have $files[$fkey][$i] ["name"]["tmp_name"]["type"]["error"]["size"]
+    if ($fkey == "fileUplMulti") {
+        $files = ibr_upload_multiple($_FILES);
+    } else {
+        $files[$fkey][] = $_FILES[$fkey];
+    }
+    //
+    $f_ct = count($files[$fkey]);
+    //begin the check and processing loop
+    foreach($files[$fkey] as $idx=>$fa) {
+        // verify that we have a usable name
+        if (is_string($fa['name'])) {
+            // check for null byte in file name, linux hidden file, directory
+            if (strpos($fa['name'], '.') === 0 || strpos($fa['name'], "\0") || strpos($fa['name'], "./") ) {
+                $html_str .= "Error: uploaded_file error for " . $fa['name'] . "<br />". PHP_EOL;
+                unset($files[$fkey][$idx]);
+                continue;
+            }
+            // replace spaces in file names -- should not happen, but response files from payers might have spaces
+            // $fname = preg_replace("/[^a-zA-Z0-9_.-]/","_",$fname);
+            $fa['name'] = str_replace(' ', '_', $fa['name']);
+        } else {
+            // name is not a string
+            $html_str .= "Error: uploaded_file error for " . $fa['tmp_name'] . "<br />". PHP_EOL;
+            unset($files[$fkey][$idx]);
+            continue;
+        }
+        // basic php verification checks
+        if ($fa['error'] !== UPLOAD_ERR_OK ) {
+            $html_str .= "Error: code " . $fa['error'] ." ". $fa['name'] ." ". $upload_err[$fa['error']][1] . "<br />" . PHP_EOL;
+            unset($files[$fkey][$idx]);
+            continue;
+        }
+        
+        if ( !$fa['tmp_name'] || !$fa['size'] ) {
+            $html_str .= "Error: file name or size error <br />" . PHP_EOL;
+            unset($files[$fkey][$idx]);
+            continue;
+        }
+        
+        if ( !is_uploaded_file($fa['tmp_name']) ) {
+            $html_str .= "Error: uploaded_file error for " . $fa['tmp_name'] . "<br />". PHP_EOL;
+            unset($files[$fkey][$idx]);
+            continue;
+        }
 
-		if ( !in_array($fa['type'], $m_types) ) {
-			$html_str .= "Error: mime-type {$fa['type']} not accepted for {$fa['name']} <br />" . PHP_EOL;
-			unset($files[$fkey][$idx]);
-			continue;
-		}
-		// verification checks special to our application
-		//
-		//////////////////////////////////
-		// this is where check for additional upload control names would be inserted
-		//  if ($fkey == 'fileUploadControlName')
-		// each upload control name should have its classify and verify functions
-		// and a type key for the $f_ar filenames array that is returned
-		//////////////////////////////////
-		///////// zip archives had a separate file upload input control, but it is redundant
-		///////// because the functionality is handled through the fileUplMulti control
-		// check for zip file archive -- they are dealt with elsewhere
-		/* ********************* to be removed
-		if ($fkey == "fileUplZIP" && in_array($fa['type'], array('application/zip', 'application/x-zip-compressed', 'application/octet-stream')) ) { 
-			// debug
-			//echo "ibr_upload_file: files array key: $fkey {$fa['name']}<br />" . PHP_EOL;
-			// get the files -- we expect only one zip file in this key
-			// if the type is 'application/octet-stream', log it
-			if ($fa['type'] == 'application/octet-stream') {
-				csv_edihist_log("ibr_upload_files: upload zip file, mime-type application/octet-stream");
-			}
-			$f_ar = ibr_ziptoarray($fa['tmp_name'], $param_ar, $html_str);
-			// get a count
-			foreach($f_ar as $k=>$v) { $p_ct += count($v); }
-			continue; 
-		}
-		* ************************ */
-		//
-		if ( $fkey != "fileUplMulti" && strpos($fa['name'], ".zip") ) {
-			$html_str .= "zip archives are not accepted through this input {$fa['name']} <br />" . PHP_EOL;
-			continue;
-		}
-		// case of a zip file included in the multi file upload or era upload
-		if ( $fkey == "fileUplMulti" && strpos($fa['name'], ".zip") ) {
-			//
-			// this is a bit involved since we cannot predict how many files will be returned 
-			// get an array of files from the zip unpack function
-			$f_upl = ibr_ziptoarray($fa['tmp_name'], $param_ar, $html_str);
-			// put them in the correct type array 
-			if (is_array($f_upl) && count($f_upl)) { 
-				foreach($f_upl as $tp=>$fz) {
-					// expect $fz to be an array of file names
+        if ( !in_array($fa['type'], $m_types) ) {
+            $html_str .= "Error: mime-type {$fa['type']} not accepted for {$fa['name']} <br />" . PHP_EOL;
+            unset($files[$fkey][$idx]);
+            continue;
+        }
+        // verification checks special to our application
+        //
+        //////////////////////////////////
+        // this is where check for additional upload control names would be inserted
+        //  if ($fkey == 'fileUploadControlName')
+        // each upload control name should have its classify and verify functions
+        // and a type key for the $f_ar filenames array that is returned
+        //////////////////////////////////
+        ///////// zip archives had a separate file upload input control, but it is redundant
+        ///////// because the functionality is handled through the fileUplMulti control
+        // check for zip file archive -- they are dealt with elsewhere
+        /* ********************* to be removed
+        if ($fkey == "fileUplZIP" && in_array($fa['type'], array('application/zip', 'application/x-zip-compressed', 'application/octet-stream')) ) { 
+            // debug
+            //echo "ibr_upload_file: files array key: $fkey {$fa['name']}<br />" . PHP_EOL;
+            // get the files -- we expect only one zip file in this key
+            // if the type is 'application/octet-stream', log it
+            if ($fa['type'] == 'application/octet-stream') {
+                csv_edihist_log("ibr_upload_files: upload zip file, mime-type application/octet-stream");
+            }
+            $f_ar = ibr_ziptoarray($fa['tmp_name'], $param_ar, $html_str);
+            // get a count
+            foreach($f_ar as $k=>$v) { $p_ct += count($v); }
+            continue; 
+        }
+        * ************************ */
+        //
+        if ( $fkey != "fileUplMulti" && strpos($fa['name'], ".zip") ) {
+            $html_str .= "zip archives are not accepted through this input {$fa['name']} <br />" . PHP_EOL;
+            continue;
+        }
+        // case of a zip file included in the multi file upload or era upload
+        if ( $fkey == "fileUplMulti" && strpos($fa['name'], ".zip") ) {
+            //
+            // this is a bit involved since we cannot predict how many files will be returned 
+            // get an array of files from the zip unpack function
+            $f_upl = ibr_ziptoarray($fa['tmp_name'], $param_ar, $html_str);
+            // put them in the correct type array 
+            if (is_array($f_upl) && count($f_upl)) { 
+                foreach($f_upl as $tp=>$fz) {
+                    // expect $fz to be an array of file names
                     //strpos("|batch|ibr|ebr|dpr|f997|f277|era|ack|ta1|text", $tp)
-					if ( strlen($tp) && in_array($tp, $paramtypes) ) {
-						if (array_key_exists($tp, $f_ar) ) {
-							foreach($f_upl[$tp] as $zf) {
-								$f_ar[$tp][] = $zf;
-								$p_ct ++;
-							}
-							//
-						} else {
-							$f_ar[$tp] = $f_upl[$tp];
-							$p_ct += count($f_upl[$tp]);
-						}
-					} else {
+                    if ( strlen($tp) && in_array($tp, $paramtypes) ) {
+                        if (array_key_exists($tp, $f_ar) ) {
+                            foreach($f_upl[$tp] as $zf) {
+                                $f_ar[$tp][] = $zf;
+                                $p_ct ++;
+                            }
+                            //
+                        } else {
+                            $f_ar[$tp] = $f_upl[$tp];
+                            $p_ct += count($f_upl[$tp]);
+                        }
+                    } else {
                         // verification failed -- ibr_ziptoarray creates its own 'reject' key
                         $html_str .= "wrong classification for " . $fa['name'] . "<br />" .PHP_EOL;
-                        unset($files[$fkey][$idx]);	
-					}
-				} // end foreach ($f_upl as $tp)
-			} else {
-				// nothing good from ibr_ziptoarray()
-				$html_str .= "verification failed for " . $fa['name'] . "<br />" .PHP_EOL;
-				unset($files[$fkey][$idx]);
-			}
-			// continue, since we have done everything that would happen below
-			continue;
-		}
-		//////////
-		// at this point, since we have come through all the if statements
-		// then we have:
-		//  a single file under "fileUplEra" 
-		//  a single file under "fileUplx12"
-		//  or one of possibly several files under "fileUplMulti"
-		//////////
-		$f_upl = ibr_upload_match_file($param_ar, $fa, $html_str);
-		// 
-		if (is_array($f_upl) && count($f_upl) > 0 ) { 
-			$tk = $f_upl['type'];
-			//if ( strlen($tk) && strpos("|batch|ibr|ebr|dpr|f997|f277|era|ack|ta1|text", $tk) ) {
+                        unset($files[$fkey][$idx]); 
+                    }
+                } // end foreach ($f_upl as $tp)
+            } else {
+                // nothing good from ibr_ziptoarray()
+                $html_str .= "verification failed for " . $fa['name'] . "<br />" .PHP_EOL;
+                unset($files[$fkey][$idx]);
+            }
+            // continue, since we have done everything that would happen below
+            continue;
+        }
+        //////////
+        // at this point, since we have come through all the if statements
+        // then we have:
+        //  a single file under "fileUplEra" 
+        //  a single file under "fileUplx12"
+        //  or one of possibly several files under "fileUplMulti"
+        //////////
+        $f_upl = ibr_upload_match_file($param_ar, $fa, $html_str);
+        // 
+        if (is_array($f_upl) && count($f_upl) > 0 ) { 
+            $tk = $f_upl['type'];
+            //if ( strlen($tk) && strpos("|batch|ibr|ebr|dpr|f997|f277|era|ack|ta1|text", $tk) ) {
             if (strlen($f_upl['type']) && in_array($f_upl['type'], $paramtypes)) {
-				$f_ar[$f_upl['type']][] = $f_upl['name'];
-				$p_ct++;
-			}
-		} else {
-			// verification failed
-			$html_str .= "verification failed for " . $fa['name'] . "<br />" .PHP_EOL;
-			$f_ar['reject'][] = $fa['name'];
-			unset($files[$fkey][$idx]);
-		}
-	} // end foreach($files[$fkey] as $idx=>$fa) 
-	//
-	$html_str .= "Received $f_ct files, accepted $p_ct<br />" . PHP_EOL;					
-	return $f_ar;
+                $f_ar[$f_upl['type']][] = $f_upl['name'];
+                $p_ct++;
+            }
+        } else {
+            // verification failed
+            $html_str .= "verification failed for " . $fa['name'] . "<br />" .PHP_EOL;
+            $f_ar['reject'][] = $fa['name'];
+            unset($files[$fkey][$idx]);
+        }
+    } // end foreach($files[$fkey] as $idx=>$fa) 
+    //
+    $html_str .= "Received $f_ct files, accepted $p_ct<br />" . PHP_EOL;                    
+    return $f_ar;
 }
 
 /**
@@ -571,71 +571,71 @@ function ibr_upload_files(&$html_str) {
  * @return string    html formatted messages
  */
 function ibr_sort_upload($files_array, $html_out = TRUE, $err_only = TRUE) {
-	//
-	$prc_htm = '';
-	//
-	if ( count($files_array) > 0 ) {
-		// we have some files
-		$p_ar = csv_parameters($type="ALL");
+    //
+    $prc_htm = '';
+    //
+    if ( count($files_array) > 0 ) {
+        // we have some files
+        $p_ar = csv_parameters($type="ALL");
         $ptypes = array_keys($p_ar);
-		//
-		if (array_key_exists('reject', $files_array) ) {
-			foreach($files_array['reject'] as $rjc) {
-				$prc_htm .= "Rejected file: $rjc <br />" .PHP_EOL;
-			}
-			$prc_htm .="<p>&nbsp;</p>";
-			unset($files_array['reject']);
-		}
-			
-		foreach ($files_array as $key=>$val) {
-			// use keys from parameters array $ftypes
-			//if ( strpos("|batch|ibr|ebr|dpr|f997|f277|era|ack|ta1|text", $key) ) {
+        //
+        if (array_key_exists('reject', $files_array) ) {
+            foreach($files_array['reject'] as $rjc) {
+                $prc_htm .= "Rejected file: $rjc <br />" .PHP_EOL;
+            }
+            $prc_htm .="<p>&nbsp;</p>";
+            unset($files_array['reject']);
+        }
+            
+        foreach ($files_array as $key=>$val) {
+            // use keys from parameters array $ftypes
+            //if ( strpos("|batch|ibr|ebr|dpr|f997|f277|era|ack|ta1|text", $key) ) {
             if (in_array($key, $ptypes)) {
                 $t_dir = $p_ar[$key]['directory'];
-				$t_base = basename($t_dir);
-			} else {
-				$prc_htm .= "<p>Type $key is not stored </p>" .PHP_EOL;
-				continue;
-			}
-			$idx = 0;
-			foreach($files_array[$key] as $idx=>$nf) {
-				// check if the file has already been stored
-				// a matching file name will not be replaced
-				$nfb = basename($nf);
-				//
-				if ($key == 'reject') {
-					$prc_htm .= "Rejected: $nfb<br />" .PHP_EOL;
-					continue;
-				}
-				
-				$testname = $t_dir.DIRECTORY_SEPARATOR.$nfb;
-				if ( is_file($testname) ) {
-					$prc_htm .= "File already in $t_base: $nfb <br />" .PHP_EOL;
-				} elseif (rename($nf, $testname) ) {
-					$iscm = chmod($testname, 0400);
-					if (!$iscm) { 
-						// if we could write, we should be able to set permissions
-						$prc_htm .= "Error: failed to set permissions for $nfb, attempting to remove file<br />" . PHP_EOL;
-						unlink($testname);
-					}					
-					$prc_htm .= "Saved in $t_base: $nfb <br />" .PHP_EOL;
-				} else {
-					$prc_htm .= "error saving $nf to $t_dir directory <br />" .PHP_EOL;
-				}
-			}
-			if (count($files_array[$key]) == 0) { 
-				$prc_htm .= "Upload: type $key submitted with no files <br />" . PHP_EOL;
-				continue; 
-			}
-		}
-	} else {
-		// should not happen since this function should not be called unless there are new files
-		$prc_htm .= "No edi files submitted<br />" . PHP_EOL;
-	}
-	//
-	$prc_htm .= "<p>Upload more or click the \"<em>Process New</em>\" button to process new files.</p>" .PHP_EOL;
-	//$prc_htm .= "</body></html>";
-	return $prc_htm;
+                $t_base = basename($t_dir);
+            } else {
+                $prc_htm .= "<p>Type $key is not stored </p>" .PHP_EOL;
+                continue;
+            }
+            $idx = 0;
+            foreach($files_array[$key] as $idx=>$nf) {
+                // check if the file has already been stored
+                // a matching file name will not be replaced
+                $nfb = basename($nf);
+                //
+                if ($key == 'reject') {
+                    $prc_htm .= "Rejected: $nfb<br />" .PHP_EOL;
+                    continue;
+                }
+                
+                $testname = $t_dir.DIRECTORY_SEPARATOR.$nfb;
+                if ( is_file($testname) ) {
+                    $prc_htm .= "File already in $t_base: $nfb <br />" .PHP_EOL;
+                } elseif (rename($nf, $testname) ) {
+                    $iscm = chmod($testname, 0400);
+                    if (!$iscm) { 
+                        // if we could write, we should be able to set permissions
+                        $prc_htm .= "Error: failed to set permissions for $nfb, attempting to remove file<br />" . PHP_EOL;
+                        unlink($testname);
+                    }                   
+                    $prc_htm .= "Saved in $t_base: $nfb <br />" .PHP_EOL;
+                } else {
+                    $prc_htm .= "error saving $nf to $t_dir directory <br />" .PHP_EOL;
+                }
+            }
+            if (count($files_array[$key]) == 0) { 
+                $prc_htm .= "Upload: type $key submitted with no files <br />" . PHP_EOL;
+                continue; 
+            }
+        }
+    } else {
+        // should not happen since this function should not be called unless there are new files
+        $prc_htm .= "No edi files submitted<br />" . PHP_EOL;
+    }
+    //
+    $prc_htm .= "<p>Upload more or click the \"<em>Process New</em>\" button to process new files.</p>" .PHP_EOL;
+    //$prc_htm .= "</body></html>";
+    return $prc_htm;
 }
 
 

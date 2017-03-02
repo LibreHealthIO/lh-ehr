@@ -1,5 +1,5 @@
 <?php
- // Copyright (C) 2010-2017 LibreEHR Support LLC
+ // Copyright (C) 2010-2017 LibreHealth EHR Support LLC
  //
  // This program is free software; you can redistribute it and/or
  // modify it under the terms of the GNU General Public License
@@ -78,7 +78,6 @@ function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
     <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script language="JavaScript">
 
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;

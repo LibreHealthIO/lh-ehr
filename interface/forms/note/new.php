@@ -42,10 +42,6 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
-<script language="JavaScript">
-// required for textbox date verification
-var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
-</script>
 
 </head>
 

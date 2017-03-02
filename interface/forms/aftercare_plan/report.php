@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Naina Mohamed <naina@capminds.com>
  * @link    http://librehealth.io
  */
@@ -29,7 +29,7 @@ if ($data) {
 print "<table><tr>";
 foreach($data as $key => $value) {
 if ($key == "id" || $key == "pid" || $key == "user" || $key == "groupname" || $key == "authorized" || $key == "activity" || $key == "date" || $value == "" || $value == "0000-00-00 00:00:00") {
-	continue;
+    continue;
 }
 if ($value == "on") {
 $value = "yes";

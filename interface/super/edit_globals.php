@@ -18,10 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
  * @author Rod Roark <rod@sunsetsystems.com>
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
@@ -54,7 +54,7 @@ function checkCreateCDB(){
     if(!is_dir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/')){
       $directory_created = mkdir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/',0777,true);      
       if(!$directory_created){
-	echo htmlspecialchars( xl("Failed to create temporary folder. CouchDB will not work."),ENT_NOQUOTES);
+    echo htmlspecialchars( xl("Failed to create temporary folder. CouchDB will not work."),ENT_NOQUOTES);
       }
     }
         $couch = new CouchDB();
@@ -77,7 +77,7 @@ function checkCreateCDB(){
 function updateBackgroundService($name,$active,$interval) {
    //order important here: next_run change dependent on _old_ value of execute_interval so it comes first
    $sql = 'UPDATE background_services SET active=?, '
-	. 'next_run = next_run + INTERVAL (? - execute_interval) MINUTE, execute_interval=? WHERE name=?';
+    . 'next_run = next_run + INTERVAL (? - execute_interval) MINUTE, execute_interval=? WHERE name=?';
    return sqlStatement($sql,array($active,$interval,$interval,$name));
 }
 
@@ -171,10 +171,10 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
   foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     foreach ($grparr as $fldid => $fldarr) {
       list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
-	  if($fldtype == 'pwd'){
-	  $pass = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = '$fldid'");
-	  $fldvalueold = $pass['gl_value'];
-	  }
+      if($fldtype == 'pwd'){
+      $pass = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = '$fldid'");
+      $fldvalueold = $pass['gl_value'];
+      }
       sqlStatement("DELETE FROM globals WHERE gl_name = '$fldid'");
 
       if (!is_array($fldtype) && substr($fldtype, 0, 2) == 'm_') {
@@ -220,7 +220,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
   $auditLogStatusFieldNew = $auditLogStatusNew['gl_value'];
   if ( $auditLogStatusFieldOld != $auditLogStatusFieldNew )
   {
-	 auditSQLAuditTamper($auditLogStatusFieldNew);
+     auditSQLAuditTamper($auditLogStatusFieldNew);
   }
   echo "<script type='text/javascript'>";
   echo "parent.left_nav.location.reload();";
@@ -380,7 +380,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
         "size='50' maxlength='255' value='$fldvalue' />\n";
     }
     else if ($fldtype == 'pwd') {
-	  if ($_GET['mode'] == "user") {
+      if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
       echo "  <input type='password' name='form_$i' " .
@@ -388,7 +388,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     }
 
     else if ($fldtype == 'pass') {
-	  if ($_GET['mode'] == "user") {
+      if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
       echo "  <input type='password' name='form_$i' " .

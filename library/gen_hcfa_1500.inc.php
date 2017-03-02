@@ -319,6 +319,12 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
       put_hcfa(26, 34, 2, $claim->medicaidReferralCode());
     }
 
+  # Box 10d. Claim Codes  medicaid_referral_code
+
+  if($claim->epsdtFlag()) {
+      put_hcfa(26, 34, 2, $claim->medicaidReferralCode());
+    }
+
   // Box 11d. Is There Another Health Benefit Plan
   if (!$new_medicare_logic) {
     put_hcfa(26, $claim->payerCount() > 1 ? 52 : 57, 1, 'X');
@@ -618,7 +624,7 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
   }
 
   // 26. Patient's Account No.
-  // Instructions say hyphens are not allowed, but freeb used them.
+  // Instructions say hyphens are not allowed.
   put_hcfa(56, 23, 15, "$pid-$encounter");
 
   // 27. Accept Assignment
@@ -696,9 +702,6 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
   put_hcfa(59, 50, 25, $claim->billingFacilityStreet());
 
   // 31. Signature of Physician or Supplier
-  // FreeB printed the rendering provider's name and the current date here,
-  // but according to my instructions it must be a real signature and date,
-  // or else "Signature on File" or "SOF".
 
    if($GLOBALS['cms_1500_box_31_format']==0)
    {

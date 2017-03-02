@@ -166,7 +166,6 @@
 
         <title><?php echo xlt('276 Claim Status Request Batch'); ?></title>
 
-        <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
         <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
         <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">

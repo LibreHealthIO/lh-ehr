@@ -24,11 +24,11 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 include_once(dirname(__FILE__).'/../../globals.php');
@@ -49,6 +49,10 @@ function misc_billing_options_report( $pid, $encounter, $cols, $id) {
             if(($key==='box_14_date_qual')||$key==='box_15_date_qual')
             {
                 $value=text(qual_id_to_description($key,$value));
+            }
+            if($key==='provider_qualifier_code')
+            {
+               $value = strtoupper($value); 
             }
             if($key==='provider_id')
             {

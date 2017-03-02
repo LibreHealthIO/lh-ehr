@@ -18,13 +18,13 @@ include_once("../../library/acl.inc");
 <tr>
 <td width="10%" nowrap>
 <?php ///<a href="javascript:document.find_patient.action='finder/patient_finder_keyboard.php';document.find_patient.submit();" class='link'>Find Patient:</a> ?>
-	<input type="entry" size="10" name="patient" />
-	<select name="findBy" size=1>
-	<option value="Last" selected><?php xl ('Name','e'); ?></option>
+    <input type="entry" size="10" name="patient" />
+    <select name="findBy" size=1>
+    <option value="Last" selected><?php xl ('Name','e'); ?></option>
         <option value="Phone"><?php xl ('Phone','e'); ?></option>
-	<option value="ID"><?php xl ('ID','e'); ?></option>
-	<option value="SSN"><?php xl ('SSN','e'); ?></option>
-	<option value="DOB"><?php xl ('DOB','e'); ?></option>
+    <option value="ID"><?php xl ('ID','e'); ?></option>
+    <option value="SSN"><?php xl ('SSN','e'); ?></option>
+    <option value="DOB"><?php xl ('DOB','e'); ?></option>
 </select>
 </td>
 
@@ -127,7 +127,7 @@ include_once("../../library/acl.inc");
 </td>
 
 <td align="center" nowrap>
-&nbsp;<a href="http://open-emr.org/wiki/index.php/LibreEHR_4.2.1_Users_Guide" target="_blank" class="menu"> 
+&nbsp;<a href="http://librehealth.io/wiki/index.php/Users_Guide" target="_blank" class="menu"> 
 <?php xl('Manual','e'); ?></a>&nbsp;&nbsp;
 </td>
 

@@ -20,8 +20,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreHealth EHR 
- * @author Brady Miller <brady@sparmy.com>
- * @author Terry Hill <teryhill@librehealth.io> 
+ * @author Brady Miller <brady@sparmy.com> 
  * @link http://librehealth.io 
  */
 
@@ -138,7 +137,6 @@ else {
 
 <script LANGUAGE="JavaScript">
 
- var mypcc = '<?php echo text($GLOBALS['phone_country_code']) ?>';
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
