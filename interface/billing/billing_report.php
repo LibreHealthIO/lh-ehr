@@ -25,11 +25,11 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  * Added hooks for UB04 and End of day reporting Terry Hill 2014 teryhill@librehealth.io
  *
  */
@@ -55,6 +55,7 @@ $EXPORT_INC = "$webserver_root/custom/BillingExport.php";
 $daysheet = false;
 $daysheet_total = false;
 $provider_run = false;
+$DateFormat = DateFormatRead();
 
 if ($GLOBALS['use_custom_daysheet'] != 0) { 
   $daysheet = true;
@@ -361,7 +362,9 @@ function MarkAsCleared(Type)
 <!-- ================================================== -->
 <!-- =============Included for Insurance ajax criteria==== -->
 <!-- ================================================== -->
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <style>
@@ -396,12 +399,8 @@ document.onclick=TakeActionOnHide;
 
 <form name='the_form' method='post' action='billing_report.php' onsubmit='return top.restoreSession()' style="display:inline">
 
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language='JavaScript'>
  var mypcc = '1';
 </script>
@@ -479,8 +478,8 @@ if(!isset($_REQUEST['mode']))//default case
   $_REQUEST['final_this_page_criteria_text'][1]=xl("Billing Status = Unbilled");
   
   $_REQUEST['date_master_criteria_form_encounter_date']="today";
-  $_REQUEST['master_from_date_form_encounter_date']=date("Y-m-d");
-  $_REQUEST['master_to_date_form_encounter_date']=date("Y-m-d");
+  $_REQUEST['master_from_date_form_encounter_date']=date($DateFormat);
+  $_REQUEST['master_to_date_form_encounter_date']=date($DateFormat);
   
   $_REQUEST['radio_billing_billed']=0;
  
@@ -511,24 +510,24 @@ if(!isset($_REQUEST['mode']))//default case
             <td><a onClick="javascript:return SubmitTheScreenPrint();" href="#" 
     class='link_submit'  ><?php echo '['. xlt('View Printable Report').']' ?></a></td>
           </tr>
-		  
-	 <?php if ($daysheet) { ?> 
-		  <tr>
+          
+     <?php if ($daysheet) { ?> 
+          <tr>
             <td>&nbsp;</td>
             <td><a onClick="javascript:return SubmitTheEndDayPrint();" href="#" 
     class='link_submit'  ><?php echo '['.xlt('End Of Day Report').']' ?></a>
-	<?php if ($daysheet_total) { ?> 
-	<span class=text><?php echo xlt('Totals'); ?> </span>
-	<input type=checkbox  name="end_of_day_totals_only" value="1" <?php if ($obj['end_of_day_totals_only'] === '1') echo "checked";?>>
-	<?php } ?>
-	<?php if ($provider_run) { ?> 
-	<span class=text><?php echo xlt('Provider'); ?> </span>
-	<input type=checkbox  name="end_of_day_provider_only" value="1" <?php if ($obj['end_of_day_provider_only'] === '1') echo "checked";?>>
-	<?php } ?>
-	</td>
+    <?php if ($daysheet_total) { ?> 
+    <span class=text><?php echo xlt('Totals'); ?> </span>
+    <input type=checkbox  name="end_of_day_totals_only" value="1" <?php if ($obj['end_of_day_totals_only'] === '1') echo "checked";?>>
+    <?php } ?>
+    <?php if ($provider_run) { ?> 
+    <span class=text><?php echo xlt('Provider'); ?> </span>
+    <input type=checkbox  name="end_of_day_provider_only" value="1" <?php if ($obj['end_of_day_provider_only'] === '1') echo "checked";?>>
+    <?php } ?>
+    </td>
           </tr>
-		<?php } ?>
-		  
+        <?php } ?>
+          
           <tr>
             <td>&nbsp;</td>
             <td>
@@ -838,7 +837,7 @@ if(is_array($ret))
             EncounterDateArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             CalendarCategoryArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
-			EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
+            EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             <?php
             while($rowresult4 = sqlFetchArray($result4))
              {
@@ -846,10 +845,10 @@ if(is_array($ret))
                 EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
                 EncounterDateArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
                 CalendarCategoryArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars( xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
-				EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['billing_note'], ENT_QUOTES); ?>';
+                EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['billing_note'], ENT_QUOTES); ?>';
                 Count++;
          <?php
-		 $enc_billing_note = $rowresult4['billing_note'];
+         $enc_billing_note = $rowresult4['billing_note'];
              }
          ?>
         </script>
@@ -877,7 +876,7 @@ if(is_array($ret))
                  "], CalendarCategoryArray[" . $iter['enc_pid'] . "])\">[" . xlt('To Dems') . "]</a>";
         $divnos=$divnos+1;
       $lhtml .= "&nbsp;&nbsp;&nbsp;<a  onclick='divtoggle(\"spanid_$divnos\",\"divid_$divnos\");' class='small' id='aid_$divnos' href=\"JavaScript:void(0);".
-        "\">(<span id=spanid_$divnos class=\"indicator\">" . htmlspecialchars( xl('Expand'), ENT_QUOTES) . '</span>)<br></a>';		
+        "\">(<span id=spanid_$divnos class=\"indicator\">" . htmlspecialchars( xl('Expand'), ENT_QUOTES) . '</span>)<br></a>';      
       if($GLOBALS['notes_to_display_in_Billing'] == 2 || $GLOBALS['notes_to_display_in_Billing'] == 3){
       $lhtml .= '<span style="margin-left: 20px; font-weight bold; color: red">'.text($billing_note).'</span>';
       }
@@ -932,8 +931,8 @@ if(is_array($ret))
         }
         $lhtml .= "</select>";
         $DivPut='yes';
-		
-		if($GLOBALS['notes_to_display_in_Billing'] == 1 || $GLOBALS['notes_to_display_in_Billing'] == 3) {
+        
+        if($GLOBALS['notes_to_display_in_Billing'] == 1 || $GLOBALS['notes_to_display_in_Billing'] == 3) {
           $lhtml .= "<br><span style='margin-left: 20px; font-weight bold; color: green'>".text($enc_billing_note)."</span>";
         }
           $lhtml .= "<br>\n&nbsp;<div   id='divid_$divnos' style='display:none'>" . text(oeFormatShortDate(substr($iter['date'], 0, 10)))
@@ -1211,12 +1210,12 @@ if ($alertmsg) {
 ?>
 $(document).ready(function() {
     $("#view-log-link").click( function() {
-		top.restoreSession();
+        top.restoreSession();
         dlgopen('customize_log.php', '_blank', 500, 400);
     });
     
     $('input[type="submit"]').click( function() {
-		top.restoreSession();
+        top.restoreSession();
         $(this).attr('data-clicked', true);
     });
     
@@ -1230,7 +1229,7 @@ $(document).ready(function() {
             $(this).removeAttr("target");
             return top.restoreSession(); 
         } else {
-			top.restoreSession();
+            top.restoreSession();
             var w = window.open('about:blank','Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');
             this.target = 'Popup_Window';
         }

@@ -33,6 +33,10 @@ require_once("$srcdir/parse_era.inc.php");
 require_once("$srcdir/sl_eob.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/classes/class.ezpdf.php");//for the purpose of pdf creation
+require_once("$srcdir/options.inc.php");
+require_once("$srcdir/acl.inc");
+require_once("$srcdir/classes/Document.class.php");
+require_once("$srcdir/classes/Note.class.php");
 
 $DEBUG = 0; // set to 0 for production, 1 to test
 
@@ -82,38 +86,70 @@ function upload_file_to_client($file_to_send) {
   sleep(1);
 }
 function upload_file_to_client_pdf($file_to_send) {
-//Function reads a text file and converts to pdf.
+  //Function reads a HTML file and converts to pdf.
 
   global $STMT_TEMP_FILE_PDF;
+  global $srcdir;
+  if ($GLOBALS['statement_appearance'] == '1') {
+    require_once("$srcdir/html2pdf/vendor/autoload.php");
+    $pdf2 = new HTML2PDF ($GLOBALS['pdf_layout'],
+    $GLOBALS['pdf_size'],
+    $GLOBALS['pdf_language'],
+                           true, // default unicode setting is true
+                           'UTF-8', // default encoding setting is UTF-8
+                           array($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin'],$GLOBALS['pdf_bottom_margin']),
+                           $_SESSION['language_direction'] == 'rtl' ? true : false
+                           );
+    ob_start();
+    echo readfile($file_to_send, "r");//this file contains the HTML to be converted to pdf.
+    //echo $file;
+    $content = ob_get_clean();
+    // Fix a nasty html2pdf bug - it ignores document root!
+    global $web_root, $webserver_root;
+    $i = 0;
+    $wrlen = strlen($web_root);
+    $wsrlen = strlen($webserver_root);
+    while (true) {
+      $i = stripos($content, " src='/", $i + 1);
+      if ($i === false) break;
+      if (substr($content, $i+6, $wrlen) === $web_root &&
+        substr($content, $i+6, $wsrlen) !== $webserver_root) {
+        $content = substr($content, 0, $i + 6) . $webserver_root . substr($content, $i + 6 + $wrlen);
+      }
+    }
+    $pdf2->WriteHTML($content);
+    $temp_filename = $STMT_TEMP_FILE_PDF;
+    $content_pdf = $pdf2->Output($STMT_TEMP_FILE_PDF,'F');
+  } else {
   $pdf = new Cezpdf('LETTER');//pdf creation starts
   $pdf->ezSetMargins(36,0,36,0);
   $pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Courier.afm");
   $pdf->ezSetY($pdf->ez['pageHeight'] - $pdf->ez['topMargin']);
   $countline=1;
   $file = fopen($file_to_send, "r");//this file contains the text to be converted to pdf.
-  while(!feof($file))
-   {
+    while(!feof($file)) {
     $OneLine=fgets($file);//one line is read
-	 if(stristr($OneLine, "\014") == true && !feof($file))//form feed means we should start a new page.
-	  {
-	    $pdf->ezNewPage();
-	    $pdf->ezSetY($pdf->ez['pageHeight'] - $pdf->ez['topMargin']);
-		str_replace("\014", "", $OneLine);
-	  }
-	
-	if(stristr($OneLine, 'REMIT TO') == true || stristr($OneLine, 'Visit Date') == true || stristr($OneLine, 'Future Appointments') == true || stristr($OneLine, 'Current') == true)//lines are made bold when 'REMIT TO' or 'Visit Date' is there.
-	 $pdf->ezText('<b>'.$OneLine.'</b>', 12, array('justification' => 'left', 'leading' => 6)); 
-	else
-	 $pdf->ezText($OneLine, 12, array('justification' => 'left', 'leading' => 6)); 
-	 
-	$countline++; 
+     if(stristr($OneLine, "\014") == true && !feof($file))//form feed means we should start a new page.
+      {
+        $pdf->ezNewPage();
+        $pdf->ezSetY($pdf->ez['pageHeight'] - $pdf->ez['topMargin']);
+        str_replace("\014", "", $OneLine);
+      }
+    
+    if(stristr($OneLine, 'REMIT TO') == true || stristr($OneLine, 'Visit Date') == true || stristr($OneLine, 'Future Appointments') == true || stristr($OneLine, 'Current') == true )//lines are made bold when 'REMIT TO' or 'Visit Date' is there.
+     $pdf->ezText('<b>'.$OneLine.'</b>', 12, array('justification' => 'left', 'leading' => 6)); 
+    else
+     $pdf->ezText($OneLine, 12, array('justification' => 'left', 'leading' => 6)); 
+     
+    $countline++; 
    }
-	
-	$fh = @fopen($STMT_TEMP_FILE_PDF, 'w');//stored to a pdf file
+    
+    $fh = @fopen($STMT_TEMP_FILE_PDF, 'w');//stored to a pdf file
     if ($fh) {
       fwrite($fh, $pdf->ezOutput());
       fclose($fh);
     }
+  }
   header("Pragma: public");//this section outputs the pdf file to browser
   header("Expires: 0");
   header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -187,21 +223,30 @@ $today = date("Y-m-d");
       //
       if ($stmt['cid'] != $row['pid']) {
         if (!empty($stmt)) ++$stmt_count;
-        fwrite($fhprint, create_statement($stmt));
         $stmt['cid'] = $row['pid'];
         $stmt['pid'] = $row['pid'];
-		$stmt['dun_count'] = $row['stmt_count'];
-		$stmt['bill_note'] = $row['pat_billing_note'];
+        $stmt['dun_count'] = $row['stmt_count'];
+        $stmt['bill_note'] = $row['pat_billing_note'];
         $stmt['enc_bill_note'] = $row['enc_billing_note'];
-		$stmt['bill_level'] = $row['last_level_billed'];
-		$stmt['level_closed'] = $row['last_level_closed'];
+        $stmt['bill_level'] = $row['last_level_billed'];
+        $stmt['level_closed'] = $row['last_level_closed'];
         $stmt['patient'] = $row['fname'] . ' ' . $row['lname'];
+      $stmt['encounter'] = $row['encounter'];
+        #If you use the field in demographics layout called
+        #guardiansname this will allow you to send statements to the parent
+        #of a child or a guardian etc
+      if(strlen($row['guardiansname']) == 0) {
         $stmt['to'] = array($row['fname'] . ' ' . $row['lname']);
+      }
+      else
+      {
+       $stmt['to'] = array($row['guardiansname']);
+     }
         if ($row['street']) $stmt['to'][] = $row['street'];
         $stmt['to'][] = $row['city'] . ", " . $row['state'] . " " . $row['postal_code'];
         $stmt['lines'] = array();
         $stmt['amount'] = '0.00';
-		$stmt['ins_paid'] = 0;
+        $stmt['ins_paid'] = 0;
         $stmt['today'] = $today;
         $stmt['duedate'] = $duedate;
       } else {
@@ -212,20 +257,17 @@ $today = date("Y-m-d");
       }
 
       // Recompute age at each invoice.
-      $stmt['age'] = round((strtotime($today) - strtotime($stmt['duedate'])) /
-        (24 * 60 * 60));
+    $stmt['age'] = round((strtotime($today) - strtotime($stmt['duedate'])) / (24 * 60 * 60));
 
       $invlines = ar_get_invoice_summary($row['pid'], $row['encounter'], true);
       foreach ($invlines as $key => $value) {
         $line = array();
         $line['dos']     = $svcdate;
         if ($GLOBALS['use_custom_statement']) {
-	      $line['desc']    = ($key == 'CO-PAY') ? "Patient Payment" : $value['code_text']; 
-		}
-        else 
-		{ 
+          $line['desc']    = ($key == 'CO-PAY') ? "Patient Payment" : $value['code_text']; 
+      } else {
         $line['desc']    = ($key == 'CO-PAY') ? "Patient Payment" : "Procedure $key";
-	    } 
+        } 
         $line['amount']  = sprintf("%.2f", $value['chg']);
         $line['adjust']  = sprintf("%.2f", $value['adj']);
         $line['paid']    = sprintf("%.2f", $value['chg'] - $value['bal']);
@@ -233,7 +275,7 @@ $today = date("Y-m-d");
         $line['detail']  = $value['dtl'];
         $stmt['lines'][] = $line;
         $stmt['amount']  = sprintf("%.2f", $stmt['amount'] + $value['bal']);
-		$stmt['ins_paid']  = $stmt['ins_paid'] + $value['ins'];
+        $stmt['ins_paid']  = $stmt['ins_paid'] + $value['ins'];
       }
 
       // Record that this statement was run.
@@ -242,10 +284,11 @@ $today = date("Y-m-d");
           "last_stmt_date = '$today', stmt_count = stmt_count + 1 " .
           "WHERE id = " . $row['id']);
       }
-    } // end for
+    fwrite($fhprint, make_statement($stmt));
+    
+  } // end while
 
     if (!empty($stmt)) ++$stmt_count;
-    fwrite($fhprint, create_statement($stmt));
     fclose($fhprint);
     sleep(1);
 

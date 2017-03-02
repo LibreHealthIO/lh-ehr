@@ -161,7 +161,7 @@ function getInsuranceProvidersExtra() {
 
 function getProviders() {
     $returnval = array("");
-    $sql = "select fname, lname from users where authorized = 1 and " .
+    $sql = "select fname, lname, suffix from users where authorized = 1 and " .
         "active = 1 and username != ''";
     $rez = sqlStatement($sql);
     for($iter=0; $row=sqlFetchArray($rez); $iter++) {
@@ -312,7 +312,7 @@ function getProviderInfo($providerID = "%", $providers_only = true, $facility = 
     if ($providerID == "%") {
         $command = "like";
     }
-    $query = "select distinct id, username, lname, fname, authorized, info, facility " .
+    $query = "select distinct id, username, lname, fname, authorized, info, facility, suffix " .
         "from users where username != '' and active = 1 and id $command '" .
         add_escape_custom($providerID) . "' " . $param1 . $param2;
     // sort by last name -- JRM June 2008
@@ -321,8 +321,8 @@ function getProviderInfo($providerID = "%", $providers_only = true, $facility = 
     for($iter=0; $row=sqlFetchArray($rez); $iter++)
         $returnval[$iter]=$row;
 
-    //if only one result returned take the key/value pairs in array [0] and merge them down the the base array so that $resultval[0]['key'] is also
-    //accessible from $resultval['key']
+    //if only one result returned take the key/value pairs in array [0] and merge them down into
+    // the base array so that $resultval[0]['key'] is also accessible from $resultval['key']
 
     if($iter==1) {
         $akeys = array_keys($returnval[0]);
@@ -357,6 +357,7 @@ function getCalendarProviderInfo($providerID = "%", $providers_only = true) {
 function getProviderName($providerID) {
     $pi = getProviderInfo($providerID, 'any');
     if (strlen($pi[0]["lname"]) > 0) {
+      if (strlen($pi[0]["suffix"]) > 0) $pi[0]["lname"] .= ", ".$pi[0]["suffix"];
         return $pi[0]['fname'] . " " . $pi[0]['lname'];
     }
     return "";

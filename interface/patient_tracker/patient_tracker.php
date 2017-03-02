@@ -12,9 +12,9 @@
  * See the Mozilla Public License for more details. 
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  * 
- * @package LibreEHR 
+ * @package Librehealth EHR 
  * @author Terry Hill <teryhill@librehealth.io> 
- * @link http://www.libreehr.org 
+ * @link http://librehealth.io
  *  
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  * 
@@ -30,13 +30,16 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient_tracker.inc.php");
 require_once("$srcdir/user.inc");
 
-if (!is_null($_POST['form_provider'])) {
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+
+if (!is_null($_POST['form_provider']) && ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0' )) {
   $provider = $_POST['form_provider'];
 }
 else if ($_SESSION['userauthorized']) {
   $provider = $_SESSION['authUserID'];
 }
-else {
+else if ($GLOBALS['docs_see_entire_calendar'] =='1') {
   $provider = null;
 }
 
@@ -211,14 +214,22 @@ function openNewTopWindow(newpid,newencounterid) {
                 <td><?php
 
                     # Build a drop-down list of providers.
+                    $uid = $_SESSION['authUserID'];
+                    if ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0') {
+                      $query = "SELECT id, lname, fname FROM users WHERE ".
+                        "authorized = 1  ORDER BY lname, fname"; 
+                    }else{
 
                     $query = "SELECT id, lname, fname FROM users WHERE ".
-                        "authorized = 1  ORDER BY lname, fname"; #(CHEMED) facility filter
+                        "authorized = 1 AND id = $uid ORDER BY lname, fname";                       
+                    }
 
                     $ures = sqlStatement($query);
 
                     echo "   <select name='form_provider'>\n";
+                    if ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0') {
                     echo "    <option value='ALL'>-- " . xlt('All') . " --\n";
+                    }
 
                     while ($urow = sqlFetchArray($ures)) {
                         $provid = $urow['id'];
@@ -236,7 +247,8 @@ function openNewTopWindow(newpid,newencounterid) {
                     ?>
                 </td>
                 <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
-                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);?></td>
+                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);
+                ?></td>
                 <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
                 <td>
                 <?php echo xlt('Category') #category drop down creation ?>:</td>
@@ -261,22 +273,12 @@ function openNewTopWindow(newpid,newencounterid) {
             </tr>
             <tr>
                 <td class='label'><?php if($GLOBALS['ptkr_date_range']) { echo xlt('From'); } else { echo xlt('Date'); }?>:</td>
-                <td><input type='text' name='form_from_date' id="form_from_date"
-                    size='10' value='<?php echo attr($from_date) ?>'
-                    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-                    title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
-                    align='absbottom' width='24' height='22' id='img_from_date'
-                    border='0' alt='[?]' style='cursor: pointer'
-                    title='<?php echo xla('Click here to choose a date'); ?>'></td>
+                <td><input type='text' size='9' name='form_from_date' id="form_from_date"
+                           value='<?php echo (oeFormatShortDate(attr($form_from_date))) ?>'>                
                 <?php if($GLOBALS['ptkr_date_range']) { ?>
                 <td class='label'><?php echo xlt('To'); ?>:</td>
-                <td><input type='text' name='form_to_date' id="form_to_date"
-                    size='10' value='<?php echo attr($to_date) ?>'
-                    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-                    title='yyyy-mm-dd'> <img src='../pic/show_calendar.gif'
-                    align='absbottom' width='24' height='22' id='img_to_date'
-                    border='0' alt='[?]' style='cursor: pointer'
-                    title='<?php echo xla('Click here to choose a date'); ?>'>
+                <td><input type='text' size='9' name='form_to_date' id="form_to_date"
+                           value='<?php echo (oeFormatShortDate(attr($form_to_date))) ?>'>
                 </td>
                 <?php } ?>
                 </tr>
@@ -387,7 +389,7 @@ function openNewTopWindow(newpid,newencounterid) {
   </td>
    <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
    <td class="dehead" align="center">
-   <?php  echo xlt('Visit Type'); ?>
+   <?php  echo xlt('Category'); ?>
   </td>
   <?php } ?>
   <?php if (count($chk_prov) > 1) { ?>
@@ -416,7 +418,7 @@ function openNewTopWindow(newpid,newencounterid) {
 
 <?php
     $prev_appt_date_time = "";
-	foreach ( $appointments as $appointment ) {
+    foreach ( $appointments as $appointment ) {
 
                 # Collect appt date and set up squashed date for use below
                 $date_appt = $appointment['pc_eventDate'];
@@ -445,7 +447,7 @@ function openNewTopWindow(newpid,newencounterid) {
                 $bgcolor = $colorevents['color'];
                 $statalert = $colorevents['time_alert'];
                 # process the time to allow items with a check out status to be displayed
-                if ( is_checkout($status) && ($GLOBALS['checkout_roll_off'] > 0) ) {
+                if ( is_checkout($status) && (($GLOBALS['checkout_roll_off'] > 0) && strlen($form_apptstatus) != 1 )  ) {
                         $to_time = strtotime($newend);
                         $from_time = strtotime($datetime);
                         $display_check_out = round(abs($from_time - $to_time) / 60,0);
@@ -468,11 +470,11 @@ function openNewTopWindow(newpid,newencounterid) {
          <?php echo text($reason_visit) ?>
          </td>
          <?php } ?>
-		 <?php if ($GLOBALS['ptkr_show_encounter']) { ?>
+         <?php if ($GLOBALS['ptkr_show_encounter']) { ?>
          <td class="detail" align="center">
-		 <?php if($appt_enc != 0) echo text($appt_enc); ?></a>
+         <?php if($appt_enc != 0) echo text($appt_enc); ?></a>
          </td>
-		 <?php } ?>
+         <?php } ?>
          <?php if ($GLOBALS['ptkr_show_room']) { ?>
          <td class="detail" align="center">
          <?php echo getListItemTitle('patient_flow_board_rooms', $appt_room);?>
@@ -506,33 +508,33 @@ function openNewTopWindow(newpid,newencounterid) {
          <?php echo text(getListItemTitle("apptstat",$status)); # drop down list for appointment status?>
          </a>
 
-		 </td>
-        <?php		 
-		 #time in current status
-		 $to_time = strtotime(date("Y-m-d H:i:s"));
-		 $yestime = '0'; 
-		 if (strtotime($newend) != '') {
- 			$from_time = strtotime($newarrive);
-			$to_time = strtotime($newend);
-			$yestime = '0';
-		 }
+         </td>
+        <?php        
+         #time in current status
+         $to_time = strtotime(date("Y-m-d H:i:s"));
+         $yestime = '0'; 
+         if (strtotime($newend) != '') {
+            $from_time = strtotime($newarrive);
+            $to_time = strtotime($newend);
+            $yestime = '0';
+         }
          else
-        {	
-			$from_time = strtotime($appointment['start_datetime']);
-			$yestime = '1';
+        {   
+            $from_time = strtotime($appointment['start_datetime']);
+            $yestime = '1';
         }
 
         $timecheck = round(abs($to_time - $from_time) / 60,0);
         if ($timecheck >= $statalert && ($statalert != '0')) { # Determine if the time in status limit has been reached.
-           echo "<td align='center' class='js-blink-infinite'>	"; # and if so blink
+           echo "<td align='center' class='js-blink-infinite'>  "; # and if so blink
         }
         else
         {
            echo "<td align='center' class='detail'> "; # and if not do not blink
         }
         if (($yestime == '1') && ($timecheck >=1) && (strtotime($newarrive)!= '')) { 
-		   echo text($timecheck . ' ' .($timecheck >=2 ? xl('minutes'): xl('minute'))); 
-		}
+           echo text($timecheck . ' ' .($timecheck >=2 ? xl('minutes'): xl('minute'))); 
+        }
         #end time in current status
         ?>
          <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
@@ -546,32 +548,32 @@ function openNewTopWindow(newpid,newencounterid) {
          </td>
          <?php } ?>
          <td class="detail" align="center"> 
-         <?php		 
-		 
-		 # total time in practice
-		 if (strtotime($newend) != '') {
- 			$from_time = strtotime($newarrive);
-			$to_time = strtotime($newend);
-		 }
+         <?php       
+         
+         # total time in practice
+         if (strtotime($newend) != '') {
+            $from_time = strtotime($newarrive);
+            $to_time = strtotime($newend);
+         }
          else
-         {	
-			$from_time = strtotime($newarrive);
- 		    $to_time = strtotime(date("Y-m-d H:i:s"));
-         }	
-         $timecheck2 = round(abs($to_time - $from_time) / 60,0);	 
-         if (strtotime($newarrive) != '' && ($timecheck2 >=1)) {  		
+         {  
+            $from_time = strtotime($newarrive);
+            $to_time = strtotime(date("Y-m-d H:i:s"));
+         }  
+         $timecheck2 = round(abs($to_time - $from_time) / 60,0);     
+         if (strtotime($newarrive) != '' && ($timecheck2 >=1)) {        
             echo text($timecheck2 . ' ' .($timecheck2 >=2 ? xl('minutes'): xl('minute')));
          }
          # end total time in practice
-        ?>		 
-		<?php echo text($appointment['pc_time']); ?>
+        ?>       
+        <?php echo text($appointment['pc_time']); ?>
          </td>
         <td class="detail" align="center">
          <?php 
-		 if (strtotime($newend) != '') {
-		    echo oeFormatTime($newend) ;
-		 }
-		 ?>
+         if (strtotime($newend) != '') {
+            echo oeFormatTime($newend) ;
+         }
+         ?>
          </td>
          <td class="detail" align="center">
          <?php echo text($appointment['user']) ?>
@@ -584,17 +586,17 @@ function openNewTopWindow(newpid,newencounterid) {
          <?php } else {  echo "  <td>"; }?>
          <?php if (strtotime($newarrive) != '' && $appointment['random_drug_test'] == '1') { ?> 
          <td class="detail" align="center">
-		 <?php if (strtotime($newend) != '') { # the following block allows the check box for drug screens to be disabled once the status is check out ?>
-		     <input type=checkbox  disabled='disable' class="drug_screen_completed" id="<?php echo htmlspecialchars($appointment['pt_tracker_id'], ENT_NOQUOTES) ?>"  <?php if ($appointment['drug_screen_completed'] == "1") echo "checked";?>>
-		 <?php } else { ?>
-		     <input type=checkbox  class="drug_screen_completed" id='<?php echo htmlspecialchars($appointment['pt_tracker_id'], ENT_NOQUOTES) ?>' name="drug_screen_completed" <?php if ($appointment['drug_screen_completed'] == "1") echo "checked";?>>
+         <?php if (strtotime($newend) != '') { # the following block allows the check box for drug screens to be disabled once the status is check out ?>
+             <input type=checkbox  disabled='disable' class="drug_screen_completed" id="<?php echo htmlspecialchars($appointment['pt_tracker_id'], ENT_NOQUOTES) ?>"  <?php if ($appointment['drug_screen_completed'] == "1") echo "checked";?>>
+         <?php } else { ?>
+             <input type=checkbox  class="drug_screen_completed" id='<?php echo htmlspecialchars($appointment['pt_tracker_id'], ENT_NOQUOTES) ?>' name="drug_screen_completed" <?php if ($appointment['drug_screen_completed'] == "1") echo "checked";?>>
          <?php } ?>
-		 </td>
+         </td>
          <?php } else {  echo "  <td>"; }?>
-		 <?php } ?>
-		 </tr>
+         <?php } ?>
+         </tr>
         <?php
-	} //end for
+    } //end for
 ?>
 </div>
 <?php
@@ -624,9 +626,9 @@ if(!is_null($_POST['form_to_date']) ){
 
 <script type="text/javascript">
   $(document).ready(function() { 
-	  $('#settings').css("display","none");
-	  refreshbegin('1');
-	  $('.js-blink-infinite').modernBlink();
+      $('#settings').css("display","none");
+      refreshbegin('1');
+      $('.js-blink-infinite').modernBlink();
 
   // toggle of the check box status for drug screen completed and ajax call to update the database
  $(".drug_screen_completed").change(function() {
@@ -641,19 +643,30 @@ if(!is_null($_POST['form_to_date']) ){
         testcomplete: testcomplete_toggle
       });
     });
-  });	
+  });   
 </script>
 <!-- form used to open a new top level window when a patient row is clicked -->
 <form name='fnew' method='post' target='_blank' action='../main/main_screen.php?auth=login&site=<?php echo attr($_SESSION['site_id']); ?>'>
 <input type='hidden' name='patientID'      value='0' />
 <input type='hidden' name='encounterID'    value='0' />
 </form>
-<script language="javascript">
-/* required for popup calendar */
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
+</body>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
  <?php if ($GLOBALS['ptkr_date_range']) { ?>
-   Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
  <?php } ?>
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 </body>
 </html>

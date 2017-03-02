@@ -280,7 +280,7 @@ if (isset($_POST["mode"]))
                                         "' and  code_type  ='" . trim(formData("HiddenCodetype$CountRow"   ))  .
 					"' and  code  ='" . trim(formData("HiddenCode$CountRow"   ))  .
 					"' and  modifier  ='" . trim(formData("HiddenModifier$CountRow"   ))  .
-					"' and memo like 'Deductable%'");
+					"' and (memo like 'Deductable%' OR memo like 'Deductible%')");
 				if(sqlNumRows($resPayment)>0)
 				 {
 				  sqlStatement("update ar_activity set "    .
@@ -294,7 +294,7 @@ if (isset($_POST["mode"]))
                                         "' and  code_type  ='" . trim(formData("HiddenCodetype$CountRow"   ))  .
 					"' and  code  ='" . trim(formData("HiddenCode$CountRow"   ))  .
 					"' and  modifier  ='" . trim(formData("HiddenModifier$CountRow"   ))  .
-					"' and memo like 'Deductable%'");
+					"' and (memo like 'Deductable%' OR memo like 'Deductible%')");
 				 }
 				else
 				 {
@@ -311,7 +311,7 @@ if (isset($_POST["mode"]))
 					"', modified_time = '"  . trim($created_time					) .
 					"', pay_amount = '" . 0  .
 					"', adj_amount = '"    . 0 .
-					"', memo = '"    . "Deductable $".trim(formData("Deductible$CountRow"   )) .
+					"', memo = '"    . "Deductible $".trim(formData("Deductible$CountRow"   )) .
 					"', account_code = '" . "Deduct"  .
 					"'");
 				 }
@@ -324,7 +324,7 @@ if (isset($_POST["mode"]))
                                         "' and  code_type  ='" . trim(formData("HiddenCodetype$CountRow"   ))  .
 					"' and  code  ='" . trim(formData("HiddenCode$CountRow"   ))  .
 					"' and  modifier  ='" . trim(formData("HiddenModifier$CountRow"   ))  .
-					"' and memo like 'Deductable%'");
+					"' (memo like 'Deductable%' OR memo like 'Deductible%')");
 		   }
 //==============================================================================================================================
 		  if (isset($_POST["Takeback$CountRow"]) && $_POST["Takeback$CountRow"]*1>0)
@@ -1004,10 +1004,10 @@ return false;
 									$AdjAmountDB=$AdjAmountDB == 0 ? '' : $AdjAmountDB;
 
 									$resPayment = sqlStatement("SELECT  memo from ar_activity where  session_id ='$payment_id' and
-									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and  code='$Code' and modifier='$Modifier'  and memo like 'Deductable%'");
+									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and  code='$Code' and modifier='$Modifier'  (memo like 'Deductable%' OR memo like 'Deductible%')");
 									$rowPayment = sqlFetchArray($resPayment);
 									$DeductibleDB=$rowPayment['memo'];
-									$DeductibleDB=str_replace('Deductable $','',$DeductibleDB);
+									$DeductibleDB=str_replace('Deductible $','',$DeductibleDB);
 
 									$resPayment = sqlStatement("SELECT  follow_up,follow_up_note from ar_activity where  session_id ='$payment_id' and
 									pid ='$PId' and  encounter  ='$Encounter' and code_type='$Codetype' and  code='$Code' and modifier='$Modifier'  and follow_up = 'y'");

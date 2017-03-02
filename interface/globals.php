@@ -118,7 +118,7 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
     $tmp = $_GET['site'];
   }
   else {
-    if (!$ignoreAuth) die("Site ID is missing from session data!");
+    if (empty($ignoreAuth)) die("Site ID is missing from session data!");
     $tmp = $_SERVER['HTTP_HOST'];
     if (!is_dir($GLOBALS['OE_SITES_BASE'] . "/$tmp")) $tmp = "default";
   }
@@ -174,6 +174,19 @@ $GLOBALS['fileroot'] = "$webserver_root";
 $include_root = "$webserver_root/interface";
 // Absolute path to the location of documentroot directory for use with include statements:
 $GLOBALS['webroot'] = $web_root;
+
+// js directory
+$GLOBALS['standard_js_path'] = "$web_root/assets/js";
+$GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
+
+// images directory
+$GLOBALS['images_path'] = "$web_root/assets/images";
+
+// css directory
+$GLOBALS['css_path'] = "$webserver_root/assets/css";
+
+// font directory
+$GLOBALS['fonts_path'] = "$webserver_root/assets/fonts";
 
 $GLOBALS['template_dir'] = $GLOBALS['fileroot'] . "/templates/";
 $GLOBALS['incdir'] = $include_root;
@@ -364,7 +377,7 @@ if ($GLOBALS['concurrent_layout']) {
 } else {
  $top_bg_line = ' bgcolor="#94d6e7" ';
  $GLOBALS['style']['BGCOLOR2'] = "#94d6e7";
- $bottom_bg_line = ' background="'.$rootdir.'/pic/aquabg.gif" ';
+ $bottom_bg_line = ' background="'.$rootdir.'/themes/theme_assets/aquabg.gif" ';
  $title_bg_line = ' bgcolor="#aaffff" ';
  $nav_bg_line = ' bgcolor="#94d6e7" ';
 }
@@ -401,11 +414,8 @@ if (!empty($special_timeout)) {
 
 //Version tag
 require_once(dirname(__FILE__) . "/../version.php");
-$patch_appending = "";
-if ( ($v_realpatch != '0') && (!(empty($v_realpatch))) ) {
-$patch_appending = " (".$v_realpatch.")";
-}
-$libreehr_version = "$v_major.$v_minor.$v_patch".$v_tag.$patch_appending;
+
+$libreehr_version = "$v_major.$v_minor.$v_patch".$v_tag;
 
 $srcdir = $GLOBALS['srcdir'];
 $login_screen = $GLOBALS['login_screen'];
@@ -429,9 +439,9 @@ $SMTP_Auth = !empty($GLOBALS['SMTP_USER']);
 
 
 //module configurations
-$GLOBALS['baseModDir'] 	= "interface/modules/"; //default path of modules
-$GLOBALS['customModDir']= "custom_modules";	//non zend modules
-$GLOBALS['zendModDir']	= "zend_modules";	//zend modules
+$GLOBALS['baseModDir']  = "interface/modules/"; //default path of modules
+$GLOBALS['customModDir']= "custom_modules"; //non zend modules
+$GLOBALS['zendModDir']  = "zend_modules";   //zend modules
 
 // Don't change anything below this line. ////////////////////////////
 
@@ -468,12 +478,12 @@ ini_set("session.bug_compat_warn","off");
 
 /* If the includer didn't specify, assume they want us to "fake" register_globals. */
 if (!isset($fake_register_globals)) {
-	$fake_register_globals = TRUE;
+    $fake_register_globals = TRUE;
 }
 
 /* Pages with "myadmin" in the URL don't need register_globals. */
 $fake_register_globals =
-	$fake_register_globals && (strpos($_SERVER['REQUEST_URI'],"myadmin") === FALSE);
+    $fake_register_globals && (strpos($_SERVER['REQUEST_URI'],"myadmin") === FALSE);
 
 
 // Emulates register_globals = On.  Moved to the bottom of globals.php to prevent

@@ -1,10 +1,30 @@
 <?php
-// Copyright (C) 2007-2011 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ * Generate X12 File
+ *
+ * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
+ * Copyright (C) 2007-2011 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreEHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Terry Hill <terry@lilysystems.com>
+ * @link http://librehealth.io
+ */
 
 require_once("Claim.class.php");
 function stripZipCode($zip)
@@ -173,12 +193,12 @@ $CMS_5010 = true;
   $HLBillingPayToProvider = $HLcount++;
 
   // Situational PRV segment for provider taxonomy code for Medicaid.
-    if ($claim->claimType() == 'MC') {
-        ++$edicount;
-        $out .= "PRV*BI*ZZ" .
-        "*" . $claim->providerTaxonomy() .
-        "~\n";
-    }
+ #   if ($claim->claimType() == 'MC') {
+ #       ++$edicount;
+ #       $out .= "PRV*BI*ZZ" .
+ #       "*" . $claim->providerTaxonomy() .
+ #       "~\n";
+ #   }
     
   // Situational CUR segment (foreign currency information) omitted here.
 
@@ -624,7 +644,26 @@ $CMS_5010 = true;
   // Segment HI*BG (Condition Information) omitted.
   // Segment HCP (Claim Pricing/Repricing Information) omitted.
 
-  if ($claim->referrerLastName()) {
+  if ($claim->referrerLastName() || $claim->providerQualifierCode() == "DN" ) {
+      
+    if ($claim->providerQualifierCode() == "DN") {  
+
+        // Getting Referrer information from Misc_Billing_form.
+    ++$edicount;
+    $out .= "NM1" .     // Loop 2310A Referring Provider
+      "*DN" .
+      "*1" .
+      "*" . $claim->billingProviderLastName() .
+      "*" . $claim->billingProviderFirstName() .
+      "*" . $claim->billingProviderMiddleName() .
+      "*" .
+      "*";
+    $out .=
+      "*XX" .
+      "*" . $claim->billingProviderNPI(). 
+     "~\n";
+    } else {
+     # Use the Referrer information
     // Medicare requires referring provider's name and UPIN.
     ++$edicount;
     $out .= "NM1" .     // Loop 2310A Referring Provider
@@ -640,6 +679,7 @@ $CMS_5010 = true;
       "*" . $claim->referrerNPI(). 
      "~\n";
 
+  }
   }
 
   
@@ -666,7 +706,8 @@ $CMS_5010 = true;
         ++$edicount;
         $out .= "PRV" .
         "*PE" . // Performing provider
-        "*" .($claim->claimType() != 'MC' ? "PXC" : "ZZ") .
+ //       "*" .($claim->claimType() != 'MC' ? "PXC" : "ZZ") .
+        "*PXC" .
         "*" . $claim->providerTaxonomy() .
         "~\n";
     }
@@ -747,7 +788,28 @@ $CMS_5010 = true;
 
   // Loop 2310E, Supervising Provider
   //
-  if ($claim->supervisorLastName()) {
+  if ($claim->supervisorLastName() || $claim->providerQualifierCode() == "DQ") {
+     if ($claim->providerQualifierCode() == "DQ") { 
+      # the Supervising Physician is filled out the Misc Billing Form
+      ++$edicount;
+      $out .= "NM1" .
+      "*DQ" . // Supervising Physician
+      "*1" .  // Person
+      "*" . $claim->billingProviderLastName() .
+      "*" . $claim->billingProviderFirstName() .
+      "*" . $claim->billingProviderMiddleName() .
+      "*" .   // NM106 not used
+      "*".    // Name Suffix
+      "*XX" .
+      "*" . $claim->billingProviderNPI();
+    
+      if (!$claim->billingProviderNPI()) {
+        $log .= "*** Supervising Provider has no NPI.\n";
+      }
+    $out .= "~\n";
+    
+     } else {
+    # the Supervising Physician is filled out on the fee sheet
     ++$edicount;
     $out .= "NM1" .
       "*DQ" . // Supervising Physician
@@ -773,6 +835,7 @@ $CMS_5010 = true;
         "~\n";
     }
   }
+ }
 
   // Segments NM1*PW, N3, N4 (Ambulance Pick-Up Location) omitted.
   // Segments NM1*45, N3, N4 (Ambulance Drop-Off Location) omitted.
@@ -1092,6 +1155,9 @@ $CMS_5010 = true;
           "~\n";
       }
 
+
+  }     
+
       // Segment PRV*PE (Rendering Provider Specialty Information) omitted.
       // Segment REF (Rendering Provider Secondary Identification) omitted.
       // Segment NM1 (Purchased Service Provider Name) omitted.
@@ -1100,7 +1166,28 @@ $CMS_5010 = true;
       // Segment REF (Service Facility Location Secondary Identification) omitted.
       // Segment NM1 (Supervising Provider Name) omitted.
       // Segment REF (Supervising Provider Secondary Identification) omitted.
-      // Segment NM1,N3,N4 (Ordering Provider) omitted.
+      // Segment NM1,N3,N4 (Ordering Provider) Needs check against the misc bill qualifer code.
+
+   #Ordering provider from the Misc_Billing_form
+   if ($claim->providerQualifierCode() == "DK") {
+    ++$edicount;
+    $out .= "NM1" .
+      "*DK" . // DK is ordering
+      "*1" .  // Person
+      "*" . $claim->billingProviderLastName() .
+      "*" . $claim->billingProviderFirstName() .
+      "*" . $claim->billingProviderMiddleName() .
+      "*" .   // NM106 not used
+      "*";    // Name Suffix
+    if ($claim->billingProviderNPI()) { $out .=
+      "*XX" .
+      "*" . $claim->billingProviderNPI();
+    }
+    if (!$claim->billingProviderNPI()) {
+      $log .= "*** Ordering Provider has no NPI.\n";
+    }
+    $out .= "~\n";
+   }
       // Segment REF (Ordering Provider Secondary Identification) omitted.
       // Segment PER (Ordering Provider Contact Information) omitted.
       // Segment NM1 (Referring Provider Name) omitted.
@@ -1108,7 +1195,6 @@ $CMS_5010 = true;
       // Segments NM1*PW, N3, N4 (Ambulance Pick-Up Location) omitted.
       // Segments NM1*45, N3, N4 (Ambulance Drop-Off Location) omitted.
 
-    }
 
     // Loop 2430, adjudication by previous payers.
     //
@@ -1147,10 +1233,10 @@ $CMS_5010 = true;
         // This is for using CAS02, which may not be implemented fully.  Values are 1,2, or 3
         /*************************************************************
         if ( isset($a[4]) &&
-        	$a[4] != null ) {
-        	$out .= "CAS02" . // Previous payer's adjustment reason
-	          "*" . $a[4] .
-	          "~\n";	
+            $a[4] != null ) {
+            $out .= "CAS02" . // Previous payer's adjustment reason
+              "*" . $a[4] .
+              "~\n";    
         }
         *************************************************************/
       }

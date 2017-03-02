@@ -6,18 +6,16 @@
 $v_major = '1';
 $v_minor = '0';
 $v_patch = '1';
-$v_tag   = '-DEV'; // minor revision number, should be empty for production releases
+$v_tag   = ''; // Tag should be empty for production releases
 
-// A real patch identifier. This is incremented when we release a patch for a
-// production release. Note the above $v_patch variable is a misnomer and actually
-// stores release version information.
-$v_realpatch = '0';
+//use of this is a temporary work around for a bad descision in the past -tdm
+$v_realpatch = $v_patch;
 
 // Database version identifier, this is to be incremented whenever there
 // is a database change in the course of development.  It is used
 // internally to determine when a database upgrade is needed.
 //
-$v_database = 2;
+$v_database = '1';
 
 // Access control version identifier, this is to be incremented whenever there
 // is a access control change in the course of development.  It is used
@@ -25,6 +23,6 @@ $v_database = 2;
 // controls is (subsequently the acl_upgrade.php script then is used to
 // upgrade and track this value)
 //
-$v_acl = 1;
+$v_acl = 0;
 
 ?>

@@ -1,6 +1,6 @@
 <?php
-/**
- * This is a report of Financial Summary by Service Code.
+/*
+ * Financial Summary by Service Code
  *
  * This is a summary of service code charge/pay/adjust and balance,
  * with the ability to pick "important" codes to either highlight or
@@ -8,11 +8,12 @@
  * Administration->Service section by assigning code with
  * 'Service Reporting'.
  *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
  * Copyright (C) 2006-2015 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
+ * as published by the Free Software Foundation; either version 3 
  * of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,8 +22,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
  * @author  Visolve
+ * @author Rod Roark <rod@sunsetsystems.com>
  * @link    http://librehealth.io
  */
 
@@ -36,6 +42,9 @@ require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/appointments.inc.php";
+/** Current format date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $grand_total_units  = 0;
 $grand_total_amt_billed  = 0;
@@ -46,8 +55,10 @@ $grand_total_amt_balance  = 0;
 
   if (! acl_check('acct', 'rep')) die(xlt("Unauthorized access."));
 
-  $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-  $form_to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
+if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($_POST['form_to_date']) && $_POST['form_from_date']) {
+    $form_from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
+    $form_to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
+}
   $form_facility  = $_POST['form_facility'];
   $form_provider  = $_POST['form_provider'];
 
@@ -66,9 +77,8 @@ $grand_total_amt_balance  = 0;
 <head>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <?php html_header_show();?>
 <style type="text/css">
@@ -117,15 +127,15 @@ $grand_total_amt_balance  = 0;
 <table>
  <tr>
   <td width='70%'>
-	<div style='float:left'>
-	<table class='text'>
-		<tr>
-			<td class='label'>
-				<?php echo xlt('Facility'); ?>:
-			</td>
-			<td>
-			<?php dropdown_facility($form_facility, 'form_facility', true); ?>
-			</td>
+    <div style='float:left'>
+    <table class='text'>
+        <tr>
+            <td class='label'>
+                <?php echo xlt('Facility'); ?>:
+            </td>
+            <td>
+            <?php dropdown_facility($form_facility, 'form_facility', true); ?>
+            </td>
                         <td><?php echo xlt('Provider'); ?>:</td>
                 <td><?php
                         // Build a drop-down list of providers.
@@ -143,63 +153,57 @@ $grand_total_amt_balance  = 0;
                                 }
                                 echo "   </select>\n";
                                 ?>
-				</td>
-		</tr><tr>
+                </td>
+        </tr><tr>
                  <td colspan="2">
                           <?php echo xlt('From'); ?>:&nbsp;&nbsp;&nbsp;&nbsp;
-                           <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo attr($form_from_date) ?>'
-                                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-                           <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                                id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-                                title='<?php echo xla("Click here to choose a date"); ?>'>
+                           <input type='text' name='form_from_date' id="form_from_date" size='10'
+                                  value='<?= ($form_from_date) ? oeFormatShortDate(attr($form_from_date)) : ''; ?>'>
                         </td>
                         <td class='label'>
                            <?php echo xlt('To'); ?>:
                         </td>
                         <td>
-                           <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo attr($form_to_date) ?>'
-                                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-                           <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                                id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-                                title='<?php echo xla("Click here to choose a date"); ?>'>
+                           <input type='text' name='form_to_date' id="form_to_date" size='10'
+                                  value='<?= ($form_to_date) ? oeFormatShortDate(attr($form_to_date)) : ''; ?>'>
                         </td>
                         <td>
                            <input type='checkbox' name='form_details'<?php  if ($_POST['form_details']) echo ' checked'; ?>>
                            <?php echo xlt('Important Codes'); ?>
                         </td>
-		</tr>
-	</table>
-	</div>
+        </tr>
+    </table>
+    </div>
   </td>
   <td align='left' valign='middle' height="100%">
-	<table style='border-left:1px solid; width:100%; height:100%' >
-		<tr>
-			<td>
-				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#form_csvexport").attr("value",""); $("#theform").submit();'>
-					<span>
-						<?php echo xlt('Submit'); ?>
-					</span>
-					</a>
+    <table style='border-left:1px solid; width:100%; height:100%' >
+        <tr>
+            <td>
+                <div style='margin-left:15px'>
+                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#form_csvexport").attr("value",""); $("#theform").submit();'>
+                    <span>
+                        <?php echo xlt('Submit'); ?>
+                    </span>
+                    </a>
 
-					<?php if ($_POST['form_refresh'] || $_POST['form_csvexport']) { ?>
-					<div id="controls">
-					<a href='#' class='css_button' id='printbutton'>
-						<span>
-							<?php echo xlt('Print'); ?>
-						</span>
-					</a>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value",""); $("#form_csvexport").attr("value","true"); $("#theform").submit();'>
-						<span>
-							<?php echo xlt('CSV Export'); ?>
-						</span>
-					</a>
-					</div>
-					<?php } ?>
-				</div>
-			</td>
-		</tr>
-	</table>
+                    <?php if ($_POST['form_refresh'] || $_POST['form_csvexport']) { ?>
+                    <div id="controls">
+                    <a href='#' class='css_button' id='printbutton'>
+                        <span>
+                            <?php echo xlt('Print'); ?>
+                        </span>
+                    </a>
+                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value",""); $("#form_csvexport").attr("value","true"); $("#theform").submit();'>
+                        <span>
+                            <?php echo xlt('CSV Export'); ?>
+                        </span>
+                    </a>
+                    </div>
+                    <?php } ?>
+                </div>
+            </td>
+        </tr>
+    </table>
   </td>
  </tr>
 </table>
@@ -249,7 +253,7 @@ $grand_total_amt_balance  = 0;
       $grand_total_amt_balance  = 0;
  
       while ($erow = sqlFetchArray($res)) {
-	  $row = array();
+      $row = array();
       $row['pid'] = $erow['pid'];
       $row['provider_id'] = $erow['provider_id'];
       $row['Procedure codes'] = $erow['code'];
@@ -268,7 +272,7 @@ $grand_total_amt_balance  = 0;
                   echo '"Units",';
                   echo '"Amt Billed",';
                   echo '"Paid Amt",';
-		  echo '"Adjustment Amt",';
+          echo '"Adjustment Amt",';
                   echo '"Balance Amt",' . "\n";
                 }
               } else {
@@ -315,41 +319,41 @@ $bgcolor = ((++$orow & 1) ? "#ffdddd" : "#ddddff");
                                                 $grand_total_amt_balance  += $row['Balance Amt'];
 
         if ($_POST['form_csvexport']) { echo $csv; } 
-	else { echo $print;
+    else { echo $print;
  }
      }
        if (!$_POST['form_csvexport']) {
          echo "<tr bgcolor='#ffffff'>\n";
          echo " <td class='detail'>" . xlt("Grand Total") . "</td>\n"; 
          echo " <td class='detail'>" . text($grand_total_units) . "</td>\n";
-		 echo " <td class='detail'>" .
+         echo " <td class='detail'>" .
          text(oeFormatMoney($grand_total_amt_billed)) . "</td>\n";
-		 echo " <td class='detail'>" .
+         echo " <td class='detail'>" .
          text(oeFormatMoney($grand_total_amt_paid)) . "</td>\n";
-   		 echo " <td class='detail'>" .
+         echo " <td class='detail'>" .
          text(oeFormatMoney($grand_total_amt_adjustment)) . "</td>\n";
-  		 echo " <td class='detail'>" .
+         echo " <td class='detail'>" .
          text(oeFormatMoney($grand_total_amt_balance)) . "</td>\n";
          echo " </tr>\n";
           ?>
                 </table>    </div>
         <?php
       }
-	}
+    }
 
   if (! $_POST['form_csvexport']) {
        if ( $_POST['form_refresh'] && count($print) != 1)
-	{
-		echo "<span style='font-size:10pt;'>";
+    {
+        echo "<span style='font-size:10pt;'>";
                 echo xlt('No matches found. Try search again.');
                 echo "</span>";
-		echo '<script>document.getElementById("report_results").style.display="none";</script>';
-		echo '<script>document.getElementById("controls").style.display="none";</script>';
-		}
-		
+        echo '<script>document.getElementById("report_results").style.display="none";</script>';
+        echo '<script>document.getElementById("controls").style.display="none";</script>';
+        }
+        
 if (!$_POST['form_refresh'] && !$_POST['form_csvexport']) { ?>
 <div class='text'>
- 	<?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+    <?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
 </div>
 <?php } ?>
 </form>
@@ -358,13 +362,22 @@ if (!$_POST['form_refresh'] && !$_POST['form_csvexport']) { ?>
 <!-- stuff for the popup calendar -->
 
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
+</script>
 <script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
  top.restoreSession();
 </script>
 </html>

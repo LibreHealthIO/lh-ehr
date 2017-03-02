@@ -1,13 +1,25 @@
 <?php
+ /**
+ * Copyright Medical Information Integration,LLC info@mi-squared.com
+ * 
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * Rewrite and modifications by sjpadgett@gmail.com Padgetts Consulting 2016.
+ *
+ * @package LibreEHR
+ * @author  Medical Information Integration,LLC <info@mi-squared.com>
+ * @author  Terry Hill <teryhill@librehealth.io>
+ * @link    http://librehealth.io
+ */
+ 
 require_once(__DIR__.'/../../globals.php');
 require_once($GLOBALS['srcdir'].'/api.inc');
 require_once("$srcdir/options.inc.php");
-    $sanitize_all_escapes=true;
-    $fake_register_globals=false;
 ?>
 <html>
 <head>
-    <!-- <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['rootdir'] ?>/forms/annotate_diagram/mapdiagram/template/css/mapdiagram.css?v=$$TIME$$" /> --><!--Rem remove TIME for production -->
 </head>
 <style>body {
     background-color: white;
@@ -110,18 +122,18 @@ function annotate_diagram_report( $pid, $encounter, $cols, $formid){
       if($legend[$c] != ""){
         if( $legend[$c][0] != '' ){
             if($legend[$c] < '~'){
-                echo '<div class="marker" style="top:'.$y[$c].'px; left:'.$x[$c].'px;">';
-                echo '<span class="count">'. $legend[$c] . '</span>';
+                echo '<div class="marker" style="top:'. attr($y[$c]).'px; left:'. attr($x[$c]).'px;">';
+                echo '<span class="count">'. text($legend[$c]) . '</span>';
             }
             else{
-                echo '<div class="xmark" style="top:'.$y[$c].'px; left:'.$x[$c].'px;">';
-                echo '<span class="xcnt">'. $legend[$c] . '</span>';
+                echo '<div class="xmark" style="top:'. attr($y[$c]).'px; left:'. attr($x[$c]).'px;">';
+                echo '<span class="xcnt">'. text($legend[$c]) . '</span>';
             }
         }
         else{
             $ltmp = ltrim($legend[$c],"");
-            echo '<div class="xmark" style="top:'.$y[$c].'px; left:'.$x[$c].'px;">';
-            echo '<span class="xcnt">'. $ltmp . '</span>';
+            echo '<div class="xmark" style="top:'. attr($y[$c]).'px; left:'. attr($x[$c]).'px;">';
+            echo '<span class="xcnt">'. text($ltmp) . '</span>';
         }
       echo "</div>";
       }
@@ -131,7 +143,7 @@ function annotate_diagram_report( $pid, $encounter, $cols, $formid){
     echo "<ul style='list-style-type:disc'>";
     for($c=0;$c<$arrlength;$c++){
         if(!isSpecial($legend[$c]))  
-            echo "<li><span class='legend-item'><b>" . ($legend[$c]) . "</b> " . ($detail[$c]) . "</span></li>";
+            echo "<li><span class='legend-item'><b>" . text(($legend[$c])) . "</b> " . text(($detail[$c])) . "</span></li>";
     }
     echo "</ul></div></div></div>";
 // Done - clear 

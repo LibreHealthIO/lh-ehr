@@ -2,6 +2,9 @@
 /**
  * Display patient notes.
  *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * No other information in the previous header
+ *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
@@ -13,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
@@ -64,11 +67,22 @@ $fake_register_globals=false;
     <table width='100%' border='0' cellspacing='1' cellpadding='1' style='border-collapse:collapse;' >
     <?php
     
+    $totalRecords = 0;
+    
     $pres = getPatientData($pid,"lname, fname");
     $patientname = $pres['lname'] . ", " . $pres['fname'];
     //retrieve all active notes
     $result = getPnotesByDate("", 1, "id,date,body,user,title,assigned_to,message_status",
       $pid, "$N", 0, '', $docid);
+
+    # to get accurate record count. Know there is a better way 
+    $rl3 = getPnotesByDate("", 1, "id,date,body,user,title,assigned_to,message_status",
+      $pid, 'all', 0, '', $docid);
+ 
+    foreach ($rl3 as $iter1) {
+       $totalRecords = $totalRecords+1; 
+    }
+    # end get record count
 
     if ($result != null) {
       $notes_count = 0;//number of notes so far displayed
@@ -88,7 +102,7 @@ $fake_register_globals=false;
         } else {
           $body = htmlspecialchars(oeFormatSDFT(strtotime($iter['date'])) . date(' H:i', strtotime($iter['date'])) .
             ' (' . $iter['user'] . ') ',ENT_NOQUOTES) .
-	    nl2br(htmlspecialchars(oeFormatPatientNote($body),ENT_NOQUOTES));
+        nl2br(htmlspecialchars(oeFormatPatientNote($body),ENT_NOQUOTES));
         }
         $body = preg_replace('/(\sto\s)-patient-(\))/','${1}'.$patientname.'${2}',$body);
         $body = strlen($body) > 120 ? substr($body,0,120)."<b>.......</b>" : $body;
@@ -96,7 +110,7 @@ $fake_register_globals=false;
 
         // Modified 6/2009 by BM to incorporate the patient notes into the list_options listings
         echo "<td valign='top' class='text'>".htmlspecialchars($iter['user'],ENT_NOQUOTES)."</td>\n";
-        echo "<td valign='top' class='text'>".htmlspecialchars($iter['date'],ENT_NOQUOTES)."</td>\n";
+        echo "<td valign='top' class='text'>".date(DateFormatRead(true) . 'H:i:s', strtotime(htmlspecialchars($iter['date'],ENT_NOQUOTES)))."</td>\n";
         echo "  <td valign='top' class='text'><b>";
         echo generate_display_field(array('data_type'=>'1','list_id'=>'note_type'), $iter['title']);
         echo "</b></td>\n";
@@ -118,17 +132,17 @@ $fake_register_globals=false;
         <span class='text'>
             <?php echo htmlspecialchars(xl( "There are no notes on file for this patient."),ENT_NOQUOTES);
                   echo " ";
-	          echo "<a href='pnotes_full.php' onclick='top.restoreSession()'>";
-	          echo htmlspecialchars(xl("To add notes, please click here"),ENT_NOQUOTES);
-	          echo "</a>."; ?>
+              echo "<a href='pnotes_full.php' onclick='top.restoreSession()'>";
+              echo htmlspecialchars(xl("To add notes, please click here"),ENT_NOQUOTES);
+              echo "</a>."; ?>
         </span>
     <?php } else {
         ?>
         <br/>
         <span class='text'>
-	    <?php echo htmlspecialchars(xl('Displaying the following number of most recent notes:'),ENT_NOQUOTES); ?> 
-	    <b><?php echo $N;?></b><br>
-	    <a href='pnotes_full.php?s=0' onclick='top.restoreSession()'><?php echo htmlspecialchars(xl('Click here to view them all.'),ENT_NOQUOTES); ?></a>
+        <?php echo htmlspecialchars(xl('Displaying the following number of most recent notes:'),ENT_NOQUOTES); ?> 
+        <b><?php echo attr($totalRecords);?></b><br>
+        <a href='pnotes_full.php?s=0' onclick='top.restoreSession()'><?php echo htmlspecialchars(xl('Click here to view them all.'),ENT_NOQUOTES); ?></a>
         </span>
         <?php
     } ?>
@@ -189,19 +203,19 @@ $fake_register_globals=false;
     <?php
     if ($has_sent_note < 1 ) { ?>
         <span class='text'>
-            <?php echo htmlspecialchars(xl( "There are no notes on file for this patient."),ENT_NOQUOTES);
+            <?php echo xlt( "There are no notes on file for this patient.");
                   echo " ";
-	          echo "<a href='pnotes_full.php' onclick='top.restoreSession()'>";
-	          echo htmlspecialchars(xl("To add notes, please click here"),ENT_NOQUOTES);
-	          echo "</a>."; ?>
+              echo "<a href='pnotes_full.php' onclick='top.restoreSession()'>";
+              echo xlt("To add notes, please click here");
+              echo "</a>."; ?>
         </span>
     <?php } else {
         ?>
         <br/>
         <span class='text'>
-	    <?php echo htmlspecialchars(xl('Displaying the following number of most recent notes'),ENT_NOQUOTES).":"; ?> 
-	    <b><?php echo $M;?></b><br>
-	    <a href='pnotes_full.php?s=1' onclick='top.restoreSession()'><?php echo htmlspecialchars(xl('Click here to view them all.'),ENT_NOQUOTES); ?></a>
+        <?php echo xlt('Displaying the following number of most recent notes').":"; ?> 
+        <b><?php echo attr($totalRecords);?></b><br>
+        <a href='pnotes_full.php?s=1' onclick='top.restoreSession()'><?php echo xlt('Click here to view them all.'); ?></a>
         </span>
         <?php
     } ?>

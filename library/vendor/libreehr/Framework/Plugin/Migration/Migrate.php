@@ -91,7 +91,7 @@ class Migrate
         $messages = array();
         
         foreach ( preg_split('/((\r?\n)|(\r\n?))/', $directive ) as $line) {
-            $line = rtrim( $line, ' \t' );
+            $line = rtrim( $line, " \t" );
             
             if ( preg_match( '/\s*--/', $line ) )
                 continue;

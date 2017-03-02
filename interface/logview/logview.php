@@ -3,17 +3,15 @@ include_once("../globals.php");
 include_once("$srcdir/log.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
+/** Current format of date  */
+$DateFormat = DateFormatRead(true);
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 <html>
 <head>
 <?php html_header_show();?>
-<link rel="stylesheet" href='<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css' type='text/css'>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <style>
 #logview {
@@ -88,11 +86,11 @@ $form_patient = formData('form_patient','G');
  */
 if ($start_date && $end_date)
 {
-	if($start_date > $end_date){
-		echo "<table><tr class='alert'><td colspan=7>"; xl('Start Date should not be greater than End Date',e);
-		echo "</td></tr></table>"; 
-		$err_message=1;	
-	}
+    if($start_date > $end_date){
+        echo "<table><tr class='alert'><td colspan=7>"; xl('Start Date should not be greater than End Date',e);
+        echo "</td></tr></table>"; 
+        $err_message=1; 
+    }
 }
 
 ?>
@@ -131,14 +129,14 @@ $sortby = formData('sortby','G') ;
 <tr><td>
 <span class="text"><?php  xl('Start Date','e'); ?>: </span>
 </td><td>
-<input type="text" size="18" name="start_date" id="start_date" value="<?php echo $start_date ? $start_date : (date("Y-m-d") . " 00:00:00"); ?>" title="<?php  xl('yyyy-mm-dd H:m Start Date','e'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
-<img src="../pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_begin_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php  xl('Click here to choose date time','e'); ?>">&nbsp;
+<input type="text" size="18" name="start_date" id="start_date"
+       value="<?php echo $start_date ? $start_date : date($DateFormat); ?>"/>&nbsp;
 </td>
 <td>
 <span class="text"><?php  xl('End Date','e'); ?>: </span>
 </td><td>
-<input type="text" size="18" name="end_date" id="end_date" value="<?php echo $end_date ? $end_date : (date("Y-m-d") . " 23:59:00"); ?>" title="<?php  xl('yyyy-mm-dd H:m End Date','e'); ?>" onkeyup="datekeyup(this,mypcc,true)" onblur="dateblur(this,mypcc,true)" />
-<img src="../pic/show_calendar.gif" align="absbottom" width="24" height="22" id="img_end_date" border="0" alt="[?]" style="cursor: pointer; cursor: hand" title="<?php  xl('Click here to choose date time','e'); ?>">&nbsp;
+<input type="text" size="18" name="end_date" id="end_date"
+       value="<?php echo $end_date ? $end_date : date($DateFormat); ?>" />&nbsp;
 </td>
 <!--VicarePlus :: Feature For Generating Log For The Selected Patient --!>
 <td>
@@ -176,16 +174,16 @@ echo "</select>\n";
 $res = sqlStatement("select distinct event from log order by event ASC");
 $ename_list=array(); $j=0;
 while ($erow = sqlFetchArray($res)) {
-	 if (!trim($erow['event'])) continue;
-	 $data = explode('-', $erow['event']);
-	 $data_c = count($data);
-	 $ename=$data[0];
-	 for($i=1;$i<($data_c-1);$i++)
-	 {
-	 	$ename.="-".$data[$i];
-	}
-	$ename_list[$j]=$ename;
-	$j=$j+1;
+     if (!trim($erow['event'])) continue;
+     $data = explode('-', $erow['event']);
+     $data_c = count($data);
+     $ename=$data[0];
+     for($i=1;$i<($data_c-1);$i++)
+     {
+        $ename.="-".$data[$i];
+    }
+    $ename_list[$j]=$ename;
+    $j=$j+1;
 }
 $res1 = sqlStatement("select distinct event from  extended_log order by event ASC");
 // $j=0; // This can't be right!  -- Rod 2013-08-23
@@ -286,16 +284,16 @@ $type_event = formData('type_event','G');
 $tevent=""; $gev="";
 if($eventname != "" && $type_event != "")
 {
-	$getevent=$eventname."-".$type_event;
+    $getevent=$eventname."-".$type_event;
 }
       
-	if(($eventname == "") && ($type_event != ""))
-    {	$tevent=$type_event;   	
+    if(($eventname == "") && ($type_event != ""))
+    {   $tevent=$type_event;    
     }
-	else if($type_event =="" && $eventname != "")
+    else if($type_event =="" && $eventname != "")
     {$gev=$eventname;}
     else if ($eventname == "")
- 	{$gev = "";}
+    {$gev = "";}
  else 
     {$gev = $getevent;}
     
@@ -305,22 +303,22 @@ if ($ret = getEvents(array('sdate' => $get_sdate,'edate' => $get_edate, 'user' =
   foreach ($ret as $iter) {
     //translate comments
     $patterns = array ('/^success/','/^failure/','/ encounter/');
-	$replace = array ( xl('success'), xl('failure'), xl('encounter','',' '));
-	
-	$log_id = $iter['id'];
-	$commentEncrStatus = "No";
-	$logEncryptData = logCommentEncryptData($log_id);
-	if(count($logEncryptData) > 0){
-		$commentEncrStatus = $logEncryptData['encrypt'];
-	}
-	
-	//July 1, 2014: Ensoftek: Decrypt comment data if encrypted
-	if($commentEncrStatus == "Yes"){
-		$trans_comments = preg_replace($patterns, $replace, aes256Decrypt($iter["comments"]));
-	}else{
-		$trans_comments = preg_replace($patterns, $replace, $iter["comments"]);
-	}
-	
+    $replace = array ( xl('success'), xl('failure'), xl('encounter','',' '));
+    
+    $log_id = $iter['id'];
+    $commentEncrStatus = "No";
+    $logEncryptData = logCommentEncryptData($log_id);
+    if(count($logEncryptData) > 0){
+        $commentEncrStatus = $logEncryptData['encrypt'];
+    }
+    
+    //July 1, 2014: Ensoftek: Decrypt comment data if encrypted
+    if($commentEncrStatus == "Yes"){
+        $trans_comments = preg_replace($patterns, $replace, aes256Decrypt($iter["comments"]));
+    }else{
+        $trans_comments = preg_replace($patterns, $replace, $iter["comments"]);
+    }
+    
 ?>
  <TR class="oneresult">
   <TD class="text"><?php echo oeFormatShortDate(substr($iter["date"], 0, 10)) . substr($iter["date"], 10) ?></TD>
@@ -371,6 +369,8 @@ foreach ($ret as $iter) {
 <?php } ?>
 
 </body>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language="javascript">
 
@@ -396,12 +396,14 @@ $(document).ready(function(){
     $("#sortby_success").click(function() { $("#sortby").val("success"); $("#theform").submit(); });
     $("#sortby_comments").click(function() { $("#sortby").val("comments"); $("#theform").submit(); });
     $("#sortby_checksum").click(function() { $("#sortby").val("checksum"); $("#theform").submit(); });
+    $("#start_date, #end_date").datetimepicker({
+        timepicker: true,
+        format: "<?= $DateFormat; ?>"
 });
 
 
-/* required for popup calendar */
-Calendar.setup({inputField:"start_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:true});
-Calendar.setup({inputField:"end_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_end_date", showsTime:true});
+    $.datetimepicker.setLocale('<?= $DateLocale;?>');
+});
 
 </script>
 
