@@ -59,12 +59,12 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package OpenEMR
+ * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Kevin Yeh <kevin.y@integralemr.com>
  * @author  Terry Hill <teryhill@librehealth.io>
- * @link    http://www.libreehr.org
+ * @link    http://librehealth.io
  */
 
 require_once(dirname(__FILE__)."/../library/csv_like_join.php");
