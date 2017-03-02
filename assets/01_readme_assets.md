@@ -9,7 +9,7 @@ originate in the LibreHealth EHR project, and are not exclusive to a module.
 No files other than 01_readme_assets.md should be found directly under /assets/.
 Sub-directories must be typed (/fonts, /css) or be language specific (/js).
 Common core includes and other assets must be located under libreehr/libraries/includes
- etc... if they are LibreHealth EHR specific.
+ etc... if they are LibreEHR specific.
 
 Complete modules in isolated directories may or may not be restricted to this on a
  case-by-case basis, though compliance is required when duplication would otherwise exist.

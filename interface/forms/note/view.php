@@ -50,6 +50,8 @@ if ($obj['date_of_signature'] != "") {
 
 
 <script language="JavaScript">
+// required for textbox date verification
+var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 function PrintForm() {
     newwin = window.open("<?php echo $rootdir."/forms/".$form_name."/print.php?id=".attr($_GET["id"]); ?>","mywin");

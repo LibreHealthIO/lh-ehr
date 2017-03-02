@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
@@ -411,7 +411,7 @@ if ($result) {
         if ($all_other_phones == '') {$all_other_phones = xl('No other phone numbers listed');}
         //end of phone number display setup, now display the phone number(s)
         echo "<td class='srPhone' title='".htmlspecialchars( $all_other_phones, ENT_QUOTES)."'>" .
-        htmlspecialchars( $iter['phone_home'], ENT_NOQUOTES) . "</td>\n";
+	    htmlspecialchars( $iter['phone_home'], ENT_NOQUOTES) . "</td>\n";
         
         echo "<td class='srSS'>" . htmlspecialchars( $iter['ss'], ENT_NOQUOTES) . "</td>";
         if ($iter{"DOB"} != "0000-00-00 00:00:00") {
@@ -437,10 +437,10 @@ if ($result) {
           $query = "select DATE_FORMAT(max(form_encounter.date),'%m/%d/%y') as mydate," .
                   " (to_days(current_date())-to_days(max(form_encounter.date))) as day_diff," .
                   " DATE_FORMAT(max(form_encounter.date) + interval " .
-              add_escape_custom($add_days) .
+	          add_escape_custom($add_days) .
                   " day,'%m/%d/%y') as next_appt, dayname(max(form_encounter.date) + interval " .
                   add_escape_custom($add_days) .
-              " day) as next_appt_day from form_encounter " .
+	          " day) as next_appt_day from form_encounter " .
                   "join billing on billing.encounter = form_encounter.encounter and " .
                   "billing.pid = form_encounter.pid and billing.activity = 1 and " .
                   "billing.code_type not like 'COPAY' where ".
@@ -455,10 +455,10 @@ if ($result) {
           $query = "select DATE_FORMAT(max(form_encounter.date),'%m/%d/%y') as mydate," .
                   " (to_days(current_date())-to_days(max(form_encounter.date))) as day_diff," .
                   " DATE_FORMAT(max(form_encounter.date) + interval " .
-              add_escape_custom($add_days) .
+	          add_escape_custom($add_days) .
                   " day,'%m/%d/%y') as next_appt, dayname(max(form_encounter.date) + interval " .
                   add_escape_custom($add_days) .
-              " day) as next_appt_day from form_encounter " .
+	          " day) as next_appt_day from form_encounter " .
                   " where form_encounter.pid = ?";
           $statement= sqlStatement($query, array($iter{"pid"}) );
           if ($results = sqlFetchArray($statement)) {

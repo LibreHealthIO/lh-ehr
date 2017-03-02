@@ -13,11 +13,11 @@
  * See the Mozilla Public License for more details. 
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author  Julia Longtin <julialongtin@diasp.org>
  * @author  Tony McCormick <tony@mi-squared.com>
  * @author  Terry Hill <teryhill@librehealth.io>
- * @link    http://librehealth.io
+ * @link    http://www.libreehr.org
  *
  * This file is included as an invisible iframe by forms that want to be
  * notified when a new message for the user comes in.

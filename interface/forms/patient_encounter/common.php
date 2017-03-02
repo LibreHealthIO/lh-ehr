@@ -13,10 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Terry Hill <teryhill@librehealth.io>
- * @link    http://librehealth.io
+ * @link    http://libreehr.github.io
  */
 
 require_once("$srcdir/options.inc.php");
@@ -185,7 +185,7 @@ function cancelClicked() {
      <td class='bold' nowrap><?php echo xlt('Visit Category:'); ?></td>
      <td class='text'>
       <select name='pc_catid' id='pc_catid'>
-    <option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
+	<option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
 <?php
  $cres = sqlStatement("SELECT pc_catid, pc_catname " .
   "FROM libreehr_postcalendar_categories ORDER BY pc_catname");
@@ -229,15 +229,15 @@ if ($fres) {
       </select>
      </td>
     </tr>
-    <tr>
-        <td class='bold' nowrap><?php echo xlt('Billing Facility'); ?>:</td>
-        <td class='text'>
-            <div id="ajaxdiv">
-            <?php
-            billing_facility('billing_facility',$result['billing_facility']);
-            ?>
-            </div>
-        </td>
+	<tr>
+		<td class='bold' nowrap><?php echo xlt('Billing Facility'); ?>:</td>
+		<td class='text'>
+			<div id="ajaxdiv">
+			<?php
+			billing_facility('billing_facility',$result['billing_facility']);
+			?>
+			</div>
+		</td>
      </tr>
     <tr>
 <?php

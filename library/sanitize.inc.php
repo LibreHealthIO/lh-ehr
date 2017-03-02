@@ -16,10 +16,10 @@
 * You should have received a copy of the GNU General Public License 
 * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
 *
-* @package LibreHealth EHR
+* @package LibreEHR
 * @author Brady Miller <brady@sparmy.com>
 * @author Roberto Vasquez <robertogagliotta@gmail.com>
-* @link http://librehealth.io
+* @link http://www.open-emr.org
 */
 // If the label contains any illegal characters, then the script will die.
 function check_file_dir_name($label) {

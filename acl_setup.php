@@ -6,7 +6,7 @@
  // as published by the Free Software Foundation; either version 2
  // of the License, or (at your option) any later version.
  //
- // This program is run by the LibreHealth EHR setup.php script to install phpGACL
+ // This program is run by the LibreEHR setup.php script to install phpGACL
  // and creates the Access Control Objects and their sections.
  // See libreehr/library/acl.inc file for the list of
  // currently supported Access Control Objects(ACO), which this
@@ -21,7 +21,7 @@
  //      Accounting
  //
  // Upgrade Howto
- // When upgrading to a new version of LibreHealth EHR, run the acl_upgrade.php
+ // When upgrading to a new version of LibreEHR, run the acl_upgrade.php
  // script to update the phpGACL access controls.  This is required to
  // ensure the database includes all the required Access Control 
  // Objects(ACO).
@@ -41,7 +41,7 @@
  // Create the ACO sections.  Every ACO must have a section.
  //
  if ($gacl->add_object_section('Accounting', 'acct', 10, 0, 'ACO') === FALSE) {
-  echo "Unable to create the access controls for LibreHealth EHR.  You have likely already run this script (acl_setup.php) successfully.<br>Other possible problems include php-GACL configuration file errors (gacl.ini.php or gacl.class.php).<br>";
+  echo "Unable to create the access controls for LibreEHR.  You have likely already run this script (acl_setup.php) successfully.<br>Other possible problems include php-GACL configuration file errors (gacl.ini.php or gacl.class.php).<br>";
   return;
  }
      // xl('Accounting')
@@ -204,7 +204,7 @@ $breakglass  = $gacl->add_group('breakglass' , 'Emergency Login'    , $users, 'A
 
  // Create the Administrator in the above-created "users" section
  // and add him/her to the above-created "admin" group.
- // If this script is being used by LibreHealth EHR's setup, then will
+ // If this script is being used by LibreEHR's setup, then will
  //   incorporate the installation values. Otherwise will
 //    hardcode the 'admin' user.
  if (isset($this) && isset($this->iuser)) {
@@ -412,11 +412,11 @@ $breakglass  = $gacl->add_group('breakglass' , 'Emergency Login'    , $users, 'A
 ?>
 <html>
 <head>
-<title>LibreHealth EHR ACL Setup</title>
+<title>LibreEHR ACL Setup</title>
 <link rel=STYLESHEET href="interface/themes/style_blue.css">
 </head>
 <body>
-<b>LibreHealth EHR ACL Setup</b>
+<b>LibreEHR ACL Setup</b>
 <br>
 All done configuring and installing access controls (php-GACL)!
 </body>

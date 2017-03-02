@@ -6,7 +6,7 @@
  * The logic will also render the appropriate action button which
  * can be one of the following:
  *      INSTALL - this is rendered when the external database has
- *                not been installed in this LibreHealth EHR instance
+ *                not been installed in this LIBREEHR instance
  *      UPGRADE - this is rendered when the external database has
  *                been installed and the staged files are more recent
  *                than the instance installed
@@ -27,7 +27,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author  (Mac) Kevin McAloon <mcaloon@patienthealthcareanalytics.com>
  * @author  Rohit Kumar <pandit.rohit@netsity.com>
  * @author  Brady Miller <brady@sparmy.com>
@@ -109,21 +109,21 @@ if (is_dir($mainPATH)) {
         $file = $mainPATH."/".$file;
         if (is_file($file)) {
             if (!strpos($file, ".zip") !== false) {
-            unset($files_array[$i]);
-            continue;
-        }
-        $supported_file = 0;
+	        unset($files_array[$i]);
+	        continue;
+	    }
+	    $supported_file = 0;
             if ($db == 'RXNORM') {
                 if (preg_match("/RxNorm_full_([0-9]{8}).zip/",$file,$matches)) {
     
-            // Hard code the version RxNorm feed to be Standard
+		    // Hard code the version RxNorm feed to be Standard
                     //  (if add different RxNorm types/versions/lanuages, then can use this)
-            //
+		    //
                     $version = "Standard";
                     $date_release = substr($matches[1],4)."-".substr($matches[1],0,2)."-".substr($matches[1],2,-4);
                     $temp_date = array('date'=>$date_release, 'version'=>$version, 'path'=>$mainPATH."/".$matches[0]);
                     array_push($revisions,$temp_date);
-                $supported_file = 1;
+	    	    $supported_file = 1;
                 }
             }
             else if ($db == 'SNOMED') {
@@ -136,18 +136,18 @@ if (is_dir($mainPATH)) {
                     $date_release = substr($matches[1],0,4)."-".substr($matches[1],4,-2)."-".substr($matches[1],6);
                     $temp_date = array('date'=>$date_release, 'version'=>$version, 'path'=>$mainPATH."/".$matches[0]);
                     array_push($revisions,$temp_date);
-                $supported_file = 1;
+	    	    $supported_file = 1;
                 }
                 else if (preg_match("/SnomedCT_Release_INT_([0-9]{8}).zip/",$file,$matches)) {
     
-            // Hard code the version SNOMED feed to be International:English
+		    // Hard code the version SNOMED feed to be International:English
                     //  (if add different SNOMED types/versions/languages, then can use this)
                     //
                     $version = "International:English";
                     $date_release = substr($matches[1],0,4)."-".substr($matches[1],4,-2)."-".substr($matches[1],6);
                     $temp_date = array('date'=>$date_release, 'version'=>$version, 'path'=>$mainPATH."/".$matches[0]);
                     array_push($revisions,$temp_date);
-                $supported_file = 1;
+	    	    $supported_file = 1;
                 }
                 else if (preg_match("/SnomedCT_Release_US[0-9]*_([0-9]{8}).zip/",$file,$matches)) {
 
@@ -188,37 +188,37 @@ if (is_dir($mainPATH)) {
                 }
             }
             else if (is_numeric(strpos($db, "ICD"))) {
-            
-                $qry_str = "SELECT `load_checksum`,`load_source`,`load_release_date` FROM `supported_external_dataloads` WHERE `load_type` = ? and `load_filename` = ? and `load_checksum` = ? ORDER BY `load_release_date` DESC";
+	        
+    	        $qry_str = "SELECT `load_checksum`,`load_source`,`load_release_date` FROM `supported_external_dataloads` WHERE `load_type` = ? and `load_filename` = ? and `load_checksum` = ? ORDER BY `load_release_date` DESC";
 
-        // this query determines whether you can load the data into LibreHealth EHR. you must have the correct 
-        // filename and checksum for each file that are part of the same release. 
-        // 
-        // IMPORTANT: Releases that contain mutliple zip file (e.g. ICD10) are grouped together based 
-        // on the load_release_date attribute value specified in the supported_external_dataloads table
+		// this query determines whether you can load the data into LIBREEHR. you must have the correct 
+		// filename and checksum for each file that are part of the same release. 
+		// 
+		// IMPORTANT: Releases that contain mutliple zip file (e.g. ICD10) are grouped together based 
+		// on the load_release_date attribute value specified in the supported_external_dataloads table
                 //
                 // Just in case same filename is released on different release dates, best to actually include the md5sum in the query itself.
                 // (and if a hit, then it is a pass)
                 // (even if two duplicate files that are in different releases, will still work since chooses most recent)
                 $file_checksum = md5(file_get_contents($file));
-                $sqlReturn = sqlQuery($qry_str, array($db, basename($file), $file_checksum) );
+    	        $sqlReturn = sqlQuery($qry_str, array($db, basename($file), $file_checksum) );
 
-            if (!empty($sqlReturn)) {
+	        if (!empty($sqlReturn)) {
                     $version = $sqlReturn['load_source'];
                     $date_release = $sqlReturn['load_release_date'];
                     $temp_date = array('date'=>$date_release, 'version'=>$version, 'path'=>$file, 'checksum'=>$file_checksum);
                     array_push($revisions,$temp_date);
-                $supported_file = 1;
+	    	    $supported_file = 1;
                 }
-        }
-        if ($supported_file === 1) {
-        ?><div class="stg"><?php echo text(basename($file)); ?></div>
-        <?php
-        } else {
+	    }
+	    if ($supported_file === 1) {
+		?><div class="stg"><?php echo text(basename($file)); ?></div>
+		<?php
+	    } else {
                 ?>
-            <div class="error_msg"><?php echo xlt("UNSUPPORTED database load file"); ?>: <BR><?php echo text(basename($file)) ?><span class="msg" id="<?php echo attr($db); ?>_unsupportedmsg">!</span></div>
-        <?php
-        }
+    		<div class="error_msg"><?php echo xlt("UNSUPPORTED database load file"); ?>: <BR><?php echo text(basename($file)) ?><span class="msg" id="<?php echo attr($db); ?>_unsupportedmsg">!</span></div>
+		<?php
+	    }
         }
     }
 } else {
@@ -350,10 +350,10 @@ if ($supported_file === 1) {
             $action=xl("UPGRADE");
         } else if ( (strtotime($current_revision) == strtotime($file_revision_date)) ) {
             // Note the exception here when installing US Extension
-        ?>
-        <div class="error_msg"><?php echo xlt("The installed version and the staged files are the same."); ?></div>
+	    ?>
+	    <div class="error_msg"><?php echo xlt("The installed version and the staged files are the same."); ?></div>
             <div class="stg msg"><?php echo xlt("Follow these instructions for installing or upgrading the following database") . ": " . text($db); ?><span class="msg" id="<?php echo attr($db); ?>_instrmsg">?</span></div>
-        <?php
+	    <?php
         } else if ( strtotime($current_revision) > strtotime($file_revision_date) ) {
             // Note the exception here when installing US Extension
             ?>
@@ -361,10 +361,10 @@ if ($supported_file === 1) {
             <div class="stg msg"><?php echo xlt("Follow these instructions for installing or upgrading the following database") . ": " . text($db); ?><span class="msg" id="<?php echo attr($db); ?>_instrmsg">?</span></div>
             <?php
         } else {
-        ?>
-        <div class="stg"><?php echo text(basename($file_revision_path)); ?> <?php echo xlt("is a more recent version of the following database") . ": " . text($db); ?></div>
-        <?php
-        $action=xl("UPGRADE");
+	    ?>
+	    <div class="stg"><?php echo text(basename($file_revision_path)); ?> <?php echo xlt("is a more recent version of the following database") . ": " . text($db); ?></div>
+	    <?php
+	    $action=xl("UPGRADE");
         }
     } else {
         if ($db=="SNOMED" && $file_revision=="US Extension") {
@@ -375,7 +375,7 @@ if ($supported_file === 1) {
             <?php
         }
         else if (count($files_array) > 0) {
-        $action=xl("INSTALL");
+	    $action=xl("INSTALL");
         }
         else {
             //do nothing
@@ -383,8 +383,8 @@ if ($supported_file === 1) {
     }
     if (strlen($action) > 0) {
     ?>
-      <input id="<?php echo attr($db); ?>_install_button" version="<?php echo attr($file_revision); ?>" file_revision_date="<?php echo attr($file_revision_date); ?>" file_checksum="<?php echo attr($file_checksum); ?>" type="button" value="<?php echo attr($action); ?>"/>
-      </div> 
+	  <input id="<?php echo attr($db); ?>_install_button" version="<?php echo attr($file_revision); ?>" file_revision_date="<?php echo attr($file_revision_date); ?>" file_checksum="<?php echo attr($file_checksum); ?>" type="button" value="<?php echo attr($action); ?>"/>
+	  </div> 
     <?php
     }
   }

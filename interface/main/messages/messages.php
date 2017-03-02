@@ -6,7 +6,7 @@
  * 2013-03-27 by sunsetsystems: Fixed some weirdness with assigning a message recipient,
  *   and allowing a message to be closed with a new note appended and no recipient.
  *
- * Copyright (c) 2010 LibreHealth EHR Support LLC
+ * Copyright (c) 2010 LibreEHR Support LLC
  *
  * LICENSE: This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License 
@@ -19,12 +19,12 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreHealth EHR
- * @author LibreHealth EHR Support LLC
+ * @package LibreEHR
+ * @author LibreEHR Support LLC
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Brady Miller <brady@sparmy.com>
- * @link http://librehealth.io 
+ * @link http://www.open-emr.org 
  */
 
 //SANITIZE ALL ESCAPES
@@ -203,7 +203,7 @@ switch($task) {
         $delete_id = $_POST['delete_id'];
         for($i = 0; $i < count($delete_id); $i++) {
             deletePnote($delete_id[$i]);
-        newEvent("delete", $_SESSION['authUser'], $_SESSION['authProvider'], 1, "pnotes: id ".$delete_id[$i]);
+	    newEvent("delete", $_SESSION['authUser'], $_SESSION['authProvider'], 1, "pnotes: id ".$delete_id[$i]);
         }
     } break;
 }
@@ -297,7 +297,7 @@ if ($noteid) {
     echo "  <td class='text'><b>";
     echo xlt('Linked document') . ":</b>\n";
     while ($gprow = sqlFetchArray($tmp)) {
-      $d = new Document($gprow['id1']); 
+      $d = new Document($gprow['id1']);	
       echo "   <a href='";
       echo $GLOBALS['webroot'] . "/controller.php?document&retrieve";
       echo "&patient_id="  . $d->get_foreign_id();
@@ -534,18 +534,18 @@ else {
             echo "
             <tr id=\"row$count\" style=\"background:white\" height=\"24\">
                 <td align=\"center\" style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><input type=checkbox id=\"check$count\" name=\"delete_id[]\" value=\"" .
-              htmlspecialchars( $myrow['id'], ENT_QUOTES) . "\" onclick=\"if(this.checked==true){ selectRow('row$count'); }else{ deselectRow('row$count'); }\"></td>
+	          htmlspecialchars( $myrow['id'], ENT_QUOTES) . "\" onclick=\"if(this.checked==true){ selectRow('row$count'); }else{ deselectRow('row$count'); }\"></td>
                 <td style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><table cellspacing=0 cellpadding=0 width=100%><tr><td width=5></td><td class=\"text\">" .
-              htmlspecialchars( $name, ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
+	          htmlspecialchars( $name, ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
                 <td style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><table cellspacing=0 cellpadding=0 width=100%><tr><td width=5></td><td class=\"text\"><a href=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&task=edit&noteid=" .
-              htmlspecialchars( $myrow['id'], ENT_QUOTES) . "&$activity_string_html\" onclick=\"top.restoreSession()\">" .
-          htmlspecialchars( $patient, ENT_NOQUOTES) . "</a></td><td width=5></td></tr></table></td>
+	          htmlspecialchars( $myrow['id'], ENT_QUOTES) . "&$activity_string_html\" onclick=\"top.restoreSession()\">" .
+		  htmlspecialchars( $patient, ENT_NOQUOTES) . "</a></td><td width=5></td></tr></table></td>
                 <td style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><table cellspacing=0 cellpadding=0 width=100%><tr><td width=5></td><td class=\"text\">" .
-              htmlspecialchars( $myrow['title'], ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
+	          htmlspecialchars( $myrow['title'], ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
                 <td style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><table cellspacing=0 cellpadding=0 width=100%><tr><td width=5></td><td class=\"text\">" .
-              htmlspecialchars( oeFormatShortDate(substr($myrow['date'], 0, strpos($myrow['date'], " "))), ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
+	          htmlspecialchars( oeFormatShortDate(substr($myrow['date'], 0, strpos($myrow['date'], " "))), ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
                 <td style=\"border-bottom: 1px #000000 solid;\"><table cellspacing=0 cellpadding=0 width=100%><tr><td width=5></td><td class=\"text\">" .
-              htmlspecialchars( $myrow['message_status'], ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
+	          htmlspecialchars( $myrow['message_status'], ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
             </tr>";
         }
     // Display the Messages table footer.

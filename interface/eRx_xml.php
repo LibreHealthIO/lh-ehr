@@ -15,11 +15,11 @@
  * General Public License along with this program.
  * If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package    LibreHealth EHR
+ * @package    LibreEHR
  * @subpackage NewCrop
  * @author     Eldho Chacko <eldho@zhservices.com>
  * @author     Vinish K <vinish@zhservices.com>
- * @link       http://librehealth.io
+ * @link       http://www.open-emr.org
  */
 
 function getErxPath()
@@ -75,7 +75,7 @@ function trimData($str,$length)
 
 function stringToNumeric($str)
 {
-    if(is_numeric($str)){
+	if(is_numeric($str)){
     return array($str,"");
     }
     else{
@@ -189,8 +189,8 @@ function account($doc,$r)
     $erxSiteID=sqlQuery("SELECT * FROM facility WHERE primary_business_entity='1'");
     if(!$erxSiteID['federal_ein'])
     {
-    echo htmlspecialchars( xl("Please select a Primary Business Entity facility with 'Tax ID' as your facility Tax ID. If you are an individual practitioner, use your tax id. This is used for identifying you in the NewCrop system."), ENT_NOQUOTES);
-    die;
+	echo htmlspecialchars( xl("Please select a Primary Business Entity facility with 'Tax ID' as your facility Tax ID. If you are an individual practitioner, use your tax id. This is used for identifying you in the NewCrop system."), ENT_NOQUOTES);
+	die;
     }
     $b = $doc->createElement( "Account" );
     $b->setAttribute('ID', $GLOBALS['erx_account_id']);
@@ -230,26 +230,26 @@ function account($doc,$r)
         );
         $AccountAddress->appendChild( $state );
         $jasonbigzip=$erxSiteID['postal_code'];
-    $jasonbigzip=preg_replace('/[^0-9]/','',$jasonbigzip);
-    if(strlen($jasonbigzip) >=5){
-        $jasonzip=substr($jasonbigzip,0,5);
-        $zip4=substr($jasonbigzip,5,4);
-    }
-    else{
-        $msg = validation(xl('Facility Zip'),$jasonzip,$msg);
-    }
+	$jasonbigzip=preg_replace('/[^0-9]/','',$jasonbigzip);
+	if(strlen($jasonbigzip) >=5){
+	    $jasonzip=substr($jasonbigzip,0,5);
+	    $zip4=substr($jasonbigzip,5,4);
+	}
+	else{
+	    $msg = validation(xl('Facility Zip'),$jasonzip,$msg);
+	}
         $zip = $doc->createElement( "zip" );
         $zip->appendChild(
             $doc->createTextNode( $jasonzip )
         );
         $AccountAddress->appendChild( $zip );
-    if(strlen($zip4)==4){
-        $zipFour = $doc->createElement( "zip4" );
-        $zipFour->appendChild(
-        $doc->createTextNode( $zip4 )
-        );
-        $AccountAddress->appendChild( $zipFour );
-    }
+	if(strlen($zip4)==4){
+	    $zipFour = $doc->createElement( "zip4" );
+	    $zipFour->appendChild(
+		$doc->createTextNode( $zip4 )
+	    );
+	    $AccountAddress->appendChild( $zipFour );
+	}
         $msg = validation(xl('Facility Country code'),$erxSiteID['country_code'],$msg);
         $county_code = substr($erxSiteID['country_code'],0,2);
         $country = $doc->createElement( "country" );
@@ -312,27 +312,27 @@ function location($doc,$r)
         );
         $LocationAddress->appendChild($state);
         }
-    $jasonbigzip=$userRole['postal_code'];
-    $jasonbigzip=preg_replace('/[^0-9]/','',$jasonbigzip);
-    if(strlen($jasonbigzip) >=5){
-        $jasonzip=substr($jasonbigzip,0,5);
-        $zip4=substr($jasonbigzip,5,4);
-    }
-    else{
-        $msg = validation(xl('Facility Zip'),$jasonzip,$msg);
-    }
+	$jasonbigzip=$userRole['postal_code'];
+	$jasonbigzip=preg_replace('/[^0-9]/','',$jasonbigzip);
+	if(strlen($jasonbigzip) >=5){
+	    $jasonzip=substr($jasonbigzip,0,5);
+	    $zip4=substr($jasonbigzip,5,4);
+	}
+	else{
+	    $msg = validation(xl('Facility Zip'),$jasonzip,$msg);
+	}
         $zip = $doc->createElement( "zip" );
         $zip->appendChild(
             $doc->createTextNode( $jasonzip )
         );
         $LocationAddress->appendChild( $zip );
-    if(strlen($zip4)==4){
-        $zipFour = $doc->createElement( "zip4" );
-        $zipFour->appendChild(
-        $doc->createTextNode( $zip4 )
-        );
-        $LocationAddress->appendChild( $zipFour );
-    }
+	if(strlen($zip4)==4){
+	    $zipFour = $doc->createElement( "zip4" );
+	    $zipFour->appendChild(
+		$doc->createTextNode( $zip4 )
+	    );
+	    $LocationAddress->appendChild( $zipFour );
+	}
         if($userRole['country_code']){
         $county_code = substr($userRole['country_code'],0,2);
         $country = $doc->createElement( 'country' );
@@ -681,7 +681,7 @@ function Patient($doc,$r,$pid)
     PatientFreeformHealthplans($doc,$b,$pid);
     $allergyId=PatientFreeformAllergy($doc,$b,$pid);
     $r->appendChild( $b );
-    return $allergyId;
+	return $allergyId;
 }
 
 function OutsidePrescription($doc,$r,$pid,$prescid)
@@ -755,11 +755,11 @@ function PatientMedication($doc,$r,$pid,$med_limit)
     if($GLOBALS['erx_upload_active']==1)
         $active = " and (enddate is null or enddate = '' or enddate = '0000-00-00' )";
     $res_med=sqlStatement("select * from lists where type='medication' and pid=? and title<>''
-    and erx_uploaded='0' $active order by enddate limit 0,$med_limit",array($pid));
-    $uploaded_med_arr="";
+	and erx_uploaded='0' $active order by enddate limit 0,$med_limit",array($pid));
+	$uploaded_med_arr="";
     while($row_med=sqlFetchArray($res_med))
     {
-        $uploaded_med_arr[]=$row_med['id'];
+		$uploaded_med_arr[]=$row_med['id'];
         $b = $doc->createElement( "OutsidePrescription" );
             $externalId = $doc->createElement( "externalId" );
             $externalId->appendChild(
@@ -805,15 +805,15 @@ function PatientMedication($doc,$r,$pid,$med_limit)
         $r->appendChild( $b );
 
     }
-    return $uploaded_med_arr;
+	return $uploaded_med_arr;
 }
 
 function PatientFreeformAllergy($doc,$r,$pid)
 {
     $res=sqlStatement("SELECT id,l.title as title1,lo.title as title2,comments FROM lists AS l
     LEFT JOIN list_options AS lo ON l.outcome=lo.option_id AND lo.list_id='outcome'
-    WHERE `type`='allergy' AND pid=? AND erx_source='0' and erx_uploaded='0' AND (enddate is null or enddate = '' or enddate = '0000-00-00')",array($pid));
-    $allergyId=array();
+	WHERE `type`='allergy' AND pid=? AND erx_source='0' and erx_uploaded='0' AND (enddate is null or enddate = '' or enddate = '0000-00-00')",array($pid));
+	$allergyId=array();
     while($row=sqlFetchArray($res))
     {
         $val=array();
@@ -845,9 +845,9 @@ function PatientFreeformAllergy($doc,$r,$pid)
             $b->appendChild( $allergyComment );
             }
         $r->appendChild( $b );
-        $allergyId[]=$row['id'];
+		$allergyId[]=$row['id'];
     }
-    return $allergyId;
+	return $allergyId;
 }
 
 function PatientFreeformHealthplans($doc, $r, $pid) {

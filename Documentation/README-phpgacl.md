@@ -1,26 +1,26 @@
-             Hints for Using phpGACL with LibreHealth EHR
-              by Rod Roark <rod at sunsetsystems dot com>
+             Hints for Using phpGACL with LibreEHR
+          by Rod Roark <rod at sunsetsystems dot com>
 
 Installation Instructions
 
-phpGACL access controls are embedded and installed by default in LibreHealth EHR
+phpGACL access controls are embedded and installed by default in LibreEHR
 versions 2.9.0.3 or later.  The administration of the access controls is
-within LibreHealth EHR in the admin->acl menu. The library/acl.inc file can be
+within LibreEHR in the admin->acl menu. The library/acl.inc file can be
 easily modified to turn off phpGACL or to use an external version.
 
 
 Upgrading Instructions
 
-After you have upgraded to a new version of LibreHealth EHR, you should
+After you have upgraded to a new version of LibreEHR, you should
 run the acl_upgrade.php program using your web browser
 (e.g. http://libreehr.location/acl_upgrade.php). This will ensure your
-phpGACL database contains all the required LibreHealth EHR Access Control
+phpGACL database contains all the required LibreEHR Access Control
 Objects.
 
 
 For Developers
 
-If you add a new Access Control Object to the LibreHealth EHR codebase, then
+If you add a new Access Control Object to the LibreEHR codebase, then
 also add it to the following three sites:
 1. Header notes of the library/acl.inc file
 2. acl_setup.php file
@@ -29,15 +29,15 @@ also add it to the following three sites:
 
 Miscellaneous Information
 (the below information is only applicable
-to LibreHealth EHR versions less than 2.9.0.3 or to users who choose to
+to LibreEHR versions less than 2.9.0.3 or to users who choose to
 install an external version of phpGACL)
 
-If you are using an LibreHealth EHR version previous to 2.9.0.3, then phpGACL
+If you are using an LibreEHR version previous to 2.9.0.3, then phpGACL
 has not been automatically installed.  Setting it up takes some careful
 study, planning and a bit of time.  If you don't have the time then you
 should hire an experienced person to set things up for you.  Helpful
 installation and configuration instructions can be found on the wiki at the
-librehealth.io site.
+www.open-emr.org site.
 
 Alternatively, it's possible to set up your own access rules without
 using phpGACL by customizing the code in library/acl.inc.  See that
@@ -46,7 +46,7 @@ module for more information.
 phpGACL is available from http://phpgacl.sourceforge.net/.  Read
 its documentation and install it according to its instructions.
 Helpful installation and configuration instructions can also be
-found on the wiki at the librehealth.io site.
+found on the wiki at the www.open-emr.org site.
 
 The admin GUI needs to be protected, so add something like this
 to your Apache configuration:
@@ -62,14 +62,14 @@ And of course make an associated .htpasswd file at the corresponding
 location.  See "man htpasswd2" if you have Apache 2.  Yes, it's quite
 odd that the phpGACL GUI does not control access to itself!
 
-Note that LibreHealth EHR does not use AXOs, so ignore the AXO Group Admin
+Note that LibreEHR does not use AXOs, so ignore the AXO Group Admin
 tab and other references to AXOs.
 
 After you have installed phpGACL and modified library/acl.inc
 appropriately, you should run the acl_setup.php program using your
 web browser (e.g. http://libreehr.location/acl_setup.php).  This will
 create some required and sample objects in the phpGACL database for
-LibreHealth EHR.
+LibreEHR.
 
 acl_setup.php creates required Access Control Objects (ACOs, the
 things to be protected), several sample Access Request Object (AROs
@@ -77,13 +77,13 @@ are the users requesting access), and their corresponding sections.
 You may also create such objects yourself using the "ACL Admin"
 tab of the phpGACL GUI.
 
-The Access Control Objects (ACOs) for LibreHealth EHR have a very specific
+The Access Control Objects (ACOs) for LibreEHR have a very specific
 structure.  This is described in the file library/acl.inc, which
 you must also modify in order to enable use of phpGACL.
 
 You must manually create an ARO in this "users" section for each
-LibreHealth EHR user (except for the "admin" user which the setup program
-creates).  The Value column must be the user's LibreHealth EHR login name,
+LibreEHR user (except for the "admin" user which the setup program
+creates).  The Value column must be the user's LibreEHR login name,
 and the Name column can (should) be their full name.
 
 By the way, values in the "Order" columns do not seem to be important.

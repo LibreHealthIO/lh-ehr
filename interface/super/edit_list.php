@@ -2,7 +2,6 @@
 /**
  * Administration Lists Module.
  *
- * Copyright (C) 2014-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2007-2015 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -16,11 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Teny <teny@zhservices.com> 
- * @author  Terry Hill <teryhill@librehealth.io>
  * @link    http://librehealth.io
  */
 
@@ -908,7 +906,7 @@ while ($row = sqlFetchArray($res)) {
   <td><b><?php echo xlt('Force Show'); ?></b></td>
 <?php } else { ?>
   <td title=<?php xl('Click to edit','e','\'','\''); ?>><b><?php  xl('ID','e'); ?></b></td>
-  <td><b><?php xl('Title'  ,'e'); ?></b></td>   
+  <td><b><?php xl('Title'  ,'e'); ?></b></td>	
   <?php //show translation column if not english and the translation lists flag is set 
   if ($GLOBALS['translate_lists'] && $_SESSION['language_choice'] > 1) {
     echo "<td><b>".xl('Translation')."</b><span class='help' title='".xl('The translated Title that will appear in current language')."'> (?)</span></td>";    
@@ -932,9 +930,9 @@ while ($row = sqlFetchArray($res)) {
   <td><b><?php xl('Global ID','e'); ?></b></td>
 <?php } ?>
   <td><b><?php 
-          if ($list_id == 'language') {
-            xl('ISO 639-2 Code','e');
-          } else if ($list_id == 'personal_relationship' || $list_id == 'religious_affiliation' || $list_id == 'ethnicity' || $list_id == 'race' || $list_id == 'drug_route'){
+		  if ($list_id == 'language') {
+		  	xl('ISO 639-2 Code','e');
+		  } else if ($list_id == 'personal_relationship' || $list_id == 'religious_affiliation' || $list_id == 'ethnicity' || $list_id == 'race' || $list_id == 'drug_route'){
                         xl('HL7-V3 Concept Code','e');
                   } else if ($list_id == 'Immunization_Completion_Status'){
                         xl('Treatment Completion Status','e');
@@ -947,8 +945,8 @@ while ($row = sqlFetchArray($res)) {
                   } else if ( $list_id == 'county' ) {
                         xl('INCITS Code','e'); //International Committee for Information Technology Standards
       } else {
-            xl('Notes','e');
-          } 
+		  	xl('Notes','e');
+		  } 
   ?></b></td>
 
   <td><b><?php xl('Code(s)','e'); ?></b></td>

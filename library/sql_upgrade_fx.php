@@ -18,11 +18,11 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
 * 
-* @package   LibreHealth EHR
+* @package   LibreEHR
 * @author    Rod Roark <rod@sunsetsystems.com>
 * @author    Brady Miller <brady@sparmy.com>
 * @author  Teny <teny@zhservices.com>
-* @link      http://librehealth.io
+* @link      http://www.open-emr.org
 */
 
 /**
@@ -417,15 +417,15 @@ function upgradeFromSqlFile($filename) {
     }
     else if (preg_match('/^#IfNotRow2Dx2\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.+)/', $line, $matches)) {
       if (tableExists($matches[1])) {
-    // If either check exist, then will skip
-    $firstCheck = tableHasRow2D($matches[1], $matches[2], $matches[3], $matches[4], $matches[5]);
-    $secondCheck = tableHasRow2D($matches[1], $matches[2], $matches[3], $matches[6], $matches[7]);
-    if ($firstCheck || $secondCheck) {
-      $skipping = true;   
-    }
-    else {
+	// If either check exist, then will skip
+	$firstCheck = tableHasRow2D($matches[1], $matches[2], $matches[3], $matches[4], $matches[5]);
+	$secondCheck = tableHasRow2D($matches[1], $matches[2], $matches[3], $matches[6], $matches[7]);
+	if ($firstCheck || $secondCheck) {
+	  $skipping = true;   
+	}
+	else {
           $skipping = false;
-    }
+	}
       }
       else {
         // If no such table then the row is deemed not "missing".
@@ -444,14 +444,14 @@ function upgradeFromSqlFile($filename) {
       if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
     }
     else if (preg_match('/^#IfRow3D\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.+)/', $line, $matches)) {
-        if (tableExists($matches[1])) {
-            $skipping = !(tableHasRow3D($matches[1], $matches[2], $matches[3], $matches[4], $matches[5], $matches[6], $matches[7]));
-        }
-        else {
-            // If no such table then should skip.
-            $skipping = true;
-        }
-        if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
+    	if (tableExists($matches[1])) {
+    		$skipping = !(tableHasRow3D($matches[1], $matches[2], $matches[3], $matches[4], $matches[5], $matches[6], $matches[7]));
+    	}
+    	else {
+    		// If no such table then should skip.
+    		$skipping = true;
+    	}
+    	if ($skipping) echo "<font color='green'>Skipping section $line</font><br />\n";
     }
 
     else if (preg_match('/^#IfNotListOccupation/', $line)) {

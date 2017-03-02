@@ -34,11 +34,11 @@
  *
  * See the Mozilla Public License for more details.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author Name <tony@mi-squared.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
  *
  * JSON EDITOR is included from:

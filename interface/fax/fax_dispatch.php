@@ -418,6 +418,7 @@ div.section {
 
 <script language="JavaScript">
 
+ var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
 

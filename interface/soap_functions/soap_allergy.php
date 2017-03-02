@@ -16,17 +16,17 @@
  * General Public License along with this program.
  * If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package    LibreHealth EHR
+ * @package    LibreEHR
  * @subpackage NewCrop
  * @author     Eldho Chacko <eldho@zhservices.com>
  * @author     Vinish K <vinish@zhservices.com>
  * @author     Sam Likins <sam.likins@wsi-services.com>
- * @link       http://librehealth.io
+ * @link       http://www.open-emr.org
  */
 
-$sanitize_all_escapes = true;       // SANITIZE ALL ESCAPES
+$sanitize_all_escapes = true;		// SANITIZE ALL ESCAPES
 
-$fake_register_globals = false;     // STOP FAKE REGISTER GLOBALS
+$fake_register_globals = false;		// STOP FAKE REGISTER GLOBALS
 
 require_once(__DIR__.'/../globals.php');
 require_once($GLOBALS['fileroot'].'/interface/eRxGlobals.php');
@@ -41,30 +41,30 @@ set_time_limit(0);
 
 $eRxSOAP = new eRxSOAP;
 $eRxSOAP->setGlobals(new eRxGlobals($GLOBALS))
-    ->setStore(new eRxStore)
-    ->setAuthUserId($_SESSION['authUserID']);
+	->setStore(new eRxStore)
+	->setAuthUserId($_SESSION['authUserID']);
 
 if(array_key_exists('patient', $_REQUEST)) {
-    $eRxSOAP->setPatientId($_REQUEST['patient']);
+	$eRxSOAP->setPatientId($_REQUEST['patient']);
 } elseif(array_key_exists('pid', $GLOBALS)) {
-    $eRxSOAP->setPatientId($GLOBALS['pid']);
+	$eRxSOAP->setPatientId($GLOBALS['pid']);
 }
 
 if((array_key_exists('refresh', $_REQUEST)
-        && $_REQUEST['refresh'] == 'true')
-    || $eRxSOAP->elapsedTTL(eRxSOAP::ACTION_ALLERGIES)
-    || $eRxSOAP->checkPatientImportStatus(eRxSOAP::FLAG_ALLERGY_PRESS)
+		&& $_REQUEST['refresh'] == 'true')
+	|| $eRxSOAP->elapsedTTL(eRxSOAP::ACTION_ALLERGIES)
+	|| $eRxSOAP->checkPatientImportStatus(eRxSOAP::FLAG_ALLERGY_PRESS)
 ) {
-    $eRxSOAP->insertUpdateAllergies();
+	$eRxSOAP->insertUpdateAllergies();
 
-    $message = $eRxSOAP->updateUploadedErx()
-        ? xl('Allergy import successfully completed')
-        : xl('Nothing to import for Allergy');
+	$message = $eRxSOAP->updateUploadedErx()
+		? xl('Allergy import successfully completed')
+		: xl('Nothing to import for Allergy');
 
-    $eRxSOAP->updatePatientImportStatus(eRxSOAP::FLAG_ALLERGY_IMPORT)
-        ->updateTTL(eRxSOAP::ACTION_ALLERGIES);
+	$eRxSOAP->updatePatientImportStatus(eRxSOAP::FLAG_ALLERGY_IMPORT)
+		->updateTTL(eRxSOAP::ACTION_ALLERGIES);
 } else {
-    $message = xl('Import deferred for time-to-live');
+	$message = xl('Import deferred for time-to-live');
 }
 
 echo text($message);

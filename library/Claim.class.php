@@ -26,10 +26,11 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Terry Hill <teryhill@librehealth.io>
- * @link http://librehealth.io
+ * no other authors present in header file
+ * @link http://www.libreehr.org
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *

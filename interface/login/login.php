@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Kevin Yeh <kevin.y@integralemr.com>
@@ -228,7 +228,7 @@ include_once("$srcdir/sql.inc");
         </div>
         </div>
         <div class="demo">
-            <!-- Uncomment this for the LibreHealth EHR demo installation
+            <!-- Uncomment this for the LibreEHR demo installation
             <p><center>login = demo
             <br>pass phrase = I am Free!
             -->

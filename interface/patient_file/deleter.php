@@ -18,14 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreHealth EHR
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @link    http://librehealth.io
  */
-
- $fake_register_globals=false;
- $sanitize_all_escapes=true;
 
 require_once('../globals.php');
 require_once($GLOBALS['srcdir'].'/log.inc');
@@ -169,12 +166,12 @@ document.deletefrm.submit();
 }
 // Java script function for closing the popup
 function popup_close() {
-    if(parent.$==undefined) {
-        window.close();
-     }
-     else {
-        parent.$.fn.fancybox.close(); 
-     }    
+	if(parent.$==undefined) {
+	  	window.close();
+	 }
+	 else {
+	  	parent.$.fn.fancybox.close(); 
+	 }	  
 }
 </script>
 </head>
@@ -204,14 +201,14 @@ function popup_close() {
    row_delete("history_data"   , "pid = '$patient'");
    row_delete("insurance_data" , "pid = '$patient'");
 
-   $res = sqlStatement("SELECT * FROM forms WHERE pid = ?", array($patient));
+   $res = sqlStatement("SELECT * FROM forms WHERE pid = '$patient'");
    while ($row = sqlFetchArray($res)) {
     form_delete($row['formdir'], $row['form_id']);
    }
    row_delete("forms", "pid = '$patient'");
    
    // Delete all documents for the patient.
-   $res = sqlStatement("SELECT id FROM documents WHERE foreign_id = ?", array($patient));
+   $res = sqlStatement("SELECT id FROM documents WHERE foreign_id = '$patient'");
    while ($row = sqlFetchArray($res)) {
     delete_document($row['id']);
    }
@@ -233,7 +230,7 @@ function popup_close() {
   }
   else if ($formid) {
    if (!acl_check('admin', 'super')) die("Not authorized!");
-   $row = sqlQuery("SELECT * FROM forms WHERE id = ?", array($formid));
+   $row = sqlQuery("SELECT * FROM forms WHERE id = '$formid'");
    $formdir = $row['formdir'];
    if (! $formdir) die("There is no form with id '$formid'");
    form_delete($formdir, $row['form_id']);
@@ -254,7 +251,7 @@ function popup_close() {
     // if (empty($ref_id)) $ref_id = -1;
     $timestamp = decorateString('....-..-.. ..:..:..', $timestamp);
     $payres = sqlStatement("SELECT * FROM payments WHERE " .
-      "pid = ? AND dtime = ?", array($patient_id, $timestamp));
+      "pid = '$patient_id' AND dtime = '$timestamp'");
     while ($payrow = sqlFetchArray($payres)) {
       if ($payrow['encounter']) {
         $ref_id = -1;
@@ -266,11 +263,11 @@ function popup_close() {
         $seres = sqlStatement("SELECT " .
           "SUM(pay_amount) AS pay_amount, session_id " .
           "FROM ar_activity WHERE " .
-          "pid = ? AND " .
-          "encounter = ? AND " .
+          "pid = '$patient_id' AND " .
+          "encounter = '" . $payrow['encounter'] . "' AND " .
           "payer_type = 0 AND " .
           "adj_amount = 0.00 " .
-          "GROUP BY session_id ORDER BY session_id DESC", array($patient_id, $payrow['encounter']));
+          "GROUP BY session_id ORDER BY session_id DESC");
         while ($serow = sqlFetchArray($seres)) {
           if (sprintf("%01.2f", $serow['adj_amount']) != 0.00) continue;
           if (sprintf("%01.2f", $serow['pay_amount'] - $tpmt) == 0.00) {
@@ -324,9 +321,9 @@ function popup_close() {
         "activity = 1");
       sqlStatement("UPDATE form_encounter SET last_level_billed = 0, " .
         "last_level_closed = 0, stmt_count = 0, last_stmt_date = NULL " .
-        "WHERE pid = ? AND encounter = ?", array($patient_id, $encounter_id));
+        "WHERE pid = '$patient_id' AND encounter = '$encounter_id'");
     sqlStatement("UPDATE drug_sales SET billed = 0 WHERE " .
-      "pid = ? AND encounter = ?", array($patient_id, $encounter_id));
+      "pid = '$patient_id' AND encounter = '$encounter_id'");
     updateClaim(true, $patient_id, $encounter_id, -1, -1, 1, 0, ''); // clears for rebilling
   }
   else if ($transaction) {
@@ -359,34 +356,34 @@ function popup_close() {
 
 <form method='post' name="deletefrm" action='deleter.php?patient=<?php echo attr($patient) ?>&encounterid=<?php echo attr($encounterid) ?>&formid=<?php echo attr($formid) ?>&issue=<?php echo attr($issue) ?>&document=<?php echo attr($document) ?>&payment=<?php echo attr($payment) ?>&billing=<?php echo attr($billing) ?>&transaction=<?php echo attr($transaction) ?>' onsubmit="javascript:alert('1');document.deleform.submit();">
 
-<p class="text">&nbsp;<br><?php echo xlt('Do you really want to delete'); ?>
+<p class="text">&nbsp;<br><?php xl('Do you really want to delete','e'); ?>
 
 <?php
  if ($patient) {
-  echo xlt('patient') . " " . text($patient);
+  echo xl('patient') . " " . text($patient);
  } else if ($encounterid) {
-  echo xlt('encounter') . " " . text($encounterid);
+  echo xl('encounter') . " " . text($encounterid);
  } else if ($formid) {
-  echo xlt('form') . " " . text($formid);
+  echo xl('form') . " " . text($formid);
  } else if ($issue) {
-  echo xlt('issue') . " " .text($issue);
+  echo xl('issue') . " " .text($issue);
  } else if ($document) {
-  echo xlt('document') . " " . text($document);
+  echo xl('document') . " " . text($document);
  } else if ($payment) {
-  echo xlt('payment') . " " .text($payment);
+  echo xl('payment') . " " .text($payment);
  } else if ($billing) {
-  echo xlt('invoice') . " " . text($billing);
+  echo xl('invoice') . " " . text($billing);
  } else if ($transaction) {
-  echo xlt('transaction') . " " . text($transaction);
+  echo xl('transaction') . " " . text($transaction);
  }
-?> <?php echo xlt('and all subordinate data? This action will be logged'); ?>!</p>
+?> <?php xl('and all subordinate data? This action will be logged','e'); ?>!</p>
 
 <center>
 
 <p class="text">&nbsp;<br>
-<a href="#" onclick="submit_form()" class="css_button"><span><?php echo xlt('Yes, Delete and Log'); ?></span></a>
-<input type='hidden' name='form_submit' value='<?php echo xla('Yes, Delete and Log'); ?>'/>
-<a href='#' class="css_button" onclick=popup_close();><span><?php echo xlt('No, Cancel');?></span></a>
+<a href="#" onclick="submit_form()" class="css_button"><span><?php xl('Yes, Delete and Log','e'); ?></span></a>
+<input type='hidden' name='form_submit' value=<?php xl('Yes, Delete and Log','e','\'','\''); ?>/>
+<a href='#' class="css_button" onclick=popup_close();><span><?php echo xl('No, Cancel');?></span></a>
 </p>
 
 </center>

@@ -16,7 +16,7 @@ V...................Upgrading
 I. Overview of Directories
 
 NOTE: Most recent documentation can be found on the online documentation at
-http://librehealth.io .
+http://www.open-emr.org .
 
 accounting    - Contains information and scripts to support SQL-Ledger
 contrib       - Contains many user-contributed encounter forms and utilities
@@ -30,7 +30,7 @@ gacl          - Contains embedded php-GACL (access controls)
 II. Unpacking
 
 NOTE: Most recent documentation can be found on the online documention at
-http://librehealth.io .
+http://www.open-emr.org .
 
 The LibreEHR release archive should be named as follows:
 
@@ -52,7 +52,7 @@ Linux distributions such as Ubuntu.
 III. Setup
 
 NOTE: Most recent documentation can be found on the online documentation at
-http://librehealth.io .
+http://www.open-emr.org .
 
 To run LibreEHR, MySQL and Apache or another PHP-capable webserver must be configured.
 To download Apache, visit www.apache.org
@@ -238,7 +238,7 @@ using the username that you picked (default 'admin' without quotes), and the
 password.  From there, select the "Administration"
 option, and customize the system to your needs.  Add users and groups as is
 needed. For information on using LibreEHR, consult the User Documentation located
-in the Documentation folder, the documentation at http://librehealth.io, and
+in the Documentation folder, the documentation at http://www.open-emr.org, and
 the forums at http://sourceforge.net/projects/libreehr.
 
 Reading libreehr/sites/default/config.php is a good idea. This file contains some
@@ -275,13 +275,13 @@ within LibreEHR in the admin->acl menu.  This is very powerful
 access control software.  To learn more about phpGACL
 (see http://phpgacl.sourceforge.net/), recommend reading the phpGACL manual,
 the /libreehr/Documentation/README.phpgacl file, and the online documentation at
-http://librehealth.io . Also recommend reading the comments in
+http://www.open-emr.org . Also recommend reading the comments in
 /libreehr/library/acl.inc.
 
 V. Upgrading
 
 NOTE: Most recent documentation can be found on the online documentation at
-http://librehealth.io .
+http://www.open-emr.org .
 
 Be sure to back up your LibreEHR installation and database before upgrading!
 
