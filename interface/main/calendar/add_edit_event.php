@@ -830,7 +830,11 @@ if ($_POST['form_action'] == "save") {
  $startampm = '1';
  if ($starttimeh >= 12) { // p.m. starts at noon and not 12:01
   $startampm = '2';
+      if ( $GLOBALS['time_display_format'] == 1) {
   if ($starttimeh > 12) $starttimeh -= 12;
+    } else {
+       if ($starttimeh > 24) $starttimeh -= 12;
+    }
  }
 
 ?>
