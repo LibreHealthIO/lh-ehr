@@ -1703,7 +1703,7 @@ function generate_display_field($frow, $currvalue) {
   // simple text field
   else if ($data_type == 2) {
     // phone number
-    if(strpos($frow['edit_options'], 'P') !== NULL) {
+    if(strpos($frow['edit_options'], 'P') !== false) {
       $phone = preg_replace("/[^0-9]/", "", $currvalue);    // strip everything except the digits
       $formatted_phone = preg_replace("/^(\d{3})(\d{3})(\d{4})$/", $GLOBALS['phone_number_format'], $phone);
 
