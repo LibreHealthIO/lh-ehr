@@ -1,8 +1,5 @@
 #Installation Instructions
 
-OSI Certified Open Source Software
-
--------------------------------------
 
 ### Table of Contents
 
@@ -36,18 +33,18 @@ gacl: Contains embedded php-GACL (access controls)
 
 The LibreHealthEHR release archive should be named as follows:
 
-`libre-health-ehr-<version>-release.tar.gz  -or-  libre-health-ehr-<version>-release.zip`
+`libreehr-<version>-release.tar.gz  -or-  libreehr-<version>-release.zip`
 
 To extract the archive, use either of the following commands from the command line:
 
-`bash# tar -pxvzf libre-health-ehr-<version>-release.tar.gz`
-`bash# unzip libre-health-ehr-<version>-release.tar.gz`
+`bash# tar -pxvzf libreehr-<version>-release.tar.gz`
+`bash# unzip libreehr-<version>-release.tar.gz`
 
 Be sure to use the `-p` flag when using tar, as certain permissions must be preserved.
 
 LibreHealthEHR will be extracted into a directory named `librehealthehr`.
 
-Alternatively a Debian package may be available as a file named `libre-health-ehr-<version>.deb`.
+Alternatively a Debian package may be available as a file named `libreehr-<version>.deb`.
  This may work with some other Debian-like Linux distributions such as Ubuntu.
 
 ##  Setup
@@ -66,26 +63,53 @@ If you don't already have it, download and install [Apache](www.apache.org), [Ma
   * PHP Index support (ensure that index.php is in your Index path in httpd.conf)
   * Session variables
   * PHP libcurl support (optional for operation, mandatory for billing)
+  
+4. If installing on Linux, make sure these dependencies are met:
+   ```
+apache2
+mysql-server (or if using mariadb, then use 'mariadb-server' instead)
+libapache2-mod-php
+libdate-calc-perl
+libdbd-mysql-perl
+libdbi-perl
+libhtml-parser-perl
+libtiff-tools
+libwww-mechanize-perl
+libxml-parser-perl
+php
+php-mysql
+php-cli
+php-gd
+php-xsl
+php-curl
+php-mcrypt
+php-soap
+php-json
+php-gettext
+imagemagick
+php-mbstring
+php-zip
+php-ldap
+  ```
 
 
 Copy the LibreHealthEHR folder into the root folder of the webserver. On Mandrake Linux, for example, use the command:
-  `bash# mv librehealthehr /var/www/html/`
+  `bash# mv libreehr /var/www/html/`
 
-Make sure the webserver is running, and point a web-browser to `setup.php` located within the libre-health-ehr web folder.  If you installed LibreHealthEHR in the root web directory, the URL would read: `http://localhost/librehealthehr/setup.php`.
+Make sure the webserver is running, and point a web-browser to `setup.php` located within the libreehr web folder.  If you installed LibreHealthEHR in the root web directory, the URL would read: `http://localhost/libreehr/setup.php`.
 The setup script will step you through the configuration of the LibreHealthEHR.
 
 The first screen of the setup script will ensure that the webserver user (in linux, often is `apache`, `www-data`, or `nobody`) has write privileges on certain files and directories. 
-The files include `librehealthehr/sites/default/sqlconf.php` and `librehealthehr/interface/modules/zend_modules/config/application.config.php`.
+The files include `libreehr/sites/default/sqlconf.php` and `libreehr/interface/modules/zend_modules/config/application.config.php`.
 
 In linux, these can be set by `chmod a+w filename` command to grant global write permissions to the file. The directories include: 
 ```
-librehealthehr/gacl/admin/templates_c
-librehealthehr/sites/default/edi
-librehealthehr/sites/default/era
-librehealthehr/sites/default/documents
-librehealthehr/custom/letter_templates
-librehealthehr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
-librehealthehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache. 
+libreehr/gacl/admin/templates_c
+libreehr/sites/default/edi
+libreehr/sites/default/era
+libreehr/sites/default/documents
+libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
+libreehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache. 
 ```
 
 **Note:** In linux, if the webserver user name is `apache`, then the command `chown -R apache:apache directory_name` will grant global write permissions to the directories, and we recommend making these changes permanent. Should the page display errors related to file or directory writing priviledges you may click the 'Check Again' button to try again (after fixing permissions).
@@ -95,7 +119,7 @@ librehealthehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache.
 You need to tell setup whether it needs to create the database on its own, or if you have already created the database.  MySQL root priveleges will be required to create a database.
 
 #### Step 2
-You will be presented with a number of fields which specify the MySQL server details and the `librehealthehr` directory paths.
+You will be presented with a number of fields which specify the MySQL server details and the `libreehr` directory paths.
 
 The `Server Host` field specifies the location of the MySQL server.  If you run MySQL and Apache/PHP on the same server, then leave this as `localhost`. If MySQL and Apache/PHP are on separate servers, then enter the IP address (or host name) of the server running MySQL.
 
@@ -127,7 +151,7 @@ The `Initial Group` is the first group, basically name of the practice, that wil
 
 
 #### Step 3
-This is where setup will configure LibreHealthEHR.  It will first create the database and connect to it to create the initial tables.  It will then write the mysql database configuration to the `librehealthehr/sites/default/sqlconf.php` file. 
+This is where setup will configure LibreHealthEHR.  It will first create the database and connect to it to create the initial tables.  It will then write the mysql database configuration to the `libreehr/sites/default/sqlconf.php` file. 
 
 Should anything fail during Step 3, you may have to remove the existing database or tables before you can try again. If no errors occur, you will see a `Continue` button at the bottom.
 
@@ -143,9 +167,21 @@ You will be given instructions on configuring the PHP.  We suggest you print the
 
 If your `php.ini` file location is not displayed, then you will need to search for it.  The location of the `php.ini` file is dependent on the operating system.  In linux, `php.ini` is generally found in the `/etc/` directory.  In Windows, the `XAMPP 1.7.0` package places the `php.ini` file in the `xampp\apache\bin\` directory. 
 
-To ensure proper functioning of LibreHealthEHR you must make sure that settings in the `php.ini` file include `short_open_tag = On`, `display_errors = Off`, `register_globals = Off`, `max_execution_time` set to at least `60`, `max_input_time` set to at least `90` , `post_max_size` set to at least `30M`, and `memory_limit` set to at least `128M`. 
+To ensure proper functioning of LibreHealthEHR you must make sure that settings in the `php.ini` file include:
+```
+max_execution_time = 600
+max_input_time = 600
+max_input_vars = 5000
+memory_limit = 1024M
+post_max_size = 32M
+upload_max_filesize = 16M
+session.gc_maxlifetime = 14400
+short_open_tag = On
+display_errors = Off
+register_globals = Off
+``` 
 
-In order to take full advantage of the patient documents capability you must make sure that settings in `php.ini` file include `file_uploads = On`, that `upload_max_filesize"` is appropriate for your use, and that `upload_tmp_dir` is set to a correct value that will work on your system.
+In order to take full advantage of the patient documents capability you must make sure that settings in `php.ini` file include `file_uploads = On`, that `upload_max_filesize` is appropriate for your use, and that `upload_tmp_dir` is set to a correct value that will work on your system.
 
 Restart apache service. Instructions on doing that are given in the FAQ section.
 
@@ -181,7 +217,7 @@ The final screen includes some additional instructions and important information
 
 Once the system has been configured properly, you may login.  Connect to the webserver where the files are stored with your web browser.  Login to the system using the username that you picked (default is `admin`), and the password.  From there, select the `Administration` option, and customize the system to your needs.  Add users and groups as is needed. For information on using LibreHealthEHR, consult the User Documentation located in the `Documentation` folder, the documentation at [LibreHealth](http://librehealth.io/).
 
-Reading `librehealthehr/sites/default/config.php` is a good idea.
+Reading `libreehr/sites/default/config.php` is a good idea.
 
 To create custom encounter forms online documentation at [LibreHealth](http://librehealth.io/). Many forms exist in `interface/forms` and may be used as examples.
 
@@ -199,32 +235,32 @@ General-purpose fax support requires customization within LibreHealthEHR at Admi
 
 Since LibreHealthEHR version `1.01`, phpGACL access controls are installed and configured automatically during LibreHealthEHR setup.  It can be administered within LibreHealthEHR in the admin->acl menu.  This is very powerful access control software. 
 
-Learn more about phpGACL [here](http://phpgacl.sourceforge.net/), recommend reading the phpGACL manual, the `/librehealthehr/Documentation/README.phpgacl` file, and the online documentation at [LibreHealth](http://librehealth.io/) . Also recommend reading the comments in `/librehealthehr/library/acl.inc`.
+Learn more about phpGACL [here](http://phpgacl.sourceforge.net/), recommend reading the phpGACL manual, the `/libreehr/Documentation/README.phpgacl` file, and the online documentation at [LibreHealth](http://librehealth.io/) . Also recommend reading the comments in `/libreehr/library/acl.inc`.
 
 ##  Upgrading
 
 Be sure to back up your LibreHealthEHR installation and database before upgrading!
 
-Upgrading LibreHealthEHR is currently done by replacing the old `librehealthehr` directory with a newer version. And, ensure you copy your settings from the following old `librehealthehr` files to the new configuration files (we do not recommend simply copying the entire files):
+Upgrading LibreHealthEHR is currently done by replacing the old `libreehr` directory with a newer version. And, ensure you copy your settings from the following old `libreehr` files to the new configuration files (we do not recommend simply copying the entire files):
 
 ```
-librehealthehr/sites/default/config.php
-librehealthehr/sites/default/sqlconf.php
+libreehr/sites/default/config.php
+libreehr/sites/default/sqlconf.php
 ```
 
 In this `sqlconf.php` file, set  `$config = 1;` (found near bottom of file within bunch of slashes)
 
 The following directories should be copied from the old version to the new version:
 ```
-librehealthehr/sites/default/documents
-librehealthehr/sites/default/era
-librehealthehr/sites/default/edi
-librehealthehr/sites/default/letter_templates
+libreehr/sites/default/documents
+libreehr/sites/default/era
+libreehr/sites/default/edi
+libreehr/sites/default/letter_templates
 ```
 
 If there are other files that you have customized, then you will also need to treat those carefully.
 
-To upgrade the database, run the `sql_upgrade.php` script from your web browser (for example: `http://librehealthehr.location/sql_upgrade.php`).  It will prompt you to select the old release number, and will display the SQL commands issued as the upgrade occurs.
+To upgrade the database, run the `sql_upgrade.php` script from your web browser (for example: `http://libreehr.location/sql_upgrade.php`).  It will prompt you to select the old release number, and will display the SQL commands issued as the upgrade occurs.
 
 ## FAQ
 
