@@ -151,6 +151,7 @@ require_once($GLOBALS['OE_SITE_DIR'] . "/config.php");
 // Collecting the utf8 disable flag from the sqlconf.php file in order
 // to set the correct html encoding. utf8 vs iso-8859-1. If flag is set
 // then set to iso-8859-1.
+//THIS NEEDS TO BE IMPROVED!!!
 require_once(dirname(__FILE__) . "/../library/sqlconf.php");
 if (!$disable_utf8_flag) {    
  ini_set('default_charset', 'utf-8');
@@ -178,6 +179,15 @@ $GLOBALS['webroot'] = $web_root;
 // js directory
 $GLOBALS['standard_js_path'] = "$web_root/assets/js";
 $GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
+
+//module configurations
+$GLOBALS['modules_dir']  = "$webserver_root/modules/";  //CURRENT modules directory.
+$modules_dir = $GLOBALS['modules_dir'];                //Make path available as a variable.
+$GLOBALS['baseModDir']  = "interface/modules/";        //base directory for the ZEND mods.  Not currently used.
+$GLOBALS['customModDir']= "custom_modules";            //OLD non zend modules, not used.
+$GLOBALS['zendModDir']  = "zend_modules";              //zend module sub-directory, not used.
+$GLOBALS['nn_mod'] = 0;                                //Nation Notes Module value off by default.
+//module config TODO:  module and global registry for same.
 
 // images directory
 $GLOBALS['images_path'] = "$web_root/assets/images";
@@ -438,10 +448,6 @@ $GLOBALS['layout_search_color'] = '#ffff55';
 $SMTP_Auth = !empty($GLOBALS['SMTP_USER']);
 
 
-//module configurations
-$GLOBALS['baseModDir']  = "interface/modules/"; //default path of modules
-$GLOBALS['customModDir']= "custom_modules"; //non zend modules
-$GLOBALS['zendModDir']  = "zend_modules";   //zend modules
 
 // Don't change anything below this line. ////////////////////////////
 
