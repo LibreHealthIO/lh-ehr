@@ -368,7 +368,7 @@ function generate_form_field($frow, $currvalue) {
     if ($agestr) {
       echo "<table cellpadding='0' cellspacing='0'><tr><td class='text'>";
     }
-    $formDate = ($currescaped) ? date($DateFormat, strtotime(htmlspecialchars($currescaped))) : '';
+    $formDate = $currescaped ;
     echo "<input type='text' size='10' name='form_$field_id_esc' id='form_$field_id_esc'" .
       " value='" . $formDate . "' $disabled />";
     if (!$disabled) {
@@ -1193,7 +1193,7 @@ function generate_print_field($frow, $currvalue) {
       echo '&nbsp;';
     }
     else {
-        echo text(date(DateFormatRead(), strtotime($currvalue)));
+      echo text(oeFormatShortDate($currvalue));
     }
     // Optional display of age or gestational age.
     if ($agestr) {
@@ -1722,7 +1722,7 @@ function generate_display_field($frow, $currvalue) {
       $s .= '&nbsp;';
     }
     else {
-      $s .= text(date(DateFormatRead(), strtotime($currvalue)));
+      $s .= text(oeFormatShortDate(substr($currvalue,0,10)));
     }
     // Optional display of age or gestational age.
     if ($agestr) {
