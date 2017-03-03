@@ -455,7 +455,7 @@ foreach ($providers as $provider) {
             $patientid = $event['pid'];
             $commapos = strpos($event['patient_name'], ",");
             $lname = substr($event['patient_name'], 0, $commapos);
-	    $fname = substr($event['patient_name'], $commapos + 2);
+        $fname = substr($event['patient_name'], $commapos + 2);
             $patient_dob = $event['patient_dob'];
             $patient_age = $event['patient_age'];
             $catid = $event['catid'];
@@ -466,10 +466,19 @@ foreach ($providers as $provider) {
             // format the time specially
             $displayTime = date("g", $startDateTime);
             if (date("i", $startDateTime) == "00") {
+                if ( $GLOBALS['time_display_format'] == 1) {
                 $displayTime .= (date("a", $startDateTime));
+                }else{
+                   $displayTime .= (date(":i", $startDateTime));
+            }
             }
             else {
+                if ( $GLOBALS['time_display_format'] == 1) {
                 $displayTime .= (date(":ia", $startDateTime));
+                }else{
+                   $displayTime = date("H", $startDateTime);
+                   $displayTime .= (date(":i", $startDateTime));
+                }
             }
 
             if ($comment && $GLOBALS['calendar_appt_style'] < 4) $title .= " " . $comment;

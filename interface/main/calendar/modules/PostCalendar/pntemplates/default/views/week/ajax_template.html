@@ -56,9 +56,9 @@ $timeslotHeightUnit="px";
  if ($GLOBALS['concurrent_layout'])
  {
 
-		 echo "  top.RTop.location = '../../patient_file/summary/demographics.php' " .
-		   "+ '?set_pid=' + pid;\n";
-	
+         echo "  top.RTop.location = '../../patient_file/summary/demographics.php' " .
+           "+ '?set_pid=' + pid;\n";
+    
  } else {
   echo "  top.location = '../../patient_file/patient_file.php' " .
    "+ '?set_pid=' + pid + '&pid=' + pid;\n";
@@ -310,7 +310,7 @@ if ($_SESSION['authorizeduser'] == 1) {
   $facilities = getFacilities();
 } else {
   $facilities = getUserFacilities($_SESSION['authId']); // from users_facility
- 	if (count($facilities) == 1)
+    if (count($facilities) == 1)
     $_SESSION['pc_facility'] = key($facilities);
 }
 if (count($facilities) > 1) {
@@ -428,7 +428,12 @@ foreach ($providers as $provider) {
     foreach ($times as $slottime) {
         $startampm = ($slottime['mer']) == "pm" ? 2 : 1;
         $starttimeh = $slottime['hour'];
+        if ( $GLOBALS['time_display_format'] == 1) {
         $disptimeh = ($starttimeh > 12) ? ($starttimeh - 12) : $starttimeh;
+        } else {
+            $disptimeh = $starttimeh;
+        }
+        //$disptimeh = ($starttimeh > 12) ? ($starttimeh - 12) : $starttimeh;
         $starttimem = $slottime['minute'];
         $slotendmins = $starttimeh * 60 + $starttimem + $interval;
 
@@ -631,14 +636,14 @@ foreach ($providers as $provider) {
             }
 
             $eventid = $event['eid'];
-	    $eventtype = sqlQuery("SELECT pc_cattype FROM libreehr_postcalendar_categories as oc LEFT OUTER JOIN libreehr_postcalendar_events as oe ON oe.pc_catid=oc.pc_catid WHERE oe.pc_eid='".$eventid."'");
-	    $pccattype = '';
-	    if($eventtype['pc_cattype']==1)
-	    $pccattype = 'true';
+        $eventtype = sqlQuery("SELECT pc_cattype FROM libreehr_postcalendar_categories as oc LEFT OUTER JOIN libreehr_postcalendar_events as oe ON oe.pc_catid=oc.pc_catid WHERE oe.pc_eid='".$eventid."'");
+        $pccattype = '';
+        if($eventtype['pc_cattype']==1)
+        $pccattype = 'true';
             $patientid = $event['pid'];
             $commapos = strpos($event['patient_name'], ",");
             $lname = substr($event['patient_name'], 0, $commapos);
-	    $fname = substr($event['patient_name'], $commapos + 2);
+        $fname = substr($event['patient_name'], $commapos + 2);
             $patient_dob = $event['patient_dob'];
             $patient_age = $event['patient_age'];
             $catid = $event['catid'];
@@ -652,12 +657,12 @@ foreach ($providers as $provider) {
 
             // the divTitle is what appears when the user hovers the mouse over the DIV
             $divTitle = date("D, d M Y", strtotime($date));
-	    $result = sqlStatement("SELECT name,id,color FROM facility WHERE id=(SELECT pc_facility FROM libreehr_postcalendar_events WHERE pc_eid=".$eventid.")");
-	    $row = sqlFetchArray($result);
-	    $color=$event["catcolor"];
-	    if($GLOBALS['event_color']==2)
-	    $color=$row['color'];
-	      $divTitle .= "\n" .htmlspecialchars($row['name'],ENT_QUOTES);
+        $result = sqlStatement("SELECT name,id,color FROM facility WHERE id=(SELECT pc_facility FROM libreehr_postcalendar_events WHERE pc_eid=".$eventid.")");
+        $row = sqlFetchArray($result);
+        $color=$event["catcolor"];
+        if($GLOBALS['event_color']==2)
+        $color=$row['color'];
+          $divTitle .= "\n" .htmlspecialchars($row['name'],ENT_QUOTES);
             if ($catid == 2 || $catid == 3 || $catid == 4 || $catid == 8 || $catid == 11) {
                 if      ($catid ==  2) $catname = xl("IN");
                 else if ($catid ==  3) $catname = xl("OUT");
@@ -715,40 +720,40 @@ foreach ($providers as $provider) {
             $divTitle .= "\n(" . xl('double click to edit') . ")";
 
             // output the DIV and content
-			if($_SESSION['pc_facility'] == 0){
-				// output the DIV and content
-				echo "<div class='".$evtClass." event' style='top:".$evtTop."; height:".$evtHeight.
-						"; background-color:".$color.
-						"; $divWidth".
-						"; $divLeft".
-						"' title='".$divTitle."'".
-						" id='".$eventdate."-".$eventid."-".$pccattype."'".
-						">";
-				echo $content;
-				echo "</div>\n";
-			}
-			elseif($_SESSION['pc_facility'] == $row['id']){
-				echo "<div class='".$evtClass." event' style='top:".$evtTop."; height:".$evtHeight.
-						"; background-color:".$event["catcolor"].
-						"; $divWidth".
-						"; $divLeft".
-						"' title='".$divTitle."'".
-						" id='".$eventdate."-".$eventid."-".$pccattype."'".
-						">";
-				echo $content;
-				echo "</div>\n";
-			}
-			else{
-				echo "<div class='".$evtClass." event' style='top:".$evtTop."; height:".$evtHeight.
-						"; background-color:#DDDDDD".
-						"; $divWidth".
-						"; $divLeft".
-						"' title='".$divTitle."'".
-						" id='".$eventdate."-".$eventid."-".$pccattype."'".
-						">";
-				echo "<span style='color:red;text-align:center;font-weight:bold'>".htmlspecialchars($row['name'],ENT_QUOTES)."</span>";
-				echo "</div>\n";
-			}
+            if($_SESSION['pc_facility'] == 0){
+                // output the DIV and content
+                echo "<div class='".$evtClass." event' style='top:".$evtTop."; height:".$evtHeight.
+                        "; background-color:".$color.
+                        "; $divWidth".
+                        "; $divLeft".
+                        "' title='".$divTitle."'".
+                        " id='".$eventdate."-".$eventid."-".$pccattype."'".
+                        ">";
+                echo $content;
+                echo "</div>\n";
+            }
+            elseif($_SESSION['pc_facility'] == $row['id']){
+                echo "<div class='".$evtClass." event' style='top:".$evtTop."; height:".$evtHeight.
+                        "; background-color:".$event["catcolor"].
+                        "; $divWidth".
+                        "; $divLeft".
+                        "' title='".$divTitle."'".
+                        " id='".$eventdate."-".$eventid."-".$pccattype."'".
+                        ">";
+                echo $content;
+                echo "</div>\n";
+            }
+            else{
+                echo "<div class='".$evtClass." event' style='top:".$evtTop."; height:".$evtHeight.
+                        "; background-color:#DDDDDD".
+                        "; $divWidth".
+                        "; $divLeft".
+                        "' title='".$divTitle."'".
+                        " id='".$eventdate."-".$eventid."-".$pccattype."'".
+                        ">";
+                echo "<span style='color:red;text-align:center;font-weight:bold'>".htmlspecialchars($row['name'],ENT_QUOTES)."</span>";
+                echo "</div>\n";
+            }
         } // end EVENT loop
 
         echo "</div>";
