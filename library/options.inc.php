@@ -373,7 +373,7 @@ function generate_form_field($frow, $currvalue) {
       " value='" . $formDate . "' $disabled />";
     if (!$disabled) {
        $selector = "#form_{$field_id}";
-       $date_init .= "$('" . $selector . "').datetimepicker({timepicker: false,  format:'" . $DateFormat . "'});";
+       $date_init .= "$('" . $selector . "').datetimepicker({timepicker: false, maxDate:0, format:'" . $DateFormat . "'});";
       if ($agestr) {
         $date_init .= "onUpdate: function() {" .
           "if (typeof(updateAgeString) == 'function') updateAgeString('$field_id','$age_asof_date', $age_format);" .
