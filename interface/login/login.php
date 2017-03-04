@@ -168,7 +168,7 @@ include_once("$srcdir/sql.inc");
                                 </td>
                             </tr>
                             <tr>
-                                <td><span class="text"><?php echo xlt('Pass Phrase:'); ?></span></td>
+                                <td><span class="text"><?php echo xlt('Pass Phrase'); ?></span></td>
                                 <td>
                                     <input class="entryfield" type="password" size="35" name="clearPass" style = "height : 28px; width : 100%; margin-left : 0px; border : 1px solid black">
                                 </td>
@@ -178,7 +178,7 @@ include_once("$srcdir/sql.inc");
                             if ($GLOBALS['language_menu_login']) {
                                 if (count($result3) != 1) { ?>
                                     <tr>
-                                        <td><span class="text"><?php echo xlt('Language'); ?>:</span></td>
+                                        <td><span class="text"><?php echo xlt('Language'); ?></span></td>
                                         <td>
                                             <select class="entryfield" name=languageChoice size="1" style = "height : 28px">
                                                 <?php
