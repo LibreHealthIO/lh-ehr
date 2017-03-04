@@ -3,7 +3,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
-/* 
+/*
     Created on : Jan 22, 2016, 2:13:40 AM
     Author     : yehster
 */
@@ -60,7 +60,7 @@ body
     flex-direction: row;
 }
 
-#framesDisplay > div
+.frameDisplay
 {
     flex: 1 0 auto;
     align-items: stretch;
@@ -76,6 +76,25 @@ body
     flex: 1 0 auto;
     border: 1px solid black;
 }
+
+#frameBarrier {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    visibility: hidden;
+}
+
+.handle {
+    width: 5px;
+    text-align: center;
+    z-index: 11;
+    transition: all ease-in 0.1s;
+}
+
+.draggable { background: #BBCCFF; }
 
 .tabControls
 {
@@ -114,7 +133,7 @@ body
 
     width: 99%;
     height:99%;
-    
+
     background-color: gray;
     z-index:1000;
     opacity: 0.5;
@@ -249,4 +268,3 @@ div.closeDlgIframe {
 {
     color:red;
 }
-

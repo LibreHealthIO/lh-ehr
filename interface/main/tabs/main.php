@@ -1,6 +1,6 @@
 <?php
 Use Esign\Api;
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -20,7 +20,7 @@ $esignApi = new Api();
 <script type="text/javascript">
 <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
 
-//  Include this variable for backward compatibility 
+//  Include this variable for backward compatibility
 var loadedFrameCount = 0;
 var tab_mode=true;
 function allFramesLoaded() {
@@ -43,7 +43,7 @@ function isEncounterLocked( encounterId ) {
         },
         dataType: 'json',
         async:false
-	});	    
+	});
 	return encounter_locked;
 	<?php } else { ?>
 	// If encounter locking isn't enabled then always return false
@@ -80,8 +80,8 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php $userQuery = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"); ?>
 <script type="text/javascript">
     <?php if(isset($_REQUEST['url']))
-        {   
-        
+        {
+
             $tab_one_default=$web_root.$GLOBALS['default_tab_1'];
             if($_REQUEST['url']==='TAB_ONE_DEFAULT')
             {
@@ -97,7 +97,7 @@ var webroot_url="<?php echo $web_root; ?>";
             tab_defaults=[];
             tab_defaults[0]=<?php echo $tab_one_default; ?>;
             app_view_model.application_data.tabs.tabsList()[0].url(<?php echo $tab_one_contents; ?>);
-        <?php 
+        <?php
         }
         if(isset($GLOBALS['default_tab_2']))
         {
@@ -128,6 +128,77 @@ var webroot_url="<?php echo $web_root; ?>";
 <script>
     $("#dialogDiv").hide();
     ko.applyBindings(app_view_model);
+
+    (function($) {
+        $.fn.drags = function(opt) {
+
+          opt = $.extend({handle:"",cursor:"ew-resize", min: 20}, opt);
+
+            if(opt.handle === "") {
+                var $el = this;
+            } else {
+                var $el = this.find(opt.handle);
+            }
+
+            var priorCursor = $('body').css('cursor');
+
+            return $el.css('cursor', opt.cursor).on("mousedown", function(e) {
+                // Activate Frame Barrier!
+                $("#frameBarrier").css("visibility", "visible");
+
+                priorCursor = $('body').css('cursor');
+                $('body').css('cursor', opt.cursor);
+
+                if(opt.handle === "") {
+                    var $drag = $(this).addClass('draggable');
+                } else {
+                    var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
+                }
+
+                var z_idx = $drag.css('z-index'),
+                    drg_h = $drag.outerHeight(),
+                    drg_w = $drag.outerWidth(),
+                    pos_y = $drag.offset().top + drg_h - e.pageY,
+                    pos_x = $drag.offset().left + drg_w - e.pageX;
+
+                $drag.css('z-index', 1000).parents().on("mousemove", function(e) {
+
+                    var prev = $('.draggable').prev();
+                    var next = $('.draggable').next();
+
+                    if(prev.offset() && next.offset()) {
+
+                        // Assume 50/50 split between prev and next then adjust to
+                        // the next X for prev
+
+                        var total = prev.outerWidth() + next.outerWidth();
+
+                        var leftPercentage = (((e.pageX - prev.offset().left) + (pos_x - drg_w / 2)) / total);
+                        var rightPercentage = 1 - leftPercentage;
+
+                        if(leftPercentage * 100 < opt.min || rightPercentage * 100 < opt.min)  {
+                          return;
+                        }
+
+                        prev.css('flex', leftPercentage.toString());
+                        next.css('flex', rightPercentage.toString());
+
+                        $(document).on("mouseup", function() {
+                          $('body').css('cursor', priorCursor);
+                            $('.draggable').removeClass('draggable').css('z-index', z_idx);
+
+                            // Deactivate Frame Barrier!
+                            $("#frameBarrier").css("visibility", "hidden");
+                        });
+                    }
+                });
+                e.preventDefault(); // Disable selection
+            });
+
+        }
+    })(jQuery);
+
+    $('.handle').drags();
 
 </script>
 

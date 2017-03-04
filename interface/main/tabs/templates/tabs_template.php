@@ -13,18 +13,23 @@
 
                 <!-- ko if:closable-->
                     <span class="typcn typcn-delete" data-bind="click: tabClose"></span>
-                <!-- /ko -->    
+                <!-- /ko -->
             </span>
         <!-- /ko -->
     </div>
 </script>
 <script type="text/html" id="tabs-frames">
-        
+
+        <div id="frameBarrier"></div>
+
         <!-- ko  foreach: tabs.tabsList -->
         <div class="frameDisplay" data-bind="visible:visible">
             <iframe data-bind="location: $data, iframeName: $data.name, ">
 
             </iframe>
         </div>
+
+        <div class="handle"></div>
+
         <!-- /ko -->
 </script>
