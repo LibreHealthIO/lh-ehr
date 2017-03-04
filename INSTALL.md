@@ -20,7 +20,6 @@
 
 NOTE: Most recent documentation can be found on the online documentation at [LibreHealth](http://librehealth.io/).
 
-accounting: Contains information and scripts to support SQL-Ledger
 contrib: Contains many user-contributed encounter forms and utilities
 custom: Contains scripts and other text files commonly customized
 Documentation: Contains useful documentation
@@ -165,7 +164,7 @@ Should anything fail during Step 4, you may have to remove the existing database
 #### Step 5
 You will be given instructions on configuring the PHP.  We suggest you print these instructions for future reference.  Instructions are given to edit the `php.ini` configuration file.  If possible, the location of your `php.ini` file will be displayed in green. 
 
-If your `php.ini` file location is not displayed, then you will need to search for it.  The location of the `php.ini` file is dependent on the operating system.  In linux, `php.ini` is generally found in the `/etc/` directory.  In Windows, the `XAMPP 1.7.0` package places the `php.ini` file in the `xampp\apache\bin\` directory. 
+If your `php.ini` file location is not displayed, then you will need to search for it.  The location of the `php.ini` file is dependent on the operating system.  In linux, `php.ini` is generally found inside the `/etc/php/` directory.  In Windows, the `XAMPP` package places the `php.ini` file in the `xampp\apache\bin\` directory. 
 
 To ensure proper functioning of LibreHealthEHR you must make sure that settings in the `php.ini` file include:
 ```
@@ -189,7 +188,7 @@ Restart apache service. Instructions on doing that are given in the FAQ section.
 #### Step 6
 You will be given instructions on configuring the Apache web server.  We suggest you print these instructions for future reference. Instructions are given to secure the`libreehrwebroot/sites/*/documents`, `libreehrwebroot/sites/*/edi` and `libreehrwebroot/sites/*/era` directories, which contain patient information. This can be done be either placing pertinent `.htaccess` files in these directories or by editing the apache configuration file. 
 
-The location of the apache configuration file is dependent on the operating system.  In linux, you can type `httpd -V` or `apache2ctle  -V` on the commandline;  the location to the configuration file will be the `HTTPD_ROOT` variable plus the `SERVER_CONFIG_FILE` variable. In Windows, the` XAMPP 1.7.0` package places the configuration file at `xampp\apache\conf\httpd.conf`. 
+The location of the apache configuration file is dependent on the operating system.  In linux, you can type `httpd -V` or `apache2ctle  -V` on the commandline;  the location to the configuration file will be the `HTTPD_ROOT` variable plus the `SERVER_CONFIG_FILE` variable. In Windows, the` XAMPP` package places the configuration file at `xampp\apache\conf\httpd.conf`. 
 
 To configure Zend and to secure the `/documents`, `/edi` and `/era` directories you can paste following to the end of the apache configuration file (ensure you put full path to directories):
 ```xml
@@ -233,7 +232,7 @@ General-purpose fax support requires customization within LibreHealthEHR at Admi
 
 ##   Setting Up Access Control
 
-Since LibreHealthEHR version `1.01`, phpGACL access controls are installed and configured automatically during LibreHealthEHR setup.  It can be administered within LibreHealthEHR in the admin->acl menu.  This is very powerful access control software. 
+phpGACL access controls are installed and configured automatically during LibreHealthEHR setup.  It can be administered within LibreHealthEHR in the admin->acl menu.  This is very powerful access control software. 
 
 Learn more about phpGACL [here](http://phpgacl.sourceforge.net/), recommend reading the phpGACL manual, the `/libreehr/Documentation/README.phpgacl` file, and the online documentation at [LibreHealth](http://librehealth.io/) . Also recommend reading the comments in `/libreehr/library/acl.inc`.
 
