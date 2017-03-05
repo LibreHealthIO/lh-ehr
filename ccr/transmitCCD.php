@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  EMR Direct <http://www.emrdirect.com/>
  * @link    http://librehealth.io
  */
@@ -73,10 +73,10 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
    $ret=fgets($fp,1024); //ignore extra server data
 
    if($requested_by=="patient")
-	$text_out = xl("Delivery of the attached clinical document was requested by the patient") . 
+    $text_out = xl("Delivery of the attached clinical document was requested by the patient") . 
             ($patientName2=="" ? "." : ", " . $patientName2 . ".");
    else
-	$text_out = xl("A clinical document is attached") . 
+    $text_out = xl("A clinical document is attached") . 
             ($patientName2=="" ? "." : " " . xl("for patient") . " " . $patientName2 . ".");
 
    $text_len=strlen($text_out);
@@ -106,17 +106,17 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
    phimail_close($fp);
 
    if($requested_by=="patient")  {
-	$reqBy="portal-user";
-	$sql = "SELECT id FROM users WHERE username='portal-user'";
-	if (($r = sqlStatementNoLog($sql)) === FALSE ||
-	    ($u = sqlFetchArray($r)) === FALSE) {
-	    $reqID = 1; //default if we don't have a service user
-	} else {
-	    $reqID = $u['id'];
-	}
+    $reqBy="portal-user";
+    $sql = "SELECT id FROM users WHERE username='portal-user'";
+    if (($r = sqlStatementNoLog($sql)) === FALSE ||
+        ($u = sqlFetchArray($r)) === FALSE) {
+        $reqID = 1; //default if we don't have a service user
+    } else {
+        $reqID = $u['id'];
+    }
 
    } else {
-	$reqBy=$_SESSION['authUser'];
+    $reqBy=$_SESSION['authUser'];
         $reqID=$_SESSION['authUserID'];
    }
 
@@ -133,14 +133,14 @@ function transmitCCD($ccd,$recipient,$requested_by,$xml_type="CCD") {
     */
    $msg_id=explode(" ",trim($ret),4);
    if($msg_id[0]!="QUEUED" || !isset($msg_id[2])) { //unexpected response
-	$ret = "UNEXPECTED RESPONSE: " . $ret;
-	newEvent("transmit-ccd",$reqBy,$_SESSION['authProvider'],0,$ret,$pid);
-	return( xl("There was a problem sending the message."));
+    $ret = "UNEXPECTED RESPONSE: " . $ret;
+    newEvent("transmit-ccd",$reqBy,$_SESSION['authProvider'],0,$ret,$pid);
+    return( xl("There was a problem sending the message."));
    }
    newEvent("transmit-".$xml_type,$reqBy,$_SESSION['authProvider'],1,$ret,$pid);
    $adodb=$GLOBALS['adodb']['db'];
    $sql="INSERT INTO direct_message_log (msg_type,msg_id,sender,recipient,status,status_ts,patient_id,user_id) " .
-	"VALUES ('S', ?, ?, ?, 'S', NOW(), ?, ?)";
+    "VALUES ('S', ?, ?, ?, 'S', NOW(), ?, ?)";
    $res=@sqlStatementNoLog($sql,array($msg_id[2],$phimail_username,$recipient,$pid,$reqID));
 
    return("SUCCESS");

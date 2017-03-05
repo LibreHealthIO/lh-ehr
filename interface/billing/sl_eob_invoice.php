@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
  * @author  Terry Hill <teryhill@librehealth.io>
- * @link    http://www.libreehr.org
+ * @link    http://librehealth.io
  */
 
  
@@ -230,7 +230,7 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
         // The sl_eob_search page needs its invoice links modified to invoke
         // javascript to load form parms for all the above and submit.
         // At the same time that page would be modified to work off the
-        // libreehr database exclusively.
+        // LibreHealth EHR database exclusively.
         // And back to the sl_eob_invoice page, I think we may want to move
         // the source input fields from row level to header level.
 
