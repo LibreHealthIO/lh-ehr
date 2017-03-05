@@ -19,8 +19,8 @@
  *  <http://opensource.org/licenses/gpl-license.php>
  * 
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
- * @package LibreEHR
+ * @link: http://librehealth.io
+ * @package LibreHealth EHR
  * @subpackage ediHistory
  */
 
@@ -46,16 +46,16 @@
  */
 class code_arrays {
 
-	private $CODE_CLAIM_ADJUSTMENT;
-	private $CODE_CLAIM_STATUS;
-	private $CODE_RA_REMARK;
-	private $CODE_PLB_REASON;
-	private $CODE_REF;
-	private $CODE_AMT;
-	private $CODE_PER;
-	private $CODE_CAS_GROUP;
-	private $CODE_LOCATION;
-	
+    private $CODE_CLAIM_ADJUSTMENT;
+    private $CODE_CLAIM_STATUS;
+    private $CODE_RA_REMARK;
+    private $CODE_PLB_REASON;
+    private $CODE_REF;
+    private $CODE_AMT;
+    private $CODE_PER;
+    private $CODE_CAS_GROUP;
+    private $CODE_LOCATION;
+    
 /**
  * Claim adjustment codes, found in CAS segments
  * Claim Adjustment Reason Codes ASC X12 External Code Source 139 LAST UPDATED 3/1/2013
@@ -63,16 +63,16 @@ class code_arrays {
  * @param string $adj_code   the code
  * @return array
  */
-	public function get_CODE_CLAIM_ADJUSTMENT( $adj_code ) {
-		// 0 => code, [1] => description, [2] => dates, [3] => notes
-		if ( is_array( $this->CODE_CLAIM_ADJUSTMENT )){
-			if (array_key_exists($adj_code, $this->CODE_CLAIM_ADJUSTMENT)){
-				return $this->CODE_CLAIM_ADJUSTMENT[$adj_code];
-				} else {
-					return FALSE;
-				}
-			} else {
-				$this->CODE_CLAIM_ADJUSTMENT = array (                    
+    public function get_CODE_CLAIM_ADJUSTMENT( $adj_code ) {
+        // 0 => code, [1] => description, [2] => dates, [3] => notes
+        if ( is_array( $this->CODE_CLAIM_ADJUSTMENT )){
+            if (array_key_exists($adj_code, $this->CODE_CLAIM_ADJUSTMENT)){
+                return $this->CODE_CLAIM_ADJUSTMENT[$adj_code];
+                } else {
+                    return FALSE;
+                }
+            } else {
+                $this->CODE_CLAIM_ADJUSTMENT = array (                    
                 '1' => array("1", "Deductible Amount", "", "", ""),
                 '2' => array("2", "Coinsurance Amount", "", "", ""),
                 '3' => array("3", "Co-payment Amount", "", "", ""),
@@ -308,14 +308,14 @@ class code_arrays {
                 'Y1' => array("Y1", "Payment denied based on Medical Payments Coverage (MPC) or Personal Injury Protection (PIP) Benefits jurisdictional regulations or payment policies, use only if no other code is applicable.", "", "", ""),
                 'Y2' => array("Y2", "Payment adjusted based on Medical Payments Coverage (MPC) or Personal Injury Protection (PIP) Benefits jurisdictional regulations or payment policies, use only if no other code is applicable.", "", "", ""),
                 'Y3' => array("Y3", "Medical Payments Coverage (MPC) or Personal Injury Protection (PIP) Benefits jurisdictional fee schedule adjustment.", "", "", "")
-				);
-				if (array_key_exists($adj_code, $this->CODE_CLAIM_ADJUSTMENT)){
-					return $this->CODE_CLAIM_ADJUSTMENT[$adj_code];
-				} else {
-					return array($adj_code, "Not found in Claim Adjustment Codes table", "", "");
-				}
-			}
-		}// end get_CODE_CLAIM_ADJUSTMENT
+                );
+                if (array_key_exists($adj_code, $this->CODE_CLAIM_ADJUSTMENT)){
+                    return $this->CODE_CLAIM_ADJUSTMENT[$adj_code];
+                } else {
+                    return array($adj_code, "Not found in Claim Adjustment Codes table", "", "");
+                }
+            }
+        }// end get_CODE_CLAIM_ADJUSTMENT
 
 /**
  * Remittance Advice and Health Care codes
@@ -324,17 +324,17 @@ class code_arrays {
  * @param $rem_code
  * @return array
  */
-	public function get_CODE_RA_REMARK( $rem_code ) {
-		// 0 => code, [1] => description, [2] => dates, [3] => notes
-		// get_LQ[LQ01]["Values"] should be 'HE' indicating these codes are used for claim payment remarks ??
-		if ( is_array( $this->CODE_RA_REMARK )) {
-			if (array_key_exists($rem_code, $this->CODE_RA_REMARK)){
-				return $this->CODE_RA_REMARK[$rem_code];
-				} else {
-					return array($rem_code, "Not found in Remark Codes table", "", "", "");
-				}
-		} else {
-			$this->CODE_RA_REMARK = array (
+    public function get_CODE_RA_REMARK( $rem_code ) {
+        // 0 => code, [1] => description, [2] => dates, [3] => notes
+        // get_LQ[LQ01]["Values"] should be 'HE' indicating these codes are used for claim payment remarks ??
+        if ( is_array( $this->CODE_RA_REMARK )) {
+            if (array_key_exists($rem_code, $this->CODE_RA_REMARK)){
+                return $this->CODE_RA_REMARK[$rem_code];
+                } else {
+                    return array($rem_code, "Not found in Remark Codes table", "", "", "");
+                }
+        } else {
+            $this->CODE_RA_REMARK = array (
             'M1' => array("M1", "X-ray not taken within the past 12 months or near enough to the start of treatment.", "", "", ""),
             'M2' => array("M2", "Not paid separately when the patient is an inpatient.", "", "", ""),
             'M3' => array("M3", "Equipment is the same or similar to equipment already being used.", "", "", ""),
@@ -1112,15 +1112,15 @@ class code_arrays {
             'N571' => array("N571", "Alert: Payment will be issued quarterly by another payer/contractor.", "", "", ""),
             'N572' => array("N572", "This procedure is not payable unless non-payable reporting codes and appropriate modifiers are submitted.", "", "", ""),
             'N573' => array("N573", "Alert: You have been overpaid and must refund the overpayment. The refund will be requested separately by another payer/contractor.", "", "", "")
-			);
-			if (array_key_exists($rem_code, $this->CODE_RA_REMARK)){
-				return $this->CODE_RA_REMARK[$rem_code];
-			} else {
-				return array($rem_code, "Not found in Remark Codes table", "", "", "");
-			}
-		}
-	} // end get_CODE_RA_REMARK
-	
+            );
+            if (array_key_exists($rem_code, $this->CODE_RA_REMARK)){
+                return $this->CODE_RA_REMARK[$rem_code];
+            } else {
+                return array($rem_code, "Not found in Remark Codes table", "", "", "");
+            }
+        }
+    } // end get_CODE_RA_REMARK
+    
 
 
 
@@ -1130,60 +1130,60 @@ class code_arrays {
  * @param string $clm_stat_code   the code
  * @return array
  */
-	public function get_CODE_PLB_REASON( $clm_stat_code ) {
-		// 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->CODE_PLB_REASON )) {
-			if (array_key_exists($clm_stat_code, $this->CODE_PLB_REASON)){
-				return $this->CODE_PLB_REASON[$clm_stat_code];
-			} else {
-				return array($clm_stat_code, "Not found in PLB Reason codes table", "", "", "");
-			}
-		} else {
-			$this->CODE_PLB_REASON = array (	
-				"50" => array ("50", "Late Charge", "", "", ""),
-				"51" => array ("51", "Unknown", "", ""),
-				"72" => array ("72", "Authorized return Refunds - Manual Invoices", "", "", ""),
-				"BD" => array ("BD", "Bad Debt Adjustment", "", "", ""),
-				"BN" => array ("BN", "Bonus", "", "", ""),
-				"AP" => array ("AP", "Acceleration of Benefits", "", "", ""),
-				"B2" => array ("B2", "Unknown", "", "", ""),
-				"B3" => array ("B3", "Unknown", "", "", ""),
-				"C5" => array ("C5", "Temporary Allowance", "", "", ""),
-				"CS" => array ("CS", "Adjustment", "", ""),
-				"CV" => array ("CV", "Capital Passthrough", "", "", ""),
-				"CW" => array ("CW", "Unknown", "", ""),
-				"DM" => array ("DM", "Direct Medical Education", "", "", ""),
-				"E3" => array ("E3", "Withholding", "", "", ""),
-				"FB" => array ("FB", "Withholding", "", "", ""),
-				"GO" => array ("GO", "Unknown", "", "", ""),
-				"HM" => array ("HM", "Hemo.", "", "", ""),
-				"IR" => array ("IR", "Withholding", "", "", ""),
-				"IS" => array ("IS", "Interim Settlement", "", "", ""),
-				"J1" => array ("J1", "Non-Reimbursable", "", "", ""),
-				"L3" => array ("L3", "Penalty", "", ""),
-				"L6" => array ("L6", "Interest Owed", "", "", ""),
-				"LE" => array ("LE", "Levy", "", "", ""),
-				"L3" => array ("L3", "Penalty", "", "", ""),
-				"LS" => array ("LS", "Lump Sum", "", "", ""),
-				"OA" => array ("OA", "Organ Acquisition", "", "", ""),
-				"OB" => array ("OB", "Offset for Affiliated", "", "", ""),
-				"PI" => array ("PI", "Periodic Interim Payment", "", "", ""),
-				"PL" => array ("PL", "Payment Final", "", "", ""),
-				"RE" => array ("RE", "Return on Equity", "", "", ""),
-				"SL" => array ("SL", "Student Loan Repayment", "", "", ""),
-				"TL" => array ("TL", "Third Party Liability", "", "", ""),
-				"WO" => array ("WO", "Overpayment Recovery", "", ""),
-				"WU" => array ("WU", "Federally mandated recoupment/bonus payment", "", "", ""),
-				"ZZ" => array ("ZZ", "Unknown", "", "", "")
-			);
-			if (array_key_exists($clm_stat_code, $this->CODE_PLB_REASON)){
-				return $this->CODE_PLB_REASON[$clm_stat_code];
-			} else {
-				return array($clm_stat_code, "Not found in PLB Reason codes table", "", "", "");
-			}
-		}
-	} // end get_CODE_PLB_REASON
+    public function get_CODE_PLB_REASON( $clm_stat_code ) {
+        // 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->CODE_PLB_REASON )) {
+            if (array_key_exists($clm_stat_code, $this->CODE_PLB_REASON)){
+                return $this->CODE_PLB_REASON[$clm_stat_code];
+            } else {
+                return array($clm_stat_code, "Not found in PLB Reason codes table", "", "", "");
+            }
+        } else {
+            $this->CODE_PLB_REASON = array (    
+                "50" => array ("50", "Late Charge", "", "", ""),
+                "51" => array ("51", "Unknown", "", ""),
+                "72" => array ("72", "Authorized return Refunds - Manual Invoices", "", "", ""),
+                "BD" => array ("BD", "Bad Debt Adjustment", "", "", ""),
+                "BN" => array ("BN", "Bonus", "", "", ""),
+                "AP" => array ("AP", "Acceleration of Benefits", "", "", ""),
+                "B2" => array ("B2", "Unknown", "", "", ""),
+                "B3" => array ("B3", "Unknown", "", "", ""),
+                "C5" => array ("C5", "Temporary Allowance", "", "", ""),
+                "CS" => array ("CS", "Adjustment", "", ""),
+                "CV" => array ("CV", "Capital Passthrough", "", "", ""),
+                "CW" => array ("CW", "Unknown", "", ""),
+                "DM" => array ("DM", "Direct Medical Education", "", "", ""),
+                "E3" => array ("E3", "Withholding", "", "", ""),
+                "FB" => array ("FB", "Withholding", "", "", ""),
+                "GO" => array ("GO", "Unknown", "", "", ""),
+                "HM" => array ("HM", "Hemo.", "", "", ""),
+                "IR" => array ("IR", "Withholding", "", "", ""),
+                "IS" => array ("IS", "Interim Settlement", "", "", ""),
+                "J1" => array ("J1", "Non-Reimbursable", "", "", ""),
+                "L3" => array ("L3", "Penalty", "", ""),
+                "L6" => array ("L6", "Interest Owed", "", "", ""),
+                "LE" => array ("LE", "Levy", "", "", ""),
+                "L3" => array ("L3", "Penalty", "", "", ""),
+                "LS" => array ("LS", "Lump Sum", "", "", ""),
+                "OA" => array ("OA", "Organ Acquisition", "", "", ""),
+                "OB" => array ("OB", "Offset for Affiliated", "", "", ""),
+                "PI" => array ("PI", "Periodic Interim Payment", "", "", ""),
+                "PL" => array ("PL", "Payment Final", "", "", ""),
+                "RE" => array ("RE", "Return on Equity", "", "", ""),
+                "SL" => array ("SL", "Student Loan Repayment", "", "", ""),
+                "TL" => array ("TL", "Third Party Liability", "", "", ""),
+                "WO" => array ("WO", "Overpayment Recovery", "", ""),
+                "WU" => array ("WU", "Federally mandated recoupment/bonus payment", "", "", ""),
+                "ZZ" => array ("ZZ", "Unknown", "", "", "")
+            );
+            if (array_key_exists($clm_stat_code, $this->CODE_PLB_REASON)){
+                return $this->CODE_PLB_REASON[$clm_stat_code];
+            } else {
+                return array($clm_stat_code, "Not found in PLB Reason codes table", "", "", "");
+            }
+        }
+    } // end get_CODE_PLB_REASON
 
 
 /**
@@ -1191,60 +1191,60 @@ class code_arrays {
  * 
  * @param string $ref_code  the code
  * @return array
- */	
-	public function get_CODE_REF( $ref_code ) {
-		// 0 => code, [1] => description, [2] => loop, [3] => category description  (empty, none available)
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->CODE_REF )) {
-			if (array_key_exists($ref_code, $this->CODE_REF)){
-				return $this->CODE_REF[$ref_code];
-			} else {
-				return array($ref_code, "Not found in REF_2100 codes table", "", "", "");
-			}
-		} else {
-			$this->CODE_REF = array (
-				"2U" => array("2U", "Payer Identification Number", "1000", "Additional Payer Identificaton", ""),
-				"EO" => array("EO", "Submitter Identification Number", "1000", "Additional Payer Identificaton", ""),
-				"HI" => array("HI", "Health Industry Number (HIN)", "1000", "Additional Payer Identificaton", ""),
-				"NF" => array("NF", "National Association of Insurance Commissioners (NAIC) Code", "1000", "Additional Payer Identificaton", ""),
-				"6R" => array("6R", "Provider Control Number", "2110", "Service Identification", ""),
-				"E9" => array("E9", "Attachment Code", "2110", "Service Identification", ""),
-				"LU" => array("LU", "Location Number", "2110", "Service Identification", ""),
-			    "RB" => array("RB", "Rate Code Number", "2110", "Service Identification", ""),
-		        "9A" => array("9A", "Repriced Claim Reference Number", "2100", "Other Claim Related Identification", ""),
-		        "9C" => array("9C", "Adjusted Repriced Claim Reference Number", "2100", "Other Claim Related Identification", ""),
-		        "A6" => array("A6", "Employee Identification Number", "2100", "Other Claim Related Identification", ""),
-		        "BB" => array("BB", "Authorization Number", "2100", "Other Claim Related Identification", ""),
-		        "CE" => array("CE", "Class of Contract Code", "2100", "Other Claim Related Identification", ""),
-		        "D3" => array("D3", "National Association of Boards of Pharmacy Number", "2100", "Rendering Provider Identification", ""),
-		        "EA" => array("EA", "Medical Record Identification Number", "2100", "Other Claim Related Identification", ""),
-		        "F8" => array("F8", "Original Reference Number", "2100", "Other Claim Related Identification", ""),
-		        "G1" => array("G1", "Prior Authorization Number", "2100", "Other Claim Related Identification", ""),
-		        "G2" => array("G2", "Provider Commercial Number", "2100", "Rendering Provider Identification", ""),
-		        "G3" => array("G3", "Predetermination of Benefits ID Number", "2100", "Other Claim Related Identification", ""),
-		        "IG" => array("IG", "Insurance Policy Number", "2100", "Other Claim Related Identification", ""),
-			    "HPI" => array ("HPI", "HCFA National Provider Identifier", "2110", "Rendering Provider Identification", ""),
-			    "TJ" => array ("TJ", "Federal Taxpayer Identification Number", "2110", "Rendering Provider Identification", ""),
-		        "SY" => array("SY", "Social Security Number", "2100", "Other Claim Related Identification", ""),
-		        "1A" => array("1A", "Blue Cross Provider Number", "2100", "Rendering Provider Identification", ""),
-		        "1B" => array("1B", "Blue Shield Provider Number", "2100", "Rendering Provider Identification", ""),
-		        "1C" => array("1C", "Medicare Provider Number", "2100", "Rendering Provider Identification", ""),
-		        "1D" => array("1D", "Medicaid Provider Number", "2100", "Rendering Provider Identification", ""),
-		        "1G" => array("1G", "Provider UPIN Number", "2100", "Rendering Provider Identification", ""),
-		        "1H" => array("1H", "CHAMPUS Identification Number", "2100", "Rendering Provider Identification", ""),
-			    "1J" => array("1J", "Facility ID Number", "2110", "Service Identification", ""),
-				"1L" => array("1L", "Group or Policy Number", "2100", "Other Claim Related Identification", ""),
-				"1W" => array("1W", "Member Identification Number", "2100", "Other Claim Related Identification", ""),
-				"1S" => array("1S", "Ambulatory Patient Group (APG) Number", "2110", "Service Identification", "")		
-		        );
-			if (array_key_exists($ref_code, $this->CODE_REF)){
-				return $this->CODE_REF[$ref_code];
-			} else {
-				return array($ref_code, "Not found in REF_2100 codes table", "", "", "");
-			}
-		}
-	} // end get_CODE_REF
-	
+ */ 
+    public function get_CODE_REF( $ref_code ) {
+        // 0 => code, [1] => description, [2] => loop, [3] => category description  (empty, none available)
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->CODE_REF )) {
+            if (array_key_exists($ref_code, $this->CODE_REF)){
+                return $this->CODE_REF[$ref_code];
+            } else {
+                return array($ref_code, "Not found in REF_2100 codes table", "", "", "");
+            }
+        } else {
+            $this->CODE_REF = array (
+                "2U" => array("2U", "Payer Identification Number", "1000", "Additional Payer Identificaton", ""),
+                "EO" => array("EO", "Submitter Identification Number", "1000", "Additional Payer Identificaton", ""),
+                "HI" => array("HI", "Health Industry Number (HIN)", "1000", "Additional Payer Identificaton", ""),
+                "NF" => array("NF", "National Association of Insurance Commissioners (NAIC) Code", "1000", "Additional Payer Identificaton", ""),
+                "6R" => array("6R", "Provider Control Number", "2110", "Service Identification", ""),
+                "E9" => array("E9", "Attachment Code", "2110", "Service Identification", ""),
+                "LU" => array("LU", "Location Number", "2110", "Service Identification", ""),
+                "RB" => array("RB", "Rate Code Number", "2110", "Service Identification", ""),
+                "9A" => array("9A", "Repriced Claim Reference Number", "2100", "Other Claim Related Identification", ""),
+                "9C" => array("9C", "Adjusted Repriced Claim Reference Number", "2100", "Other Claim Related Identification", ""),
+                "A6" => array("A6", "Employee Identification Number", "2100", "Other Claim Related Identification", ""),
+                "BB" => array("BB", "Authorization Number", "2100", "Other Claim Related Identification", ""),
+                "CE" => array("CE", "Class of Contract Code", "2100", "Other Claim Related Identification", ""),
+                "D3" => array("D3", "National Association of Boards of Pharmacy Number", "2100", "Rendering Provider Identification", ""),
+                "EA" => array("EA", "Medical Record Identification Number", "2100", "Other Claim Related Identification", ""),
+                "F8" => array("F8", "Original Reference Number", "2100", "Other Claim Related Identification", ""),
+                "G1" => array("G1", "Prior Authorization Number", "2100", "Other Claim Related Identification", ""),
+                "G2" => array("G2", "Provider Commercial Number", "2100", "Rendering Provider Identification", ""),
+                "G3" => array("G3", "Predetermination of Benefits ID Number", "2100", "Other Claim Related Identification", ""),
+                "IG" => array("IG", "Insurance Policy Number", "2100", "Other Claim Related Identification", ""),
+                "HPI" => array ("HPI", "HCFA National Provider Identifier", "2110", "Rendering Provider Identification", ""),
+                "TJ" => array ("TJ", "Federal Taxpayer Identification Number", "2110", "Rendering Provider Identification", ""),
+                "SY" => array("SY", "Social Security Number", "2100", "Other Claim Related Identification", ""),
+                "1A" => array("1A", "Blue Cross Provider Number", "2100", "Rendering Provider Identification", ""),
+                "1B" => array("1B", "Blue Shield Provider Number", "2100", "Rendering Provider Identification", ""),
+                "1C" => array("1C", "Medicare Provider Number", "2100", "Rendering Provider Identification", ""),
+                "1D" => array("1D", "Medicaid Provider Number", "2100", "Rendering Provider Identification", ""),
+                "1G" => array("1G", "Provider UPIN Number", "2100", "Rendering Provider Identification", ""),
+                "1H" => array("1H", "CHAMPUS Identification Number", "2100", "Rendering Provider Identification", ""),
+                "1J" => array("1J", "Facility ID Number", "2110", "Service Identification", ""),
+                "1L" => array("1L", "Group or Policy Number", "2100", "Other Claim Related Identification", ""),
+                "1W" => array("1W", "Member Identification Number", "2100", "Other Claim Related Identification", ""),
+                "1S" => array("1S", "Ambulatory Patient Group (APG) Number", "2110", "Service Identification", "")      
+                );
+            if (array_key_exists($ref_code, $this->CODE_REF)){
+                return $this->CODE_REF[$ref_code];
+            } else {
+                return array($ref_code, "Not found in REF_2100 codes table", "", "", "");
+            }
+        }
+    } // end get_CODE_REF
+    
 /**
  * AMT segment codes
  * <pre>
@@ -1254,42 +1254,42 @@ class code_arrays {
  * @param string $amt_code  the code
  * @return array
  */
-	public function get_CODE_AMT( $amt_code ) {
-		// 0 => code, [1] => description, [2] => loop, [3] => category description 
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->CODE_AMT )) {
-			if (array_key_exists($amt_code, $this->CODE_AMT)){
-				return $this->CODE_AMT[$amt_code];
-			} else {
-				return array($amt_code, "Not found in AMT_2100 codes table", "", "", "");
-			}
-		} else {
-			$this->CODE_AMT = array (
-			"AU" => array("AU", "Coverage Amount", "2100", "Claim Supplemantal Information", ""),
-			"B6" => array("B6", "Allowed - Actual", "2110", "Service Supplemental Amount", ""),
-			"DY" => array("DY", "Per Day Limit", "2100", "Claim Supplemantal Information", ""),
-			"F5" => array("F5", "Patient Amount Paid", "2100", "Claim Supplemantal Information", ""),
-			"I" => array("I", "Interest", "2100", "Claim Supplemantal Information", ""),
-			"KH" => array("KH", "Deduction Amount Late Filing Reduction", "2110", "Service Supplemental Amount", ""),
-			"NE" => array("NL", "Net Billed", "2110", "Service Supplemental Amount", ""),
-			"NL" => array("NL", "Negative Ledger Balance", "2100", "Claim Supplemantal Information", ""),
-			"T"	=> array("T", "Tax", "2100", "Claim Supplemantal Information", ""),
-			"T2" => array("T2", "Total Claim Before Taxes", "2100", "Claim Supplemantal Information", ""),
-			"ZK" => array("ZK", "Federal Medicare or Medicaid Payment Mandate - Category 1", "2100", "Claim Supplemental Information", ""),
-			"ZL" => array("ZL", "Federal Medicare or Medicaid Payment Mandate - Category 2", "2100", "Claim Supplemental Information", ""),
-			"ZM" => array("ZM", "Federal Medicare or Medicaid Payment Mandate - Category 3", "2100", "Claim Supplemental Information", ""),
-			"ZN" => array("ZN", "Federal Medicare or Medicaid Payment Mandate - Category 4", "2100", "Claim Supplemental Information", ""),
-			"ZO" => array("ZO", "Federal Medicare or Medicaid Payment Mandate - Category 5", "2100", "Claim Supplemental Information", ""),
-			"ZZ" => array("ZZ", "Mutually Defined", "2100", "Claim Supplemantal Information", "")
-			);
-		}
-		if (array_key_exists($amt_code, $this->CODE_AMT)){
-			return $this->CODE_AMT[$amt_code];
-		} else {
-			return array($amt_code, "Not found in AMT_2100 codes table", "", "", "");
-		}
-	
-	} // end get_CODE_AMT_2100
+    public function get_CODE_AMT( $amt_code ) {
+        // 0 => code, [1] => description, [2] => loop, [3] => category description 
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->CODE_AMT )) {
+            if (array_key_exists($amt_code, $this->CODE_AMT)){
+                return $this->CODE_AMT[$amt_code];
+            } else {
+                return array($amt_code, "Not found in AMT_2100 codes table", "", "", "");
+            }
+        } else {
+            $this->CODE_AMT = array (
+            "AU" => array("AU", "Coverage Amount", "2100", "Claim Supplemantal Information", ""),
+            "B6" => array("B6", "Allowed - Actual", "2110", "Service Supplemental Amount", ""),
+            "DY" => array("DY", "Per Day Limit", "2100", "Claim Supplemantal Information", ""),
+            "F5" => array("F5", "Patient Amount Paid", "2100", "Claim Supplemantal Information", ""),
+            "I" => array("I", "Interest", "2100", "Claim Supplemantal Information", ""),
+            "KH" => array("KH", "Deduction Amount Late Filing Reduction", "2110", "Service Supplemental Amount", ""),
+            "NE" => array("NL", "Net Billed", "2110", "Service Supplemental Amount", ""),
+            "NL" => array("NL", "Negative Ledger Balance", "2100", "Claim Supplemantal Information", ""),
+            "T" => array("T", "Tax", "2100", "Claim Supplemantal Information", ""),
+            "T2" => array("T2", "Total Claim Before Taxes", "2100", "Claim Supplemantal Information", ""),
+            "ZK" => array("ZK", "Federal Medicare or Medicaid Payment Mandate - Category 1", "2100", "Claim Supplemental Information", ""),
+            "ZL" => array("ZL", "Federal Medicare or Medicaid Payment Mandate - Category 2", "2100", "Claim Supplemental Information", ""),
+            "ZM" => array("ZM", "Federal Medicare or Medicaid Payment Mandate - Category 3", "2100", "Claim Supplemental Information", ""),
+            "ZN" => array("ZN", "Federal Medicare or Medicaid Payment Mandate - Category 4", "2100", "Claim Supplemental Information", ""),
+            "ZO" => array("ZO", "Federal Medicare or Medicaid Payment Mandate - Category 5", "2100", "Claim Supplemental Information", ""),
+            "ZZ" => array("ZZ", "Mutually Defined", "2100", "Claim Supplemantal Information", "")
+            );
+        }
+        if (array_key_exists($amt_code, $this->CODE_AMT)){
+            return $this->CODE_AMT[$amt_code];
+        } else {
+            return array($amt_code, "Not found in AMT_2100 codes table", "", "", "");
+        }
+    
+    } // end get_CODE_AMT_2100
 
 /**
  * PER segment code
@@ -1301,29 +1301,29 @@ class code_arrays {
  * @param string $per_code  the code
  * @return array
  */
-	public function get_CODE_PER( $per_code ) {
-		//
-		if ( is_array( $this->CODE_PER )) {
-			if (array_key_exists($per_code, $this->CODE_PER)){
-				return $this->CODE_PER[$per_code];
-			} else {
-				return array($per_code, "Not found in PER codes table", "", "", "");
-			}
-		} else {
-			$this->CODE_PER = array (
-			"CX" => array("CX", "Payers Claim Office", "", "Payer Contact Information", ""),
-			"EM" => array("EM", "Electronic Mail", "", "Payer Contact Information", ""),	
-			"FX" => array("FX", "Facsimile", "", "Payer Contact Information", ""),
-			"TE" => array("TE", "Telephone", "", "Payer Contact Information", ""),
-			"EX" => array("EX", "Telephone Extension", "", "Payer Contact Information", "")
-		    );
-		}
-		if (array_key_exists($per_code, $this->CODE_PER)){
-			return $this->CODE_PER[$per_code];
-		} else {
-			return array($per_code, "Not found in PER codes table", "", "", "");
-		}
-	} // end get_CODE_PER
+    public function get_CODE_PER( $per_code ) {
+        //
+        if ( is_array( $this->CODE_PER )) {
+            if (array_key_exists($per_code, $this->CODE_PER)){
+                return $this->CODE_PER[$per_code];
+            } else {
+                return array($per_code, "Not found in PER codes table", "", "", "");
+            }
+        } else {
+            $this->CODE_PER = array (
+            "CX" => array("CX", "Payers Claim Office", "", "Payer Contact Information", ""),
+            "EM" => array("EM", "Electronic Mail", "", "Payer Contact Information", ""),    
+            "FX" => array("FX", "Facsimile", "", "Payer Contact Information", ""),
+            "TE" => array("TE", "Telephone", "", "Payer Contact Information", ""),
+            "EX" => array("EX", "Telephone Extension", "", "Payer Contact Information", "")
+            );
+        }
+        if (array_key_exists($per_code, $this->CODE_PER)){
+            return $this->CODE_PER[$per_code];
+        } else {
+            return array($per_code, "Not found in PER codes table", "", "", "");
+        }
+    } // end get_CODE_PER
 
 /**
  * Claim status code
@@ -1335,41 +1335,41 @@ class code_arrays {
  * @param string $status_code
  * @return array
  */
-	public function get_CODE_CLAIM_STATUS( $status_code ) {
-		// 0 => code, [1] => description, [2] => loop, [3] => category description 
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->CODE_CLAIM_STATUS )) {
-			if (array_key_exists($status_code, $this->CODE_CLAIM_STATUS)){
-				return $this->CODE_CLAIM_STATUS[$status_code];
-			} else {
-				return FALSE;
-			}
-		} else {
-			$this->CODE_CLAIM_STATUS = array (
-			"1" => array ("1", "Processed as Primary", "2100", "Claim Payment Information", ""),
-			"2" => array ("2", "Processed as Secondary", "2100", "Claim Payment Information", ""),
-			"3" => array ("3", "Processed as Tertiary", "2100", "Claim Payment Information", ""),
-			"4" => array ("4", "Denied", "2100", "Claim Payment Information", ""),
-			"5" => array ("5", "Pended", "2100", "Claim Payment Information", ""),
-			"10" => array ("10", "Received, but not in process", "2100", "Claim Payment Information", ""),
-			"13" => array ("13", "Suspended", "2100", "Claim Payment Information", ""),
-			"15" => array ("15", "Suspended - investigation with field", "2100", "Claim Payment Information", ""),
-			"17" => array ("17", "Suspended - review pending", "2100", "Claim Payment Information", ""),
-			"19" => array ("19", "Processed as Primary, Forwarded to Additional Payer(s)", "2100", "Claim Payment Information", ""),
-			"20" => array ("20", "Processed as Secondary, Forwarded to Additional Payer(s)", "2100", "Claim Payment Information", ""),
-			"21" => array ("21", "Processed as Tertiary, Forwarded to Additional Payer(s)", "2100", "Claim Payment Information", ""),
-			"22" => array ("22", "Reversal of Previous Payment", "2100", "Claim Payment Information", ""),
-			"23" => array ("23", "Not Our Claim, Forwarded to Additional Payer(s)", "2100", "Claim Payment Information", ""),
-			"25" => array ("25", "Predetermination Pricing Only - No Payment", "2100", "Claim Payment Information", ""),
-			"27" => array ("27", "Reviewed", "2100", "Claim Payment Information", "")
-			);
-		}
-		if (array_key_exists($status_code, $this->CODE_CLAIM_STATUS)){
-			return $this->CODE_CLAIM_STATUS[$status_code];
-		} else {
-			return array($status_code, "Not found in CLAIM_STATUS codes table", "", "", "");
-		}
-	} // end get_CODE_CLAIM_STATUS		
+    public function get_CODE_CLAIM_STATUS( $status_code ) {
+        // 0 => code, [1] => description, [2] => loop, [3] => category description 
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->CODE_CLAIM_STATUS )) {
+            if (array_key_exists($status_code, $this->CODE_CLAIM_STATUS)){
+                return $this->CODE_CLAIM_STATUS[$status_code];
+            } else {
+                return FALSE;
+            }
+        } else {
+            $this->CODE_CLAIM_STATUS = array (
+            "1" => array ("1", "Processed as Primary", "2100", "Claim Payment Information", ""),
+            "2" => array ("2", "Processed as Secondary", "2100", "Claim Payment Information", ""),
+            "3" => array ("3", "Processed as Tertiary", "2100", "Claim Payment Information", ""),
+            "4" => array ("4", "Denied", "2100", "Claim Payment Information", ""),
+            "5" => array ("5", "Pended", "2100", "Claim Payment Information", ""),
+            "10" => array ("10", "Received, but not in process", "2100", "Claim Payment Information", ""),
+            "13" => array ("13", "Suspended", "2100", "Claim Payment Information", ""),
+            "15" => array ("15", "Suspended - investigation with field", "2100", "Claim Payment Information", ""),
+            "17" => array ("17", "Suspended - review pending", "2100", "Claim Payment Information", ""),
+            "19" => array ("19", "Processed as Primary, Forwarded to Additional Payer(s)", "2100", "Claim Payment Information", ""),
+            "20" => array ("20", "Processed as Secondary, Forwarded to Additional Payer(s)", "2100", "Claim Payment Information", ""),
+            "21" => array ("21", "Processed as Tertiary, Forwarded to Additional Payer(s)", "2100", "Claim Payment Information", ""),
+            "22" => array ("22", "Reversal of Previous Payment", "2100", "Claim Payment Information", ""),
+            "23" => array ("23", "Not Our Claim, Forwarded to Additional Payer(s)", "2100", "Claim Payment Information", ""),
+            "25" => array ("25", "Predetermination Pricing Only - No Payment", "2100", "Claim Payment Information", ""),
+            "27" => array ("27", "Reviewed", "2100", "Claim Payment Information", "")
+            );
+        }
+        if (array_key_exists($status_code, $this->CODE_CLAIM_STATUS)){
+            return $this->CODE_CLAIM_STATUS[$status_code];
+        } else {
+            return array($status_code, "Not found in CLAIM_STATUS codes table", "", "", "");
+        }
+    } // end get_CODE_CLAIM_STATUS      
 
 /**
  * CAS segment group codes
@@ -1377,30 +1377,30 @@ class code_arrays {
  * @param string  $status_code
  * @return array
  */
-	public function get_CODE_CAS_GROUP( $status_code ) {
-		// 0 => code, [1] => description, [2] => loop, [3] => category description 
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->CODE_CAS_GROUP )) {
-			if (array_key_exists($status_code, $this->CODE_CAS_GROUP)){
-				return $this->CODE_CAS_GROUP[$status_code];
-			} else {
-				return FALSE;
-			}
-		} else {
-			$this->CODE_CAS_GROUP = array (
-			"CO" => array ("CO", "Contractual Obligations", "", "", ""),
-			"CR" => array ("CR", "Corrections and Reversals", "", "", ""),
-			"OA" => array ("OA", "Other Adjustments", "", "", ""),
-			"PI" => array ("PI", "Payor Initiated Reductions", "", "", ""),
-			"PR" => array ("PR", "Patient Responsibility", "", "", "")
-			);
-		}
-		if (array_key_exists($status_code, $this->CODE_CAS_GROUP)){
-			return $this->CODE_CAS_GROUP[$status_code];
-		} else {
-			return array($status_code, "Not found in CAS_GROUP codes table", "", "", "");
-		}
-	} // end get_CODE_CAS_GROUP	
+    public function get_CODE_CAS_GROUP( $status_code ) {
+        // 0 => code, [1] => description, [2] => loop, [3] => category description 
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->CODE_CAS_GROUP )) {
+            if (array_key_exists($status_code, $this->CODE_CAS_GROUP)){
+                return $this->CODE_CAS_GROUP[$status_code];
+            } else {
+                return FALSE;
+            }
+        } else {
+            $this->CODE_CAS_GROUP = array (
+            "CO" => array ("CO", "Contractual Obligations", "", "", ""),
+            "CR" => array ("CR", "Corrections and Reversals", "", "", ""),
+            "OA" => array ("OA", "Other Adjustments", "", "", ""),
+            "PI" => array ("PI", "Payor Initiated Reductions", "", "", ""),
+            "PR" => array ("PR", "Patient Responsibility", "", "", "")
+            );
+        }
+        if (array_key_exists($status_code, $this->CODE_CAS_GROUP)){
+            return $this->CODE_CAS_GROUP[$status_code];
+        } else {
+            return array($status_code, "Not found in CAS_GROUP codes table", "", "", "");
+        }
+    } // end get_CODE_CAS_GROUP 
 
 /**
  * Location codes
@@ -1408,70 +1408,70 @@ class code_arrays {
  * @param string $status_code
  * @return array
  */
-	public function get_CODE_LOCATION( $status_code ) {
-		// 0 => code, [1] => description, [2] => loop, [3] => category description 
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->CODE_LOCATION )) {
-			if (array_key_exists($status_code, $this->CODE_LOCATION)){
-				return $this->CODE_LOCATION[$status_code];
-			} else {
-				return array($status_code, "Not found in LOCATION codes table", "", "", "");
-			}
-		} else {
-			$this->CODE_LOCATION = array (				
-			"01" => array ("01", "Pharmacy", "", "", ""),
-			"02" => array ("02", "Unassigned", "", "", ""),
-			"03" => array ("03", "School", "", "", ""),
-			"04" => array ("04", "Homeless Shelter", "", "", ""),
-			"05" => array ("05", "Indian Health Service Free-standing Facility", "", "", ""),
-			"06" => array ("06", "Indian Health Service Provider-based Facility", "", "", ""),
-			"07" => array ("07", "Tribal 638 Free-standing Facility", "", "", ""),
-			"08" => array ("08", "Tribal 638 Provider-based Facility", "", "", ""),
-			"09" => array ("09", "Prison/Correctional Facility", "", "", ""),
-			"11" => array ("11", "Office", "", "", ""),
-			"12" => array ("12", "Home ", "", "", ""),
-			"13" => array ("13", "Assisted Living Facility", "", "", ""),
-			"14" => array ("14", "Group Home", "", "", ""),
-			"15" => array ("15", "Mobile Unit", "", "", ""),
-			"16" => array ("16", "Temporary Lodging", "", "", ""),
-			"17" => array ("17", "Walk-in Retail Health Clinic", "", "", ""),
-			"20" => array ("20", "Urgent Care Facility", "", "", ""),
-			"21" => array ("21", "Inpatient Hospital", "", "", ""),
-			"22" => array ("22", "Outpatient Hospital", "", "", ""),
-			"23" => array ("23", "Emergency Room - Hospital", "", "", ""),
-			"24" => array ("24", "Ambulatory Surgical Center", "", "", ""),
-			"25" => array ("25", "Birthing Center", "", "", ""),
-			"26" => array ("26", "Military Treatment Facility", "", "", ""),
-			"31" => array ("31", "Skilled Nursing Facility", "", "", ""),
-			"32" => array ("32", "Nursing Facility", "", "", ""),
-			"33" => array ("33", "Custodial Care Facility", "", "", ""),
-			"34" => array ("34", "Hospice", "", "", ""),
-			"41" => array ("41", "Ambulance - Land", "", "", ""),
-			"42" => array ("42", "Ambulance - Air or Water", "", "", ""),
-			"49" => array ("49", "Independent Clinic", "", "", ""),
-			"50" => array ("50", "Federally Qualified Health Center", "", "", ""),
-			"51" => array ("51", "Inpatient Psychiatric Facility", "", "", ""),
-			"52" => array ("52", "Psychiatric Facility-Partial Hospitalization", "", "", ""),
-			"53" => array ("53", "Community Mental Health Center", "", "", ""),
-			"54" => array ("54", "Intermediate Care Facility/Mentally Retarded", "", "", ""),
-			"55" => array ("55", "Residential Substance Abuse Treatment Facility", "", "", ""),
-			"56" => array ("56", "Psychiatric Residential Treatment Center", "", "", ""),
-			"57" => array ("57", "Non-residential Substance Abuse Treatment Facility", "", "", ""),
-			"60" => array ("60", "Mass Immunization Center", "", "", ""),
-			"61" => array ("61", "Comprehensive Inpatient Rehabilitation Facility", "", "", ""),
-			"62" => array ("62", "Comprehensive Outpatient Rehabilitation Facility", "", "", ""),
-			"71" => array ("71", "Public Health Clinic", "", "", ""),
-			"72" => array ("72", "Rural Health Clinic", "", "", ""),
-			"81" => array ("81", "Independent Laboratory", "", "", ""),
-			"99" => array ("99", "Other Place of Service", "", "", "")
-			);
-		}
-		if (array_key_exists($status_code, $this->CODE_LOCATION)){
-			return $this->CODE_LOCATION[$status_code];
-		} else {
-			return array($status_code, "Not found in LOCATION codes table", "", "", "");
-		}
-	} // end get_CODE_LOCATION 	
+    public function get_CODE_LOCATION( $status_code ) {
+        // 0 => code, [1] => description, [2] => loop, [3] => category description 
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->CODE_LOCATION )) {
+            if (array_key_exists($status_code, $this->CODE_LOCATION)){
+                return $this->CODE_LOCATION[$status_code];
+            } else {
+                return array($status_code, "Not found in LOCATION codes table", "", "", "");
+            }
+        } else {
+            $this->CODE_LOCATION = array (              
+            "01" => array ("01", "Pharmacy", "", "", ""),
+            "02" => array ("02", "Unassigned", "", "", ""),
+            "03" => array ("03", "School", "", "", ""),
+            "04" => array ("04", "Homeless Shelter", "", "", ""),
+            "05" => array ("05", "Indian Health Service Free-standing Facility", "", "", ""),
+            "06" => array ("06", "Indian Health Service Provider-based Facility", "", "", ""),
+            "07" => array ("07", "Tribal 638 Free-standing Facility", "", "", ""),
+            "08" => array ("08", "Tribal 638 Provider-based Facility", "", "", ""),
+            "09" => array ("09", "Prison/Correctional Facility", "", "", ""),
+            "11" => array ("11", "Office", "", "", ""),
+            "12" => array ("12", "Home ", "", "", ""),
+            "13" => array ("13", "Assisted Living Facility", "", "", ""),
+            "14" => array ("14", "Group Home", "", "", ""),
+            "15" => array ("15", "Mobile Unit", "", "", ""),
+            "16" => array ("16", "Temporary Lodging", "", "", ""),
+            "17" => array ("17", "Walk-in Retail Health Clinic", "", "", ""),
+            "20" => array ("20", "Urgent Care Facility", "", "", ""),
+            "21" => array ("21", "Inpatient Hospital", "", "", ""),
+            "22" => array ("22", "Outpatient Hospital", "", "", ""),
+            "23" => array ("23", "Emergency Room - Hospital", "", "", ""),
+            "24" => array ("24", "Ambulatory Surgical Center", "", "", ""),
+            "25" => array ("25", "Birthing Center", "", "", ""),
+            "26" => array ("26", "Military Treatment Facility", "", "", ""),
+            "31" => array ("31", "Skilled Nursing Facility", "", "", ""),
+            "32" => array ("32", "Nursing Facility", "", "", ""),
+            "33" => array ("33", "Custodial Care Facility", "", "", ""),
+            "34" => array ("34", "Hospice", "", "", ""),
+            "41" => array ("41", "Ambulance - Land", "", "", ""),
+            "42" => array ("42", "Ambulance - Air or Water", "", "", ""),
+            "49" => array ("49", "Independent Clinic", "", "", ""),
+            "50" => array ("50", "Federally Qualified Health Center", "", "", ""),
+            "51" => array ("51", "Inpatient Psychiatric Facility", "", "", ""),
+            "52" => array ("52", "Psychiatric Facility-Partial Hospitalization", "", "", ""),
+            "53" => array ("53", "Community Mental Health Center", "", "", ""),
+            "54" => array ("54", "Intermediate Care Facility/Mentally Retarded", "", "", ""),
+            "55" => array ("55", "Residential Substance Abuse Treatment Facility", "", "", ""),
+            "56" => array ("56", "Psychiatric Residential Treatment Center", "", "", ""),
+            "57" => array ("57", "Non-residential Substance Abuse Treatment Facility", "", "", ""),
+            "60" => array ("60", "Mass Immunization Center", "", "", ""),
+            "61" => array ("61", "Comprehensive Inpatient Rehabilitation Facility", "", "", ""),
+            "62" => array ("62", "Comprehensive Outpatient Rehabilitation Facility", "", "", ""),
+            "71" => array ("71", "Public Health Clinic", "", "", ""),
+            "72" => array ("72", "Rural Health Clinic", "", "", ""),
+            "81" => array ("81", "Independent Laboratory", "", "", ""),
+            "99" => array ("99", "Other Place of Service", "", "", "")
+            );
+        }
+        if (array_key_exists($status_code, $this->CODE_LOCATION)){
+            return $this->CODE_LOCATION[$status_code];
+        } else {
+            return array($status_code, "Not found in LOCATION codes table", "", "", "");
+        }
+    } // end get_CODE_LOCATION  
 
 
 } // end Class code_arrays

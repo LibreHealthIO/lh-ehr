@@ -8,9 +8,8 @@
  *
  * Rewrite and modifications by sjpadgett@gmail.com Padgetts Consulting 2016.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Medical Information Integration,LLC <info@mi-squared.com>
- * @author  Terry Hill <teryhill@librehealth.io>
  * @link    http://librehealth.io
  */
  

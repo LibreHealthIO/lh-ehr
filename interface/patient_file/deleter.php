@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @link    http://librehealth.io
@@ -166,12 +166,12 @@ document.deletefrm.submit();
 }
 // Java script function for closing the popup
 function popup_close() {
-	if(parent.$==undefined) {
-	  	window.close();
-	 }
-	 else {
-	  	parent.$.fn.fancybox.close(); 
-	 }	  
+    if(parent.$==undefined) {
+        window.close();
+     }
+     else {
+        parent.$.fn.fancybox.close(); 
+     }    
 }
 </script>
 </head>

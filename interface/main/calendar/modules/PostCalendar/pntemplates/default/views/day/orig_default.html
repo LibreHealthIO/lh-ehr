@@ -14,10 +14,10 @@
 [-* along with this program. If not,                                          *-]
 [-* see <http://opensource.org/licenses/gpl-license.php>;.                    *-]
 [-*****************************************************************************-]
-[-* @package LibreEHR                                                          *-]
+[-* @package LibreHealth EHR                                                         *-]
 [-* @author Rod Roark <rod@sunsetsystems.com>                                 *-] 
 [-* @author Roberto Vasquez <robertogagliotta@gmail.com>                      *-]
-[-* @link http://www.open-emr.org                                             *-]
+[-* @link http://librehealth.io                                               *-]
 [-*                                                                           *-]
 [-*****************************************************************************-]
 [-config_load file="default.conf"-]
@@ -106,8 +106,8 @@ div.tiny { width:1px; height:1px; font-size:1px; }
  if ($GLOBALS['concurrent_layout'])
  {
  
-		  echo "  top.RTop.location = '../../patient_file/summary/demographics.php' " .
-		   "+ '?set_pid=' + pid;\n";	
+          echo "  top.RTop.location = '../../patient_file/summary/demographics.php' " .
+           "+ '?set_pid=' + pid;\n";    
  
  } else {
   echo "  top.location = '../../patient_file/patient_file.php' " .

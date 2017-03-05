@@ -21,7 +21,6 @@
  *
  * @package LibreHealth EHR 
  * @author Brady Miller <brady@sparmy.com>
- * @author Terry Hill <teryhill@librehealth.io> 
  * @link http://librehealth.io 
  */
 

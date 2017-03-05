@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
  * @link    http://librehealth.io
@@ -141,7 +141,7 @@ if ($mode == 'new' && $GLOBALS['default_new_encounter_form'] == 'football_injury
   }
 }
 $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
-	" left join libreehr_postcalendar_categories on fe.pc_catid=libreehr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
+    " left join libreehr_postcalendar_categories on fe.pc_catid=libreehr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
 ?>
 <html>
 <body>
@@ -149,23 +149,23 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categ
 <?php if ($GLOBALS['concurrent_layout'])
  {//Encounter details are stored to javacript as array.
 ?>
-	EncounterDateArray=new Array;
-	CalendarCategoryArray=new Array;
-	EncounterIdArray=new Array;
-	Count=0;
-	 <?php
-			   if(sqlNumRows($result4)>0)
-				while($rowresult4 = sqlFetchArray($result4))
-				 {
-	?>
-					EncounterIdArray[Count]='<?php echo attr($rowresult4['encounter']); ?>';
-					EncounterDateArray[Count]='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>';
-					CalendarCategoryArray[Count]='<?php echo attr(xl_appt_category($rowresult4['pc_catname'])); ?>';
-					Count++;
-	 <?php
-				 }
-	 ?>
-	 top.window.parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
+    EncounterDateArray=new Array;
+    CalendarCategoryArray=new Array;
+    EncounterIdArray=new Array;
+    Count=0;
+     <?php
+               if(sqlNumRows($result4)>0)
+                while($rowresult4 = sqlFetchArray($result4))
+                 {
+    ?>
+                    EncounterIdArray[Count]='<?php echo attr($rowresult4['encounter']); ?>';
+                    EncounterDateArray[Count]='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>';
+                    CalendarCategoryArray[Count]='<?php echo attr(xl_appt_category($rowresult4['pc_catname'])); ?>';
+                    Count++;
+     <?php
+                 }
+     ?>
+     top.window.parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
 <?php } ?>
  top.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>

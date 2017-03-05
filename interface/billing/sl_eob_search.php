@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
  * @link    http://librehealth.io
@@ -206,7 +206,7 @@ $today = date("Y-m-d");
       // and start a new one.  This is an associative array:
       //
       //  cid     = same as pid
-      //  pid     = LibreEHR patient ID
+      //  pid     = LibreHealth EHR patient ID
       //  patient = patient name
       //  amount  = total amount due
       //  adjust  = adjustments (already applied to amount)

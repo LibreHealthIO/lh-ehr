@@ -16,9 +16,9 @@
  * along with this program; if not,                                             *
  * see <http://opensource.org/licenses/gpl-license.php>                         *
  ********************************************************************************
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Joe Slam <joe@produnis.de>
- * @link http://www.open-emr.org
+ * @link http://librehealth.io
  * 
  */
 
@@ -38,12 +38,12 @@ require_once("../../globals.php");
 <?php
 //retrieve tracks.
 $spell = "SELECT form_name, MAX(form_track_anything_results.track_timestamp) as maxdate, form_id " .
-			"FROM forms " . 
-			"JOIN form_track_anything_results ON forms.form_id = form_track_anything_results.track_anything_id " . 
-			"WHERE forms.pid = ? " . 
-			"AND formdir = ? " .
-			"GROUP BY form_name " .
-			"ORDER BY maxdate DESC ";
+            "FROM forms " . 
+            "JOIN form_track_anything_results ON forms.form_id = form_track_anything_results.track_anything_id " . 
+            "WHERE forms.pid = ? " . 
+            "AND formdir = ? " .
+            "GROUP BY form_name " .
+            "ORDER BY maxdate DESC ";
 $result = sqlQuery($spell, array($pid, 'track_anything'));
 if ( !$result ) //If there are no disclosures recorded
 { ?>
@@ -52,19 +52,19 @@ if ( !$result ) //If there are no disclosures recorded
   </span> 
 <?php 
 } else {  // We have some tracks here...
-	echo "<span class='text'>";
-	echo xlt('Available Tracks') . ":";
-	echo $result;
-	echo "<ul>";
-	$result=sqlStatement($spell, array($pid, 'track_anything') );
-	while($myrow = sqlFetchArray($result)){
-		$formname = $myrow['form_name'];
-		$thedate = $myrow['maxdate'];
-		$formid = $myrow['form_id'];
-		echo "<li><a href='../../forms/track_anything/history.php?formid=" . attr($formid) . "'>" . text($formname) . "</a></li> (" . text($thedate) . ")</li>";
-	}
-	echo "</ul>";
-	echo "</span>";
+    echo "<span class='text'>";
+    echo xlt('Available Tracks') . ":";
+    echo $result;
+    echo "<ul>";
+    $result=sqlStatement($spell, array($pid, 'track_anything') );
+    while($myrow = sqlFetchArray($result)){
+        $formname = $myrow['form_name'];
+        $thedate = $myrow['maxdate'];
+        $formid = $myrow['form_id'];
+        echo "<li><a href='../../forms/track_anything/history.php?formid=" . attr($formid) . "'>" . text($formname) . "</a></li> (" . text($thedate) . ")</li>";
+    }
+    echo "</ul>";
+    echo "</span>";
 } ?>
 <br />
 <br />
