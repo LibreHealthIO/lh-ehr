@@ -15,6 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
  * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
@@ -32,8 +36,8 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
 
-$date             = (isset($_POST['form_date']))            ? $_POST['form_date'] : '';
-$onset_date       = (isset($_POST['form_onset_date']))      ? $_POST['form_onset_date'] : '';
+$date             = (isset($_POST['form_date']))            ? prepareDateBeforeSave($_POST['form_date']) : '';
+$onset_date       = (isset($_POST['form_onset_date']))      ? prepareDateBeforeSave($_POST['form_onset_date']) : '';
 $sensitivity      = (isset($_POST['form_sensitivity']))     ? $_POST['form_sensitivity'] : '';
 $pc_catid         = (isset($_POST['pc_catid']))             ? $_POST['pc_catid'] : '';
 $facility_id      = (isset($_POST['facility_id']))          ? $_POST['facility_id'] : '';

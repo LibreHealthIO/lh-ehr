@@ -6,7 +6,7 @@
  *  The changes to this file as of November 16 2016 to add needed items to the HCFA Print and Electronic Transmission
  *  are covered under the terms of the Mozilla Public License, v. 2.0
  *
- * @copyright Copyright (C) 2016 Terry Hill <teryhill@librehealth.io>
+ * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  *
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -34,6 +34,7 @@
 require_once("../../globals.php");
 require_once("$srcdir/api.inc");
 require_once("$srcdir/forms.inc");
+require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
 
 if (! $encounter) { // comes from globals.php
@@ -66,11 +67,11 @@ $sets = "pid = {$_SESSION["pid"]},
   lab_amount                  = '" . formData("lab_amount") . "',
   is_unable_to_work           = '" . formData("is_unable_to_work") . "',
   date_initial_treatment      = '" . formData("date_initial_treatment") . "',
-  off_work_from               = '" . formData("off_work_from") . "',
-  off_work_to                 = '" . formData("off_work_to") . "',
+  off_work_from               = '" . prepareDateBeforeSave(formData("off_work_from")) . "',
+  off_work_to                 = '" . prepareDateBeforeSave(formData("off_work_to")) . "',
   is_hospitalized             = '" . formData("is_hospitalized") . "',
-  hospitalization_date_from   = '" . formData("hospitalization_date_from") . "',
-  hospitalization_date_to     = '" . formData("hospitalization_date_to") . "',
+  hospitalization_date_from   = '" . prepareDateBeforeSave(formData("hospitalization_date_from")) . "',
+  hospitalization_date_to     = '" . prepareDateBeforeSave(formData("hospitalization_date_to")) . "',
   medicaid_resubmission_code  = '" . formData("medicaid_resubmission_code") . "',
   medicaid_original_reference = '" . formData("medicaid_original_reference") . "',
   prior_auth_number           = '" . formData("prior_auth_number") . "',
