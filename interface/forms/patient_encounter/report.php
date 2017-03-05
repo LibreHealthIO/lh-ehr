@@ -13,7 +13,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
@@ -21,13 +25,13 @@
 include_once(dirname(__file__)."/../../globals.php");
 
 function patient_encounter_report( $pid, $encounter, $cols, $id) {
-	$res = sqlStatement("select * from form_encounter where pid=? and id=?", array($pid,$id) );
-	print "<table><tr><td>\n";
-	while($result = sqlFetchArray($res)) {
-		print "<span class=bold>" . xlt('Facility') . ": </span><span class=text>" . text($result{"facility"}) . "</span><br>\n";
-		print "<span class=bold>" . xlt('Reason') . ": </span><span class=text>" . nl2br(text($result{"reason"})) . "</span><br>\n";
-	}
-	print "</td></tr></table>\n";
+    $res = sqlStatement("select * from form_encounter where pid=? and id=?", array($pid,$id) );
+    print "<table><tr><td>\n";
+    while($result = sqlFetchArray($res)) {
+        print "<span class=bold>" . xlt('Facility') . ": </span><span class=text>" . text($result{"facility"}) . "</span><br>\n";
+        print "<span class=bold>" . xlt('Reason') . ": </span><span class=text>" . nl2br(text($result{"reason"})) . "</span><br>\n";
+    }
+    print "</td></tr></table>\n";
 }
 
 ?>

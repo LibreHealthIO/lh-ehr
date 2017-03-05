@@ -22,11 +22,11 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 $fake_register_globals=false;
@@ -37,6 +37,8 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/api.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("date_qualifier_options.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 
 if (! $encounter) { // comes from globals.php
@@ -64,20 +66,15 @@ function generateDateQualifierSelect($name,$options,$obj)
 <head>
 <?php html_header_show(); ?>
 
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-9-1/index.js"></script>
-<script type="text/javascript" src="<?php //echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
 <link href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-<!-- pop up calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_en.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-9-1/index.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
 <script language="JavaScript">
 
-// this line is to assist the calendar text boxes
-var mypcc = '1';
 </script>
 
 </head>
@@ -113,25 +110,17 @@ var mypcc = '1';
  <tr>
   <td><span class=text><?php echo xlt('BOX 16. Date unable to work from');?>:</span></td>
   <td><?php $off_work_from = $obj{"off_work_from"}; ?>
-    <input type=text size=10 name='off_work_from' id='off_work_from'
-    value='<?php echo attr($off_work_from); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_off_work_from' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla("Click here to choose a date"); ?>'></td>
+   <input type='text' name='off_work_from' id="off_work_from"
+          size='10' value='<?php echo oeFormatShortDate(attr($off_work_from)) ?>'/>
+  </td>
  </tr>
  &nbsp;&nbsp;
 <tr>
  <td><span class=text><?php echo xlt('BOX 16. Date unable to work to');?>:</span></td>
   <td><?php $off_work_to = $obj{"off_work_to"}; ?>
-    <input type=text size=10 name='off_work_to' id='off_work_to'
-    value='<?php echo attr($off_work_to); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_off_work_to' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla("Click here to choose a date"); ?>'></td>
+   <input type='text' name='off_work_to' id="off_work_to"
+          size='10' value='<?php echo oeFormatShortDate(attr($off_work_to)) ?>'/>
+  </td>
  </tr>
     <br><br>
 
@@ -155,25 +144,18 @@ var mypcc = '1';
 <tr>
  <td><span class=text><?php echo xlt('BOX 18. Hospitalization date from');?>:</span></td>
  <td><?php $hospitalization_date_from = $obj{"hospitalization_date_from"}; ?>
-    <input type=text size=10 name='hospitalization_date_from' id='hospitalization_date_from'
-    value='<?php echo attr($hospitalization_date_from); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_hospitalization_date_from' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla("Click here to choose a date"); ?>'></td>
+   <input type='text' name='hospitalization_date_from' id="hospitalization_date_from"
+          size='10' value='<?php echo oeFormatShortDate(attr($hospitalization_date_from)) ?>'/>
+  </td>
  </tr>
  &nbsp;&nbsp;
  <tr>
   <td><span class=text><?php echo xlt('BOX 18. Hospitalization date to');?>:</span></td>
   <td><?php $hospitalization_date_to = $obj{"hospitalization_date_to"}; ?>
-    <input type=text size=10 name='hospitalization_date_to' id='hospitalization_date_to'
-    value='<?php echo attr($hospitalization_date_to); ?>'
-    title='<?php echo xla('yyyy-mm-dd'); ?>'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-    <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_hospitalization_date_to' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla("Click here to choose a date"); ?>'></td>
+   <input type='text' name='hospitalization_date_to' id="hospitalization_date_to"
+          size='10' value='<?php echo oeFormatShortDate(attr($hospitalization_date_to)) ?>'/>
+  </td>
+
  </tr>
     <br><br>
     <label><span class=text><?php echo xlt('BOX 20. Is Outside Lab used?'); ?>: </span><input type=checkbox name="outside_lab" value="1" <?php if ($obj['outside_lab'] == "1") echo "checked";?>></label>
@@ -204,11 +186,6 @@ var mypcc = '1';
 </div>
 
 <script language="javascript">
-/* required for popup calendar */
-Calendar.setup({inputField:"hospitalization_date_from", ifFormat:"%Y-%m-%d", button:"img_hospitalization_date_from"});
-Calendar.setup({inputField:"hospitalization_date_to", ifFormat:"%Y-%m-%d", button:"img_hospitalization_date_to"});
-Calendar.setup({inputField:"off_work_from", ifFormat:"%Y-%m-%d", button:"img_off_work_from"});
-Calendar.setup({inputField:"off_work_to", ifFormat:"%Y-%m-%d", button:"img_off_work_to"});
 
 // jQuery stuff to make the page a little easier to use
 
@@ -218,4 +195,13 @@ $(document).ready(function(){
 });
 </script>
 </body>
+<script>
+    $(function() {
+        $("#hospitalization_date_from, #hospitalization_date_to, #off_work_from, #off_work_to" ).datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
+</script>
 </html>
