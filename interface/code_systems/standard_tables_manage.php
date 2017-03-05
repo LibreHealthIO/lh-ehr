@@ -1,7 +1,7 @@
 <?php
 /**
  * This file implements the database load processing when loading external
- * database files into LIBREEHR
+ * database files into LibreHealth EHR
  *
  * Copyright (C) 2012 Patient Healthcare Analytics, Inc.
  * Copyright (C) 2011 Phyaura, LLC <info@phyaura.com>
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  (Mac) Kevin McAloon <mcaloon@patienthealthcareanalytics.com>
  * @author  Rohit Kumar <pandit.rohit@netsity.com>
  * @author  Brady Miller <brady@sparmy.com>
@@ -51,7 +51,7 @@ $db = isset($_GET['db']) ? $_GET['db'] : '0';
 $version = isset($_GET['version']) ? $_GET['version'] : '0';
 $file_revision_date = isset($_GET['file_revision_date']) ? $_GET['file_revision_date'] : '0';
 $file_checksum = isset($_GET['file_checksum']) ? $_GET['file_checksum'] : '0';
-$newInstall = 	isset($_GET['newInstall']) ? $_GET['newInstall'] : '0';
+$newInstall =   isset($_GET['newInstall']) ? $_GET['newInstall'] : '0';
 $mainPATH = $GLOBALS['fileroot']."/contrib/".strtolower($db);
 
 $files_array = scandir($mainPATH);

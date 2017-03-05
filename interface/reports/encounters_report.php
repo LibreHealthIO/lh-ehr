@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
  * 
- * @package LibreEHR 
+ * @package LibreHealth EHR 
  * @author Terry Hill <teryhill@librehealth.io> 
  * @author Rod Roark <rod@sunsetsystems.com>
  * @link http://www.libreehr.org 
@@ -34,6 +34,8 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $alertmsg = ''; // not used yet but maybe later
 
@@ -135,6 +137,7 @@ $res = sqlStatement($query);
 <title><?php echo xlt('Encounters Report'); ?></title>
 
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <style type="text/css">
@@ -166,19 +169,21 @@ $res = sqlStatement($query);
 
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script LANGUAGE="JavaScript">
 
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
+
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+        $(document).ready(function () {
+            var win = top.printLogSetup ? top : opener.top;
+            win.printLogSetup(document.getElementById('printbutton'));
+        });
 
  function dosort(orderby) {
   var f = document.forms[0];
@@ -201,7 +206,8 @@ $res = sqlStatement($query);
 <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Encounters'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
 <form method='post' name='theform' id='theform' action='encounters_report.php'>
@@ -210,114 +216,108 @@ $res = sqlStatement($query);
 <table>
  <tr>
   <td width='550px'>
-	<div style='float:left'>
+    <div style='float:left'>
 
-	<table class='text'>
-		<tr>
-			<td class='label'>
-				<?php echo xlt('Facility'); ?>:
-			</td>
-			<td>
-			<?php dropdown_facility($form_facility, 'form_facility', true); ?>
-			</td>
-			<td class='label'>
-			   <?php echo xlt('Provider'); ?>:
-			</td>
-			<td>
-				<?php
+    <table class='text'>
+        <tr>
+            <td class='label'>
+                <?php echo xlt('Facility'); ?>:
+            </td>
+            <td>
+            <?php dropdown_facility($form_facility, 'form_facility', true); ?>
+            </td>
+            <td class='label'>
+               <?php echo xlt('Provider'); ?>:
+            </td>
+            <td>
+                <?php
 
-				 // Build a drop-down list of providers.
-				 //
+                 // Build a drop-down list of providers.
+                 //
 
-				 $query = "SELECT id, lname, fname FROM users WHERE ".
-				  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
+                 $query = "SELECT id, lname, fname FROM users WHERE ".
+                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
 
-				 $ures = sqlStatement($query);
+                 $ures = sqlStatement($query);
 
-				 echo "   <select name='form_provider'>\n";
-				 echo "    <option value=''>-- " . xlt('All') . " --\n";
+                 echo "   <select name='form_provider'>\n";
+                 echo "    <option value=''>-- " . xlt('All') . " --\n";
 
-				 while ($urow = sqlFetchArray($ures)) {
-				  $provid = $urow['id'];
-				  echo "    <option value='" . attr($provid) . "'";
-				  if ($provid == $_POST['form_provider']) echo " selected";
-				  echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-				 }
+                 while ($urow = sqlFetchArray($ures)) {
+                  $provid = $urow['id'];
+                  echo "    <option value='" . attr($provid) . "'";
+                  if ($provid == $_POST['form_provider']) echo " selected";
+                  echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
+                 }
 
-				 echo "   </select>\n";
+                 echo "   </select>\n";
 
-				?>
-			</td>
-			<td>
+                ?>
+            </td>
+            <td>
        <label><input type='checkbox' name='form_new_patients' title='First-time visits only'<?php  if ($form_new_patients) echo ' checked'; ?>>
         <?php  echo xlt('New'); ?></label>
-			</td>
-           	<td>
-			   <label><input type='checkbox' name='form_esigned'<?php  if ($form_esigned) echo ' checked'; ?>>
-			   <?php  echo xlt('Forms Esigned'); ?></label>
-			</td>
-           	<td>
-			   <label><input type='checkbox' name='form_encounter_esigned'<?php  if ($form_encounter_esigned) echo ' checked'; ?>>
-			   <?php  echo xlt('Encounter Esigned'); ?></label>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'>
-			   <?php echo xlt('From'); ?>:
-			</td>
-			<td>
-			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo attr($form_from_date) ?>'
-				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php echo xla('Click here to choose a date'); ?>'>
-			</td>
-			<td class='label'>
-			   <?php echo xlt('To'); ?>:
-			</td>
-			<td>
-			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo attr($form_to_date) ?>'
-				onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='yyyy-mm-dd'>
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php echo xla('Click here to choose a date'); ?>'>
-			</td>
-			<td>
-			   <label><input type='checkbox' name='form_details'<?php  if ($form_details) echo ' checked'; ?>>
-			   <?php echo xlt('Details'); ?></label>
-			</td>
-           	<td>
-			   <label><input type='checkbox' name='form_not_esigned'<?php  if ($form_not_esigned) echo ' checked'; ?>>
-			   <?php echo xlt('Not Esigned'); ?></label>
-			</td>
-		</tr>
-	</table>
+            </td>
+            <td>
+               <label><input type='checkbox' name='form_esigned'<?php  if ($form_esigned) echo ' checked'; ?>>
+               <?php  echo xlt('Forms Esigned'); ?></label>
+            </td>
+            <td>
+               <label><input type='checkbox' name='form_encounter_esigned'<?php  if ($form_encounter_esigned) echo ' checked'; ?>>
+               <?php  echo xlt('Encounter Esigned'); ?></label>
+            </td>
+        </tr>
+        <tr>
+            <td class='label'>
+               <?php echo xlt('From'); ?>:
+            </td>
+            <td>
+               <input type='text' name='form_from_date' id="form_from_date" size='10'
+                      value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_from_date))) ?>'>
+            </td>
+            <td class='label'>
+               <?php echo xlt('To'); ?>:
+            </td>
+            <td>
+               <input type='text' name='form_to_date' id="form_to_date" size='10'
+                      value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>'>
+            </td>
+            <td>
+               <label><input type='checkbox' name='form_details'<?php  if ($form_details) echo ' checked'; ?>>
+               <?php echo xlt('Details'); ?></label>
+            </td>
+            <td>
+               <label><input type='checkbox' name='form_not_esigned'<?php  if ($form_not_esigned) echo ' checked'; ?>>
+               <?php echo xlt('Not Esigned'); ?></label>
+            </td>
+        </tr>
+    </table>
 
-	</div>
+    </div>
 
   </td>
   <td align='left' valign='middle' height="100%">
-	<table style='border-left:1px solid; width:100%; height:100%' >
-		<tr>
-			<td>
-				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-					<span>
-						<?php echo xlt('Submit'); ?>
-					</span>
-					</a>
+    <table style='border-left:1px solid; width:100%; height:100%' >
+        <tr>
+            <td>
+                <div style='margin-left:15px'>
+                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                    <span>
+                        <?php echo xlt('Submit'); ?>
+                    </span>
+                    </a>
 
-					<?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
+                    <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
             <a href='#' class='css_button' id='printbutton'>
-						<span>
-							<?php echo xlt('Print'); ?>
-						</span>
-					</a>
-					<?php } ?>
-				</div>
-			</td>
-		</tr>
-	</table>
+                        <span>
+                            <?php echo xlt('Print'); ?>
+                        </span>
+                    </a>
+                    <?php } ?>
+                </div>
+            </td>
+        </tr>
+    </table>
   </td>
  </tr>
 </table>
@@ -391,11 +391,11 @@ if ($res) {
       $encarr = getFormByEncounter($patient_id, $row['encounter'],
         "formdir, user, form_name, form_id");
       if($encarr!='') {
-	      foreach ($encarr as $enc) {
-	        if ($enc['formdir'] == 'patient_encounter') continue;
-	        if ($encnames) $encnames .= '<br />';
-	        $encnames .= text($enc['form_name']); // need to html escape it here for output below
-	      }
+          foreach ($encarr as $enc) {
+            if ($enc['formdir'] == 'patient_encounter') continue;
+            if ($encnames) $encnames .= '<br />';
+            $encnames .= text($enc['form_name']); // need to html escape it here for output below
+          }
       }     
 
       // Fetch coding and compute billing status.
@@ -476,7 +476,7 @@ if ($res) {
 </div>  <!-- end encresults -->
 <?php } else { ?>
 <div class='text'>
- 	<?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+    <?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
 </div>
 <?php } ?>
 
@@ -487,10 +487,23 @@ if ($res) {
 </body>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
 
 <?php if ($alertmsg) { echo " alert('$alertmsg');\n"; } ?>
+
+</script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 
 </script>
 

@@ -45,7 +45,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
@@ -62,6 +62,9 @@ require_once("$srcdir/billing.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("../../custom/code_types.inc.php");
+require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $currdecimals = $GLOBALS['currency_decimals'];
 
@@ -403,7 +406,7 @@ while ($prow = sqlFetchArray($pres)) {
 
 // Print receipt header for facility
 function printFacilityHeader($frow){
-	echo "<p><b>" . text($frow['name']) .
+    echo "<p><b>" . text($frow['name']) .
     "<br>" . text($frow['street']) .
     "<br>" . text($frow['city']) . ', ' . text($frow['state']) . ' ' . text($frow['postal_code']) .
     "<br>" . text($frow['phone']) .
@@ -413,7 +416,7 @@ function printFacilityHeader($frow){
 
 // Pring receipt header for Provider
 function printProviderHeader($pvdrow){
-	echo "<p><b>" . text($pvdrow['title']) . " " . text($pvdrow['fname']) . " " . text($pvdrow['mname']) . " " . text($pvdrow['lname']) . " " . 
+    echo "<p><b>" . text($pvdrow['title']) . " " . text($pvdrow['fname']) . " " . text($pvdrow['mname']) . " " . text($pvdrow['lname']) . " " . 
     "<br>" . text($pvdrow['street']) .
     "<br>" . text($pvdrow['city']) . ', ' . text($pvdrow['state']) . ' ' . text($pvdrow['postal_code']) .
     "<br>" . text($pvdrow['phone']) .
@@ -553,19 +556,19 @@ if ($_POST['form_save']) {
     $form_source = trim($_POST['form_source']);
     $paydesc = trim($_POST['form_method']);
       //Fetching the existing code and modifier
-			$ResultSearchNew = sqlStatement("SELECT * FROM billing LEFT JOIN code_types ON billing.code_type=code_types.ct_key ".
-				"WHERE code_types.ct_fee=1 AND billing.activity!=0 AND billing.pid =? AND encounter=? ORDER BY billing.code,billing.modifier",
-				array($form_pid,$form_encounter));
-			if($RowSearch = sqlFetchArray($ResultSearchNew))
-			{
+            $ResultSearchNew = sqlStatement("SELECT * FROM billing LEFT JOIN code_types ON billing.code_type=code_types.ct_key ".
+                "WHERE code_types.ct_fee=1 AND billing.activity!=0 AND billing.pid =? AND encounter=? ORDER BY billing.code,billing.modifier",
+                array($form_pid,$form_encounter));
+            if($RowSearch = sqlFetchArray($ResultSearchNew))
+            {
                                 $Codetype=$RowSearch['code_type'];
-				$Code=$RowSearch['code'];
-				$Modifier=$RowSearch['modifier'];
-			}else{
+                $Code=$RowSearch['code'];
+                $Modifier=$RowSearch['modifier'];
+            }else{
                                 $Codetype='';
-				$Code='';
-				$Modifier='';
-			}
+                $Code='';
+                $Modifier='';
+            }
       $session_id=idSqlStatement("INSERT INTO ar_session (payer_id,user_id,reference,check_date,deposit_date,pay_total,".
         " global_amount,payment_type,description,patient_id,payment_method,adjustment_code,post_to_date) ".
         " VALUES ('0',?,?,now(),?,?,'','patient','COPAY',?,?,'patient_payment',now())",
@@ -644,17 +647,13 @@ while ($urow = sqlFetchArray($ures)) {
 <head>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <title><?php echo xlt('Patient Checkout'); ?></title>
-<style>
-</style>
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.2.2.min.js"></script>
+
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script language="JavaScript">
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
 
@@ -931,13 +930,7 @@ if ($inv_encounter) {
    <?php echo xlt('Posting Date'); ?>:
   </td>
   <td>
-   <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo attr($inv_date) ?>'
-    title='yyyy-mm-dd date of service'
-    onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-    id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php echo xla("Click here to choose a date"); ?>'>
+   <input type='text' size='10' name='form_date' id='form_date' value='<?= htmlspecialchars(oeFormatShortDate(attr($inv_date))) ?>'/>
   </td>
  </tr>
 
@@ -994,7 +987,11 @@ else if (!empty($GLOBALS['gbl_mask_invoice_number'])) {
 </form>
 
 <script language='JavaScript'>
- Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_date"});
+  $("#form_date").datetimepicker({
+    timepicker: false,
+    format: "<?= $DateFormat; ?>"
+  });
+  $.datetimepicker.setLocale('<?= $DateLocale;?>');
  computeTotals();
 <?php
 

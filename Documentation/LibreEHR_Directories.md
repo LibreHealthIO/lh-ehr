@@ -316,7 +316,6 @@ report_database.inc
 restoreSession.php
 sanitize.inc.php
 sl_eob.inc.php
-spreadsheet.inc.php
 sql.inc
 sql-ccr.inc
 sqlconf.php

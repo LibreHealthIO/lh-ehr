@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
@@ -47,7 +47,7 @@ $imauthorized = $_SESSION['userauthorized'] || $see_auth > 2;
 
 // This authorizes everything for the specified patient.
 if (isset($_GET["mode"]) && $_GET["mode"] == "authorize" && $imauthorized) {
-  $retVal = getProviderId($_SESSION['authUser']);	
+  $retVal = getProviderId($_SESSION['authUser']);   
   newEvent("authorize", $_SESSION["authUser"], $_SESSION["authProvider"], 1, $_GET["pid"]);
   sqlStatement("update billing set authorized=1 where pid=?", array($_GET["pid"]) );
   sqlStatement("update forms set authorized=1 where pid=?", array($_GET["pid"]) );
@@ -97,7 +97,7 @@ if (isset($_GET["mode"]) && $_GET["mode"] == "authorize" && $imauthorized) {
 <?php } ?>
 <?php echo htmlspecialchars(xl('Authorizations'),ENT_NOQUOTES); ?> <span class='more'><?php echo htmlspecialchars($tmore,ENT_NOQUOTES); ?></span></a>
 <?php 
-	}
+    }
 ?>
 </span>
 
@@ -143,7 +143,7 @@ if ($res = sqlStatement("select * from transactions where " .
     foreach ($result2 as $iter) {
       $authorize{$iter{"pid"}}{"transaction"} .= "<span class=text>" .
         htmlspecialchars($iter{"title"} . ": " . (strterm($iter{"body"},25)) . " " . date("n/j/Y",strtotime($iter{"date"})),ENT_NOQUOTES) .
-	"</span><br>\n";
+    "</span><br>\n";
     }
   }
 }
@@ -159,7 +159,7 @@ if (empty($GLOBALS['ignore_pnotes_authorization'])) {
       foreach ($result3 as $iter) {
         $authorize{$iter{"pid"}}{"pnotes"} .= "<span class=text>" .
           htmlspecialchars((strterm($iter{"body"},25)) . " " . date("n/j/Y",strtotime($iter{"date"})),ENT_NOQUOTES) .
-	  "</span><br>\n";
+      "</span><br>\n";
       }
     }
   }
@@ -211,11 +211,11 @@ if ($authorize) {
       // as demographics.php takes care of loading the bottom frame.
 
         echo "<a href='$rootdir/patient_file/summary/demographics.php?set_pid=" .
-	  htmlspecialchars($ppid,ENT_QUOTES) . "' target='RTop' onclick='top.restoreSession()'>";
+      htmlspecialchars($ppid,ENT_QUOTES) . "' target='RTop' onclick='top.restoreSession()'>";
 
     } else {
       echo "<a href='$rootdir/patient_file/patient_file.php?set_pid=" .
-	htmlspecialchars($ppid,ENT_QUOTES) . "' target='_top' onclick='top.restoreSession()'>";
+    htmlspecialchars($ppid,ENT_QUOTES) . "' target='_top' onclick='top.restoreSession()'>";
     }
     echo "<span class='bold'>" . htmlspecialchars($name{"fname"},ENT_NOQUOTES) . " " .
       htmlspecialchars($name{"lname"},ENT_NOQUOTES) . "</span></a><br>" .

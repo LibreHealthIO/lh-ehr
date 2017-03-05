@@ -1,10 +1,28 @@
 <?php
- // Copyright (C) 2010 Brady Miller <brady@sparmy.com>
- //
- // This program is free software; you can redistribute it and/or
- // modify it under the terms of the GNU General Public License
- // as published by the Free Software Foundation; either version 2
- // of the License, or (at your option) any later version.
+/*
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2010 Brady Miller <brady@sparmy.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Brady Miller <brady@sparmy.com>
+ * @link http://librehealth.io 
+ */
 
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
@@ -21,6 +39,8 @@ require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once "$srcdir/clinical_rules.php";
 require_once "$srcdir/report_database.inc";
+$DateFormat = DateFormatRead(true);
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 // See if showing an old report or creating a new report
 $report_id = (isset($_GET['report_id'])) ? trim($_GET['report_id']) : "";
@@ -31,7 +51,7 @@ $back_link = (isset($_GET['back'])) ? trim($_GET['back']) : "";
 // If showing an old report, then collect information
 if (!empty($report_id)) {
   $report_view = collectReportDatabase($report_id);
-  $date_report = $report_view['date_report'];
+  $date_report = date($DateFormat, strtotime($report_view['date_report']));
   $type_report = $report_view['type'];
   
   $type_report = (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014")  || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2") ||
@@ -66,7 +86,7 @@ else {
     $begin_date = (isset($_POST['form_begin_date'])) ? trim($_POST['form_begin_date']) : "";
     $labs_manual = (isset($_POST['labs_manual_entry'])) ? trim($_POST['labs_manual_entry']) : "0";
   }
-  $target_date = (isset($_POST['form_target_date'])) ? trim($_POST['form_target_date']) : date('Y-m-d H:i:s');
+  $target_date = (isset($_POST['form_target_date'])) ? trim($_POST['form_target_date']) : date($DateFormat);
   $rule_filter = (isset($_POST['form_rule_filter'])) ? trim($_POST['form_rule_filter']) : "";
   $plan_filter = (isset($_POST['form_plan_filter'])) ? trim($_POST['form_plan_filter']) : "";
   $organize_method = (empty($plan_filter)) ? "default" : "plans";
@@ -81,6 +101,7 @@ else {
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <?php if ($type_report == "standard") { ?>
   <title><?php echo xlt('Standard Measures'); ?></title>
@@ -112,7 +133,7 @@ else {
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script LANGUAGE="JavaScript">
 
@@ -199,25 +220,25 @@ else {
  }
 
  function GenXml(sNested) {
-	  top.restoreSession();
-	  //QRDA Category III Export
-	  if(sNested == "QRDA"){
-		var form_rule_filter = theform.form_rule_filter.value
-		var sLoc = '../../custom/export_qrda_xml.php?target_date=' + theform.form_target_date.value + '&qrda_version=3&rule_filter=cqm_2014&form_provider='+theform.form_provider.value+"&report_id=<?php echo attr($report_id);?>";
-	  }else{
-		var sLoc = '../../custom/export_registry_xml.php?&target_date=' + theform.form_target_date.value + '&nested=' + sNested;
-	  }
-	  dlgopen(sLoc, '_blank', 600, 500);
-	  return false;
+      top.restoreSession();
+      //QRDA Category III Export
+      if(sNested == "QRDA"){
+        var form_rule_filter = theform.form_rule_filter.value
+        var sLoc = '../../custom/export_qrda_xml.php?target_date=' + theform.form_target_date.value + '&qrda_version=3&rule_filter=cqm_2014&form_provider='+theform.form_provider.value+"&report_id=<?php echo attr($report_id);?>";
+      }else{
+        var sLoc = '../../custom/export_registry_xml.php?&target_date=' + theform.form_target_date.value + '&nested=' + sNested;
+      }
+      dlgopen(sLoc, '_blank', 600, 500);
+      return false;
  }
  
  //QRDA I - 2014 Download
  function downloadQRDA() {
-	top.restoreSession();
-	var reportID = '<?php echo attr($report_id); ?>';
-	var provider = $("#form_provider").val();
-	sLoc = '../../custom/download_qrda.php?&report_id=' + reportID + '&provider_id=' + provider;
-	dlgopen(sLoc, '_blank', 600, 500);
+    top.restoreSession();
+    var reportID = '<?php echo attr($report_id); ?>';
+    var provider = $("#form_provider").val();
+    sLoc = '../../custom/download_qrda.php?&report_id=' + reportID + '&provider_id=' + provider;
+    dlgopen(sLoc, '_blank', 600, 500);
  }
 
  function validateForm() {
@@ -239,28 +260,28 @@ else {
  }
  
  function Form_Validate() {
-	 <?php if ( (empty($report_id)) && (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2")) ){ ?>	
-		 var d = document.forms[0];		 
-		 FromDate = d.form_begin_date.value;
-		 ToDate = d.form_target_date.value;
-		  if ( (FromDate.length > 0) && (ToDate.length > 0) ) {
-			 if (FromDate > ToDate){
-				  alert("<?php echo xls('End date must be later than Begin date!'); ?>");
-				  return false;
-			 }
-		 }
-	<?php } ?>
+     <?php if ( (empty($report_id)) && (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2")) ){ ?>    
+         var d = document.forms[0];      
+         FromDate = d.form_begin_date.value;
+         ToDate = d.form_target_date.value;
+          if ( (FromDate.length > 0) && (ToDate.length > 0) ) {
+             if (FromDate > ToDate){
+                  alert("<?php echo xls('End date must be later than Begin date!'); ?>");
+                  return false;
+             }
+         }
+    <?php } ?>
 
-	//For Results are in Gray Background & disabling anchor links
-	<?php if($report_id != ""){?>
-	$("#report_results").css("opacity", '0.4');
-	$("#report_results").css("filter", 'alpha(opacity=40)');
-	$("a").removeAttr("href");
-	<?php }?>
+    //For Results are in Gray Background & disabling anchor links
+    <?php if($report_id != ""){?>
+    $("#report_results").css("opacity", '0.4');
+    $("#report_results").css("filter", 'alpha(opacity=40)');
+    $("a").removeAttr("href");
+    <?php }?>
 
-	$("#form_refresh").attr("value","true"); 
-	runReport();
-	return true;
+    $("#form_refresh").attr("value","true"); 
+    runReport();
+    return true;
 }
 
 </script>
@@ -339,32 +360,28 @@ else {
 
 <div id="report_parameters">
 <?php
-	$widthDyn = "470px";
-	if (($type_report == "cqm") || ($type_report == "cqm_2011") || ($type_report == "cqm_2014")) $widthDyn = "410px";
+    $widthDyn = "470px";
+    if (($type_report == "cqm") || ($type_report == "cqm_2011") || ($type_report == "cqm_2014")) $widthDyn = "410px";
 ?>
 <table>
  <tr>
   <td scope="row" width='<?php echo $widthDyn;?>'>
-	<div style='float:left'>
+    <div style='float:left'>
 
-	<table class='text'>
+    <table class='text'>
 
-		<?php if (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2")) { ?>
+        <?php if (($type_report == "amc") || ($type_report == "amc_2011") || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2")) { ?>
                    <tr>
                       <td class='label'>
                          <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
                       </td>
                       <td>
-                         <input <?php echo $dis_text; ?> type='text' name='form_begin_date' id="form_begin_date" size='20' value='<?php echo htmlspecialchars( $begin_date, ENT_QUOTES); ?>'
-                            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-                          <?php if (empty($report_id)) { ?>
-                           <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                            id='img_begin_date' border='0' alt='[?]' style='cursor:pointer'
-                            title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
-                          <?php } ?>
+                         <input <?php echo $dis_text; ?> type='text' name='form_begin_date' id="form_begin_date" size='20'
+                             value='<?= htmlspecialchars($begin_date); ?>' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
+
                       </td>
                    </tr>
-		<?php } ?>
+        <?php } ?>
 
                 <tr>
                         <td class='label'>
@@ -375,13 +392,8 @@ else {
                            <?php } ?>
                         </td>
                         <td>
-                           <input <?php echo $dis_text; ?> type='text' name='form_target_date' id="form_target_date" size='20' value='<?php echo htmlspecialchars( $target_date, ENT_QUOTES); ?>'
-                                onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-                           <?php if (empty($report_id)) { ?>
-                             <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                                id='img_target_date' border='0' alt='[?]' style='cursor:pointer'
-                                title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>'>
-                           <?php } ?>
+                           <input <?php echo $dis_text; ?> type='text' name='form_target_date' id="form_target_date" size='20' value='<?= htmlspecialchars($target_date); ?>'
+                                   title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
                         </td>
                 </tr>
 
@@ -418,9 +430,9 @@ else {
 
                             <option value='amc_2011' <?php if ($rule_filter == "amc_2011") echo "selected"; ?>>
                             <?php  echo xlt('2011 Automated Measure Calculations (AMC)'); ?></option>
-							<option value='amc_2014_stage1' <?php if ($rule_filter == "amc_2014_stage1") echo "selected"; ?>>
+                            <option value='amc_2014_stage1' <?php if ($rule_filter == "amc_2014_stage1") echo "selected"; ?>>
                             <?php echo xlt('2014 Automated Measure Calculations (AMC) - Stage I'); ?></option>
-							<option value='amc_2014_stage2' <?php if ($rule_filter == "amc_2014_stage2") echo "selected"; ?>>
+                            <option value='amc_2014_stage2' <?php if ($rule_filter == "amc_2014_stage2") echo "selected"; ?>>
                             <?php echo xlt('2014 Automated Measure Calculations (AMC) - Stage II'); ?></option>
                             </select>
                         </td>
@@ -472,22 +484,22 @@ else {
                 <?php } ?>
 
                 <tr>      
-			<td class='label'>
-			   <?php echo htmlspecialchars( xl('Provider'), ENT_NOQUOTES); ?>:
-			</td>
-			<td>
-				<?php
+            <td class='label'>
+               <?php echo htmlspecialchars( xl('Provider'), ENT_NOQUOTES); ?>:
+            </td>
+            <td>
+                <?php
 
-				 // Build a drop-down list of providers.
-				 //
+                 // Build a drop-down list of providers.
+                 //
 
-				 $query = "SELECT id, lname, fname FROM users WHERE ".
-				  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
+                 $query = "SELECT id, lname, fname FROM users WHERE ".
+                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
 
-				 $ures = sqlStatement($query);
+                 $ures = sqlStatement($query);
 
-				 echo "   <select " . $dis_text . " id='form_provider' name='form_provider'>\n";
-				 echo "    <option value=''>-- " . htmlspecialchars( xl('All (Cumulative)'), ENT_NOQUOTES) . " --\n";
+                 echo "   <select " . $dis_text . " id='form_provider' name='form_provider'>\n";
+                 echo "    <option value=''>-- " . htmlspecialchars( xl('All (Cumulative)'), ENT_NOQUOTES) . " --\n";
 
                                  echo "    <option value='collate_outer'";
                                  if ($provider == 'collate_outer') echo " selected";
@@ -497,18 +509,18 @@ else {
                                  if ($provider == 'collate_inner') echo " selected";
                                  echo ">-- " . htmlspecialchars( xl('All (Collated Format B)'), ENT_NOQUOTES) . " --\n";
 
-				 while ($urow = sqlFetchArray($ures)) {
-				  $provid = $urow['id'];
-				  echo "    <option value='".htmlspecialchars( $provid, ENT_QUOTES)."'";
-				  if ($provid == $provider) echo " selected";
-				  echo ">" . htmlspecialchars( $urow['lname'] . ", " . $urow['fname'], ENT_NOQUOTES) . "\n";
-				 }
+                 while ($urow = sqlFetchArray($ures)) {
+                  $provid = $urow['id'];
+                  echo "    <option value='".htmlspecialchars( $provid, ENT_QUOTES)."'";
+                  if ($provid == $provider) echo " selected";
+                  echo ">" . htmlspecialchars( $urow['lname'] . ", " . $urow['fname'], ENT_NOQUOTES) . "\n";
+                 }
 
-				 echo "   </select>\n";
+                 echo "   </select>\n";
 
-				?>
+                ?>
                         </td>
-		</tr>
+        </tr>
 
                 <tr>
                         <td class='label'>
@@ -543,46 +555,46 @@ else {
                   </tr>
                 <?php } ?>
 
-	</table>
+    </table>
 
-	</div>
+    </div>
 
   </td>
   <td align='left' valign='middle' height="100%">
-	<table style='border-left:1px solid; width:100%; height:100%' >
-		<tr>
-			<td scope="row">
+    <table style='border-left:1px solid; width:100%; height:100%' >
+        <tr>
+            <td scope="row">
 
-				<div style='margin-left:15px'>
+                <div style='margin-left:15px'>
 
                                     <?php if (empty($report_id)) { ?>
-					<a id='submit_button' href='#' class='css_button' onclick='runReport();'>
-					<span>
-						<?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
-					</span>
-					</a>
+                    <a id='submit_button' href='#' class='css_button' onclick='runReport();'>
+                    <span>
+                        <?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
+                    </span>
+                    </a>
                                         <span id='status_span'></span>
                                         <div id='processing' style='margin:10px;display:none;'><img src='../pic/ajax-loader.gif'/></div>
-					<?php if ($type_report == "cqm") { ?>
-						<a id='xmla_button' href='#' class='css_button' onclick='return GenXml("false")'>
-							<span>
-								<?php echo htmlspecialchars( xl('Generate PQRI report (Method A) - 2011'), ENT_NOQUOTES); ?>
-							</span>
-						</a>
-                                        	<a id='xmlb_button' href='#' class='css_button' onclick='return GenXml("true")'>
-                                                	<span>
-                                                        	<?php echo htmlspecialchars( xl('Generate PQRI report (Method E) - 2011'), ENT_NOQUOTES); ?>
-                                                	</span>
-                                        	</a>
-					<?php } ?>
+                    <?php if ($type_report == "cqm") { ?>
+                        <a id='xmla_button' href='#' class='css_button' onclick='return GenXml("false")'>
+                            <span>
+                                <?php echo htmlspecialchars( xl('Generate PQRI report (Method A) - 2011'), ENT_NOQUOTES); ?>
+                            </span>
+                        </a>
+                                            <a id='xmlb_button' href='#' class='css_button' onclick='return GenXml("true")'>
+                                                    <span>
+                                                            <?php echo htmlspecialchars( xl('Generate PQRI report (Method E) - 2011'), ENT_NOQUOTES); ?>
+                                                    </span>
+                                            </a>
+                    <?php } ?>
                                     <?php } ?>
 
                                     <?php if (!empty($report_id)) { ?>
-					<a href='#' class='css_button' id='printbutton'>
-						<span>
-							<?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
-						</span>
-					</a>
+                    <a href='#' class='css_button' id='printbutton'>
+                        <span>
+                            <?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
+                        </span>
+                    </a>
                                             <?php if ($type_report == "cqm_2014") { ?>
                                                         <a href="#" id="genQRDA" class='css_button' onclick='return downloadQRDA()'>
                                                                 <span>
@@ -602,10 +614,10 @@ else {
                                                <a href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit();'><span><?php echo xlt("Start Another Report"); ?></span></a>
                                             <?php } ?>
                                     <?php } ?>
-				</div>
-			</td>
-		</tr>
-	</table>
+                </div>
+            </td>
+        </tr>
+    </table>
   </td>
  </tr>
 </table>
@@ -829,7 +841,7 @@ else {
 </div>  <!-- end of search results -->
 <?php } else { ?>
 <div id="instructions_text" class='text'>
- 	<?php echo htmlspecialchars( xl('Please input search criteria above, and click Submit to start report.'), ENT_NOQUOTES); ?>
+    <?php echo htmlspecialchars( xl('Please input search criteria above, and click Submit to start report.'), ENT_NOQUOTES); ?>
 </div>
 <?php } ?>
 
@@ -839,16 +851,19 @@ else {
 
 </body>
 
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script language="Javascript">
- <?php if ($type_report == "amc" || ($type_report == "amc_2014_stage1") || ($type_report == "amc_2014_stage2") ) { ?>
-  Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
- <?php } ?>
- Calendar.setup({inputField:"form_target_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_target_date", showsTime:'true'});
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_begin_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_target_date").datetimepicker({
+            timepicker: true,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 
 </html>

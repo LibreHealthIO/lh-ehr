@@ -1,29 +1,30 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
-// Copyright (C) 2011 Z&H Consultancy Services Private Limited <sam@zhservices.com>
-//
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-//
-// A copy of the GNU General Public License is included along with this program:
-// libreehr/interface/login/GnuGPL.html
-// For more information write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
-// Author:   Eldho Chacko <eldho@zhservices.com>
-//           Paul Simon K <paul@zhservices.com> 
-//
-// +------------------------------------------------------------------------------+
+/*
+ * Criteria.tab
+ *
+ * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2011 Z&H Consultancy Services Private Limited <sam@zhservices.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Eldho Chacko <eldho@zhservices.com>
+ * @author Paul Simon K <paul@zhservices.com>
+ * @link http://librehealth.io 
+ */
 ?>
 <!-- This displays the search criteria.The master processing is done here.This page is included in the billing_report.php  -->
 <style>
@@ -31,6 +32,8 @@
 .criteria_class2{padding-left:5px;}
 </style>
 <?php
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 $ThisPageSearchCriteriaKey=array();
 $ThisPageSearchCriteriaDataType=array();
 $ThisPageSearchCriteriaDisplay=array();
@@ -129,9 +132,9 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                   </tr>
                                   <tr>
                                     <td class='text' align="right" style="padding-right:5px;padding-bottom:2px;padding-top:2px">
-                                        <?php echo htmlspecialchars( xl('From'), ENT_QUOTES).':' ?><input type='text' size='7' 
+                                        <?php echo htmlspecialchars( xl('From'), ENT_QUOTES).':' ?><input type='text' size='8'
                                         name='master_from_date_<?php echo $DateNamePart;?>' 
-                                        id='master_from_date_<?php echo $DateNamePart;?>' class="text " readonly=""  
+                                        id='master_from_date_<?php echo $DateNamePart;?>' class="text "  
                                         value="<?php echo attr($_REQUEST["master_from_date_$DateNamePart"]) ?>"
                                         onChange="SetDateCriteriaCustom('date_master_criteria_<?php echo $DateNamePart;?>');
                                         appendOptionDateCriteria('<?php echo attr($ThisPageSearchCriteriaDisplay[$ThisPageSearchCriteriaIndex]);?>',
@@ -140,19 +143,21 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                         '<?php echo htmlspecialchars( xl('Custom'), ENT_QUOTES); ?>',
                                         ' = ','master_from_date_<?php echo $DateNamePart;?>','master_to_date_<?php echo $DateNamePart;?>',
                                         '<?php echo $ThisPageSearchCriteriaDataType[$ThisPageSearchCriteriaIndex] ?>')" />&nbsp;
-                                        <img src="<?php echo $web_root ?>/interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg" 
-                                        align="texttop"    id='img_master_fromdate_<?php echo $DateNamePart;?>' border='0' alt='[?]' style='cursor:pointer'
-                                        title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
                                        <script>
-                                        Calendar.setup({inputField:"master_from_date_<?php echo $DateNamePart;?>", ifFormat:"%Y-%m-%d", button:"img_master_fromdate_<?php echo $DateNamePart;?>"});
+                                           $(function() {
+                                              $("#master_from_date_<?= $DateNamePart; ?>").datetimepicker({
+                                                  timepicker: false,
+                                                  format: "<?php echo $DateFormat; ?>"
+                                              });
+                                           });
                                        </script>                            
                                    </td>
                                   </tr>
                                   <tr>
                                     <td class='text' align="right" style="padding-right:5px">
-                                        <?php echo htmlspecialchars( xl('To'), ENT_QUOTES).':' ?><input type='text' size='7' 
+                                        <?php echo htmlspecialchars( xl('To'), ENT_QUOTES).':' ?><input type='text' size='8'
                                         name='master_to_date_<?php echo $DateNamePart;?>' 
-                                        id='master_to_date_<?php echo $DateNamePart;?>' class="text " readonly=""
+                                        id='master_to_date_<?php echo $DateNamePart;?>' class="text "
                                         value="<?php echo attr($_REQUEST["master_to_date_$DateNamePart"]) ?>"
                                         onChange="SetDateCriteriaCustom('date_master_criteria_<?php echo $DateNamePart;?>');
                                         appendOptionDateCriteria('<?php echo attr($ThisPageSearchCriteriaDisplay[$ThisPageSearchCriteriaIndex]);?>',
@@ -161,11 +166,14 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                                         '<?php echo htmlspecialchars( xl('Custom'), ENT_QUOTES); ?>',
                                         ' = ','master_from_date_<?php echo $DateNamePart;?>','master_to_date_<?php echo $DateNamePart;?>',
                                         '<?php echo $ThisPageSearchCriteriaDataType[$ThisPageSearchCriteriaIndex] ?>')" />&nbsp;
-                                        <img src="<?php echo $web_root ?>/interface/main/calendar/modules/PostCalendar/pntemplates/default/images/new.jpg" 
-                                        align="texttop"    id='img_master_todate_<?php echo $DateNamePart;?>' border='0' alt='[?]' style='cursor:pointer'
-                                        title='<?php echo htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES); ?>' />
                                        <script>
-                                        Calendar.setup({inputField:"master_to_date_<?php echo $DateNamePart;?>", ifFormat:"%Y-%m-%d", button:"img_master_todate_<?php echo $DateNamePart;?>"});
+                                            $(function() {
+                                                $("#master_to_date_<?= $DateNamePart; ?>").datetimepicker({
+                                                    timepicker: false,
+                                                    format: "<?php echo $DateFormat; ?>"
+                                                });
+                                                $.datetimepicker.setLocale('<?= $DateLocale;?>');
+                                            });
                                        </script>                            
                                    </td>
                                   </tr>

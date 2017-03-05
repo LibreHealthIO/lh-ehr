@@ -8,7 +8,7 @@
 # of the License, or (at your option) any later version.
 #
 # This is for restoring a backup created by the "Backup" option
-# in LibreEHR's administration menu, which invokes
+# in LibreHealth EHR's administration menu, which invokes
 # interface/main/backup.php.
 #
 # Xdialog is supported if available... dialog support is also in
@@ -35,7 +35,7 @@ dlg_msg() {
       MSG="$MSG\n$1"
       shift
     done
-    $DLGCMD --title 'LibreEHR Restore' $LEFT --msgbox "$MSG" 0 0
+    $DLGCMD --title 'LibreHealth EHR Restore' $LEFT --msgbox "$MSG" 0 0
     return 0
   fi
   while [ ! -z "$1" ]; do
@@ -49,7 +49,7 @@ dlg_info() {
     if [ "$DLGCMD" = "Xdialog" ]; then
       echo "$1"
     fi
-    $DLGCMD --title 'LibreEHR Restore' $LEFT --infobox "$1" 0 0
+    $DLGCMD --title 'LibreHealth EHR Restore' $LEFT --infobox "$1" 0 0
     return 0
   fi
   echo "$1"
@@ -58,7 +58,7 @@ dlg_info() {
 dlg_fselect() {
   if [ ! -z "$DLGCMD" ]; then
     exec 3>&1
-    RESULT=`$DLGCMD --title 'LibreEHR Restore' --backtitle "$1" $NOBUTTONS --fselect $HOME/ 0 70 2>&1 1>&3`
+    RESULT=`$DLGCMD --title 'LibreHealth EHR Restore' --backtitle "$1" $NOBUTTONS --fselect $HOME/ 0 70 2>&1 1>&3`
     CODE=$?
     exec 3>&-
     if [ $CODE -eq 0 ]; then
@@ -79,7 +79,7 @@ dlg_yesno() {
       MSG="$MSG\n$1"
       shift
     done
-    $DLGCMD --title 'LibreEHR Restore' $DEFAULTNO $LEFT --yesno "$MSG" 0 0
+    $DLGCMD --title 'LibreHealth EHR Restore' $DEFAULTNO $LEFT --yesno "$MSG" 0 0
     CODE=$?
     exec 3>&-
     if [ $CODE -eq 0 ]; then
@@ -104,7 +104,7 @@ dlg_yesno() {
 dlg_input() {
   if [ ! -z "$DLGCMD" ]; then
     exec 3>&1
-    RESULT=`$DLGCMD --title 'LibreEHR Restore' $LEFT --inputbox "$1" 0 0 2>&1 1>&3`
+    RESULT=`$DLGCMD --title 'LibreHealth EHR Restore' $LEFT --inputbox "$1" 0 0 2>&1 1>&3`
     CODE=$?
     exec 3>&-
     if [ $CODE -eq 0 ]; then
@@ -300,7 +300,7 @@ else
 fi
 
 # If phpgacl has its own database, make sure the database user is not the
-# same as for libreehr.  This is to prevent screwups caused by persistent
+# same as for LibreHealth EHR.  This is to prevent screwups caused by persistent
 # database connections in PHP.
 if [ ! -z "$GADBNAME" ]; then
   if [ "$GADBUSER" = "$OEDBUSER" ]; then

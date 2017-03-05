@@ -45,7 +45,7 @@
 $sqlBindArray = array();
 $query = "SELECT u.*, lo.option_id AS ab_name, lo.option_value as ab_option FROM users AS u " .
   "LEFT JOIN list_options AS lo ON " .
-  "list_id = 'abook_type' AND option_id = u.abook_type " .
+  "list_id = 'abook_type' AND option_id = u.abook_type AND activity = 1 " .
   "WHERE u.active = 1 AND ( u.authorized = 1 OR u.username = '' ) ";
 if ($form_organization) {
  $query .= "AND u.organization LIKE ? ";
@@ -100,17 +100,17 @@ $res = sqlStatement($query,$sqlBindArray);
  <tr class='search'> <!-- bgcolor='#ddddff' -->
   <td>
    <?php echo xlt('Organization')?>:
-   <input type='text' name='form_organization' size='10' value='<?php echo attr($_POST['form_organization']); ?>'
-    class='inputtext' title='<?php echo xla("All or part of the organization") ?>' />&nbsp;
+   <input type='entry' name='form_organization' size='10' value='<?php echo attr($_POST['form_organization']); ?>'
+    class='text' title='<?php echo xla("All or part of the organization") ?>' />&nbsp;
    <?php echo xlt('First Name')?>:
-   <input type='text' name='form_fname' size='10' value='<?php echo attr($_POST['form_fname']); ?>'
-    class='inputtext' title='<?php echo xla("All or part of the first name") ?>' />&nbsp;
+   <input type='entry' name='form_fname' size='10' value='<?php echo attr($_POST['form_fname']); ?>'
+    class='text' title='<?php echo xla("All or part of the first name") ?>' />&nbsp;
    <?php echo xlt('Last Name')?>:
-   <input type='text' name='form_lname' size='10' value='<?php echo attr($_POST['form_lname']); ?>'
-    class='inputtext' title='<?php echo xla("All or part of the last name") ?>' />&nbsp;
+   <input type='entry' name='form_lname' size='10' value='<?php echo attr($_POST['form_lname']); ?>'
+    class='text' title='<?php echo xla("All or part of the last name") ?>' />&nbsp;
    <?php echo xlt('Specialty')?>:
-   <input type='text' name='form_specialty' size='10' value='<?php echo attr($_POST['form_specialty']); ?>'
-    class='inputtext' title='<?php echo xla("Any part of the desired specialty") ?>' />&nbsp;
+   <input type='entry' name='form_specialty' size='10' value='<?php echo attr($_POST['form_specialty']); ?>'
+    class='text' title='<?php echo xla("Any part of the desired specialty") ?>' />&nbsp;
 <?php
   echo xlt('Type') . ": ";
   // Generates a select list named form_abook_type:
@@ -151,7 +151,7 @@ $res = sqlStatement($query,$sqlBindArray);
   $username = $row['username'];
   if (! $row['active']) $username = '--';
 
-  $displayName = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname']; // Person Name
+  $displayName = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] . ' ' . $row['suffix']; // Person Name
 
   if ( acl_check('admin', 'practice' ) || (empty($username) && empty($row['ab_name'])) ) {
    // Allow edit, since have access or (no item type and not a local user)

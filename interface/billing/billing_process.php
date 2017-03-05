@@ -25,11 +25,11 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 include_once("../globals.php");
@@ -247,20 +247,20 @@ function process_form($ar) {
           }
         }
         else if (isset($ar['bn_process_hcfa_form'])) {
-        	$log = '';
-        	$lines = gen_hcfa_1500($patient_id, $encounter, $log);
+            $log = '';
+            $lines = gen_hcfa_1500($patient_id, $encounter, $log);
             $hcfa_image = $GLOBALS['fileroot'] ."/sites/default/images/cms1500.png";            
-        	fwrite($hlog, $log);
-        	$alines = explode("\014", $lines); // form feeds may separate pages
-        	foreach ($alines as $tmplines) {
-        		if ($claim_count++) $pdf->ezNewPage();
-        		$pdf->ezSetY($pdf->ez['pageHeight'] - $pdf->ez['topMargin']);
-	      		$pdf->addPngFromFile("$hcfa_image", 0,0,612,792);
-        		$pdf->ezText($tmplines, 12, array('justification' => 'left', 'leading' => 12));
-        	}
-        	if (!updateClaim(false, $patient_id, $encounter, -1, -1, 2, 2, $bat_filename)) {
-        		$bill_info[] = xl("Internal error: claim ") . $claimid . xl(" not found!") . "\n";
-        	}
+            fwrite($hlog, $log);
+            $alines = explode("\014", $lines); // form feeds may separate pages
+            foreach ($alines as $tmplines) {
+                if ($claim_count++) $pdf->ezNewPage();
+                $pdf->ezSetY($pdf->ez['pageHeight'] - $pdf->ez['topMargin']);
+                $pdf->addPngFromFile("$hcfa_image", 0,0,612,792);
+                $pdf->ezText($tmplines, 12, array('justification' => 'left', 'leading' => 12));
+            }
+            if (!updateClaim(false, $patient_id, $encounter, -1, -1, 2, 2, $bat_filename)) {
+                $bill_info[] = xl("Internal error: claim ") . $claimid . xl(" not found!") . "\n";
+            }
         }
 
         else if (isset($ar['bn_hcfa_txt_file'])) {
@@ -303,24 +303,24 @@ function process_form($ar) {
     exit;
   }
   if ( isset($ar['bn_process_hcfa_form']) ) {
-  	fclose($hlog);
-  	// If a writable edi directory exists (and it should), write the pdf to it.
-  	$fh = @fopen($GLOBALS['OE_SITE_DIR'] . "/edi/$bat_filename", 'a');
-  	if ($fh) {
-  		fwrite($fh, $pdf->ezOutput());
-  		fclose($fh);
-  	}
-  	// Send the PDF download.
-  	header("Pragma: public");
-  	header("Expires: 0");
-  	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  	header("Content-Type: application/force-download");
-  	header("Content-Disposition: attachment; filename=$bat_filename");
-  	header("Content-Description: File Transfer");
-  	//header("Content-Length: " . strlen($bat_content));
-  	echo $pdf->ezOutput();
-  	
-  	exit;
+    fclose($hlog);
+    // If a writable edi directory exists (and it should), write the pdf to it.
+    $fh = @fopen($GLOBALS['OE_SITE_DIR'] . "/edi/$bat_filename", 'a');
+    if ($fh) {
+        fwrite($fh, $pdf->ezOutput());
+        fclose($fh);
+    }
+    // Send the PDF download.
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Content-Type: application/force-download");
+    header("Content-Disposition: attachment; filename=$bat_filename");
+    header("Content-Description: File Transfer");
+    //header("Content-Length: " . strlen($bat_content));
+    echo $pdf->ezOutput();
+    
+    exit;
   }
 
   if (isset($ar['bn_hcfa_txt_file'])) {

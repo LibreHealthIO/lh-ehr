@@ -1,16 +1,35 @@
 <?php
-// Copyright (C) 2011 Ensoftek Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-
-// This report lists  patient immunizations for a given date range.
+/*
+ * Immunization report
+ * This report lists  patient immunizations for a given date range.
+ * 
+ * Copyright (C) 2011 Ensoftek Inc.
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Ensoftek Inc.
+ * @link http://librehealth.io 
+ */
 
 require_once("../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 if(isset($_POST['form_from_date'])) {
   $from_date = $_POST['form_from_date'] !== "" ? 
@@ -40,38 +59,38 @@ function tr($a) {
 
 function format_cvx_code($cvx_code) {
 
-	if ( $cvx_code < 10 ) {
-		return "0$cvx_code"; 
-	}
-	
-	return $cvx_code;
+    if ( $cvx_code < 10 ) {
+        return "0$cvx_code"; 
+    }
+    
+    return $cvx_code;
 }
 
 function format_phone($phone) {
 
-	$phone = preg_replace("/[^0-9]/", "", $phone);
-	switch (strlen($phone))
-	{
-		case 7:
-			return tr(preg_replace("/([0-9]{3})([0-9]{4})/", "000 $1$2", $phone));
-		case 10:
-			return tr(preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "$1 $2$3", $phone));
-		default:
-			return tr("000 0000000");
-	}
+    $phone = preg_replace("/[^0-9]/", "", $phone);
+    switch (strlen($phone))
+    {
+        case 7:
+            return tr(preg_replace("/([0-9]{3})([0-9]{4})/", "000 $1$2", $phone));
+        case 10:
+            return tr(preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "$1 $2$3", $phone));
+        default:
+            return tr("000 0000000");
+    }
 }
 
 function format_ethnicity($ethnicity) {
 
-	switch ($ethnicity)
-	{
-		 case "hisp_or_latin":
-		   return ("H^Hispanic or Latino^HL70189");
-		 case "not_hisp_or_latin":
-		   return ("N^not Hispanic or Latino^HL70189");
-		 default: // Unknown
-		   return ("U^Unknown^HL70189");
-	}
+    switch ($ethnicity)
+    {
+         case "hisp_or_latin":
+           return ("H^Hispanic or Latino^HL70189");
+         case "not_hisp_or_latin":
+           return ("N^not Hispanic or Latino^HL70189");
+         default: // Unknown
+           return ("U^Unknown^HL70189");
+    }
  }
 
 
@@ -140,7 +159,7 @@ $filename = "imm_reg_". $now . ".hl7";
 
 // GENERATE HL7 FILE
 if ($_POST['form_get_hl7']==='true') {
-	$content = ''; 
+    $content = ''; 
 
   $res = sqlStatement($query);
 
@@ -204,8 +223,8 @@ if ($_POST['form_get_hl7']==='true') {
     $content .= "RXA|" . 
         "0|" . // 1. Give Sub-ID Counter
         "1|" . // 2. Administrattion Sub-ID Counter
-    	$r['administered_date']."|" . // 3. Date/Time Start of Administration
-    	$r['administered_date']."|" . // 4. Date/Time End of Administration
+        $r['administered_date']."|" . // 3. Date/Time Start of Administration
+        $r['administered_date']."|" . // 4. Date/Time End of Administration
         format_cvx_code($r['code']). "^" . $r['immunizationtitle'] . "^" . "CVX" ."|" . // 5. Administration Code(CVX)
         "999|" . // 6. Administered Amount. TODO: Immunization amt currently not captured in database, default to 999(not recorded)
         "|" . // 7. Administered Units
@@ -216,9 +235,9 @@ if ($_POST['form_get_hl7']==='true') {
         "|" . // 12. Administered Per (Time Unit)
         "|" . // 13. Administered Strength
         "|" . // 14. Administered Strength Units
-    	$r['lot_number']."|" . // 15. Substance Lot Number
+        $r['lot_number']."|" . // 15. Substance Lot Number
         "|" . // 16. Substance Expiration Date
-    	"MSD" . "^" . $r['manufacturer']. "^" . "HL70227" . "|" . // 17. Substance Manufacturer Name
+        "MSD" . "^" . $r['manufacturer']. "^" . "HL70227" . "|" . // 17. Substance Manufacturer Name
         "|" . // 18. Substance/Treatment Refusal Reason
         "|" . // 19.Indication
         "|" . // 20.Completion Status
@@ -244,10 +263,8 @@ if ($_POST['form_get_hl7']==='true') {
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script language="JavaScript">
 <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
 
@@ -269,7 +286,7 @@ if ($_POST['form_get_hl7']==='true') {
     #report_parameters_daterange {
         visibility: visible;
         display: inline;
-		margin-bottom: 10px;
+        margin-bottom: 10px;
     }
     #report_results table {
        margin-top: 0px;
@@ -277,13 +294,13 @@ if ($_POST['form_get_hl7']==='true') {
 }
 /* specifically exclude some from the screen */
 @media screen {
-	#report_parameters_daterange {
-		visibility: hidden;
-		display: none;
-	}
-	#report_results {
-		width: 100%;
-	}
+    #report_parameters_daterange {
+        visibility: hidden;
+        display: none;
+    }
+    #report_results {
+        width: 100%;
+    }
 }
 </style>
 </head>
@@ -293,7 +310,8 @@ if ($_POST['form_get_hl7']==='true') {
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Immunization Registry','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($form_from_date)))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($form_to_date))); ?>
 </div>
 
 <form name='theform' id='theform' method='post' action='immunization_report.php'
@@ -333,27 +351,13 @@ onsubmit='return top.restoreSession()'>
             <?php xl('From','e'); ?>:
           </td>
           <td>
-            <input type='text' name='form_from_date' id="form_from_date"
-            size='10' value='<?php echo $form_from_date ?>'
-            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' 
-            title='yyyy-mm-dd'>
-            <img src='../pic/show_calendar.gif' align='absbottom' 
-            width='24' height='22' id='img_from_date' border='0' 
-            alt='[?]' style='cursor:pointer'
-            title='<?php xl('Click here to choose a date','e'); ?>'>
+            <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>'>
           </td>
           <td class='label'>
             <?php xl('To','e'); ?>:
           </td>
           <td>
-            <input type='text' name='form_to_date' id="form_to_date" 
-            size='10' value='<?php echo $form_to_date ?>'
-            onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' 
-            title='yyyy-mm-dd'>
-            <img src='../pic/show_calendar.gif' align='absbottom' 
-            width='24' height='22' id='img_to_date' border='0' 
-            alt='[?]' style='cursor:pointer'
-            title='<?php xl('Click here to choose a date','e'); ?>'>
+            <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>'>
           </td>
         </tr>
       </table>
@@ -435,7 +439,7 @@ onsubmit='return top.restoreSession()'>
    <?php echo htmlspecialchars($row['immunizationtitle']) ?>
   </td>
   <td>
-   <?php echo htmlspecialchars($row['immunizationdate']) ?>
+   <?= date(DateFormatRead(true), strtotime(htmlspecialchars($row['immunizationdate']))); ?>
   </td>
  </tr>
 <?php
@@ -460,9 +464,19 @@ onsubmit='return top.restoreSession()'>
 <?php } ?>
 </form>
 
-<script language='JavaScript'>
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 
 </body>

@@ -15,7 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
  * @link    http://librehealth.io
@@ -32,8 +36,8 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
 
-$date             = (isset($_POST['form_date']))            ? $_POST['form_date'] : '';
-$onset_date       = (isset($_POST['form_onset_date']))      ? $_POST['form_onset_date'] : '';
+$date             = (isset($_POST['form_date']))            ? prepareDateBeforeSave($_POST['form_date']) : '';
+$onset_date       = (isset($_POST['form_onset_date']))      ? prepareDateBeforeSave($_POST['form_onset_date']) : '';
 $sensitivity      = (isset($_POST['form_sensitivity']))     ? $_POST['form_sensitivity'] : '';
 $pc_catid         = (isset($_POST['pc_catid']))             ? $_POST['pc_catid'] : '';
 $facility_id      = (isset($_POST['facility_id']))          ? $_POST['facility_id'] : '';
@@ -141,7 +145,7 @@ if ($mode == 'new' && $GLOBALS['default_new_encounter_form'] == 'football_injury
   }
 }
 $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
-	" left join libreehr_postcalendar_categories on fe.pc_catid=libreehr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
+    " left join libreehr_postcalendar_categories on fe.pc_catid=libreehr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($pid));
 ?>
 <html>
 <body>
@@ -149,23 +153,23 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categ
 <?php if ($GLOBALS['concurrent_layout'])
  {//Encounter details are stored to javacript as array.
 ?>
-	EncounterDateArray=new Array;
-	CalendarCategoryArray=new Array;
-	EncounterIdArray=new Array;
-	Count=0;
-	 <?php
-			   if(sqlNumRows($result4)>0)
-				while($rowresult4 = sqlFetchArray($result4))
-				 {
-	?>
-					EncounterIdArray[Count]='<?php echo attr($rowresult4['encounter']); ?>';
-					EncounterDateArray[Count]='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>';
-					CalendarCategoryArray[Count]='<?php echo attr(xl_appt_category($rowresult4['pc_catname'])); ?>';
-					Count++;
-	 <?php
-				 }
-	 ?>
-	 top.window.parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
+    EncounterDateArray=new Array;
+    CalendarCategoryArray=new Array;
+    EncounterIdArray=new Array;
+    Count=0;
+     <?php
+               if(sqlNumRows($result4)>0)
+                while($rowresult4 = sqlFetchArray($result4))
+                 {
+    ?>
+                    EncounterIdArray[Count]='<?php echo attr($rowresult4['encounter']); ?>';
+                    EncounterDateArray[Count]='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>';
+                    CalendarCategoryArray[Count]='<?php echo attr(xl_appt_category($rowresult4['pc_catname'])); ?>';
+                    Count++;
+     <?php
+                 }
+     ?>
+     top.window.parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
 <?php } ?>
  top.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>

@@ -1,10 +1,13 @@
 <?php
-/**
- * Batchcom script.
+/*
+ * Batch Communications Script
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * No other copyright information in the previous header
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
+ * as published by the Free Software Foundation; either version 3 
  * of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,7 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
@@ -22,8 +29,12 @@
 include_once("../globals.php");
 include_once("$srcdir/registry.inc");
 include_once("$srcdir/sql.inc");
+require_once("$srcdir/formatting.inc.php");
 include_once("../../library/acl.inc");
 include_once("batchcom.inc.php");
+/** Current format date */
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 // gacl control
 $thisauth = acl_check('admin', 'batchcom');
@@ -82,11 +93,11 @@ if ($_POST['form_action']=='Process') {
         // encounter dates
         if ($_POST['seen_since']!=0 AND $_POST['seen_since']!='') {
             $and=where_or_and ($and);
-            $sql.=" $and forms.date > '".$_POST['seen_since']."' " ;
+            $sql.=" $and forms.last_visit > '".$_POST['seen_since']."' " ;
         } 
         if ($_POST['seen_upto']!=0 AND $_POST['not_seen_since']!='') {
             $and=where_or_and ($and);
-            $sql.=" $and forms.date > '".$_POST['seen_since']."' " ;
+            $sql.=" $and forms.last_visit > '".$_POST['seen_since']."' " ;
         }
 
         // age
@@ -126,22 +137,23 @@ if ($_POST['form_action']=='Process') {
 
         // if no results.
         if (sqlNumRows($res)==0){
-	?>
+    ?>
         <html>
-	<head>
-	<?php html_header_show();?>
-	<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-	<link rel="stylesheet" href="batchcom.css" type="text/css">
-	<script type="text/javascript" src="../../library/overlib_mini.js"></script>
-	<script type="text/javascript" src="../../library/calendar.js"></script>
-	</head>
-	<body class="body_top">
-	<!-- larry's sms/email notification -->
-	<span class="title"><?php include_once("batch_navigation.php");?></span>
-	<!--- end of larry's insert -->
-	<span class="title"><?php xl('Batch Communication Tool','e')?></span>
-	<br><br>
-	<div class="text">
+    <head>
+    <title><?php echo xlt('BatchCom'); ?></title>
+    <?php html_header_show();?>
+    <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+    <link rel="stylesheet" href="batchcom.css" type="text/css">
+    <script type="text/javascript" src="../../library/overlib_mini.js"></script>
+    <script type="text/javascript" src="../../library/calendar.js"></script>
+    </head>
+    <body class="body_top">
+    <!-- larry's sms/email notification -->
+    <span class="title"><?php include_once("batch_navigation.php");?></span>
+    <!--- end of larry's insert -->
+    <span class="title"><?php xl('Batch Communication Tool','e')?></span>
+    <br><br>
+    <div class="text">
         <?php    
             echo (xl('No results found, please try again.','','<br>'));
         ?> </div></body></html> <?php
@@ -169,6 +181,7 @@ if ($_POST['form_action']=='Process') {
 ?>
 <html>
 <head>
+<title><?php echo xlt('BatchCom'); ?></title>
 <?php html_header_show();?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="batchcom.css" type="text/css">
@@ -229,24 +242,38 @@ if ($_POST['form_action']=='Process') {
 
                         </SELECT>
         -->
-      <?php xl('And','e')?>:<INPUT TYPE="radio" NAME="and_or_app_within" value="AND" checked>, <?php xl('Or','e')?>:<INPUT TYPE="radio" NAME="and_or_app_within" value="OR"></td><td> <?php xl('Appointment within','e')?>:</td><td><INPUT TYPE='text' size='12' NAME='app_s'> <a href="javascript:show_calendar('select_form.app_s')"
-    title="<?php xl('Click here to choose a date','e')?>"
-    ><img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22' border='0' ></a></td><td>
+                        <?php xl('And', 'e') ?>:<INPUT TYPE="radio" NAME="and_or_app_within" value="AND" checked>, <?php xl('Or', 'e') ?>:<INPUT
+                            TYPE="radio" NAME="and_or_app_within" value="OR"></td>
+                    <td> <?php xl('Appointment within', 'e') ?>:</td>
+                    <td>
+                        <input type='text' size='12' name='app_s' id="app_s">
+                    </td>
+                    <td>
 
-        <?php xl('And','e')?> :  <INPUT TYPE='text' size='12' NAME='app_e'> <a href="javascript:show_calendar('select_form.app_e')"
-    title="<?php xl('Click here to choose a date','e')?>"
-    ><img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22' border='0' ></a></td>
-     </tr><tr><td>
-   
-     <?php xl('And','e')?>:<INPUT TYPE="radio" NAME="and_or_seen_since" value="AND" checked>, <?php xl('Or','e')?>:<INPUT TYPE="radio" NAME="and_or_seen_since" value="OR"></td><td> <?php xl('Seen since','e')?> :</td><td><INPUT TYPE='text' size='12' NAME='seen_since'> <a href="javascript:show_calendar('select_form.seen_since')"
-    title="<?php xl('Click here to choose a date','e')?>"
-    ><img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22' border='0'></a></td>
+                        <?php xl('And', 'e') ?> :
+                        <input type='text' size='12' name='app_e' id="app_e">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        <?php xl('And', 'e') ?>:<INPUT TYPE="radio" NAME="and_or_seen_since" value="AND" checked>, <?php xl('Or', 'e') ?>:<INPUT
+                            TYPE="radio" NAME="and_or_seen_since" value="OR"></td>
+                    <td> <?php xl('Seen since', 'e') ?> :</td>
+                    <td>
+                        <input type='text' size='12' name='seen_since' id="seen_since">
+                    </td>
   <td>&nbsp;</td>
-   </tr><tr><td>
+                </tr>
+                <tr>
+                    <td>
 
-        <?php xl('And','e')?>:<INPUT TYPE="radio" NAME="and_or_not_seen_since" value="AND" checked>, <?php xl('Or','e')?>:<INPUT TYPE="radio" NAME="and_or_not_seen_since" value="OR"></td><td> <?php xl('Not seen since','e')?> :</td><td><INPUT TYPE='text' size='12' NAME='not_seen_since'> <a href="javascript:show_calendar('select_form.not_seen_since')"
-    title="<?php xl('Click here to choose a date','e')?>"
-    ><img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22' border='0'></a></td>
+                        <?php xl('And', 'e') ?>:<INPUT TYPE="radio" NAME="and_or_not_seen_since" value="AND" checked>, <?php xl('Or', 'e') ?>:<INPUT
+                            TYPE="radio" NAME="and_or_not_seen_since" value="OR"></td>
+                    <td> <?php xl('Not seen since', 'e') ?> :</td>
+                    <td>
+                        <input type='text' size='12' name='not_seen_since' id="not_seen_since">
+                    </td>
  <td>&nbsp;</td>
    </tr><tr><td>
         <?php xl('Sort by','e')?> :</td><td><SELECT NAME="sort_by">
@@ -279,4 +306,17 @@ if ($_POST['form_action']=='Process') {
 </div>
 </div>
 </FORM>
+<link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#seen_since, #not_seen_since, #app_s, #app_e").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
+</script>
 

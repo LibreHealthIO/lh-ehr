@@ -1,34 +1,55 @@
 <?php
- // Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
- //
- // This program is free software; you can redistribute it and/or
- // modify it under the terms of the GNU General Public License
- // as published by the Free Software Foundation; either version 2
- // of the License, or (at your option) any later version.
-
- // This report cross-references appointments with encounters.
- // For a given date, show a line for each appointment with the
- // matching encounter, and also for each encounter that has no
- // matching appointment.  This helps to catch these errors:
- //
- // * Appointments with no encounter
- // * Encounters with no appointment
- // * Codes not justified
- // * Codes not authorized
- // * Procedure codes without a fee
- // * Fees assigned to diagnoses (instead of procedures)
- // * Encounters not billed
- //
- // For decent performance the following indexes are highly recommended:
- //   libreehr_postcalendar_events.pc_eventDate
- //   forms.encounter
- //   billing.pid_encounter
+/*
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation; either version 3 
+ * of the License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR 
+ * @author Rod Roark <rod@sunsetsystems.com> 
+ * 
+ * @link http://librehealth.io 
+ *
+ * This report cross-references appointments with encounters.
+ * For a given date, show a line for each appointment with the
+ * matching encounter, and also for each encounter that has no
+ * matching appointment.  This helps to catch these errors:
+ *
+ * Appointments with no encounter
+ * Encounters with no appointment
+ * Codes not justified
+ * Codes not authorized
+ * Procedure codes without a fee
+ * Fees assigned to diagnoses (instead of procedures)
+ * Encounters not billed
+ *
+ * For decent performance the following indexes are highly recommended:
+ *   libreehr_postcalendar_events.pc_eventDate
+ *   forms.encounter
+ *   billing.pid_encounter
+ */
 
 require_once("../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/billing.inc");
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
  $errmsg  = "";
  $alertmsg = ''; // not used yet but maybe later
@@ -171,9 +192,10 @@ function postError($msg) {
 }
 
 </style>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <title><?php  xl('Appointments and Encounters','e'); ?></title>
 
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 
 <script language="JavaScript">
 
@@ -191,7 +213,8 @@ function postError($msg) {
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Appointments and Encounters','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
 <form method='post' id='theform' action='appt_encounter_report.php'>
@@ -201,88 +224,82 @@ function postError($msg) {
 <table>
  <tr>
   <td width='630px'>
-	<div style='float:left'>
+    <div style='float:left'>
 
-	<table class='text'>
-		<tr>
-			<td class='label'>
-				<?php xl('Facility','e'); ?>:
-			</td>
-			<td>
-				<?php
-				 // Build a drop-down list of facilities.
-				 //
-				 $query = "SELECT id, name FROM facility ORDER BY name";
-				 $fres = sqlStatement($query);
-				 echo "   <select name='form_facility'>\n";
-				 echo "    <option value=''>-- " . xl('All Facilities', 'e') . " --\n";
-				 while ($frow = sqlFetchArray($fres)) {
-				  $facid = $frow['id'];
-				  echo "    <option value='$facid'";
-				  if ($facid == $form_facility) echo " selected";
-				  echo ">" . htmlspecialchars($frow['name']) . "\n";
-				 }
-				 echo "    <option value='0'";
-				 if ($form_facility === '0') echo " selected";
-				 echo ">-- " . xl('Unspecified') . " --\n";
-				 echo "   </select>\n";
-				?>
-			</td>
-			<td class='label'>
-			   <?php xl('DOS','e'); ?>:
-			</td>
-			<td>
-			   <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php  echo $form_from_date; ?>'
-				title='Date of appointments mm/dd/yyyy' >
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php xl('Click here to choose a date','e'); ?>'>
-			</td>
-			<td class='label'>
-			   <?php xl('To','e'); ?>:
-			</td>
-			<td>
-			   <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php  echo $form_to_date; ?>'
-				title='Optional end date mm/dd/yyyy' >
-			   <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
-				id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
-				title='<?php xl('Click here to choose a date','e'); ?>'>
-			</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>
-			   <input type='checkbox' name='form_details'
-				value='1'<?php if ($_POST['form_details']) echo " checked"; ?>><?php xl('Details','e') ?>
-			</td>
-		</tr>
-	</table>
+    <table class='text'>
+        <tr>
+            <td class='label'>
+                <?php xl('Facility','e'); ?>:
+            </td>
+            <td>
+                <?php
+                 // Build a drop-down list of facilities.
+                 //
+                 $query = "SELECT id, name FROM facility ORDER BY name";
+                 $fres = sqlStatement($query);
+                 echo "   <select name='form_facility'>\n";
+                 echo "    <option value=''>-- " . xl('All Facilities', 'e') . " --\n";
+                 while ($frow = sqlFetchArray($fres)) {
+                  $facid = $frow['id'];
+                  echo "    <option value='$facid'";
+                  if ($facid == $form_facility) echo " selected";
+                  echo ">" . htmlspecialchars($frow['name']) . "\n";
+                 }
+                 echo "    <option value='0'";
+                 if ($form_facility === '0') echo " selected";
+                 echo ">-- " . xl('Unspecified') . " --\n";
+                 echo "   </select>\n";
+                ?>
+            </td>
+            <td class='label'>
+               <?php xl('DOS','e'); ?>:
+            </td>
+            <td>
+               <input type='text' name='form_from_date' id="form_from_date" size='10'
+                      value='<?php  echo htmlspecialchars(oeFormatShortDate($form_from_date)); ?>' title='Date of appointments mm/dd/yyyy' >
+            </td>
+            <td class='label'>
+               <?php xl('To','e'); ?>:
+            </td>
+            <td>
+               <input type='text' name='form_to_date' id="form_to_date" size='10'
+                      value='<?php  echo htmlspecialchars(oeFormatShortDate($form_to_date)); ?>' title='Optional end date mm/dd/yyyy' >
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+               <input type='checkbox' name='form_details'
+                value='1'<?php if ($_POST['form_details']) echo " checked"; ?>><?php xl('Details','e') ?>
+            </td>
+        </tr>
+    </table>
 
-	</div>
+    </div>
 
   </td>
   <td align='left' valign='middle' height="100%">
-	<table style='border-left:1px solid; width:100%; height:100%' >
-		<tr>
-			<td>
-				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-					<span>
-						<?php xl('Submit','e'); ?>
-					</span>
-					</a>
+    <table style='border-left:1px solid; width:100%; height:100%' >
+        <tr>
+            <td>
+                <div style='margin-left:15px'>
+                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                    <span>
+                        <?php xl('Submit','e'); ?>
+                    </span>
+                    </a>
 
-					<?php if ($_POST['form_refresh']) { ?>
-					<a href='#' class='css_button' id='printbutton'>
-						<span>
-							<?php xl('Print','e'); ?>
-						</span>
-					</a>
-					<?php } ?>
-				</div>
-			</td>
-		</tr>
-	</table>
+                    <?php if ($_POST['form_refresh']) { ?>
+                    <a href='#' class='css_button' id='printbutton'>
+                        <span>
+                            <?php xl('Print','e'); ?>
+                        </span>
+                    </a>
+                    <?php } ?>
+                </div>
+            </td>
+        </tr>
+    </table>
   </td>
  </tr>
 </table>
@@ -502,7 +519,7 @@ function postError($msg) {
 </div> <!-- end the apptenc_report_results -->
 <?php } else { ?>
 <div class='text'>
- 	<?php echo xl('Please input search criteria above, and click Submit to view results.', 'e' ); ?>
+    <?php echo xl('Please input search criteria above, and click Submit to view results.', 'e' ); ?>
 </div>
 <?php } ?>
 
@@ -514,15 +531,19 @@ function postError($msg) {
 </script>
 </body>
 
-<!-- stuff for the popup calendar -->
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-
-<script language="Javascript">
- Calendar.setup({inputField:"form_from_date", ifFormat:"%Y-%m-%d", button:"img_from_date"});
- Calendar.setup({inputField:"form_to_date", ifFormat:"%Y-%m-%d", button:"img_to_date"});
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_from_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_to_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
 </script>
 
 </html>
