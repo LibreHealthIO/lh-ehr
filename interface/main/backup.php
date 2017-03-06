@@ -11,16 +11,16 @@
 // This script creates a backup tarball and sends it to the users's
 // browser for download.  The tarball includes:
 //
-// * an LibreEHR database dump (gzipped)
+// * an LibreHealth EHR database dump (gzipped)
 // * a phpGACL database dump (gzipped), if phpGACL is used and has
 //   its own database
-// * the LibreEHR web directory (.tar.gz)
+// * the LibreHealth EHR web directory (.tar.gz)
 // * the phpGACL web directory (.tar.gz), if phpGACL is used
 //
-// The LibreEHR web directory is important because it includes config-
+// The LibreHealth EHR web directory is important because it includes config-
 // uration files, patient documents, and possible customizations, and
 // also because the database structure is dependent on the installed
-// LibreEHR version.
+// LibreHealth EHR version.
 //
 // This script depends on execution of some external programs:
 // mysqldump & pg_dump.  It has been tested with Debian and Ubuntu
@@ -568,9 +568,9 @@ if ($cmd) {
   {
     if ($eventlog==1)
      {
-	// ViSolve : Restore previous state, if backup fails.
+    // ViSolve : Restore previous state, if backup fails.
          $res=sqlStatement("drop table if exists log_comment_encrypt");
-       	 $res=sqlStatement("rename table log_comment_encrypt_backup to log_comment_encrypt");
+         $res=sqlStatement("rename table log_comment_encrypt_backup to log_comment_encrypt");
          $res=sqlStatement("drop table if exists log");
          $res=sqlStatement("rename table log_backup to log");
      }
@@ -583,7 +583,7 @@ if ($cmd) {
         echo "<br><b>";
         echo xl('Backup Successfully taken in')." ";
         echo  $BACKUP_EVENTLOG_DIR; 
-		echo "</b>";
+        echo "</b>";
      }
  //  ViSolve:  If the Eventlog is set, then clear the temporary table  -- Ends here
 }

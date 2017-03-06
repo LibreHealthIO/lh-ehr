@@ -21,8 +21,8 @@
  * 
  * @link http://www.wpc-edi.com
  * @author Kevin McCormick
- * @link: http://www.open-emr.org
- * @package LibreEHR
+ * @link: http://librehealth.io
+ * @package LibreHealth EHR
  * @subpackage ediHistory
  */
 
@@ -35,500 +35,500 @@
  * There are get_ methods only
  */
 class status_code_arrays {
-	
-	private $STC_Category_Code;
-	private $STC_HCSDR_Code;
-	private $STC_Status_Code;
-	private $STC_Entity_Code;
-	private $STC_IDType_Code;
-	
-	/**
-	 * ID Type codes
-	 * 
-	 * @param string code
-	 * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
-	 */
-	public function get_STC_IDType_Code( $code ) {
-		// 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->STC_IDType_Code )) {
-			if (array_key_exists($code, $this->STC_IDType_Code)){
-				return $this->STC_IDType_Code[$code];
-			} else {
-				return array($code, "Not found in STC Category codes table", "", "", "");
-			}
-		} else {
-			$this->STC_IDType_Code = array (
-			'PI'=> array('PI', 'Payor Identification', '', '', ''),
-			'XV'=> array('XV', 'Centers for Medicare and Medicaid Services PlanID', '', '', ''),
-			'46'=> array('46', 'Electronic Transmitter Identification Number',  '', '', ''),
-			'24'=> array('24', 'Employers Identification Number',  '', '', ''),
-			'II'=> array('II', 'Standard Unique Health Identifier', '', '', ''), 
-			'MI'=> array('MI', 'Member Identification Number', '', '', ''),
-			'FI'=> array('FI', 'Federal Taxpayers Identification Number', '', '', ''),
-			'SV'=> array('SV', 'Service Provider Number', '', '', ''),
-			'XX'=> array('XX', 'Centers for Medicare and Medicaid Services NationalProvider Identifier', '', '', '')
-			);
-			if (array_key_exists($code, $this->STC_IDType_Code)){
-				return $this->STC_IDType_Code[$code];
-			} else {
-				return array($code, "Not found in STC ID Type codes table", "", "", "");
-			}
-		}
-	} // end get_STC_IDType_Code
-			
-	/**
-	 * entity identifier code  --code source 237
-	 * 
-	 * Entity Codes from http://ushik.ahrq.gov/ and CMS 276/277 Side-by-Side
-	 * 
-	 * @param string code
-	 * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
-	 */	 
-	public function get_STC_Entity_Code( $code ) {
-		// 0 => code, [1] => description, [2] => '', [3] => '',  [4] => ''
-		if ( is_array( $this->STC_Entity_Code )) {
-			if (array_key_exists($code, $this->STC_Entity_Code)){
-				return $this->STC_Entity_Code[$code];
-			} else {
-				return array($code, "Not found in STC Category codes table", "", "", "");
-			}
-		} else {
-			$this->STC_Entity_Code = array(	
-			'03' => array('03', 'Dependent', '', '', ''),
-			'13' => array('13', 'Contracted Service Provider', '', '', ''),
-			'17' => array('17', 'Consultant´s Office', '', '', ''),
-			'1E' => array('1E', 'Health Maintenance Organization (HMO)', '', '', ''),
-			'1G' => array('1G', 'Oncology Center', '', '', ''),
-			'1H' => array('1H', 'Kidney Dialysis Unit', '', '', ''),
-			'1I' => array('1I', 'Preferred Provider Organization (PPO)', '', '', ''),
-			'1O' => array('1O', 'Acute Care Hospital', '', '', ''),
-			'1P' => array('1P', 'Provider', '', '', ''),
-			'1Q' => array('1Q', 'Military Facility', '', '', ''),
-			'1R' => array('1R', 'University, College or School', '', '', ''),
-			'1S' => array('1S', 'Outpatient Surgicenter', '', '', ''),
-			'1T' => array('1T', 'Physician, Clinic or Group Practice', '', '', ''),
-			'1U' => array('1U', 'Long Term Care Facility', '', '', ''),
-			'1V' => array('1V', 'Extended Care Facility', '', '', ''),
-			'1W' => array('1W', 'Psychiatric Health Facility', '', '', ''),
-			'1X' => array('1X', 'Laboratory', '', '', ''),
-			'1Y' => array('1Y', 'Retail Pharmacy', '', '', ''),
-			'1Z' => array('1Z', 'Home Health Care', '', '', ''),
-			'28' => array('28', 'Subcontractor', '', '', ''),
-			'2A' => array('2A', 'Federal, State, County or City Facility', '', '', ''),
-			'2B' => array('2B', 'Third-Party Administrator', '', '', ''),
-			'2D' => array('2D', 'Miscellaneous Health Care Facility', '', '', ''),
-			'2E' => array('2E', 'Non-Health Care Miscellaneous Facility', '', '', ''),
-			'2I' => array('2I', 'Church Operated Facility', '', '', ''),
-			'2K' => array('2K', 'Partnership', '', '', ''),
-			'2P' => array('2P', 'Public Health Service Facility', '', '', ''),
-			'2Q' => array('2Q', 'Veterans Administration Facility', '', '', ''),
-			'2S' => array('2S', 'Public Health Service Indian Service Facility', '', '', ''),
-			'2Z' => array('2Z', 'Hospital Unit of an Institution (prison hospital, college infirmary, etc.)', '', '', ''),
-			'30' => array('30', 'Service Supplier', '', '', ''),
-			'36' => array('36', 'Employer', '', '', ''),
-			'3A' => array('3A', 'Hospital Unit Within an Institution for the Mentally Retarded', '', '', ''),
-			'3C' => array('3C', 'Tuberculosis and Other Respiratory Diseases Facility', '', '', ''),
-			'3D' => array('3D', 'Obstetrics and Gynecology Facility', '', '', ''),
-			'3E' => array('3E', 'Eye, Ear, Nose and Throat Facility', '', '', ''),
-			'3F' => array('3F', 'Rehabilitation Facility', '', '', ''),
-			'3G' => array('3G', 'Orthopedic Facility', '', '', ''),
-			'3H' => array('3H', 'Chronic Disease Facility', '', '', ''),
-			'3I' => array('3I', 'Other Specialty Facility', '', '', ''),
-			'3J' => array('3J', 'Children´s General Facility', '', '', ''),
-			'3K' => array('3K', 'Children´s Hospital Unit of an Institution', '', '', ''),
-			'3L' => array('3L', 'Children´s Psychiatric Facility', '', '', ''),
-			'3M' => array('3M', 'Children´s Tuberculosis and Other Respiratory Diseases Facility', '', '', ''),
-			'3N' => array('3N', 'Children´s Eye, Ear, Nose and Throat Facility', '', '', ''),
-			'3O' => array('3O', 'Children´s Rehabilitiaion Facility', '', '', ''),
-			'3P' => array('3P', 'Children´s Orthopedic Facility', '', '', ''),
-			'3Q' => array('3Q', 'Children´s Chronic Disease Facility', '', '', ''),
-			'3R' => array('3R', 'Children´s Other Specialty Facility', '', '', ''),
-			'3S' => array('3S', 'Institution for Mental Retardation', '', '', ''),
-			'3T' => array('3T', 'Alcoholism and Other Chemical Dependency Facility', '', '', ''),
-			'3U' => array('3U', 'General Inpatient Care for AIDS/ARC Facility', '', '', ''),
-			'3V' => array('3V', 'AIDS/ARC Unit', '', '', ''),
-			'3W' => array('3W', 'Specialized Outpatient Program for AIDS/ARC', '', '', ''),
-			'3X' => array('3X', 'Alcohol/Drug Abuse or Dependency Inpatient Unit', '', '', ''),
-			'3Y' => array('3Y', 'Alcohol/Drug Abuse or Dependency Outpatient Services', '', '', ''),
-			'3Z' => array('3Z', 'Arthritis Treatment Center', '', '', ''),
-			'36' => array('36', 'Employer', '', '', ''),
-			'40' => array('40', 'Receiver', '', '', ''),
-			'43' => array('43', 'Claimant Authorized Representative', '', '', ''),
-			'44' => array('44', 'Data Processing Service Bureau', '', '', ''),
-			'4A' => array('4A', 'Birthing Room/LDRP Room', '', '', ''),
-			'4B' => array('4B', 'Burn Care Unit', '', '', ''),
-			'4C' => array('4C', 'Cardiac Catherization Laboratory', '', '', ''),
-			'4D' => array('4D', 'Open-Heart Surgery Facility', '', '', ''),
-			'4E' => array('4E', 'Cardiac Intensive Care Unit', '', '', ''),
-			'4F' => array('4F', 'Angioplasty Facility', '', '', ''),
-			'4G' => array('4G', 'Chronic Obstructive Pulmonary Disease Service Facility', '', '', ''),
-			'4H' => array('4H', 'Emergency Department', '', '', ''),
-			'4I' => array('4I', 'Trauma Center (Certified)', '', '', ''),
-			'4J' => array('4J', 'Extracorporeal Shock-Wave Lithotripter (ESWL) Unit', '', '', ''),
-			'4L' => array('4L', 'Genetic Counseling/Screening Services', '', '', ''),
-			'4M' => array('4M', 'Adult Day Care Program Facility', '', '', ''),
-			'4N' => array('4N', 'Alzheimer´s Diagnostic/Assessment Services', '', '', ''),
-			'4O' => array('4O', 'Comprehensive Geriatric Assessment Facility', '', '', ''),
-			'4P' => array('4P', 'Emergency Response (Geriatric) Unit', '', '', ''),
-			'4Q' => array('4Q', 'Geriatric Acute Care Unit', '', '', ''),
-			'4R' => array('4R', 'Geriatric Clinics', '', '', ''),
-			'4S' => array('4S', 'Respite Care Facility', '', '', ''),
-			'4U' => array('4U', 'Patient Education Unit', '', '', ''),
-			'4V' => array('4V', 'Community Health Promotion Facility', '', '', ''),
-			'4W' => array('4W', 'Worksite Health Promotion Facility', '', '', ''),
-			'4X' => array('4X', 'Hemodialysis Facility', '', '', ''),
-			'4Y' => array('4Y', 'Home Health Services', '', '', ''),
-			'4Z' => array('4Z', 'Hospice', '', '', ''),
-			'41' => array('41', 'Submitter', '', '', ''),
-			'5A' => array('5A', 'Medical Surgical or Other Intensive Care Unit', '', '', ''),
-			'5B' => array('5B', 'Hisopathology Laboratory', '', '', ''),
-			'5C' => array('5C', 'Blood Bank', '', '', ''),
-			'5D' => array('5D', 'Neonatal Intensive Care Unit', '', '', ''),
-			'5E' => array('5E', 'Obstetrics Unit', '', '', ''),
-			'5F' => array('5F', 'Occupational Health Services', '', '', ''),
-			'5G' => array('5G', 'Organized Outpatient Services', '', '', ''),
-			'5H' => array('5H', 'Pediatric Acute Inpatient Unit', '', '', ''),
-			'5I' => array('5I', 'Psychiatric Child/Adolescent Services', '', '', ''),
-			'5J' => array('5J', 'Psychiatric Consultation-Liaison Services', '', '', ''),
-			'5K' => array('5K', 'Psychiatric Education Services', '', '', ''),
-			'5L' => array('5L', 'Psychiatric Emergency Services', '', '', ''),
-			'5M' => array('5M', 'Psychiatric Geriatric Services', '', '', ''),
-			'5N' => array('5N', 'Psychiatric Inpatient Unit', '', '', ''),
-			'5O' => array('5O', 'Psychiatric Outpatient Services', '', '', ''),
-			'5P' => array('5P', 'Psychiatric Partial Hospitalization Program', '', '', ''),
-			'5Q' => array('5Q', 'Megavoltage Radiation Therapy Unit', '', '', ''),
-			'5R' => array('5R', 'Radioactive Implants Unit', '', '', ''),
-			'5S' => array('5S', 'Theraputic Radioisotope Facility', '', '', ''),
-			'5T' => array('5T', 'X-Ray Radiation Therapy Unit', '', '', ''),
-			'5U' => array('5U', 'CT Scanner Unit', '', '', ''),
-			'5V' => array('5V', 'Diagnostic Radioisotope Facility', '', '', ''),
-			'5W' => array('5W', 'Magnetic Resonance Imaging (MRI) Facility', '', '', ''),
-			'5X' => array('5X', 'Ultrasound Unit', '', '', ''),
-			'5Y' => array('5Y', 'Rehabilitation Inpatient Unit', '', '', ''),
-			'5Z' => array('5Z', 'Rehabilitation Outpatient Services', '', '', ''),
-			'61' => array('61', 'Performed At', '', '', ''),
-			'6A' => array('6A', 'Reproductive Health Services', '', '', ''),
-			'6B' => array('6B', 'Skilled Nursing or Other Long-Term Care Unit', '', '', ''),
-			'6C' => array('6C', 'Single Photon Emission Computerized Tomography (SPECT) Unit', '', '', ''),
-			'6D' => array('6D', 'Organized Social Work Service Facility', '', '', ''),
-			'6E' => array('6E', 'Outpatient Social Work Services', '', '', ''),
-			'6F' => array('6F', 'Emergency Department Social Work Services', '', '', ''),
-			'6G' => array('6G', 'Sports Medicine Clinic/Services', '', '', ''),
-			'6H' => array('6H', 'Hospital Auxiliary Unit', '', '', ''),
-			'6I' => array('6I', 'Patient Representative Services', '', '', ''),
-			'6J' => array('6J', 'Volunteer Services Department', '', '', ''),
-			'6K' => array('6K', 'Outpatient Surgery Services', '', '', ''),
-			'6L' => array('6L', 'Organ/Tissue Transplant Unit', '', '', ''),
-			'6M' => array('6M', 'Orthopedic Surgery Facility', '', '', ''),
-			'6N' => array('6N', 'Occupational Therapy Services', '', '', ''),
-			'6O' => array('6O', 'Physical Therapy Services', '', '', ''),
-			'6P' => array('6P', 'Recreational Therapy Services', '', '', ''),
-			'6Q' => array('6Q', 'Respiratory Therapy Services', '', '', ''),
-			'6R' => array('6R', 'Speech Therapy Services', '', '', ''),
-			'6S' => array('6S', 'Women´s Health Center/Services', '', '', ''),
-			'6U' => array('6U', 'Cardiac Rehabilitation Program Facility', '', '', ''),
-			'6V' => array('6V', 'Non-Invasive Cardiac Assessment Services', '', '', ''),
-			'6W' => array('6W', 'Emergency Medical Technician', '', '', ''),
-			'6X' => array('6X', 'Disciplinary Contact', '', '', ''),
-			'6Y' => array('6Y', 'Case Manager', '', '', ''),
-			'70' => array('70', 'Prior Incorrect Insured', '', '', ''),
-			'71' => array('71', 'Attending Physician', '', '', ''),
-			'72' => array('72', 'Operating Physician', '', '', ''),
-			'73' => array('73', 'Other Physician', '', '', ''),
-			'74' => array('74', 'Corrected Insured', '', '', ''),
-			'75' => array('75', 'Participant', '', '', ''),
-			'77' => array('77', 'Service Location', '', '', ''),
-			'7C' => array('7C', 'Place of Occurrence', '', '', ''),
-			'80' => array('80', 'Hospital', '', '', ''),
-			'82' => array('82', 'Rendering Provider', '', '', ''),
-			'84' => array('84', 'Subscriber´s Employer', '', '', ''),
-			'85' => array('85', 'Billing Provider', '', '', ''),
-			'87' => array('87', 'Pay-to Provider', '', '', ''),
-			'95' => array('95', 'Research Institute', '', '', ''),
-			'AY' => array('AY', 'Clearinghouse','', '', ''), 
-			'CK' => array('CK', 'Pharmacist', '', '', ''),
-			'CZ' => array('CZ', 'Admitting Surgeon', '', '', ''),
-			'D2' => array('D2', 'Commercial Insurer', '', '', ''),
-			'DD' => array('DD', 'Assistant Surgeon', '', '', ''),
-			'DJ' => array('DJ', 'Consulting Physician', '', '', ''),
-			'DK' => array('DK', 'Ordering Physician', '', '', ''),
-			'DN' => array('DN', 'Referring Provider', '', '', ''),
-			'DO' => array('DO', 'Dependent Name', '', '', ''),
-			'DQ' => array('DQ', 'Supervising Physician', '', '', ''),
-			'E1' => array('E1', 'Person or Other Entity Legally Responsible for a Child', '', '', ''),
-			'E2' => array('E2', 'Person or Other Entity With Whom a Child Resides', '', '', ''),
-			'E7' => array('E7', 'Previous Employer', '', '', ''),
-			'E9' => array('E9', 'Participating Laboratory', '', '', ''),
-			'FA' => array('FA', 'Facility', '', '', ''),
-			'FD' => array('FD', 'Physical Address', '', '', ''),
-			'FE' => array('FE', 'Mail Address', '', '', ''),
-			'G0' => array('G0', 'Dependent Insured', '', '', ''),
-			'G3' => array('G3', 'Clinic', '', '', ''),
-			'GB' => array('GB', 'Other Insured', '', '', ''),
-			'GD' => array('GD', 'Guardian', '', '', ''),
-			'GI' => array('GI', 'Paramedic', '', '', ''),
-			'GJ' => array('GJ', 'Paramedical Company', '', '', ''),
-			'GK' => array('GK', 'Previous Insured', '', '', ''),
-			'GM' => array('GM', 'Spouse Insured', '', '', ''),
-			'GP' => array('GP', 'Gateway Provider', '', '', ''),
-			'GW' => array('GW', 'Group', '', '', ''),
-			'GY' => array('GY', 'Treatment Facility', '', '', ''),
-			'HF' => array('HF', 'Healthcare Professional Shortage Area (HPSA) Facility', '', '', ''),
-			'HH' => array('HH', 'Home Health Agency', '', '', ''),
-			'I3' => array('I3', 'Independent Physicians Association (IPA)', '', '', ''),
-			'IJ' => array('IJ', 'Injection Point', '', '', ''),
-			'IL' => array('IL', 'Insured or Subscriber', '', '', ''),
-			'IN' => array('IN', 'Insurer', '', '', ''),
-			'LI' => array('LI', 'Independent Lab', '', '', ''),
-			'LR' => array('LR', 'Legal Representative', '', '', ''),
-			'MR' => array('MR', 'Medical Insurance Carrier', '', '', ''),
-			'NZ' => array('NZ', 'Primary Physician', '', '', ''),
-			'OB' => array('OB', 'Ordered By', '', '', ''),
-			'OC' => array('OC', 'Origin Carrier', '', '', ''),
-			'OD' => array('OD', 'Doctor of Optometry', '', '', ''),
-			'OX' => array('OX', 'Oxygen Therapy Facility', '', '', ''),
-			'P0' => array('P0', 'Patient Facility', '', '', ''),
-			'P2' => array('P2', 'Primary Insured or Subscriber', '', '', ''),
-			'P3' => array('P3', 'Primary Care Provider', '', '', ''),
-			'P4' => array('P4', 'Prior Insurance Carrier', '', '', ''),
-			'P5' => array('P5', 'Plan Sponsor', '', '', ''),
-			'P6' => array('P6', 'Third Party Reviewing Preferred Provider Organization (PPO)', '', '', ''),
-			'P7' => array('P7', 'Third Party Repricing Preferred Provider Organization (PPO)', '', '', ''),
-			'PR' => array('PR', 'Payer', '', '', ''),
-			'PT' => array('PT', 'Party to Receive Test Report', '', '', ''),
-			'PV' => array('PV', 'Party performing certification', '', '', ''),
-			'PW' => array('PW', 'Pick Up Address', '', '', ''),
-			'QA' => array('QA', 'Pharmacy', '', '', ''),
-			'QB' => array('QB', 'Purchase Service Provider', '', '', ''),
-			'QC' => array('QC', 'Patient', '', '', ''),
-			'QD' => array('QD', 'Responsible Party', '', '', ''),
-			'QE' => array('QE', 'Policyholder', '', '', ''),
-			'QH' => array('QH', 'Physician', '', '', ''),
-			'QK' => array('QK', 'Managed Care', '', '', ''),
-			'QL' => array('QL', 'Chiropractor', '', '', ''),
-			'QN' => array('QN', 'Dentist', '', '', ''),
-			'QO' => array('QO', 'Doctor of Osteopathy', '', '', ''),
-			'QS' => array('QS', 'Podiatrist', '', '', ''),
-			'QV' => array('QV', 'Group Practice', '', '', ''),
-			'QY' => array('QY', 'Medical Doctor', '', '', ''),
-			'RC' => array('RC', 'Receiving Location', '', '', ''),
-			'RW' => array('RW', 'Rural Health Clinic', '', '', ''),
-			'S4' => array('S4', 'Skilled Nursing Facility', '', '', ''),
-			'SJ' => array('SJ', 'Service Provider', '', '', ''),
-			'SU' => array('SU', 'Supplier/Manufacturer', '', '', ''),
-			'T4' => array('T4', 'Transfer Point', '', '', ''),
-			'TQ' => array('TQ', 'Third Party Reviewing Organization (TPO)', '', '', ''),
-			'TT' => array('TT', 'Transfer To', '', '', ''),
-			'TU' => array('TU', 'Third Party Repricing Organization (TPO)', '', '', ''),
-			'UH' => array('UH', 'Nursing Home', '', '', ''),
-			'VN' => array('VN', 'Vendor', '', '', ''),
-			'X3' => array('X3', 'Utilization Management Organization', '', '', ''),
-			'X4' => array('X4', 'Spouse', '', '', ''),
-			'X5' => array('X5', 'Durable Medical Equipment Supplier', '', '', ''),
-			'Y2' => array('Y2', 'Managed Care Organization', '', '', ''),
-			'ZZ' => array('ZZ', 'Mutually Defined', '', '', ''),
-			'MSC' => array('MSC', 'Mammography Screening Center', '', '', ''),
-			'PRP' => array('PRP', 'Primary Payer', '', '', ''),
-			'SEP' => array('SEP', 'Secondary Payer', '', '', ''),
-			'TL' => array('TL', 'Testing Laboratory', '', '', ''),
-			'TTP' => array('TTP', 'Tertiary Payer', '', '', ''),
-			'EXS' => array('EXS', 'Ex-spouse', '', '', ''),		
-			'NZ' => array('NZ', 'Primary Physician', '', '', ''),
-			'AAG' => array('AAG', 'Ground Ambulance Services', '', '', ''),
-			'AAK' => array('AAK', 'Primary Surgeon', '', '', ''),
-			'AAL' => array('AAL', 'Medical Nurse', '', '', ''),
-			'AAM' => array('AAM', 'Cardiac Rehabilitation Services', '', '', ''),
-			'AAN' => array('AAN', 'Skilled Nursing Services', '', '', ''),
-			'AAO' => array('AAO', 'Observation Room Services', '', '', ''),
-			'AAQ' => array('AAQ', 'Anesthesiology Services', '', '', ''),
-			'NCT' => array('NCT', 'Name Changed To', '', '', ''),
-			'ORI' => array('ORI', 'Original Name', '', '', ''),
-			'VER' => array('VER', 'Party Performing Verification', '', '', ''),	
-			);
-			if (array_key_exists($code, $this->STC_Entity_Code)){
-				return $this->STC_Entity_Code[$code];
-			} else {
-				return array($code, "Not found in STC Entity codes table", "", "", "");
-			}
-		}
-	} // end get_STC_Entity_Code
+    
+    private $STC_Category_Code;
+    private $STC_HCSDR_Code;
+    private $STC_Status_Code;
+    private $STC_Entity_Code;
+    private $STC_IDType_Code;
+    
+    /**
+     * ID Type codes
+     * 
+     * @param string code
+     * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
+     */
+    public function get_STC_IDType_Code( $code ) {
+        // 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->STC_IDType_Code )) {
+            if (array_key_exists($code, $this->STC_IDType_Code)){
+                return $this->STC_IDType_Code[$code];
+            } else {
+                return array($code, "Not found in STC Category codes table", "", "", "");
+            }
+        } else {
+            $this->STC_IDType_Code = array (
+            'PI'=> array('PI', 'Payor Identification', '', '', ''),
+            'XV'=> array('XV', 'Centers for Medicare and Medicaid Services PlanID', '', '', ''),
+            '46'=> array('46', 'Electronic Transmitter Identification Number',  '', '', ''),
+            '24'=> array('24', 'Employers Identification Number',  '', '', ''),
+            'II'=> array('II', 'Standard Unique Health Identifier', '', '', ''), 
+            'MI'=> array('MI', 'Member Identification Number', '', '', ''),
+            'FI'=> array('FI', 'Federal Taxpayers Identification Number', '', '', ''),
+            'SV'=> array('SV', 'Service Provider Number', '', '', ''),
+            'XX'=> array('XX', 'Centers for Medicare and Medicaid Services NationalProvider Identifier', '', '', '')
+            );
+            if (array_key_exists($code, $this->STC_IDType_Code)){
+                return $this->STC_IDType_Code[$code];
+            } else {
+                return array($code, "Not found in STC ID Type codes table", "", "", "");
+            }
+        }
+    } // end get_STC_IDType_Code
+            
+    /**
+     * entity identifier code  --code source 237
+     * 
+     * Entity Codes from http://ushik.ahrq.gov/ and CMS 276/277 Side-by-Side
+     * 
+     * @param string code
+     * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
+     */  
+    public function get_STC_Entity_Code( $code ) {
+        // 0 => code, [1] => description, [2] => '', [3] => '',  [4] => ''
+        if ( is_array( $this->STC_Entity_Code )) {
+            if (array_key_exists($code, $this->STC_Entity_Code)){
+                return $this->STC_Entity_Code[$code];
+            } else {
+                return array($code, "Not found in STC Category codes table", "", "", "");
+            }
+        } else {
+            $this->STC_Entity_Code = array( 
+            '03' => array('03', 'Dependent', '', '', ''),
+            '13' => array('13', 'Contracted Service Provider', '', '', ''),
+            '17' => array('17', 'Consultant´s Office', '', '', ''),
+            '1E' => array('1E', 'Health Maintenance Organization (HMO)', '', '', ''),
+            '1G' => array('1G', 'Oncology Center', '', '', ''),
+            '1H' => array('1H', 'Kidney Dialysis Unit', '', '', ''),
+            '1I' => array('1I', 'Preferred Provider Organization (PPO)', '', '', ''),
+            '1O' => array('1O', 'Acute Care Hospital', '', '', ''),
+            '1P' => array('1P', 'Provider', '', '', ''),
+            '1Q' => array('1Q', 'Military Facility', '', '', ''),
+            '1R' => array('1R', 'University, College or School', '', '', ''),
+            '1S' => array('1S', 'Outpatient Surgicenter', '', '', ''),
+            '1T' => array('1T', 'Physician, Clinic or Group Practice', '', '', ''),
+            '1U' => array('1U', 'Long Term Care Facility', '', '', ''),
+            '1V' => array('1V', 'Extended Care Facility', '', '', ''),
+            '1W' => array('1W', 'Psychiatric Health Facility', '', '', ''),
+            '1X' => array('1X', 'Laboratory', '', '', ''),
+            '1Y' => array('1Y', 'Retail Pharmacy', '', '', ''),
+            '1Z' => array('1Z', 'Home Health Care', '', '', ''),
+            '28' => array('28', 'Subcontractor', '', '', ''),
+            '2A' => array('2A', 'Federal, State, County or City Facility', '', '', ''),
+            '2B' => array('2B', 'Third-Party Administrator', '', '', ''),
+            '2D' => array('2D', 'Miscellaneous Health Care Facility', '', '', ''),
+            '2E' => array('2E', 'Non-Health Care Miscellaneous Facility', '', '', ''),
+            '2I' => array('2I', 'Church Operated Facility', '', '', ''),
+            '2K' => array('2K', 'Partnership', '', '', ''),
+            '2P' => array('2P', 'Public Health Service Facility', '', '', ''),
+            '2Q' => array('2Q', 'Veterans Administration Facility', '', '', ''),
+            '2S' => array('2S', 'Public Health Service Indian Service Facility', '', '', ''),
+            '2Z' => array('2Z', 'Hospital Unit of an Institution (prison hospital, college infirmary, etc.)', '', '', ''),
+            '30' => array('30', 'Service Supplier', '', '', ''),
+            '36' => array('36', 'Employer', '', '', ''),
+            '3A' => array('3A', 'Hospital Unit Within an Institution for the Mentally Retarded', '', '', ''),
+            '3C' => array('3C', 'Tuberculosis and Other Respiratory Diseases Facility', '', '', ''),
+            '3D' => array('3D', 'Obstetrics and Gynecology Facility', '', '', ''),
+            '3E' => array('3E', 'Eye, Ear, Nose and Throat Facility', '', '', ''),
+            '3F' => array('3F', 'Rehabilitation Facility', '', '', ''),
+            '3G' => array('3G', 'Orthopedic Facility', '', '', ''),
+            '3H' => array('3H', 'Chronic Disease Facility', '', '', ''),
+            '3I' => array('3I', 'Other Specialty Facility', '', '', ''),
+            '3J' => array('3J', 'Children´s General Facility', '', '', ''),
+            '3K' => array('3K', 'Children´s Hospital Unit of an Institution', '', '', ''),
+            '3L' => array('3L', 'Children´s Psychiatric Facility', '', '', ''),
+            '3M' => array('3M', 'Children´s Tuberculosis and Other Respiratory Diseases Facility', '', '', ''),
+            '3N' => array('3N', 'Children´s Eye, Ear, Nose and Throat Facility', '', '', ''),
+            '3O' => array('3O', 'Children´s Rehabilitiaion Facility', '', '', ''),
+            '3P' => array('3P', 'Children´s Orthopedic Facility', '', '', ''),
+            '3Q' => array('3Q', 'Children´s Chronic Disease Facility', '', '', ''),
+            '3R' => array('3R', 'Children´s Other Specialty Facility', '', '', ''),
+            '3S' => array('3S', 'Institution for Mental Retardation', '', '', ''),
+            '3T' => array('3T', 'Alcoholism and Other Chemical Dependency Facility', '', '', ''),
+            '3U' => array('3U', 'General Inpatient Care for AIDS/ARC Facility', '', '', ''),
+            '3V' => array('3V', 'AIDS/ARC Unit', '', '', ''),
+            '3W' => array('3W', 'Specialized Outpatient Program for AIDS/ARC', '', '', ''),
+            '3X' => array('3X', 'Alcohol/Drug Abuse or Dependency Inpatient Unit', '', '', ''),
+            '3Y' => array('3Y', 'Alcohol/Drug Abuse or Dependency Outpatient Services', '', '', ''),
+            '3Z' => array('3Z', 'Arthritis Treatment Center', '', '', ''),
+            '36' => array('36', 'Employer', '', '', ''),
+            '40' => array('40', 'Receiver', '', '', ''),
+            '43' => array('43', 'Claimant Authorized Representative', '', '', ''),
+            '44' => array('44', 'Data Processing Service Bureau', '', '', ''),
+            '4A' => array('4A', 'Birthing Room/LDRP Room', '', '', ''),
+            '4B' => array('4B', 'Burn Care Unit', '', '', ''),
+            '4C' => array('4C', 'Cardiac Catherization Laboratory', '', '', ''),
+            '4D' => array('4D', 'Open-Heart Surgery Facility', '', '', ''),
+            '4E' => array('4E', 'Cardiac Intensive Care Unit', '', '', ''),
+            '4F' => array('4F', 'Angioplasty Facility', '', '', ''),
+            '4G' => array('4G', 'Chronic Obstructive Pulmonary Disease Service Facility', '', '', ''),
+            '4H' => array('4H', 'Emergency Department', '', '', ''),
+            '4I' => array('4I', 'Trauma Center (Certified)', '', '', ''),
+            '4J' => array('4J', 'Extracorporeal Shock-Wave Lithotripter (ESWL) Unit', '', '', ''),
+            '4L' => array('4L', 'Genetic Counseling/Screening Services', '', '', ''),
+            '4M' => array('4M', 'Adult Day Care Program Facility', '', '', ''),
+            '4N' => array('4N', 'Alzheimer´s Diagnostic/Assessment Services', '', '', ''),
+            '4O' => array('4O', 'Comprehensive Geriatric Assessment Facility', '', '', ''),
+            '4P' => array('4P', 'Emergency Response (Geriatric) Unit', '', '', ''),
+            '4Q' => array('4Q', 'Geriatric Acute Care Unit', '', '', ''),
+            '4R' => array('4R', 'Geriatric Clinics', '', '', ''),
+            '4S' => array('4S', 'Respite Care Facility', '', '', ''),
+            '4U' => array('4U', 'Patient Education Unit', '', '', ''),
+            '4V' => array('4V', 'Community Health Promotion Facility', '', '', ''),
+            '4W' => array('4W', 'Worksite Health Promotion Facility', '', '', ''),
+            '4X' => array('4X', 'Hemodialysis Facility', '', '', ''),
+            '4Y' => array('4Y', 'Home Health Services', '', '', ''),
+            '4Z' => array('4Z', 'Hospice', '', '', ''),
+            '41' => array('41', 'Submitter', '', '', ''),
+            '5A' => array('5A', 'Medical Surgical or Other Intensive Care Unit', '', '', ''),
+            '5B' => array('5B', 'Hisopathology Laboratory', '', '', ''),
+            '5C' => array('5C', 'Blood Bank', '', '', ''),
+            '5D' => array('5D', 'Neonatal Intensive Care Unit', '', '', ''),
+            '5E' => array('5E', 'Obstetrics Unit', '', '', ''),
+            '5F' => array('5F', 'Occupational Health Services', '', '', ''),
+            '5G' => array('5G', 'Organized Outpatient Services', '', '', ''),
+            '5H' => array('5H', 'Pediatric Acute Inpatient Unit', '', '', ''),
+            '5I' => array('5I', 'Psychiatric Child/Adolescent Services', '', '', ''),
+            '5J' => array('5J', 'Psychiatric Consultation-Liaison Services', '', '', ''),
+            '5K' => array('5K', 'Psychiatric Education Services', '', '', ''),
+            '5L' => array('5L', 'Psychiatric Emergency Services', '', '', ''),
+            '5M' => array('5M', 'Psychiatric Geriatric Services', '', '', ''),
+            '5N' => array('5N', 'Psychiatric Inpatient Unit', '', '', ''),
+            '5O' => array('5O', 'Psychiatric Outpatient Services', '', '', ''),
+            '5P' => array('5P', 'Psychiatric Partial Hospitalization Program', '', '', ''),
+            '5Q' => array('5Q', 'Megavoltage Radiation Therapy Unit', '', '', ''),
+            '5R' => array('5R', 'Radioactive Implants Unit', '', '', ''),
+            '5S' => array('5S', 'Theraputic Radioisotope Facility', '', '', ''),
+            '5T' => array('5T', 'X-Ray Radiation Therapy Unit', '', '', ''),
+            '5U' => array('5U', 'CT Scanner Unit', '', '', ''),
+            '5V' => array('5V', 'Diagnostic Radioisotope Facility', '', '', ''),
+            '5W' => array('5W', 'Magnetic Resonance Imaging (MRI) Facility', '', '', ''),
+            '5X' => array('5X', 'Ultrasound Unit', '', '', ''),
+            '5Y' => array('5Y', 'Rehabilitation Inpatient Unit', '', '', ''),
+            '5Z' => array('5Z', 'Rehabilitation Outpatient Services', '', '', ''),
+            '61' => array('61', 'Performed At', '', '', ''),
+            '6A' => array('6A', 'Reproductive Health Services', '', '', ''),
+            '6B' => array('6B', 'Skilled Nursing or Other Long-Term Care Unit', '', '', ''),
+            '6C' => array('6C', 'Single Photon Emission Computerized Tomography (SPECT) Unit', '', '', ''),
+            '6D' => array('6D', 'Organized Social Work Service Facility', '', '', ''),
+            '6E' => array('6E', 'Outpatient Social Work Services', '', '', ''),
+            '6F' => array('6F', 'Emergency Department Social Work Services', '', '', ''),
+            '6G' => array('6G', 'Sports Medicine Clinic/Services', '', '', ''),
+            '6H' => array('6H', 'Hospital Auxiliary Unit', '', '', ''),
+            '6I' => array('6I', 'Patient Representative Services', '', '', ''),
+            '6J' => array('6J', 'Volunteer Services Department', '', '', ''),
+            '6K' => array('6K', 'Outpatient Surgery Services', '', '', ''),
+            '6L' => array('6L', 'Organ/Tissue Transplant Unit', '', '', ''),
+            '6M' => array('6M', 'Orthopedic Surgery Facility', '', '', ''),
+            '6N' => array('6N', 'Occupational Therapy Services', '', '', ''),
+            '6O' => array('6O', 'Physical Therapy Services', '', '', ''),
+            '6P' => array('6P', 'Recreational Therapy Services', '', '', ''),
+            '6Q' => array('6Q', 'Respiratory Therapy Services', '', '', ''),
+            '6R' => array('6R', 'Speech Therapy Services', '', '', ''),
+            '6S' => array('6S', 'Women´s Health Center/Services', '', '', ''),
+            '6U' => array('6U', 'Cardiac Rehabilitation Program Facility', '', '', ''),
+            '6V' => array('6V', 'Non-Invasive Cardiac Assessment Services', '', '', ''),
+            '6W' => array('6W', 'Emergency Medical Technician', '', '', ''),
+            '6X' => array('6X', 'Disciplinary Contact', '', '', ''),
+            '6Y' => array('6Y', 'Case Manager', '', '', ''),
+            '70' => array('70', 'Prior Incorrect Insured', '', '', ''),
+            '71' => array('71', 'Attending Physician', '', '', ''),
+            '72' => array('72', 'Operating Physician', '', '', ''),
+            '73' => array('73', 'Other Physician', '', '', ''),
+            '74' => array('74', 'Corrected Insured', '', '', ''),
+            '75' => array('75', 'Participant', '', '', ''),
+            '77' => array('77', 'Service Location', '', '', ''),
+            '7C' => array('7C', 'Place of Occurrence', '', '', ''),
+            '80' => array('80', 'Hospital', '', '', ''),
+            '82' => array('82', 'Rendering Provider', '', '', ''),
+            '84' => array('84', 'Subscriber´s Employer', '', '', ''),
+            '85' => array('85', 'Billing Provider', '', '', ''),
+            '87' => array('87', 'Pay-to Provider', '', '', ''),
+            '95' => array('95', 'Research Institute', '', '', ''),
+            'AY' => array('AY', 'Clearinghouse','', '', ''), 
+            'CK' => array('CK', 'Pharmacist', '', '', ''),
+            'CZ' => array('CZ', 'Admitting Surgeon', '', '', ''),
+            'D2' => array('D2', 'Commercial Insurer', '', '', ''),
+            'DD' => array('DD', 'Assistant Surgeon', '', '', ''),
+            'DJ' => array('DJ', 'Consulting Physician', '', '', ''),
+            'DK' => array('DK', 'Ordering Physician', '', '', ''),
+            'DN' => array('DN', 'Referring Provider', '', '', ''),
+            'DO' => array('DO', 'Dependent Name', '', '', ''),
+            'DQ' => array('DQ', 'Supervising Physician', '', '', ''),
+            'E1' => array('E1', 'Person or Other Entity Legally Responsible for a Child', '', '', ''),
+            'E2' => array('E2', 'Person or Other Entity With Whom a Child Resides', '', '', ''),
+            'E7' => array('E7', 'Previous Employer', '', '', ''),
+            'E9' => array('E9', 'Participating Laboratory', '', '', ''),
+            'FA' => array('FA', 'Facility', '', '', ''),
+            'FD' => array('FD', 'Physical Address', '', '', ''),
+            'FE' => array('FE', 'Mail Address', '', '', ''),
+            'G0' => array('G0', 'Dependent Insured', '', '', ''),
+            'G3' => array('G3', 'Clinic', '', '', ''),
+            'GB' => array('GB', 'Other Insured', '', '', ''),
+            'GD' => array('GD', 'Guardian', '', '', ''),
+            'GI' => array('GI', 'Paramedic', '', '', ''),
+            'GJ' => array('GJ', 'Paramedical Company', '', '', ''),
+            'GK' => array('GK', 'Previous Insured', '', '', ''),
+            'GM' => array('GM', 'Spouse Insured', '', '', ''),
+            'GP' => array('GP', 'Gateway Provider', '', '', ''),
+            'GW' => array('GW', 'Group', '', '', ''),
+            'GY' => array('GY', 'Treatment Facility', '', '', ''),
+            'HF' => array('HF', 'Healthcare Professional Shortage Area (HPSA) Facility', '', '', ''),
+            'HH' => array('HH', 'Home Health Agency', '', '', ''),
+            'I3' => array('I3', 'Independent Physicians Association (IPA)', '', '', ''),
+            'IJ' => array('IJ', 'Injection Point', '', '', ''),
+            'IL' => array('IL', 'Insured or Subscriber', '', '', ''),
+            'IN' => array('IN', 'Insurer', '', '', ''),
+            'LI' => array('LI', 'Independent Lab', '', '', ''),
+            'LR' => array('LR', 'Legal Representative', '', '', ''),
+            'MR' => array('MR', 'Medical Insurance Carrier', '', '', ''),
+            'NZ' => array('NZ', 'Primary Physician', '', '', ''),
+            'OB' => array('OB', 'Ordered By', '', '', ''),
+            'OC' => array('OC', 'Origin Carrier', '', '', ''),
+            'OD' => array('OD', 'Doctor of Optometry', '', '', ''),
+            'OX' => array('OX', 'Oxygen Therapy Facility', '', '', ''),
+            'P0' => array('P0', 'Patient Facility', '', '', ''),
+            'P2' => array('P2', 'Primary Insured or Subscriber', '', '', ''),
+            'P3' => array('P3', 'Primary Care Provider', '', '', ''),
+            'P4' => array('P4', 'Prior Insurance Carrier', '', '', ''),
+            'P5' => array('P5', 'Plan Sponsor', '', '', ''),
+            'P6' => array('P6', 'Third Party Reviewing Preferred Provider Organization (PPO)', '', '', ''),
+            'P7' => array('P7', 'Third Party Repricing Preferred Provider Organization (PPO)', '', '', ''),
+            'PR' => array('PR', 'Payer', '', '', ''),
+            'PT' => array('PT', 'Party to Receive Test Report', '', '', ''),
+            'PV' => array('PV', 'Party performing certification', '', '', ''),
+            'PW' => array('PW', 'Pick Up Address', '', '', ''),
+            'QA' => array('QA', 'Pharmacy', '', '', ''),
+            'QB' => array('QB', 'Purchase Service Provider', '', '', ''),
+            'QC' => array('QC', 'Patient', '', '', ''),
+            'QD' => array('QD', 'Responsible Party', '', '', ''),
+            'QE' => array('QE', 'Policyholder', '', '', ''),
+            'QH' => array('QH', 'Physician', '', '', ''),
+            'QK' => array('QK', 'Managed Care', '', '', ''),
+            'QL' => array('QL', 'Chiropractor', '', '', ''),
+            'QN' => array('QN', 'Dentist', '', '', ''),
+            'QO' => array('QO', 'Doctor of Osteopathy', '', '', ''),
+            'QS' => array('QS', 'Podiatrist', '', '', ''),
+            'QV' => array('QV', 'Group Practice', '', '', ''),
+            'QY' => array('QY', 'Medical Doctor', '', '', ''),
+            'RC' => array('RC', 'Receiving Location', '', '', ''),
+            'RW' => array('RW', 'Rural Health Clinic', '', '', ''),
+            'S4' => array('S4', 'Skilled Nursing Facility', '', '', ''),
+            'SJ' => array('SJ', 'Service Provider', '', '', ''),
+            'SU' => array('SU', 'Supplier/Manufacturer', '', '', ''),
+            'T4' => array('T4', 'Transfer Point', '', '', ''),
+            'TQ' => array('TQ', 'Third Party Reviewing Organization (TPO)', '', '', ''),
+            'TT' => array('TT', 'Transfer To', '', '', ''),
+            'TU' => array('TU', 'Third Party Repricing Organization (TPO)', '', '', ''),
+            'UH' => array('UH', 'Nursing Home', '', '', ''),
+            'VN' => array('VN', 'Vendor', '', '', ''),
+            'X3' => array('X3', 'Utilization Management Organization', '', '', ''),
+            'X4' => array('X4', 'Spouse', '', '', ''),
+            'X5' => array('X5', 'Durable Medical Equipment Supplier', '', '', ''),
+            'Y2' => array('Y2', 'Managed Care Organization', '', '', ''),
+            'ZZ' => array('ZZ', 'Mutually Defined', '', '', ''),
+            'MSC' => array('MSC', 'Mammography Screening Center', '', '', ''),
+            'PRP' => array('PRP', 'Primary Payer', '', '', ''),
+            'SEP' => array('SEP', 'Secondary Payer', '', '', ''),
+            'TL' => array('TL', 'Testing Laboratory', '', '', ''),
+            'TTP' => array('TTP', 'Tertiary Payer', '', '', ''),
+            'EXS' => array('EXS', 'Ex-spouse', '', '', ''),     
+            'NZ' => array('NZ', 'Primary Physician', '', '', ''),
+            'AAG' => array('AAG', 'Ground Ambulance Services', '', '', ''),
+            'AAK' => array('AAK', 'Primary Surgeon', '', '', ''),
+            'AAL' => array('AAL', 'Medical Nurse', '', '', ''),
+            'AAM' => array('AAM', 'Cardiac Rehabilitation Services', '', '', ''),
+            'AAN' => array('AAN', 'Skilled Nursing Services', '', '', ''),
+            'AAO' => array('AAO', 'Observation Room Services', '', '', ''),
+            'AAQ' => array('AAQ', 'Anesthesiology Services', '', '', ''),
+            'NCT' => array('NCT', 'Name Changed To', '', '', ''),
+            'ORI' => array('ORI', 'Original Name', '', '', ''),
+            'VER' => array('VER', 'Party Performing Verification', '', '', ''), 
+            );
+            if (array_key_exists($code, $this->STC_Entity_Code)){
+                return $this->STC_Entity_Code[$code];
+            } else {
+                return array($code, "Not found in STC Entity codes table", "", "", "");
+            }
+        }
+    } // end get_STC_Entity_Code
 
 // 
-	/**
-	 * entity identifier code  --code source 237
-	 * 
-	 * Codes from http://www.wpc-edi.com 
-	 * Claim Status Category Codes LAST UPDATED 7/1/2012
-	 * 
-	 * @param string code
-	 * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
-	 */	 
-	public function get_STC_Category_Code( $code ) {
-		// 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->STC_Category_Code )) {
-			if (array_key_exists($code, $this->STC_Category_Code)){
-				return $this->STC_Category_Code[$code];
-			} else {
-				return array($code, "Not found in STC Category codes table", "", "", "");
-			}
-		} else {
-			$this->STC_Category_Code = array(	
-			'A0' =>  array('A0', 'Acknowledgement/Forwarded-The claim/encounter has been forwarded to another entity.', '', '', ''),
-			'A1' =>  array('A1', 'Acknowledgement/Receipt-The claim/encounter has been received.', '', '', ''),
-			'A2' =>  array('A2', 'Acknowledgement/Acceptance into adjudication system-The claim/encounter has been accepted into the adjudication system.', '', '', ''),
-			'A3' =>  array('A3', 'Acknowledgement/Returned as unprocessable claim-The claim/encounter has been rejected and has not been entered into the adjudication system.', '', '', ''),
-			'A4' =>  array('A4', 'Acknowledgement/Not Found-The claim/encounter can not be found in the adjudication system.', '', '', ''),
-			'A5' =>  array('A5', 'Acknowledgement/Split Claim-The claim/encounter has been split upon acceptance into the adjudication system.', '', '', ''),
-			'A6' =>  array('A6', 'Acknowledgement/Rejected for Missing Information - The claim/encounter is missing the information specified in the Status details and has been rejected.', '', '', ''),
-			'A7' =>  array('A7', 'Acknowledgement/Rejected for Invalid Information - The claim/encounter has invalid information as specified in the Status details and has been rejected.', '', '', ''),
-			'A8' =>  array('A8', 'Acknowledgement/Rejected for relational field in error.', '', '', ''),
-			// Pending
-			'P0' =>  array('P0', 'Pending: Adjudication/Details-This is a generic message about a pended claim.', '', '', ''),
-			'P1' =>  array('P1', 'Pending/In Process-The claim or encounter is in the adjudication system.', '', '', ''),
-			'P2' =>  array('P2', 'Pending/Payer Review-The claim/encounter is suspended and is pending review ', '', '', ''),
-			'P3' =>  array('P3', 'Pending/Provider Requested Information - The claim or encounter is waiting for information that has already been requested from the provider.', '', '', ''),
-			'P4' =>  array('P4', 'Pending/Patient Requested Information - The claim or encounter is waiting for information that has already been requested from the patient.', '', '', ''),
-			'P5' =>  array('P5', 'Pending/Payer Administrative/System hold', '', '', ''),
-			// Finalized
-			'F0' =>  array('F0', 'Finalized-The claim/encounter has completed the adjudication cycle and no more action will be taken.', '', '', ''),
-			'F1' =>  array('F1', 'Finalized/Payment-The claim/line has been paid.', '', '', ''),
-			'F2' =>  array('F2', 'Finalized/Denial-The claim/line has been denied.', '', '', ''),
-			'F3' =>  array('F3', 'Finalized/Revised - Adjudication information has been changed', '', '', ''),
-			'F3F' =>  array('F3F', 'Finalized/Forwarded-The claim/encounter processing has been completed.', '', '', ''),
-			'F3N' =>  array('F3N', 'Finalized/Not Forwarded-The claim/encounter processing has been completed.', '', '', ''),
-			'F4' =>  array('F4', 'Finalized/Adjudication Complete - No payment forthcoming-The claim/encounter has been adjudicated and no further payment is forthcoming.', '', '', ''),
-			// Requests for additional information
-			'R0' =>  array('R0', 'Requests for additional Information/General Requests-Requests that don\'t fall into other R-type categories.', '', '', ''),
-			'R1' =>  array('R1', 'Requests for additional Information/Entity Requests-Requests for information about specific entities ', '', '', ''),
-			'R3' =>  array('R3', 'Requests for additional Information/Claim/Line-Requests for information that could normally be submitted on a claim.', '', '', ''),
-			'R4' =>  array('R4', 'Requests for additional Information/Documentation-Requests for additional supporting documentation.', '', '', ''),
-			'R5' =>  array('R5', 'Request for additional information/more specific detail-Additional information as a follow up to a previous request is needed.', '', '', ''),
-			'R6' =>  array('R6', 'Requests for additional information – Regulatory requirements', '', '', ''),
-			'R7' =>  array('R7', 'Requests for additional information – Confirm care is consistent with Health Plan policy coverage', '', '', ''),
-			'R8' =>  array('R8', 'Requests for additional information – Confirm care is consistent with health plan coverage exceptions', '', '', ''),
-			'R9' =>  array('R9', 'Requests for additional information – Determination of medical necessity', '', '', ''),
-			'R10' =>  array('R10', 'Requests for additional information – Support a filed grievance or appeal', '', '', ''),
-			'R11' =>  array('R11', 'Requests for additional information – Pre-payment review of claims', '', '', ''),
-			'R12' =>  array('R12', 'Requests for additional information – Clarification or justification of use for specified procedure code', '', '', ''),
-			'R13' =>  array('R13', 'Requests for additional information – Original documents submitted are not readable.', '', '', ''),
-			'R14' =>  array('R14', 'Requests for additional information – Original documents received are not what was requested.', '', '', ''),
-			'R15' =>  array('R15', 'Requests for additional information – Workers Compensation coverage determination.', '', '', ''),
-			'R16' =>  array('R16', 'Requests for additional information – Eligibility determination', '', '', ''),
-			// General
-			// Error
-			'E0' =>  array('E0', 'Response not possible - error on submitted request data', '', '', ''),
-			'E1' =>  array('E1', 'Response not possible - System Status', '', '', ''),
-			'E2' =>  array('E2', 'Information Holder is not responding; resubmit at a later time.', '', '', ''),
-			'E3' =>  array('E3', 'Correction required - relational fields in error.', '', '', ''),
-			'E4' =>  array('E4', 'Trading partner agreement specific requirement not met: Data correction required.', '', '', ''),
-			'Searches' =>  array('Searches', '', '', '', ''),
-			'D0' =>  array('D0', 'Data Search Unsuccessful - The payer is unable to return status on the requested claim(s) based on the submitted search criteria.', '', '', ''),
-			);
-			if (array_key_exists($code, $this->STC_Category_Code)){
-				return $this->STC_Category_Code[$code];
-			} else {
-				return array($code, "Not found in STC Category codes table", "", "", "");
-			}
-		}
-	} // end get_STC_Category_Code
+    /**
+     * entity identifier code  --code source 237
+     * 
+     * Codes from http://www.wpc-edi.com 
+     * Claim Status Category Codes LAST UPDATED 7/1/2012
+     * 
+     * @param string code
+     * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
+     */  
+    public function get_STC_Category_Code( $code ) {
+        // 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->STC_Category_Code )) {
+            if (array_key_exists($code, $this->STC_Category_Code)){
+                return $this->STC_Category_Code[$code];
+            } else {
+                return array($code, "Not found in STC Category codes table", "", "", "");
+            }
+        } else {
+            $this->STC_Category_Code = array(   
+            'A0' =>  array('A0', 'Acknowledgement/Forwarded-The claim/encounter has been forwarded to another entity.', '', '', ''),
+            'A1' =>  array('A1', 'Acknowledgement/Receipt-The claim/encounter has been received.', '', '', ''),
+            'A2' =>  array('A2', 'Acknowledgement/Acceptance into adjudication system-The claim/encounter has been accepted into the adjudication system.', '', '', ''),
+            'A3' =>  array('A3', 'Acknowledgement/Returned as unprocessable claim-The claim/encounter has been rejected and has not been entered into the adjudication system.', '', '', ''),
+            'A4' =>  array('A4', 'Acknowledgement/Not Found-The claim/encounter can not be found in the adjudication system.', '', '', ''),
+            'A5' =>  array('A5', 'Acknowledgement/Split Claim-The claim/encounter has been split upon acceptance into the adjudication system.', '', '', ''),
+            'A6' =>  array('A6', 'Acknowledgement/Rejected for Missing Information - The claim/encounter is missing the information specified in the Status details and has been rejected.', '', '', ''),
+            'A7' =>  array('A7', 'Acknowledgement/Rejected for Invalid Information - The claim/encounter has invalid information as specified in the Status details and has been rejected.', '', '', ''),
+            'A8' =>  array('A8', 'Acknowledgement/Rejected for relational field in error.', '', '', ''),
+            // Pending
+            'P0' =>  array('P0', 'Pending: Adjudication/Details-This is a generic message about a pended claim.', '', '', ''),
+            'P1' =>  array('P1', 'Pending/In Process-The claim or encounter is in the adjudication system.', '', '', ''),
+            'P2' =>  array('P2', 'Pending/Payer Review-The claim/encounter is suspended and is pending review ', '', '', ''),
+            'P3' =>  array('P3', 'Pending/Provider Requested Information - The claim or encounter is waiting for information that has already been requested from the provider.', '', '', ''),
+            'P4' =>  array('P4', 'Pending/Patient Requested Information - The claim or encounter is waiting for information that has already been requested from the patient.', '', '', ''),
+            'P5' =>  array('P5', 'Pending/Payer Administrative/System hold', '', '', ''),
+            // Finalized
+            'F0' =>  array('F0', 'Finalized-The claim/encounter has completed the adjudication cycle and no more action will be taken.', '', '', ''),
+            'F1' =>  array('F1', 'Finalized/Payment-The claim/line has been paid.', '', '', ''),
+            'F2' =>  array('F2', 'Finalized/Denial-The claim/line has been denied.', '', '', ''),
+            'F3' =>  array('F3', 'Finalized/Revised - Adjudication information has been changed', '', '', ''),
+            'F3F' =>  array('F3F', 'Finalized/Forwarded-The claim/encounter processing has been completed.', '', '', ''),
+            'F3N' =>  array('F3N', 'Finalized/Not Forwarded-The claim/encounter processing has been completed.', '', '', ''),
+            'F4' =>  array('F4', 'Finalized/Adjudication Complete - No payment forthcoming-The claim/encounter has been adjudicated and no further payment is forthcoming.', '', '', ''),
+            // Requests for additional information
+            'R0' =>  array('R0', 'Requests for additional Information/General Requests-Requests that don\'t fall into other R-type categories.', '', '', ''),
+            'R1' =>  array('R1', 'Requests for additional Information/Entity Requests-Requests for information about specific entities ', '', '', ''),
+            'R3' =>  array('R3', 'Requests for additional Information/Claim/Line-Requests for information that could normally be submitted on a claim.', '', '', ''),
+            'R4' =>  array('R4', 'Requests for additional Information/Documentation-Requests for additional supporting documentation.', '', '', ''),
+            'R5' =>  array('R5', 'Request for additional information/more specific detail-Additional information as a follow up to a previous request is needed.', '', '', ''),
+            'R6' =>  array('R6', 'Requests for additional information – Regulatory requirements', '', '', ''),
+            'R7' =>  array('R7', 'Requests for additional information – Confirm care is consistent with Health Plan policy coverage', '', '', ''),
+            'R8' =>  array('R8', 'Requests for additional information – Confirm care is consistent with health plan coverage exceptions', '', '', ''),
+            'R9' =>  array('R9', 'Requests for additional information – Determination of medical necessity', '', '', ''),
+            'R10' =>  array('R10', 'Requests for additional information – Support a filed grievance or appeal', '', '', ''),
+            'R11' =>  array('R11', 'Requests for additional information – Pre-payment review of claims', '', '', ''),
+            'R12' =>  array('R12', 'Requests for additional information – Clarification or justification of use for specified procedure code', '', '', ''),
+            'R13' =>  array('R13', 'Requests for additional information – Original documents submitted are not readable.', '', '', ''),
+            'R14' =>  array('R14', 'Requests for additional information – Original documents received are not what was requested.', '', '', ''),
+            'R15' =>  array('R15', 'Requests for additional information – Workers Compensation coverage determination.', '', '', ''),
+            'R16' =>  array('R16', 'Requests for additional information – Eligibility determination', '', '', ''),
+            // General
+            // Error
+            'E0' =>  array('E0', 'Response not possible - error on submitted request data', '', '', ''),
+            'E1' =>  array('E1', 'Response not possible - System Status', '', '', ''),
+            'E2' =>  array('E2', 'Information Holder is not responding; resubmit at a later time.', '', '', ''),
+            'E3' =>  array('E3', 'Correction required - relational fields in error.', '', '', ''),
+            'E4' =>  array('E4', 'Trading partner agreement specific requirement not met: Data correction required.', '', '', ''),
+            'Searches' =>  array('Searches', '', '', '', ''),
+            'D0' =>  array('D0', 'Data Search Unsuccessful - The payer is unable to return status on the requested claim(s) based on the submitted search criteria.', '', '', ''),
+            );
+            if (array_key_exists($code, $this->STC_Category_Code)){
+                return $this->STC_Category_Code[$code];
+            } else {
+                return array($code, "Not found in STC Category codes table", "", "", "");
+            }
+        }
+    } // end get_STC_Category_Code
 
-	/**
-	 * Health Care Services Decision Reason Codes LAST UPDATED 7/1/2012
-	 * 
-	 * @param string code
-	 * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
-	 */
-	public function get_STC_HCSDR_Code( $code ) {
-		// 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
-		// contains "Unknown" for codes for which I did not find definitions
-		if ( is_array( $this->STC_HCSDR_Code )) {
-			if (array_key_exists($code, $this->STC_HCSDR_Code)){
-				return $this->STC_HCSDR_Code[$code];
-			} else {
-				return array($code, "Not found in STC_HCSDR_Code codes table", "", "", "");
-			}
-		} else {
-			$this->STC_HCSDR_Code = array(		
-			'1' =>  array('1', 'Price Authorization Expired', '', '', ''),
-			'2' =>  array('2', 'Price authorization no longer required', '', '', ''),
-			'3' =>  array('3', 'Product not on the price authorization', '', '', ''),
-			'4' =>  array('4', 'Authorized Quantity Exceeded', '', '', ''),
-			'5' =>  array('5', 'Special Cost Incorrect', '', '', ''),
-			'6' =>  array('6', 'No Credit Allowed', '', '', ''),
-			'7' =>  array('7', 'Administrative Cancellation', '', '', ''),
-			'8' =>  array('8', 'Unit resale higher than authorized', '', '', ''),
-			'9' =>  array('9', 'Out of Network', '', '', ''),
-			'0A' =>  array('0A', 'Testing not Included', '', '', ''),
-			'0B' =>  array('0B', 'Request Forwarded To and Decision Response Forthcoming From an External Review Organization', '', '', ''),
-			'0C' =>  array('0C', 'Authorization/Access Restrictions', '', '', ''),
-			'0D' =>  array('0D', 'Requires PCP authorization', '', '', ''),
-			'0E' =>  array('0E', 'Provider is Not Primary Care Physician', '', '', ''),
-			'0F' =>  array('0F', 'Not Medically Necessary', '', '', ''),
-			'0G' =>  array('0G', 'Level of Care Not Appropriate', '', '', ''),
-			'0H' =>  array('0H', 'Certification Not Required for this Service', '', '', ''),
-			'0J' =>  array('0J', 'Certification Responsibility of External Review Organization', '', '', ''),
-			'0K' =>  array('0K', 'Primary Care Service', '', '', ''),
-			'0L' =>  array('0L', 'Exceeds Plan Maximums', '', '', ''),
-			'0M' =>  array('0M', 'Non-covered Service', '', '', ''),
-			'0N' =>  array('0N', 'No Prior Approval', '', '', ''),
-			'0P' =>  array('0P', 'Requested Information Not Received', '', '', ''),
-			'0Q' =>  array('0Q', 'Duplicate Request', '', '', ''),
-			'0R' =>  array('0R', 'Service Inconsistent with Diagnosis', '', '', ''),
-			'0S' =>  array('0S', 'Pre-existing Condition', '', '', ''),
-			'0T' =>  array('0T', 'Experimental Service or Procedure', '', '', ''),
-			'0U' =>  array('0U', 'Additional Patient Information required', '', '', ''),
-			'0V' =>  array('0V', 'Requires Medical Review', '', '', ''),
-			'0W' =>  array('0W', 'Disposition pending review', '', '', ''),
-			'0X' =>  array('0X', 'Service Inconsistent with Provider Type', '', '', ''),
-			'0Y' =>  array('0Y', 'Service inconsistent with Patient\'s Age', '', '', ''),
-			'0Z' =>  array('0Z', 'Service inconsistent with Patient\'s Gender', '', '', ''),
-			'10' =>  array('10', 'Product/service/procedure delivery pattern ', '', '', ''),
-			'11' =>  array('11', 'Pricing', '', '', ''),
-			'12' =>  array('12', 'Patient is restricted to specific provider', '', '', ''),
-			'13' =>  array('13', 'Service authorized for another provider', '', '', ''),
-			'14' =>  array('14', 'Plan/contractual guidelines not followed', '', '', ''),
-			'15' =>  array('15', 'Plan/contractual geographic restriction', '', '', ''),
-			'16' =>  array('16', 'Inappropriate facility type', '', '', ''),
-			'17' =>  array('17', 'Time limits not met', '', '', ''),
-			'18' =>  array('18', 'Notification received', '', '', ''),
-			'19' =>  array('19', 'Cosmetic', '', '', ''),
-			'20' =>  array('20', 'Once in a lifetime restriction applies', '', '', ''),
-			'21' =>  array('21', 'Transport Request Denied', '', '', ''),
-			'22' =>  array('22', 'Ambulance Certification Segment information doesn\'t correspond to Transport Address Segment', '', '', ''),
-			'23' =>  array('23', 'Mileage cannot be computed based on data submitted', '', '', ''),
-			'24' =>  array('24', 'Computed mileage is inconsistent with transport information or service units submitted', '', '', ''),
-			'25' =>  array('25', 'Services were not considered due to other errors in the request.', '', '', ''),
-			'26' =>  array('26', 'Missing Provider Role', '', '', ''),
-			);
-			if (array_key_exists($code, $this->STC_HCSDR_Code)){
-				return $this->STC_HCSDR_Code[$code];
-			} else {
-				return array($code, "Not found in Health Care Service Decision Rules codes table", "", "", "");
-			}
-		}
-	} // end get_STC_HCSDR_Code
+    /**
+     * Health Care Services Decision Reason Codes LAST UPDATED 7/1/2012
+     * 
+     * @param string code
+     * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
+     */
+    public function get_STC_HCSDR_Code( $code ) {
+        // 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
+        // contains "Unknown" for codes for which I did not find definitions
+        if ( is_array( $this->STC_HCSDR_Code )) {
+            if (array_key_exists($code, $this->STC_HCSDR_Code)){
+                return $this->STC_HCSDR_Code[$code];
+            } else {
+                return array($code, "Not found in STC_HCSDR_Code codes table", "", "", "");
+            }
+        } else {
+            $this->STC_HCSDR_Code = array(      
+            '1' =>  array('1', 'Price Authorization Expired', '', '', ''),
+            '2' =>  array('2', 'Price authorization no longer required', '', '', ''),
+            '3' =>  array('3', 'Product not on the price authorization', '', '', ''),
+            '4' =>  array('4', 'Authorized Quantity Exceeded', '', '', ''),
+            '5' =>  array('5', 'Special Cost Incorrect', '', '', ''),
+            '6' =>  array('6', 'No Credit Allowed', '', '', ''),
+            '7' =>  array('7', 'Administrative Cancellation', '', '', ''),
+            '8' =>  array('8', 'Unit resale higher than authorized', '', '', ''),
+            '9' =>  array('9', 'Out of Network', '', '', ''),
+            '0A' =>  array('0A', 'Testing not Included', '', '', ''),
+            '0B' =>  array('0B', 'Request Forwarded To and Decision Response Forthcoming From an External Review Organization', '', '', ''),
+            '0C' =>  array('0C', 'Authorization/Access Restrictions', '', '', ''),
+            '0D' =>  array('0D', 'Requires PCP authorization', '', '', ''),
+            '0E' =>  array('0E', 'Provider is Not Primary Care Physician', '', '', ''),
+            '0F' =>  array('0F', 'Not Medically Necessary', '', '', ''),
+            '0G' =>  array('0G', 'Level of Care Not Appropriate', '', '', ''),
+            '0H' =>  array('0H', 'Certification Not Required for this Service', '', '', ''),
+            '0J' =>  array('0J', 'Certification Responsibility of External Review Organization', '', '', ''),
+            '0K' =>  array('0K', 'Primary Care Service', '', '', ''),
+            '0L' =>  array('0L', 'Exceeds Plan Maximums', '', '', ''),
+            '0M' =>  array('0M', 'Non-covered Service', '', '', ''),
+            '0N' =>  array('0N', 'No Prior Approval', '', '', ''),
+            '0P' =>  array('0P', 'Requested Information Not Received', '', '', ''),
+            '0Q' =>  array('0Q', 'Duplicate Request', '', '', ''),
+            '0R' =>  array('0R', 'Service Inconsistent with Diagnosis', '', '', ''),
+            '0S' =>  array('0S', 'Pre-existing Condition', '', '', ''),
+            '0T' =>  array('0T', 'Experimental Service or Procedure', '', '', ''),
+            '0U' =>  array('0U', 'Additional Patient Information required', '', '', ''),
+            '0V' =>  array('0V', 'Requires Medical Review', '', '', ''),
+            '0W' =>  array('0W', 'Disposition pending review', '', '', ''),
+            '0X' =>  array('0X', 'Service Inconsistent with Provider Type', '', '', ''),
+            '0Y' =>  array('0Y', 'Service inconsistent with Patient\'s Age', '', '', ''),
+            '0Z' =>  array('0Z', 'Service inconsistent with Patient\'s Gender', '', '', ''),
+            '10' =>  array('10', 'Product/service/procedure delivery pattern ', '', '', ''),
+            '11' =>  array('11', 'Pricing', '', '', ''),
+            '12' =>  array('12', 'Patient is restricted to specific provider', '', '', ''),
+            '13' =>  array('13', 'Service authorized for another provider', '', '', ''),
+            '14' =>  array('14', 'Plan/contractual guidelines not followed', '', '', ''),
+            '15' =>  array('15', 'Plan/contractual geographic restriction', '', '', ''),
+            '16' =>  array('16', 'Inappropriate facility type', '', '', ''),
+            '17' =>  array('17', 'Time limits not met', '', '', ''),
+            '18' =>  array('18', 'Notification received', '', '', ''),
+            '19' =>  array('19', 'Cosmetic', '', '', ''),
+            '20' =>  array('20', 'Once in a lifetime restriction applies', '', '', ''),
+            '21' =>  array('21', 'Transport Request Denied', '', '', ''),
+            '22' =>  array('22', 'Ambulance Certification Segment information doesn\'t correspond to Transport Address Segment', '', '', ''),
+            '23' =>  array('23', 'Mileage cannot be computed based on data submitted', '', '', ''),
+            '24' =>  array('24', 'Computed mileage is inconsistent with transport information or service units submitted', '', '', ''),
+            '25' =>  array('25', 'Services were not considered due to other errors in the request.', '', '', ''),
+            '26' =>  array('26', 'Missing Provider Role', '', '', ''),
+            );
+            if (array_key_exists($code, $this->STC_HCSDR_Code)){
+                return $this->STC_HCSDR_Code[$code];
+            } else {
+                return array($code, "Not found in Health Care Service Decision Rules codes table", "", "", "");
+            }
+        }
+    } // end get_STC_HCSDR_Code
 
 
-	/**
-	 * Health Care Claim Status Codes • ASC X12 External Code Source 508 LAST UPDATED 3/1/2013
-	 * http://www.wpc-edi.com/reference/codelists/healthcare/claim-status-codes/
-	 * 
-	 * @param string code
-	 * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
-	 */
-	public function get_STC_Status_Code( $code ) {
-	// 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
-	// contains "Unknown" for codes for which I did not find definitions
-	if ( is_array( $this->STC_Status_Code )) {
-		if (array_key_exists($code, $this->STC_Status_Code)){
-			return $this->STC_Status_Code[$code];
-		} else {
-			return array($code, "Not found in STC Status codes table", "", "", "");
-		}
-	} else {
-		$this->STC_Status_Code = array(
+    /**
+     * Health Care Claim Status Codes • ASC X12 External Code Source 508 LAST UPDATED 3/1/2013
+     * http://www.wpc-edi.com/reference/codelists/healthcare/claim-status-codes/
+     * 
+     * @param string code
+     * @return array 0=>code, [1]=>description, [2]=>empty, [3]=>empty  [4]=>empty
+     */
+    public function get_STC_Status_Code( $code ) {
+    // 0 => code, [1] => description, [2] => dates, [3] => notes  (empty, none available)
+    // contains "Unknown" for codes for which I did not find definitions
+    if ( is_array( $this->STC_Status_Code )) {
+        if (array_key_exists($code, $this->STC_Status_Code)){
+            return $this->STC_Status_Code[$code];
+        } else {
+            return array($code, "Not found in STC Status codes table", "", "", "");
+        }
+    } else {
+        $this->STC_Status_Code = array(
             '0' => array('0', 'Cannot provide further status electronically.', '', '', ''),
             '1' => array('1', 'For more detailed information, see remittance advice.', '', '', ''),
             '2' => array('2', 'More detailed information in letter.', '', '', ''),
@@ -1176,15 +1176,15 @@ class status_code_arrays {
             '761' => array('761', 'Entity\'s referral number.', '', '', ''),
             '762' => array('762', 'Locum Tenens Provider Identifier. Code must be used with Entity Code 82 - Rendering Provider', '', '', ''),
             '763' => array('763', 'Ambulance Pickup ZipCode', '', '', '')
-			);
-			if (array_key_exists($code, $this->STC_Status_Code)){
-				return $this->STC_Status_Code[$code];
-			} else {
-				return array($code, "Not found in STC Status codes table", "", "", "");
-			}
-		}
-	} // end get_STC_Status_Code
-	
+            );
+            if (array_key_exists($code, $this->STC_Status_Code)){
+                return $this->STC_Status_Code[$code];
+            } else {
+                return array($code, "Not found in STC Status codes table", "", "", "");
+            }
+        }
+    } // end get_STC_Status_Code
+    
 } // end class
 
 
