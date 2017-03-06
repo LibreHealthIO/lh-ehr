@@ -997,10 +997,10 @@ $GLOBALS_METADATA = array(
     ),
     
     'allow_appointments_in_feesheet' => array(
-      xl('Allow Schedualing Appointments from Fee Sheet'),
+      xl('Allow Scheduling of Appointments from Fee Sheet'),
       'bool',                           // data type
       '0',                              // default = false
-      xl('Allow Schedualing Appointments from the Fee Sheet.')
+      xl('Allow Scheduling of Appointments from the Fee Sheet.')
     ),
 
     'default_chief_complaint' => array(
