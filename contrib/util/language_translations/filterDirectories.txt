@@ -2,5 +2,5 @@ libreehr/Documentation
 libreehr/contrib/forms
 libreehr/.git
 libreehr/contrib/icd10
-libreehr/library/html2pdf/vendor/tecnickcom/tcpdf/fonts
+libreehr/modules/html2pdf/vendor/tecnickcom/tcpdf/fonts
 libreehr/phpmyadmin/libraries/tcpdf/fonts
