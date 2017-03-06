@@ -1,0 +1,260 @@
+<!--
+   README.html
+   
+   Copyright 2012 Kevin McCormick <kevin@records>
+   
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+   MA 02110-1301, USA.
+   
+   
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>EDI Claim History</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 0.21" />
+</head>
+
+<body>
+<h3>README Claim History Project</h3>
+<p>
+This file contains notes and hints for developing and using the files and scripts in this &quot;EDI History&quot; project.
+</p>
+<p>
+The purpose of the project is to gain ready access to edi claim information,
+quickly identify submits, rejects, denials, payments, etc. and have the information
+in a &quot;big picture&quot; format as well as the information needed to spot problems.
+It is a work-in-progress, unfinished, and will hopefully be improved upon. 
+This phase is oriented to correctly parsing the x12 files, doing basic useful
+things with the data, and having acceptable html output.  The next phase is improved 
+integration with LibreEHR database information.
+</p>
+<p>
+Nearly all the information that is important to this project is initially found in
+the user's personal directories where the downloaded edi files are stored.  These are 
+response files from payers or clearinghouses, such as claim status or ERA files.
+There is at present no interaction with the LibreEHR database.  Therefore, while I find this project 
+helpful, its usefulness to others depends on the kind of edi files they have.  That said, 
+these scripts should be able to parse 837, 835, 277, and 999 x12 files from any source.
+</p>
+<p>
+I use Availity, LLC as the clearinghouse for nearly all edi transfers so these scripts are
+definitely oriented to Availity practices.  In particular, you may want to look at your 
+Availity EDI Preferences setup so you are getting the types of files these scripts can read.
+</p>
+<p>
+You should select <em>Include TA1</em> in the Availity preferences for .997 and .999 files 
+in order for the scripts to be able to match these response files with the corresponding 
+claims batch file you submitted.  Also, Availity provides x12 277CA files, the .277 type
+for unsolicited claim responses, i.e. Availity checks the claims and the payers also
+check the claims and return the results in a .277 file.  Importantly, file name practices
+of your clearinghouse or payer must be taken into account because uploaded files are
+categorized by file name patterns.  The patterns are found in <em>csv_record_include.php</em> 
+in the function <em>csv_parameters()</em>.
+</p>
+<p>
+One Availity setting that may be important is the grouping of ERA responses.  Mine are grouped by 
+checks from a particular payer, so my ERA files will have responses from only one payer, 
+with perhaps more than one &quot;transaction&quot; in each file.  Also, the &quot;multipayer&quot; options
+help to reduce the number of Availity files one has to download.
+</p>
+
+<h3>LibreEHR Integration</h3>
+
+<p>
+    Access control is entirely under the LibreEHR scheme and will likely require the
+    access permissions of &quot;accounting.&quot;
+</p>
+<p>
+    Since the information in the EDI files is likely HIPAA protected, do not use these scripts on a public server!
+</p>
+
+<h3>File Locations:</h3>
+
+<p>
+The installed directory tree would be:
+</p>
+<ul>
+	<li>/libreehr/interface/billing </li>
+	<li>/libreehr/library/edihistory</li>
+	<li>/libreehr/library/css</li>
+</ul>
+
+<p>
+Installed files:
+</p>
+<ul>
+    <li>/libreehr/Documentation
+        <ul>
+            <li>Readme_edihistory.html</li>
+        </ul>
+    </li>
+	<li>/libreehr/interface/billing </li>
+		<ul>
+			<li>edih_view.php</li>
+			<li>edi_history_main.php</li>
+			
+		</ul>
+	<li>/libreehr/library/edihistory </li>
+		<ul>
+			<li>csv_record_include.php</li>
+			<li>ibr_ack_read.php </li>
+			<li>ibr_batch_read.php</li>
+			<li>ibr_code_arrays.php </li>
+			<li>ibr_997_read.php</li>
+			<li>ibr_277_read.php</li>
+			<li>ibr_ebr_read.php</li>
+			<li>ibr_era_read.php</li>
+			<li>ibr_status_code_arrays.php </li>
+			<li>ibr_uploads.php</li>
+            <li>ibr_io.php</li>
+            <li>ibr_271_read.php (not used as of this time)</li>
+            <li>ibr_archive.php (not used as of this time)</li>
+			<li>edi_history_log.txt (created by scripts)</li>         
+        </ul>
+	<li>/libreehr/library/css</li>
+		<ul>
+            <li>csv_edihistory.css</li>
+		</ul>
+    <p>
+       In addition, the project uses javascript libraries and related css already
+       included in LibreEHR:
+    </p>
+	<li>/libreehr/library/js <em>or</em> css</li>
+		<ul>
+            <li>jquery-1.7.1.min.js</li>
+			<li>jquery-ui-1.8.18.custom.min.js</li>
+			<li>jquery.dataTables.min.js</li>
+			<li>jquery-ui-1.8.18.custom.css</li>
+		</ul>
+		
+</ul>   
+
+<p>
+The scripts create a temporary uploads directory: /tmp/edihist
+</p>
+<p>
+The <em>csv_setup()</em> function creates a file storage directory tree: </br>
+&nbsp;&nbsp; libreehr/sites/default/edi/history </br>
+with subdirectories: ack  csv  dpr ebr  era  f277  f997  ibr  text
+</p>
+<p>
+and these csv files under: /libreehr/sites/[site]/edi/history/csv</br>
+&nbsp;&nbsp; claims_277.csv  claims_ebr.csv  claims_ibr.csv  files_277.csv  files_ebr.csv	files_ibr.csv</br>
+&nbsp;&nbsp; claims_997.csv  claims_era.csv  claims_dpr.csv  files_997.csv  files_era.csv</br>
+</p>
+<p>
+The path to these files set by <em>csv_edih_basedir()</em> based upon the LibreEHR directory paths.
+</p>
+<p>
+Note:  I suggest the following edit to the LibreEHR <em>billing_process.php</em> script:
+<br />
+&nbsp;  In the file libreehr/interface/billing/billing_process.php
+&nbsp;  in &quot;function append_claim(&amp;$segs)&quot;  near line 82  (after the &quot;if (elems[0] == 'ST') { }&quot; block)
+</p>
+<pre><code>
+    // add this mod 
+    if ($elems[0] == 'BHT') {
+       // give each claim a unique BHT number, used in x12 277 files : isa-control-num and st-num are concatenated
+       //  
+       $bat_content .= str_replace("*0123*", sprintf("*%s%04d*", $bat_icn, $bat_stcount), $seg) . "~"; 
+       continue;
+    }
+</code></pre>
+
+<h3>Usage</h3>
+<p>
+Once installed correctly, you begin usage by uploading your edi response files.
+</p>
+<p>
+On the first usage the setup function will be activated and the log file will be created.  
+It will write the directory paths and create the csv files.  If this fails, the script will 
+terminate and nothing more will happen.  Failure is probably caused by file permissions problems.
+</p>
+<p>
+The EDI History project features a tab format and the &quot;New Files&quot; tab is where we begin.
+You can select one or more files or upload a zip archive.  The batch files are saved in the 
+<em>/libreehr/sites/[site]/edi</em> directory by LibreEHR when they are created, so you should not need to upload 
+batch files.  Note the web server configuration will likely have a maximum for the number of 
+files and the size of the upload.  The steps for uploading your response files are:
+<ol>
+    <li>Click on the &quot;EDI History&quot; entry under Fees in the left_nav menu and select the &quot;New Files&quot; tab</li>
+    <li>Click the <em>Browse</em> button and select files (response files you have downloaded)</li>
+    <li>Click the <em>Submit</em> button (the selected files are sorted and copied to their respective directories).</li>
+    <li>Repeat 2 and 3 as needed</li>
+    <li>Click the <em>Process</em> button (information from new files is extracted to the csv tables)</li>
+</ol>
+</p>
+<p>
+If you have batch files already stored in your <em>/sites/[site]/edi</em> directory, there may be a large amount of output
+listing the batch files.  You can uncheck &quot;HTML Output?&quot; to avoid this.  Also, if you wish to upload a 
+large quantity of existing files, you can put then in a zip archive (no subdirectories) and upload the zip file.
+</p>
+<p>
+In ordinary usage, the &quot;New Files&quot; tab is intended to handle uploads and give a summary of
+the information in your new response files.  You will see output for each type of file, giving some particulars and 
+listing claim information when problems are indicated.  Links allow more detailed views.
+</p>
+<p>
+Each file is checked when uploaded and files that do not meet the criteria will not be accepted. &nbsp; : ( &nbsp; 
+If an uploaded file is already present, it will be discarded.  So, you can upload duplicates without 
+worrying about whether it is already there.  Once a file is uploaded and stored, it is not overwritten 
+or modified in any way, though the files are read to extract information or the contents are formatted for viewing.  
+</p>
+<p>
+The &quot;CSV Tables&quot; tab is useful after the EDI History page is reloaded in your browser, by clicking the left_nav entry, 
+since it checks the csv table files and adds them to the list of available tables if they have the minimum size. The
+&quot;CSV Tables&quot; tab allows you to locate particular claims or files with the sort and search features of the 
+<a target="_blank" href="http://datatables.net/">DataTables</a> javascript plugin.
+</p>
+<p>
+The &quot;ERA Files&quot; tab is intended to allow you to see an RA style output of ERA files in your personal
+directory, as well as to see RA style output for a patient ID, encounter number, or trace (check) number from
+ERA files that have been uploaded.
+</p>
+<p>
+The &quot;X12 Text&quot; tab allows you to see the contents of a response file in your personal directory.  
+The &quot;Notes&quot; tab allows you to view the log file and have a plain text notes file.
+</p>
+<p>
+The EDI methods and files are cryptic and mysterious.  The formats are definitely not what I would call
+user-friendly.  The contents and meaning of the various files, loops, and segments may be better understood 
+with serious research.  There are so called &quot;Companion Documents&quot; published by some insurance companies 
+and possibly by your clearinghouse.  Search for &quot;X12 835 837 277 999 Companion Document&quot; and see if you find 
+anything useful.  Another good source is the CMS/Medicare side-by-side comparisons, put out to aid the transition from the 4010 
+to the 5010 standard, e.g. <a target="_blank" href="http://www.cms.gov/Medicare/Billing/ElectronicBillingEDITrans/downloads/ProfessionalClaim4010A1to5010.pdf">ProfessionalClaim4010A1to5010.pdf</a>.
+</p>
+<p>
+Hopefully, the EDI History project will help you solve billing problems and have a better grasp of your 
+billing and collection process.  Note however, no accounting functions are included in the scripts, so 
+whatever accounting process you use remain necessary.  These scripts are basically for information only.
+</p>
+<p> 
+There is the thought that there may eventually be so many response files that older 
+ones are no longer wanted.  There is a draft script for archiving files and table contents into a 
+zip file, but it is not well tested and there is no button to run it.
+</p>
+<p>
+Although there is a script for reading x12 271 files (eligibility), it is only a draft and does not
+do anything.  Since LibreEHR does not have the present ability to submit eligibility requests, I 
+have no 271 response files to decipher so as to finish the script. 
+</p>
+</body>
+
+</html>
