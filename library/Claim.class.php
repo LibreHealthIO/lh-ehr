@@ -26,11 +26,10 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Terry Hill <teryhill@librehealth.io>
- * no other authors present in header file
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
@@ -75,6 +74,9 @@ class Claim {
   var $provider;          // row from users table (rendering provider)
   var $referrer;          // row from users table (referring provider)
   var $supervisor;        // row from users table (supervising provider)
+  var $ordering;          // row from users table (ordering provider) 
+  var $referring;          // row from users table (referring provider from encounter)
+  var $contract;          // row from users table (contract provider)
   var $insurance_numbers; // row from insurance_numbers table for current payer
   var $supervisor_numbers; // row from insurance_numbers table for current payer
   var $patient_data;      // row from patient_data table
@@ -274,6 +276,21 @@ class Claim {
     $sql = "SELECT * FROM users WHERE id = '$supervisor_id'";
     $this->supervisor = sqlQuery($sql);
     if (!$this->supervisor) $this->supervisor = array();
+    
+    $ordering_id = $this->encounter['ordering_physician'];
+    $sql = "SELECT * FROM users WHERE id = '$ordering_id'";
+    $this->ordering = sqlQuery($sql);
+    if (!$this->ordering) $this->ordering = array();
+
+    $referring_id = $this->encounter['referring_physician'];
+    $sql = "SELECT * FROM users WHERE id = '$referring_id'";
+    $this->referring = sqlQuery($sql);
+    if (!$this->referring) $this->referring = array();
+    
+    $contract_id = $this->encounter['contract_physician'];
+    $sql = "SELECT * FROM users WHERE id = '$contract_id'";
+    $this->contract = sqlQuery($sql);
+    if (!$this->contract) $this->contract = array();
     
     $billing_options_id = $this->billing_options['provider_id'];
     $sql = "SELECT * FROM users WHERE id = ?";
@@ -1390,6 +1407,64 @@ class Claim {
   function billingProviderTaxonomy() {
     if (empty($this->billing_prov_id['taxonomy'])) return '207Q00000X';
     return x12clean(trim($this->billing_prov_id['taxonomy']));
+  }
+
+  function orderingLastName() {
+    return x12clean(trim($this->ordering['lname']));
+  }
+
+  function orderingFirstName() {
+    return x12clean(trim($this->ordering['fname']));
+  }
+
+  function orderingMiddleName() {
+    return x12clean(trim($this->ordering['mname']));
+  }
+
+  function orderingNPI() {
+    return x12clean(trim($this->ordering['npi']));
+  }
+
+  function orderingUPIN() {
+    return x12clean(trim($this->ordering['upin']));
+  }
+
+  function orderingSSN() {
+    return x12clean(trim(str_replace('-', '', $this->ordering['federaltaxid'])));
+  }
+
+  function orderingTaxonomy() {
+    if (empty($this->ordering['taxonomy'])) return '207Q00000X';
+    return x12clean(trim($this->ordering['taxonomy']));
+  }
+
+  function referringLastName() {
+    return x12clean(trim($this->referring['lname']));
+  }
+
+  function referringFirstName() {
+    return x12clean(trim($this->referring['fname']));
+  }
+
+  function referringMiddleName() {
+    return x12clean(trim($this->referring['mname']));
+  }
+
+  function referringNPI() {
+    return x12clean(trim($this->referring['npi']));
+  }
+
+  function referringUPIN() {
+    return x12clean(trim($this->referring['upin']));
+  }
+
+  function referringSSN() {
+    return x12clean(trim(str_replace('-', '', $this->referring['federaltaxid'])));
+  }
+
+  function referringTaxonomy() {
+    if (empty($this->referring['taxonomy'])) return '207Q00000X';
+    return x12clean(trim($this->referring['taxonomy']));
   }
 
 }

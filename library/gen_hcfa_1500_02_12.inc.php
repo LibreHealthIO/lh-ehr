@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Kevin Yeh <kevin.y@integralemr.com>
  * @link    http://librehealth.io
  */
@@ -138,14 +138,7 @@ function process_diagnoses_02_12(&$claim,&$log)
 
     $hcfa_entries=array();
     $diags = $claim->diagArray(false);
-    if($claim->diagtype=='ICD10')
-    {
         $icd_indicator='0';        
-    }
-    else
-    {
-        $icd_indicator='9';
-    }
     
     $hcfa_entries[]=new hcfa_info(37,42,1,$icd_indicator);
     

@@ -1,10 +1,36 @@
 <?php
-// Copyright (C) 2008-2011 Rod Roark <rod@sunsetsystems.com>
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
+/*
+ *  Generate Paper HCFA
+ *
+ *  gen_hcfa_1500.inc.php Generates the Paper CMS 1500 form
+ *
+ * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
+ *
+ * Copyright (C) 2008-2011 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 require_once("Claim.class.php");
 require_once("gen_hcfa_1500_02_12.inc.php");
@@ -319,6 +345,12 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
       put_hcfa(26, 34, 2, $claim->medicaidReferralCode());
     }
 
+  # Box 10d. Claim Codes  medicaid_referral_code
+
+  if($claim->epsdtFlag()) {
+      put_hcfa(26, 34, 2, $claim->medicaidReferralCode());
+    }
+
   // Box 11d. Is There Another Health Benefit Plan
   if (!$new_medicare_logic) {
     put_hcfa(26, $claim->payerCount() > 1 ? 52 : 57, 1, 'X');
@@ -404,8 +436,16 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
         put_hcfa(34, 33, 15, $claim->billingProviderNPI());
       }
     }
-    else
-    {
+    } else if ( $claim->referringLastName()) {
+      $tmp3 = $claim->referringLastName() . ', ' . $claim->referringFirstName();
+      if ($claim->referringMiddleName())
+        $tmp3 .= ', ' . substr($claim->referringMiddleName(),0,1);
+      put_hcfa(34, 1, 3, 'DN');
+      put_hcfa(34, 4, 25, $tmp3);
+      if ($claim->referringNPI()) {
+        put_hcfa(34, 33, 15, $claim->referringNPI());
+      }
+    } else if (strlen($claim->referrerLastName()) !=0) {
     $tmp = $claim->referrerLastName() . ', ' . $claim->referrerFirstName();
     if ($claim->referrerMiddleName())
       $tmp .= ', ' . substr($claim->referrerMiddleName(),0,1);
@@ -414,7 +454,6 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
     if ($claim->referrerNPI()) {
       put_hcfa(34, 33, 15, $claim->referrerNPI());
     }
-  }
   }
 
   // Box 18. Hospitalization Dates Related to Current Services
@@ -618,7 +657,7 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
   }
 
   // 26. Patient's Account No.
-  // Instructions say hyphens are not allowed, but freeb used them.
+  // Instructions say hyphens are not allowed.
   put_hcfa(56, 23, 15, "$pid-$encounter");
 
   // 27. Accept Assignment
@@ -696,9 +735,6 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
   put_hcfa(59, 50, 25, $claim->billingFacilityStreet());
 
   // 31. Signature of Physician or Supplier
-  // FreeB printed the rendering provider's name and the current date here,
-  // but according to my instructions it must be a real signature and date,
-  // or else "Signature on File" or "SOF".
 
    if($GLOBALS['cms_1500_box_31_format']==0)
    {

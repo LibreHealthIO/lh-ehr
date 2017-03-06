@@ -8,7 +8,7 @@
 // of the License, or (at your option) any later version.
 // Modified by dozens of contributors
 
-/* @package LibreEHR
+/* @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Tony McCormick <tony@mi-squared.com>
  * @author Terry Hill <terryhill@librehealth.io>
@@ -959,6 +959,48 @@ $GLOBALS_METADATA = array(
         'bool',                         // data type
         '0',                            // default = false
        xl('Allows Fee Sheet Items to be excluded from Insurance Billing')
+    ),
+
+    'supervising_physician_in_feesheet' => array(
+      xl('Show Supervising Physician on Fee Sheet'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Supervising Physician on Fee Sheet.')
+    ),    
+    
+    'ordering_physician_in_feesheet' => array(
+      xl('Show Ordering Physician on Fee Sheet'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Ordering Physician on Fee Sheet.')
+    ),
+
+    'referring_physician_in_feesheet' => array(
+      xl('Show Referring Physician on Fee Sheet'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Show Reffering Physician on Fee Sheet.')
+    ),
+
+    'contract_physician_in_feesheet' => array(
+      xl('Show Contract Physician on Fee Sheet'),
+      'bool',                           // data type
+      '0',                              // default = false contract_physician_in_feesheet_name
+      xl('Show Contract Physician on Fee Sheet.')
+    ),
+
+    'contract_physician_in_feesheet_name' => array(
+      xl('Label Title for Contract Physician on Fee Sheet'),
+      'text',                           // data type
+      'Contractor',
+      xl('Label Title for Contract Physician on Fee Sheet')
+    ),
+    
+    'allow_appointments_in_feesheet' => array(
+      xl('Allow Schedualing Appointments from Fee Sheet'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Allow Schedualing Appointments from the Fee Sheet.')
     ),
 
     'default_chief_complaint' => array(
