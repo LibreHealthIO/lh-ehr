@@ -101,9 +101,9 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://opensource.org/licenses/gpl-license.php>.
 *
-* @package   LibreEHR
+* @package   LibreHealth EHR
 * @author    Brady Miller <brady@sparmy.com>
-* @link      http://www.open-emr.org
+* @link      http://librehealth.io
 */
 
 $ignoreAuth = true; // no login required
@@ -114,11 +114,11 @@ require_once("$srcdir/acl_upgrade_fx.php");
 //Ensure that phpGACL has been installed
 include_once('library/acl.inc');
 if (isset ($phpgacl_location)) {
-	include_once("$phpgacl_location/gacl_api.class.php");
-	$gacl = new gacl_api();
+    include_once("$phpgacl_location/gacl_api.class.php");
+    $gacl = new gacl_api();
 }
 else {
-	die("You must first set up library/acl.inc to use phpGACL!");
+    die("You must first set up library/acl.inc to use phpGACL!");
 }
 
 $acl_version = get_acl_version();

@@ -75,6 +75,16 @@ and open the template in the editor.
     color:lightgray;
 }
 
+/*Changes to make .menuDisabled visible.*/
+.menuLabel.menuDisabled {
+    color: black;
+}
+
+.menuLabel.menuDisabled:hover
+{
+	color: red;
+}
+
 #username
 {
     cursor: pointer;

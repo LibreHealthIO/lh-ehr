@@ -22,12 +22,12 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
  * No other authors mentioned in the previous header file.
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
  
@@ -69,7 +69,7 @@ if (isset($sanitize_all_escapes) && $sanitize_all_escapes) {
 //
 // The webserver_root and web_root are now automatically collected.
 // If not working, can set manually below.
-// Auto collect the full absolute directory path for libreehr.
+// Auto collect the full absolute directory path for LibreHealth EHR.
 $webserver_root = dirname(dirname(__FILE__));
 if (IS_WINDOWS) {
  //convert windows path separators
@@ -82,7 +82,7 @@ if (IS_WINDOWS) {
  $server_document_root = str_replace("\\","/",$server_document_root);
 }
 // Auto collect the relative html path, i.e. what you would type into the web
-// browser after the server address to get to LibreEHR.
+// browser after the server address to get to LibreHealth EHR.
 // This removes the leading portion of $webserver_root that it has in common with the web server's document
 // root and assigns the result to $web_root. In addition to the common case where $webserver_root is
 // /var/www/libreehr and document root is /var/www, this also handles the case where document root is
@@ -106,7 +106,7 @@ $GLOBALS['OE_SITES_BASE'] = "$webserver_root/sites";
 // The session name names a cookie stored in the browser.
 // Now that restore_session() is implemented in javaScript, session IDs are
 // effectively saved in the top level browser window and there is no longer
-// any need to change the session name for different LibreEHR instances.
+// any need to change the session name for different LibreHealth EHR instances.
 session_name("LibreEHR");
 
 session_start();
@@ -125,14 +125,14 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
   if (empty($tmp) || preg_match('/[^A-Za-z0-9\\-.]/', $tmp))
     die("Site ID '". htmlspecialchars($tmp,ENT_NOQUOTES) . "' contains invalid characters.");
   if (isset($_SESSION['site_id']) && ($_SESSION['site_id'] != $tmp)) {
-    // This is to prevent using session to penetrate other LibreEHR instances within same multisite module
+    // This is to prevent using session to penetrate other LibreHealth EHR instances within same multisite module
     session_unset(); // clear session, clean logout
     if (isset($landingpage) && !empty($landingpage)) {
-      // LibreEHR Patient Portal use
+      // LibreHealth EHR Patient Portal use
       header('Location: index.php?site='.$tmp);
     }
     else {
-      // Main LibreEHR use
+      // Main LibreHealth EHR use
       header('Location: ../login/login.php?site='.$tmp); // Assuming in the interface/main directory
     }
     exit;
@@ -207,7 +207,7 @@ $GLOBALS['login_screen'] = $GLOBALS['rootdir'] . "/login_screen.php";
 $GLOBALS['edi_271_file_path'] = $GLOBALS['OE_SITE_DIR'] . "/edi/";
 
 // Include the translation engine. This will also call sql.inc to
-//  open the libreehr mysql connection.
+//  open the LibreHealth EHR mysql connection.
 include_once (dirname(__FILE__) . "/../library/translation.inc.php");
 
 // Include convenience functions with shorter names than "htmlspecialchars" (for security)

@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
@@ -33,21 +33,21 @@ Main Screen
 <!-- The DOCTYPE is set above to XHTML to put IE into Sttrict Mode so we can get a viewport width -->
 <script type='text/javascript' language='JavaScript'>
 function GetInnerX () {
-	var x;
-	if (self.innerHeight) // all except Explorer
-	{
-		x = self.innerWidth;
-	}
-	else if (document.documentElement && document.documentElement.clientHeight)
-		// Explorer 6 Strict Mode
-	{
-		x = document.documentElement.clientWidth;
-	}
-	else if (document.body) // other Explorers
-	{
-		x = document.body.clientWidth;
-	}
-	return x;
+    var x;
+    if (self.innerHeight) // all except Explorer
+    {
+        x = self.innerWidth;
+    }
+    else if (document.documentElement && document.documentElement.clientHeight)
+        // Explorer 6 Strict Mode
+    {
+        x = document.documentElement.clientWidth;
+    }
+    else if (document.body) // other Explorers
+    {
+        x = document.body.clientWidth;
+    }
+    return x;
 }
 
 var x = GetInnerX();

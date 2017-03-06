@@ -4,7 +4,7 @@
  *
  * This program is used to allow the selection of the forms in the Annotate Diagram form. 
  *
- * Copyright (C) 2016 Jerry Padgett sjpadgett@gmail.com
+ * Copyright (C) 2016-2017 Jerry Padgett sjpadgett@gmail.com
  * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0 and the following 
  * Healthcare Disclaimer
@@ -35,9 +35,8 @@
  *
  * Rewrite and modifications by sjpadgett@gmail.com Padgetts Consulting 2016.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Jerry Padgett <sjpadgett@gmail.com> 
- * @author  Terry Hill <teryhill@librehealth.io>
  * @link    http://librehealth.io
  */
 
