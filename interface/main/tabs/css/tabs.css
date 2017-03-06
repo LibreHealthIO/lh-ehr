@@ -62,7 +62,7 @@ body
 
 .frameDisplay
 {
-    flex: 1 0 auto;
+    flex: 100 0 auto;
     align-items: stretch;
     align-content:stretch;
     display: flex;

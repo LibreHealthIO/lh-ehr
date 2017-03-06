@@ -173,12 +173,15 @@ var webroot_url="<?php echo $web_root; ?>";
 
                         var total = prev.outerWidth() + next.outerWidth();
 
-                        var leftPercentage = (((e.pageX - prev.offset().left) + (pos_x - drg_w / 2)) / total);
-                        var rightPercentage = 1 - leftPercentage;
+                        var leftPercentage = (((e.pageX - prev.offset().left) + (pos_x - drg_w / 2)) / total) * 100;
+                        var rightPercentage = (100 - leftPercentage);
 
-                        if(leftPercentage * 100 < opt.min || rightPercentage * 100 < opt.min)  {
+                        if(leftPercentage < opt.min || rightPercentage < opt.min)  {
                           return;
                         }
+
+                        console.log(leftPercentage);
+                        console.log(rightPercentage);
 
                         prev.css('flex', leftPercentage.toString());
                         next.css('flex', rightPercentage.toString());
