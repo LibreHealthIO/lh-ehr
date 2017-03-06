@@ -30,10 +30,10 @@ function allFramesLoaded() {
 
 function isEncounterLocked( encounterId ) {
     <?php if ( $esignApi->lockEncounters() ) { ?>
-	// If encounter locking is enabled, make a syncronous call (async=false) to check the
-	// DB to see if the encounter is locked.
-	// Call restore session, just in case
-	top.restoreSession();
+    // If encounter locking is enabled, make a syncronous call (async=false) to check the
+    // DB to see if the encounter is locked.
+    // Call restore session, just in case
+    top.restoreSession();
     $.ajax({
         type: 'POST',
         url: '<?php echo $GLOBALS['webroot']?>/interface/esign/index.php?module=encounter&method=esign_is_encounter_locked',
@@ -43,12 +43,12 @@ function isEncounterLocked( encounterId ) {
         },
         dataType: 'json',
         async:false
-	});
-	return encounter_locked;
-	<?php } else { ?>
-	// If encounter locking isn't enabled then always return false
-	return false;
-	<?php } ?>
+    });
+    return encounter_locked;
+    <?php } else { ?>
+    // If encounter locking isn't enabled then always return false
+    return false;
+    <?php } ?>
 }
 var webroot_url="<?php echo $web_root; ?>";
 </script>
@@ -179,9 +179,6 @@ var webroot_url="<?php echo $web_root; ?>";
                         if(leftPercentage < opt.min || rightPercentage < opt.min)  {
                           return;
                         }
-
-                        console.log(leftPercentage);
-                        console.log(rightPercentage);
 
                         prev.css('flex', leftPercentage.toString());
                         next.css('flex', rightPercentage.toString());
