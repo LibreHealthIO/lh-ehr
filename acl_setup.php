@@ -59,8 +59,6 @@
      // xl('Sensitivities')
  $gacl->add_object_section('Placeholder'   , 'placeholder'  , 10, 0, 'ACO');
      // xl('Placeholder')
- $gacl->add_object_section('Nation Notes'   , 'nationnotes'  , 10, 0, 'ACO');
-     // xl('Nation Notes')
  $gacl->add_object_section('Patient Portal','patientportal'  , 10, 0, 'ACO');
      // xl('Patient Portal')
   $gacl->add_object_section('Menus','menus'  , 10, 0, 'ACO');
@@ -174,10 +172,6 @@
  $gacl->add_object('placeholder', 'Placeholder (Maintains empty ACLs)', 'filler', 10, 0, 'ACO');
      // xl('Placeholder (Maintains empty ACLs)')
      
- // Create ACO for nationnotes.
- //
- $gacl->add_object('nationnotes', 'Nation Notes Configure', 'nn_configure', 10, 0, 'ACO');
-     // xl('Nation Notes Configure')
 
  // Create ARO groups.
  //
@@ -229,7 +223,6 @@ $breakglass  = $gacl->add_group('breakglass' , 'Emergency Login'    , $users, 'A
    'lists'=>array('default','state','country','language','ethrace'),
    'patients'=>array('appt', 'demo', 'med', 'trans', 'docs', 'notes'),
    'sensitivities'=>array('normal', 'high'),
-   'nationnotes'=>array('nn_configure'),
    'patientportal'=>array('portal'),
    'menus'=>array('modle')
   ),
@@ -400,7 +393,6 @@ $breakglass  = $gacl->add_group('breakglass' , 'Emergency Login'    , $users, 'A
    'lists'=>array('default','state','country','language','ethrace'),
    'patients'=>array('appt', 'demo', 'med', 'trans', 'docs', 'notes'),
    'sensitivities'=>array('normal', 'high'),
-   'nationnotes'=>array('nn_configure'),
    'patientportal'=>array('portal'),
    'menus'=>array('modle')
   ),

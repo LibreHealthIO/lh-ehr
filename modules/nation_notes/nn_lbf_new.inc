@@ -1,34 +1,23 @@
 <?php
-
 /**
- *
- * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
- *
  * Copyright (C) 2009-2014 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 3 
+ * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
- * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
- * See the Mozilla Public License for more details.
- * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package LibreHealth EHR 
+ * @package LibreEHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @link    http://librehealth.io
  */
-if ($GLOBALS['mod_nn'] == true){
-		require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_lbf_new.inc");}
-else{
-  
+
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
 
@@ -239,17 +228,22 @@ div.section {
 
 </style>
 
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
+<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
+<script type="text/javascript" src="../../library/textformat.js"></script>
+<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="../../../library/js/jquery.js"></script>
+<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
 
 <script language="JavaScript">
-
 $(document).ready(function() {
   // fancy box
   if (window.enable_modals) {
@@ -272,19 +266,7 @@ $(document).ready(function() {
     // add drag and drop functionality to fancybox
     $("#fancy_outer").easydrag();
   });
-  // Support for beforeunload handler.
-  $('.lbfdata input, .lbfdata select, .lbfdata textarea').change(function() {
-    somethingChanged = true;
 });
-  window.addEventListener("beforeunload", function (e) {
-    if (somethingChanged && !top.timed_out) {
-      var msg = "<?php echo xls('You have unsaved changes.'); ?>";
-      e.returnValue = msg;     // Gecko, Trident, Chrome 34+
-      return msg;              // Gecko, WebKit, Chrome <34
-    }
-  });
-});
-
 
 var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
@@ -490,6 +472,7 @@ function validate(f) {
         echo " /><b>" . text(xl_layout_label($group_name)) . "</b></span>\n";
         echo "<div id='div_" . attr($group_seq) . "' class='section' style='display:" . attr($display_style) . ";'>\n";
       }
+      // echo " <table border='0' cellpadding='0' width='100%'>\n";
       echo " <table border='0' cellspacing='0' cellpadding='0' width='100%'>\n";
       $display_style = 'none';
 
@@ -617,7 +600,7 @@ if (function_exists($formname . '_additional_buttons')) {
 <input type='button' value='<?php echo xla('Cancel') ?>' onclick="top.restoreSession();location='<?php echo $GLOBALS['form_exit_url']; ?>'" />
 &nbsp;
 <?php if ($form_is_graphable) { ?>
-<input type='button' value='<?php echo xla('Show Graph') ?>' onclick="top.restoreSession();location='../../patient_file/encounter/trend_form.php?formname=<?php echo attr($formname); ?>'" />
+<input type='button' value='<?php echo xla('Show Graph') ?>' onclick="top.restoreSession();location='../../interface/patient_file/encounter/trend_form.php?formname=<?php echo attr($formname); ?>'" />
 &nbsp;
 <?php } ?>
 <?php } else { ?>
@@ -650,4 +633,3 @@ if (function_exists($formname . '_javascript_onload')) {
 
 </body>
 </html>
-<?php}?>

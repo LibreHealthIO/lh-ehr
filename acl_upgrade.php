@@ -72,8 +72,6 @@
 *       ADD  sign  Sign Lab Results (Physicians)
 *     ACL/Group  breakglass  write  "Emergency Login"  (added all aco's to it)
 *   4.1.0
-*     Section "nationnotes" (Nation Notes)
-*       ADD  nn_configure  Nation Notes Configure  (Administrators, Emergency Login)
 *     Section "patientportal" (Patient Portal)
 *       ADD  portal    Patient Portal     (Administrators, Emergency Login)
 *   4.1.1
@@ -156,8 +154,6 @@ if ($acl_version < $upgrade_acl) {
   addObjectSectionAcl('lists', 'Lists');
   //Add 'Placeholder' object section (added in 3.0.2)
   addObjectSectionAcl('placeholder', 'Placeholder');
-  //Add 'Nation Notes' object section (added in 4.1.0)
-  addObjectSectionAcl('nationnotes','Nation Notes');
   //Add 'Patient Portal' object section (added in 4.1.0)
   addObjectSectionAcl('patientportal', 'Patient Portal');
 
@@ -187,8 +183,6 @@ if ($acl_version < $upgrade_acl) {
   addObjectAcl('placeholder', 'Placeholder', 'filler', 'Placeholder (Maintains empty ACLs)');
   //Add 'Sign Lab Results (write,addonly optional)' object (added in 3.3.0)
   addObjectAcl('patients', 'Patients', 'sign', 'Sign Lab Results (write,addonly optional)');
-  //Add 'nationnotes' object (added in 4.1.0)
-  addObjectAcl('nationnotes', 'Nation Notes', 'nn_configure', 'Nation Notes Configure');
   //Add 'patientportal' object (added in 4.1.0)
   addObjectAcl('patientportal', 'Patient Portal', 'portal', 'Patient Portal');
 
@@ -316,10 +310,6 @@ if ($acl_version < $upgrade_acl) {
   updateAcl($emergency_write, 'Emergency Login', 'sensitivities', 'Sensitivities', 'normal', 'Normal', 'write');
   //Insert the 'sign' object from the 'patients' section into the Physicians group write ACL (added in 3.3.0)
   updateAcl($doc_write, 'Physicians', 'patients', 'Patients', 'sign', 'Sign Lab Results (write,addonly optional)', 'write');
-  //Insert the 'sign' object from the 'nationnotes' section into the Administrators group write ACL (added in 3.3.0)
-  updateAcl($admin_write, 'Administrators','nationnotes', 'Nation Notes', 'nn_configure', 'Nation Notes Configure','write');
-  //Insert the 'sign' object from the 'nationnotes' section into the Emergency Login group write ACL (added in 3.3.0)
-  updateAcl($emergency_write, 'Emergency Login','nationnotes', 'Nation Notes', 'nn_configure', 'Nation Notes Configure','write');
   //Insert the 'patientportal' object from the 'patientportal' section into the Administrators group write ACL (added in 4.1.0)
   updateAcl($admin_write, 'Administrators','patientportal', 'Patient Portal', 'portal', 'Patient Portal','write');
   //Insert the 'patientportal' object from the 'patientportal' section into the Emergency Login group write ACL (added in 4.1.0)
