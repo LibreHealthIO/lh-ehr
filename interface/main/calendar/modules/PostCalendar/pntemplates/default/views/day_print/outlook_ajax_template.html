@@ -511,7 +511,7 @@ foreach ($providers as $provider) {
             $patientid = $event['pid'];
             $commapos = strpos($event['patient_name'], ",");
             $lname = substr($event['patient_name'], 0, $commapos);
-	    $fname = substr($event['patient_name'], $commapos + 2);
+        $fname = substr($event['patient_name'], $commapos + 2);
             $patient_dob = $event['patient_dob'];
             $patient_age = $event['patient_age'];
             $catid = $event['catid'];
@@ -697,7 +697,7 @@ function PrintDatePicker($caldate, $DOWlist, $daynames) {
 <script>
 $(document).ready(function(){
     var win = top.printLogPrint ? top : opener.top;
-    if (win.printLogPrint(window)) window.close();
+    win.printLogPrint(window);
 });
 </script>
 
