@@ -520,6 +520,9 @@ if (isset($_POST['form_checksum'])) {
 if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
   $main_provid = 0 + $_POST['ProviderID'];
   $main_supid  = 0 + $_POST['SupervisorID'];
+  $main_order  = 0 + $_POST['OrderingID'];
+  $main_referr  = 0 + $_POST['ReferringID'];
+  $main_contract  = 0 + $_POST['ContractID'];
   if ($main_supid == $main_provid) $main_supid = 0;
   $default_warehouse = $_POST['default_warehouse'];
 
@@ -695,8 +698,8 @@ if (!$alertmsg && ($_POST['bn_save'] || $_POST['bn_save_close'])) {
     "forms.formdir = 'patient_encounter' AND users.id = '$provid'");
   *******************************************************************/
   sqlStatement("UPDATE form_encounter SET provider_id = ?, " .
-    "supervisor_id = ?  WHERE " .
-    "pid = ? AND encounter = ?", array($main_provid,$main_supid,$pid,$encounter) );
+    "supervisor_id = ?, ordering_physician = ?, referring_physician = ?, contract_physician = ? WHERE " .
+    "pid = ? AND encounter = ?", array($main_provid,$main_supid,$main_order,$main_referr,$main_contract,$pid,$encounter) );
 
   // Save-and-Close is currently IPPF-specific but might be more generally
   // useful.  It provides the ability to mark an encounter as billed
@@ -759,6 +762,8 @@ $billresult = getBillingByEncounter($pid, $encounter, "*");
 <style>
 .billcell { font-family: sans-serif; font-size: 10pt }
 </style>
+<script type="text/javascript" src="../../../library/textformat.js"></script>
+<script type="text/javascript" src="../../../library/dialog.js"></script>
 <script language="JavaScript">
 
 var diags = new Array();
@@ -878,6 +883,16 @@ function setJustify(seljust) {
   }
  }
  theopts[j++] = new Option('Clear','',false,false);
+}
+// Open the add-event dialog.
+function newEvt() {
+ var f = document.forms[0];
+ var url = '../../main/calendar/add_edit_event.php?patientid=<?php echo attr($pid); ?>';
+ if (f.ProviderID && f.ProviderID.value) {
+  url += '&userid=' + parseInt(f.ProviderID.value);
+ }
+ dlgopen(url, '_blank', 600, 300);
+ return false;
 }
 
 </script>
@@ -1280,11 +1295,14 @@ if ($_POST['newcodes']) {
   }
 }
 
-$tmp = sqlQuery("SELECT provider_id, supervisor_id FROM form_encounter " .
+$tmp = sqlQuery("SELECT provider_id, supervisor_id, ordering_physician, referring_physician, contract_physician FROM form_encounter " .
   "WHERE pid = ? AND encounter = ? " .
   "ORDER BY id DESC LIMIT 1", array($pid,$encounter) );
 $encounter_provid = 0 + findProvider();
 $encounter_supid  = 0 + $tmp['supervisor_id'];
+$encounter_order  = 0 + $tmp['ordering_physician'];
+$encounter_referr  = 0 + $tmp['referring_physician'];
+$encounter_contract  = 0 + $tmp['contract_physician'];
 ?>
 </table>
 </p>
@@ -1300,9 +1318,30 @@ echo xlt('Providers') . ": &nbsp;";
 echo "&nbsp;&nbsp;" . xlt('Rendering') . "\n";
 genProviderSelect('ProviderID', '-- '.xl("Please Select").' --', $encounter_provid, $isBilled);
 
-if (!$GLOBALS['ippf_specific']) {
+if ($GLOBALS['supervising_physician_in_feesheet']) {
   echo "&nbsp;&nbsp;" . xlt('Supervising') . "\n";
   genProviderSelect('SupervisorID', '-- '.xl("N/A").' --', $encounter_supid, $isBilled);
+}
+
+if ($GLOBALS['ordering_physician_in_feesheet']) {
+  echo "&nbsp;&nbsp;" . xlt('Ordering') . "\n";
+  genProviderSelect('OrderingID', '-- '.xl("N/A").' --', $encounter_order, $isBilled, true);
+}
+if ($GLOBALS['ordering_physician_in_feesheet'] || $GLOBALS['supervising_physician_in_feesheet'] && ($GLOBALS['referring_physician_in_feesheet'] || $GLOBALS['contract_physician_in_feesheet'])) {
+ echo "<br></br>";
+}
+if ($GLOBALS['referring_physician_in_feesheet']) {
+  echo "&nbsp;&nbsp;" . xlt('Referring') . "\n";
+  genProviderSelect('ReferringID', '-- '.xl("N/A").' --', $encounter_referr, $isBilled, true);
+}
+
+if ($GLOBALS['contract_physician_in_feesheet']) {
+  echo "&nbsp;&nbsp;" . xlt($GLOBALS['contract_physician_in_feesheet_name']) . "\n";
+  genProviderSelect('ContractID', '-- '.xl("N/A").' --', $encounter_contract, $isBilled, true);
+}
+
+if ($GLOBALS['allow_appointments_in_feesheet']) {
+  echo "<input type='button' value='" . xla('New Appointment') . "' onclick='newEvt()' />\n";
 }
 
 echo "</b></span>\n";
@@ -1373,6 +1412,7 @@ if (true) {
   echo "   </select>\n";
 }
 ?>
+</p>
 
 &nbsp; &nbsp; &nbsp;
 

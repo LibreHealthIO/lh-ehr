@@ -20,7 +20,7 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Terry Hill <terry@lilysystems.com>
  * @link http://librehealth.io
@@ -644,7 +644,7 @@ $CMS_5010 = true;
   // Segment HI*BG (Condition Information) omitted.
   // Segment HCP (Claim Pricing/Repricing Information) omitted.
 
-  if ($claim->referrerLastName() || $claim->providerQualifierCode() == "DN" ) {
+  if ($claim->referrerLastName() || $claim->providerQualifierCode() == "DN" || $claim->referringLastName() ) {
       
     if ($claim->providerQualifierCode() == "DN") {  
 
@@ -662,7 +662,29 @@ $CMS_5010 = true;
       "*XX" .
       "*" . $claim->billingProviderNPI(). 
      "~\n";
-    } else {
+    } else if ( $claim->referringLastName()) {
+        error_log("referringlast: ".$claim->providerQualifierCode(), 0);
+     # Use the Referrer information
+    // Medicare requires referring provider's name and UPIN.
+    ++$edicount;
+    $out .= "NM1" .     // Loop 2310A Referring Provider
+      "*DN" .
+      "*1" .
+      "*" . $claim->referringLastName() .
+      "*" . $claim->referringFirstName() .
+      "*" . $claim->referringMiddleName() .
+      "*" .
+      "*";
+    if ($CMS_5010 || $claim->referringNPI()) { $out .=
+      "*XX" .
+      "*" . $claim->referringNPI();
+    } else { $out .=
+      "*34" .                           // not allowed for 5010
+      "*" . $claim->referringSSN();
+    }
+    $out .= "~\n";
+    } else if ($claim->referrerLastName()) {
+        error_log("referrerlast: ".$claim->providerQualifierCode(), 0);
      # Use the Referrer information
     // Medicare requires referring provider's name and UPIN.
     ++$edicount;
@@ -1168,8 +1190,10 @@ $CMS_5010 = true;
       // Segment REF (Supervising Provider Secondary Identification) omitted.
       // Segment NM1,N3,N4 (Ordering Provider) Needs check against the misc bill qualifer code.
 
-   #Ordering provider from the Misc_Billing_form
+   #Ordering provider from the Misc_Billing_form or fee sheet
+   if ($claim->providerQualifierCode() == "DK" || $claim->orderingLastName() ) {
    if ($claim->providerQualifierCode() == "DK") {
+    # the Ordering Physician is filled out the Misc Billing Form   
     ++$edicount;
     $out .= "NM1" .
       "*DK" . // DK is ordering
@@ -1187,6 +1211,26 @@ $CMS_5010 = true;
       $log .= "*** Ordering Provider has no NPI.\n";
     }
     $out .= "~\n";
+        } else {
+    # the Ordering Physician is filled out on the fee sheet
+    ++$edicount;
+    $out .= "NM1" .
+      "*DK" . // Ordering Physician
+      "*1" .  // Person
+      "*" . $claim->orderingLastName() .
+      "*" . $claim->orderingFirstName() .
+      "*" . $claim->orderingMiddleName() .
+      "*" .   // NM106 not used
+      "*".    // Name Suffix
+      "*XX" .
+      "*" . $claim->orderingNPI();
+    
+    if (!$claim->orderingNPI()) {
+      $log .= "*** Ordering Provider has no NPI.\n";
+    }
+    $out .= "~\n";
+
+  }
    }
       // Segment REF (Ordering Provider Secondary Identification) omitted.
       // Segment PER (Ordering Provider Contact Information) omitted.
