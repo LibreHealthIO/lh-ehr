@@ -39,7 +39,7 @@
 // 2 = Show descriptions instead of codes for billing code input
 require_once(dirname(dirname(__FILE__)) ."/interface/globals.php");
 if ($GLOBALS['mod_nn'] == true){
-		require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_library_options.inc");}
+        require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_library_options.inc");}
 else{
   
 require_once("formdata.inc.php");
@@ -1991,6 +1991,7 @@ function generate_display_field($frow, $currvalue) {
   // static text.  read-only, of course.
   else if ($data_type == 31) {
     $s .= nl2br($frow['description']);
+  }
   
 
   // facility
