@@ -141,6 +141,11 @@ a:hover {
   color: #000000;
 }
 
+.sorting_1:hover{
+    cursor:pointer;
+    color:#ff5555;
+}
+
 /*=============================================================
  * Here we have taken variables from globals.php and turned them into CSS classes 
  * these should be used in place of the GLOBAL variables -- JRM March 2008

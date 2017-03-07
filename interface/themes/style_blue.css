@@ -126,6 +126,11 @@ a {
 	text-decoration: none;
 }
 
+.sorting_1:hover{
+    cursor:pointer;
+    color:#ff5555;
+}
+
 /* style taken out of the addressbook code and put here instead */
 #addressbook_list td {
 font-family: Arial, Helvetica, sans-serif;

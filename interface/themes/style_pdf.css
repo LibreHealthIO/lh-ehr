@@ -134,6 +134,11 @@ a:hover {
     color: #000000;
 }
 
+.sorting_1:hover{
+    cursor:pointer;
+    color:#ff5555;
+}
+
 .body_top { background-color: #fefdcf; margin: 8px }    /* $top_bg_line */
 .bgcolor2 { background-color: #fefdcf; }    /* $GLOBALS['style']['BGCOLOR2'] */
 .body_bottom { background: url('theme_assets/aquabg.gif') repeat; margin: 8px }  /* $bottom_bg_line */
