@@ -1,10 +1,34 @@
     <?php
- // Copyright (C) 2011 Cassian LUP <cassi.lup@gmail.com>
- //
- // This program is free software; you can redistribute it and/or
- // modify it under the terms of the GNU General Public License
- // as published by the Free Software Foundation; either version 2
- // of the License, or (at your option) any later version.
+/**
+ *
+ * Patient Portal Patient Information
+ *
+ * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
+ * Copyright (C) 2011 Cassian LUP <cassi.lup@gmail.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Jerry Padgett <sjpadgett@gmail.com>
+ * @author Cassian LUP <cassi.lup@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
     //starting the PHP session (also regenerating the session id to avoid session fixation attacks)
         session_start();
@@ -12,35 +36,36 @@
     //
 
     //landing page definition -- where to go if something goes wrong
-	$landingpage = "index.php?site=".$_SESSION['site_id'];
+    $landingpage = "index.php?site=".$_SESSION['site_id'];
     //
     
     //checking whether the request comes from index.php
         if (!isset($_SESSION['itsme'])) {
                 session_destroy();
-		header('Location: '.$landingpage.'&w');
-		exit;
-	}
+        header('Location: '.$landingpage.'&w');
+        exit;
+    }
     //
+require_once (dirname( __FILE__ )."/lib/appsql.class.php" );
+$logit = new ApplicationTable();
 
     //some validation
         if (!isset($_POST['uname']) || empty($_POST['uname'])) {
                 session_destroy();
-		header('Location: '.$landingpage.'&w&c');
-		exit;
-	}
+        header('Location: '.$landingpage.'&w&c');
+        exit;
+    }
         if (!isset($_POST['pass']) || empty($_POST['pass'])) {
                 session_destroy();
                 header('Location: '.$landingpage.'&w&c');
-		exit;
+        exit;
         }
     //
 
-    require_once("../library/translation.inc.php");
 
     // set the language
     if (!empty($_POST['languageChoice'])) {
-        $_SESSION['language_choice'] = (int)$_POST['languageChoice'];
+            $_SESSION['language_choice'] = $_POST['languageChoice'];
     }
     else if (empty($_SESSION['language_choice'])) {
         // just in case both are empty, then use english
@@ -49,7 +74,6 @@
     else {
         // keep the current session language token
     }
-    $_SESSION['language_direction'] = getLanguageDir( $_SESSION['language_choice'] );
 
 
 
@@ -63,9 +87,10 @@
     $ignoreAuth = 1;
     //
 
-    //Authentication (and language setting)
-	require_once('../interface/globals.php');
+    //Authentication
+    require_once('../interface/globals.php');
     require_once("$srcdir/authentication/common_operations.php");        
+    require_once("$srcdir/user.inc");
     $password_update=isset($_SESSION['password_update']);
     unset($_SESSION['password_update']);
     $plain_code= $_POST['pass'];
@@ -84,6 +109,7 @@
             $auth = privQuery($sql, array($_POST['uname']));
             if($auth===false)
             {
+                $logit->portalLog('login attempt','',($_POST['uname'].':invalid username'),'','0');
                 session_destroy();
                 header('Location: '.$landingpage.'&w');
                 exit;
@@ -92,6 +118,7 @@
             {
                 if(SHA1($plain_code)!=$auth[COL_POR_PWD])
                 {
+                    $logit->portalLog('login attempt','',($_POST['uname'].':pass not salted'),'','0');
                     session_destroy();
                     header('Location: '.$landingpage.'&w');
                     exit;                        
@@ -107,6 +134,7 @@
             else {
                 if(oemr_password_hash($plain_code,$auth[COL_POR_SALT])!=$auth[COL_POR_PWD])
                 {
+                    $logit->portalLog('login attempt','',($_POST['uname'].':invalid password'),'','0');
                     session_destroy();
                     header('Location: '.$landingpage.'&w');
                     exit;                        
@@ -120,11 +148,23 @@
     if ($userData = sqlQuery($sql, array($auth['pid']) )) { // if query gets executed
 
         if (empty($userData)) {
-                            // no records for this pid, so escape
+            $logit->portalLog('login attempt','',($_POST['uname'].':not active patient'),'','0');
             session_destroy();
                             header('Location: '.$landingpage.'&w');
             exit;
                     }
+#         if ($userData['email'] != $_POST['passaddon']) {
+#           $logit->portalLog('login attempt','',($_POST['uname'].':invalid email'),'','0');
+#           session_destroy();
+#           header('Location: '.$landingpage.'&w');
+#           exit;
+#                  }
+
+#        if (substr($userData['ss'],-4) != $_POST['passaddon']) {
+#           session_destroy();
+#           header('Location: '.$landingpage.'&w');
+#           exit;
+#                  }
 
         if ($userData['allow_patient_portal'] != "YES") {
             // Patient has not authorized portal, so escape
@@ -152,6 +192,7 @@
                 privStatement("UPDATE ".TBL_PAT_ACC_ON
                               ."  SET ".COL_POR_PWD."=?,".COL_POR_SALT."=?,".COL_POR_PWD_STAT."=1 WHERE id=?", array($new_hash,$new_salt,$auth['id']) );
                 $authorizedPortal = true;
+                $logit->portalLog('password update',$auth['pid'],($_SESSION['portal_username'].': '.$_SESSION['ptName'].':success'));
             }
         }
         if ($auth['portal_pwd_status'] == 0) {
@@ -174,8 +215,18 @@
             unset($_SESSION['itsme']); // just being safe
             $_SESSION['pid'] = $auth['pid'];
             $_SESSION['patient_portal_onsite'] = 1;
+
+            $tmp = getUserIDInfo($userData['providerID']);
+            $_SESSION['providerName'] = $tmp['fname'].' '.$tmp['lname'];
+            $_SESSION['providerUName'] = $tmp['username'];
+            $_SESSION['sessionUser'] = '-patient-'; //$_POST['uname'];
+            $_SESSION['providerId'] = $userData['providerID']?$userData['providerID']:'undefined';
+            $_SESSION['ptName'] = $userData['fname'].' '.$userData['lname'];
+
+            $logit->portalLog('login',$_SESSION['pid'],($_SESSION['portal_username'].': '.$_SESSION['ptName'].':success'));
         }
         else {
+            $logit->portalLog('login','',($_POST['uname'].':not authorized'),'','0');
             session_destroy();
             header('Location: '.$landingpage.'&w');
             exit;
@@ -188,6 +239,8 @@
         exit;
     }
 
-    require_once('summary_pat_portal.php');
+    //require_once('home.php');
+    header('Location: ./home.php');
+    exit;
 
 ?>

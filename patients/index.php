@@ -1,15 +1,37 @@
 <?php
- // Copyright (C) 2011 Cassian LUP <cassi.lup@gmail.com>
- //
- // This program is free software; you can redistribute it and/or
- // modify it under the terms of the GNU General Public License
- // as published by the Free Software Foundation; either version 2
- // of the License, or (at your option) any later version.
+/** 
+ *
+ * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
+ * Copyright (C) 2011 Cassian LUP <cassi.lup@gmail.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Jerry Padgett <sjpadgett@gmail.com>
+ * @author Cassian LUP <cassi.lup@gmail.com>
+ * @link http://Librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ *
+ */
 
     //setting the session & other config options
     session_start();
 
-    //don't require standard libreehr authorization in globals.php
+    //don't require standard LibreHealth ehr authorization in globals.php
     $ignoreAuth = 1;
 
     //SANITIZE ALL ESCAPES
@@ -94,11 +116,11 @@
 <head>
     <title><?php echo xlt('Patient Portal Login'); ?></title>
 
-    <script type="text/javascript" src="../library/js/jquery-1.5.js"></script>
-    <script type="text/javascript" src="../library/js/jquery.gritter.min.js"></script>
+    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-11-3/index.js"></script>
+    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery.gritter-1-7-4/js/jquery.gritter.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/jquery.gritter.css" />
-    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']; ?>/jquery.gritter-1-7-4/css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/base.css" />
 
     <script type="text/javascript">
         function process() {
@@ -108,18 +130,18 @@
                 return false;
             }
         }
-	function validate() {
+    function validate() {
             var pass=true;            
-	    if (document.getElementById('uname').value == "") {
-		document.getElementById('uname').style.border = "1px solid red";
+        if (document.getElementById('uname').value == "") {
+        document.getElementById('uname').style.border = "1px solid red";
                 pass=false;
-	    }
-	    if (document.getElementById('pass').value == "") {
-		document.getElementById('pass').style.border = "1px solid red";
+        }
+        if (document.getElementById('pass').value == "") {
+        document.getElementById('pass').style.border = "1px solid red";
                 pass=false;
-	    }
+        }
             return pass;
-	}
+    }
         function process_new_pass() {
 
             if (!(validate_new_pass())) {
@@ -158,13 +180,13 @@
         }
     </script>
     <style type="text/css">
-	body {
-	    font-family: sans-serif;
-	    background-color: #638fd0;
-	    
-	    background: -webkit-radial-gradient(circle, white, #638fd0);
-	    background: -moz-radial-gradient(circle, white, #638fd0);
-	}
+    body {
+        font-family: sans-serif;
+        background-color: #638fd0;
+        
+        background: -webkit-radial-gradient(circle, white, #638fd0);
+        background: -moz-radial-gradient(circle, white, #638fd0);
+    }
 
     </style>
     
@@ -178,72 +200,74 @@
         $_SESSION['password_update']=1;
         ?>
       <div id="wrapper" class="centerwrapper">
-        <h2 class="title"><?php echo htmlspecialchars( xl('Please Enter a New Password'), ENT_NOQUOTES); ?></h2>
+        <h2 class="title"><?php echo xlt('Please Enter a New Pass Phrase'); ?></h2>
         <form action="get_patient_info.php" method="POST" onsubmit="return process_new_pass()" >
             <table>
                 <tr>
-                    <td class="algnRight"><?php echo htmlspecialchars( xl('User Name'), ENT_NOQUOTES); ?></td>
+                    <td class="algnRight"><?php echo xlt('User Name'); ?></td>
                     <td><input name="uname" id="uname" type="text" autocomplete="off" value="<?php echo attr($_SESSION['portal_username']); ?>"/></td>
                 </tr>
                 <tr>
-                    <td class="algnRight"><?php echo htmlspecialchars( xl('Current Password'), ENT_NOQUOTES);?></>
+                    <td class="algnRight"><?php echo xlt('Current Pass Phrase');?></>
                     <td>
                         <input name="pass" id="pass" type="password" autocomplete="off" />
                     </td>
                 </tr>
                 <tr>
-                    <td class="algnRight"><?php echo htmlspecialchars( xl('New Password'), ENT_NOQUOTES);?></>
+                    <td class="algnRight"><?php echo xlt('New Pass Phrase');?></>
                     <td>
                         <input name="pass_new" id="pass_new" type="password" />
                     </td>
                 </tr>
                 <tr>
-                    <td class="algnRight"><?php echo htmlspecialchars( xl('Confirm New Password'), ENT_NOQUOTES);?></>
+                    <td class="algnRight"><?php echo xlt('Confirm New Pass Phrase');?></>
                     <td>
                         <input name="pass_new_confirm" id="pass_new_confirm" type="password" />
                     </td>
                 </tr>
                 <tr>
-                    <td colspan=2><br><center><input type="submit" value="<?php echo htmlspecialchars( xl('Log In'), ENT_QUOTES);?>" /></center></td>
+                    <td colspan=2><br><center><input type="submit" value="<?php echo xlt('Log In');?>" /></center></td>
                 </tr>
             </table>
         </form>
 
-        <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> LibreEHR</div>
+        <div class="copyright"><?php echo xlt('Powered by');?> LibreHealth EHR</div>
+
       </div>
     <?php } else { ?>
       <div id="wrapper" class="centerwrapper">
-	<h2 class="title"><?php echo htmlspecialchars( xl('Patient Portal Login'), ENT_NOQUOTES); ?></h2>
-	<form action="get_patient_info.php" method="POST" onsubmit="return process()" >
-	    <table>
-		<tr>
-		    <td class="algnRight"><?php echo htmlspecialchars( xl('User Name'), ENT_NOQUOTES); ?></td>
-		    <td><input name="uname" id="uname" type="text" autocomplete="off" /></td>
-		</tr>
-		<tr>
-		    <td class="algnRight"><?php echo htmlspecialchars( xl('Password'), ENT_NOQUOTES);?></>
-		    <td>
-			<input name="pass" id="pass" type="password" autocomplete="off" />
-		    </td>
-		</tr>
+    <h2 class="title"><?php echo xlt('LibreHealth EHR Patient Portal Login'); ?></h2>
+    <form action="get_patient_info.php" method="POST" onsubmit="return process()" >
+        <table>
+        <tr>
+            <td class="algnRight"><?php echo xlt('User Name'); ?></td>
+            <td><input name="uname" id="uname" type="text" autocomplete="on" /></td>
+        </tr>
+        <tr>
+            <td class="algnRight"><?php echo xlt('Pass Phrase');?></>
+            <td>
+            <input name="pass" id="pass" type="password" required autocomplete="on" />
+<!--            <input name="passaddon" id="passaddon" placeholder="Email Address" type="email" autocomplete="on" />-->
+            </td>
+        </tr>
 
                 <?php if ($GLOBALS['language_menu_login']) { ?>
                  <?php if (count($result3) != 1) { ?>
                   <tr>
-                    <td><span class="text"><?php echo htmlspecialchars( xl('Language'), ENT_NOQUOTES); ?></span></td>
+                    <td><span class="text"><?php echo xlt('Language'); ?></span></td>
                     <td>
                         <select name=languageChoice size="1">
                             <?php
                             echo "<option selected='selected' value='".htmlspecialchars($defaultLangID,ENT_QUOTES)."'>" . htmlspecialchars( xl('Default') . " - " . xl($defaultLangName), ENT_NOQUOTES) . "</option>\n";
                             foreach ($result3 as $iter) {
                                 if ($GLOBALS['language_menu_showall']) {
-                                    if ( !$GLOBALS['allow_debug_language'] && $iter[lang_description] == 'dummy') continue; // skip the dummy language
-                                    echo "<option value='".htmlspecialchars($iter[lang_id],ENT_QUOTES)."'>".htmlspecialchars($iter[trans_lang_description],ENT_NOQUOTES)."</option>\n";
+                                    if ( !$GLOBALS['allow_debug_language'] && $iter['lang_description'] == 'dummy') continue; // skip the dummy language
+                                    echo "<option value='".htmlspecialchars($iter['lang_id'],ENT_QUOTES)."'>".htmlspecialchars($iter['trans_lang_description'],ENT_NOQUOTES)."</option>\n";
                                 }
                                 else {
-                                    if (in_array($iter[lang_description], $GLOBALS['language_menu_show'])) {
-                                        if ( !$GLOBALS['allow_debug_language'] && $iter[lang_description] == 'dummy') continue; // skip the dummy language
-                                        echo "<option value='".htmlspecialchars($iter[lang_id],ENT_QUOTES)."'>".htmlspecialchars($iter[trans_lang_description],ENT_NOQUOTES)."</option>\n";
+                                    if (in_array($iter['lang_description'], $GLOBALS['language_menu_show'])) {
+                                        if ( !$GLOBALS['allow_debug_language'] && $iter['lang_description'] == 'dummy') continue; // skip the dummy language
+                                        echo "<option value='".htmlspecialchars($iter['lang_id'],ENT_QUOTES)."'>".htmlspecialchars($iter['trans_lang_description'],ENT_NOQUOTES)."</option>\n";
                                     }
                                 }
                             }
@@ -253,15 +277,15 @@
                   </tr>
                 <?php }} ?>
 
-		<tr>
-		    <td colspan=2><br><center><input type="submit" value="<?php echo htmlspecialchars( xl('Log In'), ENT_QUOTES);?>" /></center></td>
-		</tr>
-	    </table>
+        <tr>
+            <td colspan=2><br><center><input type="submit" value="<?php echo xlt('Log In');?>" /></center></td>
+        </tr>
+        </table>
             <?php if (!(empty($hiddenLanguageField))) echo $hiddenLanguageField; ?>
-	</form>
+    </form>
     
-        <div class="copyright"><?php echo htmlspecialchars( xl('Powered by'), ENT_NOQUOTES);?> LibreEHR</div>
-      </div>
+        <div class="copyright"><?php echo xlt('Powered by');?> LibreHealth EHR</div>
+      </div><div><img src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/></div>
     <?php } ?>
 
     </center>
@@ -271,26 +295,26 @@
 
 <?php // if something went wrong
      if (isset($_GET['w'])) { ?>    
-	var unique_id = $.gritter.add({
-	    title: '<span class="red"><?php echo htmlspecialchars( xl('Oops!'), ENT_QUOTES);?></span>',
-	    text: '<?php echo htmlspecialchars( xl('Something went wrong. Please try again.', ENT_QUOTES)); ?>',
-	    sticky: false,
-	    time: '5000',
-	    class_name: 'my-nonsticky-class'
-	});    
+    var unique_id = $.gritter.add({
+        title: '<span class="red"><?php echo xlt('Oops!');?></span>',
+        text: '<?php echo xlt('Something went wrong. Please try again.'); ?>',
+        sticky: false,
+        time: '5000',
+        class_name: 'my-nonsticky-class'
+    });    
 <?php } ?>
 
 <?php // if successfully logged out
      if (isset($_GET['logout'])) { ?>    
-	var unique_id = $.gritter.add({
-	    title: '<span class="green"><?php echo htmlspecialchars( xl('Success'), ENT_QUOTES);?></span>',
-	    text: '<?php echo htmlspecialchars( xl('You have been successfully logged out.'), ENT_QUOTES);?>',
-	    sticky: false,
-	    time: '5000',
-	    class_name: 'my-nonsticky-class'
-	});    
+    var unique_id = $.gritter.add({
+        title: '<span class="green"><?php echo xlt('Success');?></span>',
+        text: '<?php echo xlt('You have been successfully logged out.');?>',
+        sticky: false,
+        time: '5000',
+        class_name: 'my-nonsticky-class'
+    });    
 <?php } ?>
-	return false;
+    return false;
     
     });
 </script>

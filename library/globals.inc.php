@@ -2042,7 +2042,41 @@ $GLOBALS_METADATA = array(
        '1',
       xl('Enables the ability to download documents in the Onsite Patient Portal by the user.')
     ),
+    
+    'portal_onsite_appt_modify' => array(
+      xl('Allow Users to Schedule Appointments in the Patient Portal'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Allow Users to Schedule Appointments in the Patient Portal.')
+    ),
+ 
+    'portal_onsite_appt_modify' => array(
+      xl('Allow Patient Modification of Appointments'),
+      'bool',                           // data type
+      '0',
+      xl('Allow Patient Modification of Appointments in Onsite Patient Portal.')
+    ),
 
+    'portal_start_days' => array(
+      xl('Number of Days from today to start Patients choice of Appointments'),
+      'num',                           // data type
+      '14',                            // Default
+      xl('Number of Days from today to start Patients choice of Appointments in Onsite Patient Portal.')
+    ),
+    
+    'portal_search_days' => array(
+      xl('Number of Days for Patient choice of Appointments'),
+      'num',                           // data type
+      '7',                             // Default
+      xl('Number of Days for Patient choice of Appointments in Onsite Patient Portal.')
+    ),
+    
+    'portal_default_status' => array(
+      xl('Default Status for Appointment Creation in the Patient Portal'),
+      'status',                           // data type
+      '- None',                                 // default = none 
+      xl('Default Status for Appointment Creation in the Patient Portal.')
+    ),
 
   ),
 

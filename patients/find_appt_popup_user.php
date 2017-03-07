@@ -1,15 +1,36 @@
 <?php
- // Copyright (C) 2005-2006, 2013 Rod Roark <rod@sunsetsystems.com>
- //
- // This program is free software; you can redistribute it and/or
- // modify it under the terms of the GNU General Public License
- // as published by the Free Software Foundation; either version 2
- // of the License, or (at your option) any later version.
-
-// Note from Rod 2013-01-22:
-// This module needs to be refactored to share the same code that is in
-// interface/main/calendar/find_appt_popup.php.  It contains an old version
-// of that logic and does not support exception dates for repeating events.
+/**
+ *
+ * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
+ * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
+ * Copyright (C) 2005-2006, 2013 Rod Roark <rod@sunsetsystems.com>
+ *
+ * This program is used to find un-used appointments in the Patient Portal, 
+ * allowing the patient to select there own appointment.
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Jerry Padgett <sjpadgett@gmail.com>
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the authors and to the OpenEMR community.
+ *
+ */
 
 //continue session
 session_start();
@@ -36,10 +57,10 @@ $ignoreAuth = 1;
  include_once("$srcdir/patient.inc");
 
  // Exit if the modify calendar for portal flag is not set
- if (!($GLOBALS['portal_onsite_appt_modify'])) {
+  if (!($GLOBALS['portal_onsite_appt_modify'])) {
    echo htmlspecialchars( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
    exit;
- }
+ } 
 
  $input_catid = $_REQUEST['catid'];
 
@@ -97,6 +118,11 @@ $ignoreAuth = 1;
  } else {
   $sdate = date("Y-m-d");
  }
+ $first_dow = $GLOBALS['portal_first_dow'];
+ $last_dow = $GLOBALS['portal_last_dow'];
+ $start_days = $GLOBALS['portal_start_days'];
+ $sdate = date('Y-m-d' , strtotime( " +" . $start_days ." days"));
+ $chck_sdate = date('Ymd' , strtotime( " +" . $start_days ." days"));
 
  // Get an end date - actually the date after the end date.
  preg_match("/(\d\d\d\d)\D*(\d\d)\D*(\d\d)/", $sdate, $matches);
@@ -109,7 +135,7 @@ $ignoreAuth = 1;
  $slotbase  = (int) ($slotstime / $slotsecs);
  $slotcount = (int) ($slotetime / $slotsecs) - $slotbase;
 
- if ($slotcount <= 0 || $slotcount > 100000) die("Invalid date range");
+ if ($slotcount <= 0 || $slotcount > 100000) die("Invalid date range.");
 
  $slotsperday = (int) (60 * 60 * 24 / $slotsecs);
 
@@ -127,7 +153,6 @@ $ignoreAuth = 1;
   $slots = array_pad(array(), $slotcount, 0);
 
   // Note there is no need to sort the query results.
-//  echo $sdate." -- ".$edate;
   $query = "SELECT pc_eventDate, pc_endDate, pc_startTime, pc_duration, " .
    "pc_recurrtype, pc_recurrspec, pc_alldayevent, pc_catid, pc_prefcatid, pc_title " .
    "FROM libreehr_postcalendar_events " .
@@ -251,19 +276,26 @@ $ignoreAuth = 1;
 <html>
 <head>
 <?php html_header_show(); ?>
-<title><?php xl('Find Available Appointments','e'); ?></title>
+<title><?php echo xlt('Find Available Appointments'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
+
+<link href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<?php if ($_SESSION['language_direction'] == 'rtl') { ?>
+    <link href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-rtl-3-3-4/dist/css/bootstrap-rtl.min.css" rel="stylesheet" type="text/css" />
+<?php } ?>
 
 <!-- for the pop up calendar -->
 <style type="text/css">@import url(../library/dynarch_calendar.css);</style>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-11-3/index.js" type="text/javascript"></script>
 <script type="text/javascript" src="../library/dynarch_calendar.js"></script>
 <script type="text/javascript" src="../library/dynarch_calendar_en.js"></script>
 <script type="text/javascript" src="../library/dynarch_calendar_setup.js"></script>
 
-<!-- for ajax-y stuff -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/js/bootstrap.min.js" type="text/javascript"></script>
+<!-- for ajax-y stuff
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script> -->
 
-<script language="JavaScript">
+<script>
 
  function setappt(year,mon,mday,hours,minutes) {
   if (opener.closed || ! opener.setappt)
@@ -286,8 +318,8 @@ form {
 #searchCriteria {
     text-align: center;
     width: 100%;
-    font-size: 0.8em;
-    background-color: #ddddff;
+   /* font-size: 0.8em; */
+    background-color: #bfe6ff;
     font-weight: bold;
     padding: 3px;
 }
@@ -300,11 +332,11 @@ form {
     border-collapse: collapse;
 }
 #searchResultsHeader th {
-    font-size: 0.7em;
+   /* font-size: 0.7em; */
 }
 #searchResults {
     width: 100%;
-    height: 350px; 
+    height: 100%;
     overflow: auto;
 }
 
@@ -317,12 +349,12 @@ form {
     background-color: white;
 }
 #searchResults td {
-    font-size: 0.7em;
+   /* font-size: 0.7em; */
     border-bottom: 1px solid gray;
     padding: 1px 5px 1px 5px;
 }
 .highlight { background-color: #ff9; }
-.blue_highlight { background-color: #336699; color: white; }
+.blue_highlight { background-color: #BBCCDD; color: white; }
 #am {
     border-bottom: 1px solid lightgrey;
     color: #00c;
@@ -336,40 +368,40 @@ form {
 <body class="body_top">
 
 <div id="searchCriteria">
-<form method='post' name='theform' action='find_appt_popup.php?providerid=<?php echo $providerid ?>&catid=<?php echo $input_catid ?>'>
+<form method='post' name='theform' action='./find_appt_popup_user.php?providerid=<?php echo attr($providerid) ?>&catid=<?php echo attr($input_catid) ?>'>
    <input type="hidden" name='bypatient' />
 
-   <?php xl('Start date:','e'); ?>
+   <?php echo xlt('Start date:'); ?>
 
 
-   <input type='text' name='startdate' id='startdate' size='10' value='<?php echo $sdate ?>'
-    title='yyyy-mm-dd starting date for search'/>
-    
-   <img src='../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
+   <input type='text' name='startdate' id='startdate' size='10' value='<?php echo $sdate ?> ' readonly='readonly'
+    title='<?php echo xla('This Date is set by the Clinic and cannot be Changed'); ?>'/>
+
+  <!-- <img src='../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
     id='img_date' border='0' alt='[?]' style='cursor:pointer'
-    title='<?php xl('Click here to choose a date','e'); ?>'>
+    title='<?php //xl('Click here to choose a date','e'); ?>'>-->
 
 
-   <?php xl('for','e'); ?>
-   <input type='text' name='searchdays' size='3' value='<?php echo $searchdays ?>'
-    title='Number of days to search from the start date' />
-   <?php xl('days','e'); ?>&nbsp;
-   <input type='submit' value='<?php xl('Search','e'); ?>'>
+   <?php echo xlt('for'); ?>
+   <input type='text' name='searchdays' size='3' value='<?php echo attr($searchdays) ?>'
+    title='<?php echo xla('Number of days to search from the start date'); ?>' />
+   <?php echo xlt('days'); ?>&nbsp;
+   <input type='submit' value='<?php echo xla('Search'); ?>'>
 </div>
 
 <?php if (!empty($slots)) : ?>
 
 <div id="searchResultsHeader">
-<table>
+<table class='table table-bordered'>
  <tr>
-  <th class="srDate"><?php xl ('Day','e'); ?></th>
-  <th class="srTimes"><?php xl ('Available Times','e'); ?></th>
+  <th class="srDate"><?php echo xlt('Day'); ?></th>
+  <th class="srTimes"><?php echo xlt('Available Times'); ?></th>
  </tr>
 </table>
 </div>
 
 <div id="searchResults">
-<table> 
+<table class='table table-condensed table-inversed table-bordered'>
 <?php
     $lastdate = "";
     $ampmFlag = "am"; // establish an AM-PM line break flag
@@ -436,7 +468,7 @@ form {
 
 <!-- for the pop up calendar -->
 <script language='JavaScript'>
- Calendar.setup({inputField:"startdate", ifFormat:"%Y-%m-%d", button:"img_date"});
+ <!--Calendar.setup({inputField:"startdate", ifFormat:"%Y-%m-%d", button:"img_date"});-->
 
 // jQuery stuff to make the page a little easier to use
 
