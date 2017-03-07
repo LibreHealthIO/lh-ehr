@@ -142,6 +142,11 @@ a:hover {
     text-decoration: none;
 }
 
+.sorting_1:hover{
+    cursor:pointer;
+    color:#ff5555;
+}
+
 /* see .titlebar below */
 .title_bar {
     font-family: sans-serif;
