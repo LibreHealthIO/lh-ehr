@@ -226,7 +226,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css"
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css" >
 <link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 
 <script type="text/javascript" src="../../library/textformat.js"></script>

@@ -83,7 +83,7 @@ function generateDateQualifierSelect($name,$options,$obj)
   <div id="form-div">
    <div class='container'>
    <style>form label{font-weight:normal;}</style>
-<form method=post <?php echo "name='my_form' " .  "action='$rootdir/forms/misc_billing_options/save.php?id=" . attr($formid) . "'>\n";?>
+<form method=post <?php echo "name='my_form' " .  "action='$rootdir/forms/misc_billing_options/save.php?id=" . attr($formid) . "'>\n";?> >
 
 <span class="title"><?php echo xlt('Misc Billing Options for HCFA-1500'); ?></span><br><br>
 <span class=text><?php echo xlt('Checked box = yes ,  empty = no');?><br><br>
@@ -143,7 +143,7 @@ function generateDateQualifierSelect($name,$options,$obj)
 <br><br>
 <tr>
  <td><span class=text><?php echo xlt('BOX 18. Hospitalization date from');?>:</span></td>
- <td><?php $hospitalization_date_from = $obj{"hospitalization_date_from"}; ?>
+  <td><?php $hospitalization_date_from = $obj{"hospitalization_date_from"}; ?>
    <input type='text' name='hospitalization_date_from' id="hospitalization_date_from"
           size='10' value='<?php echo oeFormatShortDate(attr($hospitalization_date_from)) ?>'/>
   </td>
@@ -186,7 +186,6 @@ function generateDateQualifierSelect($name,$options,$obj)
 </div>
 
 <script language="javascript">
-
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){

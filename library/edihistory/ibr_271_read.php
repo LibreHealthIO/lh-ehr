@@ -1477,7 +1477,7 @@ function ibr_271_csv_data($ar_277_vals) {
     
     /* *** code goes here **** */
     $csv271['file']['filename'] = $ar_elig['BHT']['FILE'];
-    $ar_elig['BHT']['controlnum'] = 
+    $ar_elig['BHT']['controlnum'] = $ar_elig['BHT']['FILE'];
     
     
     

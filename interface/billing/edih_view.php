@@ -69,7 +69,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         <table cols=2> 
         <tr vertical-align="middle">
          <td align="center">       
-            <form id='upload_new' action="edi_history_main.php" method="POST" enctype="multipart/form-data">
+            <form id='upload_new' action="edi_history_main.php" method="post" enctype="multipart/form-data">
                 <fieldset>
                 <legend><?php echo xlt("Select one or more files to upload"); ?></legend> 
                 <input id="upload_file" type="file" name="fileUplMulti[]" multiple /> 

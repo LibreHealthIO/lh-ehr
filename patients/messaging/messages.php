@@ -85,7 +85,7 @@ function getAuthPortalUsers(){
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<title><?php echo xlt("Secure Messaging"?></title>
+<title><?php echo xlt("Secure Messaging")?></title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="Mail Application" />
 <link href="<?php echo $GLOBALS['fonts_path']; ?>/font-awesome-4-6-3/css/font-awesome.min.css" type="text/css" rel="stylesheet">

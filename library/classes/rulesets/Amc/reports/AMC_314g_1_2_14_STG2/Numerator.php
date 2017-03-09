@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Ensoftek
  * @link    http://librehealth.io
  */
@@ -39,5 +39,5 @@ class AMC_314g_1_2_14_STG2_Numerator implements AmcFilterIF
 
         }
     }
-}
+
 ?>

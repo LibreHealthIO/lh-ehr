@@ -420,7 +420,7 @@ $returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_enco
 <textarea name="bronchitis_treatment" rows="4" cols="67" wrap="virtual name"></textarea>
 
 <br></br>
-<input type="Button" value="<?php xl('Check Input Data','e'); ?>" style="color: #483D8B" onClick = "onset_check(my_form)"<br> 
+<input type="Button" value="<?php xl('Check Input Data','e'); ?>" style="color: #483D8B" onClick = "onset_check(my_form)"><br> 
 <br>
 <a href="javascript:top.restoreSession();document.my_form.submit();" class="link_submit">[<?php xl('Save','e'); ?>]</a>
 <br>

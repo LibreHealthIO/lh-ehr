@@ -122,7 +122,7 @@ class OnsiteActivityViewReporter extends Reporter{
             ,`users`.`active` as Active
             ,`users`.`utitle` as Utitle
             ,`users`.`physician_type` as PhysicianType ";
-        sql .= "From onsite_portal_activity Left Join
+        $sql .= "From onsite_portal_activity Left Join
   patient_data On onsite_portal_activity.patient_id = patient_data.pid Left Join
   users On patient_data.providerID = users.id ";
 

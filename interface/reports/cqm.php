@@ -137,7 +137,6 @@ else {
 
 <script LANGUAGE="JavaScript">
 
- var mypcc = '<?php echo text($GLOBALS['phone_country_code']) ?>';
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
