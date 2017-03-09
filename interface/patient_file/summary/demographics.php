@@ -7,7 +7,7 @@
  *  The changes to this file as of November 16 2016 to include the insurance inactivate enhancement
  *  are covered under the terms of the Mozilla Public License, v. 2.0
  *
- * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  * No previous copyright information. This is an original OpenEMR program.
  *
  *
@@ -26,7 +26,7 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Brady Miller <brady@sparmy.com>
  * @author Terry Hill <teryhill@librehealth.io>
  * @link http://librehealth.io
@@ -59,7 +59,7 @@ $fake_register_globals=false;
  ////////////
  require_once(dirname(__FILE__)."/../../../library/appointments.inc.php");
  
- if ($GLOBALS['concurrent_layout'] && isset($_GET['set_pid'])) {
+  if (isset($_GET['set_pid'])) {
   include_once("$srcdir/pid.inc");
   setpid($_GET['set_pid']);
  }
@@ -232,12 +232,7 @@ font-size:10pt;
 
  // Called by the deleteme.php window on a successful delete.
  function imdeleted() {
-<?php if ($GLOBALS['concurrent_layout']) { ?>
   parent.left_nav.clearPatient();
-<?php } else { ?>
-  top.restoreSession();
-  top.location.href = '../main/main_screen.php';
-<?php } ?>
  }
 
  function newEvt() {
@@ -440,7 +435,6 @@ $(document).ready(function(){
 // JavaScript stuff to do when a new patient is set.
 //
 function setMyPatient() {
-<?php if ($GLOBALS['concurrent_layout']) { ?>
  // Avoid race conditions with loading of the left_nav or Title frame.
  if (!parent.allFramesLoaded()) {
   setTimeout("setMyPatient()", 500);
@@ -482,7 +476,6 @@ function setMyPatient() {
  parent.left_nav.setRadio(othername, 'enc');
  parent.frames[othername].location.href = '../encounter/encounter_top.php?set_encounter=' + <?php echo attr($encounter);?> + '&pid=' + <?php echo attr($pid);?>;
 <?php } // end setting new encounter id (only if new pid is also set) ?>
-<?php } // end concurrent layout ?>
 }
 
 $(window).load(function() {
@@ -1586,7 +1579,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
      $pres = sqlStatement($query, array($pid) );
 
     // appointments expand collapse widget
-        $widgetTitle = xl("Past Appoinments");
+        $widgetTitle = xl("Past Appointments");
         $widgetLabel = "past_appointments";
         $widgetButtonLabel = '';
         $widgetButtonLink = '';
@@ -1610,7 +1603,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
             if ($row['pc_hometext'] != "") {
                 $etitle = xl('Comments').": ".($row['pc_hometext'])."\r\n".$etitle;
             }
-            echo "<a href='javascript:oldEvt(" . htmlspecialchars($row['pc_eid'],ENT_QUOTES) . ")' title='" . htmlspecialchars($etitle,ENT_QUOTES) . "'>";
+            echo "<a href='javascript:oldEvt(" . htmlspecialchars(preg_replace("/-/", "", $row['pc_eventDate']),ENT_QUOTES) . ', ' . htmlspecialchars($row['pc_eid'],ENT_QUOTES) . ")' title='" . htmlspecialchars($etitle,ENT_QUOTES) . "'>";
             echo "<b>" . htmlspecialchars(xl($dayname) . ", " . $row['pc_eventDate'],ENT_NOQUOTES) . "</b>" . xlt("Status") .  "(";
             echo " " .  generate_display_field(array('data_type'=>'1','list_id'=>'apptstat'),$row['pc_apptstatus']) . ")<br>";   // can't use special char parser on this
             echo htmlspecialchars("$disphour:$dispmin ") . xl($dispampm) . " ";

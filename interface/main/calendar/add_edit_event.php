@@ -461,7 +461,7 @@ if ($_POST['form_action'] == "save") {
                         "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                         "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                         "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
-                        "pc_endDate = '" . add_escape_custom(fixDate($_POST['form_enddate'])) . "', " .
+                        "pc_endDate = '" . add_escape_custom(prepareDateBeforeSave($_POST['form_enddate'])) . "', " .
                         "pc_duration = '" . add_escape_custom(($duration * 60)) . "', " .
                         "pc_recurrtype = '" . add_escape_custom($my_recurrtype) . "', " .
                         "pc_recurrspec = '" . add_escape_custom(serialize($recurrspec)) . "', " .
@@ -554,7 +554,7 @@ if ($_POST['form_action'] == "save") {
                     "pc_room = '" . add_escape_custom($_POST['form_room']) . "', " .
                     "pc_informant = '" . add_escape_custom($_SESSION['authUserID']) . "', " .
                     "pc_eventDate = '" . add_escape_custom($event_date) . "', " .
-                    "pc_endDate = '" . add_escape_custom(fixDate($_POST['form_enddate'])) . "', " .
+                    "pc_endDate = '" . add_escape_custom(prepareDateBeforeSave($_POST['form_enddate'])) . "', " .
                     "pc_duration = '" . add_escape_custom(($duration * 60)) . "', " .
                     "pc_recurrtype = '" . add_escape_custom($my_recurrtype) . "', " .
                     "pc_recurrspec = '" . add_escape_custom(serialize($recurrspec)) . "', " .
@@ -849,11 +849,18 @@ if ($_POST['form_action'] == "save") {
 td { font-size:0.8em; }
 </style>
 
+<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
+
 <script type="text/javascript" src="../../../library/topdialog.js"></script>
 <script type="text/javascript" src="../../../library/dialog.js"></script>
 <script type="text/javascript" src="../../../library/textformat.js"></script>
+<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
+<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
+<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
 
 <script language="JavaScript">
+
+ var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 
  var durations = new Array();
@@ -1161,7 +1168,7 @@ $classpati='';
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php date($DateFormat, strtotime(attr($date)));  ?>'/   
+    value='<?php echo oeFormatShortDate(attr($date));  ?>'/>  
     
 
   </td>
@@ -1453,7 +1460,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'ap
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_enddate' id='form_enddate'
-          value='<?php date($DateFormat, strtotime(attr($row['pc_endDate'])));  ?>'/>
+          value='<?php echo oeFormatShortDate(attr($row['pc_endDate'])) ?>'/>
 <?php
 if ($repeatexdate != "") {
     $tmptitle = "The following dates are excluded from the repeating series";
@@ -1527,7 +1534,7 @@ if ($repeatexdate != "") {
 <input type='button' name='form_duplicate' id='form_duplicate' value='<?php echo xla('Create Duplicate');?>' />
 </p></td></tr></table>
 <?php if ($informant) echo "<p class='text'>" . xlt('Last update by') . " " .
-  text($informant) . " " . xlt('on') . " " . text($row['pc_time']) . "</p>\n"; ?>
+  text($informant) . " " . xlt('on') . " " . text(oeFormatDateTime($row['pc_time'])) . "</p>\n"; ?>
 </center>
 </form>
 
