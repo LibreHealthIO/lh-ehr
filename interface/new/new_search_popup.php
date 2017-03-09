@@ -18,6 +18,7 @@ $fake_register_globals=false;
 require_once("../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/formatting.inc.php");
 
 $fstart = $_REQUEST['fstart'] + 0;
 
@@ -245,7 +246,7 @@ if ($result) {
     echo  "<td class='srID'>".htmlspecialchars( $relevance, ENT_NOQUOTES)."</td>\n";
     echo  "<td class='srName'>" . htmlspecialchars( $iter['lname'] . ", " . $iter['fname'], ENT_NOQUOTES) . "</td>\n";
     foreach ($extracols as $field_id => $title) {
-      echo "<td class='srMisc'>" . htmlspecialchars( $iter[$field_id], ENT_NOQUOTES) . "</td>\n";
+      echo "<td class='srMisc'>" . htmlspecialchars( oeFormatShortDate($iter[$field_id]), ENT_NOQUOTES) . "</td>\n";
     }
   }
 }
@@ -278,14 +279,8 @@ var SelectPatient = function (eObj) {
 // For the old layout we load a frameset that also sets up the new pid.
 // The new layout loads just the demographics frame here, which in turn
 // will set the pid and load all the other frames.
-if ($GLOBALS['concurrent_layout']) {
   $newPage = "../patient_file/summary/demographics.php?set_pid=";
   $target = "document";
-}
-else {
-  $newPage = "../patient_file/patient_file.php?set_pid=";
-  $target = "top";
-}
 ?>
   objID = eObj.id;
   var parts = objID.split("~");

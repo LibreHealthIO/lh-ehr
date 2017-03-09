@@ -24,6 +24,7 @@ $fake_register_globals=false;
 include_once('../../globals.php');
 include_once("$srcdir/patient.inc");
 include_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/formatting.inc.php");
 
 $info_msg = "";
 
@@ -136,11 +137,11 @@ form {
 if(isset($_GET["res"])){
 echo '
 <script language="Javascript">
-			// Pass the variable to parent hidden type and submit
-			opener.document.theform.resname.value = "noresult";
-			opener.document.theform.submit();
-			// Close the window
-			window.self.close();
+            // Pass the variable to parent hidden type and submit
+            opener.document.theform.resname.value = "noresult";
+            opener.document.theform.submit();
+            // Close the window
+            window.self.close();
 </script>';
 }
 ?>
@@ -235,7 +236,7 @@ foreach ($result as $iter) {
     echo "</td>\n";
     echo "  <td class='srPhone'>" . htmlspecialchars( $iter['phone_home'], ENT_NOQUOTES) . "</td>\n"; //(CHEMED) Search by phone number
     echo "  <td class='srSS'>" . htmlspecialchars( $iter['ss'], ENT_NOQUOTES) . "</td>\n";
-    echo "  <td class='srDOB'>" . htmlspecialchars( $iter['DOB'], ENT_NOQUOTES) . "</td>\n";
+    echo "  <td class='srDOB'>" . htmlspecialchars(oeFormatShortDate( $iter['DOB']), ENT_NOQUOTES) . "</td>\n";
     echo "  <td class='srID'>" . htmlspecialchars( $iter['pid'], ENT_NOQUOTES) . "</td>\n";
     echo " </tr>";
 }
