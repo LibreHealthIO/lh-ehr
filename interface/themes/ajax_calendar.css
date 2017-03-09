@@ -14,7 +14,8 @@ div.tiny { width:1px; height:1px; font-size:1px; }
     cursor: default;
 }
 #printview, #dayview, #weekview, #monthview {
-    cursor: pointer; cursor: hand;
+    cursor: pointer; 
+    cursor: hand;
 }
 #functions {
     width: 13.5%; /* can't make this 25% for some reason */
@@ -135,7 +136,8 @@ div.tiny { width:1px; height:1px; font-size:1px; }
     background-color: #FFF2E8;
 }
 #datePicker .tdDatePicker {
-    cursor: pointer; cursor: hand;
+    cursor: pointer; 
+    cursor: hand;
 }
 #datePicker .tdWeekend-small {
     font-family: Arial, Helvetica, sans-serif;
