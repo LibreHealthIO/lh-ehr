@@ -966,8 +966,8 @@ $GLOBALS_METADATA = array(
       'bool',                           // data type
       '0',                              // default = false
       xl('Show Supervising Physician on Fee Sheet.')
-    ),    
-    
+    ),
+
     'ordering_physician_in_feesheet' => array(
       xl('Show Ordering Physician on Fee Sheet'),
       'bool',                           // data type
@@ -995,7 +995,7 @@ $GLOBALS_METADATA = array(
       'Contractor',
       xl('Label Title for Contract Physician on Fee Sheet')
     ),
-    
+
     'allow_appointments_in_feesheet' => array(
       xl('Allow Scheduling of Appointments from Fee Sheet'),
       'bool',                           // data type
@@ -1122,6 +1122,13 @@ $GLOBALS_METADATA = array(
        'num',                           // data type
        '1.00',
       xl('Total Minimum Dollar Amount of Statement to Allow Printing.(only applicable if Allow Statement to be Excluded from Printing is enabled)')
+    ),
+
+    'disallow_print_deceased' => array(
+      xl('Disallow Printing for Deceased Patients'),
+       'bool',                         // data type
+       '0',                            // default = false
+      xl('This will disallow printing of statements for deceased patients')
     ),
 
       'statement_bill_note_print' => array(
@@ -2042,14 +2049,14 @@ $GLOBALS_METADATA = array(
        '1',
       xl('Enables the ability to download documents in the Onsite Patient Portal by the user.')
     ),
-    
+
     'portal_onsite_appt_modify' => array(
       xl('Allow Users to Schedule Appointments in the Patient Portal'),
       'bool',                           // data type
       '0',                              // default = false
       xl('Allow Users to Schedule Appointments in the Patient Portal.')
     ),
- 
+
     'portal_onsite_appt_modify' => array(
       xl('Allow Patient Modification of Appointments'),
       'bool',                           // data type
@@ -2063,18 +2070,18 @@ $GLOBALS_METADATA = array(
       '14',                            // Default
       xl('Number of Days from today to start Patients choice of Appointments in Onsite Patient Portal.')
     ),
-    
+
     'portal_search_days' => array(
       xl('Number of Days for Patient choice of Appointments'),
       'num',                           // data type
       '7',                             // Default
       xl('Number of Days for Patient choice of Appointments in Onsite Patient Portal.')
     ),
-    
+
     'portal_default_status' => array(
       xl('Default Status for Appointment Creation in the Patient Portal'),
       'status',                           // data type
-      '- None',                                 // default = none 
+      '- None',                                 // default = none
       xl('Default Status for Appointment Creation in the Patient Portal.')
     ),
 
