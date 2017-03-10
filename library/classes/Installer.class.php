@@ -567,7 +567,8 @@ $config = 1; /////////////
     $backup_file = $this->get_backup_filename();
     $cmd = "mysqldump -u " . escapeshellarg($login) .
       " -p" . escapeshellarg($pass) .
-      " --opt --skip-extended-insert --quote-names -r $backup_file " .
+      " --opt --quote-names -r $backup_file " .
+      //" --opt --skip-extended-insert --quote-names -r $backup_file " .  Comment out above line and enable this to have really slow DB duplication.
       escapeshellarg($dbase);
     
     $tmp0 = exec($cmd, $tmp1=array(), $tmp2);
