@@ -131,8 +131,8 @@ var webroot_url="<?php echo $web_root; ?>";
 
     (function($) {
         $.fn.drags = function(opt) {
-
-          opt = $.extend({handle:"",cursor:"ew-resize", min: 20}, opt);
+          // Min set as 40/200 = 0.2 = 20% size of screen
+          opt = $.extend({handle:"",cursor:"ew-resize", min: 40}, opt);
 
             if(opt.handle === "") {
                 var $el = this;
@@ -173,8 +173,9 @@ var webroot_url="<?php echo $web_root; ?>";
 
                         var total = prev.outerWidth() + next.outerWidth();
 
-                        var leftPercentage = (((e.pageX - prev.offset().left) + (pos_x - drg_w / 2)) / total) * 100;
-                        var rightPercentage = (100 - leftPercentage);
+                        // Each tab has a flex grow of 100 hence their sum must be 200
+                        var leftPercentage = (((e.pageX - prev.offset().left) + (pos_x - drg_w / 2)) / total) * 200;
+                        var rightPercentage = (200 - leftPercentage);
 
                         if(leftPercentage < opt.min || rightPercentage < opt.min)  {
                           return;
