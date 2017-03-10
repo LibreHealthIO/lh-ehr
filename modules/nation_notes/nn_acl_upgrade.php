@@ -27,7 +27,7 @@ $acl_version = 0;
 }
 
 // Upgrade against baseline
-require_once('nn_config.inc')
+require_once('nn_config.inc');
 
 if ($acl_version < $upgrade_acl) {
   echo "<B>Upgrading GACL for Nation Notes :</B></BR>";

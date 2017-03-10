@@ -84,7 +84,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <html>
 <head>
 <?php if (function_exists('html_header_show')) html_header_show(); ?>
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css"
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>

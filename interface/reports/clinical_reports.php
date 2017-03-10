@@ -78,7 +78,6 @@ function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
     <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script language="JavaScript">
 
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
