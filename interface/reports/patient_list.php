@@ -69,15 +69,15 @@ else {
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script> <!-- Including jquery plugin to handle uncaught ReferenceError $  -->
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <script language="JavaScript">
-
-$(document).ready(function() {
- top.printLogSetup(document.getElementById('printbutton'));
-});
-
+	$(document).ready(function() {
+ 		top.printLogSetup(document.getElementById('printbutton'));
+	});
 </script>
+
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <style type="text/css">
 
