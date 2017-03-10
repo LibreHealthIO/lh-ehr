@@ -56,7 +56,7 @@ elseif (substr($GLOBALS['ptkr_end_date'],0,1) == 'D') {
    $ptkr_future_time = mktime(0,0,0,date('m') ,date('d')+$ptkr_time,date('Y'));
 }
 
-$form_to_date = date('Y-m-d', $ptkr_future_time);
+$form_to_date = date($DateFormat, $ptkr_future_time);
 # This needs some more thought.
 if ($GLOBALS['status_default']) {
     $stat_default = substr($GLOBALS['status_default'],0,1);
@@ -67,11 +67,11 @@ If ($GLOBALS['status_default'] == 'All') {
 $facility  = !is_null($_POST['form_facility']) ? $_POST['form_facility'] : null;
 $form_apptstatus = !is_null($_POST['form_apptstatus']) ? $_POST['form_apptstatus'] : $stat_default;
 $form_apptcat=null;
-$form_from_date = !is_null($_POST['form_from_date']) ? $_POST['form_from_date'] : date("Y-m-d");
+$form_from_date = !is_null($_POST['form_from_date']) ? $_POST['form_from_date'] : date($DateFormat);
 if($GLOBALS['ptkr_date_range']) {
    $form_to_date = !is_null($_POST['form_to_date']) ? $_POST['form_to_date'] : $form_to_date;
 } else {
-   $form_to_date = !is_null($_POST['form_from_date']) ? $_POST['form_from_date'] : date("Y-m-d"); 
+   $form_to_date = !is_null($_POST['form_from_date']) ? $_POST['form_from_date'] : date($DateFormat); 
 }
 if(isset($_POST['form_apptcat']))
 {
@@ -84,8 +84,8 @@ if(isset($_POST['form_apptcat']))
 $appointments = array();
 #define variables, allow changing the to_date and from_date 
 #to allow picking a date to review
-$from_date = $form_from_date; 
-$to_date = $form_to_date;
+$from_date = DateToYYYYMMDD($form_from_date); 
+$to_date = DateToYYYYMMDD($form_to_date);
 $datetime = date("Y-m-d H:i:s");
 # go get the information and process it
 $appointments = fetch_Patient_Tracker_Events($from_date, $to_date, $provider, $facility, $form_apptstatus, $form_apptcat);
@@ -120,16 +120,13 @@ foreach ( $appointments as $apt ) {
 <head>
 <title><?php echo xlt("Flow Board") ?></title>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
-<!-- pop up calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_en.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script language="JavaScript">
 // Refresh self
 function refreshme() {
@@ -274,11 +271,11 @@ function openNewTopWindow(newpid,newencounterid) {
             <tr>
                 <td class='label'><?php if($GLOBALS['ptkr_date_range']) { echo xlt('From'); } else { echo xlt('Date'); }?>:</td>
                 <td><input type='text' size='9' name='form_from_date' id="form_from_date"
-                           value='<?php echo (oeFormatShortDate(attr($form_from_date))) ?>'>                
+                           value='<?php echo (attr($form_from_date)) ?>'>                
                 <?php if($GLOBALS['ptkr_date_range']) { ?>
                 <td class='label'><?php echo xlt('To'); ?>:</td>
                 <td><input type='text' size='9' name='form_to_date' id="form_to_date"
-                           value='<?php echo (oeFormatShortDate(attr($form_to_date))) ?>'>
+                           value='<?php echo (attr($form_to_date)) ?>'>
                 </td>
                 <?php } ?>
                 </tr>
@@ -301,15 +298,15 @@ function openNewTopWindow(newpid,newencounterid) {
 <div id="flowboard_header">
   <?php if (count($chk_prov) == 1) {?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>
-      <h2><span style='float: left'><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text(oeFormatShortDate($from_date)) . ' ' . xlt('to'). ' ' . text(oeFormatShortDate($to_date)) ?></span></h2>
+      <h2><span style='float: left'><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></span></h2>
     <?php } else { ?>
-      <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' : '. xlt('Date') . ' ' . text(oeFormatShortDate($from_date)) ?></span></h2>
+      <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' : '. xlt('Date') . ' ' . text($form_from_date) ?></span></h2>
     <?php } ?>
   <?php } else { ?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>
-      <h2><span style='float: left'><?php echo xlt('Appointments Date Range'). ' : ' . text(oeFormatShortDate($from_date)) . ' ' . xlt('to'). ' ' . text(oeFormatShortDate($to_date)) ?></span></h2>
+      <h2><span style='float: left'><?php echo xlt('Appointments Date Range'). ' : ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></span></h2>
   <?php } else { ?>
-      <h2><span style='float: left'><?php echo xlt('Appointment Date'). ' : ' . text(oeFormatShortDate($from_date)) ?></span></h2>
+      <h2><span style='float: left'><?php echo xlt('Appointment Date'). ' : ' . text($form_from_date) ?></span></h2>
   <?php } ?>
   <?php } ?>
  <div id= 'inanewwindow' class='inanewwindow'>
@@ -651,20 +648,18 @@ if(!is_null($_POST['form_to_date']) ){
 <input type='hidden' name='encounterID'    value='0' />
 </form>
 </body>
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
         $("#form_from_date").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
- <?php if ($GLOBALS['ptkr_date_range']) { ?>
+        <?php if ($GLOBALS['ptkr_date_range']) { ?>
         $("#form_to_date").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
- <?php } ?>
+        <?php } ?>
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
 </script>
