@@ -5,7 +5,7 @@ namespace ESign;
 /**
  * Implementation of ButtonIF for encounter module
  * 
- * Copyright (C) 2013 OEMR 501c3 www.oemr.org
+ * Copyright (C) 2013 LibreHealth EHR
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@ namespace ESign;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Ken Chapple <ken@mi-squared.com>
  * @author  Medical Information Integration, LLC
  * @link    http://librehealth.io
@@ -34,7 +34,7 @@ class Encounter_Button implements ButtonIF
     public function __construct( $encounterId )
     {
         $this->_viewer = new Viewer();
-        $this->_viewer->target = $GLOBALS['concurrent_layout'] ? "_parent" : "Main";
+        $this->_viewer->target = "_parent";
         $this->_viewer->encounterId = $encounterId;
     }
     
