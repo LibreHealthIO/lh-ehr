@@ -33,7 +33,8 @@
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
-	zoom: 1; /* Feeling sorry for IE */
+	/*zoom: 1;*/ /* Feeling sorry for IE */
+	transform: scale(1); /*For firefox. Also zoom affects positioning differently in different browsers.*/
 }
 
 .dataTables_processing {
@@ -79,7 +80,7 @@
 	height: 19px;
 	float: left;
 	cursor: pointer;
-	*cursor: hand;
+	cursor: hand;
 	color: #111 !important;
 }
 .paginate_disabled_previous:hover, .paginate_enabled_previous:hover,
@@ -154,7 +155,7 @@ table.display thead th {
 	border-bottom: 1px solid black;
 	font-weight: bold;
 	cursor: pointer;
-	* cursor: hand;
+	cursor: hand;
 }
 
 table.display tfoot th {
@@ -264,7 +265,7 @@ tr.even {
 }
 
 .dataTables_scrollBody {
-	*margin-top: -1px;
+	margin-top: -1px;
 }
 
 .top, .bottom {
@@ -329,11 +330,12 @@ td.details {
  	.paging_full_numbers a.paginate_active {
 	border: 1px solid #aaa;
 	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
+	border-radius : 5px;
+	/*-moz-border-radius: 5px;*/
 	padding: 2px 5px;
 	margin: 0 3px;
 	cursor: pointer;
-	*cursor: hand;
+	cursor: hand;
 	color: #333 !important;
 }
 
