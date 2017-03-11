@@ -132,6 +132,12 @@ include_once("../../library/acl.inc");
 </td>
 <?php } ?>
 
+<td valign="middle" align="right" nowrap>
+&nbsp;<a class=menu href="../main/main_screen.php" target="_top" class="menu"
+ onclick="top.restoreSession()"
+ title=<?php xl('Exit from Administration','e'); ?>><?php xl('Back','e');?></a>&nbsp;&nbsp;
+</td>
+
 
 </tr>
 </table>
