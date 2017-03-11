@@ -111,7 +111,8 @@ $(document).ready(function() {
 	oTable.fnFilter( this.value, $("thead input").index(this) );
  });
 
- <?php if ( $defaultFilterValue && $defaultFilterIndex ) { ?>
+ <?php if ( $defaultFilterValue !== null &&
+    $defaultFilterIndex !== null ) { ?>
     oTable.fnFilter( "<?php echo $defaultFilterValue; ?>", <?php echo $defaultFilterIndex; ?> );
  <?php } ?>
 
