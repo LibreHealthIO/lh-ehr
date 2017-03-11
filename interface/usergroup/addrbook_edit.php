@@ -76,6 +76,11 @@ td { font-size:10pt; }
  font-size:9pt;
  font-weight:bold;
 }
+
+  input:disabled 
+  {
+    background:   #dddddd;
+  }
 </style>
 
 <script language="JavaScript">
@@ -407,7 +412,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Email'); ?>:</b></td>
   <td>
-      <input type='entry' size='40' name='form_email' id = 'email_id' onblur="validateEmail(this.value)"  maxlength='250' 
+      <input type='entry' size='40' name='form_email' id = 'email_id' onblur="validateEmail()"  maxlength='250' 
              value='<?php echo attr($row['email']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -416,7 +421,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Trusted Email'); ?>:</b></td>
   <td>
-   <input type='entry' size='40' name='form_email_direct' onblur="validateEmail(this.value)" maxlength='250'
+   <input type='entry' size='40' name='form_email_direct' id = 'trusted_email' onblur="validateEmail()" maxlength='250'
     value='<?php echo attr($row['email_direct']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -515,7 +520,7 @@ td { font-size:10pt; }
 
 <br />
 
-<input type='submit' name='form_save' value='<?php echo xla('Save'); ?>' />
+<input type='submit' name='form_save' id="form_save" value='<?php echo xla('Save'); ?>' />
 
 <?php if ($userid && !$row['username']) { ?>
 &nbsp;
@@ -533,20 +538,36 @@ td { font-size:10pt; }
     
     function validateEmail(emailField)
     {
+        var email = $('#email_id').val();
+        var trusted_email = $('#trusted_email').val();
         var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        if (reg.test(emailField) == false) 
+        if (reg.test(email) == false && email!='' ) 
         {
             alert('Invalid Email Address');
+            document.getElementById("form_save").disabled = true;  
             return false;
         }
-
-        return true;
+        if (reg.test(trusted_email) == false && trusted_email!='' ) 
+        {
+            alert('Invalid Trusted Email Address');
+            document.getElementById("form_save").disabled = true;
+            return false;
+        }
+        
+        else
+        {
+            document.getElementById("form_save").disabled = false ; 
+            return false;
+            
+        }
+        
     } 
     
-    
-    
+        
     
 </script>
+
+
 </body>
 </html>
