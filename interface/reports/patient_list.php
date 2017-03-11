@@ -372,7 +372,6 @@ if (!$_POST['form_csvexport']) {
 </form>
 </body>
 
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
