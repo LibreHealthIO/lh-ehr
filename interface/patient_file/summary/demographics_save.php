@@ -23,7 +23,7 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
  * No other authors listed in original program header.
  * @link http://librehealth.io
@@ -139,9 +139,5 @@ updatePatientData($pid, $newdata['patient_data']);
 
     }
 
-if ($GLOBALS['concurrent_layout']) {
  include_once("demographics.php");
-} else {
- include_once("patient_summary.php");
-}
 ?>
