@@ -658,6 +658,7 @@ if (! $GLOBALS['simplified_demographics']) {
       $(function() {
           $("#i<?php echo $i?>subscriber_DOB").datetimepicker({
               timepicker: false,
+              maxDate:0,
               format: "<?= $DateFormat; ?>"
           });
           $.datetimepicker.setLocale('<?= $DateLocale;?>');
