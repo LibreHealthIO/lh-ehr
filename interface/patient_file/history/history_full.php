@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
@@ -176,7 +176,7 @@ function smoking_statusClicked(cb)
      {
      document.getElementById('form_tobacco').selectedIndex = 6;
      }
-	 radioChange(document.getElementById('form_tobacco').value);	 
+     radioChange(document.getElementById('form_tobacco').value);     
 }
 
 // The ID of the input element to receive a found code.
@@ -218,8 +218,8 @@ $(document).ready(function(){
 
 <style type="text/css">
 div.tab {
-	height: auto;
-	width: auto;
+    height: auto;
+    width: auto;
 }
 </style>
 
@@ -251,7 +251,7 @@ $fres = sqlStatement("SELECT * FROM layout_options " .
         <a href="javascript:submit_history();" class='css_button'>
             <span><?php echo htmlspecialchars(xl('Save'),ENT_NOQUOTES); ?></span>
         </a>
-        <a href="history.php" <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
+        <a href="history.php" class="css_button" onclick="top.restoreSession()">
             <span><?php echo htmlspecialchars(xl('Back To View'),ENT_NOQUOTES); ?></span>
         </a>
     </div>

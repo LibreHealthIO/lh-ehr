@@ -89,7 +89,7 @@ if ($mode == "simple") {
     </span>
   </div>
   <div>
-    <a href="../summary/demographics.php" <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?> class="css_button" onclick="top.restoreSession()">
+    <a href="../summary/demographics.php" class="css_button" onclick="top.restoreSession()">
       <span><?php echo htmlspecialchars( xl('Back To Patient'), ENT_NOQUOTES);?></span>
     </a>
   </div>
@@ -244,7 +244,7 @@ else {
       <tbody>
 <?php
       $sql = "SELECT a.id, a.due_status, a.category, a.item, a.date_created, a.date_sent, a.voice_status, " .
-      				"a.sms_status, a.email_status, a.mail_status, b.fname, b.lname, b.hipaa_allowemail, b.hipaa_allowsms " .
+                    "a.sms_status, a.email_status, a.mail_status, b.fname, b.lname, b.hipaa_allowemail, b.hipaa_allowsms " .
         "FROM `patient_reminders` as a, `patient_data` as b " .
         "WHERE a.active='1' AND a.pid=b.pid " . $add_sql .
         "ORDER BY " . add_escape_custom($sortby) . " " .
