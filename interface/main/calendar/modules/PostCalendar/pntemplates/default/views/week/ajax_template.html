@@ -480,6 +480,11 @@ foreach ($providers as $provider) {
                 // skip events for other providers
                 if ($providerid != $e1['aid']) { continue; }
 
+                // skip cancelled appointments
+                if ($GLOBALS['display_canceled_appointments'] != 1){
+                   if ($event['apptstatus'] == "x") { continue; }
+                }
+
                 // specially handle all-day events
                 if ($e1['alldayevent'] == 1) {
                     $tmpTime = $times[0];
@@ -530,6 +535,11 @@ foreach ($providers as $provider) {
             // skip events for other providers
             // yeah, we've got that sort of overhead here... it ain't perfect
             if ($providerid != $event['aid']) { continue; }
+            
+            // skip cancelled appointments
+            if ($GLOBALS['display_canceled_appointments'] != 1){
+               if ($event['apptstatus'] == "x") { continue; }
+            }
 
             // skip events without an ID (why they are in the loop, I have no idea)
             if ($event['eid'] == "") { continue; }
@@ -583,6 +593,12 @@ foreach ($providers as $provider) {
                 foreach ($events as $outevent) {
                     // skip events for other providers
                     if ($providerid != $outevent['aid']) { continue; }
+                    
+                    // skip cancelled appointments
+                    if ($GLOBALS['display_canceled_appointments'] != 1){
+                       if ($event['apptstatus'] == "x") { continue; }
+                    }
+
                     // skip events with blank IDs
                     if ($outevent['eid'] == "") { continue; }
 

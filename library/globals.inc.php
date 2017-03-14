@@ -1509,6 +1509,13 @@ $GLOBALS_METADATA = array(
       xl('Check this if you want providers to see all appointments by default and not just their own.')
     ),
 
+    'display_canceled_appointments' => array(
+      xl('Display Canceled Appointments in Calendar'),
+       'bool',                          // data type
+       '1',                             // default
+      xl('Display Canceled Appointments in Calendar.')
+    ), 
+
     'auto_create_new_encounters' => array(
       xl('Auto-Create New Encounters'),
        'bool',                          // data type
