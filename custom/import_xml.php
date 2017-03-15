@@ -121,71 +121,77 @@
   if ($olddata['squad'] && ! acl_check('squads', $olddata['squad']))
    die("You are not authorized to access this squad.");
 
-  newPatientData(
-   $olddata['id'],
-   $apatient['title'],
-   $apatient['fname'],
-   $apatient['lname'],
-   $apatient['mname'],
-   $apatient['sex'],
-   $apatient['dob'],
-   $apatient['street'],
-   $apatient['zip'],
-   $apatient['city'],
-   $apatient['state'],
-   $apatient['country'],
-   $apatient['ss'],
-   $apatient['occupation'],
-   $apatient['phone_home'],
-   $apatient['phone_biz'],
-   $apatient['phone_contact'],
-   $apatient['status'],
-   $apatient['contact_relationship'],
-   $apatient['referrer'],
-   $apatient['referrerID'],
-   $apatient['email'],
-   $apatient['language'],
-   $apatient['ethnoracial'],
-   $apatient['interpreter'],
-   $apatient['migrantseasonal'],
-   $apatient['family_size'],
-   $apatient['monthly_income'],
-   $apatient['homeless'],
-   fixDate($apatient['financial_review']),
-   $apatient['pubpid'],
-   $pid,
-   $olddata['providerID'],
-   $apatient['genericname1'],
-   $apatient['genericval1'],
-   $apatient['genericname2'],
-   $apatient['genericval2'],
-   $apatient['billing_note'],
-   $apatient['phone_cell'],
-   $apatient['hipaa_mail'],
-   $apatient['hipaa_voice'],
-   $olddata['squad']
-  );
+  if(!$alertmsg)
+  {
+  	newPatientData(
+   		$olddata['id'],
+   		$apatient['title'],
+   		$apatient['fname'],
+   		$apatient['lname'],
+   		$apatient['mname'],
+   		$apatient['sex'],
+   		$apatient['dob'],
+   		$apatient['street'],
+   		$apatient['zip'],
+   		$apatient['city'],
+   		$apatient['state'],
+   		$apatient['country'],
+   		$apatient['ss'],
+   		$apatient['occupation'],
+   		$apatient['phone_home'],
+   		$apatient['phone_biz'],
+   		$apatient['phone_contact'],
+   		$apatient['status'],
+   		$apatient['contact_relationship'],
+   		$apatient['referrer'],
+   		$apatient['referrerID'],
+   		$apatient['email'],
+   		$apatient['language'],
+   		$apatient['ethnoracial'],
+   		$apatient['interpreter'],
+   		$apatient['migrantseasonal'],
+   		$apatient['family_size'],
+   		$apatient['monthly_income'],
+   		$apatient['homeless'],
+   		fixDate($apatient['financial_review']),
+   		$apatient['pubpid'],
+   		$pid,
+   		$olddata['providerID'],
+   		$apatient['genericname1'],
+   		$apatient['genericval1'],
+   		$apatient['genericname2'],
+   		$apatient['genericval2'],
+   		$apatient['billing_note'],
+   		$apatient['phone_cell'],
+   		$apatient['hipaa_mail'],
+   		$apatient['hipaa_voice'],
+   		$olddata['squad']
+  	);
 
-  newEmployerData(
-   $pid,
-   $aemployer['name'],
-   $aemployer['street'],
-   $aemployer['zip'],
-   $aemployer['city'],
-   $aemployer['state'],
-   $aemployer['country']
-  );
+  	newEmployerData(
+   		$pid,
+   		$aemployer['name'],
+   		$aemployer['street'],
+   		$aemployer['zip'],
+   		$aemployer['city'],
+   		$aemployer['state'],
+   		$aemployer['country']
+  	);
 
-  setInsurance($pid, $ainsurance, $asubscriber, '1');
-  setInsurance($pid, $ainsurance, $asubscriber, '2');
-  setInsurance($pid, $ainsurance, $asubscriber, '3');
-
-  echo "<html>\n<body>\n<script language='JavaScript'>\n";
-  if ($alertmsg) echo " alert('$alertmsg');\n";
-  echo " if (!opener.closed && opener.refreshme) opener.refreshme();\n";
-  echo " window.close();\n";
-  echo "</script>\n</body>\n</html>\n";
-  exit();
+  	setInsurance($pid, $ainsurance, $asubscriber, '1');
+  	setInsurance($pid, $ainsurance, $asubscriber, '2');
+  	setInsurance($pid, $ainsurance, $asubscriber, '3');
+  }
+  else
+  {
+  	echo "<html>\n<body>\n<script language='JavaScript'>\n";
+  	//if ($alertmsg) 
+	echo " alert('$alertmsg');\n";
+  	/*echo " if (!opener.closed && opener.refreshme) opener.refreshme();\n";
+  	echo " window.close();\n";*/
+  	echo "</script>\n</body>\n</html>\n";
+  	//exit();
+  }
  }
 ?>
 <html>
