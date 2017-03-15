@@ -1450,6 +1450,13 @@ $GLOBALS_METADATA = array(
       xl('Number of Appointments to display in the Onsite Patient Portal')
     ),
 
+    'appt_overbook_statuses' => array(
+        xl('Appointment Overbook Statuses'),
+        'text',                           // data type
+        'x, ?, %, ^, =, &',                              // default
+        xl('Override the statuses that would make an event appear available using find-available')
+    ),
+
     'appt_display_sets_option' => array(
       xl('Appointment Display Sets - Ignore Display Limit (Last Set)'),
        'bool',                           // data type
