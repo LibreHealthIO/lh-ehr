@@ -287,8 +287,8 @@ td { font-size:10pt; }
   // customize the form via the type options
   typeSelect("<?php echo attr($row['abook_type']); ?>");
   //making changes to reflect appropriate value of type selcted.
-  if("<?php echo attr($row['abook_type']); ?>" === 'ord_lab') {
-    $('#cpoe_span').css('display','inline');
+  if(typeof abook_type != 'undefined' && abook_type == 'ord_lab'){
+	$('#cpoe_span').css('display','inline');
    }
  });
 </script>
