@@ -5,10 +5,10 @@
 *
 */
 
-function add_action( $key, $callback )
+function add_action( $key, $callback, $priority = 0 )
 {
     $system = \PluginSystem\PluginSystem::getInstance();
-    $system->addAction( $key, $callback );
+    $system->addAction( $key, $callback, $priority );
 }
 
 function do_action( $key, & $args = null )
