@@ -134,17 +134,18 @@ form {
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
 <!-- ViSolve: Verify the noresult parameter -->
 <?php
-if(isset($_GET["res"])){
-echo '
-<script language="Javascript">
-            // Pass the variable to parent hidden type and submit
-            opener.document.theform.resname.value = "noresult";
-            opener.document.theform.submit();
-            // Close the window
-            window.self.close();
-</script>';
-}
+	if(isset($_GET["res"]) && $_GET['res'] == "noresult")
+	{
+		echo '
+			<script language="Javascript">
+            			//Pass the variable to parent hidden type and submit
+                        	opener.document.location="../../new/new.php";
+				//Close the window
+            			window.self.close();
+			</script>';
+	}
 ?>
+
 <!-- ViSolve: Verify the noresult parameter -->
 
 <script language="JavaScript">
