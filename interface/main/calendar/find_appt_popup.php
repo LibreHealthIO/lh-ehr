@@ -40,9 +40,20 @@
 
  $input_catid = $_REQUEST['catid'];
 
+ // These are the default "overbooked" statuses, which means that
+ // Even though there is an event, an appointment can be booked
+ // These can be overridden by a plugin by adding overbook_statuses action
+ function default_overbook_statuses()
+ {
+     return [ 'x', '?', '%', '^', '=' , '&' ];
+ }
+ add_action( 'overbook_statuses', 'default_overbook_statuses' );
+
+ $overbookStatuses = do_action( 'overbook_statuses' );
+
  // Record an event into the slots array for a specified day.
- function doOneDay($catid, $udate, $starttime, $duration, $prefcatid) {
-  global $slots, $slotsecs, $slotstime, $slotbase, $slotcount, $input_catid;
+ function doOneDay($catid, $udate, $starttime, $duration, $prefcatid, $apptstatus) {
+  global $slots, $slotsecs, $slotstime, $slotbase, $slotcount, $input_catid, $overbookStatuses;
   $udate = strtotime($starttime, $udate);
   if ($udate < $slotstime) return;
   $i = (int) ($udate / $slotsecs) - $slotbase;
@@ -66,6 +77,9 @@
    } else if ($catid == 3) { // out of office
     $slots[$i] |= 2;
     break; // ignore any positive duration for OUT
+   } else if ( in_array( $apptstatus, $overbookStatuses ) ) {
+     // The slot can be overbooked IF the appointment is in this status
+     $slots[$i] |= 1;
    } else { // all other events reserve time
     $slots[$i] |= 4;
    }
@@ -135,7 +149,7 @@
 
   // Note there is no need to sort the query results.
   $query = "SELECT pc_eventDate, pc_endDate, pc_startTime, pc_duration, " .
-   "pc_recurrtype, pc_recurrspec, pc_alldayevent, pc_catid, pc_prefcatid " .
+   "pc_recurrtype, pc_recurrspec, pc_alldayevent, pc_catid, pc_prefcatid, pc_apptstatus " .
    "FROM libreehr_postcalendar_events " .
    "WHERE pc_aid = ? AND " .
    "pc_eid != ? AND " .
@@ -193,7 +207,7 @@
      // not the desired occurrence, or if this date is in the exception array.
      if (!$repeatix && !in_array($thisymd, $exdates)) {
       doOneDay($row['pc_catid'], $thistime, $row['pc_startTime'],
-       $row['pc_duration'], $row['pc_prefcatid']);
+       $row['pc_duration'], $row['pc_prefcatid'], $row['pc_apptstatus']);
      }
      if (++$repeatix >= $repeatfreq) $repeatix = 0;
 
@@ -243,7 +257,7 @@
     }
    } else {
     doOneDay($row['pc_catid'], $thistime, $row['pc_startTime'],
-     $row['pc_duration'], $row['pc_prefcatid']);
+     $row['pc_duration'], $row['pc_prefcatid'], $row['pc_apptstatus']);
    }
   }
 
