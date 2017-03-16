@@ -832,5 +832,17 @@ function divclick(cb, divid) {
 <script language='JavaScript'>
  newtype(<?php echo $type_index ?>);
 </script>
+
+<script>
+    $(function() {
+        $("#form_begin, #form_end").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
+</script>
+
+
 </body>
 </html>
