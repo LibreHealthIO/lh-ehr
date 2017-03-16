@@ -286,8 +286,9 @@ td { font-size:10pt; }
  $(document).ready(function() {
   // customize the form via the type options
   typeSelect("<?php echo attr($row['abook_type']); ?>");
-  if(abook_type == 'ord_lab') {
-    $('#cpoe_span').css('display','inline');
+  //making changes to reflect appropriate value of type selcted.
+  if(typeof abook_type != 'undefined' && abook_type == 'ord_lab'){
+	$('#cpoe_span').css('display','inline');
    }
  });
 </script>
