@@ -107,12 +107,25 @@ body
 .tabSpan
 {
     margin: 0 0 0 0;
-    padding:  0 0 0 0;
-    border: 2px solid black;
+    padding: 5px;
+    border-left: 1px;
+    border-right: 1px;
+    border-top: 1px;
+    border-bottom: 0;
+    border-style: solid;
+    border-color: black;
     border-radius: 6px 6px 0 0;
     cursor: pointer;
     font-weight: bold;
     flex: 0 1 auto;
+}
+
+.tabFloat
+{
+    border: 1px solid black;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    margin-right: 2px;
 }
 
 .tabSpan:hover
