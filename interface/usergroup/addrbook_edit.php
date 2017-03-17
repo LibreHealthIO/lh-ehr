@@ -62,6 +62,7 @@
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/input_validate.js"></script>
 
 <style>
 td { font-size:10pt; }
@@ -407,7 +408,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Email'); ?>:</b></td>
   <td>
-   <input type='entry' size='40' name='form_email' maxlength='250'
+   <input type='entry' size='40' name='form_email' onblur="validate(this.form,this.name,'email')" maxlength='250'
     value='<?php echo attr($row['email']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -416,7 +417,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Trusted Email'); ?>:</b></td>
   <td>
-   <input type='entry' size='40' name='form_email_direct' maxlength='250'
+   <input type='entry' size='40' name='form_email_direct' onblur="validate(this.form,this.name,'email')" maxlength='250'
     value='<?php echo attr($row['email_direct']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -425,7 +426,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Website'); ?>:</b></td>
   <td>
-   <input type='entry' size='40' name='form_url' maxlength='250'
+   <input type='entry' size='40' name='form_url' onblur="validate(this.form,this.name,'url')" maxlength='250'
     value='<?php echo attr($row['url']); ?>'
     style='width:100%' class='inputtext' />
   </td>
