@@ -133,19 +133,6 @@ form {
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
 <!-- ViSolve: Verify the noresult parameter -->
-<?php
-if(isset($_GET["res"])){
-echo '
-<script language="Javascript">
-            // Pass the variable to parent hidden type and submit
-            opener.document.theform.resname.value = "noresult";
-            opener.document.theform.submit();
-            // Close the window
-            window.self.close();
-</script>';
-}
-?>
-<!-- ViSolve: Verify the noresult parameter -->
 
 <script language="JavaScript">
 
@@ -190,9 +177,6 @@ echo '
 <div id="searchstatus"><?php echo htmlspecialchars( xl('Enter your search criteria above'), ENT_NOQUOTES); ?></div>
 <?php elseif (count($result) == 0): ?>
 <div id="searchstatus" class="noResults"><?php echo htmlspecialchars( xl('No records found. Please expand your search criteria.'), ENT_NOQUOTES); ?>
-<br>
-<!--VicarePlus :: If pflag is set the new patient create link will not be displayed --!>
-<a class="noresult" href='find_patient_popup.php?res=noresult' <?php if(isset($_GET['pflag'])) { ?> style="display:none;" <?php } ?>  ><?php echo htmlspecialchars( xl('Click Here to add a new patient.'), ENT_NOQUOTES); ?></a>
 </div>
 <?php elseif (count($result)>=100): ?>
 <div id="searchstatus" class="tooManyResults"><?php echo htmlspecialchars( xl('More than 100 records found. Please narrow your search criteria.'), ENT_NOQUOTES); ?></div>
