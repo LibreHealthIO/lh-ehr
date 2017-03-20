@@ -27,7 +27,38 @@ STEP 1:AT FIRST DOWNLOAD XAMPP FROM THIS SITE:<a href="https://www.apachefriends
 <TD>
 <BR>
 <font color="#000000"><font size="4" style="font-size: 14pt">
-STEP 2:INSTALL AND RUN XAMPP:
+<p><h3>STEP 2:INSTALL  XAMPP then make these changes:----</h3><br>
+Firstly make sure that you have XAMPP server installed and the time zone is set correctly.<br>
+Make the following changes in php.ini file. You can find the php.ini file by looking at the following destination :<br>
+In case of XAMPP: C:/xampp/php/php.ini.<br>
+Make the following changes in your php.ini file : (Search for the following and make necessary changes)
+<p style="margin-left: 5%;">
+<br>
+	short_open_tag = On
+<br>
+	max_execution_time = 600
+<br>
+	max_input_time = 600
+<br>
+	max_input_vars = 5000
+<br>
+	memory_limit = 1024M
+<br>
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
+<br>
+	register_argc_argv = On
+<br>
+	post_max_size = 32M
+<br>
+	upload_max_filesize = 16M
+<br>
+	session.gc_maxlifetime = 14400
+<br>
+
+<h3>Start XAMPP Server.</h3><br>
+Sometimes , installation may take more time than usual on some systems. In that case, you would need to increase max_execution_time in your php.ini file and then restart your server.
+<br>
+</p>
 <BR>
 <img src="images/3.png" name="Image1" align="left" width="1109" height="483" border="0"/>
 </TD</TR>
