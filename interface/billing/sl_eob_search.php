@@ -287,6 +287,7 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
       //    detail  = array of details, see invoice_summary.inc.php
       //
       if ($stmt['cid'] != $row['pid']) {
+        fwrite($fhprint, make_statement($stmt));
         if (!empty($stmt)) ++$stmt_count;
         $stmt['cid'] = $row['pid'];
         $stmt['pid'] = $row['pid'];
@@ -367,12 +368,11 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
        }
         else    continue;
     }
-    else
-    fwrite($fhprint, make_statement($stmt));
     
   } // end while
 
     if (!empty($stmt)) ++$stmt_count;
+    fwrite($fhprint, make_statement($stmt));
     fclose($fhprint);
     sleep(1);
 
