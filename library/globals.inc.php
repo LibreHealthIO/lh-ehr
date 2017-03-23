@@ -493,7 +493,8 @@ $GLOBALS_METADATA = array(
     'gbl_currency_symbol' => array(
       xl('Currency Designator'),
        'text',                          // data type
-       '$',                             // default
+       '$',                             // default US Dollars
+       '€',                             // Euros
       xl('Code or symbol to indicate currency')
     ),
     'age_display_format'=>array(xl('Age Display Format'),
