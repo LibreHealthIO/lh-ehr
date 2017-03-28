@@ -1,5 +1,5 @@
-#Installation Instructions
-
+# Installation Instructions
+Last Updated: March 28, 2017
 
 ### Table of Contents
 
@@ -64,7 +64,7 @@ If you don't already have it, download and install [Apache](www.apache.org), [Ma
   * PHP libcurl support (optional for operation, mandatory for billing)
   
 4. If installing on Linux, make sure these dependencies are met:
-   ```
+```
 apache2
 mysql-server (or if using mariadb, then use 'mariadb-server' instead)
 libapache2-mod-php
@@ -89,7 +89,7 @@ imagemagick
 php-mbstring
 php-zip
 php-ldap
-  ```
+```
 
 
 Copy the LibreHealthEHR folder into the root folder of the webserver. On Mandrake Linux, for example, use the command:
@@ -212,6 +212,8 @@ Deny from all
 </Directory>
 ```
 
+For proper access to all pages of the website, enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
+
 The final screen includes some additional instructions and important information. We suggest you print these instructions for future reference.
 
 Once the system has been configured properly, you may login.  Connect to the webserver where the files are stored with your web browser.  Login to the system using the username that you picked (default is `admin`), and the password.  From there, select the `Administration` option, and customize the system to your needs.  Add users and groups as is needed. For information on using LibreHealthEHR, consult the User Documentation located in the `Documentation` folder, the documentation at [LibreHealth](http://librehealth.io/).
@@ -258,8 +260,6 @@ libreehr/sites/default/letter_templates
 ```
 
 If there are other files that you have customized, then you will also need to treat those carefully.
-
-To upgrade the database, run the `sql_upgrade.php` script from your web browser (for example: `http://libreehr.location/sql_upgrade.php`).  It will prompt you to select the old release number, and will display the SQL commands issued as the upgrade occurs.
 
 ## FAQ
 
