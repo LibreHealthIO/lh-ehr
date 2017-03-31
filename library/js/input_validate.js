@@ -28,8 +28,7 @@
                 handle_submit(form);                                    
             }            
            
-        }           
-                    
+        }   
             
         else if(field_type == "url")
         {
@@ -43,6 +42,35 @@
             
             else
             {
+                text_elem.style.border =  "";   
+                if(submit_button.hasAttribute("disabled"))
+                {       
+                    submit_button.removeAttribute("disabled");
+                    submit_button.style.backgroundColor = "";           
+                } 
+                handle_submit(form);                                                      
+                     
+            }
+                     
+        }         
+        
+        else if(field_type == "tel")
+        {
+            var reg = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/;
+            if (reg.test(field_value) == false && field_value!='' ) 
+            {
+                alert('Invalid Entry');
+                text_elem.style.border =  "thin solid red"; 
+                handle_submit(form);                                  
+            }            
+            else
+            {              
+                var formatted_no = text_elem.value.replace(/\D/g, ''),char = {0:'(',3:') ',6:' - '};
+                text_elem.value = '';
+                for (var i = 0; i < formatted_no.length; i++)
+                {
+                    text_elem.value += (char[i]||'') + formatted_no[i];
+                }
                 text_elem.style.border =  "";   
                 if(submit_button.hasAttribute("disabled"))
                 {       
@@ -74,7 +102,6 @@ function handle_submit(form)
             flag = 1;
             break;
         }
-
     }
     if(flag == 1)
     {
