@@ -32,7 +32,7 @@ $STMT_PRINT_CMD = $GLOBALS['print_command'];
  *
  *  2.  Branded Statement, whose core is build from 1., the original statement, using HTML2PDF.
  *
- *      To customize 2., add your practice location/images/practice_logo.gif 
+ *      To customize 2., add your practice location/images/practice_logo.gif
  *      In the base/default install this is located at '/openemr/sites/default/images/practice_logo.gif',
  *      Adjust directory paths per your installation.
  *      Further customize 2. manually in functions report_2() and create_HTML_statement(), below.
@@ -99,8 +99,13 @@ function report_header_2($stmt,$direction='',$providerID='1') {
 }
 function create_HTML_statement($stmt) {
   if (! $stmt['pid']) return ""; // get out if no data
+
   #minimum_amount_due_to _print
   if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
+
+  // Don't print if decreased
+  if ($GLOBALS['disallow_print_deceased']) return "";
+
   // Facility (service location)
   $atres = sqlStatement("select f.name,f.street,f.city,f.state,f.postal_code,f.attn,f.phone from facility f " .
     " left join users u on f.id=u.facility_id " .
@@ -246,7 +251,7 @@ function create_HTML_statement($stmt) {
     #
   $ageline = xl('Current') .': ' . sprintf("%.2f", $aging[0]);
   for ($age_index = 1; $age_index < ($num_ages - 1); ++$age_index) {
-    $ageline .= ' | ' . ($age_index * 30 + 1) . '-' . ($age_index * 30 + 30) . ':' . 
+    $ageline .= ' | ' . ($age_index * 30 + 1) . '-' . ($age_index * 30 + 30) . ':' .
                 sprintf(" %.2f", $GLOBALS['gbl_currency_symbol'].''.$aging[$age_index]);
   }
   // Fixed text labels
@@ -442,6 +447,9 @@ function create_statement($stmt) {
  #minimum_amount_to _print
  if ($stmt[amount] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
 
+ // Don't print if decreased
+ if ($GLOBALS['disallow_print_deceased']) return "";
+
  // These are your clinics return address, contact etc.  Edit them.
  // TBD: read this from the facility table
 
@@ -451,19 +459,19 @@ function create_statement($stmt) {
     " left join  billing b on b.provider_id=u.id and b.pid = '".$stmt['pid']."' " .
     " where  service_location=1");
   $row = sqlFetchArray($atres);
- 
+
  // Facility (service location)
- 
+
  $clinic_name = "{$row['name']}";
  $clinic_addr = "{$row['street']}";
  $clinic_csz = "{$row['city']}, {$row['state']}, {$row['postal_code']}";
- 
- 
+
+
  // Billing location
  $remit_name = $clinic_name;
  $remit_addr = $clinic_addr;
  $remit_csz = $clinic_csz;
- 
+
  // Contacts
   $atres = sqlStatement("select f.attn,f.phone from facility f " .
     " left join users u on f.id=u.facility_id " .
@@ -474,13 +482,13 @@ function create_statement($stmt) {
  $billing_phone = "{$row['phone']}";
 
  // dunning message setup
- 
+
  // insurance has paid something
  // $stmt['age'] how old is the invoice
- // $stmt['dun_count'] number of statements run 
+ // $stmt['dun_count'] number of statements run
  // $stmt['level_closed'] <= 3 insurance 4 = patient
- 
-if ($GLOBALS['use_dunning_message']) { 
+
+if ($GLOBALS['use_dunning_message']) {
 
    if ($stmt['ins_paid'] != 0 || $stmt['level_closed'] == 4)  {
 
@@ -500,19 +508,19 @@ if ($GLOBALS['use_dunning_message']) {
           break;
        case $stmt{'age'} >= $GLOBALS['fifth_dun_msg_set']:
           $dun_message = $GLOBALS['fifth_dun_msg_text'];
-          break;          
-     }  
+          break;
+     }
     }
  }
  // Text only labels
- 
+
  $label_addressee = xl('ADDRESSEE');
  $label_remitto = xl('REMIT TO');
  $label_chartnum = xl('Chart Number');
  $label_insinfo = xl('Insurance information on file');
  $label_totaldue = xl('Total amount due');
  $label_payby = xl('If paying by');
- $label_cards = xl('VISA/MC/AMEX/Dis');  
+ $label_cards = xl('VISA/MC/AMEX/Dis');
  $label_cardnum = xl('Card');
  $label_expiry = xl('Exp');
  $label_sign = xl('Signature');
@@ -531,7 +539,7 @@ if ($GLOBALS['use_dunning_message']) {
  // reformatted to handle i8n by tony
 
   $out = "\n\n";
-  $providerNAME = getProviderName($stmt['providerID']);  
+  $providerNAME = getProviderName($stmt['providerID']);
   $out .= sprintf("%-30s %s %-s\n",$clinic_name,$stmt['patient'],$stmt['today']);
   $out .= sprintf("%-30s %s: %-s\n",$providerNAME,$label_chartnum,$stmt['pid']);
   $out .= sprintf("%-30s %s\n",$clinic_addr,$label_insinfo);
@@ -557,7 +565,7 @@ $out .= sprintf("_______________________ %s _______________________\n",$label_pg
 $out .= "\n";
 $out .= sprintf("%-11s %-46s %s\n",$label_visit,$label_desc,$label_amt);
 $out .= "\n";
- 
+
  // This must be set to the number of lines generated above.
  //
   $count = 25;
@@ -571,18 +579,18 @@ $out .= "\n";
  // This generates the detail lines.  Again, note that the values must
  // be specified in the order used.
  //
- 
+
 
  foreach ($stmt['lines'] as $line) {
- if ($GLOBALS['use_custom_statement']) {  
+ if ($GLOBALS['use_custom_statement']) {
    $description = substr($line['desc'],0,30);
-   
+
     }
-else {  
+else {
      $description = $line['desc'];
-     
+
       }
-  
+
   $tmp = substr($description, 0, 14);
   if ($tmp == 'Procedure 9920' || $tmp == 'Procedure 9921')
    $description = xl('Office Visit');
@@ -620,7 +628,7 @@ else {
    } else {
     $amount = sprintf("%.2f", $ddata['chg']);
     $desc = $description;
- 
+
    }
 
    $out .= sprintf("%-10s  %-45s%8s\n", oeFormatShortDate($dos), $desc, $amount);
@@ -653,13 +661,13 @@ else {
  $label_dept = xl('Billing Department');
   $label_bill_phone = $GLOBALS['billing_phone_number'];
  $label_appointments = xl('Future Appointments') .':';
- 
+
  // This is the bottom portion of the page.
   $out .= "\n";
  if(strlen($stmt['bill_note']) !=0 && $GLOBALS['statement_bill_note_print']) {
    $out .= sprintf("%-46s\n",$stmt['bill_note']);
 }
- if ($GLOBALS['use_dunning_message']) { 
+ if ($GLOBALS['use_dunning_message']) {
    $out .= sprintf("%-46s\n",$dun_message);
  }
  $out .= "\n";
@@ -673,7 +681,7 @@ else {
  $out .= sprintf("%-s\n",$billing_contact);
   $out .= sprintf("  %-s %-25s\n",$label_dept,$label_bill_phone);
 if($GLOBALS['statement_message_to_patient']) {
- $out .= "\n"; 
+ $out .= "\n";
  $statement_message = $GLOBALS['statement_msg_text'];
  $out .= sprintf("%-40s\n",$statement_message);
 }
@@ -684,7 +692,7 @@ if($GLOBALS['show_aging_on_custom_statement']) {
  $out .= "\n" . $ageline . "\n\n";
 
 }
- if($GLOBALS['number_appointments_on_statement']!=0) { 
+ if($GLOBALS['number_appointments_on_statement']!=0) {
   $out .= "\n";
   $num_appts = $GLOBALS['number_appointments_on_statement'];
   $next_day = mktime(0,0,0,date('m'),date('d')+1,date('Y'));
@@ -698,7 +706,7 @@ if($GLOBALS['show_aging_on_custom_statement']) {
    $next_appoint_date = oeFormatShortDate($events[$j]['pc_eventDate']);
    $next_appoint_time = substr($events[$j]['pc_startTime'],0,5);
    if(strlen(umname) != 0 ) {
-      $next_appoint_provider = $events[$j]['ufname'] . ' ' . $events[$j]['umname'] . ' ' .  $events[$j]['ulname']; 
+      $next_appoint_provider = $events[$j]['ufname'] . ' ' . $events[$j]['umname'] . ' ' .  $events[$j]['ulname'];
    }
    else
    {
@@ -708,11 +716,11 @@ if($GLOBALS['show_aging_on_custom_statement']) {
       $label_plsnote[$j] = xlt('Date') . ': ' . text($next_appoint_date) . ' ' . xlt('Time') . ' ' . text($next_appoint_time) . ' ' . xlt('Provider') . ' ' . text($next_appoint_provider);
       $out .= sprintf("%-s\n",$label_plsnote[$j]);
    }
-   $j++;      
+   $j++;
   }
  }
  $out .= "\014"; // this is a form feed
- 
+
  return $out;
 }
 ?>
