@@ -65,7 +65,7 @@
             }            
             else
             {              
-                var formatted_no = text_elem.value.replace(/\D/g, ''),char = {0:'(',3:') ',6:' - '};
+                var formatted_no = text_elem.value.replace(/\D/g, ''),char = {0:'(',3:')',6:'-'};
                 text_elem.value = '';
                 for (var i = 0; i < formatted_no.length; i++)
                 {
