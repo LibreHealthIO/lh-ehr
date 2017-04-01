@@ -48,8 +48,7 @@
 
 html,
 body {
-  overflow-x: hidden!important;
-  //font-family: 'Source Sans Pro', sans-serif;
+  overflow-x: hidden!important;  
   font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100%;
@@ -93,7 +92,6 @@ body > .header {
 /* Define 2 column template */
 .right-side,
 .left-side {
-  //min-height: 100%;
   display: block;
 }
 /*right side - contins main content*/

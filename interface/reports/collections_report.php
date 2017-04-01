@@ -393,8 +393,7 @@ function checkAll(checked) {
                     </tr>
                 </table>
             </td>
-        </tr>
-        </tr>
+        </tr>        
             <td>
                 <table>
 
@@ -497,8 +496,7 @@ function checkAll(checked) {
                                echo "   </select>\n";
                         ?>
                         </td>
-                    </tr>
-                    </tr>
+                    </tr>                    
                         <td class='label'>
                            <?php echo xlt('Aging Columns') ?>:
                         </td>

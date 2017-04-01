@@ -639,7 +639,7 @@ if (!is_array($_POST['form_provider'])) {
    <b><?php echo xlt('Patient'); ?>:</b>
   </td>
   <td style='padding:0px 5px 5px 0' nowrap>
-   <input class="form-control input-md" type='text' size='10' id='form_patient' name='form_patient'' value='<?php echo attr($patientname) ?>' title='<?php echo xla('Patient'); ?>' readonly />
+   <input class="form-control input-md" type='text' size='10' id='form_patient' name='form_patient' value='<?php echo attr($patientname) ?>' title='<?php echo xla('Patient'); ?>' readonly />
    <input type='hidden' name='form_pid' value='<?php echo attr($patientid) ?>' />
   </td>
   <td nowrap>
