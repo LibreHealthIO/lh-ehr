@@ -62,6 +62,7 @@
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="../../library/js/input_validate.js"></script>
 
 <style>
 td { font-size:10pt; }
@@ -377,21 +378,22 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Home Phone'); ?>:</b></td>
   <td>
-   <input type='entry' size='15' name='form_phone' value='<?php echo attr($row['phone']); ?>'
+   <input type='tel' size='15' name='form_phone' onblur="validate(this.form,this.name,'tel')" value='<?php echo attr($row['phone']); ?>'
     title='<?php echo xla("Example (123)456-7890") #at some point we need to make these phone number tips a settable variable ?>' maxlength='30' class='inputtext' />&nbsp;&nbsp;&nbsp;
-   <b><?php echo xlt('Mobile'); ?>:</b> &nbsp;&nbsp;&nbsp;<input type='entry' size='15' name='form_phonecell'
-    title='<?php echo xla("Example (123)456-7890") ?>' maxlength='30' value='<?php echo attr($row['phonecell']); ?>' class='inputtext' />
+   <b><?php echo xlt('Mobile'); ?>:</b> &nbsp;&nbsp;&nbsp;<input type='tel' size='15' onblur="validate(this.form,this.name,'tel')" name='form_phonecell'
+    title='<?php echo xla("Example (123)456-7890") ?>' maxlength='30' 
+    <?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('State','e') : xl('Locality','e') ?>: value='<?php echo attr($row['phonecell']); ?>' class='inputtext' />
   </td>
  </tr>
 
  <tr>
   <td nowrap><b><?php echo xlt('Work Phone'); ?>:</b></td>
   <td>
-   <input type='entry' size='15' name='form_phonew1' value='<?php echo attr($row['phonew1']); ?>'
+   <input type='tel' size='15' name='form_phonew1' onblur="validate(this.form,this.name,'tel')" value='<?php echo attr($row['phonew1']); ?>'
     title='<?php echo xla("Example (123)456-7890") ?>' maxlength='30' class='inputtext' />&nbsp;&nbsp;&nbsp;
-   <b><?php echo xlt('2nd'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='15' name='form_phonew2' value='<?php echo attr($row['phonew2']); ?>'
+   <b><?php echo xlt('2nd'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='tel' size='15' name='form_phonew2' onblur="validate(this.form,this.name,'tel')"  value='<?php echo attr($row['phonew2']); ?>'
     title='<?php echo xla("Example (123)456-7890") ?>' maxlength='30' class='inputtext' />&nbsp;&nbsp;&nbsp;
-   <b><?php echo xlt('Fax'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='15' name='form_fax' value='<?php echo attr($row['fax']); ?>'
+   <b><?php echo xlt('Fax'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='tel' size='15' name='form_fax' onblur="validate(this.form,this.name,'tel')" value='<?php echo attr($row['fax']); ?>'
     title='<?php echo xla("Example (123)456-7890") #at some point we need to make these phone number tips a settable variable ?>' maxlength='30' class='inputtext' />
   </td>
  </tr>
@@ -408,7 +410,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Email'); ?>:</b></td>
   <td>
-   <input type='entry' size='40' name='form_email' maxlength='250'
+   <input type='entry' size='40' name='form_email' onblur="validate(this.form,this.name,'email')" maxlength='250'
     value='<?php echo attr($row['email']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -417,7 +419,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Trusted Email'); ?>:</b></td>
   <td>
-   <input type='entry' size='40' name='form_email_direct' maxlength='250'
+   <input type='entry' size='40' name='form_email_direct' onblur="validate(this.form,this.name,'email')" maxlength='250'
     value='<?php echo attr($row['email_direct']); ?>'
     style='width:100%' class='inputtext' />
   </td>
@@ -426,7 +428,7 @@ td { font-size:10pt; }
  <tr>
   <td nowrap><b><?php echo xlt('Website'); ?>:</b></td>
   <td>
-   <input type='entry' size='40' name='form_url' maxlength='250'
+   <input type='entry' size='40' name='form_url' onblur="validate(this.form,this.name,'url')" maxlength='250'
     value='<?php echo attr($row['url']); ?>'
     style='width:100%' class='inputtext' />
   </td>
