@@ -415,7 +415,9 @@ function openNewTopWindow(newpid,newencounterid) {
 
 <?php
     $prev_appt_date_time = "";
-    foreach ( $appointments as $appointment ) {
+
+    $overbookStatuses = array_map('trim', explode( ',', $GLOBALS['appt_overbook_statuses'] ) );
+	foreach ( $appointments as $appointment ) {
 
                 # Collect appt date and set up squashed date for use below
                 $date_appt = $appointment['pc_eventDate'];
@@ -432,6 +434,11 @@ function openNewTopWindow(newpid,newencounterid) {
                 $status = (!empty($appointment['status'])) ? $appointment['status'] : $appointment['pc_apptstatus'];
                 $appt_room = (!empty($appointment['room'])) ? $appointment['room'] : $appointment['pc_room'];
                 $appt_time = (!empty($appointment['appttime'])) ? $appointment['appttime'] : $appointment['pc_startTime'];
+                if ( in_array( $status, $overbookStatuses )) {
+                    $appt_canceled = true;
+                } else {
+                    $appt_canceled = false;
+                }
                 $appt_date_time = $date_appt .' '. $appt_time;  // used to find flag double booked
                 $tracker_id = $appointment['id'];
                 # reason for visit
@@ -482,12 +489,16 @@ function openNewTopWindow(newpid,newencounterid) {
          <?php echo oeFormatShortDate($date_appt) ?>
          </td>
          <?php }
+            // flag possible double booked, ignoring canceled appt types
+            //  and skipping of ALL providers are viewed
             $apptflagtd = '<td class="detail" align="center">';
-            if ($GLOBALS['ptkr_flag_dblbook']) {
-                if ($appt_date_time === $prev_appt_date_time) {
-                    $apptflagtd = '<td class="detail" align="center" bgcolor="orange">';
+            if ((count($chk_prov) == 1 ) and $appt_canceled != true) {
+                if ($GLOBALS['ptkr_flag_dblbook']) {
+                    if ($appt_date_time === $prev_appt_date_time) {
+                        $apptflagtd = '<td class="detail" align="center" bgcolor="orange">';  //TODO Make color configurable
+                    }
+                    $prev_appt_date_time = $appt_date_time;
                 }
-                $prev_appt_date_time = $appt_date_time;
             }
          echo $apptflagtd;  // <TD ..>
             echo oeFormatTime($appt_time);
