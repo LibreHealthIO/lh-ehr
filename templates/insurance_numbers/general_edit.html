@@ -45,7 +45,7 @@
 <tr> <td style="border-style:none;" colspan="5">
 <br>
 <b><span>{if $ins->get_id() eq ""}{xl t='Add Provider Number'}{else}{xl t='Update Provider Number'}{/if}</span></b><br>
-	<table width="100%"><tr>
+    <table width="100%"><tr>
         <td style="border-style:none;" width="200px" VALIGN="MIDDLE" >{xl t='Insurance Company'}</td>
         <td style="border-style:none;" VALIGN="MIDDLE" >
                 {if $ins->get_id() eq ""}
@@ -71,7 +71,7 @@
         <td style="border-style:none;" VALIGN="MIDDLE" >{xl t='Rendering Provider Number'}</td>
         <td style="border-style:none;" VALIGN="MIDDLE" >
                 <input type="text" size="20" name="rendering_provider_number" value="{$ins->get_rendering_provider_number()}" onKeyDown="PreventIt(event)" />
-		</td>
+        </td>
 </tr>
 <tr>
         <td style="border-style:none;" VALIGN="MIDDLE" >{xl t='Rendering Provider Number'} ({xl t='Type'})</td>
@@ -89,12 +89,12 @@
 <tr>
         <td style="border-style:none;" colspan="2">
                 {if $ins->get_id() eq ""}
-                	<a href="javascript:submit_insurancenumbers_add();" class="css_button"><span>{xl t='Save'}</span></a>
+                    <a href="javascript:submit_insurancenumbers_add();" class="css_button"><span>{xl t='Save'}</span></a>
                 {else}
-                   	<a href="javascript:submit_insurancenumbers_update();" class="css_button"><span>{xl t='Save'}</span></a>
+                    <a href="javascript:submit_insurancenumbers_update();" class="css_button"><span>{xl t='Save'}</span></a>
                 {/if}
 
-		<a href="controller.php?practice_settings&insurance_numbers&action=list"  {php} if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; {/php} class="css_button" onclick="top.restoreSession()">
+        <a href="controller.php?practice_settings&insurance_numbers&action=list" class="css_button" onclick="top.restoreSession()">
 <span>{xl t='Cancel'}</span></a>
 </td> </tr>
 {php} } else { {/php}
@@ -123,7 +123,7 @@ function submit_insurancenumbers_update() {
 function submit_insurancenumbers_add() {
     top.restoreSession();
     document.provider.submit();
-	//Z&H Removed redirection
+    //Z&H Removed redirection
 }
 
 function Waittoredirect(delaymsec) {

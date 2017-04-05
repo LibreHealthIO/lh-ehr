@@ -26,12 +26,12 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
  * no other authors present in header file
- * @link http://www.libreehr.org
+ * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 
@@ -368,12 +368,6 @@ foreach ($code_types as $key => $value) {
 </head>
 <body class="body_top" >
 
-<?php if ($GLOBALS['concurrent_layout']) {
-} else { ?>
-<a href='patient_encounter.php?codefrom=superbill' target='Main'>
-<span class='title'><?php echo xlt('Superbill Codes'); ?></span>
-<font class='more'><?php echo text($tback);?></font></a>
-<?php } ?>
 
 <form method='post' action='superbill_custom_full.php' name='theform'>
 

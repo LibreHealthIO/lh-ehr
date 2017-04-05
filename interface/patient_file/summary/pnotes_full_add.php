@@ -21,7 +21,7 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/gprelations.inc.php");
 
-if ($GLOBALS['concurrent_layout'] && $_GET['set_pid']) {
+if ($_GET['set_pid']) {
     require_once("$srcdir/pid.inc");
     setpid($_GET['set_pid']);
 }
@@ -173,7 +173,7 @@ document.forms[0].submit();
 $title_docname = "";
 if ($docid) {
   $title_docname .= " " . xl("linked to document") . " ";
-  $d = new Document($docid);	
+  $d = new Document($docid);    
   $title_docname .= $d->get_url_file();
 }
 if ($orderid) {
@@ -323,11 +323,10 @@ if ($result_count == $N) {
 <script language='JavaScript'>
 
 <?php
-if ($GLOBALS['concurrent_layout'] && $_GET['set_pid']) {
+if ($_GET['set_pid']) {
   $ndata = getPatientData($patient_id, "fname, lname, pid");
 ?>
- parent.left_nav.setPatient(<?php echo "'" . htmlspecialchars( $ndata['fname']." ".$ndata['lname'], ENT_QUOTES) . "',$patient_id,'" . htmlspecialchars( $ndata['pid'], ENT_QUOTES) . "',window.name"; ?>);
- parent.left_nav.setRadio(window.name, 'pno');
+ parent.left_nav.setPatient(<?php echo "'" . addslashes($ndata['fname']." ".$ndata['lname']) . "'," . addslashes($patient_id) . ",'" . addslashes($ndata['pid']) . "',window.name"; ?>);
 <?php
 }
 
@@ -408,8 +407,8 @@ $(document).ready(function(){
 });
 $(document).ready(function(){
     $("#cancel").click(function() {
-		  parent.$.fn.fancybox.close();
-	 });
+          parent.$.fn.fancybox.close();
+     });
 
 });
 </script>

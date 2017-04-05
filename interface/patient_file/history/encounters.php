@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
  * @link    http://librehealth.io
@@ -83,39 +83,39 @@ if (isset($_GET['billing']))
 
 //Get Document List by Encounter ID
 function getDocListByEncID($encounter,$raw_encounter_date,$pid){
-	global $ISSUE_TYPES, $auth_med; 
+    global $ISSUE_TYPES, $auth_med; 
 
-	$documents = getDocumentsByEncounter($pid,$encounter);
-	if ( count($documents) > 0 ) {
-		foreach ( $documents as $documentrow) {
-			if ($auth_med) {
-				$irow = sqlQuery("SELECT type, title, begdate FROM lists WHERE id = ? LIMIT 1", array($documentrow['list_id']) );
-				if ($irow) {
-				  $tcode = $irow['type'];
-				  if ($ISSUE_TYPES[$tcode])
-					  $tcode = $ISSUE_TYPES[$tcode][2];
-				  echo text("$tcode: " . $irow['title']);
-				}
-			}
-			else {
-				echo "(" . xlt('No access') . ")";
-			}
+    $documents = getDocumentsByEncounter($pid,$encounter);
+    if ( count($documents) > 0 ) {
+        foreach ( $documents as $documentrow) {
+            if ($auth_med) {
+                $irow = sqlQuery("SELECT type, title, begdate FROM lists WHERE id = ? LIMIT 1", array($documentrow['list_id']) );
+                if ($irow) {
+                  $tcode = $irow['type'];
+                  if ($ISSUE_TYPES[$tcode])
+                      $tcode = $ISSUE_TYPES[$tcode][2];
+                  echo text("$tcode: " . $irow['title']);
+                }
+            }
+            else {
+                echo "(" . xlt('No access') . ")";
+            }
 
-			// Get the notes for this document and display as title for the link.					
-			$queryString = "SELECT date,note FROM notes WHERE foreign_id = ? ORDER BY date";
-			$noteResultSet = sqlStatement($queryString,array($documentrow['id']));
-			$note = '';
-			while ( $row = sqlFetchArray($noteResultSet)) {
-				$note .= oeFormatShortDate(date('Y-m-d', strtotime($row['date']))) . " : " . attr($row['note']) . "\n";
-			}
-			$docTitle = ( $note ) ? $note : xla("View document");
+            // Get the notes for this document and display as title for the link.                   
+            $queryString = "SELECT date,note FROM notes WHERE foreign_id = ? ORDER BY date";
+            $noteResultSet = sqlStatement($queryString,array($documentrow['id']));
+            $note = '';
+            while ( $row = sqlFetchArray($noteResultSet)) {
+                $note .= oeFormatShortDate(date('Y-m-d', strtotime($row['date']))) . " : " . attr($row['note']) . "\n";
+            }
+            $docTitle = ( $note ) ? $note : xla("View document");
 
-			$docHref = $GLOBALS['webroot']."/controller.php?document&view&patient_id=".attr($pid)."&doc_id=".attr($documentrow['id']);
-			echo "<div class='text docrow' id='" . attr($documentrow['id'])."' title='". $docTitle . "'>\n";
-			echo "<a href='$docHref' onclick='top.restoreSession()' >". xlt('Document') . ": " . text(basename($documentrow['url'])) . ' (' . text(xl_document_category($documentrow['name'])) . ')' . "</a>";
-			echo "</div>";
-		}
-	}
+            $docHref = $GLOBALS['webroot']."/controller.php?document&view&patient_id=".attr($pid)."&doc_id=".attr($documentrow['id']);
+            echo "<div class='text docrow' id='" . attr($documentrow['id'])."' title='". $docTitle . "'>\n";
+            echo "<a href='$docHref' onclick='top.restoreSession()' >". xlt('Document') . ": " . text(basename($documentrow['url'])) . ' (' . text(xl_document_category($documentrow['name'])) . ')' . "</a>";
+            echo "</div>";
+        }
+    }
 }
  
 // This is called to generate a line of output for a patient document.
@@ -186,25 +186,14 @@ function toencounter(rawdata) {
     var datestr = parts[1];
 
     top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
     parent.left_nav.setEncounter(datestr, enc, window.name);
-    parent.left_nav.setRadio(window.name, 'enc');
     parent.left_nav.loadFrame('enc2', window.name, 'patient_file/encounter/encounter_top.php?set_encounter=' + enc);
-<?php } else { ?>
-    top.Title.location.href = '../encounter/encounter_title.php?set_encounter='   + enc;
-    top.Main.location.href  = '../encounter/patient_encounter.php?set_encounter=' + enc;
-<?php } ?>
 }
 
 function todocument(docid) {
   h = '<?php echo $GLOBALS['webroot'] ?>/controller.php?document&view&patient_id=<?php echo $pid ?>&doc_id=' + docid;
   top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
-  parent.left_nav.setRadio(window.name, 'doc');
   location.href = h;
-<?php } else { ?>
-  top.Main.location.href = h;
-<?php } ?>
 }
 
  // Helper function to set the contents of a div.
@@ -255,11 +244,6 @@ function efmouseover(elem, ptid, encid, formname, formid) {
 <body class="body_bottom">
 <div id="encounters"> <!-- large outer DIV -->
 
-<?php if ($GLOBALS['concurrent_layout']) { ?>
-<!-- <a href='encounters_full.php'> -->
-<?php } else { ?>
-<!-- <a href='encounters_full.php' target='Main'> -->
-<?php } ?>
 <font class='title'>
 <?php
 if ($issue) {
@@ -534,10 +518,10 @@ while ($result4 = sqlFetchArray($res4)) {
 
             // show encounter reason/title
             echo "<td>".$reason_string;
-			
-			//Display the documents tagged to this encounter
-			getDocListByEncID($result4['encounter'],$raw_encounter_date,$pid);	
-			
+            
+            //Display the documents tagged to this encounter
+            getDocListByEncID($result4['encounter'],$raw_encounter_date,$pid);  
+            
             echo "<div style='padding-left:10px;'>";
 
             // Now show a line for each encounter form, if the user is authorized to
@@ -626,7 +610,7 @@ while ($result4 = sqlFetchArray($res4)) {
                         if ($arid) $arinvoice = ar_get_invoice_summary($pid, $result4['encounter'], true);
                     if ($arid) {
                         $arlinkbeg = "<a href='../../billing/sl_eob_invoice.php?id=" .
-			            htmlspecialchars( $arid, ENT_QUOTES)."'" .
+                        htmlspecialchars( $arid, ENT_QUOTES)."'" .
                                     " target='_blank' class='text' style='color:#00cc00'>";
                         $arlinkend = "</a>";
                     }
