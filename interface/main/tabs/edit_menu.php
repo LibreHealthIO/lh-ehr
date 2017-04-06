@@ -44,8 +44,8 @@
  * JSON EDITOR is included from:
  *   https://github.com/josdejong/jsoneditor
  *   Copyright (C) 2011-2015 Jos de Jong
- *   usage docs etc in js/jsoneditor/docs
-
+ *   usage docs etc in js/jsoneditor/docs 
+ */
 
  /* Include our required headers */
 
