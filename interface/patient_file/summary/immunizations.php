@@ -232,14 +232,18 @@ tr.selected {
 <body class="body_top">
 
     <span class="title"><?php echo htmlspecialchars( xl('Immunizations'), ENT_NOQUOTES); ?></span>
-    <span class=back><?php echo htmlspecialchars( $tback, ENT_NOQUOTES); ?></span></a>
+    <span>
+        <a href="demographics.php" class="css_button" onclick="top.restoreSession()">
+            <span><?php echo htmlspecialchars( xl('Back to Patient'), ENT_NOQUOTES);?></span>
+        </a>
+    </span>
 
-<form action="immunizations.php" name="add_immunization" id="add_immunization">
-<input type="hidden" name="mode" id="mode" value="add">
-<input type="hidden" name="id" id="id" value="<?php echo htmlspecialchars( $id, ENT_QUOTES); ?>"> 
-<input type="hidden" name="pid" id="pid" value="<?php echo htmlspecialchars( $pid, ENT_QUOTES); ?>"> 
-<br>
-      <table border=0 cellpadding=1 cellspacing=1>
+    <form action="immunizations.php" name="add_immunization" id="add_immunization">
+    <input type="hidden" name="mode" id="mode" value="add">
+    <input type="hidden" name="id" id="id" value="<?php echo htmlspecialchars( $id, ENT_QUOTES); ?>"> 
+    <input type="hidden" name="pid" id="pid" value="<?php echo htmlspecialchars( $pid, ENT_QUOTES); ?>"> 
+    <br>
+      <table border="0" cellpadding="1" cellspacing="1">
       <?php
         if ($isAddedError) {
             echo "<tr><font color='red'><b>" . xlt("Entered in Error") . "</b></font></tr>";
@@ -249,8 +253,10 @@ tr.selected {
       <?php if (!($useCVX)) { ?>
         <tr>
           <td align="right">
-            <span class=text>
-              <?php echo htmlspecialchars( xl('Immunization'), ENT_NOQUOTES); ?>            </span>          </td>
+            <span class="text">
+              <?php echo htmlspecialchars( xl('Immunization'), ENT_NOQUOTES); ?>
+            </span>          
+          </td>
           <td>
               <?php
                 // Modified 7/2009 by BM to incorporate the immunization items into the list_options listings
@@ -261,31 +267,39 @@ tr.selected {
       <?php } else { ?>
         <tr>
           <td align="right" valign="top" style="padding-top:4px;">
-            <span class=text>
-              <?php echo htmlspecialchars( xl('Immunization'), ENT_NOQUOTES); ?> (<?php echo htmlspecialchars( xl('CVX Code'), ENT_NOQUOTES); ?>)            </span>          </td>
+            <span class="text">
+              <?php echo htmlspecialchars( xl('Immunization'), ENT_NOQUOTES); ?> (<?php echo htmlspecialchars( xl('CVX Code'), ENT_NOQUOTES); ?>)            
+            </span>          
+          </td>
           <td>
            <input type='text' size='10' name='cvx_code' id='cvx_code'
             value='<?php echo htmlspecialchars($cvx_code,ENT_QUOTES); ?>' onclick='sel_cvxcode(this)'
             title='<?php echo htmlspecialchars( xl('Click to select or change CVX code'), ENT_QUOTES); ?>'
             />
             <div id='cvx_description' style='display:inline; float:right; padding:3px; margin-left:3px; width:400px'>
-                <?php echo htmlspecialchars( xl( $code_text ), ENT_QUOTES); ?>          </div>        </td>
+                <?php echo htmlspecialchars( xl( $code_text ), ENT_QUOTES); ?>          
+            </div>        
+          </td>
         </tr>
       <?php } ?>
         
         <tr>
           <td align="right">
-            <span class=text>
-              <?php echo htmlspecialchars( xl('Date & Time Administered'), ENT_NOQUOTES); ?>            </span>          </td>
-          <td><table border="0">
-     <tr>
-       <td><input type='text' size='14' name="administered_date" id="administered_date"
-            value='<?php echo $administered_date ? date(DateFormatRead(true) . ' H:i', strtotime(text($administered_date))) : date(str_replace('%','',$DateFormat.' H:i')); ?>'
-            title='<?php echo htmlspecialchars( xl('yyyy-mm-dd Hours(24):minutes'), ENT_QUOTES); ?>'
-            />
-        </td>
-     </tr>
-   </table></td>
+            <span class="text">
+              <?php echo htmlspecialchars( xl('Date & Time Administered'), ENT_NOQUOTES); ?>
+            </span>          
+          </td>
+          <td>
+            <table border="0">
+                <tr>
+                  <td><input type='text' size='14' name="administered_date" id="administered_date"
+                       value='<?php echo $administered_date ? date(DateFormatRead(true) . ' H:i', strtotime(text($administered_date))) : date(str_replace('%','',$DateFormat.' H:i')); ?>'
+                       title='<?php echo htmlspecialchars( xl('yyyy-mm-dd Hours(24):minutes'), ENT_QUOTES); ?>'
+                       />
+                   </td>
+                </tr>
+            </table>
+          </td>
         </tr>
         <tr>
           <td align="right"><span class="text"><?php echo htmlspecialchars( xl('Amount Administered'), ENT_NOQUOTES); ?></span></td>
@@ -304,21 +318,27 @@ tr.selected {
         <tr>
           <td align="right">
             <span class=text>
-              <?php echo htmlspecialchars( xl('Immunization Manufacturer'), ENT_NOQUOTES); ?>            </span>          </td>
+              <?php echo htmlspecialchars( xl('Immunization Manufacturer'), ENT_NOQUOTES); ?>            
+            </span>          
+          </td>
           <td>
               <?php echo generate_select_list('manufacturer', 'Immunization_Manufacturer', $manufacturer, 'Select Manufacturer', '');?>
         </tr>
         <tr>
           <td align="right">
             <span class=text>
-              <?php echo htmlspecialchars( xl('Immunization Lot Number'), ENT_NOQUOTES); ?>            </span>          </td>
+              <?php echo htmlspecialchars( xl('Immunization Lot Number'), ENT_NOQUOTES); ?>            
+            </span>          </td>
           <td>
-            <input class='text' type='text' name="lot_number" size="25" value="<?php echo htmlspecialchars( $lot_number, ENT_QUOTES); ?>">          </td>
+            <input class='text' type='text' name="lot_number" size="25" value="<?php echo htmlspecialchars( $lot_number, ENT_QUOTES); ?>">          
+          </td>
         </tr>
         <tr>
           <td align="right">
             <span class='text'>
-              <?php echo htmlspecialchars( xl('Name and Title of Immunization Administrator'), ENT_NOQUOTES); ?>            </span>          </td>
+              <?php echo htmlspecialchars( xl('Name and Title of Immunization Administrator'), ENT_NOQUOTES); ?>            
+            </span>          
+          </td>
           <td class='text'>
             <input type="text" name="administered_by" id="administered_by" size="25" value="<?php echo htmlspecialchars( $administered_by, ENT_QUOTES); ?>">
             <?php echo htmlspecialchars( xl('or choose'), ENT_NOQUOTES); ?>
@@ -337,11 +357,13 @@ tr.selected {
                   echo htmlspecialchars( $row{'full_name'}, ENT_NOQUOTES) . '</OPTION>';
                 }
               ?>
-            </select>          </td>
+            </select>          
+          </td>
         </tr>
         <tr>
           <td align="right" class="text">
-              <?php echo htmlspecialchars( xl('Date Immunization Information Statements Given'), ENT_NOQUOTES); ?>          </td>
+              <?php echo htmlspecialchars( xl('Date Immunization Information Statements Given'), ENT_NOQUOTES); ?>          
+          </td>
           <td>
             <input type='text' size='10' name="education_date" id="education_date"
                     value='<?php echo $education_date? htmlspecialchars( $education_date, ENT_QUOTES) : oeFormatShortDate(date('Y-m-d')); ?>'
@@ -351,7 +373,8 @@ tr.selected {
         <tr>
           <td align="right" class="text">
               <?php echo htmlspecialchars( xl('Date of VIS Statement'), ENT_NOQUOTES); ?>
-              (<a href="http://www.cdc.gov/vaccines/pubs/vis/default.htm" title="<?php echo htmlspecialchars( xl('Help'), ENT_QUOTES); ?>" target="_blank">?</a>)          </td>
+              (<a href="http://www.cdc.gov/vaccines/pubs/vis/default.htm" title="<?php echo htmlspecialchars( xl('Help'), ENT_QUOTES); ?>" target="_blank">?</a>)          
+          </td>
           <td>
             <input type='text' size='10' name="vis_date" id="vis_date"
                     value='<?php echo $vis_date ? date(DateFormatRead(true), strtotime(text($vis_date))) : oeFormatShortDate(date('Y-m-d')); ?>'
@@ -366,33 +389,35 @@ tr.selected {
           </td>
         </tr>
         <tr>
-          <td align="right" class='text'><?php echo htmlspecialchars( xl('Administration Site'), ENT_NOQUOTES); ?></td>
+          <td align="right" class='text'><?php echo htmlspecialchars( xl('Administration Site'), ENT_NOQUOTES); ?>
+          </td>
           <td>
             <?php echo generate_select_list('immuniz_admin_ste', 'proc_body_site', $immuniz_admin_ste, 'Select Administration Site', ' ');?>
           </td>
         </tr>
         <tr>
           <td align="right" class='text'>
-              <?php echo htmlspecialchars( xl('Notes'), ENT_NOQUOTES); ?>          </td>
+              <?php echo htmlspecialchars( xl('Notes'), ENT_NOQUOTES); ?>          
+          </td>
           <td>
-            <textarea class='text' name="note" id="note" rows=5 cols=25><?php echo htmlspecialchars( $note, ENT_NOQUOTES); ?></textarea>          </td>
+            <textarea class='text' name="note" id="note" rows=5 cols=25><?php echo htmlspecialchars( $note, ENT_NOQUOTES); ?></textarea>          
+          </td>
         </tr>
         <tr>
           <td align="right" class='text'>
-              <?php echo htmlspecialchars( xl('Completion Status'), ENT_NOQUOTES); ?>          </td>
+              <?php echo htmlspecialchars( xl('Completion Status'), ENT_NOQUOTES); ?>          
+          </td>
           <td>
-            <?php echo generate_select_list('immuniz_completion_status', 'Immunization_Completion_Status', $immuniz_completion_status, 'Select Completion Status', ' ');?>          </td>
+            <?php echo generate_select_list('immuniz_completion_status', 'Immunization_Completion_Status', $immuniz_completion_status, 'Select Completion Status', ' ');?>          
+          </td>
         </tr>
         <tr>
           <td colspan="3" align="center">
-
-        <input type="button" name="save" id="save" value="<?php echo htmlspecialchars( xl('Save Immunization'), ENT_QUOTES); ?>">
-    
+            <input type="button" name="save" id="save" value="<?php echo htmlspecialchars( xl('Save Immunization'), ENT_QUOTES); ?>">
             <input type="button" name="print" id="print" value="<?php echo htmlspecialchars( xl('Print Record') . xl('PDF','',' (',')'), ENT_QUOTES); ?>">
-    
-        <input type="button" name="printHtml" id="printHtml" value="<?php echo htmlspecialchars( xl('Print Record') . xl('HTML','',' (',')'), ENT_QUOTES); ?>">
-            
-            <input type="reset" name="clear" id="clear" value="<?php echo htmlspecialchars( xl('Clear'), ENT_QUOTES); ?>">          </td>
+            <input type="button" name="printHtml" id="printHtml" value="<?php echo htmlspecialchars( xl('Print Record') . xl('HTML','',' (',')'), ENT_QUOTES); ?>">
+            <input type="reset" name="clear" id="clear" value="<?php echo htmlspecialchars( xl('Clear'), ENT_QUOTES); ?>">                    
+          </td>
         </tr>
       </table>
 </form>
