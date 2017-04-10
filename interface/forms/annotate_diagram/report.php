@@ -42,16 +42,14 @@ width:auto;height:auto;
 .symcursor{ cursor: url("redblock.png") 8 8, auto;}
 .txtcursor{ cursor: url("xhair.cur") 16 16, auto;}
 .marker {
-    position: absolute;
-    //border: 1px solid black; 
+    position: absolute;    
     background-color: #FF8282;
     min-width:14px; 
     min-height: 14px;
     text-align:center;
 }   
 .count {
-    font-size: 14px;
-    //font-weight: bold;
+    font-size: 14px;    
     color: black;
     margin:2px;
 }
@@ -60,8 +58,7 @@ width:auto;height:auto;
     text-align:center;
 }
 .xcnt {
-    font-size: 14px;
-    //font-weight: bold;
+    font-size: 14px;    
     color: red;
     margin:2px;
 }
@@ -69,9 +66,8 @@ width:auto;height:auto;
 .dytxt {
     display:none;
     background-color:lightgrey;
-    //border:0px solid red;
     position:absolute;
-    width: 70px; height:16px; // change if font size changed
+    width: 70px; height:16px; 
     font-size: 14px;
     color: red;
     margin:2px;

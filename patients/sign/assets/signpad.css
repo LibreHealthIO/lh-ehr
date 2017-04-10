@@ -33,10 +33,8 @@
  border-radius: 8px;
 }
 .sigPad label {
-  float: left;
- //margin: 10 0 0.515em;
+  float: left; 
   padding: 0;
-
   color: #000;
   font: italic normal 1em/1.375 Georgia,Times,serif;
 }
@@ -87,10 +85,8 @@
 .sigNav {
   display: none;
   height: 2.25em;
-  margin: 0;
-  //padding: 0;
+  margin: 0;  
   position: relative;
-
   list-style-type: none;
 }
 

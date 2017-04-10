@@ -16,16 +16,14 @@ body {
 .symcursor{ cursor: url("redblock.png") 8 8, auto;}
 .txtcursor{ cursor: url("xhair.cur") 16 16, auto;}
 .marker {
-    position: absolute;
-    //border: 1px solid black; 
+    position: absolute;    
     background-color: #FF8282;
     min-width:14px; 
     min-height: 14px;
     text-align:center;
 }   
 .count {
-    font-size: 14px;
-    //font-weight: bold;
+    font-size: 14px;    
     color: white;
     margin:2px;
 }
@@ -64,8 +62,7 @@ body {
   opacity: 0;
   position: fixed;
   background: #fff;
-  color: #555;
-  //font-family: sans-serif;
+  color: #555;  
   font-size: 14px;
   -webkit-transition: opacity .5s ease-in-out;
   -moz-transition: opacity .5s ease-in-out;
@@ -79,8 +76,7 @@ body {
   border: 1px solid #C6C6C6;
 }
 span.mode-inline {
-	font-size: 1.0em;
-	//font-style: italic;
+	font-size: 1.0em;	
 	padding: 5px 5px;
 	color: red;
 }
@@ -115,8 +111,7 @@ fieldset { padding:0; border:0; }
     font-weight: bold;
 }
 .legend, .container {
-    float: left;
-    //border:1px solid black;
+    float: left;    
 }
 
 p { width: 600px; }

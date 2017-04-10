@@ -44,8 +44,8 @@
  * JSON EDITOR is included from:
  *   https://github.com/josdejong/jsoneditor
  *   Copyright (C) 2011-2015 Jos de Jong
- *   usage docs etc in js/jsoneditor/docs
-
+ *   usage docs etc in js/jsoneditor/docs 
+ */
 
  /* Include our required headers */
 
@@ -82,8 +82,7 @@ if (!empty($_POST['menuEdits'])) {
     <link href="js/jsoneditor/jsoneditor.css" rel="stylesheet" type="text/css">
     <script src="js/jsoneditor/jsoneditor.js"></script>
 
-    <style>
-        <style>
+    <style>       
         body {
             font: 10.5pt arial;
             color: #4d4d4d;

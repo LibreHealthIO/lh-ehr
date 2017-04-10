@@ -73,20 +73,16 @@ body {
 #diagram {
     box-sizing:border-box;
     min-width:65px;
-    min-height:65px;
-    //background-color:blue;
+    min-height:65px;    
     position: relative;
-    //border:3px solid black;
-}
+    }
 #diagram ul {padding-left:10px;}
 #diagram li {display: inline; margin-right: 3px;}
 #diagram li img{
     border:1px solid black;
     width:100%;
     max-width:75px;
-    //height:100%;
-    //max-height:85px;
-}
+   }
 </style>
 </head>
 <body>
