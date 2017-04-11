@@ -1,9 +1,12 @@
+html2pdf derived work from  https://github.com/spipu/html2pdf
+Most recent update to 4.5.1 with PHP7 updates made by pri2si17-1997 
+
 This html2pdf library was updated by:
 
 1. Removing all old files
 
-2. Downloading HTML2PDF 4.5.0 from:
-   https://github.com/spipu/html2pdf/releases (composer package)
+2. Downloading HTML2PDF 4.5.1 from:
+  /releases (composer package)
 
 3. Running composer command "composer install"
 
@@ -22,5 +25,13 @@ This html2pdf library was updated by:
 
 10. Removed examples directory from the TCPDF package.
 
-At this point the HTML2PDF(version 4.5.0) with TCPDF(version 6.2.12) and FPDI(version 1.6.1) is installed and working.
+At this point the HTML2PDF(version 4.5.1) with TCPDF(version 6.2.12) and FPDI(version 1.6.1) tested well.
+Further modifications included:
+1. restoring the html2pdf_mod_docs directory.
+2. updating this and other readme files.
+3. updating attestation in main project.
+4. and removing TESTS, unused fonts, version control files, unneeded htaccess files, news releases etc...
+
+To add additional fonts or to reference additional resources, documentation or project news, please refer to the main html2pdf project listed above.
+
 
