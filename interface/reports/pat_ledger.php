@@ -346,7 +346,7 @@ function sel_patient() {
   #title {
     visibility: visible;
     display: inline;
-  }
+  }  
 }
 </style>
 
@@ -356,7 +356,7 @@ function sel_patient() {
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
- });
+ });  
 </script>
 
 </head>
@@ -443,6 +443,8 @@ function sel_patient() {
                     <div id="controls">
                     <a href='#' class='css_button' id='printbutton'>
                          <span><?php echo xlt('Print Ledger'); ?></span></a>
+                    <a href='#' class='css_button' id='printreceipt' onclick="printDiv()">
+                         <span><?php echo xlt('Print Receipt'); ?></span></a>
                     <?php if($type_form == '1') { ?>
                     <a href="../patient_file/summary/demographics.php" class="css_button" onclick="top.restoreSession()">
                          <span><?php echo xlt('Back To Patient');?></span></a>
@@ -715,13 +717,183 @@ if (! $_REQUEST['form_csvexport']) {
     echo '<script>document.getElementById("report_results").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
   }
-        
+  
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
 <div class='text'>
     <?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
 </div>
 <?php } ?>
 </form>
+
+<?php
+} // End not csv export
+?>
+
+<!-- for printing receipt -->
+<?php if($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) 
+    {  
+    ?>
+        <div id="receipt_contents" style="display:none">        
+            <h2 align="center">
+                <?php if($type_form == '1') { ?>
+                   <?php echo text($pat_name); ?>
+                <?php }else{ ?>
+                   <?php echo text($form_patient); ?>
+                <?php } ?>
+            </h2>   <hr>         
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class='bold' ><?php echo xlt('Receipt Generated On ')?>:
+                <?php echo text(date('Y-m-d')); ?></td>            
+            <td class='bold' ><?php echo xlt('DOB')?>:
+                <?php if($type_form == '1') { ?>
+                   <?php echo text($pat_dob);?></td>
+                <?php }else{ ?>
+                   <?php echo text($form_dob); ?></td>
+                <?php } ?>
+            <td class='bold' > <?php echo xlt('ID')?>:
+                <?php echo text($form_pid);?></td>
+          </tr>          
+          <tr>            
+            <td class="bold" ><?php echo xlt('Street : ')?><?php echo text($facility{'street'}); ?></td>
+            <td class="bold" ><?php echo xlt('City : ')?><?php echo text($facility{'city'})?></td>
+          </tr>
+          <tr>            
+            <td class="bold" ><?php echo xlt('State : ')?><?php echo text($facility{'state'})?></td>
+            <td class="bold" ><?php echo xlt('Postal Code : ')?><?php echo text($facility{'postal_code'})?></td>            
+          </tr>         
+          <tr>
+            <td class="title" ><?php echo xlt('Phone').': ' .text($facility{'phone'}); ?></td>
+            <td class="title" ><?php echo xlt('Tax Id').': ' .text($facility{'federal_ein'}); ?></td>
+          </tr>
+        </table>                
+    <br><hr>
+    <h3> Payment Details ::</h3>    
+        <?php 
+            $title = xl('For Dates') . ': '.$form_from_date.' - '.$form_to_date;
+        ?>
+    <h4><?php echo text($title); ?></h4>
+    
+    <table>
+     <tr>
+        <td class='bold' ><?php echo xlt('Code'); ?></td>
+        <td colspan="2" class='bold' ><?php echo xlt('Description'); ?></td>
+        <td class='bold' ><?php echo xlt('Billed Date'); ?> / <?php echo xlt('Payor'); ?></td>
+        <td class='bold' ><?php echo xlt('Type'); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <?php echo xlt('Units'); ?></td>
+        <td class='bold' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo xlt('Charge'); ?></td>
+        <td align='right' class='bold' >&nbsp;&nbsp;<?php echo xlt('Payment'); ?></td>
+        <td align='right' class='bold' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo xlt('Adjustment'); ?></td>
+        <td align='right' class='bold' >&nbsp;&nbsp;&nbsp;<?php echo xlt('Balance'); ?></td>
+     </tr>
+     <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="2" >&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;</td>
+        <td class='bold' >&nbsp;&nbsp;&nbsp;<?php echo xlt('UAC Appl'); ?></td>
+        <td align='right' class='bold' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo xlt('UAC Tot'); ?></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <?php      
+        
+        $orow = 0;
+        $count = 0;
+        $prev_encounter_id = -1;
+        $hdr_printed = false;
+        $prev_row = array();
+        while ($erow = sqlFetchArray($res)) {
+            $print = '';
+            $csv = '';
+            if($erow['encounter'] != $prev_encounter_id) {
+                if($prev_encounter_id != -1) {
+                    $credits = GetAllCredits($prev_encounter_id, $form_pid);
+                    if(count($credits) > 0) {
+                        if(!$hdr_printed) {
+                            PrintEncHeader($prev_row{'date'}, 
+                            $prev_row{'reason'}, $prev_row{'provider_id'});
+                        }
+                        PrintCreditDetail($credits, $form_pid);
+                    }
+                    if($hdr_printed) PrintEncFooter();
+                    $hdr_printed = false;
+                }
+                $enc_units = $enc_chg = $enc_pmt = $enc_adj = $enc_bal = 0;
+            }
+            if($erow{'id'}) {
+                // Now print an encounter heading line -
+                if(!$hdr_printed) {
+                    PrintEncHeader($erow{'date'}, 
+                    $erow{'reason'}, $erow{'provider_id'});
+                    $hdr_printed = true;
+                }
+
+                $code_desc = $erow['code_text'];
+                if(strlen($code_desc) > 50) $code_desc = substr($code_desc,0,50).'...';
+                $bgcolor = (($bgcolor == "#FFFFDD") ? "#FFDDDD" : "#FFFFDD");
+                $print = "<tr bgcolor='". attr($bgcolor) ."'>";
+                $print .= "<td class='detail'>".text($erow['code'])."</td>";
+                $print .= "<td class='detail' colspan='2'>".text($code_desc)."</td>";
+                $who = ($erow['name'] == '') ? xl('Self') : $erow['name'];
+                $bill = substr($erow['bill_date'],0,10);
+                if($bill == '') { $bill = 'unbilled'; }
+                $print .= "<td class='detail'>".text($bill)."&nbsp;/&nbsp;".text($who)."</td>";
+                $print .= "<td class='detail' style='text-align: right;'>". text($erow['units'])."</td>";
+                $print .= "<td class='detail' style='text-align: right;'>". text(oeFormatMoney($erow['fee']))."</td>";
+                $print .= "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+                $print .= "</tr>\n";
+
+                $total_units  += $erow['units'];
+                $total_chg += $erow['fee'];
+                $total_bal += $erow['fee'];
+                $enc_units  += $erow['units'];
+                $enc_chg += $erow['fee'];
+                $enc_bal += $erow['fee'];
+                $orow++;
+
+                if ($_REQUEST['form_csvexport']) { 
+                    echo $csv;                    
+                } else { 
+                    echo $print;
+                }
+            }
+            $prev_encounter_id = $erow{'encounter'};
+            $prev_row = $erow; 
+            
+        }
+        
+        if($prev_encounter_id != -1) {
+            $credits = GetAllCredits($prev_encounter_id, $form_pid);
+            if(count($credits) > 0) {
+                if(!$hdr_printed) {
+                  PrintEncHeader($prev_row{'date'}, 
+                  $prev_row{'reason'}, $prev_row{'provider_id'});
+                }
+                PrintCreditDetail($credits, $form_pid);
+            }
+            if($hdr_printed) PrintEncFooter();
+        }
+         // This is the end of the encounter/charge loop - 
+        $uac = GetAllUnapplied($form_pid,$from_date,$to_date);
+        if(count($uac) > 0) {
+            if($orow) {
+              $bgcolor = (($bgcolor == "#FFFFDD") ? "#FFDDDD" : "#FFFFDD");
+              echo "<tr bgcolor='#FFFFFF'><td colspan='9'>&nbsp;</td></tr>\n";
+            }
+            PrintCreditDetail($uac, $form_pid, true);
+        }
+      
+      ?>      
+      
+     </table>
+    <hr>
+    <h4 align="center">Thank you!</h4>
+    </div>
+    
+    <?php } ?>    
+    
 </body>
 
 <!-- stuff for the popup calendar -->
@@ -744,7 +916,20 @@ if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
 </script>
+
+<!-- Script For printing receipt -->
+<script>    
+    function printDiv() 
+    {
+        var divToPrint = document.getElementById('receipt_contents');
+        var newWin = window.open('Receipt','Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><body>'+divToPrint.innerHTML+'</body></html>');
+        newWin.document.close();
+        newWin.focus();
+        newWin.print();
+        newWin.close();
+    }    
+</script>
+
 </html>
-<?php
-} // End not csv export
-?>
