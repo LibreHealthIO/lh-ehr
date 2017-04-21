@@ -186,8 +186,10 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
    // subtract the co-pay only from the first procedure code
    if (isFirstProcCode == 1)
       balAmount = parseFloat(balAmount) + parseFloat(coPayAmount);
+  <?php if ($GLOBALS['auto_writeoff_y_n']) { ?>
 
    adjAmount = balAmount - payAmount;
+   <?php } ?>
    
    // Assign rounded adjustment value back to TextField
    adjField.value = adjAmount = Math.round(adjAmount*100)/100;
@@ -210,9 +212,13 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
     $svcdate           = substr($ferow['date'], 0, 10);
     $form_payer_id     = 0 + $_POST['form_payer_id'];
     $form_reference    = $_POST['form_reference'];
+    $form_eft_number   = $ferow['eft_number'];
     $form_check_date   = fixDate($_POST['form_check_date'], date('Y-m-d'));
+    $form_claim_number = $ferow['claim_number'];
     $form_deposit_date = fixDate($_POST['form_deposit_date'], $form_check_date);
+    $form_document_image = $ferow['document_image'];
     $form_pay_total    = 0 + $_POST['form_pay_total'];
+    $form_seq_number  = $ferow['seq_number']; 
 
   $payer_type = 0;
   if (preg_match('/^Ins(\d)/i', $_POST['form_insurance'], $matches)) {
@@ -321,8 +327,13 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
 
         $form_done = 0 + $_POST['form_done'];
         $form_stmt_count = 0 + $_POST['form_stmt_count'];
+        $form_eft_number = $_POST['form_eft_number'];
+        $form_claim_number = $_POST['form_claim_number'];
+        $form_document_image = $_POST['form_document_image'];
+        $form_seq_number = $_POST['form_seq_number'];
+
         sqlStatement("UPDATE form_encounter " .
-          "SET last_level_closed = $form_done, " .
+          "SET last_level_closed = $form_done, eft_number = $form_eft_number, claim_number = $form_claim_number, document_image = $form_document_image, seq_number = $form_seq_number, " .
           "stmt_count = $form_stmt_count WHERE " .
           "pid = '$patient_id' AND encounter = '$encounter_id'");
 
@@ -384,6 +395,13 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
     echo "<input type='text' name='form_stmt_count' size='10' value='" .
       (0 + $ferow['stmt_count']) . "' />\n";
     echo "</td>\n";
+    echo "<td rowspan='3' valign='bottom'>\n";
+    echo xl('Sequence Number:');
+    echo "</td>\n";
+    echo "<td rowspan='3' valign='bottom'>\n";
+    echo "<input type='text' name='form_seq_number' size='10' value='" .
+      (0 + $ferow['seq_number']) . "' />\n";
+    echo "</td>\n";
 ?>
  </tr>
  <tr>
@@ -442,6 +460,13 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
     echo "<td>\n";
     echo "<input type='text' name='form_reference' size='10' value='' />\n";
     echo "</td>\n";
+    echo "<td>\n";
+    echo xl('EFT/Check Number:');
+    echo "</td>\n";
+    echo "<td>\n";
+    echo "<input type='text' name='form_eft_number' size='10' value='" .
+      (0 + $ferow['eft_number']) . "' />\n";
+    echo "</td>\n";
 ?>
  </tr>
 
@@ -478,6 +503,13 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
     echo "<td>\n";
     echo "<input type='text' name='form_check_date' size='10' value='' />\n";
     echo "</td>\n";
+    echo "<td>\n";
+    echo xl('Claim Number:');
+    echo "</td>\n";
+    echo "<td>\n";
+    echo "<input type='text' name='form_claim_number' size='10' value='" .
+      (0 + $ferow['claim_number']) . "' />\n";
+    echo "</td>\n";
 ?>
  </tr>
  <tr>
@@ -503,6 +535,13 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
     echo "<input type='hidden' name='form_orig_check_date' value='' />\n";
     echo "<input type='hidden' name='form_orig_deposit_date' value='' />\n";
     echo "<input type='hidden' name='form_pay_total' value='' />\n";
+    echo "</td>\n";
+    echo "<td>\n";
+    echo xl('Document Image Number:');
+    echo "</td>\n";
+    echo "<td>\n";
+    echo "<input type='text' name='form_document_image' size='10' value='" .
+      (0 + $ferow['document_image']) . "' />\n";
     echo "</td>\n";
 ?>
  </tr>

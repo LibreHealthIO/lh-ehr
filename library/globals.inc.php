@@ -1074,6 +1074,14 @@ $GLOBALS_METADATA = array(
 
   ),
 
+   'auto_writeoff_y_n' => array(
+      xl('Allow Automatic Caculation of Write Offs in Posting'),
+      'bool',
+      '1',                              // default
+      xl('Allow Automatic Caculation of Write Offs in Posting')
+
+  ),
+
   ),
 
   // Statement Tab
