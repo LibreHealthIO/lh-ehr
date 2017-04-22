@@ -347,11 +347,20 @@ function popup_close() {
   {
     echo "window.opener.imdeleted($encounterid);\n";
   }
-  else
+  /*else
   {
     echo " if (opener && opener.imdeleted) opener.imdeleted(); else parent.imdeleted();\n";
-  }
-  echo " window.close();\n";
+  }*/
+  echo "if(parent.$==undefined) 
+	{
+        	window.close();
+     	}
+     	else 
+	{
+        	parent.$.fn.fancybox.close(); 
+     	}    
+	";
+  echo "window.top.location.reload();";
   echo "</script></body></html>\n";
   exit();
  }
