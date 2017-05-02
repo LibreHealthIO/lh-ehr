@@ -588,11 +588,9 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
   <td class="dehead">
    <?php xl('Reason','e')?>
   </td>
-<?php if ($ALLOW_DELETE) { ?>
   <td class="dehead">
    <?php xl('Del','e')?>
   </td>
-<?php } ?>
  </tr>
 <?php
   $firstProcCodeIndex = -1;
@@ -625,6 +623,19 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
       if (isset($ddata['rsn'])) $tmpadj = 0 - $ddata['chg'];
       else $tmpchg = $ddata['chg'];
     }
+     if (substr($GLOBALS['payment_delete_begin_date'],0,1) == 'Y') {
+        $payment_delete_time = substr($GLOBALS['payment_delete_begin_date'],1,1);
+        $last_year = mktime(0,0,0,date('m'),date('d'),date('Y')-$payment_delete_time);
+     }
+     elseif (substr($GLOBALS['payment_delete_begin_date'],0,1) == 'M') {
+        $payment_delete_time = substr($GLOBALS['payment_delete_begin_date'],1,1); 
+        $last_year = mktime(0,0,0,date('m')-$payment_delete_time ,date('d'),date('Y'));
+     }
+     elseif (substr($GLOBALS['payment_delete_begin_date'],0,1) == 'D') {
+        $payment_delete_time = substr($GLOBALS['payment_delete_begin_date'],1,1); 
+        $last_year = mktime(0,0,0,date('m') ,date('d')-$payment_delete_time,date('Y'));
+     }
+     $payment_delete_from_date = date('Y-m-d', $last_year);
 ?>
  <tr bgcolor='<?php echo $bgcolor ?>'>
   <td class="detail">
@@ -657,15 +668,16 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
   <td class="detail">
    <?php echo $ddata['rsn'] ?>
   </td>
-<?php if ($ALLOW_DELETE) { ?>
+<?php if ((strtotime($payment_delete_from_date) < strtotime($ddate))) { ?>
   <td class="detail">
 <?php if (!empty($ddata['arseq'])) { ?>
    <input type="checkbox" name="form_del[<?php echo $ddata['arseq']; ?>]" />
+   <?php } ?>
 <?php } else { ?>
-   &nbsp;
+   <td class="detail">
+   &nbsp;&nbsp;&nbsp;&nbsp;
 <?php } ?>
   </td>
-<?php } ?>
  </tr>
 <?php
    } // end of prior detail line
@@ -728,11 +740,9 @@ while ($orow = sqlFetchArray($ores)) {
 ?>
   </td>
 
-<?php if ($ALLOW_DELETE) { ?>
   <td class="detail">
    &nbsp;
   </td>
-<?php } ?>
 
  </tr>
 <?php
