@@ -149,9 +149,10 @@ function newEncounter() {
  }
  top.restoreSession();
  var tmp = (keyid && f.form_key[0].checked) ? ('&issue=' + keyid) : '';
- opener.top.Title.location.href='encounter/encounter_title.php';
- opener.top.Main.location.href='encounter/patient_encounter.php?mode=new' + tmp;
- window.close();
+
+ dlgopen('../../interface/forms/patient_encounter/new.php?mode=new' + tmp, '_top', 1200, 450);
+
+
 }
 
 // Determine if a given problem/encounter pair is currently linked.
