@@ -1,0 +1,402 @@
+/**
+ * Author: Sam Likins <sam.likins@wsi-services.com>
+ * Copyright: Copyright (c) 2016, WSI-Services
+ *
+ * License: http://opensource.org/licenses/gpl-3.0.html
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* Page Styling */
+
+html, body {
+	background: #EEE;
+	height: 100%;
+	min-height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+* {
+	font-family: sans-serif;
+	font-size: 10pt;
+}
+
+
+::-webkit-scrollbar {
+	width: 14px;
+	height: 14px;
+}
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+::-webkit-scrollbar-button {
+	width: 8px;
+	height: 8px;
+}
+::-webkit-scrollbar-thumb {
+	background: #E1E1E1;
+	border: 1px solid #FFF;
+	border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+	background: #666666;
+	border: 1px solid #FFF;
+	border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: #FFF;
+}
+::-webkit-scrollbar-track:hover {
+	background: #666666;
+}
+::-webkit-scrollbar-thumb:active {
+	background: #000000;
+}
+::-webkit-scrollbar-track:active {
+	background: #333333;
+}
+
+
+/* Notices Box */
+
+#notices-box {
+	background: rgba(127, 127, 127, 0.85);
+	height: 100%;
+	position: fixed;
+	text-align: center;
+	width: 100%;
+	z-index: 100;
+}
+
+#notices-box > ul {
+	background: rgba(190, 190, 190, 0.5);
+	border: 3px solid rgba(63, 63, 63, 0.75);
+	border-radius: 8px;
+	color: #C44;
+	display: inline-block;
+	font-size: 150%;
+	font-weight: bolder;
+	left: 50%;
+	list-style-type: none;
+	margin: 0;
+	padding: 1.5ex 2.5ex 1.5ex 3ex;
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+}
+#notices-box > ul > li {
+	margin: 1ex;
+	display: flex;
+}
+
+#notices-box > ul > li > button {
+	float: left;
+	left: -1em;
+	position: relative;
+	top: -0.25ex;
+}
+#notices-box > ul > li > div {
+	float: left;
+	text-align: left;
+}
+
+
+/* KoGrid */
+
+.gridStyle {
+	width: 100%;
+	height: 100%;
+}
+
+.kgViewPort {
+	background: #EEE;
+}
+.kgRow.selected:nth-child(even) {
+    background-color: rgb(165, 192, 185);
+}
+
+.gridStyle .primaryEncounter {
+	color: red;
+}
+
+/* Pane Styling */
+
+.split-pane.fixed-left > .split-pane-divider > .split-pane-divider-inner,
+.split-pane.fixed-right > .split-pane-divider > .split-pane-divider-inner,
+.split-pane.vertical-percent > .split-pane-divider > .split-pane-divider-inner {
+	left: -2;
+	padding: 0 2;
+}
+.split-pane.fixed-top > .split-pane-divider > .split-pane-divider-inner,
+.split-pane.fixed-bottom > .split-pane-divider > .split-pane-divider-inner,
+.split-pane.horizontal-percent > .split-pane-divider > .split-pane-divider-inner {
+	top: -2;
+	padding: 2 0;
+}
+.split-pane-divider {
+	background: rgba(192, 192, 192, 1);
+}
+.split-pane-divider:hover,
+.split-pane-divider.dragged {
+	background: rgba(192, 192, 192, 0.5);
+}
+
+
+/* Screen Sections */
+
+#encounter-list {
+	width: 38ex;
+	min-width: 38ex;
+}
+#encounter-list-divider {
+	left: 38ex;
+	width: 5px;
+}
+#encounter-control {
+	left: 38ex;
+	margin-left: 5px;
+}
+
+#encounter-duplicates {
+	bottom: 45%;
+	margin-bottom: 5px;
+	min-height: 10em;
+	overflow: hidden;
+}
+#encounter-duplicates-divider {
+	bottom: 45%;
+	height: 5px;
+}
+#encounter-actions {
+	height: 45%;
+}
+
+
+/* List Section */
+
+#encounter-list-table > table {
+	width: 100%;
+}
+
+
+/* Action Secction */
+
+#encounter-update > table {
+	width: 100%;
+}
+#encounter-update > table th,
+#encounter-update > table td {
+	vertical-align: top;
+}
+#encounter-update > table > thead > tr {
+	background: #111;
+	color: #FFF;
+}
+#encounter-update > table > thead > tr > th:nth-child(1) {
+	text-align: right;
+}
+#encounter-update > table > thead > tr > th:nth-child(2) {
+	text-align: left;
+	width: 100%;
+}
+#encounter-update > table > tbody > tr > th {
+	text-align: right;
+}
+#encounter-update > table > tbody > tr > td {
+	text-align: left;
+}
+#encounter-update > table textarea {
+	height: 3em;
+	width: 100%;
+}
+
+
+/* Action Bar */
+
+div.action-bar {
+	background: #CCC;
+	border-bottom: 1px solid #000;
+	height: 2em;
+}
+div.action-bar + div {
+	height: calc(100% - 2em - 1px);
+}
+div.action-bar + div:not(.nonScrollable) {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+div.action-bar > ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+div.action-bar > ul > li {
+	display: inline;
+	margin: 0;
+	margin-left: 0.25ex;
+}
+
+div.action-bar > ul > li span {
+	color: #555;
+	display: inline-block;
+	font-weight: bold;
+	padding: 0;
+	padding-left: 0.75ex;
+}
+div.action-bar > ul > li span:not(:nth-child(1)) {
+	color: #C44;
+	font-style: italic;
+}
+
+div.action-bar select {
+	background: #CCC;
+	border: 0;
+	color: #C44;
+	font-size: 110%;
+	font-style: italic;
+	font-weight: bold;
+	padding: 0 1ex;
+	margin: 0.5ex;
+}
+
+
+/* Button */
+
+button {
+	border-radius: 2px;
+	font-size: 110%;
+	padding: 0 1ex;
+	margin: 0.5ex;
+}
+button:disabled {
+	color: rgba(68, 68, 204, 0.75);
+	cursor: default;
+	background: rgba(127, 127, 127, 0.25);
+	border: 1px solid rgba(136, 136, 136, 0.25);
+}
+button:not(:disabled) {
+	color: rgba(22, 22, 255, 1);
+	cursor: pointer;
+	background: rgba(127, 127, 127, 0.25);
+	border: 1px solid rgba(136, 136, 136, 0.75);
+}
+button:not(:disabled):hover {
+	color: rgba(68, 68, 204, 0.75);
+	background: rgba(127, 127, 127, 0.75);
+}
+
+
+/* Message Box */
+
+div.message-box {
+	background: #EEE;
+	text-align: center;
+	height: 100%;
+}
+div.message-box > span {
+	background: rgba(127, 127, 127, 0.5);
+	border: 2px solid rgba(127, 127, 127, 0.75);
+	border-radius: 6px;
+	color: #C44;
+	display: inline-block;
+	font-size: 125%;
+	font-weight: bolder;
+	padding: 0.75ex;
+	margin-top: 1ex;
+}
+
+
+/* Sortable Table*/
+
+table > thead > tr > th.sortable {
+	cursor: pointer;
+}
+
+table > thead > tr > th.sortable > span.ascending:after {
+	content: ' \21A7'; /* &#8615; */
+}
+table > thead > tr > th.sortable > span.descending:after {
+	content: ' \21A5'; /* &#8613; */
+}
+
+
+/* Display Data Table */
+
+#encounter-list table {
+	empty-cells: show;
+}
+
+#encounter-list table > thead > tr:nth-child(even) {
+	background: #111;
+	color: #FFF;
+}
+
+#encounter-list table > thead > tr:nth-child(odd) {
+	background: #444;
+	color: #CCC;
+}
+
+#encounter-list table > thead > tr > th {
+	padding: 0.4ex 2ex;
+}
+
+#encounter-list table > tbody > tr > td {
+	padding: 0.25ex 1ex;
+	white-space: nowrap;
+}
+#encounter-list table > tbody > tr > td:nth-child(1) {
+	text-align: left;
+}
+#encounter-list table > tbody > tr > td:nth-child(2) {
+	text-align: center;
+}
+#encounter-list table > tbody > tr > td:nth-child(3) {
+	text-align: right;
+}
+
+#encounter-list table > tbody > tr:nth-child(even) {
+	background: #CCC;
+}
+#encounter-list table > tbody > tr:nth-child(odd) {
+	background: #FFF;
+}
+
+#encounter-list table > .clickable > tr {
+	cursor: pointer;
+	color: #44C;
+}
+
+#encounter-list table > .clickable > tr:hover,
+#encounter-list table > .clickable > tr.selected {
+	color: #22F;
+}
+#encounter-list table > .clickable > tr:nth-child(even):hover,
+#encounter-list table > .clickable > tr:nth-child(even).selected {
+	background: #BBB;
+	font-weight: bold;
+}
+#encounter-list table > .clickable > tr:nth-child(odd):hover,
+#encounter-list table > .clickable > tr:nth-child(odd).selected {
+	background: #EEE;
+	font-weight: bold;
+}
+#encounter-list table > .clickable > tr:nth-child(even).selected,
+#encounter-list table > .clickable > tr:nth-child(odd).selected {
+	color: #C44;
+}
