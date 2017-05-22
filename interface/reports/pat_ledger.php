@@ -743,6 +743,14 @@ if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
             </h2>   <hr>         
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
+              <td><?php echo xlt('Provider'); ?>:
+              <?php 
+                    $title = xl('All Providers');
+                    if($form_provider) { $title = xl('For Provider') . ': '.User_Id_Look($form_provider); }
+                ?>
+              <?php echo text($title); ?></td>
+          </tr>
+          <tr>            
             <td class='bold' ><?php echo xlt('Receipt Generated On ')?>:
                 <?php echo text(date('Y-m-d')); ?></td>            
             <td class='bold' ><?php echo xlt('DOB')?>:
@@ -753,7 +761,14 @@ if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
                 <?php } ?>
             <td class='bold' > <?php echo xlt('ID')?>:
                 <?php echo text($form_pid);?></td>
-          </tr>          
+          </tr>  
+          <tr>  <td><hr></td><td><hr></td>  </tr>
+          <tr>              
+              <td><?php echo xlt('Faclity Information : ')?></td>
+          </tr>
+          <tr>
+            <td class="title" ><?php echo xlt('Facility Name : ')?><?php echo text($facility{'name'}); ?></td>
+          </tr>
           <tr>            
             <td class="bold" ><?php echo xlt('Street : ')?><?php echo text($facility{'street'}); ?></td>
             <td class="bold" ><?php echo xlt('City : ')?><?php echo text($facility{'city'})?></td>
@@ -791,9 +806,7 @@ if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
         <td colspan="2" >&nbsp;&nbsp;&nbsp;</td>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;</td>
-        <td class='bold' >&nbsp;&nbsp;&nbsp;<?php echo xlt('UAC Appl'); ?></td>
-        <td align='right' class='bold' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo xlt('UAC Tot'); ?></td>
+        &nbsp;&nbsp;&nbsp;</td>        
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
