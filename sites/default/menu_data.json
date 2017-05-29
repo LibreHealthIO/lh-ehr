@@ -580,6 +580,13 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
+            "label" : "Patient Billing Encounter by Carrier",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/interface/reports/encounters_report_carrier.php",
+            "children" : [ ],
+            "requirement" : 0
+        }, { 
             "label" : "Appt-Enc",
             "menu_id" : "rep0",
             "target" : "rep",
