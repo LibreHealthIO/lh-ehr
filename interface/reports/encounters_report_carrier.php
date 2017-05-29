@@ -42,15 +42,13 @@ function show_doc_total($lastdocname, $doc_encounters) {
   }
 }
 
-$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-$form_to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
+$form_from_date = fixDate($_POST['form_from_date'], date($DateFormat));
+$form_to_date = fixDate($_POST['form_to_date'], date($DateFormat));
 $form_provider  = $_POST['form_provider'];
 $form_facility  = $_POST['form_facility'];
 $form_details   = true;
-#error_log("From date Top: ".$form_from_date, 0);
 // Get the info.
 //
-# Harry in line 65 and 69 I added a check against inactive to omit the inactive records in the insurance data file
 $query = "SELECT " .
   "fe.encounter, fe.date, fe.reason, fe.billing_note, " .
   "f.formdir, f.form_name, " .
@@ -326,8 +324,6 @@ if ($res) {
   $doc_encounters = 0;
   while ($row = sqlFetchArray($res)) {
     $patient_id = $row['pid'];
- #     Harry I commented the following out and made a change in the query for the check on inactive insurances
- #   if ($row['iedate1'] != '0000-00-00') continue;
     if ($form_payer_id) {
      if ($ins_co_name <> $row['cname1']) continue;
     }

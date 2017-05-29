@@ -53,8 +53,8 @@ function show_doc_total($lastdocname, $doc_encounters) {
   }
 }
 
-$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-$form_to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
+$form_from_date = fixDate($_POST['form_from_date'], date($DateFormat));
+$form_to_date = fixDate($_POST['form_to_date'], date($DateFormat));
 $form_provider  = $_POST['form_provider'];
 $form_facility  = $_POST['form_facility'];
 $form_details   = $_POST['form_details'] ? true : false;
