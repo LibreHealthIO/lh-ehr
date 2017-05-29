@@ -212,7 +212,6 @@ function topatient(pid, pubpid, pname, enc, datestr, dobstr) {
 EncounterDateArray=new Array;
 CalendarCategoryArray=new Array;
 EncounterIdArray=new Array;
-EncounterNoteArray=new Array;
 function SubmitTheScreen()
  {//Action on Update List link
   if(!ProcessBeforeSubmitting())
@@ -837,7 +836,6 @@ if(is_array($ret))
             EncounterDateArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             CalendarCategoryArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
-            EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             <?php
             while($rowresult4 = sqlFetchArray($result4))
              {
@@ -845,10 +843,8 @@ if(is_array($ret))
                 EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
                 EncounterDateArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
                 CalendarCategoryArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars( xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
-                EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['billing_note'], ENT_QUOTES); ?>';
                 Count++;
          <?php
-         $enc_billing_note = $rowresult4['billing_note'];
              }
          ?>
         </script>
@@ -933,7 +929,7 @@ if(is_array($ret))
         $DivPut='yes';
         
         if($GLOBALS['notes_to_display_in_Billing'] == 1 || $GLOBALS['notes_to_display_in_Billing'] == 3) {
-          $lhtml .= "<br><span style='margin-left: 20px; font-weight bold; color: green'>".text($enc_billing_note)."</span>";
+          $lhtml .= "<br><span style='margin-left: 20px; font-weight bold; color: green'>".text($iter['enc_billing_note'])."</span>";
         }
           $lhtml .= "<br>\n&nbsp;<div   id='divid_$divnos' style='display:none'>" . text(oeFormatShortDate(substr($iter['date'], 0, 10)))
           . text(substr($iter['date'], 10, 6)) . " " . xlt("Encounter was coded");
