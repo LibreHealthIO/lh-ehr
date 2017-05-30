@@ -130,8 +130,8 @@ $res = sqlStatement($query);
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-9-1/index.js"></script>
 <script type="text/javascript" src="../../library/js/report_helper.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/js/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/js/jquery.tablesorter.widgets.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/js/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/js/jquery.tablesorter.widgets.min.js"></script>
 
 <script LANGUAGE="JavaScript">
 
