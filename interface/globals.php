@@ -173,11 +173,12 @@ $GLOBALS['srcdir'] = "$webserver_root/library";
 $GLOBALS['fileroot'] = "$webserver_root";
 // Absolute path to the location of interface directory for use with include statements:
 $include_root = "$webserver_root/interface";
-// Absolute path to the location of documentroot directory for use with include statements:
+// Absolute path to the location of document root directory for use with include statements:
 $GLOBALS['webroot'] = $web_root;
+$GLOBALS['assets'] = "$web_root/assets";// assets directory
 
-// js directory
 $GLOBALS['standard_js_path'] = "$web_root/assets/js";
+$javascript_dir = $GLOBALS['standard_js_path']; //Make path available as a variable.
 $GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
 
 //module configurations
