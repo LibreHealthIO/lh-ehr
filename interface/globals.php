@@ -177,7 +177,7 @@ $include_root = "$webserver_root/interface";
 $GLOBALS['webroot'] = $web_root;
 $GLOBALS['assets'] = "$web_root/assets";// assets directory
 
-$GLOBALS['standard_js_path'] = "$web_root/assets/js";
+$GLOBALS['standard_js_path'] = "$web_root/assets/js/";
 $javascript_dir = $GLOBALS['standard_js_path']; //Make path available as a variable.
 $GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
 
