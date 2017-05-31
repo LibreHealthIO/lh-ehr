@@ -22,7 +22,8 @@
  * @link    http://librehealth.io
  */
 
-require_once("../globals.php");
+require_once $GLOBALS['rootdir'].'/globals.php';
+require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/lists.inc");
@@ -619,9 +620,11 @@ a, a:visited, a:hover { color:#0000cc; }
 .help     { cursor:help; }
 .translation { color:green; }
 </style>
-
+<?php
+//Move js lib includes here as they are migrated.
+include_js_library("jscolor-1-4-5/jscolor.js");
+?>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jscolor/jscolor.js"></script>
 
 <script language="JavaScript">
 
