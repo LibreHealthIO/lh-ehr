@@ -41,8 +41,8 @@ $esignApi = new Api();
 ?>
 
 <?php // include generic js support for graphing ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/library/openflashchart/js/json/json2.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/library/openflashchart/js/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/json/json2.js"></script>
+<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/swfobject.js"></script>
 
 <?php // if the track_anything form exists, then include the styling and js functions for graphing
 if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { ?>

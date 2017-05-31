@@ -52,8 +52,8 @@ if ($is_lbf) {
 </style>
 
 <script type="text/javascript" src="../../../library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="../../../library/openflashchart/js/json/json2.js"></script>
-<script type="text/javascript" src="../../../library/openflashchart/js/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/json/json2.js"></script>
+<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/swfobject.js"></script>
 <script type="text/javascript">
 
 // variable that holds graph information for the open_flash_chart_data() function
@@ -70,7 +70,7 @@ function open_flash_chart_data()
 function show_graph(table_graph, name_graph, title_graph)
 {
   top.restoreSession();
-  $.ajax({ url: '../../../library/openflashchart/graphs.php',
+  $.ajax({ url: '<?php echo $modules_dir; ?>openflashchart/graphs.php',
            type: 'POST',
            data: ({ table: table_graph,
 	            name: name_graph,
@@ -81,7 +81,7 @@ function show_graph(table_graph, name_graph, title_graph)
 	     // place the raw graph data in the data variable
              data=returnData;
 	     // this function will automatically call open_flash_chart_data() in order to collect the raw data
-             swfobject.embedSWF('../../../library/openflashchart/open-flash-chart.swf', "chart", "650", "200", "9.0.0");
+             swfobject.embedSWF('<?php echo $modules_dir; ?>openflashchart/open-flash-chart.swf', "chart", "650", "200", "9.0.0");
 	     // ensure show the chart div
 	     $('#chart').show();
            },

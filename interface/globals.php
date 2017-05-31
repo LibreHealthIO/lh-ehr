@@ -107,7 +107,7 @@ $GLOBALS['OE_SITES_BASE'] = "$webserver_root/sites";
 // Now that restore_session() is implemented in javaScript, session IDs are
 // effectively saved in the top level browser window and there is no longer
 // any need to change the session name for different LibreHealth EHR instances.
-session_name("LibreEHR");
+session_name("LibreHealthEHR");
 
 session_start();
 
