@@ -57,9 +57,10 @@
 <?php
 
 // set up the mysql collation string to ensure case is sensitive (or insensitive) in the mysql queries
+
 if (!$disable_utf8_flag) {
   $case_sensitive_collation = "COLLATE utf8_bin";
-  $case_insensitive_collation = "COLLATE utf8_general_ci";
+  $case_insensitive_collation = $mysqli->character_set_name();
 }
 else {
   $case_sensitive_collation = "COLLATE latin_bin";
