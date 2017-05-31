@@ -365,6 +365,7 @@ function MarkAsCleared(Type)
 <script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
+<script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <style>
 #ajax_div_insurance {
@@ -527,25 +528,6 @@ if(!isset($_REQUEST['mode']))//default case
           </tr>
         <?php } ?>
           
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-            <?php
-              $acct_config = $GLOBALS['oer_config']['ws_accounting'];
-              if($acct_config['enabled']) {
-                if($acct_config['enabled'] !== 2) {
-                  print '<span class=text><a href="javascript:void window.open(\'' . $acct_config['url_path'] . '\')">' . '['. xlt("SQL-Ledger") .']' . '</a> &nbsp; </span>';
-                }
-                if (acl_check('acct', 'rep')) {
-                  print '<span class=text><a href="javascript:void window.open(\'sl_receipts_report.php\')" onclick="top.restoreSession()">' . '['. xlt('Reports') .']'. '</a> &nbsp; </span>';
-                }
-                if (acl_check('acct', 'eob')) {
-                  print '<span class=text><a href="javascript:void window.open(\'sl_eob_search.php\')" onclick="top.restoreSession()">' . '['.xlt('EOBs') .']' . '</a></span>';
-                }
-              }
-            ?>
-            </td>
-          </tr>
           <tr>
             <td>&nbsp;</td>
             <td>
@@ -808,6 +790,21 @@ if(is_array($ret))
       $res = sqlQuery("select count(*) as count from insurance_data where " .
         "pid = ? and " .
         "type='primary' and " .
+        "subscriber_relationship != '' and " .
+        "subscriber_relationship is not null and " .
+        "subscriber_street != '' and " .
+        "subscriber_street is not null and " .
+        "subscriber_city != '' and " .
+        "subscriber_city is not null and " .
+        "subscriber_state != '' and " .
+        "subscriber_state is not null and " .
+        "subscriber_sex != '' and " .        
+        "subscriber_sex is not null and " .
+        "subscriber_DOB != '0000-00-00' and " .
+        "subscriber_DOB is not null and " .
+        "subscriber_DOB != '' and " .
+        "subscriber_fname is not null and " .
+        "subscriber_fname != '' and " .
         "subscriber_lname is not null and " .
         "subscriber_lname != '' limit 1", array($iter['enc_pid']) );
       $namecolor = ($res['count'] > 0) ? "black" : "#ff7777";
@@ -822,9 +819,17 @@ if(is_array($ret))
       $raw_encounter_date = date("Y-m-d", strtotime($iter['enc_date']));
       $billing_note = $name['billing_note'];       
             //  Add Encounter Date to display with "To Encounter" button 2/17/09  JCH
+
+      if ($namecolor != 'black') {
+      #error_log("Color: ".$namecolor, 0);
+        $lhtml .= "&nbsp;<span class=js-blink-infinite><font color='$namecolor'>". text($ptname) .
+          "</font></span><span class=small>&nbsp;(" . text($iter['enc_pid']) . "-" .
+          text($iter['enc_encounter']) . ")</span>";
+      }else{
       $lhtml .= "&nbsp;<span class=bold><font color='$namecolor'>". text($ptname) .
         "</font></span><span class=small>&nbsp;(" . text($iter['enc_pid']) . "-" .
         text($iter['enc_encounter']) . ")</span>";
+      }
 
          //Encounter details are stored to javacript as array.
         $result4 = sqlStatement("SELECT fe.encounter,fe.date,fe.billing_note,libreehr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
@@ -1230,6 +1235,7 @@ $(document).ready(function() {
             this.target = 'Popup_Window';
         }
     });
+          $('.js-blink-infinite').modernBlink();
 });
 </script>
 <input type="hidden" name="divnos"  id="divnos" value="<?php echo attr($divnos) ?>"/>
