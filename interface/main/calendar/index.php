@@ -17,19 +17,13 @@ require_once('../../globals.php');
     $(document).ready(function() {
 
       $('#calendar').fullCalendar({
-        customButtons: {
-       myCustomButton: {
-           text: 'custom!',
-           click: function() {
-               alert('clicked the custom button!');
-           }
-       }
-   },
         header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,basicWeek,basicDay'
-        }
+        right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: 'agendaDay',
+        allDaySlot: false
       })
 
       });
