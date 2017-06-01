@@ -29,6 +29,7 @@
 //same or adding a new allocation.Log is kept for the deleted ones.
 //===============================================================================
 require_once("../globals.php");
+require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once("$srcdir/log.inc");
 require_once("$srcdir/invoice_summary.inc.php");
 require_once("$srcdir/sl_eob.inc.php");
@@ -477,30 +478,17 @@ $DateFormat=DateFormatRead();
 <head>
 <?php if (function_exists('html_header_show')) html_header_show(); ?>
 
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<?php
+   include_css_library("jquery-datetimepicker/jquery.datetimepicker.css");
+   include_css_library("fancybox-2/jquery.fancybox.css");
+   include_js_library("jquery-min-2-2-0/index.js");
+   include_js_library("jquery-datetimepicker/jquery.datetimepicker.full.min.js");
+   include_js_library("fancybox-2/jquery.fancybox.js");
+?>
 
-<!-- supporting javascript code -->
-
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-
-
-
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-<script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-<script language='JavaScript'>
- var mypcc = '1';
-</script>
 <?php include_once("{$GLOBALS['srcdir']}/payment_jav.inc.php"); ?>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
-<script type="text/javascript" src="../../library/js/common.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 <script LANGUAGE="javascript" TYPE="text/javascript">
 function ModifyPayments()
  {//Used while modifying the allocation

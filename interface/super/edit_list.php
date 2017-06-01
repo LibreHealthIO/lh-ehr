@@ -22,7 +22,7 @@
  * @link    http://librehealth.io
  */
 
-require_once $GLOBALS['rootdir'].'/globals.php';
+require_once ('../globals.php');
 require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formdata.inc.php");
