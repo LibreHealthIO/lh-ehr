@@ -487,7 +487,7 @@ $ndc_uom_choices = array(
 // $FEE_SHEET_COLUMNS should be defined in codes.php.
 if (empty($FEE_SHEET_COLUMNS)) $FEE_SHEET_COLUMNS = 2;
 
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+$returnurl = 'encounter_top.php';
 
 // Update price level in patient demographics.
 if (!empty($_POST['pricelevel'])) {
