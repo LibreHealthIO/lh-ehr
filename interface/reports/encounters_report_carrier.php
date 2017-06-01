@@ -1,29 +1,19 @@
 <?php
 /*
- *  Encounters report. (/interface/reports/encounters_report.php
- *  
+ * Patient Billing Encounter by Carrier report. (/interface/reports/encounters_report_carrier.php
  *
- *  This report shows past encounters with filtering and sorting, 
- *  Added filtering to show encounters not e-signed, encounters e-signed and forms e-signed.
- * 
- * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
- * Copyright (C) 2007-2010 Rod Roark <rod@sunsetsystems.com>
- * 
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
- * @package LibreHealth EHR 
- * @author Terry Hill <teryhill@librehealth.io> 
- * @author Rod Roark <rod@sunsetsystems.com>
- * @link http://www.libreehr.org 
+ * This report shows past encounters with filtering and sorting,
+ * Added filtering to show encounters by primary insurance, encounter billing note, encounter total and Insurance name.
+ *
+ * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io>
+ *
+ * LICENSE: This Source Code is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @link http://librehealth.io
  *
  */
 
@@ -38,7 +28,6 @@ $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $alertmsg = ''; // not used yet but maybe later
-
 
 function bucks($amount) {
   if ($amount) printf("%.2f", $amount);
@@ -57,40 +46,30 @@ $form_from_date = fixDate($_POST['form_from_date'], date($DateFormat));
 $form_to_date = fixDate($_POST['form_to_date'], date($DateFormat));
 $form_provider  = $_POST['form_provider'];
 $form_facility  = $_POST['form_facility'];
-$form_details   = $_POST['form_details'] ? true : false;
-$form_new_patients = $_POST['form_new_patients'] ? true : false;
-$form_esigned = $_POST['form_esigned'] ? true : false;
-$form_not_esigned = $_POST['form_not_esigned'] ? true : false;
-$form_encounter_esigned = $_POST['form_encounter_esigned'] ? true : false;
-
-
+$form_details   = true;
 // Get the info.
 //
-    $esign_fields = '';
-    $esign_joins = '';
-  if ($form_encounter_esigned) {
-    $esign_fields = ", es.table, es.tid ";
-    $esign_joins = "LEFT OUTER JOIN esign_signatures AS es ON es.tid = fe.encounter ";
-  }
-    if ($form_esigned) {
-    $esign_fields = ", es.table, es.tid ";
-    $esign_joins = "LEFT OUTER JOIN esign_signatures AS es ON es.tid = fe.encounter ";
-  }
-  if ($form_not_esigned) {
-    $esign_fields = ", es.table, es.tid ";
-    $esign_joins = "LEFT JOIN esign_signatures AS es on es.tid = fe.encounter ";
-  }
-
 $query = "SELECT " .
-  "fe.encounter, fe.date, fe.reason, " .
+  "fe.encounter, fe.date, fe.reason, fe.billing_note, " .
   "f.formdir, f.form_name, " .
   "p.fname, p.mname, p.lname, p.pid, p.pubpid, " .
+  "i1.date AS idate1, i1.eDate AS iedate1, i2.date AS idate2, i2.eDate AS iedate2, " .
+  "c1.name AS cname1, c2.name AS cname2, " .
+  "( SELECT SUM(b.fee) FROM billing AS b WHERE " .
+  "b.pid = f.pid AND b.encounter = f.encounter AND " .
+  "b.activity = 1 AND b.code_type != 'COPAY' ) AS charges, " .
   "u.lname AS ulname, u.fname AS ufname, u.mname AS umname " .
-  "$esign_fields" .
   "FROM ( form_encounter AS fe, forms AS f ) " .
   "LEFT OUTER JOIN patient_data AS p ON p.pid = fe.pid " .
+  "LEFT OUTER JOIN insurance_data AS i1 ON " .
+  "i1.pid = p.pid AND i1.type = 'primary' AND i1.inactive != 1 " .
+  "LEFT OUTER JOIN insurance_companies AS c1 ON " .
+  "c1.id = i1.provider " .
+  "LEFT OUTER JOIN insurance_data AS i2 ON " .
+  "i2.pid = p.pid AND i2.type = 'secondary' AND i2.inactive != 1 " .
+  "LEFT OUTER JOIN insurance_companies AS c2 ON " .
+  "c2.id = i2.provider " .
   "LEFT JOIN users AS u ON u.id = fe.provider_id " .
-  "$esign_joins" .
   "WHERE f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'patient_encounter' ";
 if ($form_to_date) {
   $query .= "AND fe.date >= '$form_from_date 00:00:00' AND fe.date <= '$form_to_date 23:59:59' ";
@@ -103,31 +82,21 @@ if ($form_provider) {
 if ($form_facility) {
   $query .= "AND fe.facility_id = '$form_facility' ";
 }
-if ($form_new_patients) {
-  $query .= "AND fe.date = (SELECT MIN(fe2.date) FROM form_encounter AS fe2 WHERE fe2.pid = fe.pid) ";
-}
-if ($form_encounter_esigned) {
-  $query .= "AND es.tid = fe.encounter AND es.table = 'form_encounter' ";
-}
-if ($form_esigned) {
-  $query .= "AND es.tid = fe.encounter ";
-}
-if ($form_not_esigned) {
- $query .= "AND es.tid IS NULL ";
-}
 
 $res = sqlStatement($query);
+
 ?>
 <html>
 <head>
 <?php html_header_show();?>
-<title><?php echo xlt('Encounters Report'); ?></title>
+<title><?php echo xlt('Patient Billing Encounter by Carrier Report'); ?></title>
 
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/css/theme.blue.min.css" media="screen" />
+
 
 <style type="text/css">
 
@@ -167,7 +136,6 @@ $res = sqlStatement($query);
 <script LANGUAGE="JavaScript">
 
 
-
  $(document).ready(function() {
   oeFixedHeaderSetup(document.getElementById('mymaintable'));
   var win = top.printLogSetup ? top : opener.top;
@@ -177,7 +145,7 @@ $res = sqlStatement($query);
  $(document).ready(function()
     {
         $("#mymaintable").tablesorter();
- }
+    }
 );
 
  function refreshme() {
@@ -191,14 +159,14 @@ $res = sqlStatement($query);
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Encounters'); ?></span>
+<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Billing Encounter by Carrier'); ?></span>
 
 <div id="report_parameters_daterange">
     <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
     . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
-<form method='post' name='theform' id='theform' action='encounters_report.php'>
+<form method='post' name='theform' id='theform' action='encounters_report_carrier.php'>
 
 <div id="report_parameters">
 <table>
@@ -242,17 +210,39 @@ $res = sqlStatement($query);
 
                 ?>
             </td>
-            <td>
-       <label><input type='checkbox' name='form_new_patients' title='First-time visits only'<?php  if ($form_new_patients) echo ' checked'; ?>>
-        <?php  echo xlt('New'); ?></label>
+            </tr>
+            <tr>
+            <td class='label'>
+            <?php echo xlt('Primary Insurance'); ?>:
             </td>
             <td>
-               <label><input type='checkbox' name='form_esigned'<?php  if ($form_esigned) echo ' checked'; ?>>
-               <?php  echo xlt('Forms Esigned'); ?></label>
+            <?php  # added dropdown for payors (TLH)
+                $insurancei = getInsuranceProviders();
+                echo "   <select name='form_payer_id'>\n";
+                echo "    <option value='0'>-- " . xlt('All') . " --</option>\n";
+                foreach ($insurancei as $iid => $iname) {
+                  echo "<option value='" . attr($iid) . "'";
+                  if ($iid == $_POST['form_payer_id']) echo " selected";
+                  echo ">" . text($iname) . "</option>\n";
+                  if ($iid == $_POST['form_payer_id']) $ins_co_name = $iname;
+                }
+                echo "   </select>\n";
+            ?>
+            </td>
+            <td class='label'>
+            <?php echo xlt('Status'); ?>:
             </td>
             <td>
-               <label><input type='checkbox' name='form_encounter_esigned'<?php  if ($form_encounter_esigned) echo ' checked'; ?>>
-               <?php  echo xlt('Encounter Esigned'); ?></label>
+              <select name='form_category'>
+              <?php
+                foreach (array(xl('All'), xl('Open'), xl('Closed'), xl('Empty'), xl('Mixed')) as $value) {
+                  echo "    <option value='$value'";
+                  if ($_POST['form_category'] == $value) echo " selected";
+                  $chckstatus = $_POST['form_category'];
+                  echo ">$value</option>\n";
+               }
+             ?>
+            </select>
             </td>
         </tr>
         <tr>
@@ -269,14 +259,6 @@ $res = sqlStatement($query);
             <td>
                <input type='text' name='form_to_date' id="form_to_date" size='10'
                       value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>'>
-            </td>
-            <td>
-               <label><input type='checkbox' name='form_details'<?php  if ($form_details) echo ' checked'; ?>>
-               <?php echo xlt('Details'); ?></label>
-            </td>
-            <td>
-               <label><input type='checkbox' name='form_not_esigned'<?php  if ($form_not_esigned) echo ' checked'; ?>>
-               <?php echo xlt('Not Esigned'); ?></label>
             </td>
         </tr>
     </table>
@@ -317,7 +299,6 @@ $res = sqlStatement($query);
 ?>
 <div id="report_results">
 <table id='mymaintable' class="tablesorter">
-
  <thead>
 <?php if ($form_details) { ?>
   <th><?php echo xlt('Provider'); ?></th>
@@ -325,10 +306,12 @@ $res = sqlStatement($query);
   <th><?php echo xlt('Patient'); ?></th>
   <th><?php echo xlt('ID'); ?></th>
   <th><?php echo xlt('Status'); ?></th>
+  <th><?php echo xlt('ENC Reason'); ?></th>
+  <th><?php echo xlt('ENC Billing Note'); ?></th>
+  <th><?php echo xlt('Primary Ins')?></th>
   <th><?php echo xlt('Encounter'); ?></th>
-  <th><?php echo xlt('Encounter Number'); ?></th>
-  <th><?php echo xlt('Form'); ?></th>
   <th><?php echo xlt('Coding'); ?></th>
+  <th><?php echo xlt('Total'); ?></th>
 <?php } else { ?>
   <th><?php echo xlt('Provider'); ?></td>
   <th><?php echo xlt('Encounters'); ?></td>
@@ -341,7 +324,9 @@ if ($res) {
   $doc_encounters = 0;
   while ($row = sqlFetchArray($res)) {
     $patient_id = $row['pid'];
-
+    if ($form_payer_id) {
+     if ($ins_co_name <> $row['cname1']) continue;
+    }
     $docname = '';
     if (!empty($row['ulname']) || !empty($row['ufname'])) {
       $docname = $row['ulname'];
@@ -351,17 +336,6 @@ if ($res) {
 
     $errmsg  = "";
     if ($form_details) {
-      // Fetch all other forms for this encounter.
-      $encnames = '';      
-      $encarr = getFormByEncounter($patient_id, $row['encounter'],
-        "formdir, user, form_name, form_id");
-      if($encarr!='') {
-          foreach ($encarr as $enc) {
-            if ($enc['formdir'] == 'patient_encounter') continue;
-            if ($encnames) $encnames .= '<br />';
-            $encnames .= text($enc['form_name']); // need to html escape it here for output below
-          }
-      }     
 
       // Fetch coding and compute billing status.
       $coded = "";
@@ -392,6 +366,10 @@ if ($res) {
       else if ($billed_count              ) $status = xl('Closed');
       else if ($unbilled_count            ) $status = xl('Open'  );
       else                                  $status = xl('Empty' );
+
+    if ($form_category && $chckstatus !='All' ) {
+     if ($chckstatus <> $status) continue;
+    }
 ?>
  <tr bgcolor='<?php echo $bgcolor ?>'>
   <td><?php echo text($docname) //echo ($docname == $lastdocname) ? "" : text($docname) ?>&nbsp;</td>
@@ -400,22 +378,23 @@ if ($res) {
   <td><?php echo text($row['pid']); ?>&nbsp;</td>
   <td><?php echo text($status); ?>&nbsp;</td>
   <td><?php echo text($row['reason']); ?>&nbsp;</td>
+  <td><?php echo text($row['billing_note']); ?>&nbsp;</td>
+  <td><?php echo text($row['cname1']); ?>&nbsp;</td>
   <td><?php echo text($row['encounter']); ?>&nbsp;</td>
-  <td><?php echo $encnames; //since this variable contains html, have already html escaped it above ?>&nbsp;</td>
   <td><?php echo text($coded); ?></td>
+  <td><?php echo text($row['charges']); ?></td>
  </tr>
 <?php
-    } else {
-      if ($docname != $lastdocname) {
-        show_doc_total($lastdocname, $doc_encounters);
-        $doc_encounters = 0;
-      }
-      ++$doc_encounters;
-    }
+    } #else #{
+     # if ($docname != $lastdocname) {
+     #   show_doc_total($lastdocname, $doc_encounters);
+     #   $doc_encounters = 0;
+     # }
+     # ++$doc_encounters;
+    #}
     $lastdocname = $docname;
 
     }
-  if (!$form_details) show_doc_total($lastdocname, $doc_encounters);
 }
 ?>
 </tbody>
@@ -453,5 +432,4 @@ if ($res) {
     });
 
 </script>
-
 </html>
