@@ -27,7 +27,8 @@
  *
  */
 
-require_once("../globals.php");
+require_once $GLOBALS['rootdir'].'/globals.php';
+require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formdata.inc.php");
@@ -261,6 +262,8 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
   echo "self.location.href='edit_globals.php?unique=yes';";
   echo "</script>";
 }
+//Move js lib includes here as they are migrated.
+include_js_library("jscolor-1-4-5/jscolor.js");
 ?>
 
 <!-- supporting javascript code -->
@@ -268,7 +271,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-<script type="text/javascript" src="../../library/js/jscolor-1-4-5/jscolor.js"></script>
+
 <link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
