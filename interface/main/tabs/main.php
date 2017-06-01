@@ -9,7 +9,7 @@ $fake_register_globals=false;
 $sanitize_all_escapes=true;
 
 /* Include our required headers */
-require_once $GLOBALS['rootdir'].'/globals.php';
+require_once("../../globals.php");
 require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once $GLOBALS['srcdir'].'/ESign/Api.php';
 $esignApi = new Api();
