@@ -6,8 +6,8 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
 <head>
     <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
     <style type="text/css">
-        @import "<?php echo $GLOBALS['webroot'] ?>/library/js/datatables/media/css/demo_page.css";
-        @import "<?php echo $GLOBALS['webroot'] ?>/library/js/datatables/media/css/demo_table.css";
+        @import "<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/css/demo_page.css";
+        @import "<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/css/demo_table.css";
 
         body.body_top {
             margin:0;
@@ -228,7 +228,7 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
     <script src="./assets/jquery/jquery.js"></script>
     <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/datatables/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/js/jquery.dataTables.js"></script>
     <script src="<?php echo $GLOBALS['webroot'] ?>/interface/tags_filters/assets/js/data_table.js"></script>
 
     <script type="text/javascript">

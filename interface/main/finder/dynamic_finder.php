@@ -53,15 +53,15 @@ while ($row = sqlFetchArray($res)) {
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
 
 <style type="text/css">
-@import "../../../library/js/datatables/media/css/demo_page.css";
-@import "../../../library/js/datatables/media/css/demo_table.css";
+@import "<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/css/demo_page.css";
+@import "<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/css/demo_table.css";
 .mytopdiv { float: left; margin-right: 1em; }
 </style>
 
-<script type="text/javascript" src="../../../library/js/datatables/media/js/jquery.js"></script>
-<script type="text/javascript" src="../../../library/js/datatables/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/js/jquery.dataTables.min.js"></script>
 <!-- this is a 3rd party script -->
-<script type="text/javascript" src="../../../library/js/datatables/extras/ColReorder/media/js/ColReorderWithResize.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/extras/ColReorder/media/js/ColReorderWithResize.js"></script>
 
 <script language="JavaScript">
 
