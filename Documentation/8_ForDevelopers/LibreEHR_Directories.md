@@ -210,7 +210,7 @@ CSS files for the system. Should be migrated to the public/assets directory
 Uses ckeditor to create custom templates. 
 
 **edihistory**
-Edi History  module used for claim and payment display and manipliation
+Currently outdated, being moved to /modules or external plugin:  Edi History  module used for claim and payment display and manipliation
 
 **Esign**
 Classes and programs used for the Esign function
@@ -222,13 +222,13 @@ Contains fonts used in the code.
 Used in the creation of print to pdf
 
 **html2pdf**
-Used in the creation of print to pdf
+moved to /modules Used in the creation of print to pdf
 
 **js**
-Being done away with contents being migrated to public/assets in future versions
+Being done away with contents being migrated to /assets in future versions
 
 **openflashchart**
-Contains programs used for graphing items with in the code.
+ Moved to /modules Contains programs used for graphing items with in the code.
 
 **Phpseclib**
 Contains programs used in the creation of SSL certificates

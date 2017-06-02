@@ -83,8 +83,8 @@ echo "<html><head>";
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css"> 
 <link rel="stylesheet" href="<?php echo $web_root; ?>/interface/themes/labdata.css" type="text/css"> 
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/openflashchart/js/json/json2.js"></script>
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/openflashchart/js/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/json/json2.js"></script>
+<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/swfobject.js"></script>
 <script type="text/javascript" language="JavaScript">
 function checkAll(bx) {
     for (var tbls=document.getElementsByTagName("table"), i=tbls.length; i--; )
@@ -302,7 +302,7 @@ if($value_select){
                 var thetitle = JSON.stringify(<?php echo json_encode($the_item); ?>);
                 var checkboxfake = JSON.stringify(<?php echo json_encode(array(0)); ?>);
                 
-                $.ajax({ url: '<?php echo $web_root; ?>/library/openflashchart/graph_track_anything.php',
+                $.ajax({ url: '<?php echo $modules_dir; ?>openflashchart/graph_track_anything.php',
                         type: 'POST',
                         data: { dates:  thedates, 
                                 values: thevalues, 
@@ -319,7 +319,7 @@ if($value_select){
                             data=returnData;
                             flashvars.ofc = returnData;
                             // call ofc with proper falshchart
-                            swfobject.embedSWF('<?php echo $web_root; ?>/library/openflashchart/open-flash-chart.swf', 
+                            swfobject.embedSWF('<?php echo $modules_dir; ?>openflashchart/open-flash-chart.swf', 
                             "graph_item_<?php echo $item_graph ?>", "650", "200", "9.0.0","",flashvars);  
                         },
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
