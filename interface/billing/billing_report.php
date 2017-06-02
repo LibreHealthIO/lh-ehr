@@ -182,30 +182,17 @@ function set_button_states() {
 // Process a click to go to an encounter.
 function toencounter(pid, pubpid, pname, enc, datestr, dobstr) {
  top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
- var othername = (window.name == 'RTop') ? 'RBot' : 'RTop';
+     encurl = 'patient_file/encounter/encounter_top.php?set_encounter=' + enc + '&pid=' + pid;
  parent.left_nav.setPatient(pname,pid,pubpid,'',dobstr);
- parent.left_nav.setEncounter(datestr, enc, othername);
- parent.left_nav.setRadio(othername, 'enc');
- parent.frames[othername].location.href =
-  '../patient_file/encounter/encounter_top.php?set_encounter='
-  + enc + '&pid=' + pid;
-<?php } else { ?>
- location.href = '../patient_file/encounter/patient_encounter.php?set_encounter='
-  + enc + '&pid=' + pid;
-<?php } ?>
+     parent.left_nav.setEncounter(datestr, enc, 'enc');
+     parent.left_nav.loadFrame('enc2', 'enc', encurl);
 }
 // Process a click to go to an patient.
 function topatient(pid, pubpid, pname, enc, datestr, dobstr) {
  top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
- var othername = (window.name == 'RTop') ? 'RBot' : 'RTop';
+    paturl = 'patient_file/summary/demographics_full.php?pid=' + pid;
  parent.left_nav.setPatient(pname,pid,pubpid,'',dobstr);
- parent.frames[othername].location.href =
-  '../patient_file/summary/demographics_full.php?pid=' + pid;
-<?php } else { ?>
- location.href = '../patient_file/summary/demographics_full.php?pid=' + pid;
-<?php } ?>
+    parent.left_nav.loadFrame('dem1', 'pat1', paturl);
 }
 </script>
 <script language="javascript" type="text/javascript">
