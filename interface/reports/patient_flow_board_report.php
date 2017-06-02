@@ -87,13 +87,17 @@ if ($form_patient == '' ) $form_pid = '';
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/css/theme.blue.min.css" media="screen" />
 
 <title><?php echo xlt('Patient Flow Board Report'); ?></title>
 
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-9-1/index.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/js/jquery.tablesorter.widgets.js"></script>
+
 
 <script type="text/javascript">
 
@@ -102,6 +106,11 @@ if ($form_patient == '' ) $form_pid = '';
   win.printLogSetup(document.getElementById('printbutton'));
  });
 
+ $(document).ready(function() 
+    { 
+        $("#mymaintable").tablesorter(); 
+    } 
+); 
  function dosort(orderby) {
     var f = document.forms[0];
     f.form_orderby.value = orderby;
@@ -297,41 +306,35 @@ if ($form_patient == '' ) $form_pid = '';
 if ($_POST['form_refresh'] || $_POST['form_orderby']) {
     ?>
 <div id="report_results">
-<table>
+<table id='mymaintable' class="tablesorter">
 
     <thead>
     <?php if (!$chk_show_drug_screens && !$chk_show_completed_drug_screens) { # the first part of this block is for the Patient Flow Board report ?>
-        <th><a href="nojs.php" onclick="return dosort('doctor')"
-     <?php if ($form_orderby == "doctor") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Provider'); ?>
-        </a></th>
+    <th><?php  echo xlt('Provider'); ?>
+    </th>
 
-        <th><a href="nojs.php" onclick="return dosort('date')"
-     <?php if ($form_orderby == "date") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Date'); ?></a>
-        </th>
+    <th><?php  echo xlt('Date'); ?>
+    </th>
 
-        <th><a href="nojs.php" onclick="return dosort('time')"
-     <?php if ($form_orderby == "time") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Time'); ?></a>
-        </th>
+    <th><?php  echo xlt('Time'); ?>
+    </th>
 
-        <th><a href="nojs.php" onclick="return dosort('patient')"
-     <?php if ($form_orderby == "patient") echo " style=\"color:#00cc00\"" ?>>&nbsp;&nbsp;&nbsp;<?php  echo xlt('Patient'); ?></a>
-        </th>
+    <th>&nbsp;&nbsp;&nbsp;<?php  echo xlt('Patient'); ?>
+    </th>
 
-        <th><a href="nojs.php" onclick="return dosort('pid')"
-     <?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
-        </th>
+    <th>&nbsp;<?php  echo xlt('ID'); ?>
+    </th>
 
-        <th><a href="nojs.php" onclick="return dosort('type')"
-     <?php if ($form_orderby == "type") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Type'); ?></a>
-        </th>
+    <th><?php  echo xlt('Type'); ?>
+    </th>
+        
+    <th><?php echo xlt('User'); # not adding Sorting by Total Time yet but can see that it might be useful ?></th>
 
       <?php if ($chk_show_details) { ?>
-        <th><a href="nojs.php" onclick="return dosort('trackerstatus')"
-     <?php if ($form_orderby == "trackerstatus") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Status'); ?></a>
+        <th><?php  echo xlt('Status'); ?>
         </th> 
       <?php } else { ?>
-        <th><a href="nojs.php" onclick="return dosort('trackerstatus')"
-     <?php if ($form_orderby == "trackerstatus") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Final Status'); ?></a>
+        <th><?php  echo xlt('Final Status'); ?>
         </th> 
      <?php } ?>
  
@@ -358,29 +361,23 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
     
     <?php } else { # this section is for the drug screen report ?>
     
-        <th><a href="nojs.php" onclick="return dosort('doctor')"
-     <?php if ($form_orderby == "doctor") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Provider'); ?>
-        </a></th>
-
-        <th><a href="nojs.php" onclick="return dosort('date')"
-     <?php if ($form_orderby == "date") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Date'); ?></a>
+        <th><?php  echo xlt('Provider'); ?>
         </th>
 
-        <th><a href="nojs.php" onclick="return dosort('time')"
-     <?php if ($form_orderby == "time") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Time'); ?></a>
+        <th><?php  echo xlt('Date'); ?>
         </th>
 
-        <th><a href="nojs.php" onclick="return dosort('patient')"
-     <?php if ($form_orderby == "patient") echo " style=\"color:#00cc00\"" ?>>&nbsp;&nbsp;&nbsp;&nbsp;<?php  echo xlt('Patient'); ?></a>
+        <th><?php  echo xlt('Time'); ?>
+        </th>
+
+        <th>&nbsp;&nbsp;&nbsp;&nbsp;<?php  echo xlt('Patient'); ?>
         </th>
 
      <?php if (!$chk_show_completed_drug_screens) { ?>
-        <th><a href="nojs.php" onclick="return dosort('pid')"
-      <?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
+        <th>&nbsp;<?php  echo xlt('ID'); ?>
         </th>
       <?php } else { ?>       
-        <th><a href="nojs.php" onclick="return dosort('pid')"
-      <?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>>&nbsp;<?php  echo xlt('ID'); ?></a>
+        <th>&nbsp;<?php  echo xlt('ID'); ?>
         </th>    
      <?php } ?>
     
@@ -389,8 +386,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
      <?php if (!$chk_show_completed_drug_screens) { ?>
          <th>&nbsp;</th>
       <?php } else { ?>
-         <th><a href="nojs.php" onclick="return dosort('completed')"
-      <?php if ($form_orderby == "completed") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Completed'); ?></a>
+         <th><?php  echo xlt('Completed'); ?>
          </th>   
      <?php } ?>
   
@@ -429,6 +425,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         $patient_id = $appointment['pid'];
         $tracker_id = $appointment['pt_tracker_id'];
         $last_seq = $appointment['lastseq'];
+        $user  =   $appointment['original_user'];
         $docname  = $appointment['ulname'] . ', ' . $appointment['ufname'] . ' ' . $appointment['umname'];
         # only get items with a tracker id.
         if ($tracker_id == '' ) continue;
@@ -483,6 +480,9 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
 
         <td class="detail">&nbsp;<?php echo text(xl_appt_category($appointment['pc_catname'])) ?>
         </td>
+        
+        <td class="detail">&nbsp;<?php echo text(($appointment['original_user'])) ?>
+        </td>
 
         <td class="detail">
             <?php
@@ -521,6 +521,8 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         ?>
         <tr valign='top' class="detail" >
           <td colspan="6" class="detail" align='left'>
+           <td class="detail">&nbsp;<?php echo text(($tracker_elements[$i]['user'])) ?>
+        </td>
           
             <?php
                 # get the verbiage for the status code            
@@ -628,6 +630,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
     $lastdocname = $docname;
     } # end for
     ?>
+    </tbody>
     <tr>
      <?php if (!$chk_show_drug_screens && !$chk_show_completed_drug_screens) { # is it Patient Flow Board or Drug screen ?>
         <td colspan="10" align="left"><?php echo xlt('Total number of Patient Flow Board entries'); ?>&nbsp;<?php echo text($j);?>&nbsp;<?php echo xlt('Patients'); ?></td>
@@ -635,7 +638,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td colspan="10" align="left"><?php echo xlt('Total number of Drug Screen entries'); ?>&nbsp;<?php echo text($j);?>&nbsp;<?php echo xlt('Patients'); ?></td>
      <?php } ?> 
     </tr>
-    </tbody>
+    
 </table>
 </div>
 <!-- end of search results --> <?php } else { ?>
