@@ -43,7 +43,9 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 $query_if_exists =  //check to see if form already exists
 "SELECT COUNT(f.encounter)as count".
 " FROM forms AS f".
-" WHERE f.encounter = '".$encounter."';";
+" WHERE f.encounter = '".$encounter."'".
+" AND f.formdir = 'misc_billing_options'".
+" AND f.deleted = '0';";
 $if_exists = sqlFetchArray(sqlStatementNoLog($query_if_exists));
 if ($if_exists['count']> 0){//copy already exists
  die(xl("There is already a CMS-1500 Billing Options form for this Encounter!  Please edit the existing form."));
