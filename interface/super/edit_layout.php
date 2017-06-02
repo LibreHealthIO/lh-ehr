@@ -57,6 +57,9 @@ $datatypes = array(
   "2"  => xl("Textbox"),
   "3"  => xl("Textarea"),
   "4"  => xl("Text-date"),
+  "5"  => xl("Email"),
+  "6"  => xl("Integer"),  
+  "7"  => xl("URL"), 
   "10" => xl("Providers"),
   "11" => xl("Providers NPI"),
   "12" => xl("Pharmacies"),
@@ -470,7 +473,8 @@ function writeFieldLine($linedata) {
     echo "  </td>";
 
     echo "  <td align='center' class='optcell' style='width:4%'>";
-    if ($linedata['data_type'] == 2 || $linedata['data_type'] == 3 ||
+    if ($linedata['data_type'] == 2 || $linedata['data_type'] == 3 || 
+      $linedata['data_type'] == 5 || $linedata['data_type'] == 6 ||  $linedata['data_type'] == 7 || 
       $linedata['data_type'] == 21 || $linedata['data_type'] == 22 ||
       $linedata['data_type'] == 23 || $linedata['data_type'] == 25 ||
       $linedata['data_type'] == 27 || $linedata['data_type'] == 28 ||

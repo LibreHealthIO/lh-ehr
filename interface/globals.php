@@ -186,7 +186,7 @@ $modules_dir = $GLOBALS['modules_dir'];                //Make path available as 
 $GLOBALS['baseModDir']  = "interface/modules/";        //base directory for the ZEND mods.  Not currently used.
 $GLOBALS['customModDir']= "custom_modules";            //OLD non zend modules, not used.
 $GLOBALS['zendModDir']  = "zend_modules";              //zend module sub-directory, not used.
-$GLOBALS['nn_mod'] = 0;                                //Nation Notes Module value off by default.
+$GLOBALS['mod_nn'] = 0;                                //Nation Notes Module value off by default.
 //module config TODO:  module and global registry for same.
 
 // images directory

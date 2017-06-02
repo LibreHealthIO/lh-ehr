@@ -53,6 +53,9 @@ function getSearchClass($data_type) {
     case  2: // text field
     case  3: // textarea
     case  4: // date
+    case  5: //email
+    case  6: //integer
+    case  7: //url  
       return 1;
   }
   return 0;
@@ -214,6 +217,17 @@ function capitalizeMe(elem) {
  elem.value = s;
 }
 
+/*  This function allows only digits to be entered in a text-field,numeric field,etc. */
+function allowOnlyDigits(elem_name){
+    document.querySelector('input[name='+elem_name+']').addEventListener("keypress", function (evt) {
+    if(evt.which == 8){return} // to allow BackSpace
+    if (evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+        }
+    });
+}
+
 // Onkeyup handler for policy number.  Allows only A-Z and 0-9.
 function policykeyup(e) {
  var v = e.value.toUpperCase();
@@ -256,8 +270,45 @@ function trimlen(s) {
  return j + 1 - i;
 }
 
+/*Function to check if entered data in the form is of correct format(eg. email,URL..) or not. */
+function checkInputFormat(f){        
+    for(i=0;i<f.length;i++){
+                     
+        if(f[i].type=='email')
+        {
+            var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;            
+            if(f[i].value && reg.test(f[i].value)==false)
+            {
+                f[i].style.border =  "thick solid red";                
+                return false;
+            }
+            else
+            {     
+               f[i].style.border =  "";            
+            }
+        }     
+        
+        //By default, this hasn't been used anywhere. Can be used for future purpose.
+        //URL's can have following types: http://www.google.com.. or www.google.com or google.com.
+        if(f[i].type=='url')
+        {
+            var reg = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+            if(f[i].value && reg.test(f[i].value)==false)
+            {
+                f[i].style.border =  "thick solid red";                
+                return false;
+            }
+            else
+            {               
+               f[i].style.border =  "";
+            }
+        }       
+    }
+}
+
 function validate(f) {
   var errMsgs = new Array();
+  var isInputFormatValid = checkInputFormat(f);
   <?php generate_layout_validation('DEM'); ?>
   <?php if($GLOBALS['erx_enable']){ ?>
   alertMsg='';
@@ -296,6 +347,12 @@ function validate(f) {
   if ( errMsgs.length > 0 ) {
          alert(msg);
          return false;
+  }
+  else if(isInputFormatValid == false)
+  {
+        wrongFormatmsg = "<?php echo htmlspecialchars(xl('Items marked in red have invalid entries.Please enter valid data'),ENT_QUOTES); ?>";
+        alert(wrongFormatmsg);
+        return false;
   }
  return true;
 }
@@ -377,7 +434,7 @@ while ($lrow = sqlFetchArray($lres)) {
 
 <body class="body_top">
 
-<form action='new_comprehensive_save.php' name='demographics_form' method='post' onsubmit='return validate(this)'>
+<form action='new_comprehensive_save.php' name='demographics_form' method='post' onkeyup="checkInputFormat(f)" onsubmit='return validate(this)'>
 
 <span class='title'><?php xl('Search or Add Patient','e'); ?></span>
 
