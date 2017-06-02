@@ -1,0 +1,11 @@
+This is the list of all the tables currently in libreehr which are no longer used in code-base. They must be dropped from the database.
+1. array
+2. categories_seq
+3. documents_legal_detail
+4. documents_legal_categories
+5. documents_legal_master
+6. icd9_dx_code
+7. icd9_dx_long_code
+8. icd9_sg_code
+9. version
+10. sequences 
