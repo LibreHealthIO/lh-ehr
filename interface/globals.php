@@ -191,13 +191,13 @@ $GLOBALS['nn_mod'] = 0;                                //Nation Notes Module val
 //module config TODO:  module and global registry for same.
 
 // images directory
-$GLOBALS['images_path'] = "$web_root/assets/images";
+$GLOBALS['images_path'] = "$web_root/assets/images/";
 
 // css directory
-$GLOBALS['css_path'] = "$webserver_root/assets/css";
+$GLOBALS['css_path'] = "$web_root/assets/css/";
 
 // font directory
-$GLOBALS['fonts_path'] = "$webserver_root/assets/fonts";
+$GLOBALS['fonts_path'] = "$web_root/assets/fonts/";
 
 $GLOBALS['template_dir'] = $GLOBALS['fileroot'] . "/templates/";
 $GLOBALS['incdir'] = $include_root;

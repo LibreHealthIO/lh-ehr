@@ -18,6 +18,7 @@
  */
 
 require_once("../globals.php");
+require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/billing.inc");
 require_once("$srcdir/patient.inc");
@@ -42,8 +43,8 @@ function show_doc_total($lastdocname, $doc_encounters) {
   }
 }
 
-$form_from_date = fixDate($_POST['form_from_date'], date($DateFormat));
-$form_to_date = fixDate($_POST['form_to_date'], date($DateFormat));
+$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+$form_to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
 $form_provider  = $_POST['form_provider'];
 $form_facility  = $_POST['form_facility'];
 $form_details   = true;
@@ -90,14 +91,6 @@ $res = sqlStatement($query);
 <head>
 <?php html_header_show();?>
 <title><?php echo xlt('Patient Billing Encounter by Carrier Report'); ?></title>
-
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-
-<link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/css/theme.blue.min.css" media="screen" />
-
-
 <style type="text/css">
 
 /* specifically include & exclude from printing */
@@ -125,17 +118,16 @@ $res = sqlStatement($query);
 
 </style>
 
-<script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dialog.js"></script>
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-9-1/index.js"></script>
-<script type="text/javascript" src="../../library/js/report_helper.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/js/jquery.tablesorter.min.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/tablesorter-master/dist/js/jquery.tablesorter.widgets.min.js"></script>
-
+<?php
+   include_css_library("tablesorter-master/dist/css/theme.blue.min.css");
+   include_css_library("jquery-datetimepicker/jquery.datetimepicker.css");
+   include_js_library("jquery-min-3-1-1/index.js");
+   include_js_library("jquery-datetimepicker/jquery.datetimepicker.full.min.js");
+   include_js_library("tablesorter-master/dist/js/jquery.tablesorter.min.js");
+   include_js_library("tablesorter-master/dist/js/jquery.tablesorter.widgets.min.js");
+?>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/report_helper.js"></script>
 <script LANGUAGE="JavaScript">
-
-
  $(document).ready(function() {
   oeFixedHeaderSetup(document.getElementById('mymaintable'));
   var win = top.printLogSetup ? top : opener.top;
@@ -417,7 +409,6 @@ if ($res) {
 <?php if ($alertmsg) { echo " alert('$alertmsg');\n"; } ?>
 
 </script>
-<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
         $("#form_from_date").datetimepicker({

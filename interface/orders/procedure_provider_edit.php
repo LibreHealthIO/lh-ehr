@@ -44,7 +44,7 @@ function invalue($name) {
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>    
 <title><?php echo $ppid ? xlt('Edit') : xlt('Add New') ?> <?php echo xlt('Procedure Provider'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-3-1-1/index.js"></script>
 
 <style>
 td { font-size:10pt; }
@@ -142,7 +142,7 @@ while ($org_row = sqlFetchArray($org_res)) {
  <tr>
   <td nowrap><b><?php echo xlt('Name'); ?>:</b></td>
   <td>
-	<select name='form_name' id='form_name' class='inputtext' style='width:150px'> 
+    <select name='form_name' id='form_name' class='inputtext' style='width:150px'> 
           <?php echo $optionsStr; ?>
     </select>
   </td>
