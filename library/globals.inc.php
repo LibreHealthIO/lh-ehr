@@ -11,7 +11,7 @@
 /* @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Tony McCormick <tony@mi-squared.com>
- * @author Terry Hill <terryhill@librehealth.io>
+ * @author Terry Hill <teryhill@librehealth.io>
  *
  * @link http://librehealth.io
  */
@@ -198,7 +198,7 @@ $GLOBALS_METADATA = array(
     'libreehr_name' => array(
       xl('Application Title'),
        'text',
-       'LibreEHR',
+       'LibreHealth EHR',
       xl('Application name for login page and main window title.')
     ),
 
@@ -279,7 +279,7 @@ $GLOBALS_METADATA = array(
       xl('Online Forum Support Link'),
        'text',                          // data type
        'https://forums.librehealth.io/c/7-support',
-      xl('URL for LibreEHR Website.')
+      xl('URL for LibreHealth EHR Website.')
     ),
 
     'support_phone_number' => array(
@@ -1023,12 +1023,6 @@ $GLOBALS_METADATA = array(
 
   'Billing' => array(
 
-    'use_charges_panel' => array(
-      xl('Use Charges Panel'),
-      'bool',                           // data type
-      '0',                              // default = false
-      xl('Enables the old Charges panel for entering billing codes and payments. Not recommended, use the Fee Sheet instead.')
-    ),
 
     'display_units_in_billing' => array(
       xl('Display the Units Column on the Billing Screen'),
@@ -2585,7 +2579,7 @@ $GLOBALS_METADATA = array(
         'ka' => xl('Georgian'),
         'de' => xl('German'),
         'el' => xl('Greek, Modern'),
-        'gn' => xl('Guaraní'),
+        'gn' => xl('Guarani'),
         'gu' => xl('Gujarati'),
         'ht' => xl('Haitian- Haitian Creole'),
         'ha' => xl('Hausa'),
@@ -2635,7 +2629,7 @@ $GLOBALS_METADATA = array(
         'ms' => xl('Malay'),
         'ml' => xl('Malayalam'),
         'mt' => xl('Maltese'),
-        'mi' => xl('Māori'),
+        'mi' => xl('Maori'),
         'mr' => xl('Marathi (Marāṭhī)'),
         'mh' => xl('Marshallese'),
         'mn' => xl('Mongolian'),
@@ -2656,7 +2650,7 @@ $GLOBALS_METADATA = array(
         'or' => xl('Oriya'),
         'os' => xl('Ossetian, Ossetic'),
         'pa' => xl('Panjabi, Punjabi'),
-        'pi' => xl('Pāli'),
+        'pi' => xl('Pali'),
         'fa' => xl('Persian (Farsi)'),
         'pl' => xl('Polish'),
         'ps' => xl('Pashto, Pushto'),
