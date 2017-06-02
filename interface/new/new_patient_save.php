@@ -101,7 +101,7 @@ if ($_POST['form_create']) {
     "", // genericval1
     "", // genericname2
     "", // genericval2
-	"", //billing_note
+    "", //billing_note
     "", // phone_cell
     "", // hipaa_mail
     "", // hipaa_voice
@@ -135,12 +135,8 @@ if ($_POST['form_create']) {
 if ($alertmsg) {
   echo "alert('$alertmsg');\n";
 }
-if ($GLOBALS['concurrent_layout']) {
   echo "window.location='$rootdir/patient_file/summary/demographics.php?" .
     "set_pid=$pid&is_new=1';\n";
-} else {
-  echo "window.location='$rootdir/patient_file/patient_file.php?set_pid=$pid';\n";
-}
 ?>
 </script>
 
