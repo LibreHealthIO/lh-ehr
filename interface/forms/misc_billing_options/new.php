@@ -40,7 +40,15 @@ require_once("date_qualifier_options.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
-
+$query_if_exists =  //check to see if form already exists
+"SELECT COUNT(f.encounter)as count".
+" FROM forms AS f".
+" WHERE f.encounter = '".$encounter."';";
+$if_exists = sqlFetchArray(sqlStatementNoLog($query_if_exists));
+if ($if_exists['count']> 0){//copy already exists
+ die(xl("There is already a CMS-1500 Billing Options form for this Encounter!  Please edit the existing form."));
+}
+    
 if (! $encounter) { // comes from globals.php
  die(xl("Internal error: we do not seem to be in an encounter!"));
 }
