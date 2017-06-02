@@ -49,10 +49,7 @@ $referral_source  = (isset($_POST['form_referral_source'])) ? $_POST['form_refer
 $facilityresult = sqlQuery("select name FROM facility WHERE id = ?", array($facility_id));
 $facility = $facilityresult['name'];
 
-if ($GLOBALS['concurrent_layout'])
   $normalurl = "patient_file/encounter/encounter_top.php";
-else
-  $normalurl = "$rootdir/patient_file/encounter/patient_encounter.php";
 
 $nexturl = $normalurl;
 

@@ -11,7 +11,7 @@
  * @brief This file contains the C_AbstractClickmap class, used to control smarty.
  */
 
-/* for $GLOBALS['concurrent_layout','encounter','fileroot','pid','srcdir','style','webroot'] 
+/* for 'encounter','fileroot','pid','srcdir','style','webroot' 
  * remember that include paths are calculated relative to the including script, not this file.
  * to lock the path to this script (so if called from different scripts) use the dirname(FILE) variable
 */
@@ -44,13 +44,13 @@ abstract class C_AbstractClickmap extends Controller {
      *  template module name, passed to Controller's initializer.
      */
     function __construct($template_mod = "general") {
-    	parent::__construct();
-    	$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
-    	$this->template_mod = $template_mod;
-    	$this->template_dir = $GLOBALS['fileroot'] . "/interface/clickmap/template/";
-    	$this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
-    	$this->assign("FORM_ACTION", $GLOBALS['webroot']);
-    	$this->assign("STYLE", $GLOBALS['style']);
+        parent::__construct();
+        $returnurl = 'encounter_top.php';
+        $this->template_mod = $template_mod;
+        $this->template_dir = $GLOBALS['fileroot'] . "/interface/clickmap/template/";
+        $this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
+        $this->assign("FORM_ACTION", $GLOBALS['webroot']);
+        $this->assign("STYLE", $GLOBALS['style']);
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class C_AbstractClickmap extends Controller {
      */
     function default_action() {
         $model = $this->createModel();
-    	$this->assign("form", $model);
+        $this->assign("form", $model);
         $this->set_context($model);
         return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
     }
@@ -125,9 +125,9 @@ abstract class C_AbstractClickmap extends Controller {
      */
     function view_action($form_id) {
         $model = $this->createModel($form_id);
-    	$this->assign("form",$model);
+        $this->assign("form",$model);
         $this->set_context($model);
-    	return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
+        return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
     }
 
     /**
@@ -140,10 +140,10 @@ abstract class C_AbstractClickmap extends Controller {
      */
     function report_action($form_id) {
         $model = $this->createModel($form_id);
-    	$this->assign("form",$model);
+        $this->assign("form",$model);
         $this->set_context($model);
         $model->hideNav = "true";
-    	return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
+        return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
     }
 
      /**
