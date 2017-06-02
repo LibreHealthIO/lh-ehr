@@ -188,6 +188,30 @@ jQuery(document).ready( function($) {
         top.restoreSession();
         parent.location.href = "<?php echo $rootdir; ?>/patient_file/encounter/view_form.php?formname="+parts[0]+"&id="+parts[1];
     }
+
+$(".flat_button").click(function(){
+   if($(this).attr("data-encounter")!=""){
+   var parts = $(this).attr("data-encounter").split("~");
+    var enc = parts[0];
+    var datestr = parts[1];
+  //  var f = top.window.parent.left_nav.document.forms[0];
+        frame = 'RBot';
+  //  if (!f.cb_bot.checked) frame = 'RTop'; else if (!f.cb_top.checked) frame = 'RBot';
+   top.restoreSession();
+    <?php if ($GLOBALS['concurrent_layout']) { ?>
+    top.parent.left_nav.setEncounter(datestr, enc, frame);
+    top.parent.left_nav.setRadio(frame, 'enc');
+    parent.location.href  = 'encounter_top.php?set_encounter=' + enc;
+<?php } else { ?>
+    //top.Title.location.href = 'encounter_title.php?set_encounter='   + enc;
+    //top.Main.location.href  = 'patient_encounter.php?set_encounter=' + enc;
+<?php } ?>
+
+   }
+   else{
+    alert('No '+($(this).attr("name").charAt(0).toUpperCase()+$(this).attr("name").slice(1))+' Encounters Found.');
+   }
+ });
 });
 
  // Process click on Delete link.
@@ -269,6 +293,9 @@ function divtoggle(spanid, divid) {
         display:inline;
         margin-top:10px;
     }
+    .flat_button{
+    padding: 3px 6px;
+    }
 </style>
 
 </head>
@@ -276,7 +303,18 @@ function divtoggle(spanid, divid) {
 $hide=1;
 require_once("$incdir/patient_file/encounter/new_form.php");
 ?>
-<body class="body_top">
+<?php
+$previous = sqlQuery("select encounter,date from form_encounter where pid = '".$_SESSION['pid']."' and encounter < ? ORDER BY encounter desc limit 1 ",array($_SESSION['encounter']));
+$next = sqlQuery("select encounter,date from form_encounter where pid = '".$_SESSION['pid']."' and encounter > ? ORDER BY encounter asc limit 1",array($_SESSION['encounter']));
+$previous_value = isset($previous['encounter'])?$previous['encounter']."~".date("Y-m-d",strtotime($previous['date'])):"";
+$next_value = isset($next['encounter'])?$next['encounter']."~".date("Y-m-d",strtotime($next['date'])):"";
+?>
+<div style="float:left;">
+<input type="button" name="previous" data-encounter="<?php echo $previous_value;?>" class="flat_button" value="<&nbsp;Previous" ></input>
+</div>
+<div style="float:right;">
+<input type="button" name="next" data-encounter="<?php echo $next_value;?>" class="flat_button" value="Next&nbsp;>" ></input>
+</div>
 
 <div id="encounter_forms">
 
@@ -324,8 +362,8 @@ if ( $esign->isButtonViewable() ) {
 <?php if (acl_check('admin', 'super')) { ?>
     <a href='toggledivs(this.id,this.id);' class='css_button' onclick='return deleteme()'><span><?php echo xl('Delete') ?></span></a>
 <?php } ?>
-&nbsp;&nbsp;&nbsp;<a href="#" onClick='expandcollapse("expand");' style="font-size:80%;"><?php xl('Expand All','e'); ?></a>
-&nbsp;&nbsp;&nbsp;<a  style="font-size:80%;" href="#" onClick='expandcollapse("collapse");'><?php xl('Collapse All','e'); ?></a>
+&nbsp;&nbsp;&nbsp;<a href="#" onClick='expandcollapse("expand");' style="font-size:80%;"><?php echo xlt('Expand All'); ?></a>
+&nbsp;&nbsp;&nbsp;<a  style="font-size:80%;" href="#" onClick='expandcollapse("collapse");'><?php echo xlt('Collapse All'); ?></a>
 </div>
 </div>
 
