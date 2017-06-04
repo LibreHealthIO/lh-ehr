@@ -9,3 +9,4 @@ This is the list of all the tables currently in libreehr which are no longer use
 8. icd9_sg_code
 9. version
 10. sequences 
+11. employer_data
