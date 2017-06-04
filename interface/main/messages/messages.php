@@ -7,6 +7,7 @@
  *   and allowing a message to be closed with a new note appended and no recipient.
  *
  * Copyright (c) 2010 LibreHealth EHR Support LLC
+ * Copyright (c) 2017 MedEXBank.com
  *
  * LICENSE: This program is free software; you can redistribute it and/or 
  * modify it under the terms of the GNU General Public License 
@@ -24,6 +25,7 @@
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Brady Miller <brady@sparmy.com>
+ * @author Ray Magauran <magauran@medfetch.com>
  * @link http://librehealth.io 
  */
 
@@ -43,36 +45,112 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/gprelations.inc.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/MedEx/API.php");
+
+$hb = new MedExApi\MedEx('MedExBank.com');
+$logged_in = $hb->login();
+
 ?>
 <html>
 <head>
 
-<?php html_header_show();?>
+<title><?php echo xlt('Message Center'); ?></title>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<script type="text/javascript" src="../../../library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.js"></script>
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-ui-1-11-4/themes/excite-bike/jquery-ui.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/css/bootstrap.min.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/qtip2-2-2-1/jquery.qtip.min.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['fonts_path']; ?>/font-awesome-4-6-3/css/font-awesome.min.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/pure-0-5-0/pure-min.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['web_root']; ?>/library/css/bootstrap_navbar.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $webroot; ?>/interface/main/messages/css/reminder_style.css" type="text/css">
+
+<link rel="shortcut icon" href="<?php echo $webroot; ?>/sites/default/favicon.ico" />
+<script type="text/javascript" src="<?php echo $GLOBALS['web_root']; ?>/library/dialog.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['web_root']; ?>/library/textformat.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-2-2-0/index.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-ui-1-11-4/jquery-ui.min.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>/qtip2-2-2-1/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/moment-2-13-0/moment.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['web_root']; ?>/interface/main/messages/js/reminder_appts.js"></script>
+<script type="text/javascript">
+  <?php require_once("$srcdir/restoreSession.php"); ?>
+</script>
+<script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js">
+</script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="MedEx Bank">
+  <meta name="author" content="Libreehr: MedExBank">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body class="body_top">
 
-<span class="title"><?php echo xlt('Message and Reminder Center'); ?></span>
-<br /><br />
-<span class="title"><?php echo xlt('Reminders'); ?></span>
+    <div class="row">
+      <?php
+      if (empty($_REQUEST['nomenu'])) $hb->display->navigation($logged_in); ?>
+    </div>
+    <?php if (!empty($_GET['go'])) { ?>
+
+    <?php
+    if (($_REQUEST['go']=="setup")&&(!$logged_in)) {
+      $stage = $_REQUEST['stage'];
+      if (!is_numeric($stage)) {
+        echo "<br /><br /><span class='title'>$stage ".xlt('Warning: This is not a valid request').".</span>";
+      } else{
+        $hb->setup->MedExBank($stage);
+      }
+    } elseif ($_REQUEST['go']=="addRecall") {
+      $hb->display->display_add_recall();
+    } else if ($_REQUEST['go']=='Recalls') {
+      $hb->display->display_recalls($logged_in);
+    } elseif ((($_REQUEST['go']=="setup")||($_REQUEST['go']=='Preferences'))&&($logged_in)) {
+      $hb->display->preferences();
+    } elseif ($_REQUEST['go']=='icons') {
+      $hb->display->icon_template();
+    } else {
+      echo xlt('Warning:  Navigation error.  Please behave.');
+    }
+    ?>
+    <?php } else {
+      //original message.php stuff
+      ?>
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8 center">
+            <div style="position:relative;float:left;display: inline-block;margin:30px 30px;">
+              <span class="title"><?php echo xlt('Messages'); ?></span>
 
 <?php       
         
         // TajEmo Work by CB 2012/01/11 02:51:25 PM adding dated reminders
         // I am asuming that at this point security checks have been performed
         require_once '../dated_reminders/dated_reminders.php';   
+              ?>
+            </div>
+            <div style="position:relative;display: inline-block;margin:30px 10px 0px;vertical-align:top;">
+              <span class="title"><?php echo xlt('Recalls'); ?></span>
+              <br /><br />
+              <!--    <a class="reminder_button" onclick="goReminderRecall('Reminders');"><span><?php echo xlt('Reminders'); ?></span></a>
+              &nbsp;
+              -->
+              <a class="reminder_button" href="<?php echo $GLOBALS['web_root']; ?>/interface/main/messages/messages.php?go=addRecall"><span><?php echo xlt('New Recall'); ?></span></a>
+              &nbsp;
+              <a class="reminder_button" onclick="goReminderRecall('Recalls');"><span><?php echo xlt('Recall Board'); ?></span></a>
+              &nbsp;
+              <!-- <span class="reminder_button" onclick="goReminderRecall('Preferences');"><?php echo xlt('Preferences'); ?></span>-->
+            </div>
+            <br />
+            <div style="clear:both;vertical-align:top;width:100%;">
+              <hr />
+              <?php
         
 // Check to see if the user has Admin rights, and if so, allow access to See All.
 $showall = isset($_GET['show_all']) ? $_GET['show_all'] : "" ;
 if ($showall == "yes") {
     $show_all = $showall;
-}
-else
-{
+} else {
     $show_all= "no";
 }
 
@@ -102,12 +180,19 @@ if ($show_all=='yes') {
 }
 else {
     $showall = "no";
-    $lnkvar="'messages.php?show_all=yes&$activity_string_html' name='See All' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('See All'), ENT_NOQUOTES).")";
+                  $lnkvar1="'messages.php?show_all=yes&$activity_string_html' name='See All' onclick=\"top.restoreSession()\"";
+                  $linkvar2 = "(".htmlspecialchars( xl('See All'), ENT_NOQUOTES).")";
 }
 }
 ?>
-<br>
-<table><tr><td><span class="title"><?php echo htmlspecialchars( xl('Messages'), ENT_NOQUOTES); ?></span> <a class='more' href=<?php echo $lnkvar; ?> ></a></td></tr></table>
+              <table>
+                <tr>
+                  <td>
+                    <span class="title"><?php echo htmlspecialchars( xl('Messages'), ENT_NOQUOTES); ?></span>
+                    <a class='more' href=<?php echo $lnkvar1; ?>> <?php echo $linkvar2; ?> </a>
+                  </td>
+                </tr>
+              </table>
 <?php
 //show the activity links
 if (empty($task) || $task=="add" || $task=="delete") { ?>
@@ -129,6 +214,7 @@ if (empty($task) || $task=="add" || $task=="delete") { ?>
     <a href="messages.php?form_inactive=1" class="link" onclick="top.restoreSession()"><span><?php echo xlt('Show Inactive'); ?></span></a>
   <?php } ?>
 <?php } ?>
+            </div>
 
 <?php
 switch($task) {
@@ -214,8 +300,9 @@ echo "
 <form name=new_note id=new_note action=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&$activity_string_html\" method=post>
 <input type=hidden name=noteid id=noteid value='".attr($noteid)."'>
 <input type=hidden name=task id=task value=add>";
-?>
-<div id="pnotes"><center>
+ ?><br />
+<div id="pnotes" class="borderShadow" style="display: table;margin: 0 auto;padding: 1em 2em;">
+<center>
 <table border='0' cellspacing='8'>
  <tr>
   <td class='text'>
@@ -235,7 +322,7 @@ echo "
  <?php
   }
  if ($reply_to) {
-  $prow = sqlQuery("SELECT lname, fname " .
+   $prow = sqlQuery("SELECT lname, fname, pid, DOB  " .
    "FROM patient_data WHERE pid = ?", array($reply_to) );
   $patientname = $prow['lname'] . ", " . $prow['fname'];
  }
@@ -298,11 +385,12 @@ if ($noteid) {
     echo xlt('Linked document') . ":</b>\n";
     while ($gprow = sqlFetchArray($tmp)) {
       $d = new Document($gprow['id1']); 
-      echo "   <a href='";
-      echo $GLOBALS['webroot'] . "/controller.php?document&retrieve";
-      echo "&patient_id="  . $d->get_foreign_id();
-      echo "&document_id=" . $d->get_id();
-      echo "&as_file=true' target='_blank' onclick='top.restoreSession()'>";
+      $enc_list = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
+      " left join libreehr_postcalendar_categories on fe.pc_catid=libreehr_postcalendar_categories.pc_catid  WHERE fe.pid = ? order by fe.date desc", array($prow['pid']));
+      $str_dob = htmlspecialchars(xl("DOB") . ":" . $prow['DOB'] . " " . xl("Age") . ":" . getPatientAge($prow['DOB']));
+      $pname = $prow['fname']." ".$prow['lname'];
+      echo "<a href='javascript:void(0);' ";
+      echo "onClick=\"gotoReport(".addslashes(attr($d->get_id())).",'".addslashes(attr($pname))."',".addslashes(attr($prow['pid'])).",'".addslashes(attr($str_dob))."');\">";
       echo text($d->get_url_file());
       echo "</a>\n";
     }
@@ -359,9 +447,14 @@ if ($noteid) {
 <input type="button" id="cancel" value="<?php echo htmlspecialchars( xl('Cancel'), ENT_QUOTES); ?>">
 <?php }
 ?>
+                  </center>
+                </div>
 
 <br>
-</form></center></div>
+              </form>
+        </div>
+        <div class="col-sm-2"></div>
+      </div>
 <script language="javascript">
 
 // jQuery stuff to make the page a little easier to use
@@ -409,6 +502,46 @@ $(document).ready(function(){
         $("#new_note").submit();
     }
 });
+          function gotoReport(doc_id,pname,pid,pubpid,str_dob){
+            EncounterDateArray=new Array;
+            CalendarCategoryArray=new Array;
+            EncounterIdArray=new Array;
+            Count = 0;
+            <?php
+            if(isset($enc_list) && sqlNumRows($enc_list) >0 ){
+              while($row = sqlFetchArray($enc_list)){
+                ?>
+                EncounterIdArray[Count]='<?php echo attr($row['encounter']); ?>';
+                EncounterDateArray[Count]='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($row['date'])))); ?>';
+                CalendarCategoryArray[Count]='<?php echo attr(xl_appt_category($row['pc_catname'])); ?>';
+                Count++;
+                <?php
+              }
+            }
+            ?>
+            top.restoreSession();
+            $.ajax({
+              type:'get',
+              url:'<?php echo $GLOBALS['webroot']."/interface/patient_file/encounter/patient_encounter.php";?>',
+              data:{set_pid: pid},
+              async: false
+            });
+            parent.left_nav.setPatient(pname,pid,pubpid,'',str_dob);
+            parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
+            <?php if ($GLOBALS['new_tabs_layout']) { ?>
+              var docurl  = '../controller.php?document&view' + "&patient_id=" + pid + "&document_id=" + doc_id + "&";
+              var paturl = 'patient_file/summary/demographics.php?pid=' + pid;
+              parent.left_nav.loadFrame('dem1', 'pat', paturl);
+              parent.left_nav.loadFrame('doc0', 'enc', docurl);
+              top.activateTabByName('enc',true);
+              <?php } else  { ?>
+                var docurl  = '<?php  echo $GLOBALS['webroot'] . "/controller.php?document&view"; ?>' + "&patient_id=" + pid + "&document_id=" + doc_id + "&";
+                var paturl  = '<?php  echo $GLOBALS['webroot'] . "/interface/patient_file/summary/demographics.php?pid="; ?>' + pid;
+                var othername = (window.name == 'RTop') ? 'RBot' : 'RTop';
+                parent.frames[othername].location.href = paturl;
+                location.href = docurl;
+                <?php } ?>
+          }
  // This is for callback by the find-patient popup.
  function setpatient(pid, lname, fname, dob) {
   var f = document.forms[0];
@@ -445,8 +578,7 @@ $(document).ready(function(){
   }
  
 </script><?php
-}
-else {
+    } else {
 
     // This is for sorting the records.
     $sort = array("users.lname", "patient_data.lname", "pnotes.title", "pnotes.date", "pnotes.message_status");
@@ -591,6 +723,7 @@ function deselectRow(row) {
 }
 </script><?php
 }
+    }
 ?>
 
 </body>
