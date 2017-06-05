@@ -23,7 +23,14 @@ require_once('../../globals.php');
         right: 'month,agendaWeek,agendaDay'
         },
         defaultView: 'agendaDay',
-        allDaySlot: false
+        allDaySlot: false,
+        events: {
+          url: 'api/get_events.php',
+          type: 'POST',
+          error: function() {
+              alert('There was an error while fetching events.');
+          }
+        }
       })
 
       });
