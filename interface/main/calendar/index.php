@@ -5,9 +5,11 @@ require_once('../../globals.php');
 <head>
   <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+  <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
   <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
+  <script src='full_calendar_scheduler/scheduler.min.js'></script>
 </head>
 <body>
   
@@ -17,6 +19,7 @@ require_once('../../globals.php');
     $(document).ready(function() {
 
       $('#calendar').fullCalendar({
+        schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         header: {
         left: 'prev,next today',
         center: 'title',
