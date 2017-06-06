@@ -108,7 +108,7 @@ $(document).ready(function() {
  // Borrowed from the multi_filter.html example.
  $("thead input").keyup(function () {
   // Filter on the column (the index) of this element
-	oTable.fnFilter( this.value, $("thead input").index(this) );
+    oTable.fnFilter( this.value, $("thead input").index(this) );
  });
 
  <?php if ( $defaultFilterValue !== null &&
@@ -133,11 +133,7 @@ $(document).ready(function() {
   }
   else {
    top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
    top.RTop.location = "../../patient_file/summary/demographics.php?set_pid=" + newpid;
-<?php } else { ?>
-   top.location = "../../patient_file/patient_file.php?set_pid=" + newpid;
-<?php } ?>
   }
  } );
 

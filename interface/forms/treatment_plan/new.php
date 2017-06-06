@@ -33,7 +33,7 @@ require_once($GLOBALS['srcdir']."/formatting.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 formHeader("Form:Treatment Planning");
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+$returnurl = 'encounter_top.php';
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
 $obj = $formid ? formFetch("form_treatment_plan", $formid) : array();
 
