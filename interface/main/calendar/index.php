@@ -27,16 +27,33 @@ require_once('../../globals.php');
         },
         defaultView: 'agendaDay',
         allDaySlot: false,
+        views: {
+          week: {
+            // options apply to basicWeek and agendaWeek views
+            groupByResource: true
+          },
+          day: {
+            // options apply to basicDay and agendaDay views
+            groupByDateAndResource: true
+          }
+        },
         events: {
-          url: 'api/get_events.php',
+          url: 'api/get_provider_events.php',
           type: 'POST',
           error: function() {
               alert('There was an error while fetching events.');
           }
+        },
+        resources: {
+          url: 'api/get_providers.php',
+          type: 'POST',
+          error: function() {
+              alert('There was an error while fetching providers.');
+          }
         }
       })
-
-      });
+      
+    });
   </script>
 </body>
 </html>
