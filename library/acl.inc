@@ -2,7 +2,7 @@
 /**
  * library/acl.inc 
  * 
- * Functions wrapping php-GACL's functionality, to create a generic LibreEHR access control system.
+ * Functions wrapping php-GACL's functionality, to create a generic LibreHealth EHR access control system.
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,14 @@
  * along with this program. If not, see 
  * http://www.gnu.org/licenses/licenses.html#GPL .
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @license http://www.gnu.org/licenses/licenses.html#GPL GNU GPL V3+
  * @author  Brady Miller <brady@sparmy.com>
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @link    http://librehealth.io
  */
 
-// php-GACL access controls are included in LibreEHR. The below
+// php-GACL access controls are included in LibreHealth EHR. The below
 // function will automatically create the path where gacl.class.php
 // can be found. Note that this path can be manually set below
 // for users who are using an external version of php-GACL.
@@ -139,8 +139,8 @@
  * @param string|array $return_value Type or types of access being requested.
  * @return bool|array  FALSE if access is denied, TRUE if allowed. An
  *                     array() of bools is returned if $return_value is an
- *		       array, representing results for each type of access
- * 		       requested.
+ *             array, representing results for each type of access
+ *             requested.
  */
   function acl_check($section, $value, $user = '', $return_value = '') {
     if (! $user) $user = $_SESSION['authUser'];
@@ -352,7 +352,7 @@
             $arr_group_data = $gacl->get_group_data($value, 'ARO');
             $arr_group_titles[$key] =  $arr_group_data[3];
           }
-	sort($arr_group_titles);
+    sort($arr_group_titles);
         return $arr_group_titles;
         }
       }
@@ -459,23 +459,23 @@
       foreach ($arr_all_group_ids as $value) {
         $arr_group_data = $gacl->get_group_data($value, 'ARO');
         if ((empty($arr_group_titles)) ||
-	 (in_array($arr_group_data[3], $arr_group_titles))) {
+     (in_array($arr_group_data[3], $arr_group_titles))) {
           //We have a hit, so need to add group and increment counter
           // because processing of first hit is unique
-	  //This will also deal with an empty $arr_group_titles array
-	  // removing user from all groups unless 'admin'
+      //This will also deal with an empty $arr_group_titles array
+      // removing user from all groups unless 'admin'
           $counter = $counter + 1;
           //create user full name field
           if ($middle_name) {
             $full_name = $first_name . " " . $middle_name . " " .  $last_name;
           }
           else {
-	    if ($last_name) {
+        if ($last_name) {
               $full_name = $first_name . " " . $last_name;
-	    }
-	    else {
-	      $full_name = $first_name;
-	    }
+        }
+        else {
+          $full_name = $first_name;
+        }
           }
 
           //If this is not the first group to be added, then will skip below
@@ -501,9 +501,9 @@
           }
 
           //place the user ARO object in the selected group (if group(s) is selected)
-	  if (!empty($arr_group_titles)) {
+      if (!empty($arr_group_titles)) {
             $gacl->add_group_object($value, $section_aro_value, $user_name, 'ARO');
-	  }
+      }
 
           //
           //Below will not allow 'admin' or gacl_protected user to be removed from 'admin' group
@@ -528,8 +528,8 @@
             }
           }
         }
-	//if array of groups was empty, then we are done, and can break from loop
-	if (empty($arr_group_titles)) break;
+    //if array of groups was empty, then we are done, and can break from loop
+    if (empty($arr_group_titles)) break;
       }
       return true;
     }

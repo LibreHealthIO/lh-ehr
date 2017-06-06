@@ -98,24 +98,24 @@ div.tiny { width:1px; height:1px; font-size:1px; }
 }
 
 .apptstatus {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 9pt;
-	color: #000000;
-	font-weight: bold;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    color: #000000;
+    font-weight: bold;
     margin: 0px 2px 0px 2px;
 }
 
 .appttime {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 9pt;
-	margin-left: 2px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    margin-left: 2px;
     border-left: solid 1px #000000;
 }
 
 .apptname {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 9pt;
-	margin-right: 2px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    margin-right: 2px;
     border-right: solid 1px #000000;
 }
 .cal_date_range {
@@ -159,16 +159,10 @@ div.tiny { width:1px; height:1px; font-size:1px; }
  function goPid(pid) {
   top.restoreSession();
     [-php-]
-     if ($GLOBALS['concurrent_layout'])
-     {
 
-	      echo "  top.RTop.location = '../../patient_file/summary/demographics.php' " .
-	       "+ '?set_pid=' + pid;\n";	
+          echo "  top.RTop.location = '../../patient_file/summary/demographics.php' " .
+           "+ '?set_pid=' + pid;\n";    
 
-     } else {
-      echo "  top.location = '../../patient_file/patient_file.php' " .
-       "+ '?set_pid=' + pid + '&pid=' + pid;\n";
-     }
     [-/php-]
  }
 

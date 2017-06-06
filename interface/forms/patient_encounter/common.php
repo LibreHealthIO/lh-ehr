@@ -140,7 +140,6 @@ function cancelClicked() {
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
 <form id="new-encounter-form" method='post' action="<?php echo $rootdir ?>/forms/patient_encounter/save.php" name='new_encounter'
- <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?>>
 
 <div style='float:left'>
 <?php if ($viewmode) { ?>
@@ -160,15 +159,9 @@ function cancelClicked() {
     </div>
 
     <div style = 'float:left; margin-top:-3px'>
-  <?php if ($GLOBALS['concurrent_layout']) { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
         class="css_button link_submit" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
-  <?php } else { ?>
-      <a href="<?php echo "$rootdir/patient_file/encounter/patient_encounter.php"; ?>"
-        class="css_button link_submit" target='Main' onClick="top.restoreSession()">
-      <span><?php echo xlt('Cancel'); ?>]</span></a>
-  <?php } // end not concurrent layout ?>
-  <?php } else if ($GLOBALS['concurrent_layout']) { // not $viewmode ?>
+  <?php } else { // not $viewmode ?>
       <a href="" class="css_button link_submit" onClick="return cancelClicked()">
       <span><?php echo xlt('Cancel'); ?></span></a>
   <?php } // end not $viewmode ?>
