@@ -1023,12 +1023,6 @@ $GLOBALS_METADATA = array(
 
   'Billing' => array(
 
-    'use_charges_panel' => array(
-      xl('Use Charges Panel'),
-      'bool',                           // data type
-      '0',                              // default = false
-      xl('Enables the old Charges panel for entering billing codes and payments. Not recommended, use the Fee Sheet instead.')
-    ),
 
     'display_units_in_billing' => array(
       xl('Display the Units Column on the Billing Screen'),
@@ -2585,7 +2579,7 @@ $GLOBALS_METADATA = array(
         'ka' => xl('Georgian'),
         'de' => xl('German'),
         'el' => xl('Greek, Modern'),
-        'gn' => xl('Guarani'),
+        'gn' => xl('Guaraní'),
         'gu' => xl('Gujarati'),
         'ht' => xl('Haitian- Haitian Creole'),
         'ha' => xl('Hausa'),
@@ -2635,7 +2629,7 @@ $GLOBALS_METADATA = array(
         'ms' => xl('Malay'),
         'ml' => xl('Malayalam'),
         'mt' => xl('Maltese'),
-        'mi' => xl('Maori'),
+        'mi' => xl('Māori'),
         'mr' => xl('Marathi (Marāṭhī)'),
         'mh' => xl('Marshallese'),
         'mn' => xl('Mongolian'),
@@ -2656,7 +2650,7 @@ $GLOBALS_METADATA = array(
         'or' => xl('Oriya'),
         'os' => xl('Ossetian, Ossetic'),
         'pa' => xl('Panjabi, Punjabi'),
-        'pi' => xl('Pali'),
+        'pi' => xl('Pāli'),
         'fa' => xl('Persian (Farsi)'),
         'pl' => xl('Polish'),
         'ps' => xl('Pashto, Pushto'),
