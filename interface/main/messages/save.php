@@ -35,14 +35,14 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/MedEx/API.php");
 //require_once(dirname(__FILE__). "/log.inc");
 
-$hb = new MedExApi\MedEx('MedExBank.com');
+$MedEx = new MedExApi\MedEx('MedExBank.com');
 //you need admin privileges to update this.
 if ($_REQUEST['go'] =='Preferences') {
     $query = "SELECT * FROM users where id = ?";
     $user_data = sqlQuery($query,array($_SESSION['authUserID']));
 
     if (acl_check('admin', 'super')) {
-        $sql = "UPDATE `MedEx_prefs` set `ME_facilities`=?,`ME_providers`=?,`ME_hipaa_default_override`=?,
+        $sql = "UPDATE `medex_prefs` set `ME_facilities`=?,`ME_providers`=?,`ME_hipaa_default_override`=?,
             `PHONE_country_code`=? ,`MSGS_default_yes`=?,
             `POSTCARDS_local`=?,`POSTCARDS_remote`=?,
             `LABELS_local`=?,`LABELS_choice`=?,
@@ -99,26 +99,40 @@ if ($_REQUEST['MedEx']=="start") {
         if (!file_exists($practice_logo)) {
             $data['logo_url'] = $prefix.$_SERVER['HTTP_HOST'].$web_root."/sites/".$_SESSION["site_id"]."/images/practice_logo.gif";
         } else {
-            $data['logo_url'] = $prefix.$_SERVER['HTTP_HOST']."/openemr/public/images/menu-logo.png";
+            $data['logo_url'] = $prefix.$_SERVER['HTTP_HOST']."/libreehr/assets/images/menu-logo.png";
         }
 
-        $response = $hb->setup->autoReg($data);
+        $response = $MedEx->setup->autoReg($data);
+
         if (($response['API_key']>'')&&($response['customer_id'] > '')) {
-            sqlQuery("Delete from MedEx_prefs");
-            $sqlUPDATE = "INSERT into `MedEx_prefs` (MedEx_id,ME_api_key,ME_username) VALUES (?,?,?)";
-            sqlStatement($sqlUPDATE,array($response['customer_id'],$response['API_key'],$_POST['new_email']));
+            sqlQuery("Delete from medex_prefs");
+
+            $runQuery ="select * from facility order by name";
+            $fetch = sqlStatement($runQuery);
+            while ($frow = sqlFetchArray($fetch)) { $facilities[] = $frow; }
+            $runQuery = "SELECT * FROM users WHERE username != '' AND active = '1' and authorized='1'";
+            $prove = sqlStatement($runQuery);
+            while ($prow = sqlFetchArray($prove)) { $providers[] = $prow; }
+            $facilities = implode("|",$facilities);
+            $providers  = implode("|",$providers);
+            $sqlINSERT  = "INSERT into `medex_prefs` (
+                                MedEx_id,ME_api_key,ME_username, 
+                                ME_facilities,ME_providers,ME_hipaa_default_override,MSGS_default_yes,
+                                PHONE_country_code,LABELS_local,LABELS_choice) 
+                            VALUES (?,?,?,?,?,?,?,?,?,?)";
+            sqlStatement($sqlINSERT,array($response['customer_id'],$response['API_key'],$_POST['new_email'],$facilities,$providers,"1","1","1","1","5160"));
         }
-        $logged_in = $hb->login();
+        $logged_in = $MedEx->login();
 
 
         if ($logged_in) {
             $token      = $logged_in['token'];
-            $practice   = $hb->practice->sync($token);
+            $practice   = $MedEx->practice->sync($token);
             $token      = $logged_in['token'];
 
-            $response   = $hb->practice->sync($token);
-            $campaigns  = $hb->campaign->events($token);
-            $response   = $hb->events->generate($token,$campaigns['events']);
+            $response   = $MedEx->practice->sync($token);
+            $campaigns  = $MedEx->campaign->events($token);
+            $response   = $MedEx->events->generate($token,$campaigns['events']);
 
             $response['success'] = "OK BABY!";
             $response['show'] =  xlt("Sign-up successful for")." ".$data['company']. ".<br />".xlt("Proceeding to Preferences").".<br />".
@@ -128,7 +142,8 @@ if ($_REQUEST['MedEx']=="start") {
             echo json_encode($response);
         }   else {
             $response_prob=array();
-            $response_prob['show'] = xlt("We ran into some problems connecting to the MedEx servers from your EHR").".<br>".xlt('Proceed to')." <a href='https://medexbank.com/cart/upload/''>MedEx Bank</a>.
+            $response_prob['show'] = xlt("We ran into some problems connecting to the MedEx servers from your EHR").".<br>
+                ".xlt('Proceed to')." <a href='https://medexbank.com/cart/upload/''>MedEx Bank</a>.
                 <br />
                 <div class='center left' >
                     <ul><li> ".xlt('Login')." (".xlt('or register if required').") ".xlt('using your email/password')." </li>
@@ -140,10 +155,10 @@ if ($_REQUEST['MedEx']=="start") {
                 </div>
                 ";
             echo json_encode($response_prob);
-        }   exit;
+        }
                     //then redirect user to preferences with a success message!
     } else {
-        echo "Sorry you are not privileged enough...";
+        echo xlt("Sorry you are not privileged enough...");
     }
     exit;
 }
@@ -151,13 +166,19 @@ if ($_REQUEST['MedEx']=="start") {
 if (($_REQUEST['pid'])&&($_REQUEST['action']=="new_recall")) {
     $query = "select * from patient_data where pid=?";
     $result = sqlQuery($query, array($_REQUEST['pid']) );
-    $result['age'] = getAge($result['DOB']);
-    //if they are not using the eye form then this makes no sense
-    //As forms mature, there should be a uniform way to find the PLAN?
-    //And when that day comes we'll put it here...
-    //For now, we will have to test if the form_eye_mag exists at all, or send NADA.
-    //now get the last visit eye_mag PLAN and put it here...
-    //use the default form if set in globals in the future...
+    $result['age'] = $MedEx->events->getAge($result['DOB']);
+
+    /**
+     *  Did the clinician create a PLAN at the last visit?  
+     *  To do an in office test, and get paid for it, 
+     *  we must have an order (and a report of the findings).
+     *  If the practice is using the eye form then uncomment the 3 lines below.
+     *  It provides the PLAN and orders for next visit.
+     *  As forms mature, there should be a uniform way to find the PLAN?  
+     *  And when that day comes we'll put it here...
+     *  The other option is to use Visit Categories here.  Maybe both?  Consensus?  
+     *  Beuller?  The silence is deafening.  I need to get some friends.
+     */
    # $query = "select PLAN from form_eye_mag where PID=? and date < NOW() ORDER by date desc LIMIT 1";
    # $result2 = sqlQuery($query, array($_REQUEST['pid']) );
    # if ($result2) $result['PLAN'] = $result2['PLAN'];
@@ -169,15 +190,14 @@ if (($_REQUEST['pid'])&&($_REQUEST['action']=="new_recall")) {
 }
 
 if (($_REQUEST['action']=='addRecall')||($_REQUEST['add_new'])) {
-    $saved = $_REQUEST;
-    save_recall($saved);
-    return "saved";
+    $MedEx->events->save_recall($_REQUEST);
+    echo "saved";
     exit;
 }
 
 if (($_REQUEST['action']=='delete_Recall')&&($_REQUEST['pid'])) {
-    delete_recall($_REQUEST);
-    return "deleted";
+    $MedEx->events->delete_recall($_REQUEST);
+    echo "deleted";
     exit;
 }
 
@@ -193,7 +213,7 @@ if ($_REQUEST['action'] == "process") {
     $new_pc_eid = json_decode($_POST['pc_eid'],true);
 
     if (($_POST['item']=="phone")||(($_POST['item']=="notes")&&($_POST['msg_notes']>''))) {
-        $sql ="INSERT INTO MedEx_outgoing (msg_pc_eid, msg_type, msg_reply, msg_extra_text) VALUES (?,?,?,?)";
+        $sql ="INSERT INTO medex_outgoing (msg_pc_eid, msg_type, msg_reply, msg_extra_text) VALUES (?,?,?,?)";
         echo $sql.'recall_'.$new_pid[0]." - ".$_POST['item']. " - ". $_SESSION['authUserID'] ." - ".$_POST['msg_notes']. "\n";
         sqlQuery($sql,array('recall_'.$new_pid[0], $_POST['item'], $_SESSION['authUserID'], $_POST['msg_notes']));
         return "done";
@@ -212,13 +232,13 @@ if ($_REQUEST['action'] == "process") {
     }
     if ($_POST['item']=="postcards") {
         foreach($pidList as $pid) {
-            $sql ="INSERT INTO MedEx_outgoing (msg_pc_eid, msg_type, msg_reply, msg_extra_text) VALUES (?,?,?,?)";
+            $sql ="INSERT INTO medex_outgoing (msg_pc_eid, msg_type, msg_reply, msg_extra_text) VALUES (?,?,?,?)";
             sqlQuery($sql,array('recall_'.$pid, $_POST['item'], $_SESSION['authUserID'], 'Postcard printed locally'));
         }
     }
     if ($_POST['item']=="labels") {
         foreach($pidList as $pid) {
-            $sql ="INSERT INTO MedEx_outgoing (msg_pc_eid, msg_type, msg_reply, msg_extra_text) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE msg_extra_text='Label repeat'";
+            $sql ="INSERT INTO medex_outgoing (msg_pc_eid, msg_type, msg_reply, msg_extra_text) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE msg_extra_text='Label repeat'";
             sqlQuery($sql,array('recall_'.$pid, $_POST['item'], $_SESSION['authUserID'], 'Label printed locally'));
         }
     }
@@ -239,41 +259,6 @@ if ($_REQUEST['action'] == "remove_rule") {
     echo json_encode($result);
     exit;
 }
-echo "now exiting";
 exit;
-function save_recall($saved) {
-    $mysqldate = date( 'Y-m-d', $_REQUEST['datepicker2'] );
-    $mysqldate = DateTime::createFromFormat('Y-m-d', $_REQUEST['datepicker2']);
-    $mysqldate = date('Y-m-d', strtotime($_REQUEST['datepicker2']));
-    $queryINS = "INSERT into MedEx_recalls (r_pid,r_reason,r_eventDate,r_provider,r_facility)
-                    VALUES (?,?,?,?,?)
-                    on DUPLICATE KEY
-                    UPDATE r_reason=?, r_eventDate=?, r_provider=?,r_facility=?";
-    $result = sqlStatement($queryINS,array($_REQUEST['new_pid'],$_REQUEST['new_reason'],$mysqldate,$_REQUEST['new_provider'],$_REQUEST['new_facility'],$_REQUEST['new_reason'],$mysqldate,$_REQUEST['new_provider'],$_REQUEST['new_facility']));
-    $query = "UPDATE patient_data
-                set phone_home=?,phone_cell=?,email=?,
-                    hipaa_allowemail=?,hipaa_voice=?,hipaa_allowsms=?,
-                    street=?,postal_code=?,city=?,state=?
-                where pid=?";
-    $sqlValues = array($_REQUEST['new_phone_home'],$_REQUEST['new_phone_cell'],$_REQUEST['new_email'],
-                        $_REQUEST['new_email_allow'],$_REQUEST['new_voice'],$_REQUEST['new_allowsms'],
-                        $_REQUEST['new_address'],$_REQUEST['new_postal_code'],$_REQUEST['new_city'],$_REQUEST['new_state'],
-                        $_REQUEST['new_pid']);
-    $result = sqlStatement($query,$sqlValues);
-    return;
-}
-function delete_Recall($saved) {
-    $sqlQuery = "DELETE FROM MedEx_recalls where r_pid=? and r_ID=?";
-    $result = sqlStatement($sqlQuery,array($_POST['pid'],$_POST['r_ID']));
-    return $result;
-}
-function getAge($dob, $asof='') {
-    if (empty($asof)) $asof = date('Y-m-d');
-    $a1 = explode('-', substr($dob , 0, 10));
-    $a2 = explode('-', substr($asof, 0, 10));
-    $age = $a2[0] - $a1[0];
-    if ($a2[1] < $a1[1] || ($a2[1] == $a1[1] && $a2[2] < $a1[2])) --$age;
-    return $age;
-}
 
 ?>

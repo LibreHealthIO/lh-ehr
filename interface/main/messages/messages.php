@@ -47,31 +47,30 @@ require_once("$srcdir/gprelations.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/MedEx/API.php");
 
-$hb = new MedExApi\MedEx('MedExBank.com');
-$logged_in = $hb->login();
+$MedEx = new MedExApi\MedEx('MedExBank.com');
+$logged_in = $MedEx->login();
 
-?>
-<html>
+?><html>
 <head>
 
 <title><?php echo xlt('Message Center'); ?></title>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-ui-1-11-4/themes/excite-bike/jquery-ui.css" >
-<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/css/bootstrap.min.css" >
-<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/qtip2-2-2-1/jquery.qtip.min.css" >
-<link rel="stylesheet" href="<?php echo $GLOBALS['fonts_path']; ?>/font-awesome-4-6-3/css/font-awesome.min.css" >
-<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/pure-0-5-0/pure-min.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>jquery-ui-1-11-4/themes/excite-bike/jquery-ui.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/css/bootstrap.min.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>qtip2-2-2-1/jquery.qtip.min.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['fonts_path']; ?>font-awesome-4-6-3/css/font-awesome.min.css" >
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>pure-0-5-0/pure-min.css" >
 <link rel="stylesheet" href="<?php echo $GLOBALS['web_root']; ?>/library/css/bootstrap_navbar.css" type="text/css">
 <link rel="stylesheet" href="<?php echo $webroot; ?>/interface/main/messages/css/reminder_style.css" type="text/css">
 
 <link rel="shortcut icon" href="<?php echo $webroot; ?>/sites/default/favicon.ico" />
 <script type="text/javascript" src="<?php echo $GLOBALS['web_root']; ?>/library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['web_root']; ?>/library/textformat.js"></script>
-<script src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-2-2-0/index.js"></script>
-<script src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-ui-1-11-4/jquery-ui.min.js"></script>
-<script src="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
-<script src="<?php echo $GLOBALS['standard_js_path']; ?>/qtip2-2-2-1/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/moment-2-13-0/moment.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-2-2-0/index.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-ui-1-11-4/jquery-ui.min.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>qtip2-2-2-1/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>moment-2-13-0/moment.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['web_root']; ?>/interface/main/messages/js/reminder_appts.js"></script>
 <script type="text/javascript">
   <?php require_once("$srcdir/restoreSession.php"); ?>
@@ -89,7 +88,7 @@ $logged_in = $hb->login();
 
     <div class="row">
       <?php
-      if (empty($_REQUEST['nomenu'])) $hb->display->navigation($logged_in); ?>
+      if (empty($_REQUEST['nomenu'])) $MedEx->display->navigation($logged_in); ?>
     </div>
     <?php if (!empty($_GET['go'])) { ?>
 
@@ -99,16 +98,16 @@ $logged_in = $hb->login();
       if (!is_numeric($stage)) {
         echo "<br /><br /><span class='title'>$stage ".xlt('Warning: This is not a valid request').".</span>";
       } else{
-        $hb->setup->MedExBank($stage);
+              $MedEx->setup->MedExBank($stage);
       }
     } elseif ($_REQUEST['go']=="addRecall") {
-      $hb->display->display_add_recall();
+            $MedEx->display->display_add_recall();
     } else if ($_REQUEST['go']=='Recalls') {
-      $hb->display->display_recalls($logged_in);
+            $MedEx->display->display_recalls($logged_in);
     } elseif ((($_REQUEST['go']=="setup")||($_REQUEST['go']=='Preferences'))&&($logged_in)) {
-      $hb->display->preferences();
+            $MedEx->display->preferences();
     } elseif ($_REQUEST['go']=='icons') {
-      $hb->display->icon_template();
+            $MedEx->display->icon_template();
     } else {
       echo xlt('Warning:  Navigation error.  Please behave.');
     }

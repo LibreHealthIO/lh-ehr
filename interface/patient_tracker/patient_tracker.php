@@ -43,7 +43,7 @@ else if ($GLOBALS['docs_see_entire_calendar'] =='1') {
   $provider = null;
 }
 if ($_POST['clearCALLback']) {
-  $sql = "UPDATE MedEx_outgoing set msg_extra_text='COMPLETED' where msg_pc_eid=?";
+  $sql = "UPDATE medex_outgoing set msg_extra_text='COMPLETED' where msg_pc_eid=?";
   sqlQuery($sql,array($_POST['clearCALLback']));
   exit;
 }
@@ -126,8 +126,9 @@ foreach ( $appointments as $apt ) {
 <title><?php echo xlt("Flow Board") ?></title>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-<link rel="stylesheet" href="<?php echo $GLOBALS['fonts_path'];?>/font-awesome-4-6-3/css/font-awesome.css" type="text/css">
-<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path'] ?>/bootstrap-3-3-4/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="<?php echo $GLOBALS['fonts_path'];?>font-awesome-4-6-3/css/font-awesome.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path'] ?>pure-0-5-0/pure-min.css">
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path'] ?>bootstrap-3-3-4/dist/css/bootstrap.min.css">
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
@@ -436,7 +437,7 @@ function openNewTopWindow(newpid,newencounterid) {
  </tr>
 
 <?php
-          $query2 = "SELECT * from MedEx_icons";
+          $query2 = "SELECT * from medex_icons";
           $iconed = sqlStatement($query2);
           foreach ($iconed as $icon) {
             $icons[$icon['msg_type']][$icon['msg_status']]['description'] = $icon['i_description'];
@@ -445,20 +446,22 @@ function openNewTopWindow(newpid,newencounterid) {
     $prev_appt_date_time = "";
     foreach ( $appointments as $appointment ) {
             if (empty($room)) {
-              //they are not here yet, display MedEx Reminder info
+              //they are not here yet, display medex Reminder info
               //one icon per type of response.
               //If there was a SMS dialog, display it as a mouseover/title
               //Display date received also as mouseover title.
-              $icon_here='';
               $other_title = '';
               $title = '';
               $icon2_here ='';
               $appt['stage'] ='';
-              $icon_here = '';
+              $icon_here = array();
 
-              $query = "Select * from MedEx_outgoing where msg_pc_eid =? order by msg_date";
-              $myMedEx = sqlStatement($query,array($appointment['eid']));
-              while ($row = sqlFetchArray($myMedEx)) {
+              $query = "Select * from medex_outgoing where msg_pc_eid =? order by msg_date";
+              $mymedex = sqlStatement($query,array($appointment['eid']));
+              #error_log("mymedes: ".$mymedex, 0);
+
+              while ($row = sqlFetchArray($mymedex)) {
+                #error_log("msg_reply: ".$row['msg_reply'], 0);
                 if ($row['msg_reply'] == 'Other') {
                   $other_title .= $row['msg_extra_text']."\n"; //format the date/time how we like it.
                   continue;
@@ -466,25 +469,25 @@ function openNewTopWindow(newpid,newencounterid) {
                 // Calendar Appt status gets updated.
                 // We have added Appt statuses to list apptstatus to include the following categories SMS,AVM,EMAIL,CALL
 
-                if (($row['msg_reply'] == "CONFIRMED")||($appt['stage']=="CONFIRMED")) { //all done then, no need to show any more SMS stuff
-                  $appt['stage'] = "CONFIRMED";
-                  $icon_here .= $icons[$row['msg_type']]['CONFIRMED']['html'];
+               if (($row['msg_reply'] == "CONFIRMED")||($appointment[$row['msg_type']]['stage']=="CONFIRMED")) { //all done then, no need to show any more SMS stuff
+                  $appointment[$row['msg_type']]['stage'] = "CONFIRMED";
+                  $icon_here[$row['msg_type']] = $icons[$row['msg_type']]['CONFIRMED']['html'];
                 //  $appointment['status'] = $row['msg_type'];
 
-                } elseif (($row['msg_reply'] == "READ")||($appt['stage']=="READ")) {
-                  if ($appt['stage']  != "CONFIRMED") {
-                    $appt['stage'] = "READ";
-                    $icon_here .= $icons[$row['msg_type']]['READ']['html'];
+                } elseif (($row['msg_reply'] == "READ")||($appointment[$row['msg_type']]['stage']=="READ")) {
+                  if ($appointment[$row['msg_type']]['stage']  != "CONFIRMED") {
+                    $appointment['stage'] = "READ";
+                    $icon_here[$row['msg_type']] = $icons[$row['msg_type']]['READ']['html'];
                   }
-                } elseif (($row['msg_reply'] == "SENT")||($appt['stage']=="SENT")) {
-                  if (($appt['stage']!="CONFIRMED")&& ($appt['stage']!="READ")) {
-                    $appt['stage'] = "SENT";
-                    $icon_here .= $icons[$row['msg_type']]['SENT']['html'];
+                } elseif (($row['msg_reply'] == "SENT")||($appointment[$row['msg_type']]['stage']=="SENT")) {
+                  if (($appointment[$row['msg_type']]['stage']!="CONFIRMED")&& ($appointment[$row['msg_type']]['stage']!="READ")) {
+                    $appointment[$row['msg_type']]['stage'] = "SENT";
+                    $icon_here[$row['msg_type']] = $icons[$row['msg_type']]['SENT']['html'];
                   }
-                } elseif (($row['msg_reply'] == "To Send")||($appt['stage']=="QUEUED")) {
-                  if (($appt['stage']!="CONFIRMED")&&($appt['stage']!="READ")&&($appt['stage']!="SENT")) {
-                      $appt['stage']   = "QUEUED";
-                      $icon_here .= $icons[$row['msg_type']]['SCHEDULED']['html'];
+                } elseif (($row['msg_reply'] == "To Send")||($appointment['stage']=="QUEUED")) {
+                  if (($appointment[$row['msg_type']]['stage']!="CONFIRMED")&&($appointment[$row['msg_type']]['stage']!="READ")&&($aappointment[$row['msg_type']]['stage']!="SENT")) {
+                      $appointment[$row['msg_type']]['stage']   = "QUEUED";
+                      $icon_here[$row['msg_type']] = $icons[$row['msg_type']]['SCHEDULED']['html'];
                   }
                 }
                 //these are additional icons if present
@@ -587,7 +590,7 @@ function openNewTopWindow(newpid,newencounterid) {
          </td>
          <td class="detail" align="center">
         <?php
-        echo ($newarrive ? oeFormatTime($newarrive) : $Xappointment['messages']) ?>
+        echo ($newarrive ? oeFormatTime($newarrive) : $appointment['messages']) ?>
          </td>
          <td class="detail" align="center"> 
          <?php if (empty($tracker_id)) { #for appt not yet with tracker id and for recurring appt ?>
@@ -625,7 +628,7 @@ function openNewTopWindow(newpid,newencounterid) {
         if (($yestime == '1') && ($timecheck >=1) && (strtotime($newarrive)!= '')) { 
            echo text($timecheck . ' ' .($timecheck >=2 ? xl('minutes'): xl('minute'))); 
          } else {
-          echo  $icon_here." ".$icon2_here;
+          echo  implode($icon_here)." ".$icon2_here;
         }
         #end time in current status
         ?>

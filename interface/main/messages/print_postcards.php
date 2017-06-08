@@ -1,6 +1,6 @@
 <?php
 /**
- * /library/MedEx/MedEx_background.php
+ * /library/MedEx/print_postcards.php
  *
  * This file is executed as a background service
  * either through ajax or cron.

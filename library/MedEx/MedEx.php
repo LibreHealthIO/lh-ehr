@@ -28,7 +28,7 @@ error_reporting(0);
 
 $ignoreAuth=true;
 $_SERVER['REQUEST_URI'] = '';
-$_SERVER['SERVER_NAME'] = 'example.tdl'; //PUT your fqdn - server name here
+$_SERVER['SERVER_NAME'] = 'librehealth.io'; //PUT your server name here
 $_SERVER['HTTP_HOST']   = 'default'; //for multi-site i believe
 
 require_once(dirname(__FILE__)."/../../interface/globals.php");
@@ -37,26 +37,26 @@ require_once(dirname(__FILE__)."/../log.inc");
 require_once(dirname(__FILE__)."/../formatting.inc.php");
 require_once(dirname(__FILE__)."/API.php");
 
-$hb = new MedExApi\MedEx('MedExBank.com');
-$logged_in = $hb->login();
-$log = "/tmp/myhipaa.log" ;
-$stdlog = fopen($log, 'a');
-$timed = date(DATE_RFC2822);
-fputs($stdlog,"\n".$timed."\nMedEx.php fired\n");        
+$MedEx = new MedExApi\MedEx('MedExBank.com');
+
+$logged_in = $MedEx->login();
+$log['Time']= date(DATE_RFC2822);
+$log['action'] = "MedEx.php fired";
+
 if ($logged_in) {
     if (!empty($_POST['callback'])) {
         $data = json_decode($_POST,true);
-        $response = $hb->callback->receive($data);
+        $response = $MedEx->callback->receive($data); 
         echo $response;
         exit;
     }
     $token      = $logged_in['token'];
-    $response   = $hb->practice->sync($token);
-    $campaigns  = $hb->campaign->events($token);
-    $response   = $hb->events->generate($token,$campaigns['events']);
+    $response   = $MedEx->practice->sync($token);
+    $campaigns  = $MedEx->campaign->events($token);
+    $response   = $MedEx->events->generate($token,$campaigns['events']);
 } else {
     echo "not logged in";
-    echo $hb->getLastError();
+    echo $MedEx->getLastError();
 }
 echo "200";
 exit;

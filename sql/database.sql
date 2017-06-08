@@ -7928,10 +7928,10 @@ CREATE TABLE `form_clinical_instructions` (
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB;
 --
--- Table structure for table `MedEx_icons`
+-- Table structure for table `medex_icons`
 --
 
-CREATE TABLE IF NOT EXISTS `MedEx_icons` (
+CREATE TABLE IF NOT EXISTS `medex_icons` (
   `i_UID` int(11) NOT NULL AUTO_INCREMENT,
   `msg_type` varchar(50) NOT NULL,
   `msg_status` varchar(10) NOT NULL,
@@ -7942,10 +7942,10 @@ CREATE TABLE IF NOT EXISTS `MedEx_icons` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 --
--- Dumping data for table `MedEx_icons`
+-- Dumping data for table `medex_icons`
 --
 
-INSERT INTO `MedEx_icons` (`i_UID`, `msg_type`, `msg_status`, `i_description`, `i_html`, `i_blob`) VALUES
+INSERT INTO `medex_icons` (`i_UID`, `msg_type`, `msg_status`, `i_description`, `i_html`, `i_blob`) VALUES
 (1, 'SMS', 'ALLOWED', 'Message type allowed', '<i title="SMS is possible." class="fa fa-commenting-o fa-fw"></i>', ''),
 (2, 'SMS', 'NotAllowed', 'Message type not allowed', '<span class="fa-stack" title="SMS not possible"><i class="fa fa-commenting-o fa-stack-1x fa-fw"></i><i class="fa fa-ban fa-stack-2x text-danger"></i></span>', ''),
 (3, 'SMS', 'SCHEDULED', 'SMS: scheduled', '<span class="btn scheduled" title="SMS scheduled"><i class="fa fa-commenting-o fa-fw"></i></span>', ''),
@@ -7984,10 +7984,10 @@ INSERT INTO `MedEx_icons` (`i_UID`, `msg_type`, `msg_status`, `i_description`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `MedEx_outgoing`
+-- Table structure for table `medex_outgoing`
 --
 
-CREATE TABLE IF NOT EXISTS `MedEx_outgoing` (
+CREATE TABLE IF NOT EXISTS `medex_outgoing` (
   `msg_uid` int(11) NOT NULL AUTO_INCREMENT,
   `msg_pc_eid` varchar(11) NOT NULL,
   `campaign_uid` int(11) NOT NULL DEFAULT '0',
@@ -8000,17 +8000,17 @@ CREATE TABLE IF NOT EXISTS `MedEx_outgoing` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Dumping data for table `MedEx_outgoing`
+-- Dumping data for table `medex_outgoing`
 --
 
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `MedEx_prefs`
+-- Table structure for table `medex_prefs`
 --
 
-CREATE TABLE IF NOT EXISTS `MedEx_prefs` (
+CREATE TABLE IF NOT EXISTS `medex_prefs` (
   `MedEx_id` int(11) DEFAULT '0',
   `ME_username` varchar(100) DEFAULT NULL,
   `ME_api_key` text,
@@ -8031,10 +8031,10 @@ CREATE TABLE IF NOT EXISTS `MedEx_prefs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `MedEx_recalls`
+-- Table structure for table `medex_recalls`
 --
 
-CREATE TABLE IF NOT EXISTS `MedEx_recalls` (
+CREATE TABLE IF NOT EXISTS `medex_recalls` (
   `r_ID` int(11) NOT NULL AUTO_INCREMENT,
   `r_PRACTID` int(11) NOT NULL,
   `r_pid` int(11) NOT NULL COMMENT 'PatientID from pat_data',
@@ -8052,7 +8052,7 @@ CREATE TABLE IF NOT EXISTS `MedEx_recalls` (
 --
 
 INSERT INTO `background_services` (`name`, `title`, `active`, `running`, `next_run`, `execute_interval`, `function`, `require_once`, `sort_order`) VALUES
-('MedEx', 'MedEx Messaging Service', 1, 0, '2017-05-09 17:39:10', 60, 'start_MedEx', '/library/MedEx/MedEx_background.php', 100);
+('MedEx', 'MedEx Messaging Service', 29, 0, '2017-05-09 17:39:10', 60, 'start_MedEx', '/library/MedEx/medex_background.php', 100);
 
 INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
 ('apptstat', 'AVM', 'AVM Confirmed', 110, 0, 0, '', 'F0FFE8|0', '', 0, 0, 1, ''),
