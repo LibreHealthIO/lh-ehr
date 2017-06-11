@@ -21,12 +21,28 @@ while ($row = sqlFetchArray($res)) {
   $e['title'] = $row['pc_title'];
   $e['start'] = $row['pc_eventDate'] . " " . $row['pc_startTime'];
   $e['end'] = $row['pc_eventDate'] . " " . $row['pc_endTime'];
-  // if it's In Office event, get the corresponding out of office; TODO
-  $e['allDay'] = false;
-  $e['rendering'] = 'background';
+  $e['allDay'] = ($e['pc_alldayevent'] == 1) ? true : false;
   
   // Merge the event array into the return array
   array_push($events, $e);
+}
+
+// Set a background event to indicate provider shifts
+foreach($events as $eStart) {
+  if($eStart['pc_catid'] == 2) {
+    foreach($events as $eEnd) {
+      if($eStart['pc_aid'] == $eEnd['pc_aid'] && $eEnd['pc_catid'] == 3 && $eStart['pc_eventDate'] == $eEnd['pc_eventDate']) {
+        $e = array();
+        $e['start'] = $eStart['start'];
+        $e['end'] = $eEnd['start'];
+        $e['resourceId'] = $eStart['resourceId'];
+        // $e['color'] = 'gray';
+        // $e['className'] = 'fc-business';
+        $e['rendering'] = 'background';
+        array_push($events, $e);
+      }
+    }
+  }
 }
 
 // Output json for our calendar

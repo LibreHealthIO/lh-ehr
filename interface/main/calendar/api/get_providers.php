@@ -15,6 +15,7 @@ while ($row = sqlFetchArray($res)) {
   $r = $row;
   $r['id'] = $row['id'];
   $r['title'] = $row['fname'] . " " . $row['lname'];
+  
   // Merge the provider array into the return array
   array_push($resources, $r);
 }

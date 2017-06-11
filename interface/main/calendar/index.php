@@ -26,7 +26,10 @@ require_once('../../globals.php');
         right: 'month,agendaWeek,agendaDay'
         },
         defaultView: 'agendaDay',
-        allDaySlot: false,
+        defaultTimedEventDuration: '00:15:00',
+        minTime: '08:00:00',  // TODO: set according to globals
+        maxTime: '18:00:00',
+        slotDuration: '00:15:00',
         views: {
           week: {
             // options apply to basicWeek and agendaWeek views
