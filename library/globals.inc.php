@@ -117,6 +117,7 @@ $USER_SPECIFIC_TABS = array('Appearance',
 $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'default_tab_2',
                                'css_header',
+                               'menu_styling_tabs',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
                                'drop_bottom',
@@ -180,6 +181,25 @@ $GLOBALS_METADATA = array(
       '/interface/main/messages/messages.php?form_active=1',    // default = Messages
       xl('Second TAB on the left')
   ),
+
+    'menu_styling_tabs' => array(
+      xl('Role-based Menu'),
+      array(
+        'AnsServ' =>xl('Answering Service'),
+        'Front Office' =>xl('Front Office'),
+        'Clinical Staff'  =>xl('Clinical Staff'),
+        /**
+          * Menu additions :
+          * Add line below here and populate menu_trees with its menu
+          * 'Back Office' =>xl('Back Office')
+          * Priviedges to access a menu are handled later
+          */
+        'Administrators' =>xl('Administrator'),
+        'Default' =>xl('Default'),
+      ),
+      'Administrator',
+      xl('Tab Menu Style (refresh browser).')
+    ),
 
     'css_header' => array(
       xl('Theme'),
