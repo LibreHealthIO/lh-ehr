@@ -7,8 +7,8 @@ $query = "SELECT a.*, b.*, u.*, pd.* FROM
   LEFT JOIN libreehr_postcalendar_categories AS b ON b.pc_catid = a.pc_catid 
   LEFT JOIN users as u ON a.pc_aid = u.id 
   LEFT JOIN patient_data as pd ON a.pc_pid = pd.pid
-  WHERE  a.pc_eventstatus = 1";
- 
+  WHERE  a.pc_eventstatus = 1 AND u.username IN('" . implode("','", $_SESSION['pc_username']) . "')";
+
 $res = sqlStatement($query);
 
 $events = array();

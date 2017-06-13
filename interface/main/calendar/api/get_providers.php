@@ -3,7 +3,8 @@
 require_once('../../../globals.php');
 
 $query = "SELECT id, lname, mname, fname, suffix FROM users
-  WHERE authorized = 1 AND username != '' AND active = 1
+  WHERE authorized = 1 AND username != '' AND active = 1 
+  AND username IN('" . implode("','", $_SESSION['pc_username']) . "')
   ORDER BY fname, lname";
  
 $res = sqlStatement($query);
