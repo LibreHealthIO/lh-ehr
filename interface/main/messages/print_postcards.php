@@ -38,11 +38,9 @@ require_once("$srcdir/formatting.inc.php");
 $pid_list = array();
 $pid_list = $_SESSION['pidList'];
 
-//$pdf = new FPDF('L', 'mm', array(297.638,  419.528));
 $pdf = new FPDF('L', 'mm', array(148,105));
 $last = 1;
 $pdf->SetFont('Arial','',14);
-//var_dump($_SESSION['pidList']);exit;
 
 #Get the data to place on labels
 #and output each label
@@ -57,36 +55,46 @@ $patdata = sqlQuery("SELECT " .
 # sprintf to print data
 $text = sprintf("  %s %s\n  %s\n  %s %s %s\n ", $patdata['fname'], $patdata['lname'], $patdata['street'], $patdata['city'], $patdata['state'], $patdata['postal_code']);
 
-$postcard_message = "It's time to get your EYES checked!
-Please call our office to schedule\nyour eye exam  at (413) 276-4543.
-Our office is now located at:\n\n   55 St. George Road\n   Springfield, MA 01104\n\n\n";
+$sql = "SELECT * FROM facility ORDER BY billing_location DESC LIMIT 1";
+$facility = sqlQuery($sql);
 
-//$text = $postcard_message;
+$postcard_message1 ="It's time to get your EYES checked!";
+$postcard_message2 ="Please call our office to schedule";
+$postcard_message3 ="your eye exam at ".$facility['phone'];
+$postcard_message4 ="Our office is now located at";
+$postcard_message5 =$facility['street'];
+$postcard_message6 =$facility['city']. ' ' .$facility['state']. ' ' .$facility['postal_code'];
+# Add these lines for more information.
+#$postcard_message7 ="It's time to get your EYES checked!";
+#$postcard_message8 ="Please call our office to schedule";
+#$postcard_message9 ="your eye exam at ".$facility['phone'];
 
-//$text = "hello";
-//$pdf->Cell(40,10,'Hello World !',1);
-//$pdf->Write(5,$text);
+
 $pdf->SetFont('Arial','',9);
-$pdf->Cell(74,10,'Oculoplastics, LLC:  Raymond Magauran, MD',1,1,'C');
+$pdf->Cell(74,10,$facility['name'],1,1,'C');
 $pdf->MultiCell(74, 55, '', 1 ,'C');// [, boolean fill]]])
 
 
-$pdf->Text(22,30,"It's time to get your EYES checked!");
-$pdf->Text(23,35,"Please call our office to schedule");
-$pdf->Text(25,40,"your eye exam  at (413) 276-4543.");
-$pdf->Text(25,45,"Our office is now located at");
-$pdf->Text(25,50,"   55 St. George Road");
-$pdf->Text(25,55,"   Springfield, MA 01104");
+$pdf->Text(22,30,$postcard_message1);
+$pdf->Text(23,35,$postcard_message2);
+$pdf->Text(25,40,$postcard_message3);
+$pdf->Text(25,45,$postcard_message4);
+$pdf->Text(25,50,$postcard_message5);
+$pdf->Text(25,55,$postcard_message6);
+# Add these lines for more information.
+#$pdf->Text(25,60,$postcard_message7);
+#$pdf->Text(25,65,$postcard_message8);
+#$pdf->Text(25,70,$postcard_message9);
 
 $pdf->Text(100,40,$patdata['fname']." ".$patdata['lname']);
 $pdf->Text(100,50,$patdata['street']);
 $pdf->Text(100,60,$patdata['city']." ".$patdata['state']."  ".$patdata['postal_code']);
 $pdf->SetFont('Arial','',8);
-$pdf->Text(15,80," St. George Road is at the bottom of Carew Street,");
+$pdf->Text(15,80,$facility['street']." is at the bottom of None Street,");
 
 $pdf->Text(18,85,"where it intersects with Main Street.");
-$pdf->Text(15,90,"We are across from the Greek Orthodox Church");
-$pdf->Text(18,95,"and next to the Surgery Center of New England.");
+$pdf->Text(15,90,"We are across from the Baptist Church");
+$pdf->Text(18,95,"and next to the Bob's Magic Touch car wash.");
 
 }
 $pdf->Output('postcards.pdf','D');

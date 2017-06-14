@@ -175,7 +175,7 @@ class practice extends Base {
                 $result2['pc_apptstatus'] =='%' ||  //cancelled < 24hour
                 $result2['pc_apptstatus'] =='x' ) { //cancelled
 
-                $sqlUPDATE = "UPDATE medex_outgoing set msg_reply = 'DONE',msg_extra=? where msg_uid = ?";
+                $sqlUPDATE = "UPDATE medex_outgoing set msg_reply = 'DONE',msg_extra_text=? where msg_uid = ?";
                 sqlQuery($sqlUPDATE,array($result2['pc_apptstatus'],$result2['msg_uid']));
                 //we need to update MedEx regarding actions to try to cancel
                 $tell_MedEx['DELETE_MSG'][] = $result1['msg_pc_eid'];
@@ -345,6 +345,7 @@ class Events extends Base {
                 // It is Friday.  2 days ahead is Sunday, but Monday's would run on Saturday and Tuesday's on Sunday.
                 // We should run them all on Friday...  So load them that way now.
                 $today=date("l");
+                if ($today =="Sunday") continue;
                 if ($today == "Friday") {
                     $timing2 = ($timing + 3).":0:1"; //this is + 3 day, 0 hour and 1 minute...
                 } else {
@@ -649,9 +650,9 @@ class Callback extends Base {
 
         //Store responses in TABLE medex_outgoing
         $sqlINSERT = "INSERT INTO medex_outgoing (msg_pc_eid, campaign_uid, msg_type, msg_reply, msg_extra_text) 
-                        VALUES (?,?,?,?,?)
-                        ON DUPLICATE KEY UPDATE msg_extra_text=?";
-        sqlQuery($sqlINSERT,array($data['pc_eid'],$data['campaign_uid'], $data['msg_type'],$data['msg_reply'],$data['msg_extra'],$data['msg_extra']));
+                        VALUES (?,?,?,?,?)";
+//                        ON DUPLICATE KEY UPDATE msg_extra_text=?";
+        sqlQuery($sqlINSERT,array($data['pc_eid'],$data['campaign_uid'], $data['msg_type'],$data['msg_reply'],$data['msg_extra']));
         //process AVM responses
         if ($data['msg_reply']=="CONFIRMED") {
             $sqlUPDATE = "UPDATE libreehr_postcalendar_events set pc_apptstatus = ? where pc_eid=?";
@@ -707,11 +708,6 @@ class Callback extends Base {
         $response['comments'] = $data['pc_eid']." - ".$data['campaign_uid']." - ".$data['msg_type']." - ".$data['reply']." - ".$data['extra'];
         $response['pid'] = $data['pid'];
         $response['success'] = $data['msg_type']." reply";
-        //maybe this is the place to do LibreHealth EHR logging?
-        //TODO
-        //$this->Logging->log_this($data);
-        //$this->MedEx->medex_logit($event="MedEx-Callback-Service",$response['success'],$resonse['comments'],$response['pid']);
-        //$checked = $this->check_QUEUE($token);
 
         return $response;
     }

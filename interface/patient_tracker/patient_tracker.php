@@ -185,14 +185,19 @@ function topatient(newpid, enc) {
  }
 }
 
-function clearCALLback(eid) {
+    function clearCALLback(eventdate,eid,pccattype) {
       if (confirm('<?php echo xla("This patient has requested a call from the office"); ?>. <?php echo xla('Are you ready to remove this flag'); ?>?\n<?php echo xla("If you have resolved the issue and you are ready to delete this flag from the Flow Board, select OK"); ?>.')) {
   var data = {};
       data['clearCALLback'] = eid;
-  $.post('patient_tracker.php',data).done(function( data ) { alert( "CallBack Completed" + data );
+        $.post('patient_tracker.php',data).done(function( data ) { 
+          calendarpopup(eid,eventdate);
+          //oldEvt(eventdate,eid,pccattype);
   });
 }
 }
+    function oldEvt(eventdate, eventid, pccattype) {
+      dlgopen('../main/calendar/add_edit_event.php?date='+eventdate+'&eid=' + eventid+'&provX=' + pccattype, '_blank', 775, 500);
+    }
 
 // opens the demographic and encounter screens in a new window
 function openNewTopWindow(newpid,newencounterid) {
@@ -446,7 +451,7 @@ function openNewTopWindow(newpid,newencounterid) {
     $prev_appt_date_time = "";
     foreach ( $appointments as $appointment ) {
             if (empty($room)) {
-              //they are not here yet, display medex Reminder info
+              //they are not here yet, display MedEx Reminder info
               //one icon per type of response.
               //If there was a SMS dialog, display it as a mouseover/title
               //Display date received also as mouseover title.
@@ -455,13 +460,15 @@ function openNewTopWindow(newpid,newencounterid) {
               $icon2_here ='';
               $appt['stage'] ='';
               $icon_here = array();
+              # Collect appt date and set up squashed date for use below
+              $date_appt = $appointment['pc_eventDate'];
+              $date_squash = str_replace("-","",$date_appt);
 
               $query = "Select * from medex_outgoing where msg_pc_eid =? order by msg_date";
-              $mymedex = sqlStatement($query,array($appointment['eid']));
-              #error_log("mymedes: ".$mymedex, 0);
+              $myMedEx = sqlStatement($query,array($appointment['eid']));
 
-              while ($row = sqlFetchArray($mymedex)) {
-                #error_log("msg_reply: ".$row['msg_reply'], 0);
+              while ($row = sqlFetchArray($myMedEx)) {
+
                 if ($row['msg_reply'] == 'Other') {
                   $other_title .= $row['msg_extra_text']."\n"; //format the date/time how we like it.
                   continue;
@@ -494,14 +501,16 @@ function openNewTopWindow(newpid,newencounterid) {
                 if ($row['msg_reply'] == "CALL") {
                   if ($row['msg_extra_text'] !="COMPLETED") {
                   //  $appointment['status'] = "CALL";
-                    $icon2_here .= "<span onclick=\"clearCALLback('".$appointment['eid']."');\">".$icons[$row['msg_type']]['CALL']['html']."</span>";
+                    $icon2_here .= "<span onclick=\"clearCALLback('".$date_squash."','".$appointment['eid']."','".$appointment['pc_cattype']."');\">".$icons[$row['msg_type']]['CALL']['html']."</span>";
                   }
                 } elseif ($row['msg_reply'] == "STOP") {
                     $icon2_here .= $icons[$row['msg_type']]['STOP']['html'];
-                } elseif ($progress['msg_reply'] == "EXTRA") {
+                } elseif ($row['msg_reply'] == "EXTRA") { 
                   $icon2_here .= $icons[$row['msg_type']]['STOP']['html'];
-                } elseif ($progress['msg_reply'] == "FAILED") {
+                } elseif ($row['msg_reply'] == "FAILED") { 
                   $icon2_here .= $icons[$row['msg_type']]['FAILED']['html'];
+                } elseif ($row['msg_reply'] == "CALLED") { 
+                  $icon2_here .= $icons[$row['msg_type']]['CALLED']['html'];
                 }
               }
               //if pc_apptstatus == '-', update it now to=status
@@ -512,9 +521,6 @@ function openNewTopWindow(newpid,newencounterid) {
               }
             }
 
-                # Collect appt date and set up squashed date for use below
-                $date_appt = $appointment['pc_eventDate'];
-                $date_squash = str_replace("-","",$date_appt);
 
                 # Collect variables and do some processing
                 $docname  = $chk_prov[$appointment['uprovider_id']];
@@ -628,7 +634,7 @@ function openNewTopWindow(newpid,newencounterid) {
         if (($yestime == '1') && ($timecheck >=1) && (strtotime($newarrive)!= '')) { 
            echo text($timecheck . ' ' .($timecheck >=2 ? xl('minutes'): xl('minute'))); 
          } else {
-          echo  implode($icon_here)." ".$icon2_here;
+          echo  "<span onclick='return calendarpopup(". attr($appt_eid).",".attr($date_squash).")'>". implode($icon_here)."</span> ".$icon2_here;
         }
         #end time in current status
         ?>
