@@ -2,6 +2,7 @@
 require_once('../../globals.php');
 require_once('../../../library/calendar.inc');
 require_once('../../../library/patient.inc');
+require('includes/session.php');
 
 // session_start();
 // 
@@ -27,58 +28,17 @@ require_once('../../../library/patient.inc');
   <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
+  <link href='css/index.css' rel='stylesheet' />
+  
   <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
 </head>
 <body>
-  <div style="float:left; width:15%; min-width:140px; clear:left; display:block;">
+  <div id="sidebar">
     <form name='theform' id='theform' method='post' onsubmit='return top.restoreSession()'>
     <?php
-      // FACILITIES
-      // From Michael Brinson 2006-09-19:
-      if (isset($_POST['pc_username'])) $_SESSION['pc_username'] = $_POST['pc_username'];
-
-      //(CHEMED) Facility filter
-      if (isset($_POST['all_users'])) $_SESSION['pc_username'] = $_POST['all_users'];
-
-      // bug fix to allow default selection of a provider
-      // added 'if..POST' check -- JRM
-      if (isset($_REQUEST['pc_username']) && $_REQUEST['pc_username']) $_SESSION['pc_username'] = $_REQUEST['pc_username'];
-
-      // (CHEMED) Get the width of vieport
-      if (isset($_GET['framewidth'])) $_SESSION['pc_framewidth'] = $_GET['framewidth'];
-
-      // FACILITY FILTERING (lemonsoftware) (CHEMED)
-      $_SESSION['pc_facility'] = 0;
-
-      /*********************************************************************
-      if ($_POST['pc_facility'])  $_SESSION['pc_facility'] = $_POST['pc_facility'];
-      *********************************************************************/
-      if (isset($_COOKIE['pc_facility']) && $GLOBALS['set_facility_cookie']) $_SESSION['pc_facility'] = $_COOKIE['pc_facility'];
-      // override the cookie if the user doesn't have access to that facility any more
-      if ($_SESSION['userauthorized'] != 1 && $GLOBALS['restrict_user_facility']) { 
-        $facilities = getUserFacilities($_SESSION['authId']);
-        // use the first facility the user has access to, unless...
-        $_SESSION['pc_facility'] = $facilities[0]['id']; 
-        // if the cookie is in the users' facilities, use that.
-        foreach ($facilities as $facrow) {
-          if (($facrow['id'] == $_COOKIE['pc_facility']) && $GLOBALS['set_facility_cookie'])
-            $_SESSION['pc_facility'] = $_COOKIE['pc_facility'];
-        }
-      }
-      if (isset($_POST['pc_facility']))  {
-        $_SESSION['pc_facility'] = $_POST['pc_facility'];
-      }
-      /********************************************************************/
-
-      if (isset($_GET['pc_facility']))  $_SESSION['pc_facility'] = $_GET['pc_facility'];
-      if ($GLOBALS['set_facility_cookie'] && ($_SESSION['pc_facility'] > 0)) setcookie("pc_facility", $_SESSION['pc_facility'], time() + (3600 * 365));
-
-      // Simplifying by just using request variable instead of checking for both post and get - KHY
-      if (isset($_REQUEST['viewtype'])) $_SESSION['viewtype'] = $_REQUEST['viewtype'];
-
       // CHEMED
       $facilities = getUserFacilities($_SESSION['authId']); // from users_facility
       if ( $_SESSION['pc_facility'] ) {
@@ -127,7 +87,7 @@ require_once('../../../library/patient.inc');
       $_SESSION['pc_username'] = array_intersect($_SESSION['pc_username'], $provinfo_users);
       
       echo "   <select multiple size='15' name='pc_username[]' id='pc_username'>\n";
-      echo "    <option value='__PC_ALL__'>"  .xl ("All Users"). "</option>\n";
+      echo "    <option value='__PC_ALL__' title='All Users'>"  .xl ("All Users"). "</option>\n";
       foreach ($provinfo as $doc) {
         $username = $doc['username'];
         echo "    <option value='$username'";
@@ -136,7 +96,7 @@ require_once('../../../library/patient.inc');
             echo " selected";
           }
         }
-        echo ">" . htmlspecialchars($doc['lname'],ENT_QUOTES) . ", " . htmlspecialchars($doc['fname'],ENT_QUOTES) . "</option>\n";
+        echo " title='" . $doc['lname'] . ", " . $doc['fname'] . "'>" . htmlspecialchars($doc['lname'],ENT_QUOTES) . ", " . htmlspecialchars($doc['fname'],ENT_QUOTES) . "</option>\n";
       }
       echo "   </select>\n";
     ?>
@@ -146,7 +106,7 @@ require_once('../../../library/patient.inc');
       echo '<div id="facilityColor">';
       echo '<table>';
       foreach ($facilities as $f){
-        echo "   <tr><td><div class='view1' style=background-color:".$f['color'].";font-weight:bold>".htmlspecialchars($f['name'],ENT_QUOTES)."</div></td></tr>";
+        echo "   <tr><td><div style=background-color:".$f['color'].";font-weight:bold>".htmlspecialchars($f['name'],ENT_QUOTES)."</div></td></tr>";
       }
       echo '</table>';
       echo '</div>';
@@ -155,7 +115,7 @@ require_once('../../../library/patient.inc');
   </div>
   
   <div style="height: 99%;">
-    <div id='calendar' style="overflow-x:auto; display:block;"></div>
+    <div id='calendar'></div>
   </div>
   
   <script>
@@ -185,14 +145,14 @@ require_once('../../../library/patient.inc');
           }
         },
         resources: {
-          url: 'api/get_providers.php',
+          url: 'includes/get_providers.php',
           type: 'POST',
           error: function() {
               alert('There was an error while fetching providers.');
           }
         },
         events: {
-          url: 'api/get_provider_events.php',
+          url: 'includes/get_provider_events.php',
           type: 'POST',
           error: function() {
               alert('There was an error while fetching events.');

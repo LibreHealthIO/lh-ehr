@@ -1,0 +1,45 @@
+#sidebar {
+  float:left;
+  width:15%;
+  min-width:140px;
+  clear:left;
+}
+
+#calendar {
+  overflow-x:auto;
+}
+
+#pc_facility {
+  padding: 4px;
+  margin: 10px 10px 10px 0;
+  width: 90%;
+  font-size: 11px;
+}
+
+#pc_facility * {
+  width: 5px;
+}
+
+#pc_username {
+  margin: 10px 10px 10px 0;
+  width: 90%;
+  overflow-y: auto;
+  font-size: 11px;
+  padding: 5px 0 5px 0;
+  border-radius: 0.25em;
+}
+
+#facilityColor {
+  margin: 10px 10px 10px 0;
+  width: 90%;
+}
+
+#facilityColor table {
+  width: 100%;
+  font-size: 12px;
+}
+
+#facilityColor td div {
+  padding: 2px 4px 2px 4px;
+  border-radius: 0.25em;
+}
