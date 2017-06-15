@@ -21,7 +21,7 @@
 }
 
 #pc_username {
-  margin: 10px 10px 10px 0;
+  margin: 10px 10px 0 0;
   width: 90%;
   overflow-y: auto;
   font-size: 11px;
@@ -42,4 +42,9 @@
 #facilityColor td div {
   padding: 2px 4px 2px 4px;
   border-radius: 0.25em;
+}
+
+.fc-time, .fc-title {
+margin: 0;
+color: #000;
 }

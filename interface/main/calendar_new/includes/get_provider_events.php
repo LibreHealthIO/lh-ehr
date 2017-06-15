@@ -2,7 +2,7 @@
 
 require_once('../../../globals.php');
 
-$query = "SELECT a.*, b.*, u.*, pd.* FROM
+$query = "SELECT a.*, b.*, u.*, pd.*, pd.lname as plname, pd.fname as pfname  FROM
   libreehr_postcalendar_events AS a
   LEFT JOIN libreehr_postcalendar_categories AS b ON b.pc_catid = a.pc_catid 
   LEFT JOIN users as u ON a.pc_aid = u.id 
@@ -22,7 +22,11 @@ while ($row = sqlFetchArray($res)) {
   $e['start'] = $row['pc_eventDate'] . " " . $row['pc_startTime'];
   $e['end'] = $row['pc_eventDate'] . " " . $row['pc_endTime'];
   $e['allDay'] = ($e['pc_alldayevent'] == 1) ? true : false;
+  $e['color'] = $row['pc_catcolor'];
   
+  if($row["pc_pid"] > 0) {
+    $e['title'] = $row['pc_title'] . " " . $row['pc_apptstatus'] . " " . $row['pfname'] . " " . $row['plname'];
+  }
   // Merge the event array into the return array
   array_push($events, $e);
 }
