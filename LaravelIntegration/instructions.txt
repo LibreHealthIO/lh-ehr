@@ -1,5 +1,0 @@
-Instructions to set up Laravel Database:
-
-1. Set the database credentials in .env file.
-2. Run command php artisan make:database
-3. Run command php artisan migrate
