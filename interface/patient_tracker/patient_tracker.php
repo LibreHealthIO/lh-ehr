@@ -242,11 +242,11 @@ function openNewTopWindow(newpid,newencounterid) {
                     $uid = $_SESSION['authUserID'];
                     if ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0') {
                       $query = "SELECT id, lname, fname FROM users WHERE ".
-                        "authorized = 1  ORDER BY lname, fname"; 
+                        "authorized = 1 AND active = 1 ORDER BY lname, fname";
                     }else{
 
                     $query = "SELECT id, lname, fname FROM users WHERE ".
-                        "authorized = 1 AND id = $uid ORDER BY lname, fname";                       
+                        "authorized = 1 AND active = 1 AND id = $uid ORDER BY lname, fname";
                     }
 
                     $ures = sqlStatement($query);

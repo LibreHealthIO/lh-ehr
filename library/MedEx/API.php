@@ -222,10 +222,9 @@ class practice extends Base {
             $checker = sqlStatement($sqlQuery,array($data['e_pc_eid'],$data['campaign_uid'], $data['M_type'],$data['msg_reply']));//,$data['msg_extra']));
             if (sqlNumRows($checker)=='0') { //if this isn't already here, add it to local DB.
                 $this->MedEx->callback->receive($data); 
-                $response['found_replies'] = $j++;
             }
         }
-        $sqlUPDATE = "UPDATE medex_prefs set MedEx_lastupdated=NOW()";
+        $sqlUPDATE = "UPDATE medex_prefs set MedEx_lastupdated=utc_timestamp()";
         sqlStatement($sqlUPDATE);
 
         if (!empty($tell_MedEx['DELETE_MSG'])) {
@@ -649,8 +648,8 @@ class Callback extends Base {
         $this->MedEx->logging->log_this($data);
 
         //Store responses in TABLE medex_outgoing
-        $sqlINSERT = "INSERT INTO medex_outgoing (msg_pc_eid, campaign_uid, msg_type, msg_reply, msg_extra_text) 
-                        VALUES (?,?,?,?,?)";
+        $sqlINSERT = "INSERT INTO medex_outgoing (msg_pc_eid, campaign_uid, msg_type, msg_reply, msg_extra_text,msg_date) 
+                        VALUES (?,?,?,?,?,utc_timestamp())";
 //                        ON DUPLICATE KEY UPDATE msg_extra_text=?";
         sqlQuery($sqlINSERT,array($data['pc_eid'],$data['campaign_uid'], $data['msg_type'],$data['msg_reply'],$data['msg_extra']));
         //process AVM responses
