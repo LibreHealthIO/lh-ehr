@@ -4,24 +4,6 @@ require_once('../../../library/calendar.inc');
 require_once('../../../library/patient.inc');
 require('includes/session.php');
 
-// session_start();
-// 
-// if(isset($_POST['pc_username'])) { 
-//   $_SESSION['pc_username'] = $_POST['pc_username']; 
-// }
-// if(isset($_POST['pc_facility'])) { 
-//   $_SESSION['pc_facility'] = $_POST['pc_facility']; 
-//   
-  // // if facility is changed, we set it to all the providers
-  // $_SESSION['pc_username'] = array();
-  // array_push($_SESSION['pc_username'], '__PC_ALL__');
-// }
-// 
-// if(!isset($_SESSION['pc_username'])) { // if we haven't selected a provider, select all by default
-//   $_SESSION['pc_username'] = array();
-//   array_push($_SESSION['pc_username'], '__PC_ALL__');
-// }
-
 ?>
 <html>
 <head>  
