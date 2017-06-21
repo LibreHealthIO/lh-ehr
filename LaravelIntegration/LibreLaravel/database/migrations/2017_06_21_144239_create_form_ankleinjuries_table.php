@@ -41,6 +41,7 @@ class CreateFormAnkleinjuriesTable extends Migration
 	    $table->string('ankle_diagnosis_4')->nullable()->comment = "Further Diagnosis.";
 	    $table->text('ankle_plan')->comment = "Prescription by doctor";
 	    $table->text('ankle_additional_diagnisis')->nullable()->comment = "Additional Diagnosis.";
+	    $table->string('cpt_codes')->nullable()->comment = "CPT Code";
             $table->foreign('encounter')->references('encounter')->on('form_encounters')->onDelete('cascade');
             $table->foreign('pid')->references('pid')->on('patient_datas')->onDelete('cascade');
             $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
