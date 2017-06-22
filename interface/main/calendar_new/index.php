@@ -16,6 +16,8 @@ require('includes/session.php');
   <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
+  
+  <script type="text/javascript" src="../../../library/dialog.js"></script>
 </head>
 <body>
   <div id="sidebar">
@@ -111,7 +113,11 @@ require('includes/session.php');
         center: 'title',
         right: 'month,agendaWeek,agendaDay'
         },
+        navLinks: true,
+        selectable: true,
+        selectHelper: true,
         defaultView: 'agendaDay',
+        // allDaySlot: false,
         defaultTimedEventDuration: '00:15:00',
         minTime: '08:00:00',  // TODO: set according to globals
         maxTime: '18:00:00',
@@ -137,9 +143,23 @@ require('includes/session.php');
           url: 'includes/get_provider_events.php',
           type: 'POST',
           error: function() {
-              alert('There was an error while fetching events.');
+              alert('There was an error while fetching appointments.');
           }
-        }
+        },
+        select: function(start, end, jsEvent, view, resource) { //TODO: FIX
+          dlgopen('../calendar/add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
+          '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD')+ '&catid=' + 0
+           <?php
+            if(isset($_SESSION[pid]))
+                {
+                    if($_SESSION[pid]>0)
+                        {
+                            echo "+'&patientid=$_SESSION[pid]'";
+                        }
+                }
+          ?>
+           ,'_blank', 775, 375);
+			  },
       })
       
     });
