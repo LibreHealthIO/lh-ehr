@@ -117,7 +117,7 @@ require('includes/session.php');
         selectable: true,
         selectHelper: true,
         defaultView: 'agendaDay',
-        // allDaySlot: false,
+        allDaySlot: false,
         defaultTimedEventDuration: '00:15:00',
         minTime: '08:00:00',  // TODO: set according to globals
         maxTime: '18:00:00',

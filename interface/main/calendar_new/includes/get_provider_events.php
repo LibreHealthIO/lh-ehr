@@ -21,7 +21,7 @@ while ($row = sqlFetchArray($res)) {
   $e['title'] = $row['pc_title'];
   $e['start'] = $row['pc_eventDate'] . " " . $row['pc_startTime'];
   $e['end'] = $row['pc_eventDate'] . " " . $row['pc_endTime'];
-  $e['allDay'] = ($e['pc_alldayevent'] == 1) ? true : false;
+  // $e['allDay'] = ($e['pc_alldayevent'] == 1) ? true : false;
   $e['color'] = $row['pc_catcolor'];
   
   if($row["pc_pid"] > 0) {
