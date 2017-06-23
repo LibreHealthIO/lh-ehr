@@ -727,7 +727,13 @@ if ($_POST['form_action'] == "save") {
  $repeattype = '0';
  $repeatfreq = '0';
  $patientid = '';
+ 
+ // fix for new calendar
+ if (isset($_SESSION['pid']) && $_SESSION['pid'] > 0) $patientid = $_SESSION['pid'];
+ 
+ // used in find_patient.php
  if ($_REQUEST['patientid']) $patientid = $_REQUEST['patientid'];
+ 
  $patientname = xl('Click to select');
  $patienttitle = "";
  $pcroom = "";
