@@ -146,10 +146,10 @@ require('includes/session.php');
               alert('There was an error while fetching appointments.');
           }
         },
-        select: function(start, end, jsEvent, view, resource) { //TODO: FIX
+        select: function(start, end, jsEvent, view, resource) {
           dlgopen('../calendar/add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
-          '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD')+ '&catid=' + 0
-           <?php
+          '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
+           <?php // TODO: This part (modified) goes in add edit event
             if(isset($_SESSION[pid]))
                 {
                     if($_SESSION[pid]>0)
