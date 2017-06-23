@@ -115,7 +115,7 @@ require('includes/session.php');
         },
         navLinks: true,
         selectable: true,
-        selectHelper: true,
+        //selectHelper: true,
         defaultView: 'agendaDay',
         allDaySlot: false,
         defaultTimedEventDuration: '00:15:00',
@@ -152,6 +152,9 @@ require('includes/session.php');
            ,'_blank', 775, 375);
 			  },
       })
+      
+      // TODO: Use a global
+      setInterval(function() { $('#calendar').fullCalendar( 'refetchEvents' ) }, 3000);
       
     });
     
