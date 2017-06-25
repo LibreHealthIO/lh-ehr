@@ -1,19 +1,27 @@
 #sidebar {
   float:left;
   width:15%;
-  min-width:140px;
-  clear:left;
+  min-width: 120px;
+  /*min-width:140px;*/
+  /*clear:left;*/
 }
 
-#calendar {
-  overflow-x:auto;
+#calendar-container {
+  /*width: 100%;*/
+  /*overflow-x: scroll;*/
+  float: right;
+  width: 85%;
+  max-width: calc(100% - 120px);
+  height: 100%;
 }
-
 #pc_facility {
   padding: 4px;
   margin: 10px 10px 10px 0;
   width: 90%;
   font-size: 11px;
+}
+#shec {
+  height: 100%;
 }
 
 #pc_facility * {

@@ -98,7 +98,7 @@ require('includes/session.php');
     ?>
   </div>
   
-  <div style="height: 99%;">
+  <div id='calendar-container'>
     <div id='calendar'></div>
   </div>
   
@@ -149,7 +149,7 @@ require('includes/session.php');
           dlgopen('../calendar/add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
           '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
            ,'_blank', 775, 375);
-			  },
+			  }
       })
       
       // TODO: Use a global
