@@ -1,0 +1,25 @@
+Laravel Installation : 
+----------------------
+
+For installation purpose, official docs at https://laravel.com/docs/5.4/installation followed. Below is brief instructions to follow for unix based systems.
+
+Dependency:
+-----------
+1. PHP 7.0+
+2. OpenSSL PHP Extension
+3. PDO PHP Extension
+4. Mbstring PHP Extension
+5. Composer
+
+Install Laravel:
+----------------
+-composer global require "laravel/installer" 
+
+Above will install laravel via Laravel Installer, but to have a global access we need to export its path. So for this, follow below instructions : 
+1. Open your shell. (In my case bash shell)
+2. open .bashrc
+3. Add export PATH="$PATH:$HOME/.config/composer/vendor/bin" at the end of file. 
+4. Run source ~/.bashrc
+
+
+
