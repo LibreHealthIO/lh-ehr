@@ -2,7 +2,7 @@
 
 require_once('../../../globals.php');
 
-$query = "SELECT a.*, b.*, u.*, pd.*, pd.lname as plname, pd.fname as pfname  FROM
+$query = "SELECT a.*, b.*, u.*, pd.*, pd.lname as plname, pd.fname as pfname, a.pc_pid as e_pid FROM
   libreehr_postcalendar_events AS a
   LEFT JOIN libreehr_postcalendar_categories AS b ON b.pc_catid = a.pc_catid 
   LEFT JOIN users as u ON a.pc_aid = u.id 

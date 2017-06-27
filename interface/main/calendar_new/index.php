@@ -149,7 +149,12 @@ require('includes/session.php');
           dlgopen('../calendar/add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
           '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
            ,'_blank', 775, 375);
-			  }
+			  },
+        eventClick: function(calEvent, jsEvent, view) {
+          var pccattype = (calEvent['e_pid'] && calEvent['e_pid'] > 0) ? 0 :  1;
+          console.log(pccattype);
+          dlgopen('../calendar/add_edit_event.php?date='+ calEvent.start.format('YYYYMMDD') +'&eid=' + calEvent.id +'&prov=' + pccattype, '_blank', 775, 375);
+        }
       })
       
       // TODO: Use a global
