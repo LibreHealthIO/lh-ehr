@@ -88,7 +88,7 @@
 </div>
 <!-- THE END -->
 <script type="text/javascript">
-var cancellink = '<?php echo $this->dont_save_link;?>;
+var cancellink = '<?php echo $this->dont_save_link;?>';
 var cursorpath = "<?php echo $this->form->template_dir;?>/css/";
 var popreturn = false;
 
@@ -148,12 +148,12 @@ var popreturn = false;
 var setCheck = function(bnobj){
     if(bnobj == "help"){// plan writing a help class - alert will do for now
       var strhelp = "To select symbols or options, right click anywhere on diagram for options menu. The Label Mode and Legend mode button will toggle to allow direct diagram editing using special symbols or text. Just select the symbol from the radio buttons presented when Label mode is clicked and that symbol or text will be placed on the diagram where clicked. A text prompt will appear for text entry when text mode is selected. Legend Mode allows the normal imformation popup for adding numbered markers/observations with the added option of selecting the special symbols used in Label mode so they may be named in the label legend. Also I added another text field in case you wish to add an observation not provided in the observations list, one or both fields may be used. You may remove any marker/label in either mode by clicking it, so long as you are in form edit.\n\nYellow markers are placed where symbols have been named for the legend so they can be identified if removal is needed. Hovering over any marker will show tool tip to identify label. Note that the idea behide the text mode and check marks is to allow for text like data in images of forms like range of motion or onset of pain questions. * To add additional diagrams to this feature simply drop the png image into the '/diagram' directory off forms file root. The diagram image is not restricted within its container so ensure an image width appropriate, 600px max seems right.\n\nOne last item concerning text input when in Label text mode(the default): Entered text is not saved until you click outside the text box, so before leaving text entry mode via selecting a symbol or toggling into Legend mode, click anywhere on the diagram first. Double clicking on a new location will give you another text box at new location and save the previous one, while any empty text box, is abandoned.";
-        alert({xl t=strhelp });
+        alert(strhelp);
    return;
     }
     if(bnobj == "help-dialog"){
        var strhelp = "To add a description to the legend of a symbol used for shading areas of the diagram, simply click the symbols button, enter the description in the field shown and save. The item is indentified on the diagram with yellow blocks so they may be removed. I suggest adding next to symbol. You may enter any text in the label field as a marker or use the auto numbered values.";
-        alert({xl t=strhelp });
+        alert(strhelp);
         return;
     }
     bnobj += " = ";
