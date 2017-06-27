@@ -1,33 +1,24 @@
 <?php
 
-require_once(dirname(__FILE__) . "/../Smarty/Smarty.class.php");
 require_once(dirname(__FILE__) . "/../formdata.inc.php");
-if (!defined('SMARTY_DIR')) {
-    define("SMARTY_DIR", dirname(__FILE__) . "/../Smarty/");
-}
 
-
-class Controller extends Smarty {
+class Controller {
 
        var $_current_action;
        var $_state;
        var $_args = array();
+       
+       const PROCESS = "true";
+       const HEADER = "<html><head><?php html_header_show();?></head><body>";
+       const FOOTER = "</body></html>";
+       const CONTROLLER = "controller.php?";       
 
        function __construct() {
-               parent::__construct();
+               
                $this->template_mod = "general";
                $this->_current_action = "";
-               $this->_state = true;
-               $this->compile_dir = $GLOBALS['fileroot'] . "/interface/main/calendar/modules/PostCalendar/pntemplates/compiled";
-               $this->compile_check = true;
-               $this->plugins_dir = array(dirname(__FILE__) . "/../Smarty/plugins");
-               $this->assign("PROCESS", "true");
-               $this->assign("HEADER", "<html><head>
-<?php html_header_show();?></head><body>");
-               $this->assign("FOOTER", "</body></html>");
-               $this->assign("CONTROLLER", "controller.php?");
-               $this->assign("CONTROLLER_THIS", "controller.php?" . $_SERVER['QUERY_STRING']);
-               $this->assign("WEBROOT", $GLOBALS['webroot']);
+               $this->_state = true;              
+               $this->controller_this = "controller.php?" . $_SERVER['QUERY_STRING'];               
        }
 
        function set_current_action($action) {
@@ -77,8 +68,8 @@ class Controller extends Smarty {
                return include_once($file);
        }
 
-       function act($qarray) {
-
+       function act($qarray) {           
+          
                if (isset($_GET['process'])){
          unset($_GET['process']);
          unset($qarray['process']);
@@ -95,20 +86,20 @@ class Controller extends Smarty {
 
                $c_name = $name;
                $c_action = preg_replace("/[^A-Za-z0-9_]/","",array_pop($args));
-               $args = array_reverse($args);
+               $args = array_reverse($args);              
 
                if(!call_user_func(array(Controller,"i_once"),$GLOBALS['fileroot'] ."/controllers/C_" . $c_name . ".class.php")) {
                        echo "Unable to load controller $name\n, please check the first argument supplied in the URL and try again";
                        exit;
                }
 
-               $obj_name = "C_" . $c_name;
+               $obj_name = "C_" . $c_name;              
                $c_obj = new $obj_name();
 
                if (empty ($c_action)) {
                        $c_action = "default";
-               }
-
+               }                
+              
                $c_obj->_current_action = $c_action;
                $args_array = array();
 
@@ -150,8 +141,8 @@ class Controller extends Smarty {
                                }
                }
 
-
-               return $output;
+               
+               return $output;               
        }
 
        function _link($action = "default",$inlining = false) {
