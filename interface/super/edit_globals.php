@@ -300,22 +300,20 @@ input     { font-size:10pt; }
 <?php } else { ?>
   <p><b><?php echo xlt('Edit Global Settings'); ?></b>
 <?php } ?>
-
+<!--tabNav-->
 <ul class="tabNav">
 <?php
 $i = 0;
 foreach ($GLOBALS_METADATA as $grpname => $grparr) {
   if ( $_GET['mode'] != "user" || ($_GET['mode'] == "user" && in_array($grpname, $USER_SPECIFIC_TABS)) ) {
-    echo " <li" . ($i ? "" : " class='current'") .
-      "><a href='/play/javascript-tabbed-navigation/'>" .
-      xlt($grpname) . "</a></li>\n";
+    echo " <li" . ($i ? "" : " class='current'") ."><a href='/play/javascript-tabbed-navigation/'>" . xlt($grpname) . "</a></li>\n";
     ++$i;
   }
 }
 ?>
-</ul>
+</ul> 
 
-<div class="tabContainer">
+<div class="tabContainer well">
 <?php
 $i = 0;
 foreach ($GLOBALS_METADATA as $grpname => $grparr) {
@@ -323,7 +321,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
   echo " <div class='tab" . ($i ? "" : " current") .
     "' style='height:auto;width:97%;'>\n";
 
-  echo " <table>";
+  echo " <table class='table table-hover'>";
 
   if ($_GET['mode'] == "user") {
    echo "<tr>";
@@ -365,7 +363,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     echo " <tr title='" . attr($flddesc) . "'  id='".attr($fldid)."' value='".attr($fldvalue)."'><td><b>" . text($fldname) . "</b></td><td>\n";
 
     if (is_array($fldtype)) {
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       foreach ($fldtype as $key => $value) {
         if ($_GET['mode'] == "user") {
           if ($globalValue == $key) $globalTitle = $value;
@@ -391,7 +389,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
           $globalTitle = htmlspecialchars( xl('Not Checked'), ENT_NOQUOTES);
         }
       }
-      echo "  <input type='checkbox' name='form_$i' id='form_$i' value='1'";
+      echo "  <input type='checkbox' class='checkbox' name='form_$i' id='form_$i' value='1'";
       if ($fldvalue) echo " checked";
       echo " />\n";
     }
@@ -400,7 +398,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      echo "  <input type='text' name='form_$i' id='form_$i' " .
+      echo "  <input type='text' class='form-control form-rounded' name='form_$i' id='form_$i' " .
         "size='6' maxlength='15' value='" . attr($fldvalue) . "' />\n";
     }
 
@@ -408,7 +406,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      echo "  <input type='text' name='form_$i' id='form_$i' " .
+      echo "  <input type='text' class='form-control form-rounded' name='form_$i' id='form_$i' " .
         "size='50' maxlength='255' value='" . attr($fldvalue) . "' />\n";
     }
     else if ($fldtype == 'pwd') {
@@ -429,7 +427,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 
     else if ($fldtype == 'lang') {
       $res = sqlStatement("SELECT * FROM lang_languages ORDER BY lang_description");
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       while ($row = sqlFetchArray($res)) {
         echo "   <option value='" . $row['lang_description'] . "'";
         if ($row['lang_description'] == $fldvalue) echo " selected";
@@ -445,7 +443,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
         $globalTitle = $globalValue;
       }
       $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       if ($flddef ==" ") {
       $top_choice = "All";
       }else{
@@ -465,7 +463,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 
     else if ($fldtype == 'all_code_types') {
       global $code_types;
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       foreach (array_keys($code_types) as $code_key ) {
         echo "   <option value='" . attr($code_key) . "'";
         if ($code_key == $fldvalue) echo " selected";
@@ -478,7 +476,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 
     else if ($fldtype == 'm_lang') {
       $res = sqlStatement("SELECT * FROM lang_languages  ORDER BY lang_description");
-      echo "  <select multiple name='form_{$i}[]' id='form_{$i}[]' size='3'>\n";
+      echo "  <select multiple name='form_{$i}[]' class='form-control' id='form_{$i}[]' size='3'>\n";
       while ($row = sqlFetchArray($res)) {
         echo "   <option value='" . attr($row['lang_description']) . "'";
         foreach ($glarr as $glrow) {
@@ -509,7 +507,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       $themedir = "$webserver_root/interface/themes";
       $dh = opendir($themedir);
       if ($dh) {
-        echo "  <select name='form_$i' id='form_$i'>\n";
+        echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
         while (false !== ($tfname = readdir($dh))) {
           // Only show files that contain style_ as options
           //  Skip style_blue.css since this is used for
@@ -540,7 +538,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       $themedir = "$webserver_root/interface/themes";
       $dh = opendir($themedir);
       if ($dh) {
-        echo "  <select name='form_$i' id='form_$i'>\n";
+        echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
         while (false !== ($tfname = readdir($dh))) {
           // Only show files that contain tabs_style_ as options
           if (!preg_match("/^tabs_style_.*\.css$/", $tfname)) continue;
@@ -563,7 +561,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       for ($h = 0; $h < 24; ++$h) {
         echo "<option value='$h'";
         if ($h == $fldvalue) echo " selected";
@@ -580,7 +578,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       echo " </td>\n";
       echo "<td align='center' style='color:red;'>" . attr($globalTitle) . "</td>\n";
       echo "<td>&nbsp</td>";
-      echo "<td align='center'><input type='checkbox' value='YES' name='toggle_" . $i . "' id='toggle_" . $i . "' " . attr($settingDefault) . "/></td>\n";
+      echo "<td align='center'><input type='checkbox' class='checkbox' value='YES' name='toggle_" . $i . "' id='toggle_" . $i . "' " . attr($settingDefault) . "/></td>\n";
       echo "<input type='hidden' id='globaldefault_" . $i . "' value='" . attr($globalValue) . "'>\n";
       echo "</tr>\n";
     }
@@ -598,7 +596,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 </div>
 
 <p>
- <input type='submit' name='form_save' value='<?php echo xla('Save'); ?>' />
+ <input type='submit'  name='form_save' value='<?php echo xla('Save'); ?>' />
 </p>
 </center>
 
