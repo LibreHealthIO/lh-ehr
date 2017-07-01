@@ -229,6 +229,54 @@ function capitalizeMe(elem) {
  elem.value = s;
 }
 
+/*Function to check if entered data in the form is of correct format(eg. email,URL..) or not. */
+function checkInputFormat(f){        
+    for(i=0;i<f.length;i++){
+                     
+        if(f[i].type=='email')
+        {
+            var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;            
+            if(f[i].value && reg.test(f[i].value)==false)
+            {
+                f[i].style.border =  "thick solid red";                
+                return false;
+            }
+            else
+            {     
+               f[i].style.border =  "";            
+            }
+        }     
+        
+        //By default, this hasn't been used anywhere. Can be used for future purpose.
+        //URL's can have following types: http://www.google.com.. or www.google.com or google.com.
+        if(f[i].type=='url')
+        {
+            var reg = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+            if(f[i].value && reg.test(f[i].value)==false)
+            {
+                f[i].style.border =  "thick solid red";                
+                return false;
+            }
+            else
+            {               
+               f[i].style.border =  "";
+            }
+        }       
+    }
+}
+
+
+/*  This function allows only digits to be entered in a text-field,numeric field,etc. */
+function allowOnlyDigits(elem_name){
+    document.querySelector('input[name='+elem_name+']').addEventListener("keypress", function (evt) {
+    if(evt.which == 8){return} // to allow BackSpace
+    if (evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+        }
+    });
+}
+
 function divclick(cb, divid) {
  var divstyle = document.getElementById(divid).style;
  if (cb.checked) {
@@ -252,6 +300,7 @@ function trimlen(s) {
 function validate(f) {
  var errCount = 0;
  var errMsgs = new Array();
+ var isInputFormatValid = checkInputFormat(f);
 <?php generate_layout_validation('DEM'); ?>
 
  var msg = "";
@@ -264,6 +313,12 @@ function validate(f) {
  if ( errMsgs.length > 0 ) {
     alert(msg);
  }
+ else if(isInputFormatValid == false)
+  {
+        wrongFormatmsg = "<?php echo htmlspecialchars(xl('Items marked in red have invalid entries.Please enter valid data.'),ENT_QUOTES); ?>";
+        alert(wrongFormatmsg);
+        return false;
+  }
  
 //Patient Data validations
  <?php if($GLOBALS['erx_enable']){ ?>
@@ -395,7 +450,7 @@ function insurance_active(current){
 </head>
 
 <body class="body_top">
-<form action='demographics_save.php' name='demographics_form' method='post' onsubmit='return validate(this)'>
+<form action='demographics_save.php' name='demographics_form' method='post' onkeyup="checkInputFormat(f)" onsubmit='return validate(this)'>
 <input type='hidden' name='mode' value='save' />
 <input type='hidden' name='db_id' value="<?php echo $result['id']?>" />
 <table cellpadding='0' cellspacing='0' border='0'>

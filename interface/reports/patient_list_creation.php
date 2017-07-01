@@ -32,6 +32,7 @@
     require_once("../drugs/drugs.inc.php");
     require_once("$srcdir/formatting.inc.php");
     require_once("$srcdir/payment_jav.inc.php");
+    require_once("$srcdir/headers.inc.php");
     /** Current format of date  */
     
     $DateFormat=DateFormatRead();
@@ -111,8 +112,8 @@ if ($_POST['date_to'] != "") {
         <script type="text/javascript" src="../../library/dialog.js"></script>
         <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
         <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
-        <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']?>fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
+        <?php include_js_library("fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js");?>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
         <style type="text/css">
             /* specifically include & exclude from printing */
