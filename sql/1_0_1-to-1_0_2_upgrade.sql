@@ -159,15 +159,15 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 
 #IfNotTable medex_icons 
  
-CREATE TABLE IF NOT EXISTS `medex_icons` (
+CREATE TABLE `medex_icons` (
   `i_UID` int(11) NOT NULL AUTO_INCREMENT,
   `msg_type` varchar(50) NOT NULL,
   `msg_status` varchar(10) NOT NULL,
   `i_description` varchar(255) NOT NULL,
-  `i_html` text NOT NULL,
+  `i_html` text,
   `i_blob` longtext NOT NULL,
   PRIMARY KEY (`i_UID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `medex_icons`
@@ -217,7 +217,7 @@ INSERT INTO `medex_icons` (`i_UID`, `msg_type`, `msg_status`, `i_description`, `
 
 #IfNotTable medex_outgoing
 
-CREATE TABLE IF NOT EXISTS `medex_outgoing` (
+CREATE TABLE `medex_outgoing` (
   `msg_uid` int(11) NOT NULL AUTO_INCREMENT,
   `msg_pc_eid` varchar(11) NOT NULL,
   `campaign_uid` int(11) NOT NULL DEFAULT '0',
@@ -227,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `medex_outgoing` (
   `msg_extra_text` text,
   PRIMARY KEY (`msg_uid`),
   UNIQUE KEY `msg_eid` (`msg_uid`,`msg_pc_eid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB;
 #Endif
 
 --
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `medex_outgoing` (
 
 #IfNotTable medex_prefs
 
-CREATE TABLE IF NOT EXISTS `medex_prefs` (
+CREATE TABLE `medex_prefs` (
   `MedEx_id` int(11) DEFAULT '0',
   `ME_username` varchar(100) DEFAULT NULL,
   `ME_api_key` text,
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `medex_prefs` (
   `notify` varchar(100) DEFAULT NULL,
   `MedEx_lastupdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `ME_username` (`ME_username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB;
 #Endif
 
 --
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `medex_prefs` (
 --
 #IfNotTable medex_recalls
 
-CREATE TABLE IF NOT EXISTS `medex_recalls` (
+CREATE TABLE `medex_recalls` (
   `r_ID` int(11) NOT NULL AUTO_INCREMENT,
   `r_PRACTID` int(11) NOT NULL,
   `r_pid` int(11) NOT NULL COMMENT 'PatientID from pat_data',
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `medex_recalls` (
   `r_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`r_ID`),
   UNIQUE KEY `r_PRACTID` (`r_PRACTID`,`r_pid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=168 ;
+) ENGINE=InnoDB;
 #Endif
 
 --
