@@ -156,6 +156,8 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 --
 -- Table structure for table `medex_icons`
 --
+
+#IfNotTable medex_icons 
  
 CREATE TABLE IF NOT EXISTS `medex_icons` (
   `i_UID` int(11) NOT NULL AUTO_INCREMENT,
@@ -207,10 +209,13 @@ INSERT INTO `medex_icons` (`i_UID`, `msg_type`, `msg_status`, `i_description`, `
 (33, 'POSTCARD', 'SCHEDULED', 'Postcard Campaign Event is scheduled.', '<span class="btn scheduled" title="Postcard Campaign Event is scheduled."><i class="fa fa-image fa-fw"></i></span>', ''),
 (36, 'AVM', 'READ', 'AVM delivered', '<span class="btn" title="AVM completed - waiting for manual response" aria-label="AVM Delivered" style="padding:5px;background-color:#146abd;"><i class="fa fa-phone fa-fw" aria-hidden="true"></i></span>', ''),
 (37, 'SMS', 'CALLED', 'Callback Completed', '<span class="btn btn-success" style="padding:5px;background-color:#146abd;" title="Patient requests Office Call: COMPLETED">\r\n<i class="fa fa-flag fa-fw"></i></span>\r\n', '');
+#Endif
 
 --
 -- Table structure for table `medex_outgoing`
 --
+
+#IfNotTable medex_outgoing
 
 CREATE TABLE IF NOT EXISTS `medex_outgoing` (
   `msg_uid` int(11) NOT NULL AUTO_INCREMENT,
@@ -223,10 +228,13 @@ CREATE TABLE IF NOT EXISTS `medex_outgoing` (
   PRIMARY KEY (`msg_uid`),
   UNIQUE KEY `msg_eid` (`msg_uid`,`msg_pc_eid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+#Endif
 
 --
 -- Table structure for table `medex_prefs`
 --
+
+#IfNotTable medex_prefs
 
 CREATE TABLE IF NOT EXISTS `medex_prefs` (
   `MedEx_id` int(11) DEFAULT '0',
@@ -246,10 +254,12 @@ CREATE TABLE IF NOT EXISTS `medex_prefs` (
   `MedEx_lastupdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `ME_username` (`ME_username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+#Endif
 
 --
 -- Table structure for table `medex_recalls`
 --
+#IfNotTable medex_recalls
 
 CREATE TABLE IF NOT EXISTS `medex_recalls` (
   `r_ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -263,17 +273,35 @@ CREATE TABLE IF NOT EXISTS `medex_recalls` (
   PRIMARY KEY (`r_ID`),
   UNIQUE KEY `r_PRACTID` (`r_PRACTID`,`r_pid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=168 ;
+#Endif
 
 --
 -- Dumping data for table `background_services`
 --
 
+#IfNotRow background_services name MedEx
+
 INSERT INTO `background_services` (`name`, `title`, `active`, `running`, `next_run`, `execute_interval`, `function`, `require_once`, `sort_order`) VALUES
 ('MedEx', 'MedEx Messaging Service', 29, 0, '2017-05-09 17:39:10', 60, 'start_MedEx', '/library/MedEx/medex_background.php', 100);
+#Endif
+
+#IfNotRow2D list_options list_id apptstat option_id AVM
 
 INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
-('apptstat', 'AVM', 'AVM Confirmed', 110, 0, 0, '', 'F0FFE8|0', '', 0, 0, 1, ''),
-('apptstat', 'CALL', 'Callback requested', 130, 0, 0, '', 'FFDBE2|5', '', 0, 0, 1, ''),
-('apptstat', 'SMS', 'SMS Confirmed', 90, 0, 0, '', 'F0FFE8|0', '', 0, 0, 1, ''),
+('apptstat', 'AVM', 'AVM Confirmed', 110, 0, 0, '', 'F0FFE8|0', '', 0, 0, 1, '');
+#Endif
+
+#IfNotRow2D list_options list_id apptstat option_id CALL
+INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
+('apptstat', 'CALL', 'Callback requested', 130, 0, 0, '', 'FFDBE2|5', '', 0, 0, 1, '');
+#Endif
+
+#IfNotRow2D list_options list_id apptstat option_id SMS
+INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
+('apptstat', 'SMS', 'SMS Confirmed', 90, 0, 0, '', 'F0FFE8|0', '', 0, 0, 1, '');
+#Endif
+
+#IfNotRow2D list_options list_id apptstat option_id EMAIL
+INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
 ('apptstat', 'EMAIL', 'EMAIL Confimed', 20, 0, 0, '', 'FFEBE3|0', '', 0, 0, 1, '');
- 
+#Endif 
