@@ -153,7 +153,7 @@ class practice extends Base {
         //always on-line sending crons and background_service messages.
         //We need to make sure all our messages are up-to-date.
         //Practice: Since the last MedEx login, who has responded to one of our messages and do we know about these responses?  
-        //Have we delete, cancelled or changed an appointment that we thought we were supposed to send, and now don't want to?
+        //Have we deleted, cancelled or changed an appointment that we thought we were supposed to send, and now don't want to?
         //1. Check to see if anything pending was cancelled/changed.
         //2. Make sure any recalls don't have appointments just scheduled
         //3. Sync any responses received on MedEx that we didn't see already.
@@ -274,12 +274,11 @@ class Campaign extends Base {
 }
 
 class Events extends Base {
-    //this is run via cron twice per day to find appointments that match our Campaign events and rules.
+    //this is run via cron to find appointments that match our Campaign events and rules.
     private function recursive_array_search($needle,$haystack) {
         foreach($haystack as $key=>$value) {
             $current_key=$key;
             if($needle===$value OR (is_array($value) && $this->recursive_array_search($needle,$value))) {
-                //    echo "needle =".$needle." and key=".$key." and value=".$value."<br />";
                 return true; //$current_key;
             }
         }
@@ -304,7 +303,7 @@ class Events extends Base {
              * 2 = days before PM
              * 3 = days after
              * 4 = days after PM
-             * So if it == 2 or 4, then check time of day local and run if after 6PM. 
+             * So if it == 2 or 4, MedEx checks time of day (local timezone) and run if after 6PM. 
              */
             if (($event['E_timing'] == '2')||($event['E_timing'] == '2')) {
                 if (date('H') < 18) {
@@ -374,7 +373,7 @@ class Events extends Base {
                     // Then Visit 2 fires for any remaining rules that match it.
                     // Let me know if this is a desired feature and we can add it to v2.0
                     /*if ($appt['e_is_subEvent_of'] > '0') {
-                            $query ="select * from hipaa_outgoing where e_uid=?";
+                            $query ="select * from medex_outgoing where e_uid=?";
                         $event2 = sqlStatement($query,array($appt['e_is_subEvent_of']));
                         if (new DateTime() < new DateTime($event2["e_eventDate"]." ".$event2["e_eventTime"])) {
                             // if current time is less than Parent Appt, ignore this appt
@@ -472,7 +471,7 @@ class Events extends Base {
                     // not just upcoming.  If there are more than one campaign event that could fire for this
                     // recall, we are only going to do the first one.  Generate one thing for MedEx to do for this event.
                     // Think.  Maybe the practice schedule 2 Campaign Event Messages for the same day?  We would want to run both right?
-                    // Yes, so do this only for recalls that are in the past!  T
+                    // Yes, so only limit recalls that are in the past to one event!  T
 
                     if (strtotime($recall['r_eventDate']) < mktime(0,0,0)) {
                         if ($this->recursive_array_search("recall_".$recall['r_pid'],$appt3)) { continue; }
@@ -569,7 +568,7 @@ class Events extends Base {
     }
 
     /**
-     *  This function deletes Recalls from the Recall Board when they are completed and no further processing is
+     *  This function deletes Recalls from MedEx when they are completed and no further processing is 
      *   needed. They are in an array = $data.
      */
     private function process_deletes($token,$data) {
@@ -590,19 +589,12 @@ class Events extends Base {
     public function save_recall($saved) {
         $this->delete_Recall($saved);
         
-        //$mysqldate = date('Y-m-d', $_REQUEST['datepicker2'] );
-        //$mysqldate = date('Y-m-d', $_REQUEST['datepicker2']);
         $mysqldate = date('Y-m-d', strtotime($_REQUEST['datepicker2']));
         $queryINS = "INSERT into medex_recalls (r_pid,r_reason,r_eventDate,r_provider,r_facility) 
                         VALUES (?,?,?,?,?) 
                         on DUPLICATE KEY 
                         UPDATE r_reason=?, r_eventDate=?, r_provider=?,r_facility=?";
         $result = sqlStatement($queryINS,array($_REQUEST['new_pid'],$_REQUEST['new_reason'],$mysqldate,$_REQUEST['new_provider'],$_REQUEST['new_facility'],$_REQUEST['new_reason'],$mysqldate,$_REQUEST['new_provider'],$_REQUEST['new_facility']));
-        /*$sqlINSERT = "INSERT INTO medex_outgoing (msg_pc_eid, campaign_uid, msg_type, msg_reply, msg_extra_text) 
-                        VALUES (?,?,?,?,?)
-                        ON DUPLICATE KEY UPDATE msg_reply=?";
-                    sqlQuery($sqlINSERT,array($appt['pc_eid'],$appt['C_UID'], $appt['M_type'],$appt['reply'],$appt['extra'],$appt['reply']));
-          */     
         $query = "UPDATE patient_data 
                     set phone_home=?,phone_cell=?,email=?,
                         hipaa_allowemail=?,hipaa_voice=?,hipaa_allowsms=?,
@@ -842,10 +834,7 @@ class Display extends base {
                                                 <div class="divTableCell indent20">
                                                     <input type="checkbox" class="update" name="ME_hipaa_default_override" id="ME_hipaa_default_override" value="1" <?php
                                                         if ($prefs['ME_hipaa_default_override']=='1') echo 'checked ="checked"'; ?>/>
-                                                    <label for="ME_hipaa_default_override" class="input-helper input-helper--checkbox" title='<?php echo xla('Default: "checked".
-                                                    When checked, messages are processed for patients with Patient Demographic Choice: "Hipaa Notice Received" set to "Unassigned" or "Yes".
-                                                    When unchecked, this choice must = "YES" to process the patient reminder.
-                                                    For patients with Choice ="No", Reminders will need to be processed manually.'); //or no translation... ?>'><?php echo xlt('Assume patients receive HIPAA policy'); ?></label><br />
+                                                    <label for="ME_hipaa_default_override" class="input-helper input-helper--checkbox" title='<?php echo xla('Default: "checked". When checked, messages are processed for patients with Patient Demographic Choice: "Hipaa Notice Received" set to "Unassigned" or "Yes". When unchecked, this choice must = "YES" to process the patient reminder.  For patients with Choice ="No", Reminders will need to be processed manually.'); //or no translation... ?>'><?php echo xlt('Assume patients receive HIPAA policy'); ?></label><br />
                                                     <input type="checkbox" class="update" name="MSGS_default_yes" id="MSGS_default_yes" value="1" <?php if ($prefs['MSGS_default_yes']=='1') echo "checked='checked'"; ?>>
                                                                 <label for="MSGS_default_yes" class="input-helper input-helper--checkbox" title="<?php echo xla('Default: Checked.  When checked, messages are processed for patients with Patient Demographic Choice (Phone/Text/Email) set to \'Unassigned\' or \'Yes\'.  If this is unchecked, a given type of message can only be sent if its Demographic Choice = \'Yes\'.'); ?>"><?php echo xlt('Assume patients permit Messaging'); ?></label>
                                                 </div>
@@ -889,8 +878,8 @@ class Display extends base {
                                                     }
                                                     if (!empty($prov['suffix']))  $suffix = ', '.$prov['suffix'];
                                                     ?>
-                                                    <input <?php echo $checked; ?> class="update" type="checkbox" name="providers[]" id="provider_<?php echo $prov['id']; ?>" value="<?php echo $prov['id']; ?>">
-                                                    <label for="provider_<?php echo $prov['id']; ?>"><?php echo $prov['fname']." ".$prov['lname'].$suffix; ?></label><br /><?php
+                                                    <input <?php echo $checked; ?> class="update" type="checkbox" name="providers[]" id="provider_<?php echo attr($prov['id']); ?>" value="<?php echo attr($prov['id']); ?>">
+                                                    <label for="provider_<?php echo $prov['id']; ?>"><?php echo text($prov['fname'])." ".text($prov['lname']).text($suffix); ?></label><br /><?php
                                                 }
                                                 ?>
                                                 </div>
@@ -899,7 +888,7 @@ class Display extends base {
                                                 <div class="divTableCell divTableHeading"><?php echo xlt('Labels'); ?></div>
                                                 <div class="divTableCell indent20">
                                                     <input type="checkbox" class="update" name="LABELS_local" id="LABELS_local" value="1" <?php if ($prefs['LABELS_local']) echo "checked='checked'"; ?> />
-                                                    <label for="LABELS_local" class="input-helper input-helper--checkbox" title='Check if you plan to use Avery Labels for Reminders or Recalls'>
+                                                    <label for="LABELS_local" class="input-helper input-helper--checkbox" title='<?php echo xla('Check if you plan to use Avery Labels for Reminders or Recalls'); ?>'>
                                                     <?php echo xlt('Use Labels'); ?></label>
                                                     <table id="LABELS_local_details" name="LABELS_local_details" class="<?php echo $show_local_only; ?>">
                                                         <tr>
@@ -945,8 +934,8 @@ class Display extends base {
                                         -->
                                         */   
                                         ?>
-                                            <input type="hidden" name="ME_username" id="ME_username" value="<?php echo $prefs['ME_username'];?>" />
-                                            <input type="hidden" name="ME_api_key" id="ME_api_key" value="<?php echo xla($prefs['ME_api_key']);?>" />
+                                            <input type="hidden" name="ME_username" id="ME_username" value="<?php echo attr($prefs['ME_username']);?>" />
+                                            <input type="hidden" name="ME_api_key" id="ME_api_key" value="<?php echo attr($prefs['ME_api_key']);?>" />
                                         </div>
                                     </div>
 
@@ -996,7 +985,7 @@ class Display extends base {
 
                 ?>
                 <div class="borderShadow" style="position:absolute;top:20px;right:10px;width:200px;font-size:0.9em;">
-                    <a class="fa fw fa-plus-square" title="Add a New Recall" id="BUTTON_new_recall_menu" style="float:left;" href="<?php echo $GLOBALS['web_root']; ?>/interface/main/messages/messages.php?go=addRecall"></a>
+                    <a class="fa fw fa-plus-square" title="<?php echo xla('Add a New Recall'); ?>" id="BUTTON_new_recall_menu" style="float:left;" href="<?php echo $GLOBALS['web_root']; ?>/interface/main/messages/messages.php?go=addRecall"></a>
                     <b><u>MedEx <?php echo xlt('Recall Schedule'); ?></u></b><br />
                     <span>
                         <?php echo $current_events; ?>
@@ -1006,7 +995,7 @@ class Display extends base {
                 <div class="title"><?php echo xlt('Recall Board'); ?></div>
                 <div name="div_response" id="div_response"><?php echo xlt('Persons needing a recall, no appt scheduled yet'); ?>.</div>
                 <div name="message" id="message" class="warning"></div>
-                <ul class="nav nav-tabs <?php echo $reminder_bar; ?>">
+                <ul class="nav nav-tabs <?php echo attr($reminder_bar); ?>">
                     <li class="active whitish"><a href="#tab-all" data-toggle="tab"><?php echo xlt('All'); ?></a></li>
                     <li class="whitish"><a href="#tab-pending" data-toggle="tab"><?php echo xlt('Events Scheduled'); ?></a></li>
                     <li class="yellowish"><a href="#tab-processing" data-toggle="tab"><?php echo xlt('In-process'); ?></a></li>
@@ -1084,7 +1073,7 @@ class Display extends base {
                 if (strlen($recall['email']) > 15) {
                     $recall['email'] = substr($recall['email'], 0, 12)."...";
                 }
-                echo 'E: <a title="Send an email to '.$mailto.'" href="mailto:'.$mailto.'">'.$recall['email'].'</a><br />';
+                echo 'E: <a title="'.xla('Send an email to ').attr($mailto).'" href="mailto:'.attr($mailto).'">'.text($recall['email']).'</a><br />';
             }
             if ($logged_in) {
                 $pat = $this->possibleModalities($recall);
@@ -1095,30 +1084,30 @@ class Display extends base {
             if ($show['postcard'] > '') {
                 echo '<div class="divTableCell center postcards">'.$show['postcard'].'</div>';
             } else {
-                echo '<div class="divTableCell center postcards"><input type="checkbox" name="postcards" id="postcards[]" value="'.$recall['pid'].'"></div>';
+                echo '<div class="divTableCell center postcards"><input type="checkbox" name="postcards" id="postcards[]" value="'.attr($recall['pid']).'"></div>';
             }
 
             if ($show['label'] > '') {
                 echo '<div class="divTableCell center labels">'.$show['label'].'</div>';
             } else {
-                echo '<div class="divTableCell center labels"><input type="checkbox" name="labels" id="labels[]" value="'.$recall['pid'].'"></div>';
+                echo '<div class="divTableCell center labels"><input type="checkbox" name="labels" id="labels[]" value="'.attr($recall['pid']).'"></div>';
             }
             echo '  <div class="divTableCell center msg_manual"><span class="fa fa-fw spaced_icon" >
-                    <input type="checkbox" name="msg_phone" id="msg_phone_'.$recall['pid'].'" onclick="process_this(\'phone\',\''.$recall['pid'].'\',\''.$recall['r_ID'].'\')" />
+                    <input type="checkbox" name="msg_phone" id="msg_phone_'.$recall['pid'].'" onclick="process_this(\'phone\',\''.attr($recall['pid']).'\',\''.attr($recall['r_ID']).'\')" />
                 </span>';
-            echo '    <span title="'.xla('Scheduling').'" class="fa fa-calendar-check-o fa-fw" onclick="newEvt(\''.$recall['pid'].'\',\'\');">
+            echo '    <span title="'.xla('Scheduling').'" class="fa fa-calendar-check-o fa-fw" onclick="newEvt(\''.attr($recall['pid']).'\',\'\');">
                 </span>';
             echo '</div>';
 
             echo '  <div class="divTableCell left msg_resp">';
                 //    if phone all made show each info from progress
-            echo '<textarea onblur="process_this(\'notes\',\''.$recall['pid'].'\',\''.$recall['r_ID'].'\');" name="msg_notes" id="msg_notes_'.$recall['pid'].'" style="width:90%;height:30px;">'.nl2br(text($recall['NOTES'])).'</textarea>';
+            echo '<textarea onblur="process_this(\'notes\',\''.attr($recall['pid']).'\',\''.attr($recall['r_ID']).'\');" name="msg_notes" id="msg_notes_'.attr($recall['pid']).'" style="width:90%;height:30px;">'.nl2br(text($recall['NOTES'])).'</textarea>';
             echo '</div>';
             echo '  <div class="divTableCell left msg_resp">
-            <i class="top_right_corner fa fa-times" onclick="delete_Recall(\''.$recall['pid'].'\',\''.$recall['r_ID'].'\')"></i> ';
+            <i class="top_right_corner fa fa-times" onclick="delete_Recall(\''.attr($recall['pid']).'\',\''.attr($recall['r_ID']).'\')"></i> ';
             echo $show['progression'];
 
-            if ($show['appt']) echo "<span  onclick=\"newEvt('".$prog['pid']."','".$show['pc_eid']."');\" class='btn btn-danger center' title='Appointment made by ".$prog['who']." on  ".$prog['when']."'><b>Appt:</b> ".$show['appt']."<br />";
+            if ($show['appt']) echo "<span  onclick=\"newEvt('".attr($prog['pid'])."','".attr($show['pc_eid'])."');\" class='btn btn-danger center' title='".xla('Appointment made by')." ".attr($prog['who'])." ".xla('on')." ".attr($prog['when'])."'><b>".xlt('Appt{{Appointment}}').":</b> ".text($show['appt'])."<br />";
             echo '</div>';
             echo '</div>';
             $content = ob_get_clean();
@@ -1161,7 +1150,7 @@ class Display extends base {
         // Recalls are requests to schedule a future appointment.
         // Thus there is no r_appt_time (NULL) but there is a DATE set.
         // Get recalls for today and the future.
-        // Will build facility for user to narrow date range, so as not to display EVERYTHING.
+        // Will build mechanism for user to narrow date range, or pagination, so as not to display EVERYTHING.
         $query = "Select * from medex_recalls,patient_data as pat where pat.pid=medex_recalls.r_pid and r_eventDate < CURDATE()+INTERVAL ".add_escape_custom($duration)." DAY order by r_eventDate ASC";
         $result = sqlStatement($query);
         while ($recall= sqlFetchArray($result))   {
@@ -1223,8 +1212,8 @@ class Display extends base {
                                         <div class="divTableCell recall_name">
                                             <input type="text" name="new_recall_name" id="new_recall_name"
                                                 onclick="recall_name_click(this)"
-                                                value="<?php echo $result_pat['fname']." ".$result_pat['lname']; ?>">
-                                            <input type="hidden" name="new_pid" id="new_pid" value="<?php echo $result_pat['id']; ?>">
+                                                value="<?php echo attr($result_pat['fname'])." ".attr($result_pat['lname']); ?>">
+                                            <input type="hidden" name="new_pid" id="new_pid" value="<?php echo attr($result_pat['id']); ?>">
                                         </div>
                                     </div>
                                     <div class="divTableRow">
@@ -1249,7 +1238,7 @@ class Display extends base {
                                     <div class="divTableRow">
                                         <div class="divTableCell divTableHeading"><?php echo xlt('Recall Reason'); ?></div>
                                         <div class="divTableCell">
-                                            <input type="text" name="new_reason" id="new_reason" Xstyle="width:200px;" value="<?php echo $result_pat['PLAN']; ?>">
+                                            <input type="text" name="new_reason" id="new_reason" value="<?php echo attr($result_pat['PLAN']); ?>">
                                         </div>
                                     </div>
                                     <div class="divTableRow">
@@ -1320,18 +1309,18 @@ class Display extends base {
                                     <div class="divTableRow news">
                                         <div class="divTableCell divTableHeading"><?php echo xlt('Address'); ?></div>
                                         <div class="divTableCell">
-                                            <input type="text" name="new_address" id="new_address" style="width:200px;" value="<?php echo $result_pat['street']; ?>"><br />
-                                            <input type="text" name="new_city" id="new_city" style="width:100px;" value="<?php echo $result_pat['city']; ?>">
-                                            <input type="text" name="new_state" id="new_state" style="width:30px;" value="<?php echo $result_pat['state']; ?>">
-                                            <input type="text" name="new_postal_code" id="new_postal_code" style="width:50px;" value="<?php echo $result_pat['postal_code']; ?>"></div>
+                                            <input type="text" name="new_address" id="new_address" style="width:200px;" value="<?php echo attr($result_pat['street']); ?>"><br />
+                                            <input type="text" name="new_city" id="new_city" style="width:100px;" value="<?php echo attr($result_pat['city']); ?>">
+                                            <input type="text" name="new_state" id="new_state" style="width:30px;" value="<?php echo attr($result_pat['state']); ?>">
+                                            <input type="text" name="new_postal_code" id="new_postal_code" style="width:50px;" value="<?php echo attr($result_pat['postal_code']); ?>"></div>
                                     </div>
                                     <div class="divTableRow news">
                                         <div class="divTableCell divTableHeading phone_home"><?php echo xlt('Home Phone'); ?></div>
-                                        <div class="divTableCell"><input type="text" name="new_phone_home" id="new_phone_home" style="width:200px;" value="<?php echo $result_pat['phone_home']; ?>"></div>
+                                        <div class="divTableCell"><input type="text" name="new_phone_home" id="new_phone_home" style="width:200px;" value="<?php echo attr($result_pat['phone_home']); ?>"></div>
                                     </div>
                                     <div class="divTableRow news">
                                         <div class="divTableCell divTableHeading phone_cell"><?php echo xlt('Mobile Phone'); ?></div>
-                                        <div class="divTableCell"><input type="text" name="new_phone_cell" id="new_phone_cell" style="width:200px;" value="<?php echo $result_pat['phone_cell']; ?>"></div>
+                                        <div class="divTableCell"><input type="text" name="new_phone_cell" id="new_phone_cell" style="width:200px;" value="<?php echo attr($result_pat['phone_cell']); ?>"></div>
                                     </div>
                                     <div class="divTableRow news">
                                         <div class="divTableCell divTableHeading msg_sent" title="Text Message"><?php echo xlt('SMS OK'); ?></div>
@@ -1351,7 +1340,7 @@ class Display extends base {
                                     </div>
                                     <div class="divTableRow news">
                                         <div class="divTableCell divTableHeading phone_cell"><?php echo xlt('E-Mail'); ?></div>
-                                        <div class="divTableCell"><input type="text" name="new_email" id="new_email" style="width:200px;" value="<?php echo $result_pat['email']; ?>"></div>
+                                        <div class="divTableCell"><input type="text" name="new_email" id="new_email" style="width:200px;" value="<?php echo attr($result_pat['email']); ?>"></div>
                                     </div>
 
                                     <div class="divTableRow news">
@@ -1368,7 +1357,7 @@ class Display extends base {
                                 
                                 <input class="ui-buttons ui-widget ui-corner-all news btn" onclick="add_this_recall();"  style="width:100px;" value="<?php echo xla('Add Recall'); ?>" id="add_new" name="add_new">
                                 <br />
-                                <em>* N.B.: <?php echo xlt('Changes to demographics here will be system-wide'); ?>.</em>
+                                <em>* <?php echo alt('N.B.{{Nota bene}}')." ".xlt('Demographic changes made here are system-wide'); ?>.</em>
                             </div>
                         </form>
                     </div>
@@ -1396,9 +1385,9 @@ class Display extends base {
     *       Let the Recall Board look to see if there is an appointment for this patient in the future.
     *       If there is, and it was made more than 16 hours ago, it deletes the Recall altogether.  It is never displayed again.
     *       If an appointment was created less than 16 hours ago, it turns the row greenish, signaling anyone who looks that it was just taken care of,
-    *       and display in the "pregress" area what has transpired.
+    *       and display in the "progress" column what has transpired.
     *       Thanks, move on, nothing to see here.
-    *       This also allows anyone (management?) a tool to see what Recall work was performed over the last 24 hours.
+    *       This also allows anyone (management?) a tool to see what Recall work was performed over the last 16 hours.
     */
     public function show_progress_recall($recall,$events='',$possibleModalities='') {
         //Two scenarios: First, appt is made as recall asks. Second, appt is made not for recall reason - recall still needed.
@@ -1410,7 +1399,7 @@ class Display extends base {
         //that we got some work done today...
         //So, if appt was made more than 16 hours ago, and it is within 3 months of the recall date, auto-delete the recall from the board.
         //ie.  appts added in for problem visits won't auto-delete an official recall unless they are close in time to the recall...
-        //Adjust according to your needs and work flows.  This function is run in recall board and cron MedEx calls.
+        //Adjust according to your needs and work flows.  This function is run by the Recall Board and with cron MedEx calls.
         $show['EMAIL']['text']='';
         $show['SMS']['text']='';
         $show['AVM']['text']='';
@@ -1430,11 +1419,11 @@ class Display extends base {
             $show['status'] ='greenish'; //tells MedEx to move on, don't process this recall - delete it from their servers.
             return $show;
             // Just cleaning up the Recall Board for you. Move along, nothing to see.
-            // If you need to look at the track of action, look in the log.
+            // If you need to look at the track of action, look in the log?
         }
 
         // Did anything happen yet?
-        // Table medex_outgoing is our log.  
+        // Table medex_outgoing is our log for current activities.
         // It includes records of local manual things your office did and the MedEx reports.
         // For non-MedEx subscribers, the local functionality will still work just fine...
         // Unless the RECALL is completed (appt made) more than 16 hours ago, the RECALL's data will be present.
@@ -1456,13 +1445,13 @@ class Display extends base {
                 $who_name = $who['fname']." ".$who['lname'];
                 //Manually generated actions
                 if ($progress['msg_type'] == 'phone') { //ie. a manual phone call, not an AVM
-                    $show['progression'] .= "<span class='left' title='<?php echo xla('Phone call made by'); ?> ".$who_name."'><b><?php echo xlt('Phone'); ?>:</b> ".$when."</span></br />\n";
+                    $show['progression'] .= "<span class='left' title='<?php echo xla('Phone call made by'); ?> ".text($who_name)."'><b><?php echo xlt('Phone'); ?>:</b> ".text($when)."</span></br />\n";
                 } elseif ($progress['msg_type'] == 'notes') {
-                    $show['progression'] .= "<span class='left' title='<?php echo xla('Notes by'); ?> ".$who_name." on ".$when."'><b><?php echo xlt('Note'); ?>:</b> ".$progress['msg_extra_text']."</span></br />\n";
+                    $show['progression'] .= "<span class='left' title='<?php echo xla('Notes by'); ?> ".text($who_name)." on ".text($when)."'><b><?php echo xlt('Note'); ?>:</b> ".text($progress['msg_extra_text'])."</span></br />\n";
                 } elseif ($progress['msg_type'] == 'postcards') {
-                    $show['progression'] .= "<span class='left' title='<?php echo xla('Postcard printed by'); ?> ".$who_name."'><b><?php echo xlt('Postcard'); ?>:</b> ".$when."</span></br />\n";
+                    $show['progression'] .= "<span class='left' title='<?php echo xla('Postcard printed by'); ?> ".text($who_name)."'><b><?php echo xlt('Postcard'); ?>:</b> ".text($when)."</span></br />\n";
                 } elseif ($progress['msg_type'] == 'labels') {
-                    $show['progression'] .= "<span class='left' title='<?php echo xla('Label printed by'); ?> ".$who."'><b><?php echo xlt('Label'); ?>:</b> ".$when."</span></br />";
+                    $show['progression'] .= "<span class='left' title='<?php echo xla('Label printed by'); ?> ".text($who)."'><b><?php echo xlt('Label'); ?>:</b> ".text($when)."</span></br />";
                 }
             } else {
                 $who_name = "MedEx";
@@ -1471,13 +1460,13 @@ class Display extends base {
                 if (($progress['msg_reply'] == "READ")||($show[$progress['msg_type']]['stage']=="READ")) {
                         $show[$progress['msg_type']]['stage']   = "READ";
                         $icon = $this->get_icon($progress['msg_type'],"READ");
-                        $show[$progress['msg_type']]['text']    = "<span class='left'>".$icon." ".$when."</span><br />";
+                    $show[$progress['msg_type']]['text']    = "<span class='left'>".$icon." ".text($when)."</span><br />";
                         if ($progress['msg_type'] == 'AVM') $show['campaign'][$i]['status']="reddish";
                 } elseif (($progress['msg_reply'] == "SENT")||($show[$progress['msg_type']]['stage']=="SENT")) {
                     if ($show[$progress['msg_type']]['stage']!="READ") {
                         $show[$progress['msg_type']]['stage']   = "SENT";
                         $icon = $this->get_icon($progress['msg_type'],"SENT");
-                        $show[$progress['msg_type']]['text']    = "<span class='left'>".$icon." ".$when."</span><br />";
+                        $show[$progress['msg_type']]['text']    = "<span class='left'>".$icon." ".text($when)."</span><br />";
                     }
                 } elseif (($progress['msg_reply'] == "To Send")||($show[$progress['msg_type']]['stage']=="QUEUED")) {
                     if (($show[$progress['msg_type']]['stage']!="READ")&&($show[$progress['msg_type']]['stage']!="SENT")) {
@@ -1487,16 +1476,16 @@ class Display extends base {
                 }
                 if ($progress['msg_reply'] == "CALL") {
                     $icon = $this->get_icon($progress['msg_type'],"CALL");
-                    $show['progression'] .= "<span class='left'>".$icon." ".$progress['msg_type']."@".$when."</span><br />";
+                    $show['progression'] .= "<span class='left'>".$icon." ".text($progress['msg_type'])."@".text($when)."</span><br />";
                 } elseif ($progress['msg_reply'] == "STOP") {
                     $icon = $this->get_icon($progress['msg_type'],"STOP");
-                    $show['progression'] .= "<span class='left'>".$icon." ".$when."</span><br />";
+                    $show['progression'] .= "<span class='left'>".$icon." ".text($when)."</span><br />";
                 } elseif ($progress['msg_reply'] == "EXTRA") {
                     $icon = $this->get_icon($progress['msg_type'],"EXTRA");
-                    $show['progression'] .= "<span class='left'>".$icon." ".$when."</span><br />";
+                    $show['progression'] .= "<span class='left'>".$icon." ".text($when)."</span><br />";
                 } elseif ($progress['msg_reply'] == "FAILED") {
                     $icon = $this->get_icon($progress['msg_type'],"FAILED");
-                    $show['progression']  .= "<span class='left'>".$icon." ".$when."</span><br />";
+                    $show['progression']  .= "<span class='left'>".$icon." ".text($when)."</span><br />";
                     $show['campaign'][$i]['status']=1;
                 }
                 $show['campaign'][$i]['icon'] = $icon;
@@ -1539,7 +1528,7 @@ class Display extends base {
                 $show['campaign'][$event['C_UID']]['executed'] = $execute;
             }
             $show['progression'] .= "<a href='https://medexbank.com/cart/upload/index.php?route=information/campaigns' class='nowrap left' target='_MedEx'>".
-                                    $show['campaign'][$event['C_UID']]['icon']." ".$show['campaign'][$event['C_UID']]['executed']."</a><br />";
+                                    $show['campaign'][$event['C_UID']]['icon']." ".text($show['campaign'][$event['C_UID']]['executed'])."</a><br />";
         }
 
         // Show recall row status via background color.
@@ -1682,11 +1671,6 @@ class Setup extends Base {
              <div class="col-sm-10 center">
                 <div id="setup_1" class="showReminders borderShadow">
                     <div class="title row">MedEx Bank</div>
-                    <div class="showReminders row">
-                        <div class="col-sm-12">
-                            <em>“<?php echo xlt('When you need it absolutely, positively confirmed'); ?>!” </em>
-                        </div>
-                    </div>
                     <div class="row showReminders ">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-5 left">
@@ -1739,7 +1723,7 @@ class Setup extends Base {
                                             </div>
                                             <div class="divTableCell">
                                                 <i id="email_check" name="email_check" class="top_right_corner nodisplay red fa fa-check"></i>
-                                                <input type="text" data-rule-email="true" class="form-control" id="new_email" name="new_email" value="<?php echo $GLOBALS['user_data']['email']; ?>" placeholder="your email address" required>
+                                                <input type="text" data-rule-email="true" class="form-control" id="new_email" name="new_email" value="<?php echo attr($GLOBALS['user_data']['email']); ?>" placeholder="<?php echo xla('your email address'); ?>" required>
                                                 <div style="font-size:0.8em;color:red;margin:0 15px;padding:0 15px;" class="red nodisplay" id="email_help" name="email_help"><?php echo xlt('Please provide a valid e-mail address to proceed'); ?>...</div>
 
                                             </div>
@@ -1750,7 +1734,7 @@ class Setup extends Base {
                                             </div>
                                             <div class="divTableCell"><i id="pwd_check" name="pwd_check" class="top_right_corner nodisplay red fa fa-check"></i>
                                                 <i class="fa top_right_corner fa-question" id="pwd_ico_help" aria-hidden="true" onclick="$('#pwd_help').toggleClass('nodisplay');"></i>
-                                                <input type="password" placeholder="Password" id="new_password" name="new_password" class="form-control" required>
+                                                <input type="password" placeholder="<?php xla('Password'); ?>" id="new_password" name="new_password" class="form-control" required> 
                                                 <br />
                                                 <div id="pwd_help" class="nodisplay" style="font-size:0.8em;color:red;margin:0 15px;padding:0 15px;"><?php echo xlt('8-12 characters long, including at least one upper case letter, one lower case letter, one number and one special character'); ?></div>
                                             </div>
@@ -1760,9 +1744,27 @@ class Setup extends Base {
                                                 <?php echo xlt('Repeat'); ?>
                                             </div>
                                             <div class="divTableCell"><i id="pwd_rcheck" name="pwd_rcheck" class="top_right_corner nodisplay red fa fa-check"></i>
-                                                <input type="password" placeholder="Repeat password" id="new_rpassword" name="new_rpassword" class="form-control" required>
+                                                <input type="password" placeholder="<?php echo xla('Repeat password'); ?>" id="new_rpassword" name="new_rpassword" class="form-control" required>
                                                         <br />
-                                                <div id="pwd_rhelp" class="nodisplay" style="font-size:0.8em;color:red;margin:0 15px;padding:0 15px;"><?php echo xlt('Passwords do not match.'); ?></div>
+                                                <div id="pwd_rhelp" class="nodisplay" style="color:red;margin:0 15px;padding:0 15px;arial,helvetica,clean,sans-serif
+font-feature-settings: normal;
+font-kerning: auto;
+font-language-override: normal;
+font-size: 11.7px;
+font-size-adjust: none;
+font-stretch: normal;
+font-style: normal;
+font-synthesis: weight style;
+font-variant: normal;
+font-variant-alternates: normal;
+font-variant-caps: normal;
+font-variant-east-asian: normal;
+font-variant-ligatures: normal;
+font-variant-numeric: normal;
+font-variant-position: normal;
+font-weight: 700;
+line-height: 15.2167px;
+"><?php echo xlt('Passwords do not match.'); ?></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1799,7 +1801,7 @@ class Setup extends Base {
                 if (!$("#TERMS_yes").is(':checked')) return alert('<?php echo xlt('You must agree to the Terms & Conditions before signing up...');?> ');
                 if (!$("#BusAgree_yes").is(':checked')) return alert('<?php echo xlt('You must agree to the HIPAA Business Associate Agreement...');?> ');
                 //do we want this translated?  MedEx is in English.
-                if (confirm("     Confirm: you are opening a secure connection to MedExBank.com to create your account.\n\nBefore your practice can send live messages, you will need to login to MedExBank.com to:\n     confirm your practice information\n     choose your service options\n     create your desired SMS/Voice and/or e-mail messages."))
+                if (confirm("    <?php echo xla('Confirm: you are opening a secure connection to MedExBank.com to create your account').".\n\n".xla('Before your practice can send live messages, you will need to login to')." MedExBank.com ".xla('to').":\n     ".xla('confirm your practice information')."\n     ".xla('choose your service options')."\n     ".xla('create your desired SMS/Voice and/or e-mail messages')."."; ?>"))
                 {
                     var url = "save.php?MedEx=start";
                     formData = $("form#medex_start").serialize();
@@ -1815,7 +1817,7 @@ class Setup extends Base {
                                 $("#ihvread").addClass('nodisplay');
 
                                 if (obj.success) {
-                                    $("#butme").html('<a href="messages.php?go=Preferences">Preferences</a>');
+                                $("#butme").html('<a href="messages.php?go=Preferences"><?php echo xlt('Preferences'); ?></a>');
                                     url="https://www.medexbank.com/cart/upload/";
                                     window.open(url, 'clinical', 'width=fullscreen,height=fullscreen,resizable=1,scrollbars=1,directories=0,titlebar=0,toolbar=0,location=0,status=0,menubar=0');
                                 header("location: messages.php?go=Preferences");//or refresh_me(); not sure which way to go - need to test errors to know...
@@ -1996,7 +1998,7 @@ class MedEx {
     public function __construct($url, $sessionFile = 'cookiejar_MedExAPI') {
         global $GLOBALS ;
    
-        if ($sessionFile == 'cookiejar_cookie_MedExAPI') {
+        if ($sessionFile == 'cookiejar_MedExAPI') {
             $sessionFile = $GLOBALS['temporary_files_dir'].'/cookiejar_MedExAPI';
         }
         $this->url      = rtrim('http://'.preg_replace('/^https?\:\/\//', '', $url), '/') . '/cart/upload/index.php?route=api/';

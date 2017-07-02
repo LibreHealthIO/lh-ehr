@@ -452,7 +452,7 @@ $(document).ready(function(){
                                          data       :  formData,
                                          action      : 'save_prefs'
                                          }).done(function(result) {
-                                                 $("#div_response").html('<span style="color:red;">Preferences updated successfully.</span>');
+                                                 $("#div_response").html('<span style="color:red;">'+xljs1+'.</span>');
                                                  setTimeout(function() {
                                                             $("#div_response").html('<br />');
                                                             }, 2000);

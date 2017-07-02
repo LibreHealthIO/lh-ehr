@@ -158,7 +158,7 @@ if ($_REQUEST['MedEx']=="start") {
         }
                     //then redirect user to preferences with a success message!
     } else {
-        echo xlt("Sorry you are not privileged enough...");
+        echo xlt("Sorry, you don't have access to this.");
     }
     exit;
 }

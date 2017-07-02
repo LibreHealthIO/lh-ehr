@@ -28,7 +28,7 @@ error_reporting(0);
 
 $ignoreAuth=true;
 $_SERVER['REQUEST_URI'] = '';
-$_SERVER['SERVER_NAME'] = 'example.tdl'; //PUT your fqdn - server name here
+$_SERVER['SERVER_NAME'] = 'example.tdl'; //PUT your server name here
 $_SERVER['HTTP_HOST']   = 'default'; //for multi-site i believe
 
 require_once(dirname(__FILE__)."/../../interface/globals.php");
@@ -41,8 +41,10 @@ require_once(dirname(__FILE__) ."/../log.inc");
 function start_MedEx() {
     $log = "/tmp/myhipaa.log" ;
     $stdlog = fopen($log, 'a');
-    $timed = date(DATE_RFC2822);
-    fputs($stdlog,"\n".$timed."\n");        
+    // $timed = date(DATE_RFC2822);
+    fputs($stdlog,"\nOK*****************************\n".date("H:i:s")."\n");
+
+    // fputs($stdlog,"\n****************************\n".$timed."\n");        
     
     $hb = new MedExApi\MedEx('MedExBank.com');
     $logged_in = $hb->login();
@@ -57,10 +59,19 @@ function start_MedEx() {
         }
         $token      = $logged_in['token'];
         $response   = $hb->practice->sync($token);
+        $logme = print_r($response);
+        fputs($stdlog,$logme."\n");
         $campaigns  = $hb->campaign->events($token);
+        $logme = print_r($campaigns);
+        echo $logme;
+        fputs($stdlog,$logme."\n");
+        
         $response   = $hb->events->generate($token,$campaigns['events']);
+        $logme = print_r($response);
+        fputs($stdlog,$logme."\n");
     } else {
         echo "not logged in";
+        fputs($stdlog,"not logged in\n");
         echo $hb->getLastError();
     }
 }
