@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 #sidebar {
   float:left;
   width:15%;
@@ -13,6 +17,7 @@
   width: 85%;
   max-width: calc(100% - 120px);
   height: 100%;
+  overflow: hidden;
 }
 #pc_facility {
   padding: 4px;
@@ -53,6 +58,14 @@
 }
 
 .fc-time, .fc-title {
-margin: 0;
-color: #000;
+  margin: 0;
+  color: #000;
+}
+
+.tooltipevent {
+  padding:5px;
+  border-radius: 0.25em;
+  background:#fff;
+  position:absolute;
+  z-index:10001;
 }

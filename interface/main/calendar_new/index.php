@@ -10,6 +10,7 @@ require('includes/session.php');
   <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
+  
   <link href='css/index.css' rel='stylesheet' />
   
   <script src='full_calendar/lib/moment.min.js'></script>
@@ -111,16 +112,8 @@ require('includes/session.php');
         header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right: 'timelineMonth,timelineWeek,timelineDay, providerAgenda'
         },
-        navLinks: true,
-        selectable: true,
-        //selectHelper: true,
-        defaultView: 'agendaDay',
-        defaultTimedEventDuration: '00:15:00',
-        minTime: '08:00:00',  // TODO: set according to globals
-        maxTime: '18:00:00',
-        slotDuration: '00:15:00',
         views: {
           week: {
             // options apply to basicWeek and agendaWeek views
@@ -129,8 +122,23 @@ require('includes/session.php');
           day: {
             // options apply to basicDay and agendaDay views
             groupByDateAndResource: true
+          }, 
+          providerAgenda: {
+            type: 'agenda',
+            duration: { days: 1 },
+            buttonText: 'agenda',
+            groupByDateAndResource: true
           }
         },
+        resourceAreaWidth: "25%",
+        navLinks: true,
+        selectable: true,
+        //selectHelper: true,
+        defaultView: 'timelineDay', // TODO: Set according to globals
+        defaultTimedEventDuration: '00:15:00',
+        minTime: '08:00:00',  // TODO: set according to globals
+        maxTime: '18:00:00',
+        slotDuration: '00:15:00',
         resources: {
           url: 'includes/get_providers.php',
           type: 'POST',
@@ -144,6 +152,23 @@ require('includes/session.php');
           error: function() {
               alert('There was an error while fetching appointments.');
           }
+        },
+        eventMouseover: function(calEvent, element, view) {
+          var tooltip = '<div class="tooltipevent">' + calEvent.title + '</div>';
+          var $tooltip = $(tooltip).appendTo('body');
+
+         $(this).mouseover(function(e) {
+             $(this).css('z-index', 10000);
+             $tooltip.fadeIn('500');
+             $tooltip.fadeTo('10', 1.9);
+         }).mousemove(function(e) {
+             $tooltip.css('top', e.pageY + 10);
+             $tooltip.css('left', e.pageX + 20);
+         });
+        },
+        eventMouseout: function(calEvent, element, view) {
+          $(this).css('z-index', 8);
+          $('.tooltipevent').remove();
         },
         select: function(start, end, jsEvent, view, resource) {
           dlgopen('../calendar/add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
