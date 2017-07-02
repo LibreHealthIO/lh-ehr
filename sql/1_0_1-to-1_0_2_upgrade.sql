@@ -1,4 +1,4 @@
---
+﻿--
 --  Comment Meta Language Constructs:
 --
 --  #IfNotTable
@@ -157,8 +157,7 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 -- Table structure for table `medex_icons`
 --
 
-#IfNotTable medex_icons 
- 
+#IfNotTable medex_icons
 CREATE TABLE `medex_icons` (
   `i_UID` int(11) NOT NULL AUTO_INCREMENT,
   `msg_type` varchar(50) NOT NULL,
@@ -216,7 +215,6 @@ INSERT INTO `medex_icons` (`i_UID`, `msg_type`, `msg_status`, `i_description`, `
 --
 
 #IfNotTable medex_outgoing
-
 CREATE TABLE `medex_outgoing` (
   `msg_uid` int(11) NOT NULL AUTO_INCREMENT,
   `msg_pc_eid` varchar(11) NOT NULL,
@@ -235,7 +233,6 @@ CREATE TABLE `medex_outgoing` (
 --
 
 #IfNotTable medex_prefs
-
 CREATE TABLE `medex_prefs` (
   `MedEx_id` int(11) DEFAULT '0',
   `ME_username` varchar(100) DEFAULT NULL,
@@ -260,7 +257,6 @@ CREATE TABLE `medex_prefs` (
 -- Table structure for table `medex_recalls`
 --
 #IfNotTable medex_recalls
-
 CREATE TABLE `medex_recalls` (
   `r_ID` int(11) NOT NULL AUTO_INCREMENT,
   `r_PRACTID` int(11) NOT NULL,
@@ -280,13 +276,11 @@ CREATE TABLE `medex_recalls` (
 --
 
 #IfNotRow background_services name MedEx
-
 INSERT INTO `background_services` (`name`, `title`, `active`, `running`, `next_run`, `execute_interval`, `function`, `require_once`, `sort_order`) VALUES
 ('MedEx', 'MedEx Messaging Service', 29, 0, '2017-05-09 17:39:10', 60, 'start_MedEx', '/library/MedEx/medex_background.php', 100);
 #Endif
 
 #IfNotRow2D list_options list_id apptstat option_id AVM
-
 INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
 ('apptstat', 'AVM', 'AVM Confirmed', 110, 0, 0, '', 'F0FFE8|0', '', 0, 0, 1, '');
 #Endif

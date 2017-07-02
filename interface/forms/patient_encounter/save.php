@@ -49,10 +49,7 @@ $referral_source  = (isset($_POST['form_referral_source'])) ? $_POST['form_refer
 $facilityresult = sqlQuery("select name FROM facility WHERE id = ?", array($facility_id));
 $facility = $facilityresult['name'];
 
-if ($GLOBALS['concurrent_layout'])
   $normalurl = "patient_file/encounter/encounter_top.php";
-else
-  $normalurl = "$rootdir/patient_file/encounter/patient_encounter.php";
 
 $nexturl = $normalurl;
 
@@ -150,9 +147,6 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categ
 <html>
 <body>
 <script language='JavaScript'>
-<?php if ($GLOBALS['concurrent_layout'])
- {//Encounter details are stored to javacript as array.
-?>
     EncounterDateArray=new Array;
     CalendarCategoryArray=new Array;
     EncounterIdArray=new Array;
@@ -170,17 +164,12 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categ
                  }
      ?>
      top.window.parent.left_nav.setPatientEncounter(EncounterIdArray,EncounterDateArray,CalendarCategoryArray);
-<?php } ?>
  top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
 <?php if ($mode == 'new') { ?>
  parent.left_nav.setEncounter(<?php echo "'" . attr(oeFormatShortDate($date)) . "', " . attr($encounter) . ", window.name"; ?>);
  parent.left_nav.setRadio(window.name, 'enc');
 <?php } // end if new encounter ?>
  parent.left_nav.loadFrame('enc2', window.name, '<?php echo $nexturl; ?>');
-<?php } else { // end if concurrent layout ?>
- window.location="<?php echo $nexturl; ?>";
-<?php } // end not concurrent layout ?>
 </script>
 
 </body>
