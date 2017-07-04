@@ -27,7 +27,8 @@
  *
  */
 
-require_once("../globals.php");
+require_once ('../globals.php');
+require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formdata.inc.php");
@@ -264,14 +265,14 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
 ?>
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="../../library/js/common.js"></script>
-<script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-<script type="text/javascript" src="../../library/js/jscolor-1-4-5/jscolor.js"></script>
-<link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
+<?php 
+   include_css_library("fancybox/jquery.fancybox-1.2.6.css");
+   include_js_library("jquery-min-3-1-1/index.js");
+   include_js_library("fancybox/jquery.fancybox-1.2.6.js");
+   include_js_library("jscolor-1-4-5/jscolor.js");
+?>
 
-<link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
+<script type="text/javascript" src="../../library/js/common.js"></script>
 <?php if ($_GET['mode'] == "user") { ?>
   <title><?php  echo xlt('User Settings'); ?></title>
 <?php } else { ?>

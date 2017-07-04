@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>.
  *
- * @package LibreEHR
+ * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @link    http://librehealth.io
  */
 
 require_once("../globals.php");
 if ($GLOBALS['mod_nn'] == true){
-		require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_super_edit_layout.inc");}
+        require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_super_edit_layout.inc");}
 else{
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/log.inc");
@@ -57,6 +57,9 @@ $datatypes = array(
   "2"  => xl("Textbox"),
   "3"  => xl("Textarea"),
   "4"  => xl("Text-date"),
+  "5"  => xl("Email"),
+  "6"  => xl("Integer"),  
+  "7"  => xl("URL"), 
   "10" => xl("Providers"),
   "11" => xl("Providers NPI"),
   "12" => xl("Pharmacies"),
@@ -445,7 +448,7 @@ function writeFieldLine($linedata) {
     if ($GLOBALS['translate_layout'] && $_SESSION['language_choice'] > 1) {
         echo "<td align='center' class='translation' style='width:10%'>" . htmlspecialchars(xl($linedata['title']), ENT_QUOTES) . "</td>\n";
     }
-	
+    
     echo "  <td align='center' class='optcell' style='width:4%'>";
     echo "<select name='fld[$fld_line_no][uor]' class='optin'>";
     foreach (array(0 =>xl('Unused'), 1 =>xl('Optional'), 2 =>xl('Required')) as $key => $value) {
@@ -470,7 +473,8 @@ function writeFieldLine($linedata) {
     echo "  </td>";
 
     echo "  <td align='center' class='optcell' style='width:4%'>";
-    if ($linedata['data_type'] == 2 || $linedata['data_type'] == 3 ||
+    if ($linedata['data_type'] == 2 || $linedata['data_type'] == 3 || 
+      $linedata['data_type'] == 5 || $linedata['data_type'] == 6 ||  $linedata['data_type'] == 7 || 
       $linedata['data_type'] == 21 || $linedata['data_type'] == 22 ||
       $linedata['data_type'] == 23 || $linedata['data_type'] == 25 ||
       $linedata['data_type'] == 27 || $linedata['data_type'] == 28 ||
@@ -532,8 +536,8 @@ function writeFieldLine($linedata) {
         $linedata['data_type'] == 33 || $linedata['data_type'] == 36)
     {
         echo "<input type='text' name='fld[$fld_line_no][list_backup_id]' value='" .
-    	    htmlspecialchars($linedata['list_backup_id'], ENT_QUOTES) .
-    	    "' size='3' maxlength='10' class='optin listid' style='cursor:pointer; width:100%' />";
+            htmlspecialchars($linedata['list_backup_id'], ENT_QUOTES) .
+            "' size='3' maxlength='10' class='optin listid' style='cursor:pointer; width:100%' />";
     }
     else {
         echo "<input type='hidden' name='fld[$fld_line_no][list_backup_id]' value=''>";
@@ -962,7 +966,7 @@ while ($row = sqlFetchArray($res)) {
     if ($GLOBALS['translate_layout'] && $_SESSION['language_choice'] > 1) {
       // echo "<span class='translation'>>>&nbsp; " . xl(preg_replace("/^\d+/", "", $row['group_name'])) . "</span>";
       echo "<span class='translation'>>>&nbsp; " . xl(substr($row['group_name'], 1)) . "</span>";
-      echo "&nbsp; ";	
+      echo "&nbsp; ";   
     }
     echo "&nbsp; ";
     echo " <input type='button' class='addfield' id='addto~".$row['group_name']."' value='" . xl('Add Field') . "'/>";
@@ -987,8 +991,8 @@ while ($row = sqlFetchArray($res)) {
   <th><?php xl('Label','e'); ?>&nbsp;<span class="help" title=<?php xl('The label that appears to the user on the form','e','\'','\''); ?> >(?)</span></th>
   <?php // if not english and showing layout label translations, then show translation header for title
   if ($GLOBALS['translate_layout'] && $_SESSION['language_choice'] > 1) {
-   echo "<th>" . xl('Translation')."<span class='help' title='" . xl('The translated label that will appear on the form in current language') . "'>&nbsp;(?)</span></th>";	
-  } ?>		  
+   echo "<th>" . xl('Translation')."<span class='help' title='" . xl('The translated label that will appear on the form in current language') . "'>&nbsp;(?)</span></th>";  
+  } ?>        
   <th><?php xl('UOR','e'); ?></th>
   <th><?php xl('Data Type','e'); ?></th>
   <th><?php xl('Size','e'); ?></th>
@@ -1038,7 +1042,7 @@ while ($row = sqlFetchArray($res)) {
 <!-- template DIV that appears when user chooses to rename an existing group -->
 <div id="renamegroupdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <input type="hidden" name="renameoldgroupname" id="renameoldgroupname" value="">
-<?php xl('Group Name','e'); ?>:	<input type="textbox" size="20" maxlength="30" name="renamegroupname" id="renamegroupname">
+<?php xl('Group Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="renamegroupname" id="renamegroupname">
 <br>
 <input type="button" class="saverenamegroup" value=<?php xl('Rename Group','e','\'','\''); ?>>
 <input type="button" class="cancelrenamegroup" value=<?php xl('Cancel','e','\'','\''); ?>>
@@ -1047,7 +1051,7 @@ while ($row = sqlFetchArray($res)) {
 <!-- template DIV that appears when user chooses to add a new group -->
 <div id="groupdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <span class='bold'>
-<?php xl('Group Name','e'); ?>:	<input type="textbox" size="20" maxlength="30" name="newgroupname" id="newgroupname">
+<?php xl('Group Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="newgroupname" id="newgroupname">
 <br>
 <table style="border-collapse: collapse; margin-top: 5px;">
 <thead>

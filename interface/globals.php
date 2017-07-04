@@ -107,7 +107,7 @@ $GLOBALS['OE_SITES_BASE'] = "$webserver_root/sites";
 // Now that restore_session() is implemented in javaScript, session IDs are
 // effectively saved in the top level browser window and there is no longer
 // any need to change the session name for different LibreHealth EHR instances.
-session_name("LibreEHR");
+session_name("LibreHealthEHR");
 
 session_start();
 
@@ -173,11 +173,12 @@ $GLOBALS['srcdir'] = "$webserver_root/library";
 $GLOBALS['fileroot'] = "$webserver_root";
 // Absolute path to the location of interface directory for use with include statements:
 $include_root = "$webserver_root/interface";
-// Absolute path to the location of documentroot directory for use with include statements:
+// Absolute path to the location of document root directory for use with include statements:
 $GLOBALS['webroot'] = $web_root;
+$GLOBALS['assets'] = "$web_root/assets";// assets directory
 
-// js directory
-$GLOBALS['standard_js_path'] = "$web_root/assets/js";
+$GLOBALS['standard_js_path'] = "$web_root/assets/js/";
+$javascript_dir = $GLOBALS['standard_js_path']; //Make path available as a variable.
 $GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
 
 //module configurations
@@ -186,17 +187,17 @@ $modules_dir = $GLOBALS['modules_dir'];                //Make path available as 
 $GLOBALS['baseModDir']  = "interface/modules/";        //base directory for the ZEND mods.  Not currently used.
 $GLOBALS['customModDir']= "custom_modules";            //OLD non zend modules, not used.
 $GLOBALS['zendModDir']  = "zend_modules";              //zend module sub-directory, not used.
-$GLOBALS['nn_mod'] = 0;                                //Nation Notes Module value off by default.
+$GLOBALS['mod_nn'] = 0;                                //Nation Notes Module value off by default.
 //module config TODO:  module and global registry for same.
 
 // images directory
-$GLOBALS['images_path'] = "$web_root/assets/images";
+$GLOBALS['images_path'] = "$web_root/assets/images/";
 
 // css directory
-$GLOBALS['css_path'] = "$webserver_root/assets/css";
+$GLOBALS['css_path'] = "$web_root/assets/css/";
 
 // font directory
-$GLOBALS['fonts_path'] = "$webserver_root/assets/fonts";
+$GLOBALS['fonts_path'] = "$web_root/assets/fonts/";
 
 $GLOBALS['template_dir'] = $GLOBALS['fileroot'] . "/templates/";
 $GLOBALS['incdir'] = $include_root;

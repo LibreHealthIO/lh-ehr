@@ -43,7 +43,7 @@ $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 formHeader("Form:Observation Form");
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+$returnurl = 'encounter_top.php';
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
 
 if ($formid) {

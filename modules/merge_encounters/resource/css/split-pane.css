@@ -1,0 +1,121 @@
+/*!
+
+Split Pane v0.9.3
+
+Copyright (c) 2014 - 2016 Simon Hagström
+
+Released under the MIT license
+https://raw.github.com/shagstrom/split-pane/master/LICENSE
+
+*/
+.split-pane {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	z-index: 0;
+}
+
+.split-pane.fixed-top > .split-pane-component,
+.split-pane.fixed-bottom > .split-pane-component,
+.split-pane.horizontal-percent > .split-pane-component {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	overflow: auto;
+	top: auto;
+	bottom: 0;
+	z-index: 1;
+}
+
+.split-pane.fixed-top > .split-pane-component:first-child,
+.split-pane.fixed-bottom > .split-pane-component:first-child,
+.split-pane.horizontal-percent > .split-pane-component:first-child {
+	top: 0;
+	bottom: auto;
+}
+
+.split-pane.fixed-top > .split-pane-divider,
+.split-pane.fixed-bottom > .split-pane-divider,
+.split-pane.horizontal-percent > .split-pane-divider {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	cursor: row-resize;
+	z-index: 2;
+}
+
+.split-pane.fixed-top > .split-pane-divider > .split-pane-divider-inner,
+.split-pane.fixed-bottom > .split-pane-divider > .split-pane-divider-inner,
+.split-pane.horizontal-percent > .split-pane-divider > .split-pane-divider-inner {
+	position: absolute;
+	top: -5px;
+	left: 0;
+	box-sizing: content-box;
+	width: 100%;
+	height: 100%;
+	padding: 5px 0;
+}
+
+.split-pane.fixed-left > .split-pane-component,
+.split-pane.fixed-right > .split-pane-component,
+.split-pane.vertical-percent > .split-pane-component {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	overflow: auto;
+	left: auto;
+	right: 0;
+	z-index: 1;
+}
+
+.split-pane.fixed-left > .split-pane-component:first-child,
+.split-pane.fixed-right > .split-pane-component:first-child,
+.split-pane.vertical-percent > .split-pane-component:first-child {
+	left: 0;
+	right: auto;
+}
+
+.split-pane.fixed-left > .split-pane-divider,
+.split-pane.fixed-right > .split-pane-divider,
+.split-pane.vertical-percent > .split-pane-divider {
+	position: absolute;
+	height: 100%;
+	top: 0;
+	cursor: col-resize;
+	z-index: 2;
+}
+
+.split-pane.fixed-left > .split-pane-divider > .split-pane-divider-inner,
+.split-pane.fixed-right > .split-pane-divider > .split-pane-divider-inner,
+.split-pane.vertical-percent > .split-pane-divider > .split-pane-divider-inner {
+	position: absolute;
+	top: 0;
+	left: -5px;
+	box-sizing: content-box;
+	width: 100%;
+	height: 100%;
+	padding: 0 5px;
+}
+
+.split-pane-resize-shim {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10000;
+	display: none;
+}
+
+.split-pane.fixed-left > .split-pane-resize-shim,
+.split-pane.fixed-right > .split-pane-resize-shim,
+.split-pane.vertical-percent > .split-pane-resize-shim {
+	cursor: col-resize;
+}
+
+.split-pane.fixed-top > .split-pane-resize-shim,
+.split-pane.fixed-bottom > .split-pane-resize-shim,
+.split-pane.horizontal-percent > .split-pane-resize-shim {
+	cursor: row-resize;
+}

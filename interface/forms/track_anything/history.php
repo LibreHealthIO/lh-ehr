@@ -27,7 +27,7 @@ $fake_register_globals = false;
 require_once("../../globals.php");
 include_once($GLOBALS["srcdir"] . "/api.inc");
 
-$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+$returnurl = 'encounter_top.php';
 if(!$formid){ 
     $formid = $_POST['formid']; // call from track_anything encounter
     $fromencounter = 1;
@@ -79,8 +79,8 @@ echo "<html><head>";
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="style.css" type="text/css"> 
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/openflashchart/js/json/json2.js"></script>
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/openflashchart/js/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/json/json2.js"></script>
+<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/swfobject.js"></script>
 <script type="text/javascript">
 //-------------- checkboxes checked checker --------------------
 // Pass the checkbox name to the function
@@ -115,7 +115,7 @@ var data;
 //------------------------------------------------------
 function plot_graph(checkedBoxes, theitems, thetrack, thedates, thevalues, trackCount){
     top.restoreSession();
-    return $.ajax({ url: '<?php echo $web_root; ?>/library/openflashchart/graph_track_anything.php',
+    return $.ajax({ url: '<?php echo $modules_dir; ?>openflashchart/graph_track_anything.php',
              type: 'POST',
              data: { dates:  thedates, 
                      values: thevalues, 
@@ -132,7 +132,7 @@ function plot_graph(checkedBoxes, theitems, thetrack, thedates, thevalues, track
                  data=returnData;
                  flashvars.ofc = returnData;
                  // call ofc with proper falshchart
-                    swfobject.embedSWF('<?php echo $web_root; ?>/library/openflashchart/open-flash-chart.swf', 
+                    swfobject.embedSWF('<?php echo $modules_dir; ?>openflashchart/open-flash-chart.swf', 
                     "graph"+trackCount, "650", "200", "9.0.0","",flashvars);  
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -176,7 +176,7 @@ if($fromencounter == 1) {
     }
 if($fromencounter == 0) {
     echo "<td>&nbsp;&nbsp;&nbsp;<a href='../../patient_file/summary/demographics.php' ";
-    if (!$GLOBALS['concurrent_layout']){ echo "target='Main'"; }
+    echo "target='Main'";
     echo " class='css_button' onclick='top.restoreSession()'>";
     echo "<span>" . xlt('Back to Patient') . "</span></a></td>";
     }
@@ -407,7 +407,7 @@ if($fromencounter == 1) {
     }
 if($fromencounter == 0) {
     echo "<td>&nbsp;&nbsp;&nbsp;<a href='../../patient_file/summary/demographics.php' ";
-    if (!$GLOBALS['concurrent_layout']){ echo "target='Main'"; }
+    echo "target='Main'";
     echo " class='css_button' onclick='top.restoreSession()'>";
     echo "<span>" . htmlspecialchars(xl('Back to Patient'),ENT_NOQUOTES) . "</span></a></td>";
     }

@@ -24,6 +24,7 @@
  */
 
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/headers.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -64,11 +65,13 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
 
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']?>fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
+<?php
+include_js_library("fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js");
+?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
@@ -140,7 +143,6 @@ function cancelClicked() {
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
 <form id="new-encounter-form" method='post' action="<?php echo $rootdir ?>/forms/patient_encounter/save.php" name='new_encounter'
- <?php if (!$GLOBALS['concurrent_layout']) echo "target='Main'"; ?>>
 
 <div style='float:left'>
 <?php if ($viewmode) { ?>
@@ -160,15 +162,9 @@ function cancelClicked() {
     </div>
 
     <div style = 'float:left; margin-top:-3px'>
-  <?php if ($GLOBALS['concurrent_layout']) { ?>
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
         class="css_button link_submit" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
-  <?php } else { ?>
-      <a href="<?php echo "$rootdir/patient_file/encounter/patient_encounter.php"; ?>"
-        class="css_button link_submit" target='Main' onClick="top.restoreSession()">
-      <span><?php echo xlt('Cancel'); ?>]</span></a>
-  <?php } // end not concurrent layout ?>
-  <?php } else if ($GLOBALS['concurrent_layout']) { // not $viewmode ?>
+  <?php } else { // not $viewmode ?>
       <a href="" class="css_button link_submit" onClick="return cancelClicked()">
       <span><?php echo xlt('Cancel'); ?></span></a>
   <?php } // end not $viewmode ?>

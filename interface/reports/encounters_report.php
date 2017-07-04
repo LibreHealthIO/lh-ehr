@@ -23,11 +23,12 @@
  * @package LibreHealth EHR 
  * @author Terry Hill <teryhill@librehealth.io> 
  * @author Rod Roark <rod@sunsetsystems.com>
- * @link http://www.libreehr.org 
+ * @link http://librehealth.io
  *
  */
 
 require_once("../globals.php");
+require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/billing.inc");
 require_once("$srcdir/patient.inc");
@@ -39,15 +40,6 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $alertmsg = ''; // not used yet but maybe later
 
-// For each sorting option, specify the ORDER BY argument.
-//
-$ORDERHASH = array(
-  'doctor'  => 'lower(u.lname), lower(u.fname), fe.date',
-  'patient' => 'lower(p.lname), lower(p.fname), fe.date',
-  'pid'  => 'lower(p.pid), fe.date',
-  'time'    => 'fe.date, lower(u.lname), lower(u.fname)',
-  'encounter'    => 'fe.encounter, fe.date, lower(u.lname), lower(u.fname)',
-);
 
 function bucks($amount) {
   if ($amount) printf("%.2f", $amount);
@@ -72,9 +64,6 @@ $form_esigned = $_POST['form_esigned'] ? true : false;
 $form_not_esigned = $_POST['form_not_esigned'] ? true : false;
 $form_encounter_esigned = $_POST['form_encounter_esigned'] ? true : false;
 
-$form_orderby = $ORDERHASH[$_REQUEST['form_orderby']] ?
-  $_REQUEST['form_orderby'] : 'doctor';
-$orderby = $ORDERHASH[$form_orderby];
 
 // Get the info.
 //
@@ -127,7 +116,6 @@ if ($form_esigned) {
 if ($form_not_esigned) {
  $query .= "AND es.tid IS NULL ";
 }
-$query .= "ORDER BY $orderby";
 
 $res = sqlStatement($query);
 ?>
@@ -136,10 +124,7 @@ $res = sqlStatement($query);
 <?php html_header_show();?>
 <title><?php echo xlt('Encounters Report'); ?></title>
 
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
-<link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <style type="text/css">
 
 /* specifically include & exclude from printing */
@@ -167,30 +152,31 @@ $res = sqlStatement($query);
 
 </style>
 
-<script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dialog.js"></script>
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<?php
+   include_css_library("tablesorter-master/dist/css/theme.blue.min.css");
+   include_css_library("jquery-datetimepicker/jquery.datetimepicker.css");
+   include_js_library("jquery-min-3-1-1/index.js");
+   include_js_library("jquery-datetimepicker/jquery.datetimepicker.full.min.js");
+   include_js_library("tablesorter-master/dist/js/jquery.tablesorter.min.js");
+   include_js_library("tablesorter-master/dist/js/jquery.tablesorter.widgets.min.js");
+?>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/report_helper.js"></script>
 
 <script LANGUAGE="JavaScript">
 
 
 
  $(document).ready(function() {
+  oeFixedHeaderSetup(document.getElementById('mymaintable'));
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
-        $(document).ready(function () {
-            var win = top.printLogSetup ? top : opener.top;
-            win.printLogSetup(document.getElementById('printbutton'));
-        });
 
- function dosort(orderby) {
-  var f = document.forms[0];
-  f.form_orderby.value = orderby;
-  f.submit();
-  return false;
+ $(document).ready(function()
+    {
+        $("#mymaintable").tablesorter();
  }
+);
 
  function refreshme() {
   document.forms[0].submit();
@@ -307,7 +293,7 @@ $res = sqlStatement($query);
                     </span>
                     </a>
 
-                    <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
+                    <?php if ($_POST['form_refresh']) { ?>
             <a href='#' class='css_button' id='printbutton'>
                         <span>
                             <?php echo xlt('Print'); ?>
@@ -325,45 +311,22 @@ $res = sqlStatement($query);
 </div> <!-- end report_parameters -->
 
 <?php
- if ($_POST['form_refresh'] || $_POST['form_orderby']) {
+ if ($_POST['form_refresh']) {
 ?>
 <div id="report_results">
-<table>
+<table id='mymaintable' class="tablesorter">
 
  <thead>
 <?php if ($form_details) { ?>
-  <th>
-   <a href="nojs.php" onclick="return dosort('doctor')"
-   <?php if ($form_orderby == "doctor") echo " style=\"color:#00cc00\"" ?>><?php echo xlt('Provider'); ?> </a>
-  </th>
-  <th>
-   <a href="nojs.php" onclick="return dosort('time')"
-   <?php if ($form_orderby == "time") echo " style=\"color:#00cc00\"" ?>><?php echo xlt('Date'); ?></a>
-  </th>
-  <th>
-   <a href="nojs.php" onclick="return dosort('patient')"
-   <?php if ($form_orderby == "patient") echo " style=\"color:#00cc00\"" ?>><?php echo xlt('Patient'); ?></a>
-  </th>
-  <th>
-   <a href="nojs.php" onclick="return dosort('pid')"
-   <?php if ($form_orderby == "pid") echo " style=\"color:#00cc00\"" ?>><?php echo xlt('ID'); ?></a>
-  </th>
-  <th>
-   <?php echo xlt('Status'); ?>
-  </th>
-  <th>
-   <?php echo xlt('Encounter'); ?>
-  </th>
-  <th>
-   <a href="nojs.php" onclick="return dosort('encounter')"
-   <?php if ($form_orderby == "encounter") echo " style=\"color:#00cc00\"" ?>><?php echo xlt('Encounter Number'); ?></a>
-  </th>
-  <th>
-   <?php echo xlt('Form'); ?>
-  </th>
-  <th>
-   <?php echo xlt('Coding'); ?>
-  </th>
+  <th><?php echo xlt('Provider'); ?></th>
+  <th><?php echo xlt('Date'); ?></th>
+  <th><?php echo xlt('Patient'); ?></th>
+  <th><?php echo xlt('ID'); ?></th>
+  <th><?php echo xlt('Status'); ?></th>
+  <th><?php echo xlt('Encounter'); ?></th>
+  <th><?php echo xlt('Encounter Number'); ?></th>
+  <th><?php echo xlt('Form'); ?></th>
+  <th><?php echo xlt('Coding'); ?></th>
 <?php } else { ?>
   <th><?php echo xlt('Provider'); ?></td>
   <th><?php echo xlt('Encounters'); ?></td>
@@ -429,33 +392,15 @@ if ($res) {
       else                                  $status = xl('Empty' );
 ?>
  <tr bgcolor='<?php echo $bgcolor ?>'>
-  <td>
-   <?php echo ($docname == $lastdocname) ? "" : text($docname) ?>&nbsp;
-  </td>
-  <td>
-   <?php echo text(oeFormatShortDate(substr($row['date'], 0, 10))) ?>&nbsp;
-  </td>
-  <td>
-   <?php echo text($row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname']); ?>&nbsp;
-  </td>
-  <td>
-   <?php echo text($row['pid']); ?>&nbsp;
-  </td>
-  <td>
-   <?php echo text($status); ?>&nbsp;
-  </td>
-  <td>
-   <?php echo text($row['reason']); ?>&nbsp;
-  </td>
-   <td>
-   <?php echo text($row['encounter']); ?>&nbsp;
-  </td>
-  <td>
-   <?php echo $encnames; //since this variable contains html, have already html escaped it above ?>&nbsp;
-  </td>
-  <td>
-   <?php echo text($coded); ?>
-  </td>
+  <td><?php echo text($docname) //echo ($docname == $lastdocname) ? "" : text($docname) ?>&nbsp;</td>
+  <td><?php echo text(oeFormatShortDate(substr($row['date'], 0, 10))) ?>&nbsp;</td>
+  <td><?php echo text($row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname']); ?>&nbsp;</td>
+  <td><?php echo text($row['pid']); ?>&nbsp;</td>
+  <td><?php echo text($status); ?>&nbsp;</td>
+  <td><?php echo text($row['reason']); ?>&nbsp;</td>
+  <td><?php echo text($row['encounter']); ?>&nbsp;</td>
+  <td><?php echo $encnames; //since this variable contains html, have already html escaped it above ?>&nbsp;</td>
+  <td><?php echo text($coded); ?></td>
  </tr>
 <?php
     } else {
@@ -477,10 +422,10 @@ if ($res) {
 <?php } else { ?>
 <div class='text'>
     <?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo xlt('Column headers can be clicked to change sort order') ?>
 </div>
 <?php } ?>
 
-<input type="hidden" name="form_orderby" value="<?php echo attr($form_orderby) ?>" />
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
 
 </form>
@@ -491,7 +436,6 @@ if ($res) {
 <?php if ($alertmsg) { echo " alert('$alertmsg');\n"; } ?>
 
 </script>
-<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
         $("#form_from_date").datetimepicker({

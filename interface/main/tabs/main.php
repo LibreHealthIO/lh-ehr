@@ -9,8 +9,8 @@ $fake_register_globals=false;
 $sanitize_all_escapes=true;
 
 /* Include our required headers */
-require_once('../../globals.php');
-require_once($webserver_root."/interface/includes/include_utils.php");
+require_once("../../globals.php");
+require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once $GLOBALS['srcdir'].'/ESign/Api.php';
 $esignApi = new Api();
 
@@ -56,8 +56,10 @@ var webroot_url="<?php echo $web_root; ?>";
 <link rel="stylesheet" type="text/css" href="css/tabs.css"/>
 <link rel="stylesheet" type="text/css" href="css/menu.css"/>
 
-<?php include_js_library("knockout/knockout-3.4.0.js"); ?>
-<?php include_js_library("jquery-2.2.0.min.js"); ?>
+<?php
+include_js_library("knockout/knockout-3.4.0.js"); 
+include_js_library("jquery-min-2-2-0/index.js");
+?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>
 

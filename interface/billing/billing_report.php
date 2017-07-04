@@ -182,37 +182,23 @@ function set_button_states() {
 // Process a click to go to an encounter.
 function toencounter(pid, pubpid, pname, enc, datestr, dobstr) {
  top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
- var othername = (window.name == 'RTop') ? 'RBot' : 'RTop';
+     encurl = 'patient_file/encounter/encounter_top.php?set_encounter=' + enc + '&pid=' + pid;
  parent.left_nav.setPatient(pname,pid,pubpid,'',dobstr);
- parent.left_nav.setEncounter(datestr, enc, othername);
- parent.left_nav.setRadio(othername, 'enc');
- parent.frames[othername].location.href =
-  '../patient_file/encounter/encounter_top.php?set_encounter='
-  + enc + '&pid=' + pid;
-<?php } else { ?>
- location.href = '../patient_file/encounter/patient_encounter.php?set_encounter='
-  + enc + '&pid=' + pid;
-<?php } ?>
+     parent.left_nav.setEncounter(datestr, enc, 'enc');
+     parent.left_nav.loadFrame('enc2', 'enc', encurl);
 }
 // Process a click to go to an patient.
 function topatient(pid, pubpid, pname, enc, datestr, dobstr) {
  top.restoreSession();
-<?php if ($GLOBALS['concurrent_layout']) { ?>
- var othername = (window.name == 'RTop') ? 'RBot' : 'RTop';
+    paturl = 'patient_file/summary/demographics_full.php?pid=' + pid;
  parent.left_nav.setPatient(pname,pid,pubpid,'',dobstr);
- parent.frames[othername].location.href =
-  '../patient_file/summary/demographics_full.php?pid=' + pid;
-<?php } else { ?>
- location.href = '../patient_file/summary/demographics_full.php?pid=' + pid;
-<?php } ?>
+    parent.left_nav.loadFrame('dem1', 'pat1', paturl);
 }
 </script>
 <script language="javascript" type="text/javascript">
 EncounterDateArray=new Array;
 CalendarCategoryArray=new Array;
 EncounterIdArray=new Array;
-EncounterNoteArray=new Array;
 function SubmitTheScreen()
  {//Action on Update List link
   if(!ProcessBeforeSubmitting())
@@ -366,6 +352,7 @@ function MarkAsCleared(Type)
 <script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/ajax/payment_ajax_jav.inc.php"); ?>
+<script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <style>
 #ajax_div_insurance {
@@ -386,15 +373,7 @@ document.onclick=TakeActionOnHide;
 <body class="body_top" onLoad="TestExpandCollapse()">
 
 <p style='margin-top:5px;margin-bottom:5px;margin-left:5px'>
-
-<?php if ($GLOBALS['concurrent_layout']) { ?>
 <font class='title'><?php echo xlt('Billing Manager') ?></font>
-<?php } else if ($userauthorized) { ?>
-<a href="../main/main.php" target='Main' onclick='top.restoreSession()'><font class=title><?php echo xlt('Billing Manager') ?></font><font class=more> <?php echo $tback; ?></font></a>
-<?php } else { ?>
-<a href="../main/onotes/office_comments.php" target='Main' onclick='top.restoreSession()'><font class=title><?php echo xlt('Billing Manager') ?></font><font class=more><?php echo $tback; ?></font></a>
-<?php } ?>
-
 </p>
 
 <form name='the_form' method='post' action='billing_report.php' onsubmit='return top.restoreSession()' style="display:inline">
@@ -423,23 +402,23 @@ $ThisPageSearchCriteriaQueryDropDownMasterDefaultKey=array();
 $ThisPageSearchCriteriaIncludeMaster=array();
 
 if ($daysheet) {
-$ThisPageSearchCriteriaDisplayMaster= array( xl("Date of Service"),xl("Date of Entry"),xl("Date of Billing"),xl("Claim Type"),xl("Patient Name"),xl("Patient Id"),xl("Insurance Company"),xl("Encounter"),xl("Whether Insured"),xl("Charge Coded"),xl("Billing Status"),xl("Authorization Status"),xl("Last Level Billed"),xl("X12 Partner"),xl("User") );
-$ThisPageSearchCriteriaKeyMaster="form_encounter.date,billing.date,claims.process_time,claims.target,patient_data.fname,".
-                                 "form_encounter.pid,claims.payer_id,form_encounter.encounter,insurance_data.provider,billing.id,billing.billed,".
+$ThisPageSearchCriteriaDisplayMaster= array( xl("Date of Service"),xl("Date of Entry"),xl("Date of Billing"),xl("Patient Name"),xl("Patient Id"),xl("Provider"),xl("Referring Provider"),xl("Insurance Company"),xl("Claim Type"),xl("Encounter"),xl("Whether Insured"),xl("Charge Coded"),xl("Billing Status"),xl("Authorization Status"),xl("Last Level Billed"),xl("X12 Partner"),xl("User") );
+$ThisPageSearchCriteriaKeyMaster="form_encounter.date,billing.date,claims.process_time,patient_data.fname,".
+                                 "form_encounter.pid,form_encounter.provider_id,form_encounter.referring_physician,claims.payer_id,claims.target,form_encounter.encounter,insurance_data.provider,billing.id,billing.billed,".
                                  "billing.authorized,form_encounter.last_level_billed,billing.x12_partner_id,billing.user";
-$ThisPageSearchCriteriaDataTypeMaster="datetime,datetime,datetime,radio,text_like,".
-                                      "text,include,text,radio,radio,radio,".
+$ThisPageSearchCriteriaDataTypeMaster="datetime,datetime,datetime,text_like,".
+                                      "text,query_drop_down,query_drop_down,include,radio,text,radio,radio,radio,".
                                       "radio_like,radio,query_drop_down,text";
 }
 else
 {
 
-$ThisPageSearchCriteriaDisplayMaster= array( xl("Date of Service"),xl("Date of Entry"),xl("Date of Billing"),xl("Claim Type"),xl("Patient Name"),xl("Patient Id"),xl("Insurance Company"),xl("Encounter"),xl("Whether Insured"),xl("Charge Coded"),xl("Billing Status"),xl("Authorization Status"),xl("Last Level Billed"),xl("X12 Partner") );
-$ThisPageSearchCriteriaKeyMaster="form_encounter.date,billing.date,claims.process_time,claims.target,patient_data.fname,".
-                                 "form_encounter.pid,claims.payer_id,form_encounter.encounter,insurance_data.provider,billing.id,billing.billed,".
+$ThisPageSearchCriteriaDisplayMaster= array( xl("Date of Service"),xl("Date of Entry"),xl("Date of Billing"),xl("Patient Name"),xl("Patient Id"),xl("Provider"),xl("Referring Provider"),xl("Insurance Company"),xl("Claim Type"),xl("Encounter"),xl("Whether Insured"),xl("Charge Coded"),xl("Billing Status"),xl("Authorization Status"),xl("Last Level Billed"),xl("X12 Partner") );
+$ThisPageSearchCriteriaKeyMaster="form_encounter.date,billing.date,claims.process_time,patient_data.fname,".
+                                 "form_encounter.pid,form_encounter.provider_id,form_encounter.referring_physician,claims.payer_id,claims.target,form_encounter.encounter,insurance_data.provider,billing.id,billing.billed,".
                                  "billing.authorized,form_encounter.last_level_billed,billing.x12_partner_id";
-$ThisPageSearchCriteriaDataTypeMaster="datetime,datetime,datetime,radio,text_like,".
-                                      "text,include,text,radio,radio,radio,".
+$ThisPageSearchCriteriaDataTypeMaster="datetime,datetime,datetime,text_like,".
+                                      "text,query_drop_down,query_drop_down,include,radio,text,radio,radio,radio,".
                                       "radio_like,radio,query_drop_down";
 
 
@@ -461,9 +440,15 @@ $ThisPageSearchCriteriaRadioKeyMaster[5]="%,1,0";
 $ThisPageSearchCriteriaDisplayRadioMaster[6]= array( xl("All"),xl("None"),xl("Ins 1"),xl("Ins 2 or Ins 3") );
 $ThisPageSearchCriteriaRadioKeyMaster[6]="all,0,1,2";
 //The below section is needed if there is any 'query_drop_down' type in the $ThisPageSearchCriteriaDataTypeMaster
-$ThisPageSearchCriteriaQueryDropDownMaster[1]="SELECT name,id FROM x12_partners;";
+$ThisPageSearchCriteriaQueryDropDownMaster[1]="SELECT id, CONCAT(lname, ', ', fname) AS name FROM users WHERE authorized = 1 AND username != '' ORDER BY name ;";
 $ThisPageSearchCriteriaQueryDropDownMasterDefault[1]= xl("All");//Only one item will be here
 $ThisPageSearchCriteriaQueryDropDownMasterDefaultKey[1]="all";//Only one item will be here
+$ThisPageSearchCriteriaQueryDropDownMaster[2]="SELECT id, CONCAT(lname, ', ', fname) AS name FROM users WHERE authorized = 1 OR npi != '' ORDER BY name ;";
+$ThisPageSearchCriteriaQueryDropDownMasterDefault[2]= xl("All");//Only one item will be here
+$ThisPageSearchCriteriaQueryDropDownMasterDefaultKey[2]="all";//Only one item will be here
+$ThisPageSearchCriteriaQueryDropDownMaster[3]="SELECT name,id FROM x12_partners;";
+$ThisPageSearchCriteriaQueryDropDownMasterDefault[3]= xl("All");//Only one item will be here
+$ThisPageSearchCriteriaQueryDropDownMasterDefaultKey[3]="all";//Only one item will be here
 //The below section is needed if there is any 'include' type in the $ThisPageSearchCriteriaDataTypeMaster
 //Function name is added here.Corresponding include files need to be included in the respective pages as done in this page.
 //It is labled(Included for Insurance ajax criteria)(Line:-279-299).
@@ -528,25 +513,6 @@ if(!isset($_REQUEST['mode']))//default case
           </tr>
         <?php } ?>
           
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-            <?php
-              $acct_config = $GLOBALS['oer_config']['ws_accounting'];
-              if($acct_config['enabled']) {
-                if($acct_config['enabled'] !== 2) {
-                  print '<span class=text><a href="javascript:void window.open(\'' . $acct_config['url_path'] . '\')">' . '['. xlt("SQL-Ledger") .']' . '</a> &nbsp; </span>';
-                }
-                if (acl_check('acct', 'rep')) {
-                  print '<span class=text><a href="javascript:void window.open(\'sl_receipts_report.php\')" onclick="top.restoreSession()">' . '['. xlt('Reports') .']'. '</a> &nbsp; </span>';
-                }
-                if (acl_check('acct', 'eob')) {
-                  print '<span class=text><a href="javascript:void window.open(\'sl_eob_search.php\')" onclick="top.restoreSession()">' . '['.xlt('EOBs') .']' . '</a></span>';
-                }
-              }
-            ?>
-            </td>
-          </tr>
           <tr>
             <td>&nbsp;</td>
             <td>
@@ -809,6 +775,21 @@ if(is_array($ret))
       $res = sqlQuery("select count(*) as count from insurance_data where " .
         "pid = ? and " .
         "type='primary' and " .
+        "subscriber_relationship != '' and " .
+        "subscriber_relationship is not null and " .
+        "subscriber_street != '' and " .
+        "subscriber_street is not null and " .
+        "subscriber_city != '' and " .
+        "subscriber_city is not null and " .
+        "subscriber_state != '' and " .
+        "subscriber_state is not null and " .
+        "subscriber_sex != '' and " .        
+        "subscriber_sex is not null and " .
+        "subscriber_DOB != '0000-00-00' and " .
+        "subscriber_DOB is not null and " .
+        "subscriber_DOB != '' and " .
+        "subscriber_fname is not null and " .
+        "subscriber_fname != '' and " .
         "subscriber_lname is not null and " .
         "subscriber_lname != '' limit 1", array($iter['enc_pid']) );
       $namecolor = ($res['count'] > 0) ? "black" : "#ff7777";
@@ -823,9 +804,17 @@ if(is_array($ret))
       $raw_encounter_date = date("Y-m-d", strtotime($iter['enc_date']));
       $billing_note = $name['billing_note'];       
             //  Add Encounter Date to display with "To Encounter" button 2/17/09  JCH
+
+      if ($namecolor != 'black') {
+      #error_log("Color: ".$namecolor, 0);
+        $lhtml .= "&nbsp;<span class=js-blink-infinite><font color='$namecolor'>". text($ptname) .
+          "</font></span><span class=small>&nbsp;(" . text($iter['enc_pid']) . "-" .
+          text($iter['enc_encounter']) . ")</span>";
+      }else{
       $lhtml .= "&nbsp;<span class=bold><font color='$namecolor'>". text($ptname) .
         "</font></span><span class=small>&nbsp;(" . text($iter['enc_pid']) . "-" .
         text($iter['enc_encounter']) . ")</span>";
+      }
 
          //Encounter details are stored to javacript as array.
         $result4 = sqlStatement("SELECT fe.encounter,fe.date,fe.billing_note,libreehr_postcalendar_categories.pc_catname FROM form_encounter AS fe ".
@@ -837,7 +826,6 @@ if(is_array($ret))
             EncounterDateArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             CalendarCategoryArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
-            EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>]=new Array;
             <?php
             while($rowresult4 = sqlFetchArray($result4))
              {
@@ -845,10 +833,8 @@ if(is_array($ret))
                 EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
                 EncounterDateArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
                 CalendarCategoryArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars( xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
-                EncounterNoteArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['billing_note'], ENT_QUOTES); ?>';
                 Count++;
          <?php
-         $enc_billing_note = $rowresult4['billing_note'];
              }
          ?>
         </script>
@@ -933,7 +919,7 @@ if(is_array($ret))
         $DivPut='yes';
         
         if($GLOBALS['notes_to_display_in_Billing'] == 1 || $GLOBALS['notes_to_display_in_Billing'] == 3) {
-          $lhtml .= "<br><span style='margin-left: 20px; font-weight bold; color: green'>".text($enc_billing_note)."</span>";
+          $lhtml .= "<br><span style='margin-left: 20px; font-weight bold; color: green'>".text($iter['enc_billing_note'])."</span>";
         }
           $lhtml .= "<br>\n&nbsp;<div   id='divid_$divnos' style='display:none'>" . text(oeFormatShortDate(substr($iter['date'], 0, 10)))
           . text(substr($iter['date'], 10, 6)) . " " . xlt("Encounter was coded");
@@ -1234,6 +1220,7 @@ $(document).ready(function() {
             this.target = 'Popup_Window';
         }
     });
+          $('.js-blink-infinite').modernBlink();
 });
 </script>
 <input type="hidden" name="divnos"  id="divnos" value="<?php echo attr($divnos) ?>"/>
