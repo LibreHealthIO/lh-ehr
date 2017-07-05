@@ -20,13 +20,13 @@ function update_modules_menu(&$menu_list)
                     $acl_section = strtolower($modulerow['mod_directory']);
                     $disallowed[$acl_section] = zh_acl_check($_SESSION['authUserID'],$acl_section) ?  "" : "1";
                     $modulePath = "";
-                    $added 		= "";
+                    $added      = "";
                     if($modulerow['type'] == 0) {
                             $modulePath = $GLOBALS['customModDir'];
-                            $added		= "";
+                            $added      = "";
                     }
-                    else{ 	
-                            $added		= "index";
+                    else{   
+                            $added      = "index";
                             $modulePath = $GLOBALS['zendModDir'];
                     }
 
@@ -79,6 +79,24 @@ if (sqlNumRows($lres)) {
         array_push($menu_list->children,$formEntry);
       }
     }    
+    /** do they same for the menus defined in $GLOBALS['menu_styling_tabs'] => array(
+      xl('Tabs Menu Style (refresh browser)'),
+      array(
+        'AnsServ' =>xl('Answering Service'),
+        'Front Office' =>xl('Front Office'),
+        'Clinical Staff'  =>xl('Clinical Staff'),
+        /**
+          * Menu additions :
+          * Add line below here and populate menu_trees with its menu
+          * 'Back Office' =>xl('Back Office')
+          * Privileges to access a menu are (need to be) handled later
+          *
+        'Administrator' =>xl('Administrator'),
+        'Default' =>xl('Default'),
+      ),
+      'Administrator',
+      xl('Tab Menu Style (refresh browser).')
+    ),*/
     
 }
 function menu_update_entries(&$menu_list)

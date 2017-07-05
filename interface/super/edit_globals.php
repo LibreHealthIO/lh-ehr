@@ -138,13 +138,9 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
     }
   }
   echo "<script type='text/javascript'>";
-  echo "parent.left_nav.location.reload();";
-  echo "parent.Title.location.reload();";
-  echo "if(self.name=='RTop'){";
-  echo "parent.RBot.location.reload();";
-  echo "}else{";
-  echo "parent.RTop.location.reload();";
-  echo "}";
+  if (!$action['css_header']||!$action['menu_styling_tabs']) {
+    echo "top.location.reload(true);";
+  }
   echo "self.location.href='edit_globals.php?mode=user&unique=yes';";
   echo "</script>";
 }
@@ -252,13 +248,6 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
      auditSQLAuditTamper($auditLogStatusFieldNew);
   }
   echo "<script type='text/javascript'>";
-  echo "parent.left_nav.location.reload();";
-  echo "parent.Title.location.reload();";
-  echo "if(self.name=='RTop'){";
-  echo "parent.RBot.location.reload();";
-  echo "}else{";
-  echo "parent.RTop.location.reload();";
-  echo "}";
   echo "self.location.href='edit_globals.php?unique=yes';";
   echo "</script>";
 }
