@@ -48,6 +48,13 @@ h1 {
 }
 .nav-tabs > li > a {
   margin-right:0px;
+  border:none;
+}
+.nav-tabs > li.active > a {
+    border:none;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    border:unset;
 }
  .main_container {
   text-align:center;
@@ -227,18 +234,28 @@ width: 98%;
  }
  .reddish {
   background: rgba(246, 224, 224, 0.5);
+  border-radius: 4px 4px 0px 0px;
+  margin:0px 5px;
  }
  .yellowish {
   background-color: rgba(245, 248, 152, 0.5);
+  border-radius: 4px 4px 0px 0px;
+  margin:0px 5px;
  }
  .greenish {
   background-color: rgba(211, 242, 211, 0.5);
+  border-radius: 4px 4px 0px 0px;
+  margin:0px 5px;
  }
  .whitish {
   background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px 4px 0px 0px;
+  margin:0px 5px;
  }
  .bluish {
   background-color: rgba(134, 212, 233, 0.5);
+  border-radius: 4px 4px 0px 0px;
+  margin:0px 5px;
  }
  .yellow {
   background-color: #f6f6f6;
@@ -421,7 +438,7 @@ td.right { width: 30%; }
     box-shadow: 5px 5px 9px #888888;
     border: 1.00pt solid #000000;
     background: #ffffff;
-    font-family:  "FontAwesome",Arial,Serif, Arial;
+    font-family:  "Open sans","FontAwesome",Arial,Serif, Arial;
     padding:6px;
     font-size:1.2em;
     border-radius: 6px;
@@ -443,7 +460,7 @@ td.right { width: 30%; }
   box-shadow: 5px 5px 9px #888888;
     border: 1.00pt solid #000000;
     background: #ffffff;
-    font-family:  "FontAwesome",Arial,Serif, Arial;
+    font-family:  "Open sans","FontAwesome",Arial,Serif, Arial;
     padding:10px;
     font-size:1.2em;
 }
@@ -477,7 +494,7 @@ td.right { width: 30%; }
   width:0px;
 }
 .messages {
-font-family: "FontAwesome",Arial,Serif, Arial;
+font-family: "Open sans","FontAwesome",Arial,Serif, Arial;
 padding: 20px;
 font-size: 1.0em;
 margin: 2px auto;

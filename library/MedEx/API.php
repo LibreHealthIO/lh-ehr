@@ -115,10 +115,17 @@ class practice extends Base {
         $callback = str_replace('ajax/execute_background_services.php','MedEx/MedEx.php',$callback);
         $fields2['callback_url'] = $callback;
         //get the providers list:
-        $runQuery = "SELECT * FROM users WHERE username != '' AND active = '1' and authorized='1'";
-        $ures = sqlStatement($runQuery);
+        $sqlQuery = "SELECT * from medex_prefs";
+        $my_status = sqlStatement($sqlQuery);
+        while ($urowME = sqlFetchArray($my_status)) {
+            $providers = explode('|',$urowME['ME_providers']);
+            foreach ($providers as $provider) {
+                $runQuery = "SELECT * FROM users WHERE id=?";
+                $ures = sqlStatement($runQuery,array($provider));
         while ($urow = sqlFetchArray($ures)) {
             $fields2['providers'][] = $urow;
+        }
+            }
         }
         //get the facilities list:
         $runQuery ="select * from facility order by name";
@@ -834,9 +841,11 @@ class Display extends base {
                                                 <div class="divTableCell indent20">
                                                     <input type="checkbox" class="update" name="ME_hipaa_default_override" id="ME_hipaa_default_override" value="1" <?php
                                                         if ($prefs['ME_hipaa_default_override']=='1') echo 'checked ="checked"'; ?>/>
-                                                    <label for="ME_hipaa_default_override" class="input-helper input-helper--checkbox" title='<?php echo xla('Default: "checked". When checked, messages are processed for patients with Patient Demographic Choice: "Hipaa Notice Received" set to "Unassigned" or "Yes". When unchecked, this choice must = "YES" to process the patient reminder.  For patients with Choice ="No", Reminders will need to be processed manually.'); //or no translation... ?>'><?php echo xlt('Assume patients receive HIPAA policy'); ?></label><br />
+                                                    <label for="ME_hipaa_default_override" class="input-helper input-helper--checkbox" title='<?php echo xla('Default: "checked". When checked, messages are processed for patients with Patient Demographic Choice: "Hipaa Notice Received" set to "Unassigned" or "Yes". When unchecked, this choice must = "YES" to process the patient reminder.  For patients with Choice ="No", Reminders will need to be processed manually.'); //or no translation... ?>'>
+                                                        <?php echo xlt('Assume patients receive HIPAA policy'); ?></label><br />
                                                     <input type="checkbox" class="update" name="MSGS_default_yes" id="MSGS_default_yes" value="1" <?php if ($prefs['MSGS_default_yes']=='1') echo "checked='checked'"; ?>>
-                                                                <label for="MSGS_default_yes" class="input-helper input-helper--checkbox" title="<?php echo xla('Default: Checked.  When checked, messages are processed for patients with Patient Demographic Choice (Phone/Text/Email) set to \'Unassigned\' or \'Yes\'.  If this is unchecked, a given type of message can only be sent if its Demographic Choice = \'Yes\'.'); ?>"><?php echo xlt('Assume patients permit Messaging'); ?></label>
+                                                    <label for="MSGS_default_yes" class="input-helper input-helper--checkbox" title="<?php echo xla('Default: Checked.  When checked, messages are processed for patients with Patient Demographic Choice (Phone/Text/Email) set to \'Unassigned\' or \'Yes\'.  If this is unchecked, a given type of message can only be sent if its Demographic Choice = \'Yes\'.'); ?>">
+                                                        <?php echo xlt('Assume patients permit Messaging'); ?></label>
                                                 </div>
                                             </div>
                                             <div class="divTableRow">
@@ -909,19 +918,21 @@ class Display extends base {
                                                     </table>
                                                 </div>
                                             </div>
-                                        <?php 
-                                        /*        
-                                            <!--    
-                                        These options are for future use...
                                             <div class="divTableRow">
                                                 <div class="divTableCell divTableHeading"><?php echo xlt('Postcards'); ?></div>
                                                 <div class="divTableCell indent20">
+                                                <!--    
                                                     <input type="checkbox" class="update" name="POSTCARDS_local" id="POSTCARDS_local" value="1" <?php if ($prefs['POSTCARDS_local']) echo "checked='checked'"; ?>" />
-                                                    <label for="POSTCARDS_local" name="POSTCARDS_local" class="input-helper input-helper--checkbox" title='Check if you plan to print postcards locally'><?php echo xlt('Print locally'); ?></label><br />
+                                                    <label for="POSTCARDS_local" name="POSTCARDS_local" class="input-helper input-helper--checkbox" title='<?php echo xla('Check if you plan to print postcards locally'); ?>'><?php echo xlt('Print locally'); ?></label><br />
                                                     <input type="checkbox" class="update" name="POSTCARDS_remote" id="POSTCARDS_remote" value="1" <?php if ($prefs['POSTCARDS_remote']) echo "checked='checked'"; ?>" />
-                                                    <label for="POSTCARDS_remote" name="POSTCARDS_remote" class="input-helper input-helper--checkbox" title='Check if you plan to send postcards via MedEx'><?php echo xlt('Print remotely'); ?></label>
+                                                    <label for="POSTCARDS_remote" name="POSTCARDS_remote" class="input-helper input-helper--checkbox" title='<?php echo xla('Check if you plan to send postcards via MedEx'); ?>'><?php echo xlt('Print remotely'); ?></label>
+                                                -->
+                                                    <label for="postcards_top" title="<?php echo xla('Custom text for Flow Board postcards. After changing text, print samples before printing mass quantities!'); ?>"><?php echo xlt('Custom Greeting'); ?>:</label><br /><textarea rows=3 columns=30 id="postcard_top" name="postcard_top" class="update"><?php echo $prefs['postcard_top']; ?></textarea>
                                                 </div>
                                             </div>
+                                         <?php 
+                                         /*      <!--    
+                                            These options are for future use...
 
                                             <div class="divTableRow">
                                                 <div class="divTableCell divTableHeading"><?php echo xlt('Combine Reminders'); ?></div>
@@ -999,8 +1010,8 @@ class Display extends base {
                     <li class="active whitish"><a href="#tab-all" data-toggle="tab"><?php echo xlt('All'); ?></a></li>
                     <li class="whitish"><a href="#tab-pending" data-toggle="tab"><?php echo xlt('Events Scheduled'); ?></a></li>
                     <li class="yellowish"><a href="#tab-processing" data-toggle="tab"><?php echo xlt('In-process'); ?></a></li>
-                    <li class="greenish"><a href="#tab-complete" data-toggle="tab"><?php echo xlt('Successfully Completed'); ?></a></li>
                     <li class="reddish"><a href="#tab-manual" data-toggle="tab"><?php echo xlt('Manual Processing Required'); ?></a></li>
+                    <li class="greenish"><a href="#tab-complete" data-toggle="tab"><?php echo xlt('Recently Completed'); ?></a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab-all">
@@ -1357,7 +1368,7 @@ class Display extends base {
                                 
                                 <input class="ui-buttons ui-widget ui-corner-all news btn" onclick="add_this_recall();"  style="width:100px;" value="<?php echo xla('Add Recall'); ?>" id="add_new" name="add_new">
                                 <br />
-                                <em>* <?php echo alt('N.B.{{Nota bene}}')." ".xlt('Demographic changes made here are system-wide'); ?>.</em>
+                                <em>* <?php echo xlt('N.B.{{Nota bene}}')." ".xlt('Demographic changes made here are recorded system-wide'); ?>.</em>
                             </div>
                         </form>
                     </div>
@@ -1445,13 +1456,13 @@ class Display extends base {
                 $who_name = $who['fname']." ".$who['lname'];
                 //Manually generated actions
                 if ($progress['msg_type'] == 'phone') { //ie. a manual phone call, not an AVM
-                    $show['progression'] .= "<span class='left' title='<?php echo xla('Phone call made by'); ?> ".text($who_name)."'><b><?php echo xlt('Phone'); ?>:</b> ".text($when)."</span></br />\n";
+                    $show['progression'] .= "<span class='left' title='".xla('Phone call made by')." ".text($who_name)."'><b>".xlt('Phone')."</b> ".text($when)."</span></br />\n";
                 } elseif ($progress['msg_type'] == 'notes') {
-                    $show['progression'] .= "<span class='left' title='<?php echo xla('Notes by'); ?> ".text($who_name)." on ".text($when)."'><b><?php echo xlt('Note'); ?>:</b> ".text($progress['msg_extra_text'])."</span></br />\n";
+                    $show['progression'] .= "<span class='left' title='".xla('Notes by')." ".text($who_name)." on ".text($when)."'><b>".xlt('Note').":</b> ".text($progress['msg_extra_text'])."</span></br />\n";
                 } elseif ($progress['msg_type'] == 'postcards') {
-                    $show['progression'] .= "<span class='left' title='<?php echo xla('Postcard printed by'); ?> ".text($who_name)."'><b><?php echo xlt('Postcard'); ?>:</b> ".text($when)."</span></br />\n";
+                    $show['progression'] .= "<span class='left' title='".xla('Postcard printed by')." ".text($who_name)."'><b>".xlt('Postcard').":</b> ".text($when)."</span></br />\n";
                 } elseif ($progress['msg_type'] == 'labels') {
-                    $show['progression'] .= "<span class='left' title='<?php echo xla('Label printed by'); ?> ".text($who)."'><b><?php echo xlt('Label'); ?>:</b> ".text($when)."</span></br />";
+                    $show['progression'] .= "<span class='left' title='".xla('Label printed by')." ".text($who)."'><b>".xlt('Label').":</b> ".text($when)."</span></br />";
                 }
             } else {
                 $who_name = "MedEx";
@@ -1659,6 +1670,23 @@ class Display extends base {
           </div>
 
         <?php
+    }
+    public function SMS_bot($logged_in) {
+        $fields = array();
+        $fields['pc_eid'] = $_REQUEST['pc_eid'];
+        $fields['show'] = $_REQUEST['show'];
+        $this->curl->setUrl($this->MedEx->getUrl('custom/SMS_bot&token='.$logged_in['token']));
+        $this->curl->setData($fields);
+        $this->curl->makeRequest();
+//        echo $this->curl->getRawResponse();exit;
+        $response = $this->curl->getResponse();
+
+        if (isset($response['success'])) { 
+            echo $response['success'];
+        } else if (isset($response['error'])) {
+            $this->lastError = $response['error'];
+        }
+        return false;
     }
 }
 
@@ -2046,6 +2074,10 @@ class MedEx {
         $sqlQuery = "select * from medex_icons";
         $result = sqlStatement($sqlQuery);
         while ($icons = sqlFetchArray($result)) {
+            //substitute title="..." with title="'.xla('...').'" in $icons['i_html']
+            $title = preg_match('/title=\"(.*)\"/', $icons['i_html']);
+            $xl_title = xla($title);
+            $icons['i_html'] = str_replace($title,$xl_title,$icons['i_html']);
             $icon[$icons['msg_type']][$icons['msg_status']] = $icons['i_html'];
         }
         if ($event['M_type'] =="SMS") {

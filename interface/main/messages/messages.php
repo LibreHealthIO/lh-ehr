@@ -72,7 +72,7 @@ $logged_in = $MedEx->login();
 <script src="<?php echo $GLOBALS['standard_js_path']; ?>qtip2-2-2-1/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>moment-2-13-0/moment.js"></script>
 <script>
-  var xljs1 = <?php echo xl('Preferences updated successfully'); ?>;
+      var xljs1 = '<?php echo xl('Preferences updated successfully'); ?>';
 </script>
 <script type="text/javascript" src="<?php echo $GLOBALS['web_root']; ?>/interface/main/messages/js/reminder_appts.js"></script>
 <script type="text/javascript">
@@ -111,6 +111,8 @@ $logged_in = $MedEx->login();
             $MedEx->display->preferences();
     } elseif ($_REQUEST['go']=='icons') {
             $MedEx->display->icon_template();
+    } elseif ($_REQUEST['go']=='SMS_bot') {
+            $MedEx->display->SMS_bot($logged_in);
     } else {
       echo xlt('Warning:  Navigation error.  Please behave.');
     }

@@ -42,8 +42,22 @@ $pdf = new FPDF('L', 'mm', array(148,105));
 $last = 1;
 $pdf->SetFont('Arial','',14);
 
-#Get the data to place on labels
-#and output each label
+$sql = "SELECT * FROM facility ORDER BY billing_location DESC LIMIT 1";
+$facility = sqlQuery($sql);
+
+$sql = "select * from medex_prefs";
+$prefs =  sqlQuery($sql);
+if ($prefs['postcard_top']) {
+    $postcard_top = $prefs['postcard_top'];
+} else {
+    $postcard_top ='';
+}
+
+$postcard_message = $postcard_top."\n".xlt('Please call our office to schedule')."\n".xlt('your next appointment at')." ".text($facility['phone']).".
+    \n\n   ".text($facility['street'])."\n   
+    ".text($facility['city']).", ".text($facility['state'])."  ".text($facility['postal_code']);
+$postcard_message = "\n\n".$postcard_message."\n\n";
+
 foreach ($pid_list as $pid) {
 $pdf->AddPage();
 $patdata = sqlQuery("SELECT " .
@@ -52,49 +66,19 @@ $patdata = sqlQuery("SELECT " .
   "FROM patient_data AS p " .
   "WHERE p.pid = ? LIMIT 1", array($pid));
 
-# sprintf to print data
-$text = sprintf("  %s %s\n  %s\n  %s %s %s\n ", $patdata['fname'], $patdata['lname'], $patdata['street'], $patdata['city'], $patdata['state'], $patdata['postal_code']);
-
-$sql = "SELECT * FROM facility ORDER BY billing_location DESC LIMIT 1";
-$facility = sqlQuery($sql);
-
-$postcard_message1 ="It's time to get your EYES checked!";
-$postcard_message2 ="Please call our office to schedule";
-$postcard_message3 ="your eye exam at ".$facility['phone'];
-$postcard_message4 ="Our office is now located at";
-$postcard_message5 =$facility['street'];
-$postcard_message6 =$facility['city']. ' ' .$facility['state']. ' ' .$facility['postal_code'];
-# Add these lines for more information.
-#$postcard_message7 ="It's time to get your EYES checked!";
-#$postcard_message8 ="Please call our office to schedule";
-#$postcard_message9 ="your eye exam at ".$facility['phone'];
+    $prov = sqlQuery("select * from users where id in (SELECT r_provider  FROM `medex_recalls` WHERE `r_pid`=?)",array($pid));
+    if (isset($prov['fname']) && isset($prov['lname'])) {
+        $prov_name = ": ".$prov['fname']." ".$prov['lname'];
+        if (isset($prov['suffix'])) $prov_name .= ", ".$prov['suffix'];
+    }
 
 
 $pdf->SetFont('Arial','',9);
-$pdf->Cell(74,10,$facility['name'],1,1,'C');
-$pdf->MultiCell(74, 55, '', 1 ,'C');// [, boolean fill]]])
-
-
-$pdf->Text(22,30,$postcard_message1);
-$pdf->Text(23,35,$postcard_message2);
-$pdf->Text(25,40,$postcard_message3);
-$pdf->Text(25,45,$postcard_message4);
-$pdf->Text(25,50,$postcard_message5);
-$pdf->Text(25,55,$postcard_message6);
-# Add these lines for more information.
-#$pdf->Text(25,60,$postcard_message7);
-#$pdf->Text(25,65,$postcard_message8);
-#$pdf->Text(25,70,$postcard_message9);
-
-$pdf->Text(100,40,$patdata['fname']." ".$patdata['lname']);
-$pdf->Text(100,50,$patdata['street']);
+    $pdf->Cell(74,30,$facility['name'].$prov_name,1,1,'C');
+    $pdf->MultiCell(74, 4, $postcard_message,'LRTB', 'C', 0);// [, boolean fill]]])
+    $pdf->Text(100,50,$patdata['fname']." ".$patdata['lname']);
+    $pdf->Text(100,55,$patdata['street']);
 $pdf->Text(100,60,$patdata['city']." ".$patdata['state']."  ".$patdata['postal_code']);
-$pdf->SetFont('Arial','',8);
-$pdf->Text(15,80,$facility['street']." is at the bottom of None Street,");
-
-$pdf->Text(18,85,"where it intersects with Main Street.");
-$pdf->Text(15,90,"We are across from the Baptist Church");
-$pdf->Text(18,95,"and next to the Bob's Magic Touch car wash.");
 
 }
 $pdf->Output('postcards.pdf','D');

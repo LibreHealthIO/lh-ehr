@@ -33,7 +33,6 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/MedEx/API.php");
-//require_once(dirname(__FILE__). "/log.inc");
 
 $MedEx = new MedExApi\MedEx('MedExBank.com');
 //you need admin privileges to update this.
@@ -46,7 +45,7 @@ if ($_REQUEST['go'] =='Preferences') {
             `PHONE_country_code`=? ,`MSGS_default_yes`=?,
             `POSTCARDS_local`=?,`POSTCARDS_remote`=?,
             `LABELS_local`=?,`LABELS_choice`=?,
-            `combine_time`=?";
+            `combine_time`=?, postcard_top=?";
 
         $facilities     = implode("|",$_REQUEST['facilities']);
         $providers      = implode("|",$_REQUEST['providers']);
@@ -54,7 +53,8 @@ if ($_REQUEST['go'] =='Preferences') {
         $MSGS           = ($_REQUEST['MSGS_default_yes'] ? $_REQUEST['MSGS_default_yes'] : '');
         $country_code   = ($_REQUEST['PHONE_country_code'] ? $_REQUEST['PHONE_country_code'] : '1');
 
-        $myValues = array($facilities,$providers,$HIPAA,$country_code,$MSGS,$_REQUEST['POSTCARDS_local'],$_REQUEST['POSTCARDS_remote'],$_REQUEST['LABELS_local'],$_REQUEST['chart_label_type'],$_REQUEST['combine_time']);
+        $myValues = array( $facilities, $providers, $HIPAA, $country_code, $MSGS, $_REQUEST['POSTCARDS_local'], $_REQUEST['POSTCARDS_remote'], $_REQUEST['LABELS_local'], $_REQUEST['chart_label_type'], $_REQUEST['combine_time'], $_REQUEST['postcard_top'] );
+
         $_GLOBALS['chart_label_type'] = $_REQUEST['chart_label_type'];
         sqlStatement( 'UPDATE `globals` set gl_value = ? where gl_name like "chart_label_type" ', array( $_REQUEST['chart_label_type'] ) );
 
