@@ -134,7 +134,7 @@ require('includes/session.php');
         navLinks: true,
         selectable: true,
         //selectHelper: true,
-        defaultView: 'timelineDay', // TODO: Set according to globals
+        defaultView: '<?php echo $GLOBALS['calendar_view_type'] ?>',
         defaultTimedEventDuration: '00:15:00',
         minTime: '<?php echo $GLOBALS['schedule_start'] ?>:00:00',
         maxTime: '<?php echo $GLOBALS['schedule_end'] + 1 ?>:00:00',  // adding 1 to make ending hour as inclusive

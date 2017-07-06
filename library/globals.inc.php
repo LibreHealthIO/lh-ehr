@@ -1424,11 +1424,12 @@ $GLOBALS_METADATA = array(
     'calendar_view_type' => array(
       xl('Default Calendar View'),
       array(
-       'day' => xl('Day'),
-       'week' => xl('Week'),
-       'month' => xl('Month'),
+       'providerAgenda' => xl('Agenda'),
+       'timelineDay' => xl('Day'),
+       'timelineWeek' => xl('Week'),
+       'timelineMonth' => xl('Month'),
       ),
-       'day',                           // default
+       'timelineDay',                           // default
       xl('This sets the Default Calendar View, Default is Day.')
     ),
 
