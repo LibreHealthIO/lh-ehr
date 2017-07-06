@@ -14,6 +14,12 @@ $res = sqlStatement($query);
 $events = array();
 
 while ($row = sqlFetchArray($res)) {
+  
+  // skip cancelled appointments
+  if ($GLOBALS['display_canceled_appointments'] != 1) {
+     if ($row['pc_apptstatus'] == "x") { continue; }
+  }
+  
   $e = array();
   $e = $row;
   $e['id'] = $row['pc_eid'];
