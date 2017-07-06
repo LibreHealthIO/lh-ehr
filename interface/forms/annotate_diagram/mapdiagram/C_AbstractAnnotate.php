@@ -14,6 +14,10 @@
  * @brief This file contains the C_AbstractAnnotate class, used to control smarty.
  */
 
+/* for $GLOBALS['concurrent_layout','encounter','fileroot','pid','srcdir','style','webroot'] 
+ * remember that include paths are calculated relative to the including script, not this file.
+ * to lock the path to this script (so if called from different scripts) use the dirname(FILE) variable
+*/
 require_once('../../globals.php');
 
 /* For Controller, the class we're extending. */
@@ -48,11 +52,11 @@ abstract class C_AbstractAnnotate extends Controller {
      *  template module name, passed to Controller's initializer.
      */
     function C_AbstractAnnotate($template_mod = "annotate") {
-        parent::__construct();
-        $returnurl = 'encounter_top.php' ;
-        $this->template_mod = $template_mod;
-        $this->template_dir = $GLOBALS['fileroot'] . "/interface/forms/annotate_diagram/mapdiagram/template/";
-        
+    	parent::__construct();
+    	$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+    	$this->template_mod = $template_mod;
+    	$this->template_dir = $GLOBALS['fileroot'] . "/interface/forms/annotate_diagram/mapdiagram/template/";
+    	
                     $this->dont_save_link = $GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl";
                     $this->form_action = $GLOBALS['webroot'];
                     $this->style  = $GLOBALS['style'];
@@ -75,7 +79,7 @@ abstract class C_AbstractAnnotate extends Controller {
      * @return The path to the image backing this form relative to the webroot.
      */
     abstract function getImage();
-    
+	
     /**
      * @brief Override this abstract function to return the label of the optionlists on this form.
      *
@@ -105,11 +109,11 @@ abstract class C_AbstractAnnotate extends Controller {
         $data = $model->get_data();
         $model->data = $data != "" ? "'" . $data . "'" : "null";
         $model->hideNav = "false";
-        $model->image = $this->getImage();
-        $imagedata = $model->get_imagedata();
-        $model->image = $imagedata;
-        $dyntitle = $model->get_dyntitle();
-        $model->dyntitle = $dyntitle;
+		$model->image = $this->getImage();
+		$imagedata = $model->get_imagedata();
+		$model->image = $imagedata;
+		$dyntitle = $model->get_dyntitle();
+		$model->dyntitle = $dyntitle;
     }
 
     /**
@@ -137,7 +141,7 @@ abstract class C_AbstractAnnotate extends Controller {
      * 
      */
     function view_action($form_id) {
-        $model = $this->createModel($form_id);      
+        $model = $this->createModel($form_id);    	
         $this->form = $model;
         $this->set_context($model);       
         ob_start(); //Start output Buffer
@@ -155,11 +159,11 @@ abstract class C_AbstractAnnotate extends Controller {
      * 
      */
     function report_action($form_id) {
-        $model = $this->createModel($form_id);      
+        $model = $this->createModel($form_id);    	
         $this->form = $model;
         $this->set_context($model);
         $model->hideNav = "true";
-        
+    	
         ob_start(); //Start output Buffer
         require_once($this->template_dir . $this->template_mod . "_rpt.html");
         $echoed_content = ob_get_clean(); // gets content, discards buffer
