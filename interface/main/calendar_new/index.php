@@ -112,7 +112,7 @@ require('includes/session.php');
         header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'timelineMonth,timelineWeek,timelineDay, providerAgenda'
+        right: 'timelineMonth,timelineWeek,timelineDay,providerAgenda'
         },
         views: {
           week: {
@@ -131,6 +131,7 @@ require('includes/session.php');
           }
         },
         resourceAreaWidth: "25%",
+        displayEventTime: false,
         navLinks: true,
         selectable: true,
         //selectHelper: true,
@@ -154,7 +155,7 @@ require('includes/session.php');
           }
         },
         eventMouseover: function(calEvent, element, view) {
-          var tooltip = '<div class="tooltipevent">' + calEvent.title + '</div>';
+          var tooltip = '<div class="tooltipevent">' + calEvent.description + '</div>';
           var $tooltip = $(tooltip).appendTo('body');
 
          $(this).mouseover(function(e) {
