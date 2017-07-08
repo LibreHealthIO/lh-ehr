@@ -42,10 +42,12 @@ else if ($_SESSION['userauthorized']) {
 else if ($GLOBALS['docs_see_entire_calendar'] =='1') {
   $provider = null;
 }
-if ($_POST['clearCALLback']) {
-  $sql = "UPDATE medex_outgoing set msg_extra_text='COMPLETED' where msg_pc_eid=?";
-  sqlQuery($sql,array($_POST['clearCALLback']));
-  exit;
+
+if ($_POST['saveCALLback'] =="Save") {
+  $sqlINSERT = "INSERT INTO medex_outgoing (msg_pc_eid,campaign_uid,msg_type,msg_reply,msg_extra_text)
+                  VALUES
+                (?,?,'NOTES','CALLED',?)";
+  sqlQuery($sqlINSERT,array($_POST['pc_eid'],$_POST['campaign_uid'],$_POST['txtCALLback']));
 }
 
 if (substr($GLOBALS['ptkr_end_date'],0,1) == 'Y') {
@@ -123,7 +125,7 @@ foreach ( $appointments as $apt ) {
 ?>
 <html>
 <head>
-<title><?php echo xlt("Flow Board") ?></title>
+<title><?php echo xlt("Patient Tracker") ?></title>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <link rel="stylesheet" href="<?php echo $GLOBALS['fonts_path'];?>font-awesome-4-6-3/css/font-awesome.css" type="text/css">
@@ -157,7 +159,7 @@ function calendarpopup(eid,date_squash) {
 }
 
 // auto refresh screen pat_trkr_timer is the timer variable
-function refreshbegin(first){
+    function refreshbegin(first,stop=''){
   <?php if ($GLOBALS['pat_trkr_timer'] != '0') { ?>
     var reftime="<?php echo attr($GLOBALS['pat_trkr_timer']); ?>";
     var parsetime=reftime.split(":");
@@ -165,7 +167,9 @@ function refreshbegin(first){
     if (first != '1') {
       refreshme();
     }
+        if (stop !='1') {
     setTimeout("refreshbegin('0')",parsetime);
+   }
   <?php } ?>
 } 
 
@@ -185,19 +189,11 @@ function topatient(newpid, enc) {
  }
 }
 
-    function clearCALLback(eventdate,eid,pccattype) {
-      if (confirm('<?php echo xla("This patient has requested a call from the office"); ?>. <?php echo xla('Are you ready to remove this flag'); ?>?\n<?php echo xla("If you have resolved the issue and you are ready to delete this flag from the Flow Board, select OK"); ?>.')) {
-  var data = {};
-      data['clearCALLback'] = eid;
-        $.post('patient_tracker.php',data).done(function( data ) { 
-          calendarpopup(eid,eventdate);
-          //oldEvt(eventdate,eid,pccattype);
-  });
+    function doCALLback(eventdate,eid,pccattype) {
+      $("#progCALLback_"+eid).parent().removeClass('js-blink-infinite').css('animation-name','none');
+      refreshbegin('1','1');
+      $("#progCALLback_"+eid).removeClass("hidden");
 }
-}
-    function oldEvt(eventdate, eventid, pccattype) {
-      dlgopen('../main/calendar/add_edit_event.php?date='+eventdate+'&eid=' + eventid+'&provX=' + pccattype, '_blank', 775, 500);
-    }
 
 // opens the demographic and encounter screens in a new window
 function openNewTopWindow(newpid,newencounterid) {
@@ -206,6 +202,12 @@ function openNewTopWindow(newpid,newencounterid) {
  top.restoreSession();
  document.fnew.submit();
  }
+
+    function SMS_bot(eid) {
+      top.restoreSession()
+      window.open('../main/messages/messages.php?nomenu=1&go=SMS_bot&pc_eid=' + eid,'_blank', 'width=330,height=550,resizable=0');
+      return false;
+    }
  
 </script>
   <style>
@@ -230,7 +232,7 @@ function openNewTopWindow(newpid,newencounterid) {
 
 ?>
 <body class="body_top" >
-  <div class="title"><?php echo xlt("Flow Board") ?></div>
+  <div class="title"><?php echo xlt("Patient Tracker") ?></div>
 <form method='post' name='theform' id='theform' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()'>
     <div id="flow_board_parameters">
         <table>
@@ -445,7 +447,7 @@ function openNewTopWindow(newpid,newencounterid) {
           $query2 = "SELECT * from medex_icons";
           $iconed = sqlStatement($query2);
           foreach ($iconed as $icon) {
-            $icons[$icon['msg_type']][$icon['msg_status']]['description'] = $icon['i_description'];
+          //  $icons[$icon['msg_type']][$icon['msg_status']]['description'] = $icon['i_description'];
             $icons[$icon['msg_type']][$icon['msg_status']]['html'] = $icon['i_html'];
           }
     $prev_appt_date_time = "";
@@ -458,8 +460,12 @@ function openNewTopWindow(newpid,newencounterid) {
               $other_title = '';
               $title = '';
               $icon2_here ='';
+              $icon_CALL = '';
+              $icon_4_CALL = '';
               $appt['stage'] ='';
               $icon_here = array();
+              $prog_text='';
+
               # Collect appt date and set up squashed date for use below
               $date_appt = $appointment['pc_eventDate'];
               $date_squash = str_replace("-","",$date_appt);
@@ -468,6 +474,7 @@ function openNewTopWindow(newpid,newencounterid) {
               $myMedEx = sqlStatement($query,array($appointment['eid']));
 
               while ($row = sqlFetchArray($myMedEx)) {
+                $prog_text .= $row['msg_date']." ".$row['msg_type']." ".$row['msg_reply'].": ".$row['msg_extra_text']."\n";
 
                 if ($row['msg_reply'] == 'Other') {
                   $other_title .= $row['msg_extra_text']."\n"; //format the date/time how we like it.
@@ -498,11 +505,25 @@ function openNewTopWindow(newpid,newencounterid) {
                   }
                 }
                 //these are additional icons if present
-                if ($row['msg_reply'] == "CALL") {
-                  if ($row['msg_extra_text'] !="COMPLETED") {
-                  //  $appointment['status'] = "CALL";
-                    $icon2_here .= "<span onclick=\"clearCALLback('".$date_squash."','".$appointment['eid']."','".$appointment['pc_cattype']."');\">".$icons[$row['msg_type']]['CALL']['html']."</span>";
+                if (($row['msg_reply'] == "CALL")||($row['msg_type']=="NOTES")) {
+                  if (($appointment['NOTES']['staged'])||($row['msg_type']=="NOTES")) {
+                    $appointment['NOTES']['staged'] ="YES";
+                    $icon_4_CALL = $icons['NOTES']['CALLED']['html'];
+                  } else {
+                    $icon_4_CALL = $icons[$row['msg_type']]['CALL']['html'];
                   }
+                  $icon_CALL = "<span onclick=\"doCALLback('".$date_squash."','".$appointment['eid']."','".$appointment['pc_cattype']."')\">".$icon_4_CALL."</span>
+                    <span class='hidden' name='progCALLback_".$appointment['eid']."' id='progCALLback_".$appointment['eid']."'>
+                      <form  method='post'>
+                        <h4>Call Back Notes:</h4>
+                        <input type='hidden' name='pc_eid' id='pc_eid' value='".$appointment['eid']."'>
+                        <input type='hidden' name='campaign_uid' id='campaign_uid' value='".$row['campaign_uid']."'>
+                        <textarea name='txtCALLback' id='txtCALLback' rows=6 cols=20></textarea>
+                        <input type='submit' name='saveCALLback' id='saveCALLback' value='Save'>
+                      </form>
+                    </span>
+                      ";
+
                 } elseif ($row['msg_reply'] == "STOP") {
                     $icon2_here .= $icons[$row['msg_type']]['STOP']['html'];
                 } elseif ($row['msg_reply'] == "EXTRA") { 
@@ -516,7 +537,7 @@ function openNewTopWindow(newpid,newencounterid) {
               //if pc_apptstatus == '-', update it now to=status
 
               if (!empty($other_title)) {
-                $title = '<a class="btn btn-primary" title="'.$other_title.'"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a>';
+                $title = '<a class="btn btn-primary" title="'.$other_title.'" onclick="SMS_bot(\''.attr($appointment['pc_eid']).'\')"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></a>';
                 $appointment['messages'] .= $title;
               }
             }
@@ -634,7 +655,7 @@ function openNewTopWindow(newpid,newencounterid) {
         if (($yestime == '1') && ($timecheck >=1) && (strtotime($newarrive)!= '')) { 
            echo text($timecheck . ' ' .($timecheck >=2 ? xl('minutes'): xl('minute'))); 
          } else {
-          echo  "<span onclick='return calendarpopup(". attr($appt_eid).",".attr($date_squash).")'>". implode($icon_here)."</span> ".$icon2_here;
+          echo  "<span onclick='return calendarpopup(". attr($appt_eid).",".attr($date_squash).")'>". implode($icon_here)."</span> ".$icon2_here.$icon_CALL;
         }
         #end time in current status
         ?>
@@ -671,6 +692,10 @@ function openNewTopWindow(newpid,newencounterid) {
          </td>
         <td class="detail" align="center">
          <?php 
+       if ($prog_text >'') {
+          echo  '<span class="btn btn-primary" style="padding:5px;" onclick="SMS_bot(\''.attr($appointment['pc_eid']).'\')"><i class="fa fa-list-alt fa-inverse" title="'.text($prog_text).'"></i></span>';
+         }
+
          if (strtotime($newend) != '') {
             echo oeFormatTime($newend) ;
          }
