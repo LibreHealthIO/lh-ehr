@@ -35,20 +35,40 @@ class C_Prescription extends Controller {
     var $providerid = 0;
     var $is_faxing = false;
     var $is_print_to_fax = false;
+    var $form_action;
+    var $top_action;
+    var $style;
+    var $weight_loss_clinic;
+    var $simplified_prescriptions;
+    var $css_header;
+    var $web_root;
+    var $drug_array_values;
+    var $drug_array_output;
+    var $drug_attributes;
+    var $prescription;
+    var $prescriptions;
+    var $disp_quantity;
+    var $disp_fee;
+    var $ending_javascript;
+    var $process_result;
+    var $drug;
+    var $drug_options;
+    var $drug_values;
+    var $no_results;
 
     function __construct($template_mod = "general") {
         parent::__construct();
 
-        $this->template_mod = $template_mod;
-        $this->assign("FORM_ACTION", $GLOBALS['webroot']."/controller.php?" . $_SERVER['QUERY_STRING']);
-        $this->assign("TOP_ACTION", $GLOBALS['webroot']."/controller.php?" . "prescription" . "&");
-        $this->assign("STYLE", $GLOBALS['style']);
-        $this->assign("WEIGHT_LOSS_CLINIC", $GLOBALS['weight_loss_clinic']);
-        $this->assign("SIMPLIFIED_PRESCRIPTIONS", $GLOBALS['simplified_prescriptions']);
-        $this->pconfig = $GLOBALS['oer_config']['prescriptions'];
-        $this->assign("CSS_HEADER",  $GLOBALS['css_header'] );
-        $this->assign("WEB_ROOT", $GLOBALS['webroot'] );
+        $this->template_mod = $template_mod;        
+        $this->pconfig = $GLOBALS['oer_config']['prescriptions'];        
         $this->RxList = new RxList();
+        $this->form_action = $GLOBALS['webroot']."/controller.php?" . $_SERVER['QUERY_STRING'];
+        $this->top_action = $GLOBALS['webroot']."/controller.php?" . "prescription" . "&";
+        $this->style = $GLOBALS['style'];
+        $this->weight_loss_clinic = $GLOBALS['weight_loss_clinic'];
+        $this->simplified_prescriptions = $GLOBALS['simplified_prescriptions'];
+        $this->css_header = $GLOBALS['css_header'];
+        $this->web_root = $GLOBALS['webroot'];
 
         if ($GLOBALS['inhouse_pharmacy']) {
             // Make an array of drug IDs and selectors for the template.
@@ -85,15 +105,16 @@ class C_Prescription extends Controller {
                     $row['refills']    . ","   . //  9
                     $row['quantity']   . "]";    // 10 quantity per_refill
             }
-            $this->assign("DRUG_ARRAY_VALUES", $drug_array_values);
-            $this->assign("DRUG_ARRAY_OUTPUT", $drug_array_output);
-            $this->assign("DRUG_ATTRIBUTES", $drug_attributes);
+            
+            $this->drug_array_values = $drug_array_values;
+            $this->drug_array_output = $drug_array_output;
+            $this->drug_attributes = $drug_attributes;
         }
     }
 
-    function default_action() {
-        $this->assign("prescription",$this->prescriptions[0]);
-        $this->display($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_edit.html");
+    function default_action() {        
+        $this->prescription = $this->prescriptions[0];
+        require_once($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_edit.php");
     }
 
     function edit_action($id = "",$patient_id="",$p_obj = null) {
@@ -111,8 +132,13 @@ class C_Prescription extends Controller {
 
         // If quantity to dispense is not already set from a POST, set its
         // default value.
-        if (! $this->get_template_vars('DISP_QUANTITY')) {
-            $this->assign('DISP_QUANTITY', $this->prescriptions[0]->quantity);
+        /*
+        if (! $this->get_template_vars('DISP_QUANTITY')) {           
+            $this->disp_quantity = $this->prescriptions[0]->quantity;            
+        }
+        */
+        if (! isset($this->disp_quantity)) {           
+            $this->disp_quantity = $this->prescriptions[0]->quantity;            
         }
 
         $this->default_action();
@@ -123,14 +149,14 @@ class C_Prescription extends Controller {
             $this->function_argument_error();
             exit;
         }
-        if (!empty($sort)) {
-            $this->assign("prescriptions", Prescription::prescriptions_factory($id,$sort));
+        if (!empty($sort)) {            
+            $this->prescriptions = Prescription::prescriptions_factory($id,$sort);
         }
-        else {
-            $this->assign("prescriptions", Prescription::prescriptions_factory($id));
+        else {           
+           $this->prescriptions = Prescription::prescriptions_factory($id);
         }
 
-                $this->display($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_list.html");
+                require_once($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_list.php");
     }
 
     function block_action($id,$sort = "") {
@@ -138,14 +164,14 @@ class C_Prescription extends Controller {
             $this->function_argument_error();
             exit;
         }
-        if (!empty($sort)) {
-            $this->assign("prescriptions", Prescription::prescriptions_factory($id,$sort));
+        if (!empty($sort)) {           
+           $this->prescriptions = Prescription::prescriptions_factory($id,$sort);
         }
-        else {
-            $this->assign("prescriptions", Prescription::prescriptions_factory($id));
+        else {           
+           $this->prescriptions = Prescription::prescriptions_factory($id);
         }
         //print_r(Prescription::prescriptions_factory($id));
-        $this->display($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_block.html");
+        require_once($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_block.php");
     }
 
     function fragment_action($id,$sort = "") {
@@ -153,19 +179,19 @@ class C_Prescription extends Controller {
             $this->function_argument_error();
             exit;
         }
-        if (!empty($sort)) {
-            $this->assign("prescriptions", Prescription::prescriptions_factory($id,$sort));
+        if (!empty($sort)) {           
+           $this->prescriptions = Prescription::prescriptions_factory($id,$sort);
         }
-        else {
-            $this->assign("prescriptions", Prescription::prescriptions_factory($id));
+        else {           
+           $this->prescriptions = Prescription::prescriptions_factory($id);
         }
         //print_r(Prescription::prescriptions_factory($id));
-        $this->display($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_fragment.html");
+        require_once($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_fragment.php");
     }
 
     function lookup_action() {
         $this->do_lookup();
-        $this->display($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_lookup.html");
+        require_once($GLOBALS['template_dir'] . "prescription/" . $this->template_mod . "_lookup.php");
     }
 
     function edit_action_process() {
@@ -188,9 +214,9 @@ class C_Prescription extends Controller {
         // include a piece of javascript to call dispense().
         //
         if ($_POST['disp_button']) {
-            $this->assign("DISP_QUANTITY", $_POST['disp_quantity']);
-            $this->assign("DISP_FEE", $_POST['disp_fee']);
-            $this->assign("ENDING_JAVASCRIPT", "dispense();");
+            $this->disp_quantity = $_POST['disp_quantity'];
+            $this->disp_fee = $_POST['disp_fee'];
+            $this->ending_javascript = "dispense();";
             $this->_state = false;
             return $this->edit_action($this->prescriptions[0]->id);
         }
@@ -250,11 +276,16 @@ class C_Prescription extends Controller {
             $rx->pharmacy->set_id($prow['pharmacy_id']);
             $rx->pharmacy->populate();
         }
-        $this->assign("prescription", $rx);
+       // $this->assign("prescription", $rx);
+       $this->prescription = $rx;
 
         $this->_state = false;
-        return $this->fetch($GLOBALS['template_dir'] . "prescription/" .
-            $this->template_mod . "_send.html");
+        //return $this->fetch($GLOBALS['template_dir'] . "prescription/" .$this->template_mod . "_send.php");
+        ob_start(); //Start output Buffer
+        require_once($GLOBALS['template_dir'] . "prescription/" .$this->template_mod . "_send.php");
+        $template_content = ob_get_clean(); // gets content, discards buffer
+        return $template_content;
+
     }
 
     function multiprintfax_header(& $pdf, $p) {
@@ -789,8 +820,8 @@ class C_Prescription extends Controller {
     }
 
     function _email_prescription($p,$email) {
-        if (empty($email)) {
-            $this->assign("process_result","Email could not be sent, the address supplied: '$email' was empty or invalid.");
+        if (empty($email)) {            
+            $this->process_result = "Email could not be sent, the address supplied: '$email' was empty or invalid."; 
             return;
         }
         require($GLOBALS['fileroot'] . "/library/classes/class.phpmailer.php");
@@ -806,25 +837,25 @@ class C_Prescription extends Controller {
         $mail->Body = $text_body;
         $mail->Subject = "Prescription for: " . $p->patient->get_name_display();
         $mail->AddAddress($email);
-        if($mail->Send()) {
-            $this->assign("process_result","Email was successfully sent to: " . $email);
+        if($mail->Send()) {            
+            $this->process_result = "Email was successfully sent to: " . $email;
             return;
         }
         else {
-            $this->assign("process_result","There has been a mail error sending to " . $_POST['email_to'] . " " . $mail->ErrorInfo);
+            $this->process_result = "There has been a mail error sending to " . $_POST['email_to'] . " " . $mail->ErrorInfo;
             return;
         }
     }
 
     function do_lookup() {
         if ($_POST['process'] != "true") {
-                    // don't do a lookup
-            $this->assign("drug", $_GET['drug']);
+                    // don't do a lookup            
+            $this->drug = $_GET['drug'];
                     return;
                 }
 
-                // process the lookup
-        $this->assign("drug", $_POST['drug']);
+                // process the lookup        
+        $this->drug =  $_POST['drug'];
         $list = array();
         if (!empty($_POST['drug'])) {
             $list = $this->RxList->get_list($_POST['drug']);
@@ -832,11 +863,11 @@ class C_Prescription extends Controller {
 
         if (is_array($list)) {
             $list = array_flip($list);
-            $this->assign("drug_options",$list);
-            $this->assign("drug_values",array_keys($list));
+            $this->drug_options = $list;
+            $this->drug_values = array_keys($list);
         }
         else {
-            $this->assign("NO_RESULTS","No results found for: " .$_POST['drug'] . "<br />");
+            $this->no_results = "No results found for: " .$_POST['drug'] . "<br />";
         }
         //print_r($_POST);
         //$this->assign("PROCESS","");
@@ -895,7 +926,7 @@ class C_Prescription extends Controller {
         }
         if($err)
         {
-            $this->assign("process_result",$err);
+            $this->process_result = $err;
         }
     }
 }
