@@ -4,18 +4,18 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserResedentialLinksTable extends Migration
+class CreateUserResidentialLinksTable extends Migration
 {
     /**
      * Run the migrations.
-     * This will create user_resedential_links table.
+     * This will create user_residential_links table.
      * This stores the address information of user. Many to many relationship with users and addresses table.
      * @author Priyanshu Sinha <pksinha217@gmail.com>
      * @return void
      */
     public function up()
     {
-        Schema::create('user_resedential_links', function (Blueprint $table) {
+        Schema::create('user_residential_links', function (Blueprint $table) {
             $table->increments('id')->comment = "Primary Key. Autoincrement.";
 	    $table->integer('addressID')->unsigned()->comment = "To create link with addresses table.";
   	    $table->integer('userID')->unsigned()->comment = "To create link with user_infos table.";
@@ -33,6 +33,6 @@ class CreateUserResedentialLinksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_resedential_links');
+        Schema::dropIfExists('user_residential_links');
     }
 }
