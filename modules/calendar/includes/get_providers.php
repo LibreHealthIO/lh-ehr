@@ -1,6 +1,6 @@
 <?php 
 
-require_once('../../../globals.php');
+require_once('../../../interface/globals.php');
 
 $query = "SELECT id, lname, mname, fname, suffix FROM users
   WHERE authorized = 1 AND username != '' AND active = 1 

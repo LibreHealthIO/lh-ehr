@@ -1,6 +1,6 @@
 <?php 
 
-require_once('../../../globals.php');
+require_once('../../../interface/globals.php');
 
 $query = "SELECT a.*, b.*, u.*, pd.*, pd.lname as plname, pd.fname as pfname, a.pc_pid as e_pid FROM
   libreehr_postcalendar_events AS a

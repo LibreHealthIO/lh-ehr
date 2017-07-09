@@ -1,7 +1,7 @@
 <?php
-require_once('../../globals.php');
-require_once('../../../library/calendar.inc');
-require_once('../../../library/patient.inc');
+require_once('../../interface/globals.php');
+require_once('../../library/calendar.inc');
+require_once('../../library/patient.inc');
 require('includes/session.php');
 
 ?>
@@ -18,7 +18,7 @@ require('includes/session.php');
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
   
-  <script type="text/javascript" src="../../../library/dialog.js"></script>
+  <script type="text/javascript" src="../../library/dialog.js"></script>
 </head>
 <body>
   <div id="sidebar">
@@ -136,7 +136,7 @@ require('includes/session.php');
         selectable: true,
         //selectHelper: true,
         defaultView: '<?php echo $GLOBALS['calendar_view_type'] ?>',
-        defaultTimedEventDuration: '00:15:00',
+        defaultTimedEventDuration: '00:10:00',
         minTime: '<?php echo $GLOBALS['schedule_start'] ?>:00:00',
         maxTime: '<?php echo $GLOBALS['schedule_end'] + 1 ?>:00:00',  // adding 1 to make ending hour as inclusive
         slotDuration: '00:<?php echo $GLOBALS['calendar_interval'] ?>:00',
@@ -172,14 +172,14 @@ require('includes/session.php');
           $('.tooltipevent').remove();
         },
         select: function(start, end, jsEvent, view, resource) {
-          dlgopen('../calendar/add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
+          dlgopen('../../interface/main/calendar/add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
           '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
            ,'_blank', 775, 375);
 			  },
         eventClick: function(calEvent, jsEvent, view) {
           var pccattype = (calEvent['e_pid'] && calEvent['e_pid'] > 0) ? 0 :  1;
           console.log(pccattype);
-          dlgopen('../calendar/add_edit_event.php?date='+ calEvent.start.format('YYYYMMDD') +'&eid=' + calEvent.id +'&prov=' + pccattype, '_blank', 775, 375);
+          dlgopen('../../interface/main/calendar/add_edit_event.php?date='+ calEvent.start.format('YYYYMMDD') +'&eid=' + calEvent.id +'&prov=' + pccattype, '_blank', 775, 375);
         }
       })
       
