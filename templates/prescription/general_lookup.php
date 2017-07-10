@@ -20,8 +20,23 @@
 	<?php if($this->drug_options){?>
         <div>
         <!--{html_options name="drug" values=$drug_values options=$drug_options}-->
+        <?php 
+            $i=0;
+            foreach($this->drug_values as $value)
+            {
+                $drug_values_res[$i] = $value;
+                $i++; 
+            }
+        ?>
         <select name="drug">
-
+        <?php $i=0;
+        foreach ($this->drug_options as $value)
+        { ?>            
+            <option label="<?php echo $value;?>" value="<?php echo $drug_values_res[$i];?>" ><?php echo $value;?></option>                          
+        <?php
+        $i++;
+        }
+        ?>
         </select>
         <br/>
         </div>

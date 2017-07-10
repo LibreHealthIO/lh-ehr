@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="<?php echo $GLOBALS['css_header']; ?>" type="text/css">
-<script type="text/javascript" src="<?php echo $this->webroot;?>/library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->web_root;?>/library/js/jquery-1.2.2.min.js"></script>
 
 
 <style type="text/css" title="mystyles" media="all">
@@ -121,14 +121,14 @@ $(document).ready(function(){
                 <table>
                     <tr>
                         <td>
-                            <a id="multiprint" href="<?php echo $this->controller;?>prescription&multiprint&id=<?php echo $printm;?>" onclick="top.restoreSession()" class="css_button"><span><?php echo xl('Download');?> (<?php echo xl('PDF');?>)</span></a>
+                            <a id="multiprint" href="<?php echo $this->top_action;?>multiprint&id=<?php echo $this->printm;?>" onclick="top.restoreSession()" class="css_button"><span><?php echo xl('Download');?> (<?php echo xl('PDF');?>)</span></a>
                         </td>
                         <td>
                           <!-- TajEmo work by CB 2012/06/14 02:16:32 PM target="_script" opens better -->
-                            <a target="_script" id="multiprintcss" href="<?php echo $this->controller;?>prescription&multiprintcss&id=<?php echo $printm;?>" onclick="top.restoreSession()" class="css_button"><span><?php echo xl('View Printable Version');?> (<?php echo xl('HTML');?>)</span></a>
+                            <a target="_script" id="multiprintcss" href="<?php echo $this->top_action;?>multiprintcss&id=<?php echo $this->printm;?>" onclick="top.restoreSession()" class="css_button"><span><?php echo xl('View Printable Version');?> (<?php echo xl('HTML');?>)</span></a>
                         </td>
                         <td style="border-style:none;">
-                            <a id="multiprintToFax" href="<?php echo $this->controller;?>prescription&multiprintfax&id=<?php echo $printm;?>" onclick="top.restoreSession()" class="css_button"><span><?php echo xl('Download');?> (<?php echo xl('Fax');?>)</span></a>
+                            <a id="multiprintToFax" href="<?php echo $this->top_action;?>multiprintfax&id=<?php echo $this->printm;?>" onclick="top.restoreSession()" class="css_button"><span><?php echo xl('Download');?> (<?php echo xl('Fax');?>)</span></a>
                         </td>
                     </tr>
                 </table>

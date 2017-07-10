@@ -2,7 +2,7 @@
 <head>
 
 <link rel="stylesheet" href="<?php echo $this->css_header;?>" type="text/css">
-<link rel="stylesheet" href="<?php echo $this->webroot;?>/interface/themes/jquery.autocomplete.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $this->web_root;?>/interface/themes/jquery.autocomplete.css" type="text/css">
 
 <style type="text/css">
     .text {
@@ -12,22 +12,22 @@
 
 <script language="Javascript">
 
-		function my_process () {
-			// Pass the variable
-			opener.document.prescribe.drug.value = document.lookup.drug.value;
-			// Close the window
-			window.self.close();
-		}
+    function my_process () {
+      // Pass the variable
+      opener.document.prescribe.drug.value = document.lookup.drug.value;
+      // Close the window
+      window.self.close();
+    }
 
 </script>
 
 
 <!---Gen Look up-->
-<script type="text/javascript" src="<?php echo $this->webroot;?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $this->webroot;?>/library/js/jquery-1.2.2.min.js"></script>
-<script type="text/javascript" src="<?php echo $this->webroot;?>/library/js/jquery.bgiframe.min.js"></script>
-<script type="text/javascript" src="<?php echo $this->webroot;?>/library/js/jquery.dimensions.pack.js"></script>
-<script type="text/javascript" src="<?php echo $this->webroot;?>/library/js/jquery.autocomplete.pack.js"></script>
+<script type="text/javascript" src="<?php echo $this->web_root;?>/library/dialog.js"></script>
+<script type="text/javascript" src="<?php echo $this->web_root;?>/library/js/jquery-1.2.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->web_root;?>/library/js/jquery.bgiframe.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->web_root;?>/library/js/jquery.dimensions.pack.js"></script>
+<script type="text/javascript" src="<?php echo $this->web_root;?>/library/js/jquery.autocomplete.pack.js"></script>
 
 <script language='JavaScript'>
 
@@ -92,18 +92,18 @@
 <form name="prescribe" id="prescribe" method="post" action="<?php echo $this->form_action;?>">
 <table>
     <tr><td class="title"><font><b>Add/Edit</b></font>&nbsp;</td>
-		<td><a href="#" onclick="submitfun();" class="css_button_small"><span>Save</span></a>
-		<?php if($this->drug_array_values){?>
-		&nbsp; &nbsp; &nbsp; &nbsp;
-		<?php if($this->prescription->get_refills() >= $this->prescription->get_dispensation_count()){?>
-		<input type="submit" name="disp_button" value="Save and Dispense" />
-		<input type="text" name="disp_quantity" size="2" maxlength="10" value="<?php echo $this->disp_quantity;?>" />
-		units, $
-		<input type="text" name="disp_fee" size="5" maxlength="10" value="<?php echo $disp_fee;?>" />
+    <td><a href="#" onclick="submitfun();" class="css_button_small"><span>Save</span></a>
+    <?php if($this->drug_array_values){?>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <?php if($this->prescription->get_refills() >= $this->prescription->get_dispensation_count()){?>
+    <input type="submit" name="disp_button" value="Save and Dispense" />
+    <input type="text" name="disp_quantity" size="2" maxlength="10" value="<?php echo $this->disp_quantity;?>" />
+    units, $
+    <input type="text" name="disp_fee" size="5" maxlength="10" value="<?php echo $disp_fee;?>" />
         <?php }else{?>&nbsp;
-		prescription has reached its limit of <?php echo $this->prescription->get_refills();?> refills.
+    prescription has reached its limit of <?php echo $this->prescription->get_refills();?> refills.
         <?php }
-        }?>		
+        }?>   
          <a class='css_button_small' href="controller.php?prescription&list&id=<?php echo $this->prescription->patient->id;?>"><span>
          Back</span></a>
 </td></tr>
@@ -111,25 +111,26 @@
 
 <?php if($GLOBALS['enable_amc_prompting']) {?> 
   <div style='float:right;margin-right:25px;border-style:solid;border-width:1px;'>
-    <div style='float:left;margin:5px 5px 5px 5px;'>
-      {amcCollect amc_id='e_prescribe_amc' patient_id=$this->prescription->patient->id object_category='prescriptions' object_id=prescription->id}
-      <?php if(!$amcCollectReturn){?>
+    <div style='float:left;margin:5px 5px 5px 5px;'>      
+      <?php $amcCollectResult1 = amcCollect('e_prescribe_amc',$this->prescription->patient->id,'prescriptions',$this->prescription->id);
+         if(!is_array($amcCollectResult1)){?>
         <input type="checkbox" id="escribe_flag" name="escribe_flag">
       <?php }else {?>
         <input type="checkbox" id="escribe_flag" name="escribe_flag" checked>
       <?php }?>
       <span class="text">E-Prescription?</span><br>
-
-      {amcCollect amc_id='e_prescribe_chk_formulary_amc' patient_id=$this->prescription->patient->id object_category='prescriptions' object_id=$this->prescription->id}
-      <?php if(!$amcCollectReturn){?>
+     
+      <?php $amcCollectResult2 = amcCollect('e_prescribe_chk_formulary_amc',$this->prescription->patient->id,'prescriptions',$this->prescription->id);
+         if(!is_array($amcCollectResult2)){?>
         <input type="checkbox" id="checked_formulary_flag" name="checked_formulary_flag">
       <?php }else {?>
         <input type="checkbox" id="checked_formulary_flag" name="checked_formulary_flag" checked>
       <?php }?>
       <span class="text"><?php echo xl('Checked Drug Formulary?')?></span><br>
-
-      {amcCollect amc_id='e_prescribe_cont_subst_amc' patient_id=$this->prescription->patient->id object_category='prescriptions' object_id=$this->prescription->id}
-      <?php if(!$amcCollectReturn){?>
+      
+      <?php 
+         $amcCollectResult3 = amcCollect('e_prescribe_cont_subst_amc',$this->prescription->patient->id,'prescriptions',$this->prescription->id);
+         if(!is_array($amcCollectResult3)){?>
         <input type="checkbox" id="controlled_substance_flag" name="controlled_substance_flag">
       <?php }else {?>
         <input type="checkbox" id="controlled_substance_flag" name="controlled_substance_flag" checked>
@@ -148,107 +149,219 @@
   </td>
 </tr>
 <tr>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Starting Date');?></td>
-	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-		{html_select_date start_year="-10" end_year="+5" time=$this->prescription->start_date prefix="start_date_"}
-	</td>
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Starting Date');?></td>
+  <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
+    <?php // {html_select_date start_year="-10" end_year="+5" time=$this->prescription->start_date prefix="start_date_"} 
+          ?>
+    <select name="start_date_Month">
+    <?php for($i=1;$i<=12;$i++) {?>
+        <option value="<?php echo $i;?>" ><?php echo $i;?></option>
+    <?php }?>     
+    </select>
+    <select name="start_date_Day">
+    <?php for($i=1;$i<=31;$i++) {?>
+        <option value="<?php echo $i;?>" ><?php echo $i;?></option>
+    <?php }?>     
+    </select>
+    <select name="start_date_Year">
+    <?php for($i=$this->prescription->start_date-10;$i<=$this->prescription->start_date+5;$i++) {
+    if($i==$this->prescription->start_date){?>
+        <option value="<?php echo $i;?>" selected="selected"><?php echo $i;?></option>
+    <?php } else{?>
+        <option value="<?php echo $i;?>" ><?php echo $i;?></option>
+    <?php }}?>     
+    </select>
+  </td>
 </tr>
 <tr>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Provider');?></td>
-	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-		{html_options name="provider_id" options=$this->prescription->provider->utility_provider_array() selected=$this->prescription->provider->get_id()}
-		<input type="hidden" name="patient_id" value="<?php echo $this->prescription->patient->id;?>" />
-	</td>
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Provider');?></td>
+  <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >    
+        <select name="provider_id">            
+            <?php foreach ($this->prescription->provider->utility_provider_array() as $key => $value) 
+                { 
+                if($key==$this->prescription->provider->get_id()) { ?>
+                <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+                <?php } else { ?>
+                <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+                <?php }                
+                } ?>            
+        </select>        
+        <input type="hidden" name="patient_id" value="<?php echo $this->prescription->patient->id;?>" />
+  </td>
 </tr>
 <tr>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Drug');?></td>
-	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Drug');?></td>
+  <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
             <input type="input" size="20" name="drug" id="drug" value="<?php echo $this->prescription->drug;?>"/>
             <a href="javascript:;" id="druglookup" class="small" name="B4" 
-            onclick="$('#hiddendiv').show(); document.getElementById('hiddendiv').innerHTML='&lt;iframe src=&quot;controller.php?prescription&amp;lookup&amp;drug=&quot; width=&quot;100%&quot;height=&quot;52&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot;&gt;&lt;/iframe&gt;'">
+            onclick="$('#hiddendiv').show(); 
+            document.getElementById('hiddendiv').innerHTML='&lt;iframe src=&quot;controller.php?prescription&amp;lookup&amp;drug=&quot; width=&quot;100%&quot;height=&quot;52&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot;&gt;&lt;/iframe&gt;'">
             (<?php echo xl('click here to search');?>)</a>
             <div id="hiddendiv" style="display:none">&nbsp;</div>
-	</td>
+  </td>
 </tr>
-<?php if($this->drug_array_values){?>
+<?php if(is_array($this->drug_array_values)){?>
 <tr>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" >&nbsp; <?php echo xl('in-house');?></td>
-	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-		<select name="drug_id" onchange="drugselected(this)">
-    {html_options values=$this->drug_array_values output=$DRUG_ARRAY_OUTPUT selected=$this->prescription->get_drug_id()}
-		</select>
-	</td>
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" >&nbsp; <?php echo xl('in-house');?></td>
+  <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
+    <select name="drug_id" onchange="drugselected(this)">
+        <?php $i=0;
+         foreach($this->drug_array_output as $value)
+         { 
+            if($key==$this->prescription->get_drug_id()) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $drug_array_labels[$i];?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $drug_array_labels[$i];?>" ><?php echo $value;?></option>
+            <?php }
+            $i++;                
+        } ?> 
+    </select>
+
+  </td>
 </tr>
 <?php }?>
 <tr>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Quantity');?></td>
-	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-		<input TYPE="TEXT" NAME="quantity" id="quantity" SIZE="10" MAXLENGTH="31"
-		 VALUE="<?php echo $this->prescription->quantity;?>"
-		 onchange="quantityChanged()" />
-	</td>
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Quantity');?></td>
+  <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
+    <input TYPE="TEXT" NAME="quantity" id="quantity" SIZE="10" MAXLENGTH="31"
+     VALUE="<?php echo $this->prescription->quantity;?>"
+     onchange="quantityChanged()" />
+  </td>
 </tr>
 <?php if($this->simplified_prescriptions && !$this->prescription->size){?>
 <tr style='display:none;'>
 <?php } else {?>
 <tr>
 <?php }?>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Medicine Units');?></td>
-	<td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-		<input TYPE="TEXT" NAME="size" id="size" SIZE="11" MAXLENGTH="10" VALUE="<?php echo $this->prescription->size;?>"/>
-		<select name="unit" id="unit">
-        {html_options options=$this->prescription->unit_array selected=$this->prescription->unit}</select>
-	</td>
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Medicine Units');?></td>
+  <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
+    <input TYPE="TEXT" NAME="size" id="size" SIZE="11" MAXLENGTH="10" VALUE="<?php echo $this->prescription->size;?>"/>
+    <select name="unit" id="unit">        
+        <?php foreach ($this->prescription->unit_array as $key => $value)
+        { 
+            if($key==$this->prescription->unit) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+            <?php }                
+        }
+        ?>
+    </select>
+  </td>
 </tr>
 <tr>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Take');?></td>
-	<td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Take');?></td>
+  <td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
 <?php if($this->simplified_prescriptions && !$this->prescription->form && !$this->prescription->route && !$this->prescription->interval){?>
-		<input TYPE="text" NAME="dosage" id="dosage" SIZE="30" MAXLENGTH="100" VALUE="<?php echo $this->prescription->dosage;?>" />
-		<input type="hidden" name="form" id="form" value="0" />
-		<input type="hidden" name="route" id="route" value="0" />
-		<input type="hidden" name="interval" id="interval" value="0" />
+    <input TYPE="text" NAME="dosage" id="dosage" SIZE="30" MAXLENGTH="100" VALUE="<?php echo $this->prescription->dosage;?>" />
+    <input type="hidden" name="form" id="form" value="0" />
+    <input type="hidden" name="route" id="route" value="0" />
+    <input type="hidden" name="interval" id="interval" value="0" />
 <?php } else {?>
-		<input TYPE="TEXT" NAME="dosage" id="dosage" SIZE="2" MAXLENGTH="10" VALUE="<?php echo $this->prescription->dosage;?>"/> <?php echo xl('in');?>
-		<select name="form" id="form">
-        {html_options options=$this->prescription->form_array selected=$this->prescription->form}</select>
-		<select name="route" id="route">
-        {html_options options=$this->prescription->route_array selected=$this->prescription->route}</select>
-		<select name="interval" id="interval">
-        {html_options options=$this->prescription->interval_array selected=$this->prescription->interval}</select>
+    <input TYPE="TEXT" NAME="dosage" id="dosage" SIZE="2" MAXLENGTH="10" VALUE="<?php echo $this->prescription->dosage;?>"/> <?php echo xl('in');?>
+    <select name="form" id="form">
+        <?php foreach ($this->prescription->form_array as $key => $value)
+        { 
+            if($key==$this->prescription->form) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+            <?php }                
+        }
+        ?>
+    </select>
+    
+    <select name="route" id="route">        
+        <?php foreach ($this->prescription->route_array as $key => $value)
+        { 
+            if($key==$this->prescription->route) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+            <?php }                
+        }
+        ?>
+    </select>
+    <select name="interval" id="interval">        
+        <?php foreach ($this->prescription->interval_array as $key => $value)
+        { 
+            if($key==$this->prescription->interval) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+            <?php }                
+        }
+        ?>
+    </select>
 <?php }?>
-	</td>
+  </td>
 </tr>
 <tr>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Refills');?></td>
-	<td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
-		{html_options name="refills" options=$this->prescription->refills_array selected=$this->prescription->refills}
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Refills');?></td>
+  <td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >    
+        <select name="refills">
+        <?php foreach ($this->prescription->refills_array as $key => $value)
+        { 
+            if($key==$this->prescription->refills) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+            <?php }                
+        }
+        ?>
+        </select>
 <?php if($this->simplified_prescriptions){?>
-		<input TYPE="hidden" ID="per_refill" NAME="per_refill" VALUE="<?php echo $this->prescription->per_refill;?>" />
+    <input TYPE="hidden" ID="per_refill" NAME="per_refill" VALUE="<?php echo $this->prescription->per_refill;?>" />
 <?php }else {?>
-		&nbsp; &nbsp; # <?php echo xl('of tablets');?>:
-		<input TYPE="TEXT" ID="per_refill" NAME="per_refill" SIZE="2" MAXLENGTH="10" VALUE="<?php echo $this->prescription->per_refill;?>" />
+    &nbsp; &nbsp; # <?php echo xl('of tablets');?>:
+    <input TYPE="TEXT" ID="per_refill" NAME="per_refill" SIZE="2" MAXLENGTH="10" VALUE="<?php echo $this->prescription->per_refill;?>" />
 <?php }?>
-	</td>
+  </td>
 </tr>
 <tr>
-	<td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Notes');?></td>
-	<td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
-	<textarea name="note" cols="30" rows="2" wrap="virtual"><?php echo $this->prescription->note;?></textarea>
-	</td>
+  <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Notes');?></td>
+  <td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
+  <textarea name="note" cols="30" rows="2" wrap="virtual"><?php echo $this->prescription->note;?></textarea>
+  </td>
 </tr>
 <tr>
 <?php if($this->weight_loss_clinic){?>
   <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Substitution');?></td>
-  <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-    {html_options name="substitute" options=$this->prescription->substitute_array selected=$this->prescription->substitute}
+  <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >    
+    <select name="substitute">
+    <?php foreach ($this->prescription->substitute_array as $key => $value)
+        { 
+            if($key==$this->prescription->substitute) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+            <?php }                
+        }
+        ?>
+    </select>
   </td>
 <?php }else {?>
   <td COLSPAN="1" class="text" ALIGN="right" VALIGN="MIDDLE" ><?php echo xl('Add to Medication List');?></td>
-  <td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >
-    {html_radios name="medication" options=$this->prescription->medication_array selected=$this->prescription->medication}
-    &nbsp; &nbsp;
-    {html_options name="substitute" options=$this->prescription->substitute_array selected=$this->prescription->substitute}
+  <td COLSPAN="2" class="text" ALIGN="LEFT" VALIGN="MIDDLE" >    
+    <?php foreach ($this->prescription->medication_array as $value) {
+        if($value==$this->prescription->medication){?>
+        <label><input type="radio" name="medication" value="<?php echo $value;?>" checked="checked" /><?php echo $value;?></label>
+        <?php } else {?>
+        <label><input type="radio" name="medication" value="<?php echo $value;?>"/><?php echo $value;?></label>
+        <?php }
+    }?> 
+    &nbsp; &nbsp;    
+    <select name="substitute">
+    <?php foreach ($this->prescription->substitute_array as $key => $value)
+        { 
+            if($key==$this->prescription->substitute) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+            <?php }                
+        }
+    ?>
+    </select>
   </td>
 <?php }?>
 </tr>

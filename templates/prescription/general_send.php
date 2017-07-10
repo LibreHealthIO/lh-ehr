@@ -42,9 +42,19 @@
         </form>
         <form name="send_prescription" method="post" action="<?php echo $this->top_action;?>send&id=<?php echo $this->prescription->id;?>" target="_new" onsubmit="return top.restoreSession()">
         <input type="submit" name="submit" value="Auto Send" style="width:100;font-size:9pt;" /> 
-        {html_options name="pharmacy_id" 
-        options=$prescription->pharmacy->utility_pharmacy_array() 
-        selected=$prescription->pharmacy->id}
+        
+        <select name="pharmacy_id">        
+        <?php foreach ($this->prescription->pharmacy->utility_pharmacy_array() as $key => $value)
+        { 
+            if($key==$this->prescription->pharmacy->id) { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" selected="selected" ><?php echo $value;?></option>
+            <?php } else { ?>
+            <option label="<?php echo $value;?>" value="<?php echo $key;?>" ><?php echo $value;?></option>
+            <?php }                
+        }
+        ?>
+        </select>
+
         <input type="hidden" name="process" value="<?php echo self::PROCESS;?>" />
         </form>
     </div>
