@@ -1,6 +1,7 @@
 <?php
 /*
- * Functions to be used in the forms.
+ * Functions to be used in the clinical/visit/encounter forms. Any functions specific to the clinical/visit/encounter forms
+ * that are used in multiple forms should be included in this file.
  *
  * @copyright Copyright (C) 2017 Terry Hill <teryhill@librehealth.io>
  *
