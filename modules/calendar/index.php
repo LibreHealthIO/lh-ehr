@@ -140,6 +140,12 @@ require('includes/session.php');
         minTime: '<?php echo $GLOBALS['schedule_start'] ?>:00:00',
         maxTime: '<?php echo $GLOBALS['schedule_end'] + 1 ?>:00:00',  // adding 1 to make ending hour as inclusive
         slotDuration: '00:<?php echo $GLOBALS['calendar_interval'] ?>:00',
+        <?php
+        if($GLOBALS['time_display_format'] == 0) {
+          echo "timeFormat: 'H:mm',";   // uppercase H for 24-hour clock
+          echo "slotLabelFormat: 'H:mm',";
+        }
+        ?>
         resources: {
           url: 'includes/get_providers.php',
           type: 'POST',
