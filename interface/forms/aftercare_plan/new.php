@@ -2,6 +2,7 @@
 /**
  *
  * Copyright (C) 2012-2013 Naina Mohamed <naina@capminds.com> CapMinds Technologies
+ * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,6 +14,10 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreHealth EHR
  * @author  Naina Mohamed <naina@capminds.com>
@@ -32,11 +37,16 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+require_once("$srcdir/formsoptions.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 formHeader("Form:AfterCare Planning");
 $returnurl = 'encounter_top.php';
+$form_name = 'form_aftercare_plan';
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
+if (empty($formid)) {
+        $formid = checkFormIsActive($form_name,$encounter);
+}
 $obj = $formid ? formFetch("form_aftercare_plan", $formid) : array();
 
 ?>

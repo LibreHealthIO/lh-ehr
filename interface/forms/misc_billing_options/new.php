@@ -37,40 +37,22 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/api.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("date_qualifier_options.php");
+require_once("$srcdir/formsoptions.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
-$query_if_exists =  //check to see if form already exists
-"SELECT COUNT(f.encounter)as count".
-" FROM forms AS f".
-" WHERE f.encounter = '".$encounter."'".
-" AND f.formdir = 'misc_billing_options'".
-" AND f.deleted = '0';";
-$if_exists = sqlFetchArray(sqlStatementNoLog($query_if_exists));
-if ($if_exists['count']> 0){//copy already exists
- die(xl("There is already a CMS-1500 Billing Options form for this Encounter!  Please edit the existing form."));
-}
     
 if (! $encounter) { // comes from globals.php
  die(xl("Internal error: we do not seem to be in an encounter!"));
 }
 
 $formid   = 0 + formData('id', 'G');
+$form_name = 'form_misc_billing_options';
+if (empty($formid)) {
+    $formid = checkFormIsActive($form_name,$encounter);
+}
 $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
 
-formHeader("Form: misc_billing_options");
-function generateDateQualifierSelect($name,$options,$obj)
-{
-    echo     "<select name='".attr($name)."'>";
-    for($idx=0;$idx<count($options);$idx++)
-    {
-        echo "<option value='".attr($options[$idx][1])."'";
-        if($obj[$name]==$options[$idx][1]) echo " selected";
-        echo ">".text($options[$idx][0])."</option>";
-    }
-    echo     "</select>";
-
-}
 ?>
 <html>
 <head>
