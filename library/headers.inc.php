@@ -37,4 +37,5 @@ function include_js_library($path)
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'];?>/bootstrap-3-3-4/dist/js/bootsrap.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'];?>/bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
