@@ -30,11 +30,16 @@ include_once("$srcdir/api.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+require_once("$srcdir/formsoptions.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 formHeader("Form:Treatment Planning");
 $returnurl = 'encounter_top.php';
+$form_name = 'form_treatment_plan';
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
+if (empty($formid)) {
+        $formid = checkFormIsActive($form_name,$encounter);
+}
 $obj = $formid ? formFetch("form_treatment_plan", $formid) : array();
 
 // Get the providers list.
