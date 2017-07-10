@@ -206,3 +206,9 @@
 .fc button {
 	display: none; /* don't display any button-related controls */
 }
+
+
+/* fix for top margin */
+.fc-scroller {
+    margin: 0px !important;
+}

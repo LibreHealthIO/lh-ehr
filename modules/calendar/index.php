@@ -8,7 +8,7 @@ require('includes/session.php');
 <html>
 <head>  
   <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
-  <link href='full_calendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+  <link href='full_calendar/fullcalendar.print.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
   
   <link href='css/index.css' rel='stylesheet' />
@@ -17,7 +17,7 @@ require('includes/session.php');
   <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
-  
+
   <script type="text/javascript" src="../../library/dialog.js"></script>
 </head>
 <body>
@@ -110,7 +110,7 @@ require('includes/session.php');
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         height: 'parent',
         header: {
-        left: 'prev,next today',
+        left: 'prev,next today print',
         center: 'title',
         right: 'timelineMonth,timelineWeek,timelineDay,providerAgenda'
         },
@@ -127,11 +127,11 @@ require('includes/session.php');
             type: 'agenda',
             duration: { days: 1 },
             buttonText: 'agenda',
+            displayEventTime: false,
             groupByDateAndResource: true
           }
         },
         resourceAreaWidth: "25%",
-        displayEventTime: false,
         navLinks: true,
         selectable: true,
         //selectHelper: true,
@@ -153,6 +153,22 @@ require('includes/session.php');
           error: function() {
               alert('There was an error while fetching appointments.');
           }
+        },
+        customButtons: {
+          print: {
+              text: 'Print',
+              click: function() { // Printing currently works for a single provider.
+                if($('#calendar').fullCalendar('getResources').length > 1) {
+                  alert("Please select only a single provider.");
+                }
+                else {
+                  var oldView = $('#calendar').fullCalendar('getView');
+                  $('#calendar').fullCalendar('changeView', 'listDay');
+                  window.print();
+                  $('#calendar').fullCalendar('changeView', oldView.name);
+                }
+              }
+            }
         },
         eventMouseover: function(calEvent, element, view) {
           var tooltip = '<div class="tooltipevent">' + calEvent.description + '</div>';
