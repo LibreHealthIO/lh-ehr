@@ -23,7 +23,7 @@
  * @author Rod Roark <rod@sunsetsystems.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 
@@ -39,7 +39,7 @@ require_once("$srcdir/classes/CouchDB.class.php");
 if ($_GET['mode'] != "user") {
   // Check authorization.
   $thisauth = acl_check('admin', 'super');
-  if (!$thisauth) die(xl('Not authorized'));
+  if (!$thisauth) die(xlt('Not authorized'));
 }
 
 function checkCreateCDB(){
@@ -50,7 +50,7 @@ function checkCreateCDB(){
       $GLOBALS[$globalsrow['gl_name']] = $globalsrow['gl_value'];
     }
     $directory_created = false;
-  if( !empty($GLOBALS['document_storage_method']) ) {
+  if($GLOBALS['document_storage_method'] != 0){
     // /documents/temp/ folder is required for CouchDB
     if(!is_dir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/')){
       $directory_created = mkdir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/',0777,true);      
@@ -104,7 +104,7 @@ function checkBackgroundServices(){
     }
 
    //Set up phimail service
-  $phimail_active = empty($GLOBALS['phimail_enable']) ? '0' : '1';
+   $phimail_active = $GLOBALS['phimail_enable'] ? '1' : '0';
    $phimail_interval = max(0,(int)$GLOBALS['phimail_interval']);
    updateBackgroundService('phimail',$phimail_active,$phimail_interval);
 }
@@ -127,7 +127,7 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
         if (in_array($fldid, $USER_SPECIFIC_GLOBALS)) {
           list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
           $label = "global:".$fldid;
-          $fldvalue = trim($_POST["form_$i"]);
+          $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
           setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);
@@ -289,6 +289,14 @@ input     { font-size:10pt; }
 <?php } else { ?>
   <p><b><?php echo xlt('Edit Global Settings'); ?></b>
 <?php } ?>
+
+<?php // mdsupport - Optional server based searching mechanism for large number of fields on this screen. ?>
+<span style='float: right;'>
+    <input name='srch_desc' size='20'
+        value='<?php echo (!empty($_POST['srch_desc']) ? htmlspecialchars($_POST['srch_desc']) : '') ?>' />
+    <input type='submit' name='form_search' value='<?php echo xla('Search'); ?>' />
+</span>
+
 <!--tabNav-->
 <ul class="tabNav">
 <?php
@@ -325,6 +333,11 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
   foreach ($grparr as $fldid => $fldarr) {
    if ( $_GET['mode'] != "user" || ($_GET['mode'] == "user" && in_array($fldid, $USER_SPECIFIC_GLOBALS)) ) {
     list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
+    // mdsupport - Check for matches
+    $srch_cl = '';
+    if (!empty($_POST['srch_desc']) && (stristr(($fldname.$flddesc), $_POST['srch_desc']) !== FALSE)) {
+        $srch_cl = 'class="srch"';
+    }
 
     // Most parameters will have a single value, but some will be arrays.
     // Here we cater to both possibilities.
@@ -349,7 +362,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       }
     }
 
-    echo " <tr title='" . attr($flddesc) . "'  id='".attr($fldid)."' value='".attr($fldvalue)."'><td><b>" . text($fldname) . "</b></td><td>\n";
+    echo " <tr $srch_cl title='" . attr($flddesc) . "'  id='".attr($fldid)."' value='".attr($fldvalue)."'><td><b>" . text($fldname) . "</b></td><td>\n";
 
     if (is_array($fldtype)) {
       echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
@@ -418,7 +431,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       $res = sqlStatement("SELECT * FROM lang_languages ORDER BY lang_description");
       echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       while ($row = sqlFetchArray($res)) {
-        echo "   <option value='" . $row['lang_description'] . "'";
+        echo "   <option value='" . attr($row['lang_description']) . "'";
         if ($row['lang_description'] == $fldvalue) echo " selected";
         echo ">";
         echo xlt($row['lang_description']);
@@ -431,7 +444,12 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
+    if($GLOBALS['gb_how_sort_list'] == '0') {
+        $order = "seq, title";
+    } else {
+        $order = "title, seq";
+    }
+      $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1 ORDER BY " . $order, array('apptstat'));
       echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       if ($flddef ==" ") {
       $top_choice = "All";
@@ -599,6 +617,13 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 $(document).ready(function(){
   tabbify();
   enable_modals();
+
+  <?php // mdsupport - Highlight search results ?>
+  $('.srch td').wrapInner("<mark></mark>");
+  $('.tab > table').find('tr.srch:first').each(function() {
+      var srch_div = $(this).closest('div').prevAll().length + 1;
+      $('.tabNav > li:nth-child('+srch_div+') a').wrapInner("<mark></mark>");
+  });
 
   // Use the counter ($i) to make the form user friendly for user-specific globals use
   <?php if ($_GET['mode'] == "user") { ?>
