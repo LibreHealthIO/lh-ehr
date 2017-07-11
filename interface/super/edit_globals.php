@@ -18,16 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
- * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
- * See the Mozilla Public License for more details.
- * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
  * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
  * @author Rod Roark <rod@sunsetsystems.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 
