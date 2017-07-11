@@ -404,7 +404,10 @@ float: right;
     Xwidth: 85%;
 }
 .msg_resp {
-  width:53px;
+  width:65px;
+}
+.msg_manual {
+    width:100px;
 }
 .msg_notes {
   width:125px;

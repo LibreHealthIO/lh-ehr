@@ -37,6 +37,7 @@ require_once("$srcdir/MedEx/API.php");
 $MedEx = new MedExApi\MedEx('MedExBank.com');
 //you need admin privileges to update this.
 if ($_REQUEST['go'] =='Preferences') {
+    $result     = array();
     $query = "SELECT * FROM users where id = ?";
     $user_data = sqlQuery($query,array($_SESSION['authUserID']));
 
@@ -58,7 +59,8 @@ if ($_REQUEST['go'] =='Preferences') {
         $_GLOBALS['chart_label_type'] = $_REQUEST['chart_label_type'];
         sqlStatement( 'UPDATE `globals` set gl_value = ? where gl_name like "chart_label_type" ', array( $_REQUEST['chart_label_type'] ) );
 
-        $result = sqlQuery($sql,$myValues);
+        $result['output'] = sqlQuery( $sql, $myValues );
+        if ($result['output'] == false) $result['success'] = "medex_prefs updated";
 
 
         echo json_encode($result);
@@ -109,10 +111,10 @@ if ($_REQUEST['MedEx']=="start") {
 
             $runQuery ="select * from facility order by name";
             $fetch = sqlStatement($runQuery);
-            while ($frow = sqlFetchArray($fetch)) { $facilities[] = $frow; }
+            while ( $frow = sqlFetchArray( $fetch ) ) { $facilities[] = $frow['id']; }
             $runQuery = "SELECT * FROM users WHERE username != '' AND active = '1' and authorized='1'";
             $prove = sqlStatement($runQuery);
-            while ($prow = sqlFetchArray($prove)) { $providers[] = $prow; }
+            while ( $prow = sqlFetchArray( $prove ) ) { $providers[] = $prow['id']; }
             $facilities = implode("|",$facilities);
             $providers  = implode("|",$providers);
             $sqlINSERT  = "INSERT into `medex_prefs` (

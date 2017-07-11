@@ -67,7 +67,7 @@ class CurlRequest {
         curl_setopt($this->handle, CURLOPT_POST, true);
         curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, true);//changed when certificates done - 
         //some may need this to = false if cert authority list not on their server
-        curl_setopt($this->handle, CURLOPT_POSTFIELDS, http_build_query($this->postData));
+        curl_setopt($this->handle, CURLOPT_POSTFIELDS, http_build_query($this->postData).'&MedEx=remote');
         if (!empty($this->cookies)) {
             curl_setopt($this->handle, CURLOPT_COOKIE, $this->getCookies());
         }
@@ -359,12 +359,7 @@ class Events extends Base {
                 $sql2= "SELECT ME_facilities from medex_prefs";
                 $pref_facilities = sqlQuery($sql2);
                 if ($pref_facilities['ME_facilities'] !='') {
-                    $facs = explode(',',$pref_facilities['ME_facilities']);
-                $places='';
-                foreach ($facs as $place) {
-                    $places .= $place.",";
-                }
-                $places = rtrim($places,",");
+                    $places = str_replace("|",",",$pref_facilities['ME_facilities']);
                 $query  = "select * from libreehr_postcalendar_events as cal
                             left join patient_data as pat on cal.pc_pid=pat.pid
                             WHERE (pc_eventDate > CURDATE() ".$interval." INTERVAL ".$timing." DAY
@@ -1111,7 +1106,7 @@ class Display extends base {
             echo '</div>';
 
             echo '  <div class="divTableCell left msg_resp">';
-                //    if phone all made show each info from progress
+                //    if phone call made show each in progress
             echo '<textarea onblur="process_this(\'notes\',\''.attr($recall['pid']).'\',\''.attr($recall['r_ID']).'\');" name="msg_notes" id="msg_notes_'.attr($recall['pid']).'" style="width:90%;height:30px;">'.nl2br(text($recall['NOTES'])).'</textarea>';
             echo '</div>';
             echo '  <div class="divTableCell left msg_resp">
@@ -1133,7 +1128,7 @@ class Display extends base {
             <div class="divTableBody">
                 <div class="sticky divTableRow divTableHeading">
                     <div class="divTableCell center" style="width:10%;"><?php echo xlt('Name'); ?></div>
-                    <div class="divTableCell center" style="width:10%;"><?php echo xlt('Recall Date'); ?></div>
+                    <div class="divTableCell center" style="width:10%;"><?php echo xlt('Recall'); ?></div>
 
                     <div class="divTableCell center phones" style="width:10%;"><?php echo xlt('Contacts'); ?></div>
                     <div class="divTableCell center msg_resp"><?php echo xlt('Postcards'); ?><br />
@@ -1146,7 +1141,7 @@ class Display extends base {
                                                 &nbsp;&nbsp;
                         <span onclick="process_this('labels');" class="fa fa-print fa-lg"></span>
                     </div>
-                    <div class="divTableCell center msg_resp"><?php echo xlt('Office: Phone'); ?></div>
+                    <div class="divTableCell center msg_resp"><?php echo xlt('Office').": ".xlt('Phone'); ?></div>
                     <div class="divTableCell center msg_notes"><?php echo xlt('Notes'); ?></div>
                     <div class="divTableCell center msg_notes"><?php echo xlt('Progress'); ?></div>
                 </div>
@@ -1200,6 +1195,19 @@ class Display extends base {
             } else {
                 $pat['EMAIL'] = $icon['EMAIL']['ALLOWED'];
             }
+        // If the practice is a MedEx practice, is this facility and/or this provider signed up for MedEx?  
+        //  In this scenario, not all providers or locations for this practice are enrolled in MedEx.
+        //  Don't report that something MedEx-related is going to happen for these folks, cause it shouldn't.
+        $sql = "select * from medex_prefs";
+        $prefs = sqlFetchArray(sqlStatement($sql));
+        $facs = explode('|',$prefs['ME_facilities']);
+        foreach ($facs as $place) {
+            if (isset($appt['r_facility']) && ($appt['r_facility']==$place)) $pat['facility'] = 'ok';
+        }
+        $providers = explode('|',$prefs['ME_providers']);
+        foreach ($providers as $provider) {
+            if (isset($appt['r_provider']) && ($appt['r_provider']==$provider)) $pat['provider'] = 'ok';
+        }
         return $pat;
     }
     public function display_add_recall($pid='new') {
@@ -1520,6 +1528,9 @@ class Display extends base {
             if ($event['M_group'] != "RECALL") continue;
             $pat = $this->possibleModalities($recall);
             if ($pat['ALLOWED'][$event['M_type']] == 'NO') continue;    //it can't happen
+            if ($pat['facility']!= 'ok') continue;    //it can't happen
+            if ($pat['provider']!= 'ok') continue;    //it can't happen
+
             if ($show['campaign'][$event['C_UID']]['status']) continue; //it is done
              $camps++;                                                 //there is still work to be done
             if ($show['campaign'][$event['C_UID']]['icon']) continue;   //but something has happened since it was scheduled.
@@ -1828,8 +1839,8 @@ line-height: 15.2167px;
                 if ($("#new_rpassword").val() !== password) return alert('<?php echo xlt('Passwords do not match'); ?>!');
                 if (!$("#TERMS_yes").is(':checked')) return alert('<?php echo xlt('You must agree to the Terms & Conditions before signing up...');?> ');
                 if (!$("#BusAgree_yes").is(':checked')) return alert('<?php echo xlt('You must agree to the HIPAA Business Associate Agreement...');?> ');
-                //do we want this translated?  MedEx is in English.
-                if (confirm("    <?php echo xla('Confirm: you are opening a secure connection to MedExBank.com to create your account').".\n\n".xla('Before your practice can send live messages, you will need to login to')." MedExBank.com ".xla('to').":\n     ".xla('confirm your practice information')."\n     ".xla('choose your service options')."\n     ".xla('create your desired SMS/Voice and/or e-mail messages')."."; ?>"))
+                //No translation for now - unless you can get it translated without breaking the Auto-Registration...
+                if (confirm(" CONFIRM: You are opening a secure connection to MedExBank.com to create your account.\n\nBefore your practice can send live messages, you will need to login to MedExBank.com to:\n     confirm your practice information\n     choose your service options\n     create your desired SMS/Voice and/or e-mail messages."))
                 {
                     var url = "save.php?MedEx=start";
                     formData = $("form#medex_start").serialize();
@@ -2058,7 +2069,8 @@ class MedEx {
         $this->curl->setData(array(
             'username' => $username,
             'key' => $key,
-            'UID' => $UID
+            'UID' => $UID,
+            'MedEx' => 'LibreHealth Ehr'
         ));
         $this->curl->makeRequest();
 

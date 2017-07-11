@@ -312,7 +312,7 @@ function openNewTopWindow(newpid,newencounterid) {
                 <tr>
                     <td>
                         <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                            <span> <?php echo xlt('Submit'); ?> </span> </a>
+                            <span> <?php echo xlt('Apply'); ?> </span> </a>
                         <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
                             <a href='#' class='css_button' id='printbutton'>
                                 <span> <?php echo xlt('Print'); ?> </span> </a>
