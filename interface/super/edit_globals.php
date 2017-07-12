@@ -254,10 +254,9 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
 ?>
 
 <!-- supporting javascript code -->
-<?php 
-   include_css_library("fancybox/jquery.fancybox-1.2.6.css");
-   include_js_library("jquery-min-3-1-1/index.js");
-   include_js_library("fancybox/jquery.fancybox-1.2.6.js");
+<?php
+   // Including Bootstrap and Fancybox.
+   call_required_libraries(true,true,false,false);
    include_js_library("jscolor-1-4-5/jscolor.js");
 ?>
 

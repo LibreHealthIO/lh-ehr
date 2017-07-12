@@ -19,7 +19,6 @@
  */
 ?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path'] ?>bootstrap-3-3-4/dist/css/bootstrap.min.css" type="text/css">
 <?php
 
 function include_js_library($path)
@@ -33,9 +32,38 @@ function include_js_library($path)
 <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path'].$path;?>" media="screen" />
 <?php
 }
-
 ?>
+
+<?php 
+/*  
+    This function can be used to call various frequently used libraries.
+    Parameters for this function are boolean. Use true or false for including the required libraries.   
+*/
+function call_required_libraries($bootstrap,$fancybox,$knockout,$datepicker){?>
+    <!-- All these libraries require jQuery to be loaded initially for best performance -->
+    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-3-1-1/index.js"></script>
+    <?php 
+    if($bootstrap===true){   ?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/css/bootstrap.min.css" type="text/css">
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
+    <?php
+    }
+    if($fancybox===true){   ?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>fancybox/jquery.fancybox-1.2.6.css" media="screen" />
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>fancybox/jquery.fancybox-1.2.6.js"></script>
+    <?php
+    }
+    if($knockout===true){   ?>
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>knockout/knockout-3.4.0.js"></script>
+    <?php
+    }
+    if($datepicker===true){ ?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" media="screen" />
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
+    <?php
+    }
+}
+?>
+
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'];?>/bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>

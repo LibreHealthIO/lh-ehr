@@ -16,6 +16,9 @@ require_once("../../globals.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/headers.inc.php");
 
+// Including Bootstrap library.
+call_required_libraries(true,false,false,false);
+
 $popup = empty($_REQUEST['popup']) ? 0 : 1;
 $defaultFilterName = empty($_REQUEST['defaultFilterName']) ? null : $_REQUEST['defaultFilterName'];
 $defaultFilterValue = empty($_REQUEST['defaultFilterValue']) ? null : $_REQUEST['defaultFilterValue'];
