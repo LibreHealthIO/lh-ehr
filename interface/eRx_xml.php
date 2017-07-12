@@ -850,6 +850,7 @@ function PatientFreeformAllergy($doc,$r,$pid)
     return $allergyId;
 }
 
+//Get insco with Self, LIMIT to first 3 to avoid erX overflow
 function PatientFreeformHealthplans($doc, $r, $pid) {
     $resource = sqlStatement('SELECT
             `ins`.`name`
@@ -863,8 +864,10 @@ function PatientFreeformHealthplans($doc, $r, $pid) {
                 AND `id`.`subscriber_relationship` = \'self\'
                 AND `id`.`provider` > 0
             ORDER BY `id`.`date` DESC
+            LIMIT 3
         ) AS `ins`
-        GROUP BY `ins`.`type`;',
+        GROUP BY `ins`.`type`
+        LIMIT 3;',
         array($pid)
     );
 
