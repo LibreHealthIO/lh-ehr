@@ -7,47 +7,47 @@ $events = array();
 
 $fetchedEvents = fetchAllEvents('0000-00-00', '2040-01-01');
 
-foreach($fetchedEvents as $row) {
+foreach($fetchedEvents as $event) {
   
   // skip cancelled appointments
   if ($GLOBALS['display_canceled_appointments'] != 1) {
-     if ($row['pc_apptstatus'] == "x") { continue; }
+     if ($event['pc_apptstatus'] == "x") { continue; }
   }
   
   $e = array();
-  $e = $row;
-  $e['id'] = $row['pc_eid'];
-  $e['resourceId'] = $row['pc_aid'];
-  $e['title'] = $row['pc_title'];
-  $e['start'] = $row['pc_eventDate'] . " " . $row['pc_startTime'];
-  $e['end'] = $row['pc_eventDate'] . " " . $row['pc_endTime'];
+  $e = $event;
+  $e['id'] = $event['pc_eid'];
+  $e['resourceId'] = $event['pc_aid'];
+  $e['title'] = $event['pc_title'];
+  $e['start'] = $event['pc_eventDate'] . " " . $event['pc_startTime'];
+  $e['end'] = $event['pc_eventDate'] . " " . $event['pc_endTime'];
   $e['allDay'] = ($e['pc_alldayevent'] == 1) ? true : false;
-  $e['color'] = $row['pc_catcolor'];
+  $e['color'] = $event['pc_catcolor'];
   
-  if($row["pc_pid"] > 0) {
-    $e['description'] = $row['pc_apptstatus'] . " " . $row['lname'] . ", " . $row['fname'] . " (" . $row['pc_title'];
-    if(!empty($row["pc_hometext"])) {
-      $e['description'] = $e['description'] . ": " . $row["pc_hometext"];
+  if($event["pc_pid"] > 0) {
+    $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
+    if(!empty($event["pc_hometext"])) {
+      $e['description'] = $e['description'] . ": " . $event["pc_hometext"];
     }
     $e['description'] = $e['description'] . ")";
     switch($GLOBALS['calendar_appt_style']) {
       case 1:
-        $e['title'] = $row['pc_apptstatus'] . " " . $row['lname'];
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'];
         break;
       case 2:
-        $e['title'] = $row['pc_apptstatus'] . " " . $row['lname'] . ", " . $row['fname'];
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
         break;
       case 3:
-        $e['title'] = $row['pc_apptstatus'] . " " . $row['lname'] . ", " . $row['fname'] . " (" . $row['pc_title'] . ")";
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'] . ")";
         break;
       case 4:
         $e['title'] = $e['description'];  // Case 4 is exactly the same as the event tooltip
         break;
       default:
-        $e['title'] = $row['pc_apptstatus'] . " " . $row['lname'] . ", " . $row['fname'];
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
     }
   } else {
-    $e['description'] = $row['pc_title'];
+    $e['description'] = $event['pc_title'];
   }
   // Merge the event array into the return array
   array_push($events, $e);
