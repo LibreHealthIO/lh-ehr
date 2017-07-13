@@ -1,19 +1,13 @@
 <?php 
 
 require_once('../../../interface/globals.php');
-
-$query = "SELECT a.*, b.*, u.*, pd.*, pd.lname as plname, pd.fname as pfname, a.pc_pid as e_pid FROM
-  libreehr_postcalendar_events AS a
-  LEFT JOIN libreehr_postcalendar_categories AS b ON b.pc_catid = a.pc_catid 
-  LEFT JOIN users as u ON a.pc_aid = u.id 
-  LEFT JOIN patient_data as pd ON a.pc_pid = pd.pid
-  WHERE  a.pc_eventstatus = 1 AND u.username IN('" . implode("','", $_SESSION['pc_username']) . "')";
-
-$res = sqlStatement($query);
+require_once('../../../library/appointments.inc.php');
 
 $events = array();
 
-while ($row = sqlFetchArray($res)) {
+$fetchedEvents = fetchAllEvents('0000-00-00', '2040-01-01');
+
+foreach($fetchedEvents as $row) {
   
   // skip cancelled appointments
   if ($GLOBALS['display_canceled_appointments'] != 1) {
@@ -31,26 +25,26 @@ while ($row = sqlFetchArray($res)) {
   $e['color'] = $row['pc_catcolor'];
   
   if($row["pc_pid"] > 0) {
-    $e['description'] = $row['pc_apptstatus'] . " " . $row['plname'] . ", " . $row['pfname'] . " (" . $row['pc_title'];
+    $e['description'] = $row['pc_apptstatus'] . " " . $row['lname'] . ", " . $row['fname'] . " (" . $row['pc_title'];
     if(!empty($row["pc_hometext"])) {
       $e['description'] = $e['description'] . ": " . $row["pc_hometext"];
     }
     $e['description'] = $e['description'] . ")";
     switch($GLOBALS['calendar_appt_style']) {
       case 1:
-        $e['title'] = $row['pc_apptstatus'] . " " . $row['plname'];
+        $e['title'] = $row['pc_apptstatus'] . " " . $row['lname'];
         break;
       case 2:
-        $e['title'] = $row['pc_apptstatus'] . " " . $row['plname'] . ", " . $row['pfname'];
+        $e['title'] = $row['pc_apptstatus'] . " " . $row['lname'] . ", " . $row['fname'];
         break;
       case 3:
-        $e['title'] = $row['pc_apptstatus'] . " " . $row['plname'] . ", " . $row['pfname'] . " (" . $row['pc_title'] . ")";
+        $e['title'] = $row['pc_apptstatus'] . " " . $row['lname'] . ", " . $row['fname'] . " (" . $row['pc_title'] . ")";
         break;
       case 4:
         $e['title'] = $e['description'];  // Case 4 is exactly the same as the event tooltip
         break;
       default:
-        $e['title'] = $row['pc_apptstatus'] . " " . $row['plname'] . ", " . $row['pfname'];
+        $e['title'] = $row['pc_apptstatus'] . " " . $row['lname'] . ", " . $row['fname'];
     }
   } else {
     $e['description'] = $row['pc_title'];

@@ -196,7 +196,7 @@ require('includes/session.php');
            ,'_blank', 775, 375);
 			  },
         eventClick: function(calEvent, jsEvent, view) {
-          var pccattype = (calEvent['e_pid'] && calEvent['e_pid'] > 0) ? 0 :  1;
+          var pccattype = (calEvent['pc_pid'] && calEvent['pc_pid'] > 0) ? 0 :  1;
           console.log(pccattype);
           dlgopen('../../interface/main/calendar/add_edit_event.php?date='+ calEvent.start.format('YYYYMMDD') +'&eid=' + calEvent.id +'&prov=' + pccattype, '_blank', 775, 375);
         }
