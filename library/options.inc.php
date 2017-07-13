@@ -343,7 +343,7 @@ function generate_form_field($frow, $currvalue) {
     $tmp = htmlspecialchars( $GLOBALS['gbl_mask_patient_id'], ENT_QUOTES);
     if ($field_id == 'pubpid' && strlen($tmp) > 0) {
       echo " onkeyup='maskkeyup(this,\"$tmp\")'";
-      echo " onblur='maskblur(this,\"$tmp\")'";
+      echo " onblur='maskblur(this,\"$tmp\")'";      
     }
     if (strpos($frow['edit_options'], '1') !== FALSE && strlen($currescaped) > 0) {
       echo " readonly";
@@ -390,7 +390,66 @@ function generate_form_field($frow, $currvalue) {
       echo "</td></tr><tr><td id='span_$field_id' class='text'>" . text($agestr) . "</td></tr></table>";
     }
   }
-
+  
+  // Email datatype.
+  elseif ($data_type == 5) {
+      $fldlength = htmlspecialchars( $frow['fld_length'], ENT_QUOTES);
+      $maxlength = $frow['max_length'];
+      $string_maxlength = "";
+      if ($maxlength) $string_maxlength = "maxlength='".attr($maxlength)."'";  
+      else $string_maxlength = "";    
+      
+      echo "<input type='email'" .
+      " name='form_$field_id_esc'" .
+      " id='form_$field_id_esc'" .
+      " size='$fldlength'" .
+      " $string_maxlength" .
+      " title='$description'" .
+      " value='$currescaped'";  
+      if ($disabled) echo ' disabled';
+      echo " />";
+    }    
+    
+    // Integer Datatype (This allows only digits (doesn't allow hyphens or decimal points)) 
+    elseif ($data_type == 6) {
+      $fldlength = htmlspecialchars( $frow['fld_length'], ENT_QUOTES);
+      $string_maxlength = "";
+      $maxlength = $frow['max_length'];      
+      // if max_length is set to zero, then do not set a maxlength
+      if ($maxlength) $string_maxlength = "maxlength='".attr($maxlength)."'";  
+      else $string_maxlength = "";    
+      
+      echo "<input type='text'" .
+      " name='form_$field_id_esc'" .
+      " id='form_$field_id_esc'".
+      " title='$description'" .
+      " size='$fldlength'" .
+      " $string_maxlength" .
+      " value='$currescaped'".
+      " onfocus = 'allowOnlyDigits(this.name)'";
+      if ($disabled) echo ' disabled';
+      echo " />";
+    } 
+    
+    // URL Datatype (URL's can have following types: http://www.google.com.. or www.google.com or google.com)
+    elseif ($data_type == 7) {
+      $fldlength = htmlspecialchars( $frow['fld_length'], ENT_QUOTES);
+      $maxlength = $frow['max_length'];
+      $string_maxlength = "";
+      if ($maxlength) $string_maxlength = "maxlength='".attr($maxlength)."'";  
+      else $string_maxlength = "";    
+      
+      echo "<input type='url'" .
+      " name='form_$field_id_esc'" .
+      " id='form_$field_id_esc'".
+      " title='$description'" .
+      " size='$fldlength'" .
+      " $string_maxlength" .
+      " value='$currescaped'";    
+      if ($disabled) echo ' disabled';
+      echo " />";
+    }      
+    
   // provider list, local providers only
   else if ($data_type == 10) {
     $ures = sqlStatement("SELECT id, fname, lname, specialty FROM users " .
@@ -1705,6 +1764,13 @@ function generate_display_field($frow, $currvalue) {
       $s = nl2br(htmlspecialchars($currvalue,ENT_NOQUOTES));
     }
   }
+  
+  // for datatypes email ,numeric and URL
+  else if($data_type == 5 || $data_type == 6 ||$data_type==7 )
+  {
+       $s = nl2br(htmlspecialchars($currvalue,ENT_NOQUOTES));
+  }  
+ 
 
   // long or multi-line text field
   else if ($data_type == 3) {

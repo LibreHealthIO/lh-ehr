@@ -36,6 +36,11 @@ abstract class C_AbstractAnnotate extends Controller {
      */
     var $template_dir;
     var $newTitle;
+    
+    var $dont_save_link;
+    var $form_action;
+    var $style;
+    var $form;
     /**
      * @brief Initialize a newly created object belonging to this class
      *
@@ -47,9 +52,10 @@ abstract class C_AbstractAnnotate extends Controller {
         $returnurl = 'encounter_top.php' ;
         $this->template_mod = $template_mod;
         $this->template_dir = $GLOBALS['fileroot'] . "/interface/forms/annotate_diagram/mapdiagram/template/";
-        $this->assign("DONT_SAVE_LINK",$GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl");
-        $this->assign("FORM_ACTION", $GLOBALS['webroot']);
-        $this->assign("STYLE", $GLOBALS['style']);
+        
+                    $this->dont_save_link = $GLOBALS['webroot'] . "/interface/patient_file/encounter/$returnurl";
+                    $this->form_action = $GLOBALS['webroot'];
+                    $this->style  = $GLOBALS['style'];
     }
 
     /**
@@ -112,10 +118,14 @@ abstract class C_AbstractAnnotate extends Controller {
      * @return the result of smarty's fetch() operation.
      */
     function default_action() {
-        $model = $this->createModel();
-        $this->assign("form", $model);
+        $model = $this->createModel();       
+        $this->form = $model;
         $this->set_context($model);
-        return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
+        
+        ob_start(); //Start output Buffer
+       require_once($this->template_dir . $this->template_mod . "_new.php");
+       $echoed_content = ob_get_clean(); // gets content, discards buffer
+       return $echoed_content;
     }
 
     /**
@@ -124,13 +134,16 @@ abstract class C_AbstractAnnotate extends Controller {
      * @param form_id
      *  The id of the form to populate data from.
      *
-     * @return the result of smarty's fetch() operation.
+     * 
      */
     function view_action($form_id) {
-        $model = $this->createModel($form_id);
-        $this->assign("form",$model);
-        $this->set_context($model);
-        return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
+        $model = $this->createModel($form_id);      
+        $this->form = $model;
+        $this->set_context($model);       
+        ob_start(); //Start output Buffer
+        require_once($this->template_dir . $this->template_mod . "_new.php");
+        $echoed_content = ob_get_clean(); // gets content, discards buffer
+        return $echoed_content;
     }
 
     /**
@@ -139,14 +152,18 @@ abstract class C_AbstractAnnotate extends Controller {
      * @param form_id
      *  The id of the form to populate data from.
      *
-     * @return the result of smarty's fetch() operation.
+     * 
      */
     function report_action($form_id) {
-        $model = $this->createModel($form_id);
-        $this->assign("form",$model);
+        $model = $this->createModel($form_id);      
+        $this->form = $model;
         $this->set_context($model);
         $model->hideNav = "true";
-        return $this->fetch($this->template_dir . $this->template_mod . "_rpt.html");
+        
+        ob_start(); //Start output Buffer
+        require_once($this->template_dir . $this->template_mod . "_rpt.html");
+        $echoed_content = ob_get_clean(); // gets content, discards buffer
+        return $echoed_content;
     }
 
      /**

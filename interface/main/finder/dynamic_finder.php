@@ -14,6 +14,7 @@ $fake_register_globals = false;
 
 require_once("../../globals.php");
 require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 $popup = empty($_REQUEST['popup']) ? 0 : 1;
 $defaultFilterName = empty($_REQUEST['defaultFilterName']) ? null : $_REQUEST['defaultFilterName'];
@@ -40,7 +41,7 @@ while ($row = sqlFetchArray($res)) {
     $headerValue = $defaultFilterValue;
   }
   $header0 .= "   <td align='center'><input type='text' size='10' ";
-  $header0 .= "value='$headerValue' class='search_init' /></td>\n";
+  $header0 .= "value='$headerValue' class='form-control form-rounded' /></td>\n";
   if ($coljson) $coljson .= ", ";
   $coljson .= "{\"sName\": \"" . addcslashes($colname, "\t\r\n\"\\") . "\"}";
   ++$colcount;
@@ -50,7 +51,6 @@ while ($row = sqlFetchArray($res)) {
 <head>
 <?php html_header_show(); ?>
     <title><?php echo "Patient Finder"; ?></title>
-<link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
 
 <style type="text/css">
 @import "<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/css/demo_page.css";
@@ -148,12 +148,12 @@ function openNewTopWindow(pid) {
 </script>
 
 </head>
-<body class="body_top">
+<body class="body_top well">
 
-<div id="dynamic"><!-- TBD: id seems unused, is this div required? -->
+<div id="dynamic">
 
 <!-- Class "display" is defined in demo_table.css -->
-<table cellpadding="0" cellspacing="0" border="0" class="display" id="pt_table">
+<table cellpadding="0" cellspacing="0" border="0" class="table table-hover " id="pt_table">
  <thead>
   <tr>
 <?php echo $header0; ?>

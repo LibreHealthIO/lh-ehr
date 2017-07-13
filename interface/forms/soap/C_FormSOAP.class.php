@@ -7,20 +7,28 @@ require_once("FormSOAP.class.php");
 class C_FormSOAP extends Controller {
 
 	var $template_dir;
+                    var $form_action;
+                    var $dont_save_link;
+                    var $style;
+                    var $data;
+                    
 
     function __construct($template_mod = "general") {
     	parent::__construct();
     	$this->template_mod = $template_mod;
-    	$this->template_dir = dirname(__FILE__) . "/templates/";
-    	$this->assign("FORM_ACTION", $GLOBALS['web_root']);
-    	$this->assign("DONT_SAVE_LINK", $GLOBALS['form_exit_url']);
-    	$this->assign("STYLE", $GLOBALS['style']);
-    }
+    	$this->template_dir = dirname(__FILE__) . "/templates/";    	
+                    $this->form_action = $GLOBALS['web_root'];
+                    $this->dont_save_link = $GLOBALS['form_exit_url'];
+                    $this->style = $GLOBALS['style'];    }
 
     function default_action() {
-    	$form = new FormSOAP();
-    	$this->assign("data",$form);
-    	return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
+    	$form = new FormSOAP();    	
+                   $this->data = $form;
+    	
+                    ob_start(); //Start output Buffer
+                    require_once($this->template_dir . $this->template_mod . "_new.php");
+                    $echoed_content = ob_get_clean(); // gets content, discards buffer
+                    return $echoed_content;
 	}
 	
 	function view_action($form_id) {
@@ -30,11 +38,13 @@ class C_FormSOAP extends Controller {
     	else {
     		$form = new FormSOAP();
     	}
-    	$dbconn = $GLOBALS['adodb']['db'];
+    	$dbconn = $GLOBALS['adodb']['db'];    	
     	
-    	$this->assign("data",$form);
-    	    	   	
-		return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
+                    $this->data = $form;    	
+                    ob_start(); //Start output Buffer
+                    require_once($this->template_dir . $this->template_mod . "_new.php");
+                    $echoed_content = ob_get_clean(); // gets content, discards buffer
+                    return $echoed_content;                   
 
 	}
 	
