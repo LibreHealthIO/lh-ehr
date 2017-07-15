@@ -117,6 +117,356 @@ LOCK TABLES `amendments` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `audit_details`
+--
+
+DROP TABLE IF EXISTS `audit_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `audit_details` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `audit_details`
+--
+
+LOCK TABLES `audit_details` WRITE;
+/*!40000 ALTER TABLE `audit_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `audit_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `audit_masters`
+--
+
+DROP TABLE IF EXISTS `audit_masters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `audit_masters` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `audit_masters`
+--
+
+LOCK TABLES `audit_masters` WRITE;
+/*!40000 ALTER TABLE `audit_masters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `audit_masters` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `automatic_notifications`
+--
+
+DROP TABLE IF EXISTS `automatic_notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `automatic_notifications` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autoincrement. Primary Key',
+  `sms_gateway_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of sms gateway.',
+  `next_app_schedule` datetime NOT NULL COMMENT 'When next notification is scheduled?',
+  `provider_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci COMMENT 'Message to be sent.',
+  `email_sender` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Who sent email? It can be any user or any clinic.',
+  `email_subject` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Subject of notification',
+  `type` enum('SMS','Email') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'SMS' COMMENT 'Type of notification.',
+  `notification_sent_date` datetime NOT NULL COMMENT 'When notification was sent.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `automatic_notifications`
+--
+
+LOCK TABLES `automatic_notifications` WRITE;
+/*!40000 ALTER TABLE `automatic_notifications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `automatic_notifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `background_services`
+--
+
+DROP TABLE IF EXISTS `background_services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `background_services` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Service Name',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name for reports',
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is service active or deleted.  0 -> False | 1 -> True',
+  `running` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is service running or stopped. 0 -> Stopped(False) | 1 -> Running(True)',
+  `next_run` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When next run is scheduled?',
+  `execute_interval` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Minimum number of minutes between function calls, 0 = Manual Mode',
+  `function` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of background service function',
+  `sort_order` int(10) unsigned NOT NULL COMMENT 'If there are multiple services, then lower number will run first.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `background_services_name_unique` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `background_services`
+--
+
+LOCK TABLES `background_services` WRITE;
+/*!40000 ALTER TABLE `background_services` DISABLE KEYS */;
+/*!40000 ALTER TABLE `background_services` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `batchcoms`
+--
+
+DROP TABLE IF EXISTS `batchcoms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `batchcoms` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `pid` int(10) unsigned NOT NULL COMMENT 'Foreign key to patient_datas table.',
+  `sent_by` int(10) unsigned NOT NULL COMMENT 'Foreign key to users table.',
+  `msg_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Message Type',
+  `msg_subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Subject',
+  `msg_text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Message to be sent.',
+  `msg_date_sent` datetime NOT NULL COMMENT 'Timestamp when message was sent.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `batchcoms_pid_foreign` (`pid`),
+  KEY `batchcoms_sent_by_foreign` (`sent_by`),
+  CONSTRAINT `batchcoms_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE,
+  CONSTRAINT `batchcoms_sent_by_foreign` FOREIGN KEY (`sent_by`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `batchcoms`
+--
+
+LOCK TABLES `batchcoms` WRITE;
+/*!40000 ALTER TABLE `batchcoms` DISABLE KEYS */;
+/*!40000 ALTER TABLE `batchcoms` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of category.',
+  `parent` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Parent of sub directory. Category directory is root and hence it will have parent as 0.',
+  `lft` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Left Subtree.',
+  `rght` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Right Subtree',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `categories_to_documents`
+--
+
+DROP TABLE IF EXISTS `categories_to_documents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categories_to_documents` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key. Autoincrement.',
+  `category_id` int(10) unsigned NOT NULL COMMENT 'Foreign Key to categories table.',
+  `document_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to Documents table.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `categories_to_documents_category_id_foreign` (`category_id`),
+  KEY `categories_to_documents_document_id_foreign` (`document_id`),
+  CONSTRAINT `categories_to_documents_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `categories_to_documents_document_id_foreign` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories_to_documents`
+--
+
+LOCK TABLES `categories_to_documents` WRITE;
+/*!40000 ALTER TABLE `categories_to_documents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categories_to_documents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `chart_trackers`
+--
+
+DROP TABLE IF EXISTS `chart_trackers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `chart_trackers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key. Autoincrement.',
+  `user_id` int(10) unsigned NOT NULL COMMENT 'Foreign Key to users table.',
+  `when` datetime NOT NULL COMMENT 'Timestamp when this created.',
+  `location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Location',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `chart_trackers_user_id_foreign` (`user_id`),
+  CONSTRAINT `chart_trackers_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chart_trackers`
+--
+
+LOCK TABLES `chart_trackers` WRITE;
+/*!40000 ALTER TABLE `chart_trackers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chart_trackers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dated_reminder_links`
+--
+
+DROP TABLE IF EXISTS `dated_reminder_links`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dated_reminder_links` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Autoincrement. Primary Key.',
+  `dr_id` int(10) unsigned NOT NULL COMMENT 'Link to dated_reminders table.',
+  `to_id` int(10) unsigned NOT NULL COMMENT 'Link to users table',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `dated_reminder_links_dr_id_foreign` (`dr_id`),
+  KEY `dated_reminder_links_to_id_foreign` (`to_id`),
+  CONSTRAINT `dated_reminder_links_dr_id_foreign` FOREIGN KEY (`dr_id`) REFERENCES `dated_reminders` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `dated_reminder_links_to_id_foreign` FOREIGN KEY (`to_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dated_reminder_links`
+--
+
+LOCK TABLES `dated_reminder_links` WRITE;
+/*!40000 ALTER TABLE `dated_reminder_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dated_reminder_links` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dated_reminders`
+--
+
+DROP TABLE IF EXISTS `dated_reminders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dated_reminders` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `dr_from_ID` int(10) unsigned NOT NULL COMMENT 'Who created dated reminder? Refers to users table.',
+  `pid` int(10) unsigned NOT NULL COMMENT 'Foreign key to patient_datas table.',
+  `dr_message_text` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Message.',
+  `dr_message_sent_date` datetime NOT NULL COMMENT 'When message is sent.',
+  `dr_message_due_date` date NOT NULL COMMENT 'Due Date',
+  `message_priority` int(10) unsigned NOT NULL COMMENT 'Priority of Message. 1 -> High | 2 -> Medium | 3 -> Low',
+  `message_processed` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is message processed? 0 -> No | 1 -> Yes',
+  `processed_date` datetime NOT NULL COMMENT 'When message is processed by respective user? Not keeping it null, becuase it can be system generated datetime, whenever message is processed.',
+  `dr_processed_by` int(10) unsigned DEFAULT NULL COMMENT 'User who processed the message. It can be multiple users or a single user. References users table.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `dated_reminders_pid_foreign` (`pid`),
+  KEY `dated_reminders_dr_from_id_foreign` (`dr_from_ID`),
+  KEY `dated_reminders_dr_processed_by_foreign` (`dr_processed_by`),
+  CONSTRAINT `dated_reminders_dr_from_id_foreign` FOREIGN KEY (`dr_from_ID`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `dated_reminders_dr_processed_by_foreign` FOREIGN KEY (`dr_processed_by`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `dated_reminders_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dated_reminders`
+--
+
+LOCK TABLES `dated_reminders` WRITE;
+/*!40000 ALTER TABLE `dated_reminders` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dated_reminders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `documents`
+--
+
+DROP TABLE IF EXISTS `documents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `documents` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Auto increment. Primary Key.',
+  `pid` int(10) unsigned NOT NULL COMMENT 'Foreign key to patient_datas table. Earlier foreign_id.',
+  `owner` int(10) unsigned NOT NULL COMMENT 'Foreign key to users table.',
+  `list_id` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to lists table.',
+  `encounter_id` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to form_encounters table.',
+  `audit_master_id` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to audit_masters table.',
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Path of uploaded file.',
+  `mimetype` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of uploaded file. Image or text.',
+  `revision` datetime NOT NULL COMMENT 'Timestamp when document was revised.',
+  `docdate` date NOT NULL COMMENT 'When document was uploaded.',
+  `hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '40 character SHA-1 hash of document.',
+  `imported` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Parsing status for CCR/CCD/CCDA importing. 0 -> False | 1 -> True',
+  `encounter_check` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If encounter is created while tagging. 0 -> No | 1 -> Yes',
+  `audit_master_approval_status` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'approval_status from audit_master table.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_pid_foreign` (`pid`),
+  KEY `documents_owner_foreign` (`owner`),
+  KEY `documents_list_id_foreign` (`list_id`),
+  KEY `documents_encounter_id_foreign` (`encounter_id`),
+  KEY `documents_audit_master_id_foreign` (`audit_master_id`),
+  CONSTRAINT `documents_audit_master_id_foreign` FOREIGN KEY (`audit_master_id`) REFERENCES `audit_masters` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `documents_encounter_id_foreign` FOREIGN KEY (`encounter_id`) REFERENCES `form_encounters` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `documents_list_id_foreign` FOREIGN KEY (`list_id`) REFERENCES `lists` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `documents_owner_foreign` FOREIGN KEY (`owner`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `documents_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `documents`
+--
+
+LOCK TABLES `documents` WRITE;
+/*!40000 ALTER TABLE `documents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `documents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `facilities`
 --
 
@@ -1467,6 +1817,255 @@ LOCK TABLES `forms` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `icd10_dx_order_codes`
+--
+
+DROP TABLE IF EXISTS `icd10_dx_order_codes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `icd10_dx_order_codes` (
+  `dx_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `dx_code` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD10 Dx code',
+  `formatted_dx_code` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Formatted DX Code',
+  `valid_for_coding` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Is it valid for coding?',
+  `short_desc` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Short description of that code.',
+  `long_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Long description of that code.',
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is code Active? 0 -> No | 1 -> Yes',
+  `revision` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Revision of code.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`dx_id`),
+  KEY `icd10_dx_order_codes_formatted_dx_code_index` (`formatted_dx_code`),
+  KEY `icd10_dx_order_codes_active_index` (`active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `icd10_dx_order_codes`
+--
+
+LOCK TABLES `icd10_dx_order_codes` WRITE;
+/*!40000 ALTER TABLE `icd10_dx_order_codes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icd10_dx_order_codes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icd10_gem_dx_10_9s`
+--
+
+DROP TABLE IF EXISTS `icd10_gem_dx_10_9s`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `icd10_gem_dx_10_9s` (
+  `map_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `dx_icd10_source` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD 10 Source.',
+  `dx_icd9_target` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD 9 target.',
+  `flags` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Flags',
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is code active? 0 -> No  | 1 -> Yes',
+  `revision` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Revision of code.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`map_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `icd10_gem_dx_10_9s`
+--
+
+LOCK TABLES `icd10_gem_dx_10_9s` WRITE;
+/*!40000 ALTER TABLE `icd10_gem_dx_10_9s` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icd10_gem_dx_10_9s` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icd10_gem_dx_9_10s`
+--
+
+DROP TABLE IF EXISTS `icd10_gem_dx_9_10s`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `icd10_gem_dx_9_10s` (
+  `map_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `dx_icd9_source` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD 9 Source.',
+  `dx_icd10_target` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD 10 target.',
+  `flags` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Flags',
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is code active? 0 -> No  | 1 -> Yes',
+  `revision` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Revision of code.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`map_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `icd10_gem_dx_9_10s`
+--
+
+LOCK TABLES `icd10_gem_dx_9_10s` WRITE;
+/*!40000 ALTER TABLE `icd10_gem_dx_9_10s` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icd10_gem_dx_9_10s` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icd10_gem_pcs_10_9s`
+--
+
+DROP TABLE IF EXISTS `icd10_gem_pcs_10_9s`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `icd10_gem_pcs_10_9s` (
+  `map_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `pcs_icd10_source` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD 10 Source.',
+  `pcs_icd9_target` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD 9 target.',
+  `flags` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Flags',
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is code active? 0 -> No  | 1 -> Yes',
+  `revision` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Revision of code.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`map_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `icd10_gem_pcs_10_9s`
+--
+
+LOCK TABLES `icd10_gem_pcs_10_9s` WRITE;
+/*!40000 ALTER TABLE `icd10_gem_pcs_10_9s` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icd10_gem_pcs_10_9s` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icd10_gem_pcs_9_10s`
+--
+
+DROP TABLE IF EXISTS `icd10_gem_pcs_9_10s`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `icd10_gem_pcs_9_10s` (
+  `map_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `pcs_icd9_source` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD 9 Source.',
+  `pcs_icd10_target` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD 10 target.',
+  `flags` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Flags',
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is code active? 0 -> No  | 1 -> Yes',
+  `revision` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Revision of code.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`map_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `icd10_gem_pcs_9_10s`
+--
+
+LOCK TABLES `icd10_gem_pcs_9_10s` WRITE;
+/*!40000 ALTER TABLE `icd10_gem_pcs_9_10s` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icd10_gem_pcs_9_10s` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icd10_pcs_order_codes`
+--
+
+DROP TABLE IF EXISTS `icd10_pcs_order_codes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `icd10_pcs_order_codes` (
+  `pcs_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `pcs_code` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ICD10 PCS code',
+  `valid_for_coding` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Is it valid for coding?',
+  `short_desc` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Short description of that code.',
+  `long_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Long description of that code.',
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is code Active? 0 -> No | 1 -> Yes',
+  `revision` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Revision of code.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`pcs_id`),
+  KEY `icd10_pcs_order_codes_pcs_code_index` (`pcs_code`),
+  KEY `icd10_pcs_order_codes_active_index` (`active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `icd10_pcs_order_codes`
+--
+
+LOCK TABLES `icd10_pcs_order_codes` WRITE;
+/*!40000 ALTER TABLE `icd10_pcs_order_codes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icd10_pcs_order_codes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icd10_reimbr_dx_9_10s`
+--
+
+DROP TABLE IF EXISTS `icd10_reimbr_dx_9_10s`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `icd10_reimbr_dx_9_10s` (
+  `map_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `code` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Code.',
+  `code_cnt` tinyint(4) DEFAULT NULL,
+  `ICD9_01` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_02` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_03` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_04` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_05` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_06` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is code active? 0 -> No | 1 -> Yes',
+  `revision` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Code Revision',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`map_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `icd10_reimbr_dx_9_10s`
+--
+
+LOCK TABLES `icd10_reimbr_dx_9_10s` WRITE;
+/*!40000 ALTER TABLE `icd10_reimbr_dx_9_10s` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icd10_reimbr_dx_9_10s` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `icd10_reimbr_pcs_9_10s`
+--
+
+DROP TABLE IF EXISTS `icd10_reimbr_pcs_9_10s`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `icd10_reimbr_pcs_9_10s` (
+  `map_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `code` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Code.',
+  `code_cnt` tinyint(4) DEFAULT NULL,
+  `ICD9_01` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_02` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_03` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_04` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_05` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ICD9_06` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is code active? 0 -> No | 1 -> Yes',
+  `revision` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Code Revision',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`map_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `icd10_reimbr_pcs_9_10s`
+--
+
+LOCK TABLES `icd10_reimbr_pcs_9_10s` WRITE;
+/*!40000 ALTER TABLE `icd10_reimbr_pcs_9_10s` DISABLE KEYS */;
+/*!40000 ALTER TABLE `icd10_reimbr_pcs_9_10s` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `insurance_companies`
 --
 
@@ -1476,15 +2075,17 @@ DROP TABLE IF EXISTS `insurance_companies`;
 CREATE TABLE `insurance_companies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
   `addressID` int(10) unsigned NOT NULL COMMENT 'Foreign Key to addresses table.',
-  `attn` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Attn',
-  `cms_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'CMS Id',
-  `alt_cms_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Alternate CMS Id',
+  `x12_default_partner_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to x12_partners. The real clearinghouse partner key, and is related to cms_id',
+  `attn` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Attn. Eg : Billing Department',
+  `cms_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Insurance company identifier supplied by x12_default_partner published list.  NOT a UUID like an NPI or tax number.  Refer to Clearinghouse Payer List for value.',
   `ins_type_code` int(10) unsigned DEFAULT NULL COMMENT 'Payer Type ID',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `insurance_companies_addressid_foreign` (`addressID`),
-  CONSTRAINT `insurance_companies_addressid_foreign` FOREIGN KEY (`addressID`) REFERENCES `addresses` (`id`) ON DELETE CASCADE
+  KEY `insurance_companies_x12_default_partner_id_foreign` (`x12_default_partner_id`),
+  CONSTRAINT `insurance_companies_addressid_foreign` FOREIGN KEY (`addressID`) REFERENCES `addresses` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `insurance_companies_x12_default_partner_id_foreign` FOREIGN KEY (`x12_default_partner_id`) REFERENCES `x12_partners` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1581,6 +2182,82 @@ LOCK TABLES `libreehr_calendar_events` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `list_diagnoses`
+--
+
+DROP TABLE IF EXISTS `list_diagnoses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `list_diagnoses` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key. Autoincrement.',
+  `list_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to lists table.',
+  `diagnosis` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Diagnosis.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `list_diagnoses_list_id_foreign` (`list_id`),
+  CONSTRAINT `list_diagnoses_list_id_foreign` FOREIGN KEY (`list_id`) REFERENCES `lists` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `list_diagnoses`
+--
+
+LOCK TABLES `list_diagnoses` WRITE;
+/*!40000 ALTER TABLE `list_diagnoses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `list_diagnoses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lists`
+--
+
+DROP TABLE IF EXISTS `lists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lists` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement.',
+  `pid` int(10) unsigned NOT NULL COMMENT 'Foreign Key to patient_datas table.',
+  `user` int(10) unsigned NOT NULL COMMENT 'Foreign key to users table.',
+  `date` datetime NOT NULL COMMENT 'Timestamp when list created.',
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of list. Medications, Allergies, Surgery, Medical Problems, etc.',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Title of that particular type.',
+  `begdate` date NOT NULL COMMENT 'Date of beginning of issue.',
+  `enddate` date DEFAULT NULL COMMENT 'Date of end of this issue. Null if still active.',
+  `occurrence` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Occurence of this issue. Recurrence, First, Early Recurrence, Late Recurrence, and Acute on Chronic.',
+  `referredby` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Who referred this issue.',
+  `activity` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Still Active. 0 -> No | 1 -> Yes',
+  `comments` text COLLATE utf8mb4_unicode_ci COMMENT 'Comment about that issue.',
+  `outcome` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Outcome of issue.',
+  `destination` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'destination.',
+  `reaction` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Reaction of that issue.',
+  `external_allergyid` int(10) unsigned DEFAULT NULL COMMENT 'External ERX Id.',
+  `erx_source` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 -> LibreEHR | 1 -> External',
+  `erx_uploaded` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 -> Pending to NewCrop upload | 1 -> Uploaded to NewCrop',
+  `modifydate` datetime NOT NULL COMMENT 'Timestamp when issue modified.',
+  `severity_al` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Severity Level.',
+  `external_id` int(10) unsigned DEFAULT NULL COMMENT 'To hold an ID number from some other system, such as another EHR, an assigned ID that exists on a proprietary medical device or the like.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lists_pid_foreign` (`pid`),
+  KEY `lists_user_foreign` (`user`),
+  CONSTRAINT `lists_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE,
+  CONSTRAINT `lists_user_foreign` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lists`
+--
+
+LOCK TABLES `lists` WRITE;
+/*!40000 ALTER TABLE `lists` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lists` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -1592,7 +2269,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1076 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1601,8 +2278,38 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (155,'2014_10_12_000000_create_users_table',1),(156,'2014_10_12_100000_create_password_resets_table',1),(157,'2017_06_17_083322_create_addresses_table',1),(158,'2017_06_17_084322_create_user_secures_table',1),(159,'2017_06_17_085507_create_user_resedential_links_table',1),(160,'2017_06_17_094408_create_user_settings_table',1),(161,'2017_06_17_101539_create_user_addr_books_table',1),(162,'2017_06_17_103044_create_user_password_histories_table',1),(163,'2017_06_17_103947_create_user_communications_table',1),(164,'2017_06_17_111354_create_patient_datas_table',1),(165,'2017_06_17_111916_create_patient_face_sheets_table',1),(166,'2017_06_17_134316_create_patient_social_statistics_table',1),(167,'2017_06_17_134845_create_patient_employers_table',1),(168,'2017_06_17_135505_create_patient_contacts_table',1),(169,'2017_06_17_141531_create_patient_contact_links_table',1),(170,'2017_06_17_142000_create_patient_privacy_contacts_table',1),(171,'2017_06_17_142423_create_patient_contact_communications_table',1),(172,'2017_06_17_192428_create_amendments_table',1),(173,'2017_06_17_195953_create_amendment_histories_table',1),(174,'2017_06_19_193813_create_facilities_table',1),(175,'2017_06_19_202456_create_user_facility_links_table',1),(176,'2017_06_20_162245_create_libreehr_calendar_categories_table',1),(177,'2017_06_20_162307_create_libreehr_calendar_events_table',1),(178,'2017_06_20_172045_create_form_encounters_table',1),(179,'2017_06_20_172800_create_forms_table',1),(180,'2017_06_20_195925_create_form_aftercare_plans_table',1),(181,'2017_06_21_144239_create_form_ankleinjuries_table',1),(182,'2017_06_21_173702_create_form_annotate_diagrams_table',1),(183,'2017_06_22_011754_create_form_clinical_instructions_table',1),(184,'2017_06_22_012807_create_form_dictations_table',1),(185,'2017_06_22_014513_create_form_notes_table',1),(186,'2017_06_22_020654_create_form_painmaps_table',1),(187,'2017_06_22_172607_create_form_physical_exams_table',1),(188,'2017_06_22_181230_create_form_physical_exam_diagnoses_table',1),(189,'2017_06_22_184239_create_form_prior_auths_table',1),(190,'2017_06_22_190845_create_form_soaps_table',1),(191,'2017_06_23_162354_create_form_track_anything_types_table',1),(192,'2017_06_23_173954_create_form_track_anythings_table',1),(193,'2017_06_23_183725_create_form_track_anything_results_table',1),(194,'2017_06_23_194614_create_form_transfer_summaries_table',1),(195,'2017_06_24_032958_create_form_treatment_plans_table',1),(196,'2017_06_24_043121_create_form_vitals_table',1),(197,'2017_06_24_054151_create_form_misc_billing_options_table',1),(198,'2017_06_24_123245_create_form_bronchitis_table',1),(199,'2017_06_24_193504_create_form_reviewofs_table',1),(200,'2017_06_25_065204_create_form_ros_table',2),(201,'2017_06_27_170625_create_x12_partners_table',3),(202,'2017_06_28_162853_create_insurance_companies_table',4),(203,'2017_06_28_165512_create_insurance_numbers_table',5),(204,'2017_06_28_181202_create_pnotes_table',6);
+INSERT INTO `migrations` VALUES (1001,'2014_10_12_000000_create_users_table',1),(1002,'2014_10_12_100000_create_password_resets_table',1),(1003,'2017_06_17_083322_create_addresses_table',1),(1004,'2017_06_17_084322_create_user_secures_table',1),(1005,'2017_06_17_094408_create_user_settings_table',1),(1006,'2017_06_17_101539_create_user_addr_books_table',1),(1007,'2017_06_17_103044_create_user_password_histories_table',1),(1008,'2017_06_17_103947_create_user_communications_table',1),(1009,'2017_06_17_111354_create_patient_datas_table',1),(1010,'2017_06_17_111916_create_patient_face_sheets_table',1),(1011,'2017_06_17_134316_create_patient_social_statistics_table',1),(1012,'2017_06_17_134845_create_patient_employers_table',1),(1013,'2017_06_17_135505_create_patient_contacts_table',1),(1014,'2017_06_17_141531_create_patient_contact_links_table',1),(1015,'2017_06_17_142000_create_patient_privacy_contacts_table',1),(1016,'2017_06_17_142423_create_patient_contact_communications_table',1),(1017,'2017_06_17_192428_create_amendments_table',1),(1018,'2017_06_17_195953_create_amendment_histories_table',1),(1019,'2017_06_19_193813_create_facilities_table',1),(1020,'2017_06_19_202456_create_user_facility_links_table',1),(1021,'2017_06_20_162245_create_libreehr_calendar_categories_table',1),(1022,'2017_06_20_162307_create_libreehr_calendar_events_table',1),(1023,'2017_06_20_172045_create_form_encounters_table',1),(1024,'2017_06_20_172800_create_forms_table',1),(1025,'2017_06_20_195925_create_form_aftercare_plans_table',1),(1026,'2017_06_21_144239_create_form_ankleinjuries_table',1),(1027,'2017_06_21_173702_create_form_annotate_diagrams_table',1),(1028,'2017_06_22_011754_create_form_clinical_instructions_table',1),(1029,'2017_06_22_012807_create_form_dictations_table',1),(1030,'2017_06_22_014513_create_form_notes_table',1),(1031,'2017_06_22_020654_create_form_painmaps_table',1),(1032,'2017_06_22_172607_create_form_physical_exams_table',1),(1033,'2017_06_22_181230_create_form_physical_exam_diagnoses_table',1),(1034,'2017_06_22_184239_create_form_prior_auths_table',1),(1035,'2017_06_22_190845_create_form_soaps_table',1),(1036,'2017_06_23_162354_create_form_track_anything_types_table',1),(1037,'2017_06_23_173954_create_form_track_anythings_table',1),(1038,'2017_06_23_183725_create_form_track_anything_results_table',1),(1039,'2017_06_23_194614_create_form_transfer_summaries_table',1),(1040,'2017_06_24_032958_create_form_treatment_plans_table',1),(1041,'2017_06_24_043121_create_form_vitals_table',1),(1042,'2017_06_24_054151_create_form_misc_billing_options_table',1),(1043,'2017_06_24_123245_create_form_bronchitis_table',1),(1044,'2017_06_24_193504_create_form_reviewofs_table',1),(1045,'2017_06_25_065204_create_form_ros_table',1),(1046,'2017_06_27_170625_create_x12_partners_table',1),(1047,'2017_06_28_162853_create_insurance_companies_table',1),(1048,'2017_06_28_165512_create_insurance_numbers_table',1),(1049,'2017_06_28_181202_create_pnotes_table',1),(1050,'2017_06_29_201827_create_dated_reminders_table',1),(1051,'2017_06_29_210431_create_dated_reminder_links_table',1),(1052,'2017_07_01_102005_create_user_residential_links_table',1),(1053,'2017_07_04_195129_create_background_services_table',1),(1054,'2017_07_05_161121_create_batchcoms_table',1),(1055,'2017_07_05_170249_create_automatic_notifications_table',1),(1056,'2017_07_07_165115_create_categories_table',1),(1057,'2017_07_09_143758_create_tf_tags_table',1),(1058,'2017_07_09_161214_create_tf_filters_table',1),(1059,'2017_07_09_171607_create_tf_patient_tags_table',1),(1060,'2017_07_09_191453_create_icd10_dx_order_codes_table',1),(1061,'2017_07_09_194848_create_icd10_gem_dx_10_9s_table',1),(1062,'2017_07_09_200852_create_icd10_gem_dx_9_10s_table',1),(1063,'2017_07_09_201254_create_icd10_gem_pcs_10_9s_table',1),(1064,'2017_07_09_201827_create_icd10_gem_pcs_9_10s_table',1),(1065,'2017_07_09_202332_create_icd10_pcs_order_codes_table',1),(1066,'2017_07_09_203018_create_icd10_reimbr_dx_9_10s_table',1),(1067,'2017_07_09_204819_create_icd10_reimbr_pcs_9_10s_table',1),(1068,'2017_07_15_143915_create_lists_table',1),(1069,'2017_07_15_180535_create_audit_masters_table',1),(1070,'2017_07_15_180547_create_audit_details_table',1),(1071,'2017_07_15_180557_create_documents_table',1),(1072,'2017_07_15_181604_create_categories_to_documents_table',2),(1073,'2017_07_15_183711_create_list_diagnoses_table',3),(1074,'2017_07_15_190446_create_chart_trackers_table',4),(1075,'2017_07_15_191158_create_office_notes_table',5);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `office_notes`
+--
+
+DROP TABLE IF EXISTS `office_notes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `office_notes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `user` int(10) unsigned NOT NULL COMMENT 'Foreign Key to users table.',
+  `date` datetime NOT NULL COMMENT 'Timestamp when note is created.',
+  `body` text COLLATE utf8mb4_unicode_ci COMMENT 'Note content',
+  `activity` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is note active? 0 -> No | 1 -> Yes',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `office_notes_user_foreign` (`user`),
+  CONSTRAINT `office_notes_user_foreign` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `office_notes`
+--
+
+LOCK TABLES `office_notes` WRITE;
+/*!40000 ALTER TABLE `office_notes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `office_notes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1945,6 +2652,117 @@ LOCK TABLES `pnotes` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tf_filters`
+--
+
+DROP TABLE IF EXISTS `tf_filters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tf_filters` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Auto-increment',
+  `created_by` int(10) unsigned NOT NULL COMMENT 'User who created this filter. Foreign key to users table.',
+  `updated_by` int(10) unsigned NOT NULL COMMENT 'User who updated this filter. Foreign key to users table.',
+  `requesting_action` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 -> Allow | 0 -> Deny',
+  `requesting_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 -> Group | 0 -> User',
+  `requesting_entity` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Group name or username of the source',
+  `object_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 -> Tag | 1 -> Patient. Filter object type',
+  `note` text COLLATE utf8mb4_unicode_ci COMMENT 'Note about filter.',
+  `gacl_aro` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Gacl Field',
+  `gacl_acl` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Gacl Field',
+  `effective_datetime` datetime NOT NULL COMMENT 'Timestamp when filter is active.',
+  `expiration_datetime` datetime NOT NULL COMMENT 'Timestamp till filter is active.',
+  `priority` int(10) unsigned NOT NULL COMMENT 'Priority of filter.',
+  `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is filter deleted. 0 -> No  | 1 -> Yes',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tf_filters_created_by_foreign` (`created_by`),
+  KEY `tf_filters_updated_by_foreign` (`updated_by`),
+  CONSTRAINT `tf_filters_created_by_foreign` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `tf_filters_updated_by_foreign` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tf_filters`
+--
+
+LOCK TABLES `tf_filters` WRITE;
+/*!40000 ALTER TABLE `tf_filters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tf_filters` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tf_patient_tags`
+--
+
+DROP TABLE IF EXISTS `tf_patient_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tf_patient_tags` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `created_by` int(10) unsigned NOT NULL COMMENT 'User who created this tag. Foreign key to users table.',
+  `updated_by` int(10) unsigned NOT NULL COMMENT 'User who updated this tag. Foreign key to users table.',
+  `tag_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to tf_tags table.',
+  `pid` int(10) unsigned NOT NULL COMMENT 'Foreign key to patient_datas table.',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 -> In-active | 1 -> active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tf_patient_tags_created_by_foreign` (`created_by`),
+  KEY `tf_patient_tags_updated_by_foreign` (`updated_by`),
+  KEY `tf_patient_tags_tag_id_foreign` (`tag_id`),
+  KEY `tf_patient_tags_pid_foreign` (`pid`),
+  CONSTRAINT `tf_patient_tags_created_by_foreign` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `tf_patient_tags_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE,
+  CONSTRAINT `tf_patient_tags_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `tf_tags` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `tf_patient_tags_updated_by_foreign` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tf_patient_tags`
+--
+
+LOCK TABLES `tf_patient_tags` WRITE;
+/*!40000 ALTER TABLE `tf_patient_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tf_patient_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tf_tags`
+--
+
+DROP TABLE IF EXISTS `tf_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tf_tags` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincremnet',
+  `created_by` int(10) unsigned NOT NULL COMMENT 'User who created this tag. Foreign key to users table.',
+  `updated_by` int(10) unsigned NOT NULL COMMENT 'User who updated this tag. Foreign key to users table.',
+  `tag_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of tag.',
+  `tag_color` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Color used to denote this tag on layout.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tf_tags_created_by_foreign` (`created_by`),
+  KEY `tf_tags_updated_by_foreign` (`updated_by`),
+  KEY `tf_tags_tag_name_index` (`tag_name`),
+  CONSTRAINT `tf_tags_created_by_foreign` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `tf_tags_updated_by_foreign` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tf_tags`
+--
+
+LOCK TABLES `tf_tags` WRITE;
+/*!40000 ALTER TABLE `tf_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tf_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_addr_books`
 --
 
@@ -2071,13 +2889,13 @@ LOCK TABLES `user_password_histories` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_resedential_links`
+-- Table structure for table `user_residential_links`
 --
 
-DROP TABLE IF EXISTS `user_resedential_links`;
+DROP TABLE IF EXISTS `user_residential_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_resedential_links` (
+CREATE TABLE `user_residential_links` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement.',
   `addressID` int(10) unsigned NOT NULL COMMENT 'To create link with addresses table.',
   `userID` int(10) unsigned NOT NULL COMMENT 'To create link with user_infos table.',
@@ -2085,20 +2903,20 @@ CREATE TABLE `user_resedential_links` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_resedential_links_addressid_foreign` (`addressID`),
-  KEY `user_resedential_links_userid_foreign` (`userID`),
-  CONSTRAINT `user_resedential_links_addressid_foreign` FOREIGN KEY (`addressID`) REFERENCES `addresses` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `user_resedential_links_userid_foreign` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  KEY `user_residential_links_addressid_foreign` (`addressID`),
+  KEY `user_residential_links_userid_foreign` (`userID`),
+  CONSTRAINT `user_residential_links_addressid_foreign` FOREIGN KEY (`addressID`) REFERENCES `addresses` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_residential_links_userid_foreign` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_resedential_links`
+-- Dumping data for table `user_residential_links`
 --
 
-LOCK TABLES `user_resedential_links` WRITE;
-/*!40000 ALTER TABLE `user_resedential_links` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_resedential_links` ENABLE KEYS */;
+LOCK TABLES `user_residential_links` WRITE;
+/*!40000 ALTER TABLE `user_residential_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_residential_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2258,4 +3076,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-29  8:38:42
+-- Dump completed on 2017-07-16  0:58:48
