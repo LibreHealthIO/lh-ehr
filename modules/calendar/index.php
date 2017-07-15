@@ -17,6 +17,7 @@ require('includes/session.php');
   <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
+  <script src='js.cookie.js'></script>
 
   <script type="text/javascript" src="../../library/dialog.js"></script>
 </head>
@@ -137,7 +138,8 @@ require('includes/session.php');
         navLinks: true,
         selectable: true,
         //selectHelper: true,
-        defaultView: '<?php echo $GLOBALS['calendar_view_type'] ?>',
+        defaultDate: Cookies.get('fullCalendarCurrentDate') || null,   // set last selected date and view when switching providers or facilities
+        defaultView: Cookies.get('fullCalendarCurrentView') || '<?php echo $GLOBALS['calendar_view_type'] ?>',
         defaultTimedEventDuration: '00:10:00',
         minTime: '<?php echo $GLOBALS['schedule_start'] ?>:00:00',
         maxTime: '<?php echo $GLOBALS['schedule_end'] + 1 ?>:00:00',  // adding 1 to make ending hour as inclusive
@@ -199,6 +201,12 @@ require('includes/session.php');
           var pccattype = (calEvent['pc_pid'] && calEvent['pc_pid'] > 0) ? 0 :  1;
           console.log(pccattype);
           dlgopen('../../interface/main/calendar/add_edit_event.php?date='+ calEvent.start.format('YYYYMMDD') +'&eid=' + calEvent.id +'&prov=' + pccattype, '_blank', 775, 375);
+        },
+        viewRender: function(view) {
+            // Remember last selected date and view
+            var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
+            Cookies.set('fullCalendarCurrentDate', view.intervalStart.format(), {expires: inFifteenMinutes, path: ''});
+            Cookies.set('fullCalendarCurrentView', view.name, {expires: inFifteenMinutes, path: ''});
         }
       })
       
