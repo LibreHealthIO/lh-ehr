@@ -5,7 +5,7 @@ require_once('../../../library/appointments.inc.php');
 
 $events = array();
 
-$fetchedEvents = fetchAllEvents('0000-00-00', '2040-01-01');
+$fetchedEvents = fetchAllEvents($_POST['start'], $_POST['end']);
 
 foreach($fetchedEvents as $event) {
   
