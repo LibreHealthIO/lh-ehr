@@ -229,18 +229,18 @@ function account($doc,$r)
             $doc->createTextNode( $erxSiteID['state'] )
         );
         $AccountAddress->appendChild( $state );
-        $jasonbigzip=$erxSiteID['postal_code'];
-    $jasonbigzip=preg_replace('/[^0-9]/','',$jasonbigzip);
-    if(strlen($jasonbigzip) >=5){
-        $jasonzip=substr($jasonbigzip,0,5);
-        $zip4=substr($jasonbigzip,5,4);
+        $jsonbigzip=$erxSiteID['postal_code'];
+    $jsonbigzip=preg_replace('/[^0-9]/','',$jsonbigzip);
+    if(strlen($jsonbigzip) >=5){
+        $jsonzip=substr($jsonbigzip,0,5);
+        $zip4=substr($jsonbigzip,5,4);
     }
     else{
-        $msg = validation(xl('Facility Zip'),$jasonzip,$msg);
+        $msg = validation(xl('Facility Zip'),$jsonzip,$msg);
     }
         $zip = $doc->createElement( "zip" );
         $zip->appendChild(
-            $doc->createTextNode( $jasonzip )
+            $doc->createTextNode( $jsonzip )
         );
         $AccountAddress->appendChild( $zip );
     if(strlen($zip4)==4){
@@ -278,6 +278,7 @@ function account($doc,$r)
 function location($doc,$r)
 {
     global $msg;
+    $jsonzip="";
     $userRole=sqlQuery("SELECT * FROM users AS u LEFT JOIN facility AS f ON f.id=u.facility_id WHERE u.username=?",array($_SESSION['authUser']));
     $b = $doc->createElement( "Location" );
     $b->setAttribute('ID',$userRole['id']);
@@ -312,18 +313,18 @@ function location($doc,$r)
         );
         $LocationAddress->appendChild($state);
         }
-    $jasonbigzip=$userRole['postal_code'];
-    $jasonbigzip=preg_replace('/[^0-9]/','',$jasonbigzip);
-    if(strlen($jasonbigzip) >=5){
-        $jasonzip=substr($jasonbigzip,0,5);
-        $zip4=substr($jasonbigzip,5,4);
+    $jsonbigzip=$userRole['postal_code'];
+    $jsonbigzip=preg_replace('/[^0-9]/','',$jsonbigzip);
+    if(strlen($jsonbigzip) >=5){
+        $jsonzip=substr($jsonbigzip,0,5);
+        $zip4=substr($jsonbigzip,5,4);
     }
     else{
-        $msg = validation(xl('Facility Zip'),$jasonzip,$msg);
+        $msg = validation(xl('Facility Zip'),$jsonzip,$msg);
     }
         $zip = $doc->createElement( "zip" );
         $zip->appendChild(
-            $doc->createTextNode( $jasonzip )
+            $doc->createTextNode( $jsonzip )
         );
         $LocationAddress->appendChild( $zip );
     if(strlen($zip4)==4){
@@ -784,7 +785,7 @@ function PatientMedication($doc,$r,$pid,$med_limit)
             $b->appendChild( $sig );
             $dispenseNumber = $doc->createElement( "dispenseNumber" );
             $dispenseNumber->appendChild(
-                $doc->createTextNode( $prec['quantity'] )
+                $doc->createTextNode( $prec['quantity'] )  // THIS CAN't BE RIGHT tdm $prec is outside of scope
             );
             $b->appendChild( $dispenseNumber );
             $sig = $doc->createElement( "sig" );
@@ -850,6 +851,7 @@ function PatientFreeformAllergy($doc,$r,$pid)
     return $allergyId;
 }
 
+//Get insco with Self, LIMIT to first 3 to avoid erX overflow
 function PatientFreeformHealthplans($doc, $r, $pid) {
     $resource = sqlStatement('SELECT
             `ins`.`name`
@@ -862,9 +864,12 @@ function PatientFreeformHealthplans($doc, $r, $pid) {
             WHERE `id`.`pid` = ?
                 AND `id`.`subscriber_relationship` = \'self\'
                 AND `id`.`provider` > 0
+                AND `id`.`inactive` = 0
             ORDER BY `id`.`date` DESC
+            LIMIT 3
         ) AS `ins`
-        GROUP BY `ins`.`type`;',
+        GROUP BY `ins`.`type`
+        LIMIT 3;',
         array($pid)
     );
 
