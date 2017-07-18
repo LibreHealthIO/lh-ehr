@@ -146,6 +146,8 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'floating_message_alerts',
                                'floating_message_alerts_timer',
                                'floating_message_alerts_allergies',
+                               'ubtop_margin_default',
+                               'ubleft_margin_default',
                                'cms_top_margin_default',
                                'cms_left_margin_default');
 
@@ -1261,7 +1263,19 @@ $GLOBALS_METADATA = array(
 
   // Claim Tab
   //
-  'Claim' => array(
+  'Claims' => array(
+  
+    'claim_type' => array(
+     xl('Insurance Claim Type'),
+        array(
+            '0' => xl('CMS 1500'),
+            '1' => xl('UB-04'),
+            '2' => xl('Both')
+        ),
+        '0',                              // default = CMS 1500
+        xl('Insurance Claim Type CMS 1500 , UB-04 or Both Displayed in the Billing Screen'),
+    ),
+ 
     'preprinted_cms_1500' => array(
       xl('Prints the CMS 1500 on the Preprinted form.'),
        'bool',                          // data type
@@ -1313,6 +1327,79 @@ $GLOBALS_METADATA = array(
        '0',                             // default
       xl('This specifies whether to include date in Box 31.')
     ),
+
+    'ubtop_margin_default' => array(
+      xl('Default top print margin for UB-04'),
+      'num', // data type
+      '07', // default
+      xl('This is the default top print margin for UB-04. It will adjust the final printed output up or down.')
+    ),
+
+    'ubleft_margin_default' => array(
+      xl('Default left print margin for UB-04'),
+      'num', // data type
+      '14', // default
+      xl('his is the default left print margin for UB-04. It will adjust the final printed output left or right.')
+    ),
+
+    'default_bill_type' => array(
+      xl('Default Bill Type Box 4'),
+      'text', // data type
+      '0111', // default
+      xl('This Default entry must start with a zero followed by three numbers. It will be used in Box 4 of the UB04')
+    ),
+
+     'admit_default_type' => array(
+      xl('Admission Type Box 14'),
+      'list', // data type
+      '',     // default
+      xl('This entry is for the Admission Type it needs to be a single digit. It will be used in Box 14 of the UB04'),
+      'ub_admit_type'
+    ),
+
+     'admit_default_source' => array(
+      xl('Admission Source Box 15'),
+      'list', // data type
+      '',     // default
+      xl('This entry is for the Admission Source it needs to be 2 digits (example 01, 12 etc). It will be used in Box 15 of the UB04'),
+      'ub_admit_source'
+    ),
+
+     'discharge_status_default' => array(
+      xl('Discharge Status Box 17'),
+      'text', // data type
+      '', // default
+      xl('This entry is for the Discharge Status it needs to be 2 digits (example 02, 11 etc). It will be used in Box 17 of the UB04')
+    ),
+
+     'attending_id' => array(
+      xl('Attending Physician Box 76'),
+      'provider', // data type
+      '',     // default
+      xl('Attending Physician Box 76 of the UB04')
+    ),
+
+     'operating_id' => array(
+      xl('Operating Physician Box 77'),
+      'provider', // data type
+      '',     // default
+      xl('Operating Physician Box 77 of the UB04')
+    ),
+
+    'other1_id' => array(
+      xl('Other Physician #1 Box 78'),
+      'provider', // data type
+      '',     // default
+      xl('Other Physician #1 Box 78 of the UB04')
+    ),
+
+    'other2_id' => array(
+      xl('Other Physician #2 Box 79'),
+      'provider', // data type
+      '',     // default
+      xl('Other Physician #2 Box 79 of the UB04')
+    ),
+    
   ),
 
 
