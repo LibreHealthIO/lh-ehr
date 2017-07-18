@@ -24,6 +24,8 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreHealth EHR 
+ * @author  Art Eaton <art@suncoastconnection.com>  (MIPS/MACRA Refactor)
+ * @author  Bryan Lee <bryan@suncoastconnection.com>
  * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
@@ -166,6 +168,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <table>
 
  <thead>
+  <th align='left'>
+   <?php echo htmlspecialchars( xl('Delete'), ENT_NOQUOTES); ?>
+  </th>
+  <th align='left'>
+   <?php echo htmlspecialchars( xl('Rename'), ENT_NOQUOTES); ?>
+  </th>
   <th align='center'>
    <?php echo htmlspecialchars( xl('Title'), ENT_NOQUOTES); ?>
   </th>
@@ -186,45 +194,25 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  while ($row = sqlFetchArray($res)) {
 
   // Figure out the title and link
-  if ($row['type'] == "cqm") {
-    if (!$GLOBALS['enable_cqm']) continue;
-    $type_title = xl('Clinical Quality Measures (CQM)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
+  if ($row['type'] == "pqrs_individual_2016") {
+    if (!$GLOBALS['enable_pqrs']) continue;
+    $type_title = xl('2016 PQRS Individual Measures');
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
-  else if ($row['type'] == "cqm_2011") {
-    if (!$GLOBALS['enable_cqm']) continue;
-    $type_title = xl('2011 Clinical Quality Measures (CQM)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
+  else if ($row['type'] == "pqrs_groups_2016") {
+    if (!$GLOBALS['enable_pqrs']) continue;
+    $type_title = xl('2016 PQRS Group Measures');
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
-  else if ($row['type'] == "cqm_2014") {
-    if (!$GLOBALS['enable_cqm']) continue;
-    $type_title = xl('2014 Clinical Quality Measures (CQM)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
+  else if ($row['type'] == "mips_2017" ) {
+    if (!$GLOBALS['enable_pqrs']) continue;
+    $type_title = xl('2017 MIPS Measures');
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
-  else if ($row['type'] == "amc") {
-    if (!$GLOBALS['enable_amc']) continue;
-    $type_title = xl('Automated Measure Calculations (AMC)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "amc_2011") {
-    if (!$GLOBALS['enable_amc']) continue;
-    $type_title = xl('2011 Automated Measure Calculations (AMC)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "amc_2014") {
-    if (!$GLOBALS['enable_amc']) continue;
-    $type_title = xl('2014 Automated Measure Calculations (AMC)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "amc_2014_stage1") {
-    if (!$GLOBALS['enable_amc']) continue;
-    $type_title = xl('2014 Automated Measure Calculations (AMC) - Stage I');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "amc_2014_stage2") {
-    if (!$GLOBALS['enable_amc']) continue;
-    $type_title = xl('2014 Automated Measure Calculations (AMC) - Stage II');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
+  else if ($row['type'] == "mips" ) {
+    if (!$GLOBALS['enable_pqrs']) continue;
+    $type_title = xl('MIPS Measures');
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
   else if ($row['type'] == "process_reminders") {
     if (!$GLOBALS['enable_cdr']) continue;
@@ -239,25 +227,42 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   else if ($row['type'] == "passive_alert") {
     if (!$GLOBALS['enable_cdr']) continue;
     $type_title = xl('Standard Measures (Passive Alerts)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
   else if ($row['type'] == "active_alert") {
     if (!$GLOBALS['enable_cdr']) continue;
     $type_title = xl('Standard Measures (Active Alerts)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
   else if ($row['type'] == "patient_reminder") {
     if (!$GLOBALS['enable_cdr']) continue;
     $type_title = xl('Standard Measures (Patient Reminders)');
-    $link="cqm.php?report_id=" . attr($row["report_id"]) . "&back=list";
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
   else {
     // Not identified, so give an unknown title
     $type_title = xl('Unknown') . "-" . $row['type'];
     $link="";
   }
+
+    // Reset the title based on a having a title in the row
+  if ( $row['title'] != "0" ) {
+    $type_title = xl($row['title']);
+  }
+
 ?>
  <tr>
+      <td>
+         <a id='delete_button' href='#' class='css_button_small'
+           onclick='deleteReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
+         <span>Delete</span></a>
+      </td>
+      <td>
+         <a id='rename_button' href='#' class='css_button_small'
+           onclick='renameReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
+         <span>Rename</span></a>
+      </td>
+
     <?php if ($row["progress"] == "complete") { ?>
       <td align='center'><a href='<?php echo $link; ?>' onclick='top.restoreSession()'><?php echo text($type_title); ?></a></td>
     <?php } else { ?>
@@ -297,6 +302,53 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
 </script>
+<!--  Stuff for deleting and renaming reports -->
+<script type='text/javascript'>
+function manageReport(report_id,action,newname){
+	console.log('manageReport:  report_id= ' + report_id + '  action= ' + action + ' newname= ' +newname);
+        $.ajax({
+                type: 'POST',
+                url: '<?php echo $GLOBALS['webroot']; ?>/library/classes/rulesets/PQRS/PQRSReportManager.php',
+                dataType: 'text',
+                data: {
+                        report_id: report_id,
+                        action: action,
+                        report_new_name: newname,
+                },
+                success: function(data, status, xHR) {
+                        if(data == 'SUCCESS') {
+                                console.log('Update succeeded.');
+                        } else {
+                                console.log('Update failed: '+ data);
+                        }
+                },
+                error: function(xHR, status, error) {
+                        console.log('Status: ' + status + ', Error: ' + error);
+                }
+        });
+}
 
+function deleteReport(report_id){
+    var answer = confirm('Are you sure you want to delete this report?');
+    if (answer == true) {
+//        console.log('Delete Report -- report_id: ' + report_id );
+	manageReport(report_id,'DELETE','deleted');
+    }
+}
+
+function renameReport(report_id){
+    var newname = prompt('New name for this report?');
+    console.log('Rename Report -- prompt got: ' + newname);
+//    if (newname == "")  {
+//        confirm('You didn\'t supply a new name.');
+//    } else {
+        console.log('Rename Report -- report_id: ' + report_id + ', New Name: ' + newname);
+	manageReport(report_id,'RENAME',newname);
+//    }
+
+top.restoreSession();  $("#theform").submit();
+}
+
+</script>
 </html>
 

@@ -3037,5 +3037,58 @@ if ( function_exists( 'do_action' ) ) {
         'user_specific_globals' => $USER_SPECIFIC_GLOBALS,
         'user_specific_tabs' => $USER_SPECIFIC_TABS ] );
 }
+  // PQRS (Physician Quality Reporting System)
+  // 2016-02-02 leebc -- Globals configuration section for PQRS
+  // 2016-03-23 leebc -- Added configuration values for registry for XML
 
+  'PQRS' => array(
+
+    'enable_pqrs' => array(
+      xl('Enable Physician Quality Reporting System (PQRS/MIPS)'),
+      'bool',                           // data type
+      '1',                               // default
+      xl('Enable Physician Quality Reporting System (PQRS/MIPS)')
+    ),
+
+    'pqrs_demosystem' => array(
+      xl('This is a PQRS demo system'),
+      'bool',                           // data type
+      '0',                               // default
+      xl('Show demo system "Save/Load database presets" menu')
+    ),
+
+    'pqrs_creator' => array(
+      xl('PQRS Creator'),		// for XML generation
+      'text',                           // data type
+      'FIXME creator FIXME!!!',                     // default
+      xl('PQRS Creator Name')
+    ),
+
+    'pqrs_registry_name' => array(
+      xl('PQRS Registry Name'),		// for XML generation
+      'text',                           // data type
+      'FIXME registry name FIXME!!!',               // default
+      xl('PQRS Registry Name')
+    ),
+
+    'pqrs_registry_id' => array(
+      xl('PQRS Registry ID'),		// for XML generation
+      'text',                           // data type
+      'FIXME registry id FIXME!!!',                 // default
+      xl('PQRS Registry ID')
+    ),
+
+    'pqrs_vendor_unique_id' => array(
+      xl('PQRS VENDOR UNIQUE ID'),	// for XML generation
+      'text',                           // data type
+      'FIXME vendor unique id FIXME!!!',            // default
+      xl('PQRS Registry Name')
+    ),
+
+  ),
+
+   
+
+   
+);
 ?>
