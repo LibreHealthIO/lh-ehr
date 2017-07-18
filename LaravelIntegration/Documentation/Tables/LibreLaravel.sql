@@ -467,6 +467,203 @@ LOCK TABLES `documents` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `drug_inventories`
+--
+
+DROP TABLE IF EXISTS `drug_inventories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `drug_inventories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement.',
+  `drug_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to drugs table.',
+  `warehouse_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to product_warehouses table.',
+  `lot_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'LOT Number. Unique Number for drugs.',
+  `expiration` date DEFAULT NULL COMMENT 'Expiry Date of Drug.',
+  `manufacturer` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Manufacturer of Drug.',
+  `on_hand` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Count of drug already in inventory.',
+  `vendor_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Vendor.',
+  `destroy_date` date DEFAULT NULL COMMENT 'Date when drug is destroyed.',
+  `destroy_method` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Method used to destroy drug.',
+  `destroy_witness` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Witness at the time of destruction.',
+  `destroy_notes` text COLLATE utf8mb4_unicode_ci COMMENT 'Extra information.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `drug_inventories_lot_number_unique` (`lot_number`),
+  KEY `drug_inventories_drug_id_foreign` (`drug_id`),
+  KEY `drug_inventories_warehouse_id_foreign` (`warehouse_id`),
+  KEY `drug_inventories_vendor_id_index` (`vendor_id`),
+  CONSTRAINT `drug_inventories_drug_id_foreign` FOREIGN KEY (`drug_id`) REFERENCES `drugs` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `drug_inventories_warehouse_id_foreign` FOREIGN KEY (`warehouse_id`) REFERENCES `product_warehouses` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `drug_inventories`
+--
+
+LOCK TABLES `drug_inventories` WRITE;
+/*!40000 ALTER TABLE `drug_inventories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `drug_inventories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `drug_sales`
+--
+
+DROP TABLE IF EXISTS `drug_sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `drug_sales` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `drug_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to drugs table.',
+  `inventory_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to drug_inventories table.',
+  `prescription_id` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to prescriptions table.',
+  `pid` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to patient_datas table.',
+  `encounter` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to form_encounters table.',
+  `user` int(10) unsigned NOT NULL COMMENT 'Foreign key to users table.',
+  `distributor_id` int(10) unsigned DEFAULT NULL COMMENT 'Distributor of drug. Foreign key to users table.',
+  `sale_date` date NOT NULL COMMENT 'Date when drug is sold.',
+  `quantity` int(10) unsigned NOT NULL,
+  `fee` decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT 'Fees of Drugs.',
+  `billed` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the sale is posted to accounting? 0 -> No | 1 -> Yes',
+  `notes` text COLLATE utf8mb4_unicode_ci COMMENT 'Notes',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `drug_sales_drug_id_foreign` (`drug_id`),
+  KEY `drug_sales_inventory_id_foreign` (`inventory_id`),
+  KEY `drug_sales_prescription_id_foreign` (`prescription_id`),
+  KEY `drug_sales_pid_foreign` (`pid`),
+  KEY `drug_sales_encounter_foreign` (`encounter`),
+  KEY `drug_sales_user_foreign` (`user`),
+  KEY `drug_sales_distributor_id_foreign` (`distributor_id`),
+  CONSTRAINT `drug_sales_distributor_id_foreign` FOREIGN KEY (`distributor_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `drug_sales_drug_id_foreign` FOREIGN KEY (`drug_id`) REFERENCES `drugs` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `drug_sales_encounter_foreign` FOREIGN KEY (`encounter`) REFERENCES `form_encounters` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `drug_sales_inventory_id_foreign` FOREIGN KEY (`inventory_id`) REFERENCES `drug_inventories` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `drug_sales_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE,
+  CONSTRAINT `drug_sales_prescription_id_foreign` FOREIGN KEY (`prescription_id`) REFERENCES `prescriptions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `drug_sales_user_foreign` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `drug_sales`
+--
+
+LOCK TABLES `drug_sales` WRITE;
+/*!40000 ALTER TABLE `drug_sales` DISABLE KEYS */;
+/*!40000 ALTER TABLE `drug_sales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `drug_templates`
+--
+
+DROP TABLE IF EXISTS `drug_templates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `drug_templates` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `drug_id` int(10) unsigned NOT NULL COMMENT 'Foreign Key to drugs table.',
+  `selector` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Selector. Name of Template.',
+  `dosage` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Schedule.',
+  `period` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Interval',
+  `quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Quantity',
+  `refills` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Refills.',
+  `taxrates` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Tax Rate.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `drug_templates_selector_unique` (`selector`),
+  KEY `drug_templates_drug_id_foreign` (`drug_id`),
+  CONSTRAINT `drug_templates_drug_id_foreign` FOREIGN KEY (`drug_id`) REFERENCES `drugs` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `drug_templates`
+--
+
+LOCK TABLES `drug_templates` WRITE;
+/*!40000 ALTER TABLE `drug_templates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `drug_templates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `drugs`
+--
+
+DROP TABLE IF EXISTS `drugs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `drugs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `related_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Codes',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of Drug.',
+  `ndc_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'NDC Number',
+  `on_order` int(10) unsigned NOT NULL COMMENT 'On Order.',
+  `reorder_point` double(8,2) NOT NULL DEFAULT '0.00' COMMENT 'Min Global (In Form)',
+  `max_level` double(8,2) NOT NULL DEFAULT '0.00' COMMENT 'Max Global (In Form)',
+  `reactions` text COLLATE utf8mb4_unicode_ci COMMENT 'Reaction of drug.',
+  `cyp_factor` double(8,2) NOT NULL COMMENT 'Quantity representing a years supply',
+  `active` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is Drug active? 0 -> No | 1 -> Yes',
+  `allow_combining` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Allow filling an order from multiple lots? 0 -> No | 1 -> Yes',
+  `allow_multiple` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Allow multiple lots at one warehouse? 0 -> No | 1 -> Yes',
+  `drug_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Drug Code',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `drugs_drug_code_index` (`drug_code`),
+  KEY `drugs_related_code_index` (`related_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `drugs`
+--
+
+LOCK TABLES `drugs` WRITE;
+/*!40000 ALTER TABLE `drugs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `drugs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `extended_logs`
+--
+
+DROP TABLE IF EXISTS `extended_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `extended_logs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `pid` int(10) unsigned NOT NULL COMMENT 'Foreign Key to patient_datas table.',
+  `user` int(10) unsigned NOT NULL COMMENT 'Foreign Key to users table.',
+  `date` datetime NOT NULL COMMENT 'Date when disclosure recorded.',
+  `event` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of Disclosure',
+  `recipient` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Recipient of disclosure.',
+  `description` text COLLATE utf8mb4_unicode_ci COMMENT 'Description of Disclosure.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `extended_logs_pid_foreign` (`pid`),
+  KEY `extended_logs_user_foreign` (`user`),
+  CONSTRAINT `extended_logs_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE,
+  CONSTRAINT `extended_logs_user_foreign` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `extended_logs`
+--
+
+LOCK TABLES `extended_logs` WRITE;
+/*!40000 ALTER TABLE `extended_logs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `extended_logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `facilities`
 --
 
@@ -2269,7 +2466,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1076 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1084 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2278,7 +2475,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1001,'2014_10_12_000000_create_users_table',1),(1002,'2014_10_12_100000_create_password_resets_table',1),(1003,'2017_06_17_083322_create_addresses_table',1),(1004,'2017_06_17_084322_create_user_secures_table',1),(1005,'2017_06_17_094408_create_user_settings_table',1),(1006,'2017_06_17_101539_create_user_addr_books_table',1),(1007,'2017_06_17_103044_create_user_password_histories_table',1),(1008,'2017_06_17_103947_create_user_communications_table',1),(1009,'2017_06_17_111354_create_patient_datas_table',1),(1010,'2017_06_17_111916_create_patient_face_sheets_table',1),(1011,'2017_06_17_134316_create_patient_social_statistics_table',1),(1012,'2017_06_17_134845_create_patient_employers_table',1),(1013,'2017_06_17_135505_create_patient_contacts_table',1),(1014,'2017_06_17_141531_create_patient_contact_links_table',1),(1015,'2017_06_17_142000_create_patient_privacy_contacts_table',1),(1016,'2017_06_17_142423_create_patient_contact_communications_table',1),(1017,'2017_06_17_192428_create_amendments_table',1),(1018,'2017_06_17_195953_create_amendment_histories_table',1),(1019,'2017_06_19_193813_create_facilities_table',1),(1020,'2017_06_19_202456_create_user_facility_links_table',1),(1021,'2017_06_20_162245_create_libreehr_calendar_categories_table',1),(1022,'2017_06_20_162307_create_libreehr_calendar_events_table',1),(1023,'2017_06_20_172045_create_form_encounters_table',1),(1024,'2017_06_20_172800_create_forms_table',1),(1025,'2017_06_20_195925_create_form_aftercare_plans_table',1),(1026,'2017_06_21_144239_create_form_ankleinjuries_table',1),(1027,'2017_06_21_173702_create_form_annotate_diagrams_table',1),(1028,'2017_06_22_011754_create_form_clinical_instructions_table',1),(1029,'2017_06_22_012807_create_form_dictations_table',1),(1030,'2017_06_22_014513_create_form_notes_table',1),(1031,'2017_06_22_020654_create_form_painmaps_table',1),(1032,'2017_06_22_172607_create_form_physical_exams_table',1),(1033,'2017_06_22_181230_create_form_physical_exam_diagnoses_table',1),(1034,'2017_06_22_184239_create_form_prior_auths_table',1),(1035,'2017_06_22_190845_create_form_soaps_table',1),(1036,'2017_06_23_162354_create_form_track_anything_types_table',1),(1037,'2017_06_23_173954_create_form_track_anythings_table',1),(1038,'2017_06_23_183725_create_form_track_anything_results_table',1),(1039,'2017_06_23_194614_create_form_transfer_summaries_table',1),(1040,'2017_06_24_032958_create_form_treatment_plans_table',1),(1041,'2017_06_24_043121_create_form_vitals_table',1),(1042,'2017_06_24_054151_create_form_misc_billing_options_table',1),(1043,'2017_06_24_123245_create_form_bronchitis_table',1),(1044,'2017_06_24_193504_create_form_reviewofs_table',1),(1045,'2017_06_25_065204_create_form_ros_table',1),(1046,'2017_06_27_170625_create_x12_partners_table',1),(1047,'2017_06_28_162853_create_insurance_companies_table',1),(1048,'2017_06_28_165512_create_insurance_numbers_table',1),(1049,'2017_06_28_181202_create_pnotes_table',1),(1050,'2017_06_29_201827_create_dated_reminders_table',1),(1051,'2017_06_29_210431_create_dated_reminder_links_table',1),(1052,'2017_07_01_102005_create_user_residential_links_table',1),(1053,'2017_07_04_195129_create_background_services_table',1),(1054,'2017_07_05_161121_create_batchcoms_table',1),(1055,'2017_07_05_170249_create_automatic_notifications_table',1),(1056,'2017_07_07_165115_create_categories_table',1),(1057,'2017_07_09_143758_create_tf_tags_table',1),(1058,'2017_07_09_161214_create_tf_filters_table',1),(1059,'2017_07_09_171607_create_tf_patient_tags_table',1),(1060,'2017_07_09_191453_create_icd10_dx_order_codes_table',1),(1061,'2017_07_09_194848_create_icd10_gem_dx_10_9s_table',1),(1062,'2017_07_09_200852_create_icd10_gem_dx_9_10s_table',1),(1063,'2017_07_09_201254_create_icd10_gem_pcs_10_9s_table',1),(1064,'2017_07_09_201827_create_icd10_gem_pcs_9_10s_table',1),(1065,'2017_07_09_202332_create_icd10_pcs_order_codes_table',1),(1066,'2017_07_09_203018_create_icd10_reimbr_dx_9_10s_table',1),(1067,'2017_07_09_204819_create_icd10_reimbr_pcs_9_10s_table',1),(1068,'2017_07_15_143915_create_lists_table',1),(1069,'2017_07_15_180535_create_audit_masters_table',1),(1070,'2017_07_15_180547_create_audit_details_table',1),(1071,'2017_07_15_180557_create_documents_table',1),(1072,'2017_07_15_181604_create_categories_to_documents_table',2),(1073,'2017_07_15_183711_create_list_diagnoses_table',3),(1074,'2017_07_15_190446_create_chart_trackers_table',4),(1075,'2017_07_15_191158_create_office_notes_table',5);
+INSERT INTO `migrations` VALUES (1001,'2014_10_12_000000_create_users_table',1),(1002,'2014_10_12_100000_create_password_resets_table',1),(1003,'2017_06_17_083322_create_addresses_table',1),(1004,'2017_06_17_084322_create_user_secures_table',1),(1005,'2017_06_17_094408_create_user_settings_table',1),(1006,'2017_06_17_101539_create_user_addr_books_table',1),(1007,'2017_06_17_103044_create_user_password_histories_table',1),(1008,'2017_06_17_103947_create_user_communications_table',1),(1009,'2017_06_17_111354_create_patient_datas_table',1),(1010,'2017_06_17_111916_create_patient_face_sheets_table',1),(1011,'2017_06_17_134316_create_patient_social_statistics_table',1),(1012,'2017_06_17_134845_create_patient_employers_table',1),(1013,'2017_06_17_135505_create_patient_contacts_table',1),(1014,'2017_06_17_141531_create_patient_contact_links_table',1),(1015,'2017_06_17_142000_create_patient_privacy_contacts_table',1),(1016,'2017_06_17_142423_create_patient_contact_communications_table',1),(1017,'2017_06_17_192428_create_amendments_table',1),(1018,'2017_06_17_195953_create_amendment_histories_table',1),(1019,'2017_06_19_193813_create_facilities_table',1),(1020,'2017_06_19_202456_create_user_facility_links_table',1),(1021,'2017_06_20_162245_create_libreehr_calendar_categories_table',1),(1022,'2017_06_20_162307_create_libreehr_calendar_events_table',1),(1023,'2017_06_20_172045_create_form_encounters_table',1),(1024,'2017_06_20_172800_create_forms_table',1),(1025,'2017_06_20_195925_create_form_aftercare_plans_table',1),(1026,'2017_06_21_144239_create_form_ankleinjuries_table',1),(1027,'2017_06_21_173702_create_form_annotate_diagrams_table',1),(1028,'2017_06_22_011754_create_form_clinical_instructions_table',1),(1029,'2017_06_22_012807_create_form_dictations_table',1),(1030,'2017_06_22_014513_create_form_notes_table',1),(1031,'2017_06_22_020654_create_form_painmaps_table',1),(1032,'2017_06_22_172607_create_form_physical_exams_table',1),(1033,'2017_06_22_181230_create_form_physical_exam_diagnoses_table',1),(1034,'2017_06_22_184239_create_form_prior_auths_table',1),(1035,'2017_06_22_190845_create_form_soaps_table',1),(1036,'2017_06_23_162354_create_form_track_anything_types_table',1),(1037,'2017_06_23_173954_create_form_track_anythings_table',1),(1038,'2017_06_23_183725_create_form_track_anything_results_table',1),(1039,'2017_06_23_194614_create_form_transfer_summaries_table',1),(1040,'2017_06_24_032958_create_form_treatment_plans_table',1),(1041,'2017_06_24_043121_create_form_vitals_table',1),(1042,'2017_06_24_054151_create_form_misc_billing_options_table',1),(1043,'2017_06_24_123245_create_form_bronchitis_table',1),(1044,'2017_06_24_193504_create_form_reviewofs_table',1),(1045,'2017_06_25_065204_create_form_ros_table',1),(1046,'2017_06_27_170625_create_x12_partners_table',1),(1047,'2017_06_28_162853_create_insurance_companies_table',1),(1048,'2017_06_28_165512_create_insurance_numbers_table',1),(1049,'2017_06_28_181202_create_pnotes_table',1),(1050,'2017_06_29_201827_create_dated_reminders_table',1),(1051,'2017_06_29_210431_create_dated_reminder_links_table',1),(1052,'2017_07_01_102005_create_user_residential_links_table',1),(1053,'2017_07_04_195129_create_background_services_table',1),(1054,'2017_07_05_161121_create_batchcoms_table',1),(1055,'2017_07_05_170249_create_automatic_notifications_table',1),(1056,'2017_07_07_165115_create_categories_table',1),(1057,'2017_07_09_143758_create_tf_tags_table',1),(1058,'2017_07_09_161214_create_tf_filters_table',1),(1059,'2017_07_09_171607_create_tf_patient_tags_table',1),(1060,'2017_07_09_191453_create_icd10_dx_order_codes_table',1),(1061,'2017_07_09_194848_create_icd10_gem_dx_10_9s_table',1),(1062,'2017_07_09_200852_create_icd10_gem_dx_9_10s_table',1),(1063,'2017_07_09_201254_create_icd10_gem_pcs_10_9s_table',1),(1064,'2017_07_09_201827_create_icd10_gem_pcs_9_10s_table',1),(1065,'2017_07_09_202332_create_icd10_pcs_order_codes_table',1),(1066,'2017_07_09_203018_create_icd10_reimbr_dx_9_10s_table',1),(1067,'2017_07_09_204819_create_icd10_reimbr_pcs_9_10s_table',1),(1068,'2017_07_15_143915_create_lists_table',1),(1069,'2017_07_15_180535_create_audit_masters_table',1),(1070,'2017_07_15_180547_create_audit_details_table',1),(1071,'2017_07_15_180557_create_documents_table',1),(1072,'2017_07_15_181604_create_categories_to_documents_table',2),(1073,'2017_07_15_183711_create_list_diagnoses_table',3),(1074,'2017_07_15_190446_create_chart_trackers_table',4),(1075,'2017_07_15_191158_create_office_notes_table',5),(1076,'2017_07_15_195729_create_extended_logs_table',6),(1077,'2017_07_16_052607_create_drugs_table',6),(1078,'2017_07_16_062312_create_drug_templates_table',6),(1079,'2017_07_16_070701_create_prices_table',6),(1080,'2017_07_17_150343_create_product_warehouses_table',6),(1081,'2017_07_17_164619_create_drug_inventories_table',6),(1082,'2017_07_18_144245_create_prescriptions_table',6),(1083,'2017_07_18_144254_create_drug_sales_table',6);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2649,6 +2846,92 @@ CREATE TABLE `pnotes` (
 LOCK TABLES `pnotes` WRITE;
 /*!40000 ALTER TABLE `pnotes` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pnotes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `prescriptions`
+--
+
+DROP TABLE IF EXISTS `prescriptions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `prescriptions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prescriptions`
+--
+
+LOCK TABLES `prescriptions` WRITE;
+/*!40000 ALTER TABLE `prescriptions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `prescriptions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `prices`
+--
+
+DROP TABLE IF EXISTS `prices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `prices` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `pr_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to drugs table.',
+  `pr_selector` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Template selector for drugs, empty for codes',
+  `pr_level` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Price Level',
+  `pr_price` decimal(10,2) NOT NULL COMMENT 'Price of that drug in local currency',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `prices_pr_id_foreign` (`pr_id`),
+  KEY `prices_pr_selector_foreign` (`pr_selector`),
+  CONSTRAINT `prices_pr_id_foreign` FOREIGN KEY (`pr_id`) REFERENCES `drugs` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `prices_pr_selector_foreign` FOREIGN KEY (`pr_selector`) REFERENCES `drug_templates` (`selector`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prices`
+--
+
+LOCK TABLES `prices` WRITE;
+/*!40000 ALTER TABLE `prices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `prices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_warehouses`
+--
+
+DROP TABLE IF EXISTS `product_warehouses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_warehouses` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `drug_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to Drugs table.',
+  `pw_warehouse` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Warehouse',
+  `pw_min_level` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT 'Min Level',
+  `pw_max_level` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT 'Max Level',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_warehouses_drug_id_foreign` (`drug_id`),
+  CONSTRAINT `product_warehouses_drug_id_foreign` FOREIGN KEY (`drug_id`) REFERENCES `drugs` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_warehouses`
+--
+
+LOCK TABLES `product_warehouses` WRITE;
+/*!40000 ALTER TABLE `product_warehouses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_warehouses` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -3076,4 +3359,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-16  0:58:48
+-- Dump completed on 2017-07-18 22:53:02
