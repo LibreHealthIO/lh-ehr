@@ -13,8 +13,8 @@ require('includes/session.php');
   
   <link href='css/index.css' rel='stylesheet' />
   
-  <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/lib/jquery.min.js'></script>
+  <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
   <script src='js.cookie.js'></script>
@@ -111,7 +111,7 @@ require('includes/session.php');
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         height: 'parent',
         header: {
-        left: 'prev,next today print',
+        left: 'prev,next,today print,search',
         center: 'title',
         right: 'timelineMonth,timelineWeek,timelineDay,providerAgenda'
         },
@@ -161,7 +161,7 @@ require('includes/session.php');
         },
         customButtons: {
           print: {
-              text: 'Print',
+              text: 'print',
               click: function() { // Printing currently works for a single provider.
                 if($('#calendar').fullCalendar('getResources').length > 1) {
                   alert("Please select only a single provider.");
@@ -172,6 +172,12 @@ require('includes/session.php');
                   window.print();
                   $('#calendar').fullCalendar('changeView', oldView.name);
                 }
+              }
+            },
+            search: {
+              text: 'search',
+              click: function() {
+                window.location.href = 'search.php';
               }
             }
         },
