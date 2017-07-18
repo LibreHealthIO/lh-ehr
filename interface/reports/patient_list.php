@@ -231,8 +231,8 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   <th> <?php xl('City','e'); ?> </th>
   <th> <?php xl('State','e'); ?> </th>
   <th> <?php xl('Zip','e'); ?> </th>
-  <th> <?php xl('Home Phone','e'); ?> </th>
-  <th> <?php xl('Work Phone','e'); ?> </th>
+  <th> <?php xl('Primary Insurance','e'); ?> </th>
+  <th> <?php xl('Secondary Insurance','e'); ?> </th>
  </thead>
  <tbody>
 <?php
@@ -302,8 +302,8 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     echo '"' . qescape($row['city']) . '",';
     echo '"' . qescape($row['state']) . '",';
     echo '"' . qescape($row['postal_code']) . '",';
-    echo '"' . qescape($row['phone_home']) . '",';
-    echo '"' . qescape($row['phone_biz']) . '"' . "\n";
+    echo '"' . qescape($row['cname1']) . '",';
+    echo '"' . qescape($row['cname2']) . '"' . "\n";
    }
    else {
 ?>
@@ -330,10 +330,10 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
    <?php echo $row['postal_code'] ?>
   </td>
   <td>
-   <?php echo $row['phone_home'] ?>
+   <?php echo $row['cname1'] ?>
   </td>
   <td>
-   <?php echo $row['phone_biz'] ?>
+   <?php echo $row['cname2'] ?>
   </td>
  </tr>
 <?php
