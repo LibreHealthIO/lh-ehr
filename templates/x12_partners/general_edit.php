@@ -25,39 +25,39 @@
 
 
 <form name="x12_partner" method="post" action="<?php echo $this->form_action; ?>">
-    <table width="400px" style="font-size:9pt;" CELLSPACING="0" CELLPADDING="3" border="0">
+    <table class="table table-hover">
         <tr>
             <td colspan="2"><?php echo xl("X12 Partner"); ?></td>
         </tr>
         <tr>
-            <td ALIGN="LEFT" VALIGN="MIDDLE" >Partner&nbsp;Name</td>
-            <td COLSPAN="2" ALIGN="LEFT" VALIGN="MIDDLE" >
-                <input type="text" size="20" name="name" value="<?php echo $this->partner->get_name(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>Partner Name</td>
+            <td>
+                <input type="text" class="form-control" size="20" name="name" value="<?php echo $this->partner->get_name(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td ALIGN="LEFT" VALIGN="MIDDLE" >ID&nbsp;Number&nbsp;ETIN</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="20" name="id_number" value="<?php echo $this->partner->get_id_number(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>ID&nbsp;Number&nbsp;ETIN</td>
+            <td><input type="text" class="form-control" size="20" name="id_number" value="<?php echo $this->partner->get_id_number(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >User logon Required Indicator (ISA01~ use 00 or 03)'}</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="2" name="x12_isa01" value="<?php echo $this->partner->get_x12_isa01(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>User logon Required Indicator (ISA01~ use 00 or 03)</td>
+            <td><input type="text" class="form-control" size="2" name="x12_isa01" value="<?php echo $this->partner->get_x12_isa01(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >User Logon (If 03 above, else leave spaces) (ISA02)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="20" name="x12_isa02" value="<?php echo $this->partner->get_x12_isa02(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>User Logon (If 03 above, else leave spaces) (ISA02)</td>
+            <td><input type="text" class="form-control" size="20" name="x12_isa02" value="<?php echo $this->partner->get_x12_isa02(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >User password required Indicator (ISA03~ use 00 or 01)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="2" name="x12_isa03" value="<?php echo $this->partner->get_x12_isa03(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>User password required Indicator (ISA03~ use 00 or 01)</td>
+            <td><input type="text" class="form-control" size="2" name="x12_isa03" value="<?php echo $this->partner->get_x12_isa03(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >User Password (ISA04~ if 01 above, else leave spaces)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="20" name="x12_isa04" value="<?php $this->partner->get_x12_isa04(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>User Password (ISA04~ if 01 above, else leave spaces)</td>
+            <td><input type="text" class="form-control" size="20" name="x12_isa04" value="<?php $this->partner->get_x12_isa04(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
-        <td VALIGN="MIDDLE" >Sender ID Qualifier (ISA05)</td>
-        <td COLSPAN="2" VALIGN="MIDDLE" >
+        <td>Sender ID Qualifier (ISA05)</td>
+        <td>
             <!-- {html_options name="x12_isa05" options=$partner->get_idqual_array() selected=$partner->get_x12_isa05()} -->
-            <select name="x12_isa05">
+            <select class="form-control" name="x12_isa05">
                 <?php
                 foreach ($this->partner->get_idqual_array() as $key => $value) {
                     if ($key == $this->partner->get_x12_isa05()) {
@@ -72,14 +72,14 @@
         </td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Sender ID (ISA06)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="20" name="x12_sender_id" value="<?php $this->partner->get_x12_sender_id(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>Sender ID (ISA06)</td>
+            <td><input type="text" class="form-control" size="20" name="x12_sender_id" value="<?php $this->partner->get_x12_sender_id(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Receiver ID Qualifier (ISA07)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" >
+            <td>Receiver ID Qualifier (ISA07)</td>
+            <td>
                 <!--{html_options name="x12_isa07" options=$partner->get_idqual_array() selected=$partner->get_x12_isa07()}</td>-->
-                <select name="x12_isa07">
+                <select class="form-control" name="x12_isa07">
                     <?php
                     foreach ($this->partner->get_idqual_array() as $key => $value) {
                         if ($key == $this->partner->get_x12_isa07()) {
@@ -93,15 +93,15 @@
                 </select>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Receiver ID (ISA08)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="20" name="x12_receiver_id" 
+            <td>Receiver ID (ISA08)</td>
+            <td><input type="text" class="form-control" size="20" name="x12_receiver_id" 
                                                     value="<?php $this->partner->get_x12_receiver_id(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Acknowledgment Requested (ISA14)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" >
+            <td>Acknowledgment Requested (ISA14)</td>
+            <td>
                 <!--{html_options name="x12_isa14" options=$partner->get_x12_isa14_array() selected=$partner->get_x12_isa14()}</td>-->
-                <select name="x12_isa14">
+                <select class="form-control" name="x12_isa14">
                     <?php
                     foreach ($this->partner->get_x12_isa14_array() as $key => $value) {
                         if ($key == $this->partner->get_x12_isa14()) {
@@ -115,10 +115,10 @@
                 </select>            
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Usage Indicator (ISA15)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" >
+            <td>Usage Indicator (ISA15)</td>
+            <td>
                 <!--{html_options name="x12_isa15" options=$partner->get_x12_isa15_array() selected=$partner->get_x12_isa15()}</td>-->
-                <select name="x12_isa15">
+                <select class="form-control" name="x12_isa15">
                     <?php
                     foreach ($this->partner->get_x12_isa15_array() as $key => $value) {
                         if ($key == $this->partner->get_x12_isa15()) {
@@ -132,18 +132,18 @@
                 </select>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Application Sender Code (GS02)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="20" name="x12_gs02" value="<?php $this->partner->get_x12_gs02(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>Application Sender Code (GS02)</td>
+            <td><input type="text" class="form-control" size="20" name="x12_gs02" value="<?php $this->partner->get_x12_gs02(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Submitter EDI Access Number (PER06)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="20" name="x12_per06" value="<?php $this->partner->get_x12_per06(); ?>" onKeyDown="PreventIt(event)" /></td>
+            <td>Submitter EDI Access Number (PER06)</td>
+            <td><input type="text" class="form-control" size="20" name="x12_per06" value="<?php $this->partner->get_x12_per06(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Version</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" >
+            <td>Version</td>
+            <td>
                 <!--{html_options name="x12_version" options=$partner->get_x12_version_array() selected=$partner->get_x12_version()}</td>-->
-                <select name="x12_version">
+                <select class="form-control" name="x12_version">
                     <?php
                     foreach ($this->partner->get_x12_version_array() as $key => $value) {
                         if ($key == $this->partner->get_x12_version()) {
@@ -157,11 +157,11 @@
                 </select>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Processing&nbsp;Format</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" >
+            <td>Processing&nbsp;Format</td>
+            <td>
                 <!-- {html_options name="processing_format" options=$partner->get_processing_format_array() 
                 selected=$partner->get_processing_format()}</td>-->
-                <select name="processing_format">
+                <select class="form-control" name="processing_format">
                         <?php
                         foreach ($this->partner->get_processing_format_array() as $key => $value) {
                             if ($key == $this->partner->get_processing_format()) {
@@ -175,8 +175,8 @@
                 </select>
         </tr>
         <tr>
-            <td VALIGN="MIDDLE" >Application Receiver Code (GS03 - If blank ISA08 will be used)</td>
-            <td COLSPAN="2" VALIGN="MIDDLE" ><input type="text" size="20" name="x12_gs03"
+            <td>Application Receiver Code (GS03 - If blank ISA08 will be used)</td>
+            <td><input type="text" class="form-control" size="20" name="x12_gs03"
                                                     value="<?php echo $this->partner->get_x12_gs03(); ?>" onKeyDown="PreventIt(event)" maxlength="15"/></td>
         </tr>
         <tr height="25"><td colspan="2">&nbsp;</td></tr>

@@ -1,10 +1,10 @@
 <a href="<?php echo $this->current_action;?>action=edit&id=default" onclick="top.restoreSession()" class="css_button" >
 <span>Add New Partner</span></a><br><br>
-<table cellpadding="1" cellspacing="0" class="showborder">
-    <tr class="showborder_head">
-        <th width="200px"><?php echo xl("Name");?></th>
-        <th width="130px"><?php echo xl("Sender ID");?></th>
-        <th width="130px"><?php echo xl("Receiver ID");?></th>
+<table class="table table-hover">
+    <tr>
+        <th><?php echo xl("Name");?></th>
+        <th><?php echo xl("Sender ID");?></th>
+        <th><?php echo xl("Receiver ID");?></th>
         <th><?php echo xl("Version");?></th>
     </tr>
     

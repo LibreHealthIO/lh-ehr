@@ -10,24 +10,24 @@ if($this->error) {
                 if it were called last, the settings from the form would be overwritten with the old information-->
 <input type="hidden" name="form_id" value="<?php echo $this->ins->id;?>" />
 
-<table class="showborder" CELLSPACING="0" CELLPADDING="3">
+<table class="table table-hover">
 
 <tr><td colspan="5" style="border-style:none;" class="bold">
    <?php echo $this->provider->get_name_display();?>
 </td></tr>
 
-<tr  class="showborder_head">
-    <th class="small">Company Name</th>
-    <th class="small">Provider Number</th>
-    <th class="small">Rendering Provider Number</th>
-    <th class="small">Group Number</th>
+<tr>
+    <th>Company Name</th>
+    <th>Provider Number</th>
+    <th>Rendering Provider Number</th>
+    <th>Group Number</th>
 </tr>
 
 <?php if(($this->provider->get_insurance_numbers())) {
     
 foreach ($this->provider->get_insurance_numbers() as $numset) { ?>
 <tr>
-    <td valign="middle">
+    <td>
         <a href="<?php echo $this->current_action; ?>action=edit&id=<?php echo $numset->get_id(); ?>&showform=true" 
            onclick="top.restoreSession()">
             <?php echo $numset->get_insurance_company_name();?>&nbsp;</a>
@@ -46,13 +46,12 @@ else { ?>
 
 <tr> <td style="border-style:none;" colspan="5">
     <a href="<?php echo $this->current_action;?>action=edit&id=&provider_id=<?php echo $this->provider->get_id();?>&showform=true"
-       class="css_button_small" style='margin-top:2px'
+       class="css_button" style='margin-top:2px'
        onclick="top.restoreSession()">
             <span>Add New</span>
     </a>
 </td> </tr>
 
-<?php echo $_GET['showform'];?>
 <?php if($_GET['showform'] == 'true') 
 {
 ?>
@@ -63,19 +62,12 @@ else { ?>
             else { echo "Update Provider Number"; } 
             ?>
         </span></b><br>
-        <table width="100%">
+        <table class="table table-hover">
         <tr>
-            <td style="border-style:none;" width="200px" VALIGN="MIDDLE" >Insurance Company</td>
-            <td style="border-style:none;" VALIGN="MIDDLE" >
-                    <!--
-                    {if $ins->get_id() eq ""}
-                            {html_options name="insurance_company_id" options=$ic_array values=$ic_array selected=$ins->get_insurance_company_id()}
-                    {else}
-                     {$ins->get_insurance_company_name()}
-                    {/if}
-                    -->
+            <td>Insurance Company</td>
+            <td>
                     <?php if($this->ins->get_id() =="") { ?>
-                    <select name="insurance_company_id">
+                    <select class="form-control" name="insurance_company_id">
                         <?php foreach ($this->ic_array as $key => $value) 
                         { 
                             if($key==$this->ins->get_insurance_company_id() ) { ?>
@@ -91,19 +83,19 @@ else { ?>
     </tr>
 
 <tr>
-        <td style="border-style:none;" VALIGN="MIDDLE" >Provider Number</td>
-        <td style="border-style:none;" VALIGN="MIDDLE" >
-           <input type="text" size="20" name="provider_number" value="<?php $this->ins->get_provider_number();?>" onKeyDown="PreventIt(event)" />
+        <td>Provider Number</td>
+        <td>
+           <input type="text" class="form-control" size="20" name="provider_number" value="<?php $this->ins->get_provider_number();?>" onKeyDown="PreventIt(event)" />
         </td>
 </tr>
 <tr>
-        <td style="border-style:none;" VALIGN="MIDDLE" >Provider Number Type</td>
-        <td style="border-style:none;" VALIGN="MIDDLE" >
+        <td>Provider Number Type</td>
+        <td>
            <!--{html_options name="provider_number_type" options=$ic_type_options_array 
            values=$ins->provider_number_type_array 
            selected=$ins->get_provider_number_type()}-->
            
-           <select name="provider_number_type">
+           <select class="form-control" name="provider_number_type">
                         <?php foreach ($this->ic_type_options_array  as $key => $value) 
                         { 
                             if($key==$this->ins->get_provider_number_type() ) { ?>
@@ -118,20 +110,20 @@ else { ?>
         </td>
 </tr>
 <tr>
-        <td style="border-style:none;" VALIGN="MIDDLE" >Rendering Provider Number</td>
-        <td style="border-style:none;" VALIGN="MIDDLE" >
-                <input type="text" size="20" name="rendering_provider_number" value="<?php echo $this->ins->get_rendering_provider_number();?>" 
+        <td>Rendering Provider Number</td>
+        <td>
+                <input type="text" class="form-control" size="20" name="rendering_provider_number" value="<?php echo $this->ins->get_rendering_provider_number();?>" 
                        onKeyDown="PreventIt(event)" />
         </td>
 </tr>
 <tr>
-        <td style="border-style:none;" VALIGN="MIDDLE" >Rendering Provider Number Type</td>
-        <td style="border-style:none;" VALIGN="MIDDLE" >
+        <td>Rendering Provider Number Type</td>
+        <td>
            <!-- {html_options name="rendering_provider_number_type" options=$ic_rendering_type_options_array 
             values=$ins->rendering_provider_number_type_array 
             selected=$ins->get_rendering_provider_number_type()}
            -->
-           <select name="rendering_provider_number_type">
+           <select class="form-control" name="rendering_provider_number_type">
                <?php foreach ($this->ic_rendering_type_options_array   as $key => $value) 
                         { 
                             if($key==$this->ins->get_rendering_provider_number_type() ) { ?>
@@ -145,15 +137,15 @@ else { ?>
         </td>
 </tr>
 <tr>
-        <td style="border-style:none;" VALIGN="MIDDLE" >Group Number</td>
-        <td style="border-style:none;" VALIGN="MIDDLE" >
-                <input type="text" size="20" name="group_number" value="<?php echo $this->ins->get_group_number(); ?>" 
+        <td>Group Number</td>
+        <td>
+                <input type="text" class="form-control" size="20" name="group_number" value="<?php echo $this->ins->get_group_number(); ?>" 
                        onKeyDown="PreventIt(event)" />
         </td>
 </tr>
-<tr><td style="border-style:none;"></td></tr>
+<tr><td></td></tr>
 <tr>
-        <td style="border-style:none;" colspan="2">                
+        <td colspan="2">                
                 <?php if($this->ins->get_id() == "" ) {?>
                     <a href="javascript:submit_insurancenumbers_add();" class="css_button"><span>Save</span></a>
                 <?php } else { ?>
@@ -205,4 +197,3 @@ function Waittoredirect(delaymsec) {
 <style type="text/css">
 text,select {font-size:9pt;}
 </style>
-

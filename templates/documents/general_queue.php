@@ -13,17 +13,17 @@ function submit_documents()
 <a href="controller.php?practice_settings&<?php echo $this->top_action; ?>document_category&action=list" 
    onclick="top.restoreSession()" class="css_button" >
 <span>Edit Categories</span></a><a href="#" onclick="submit_documents();" class="css_button" target="_self" ><span>Update files</span></a>
-<input type="hidden" name="process" value="<?php echo self::PROCESS;?>" /><br><br>
+<input type="hidden" name="process" value="<?php echo self::PROCESS;?>" />
 
 <form name="queue" method="post" action="<?php echo $this->form_action; ?>" onsubmit="return top.restoreSession()">
-<table cellpadding="1" class="showborder">
+<table class="table table-hover">
     <tr class="center_display">
         <td colspan="6"><?php $this->messages; ?></td>
     </tr>
-    <tr class="showborder_head">
-        <th colspan="2" width="110px">Name</td>
-        <th width="100px">Date</td>
-        <th width="200px">Patient</td>
+    <tr>
+        <th colspan="2">Name</td>
+        <th>Date</td>
+        <th>Patient</td>
         <th colspan="2">Category</td>
     </tr>
     

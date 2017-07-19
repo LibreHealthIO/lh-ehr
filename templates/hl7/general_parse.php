@@ -1,11 +1,10 @@
 <html>
 <head>
-<?php html_header_show();?>
 </head>
 
 <body >
     <form name="prescribe" method="post" action="<?php echo $this->form_action;?>" onsubmit="return top.restoreSession()">
-<table CELLSPACING="0" CELLPADDING="3" class="shownoborder">
+<table class="table">
 <!--<tr><td>Example HL7 data<td></tr>
 <tr><td>MSH|^~\&|ADT1|CUH|LABADT|CUH|198808181127|SECURITY|ADT^A01|MSG00001|P|2.3|
 EVN|A01|198808181122||
@@ -16,7 +15,8 @@ PV1|1|I|2000^2053^01||||004777^FISHER^BEN^J.|||SUR||||ADM|A0|</td></tr>-->
 <td colspan="2"><b>Paste HL7 Data</b></td>
 </tr>
 <tr height="25">
-	<td colspan="2" ><textarea rows="10" wrap="virtual" cols="70" name="hl7data"></textarea><br /><br />
+	<td colspan="2">
+        <textarea class="form-control" rows="10" wrap="virtual" cols="70" name="hl7data"></textarea>
 	</td></tr>
 	<tr class="text"><td colspan="2">
 	<a href="javascript:document.forms[0].reset();" class="css_button"><span>Clear HL7 Data</span></a>
@@ -28,7 +28,7 @@ PV1|1|I|2000^2053^01||||004777^FISHER^BEN^J.|||SUR||||ADM|A0|</td></tr>-->
         
  <?php if($this->hl7_array){?>       
      <tr class="text"><td colspan="2">
-	<table class="showborder">
+	<table class="table">
                     <?php foreach ($this->hl7_array as $hl7item => $hl7key) {?>
                         <tr height="25"><td colspan="3"><?php echo $hl7item;?></td></tr>                      
                        
@@ -47,8 +47,7 @@ PV1|1|I|2000^2053^01||||004777^FISHER^BEN^J.|||SUR||||ADM|A0|</td></tr>-->
 </form>
 
 </body>
-</html>
-                        
+</html>                    
                                     
                                 
 

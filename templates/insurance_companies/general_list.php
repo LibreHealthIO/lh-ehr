@@ -2,10 +2,10 @@
    onclick="top.restoreSession()" class="css_button" >
 <span><?php echo xl("Add a company");?> </span></a><br>
 <br>
-<table cellpadding="1" cellspacing="0" class="showborder">
-    <tr class="showborder_head">
-        <th width="140px"><b><?php echo xl("Name");?> </b></th>
-        <th width="300px"><b><?php echo xl("City,State");?> </b></th>
+<table class="table table-hover ">
+    <tr>
+        <th><b><?php echo xl("Name");?> </b></th>
+        <th><b><?php echo xl("City,State");?> </b></th>
         <th><b><?php echo xl("Default X12 Partner");?> </b></th>
     </tr>
     
@@ -13,7 +13,7 @@
     
    <?php if(is_array($this->icompanies)) {?>
     <?php foreach ($this->icompanies as $insurancecompany) { ?>
-    <tr height="22">
+    <tr>
         <td><a href="<?php echo $this->current_action;?>action=edit&id=<?php echo $insurancecompany->id;?>" onsubmit="return top.restoreSession()">
                 <?php echo $insurancecompany->name;?>&nbsp;</a>
         </td>
