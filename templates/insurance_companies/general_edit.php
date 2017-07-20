@@ -108,7 +108,7 @@ This is now deprecated use the newer x12 partner code instead
     </td>
 </tr>-->
 <tr>
-    <td>Default X12 Partner</td>
+    <td><?php echo xl("Default X12 Partner");?></td>
     <td>
         <!--{html_options name="x12_default_partner_id" options=$x12_partners selected=$insurancecompany->get_x12_default_partner_id()}-->
         <select class="form-control" name="x12_default_partner_id">
@@ -125,9 +125,9 @@ This is now deprecated use the newer x12 partner code instead
 </tr>
 <tr height="25"><td colspan=2>&nbsp;</td></tr>
 <tr>
-    <td colspan="2"><a href="javascript:submit_insurancecompany();" class="css_button"><span>Save</span></a>
+    <td colspan="2"><a href="javascript:submit_insurancecompany();" class="css_button"><span><?php echo xl("Save");?></span></a>
         <a href="controller.php?practice_settings&insurance_company&action=list" class="css_button" onclick="top.restoreSession()">
-            <span>Cancel</span></a></td>
+            <span><?php echo xl("Cancel");?></span></a></td>
 </tr>
 </table>
 <input type="hidden" name="id" value="<?php echo $this->insurancecompany->id;?>" />

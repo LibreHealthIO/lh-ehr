@@ -12,7 +12,7 @@ PID|||PATID1234^5^M11||RYAN^HENRY^P||19610615|M||C|1200 N ELM STREET^^GREENSBORO
 NK1|JOHNSON^JOAN^K|WIFE||||||NK^NEXT OF KIN
 PV1|1|I|2000^2053^01||||004777^FISHER^BEN^J.|||SUR||||ADM|A0|</td></tr>-->
 <tr>
-<td colspan="2"><b>Paste HL7 Data</b></td>
+<td colspan="2"><b><?php echo xl("Paste HL7 Data");?></b></td>
 </tr>
 <tr height="25">
 	<td colspan="2">

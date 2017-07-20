@@ -1,5 +1,5 @@
 <a href="<?php echo $this->current_action;?>action=edit&id=default" onclick="top.restoreSession()" class="css_button" >
-<span>Add New Partner</span></a><br><br>
+<span><?php echo xl("Add New Partner");?></span></a><br><br>
 <table class="table table-hover">
     <tr>
         <th><?php echo xl("Name");?></th>

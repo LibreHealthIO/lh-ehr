@@ -18,12 +18,12 @@
                 <?php echo $insurancecompany->name;?>&nbsp;</a>
         </td>
         <td>
-            <td><?php echo $insurancecompany->address->city ;?>
+            <?php echo $insurancecompany->address->city ;?>
                 <?php echo $insurancecompany->address->state;?>
-            </td>
+            
         </td>
         <td>
-            <td><?php echo $insurancecompany->get_x12_default_partner_name();?>&nbsp;</td>
+            <?php echo $insurancecompany->get_x12_default_partner_name();?>&nbsp;
         </td>
     </tr>
    <?php }   

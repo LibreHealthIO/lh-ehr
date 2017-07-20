@@ -12,7 +12,7 @@ function submit_documents()
 
 <a href="controller.php?practice_settings&<?php echo $this->top_action; ?>document_category&action=list" 
    onclick="top.restoreSession()" class="css_button" >
-<span>Edit Categories</span></a><a href="#" onclick="submit_documents();" class="css_button" target="_self" ><span>Update files</span></a>
+<span><?php echo xl("Edit Categories");?></span></a><a href="#" onclick="submit_documents();" class="css_button" target="_self" ><span>Update files</span></a>
 <input type="hidden" name="process" value="<?php echo self::PROCESS;?>" />
 
 <form name="queue" method="post" action="<?php echo $this->form_action; ?>" onsubmit="return top.restoreSession()">
@@ -21,10 +21,10 @@ function submit_documents()
         <td colspan="6"><?php $this->messages; ?></td>
     </tr>
     <tr>
-        <th colspan="2">Name</td>
-        <th>Date</td>
-        <th>Patient</td>
-        <th colspan="2">Category</td>
+        <th colspan="2"><?php echo xl("Name");?></td>
+        <th><?php echo xl("Date");?></td>
+        <th><?php echo xl("Patient");?></td>
+        <th colspan="2"><?php echo xl("Category");?></td>
     </tr>
     
    <?php if(!(empty($this->queue_files)))  
@@ -34,7 +34,7 @@ function submit_documents()
         <td><input type="checkbox" name="files[<?php echo $file.document_id;?>][active]" value="1" 
                    <!--{if is_numeric($file.patient_id)}checked{/if}>-->
                    <?php if(is_numeric($file.patient_id)) {
-                            echo "checked";                           
+                            echo xl("checked");                           
                    }
                    ?>                           
         </td>
@@ -58,7 +58,7 @@ function submit_documents()
    <?php }    
    } else{ ?>
         <tr height="25" class="center_display">
-                <td colspan="6"><?php echo "No Documents Found";?></td>
+                <td colspan="6"><?php echo xl("No Documents Found");?></td>
          </tr>
    <?php }?>
          
