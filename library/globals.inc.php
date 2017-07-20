@@ -182,6 +182,13 @@ $GLOBALS_METADATA = array(
       xl('Second TAB on the left')
   ),
 
+    'theme_tabs_layout' => array(
+      xl('Menu Theme'),
+      'tabs_css',
+      'tabs_style_full.css',
+      xl('Pick a theme: Windows style (full) or Mac/Linux style (compact) ')
+    ),
+
     'menu_styling_tabs' => array(
       xl('Role-based Menu'),
       array(
