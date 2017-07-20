@@ -13,7 +13,7 @@
 
 <div class="col-md-12 col-xs-12 col-lg-12">
     <div class="row well">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="border-bottom:0px">
             <li class="col-md-2 col-xs-4">
                 <a href="<?php echo $this->top_action;?>pharmacy&action=list"><?php echo "<h5>".xl("Pharmacies")."</h5>";?></a>
             </li>
