@@ -520,7 +520,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
           //  lone scripts such as setup.php
           //  Also skip style_pdf.css which is for PDFs and not screen output
           if (!preg_match("/^style_.*\.css$/", $tfname) ||
-            $tfname == 'style_blue.css' || $tfname == 'style_pdf.css')
+            $tfname == 'style_setup.css' || $tfname == 'style_pdf.css')
             continue;
           echo "<option value='" . attr($tfname) . "'";
           // Drop the "style_" part and any replace any underscores with spaces

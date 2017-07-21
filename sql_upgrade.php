@@ -41,7 +41,7 @@ ksort($versions);
 <html>
 <head>
 <title>LibreHealth EHR Database Upgrade</title>
-<link rel='STYLESHEET' href='interface/themes/style_blue.css'>
+<link rel='STYLESHEET' href='interface/themes/style_setup.css'>
 <link rel="shortcut icon" href="public/images/favicon.ico" />
 </head>
 <body>
