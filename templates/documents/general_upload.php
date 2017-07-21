@@ -3,8 +3,8 @@
 
 <?php if(!($patient_id > 0)) { ?>
 <div class="text" style="color:red;">
-    <?php echo xl(" IMPORTANT: This upload tool is only for uploading documents on patients that are not yet entered into the system.
-        To upload files for patients whom already have been entered into the system, please use the upload tool linked within the Patient Summary screen.");?>
+    <?php echo xlt(" IMPORTANT").":".xlt(" This upload tool is only for uploading documents on patients that are not yet entered into the system").".".xlt("
+        To upload files for patients whom already have been entered into the system").",".xlt(" please use the upload tool linked within the Patient Summary screen");?>
    
     <br/>
     <br/>
@@ -12,35 +12,35 @@
 <?php } ?>
 
 <div class="text">
-   <?php echo xl(" NOTE: Uploading files with duplicate names will cause the files to be automatically renamed (for example, file.jpg will become file.1.jpg). 
-    Filenames are considered unique per patient, not per category.");?>
+   <?php echo xlt(" NOTE").":".xlt(" Uploading files with duplicate names will cause the files to be automatically renamed ")."(".xlt("for example").",".xlt(" file").".".xlt("jpg will become file").".".xlt("1").".".xlt("jpg").")". 
+    xlt("Filenames are considered unique per patient not per category");?>
     <br/>
     <br/>
 </div>
 <div class="text bold">
-    <?php xl("Upload Document"); ?>
+    <?php xlt("Upload Document"); ?>
     
     <?php if(!empty($this->category_name)) {    
-        echo xl("to category ".$this->category_name);
+        echo xlt("to category ".$this->category_name);
     }
 ?>
         
 </div>
 <div class="text">
-    <p><span><?php echo xl("Source File Path:");?></span> <input type="file" name="file[]" id="source-name" multiple="true"/>&nbsp;
+    <p><span><?php echo xlt("Source File Path ").":";?></span> <input type="file" name="file[]" id="source-name" multiple="true"/>&nbsp;
         (<font size="1">Multiple files can be uploaded at one time by selecting them using CTRL+Click or SHIFT+Click.</font>)</p>
-    <p><span title="Leave Blank To Keep Original Filename"><?php echo xl("Optional Destination Name:");?></span> 
+    <p><span title="Leave Blank To Keep Original Filename"><?php echo xlt("Optional Destination Name:");?></span> 
         <input type="text" name="destination" title="Leave Blank To Keep Original Filename" id="destination-name" /></p>
     <?php if( !$this->hide_encryption) {?>
         </br>
-	<p><span title="Check the box if this is an encrypted file"><?php echo xl("Is The File Encrypted?:");?></span> 
-                        <input type="checkbox" name="encrypted" title="Check the box if this is an encrypted file" id="encrypted" /></p>
-	<p><span title="Pass phrase to decrypt document"><?php echo xl("Pass Phrase:");?></span> 
-                        <input type="text" name="passphrase" title="{xl t='Pass phrase to decrypt document'}" id="passphrase" /></p>
-	<p><i><?php echo xl('Supports TripleDES encryption/decryption only.');?></i></p>
+	<p><span title="Check the box if this is an encrypted file"><?php echo xlt("Is The File Encrypted")."?:";?></span> 
+        <input type="checkbox" name="encrypted" title="Check the box if this is an encrypted file" id="encrypted" /></p>
+	<p><span title="Pass phrase to decrypt document"><?php echo xlt("Pass Phrase").":";?></span> 
+        <input type="text" name="passphrase" title="Pass phrase to decrypt document" id="passphrase" /></p>
+	<p><i><?php echo xlt('Supports TripleDES encryption/decryption only.');?></i></p>
     <?php }?>   
     
-    <p><input type="submit" value="<?php echo xl("Upload");?>" /></p>
+    <p><input type="submit" value="<?php echo xlt("Upload");?>" /></p>
 </div>
 
 <input type="hidden" name="patient_id" value="<?php echo $this->patient_id;?>" />
@@ -52,7 +52,7 @@
 <form method='post' action='interface/patient_file/download_template.php' onsubmit='return top.restoreSession()'>
     <input type='hidden' name='patient_id' value='<?php echo $this->patient_id;?>' />
 <p class='text bold'>
-    <?php echo xl("Download document template for this patient and visit");?> 
+    <?php echo xlt("Download document template for this patient and visit");?> 
 </p>
 <p class='text'>
  <select name='form_filename'><?php echo $this->templates_list;?></select> &nbsp;
@@ -64,7 +64,7 @@
 <?php if(!empty($this->file)) {?>
 <div class="text bold">
 		<br/>
-		<?php echo xl("Upload Report");?>
+		<?php echo xlt("Upload Report");?>
 </div>
 <?php foreach ($this->file as $file) { ?>
 <div class="text">

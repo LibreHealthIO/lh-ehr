@@ -1,11 +1,11 @@
 <div class="table-responsive">
 <table class="table table-hover">
         <tr>
-                <th><?php echo xl("Name");?></th>
+                <th><?php echo xlt("Name");?></th>
                 <th>&nbsp;</th>
-                <th><?php echo xl("Provider");?>#</th>
-                <th><?php echo xl("Rendering");?>#</th>
-                <th><?php echo xl("Group");?>#</th>
+                <th><?php echo xlt("Provider");?>#</th>
+                <th><?php echo xlt("Rendering");?>#</th>
+                <th><?php echo xlt("Group");?>#</th>
         </tr>
         
         <?php if(is_array($this->providers)) { 
@@ -24,7 +24,7 @@
         <?php } }
         else { ?>
             <tr class="center_display">
-                <td colspan="5"><?php echo xl("No Providers Found");?> </td>
+                <td colspan="5"><?php echo xlt("No Providers Found");?> </td>
             </tr>
         <?php }?>
     </table>

@@ -5,25 +5,25 @@
 <input type="hidden" name="form_id" value="<?php echo $this->pharmacy->id;?>" />
 <table class="table table-hover">
 <tr>
-    <td><?php echo xl("Name");?> </td>
+    <td><?php echo xlt("Name");?> </td>
     <td>
         <input type="text" class="form-control" size="40" name="name" value="<?php echo $this->pharmacy->name;?>" onKeyDown="PreventIt(event)" />(Required)
     </td>
 </tr>
 <tr>
-    <td><?php echo xl("Address(line1)");?></td>
+    <td><?php echo xlt("Address")."(".xlt("line1").")";?></td>
     <td>
         <input type="text" class="form-control" size="40" name="address_line1" value="<?php echo $this->pharmacy->address->line1;?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
-    <td><?php echo xl("Address(line2)");?></td>
+    <td><?php echo xlt("Address")."(".xlt("line2").")";?></td>
     <td >
         <input type="text" class="form-control" size="40" name="address_line2" value="<?php echo $this->pharmacy->address->line2;?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
-    <td><?php echo xl("City ,state, zip");?></td>
+    <td><?php echo xlt("City").",".xlt("state").",".xlt("zip");?></td>
     <td class="form-group form-inline">        
         <input type="text" class="form-control " size="25" name="city" value="<?php echo $this->pharmacy->address->city;?>" onKeyDown="PreventIt(event)" /> , 
         <input type="text" class="form-control " size="2" maxlength="2" name="state" value="<?php echo $this->pharmacy->address->state;?>" onKeyDown="PreventIt(event)" /> ,
@@ -31,26 +31,26 @@
     </td>
 </tr>
 <tr>
-    <td  ><?php echo xl("Email");?></td>
+    <td  ><?php echo xlt("Email");?></td>
     <td >
         <input type="text" class="form-control" NAME="email" SIZE="35" VALUE="<?php echo $this->pharmacy->email;?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
-    <td><?php echo xl("Phone");?></td>
+    <td><?php echo xlt("Phone");?></td>
     <td>
         <input type="text" class="form-control" NAME="phone" SIZE="12" VALUE="<?php echo $this->pharmacy->get_phone();?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
-    <td><?php echo xl("Fax");?></td>
+    <td><?php echo xlt("Fax");?></td>
     <td>
         <input type="text" class="form-control" NAME="fax" SIZE="12" VALUE="<?php echo $this->pharmacy->get_fax();?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 
 <tr>
-    <td><?php echo xl("Default Method");?></td>
+    <td><?php echo xlt("Default Method");?></td>
     <td>
         <select class="form-control" name="transmit_method">
             <!--{html_options    options=$pharmacy->transmit_method_array  selected=$pharmacy->transmit_method}-->
@@ -67,9 +67,9 @@
 </tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr>
-    <td colspan="2"><a href="javascript:submit_pharmacy();" class="css_button"><span><?php echo xl("Save");?></span></a>
+    <td colspan="2"><a href="javascript:submit_pharmacy();" class="css_button"><span><?php echo xlt("Save");?></span></a>
         <a href="controller.php?practice_settings&pharmacy&action=list" class="css_button" onclick="top.restoreSession()">
-                    <span><?php echo xl("Cancel");?></span></a>
+                    <span><?php echo xlt("Cancel");?></span></a>
     </td>
 </tr>
 </table>

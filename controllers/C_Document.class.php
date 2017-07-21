@@ -37,7 +37,7 @@ class C_Document extends Controller {
     var $file;
     var $error;
     //under view _action
-    var $webpath;
+    var $web_path;
     var $note_action;
     var $move_action;
     var $delete_string;

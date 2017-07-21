@@ -34,7 +34,7 @@
 
  function submitNonEmpty( e )   {  
     if ( e.elements['passphrase'].value.length == 0 )    {  
-        alert( "{xl t='You must enter a pass phrase to encrypt the document'}" );
+        alert( "You must enter a pass phrase to encrypt the document" );
           }  
     else {
         e.submit();
@@ -46,11 +46,11 @@ function tagUpdate() {
     var f = document.forms['document_tag'];
     if (f.encounter_check.checked)    {   
         if(f.visit_category_id.value==0)   {   
-            alert(" {xl t='Please select visit category'}" );
+            alert(" Please select visit category" );
             return false;
         }
       }  else if (f.encounter_id.value == 0 )  {    
-        alert(" {xl t='Please select encounter'}");
+        alert("Please select encounter");
         return false;   
       }  
     //top.restoreSession();
@@ -101,15 +101,15 @@ function set_checkbox()    {
 <table valign="top" width="100%">
     <tr>
         <td>
-            <a class="css_button" href="{$web_path}" onclick="top.restoreSession()"><span><?php echo xl("Download");?></span></a>
-            <a class="css_button" href='' onclick='return showpnotes(<?php $this->file->get_id();?>)'><span><?php echo xl("Show Notes");?></span></a>
+            <a class="css_button" href="<?php echo $this->web_path;?>" onclick="top.restoreSession()"><span><?php echo xlt("Download");?></span></a>
+            <a class="css_button" href='' onclick='return showpnotes(<?php $this->file->get_id();?>)'><span><?php echo xlt("Show Notes");?></span></a>
             <?php echo $this->delete_string;?>
             
             <?php if(($this->file->get_ccr_type($file->get_id()=="CCR") &&
                     ($this->file->get_mimetype($this->file->get_id()) == "application/xml" )) || 
                     ($this->file->get_mimetype($file->get_id()) ==  "text/xml" && 
                             $this->file->get_imported($file->get_id()) == 0)  ) { ?>
-            <a class="css_button" href='javascript:' onclick='return import_ccr(<?php echo $this->file->get_id();?>)'><span>Import<?php echo xl("Import");?></span></a>
+            <a class="css_button" href='javascript:' onclick='return import_ccr(<?php echo $this->file->get_id();?>)'><span>Import<?php echo xlt("Import");?></span></a>
             <?php }?>
         </td>
     </tr>
@@ -120,15 +120,15 @@ function set_checkbox()    {
                 <form method="post" name="document_encrypt" action="<?php echo $this->web_path;?>" onsubmit="return top.restoreSession()">
                 <div>
                     <div style="float:left">
-                        <b><?php echo xl("Encryption");?></b>&nbsp; 
+                        <b><?php echo xlt("Encryption");?></b>&nbsp; 
                     </div>
                     <div style="float:none">
                         <a href="javascript:;" onclick="submitNonEmpty( document.forms['document_encrypt'] );">
-                            (<span><?php echo xl("download encrypted file");?></span></a>
+                            (<span><?php echo xlt("download encrypted file");?></span></a>
                     </div> 
                 </div>
                 <div>
-                   <?php echo xl("Pass Phrase:");?>
+                   <?php echo xlt("Pass Phrase").":";?>
                     <input title="Supports TripleDES encryption/decryption only. Leaving the pass phrase blank will not encrypt the document" 
                            type='text' size='20' name='passphrase' id='passphrase' value=''/>
                     <input type="hidden" name="encrypted" value="true"></input>
@@ -141,11 +141,11 @@ function set_checkbox()    {
                 <form method="post" name="document_validate" action="<?php echo $this->validate_action;?>" onsubmit="return top.restoreSession()">
                 <div>
                     <div style="float:left">
-                        <b><?php echo xl("Sha-1 Hash:");?></b>&nbsp;
+                        <b><?php echo xlt("Sha1 Hash").":";?></b>&nbsp;
                         <i><?php echo $this->file->get_hash();?></i>&nbsp;
                     </div>
                     <div style="float:none">
-                        <a href="javascript:;" onclick="document.forms['document_validate'].submit();">(<span><?php echo xl("validate");?>)</span></a>
+                        <a href="javascript:;" onclick="document.forms['document_validate'].submit();">(<span><?php echo xlt("validate");?>)</span></a>
                     </div>
                 </div>
                 </form>
@@ -155,18 +155,18 @@ function set_checkbox()    {
                 <form method="post" name="document_update" action="<?php echo $this->update_action;?>" onsubmit="return top.restoreSession()">
                 <div>
                     <div style="float:left">
-                        <b><?php echo xl("Update");?></b>&nbsp;
+                        <b><?php echo xlt("Update");?></b>&nbsp;
                     </div>
                     <div style="float:none">
-                        <a href="javascript:;" onclick="document.forms['document_update'].submit();">(<span><?php echo xl("submit");?>)</span></a>
+                        <a href="javascript:;" onclick="document.forms['document_update'].submit();">(<span><?php echo xlt("submit");?>)</span></a>
                     </div>
                 </div>
                 <div>
-                    <?php echo xl("Rename:");?>
+                    <?php echo xlt("Rename:");?>
                     <input type='text' size='20' name='docname' id='docname' value='<?php echo $this->file->get_url_web();?>'/>
                 </div>
                 <div>
-                   <?php echo xl("Date:");?>
+                   <?php echo xlt("Date").":";?>
                     <input type='text' size='10' name='docdate' id='docdate'
                      value='<?php echo $this->docdate;?>' title='yyyy-mm-dd document date'
                      onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
@@ -184,10 +184,10 @@ function set_checkbox()    {
                 <form method="post" name="document_move" action="<?php echo $this->move_action;?>" onsubmit="return top.restoreSession()">
                 <div>
                     <div style="float:left">
-                        <b><?php echo xl("Move");?></b>&nbsp;
+                        <b><?php echo xlt("Move");?></b>&nbsp;
                     </div>
                     <div style="float:none">
-                        <a href="javascript:;" onclick="document.forms['document_move'].submit();">(<span><?php echo xl("submit");?>)</span></a>
+                        <a href="javascript:;" onclick="document.forms['document_move'].submit();">(<span><?php echo xlt("submit");?>)</span></a>
                     </div>
                 </div>
 
@@ -211,19 +211,19 @@ function set_checkbox()    {
 
                 <div >
                    <div style="float:left">
-                       <b><?php echo xl("Tag to Encounter");?></b>&nbsp;
+                       <b><?php echo xlt("Tag to Encounter");?></b>&nbsp;
                    </div>
 
                    <div style="float:none">
-                       <a href="javascript:;" onclick="tagUpdate();">(<span><?php echo xl("submit");?>)</span></a>
+                       <a href="javascript:;" onclick="tagUpdate();">(<span><?php echo xlt("submit");?>)</span></a>
                    </div>
                </div>
 
                  <div>
                     <select id="encounter_id"  name="encounter_id"  ><?php echo $enc_list;?></select>&nbsp;
                     <input type="checkbox" name="encounter_check" id="encounter_check"  onclick='set_checkbox(this)'/> 
-                    <label for="encounter_check"><b><?php echo xl("Create Encounter");?></b></label>&nbsp;&nbsp;
-                      <?php echo xl("Visit Category");?>: &nbsp;<select id="visit_category_id"  name="visit_category_id"  disabled>
+                    <label for="encounter_check"><b><?php echo xlt("Create Encounter");?></b></label>&nbsp;&nbsp;
+                      <?php echo xlt("Visit Category");?>: &nbsp;<select id="visit_category_id"  name="visit_category_id"  disabled>
                           <?php echo $this->visit_category_list;?></select>&nbsp; 
 
                </div>
@@ -236,16 +236,16 @@ function set_checkbox()    {
             <div class="text">
                 <div>
                     <div style="float:left">
-                        <b><?php echo xl("Notes");?></b>&nbsp;
+                        <b><?php echo xlt("Notes");?></b>&nbsp;
                     </div>
                     <div style="float:none">
                         <a href="javascript:;" onclick="document.notes.identifier.value='no';document.forms['notes'].submit();">
-                            (<span><?php echo xl("add");?></span>)</a>
-                        &nbsp;&nbsp;&nbsp;<b><?php echo xl("Email");?></b>&nbsp;
+                            (<span><?php echo xlt("add");?></span>)</a>
+                        &nbsp;&nbsp;&nbsp;<b><?php echo xlt("Email");?></b>&nbsp;
                         <input type="text" size="25" name="provide_email" id="provide_email" />
                         <input type="hidden" name="identifier" id="identifier" />
                         <a href="javascript:;" onclick="javascript:document.notes.identifier.value='yes';document.forms['notes'].submit();">
-                            (<span><?php echo xl("Send");?></span>)
+                            (<span><?php echo xlt("Send");?></span>)
                         </a>
                     </div>
                     <div>
@@ -289,7 +289,7 @@ function set_checkbox()    {
     </tr>
     <tr>
         <td>
-            <div class="text"><b><?php echo xl("Content");?></b></div>
+            <div class="text"><b><?php echo xlt("Content");?></b></div>
             <?php if($this->file->get_mimetype() =="image/tiff" ) { ?>
                 <embed frameborder="0" type="<?php echo $this->file->get_mimetype();?>" src="<?php echo $this->web_path;?>as_file=false"></embed>
             <?php } else if($this->file->get_mimetype()=="image/png" || $this->file->get_mimetype() == "image/jpg"

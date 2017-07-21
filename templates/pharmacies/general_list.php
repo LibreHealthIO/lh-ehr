@@ -1,12 +1,12 @@
 <a href="controller.php?practice_settings&<?php echo $this->top_action;?> pharmacy&action=edit" onclick="top.restoreSession()" class="css_button" >
-<span><?php echo xl("Add a Pharmacy");?></span></a><br><br>
+<span><?php echo xlt("Add a Pharmacy");?></span></a><br><br>
 
 <div class="table-responive">
 <table class="table table-hover">
     <tr>
-        <th><b><?php echo xl("Name");?></b></th>
-        <th><b><?php echo xl("Address");?></b></th>
-        <th><b><?php echo xl("Default Method");?></b></th>
+        <th><b><?php echo xlt("Name");?></b></th>
+        <th><b><?php echo xlt("Address");?></b></th>
+        <th><b><?php echo xlt("Default Method");?></b></th>
     </tr>
     
     <?php if(is_array($this->pharmacies)) { ?>
@@ -28,7 +28,7 @@
     <?php } }
     else { ?>
         <tr class="center_display">
-            <td colspan="3"><b><?php echo xl("No pharmacies Found");?><b></td>
+            <td colspan="3"><b><?php echo xlt("No pharmacies Found");?><b></td>
         </tr>
     <?php } ?>
     </table>
