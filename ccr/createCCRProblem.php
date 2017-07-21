@@ -71,7 +71,7 @@
         $e_Value = $ccr->createElement('Value',$row['diagnosis']);
         $e_Code->appendChild($e_Value);
     
-    $e_Value = $ccr->createElement('CodingSystem', 'ICD9-CM');
+    $e_Value = $ccr->createElement('CodingSystem', 'ICD10');
         $e_Code->appendChild($e_Value);
         
         $e_Status = $ccr->createElement('Status');
