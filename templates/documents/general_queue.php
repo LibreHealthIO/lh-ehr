@@ -12,19 +12,19 @@ function submit_documents()
 
 <a href="controller.php?practice_settings&<?php echo $this->top_action; ?>document_category&action=list" 
    onclick="top.restoreSession()" class="css_button" >
-<span>Edit Categories</span></a><a href="#" onclick="submit_documents();" class="css_button" target="_self" ><span>Update files</span></a>
-<input type="hidden" name="process" value="<?php echo self::PROCESS;?>" /><br><br>
+<span><?php echo xlt("Edit Categories");?></span></a><a href="#" onclick="submit_documents();" class="css_button" target="_self" ><span>Update files</span></a>
+<input type="hidden" name="process" value="<?php echo self::PROCESS;?>" />
 
 <form name="queue" method="post" action="<?php echo $this->form_action; ?>" onsubmit="return top.restoreSession()">
-<table cellpadding="1" class="showborder">
+<table class="table table-hover">
     <tr class="center_display">
         <td colspan="6"><?php $this->messages; ?></td>
     </tr>
-    <tr class="showborder_head">
-        <th colspan="2" width="110px">Name</td>
-        <th width="100px">Date</td>
-        <th width="200px">Patient</td>
-        <th colspan="2">Category</td>
+    <tr>
+        <th colspan="2"><?php echo xlt("Name");?></td>
+        <th><?php echo xlt("Date");?></td>
+        <th><?php echo xlt("Patient");?></td>
+        <th colspan="2"><?php echo xlt("Category");?></td>
     </tr>
     
    <?php if(!(empty($this->queue_files)))  
@@ -34,7 +34,7 @@ function submit_documents()
         <td><input type="checkbox" name="files[<?php echo $file.document_id;?>][active]" value="1" 
                    <!--{if is_numeric($file.patient_id)}checked{/if}>-->
                    <?php if(is_numeric($file.patient_id)) {
-                            echo "checked";                           
+                            echo xlt("checked");                           
                    }
                    ?>                           
         </td>
@@ -58,7 +58,7 @@ function submit_documents()
    <?php }    
    } else{ ?>
         <tr height="25" class="center_display">
-                <td colspan="6"><?php echo "No Documents Found";?></td>
+                <td colspan="6"><?php echo xlt("No Documents Found");?></td>
          </tr>
    <?php }?>
          
