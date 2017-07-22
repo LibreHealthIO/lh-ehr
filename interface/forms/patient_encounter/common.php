@@ -64,28 +64,11 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
   call_required_libraries(true,true,false,true);
 ?>
 <title><?php echo xlt('Patient Encounter'); ?></title>
-
-<!--<link rel="stylesheet" href="<?php //echo $css_header;?>" type="text/css">-->
-<!--<link rel="stylesheet" href="<?php //echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">-->
-
-<!--<link rel="stylesheet" type="text/css" href="<?php //echo $GLOBALS['standard_js_path']?>fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />-->
-
-<!--<script type="text/javascript" src="<?php //echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js"></script>-->
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/common.js"></script>
-<?php
-//include_js_library("fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js");
-?>
-<!--<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>-->
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/overlib_mini.js"></script>
-<!--<script type="text/javascript" src="<?php //echo $GLOBALS['webroot']; ?>/library/textformat.js"></script>-->
-<!--<script type="text/javascript" src="<?php //echo $GLOBALS['webroot']; ?>/library/js/jquery.datetimepicker.full.min.js"></script>-->
-<!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>-->
-
 
 <?php include_once("{$GLOBALS['srcdir']}/ajax/facility_ajax_jav.inc.php"); ?>
 <script language="JavaScript">
-
 
  // Process click on issue title.
  function newissue() {
@@ -179,63 +162,68 @@ function cancelClicked() {
 
 <br> <br>
 
-<table width='96%'>
+<table class="table container">
 
- <tr>
-  <td width='33%' nowrap class='bold'><?php echo xlt('Consultation Brief Description'); ?>:</td>
-  <td width='34%' rowspan='2' align='center' valign='center' class='text'>
-   <table>
+ <tr class="row">
+  <td class="col-xs-12 col-md-4 col-lg-4">
+    <?php echo xlt('Consultation Brief Description'); ?>:
+    <textarea class="form-control" name='reason' cols='40' rows='12' wrap='virtual'>
+      <?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?>
+    </textarea>  
+  </td>
+  <td class="col-xs-12 col-md-4 col-lg-4">
+   <table class="table">
 
     <tr>
-     <td class='bold' nowrap><?php echo xlt('Visit Category:'); ?></td>
+     <td class='bold'><?php echo xlt('Visit Category:'); ?></td>
      <td class='text'>
-      <select name='pc_catid' id='pc_catid'>
-    <option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
-<?php
- $cres = sqlStatement("SELECT pc_catid, pc_catname " .
-  "FROM libreehr_postcalendar_categories ORDER BY pc_catname");
- while ($crow = sqlFetchArray($cres)) {
-  $catid = $crow['pc_catid'];
-  if ($catid < 9 && $catid != 5) continue;
-  echo "       <option value='" . attr($catid) . "'";
-  if ($viewmode && $crow['pc_catid'] == $result['pc_catid']) echo " selected";
-  echo ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
- }
-?>
+      <select class="form-control" name='pc_catid' id='pc_catid'>
+      <option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
+        <?php
+        $cres = sqlStatement("SELECT pc_catid, pc_catname " .
+          "FROM libreehr_postcalendar_categories ORDER BY pc_catname");
+        while ($crow = sqlFetchArray($cres)) {
+          $catid = $crow['pc_catid'];
+          if ($catid < 9 && $catid != 5) continue;
+          echo "       <option value='" . attr($catid) . "'";
+          if ($viewmode && $crow['pc_catid'] == $result['pc_catid']) echo " selected";
+          echo ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
+        }
+        ?>
       </select>
      </td>
     </tr>
 
     <tr>
-     <td class='bold' nowrap><?php echo xlt('Place of Service:'); ?></td>
+     <td class='bold'><?php echo xlt('Place of Service:'); ?></td>
      <td class='text'>
-      <select name='facility_id' onChange="bill_loc()">
-<?php
+      <select class="form-control" name='facility_id' onChange="bill_loc()">
+        <?php
 
-if ($viewmode) {
-  $def_facility = $result['facility_id'];
-} else {
-  $dres = sqlStatement("select facility_id from users where username = ?", array($_SESSION['authUser']));
-  $drow = sqlFetchArray($dres);
-  $def_facility = $drow['facility_id'];
-}
-$fres = sqlStatement("select * from facility where service_location != 0 order by name");
-if ($fres) {
-  $fresult = array();
-  for ($iter = 0; $frow = sqlFetchArray($fres); $iter++)
-    $fresult[$iter] = $frow;
-  foreach($fresult as $iter) {
-?>
-       <option value="<?php echo attr($iter['id']); ?>" <?php if ($def_facility == $iter['id']) echo "selected";?>><?php echo text($iter['name']); ?></option>
-<?php
-  }
- }
-?>
+        if ($viewmode) {
+          $def_facility = $result['facility_id'];
+        } else {
+          $dres = sqlStatement("select facility_id from users where username = ?", array($_SESSION['authUser']));
+          $drow = sqlFetchArray($dres);
+          $def_facility = $drow['facility_id'];
+        }
+        $fres = sqlStatement("select * from facility where service_location != 0 order by name");
+        if ($fres) {
+          $fresult = array();
+          for ($iter = 0; $frow = sqlFetchArray($fres); $iter++)
+            $fresult[$iter] = $frow;
+          foreach($fresult as $iter) {
+        ?>
+              <option value="<?php echo attr($iter['id']); ?>" <?php if ($def_facility == $iter['id']) echo "selected";?>><?php echo text($iter['name']); ?></option>
+        <?php
+          }
+        }
+        ?>
       </select>
      </td>
     </tr>
     <tr>
-        <td class='bold' nowrap><?php echo xlt('Billing Facility'); ?>:</td>
+        <td class='bold'><?php echo xlt('Billing Facility'); ?>:</td>
         <td class='text'>
             <div id="ajaxdiv">
             <?php
@@ -250,9 +238,9 @@ if ($fres) {
  if ($sensitivities && count($sensitivities)) {
   usort($sensitivities, "sensitivity_compare");
 ?>
-     <td class='bold' nowrap><?php echo xlt('Sensitivity:'); ?></td>
+     <td class='bold'><?php echo xlt('Sensitivity:'); ?></td>
      <td class='text'>
-      <select name='form_sensitivity'>
+      <select class="form-control" name='form_sensitivity'>
 <?php
   foreach ($sensitivities as $value) {
    // Omit sensitivities to which this user does not have access.
@@ -278,7 +266,7 @@ if ($fres) {
     </tr>
 
     <tr<?php if (!$GLOBALS['gbl_visit_referral_source']) echo " style='visibility:hidden;'"; ?>>
-     <td class='bold' nowrap><?php echo xlt('Referral Source'); ?>:</td>
+     <td class='bold' ><?php echo xlt('Referral Source'); ?>:</td>
      <td class='text'>
 <?php
   echo generate_select_list('form_referral_source', 'refsource', $viewmode ? $result['referral_source'] : '', '');
@@ -287,18 +275,18 @@ if ($fres) {
     </tr>
 
     <tr>
-     <td class='bold' nowrap><?php echo xlt('Date of Service:'); ?></td>
-     <td class='text' nowrap>
-       <input type='text' size='10' name='form_date' id='form_date' <?php echo $disabled ?>
+     <td class='bold' ><?php echo xlt('Date of Service:'); ?></td>
+     <td class='text' >
+       <input type='text' class="form-control" size='10' name='form_date' id='form_date' <?php echo $disabled ?>
               value='<?php echo $viewmode ? oeFormatShortDate(substr($result['date'], 0, 10)) : date($DateFormat); ?>'
               title='<?php echo xla('Date of Service'); ?>'/>
      </td>
     </tr>
 
     <tr<?php if ($GLOBALS['ippf_specific']) echo " style='visibility:hidden;'"; ?>>
-     <td class='bold' nowrap><?php echo xlt('Onset/hosp. date:'); ?></td>
-     <td class='text' nowrap><!-- default is blank so that while generating claim the date is blank. -->
-      <input type='text' size='10' name='form_onset_date' id='form_onset_date' 
+     <td class='bold' ><?php echo xlt('Onset/hosp. date:'); ?></td>
+     <td class='text' ><!-- default is blank so that while generating claim the date is blank. -->
+      <input type='text' class="form-control" size='10' name='form_onset_date' id='form_onset_date' 
              value='<?php echo $viewmode && $result['onset_date']!='0000-00-00 00:00:00' ? oeFormatShortDate(substr($result['onset_date'], 0, 10)) : ''; ?>'
              title='<?php echo xla('Date of onset or hospitalization'); ?>'/>
      </td>
@@ -313,52 +301,45 @@ if ($fres) {
 
   </td>
 
-  <td class='bold' width='33%' nowrap>
-    <div style='float:left'>
+  <td class="col-xs-12 col-md-4 col-lg-4" >
+    <div>
    <?php echo xlt('Issues (Injuries/Medical/Allergy)'); ?>
     </div>
-    <div style='float:left;margin-left:8px;margin-top:-3px'>
+    <div>
       <a href="../../patient_file/summary/add_edit_issue.php" class="css_button_small link_submit iframe"
        onclick="top.restoreSession()"><span><?php echo xlt('Add'); ?></span></a>
     </div>
-  </td>
- </tr>
-
- <tr>
-  <td class='text' valign='top'>
-   <textarea name='reason' cols='40' rows='12' wrap='virtual' style='width:96%'
-    ><?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?></textarea>
-  </td>
-  <td class='text' valign='top'>
-   <select multiple name='issues[]' size='8' style='width:100%'
-    title='<?php echo xla('Hold down [Ctrl] for multiple selections or to unselect'); ?>'>
-<?php
-while ($irow = sqlFetchArray($ires)) {
-  $list_id = $irow['id'];
-  $tcode = $irow['type'];
-  if ($ISSUE_TYPES[$tcode]) $tcode = $ISSUE_TYPES[$tcode][2];
-  echo "    <option value='" . attr($list_id) . "'";
-  if ($viewmode) {
-    $perow = sqlQuery("SELECT count(*) AS count FROM issue_encounter WHERE " .
-      "pid = ? AND encounter = ? AND list_id = ?", array($pid,$encounter,$list_id));
-    if ($perow['count']) echo " selected";
-  }
-  else {
-    // For new encounters the invoker may pass an issue ID.
-    if (!empty($_REQUEST['issue']) && $_REQUEST['issue'] == $list_id) echo " selected";
-  }
-  echo ">" . text($tcode) . ": " . text($irow['begdate']) . " " .
-    text(substr($irow['title'], 0, 40)) . "</option>\n";
-}
-?>
+    
+    <select multiple class="form-control" name='issues[]' size='8' 
+      title='<?php echo xla('Hold down [Ctrl] for multiple selections or to unselect'); ?>'>
+        <?php
+        while ($irow = sqlFetchArray($ires)) {
+          $list_id = $irow['id'];
+          $tcode = $irow['type'];
+          if ($ISSUE_TYPES[$tcode]) $tcode = $ISSUE_TYPES[$tcode][2];
+          echo "    <option value='" . attr($list_id) . "'";
+          if ($viewmode) {
+            $perow = sqlQuery("SELECT count(*) AS count FROM issue_encounter WHERE " .
+              "pid = ? AND encounter = ? AND list_id = ?", array($pid,$encounter,$list_id));
+            if ($perow['count']) echo " selected";
+          }
+          else {
+            // For new encounters the invoker may pass an issue ID.
+            if (!empty($_REQUEST['issue']) && $_REQUEST['issue'] == $list_id) echo " selected";
+          }
+          echo ">" . text($tcode) . ": " . text($irow['begdate']) . " " .
+            text(substr($irow['title'], 0, 40)) . "</option>\n";
+        }
+        ?>
    </select>
 
    <p><i><?php echo xlt('To link this encounter/consult to an existing issue, click the '
    . 'desired issue above to highlight it and then click [Save]. '
-   . 'Hold down [Ctrl] button to select multiple issues.'); ?></i></p>
+   . 'Hold down [Ctrl] button to select multiple issues.'); ?>
+   </i></p>
 
   </td>
- </tr>
+ </tr> 
 
 </table>
 
