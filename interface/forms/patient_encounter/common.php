@@ -59,23 +59,29 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<?php html_header_show();?>
+<?php 
+  html_header_show();
+  call_required_libraries(true,true,false,true);
+?>
 <title><?php echo xlt('Patient Encounter'); ?></title>
 
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
+<!--<link rel="stylesheet" href="<?php //echo $css_header;?>" type="text/css">-->
+<!--<link rel="stylesheet" href="<?php //echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">-->
 
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']?>fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
+<!--<link rel="stylesheet" type="text/css" href="<?php //echo $GLOBALS['standard_js_path']?>fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />-->
 
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+<!--<script type="text/javascript" src="<?php //echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js"></script>-->
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/common.js"></script>
 <?php
-include_js_library("fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js");
+//include_js_library("fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js");
 ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
+<!--<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>-->
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/overlib_mini.js"></script>
+<!--<script type="text/javascript" src="<?php //echo $GLOBALS['webroot']; ?>/library/textformat.js"></script>-->
+<!--<script type="text/javascript" src="<?php //echo $GLOBALS['webroot']; ?>/library/js/jquery.datetimepicker.full.min.js"></script>-->
+<!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>-->
+
 
 <?php include_once("{$GLOBALS['srcdir']}/ajax/facility_ajax_jav.inc.php"); ?>
 <script language="JavaScript">
@@ -408,5 +414,19 @@ if (!$viewmode) { ?>
 }
 ?>
 </script>
+
+<!-- Script for making fancybox compatible with jquery 3.1.1 as $.browser is removed in jquery 1.9 -->
+<script type="text/javascript">
+    jQuery.browser = {};
+    (function () {
+        jQuery.browser.msie = false;
+        jQuery.browser.version = 0;
+        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+            jQuery.browser.msie = true;
+            jQuery.browser.version = RegExp.$1;
+        }
+    })();
+</script>
+
 
 </html>
