@@ -1,11 +1,11 @@
 <a href="<?php echo $this->current_action;?>action=edit&id=default" onclick="top.restoreSession()" class="css_button" >
-<span>Add New Partner</span></a><br><br>
-<table cellpadding="1" cellspacing="0" class="showborder">
-    <tr class="showborder_head">
-        <th width="200px"><?php echo xl("Name");?></th>
-        <th width="130px"><?php echo xl("Sender ID");?></th>
-        <th width="130px"><?php echo xl("Receiver ID");?></th>
-        <th><?php echo xl("Version");?></th>
+<span><?php echo xlt("Add New Partner");?></span></a><br><br>
+<table class="table table-hover">
+    <tr>
+        <th><?php echo xlt("Name");?></th>
+        <th><?php echo xlt("Sender ID");?></th>
+        <th><?php echo xlt("Receiver ID");?></th>
+        <th><?php echo xlt("Version");?></th>
     </tr>
     
     <?php if(is_array($this->partners)) {?>
@@ -20,7 +20,7 @@
         <?php }?>
       <?php }  else { ?>
             <tr height="25" class="center_display">
-                <td colspan="4"><?php echo xl("No Partners Found ");?></td>
+                <td colspan="4"><?php echo xlt("No Partners Found ");?></td>
             </tr>
       <?php }?>
 </table>
