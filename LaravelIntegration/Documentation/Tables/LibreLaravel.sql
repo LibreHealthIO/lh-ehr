@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.18, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.19, for Linux (x86_64)
 --
 -- Host: localhost    Database: LibreLaravel
 -- ------------------------------------------------------
--- Server version	5.7.18-0ubuntu0.16.04.1
+-- Server version	5.7.19-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -2014,6 +2014,59 @@ LOCK TABLES `forms` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `history_datas`
+--
+
+DROP TABLE IF EXISTS `history_datas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `history_datas` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement.',
+  `pid` int(10) unsigned NOT NULL COMMENT 'Foreign key to patient_datas table.',
+  `risk_factors` json DEFAULT NULL COMMENT 'Stores risk factors data in json format. The field name is key and boolean is value.',
+  `exams` json DEFAULT NULL COMMENT 'Stores exams/test data in json format.',
+  `history_mother` json DEFAULT NULL COMMENT 'Stores history of mother with diagnosis code in json format.',
+  `history_father` json DEFAULT NULL COMMENT 'Stores history of father with diagnosis code in json format.',
+  `history_siblings` json DEFAULT NULL COMMENT 'Stores history of siblings with diagnosis code in json format.',
+  `history_offspring` json DEFAULT NULL COMMENT 'Stores history of childeren with diagnosis code in json format.',
+  `history_spouse` json DEFAULT NULL COMMENT 'Stores history of wife with diagnosis code in json format.',
+  `relatives_cancer` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Cancer information of relatives.',
+  `relatives_diabetes` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Diabetes information of relatives',
+  `relatives_tuberculosis` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Tuberculosis information of relatives',
+  `relatives_high_blood_pressure` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Blood Pressure information of relatives',
+  `relatives_heart_problems` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Heart Related information of relatives',
+  `relatives_stroke` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Stroke information of relatives.',
+  `relatives_epilepsy` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Epilepsy information of relatives.',
+  `relatives_mental_illness` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Mental illeness information of relatives.',
+  `coffee` json DEFAULT NULL COMMENT 'Coffe data in json format.',
+  `tobacco` json DEFAULT NULL COMMENT 'Tobacco data.',
+  `alcohol` json NOT NULL COMMENT 'Alcohol data.',
+  `sleep_patterns` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Sleep Pattern.',
+  `exercise_patterns` json DEFAULT NULL COMMENT 'Exercise Pattern.',
+  `seatbelt_use` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Seatbelt Use.',
+  `counseling` json DEFAULT NULL COMMENT 'Counselling',
+  `hazardous_activities` json DEFAULT NULL COMMENT 'Hazardous Activities',
+  `recreational_drugs` json DEFAULT NULL COMMENT 'Recreational Drugs.',
+  `name_value` json DEFAULT NULL COMMENT 'Name-Value Pair',
+  `additional_history` text COLLATE utf8mb4_unicode_ci COMMENT 'Additional History.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `history_datas_pid_foreign` (`pid`),
+  CONSTRAINT `history_datas_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `history_datas`
+--
+
+LOCK TABLES `history_datas` WRITE;
+/*!40000 ALTER TABLE `history_datas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `history_datas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `icd10_dx_order_codes`
 --
 
@@ -2296,6 +2349,63 @@ LOCK TABLES `insurance_companies` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `insurance_datas`
+--
+
+DROP TABLE IF EXISTS `insurance_datas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `insurance_datas` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement.',
+  `type` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Type of insurance data. 0 -> Primary | 1 -> Secomdary | 2 -> Tertiary',
+  `provider` int(10) unsigned NOT NULL COMMENT 'Foreign key to insurance_companies table.',
+  `subscriber_addr_id` int(10) unsigned DEFAULT NULL COMMENT 'Address of Subscriber. Foreign key to addresses table.',
+  `employer_addr_id` int(10) unsigned DEFAULT NULL COMMENT 'Address of employer. Foreign key to addresses table.',
+  `pid` int(10) unsigned NOT NULL COMMENT 'Foreign Key to patient_datas table.',
+  `plan_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Insurance Plan.',
+  `policy_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Policy Number.',
+  `group_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Group Number',
+  `subscriber_lname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Last name of subscriber.',
+  `subscriber_mname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Middle name of subscriber.',
+  `subscriber_fname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'First Name of Subscriber.',
+  `subscriber_relationship` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Relationship of subscriber with patient.',
+  `subscriber_DOB` date NOT NULL COMMENT 'Date of birth of subscriber.',
+  `subscriber_sex` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Sex of subscriber.',
+  `subscriber_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Phone number of subscriber.',
+  `subscriber_employer` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Employer of subscriber.',
+  `copay` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Co Pay',
+  `sDate` date NOT NULL COMMENT 'Start date of insurance.',
+  `eDate` date NOT NULL COMMENT 'End date of insurance',
+  `accept_assignment` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 -> False | 1 -> True',
+  `policy_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Policy Type',
+  `inactive` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is insurance active? 0 -> False | 1 -> True',
+  `inactive_time` datetime NOT NULL COMMENT 'Time since inactive.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `insurance_datas_provider_foreign` (`provider`),
+  KEY `insurance_datas_subscriber_addr_id_foreign` (`subscriber_addr_id`),
+  KEY `insurance_datas_employer_addr_id_foreign` (`employer_addr_id`),
+  KEY `insurance_datas_pid_foreign` (`pid`),
+  KEY `insurance_datas_policy_number_index` (`policy_number`),
+  KEY `insurance_datas_sdate_index` (`sDate`),
+  CONSTRAINT `insurance_datas_employer_addr_id_foreign` FOREIGN KEY (`employer_addr_id`) REFERENCES `addresses` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `insurance_datas_pid_foreign` FOREIGN KEY (`pid`) REFERENCES `patient_datas` (`pid`) ON DELETE CASCADE,
+  CONSTRAINT `insurance_datas_provider_foreign` FOREIGN KEY (`provider`) REFERENCES `insurance_companies` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `insurance_datas_subscriber_addr_id_foreign` FOREIGN KEY (`subscriber_addr_id`) REFERENCES `addresses` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `insurance_datas`
+--
+
+LOCK TABLES `insurance_datas` WRITE;
+/*!40000 ALTER TABLE `insurance_datas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `insurance_datas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `insurance_numbers`
 --
 
@@ -2328,6 +2438,119 @@ CREATE TABLE `insurance_numbers` (
 LOCK TABLES `insurance_numbers` WRITE;
 /*!40000 ALTER TABLE `insurance_numbers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `insurance_numbers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lang_constants`
+--
+
+DROP TABLE IF EXISTS `lang_constants`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lang_constants` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Auto increment. Primary Key.',
+  `constant_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of Constant',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lang_constants`
+--
+
+LOCK TABLES `lang_constants` WRITE;
+/*!40000 ALTER TABLE `lang_constants` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lang_constants` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lang_customs`
+--
+
+DROP TABLE IF EXISTS `lang_customs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lang_customs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key. Autoincrement.',
+  `lang_code` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '2 Character Language Code.',
+  `lang_description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Description of langauge.',
+  `cons_id` int(10) unsigned DEFAULT NULL COMMENT 'Foreign key to lang_constants table.',
+  `definition` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Definition of language.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lang_customs_cons_id_foreign` (`cons_id`),
+  CONSTRAINT `lang_customs_cons_id_foreign` FOREIGN KEY (`cons_id`) REFERENCES `lang_constants` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lang_customs`
+--
+
+LOCK TABLES `lang_customs` WRITE;
+/*!40000 ALTER TABLE `lang_customs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lang_customs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lang_definitions`
+--
+
+DROP TABLE IF EXISTS `lang_definitions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lang_definitions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `lang_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to lang_languages table.',
+  `cons_id` int(10) unsigned NOT NULL COMMENT 'Foreign key to lang_constants table.',
+  `definition` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Definition of language.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lang_definitions_lang_id_foreign` (`lang_id`),
+  KEY `lang_definitions_cons_id_foreign` (`cons_id`),
+  CONSTRAINT `lang_definitions_cons_id_foreign` FOREIGN KEY (`cons_id`) REFERENCES `lang_constants` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `lang_definitions_lang_id_foreign` FOREIGN KEY (`lang_id`) REFERENCES `lang_languages` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lang_definitions`
+--
+
+LOCK TABLES `lang_definitions` WRITE;
+/*!40000 ALTER TABLE `lang_definitions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lang_definitions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lang_languages`
+--
+
+DROP TABLE IF EXISTS `lang_languages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lang_languages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key. Autoincrement',
+  `lang_code` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Language code. 2 character code.',
+  `lang_description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Language Description.',
+  `lang_is_rtl` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Is language Right to left formatted.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lang_languages`
+--
+
+LOCK TABLES `lang_languages` WRITE;
+/*!40000 ALTER TABLE `lang_languages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lang_languages` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2466,7 +2689,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1084 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1090 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2475,7 +2698,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1001,'2014_10_12_000000_create_users_table',1),(1002,'2014_10_12_100000_create_password_resets_table',1),(1003,'2017_06_17_083322_create_addresses_table',1),(1004,'2017_06_17_084322_create_user_secures_table',1),(1005,'2017_06_17_094408_create_user_settings_table',1),(1006,'2017_06_17_101539_create_user_addr_books_table',1),(1007,'2017_06_17_103044_create_user_password_histories_table',1),(1008,'2017_06_17_103947_create_user_communications_table',1),(1009,'2017_06_17_111354_create_patient_datas_table',1),(1010,'2017_06_17_111916_create_patient_face_sheets_table',1),(1011,'2017_06_17_134316_create_patient_social_statistics_table',1),(1012,'2017_06_17_134845_create_patient_employers_table',1),(1013,'2017_06_17_135505_create_patient_contacts_table',1),(1014,'2017_06_17_141531_create_patient_contact_links_table',1),(1015,'2017_06_17_142000_create_patient_privacy_contacts_table',1),(1016,'2017_06_17_142423_create_patient_contact_communications_table',1),(1017,'2017_06_17_192428_create_amendments_table',1),(1018,'2017_06_17_195953_create_amendment_histories_table',1),(1019,'2017_06_19_193813_create_facilities_table',1),(1020,'2017_06_19_202456_create_user_facility_links_table',1),(1021,'2017_06_20_162245_create_libreehr_calendar_categories_table',1),(1022,'2017_06_20_162307_create_libreehr_calendar_events_table',1),(1023,'2017_06_20_172045_create_form_encounters_table',1),(1024,'2017_06_20_172800_create_forms_table',1),(1025,'2017_06_20_195925_create_form_aftercare_plans_table',1),(1026,'2017_06_21_144239_create_form_ankleinjuries_table',1),(1027,'2017_06_21_173702_create_form_annotate_diagrams_table',1),(1028,'2017_06_22_011754_create_form_clinical_instructions_table',1),(1029,'2017_06_22_012807_create_form_dictations_table',1),(1030,'2017_06_22_014513_create_form_notes_table',1),(1031,'2017_06_22_020654_create_form_painmaps_table',1),(1032,'2017_06_22_172607_create_form_physical_exams_table',1),(1033,'2017_06_22_181230_create_form_physical_exam_diagnoses_table',1),(1034,'2017_06_22_184239_create_form_prior_auths_table',1),(1035,'2017_06_22_190845_create_form_soaps_table',1),(1036,'2017_06_23_162354_create_form_track_anything_types_table',1),(1037,'2017_06_23_173954_create_form_track_anythings_table',1),(1038,'2017_06_23_183725_create_form_track_anything_results_table',1),(1039,'2017_06_23_194614_create_form_transfer_summaries_table',1),(1040,'2017_06_24_032958_create_form_treatment_plans_table',1),(1041,'2017_06_24_043121_create_form_vitals_table',1),(1042,'2017_06_24_054151_create_form_misc_billing_options_table',1),(1043,'2017_06_24_123245_create_form_bronchitis_table',1),(1044,'2017_06_24_193504_create_form_reviewofs_table',1),(1045,'2017_06_25_065204_create_form_ros_table',1),(1046,'2017_06_27_170625_create_x12_partners_table',1),(1047,'2017_06_28_162853_create_insurance_companies_table',1),(1048,'2017_06_28_165512_create_insurance_numbers_table',1),(1049,'2017_06_28_181202_create_pnotes_table',1),(1050,'2017_06_29_201827_create_dated_reminders_table',1),(1051,'2017_06_29_210431_create_dated_reminder_links_table',1),(1052,'2017_07_01_102005_create_user_residential_links_table',1),(1053,'2017_07_04_195129_create_background_services_table',1),(1054,'2017_07_05_161121_create_batchcoms_table',1),(1055,'2017_07_05_170249_create_automatic_notifications_table',1),(1056,'2017_07_07_165115_create_categories_table',1),(1057,'2017_07_09_143758_create_tf_tags_table',1),(1058,'2017_07_09_161214_create_tf_filters_table',1),(1059,'2017_07_09_171607_create_tf_patient_tags_table',1),(1060,'2017_07_09_191453_create_icd10_dx_order_codes_table',1),(1061,'2017_07_09_194848_create_icd10_gem_dx_10_9s_table',1),(1062,'2017_07_09_200852_create_icd10_gem_dx_9_10s_table',1),(1063,'2017_07_09_201254_create_icd10_gem_pcs_10_9s_table',1),(1064,'2017_07_09_201827_create_icd10_gem_pcs_9_10s_table',1),(1065,'2017_07_09_202332_create_icd10_pcs_order_codes_table',1),(1066,'2017_07_09_203018_create_icd10_reimbr_dx_9_10s_table',1),(1067,'2017_07_09_204819_create_icd10_reimbr_pcs_9_10s_table',1),(1068,'2017_07_15_143915_create_lists_table',1),(1069,'2017_07_15_180535_create_audit_masters_table',1),(1070,'2017_07_15_180547_create_audit_details_table',1),(1071,'2017_07_15_180557_create_documents_table',1),(1072,'2017_07_15_181604_create_categories_to_documents_table',2),(1073,'2017_07_15_183711_create_list_diagnoses_table',3),(1074,'2017_07_15_190446_create_chart_trackers_table',4),(1075,'2017_07_15_191158_create_office_notes_table',5),(1076,'2017_07_15_195729_create_extended_logs_table',6),(1077,'2017_07_16_052607_create_drugs_table',6),(1078,'2017_07_16_062312_create_drug_templates_table',6),(1079,'2017_07_16_070701_create_prices_table',6),(1080,'2017_07_17_150343_create_product_warehouses_table',6),(1081,'2017_07_17_164619_create_drug_inventories_table',6),(1082,'2017_07_18_144245_create_prescriptions_table',6),(1083,'2017_07_18_144254_create_drug_sales_table',6);
+INSERT INTO `migrations` VALUES (1001,'2014_10_12_000000_create_users_table',1),(1002,'2014_10_12_100000_create_password_resets_table',1),(1003,'2017_06_17_083322_create_addresses_table',1),(1004,'2017_06_17_084322_create_user_secures_table',1),(1005,'2017_06_17_094408_create_user_settings_table',1),(1006,'2017_06_17_101539_create_user_addr_books_table',1),(1007,'2017_06_17_103044_create_user_password_histories_table',1),(1008,'2017_06_17_103947_create_user_communications_table',1),(1009,'2017_06_17_111354_create_patient_datas_table',1),(1010,'2017_06_17_111916_create_patient_face_sheets_table',1),(1011,'2017_06_17_134316_create_patient_social_statistics_table',1),(1012,'2017_06_17_134845_create_patient_employers_table',1),(1013,'2017_06_17_135505_create_patient_contacts_table',1),(1014,'2017_06_17_141531_create_patient_contact_links_table',1),(1015,'2017_06_17_142000_create_patient_privacy_contacts_table',1),(1016,'2017_06_17_142423_create_patient_contact_communications_table',1),(1017,'2017_06_17_192428_create_amendments_table',1),(1018,'2017_06_17_195953_create_amendment_histories_table',1),(1019,'2017_06_19_193813_create_facilities_table',1),(1020,'2017_06_19_202456_create_user_facility_links_table',1),(1021,'2017_06_20_162245_create_libreehr_calendar_categories_table',1),(1022,'2017_06_20_162307_create_libreehr_calendar_events_table',1),(1023,'2017_06_20_172045_create_form_encounters_table',1),(1024,'2017_06_20_172800_create_forms_table',1),(1025,'2017_06_20_195925_create_form_aftercare_plans_table',1),(1026,'2017_06_21_144239_create_form_ankleinjuries_table',1),(1027,'2017_06_21_173702_create_form_annotate_diagrams_table',1),(1028,'2017_06_22_011754_create_form_clinical_instructions_table',1),(1029,'2017_06_22_012807_create_form_dictations_table',1),(1030,'2017_06_22_014513_create_form_notes_table',1),(1031,'2017_06_22_020654_create_form_painmaps_table',1),(1032,'2017_06_22_172607_create_form_physical_exams_table',1),(1033,'2017_06_22_181230_create_form_physical_exam_diagnoses_table',1),(1034,'2017_06_22_184239_create_form_prior_auths_table',1),(1035,'2017_06_22_190845_create_form_soaps_table',1),(1036,'2017_06_23_162354_create_form_track_anything_types_table',1),(1037,'2017_06_23_173954_create_form_track_anythings_table',1),(1038,'2017_06_23_183725_create_form_track_anything_results_table',1),(1039,'2017_06_23_194614_create_form_transfer_summaries_table',1),(1040,'2017_06_24_032958_create_form_treatment_plans_table',1),(1041,'2017_06_24_043121_create_form_vitals_table',1),(1042,'2017_06_24_054151_create_form_misc_billing_options_table',1),(1043,'2017_06_24_123245_create_form_bronchitis_table',1),(1044,'2017_06_24_193504_create_form_reviewofs_table',1),(1045,'2017_06_25_065204_create_form_ros_table',1),(1046,'2017_06_27_170625_create_x12_partners_table',1),(1047,'2017_06_28_162853_create_insurance_companies_table',1),(1048,'2017_06_28_165512_create_insurance_numbers_table',1),(1049,'2017_06_28_181202_create_pnotes_table',1),(1050,'2017_06_29_201827_create_dated_reminders_table',1),(1051,'2017_06_29_210431_create_dated_reminder_links_table',1),(1052,'2017_07_01_102005_create_user_residential_links_table',1),(1053,'2017_07_04_195129_create_background_services_table',1),(1054,'2017_07_05_161121_create_batchcoms_table',1),(1055,'2017_07_05_170249_create_automatic_notifications_table',1),(1056,'2017_07_07_165115_create_categories_table',1),(1057,'2017_07_09_143758_create_tf_tags_table',1),(1058,'2017_07_09_161214_create_tf_filters_table',1),(1059,'2017_07_09_171607_create_tf_patient_tags_table',1),(1060,'2017_07_09_191453_create_icd10_dx_order_codes_table',1),(1061,'2017_07_09_194848_create_icd10_gem_dx_10_9s_table',1),(1062,'2017_07_09_200852_create_icd10_gem_dx_9_10s_table',1),(1063,'2017_07_09_201254_create_icd10_gem_pcs_10_9s_table',1),(1064,'2017_07_09_201827_create_icd10_gem_pcs_9_10s_table',1),(1065,'2017_07_09_202332_create_icd10_pcs_order_codes_table',1),(1066,'2017_07_09_203018_create_icd10_reimbr_dx_9_10s_table',1),(1067,'2017_07_09_204819_create_icd10_reimbr_pcs_9_10s_table',1),(1068,'2017_07_15_143915_create_lists_table',1),(1069,'2017_07_15_180535_create_audit_masters_table',1),(1070,'2017_07_15_180547_create_audit_details_table',1),(1071,'2017_07_15_180557_create_documents_table',1),(1072,'2017_07_15_181604_create_categories_to_documents_table',2),(1073,'2017_07_15_183711_create_list_diagnoses_table',3),(1074,'2017_07_15_190446_create_chart_trackers_table',4),(1075,'2017_07_15_191158_create_office_notes_table',5),(1076,'2017_07_15_195729_create_extended_logs_table',6),(1077,'2017_07_16_052607_create_drugs_table',6),(1078,'2017_07_16_062312_create_drug_templates_table',6),(1079,'2017_07_16_070701_create_prices_table',6),(1080,'2017_07_17_150343_create_product_warehouses_table',6),(1081,'2017_07_17_164619_create_drug_inventories_table',6),(1082,'2017_07_18_144245_create_prescriptions_table',6),(1083,'2017_07_18_144254_create_drug_sales_table',6),(1084,'2017_07_20_193311_create_insurance_datas_table',7),(1085,'2017_07_20_214001_create_lang_languages_table',8),(1086,'2017_07_20_214027_create_lang_constants_table',8),(1087,'2017_07_20_214046_create_lang_definitions_table',8),(1088,'2017_07_20_214055_create_lang_customs_table',8),(1089,'2017_07_22_084303_create_history_datas_table',9);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3359,4 +3582,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-18 22:53:02
+-- Dump completed on 2017-07-22 20:25:11
