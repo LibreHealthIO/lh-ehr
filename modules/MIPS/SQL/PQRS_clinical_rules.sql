@@ -1,13 +1,17 @@
-/* PATCH FILE to include 2016 measures and changes
- *  If you try to create another patch file, update the SEQ in the options_list
- * Copyright (C) 2016 Suncoast Connection
- *
- *
- * @package PQRS Gateway
- * @author  Suncoast Connection
- * @author  leebc
+/* Copyright (C) 2015 - 2017      Suncoast Connection
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details. 
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * 
+ * @author  Art Eaton <art@suncoastconnection.com>
+ * @author  Bryan lee <leebc@suncoastconnection.com>
+ * @package LibreHealthEHR 
  * @link    http://suncoastconnection.com
-*/
+ * @link    http://librehealth.io
+ *
+ * Please support this product by sharing your changes with the LibreHealth.io community.
+ */
 
 DROP TABLE IF EXISTS `clinical_rules`;
 

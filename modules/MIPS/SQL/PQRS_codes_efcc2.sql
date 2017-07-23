@@ -1,25 +1,17 @@
-
-/*
- * Copyright (C),2016 Suncoast Connection
- *
- * LICENSE: This program is free software; you c
- * modify it under the terms of the GNU General 
- * as published by the Free Software Foundation;
- * of the License, or (at your option),any later
- * This program is distributed in the hope that 
- * but WITHOUT ANY WARRANTY; without even the im
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR P
- * GNU General Public License for more details.
- * You should have received a copy of the GNU Ge
- * along with this program. If not, see <http://
- *
- * @package OpenEMR
- * @author  Suncoast Connection
- * @author  leebc
- * @author  meggerc
- * @link    http://www.oemr.org
+/* Copyright (C) 2015 - 2017      Suncoast Connection
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details. 
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * 
+ * @author  Art Eaton <art@suncoastconnection.com>
+ * @author  Bryan lee <leebc@suncoastconnection.com>
+ * @package LibreHealthEHR 
  * @link    http://suncoastconnection.com
-*/
+ * @link    http://librehealth.io
+ *
+ * Please support this product by sharing your changes with the LibreHealth.io community.
+ */
 
 DROP TABLE IF EXISTS pqrs_efcc2;
 CREATE TABLE IF NOT EXISTS `pqrs_efcc2` (

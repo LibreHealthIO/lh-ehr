@@ -1,26 +1,29 @@
 <?php
 /**
  * Display Measures Engine Report Form
- * Copyright (C) 2016      Suncoast Connection
- *
- * @link    http://SuncoastConnection.com
+ * Copyright (C) 2015 - 2017      Suncoast Connection
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details. 
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * 
+ * @author  Art Eaton <art@suncoastconnection.com>
  * @author  Bryan lee <leebc 11 at acm dot org>
  * @author  Sam Likins <sam.likins@wsi-services.com>
+ * @package LibreHealthEHR 
+ * @link    http://suncoastconnection.com
+ * @link    http://librehealth.io
+ *
+ * Please support this product by sharing your changes with the LibreHealth.io community.
  */
-
 // SANITIZE ALL ESCAPES
 $sanitize_all_escapes = true;
 
 // STOP FAKE REGISTER GLOBALS
 $fake_register_globals = false;
 
-require_once '../globals.php';
-require_once $srcdir.'/patient.inc';
-require_once $srcdir.'/formatting.inc.php';
-require_once $srcdir.'/options.inc.php';
-require_once $srcdir.'/formdata.inc.php';
-require_once $srcdir.'/clinical_rules.php';
-require_once $srcdir.'/report_database.inc';
+require_once 'mips_headers.inc.php';
+
 
 function existsDefault(&$array, $key, $default = '') {
   if(array_key_exists($key, $array)) {
