@@ -162,16 +162,17 @@ function cancelClicked() {
 
 <br> <br>
 
-<table class="table container">
+<div class="container">
 
- <tr class="row">
-  <td class="col-xs-12 col-md-4 col-lg-4">
+ <div class="row">
+  <div class="col-xs-12 col-sm-4 col-lg-4 ">
     <?php echo xlt('Consultation Brief Description'); ?>:
     <textarea class="form-control" name='reason' cols='40' rows='12' wrap='virtual'>
       <?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?>
-    </textarea>  
-  </td>
-  <td class="col-xs-12 col-md-4 col-lg-4">
+    </textarea>
+    <hr>  
+  </div>
+  <div class="col-xs-12 col-sm-4 col-lg-4 ">
    <table class="table">
 
     <tr>
@@ -266,13 +267,13 @@ function cancelClicked() {
     </tr>
 
     <tr<?php if (!$GLOBALS['gbl_visit_referral_source']) echo " style='visibility:hidden;'"; ?>>
-     <td class='bold' ><?php echo xlt('Referral Source'); ?>:</td>
+     <td class='bold' ><?php echo xlt('Referral Source'); ?>:</div>
      <td class='text'>
 <?php
   echo generate_select_list('form_referral_source', 'refsource', $viewmode ? $result['referral_source'] : '', '');
 ?>
      </td>
-    </tr>
+    </div>
 
     <tr>
      <td class='bold' ><?php echo xlt('Date of Service:'); ?></td>
@@ -299,9 +300,9 @@ function cancelClicked() {
 
    </table>
 
-  </td>
+  </div>
 
-  <td class="col-xs-12 col-md-4 col-lg-4" >
+  <div class="col-xs-12 col-sm-4 col-lg-4 " >
     <div>
    <?php echo xlt('Issues (Injuries/Medical/Allergy)'); ?>
     </div>
@@ -339,9 +340,9 @@ function cancelClicked() {
    </i></p>
 
   </td>
- </tr> 
+ </div> 
 
-</table>
+</div>
 
 </form>
 
