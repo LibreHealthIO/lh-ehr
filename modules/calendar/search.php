@@ -110,12 +110,13 @@ function keywordFilter($arr) {
     ?>
     <table class="table table-hover">
       <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Provider</th>
-        <th>Patient</th>
-        <th>Category</th>
+        <th><?php echo xlt('Date')?></th>
+        <th><?php echo xlt('Time')?></th>
+        <th><?php echo xlt('Provider')?></th>
+        <th><?php echo xlt('Patient')?></th>
+        <th><?php echo xlt('Category')?></th>
       </tr>
+      <!-- filter appointments loop start -->
       <?php foreach($filteredAppointments as $appointment) {
         $eid = $appointment['pc_eid'];
         $pid = $appointment['pc_pid'];
@@ -129,8 +130,9 @@ function keywordFilter($arr) {
         echo "</tr>";
       }
       ?>
+      <!-- filter appointments loop end -->
     </table>
-    <!-- end if -->
+    <!-- end if search performed -->
     <?php } ?>
   </div>
   
