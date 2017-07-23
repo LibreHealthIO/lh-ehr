@@ -177,8 +177,6 @@ function generatePageElement($start,$pagesize,$billing,$issue,$text)
 ?>
 <!-- Main style sheet comes after the page-specific stylesheet to facilitate overrides. -->
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/encounters.css" type="text/css">
-<!--<link rel="stylesheet" href="<?php //echo $css_header;?>" type="text/css">-->
-
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/ajtooltip.js"></script>
 
 <script language="JavaScript">
