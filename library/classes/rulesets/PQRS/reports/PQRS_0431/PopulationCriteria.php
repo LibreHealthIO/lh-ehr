@@ -16,8 +16,7 @@
  *
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
- * @author  Suncoast Connection
- */
+
  
 class PQRS_0431_PopulationCriteria implements PQRSPopulationCriteriaFactory
 {
