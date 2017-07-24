@@ -128,7 +128,7 @@ h1, h2, h3 {
 	font-size: 9pt;
 }
 		</style>
-		<script type="text/javascript" src="../../../library/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 		<script language="JavaScript">
 $(document).ready(function() {
 	$('input[type=checkbox]').change(function(e) {
