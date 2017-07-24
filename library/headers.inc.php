@@ -26,7 +26,8 @@ function include_js_library($path)
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$path;?>"></script>
 <?php
-}function include_css_library($path)
+}
+function include_css_library($path)
 {
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path'].$path;?>" media="screen" />

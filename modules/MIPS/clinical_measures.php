@@ -220,7 +220,6 @@ function collectStatus(report_id) {
 }
 
 function GenXml(sNested) {
-// PQRS TEAM NOTE: !! Important for XML generation !!
 
   top.restoreSession();
 
@@ -235,17 +234,7 @@ function GenXml(sNested) {
   return false;
 }
 
-// QRDA I - 2014 Download
-function downloadQRDA() {
-  top.restoreSession();
 
-  var reportID = '<?php echo attr($report_id); ?>';
-  var provider = $("#form_provider").val();
-
-  sLoc = '../../custom/download_qrda.php?&report_id='+reportID+'&provider_id='+provider;
-
-  dlgopen(sLoc, '_blank', 600, 500);
-}
 
 function validateForm() {
   return true;
@@ -332,7 +321,7 @@ function Form_Validate() {
                         onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
                         title='<?php echo htmlspecialchars(xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
 <?php   if(empty($report_id)) { ?>
-                      <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+                      <img src='../../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
                         id='img_begin_date' border='0' alt='[?]' style='cursor:pointer'
                         title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
 <?php   } ?>
@@ -353,7 +342,7 @@ function Form_Validate() {
                         onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
                         title='<?php echo htmlspecialchars(xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
 <?php if(empty($report_id)) { ?>
-                      <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+                      <img src='../../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
                         id='img_target_date' border='0' alt='[?]' style='cursor:pointer'
                         title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
 <?php } ?>
@@ -387,7 +376,7 @@ function Form_Validate() {
                     <td>
                       <select <?php echo $dis_text; ?> id='form_provider' name='form_provider'>
                         <option value=''>-- <?php echo htmlspecialchars(xl('All (Cumulative)'), ENT_NOQUOTES); ?> --</option>
-<!-- TODO: Not sure what this does yet, but may have use for creating multiple files/provider stuff. -->
+<!-- TODO: Requires revision upon publishing of 2017 MIPS standard (not published yet: July 2017) -->
                         <option value='collate_outer' <?php if($provider == 'collate_outer') {echo 'selected';} ?>>-- <?php echo htmlspecialchars(xl('All (Collated Format A)'), ENT_NOQUOTES); ?> --</option>
                         <option value='collate_inner' <?php if($provider == 'collate_inner') {echo 'selected';} ?>>-- <?php echo htmlspecialchars(xl('All (Collated Format B)'), ENT_NOQUOTES); ?> --</option>
 <?php
@@ -445,7 +434,7 @@ function Form_Validate() {
                         </span>
                       </a>
                       <span id='status_span'></span>
-                      <div id='processing' style='margin:10px;display:none;'><img src='../pic/ajax-loader.gif'/></div>
+                      <div id='processing' style='margin:10px;display:none;'><img src='../../interface/pic/ajax-loader.gif'/></div>
 <?php }
 
     if(!empty($report_id)) {
