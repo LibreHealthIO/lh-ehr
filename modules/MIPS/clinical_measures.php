@@ -35,7 +35,7 @@ function existsDefault(&$array, $key, $default = '') {
 
 $page_titles = array(
   'pqrs'                  => xlt('Physician Quality Reporting System'),
-  'pqrs_individual_2016'  => xlt('Physician Quality Reporting System -- Measures -- 2016'),
+  'pqrs_individual_2016'  => xlt('Physician Quality Reporting System -- Measures -- 2017'),
 );
 
 // See if showing an old report or creating a new report
@@ -503,12 +503,7 @@ function Form_Validate() {
               <td class='detail'>
 <?php
           if(isset($row['is_main'])) {
-// TODO: Art note: No idea what I am doing here yet... the below is very ambiguous
-            // is_sub is a special case of is_main whereas total patients, denominator, and excluded patients are taken
-            // from is_main prior to it. So, need to store denominator patients from is_main for subsequent is_sub
-            // to calculate the number of patients that failed.
-            // Note that exlusion in the standard rules is not the same as in the cqm/amd and should not be in calculation
-            // as is in the cqm/amc rules.
+
             $main_pass_filter = $row['pass_filter'];
 
             echo '<b>'.generate_display_field(array('data_type' => '1', 'list_id' => 'clinical_rules'), $row['id']).'</b>';
@@ -549,7 +544,7 @@ function Form_Validate() {
               'numerator_label' => attr($row['numerator_label'])
             ));
 ?>
-              <td align='center'><a href='../main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['pass_filter']; ?></a></td>
+              <td align='center'><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['pass_filter']; ?></a></td>
 <?php
           } else {
 ?>
@@ -569,7 +564,7 @@ function Form_Validate() {
                 'numerator_label' => attr($row['numerator_label']),
               ));
 ?>
-              <td align='center'><a href='../main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['excluded']; ?></a></td>
+              <td align='center'><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['excluded']; ?></a></td>
 <?php
             } else {
 ?>
@@ -578,7 +573,7 @@ function Form_Validate() {
             }
 
 
-// TODO: Art note: Targets are not implemented in PQRS reports as far as I understand.  May be useful, but direct entry form will do this instead
+// TODO: 
           if(isset($row['itemized_test_id']) && $row['pass_target'] > 0) {
             $query = http_build_query(array(
               'from_page' => 'pqrs_report',
@@ -588,7 +583,7 @@ function Form_Validate() {
               'numerator_label' => attr($row['numerator_label']),
             ));
 ?>
-              <td align='center'><a href='../main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['pass_target']; ?></a></td>
+              <td align='center'><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['pass_target']; ?></a></td>
 <?php
           } else {
 ?>
@@ -612,7 +607,7 @@ function Form_Validate() {
               'numerator_label' => attr($row['numerator_label']),
             ));
 ?>
-              <td align='center'><a href='../main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $failed_items; ?></a></td>
+              <td align='center'><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $failed_items; ?></a></td>
 <?php
           } else {
 ?>
