@@ -198,16 +198,13 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
     $type_title = xl('2016 PQRS Group Measures');
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
-  else if ($row['type'] == "mips_2017" ) {
+  else if ($row['type'] == "pqrs_individual_2017" ) {
     if (!$GLOBALS['enable_pqrs']) continue;
     $type_title = xl('2017 MIPS Measures');
+
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
-  else if ($row['type'] == "mips" ) {
-    if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('MIPS Measures');
-    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
+
   else if ($row['type'] == "process_reminders") {
     if (!$GLOBALS['enable_cdr']) continue;
     $type_title = xl('Processing Patient Reminders');
@@ -233,17 +230,15 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
     $type_title = xl('Standard Measures (Patient Reminders)');
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
-  else {
+  else if ($row['type'] == "") {
     // Not identified, so give an unknown title
     $type_title = xl('Unknown') . "-" . $row['type'];
     $link="";
   }
-
-    // Reset the title based on a having a title in the row
-  if ( $row['title'] != "0" ) {
-    $type_title = xl($row['title']);
+  else {
+    $type_title = xl($row['type']);
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
-
 ?>
  <tr>
       <td>
@@ -256,7 +251,6 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
            onclick='renameReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
          <span>Rename</span></a>
       </td>
-
     <?php if ($row["progress"] == "complete") { ?>
       <td align='center'><a href='<?php echo $link; ?>' onclick='top.restoreSession()'><?php echo text($type_title); ?></a></td>
     <?php } else { ?>
@@ -299,14 +293,13 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <!--  Stuff for deleting and renaming reports -->
 <script type='text/javascript'>
 function manageReport(report_id,action,newname){
-	console.log('manageReport:  report_id= ' + report_id + '  action= ' + action + ' newname= ' +newname);
         $.ajax({
                 type: 'POST',
                 url: '<?php echo $GLOBALS['webroot']; ?>/library/classes/rulesets/PQRS/PQRSReportManager.php',
                 dataType: 'text',
                 data: {
-                        report_id: report_id,
                         action: action,
+                        report_id: report_id,
                         report_new_name: newname,
                 },
                 success: function(data, status, xHR) {
@@ -332,17 +325,17 @@ function deleteReport(report_id){
 
 function renameReport(report_id){
     var newname = prompt('New name for this report?');
-    console.log('Rename Report -- prompt got: ' + newname);
-//    if (newname == "")  {
-//        confirm('You didn\'t supply a new name.');
-//    } else {
-        console.log('Rename Report -- report_id: ' + report_id + ', New Name: ' + newname);
+    if (newname == "")  {
+        confirm('You didn\'t supply a new name.');
+    } else {
+//        console.log('Rename Report -- report_id: ' + report_id + ', New Name: ' + newname);
 	manageReport(report_id,'RENAME',newname);
-//    }
 
+    }
 top.restoreSession();  $("#theform").submit();
 }
 
 </script>
+
 </html>
 
