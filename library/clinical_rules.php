@@ -1454,7 +1454,7 @@ function resolve_rules_sql($type='',$patient_id='0',$configurableOnly=FALSE,$pla
   if ($configurableOnly) {
     // Collect all default, configurable (per patient) rules into an array
     //   (ie. ignore the cqm and amc rules)
-    $sql = sqlStatementCdrEngine("SELECT * FROM `clinical_rules` WHERE `pid`=0  AND `pqrs_individual_2016_flag` !=1 AND `pqrs_flag` !=1  ORDER BY `id`");
+    $sql = sqlStatementCdrEngine("SELECT * FROM `clinical_rules` WHERE `pid`=0  AND `pqrs_individual_2016_flag` !=1  ORDER BY `id`");
   }
   else {
     // Collect all default rules into an array

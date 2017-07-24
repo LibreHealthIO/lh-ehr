@@ -555,7 +555,7 @@
             "children" : [ ],
             "requirement" : 0
         },{ 
-            "label" : "Remove Provider Assignments",
+            "label" : "Remove_Provider_Assignments",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/modules/MIPS/reset_provider_to_unassigned.php",
