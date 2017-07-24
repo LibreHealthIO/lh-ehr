@@ -2968,6 +2968,14 @@ $GLOBALS_METADATA = array(
       '0',                               // default
       xl('Show demo system "Save/Load database presets" menu')
     ),
+    
+    'report_itemizing_pqrs' => array(
+      xl('Enable MIPS report itemization'),		// for itemizing reports
+      'text',                           // data type
+      '1',                     // default
+      xl('Creates patient lists from reports')
+    ),
+    
 
     'pqrs_creator' => array(
       xl('MIPS Report Creator Name'),		// for XML generation
