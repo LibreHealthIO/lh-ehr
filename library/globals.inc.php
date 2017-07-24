@@ -3163,20 +3163,7 @@ $GLOBALS_METADATA = array(
     ),
 
   ),
-
-);
-
-if ( function_exists( 'do_action' ) ) {
-    do_action( 'globals_init', $args = [
-        'global_metadata' => $GLOBALS_METADATA,
-        'user_specific_globals' => $USER_SPECIFIC_GLOBALS,
-        'user_specific_tabs' => $USER_SPECIFIC_TABS ] );
-}
-  // PQRS (Physician Quality Reporting System)
-  // 2016-02-02 leebc -- Globals configuration section for PQRS
-  // 2016-03-23 leebc -- Added configuration values for registry for XML
-
-  'PQRS' => array(
+    'PQRS' => array(
 
     'enable_pqrs' => array(
       xl('Enable Physician Quality Reporting System (PQRS/MIPS)'),
@@ -3222,8 +3209,19 @@ if ( function_exists( 'do_action' ) ) {
 
   ),
 
-   
-
-   
 );
+
+if ( function_exists( 'do_action' ) ) {
+    do_action( 'globals_init', $args = [
+        'global_metadata' => $GLOBALS_METADATA,
+        'user_specific_globals' => $USER_SPECIFIC_GLOBALS,
+        'user_specific_tabs' => $USER_SPECIFIC_TABS ] );
+}
+  // PQRS (Physician Quality Reporting System)
+  // 2016-02-02 leebc -- Globals configuration section for PQRS
+  // 2016-03-23 leebc -- Added configuration values for registry for XML
+
+
+
+
 ?>
