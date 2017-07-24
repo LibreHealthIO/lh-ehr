@@ -23,53 +23,53 @@ include_once("$srcdir/api.inc");
 <?php
 if($_POST['formSubmit'] == "Submit") 
 {
-sqlStatement("TRUNCATE TABLE `addresses`;");
+sqlStatementNoLog("TRUNCATE TABLE `addresses`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/addresses.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `billing`;");
+sqlStatementNoLog("TRUNCATE TABLE `billing`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/billing.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `facility`;");
+sqlStatementNoLog("TRUNCATE TABLE `facility`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/facilities.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `form_encounter`;");
+sqlStatementNoLog("TRUNCATE TABLE `form_encounter`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/form_encounter.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `forms`;");
+sqlStatementNoLog("TRUNCATE TABLE `forms`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/forms.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `insurance_companies`;");
+sqlStatementNoLog("TRUNCATE TABLE `insurance_companies`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/insurance_companies.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `insurance_data`;");
+sqlStatementNoLog("TRUNCATE TABLE `insurance_data`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/insurance_data.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `patient_data`;");
+sqlStatementNoLog("TRUNCATE TABLE `patient_data`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/patient_data.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `phone_numbers`;");
+sqlStatementNoLog("TRUNCATE TABLE `phone_numbers`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/phone_numbers.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("TRUNCATE TABLE `x12_partners`;");
+sqlStatementNoLog("TRUNCATE TABLE `x12_partners`;");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/x12_partners.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("DELETE FROM `users` WHERE `users`.`id` > '20';");
+sqlStatementNoLog("DELETE FROM `users` WHERE `users`.`id` > '20';");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/users.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 
-sqlStatement("DELETE FROM `groups` WHERE `groups`.`id` > '20';");
+sqlStatementNoLog("DELETE FROM `groups` WHERE `groups`.`id` > '20';");
 $query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Importer/groups.sql");
-sqlStatement($query);
+sqlStatementNoLog($query);
 echo "Database updated!";
 }
 ?>
