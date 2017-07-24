@@ -530,7 +530,6 @@
             "label" : "Create MIPS Report",
             "menu_id" : "rep0",
             "target" : "rep",
-            "url" : "'reports/clinical_measures.php?type=pqrs'",
             "children" : [ ],
             "requirement" : 0
         }, { 
