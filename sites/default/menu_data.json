@@ -530,6 +530,7 @@
             "label" : "Create MIPS Report",
             "menu_id" : "rep0",
             "target" : "rep",
+            "url" : "/modules/MIPS/clinical_measures.php?type=pqrs",
             "children" : [ ],
             "requirement" : 0
         }, { 
@@ -572,6 +573,13 @@
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/modules/filemanager/index.php",
+            "children" : [ ],
+            "requirement" : 0
+        },{ 
+            "label" : "Change Demo Database",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/modules/MIPS/reload_demo_database.php",
             "children" : [ ],
             "requirement" : 0
         },{ 

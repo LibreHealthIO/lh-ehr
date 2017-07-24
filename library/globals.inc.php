@@ -1834,61 +1834,6 @@ $GLOBALS_METADATA = array(
       xl('Enable Patient Reminder Widget')
     ),
 
-    'enable_cqm' => array(
-      xl('Enable CQM Reporting'),
-       'bool',                          // data type
-       '1',                             // default
-      xl('Enable Clinical Quality Measure (CQM) Reporting')
-    ),
-
-    'pqri_registry_name' => array(
-      xl('PQRI Registry Name'),
-       'text',                          // data type
-       'Model Registry',                // default
-      xl('PQRI Registry Name')
-    ),
-
-    'pqri_registry_id' => array(
-      xl('PQRI Registry ID'),
-       'text',                          // data type
-       '125789123',                     // default
-      xl('PQRI Registry ID')
-    ),
-
-    'enable_amc' => array(
-      xl('Enable AMC Reporting'),
-       'bool',                          // data type
-       '1',                             // default
-      xl('Enable Automated Measure Calculations (AMC) Reporting')
-    ),
-
-    'enable_amc_prompting' => array(
-      xl('Enable AMC Prompting'),
-       'bool',                          // data type
-       '1',                             // default
-      xl('Enable Prompting For Automated Measure Calculations (AMC) Required Data')
-    ),
-
-    'enable_amc_tracking' => array(
-      xl('Enable AMC Tracking'),
-       'bool',                          // data type
-       '1',                             // default
-      xl('Enable Reporting of Tracking Date For Automated Measure Calculations (AMC)')
-    ),
-
-    'cdr_report_nice' => array(
-      xl('CDR Reports Processing Priority'),
-      array(
-        '' => xl('Default Priority'),
-        '5' => xl('Moderate Priority'),
-        '10' => xl('Moderate/Low Priority'),
-        '15' => xl('Low Priority'),
-        '20' => xl('Lowest Priority')
-      ),
-       '',                              // default
-      xl('Set processing priority for CDR engine based reports.')
-    ),
-
     'pat_rem_clin_nice' => array(
       xl('Patient Reminder Creation Processing Priority'),
       array(
@@ -1902,26 +1847,6 @@ $GLOBALS_METADATA = array(
       xl('Set processing priority for creation of Patient Reminders (in full clinic mode).')
     ),
 
-    'report_itemizing_standard' => array(
-      xl('Enable Standard Report Itemization'),
-       'bool',                          // data type
-       '1',                             // default
-      xl('Enable Itemization of Standard Clinical Rules Reports')
-    ),
-
-    'report_itemizing_cqm' => array(
-      xl('Enable CQM Report Itemization'),
-       'bool',                          // data type
-       '1',                             // default
-      xl('Enable Itemization of CQM Reports')
-    ),
-
-    'report_itemizing_amc' => array(
-      xl('Enable AMC Report Itemization'),
-       'bool',                          // data type
-       '1',                             // default
-      xl('Enable Itemization of AMC Reports')
-    ),
   ),
 
   // Logging
@@ -3163,48 +3088,48 @@ $GLOBALS_METADATA = array(
     ),
 
   ),
-    'PQRS' => array(
+    'MIPS' => array(
 
     'enable_pqrs' => array(
-      xl('Enable Physician Quality Reporting System (PQRS/MIPS)'),
+      xl('Enable Physician Quality Reporting System (MIPS)'),
       'bool',                           // data type
       '1',                               // default
-      xl('Enable Physician Quality Reporting System (PQRS/MIPS)')
+      xl('Enable Physician Quality Reporting System (MIPS)')
     ),
 
     'pqrs_demosystem' => array(
-      xl('This is a PQRS demo system'),
+      xl('This is a MIPS demo system'),
       'bool',                           // data type
       '0',                               // default
       xl('Show demo system "Save/Load database presets" menu')
     ),
 
     'pqrs_creator' => array(
-      xl('PQRS Creator'),		// for XML generation
+      xl('MIPS Report Creator Name'),		// for XML generation
       'text',                           // data type
       'FIXME creator FIXME!!!',                     // default
-      xl('PQRS Creator Name')
+      xl('MIPS Report Creator Name')
     ),
 
     'pqrs_registry_name' => array(
-      xl('PQRS Registry Name'),		// for XML generation
+      xl('MIPS Registry Name'),		// for XML generation
       'text',                           // data type
       'FIXME registry name FIXME!!!',               // default
-      xl('PQRS Registry Name')
+      xl('MIPS Registry Name')
     ),
 
     'pqrs_registry_id' => array(
-      xl('PQRS Registry ID'),		// for XML generation
+      xl('MIPS Registry ID'),		// for XML generation
       'text',                           // data type
       'FIXME registry id FIXME!!!',                 // default
-      xl('PQRS Registry ID')
+      xl('MIPS Registry ID')
     ),
 
     'pqrs_vendor_unique_id' => array(
-      xl('PQRS VENDOR UNIQUE ID'),	// for XML generation
+      xl('MIPS VENDOR UNIQUE ID'),	// for XML generation
       'text',                           // data type
       'FIXME vendor unique id FIXME!!!',            // default
-      xl('PQRS Registry Name')
+      xl('MIPS Registry Name')
     ),
 
   ),
