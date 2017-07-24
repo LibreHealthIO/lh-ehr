@@ -518,40 +518,68 @@
         } ],
         "requirement" : 0
     }, { 
-        "label" : "Clinic",
+        "label" : "QA Measures",
         "children" : [ { 
-            "label" : "Report Results",
+            "label" : "View Reports",
             "menu_id" : "rep0",
             "target" : "rep",
-            "url" : "/interface/reports/report_results.php",
+            "url" : "/modules/MIPS/report_results.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Standard Measures",
+            "label" : "Create MIPS Report",
             "menu_id" : "rep0",
             "target" : "rep",
-            "url" : "/interface/reports/cqm.php?type=standard",
+            "url" : "'reports/clinical_measures.php?type=pqrs'",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Quality Measures (CQM)",
+            "label" : "Select Measures",
             "menu_id" : "rep0",
             "target" : "rep",
-            "url" : "/interface/reports/cqm.php?type=cqm",
+            "url" : "/modules/MIPS/measure_activate.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Automated Measures (AMC)",
+            "label" : "Delete Old Reports",
             "menu_id" : "rep0",
             "target" : "rep",
-            "url" : "/interface/reports/cqm.php?type=amc",
+            "url" : "/modules/MIPS/truncate_reports.php",
             "children" : [ ],
             "requirement" : 0
-        }, { 
-            "label" : "AMC Tracking",
+        },{ 
+            "label" : "Report Database Import",
             "menu_id" : "rep0",
             "target" : "rep",
-            "url" : "/interface/reports/amc_tracking.php",
+            "url" : "/modules/MIPS/import_data.php",
+            "children" : [ ],
+            "requirement" : 0
+        },{ 
+            "label" : "Remove Provider Assignments",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/modules/MIPS/reset_provider_to_unassigned.php",
+            "children" : [ ],
+            "requirement" : 0
+        },{ 
+            "label" : "Provider Encounter Counts",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/modules/MIPS/provider_encounter_counts.php",
+            "children" : [ ],
+            "requirement" : 0
+        },{ 
+            "label" : "Upload Claim Files",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/modules/filemanager/index.php",
+            "children" : [ ],
+            "requirement" : 0
+        },{ 
+            "label" : "XML Editor",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/modules/MIPS/xmleditor",
             "children" : [ ],
             "requirement" : 0
         }, { 
