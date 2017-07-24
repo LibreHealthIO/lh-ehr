@@ -73,12 +73,7 @@ form {
     font-size: 0.7em;
 }
 <?php if ($from_page == "pqrs_report") {
-	echo "
-#searchResults {
-    width: 100%;
-    height: 60%;
-    overflow: auto;
-}";}
+	echo "#searchResults {    width: 100%;    height: 60%;    overflow: auto;}";}?>
 
 
 .srName { width: 12%; }
@@ -194,7 +189,7 @@ if ($from_page == "pqrs_report") {
  <tr>
   <td class='text'>
   <?php if ($from_page == "pqrs_report") { ?>
-   <a href='../../reports/clinical_measures.php?report_id=<?php echo attr($report_id) ?>' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt("Return To Report Results"); ?></span></a>
+   <a href='../../../modules/MIPS/clinical_measures.php?report_id=<?php echo attr($report_id) ?>' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt("Return To Report Results"); ?></span></a>
   <?php } ?>
   </td>
   <td class='text' align='center'>

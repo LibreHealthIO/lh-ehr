@@ -533,7 +533,7 @@ function test_rules_clinic_batch_method($provider='',$type='',$dateTarget='',$mo
 
   // Set ability to itemize report if this feature is turned on
   $GLOBALS['report_itemizing_temp_flag_and_id'] = (
-    ($GLOBALS['report_itemizing_pqrs'] && in_array($type, array('pqrs_individual_2015', 'pqrs_individual_2016'))) ?
+    ($GLOBALS['report_itemizing_pqrs'] && in_array($type, array('pqrs_individual_2015', 'pqrs_individual_2016', 'mips_2017', 'mips'))) ?
       $report_id :
       0
   );
