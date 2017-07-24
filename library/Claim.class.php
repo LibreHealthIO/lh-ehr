@@ -81,6 +81,7 @@ class Claim {
   var $supervisor_numbers; // row from insurance_numbers table for current payer
   var $patient_data;      // row from patient_data table
   var $billing_options;   // row from form_misc_billing_options table
+  var $ub04_options;      // row from form_ub04_billing_options table
   var $invoice;           // result from get_invoice_summary()
   var $payers;            // array of arrays, for all payers
   var $copay;             // total of copays from the ar_activity table
@@ -264,6 +265,17 @@ class Claim {
       "forms.formdir = 'misc_billing_options' " .
       "ORDER BY forms.date";
     $this->billing_options = sqlQuery($sql);
+
+    if ($GLOBALS['claim_type'] =='1' || $GLOBALS['claim_type'] =='2') {
+       $sql = "SELECT fpa.* FROM forms JOIN form_UB04_billing_options AS fpa " .
+        "ON fpa.id = forms.form_id WHERE " .
+        "forms.encounter = '{$this->encounter_id}' AND " .
+        "forms.pid = '{$this->pid}' AND " .
+        "forms.deleted = 0 AND " .
+        "forms.formdir = 'ub04_billing_options' " .
+        "ORDER BY forms.date";
+      $this->ub04_options = sqlQuery($sql);
+    }
 
     $referrer_id = (empty($GLOBALS['MedicareReferrerIsRenderer']) ||
       $this->insurance_numbers['provider_number_type'] != '1C') ?
