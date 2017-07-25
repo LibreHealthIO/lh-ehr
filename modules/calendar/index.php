@@ -17,8 +17,7 @@ require('includes/session.php');
   <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
-  <script src='js.cookie.js'></script>
-
+  <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
   <script type="text/javascript" src="../../library/dialog.js"></script>
 </head>
 <body>
@@ -216,8 +215,8 @@ require('includes/session.php');
         }
       })
       
-      // TODO: Use a global
-      setInterval(function() { $('#calendar').fullCalendar( 'refetchEvents' ) }, 3000);
+      // refetch events every few seconds.
+      setInterval(function() { $('#calendar').fullCalendar( 'refetchEvents' ) }, <?php if($GLOBALS['calendar_refresh_freq']) echo $GLOBALS['calendar_refresh_freq']; else echo '3000'; ?>);
       
     });
     

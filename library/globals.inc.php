@@ -1520,6 +1520,18 @@ $GLOBALS_METADATA = array(
        '17',                            // default
       xl('Ending hour of day for calendar events.')
     ),
+    
+    'calendar_refresh_freq' => array(
+      xl('Calendar Refresh Frequency'),
+      array(
+       '1000' => xl('1 second'),
+       '3000' => xl('3 seconds'),
+       '5000' => xl('5 seconds'),
+       '10000' => xl('10 seconds'),
+      ),
+       '3000',                     // default
+      xl('How often the calendar automatically refetches events.')
+    ),
 
     'calendar_interval' => array(
       xl('Calendar Interval'),
