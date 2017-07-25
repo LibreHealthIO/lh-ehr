@@ -1,12 +1,14 @@
+<?php
+  require_once($GLOBALS['fileroot'] . "/library/headers.inc.php");
+?>
 <html>
   <head>
     <!-- {math equation="number * constant" number=$this->vitals->get_weight() constant=0.45359237 format="%.2f"}{/if}" -->
-    <?php html_header_show(); ?>
-    <link rel="stylesheet" href="<?php echo $this->form_action; ?>/library/css/jquery.datetimepicker.css">
-    <script type="text/javascript" src="<?php echo $this->form_action; ?>/library/dialog.js">    </script>
-    <script type="text/javascript" src="<?php echo $this->form_action; ?>/library/textformat.js">    </script>
-    <script type="text/javascript" src="<?php echo $this->form_action; ?>/library/js/jquery-1.7.2.min.js">    </script>
-    <script type="text/javascript" src="<?php echo $this->form_action; ?>/library/js/jquery.datetimepicker.full.min.js">    </script>
+    <?php 
+      html_header_show();       
+      // Include Bootstrap and datetimepicker
+      call_required_libraries(true,false,false,true);
+    ?>    
     <script type="text/javascript">
       var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';
       // Only load jquery if not already closing. This page serves two purposes now,
@@ -57,7 +59,8 @@
       }
     </script>
     <style type="text/css" title="mystyles" media="all">
-      .title {
+     
+     .title {
         font-size: 120%;
         font-weight: bold;
       }
@@ -80,14 +83,7 @@
         border-bottom: 1px solid #ddd;
         border-right: 1px solid #ddd;
         text-align: right;
-      }
-      table {
-        border-collapse: collapse;
-      }
-      td,th {
-        padding-right: 10px;
-        padding-left: 10px;
-      }
+      }      
       .hide {
         display:none;
       }
@@ -97,21 +93,22 @@
       .error {
         border:2px solid red;
       }
+      
     </style>
   </head>
   <body >
     <p>
-    <table>
+    <table class="table well">
       <tr>
         <td>
           <span class="title">
-            <?php echo xl("Vitals"); ?>
+            <?php echo xlt("Vitals"); ?>
           </span>
         </td>
         <td>&nbsp;&nbsp;&nbsp;
           <a href="../summary/demographics.php"  class="readonly css_button_small" onclick="top.restoreSession()"> 
             <span>
-              <?php echo xl("View Patient"); ?>
+              <?php echo xlt("View Patient"); ?>
             </span>
           </a>
         </td>
@@ -122,12 +119,12 @@
         onSubmit="return vitalsFormSubmitted()">
     <div id="chart">
     </div>
-    <table>
+    <table class="table">
       <tr>
-        <th align="left">
-          <?php echo xl("Name"); ?>
+        <th>
+          <?php echo xlt("Name"); ?>
         </th>
-        <th align="left"><?php echo xl("Unit");?>
+        <th><?php echo xlt("Unit");?>
         </th>
         <th class='currentvalues' title='Date and time of this observation'>
           <input type='text' size='14' name='date' id='date' value='<?php 
@@ -149,20 +146,20 @@
         <td class="unfocus graph" id="weight">
           <?php } else { ?> 
         <td class="graph" id="weight">
-          <?php } echo xl("Weight"); ?>
+          <?php } echo xlt("Weight"); ?>
           <?php if ($this->units_of_measurement == 2) { ?>
         <td class="unfocus">
           <?php } else { ?>
         <td>
-          <?php } echo xl("lbs"); ?>   
+          <?php } echo xlt("lbs"); ?>   
           <?php if ($this->units_of_measurement == 2) { ?>
         <td class="valuesunfocus">
           <?php } else { ?>
         <td class='currentvalues'>
           <?php } ?>     
-          <input type="text" size='5' name='weight' id='weight_input' 
+          <input type="text" class="form-control" size='5' name='weight' id='weight_input' 
                  value="<?php if ($this->vitals->get_weight() != 0) { echo $this->vitals->get_weight();} ?>"  onchange="convLbtoKg('weight_input');" 
-                 title='<?php echo xl("Decimal pounds or pounds and ounces separated by #(e.g. 5#4)"); ?>'/>
+                 title='<?php echo xlt("Decimal pounds or pounds and ounces separated by #(e.g. 5#4)"); ?>'/>
         </td>    
         <?php foreach ($this->results as $result) { ?>
         <td  class='historicalvalues'>
@@ -178,20 +175,20 @@
         <td class="unfocus graph" id="weight_metric">
           <?php }else { ?>
         <td class="graph" id="weight_metric">
-          <?php } echo xl("Weight") ?>
+          <?php } echo xlt("Weight") ?>
         </td> 
         <?php if ($this->units_of_measurement == 1) { ?>
         <td class="unfocus">
           <?php } else { ?>
         <td>
-          <?php } echo xl("kg"); ?>
+          <?php } echo xlt("kg"); ?>
         </td>
         <?php if ($this->units_of_measurement == 1) { ?>
         <td class="valuesunfocus">
           <?php } else { ?>
         <td class='currentvalues'>
           <?php } ?>
-          <input type="text" size='5' id='weight_input_metric' value="<?php if ($this->vitals->get_weight() != 0) {
+          <input type="text" class="form-control" size='5' id='weight_input_metric' value="<?php if ($this->vitals->get_weight() != 0) {
                                                                       $final_result =  $this->vitals->get_weight()*0.45359237 ;
                                                                       echo sprintf("%.2f",$final_result); } ?>"                          
                  onChange="convKgtoLb('weight_input');"/>
@@ -214,7 +211,7 @@
         <td class="unfocus graph" id="height">
           <?php } else { ?>
         <td class="graph" id="height">
-          <?php } echo xl("Height/Length"); ?>
+          <?php } echo xlt("Height/Length"); ?>
         </td>
         <?php if ($this->units_of_measurement == 2) { ?>
         <td class="unfocus">
@@ -227,7 +224,7 @@
           <?php } else { ?>
         <td class='currentvalues'>
           <?php } ?>
-          <input type="text" size='5' name='height' id='height_input' 
+          <input type="text" class="form-control" size='5' name='height' id='height_input' 
                  value="<?php if ($this->vitals->get_height() != 0) { ?><?php echo $this->vitals->get_height();
                         } ?>" onChange="convIntoCm('height_input');"/>
         </td>
@@ -244,20 +241,20 @@
         <td class="unfocus graph" id="height_metric">
           <?php } else { ?>
         <td class="graph" id="height_metric">
-          <?php } echo xl("Height/Length"); ?>
+          <?php } echo xlt("Height/Length"); ?>
         </td>
         <?php if ($this->units_of_measurement == 1) { ?>
         <td class="unfocus">
           <?php } else { ?>
         <td>
-          <?php }echo xl("cm"); ?>
+          <?php }echo xlt("cm"); ?>
         </td>
         <?php if ($this->units_of_measurement == 1) { ?>
         <td class="valuesunfocus">
           <?php } else { ?>
         <td class='currentvalues'>
           <?php } ?>
-          <input type="text" size='5' id='height_input_metric' 
+          <input type="text" class="form-control" size='5' id='height_input_metric' 
                  value="<?php if($this->vitals->get_height() != 0) {
                         $final_result = $this->vitals->get_height()*2.54;
                         echo sprintf('%.2f',$final_result);}?>" 
@@ -279,7 +276,7 @@
         <td>mmHg
         </td>
         <td class='currentvalues'>
-          <input type="text" size='5'
+          <input type="text" class="form-control" size='5'
                  name='bps' id='bps_input' value="<?php echo $this->vitals->get_bps(); ?>"/>
         </td>
         <?php foreach ($this->results as $result) { ?>
@@ -294,7 +291,7 @@
         <td>mmHg
         </td>
         <td class='currentvalues'>
-          <input type="text" size='5'
+          <input type="text" class="form-control" size='5'
                  name='bpd' id='bpd_input' value="<?php echo $this->vitals->get_bpd(); ?>"/>
         </td>
         <?php foreach ($this->results as $result) { ?>
@@ -309,7 +306,7 @@
         <td>per min
         </td>
         <td class='currentvalues'>
-          <input type="text" size='5' name='pulse' id='pulse_input' 
+          <input type="text" class="form-control" size='5' name='pulse' id='pulse_input' 
                  value="<?php if($this->vitals->get_pulse() != 0){
                         echo sprintf('%.0f',$this->vitals->get_pulse());}?>"/>
         </td>
@@ -323,12 +320,12 @@
       </tr>
       <tr>
         <td class="graph" id="respiration">
-          <?php echo xl("Respiration");?>
+          <?php echo xlt("Respiration");?>
         </td>
         <td>per min
         </td>
         <td class='currentvalues'>
-          <input type="text" size='5'
+          <input type="text" class="form-control" size='5'
                  name='respiration' id='respiration_input' 
                  value="<?php if($this->vitals->get_respiration() != 0){
                         echo sprintf('%.0f',$this->vitals->get_respiration());}?>"/>
@@ -350,7 +347,7 @@
         <td class="unfocus graph" id="temperature">
           <?php } else { ?>
         <td class="graph" id="temperature">
-          <?php } echo xl("Temperature"); ?>
+          <?php } echo xlt("Temperature"); ?>
         </td>
         <?php if ($this->units_of_measurement == 2) { ?>
         <td class="unfocus">
@@ -363,7 +360,7 @@
           <?php } else { ?>
         <td class='currentvalues'>
           <?php } ?>
-          <input type="text" size='5' name='temperature' id='temperature_input' 
+          <input type="text" class="form-control" size='5' name='temperature' id='temperature_input' 
                  value="<?php if ($this->vitals->get_temperature() != 0) {
                         echo $this->vitals->get_temperature();
                         } ?>" onChange="convFtoC('temperature_input');"/>
@@ -384,7 +381,7 @@
         <td class="unfocus graph" id="temperature_metric">
           <?php } else {?>
         <td class="graph" id="temperature_metric">
-          <?php  } echo xl("Temperature");?>
+          <?php  } echo xlt("Temperature");?>
         </td>
         <?php if($this->units_of_measurement == 1){?>
         <td class="unfocus">
@@ -397,7 +394,7 @@
           <?php }else {?>
         <td class='currentvalues'>
           <?php }?>
-          <input type="text" size='5' id='temperature_input_metric' 
+          <input type="text" class="form-control" size='5' id='temperature_input_metric' 
                  value="<?php if($this->vitals->get_temperature() != 0) {
                         $final_result = ($this->vitals->get_temperature()-32)*0.5556;
                         echo sprintf('%.2f',$final_result);
@@ -419,46 +416,46 @@
         </td>
       </td>
     <td class='currentvalues'>
-      <select name="temp_method" id='temp_method'/>
+      <select class="form-control" name="temp_method" id='temp_method'/>
       <option value=""> 
       </option>  
       <option value="Oral"  >  
         <?php if ($this->vitals->get_temp_method() == "Oral" || $this->vitals->get_temp_method() == 2) { ?> selected
-        <?php } echo xl("Oral"); ?>
+        <?php } echo xlt("Oral"); ?>
       </option>
       <option value="Tympanic Membrane">
         <?php if ($this->vitals->get_temp_method() == "Tympanic Membrane" || $this->vitals->get_temp_method() == 1) { ?> selected
-        <?php } echo xl("Tympanic Membrane"); ?>
+        <?php } echo xlt("Tympanic Membrane"); ?>
       </option>
       <option value="Rectal" >     
         <?php if ($this->vitals->get_temp_method() == "Rectal" || $this->vitals->get_temp_method() == 3) { ?> selected
-        <?php } echo xl("Rectal"); ?>
+        <?php } echo xlt("Rectal"); ?>
       </option>
       <option value="Axillary">
         <?php if ($this->vitals->get_temp_method() == "Axillary" || $this->vitals->get_temp_method() == 4) { ?> selected
-        <?php } echo xl("Axillary"); ?>
+        <?php } echo xlt("Axillary"); ?>
       </option>
       <option value="Temporal Artery">
         <?php if ($this->vitals->get_temp_method() == "Temporal Artery") { ?> selected
-        <?php } echo xl("Temporal Artery"); ?>
+        <?php } echo xlt("Temporal Artery"); ?>
       </option>
     </select>
   </td>
   <?php foreach ($this->results as $result) { ?>
   <td class='historicalvalues'>
     <?php if ($result . temp_method) {
-  echo xl($result['temp_method']);
+  echo xlt($result['temp_method']);
   } ?>
   </td>
   <?php } ?>
   <tr>
   <td class="graph" id="oxygen_saturation">
-    <?php echo xl("Oxygen Saturation");?>
+    <?php echo xlt("Oxygen Saturation");?>
   </td>
   <td>%
   </td>
   <td class='currentvalues'>
-    <input type="text" size='5'
+    <input type="text" class="form-control" size='5'
            name='oxygen_saturation' id='oxygen_saturation_input' 
            value="<?php if($this->vitals->get_oxygen_saturation() != 0){
                   echo sprintf('%.0f',$this->vitals->get_oxygen_saturation());}?>"/>
@@ -479,7 +476,7 @@
   <td class="unfocus graph" id="head_circ">
     <?php } else { ?>
   <td class="graph" id="head_circ">  
-    <?php } echo xl("Head Circumference"); ?>
+    <?php } echo xlt("Head Circumference"); ?>
   </td>
   <?php if ($this->units_of_measurement == 2) { ?>
   <td class="unfocus">
@@ -491,7 +488,7 @@
   <td class="valuesunfocus">
     <?php } else { ?>
     <td class='currentvalues'><?php }?>
-    <input type="text" size='5' name='head_circ' id='head_circ_input' value="<?php if ($this->vitals->get_head_circ() != 0) {
+    <input type="text" class="form-control" size='5' name='head_circ' id='head_circ_input' value="<?php if ($this->vitals->get_head_circ() != 0) {
                                                                              echo $this->vitals->get_head_circ();
                                                                              } ?>" onChange="convIntoCm('head_circ_input');"/>
   </td>
@@ -510,7 +507,7 @@ echo $result['head_circ'];
   <td class="unfocus graph" id="head_circ_metric">
     <?php }else {?>
   <td class="graph" id="head_circ_metric">
-    <?php } echo xl("Head Circumference");?>
+    <?php } echo xlt("Head Circumference");?>
   </td>
   <?php if($this->units_of_measurement == 1){?>
   <td class="unfocus">
@@ -523,7 +520,7 @@ echo $result['head_circ'];
     <?php } else {?>
   <td class='currentvalues'>
     <?php }?>
-    <input type="text" size='5' id='head_circ_input_metric' 
+    <input type="text" class="form-control" size='5' id='head_circ_input_metric' 
            value="<?php if($this->vitals->get_head_circ() != 0){
                   $final_value = $this->vitals->get_head_circ()*2.54;
                   echo sprintf('%.2f',$final_result);}?>" 
@@ -546,7 +543,7 @@ echo sprintf("%.2f",$final_result);
   <td class="unfocus graph" id="waist_circ">
     <?php } else { ?>
   <td class="graph" id="waist_circ">
-    <?php }echo xl("Waist Circumference"); ?>
+    <?php }echo xlt("Waist Circumference"); ?>
   </td>
   <?php if ($this->units_of_measurement == 2) { ?>
   <td class="unfocus">
@@ -558,7 +555,7 @@ echo sprintf("%.2f",$final_result);
   <td class="valuesunfocus">
     <?php } else { ?>
     <td class='currentvalues'><?php }?>
-    <input type="text" size='5' name='waist_circ' id='waist_circ_input' 
+    <input type="text" class="form-control" size='5' name='waist_circ' id='waist_circ_input' 
            value="<?php if ($this->vitals->get_waist_circ() != 0) {
                   echo $this->vitals->get_waist_circ();
                   } ?>" onChange="convIntoCm('waist_circ_input');"/>
@@ -579,7 +576,7 @@ echo $result['waist_circ'];
   <td class="unfocus graph" id="waist_circ_metric">
     <?php } else {?>
   <td class="graph" id="waist_circ_metric">
-    <?php } echo xl("Waist Circumference");?>
+    <?php } echo xlt("Waist Circumference");?>
   </td>
   <?php if($this->units_of_measurement == 1){?>
   <td class="unfocus">
@@ -592,7 +589,7 @@ echo $result['waist_circ'];
     <?php } else {?>
   <td class='currentvalues'>
     <?php }?>
-    <input type="text" size='5' id='waist_circ_input_metric' 
+    <input type="text" class="form-control" size='5' id='waist_circ_input_metric' 
            value="<?php if($this->vitals->get_waist_circ() != 0){
                   $final_value = $this->vitals->get_waist_circ()*2.54;
                   echo sprintf("%.2f",$final_value);                                       
@@ -609,12 +606,12 @@ echo sprintf("%.2f",$final_value);
 </tr>
 <tr>
   <td class="graph" id="BMI">
-    <?php echo xl("BMI");?>
+    <?php echo xlt("BMI");?>
   </td>
   <td>kg/m^2
   </td>
   <td class='currentvalues'>
-    <input type="text" size='5'  name='BMI' id='BMI_input' 
+    <input type="text" class="form-control" size='5'  name='BMI' id='BMI_input' 
            value="<?php if($this->vitals->get_BMI() != 0){
                   echo substr($this->vitals->get_BMI(), 0, 5);
                   }?>"/>
@@ -629,12 +626,12 @@ echo substr($result['BMI'], 0, 5);
 </tr>
 <tr>
   <td>
-    <?php echo xl("BMI Status");?>
+    <?php echo xlt("BMI Status");?>
   </td>
   <td>Type
   </td>
   <td class='currentvalues'>
-    <input type="text" size='15' name="BMI_status" id="BMI_status" 
+    <input type="text" class="form-control" size='15' name="BMI_status" id="BMI_status" 
            value="<?php echo $this->vitals->get_BMI_status();?>"/>
   </td>
   <?php foreach ($this->results as $result) { ?>
@@ -652,7 +649,7 @@ echo $result['BMI_status'];
   </td>
 </td>
 <td class='currentvalues'>
-  <input type="text" size='20'
+  <input type="text" class="form-control" size='20'
          name="note" id='note' value="<?php echo $this->vitals->get_note();?>" />
 </td>
 <?php foreach ($this->results as $result) { ?>
