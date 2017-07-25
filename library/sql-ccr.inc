@@ -318,7 +318,7 @@ function getProblemData() {
     LEFT JOIN form_encounter AS fe ON fe.encounter = ie.encounter
     LEFT JOIN facility AS f ON fe.facility_id = f.id
     LEFT JOIN users AS u ON fe.provider_id = u.id
-    WHERE l.type = 'medical_problem' AND l.pid=? AND l.diagnosis LIKE 'ICD9:%'
+    WHERE l.type = 'medical_problem' AND l.pid=? AND l.diagnosis LIKE 'ICD10:%'
     AND l.diagnosis NOT LIKE '%;%'
     AND l.date BETWEEN ? AND ?";
     $result = sqlStatement($sql, array($pid,$start,$end) );
@@ -332,7 +332,7 @@ function getProblemData() {
     LEFT JOIN form_encounter AS fe ON fe.encounter = ie.encounter
     LEFT JOIN facility AS f ON fe.facility_id = f.id
     LEFT JOIN users AS u ON fe.provider_id = u.id
-    WHERE l.type = 'medical_problem' AND l.pid=? AND l.diagnosis LIKE 'ICD9:%'
+    WHERE l.type = 'medical_problem' AND l.pid=? AND l.diagnosis LIKE 'ICD10:%'
     AND l.diagnosis NOT LIKE '%;%'";
     $result = sqlStatement($sql, array($pid) );
   }

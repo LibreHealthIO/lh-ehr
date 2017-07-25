@@ -33,6 +33,7 @@ require_once("history.inc.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/options.js.php");
+require_once("$srcdir/headers.inc.php");
 $CPR = 4; // cells per row
 
 // Check authorization.
@@ -46,8 +47,11 @@ if ( !acl_check('patients','med','',array('write','addonly') ))
 ?>
 <html>
 <head>
-<?php html_header_show();?>
-<link rel="stylesheet" href="<?php echo $css_header ?>" type="text/css">
+<?php 
+    html_header_show();
+    //  Include datepicker library
+    call_required_libraries(false,false,false,true);
+?>
 
 <style>
 .control_label {
@@ -56,15 +60,6 @@ if ( !acl_check('patients','med','',array('write','addonly') ))
 }
 </style>
 
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
-
-<script type="text/javascript" src="../../../library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
-
-<script type="text/javascript" src="../../../library/js/jquery.1.3.2.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
 

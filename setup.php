@@ -21,7 +21,7 @@ if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
   echo "<html>\n";
   echo "<head>\n";
   echo "<title>LibreHealth EHR Setup Tool</title>\n";
-  echo "<link rel='stylesheet' href='interface/themes/style_blue.css'>\n";
+  echo "<link rel='stylesheet' href='interface/themes/style_setup.css'>\n";
   echo "</head>\n";
   echo "<body>\n";
   echo "<p><b>Optional Site ID Selection</b></p>\n";

@@ -29,9 +29,14 @@ include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/formsoptions.inc.php");
 formHeader("Form:Transfer Summary");
 $returnurl = 'encounter_top.php';
+$form_name = 'form_transfer_summary';
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
+if (empty($formid)) {
+        $formid = checkFormIsActive($form_name,$encounter);
+}
 $obj = $formid ? formFetch("form_transfer_summary", $formid) : array();
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
 $DateFormat = DateFormatRead();

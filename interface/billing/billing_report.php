@@ -110,8 +110,12 @@ $my_authorized = isset($_POST["authorized"]) ? $_POST["authorized"] : '';
 // are to be reported.
 $missing_mods_only = (isset($_POST['missing_mods_only']) && !empty($_POST['missing_mods_only']));
 
-$left_margin = isset($_POST["left_margin"]) ? $_POST["left_margin"] : $GLOBALS['cms_left_margin_default'];
-$top_margin  = isset($_POST["top_margin"] ) ? $_POST["top_margin" ] : $GLOBALS['cms_top_margin_default'];
+$left_margin = isset($_POST["left_margin"]) ? $_POST["left_margin"] : 24;
+$top_margin  = isset($_POST["top_margin"] ) ? $_POST["top_margin" ] : 20;
+// if this
+$ubleft_margin = isset($_POST["ubleft_margin"]) ? $_POST["ubleft_margin"] : $GLOBALS['ubleft_margin_default'];
+$ubtop_margin  = isset($_POST["ubtop_margin"] ) ? $_POST["ubtop_margin" ] : $GLOBALS['ubtop_margin_default'];
+//}
 
 $ofrom_date  = $from_date;
 $oto_date    = $to_date;
@@ -164,15 +168,24 @@ function set_button_states() {
   // f.bn_hcfa.disabled            = !can_generate;
   // f.bn_ub92_print.disabled      = !can_generate;
   // f.bn_ub92.disabled            = !can_generate;
+<?php if ($GLOBALS['claim_type'] =='0' || $GLOBALS['claim_type'] =='2' ) { ?>
   f.bn_x12.disabled             = !can_generate;
+<?php } ?>
 <?php if ($GLOBALS['support_encounter_claims']) { ?>
   f.bn_x12_encounter.disabled   = !can_generate;
 <?php } ?>
+<?php if ($GLOBALS['claim_type'] =='0' || $GLOBALS['claim_type'] =='2' ) { ?>
   f.bn_process_hcfa.disabled    = !can_generate;
 <?php if ($GLOBALS['preprinted_cms_1500']) { ?>
   f.bn_process_hcfa_form.disabled    = !can_generate;
 <?php } ?>
   f.bn_hcfa_txt_file.disabled   = !can_generate;
+ <?php } ?>
+<?php if ($GLOBALS['claim_type'] =='1' || $GLOBALS['claim_type'] =='2' ) { ?>
+  f.bn_process_ub04.disabled    = !can_generate;
+  f.bn_ub04_txt_file.disabled   = !can_generate;
+  f.bn_837I.disabled            = !can_generate;
+ <?php } ?>
   // f.bn_electronic_file.disabled = !can_bill;
   f.bn_reopen.disabled          = !can_bill;
 <?php } ?>
@@ -558,6 +571,7 @@ if(!isset($_REQUEST['mode']))//default case
 <input type="submit" class="subbtn" name="bn_ub92_print" value="Queue UB92 &amp; Print" title="<?php echo xla('Queue for UB-92 batch processing and printing')?>">
 <input type="submit" class="subbtn" name="bn_ub92" value="Queue UB92" title="<?php echo xla('Queue for UB-92 batch processing')?>">
 -->
+<?php if ($GLOBALS['claim_type'] =='0' || $GLOBALS['claim_type'] =='2' ) { ?>
 <input type="submit" class="subbtn" name="bn_x12" value="<?php echo xla('Generate X12')?>"
  title="<?php echo xla('Generate and download X12 batch')?>"
  onclick="MarkAsCleared(1)">
@@ -591,9 +605,52 @@ if(!isset($_REQUEST['mode']))//default case
 &nbsp;<?php echo xlt('Top'); ?>:
 <input type='text' size='2' name='top_margin'
  value='<?php echo attr($top_margin); ?>'
- title='<?php echo xla('HCFA top margin in points'); ?>' />
-</span>
+ title='<?php echo xla('HCFA top margin in points'); ?>' /><br></br>
+
+ <?php } ?>
+
+<?php if ($GLOBALS['claim_type'] =='1' || $GLOBALS['claim_type'] =='2') { ?>
+
+<input type="submit" class="subbtn" name="bn_837I" value="<?php echo xla('Generate 837I')?>"
+ title="<?php echo xla('Generate and download 837I file')?>"
+ onclick="MarkAsCleared(1)">
+
+<input type="submit" class="subbtn" style="width:175px;" name="bn_process_ub04" value="<?php echo xla('Generate CMS 1450 PDF')?>"
+ title="<?php echo xla('Generate and download CMS 1450 paper claims')?>"
+ onclick="MarkAsCleared(2)">
+
+<input type="submit" class="subbtn" style="width:175px;" name="bn_ub04_txt_file" value="<?php echo xla('Generate CMS 1450 TEXT')?>"
+ title="<?php echo xla('Making batch text files for uploading to Clearing House and will mark as billed')?>"
+ onclick="MarkAsCleared(3)">
+
+<?php if ($GLOBALS['claim_type'] =='1') { ?>
+
+<input type="submit" class="subbtn" name="bn_mark" value="<?php echo xla('Mark as Cleared')?>" title="<?php echo xla('Post to accounting and mark as billed')?>">
+<input type="submit" class="subbtn" name="bn_reopen" value="<?php echo xla('Re-Open')?>" title="<?php echo xla('Mark as not billed')?>">
+
 <?php } ?>
+
+<?php if ($GLOBALS['claim_type'] =='2') { ?>
+
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<?php } ?>
+
+ &nbsp;&nbsp;&nbsp;
+
+<?php echo xlt('CMS 1450 Margins'); ?>:
+&nbsp;<?php echo xlt('Left'); ?>:
+<input type='text' size='2' name='ubleft_margin'
+ value='<?php echo attr($ubleft_margin); ?>'
+ title='<?php echo xla('UB04 left margin in points'); ?>' />
+&nbsp;<?php echo xlt('Top'); ?>:
+<input type='text' size='2' name='ubtop_margin'
+ value='<?php echo attr($ubtop_margin); ?>'
+ title='<?php echo xla('UB04 top margin in points'); ?>' />
+
+<?php } ?>
+<?php } ?>
+</span>
 
 </center>
 <input type='hidden' name='HiddenMarkAsCleared'  id='HiddenMarkAsCleared' value="" />

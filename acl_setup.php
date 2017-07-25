@@ -405,7 +405,7 @@ $breakglass  = $gacl->add_group('breakglass' , 'Emergency Login'    , $users, 'A
 <html>
 <head>
 <title>LibreHealth EHR ACL Setup</title>
-<link rel=STYLESHEET href="interface/themes/style_blue.css">
+<link rel=STYLESHEET href="interface/themes/style_setup.css">
 </head>
 <body>
 <b>LibreHealth EHR ACL Setup</b>

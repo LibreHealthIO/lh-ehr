@@ -23,7 +23,7 @@
  * @author Rod Roark <rod@sunsetsystems.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 
@@ -39,7 +39,7 @@ require_once("$srcdir/classes/CouchDB.class.php");
 if ($_GET['mode'] != "user") {
   // Check authorization.
   $thisauth = acl_check('admin', 'super');
-  if (!$thisauth) die(xl('Not authorized'));
+  if (!$thisauth) die(xlt('Not authorized'));
 }
 
 function checkCreateCDB(){
@@ -50,7 +50,7 @@ function checkCreateCDB(){
       $GLOBALS[$globalsrow['gl_name']] = $globalsrow['gl_value'];
     }
     $directory_created = false;
-  if( !empty($GLOBALS['document_storage_method']) ) {
+  if($GLOBALS['document_storage_method'] != 0){
     // /documents/temp/ folder is required for CouchDB
     if(!is_dir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/')){
       $directory_created = mkdir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/',0777,true);      
@@ -104,7 +104,7 @@ function checkBackgroundServices(){
     }
 
    //Set up phimail service
-  $phimail_active = empty($GLOBALS['phimail_enable']) ? '0' : '1';
+   $phimail_active = $GLOBALS['phimail_enable'] ? '1' : '0';
    $phimail_interval = max(0,(int)$GLOBALS['phimail_interval']);
    updateBackgroundService('phimail',$phimail_active,$phimail_interval);
 }
@@ -125,9 +125,9 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
     if (in_array($grpname, $USER_SPECIFIC_TABS)) {
       foreach ($grparr as $fldid => $fldarr) {
         if (in_array($fldid, $USER_SPECIFIC_GLOBALS)) {
-          list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
+          list($fldname, $fldtype, $flddef, $flddesc, $fldlist) = $fldarr;
           $label = "global:".$fldid;
-          $fldvalue = trim($_POST["form_$i"]);
+          $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
           setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);
@@ -138,13 +138,9 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
     }
   }
   echo "<script type='text/javascript'>";
-  echo "parent.left_nav.location.reload();";
-  echo "parent.Title.location.reload();";
-  echo "if(self.name=='RTop'){";
-  echo "parent.RBot.location.reload();";
-  echo "}else{";
-  echo "parent.RTop.location.reload();";
-  echo "}";
+  if (!$action['css_header']||!$action['menu_styling_tabs']) {
+    echo "top.location.reload(true);";
+  }
   echo "self.location.href='edit_globals.php?mode=user&unique=yes';";
   echo "</script>";
 }
@@ -179,7 +175,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
   $i = 0;
   foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     foreach ($grparr as $fldid => $fldarr) {
-      list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
+      list($fldname, $fldtype, $flddef, $flddesc, $fldlist) = $fldarr;
       if($fldtype == 'pwd'){
         $pass = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = ?", array($fldid) );
       $fldvalueold = $pass['gl_value'];
@@ -252,23 +248,15 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
      auditSQLAuditTamper($auditLogStatusFieldNew);
   }
   echo "<script type='text/javascript'>";
-  echo "parent.left_nav.location.reload();";
-  echo "parent.Title.location.reload();";
-  echo "if(self.name=='RTop'){";
-  echo "parent.RBot.location.reload();";
-  echo "}else{";
-  echo "parent.RTop.location.reload();";
-  echo "}";
   echo "self.location.href='edit_globals.php?unique=yes';";
   echo "</script>";
 }
 ?>
 
 <!-- supporting javascript code -->
-<?php 
-   include_css_library("fancybox/jquery.fancybox-1.2.6.css");
-   include_js_library("jquery-min-3-1-1/index.js");
-   include_js_library("fancybox/jquery.fancybox-1.2.6.js");
+<?php
+   // Including Bootstrap and Fancybox.
+   call_required_libraries(true,true,false,false);
    include_js_library("jscolor-1-4-5/jscolor.js");
 ?>
 
@@ -301,21 +289,27 @@ input     { font-size:10pt; }
   <p><b><?php echo xlt('Edit Global Settings'); ?></b>
 <?php } ?>
 
+<?php // mdsupport - Optional server based searching mechanism for large number of fields on this screen. ?>
+<span style='float: right;'>
+    <input name='srch_desc' size='20'
+        value='<?php echo (!empty($_POST['srch_desc']) ? htmlspecialchars($_POST['srch_desc']) : '') ?>' />
+    <input type='submit' name='form_search' value='<?php echo xla('Search'); ?>' />
+</span>
+
+<!--tabNav-->
 <ul class="tabNav">
 <?php
 $i = 0;
 foreach ($GLOBALS_METADATA as $grpname => $grparr) {
   if ( $_GET['mode'] != "user" || ($_GET['mode'] == "user" && in_array($grpname, $USER_SPECIFIC_TABS)) ) {
-    echo " <li" . ($i ? "" : " class='current'") .
-      "><a href='/play/javascript-tabbed-navigation/'>" .
-      xlt($grpname) . "</a></li>\n";
+    echo " <li" . ($i ? "" : " class='current'") ."><a href='/play/javascript-tabbed-navigation/'>" . xlt($grpname) . "</a></li>\n";
     ++$i;
   }
 }
 ?>
-</ul>
+</ul> 
 
-<div class="tabContainer">
+<div class="tabContainer well">
 <?php
 $i = 0;
 foreach ($GLOBALS_METADATA as $grpname => $grparr) {
@@ -323,7 +317,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
   echo " <div class='tab" . ($i ? "" : " current") .
     "' style='height:auto;width:97%;'>\n";
 
-  echo " <table>";
+  echo " <table class='table table-hover'>";
 
   if ($_GET['mode'] == "user") {
    echo "<tr>";
@@ -337,7 +331,12 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 
   foreach ($grparr as $fldid => $fldarr) {
    if ( $_GET['mode'] != "user" || ($_GET['mode'] == "user" && in_array($fldid, $USER_SPECIFIC_GLOBALS)) ) {
-    list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
+    list($fldname, $fldtype, $flddef, $flddesc, $fldlist) = $fldarr;
+    // mdsupport - Check for matches
+    $srch_cl = '';
+    if (!empty($_POST['srch_desc']) && (stristr(($fldname.$flddesc), $_POST['srch_desc']) !== FALSE)) {
+        $srch_cl = 'class="srch"';
+    }
 
     // Most parameters will have a single value, but some will be arrays.
     // Here we cater to both possibilities.
@@ -362,10 +361,10 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       }
     }
 
-    echo " <tr title='" . attr($flddesc) . "'  id='".attr($fldid)."' value='".attr($fldvalue)."'><td><b>" . text($fldname) . "</b></td><td>\n";
+    echo " <tr $srch_cl title='" . attr($flddesc) . "'  id='".attr($fldid)."' value='".attr($fldvalue)."'><td><b>" . text($fldname) . "</b></td><td>\n";
 
     if (is_array($fldtype)) {
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       foreach ($fldtype as $key => $value) {
         if ($_GET['mode'] == "user") {
           if ($globalValue == $key) $globalTitle = $value;
@@ -391,7 +390,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
           $globalTitle = htmlspecialchars( xl('Not Checked'), ENT_NOQUOTES);
         }
       }
-      echo "  <input type='checkbox' name='form_$i' id='form_$i' value='1'";
+      echo "  <input type='checkbox' class='checkbox' name='form_$i' id='form_$i' value='1'";
       if ($fldvalue) echo " checked";
       echo " />\n";
     }
@@ -400,7 +399,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      echo "  <input type='text' name='form_$i' id='form_$i' " .
+      echo "  <input type='text' class='form-control form-rounded' name='form_$i' id='form_$i' " .
         "size='6' maxlength='15' value='" . attr($fldvalue) . "' />\n";
     }
 
@@ -408,7 +407,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      echo "  <input type='text' name='form_$i' id='form_$i' " .
+      echo "  <input type='text' class='form-control form-rounded' name='form_$i' id='form_$i' " .
         "size='50' maxlength='255' value='" . attr($fldvalue) . "' />\n";
     }
     else if ($fldtype == 'pwd') {
@@ -429,9 +428,9 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 
     else if ($fldtype == 'lang') {
       $res = sqlStatement("SELECT * FROM lang_languages ORDER BY lang_description");
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       while ($row = sqlFetchArray($res)) {
-        echo "   <option value='" . $row['lang_description'] . "'";
+        echo "   <option value='" . attr($row['lang_description']) . "'";
         if ($row['lang_description'] == $fldvalue) echo " selected";
         echo ">";
         echo xlt($row['lang_description']);
@@ -444,8 +443,13 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array('apptstat'));
-      echo "  <select name='form_$i' id='form_$i'>\n";
+    if($GLOBALS['gb_how_sort_list'] == '0') {
+        $order = "seq, title";
+    } else {
+        $order = "title, seq";
+    }
+      $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1 ORDER BY " . $order, array('apptstat'));
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       if ($flddef ==" ") {
       $top_choice = "All";
       }else{
@@ -463,9 +467,74 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       echo "  </select>\n";
     }
 
+    else if ($fldtype == 'provider') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
+      $query = "SELECT id, lname, mname, fname FROM users WHERE " .
+      "( authorized = 1 OR info LIKE '%provider%' ) AND username != '' " .
+      "AND active = 1 AND ( info IS NULL OR info NOT LIKE '%Inactive%' ) " .
+      "ORDER BY lname, fname";
+      $res = sqlStatement($query);
+      echo "  <select name='form_$i' id='form_$i'>\n";
+      if ($flddef ==" ") {
+      $top_choice = "All";
+      }else{
+        $top_choice = $flddef;
+      }
+      echo "    <option value=''>" . text($top_choice) . "\n";
+      while ($row = sqlFetchArray($res)) {
+        $title = $row['id'];
+        $name = $row['lname'] . ", " . $row['fname'] . " " . $row['mname'];
+        echo "   <option value='" . attr($title) . "'";
+        if ($title == $fldvalue) echo " selected";
+        echo ">";
+        echo xlt($name);
+        echo "</option>\n";
+      }
+      echo "  </select>\n";
+    }
+
+    else if ($fldtype == 'list') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
+     $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array($fldlist));
+     echo "  <select name='form_$i' id='form_$i'>\n";
+     echo "    <option value=''>" . text($top_choice) . "\n";
+     while ($row = sqlFetchArray($res)) {
+        $title = $row['option_id'];
+        $name = $row['title'];
+        echo "   <option value='" . attr($title) . "'";
+        if ($title == $fldvalue) echo " selected";
+        echo ">";
+        echo xlt($name);
+        echo "</option>\n";
+      }
+      echo "  </select>\n";
+    }
+
+    else if ($fldtype == 'm_select_dow') {
+      $res = sqlStatement("SELECT option_id, title FROM list_options WHERE list_id = ? AND activity=1", array($flddef));
+      echo "  <select multiple name='form_{$i}[]' id='form_{$i}[]' size='4'>\n";
+      while ($row = sqlFetchArray($res)) {
+        echo "   <option value='" . attr($row['title']) . "'";
+        foreach ($glarr as $glrow) {
+          if ($glrow['gl_value'] == $row['title']) {
+            echo " selected";
+            break;
+          }
+        }
+        echo ">";
+        echo xlt($row['title']);
+        echo "</option>\n";
+      }
+      echo "  </select>\n";
+    }
+
     else if ($fldtype == 'all_code_types') {
       global $code_types;
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       foreach (array_keys($code_types) as $code_key ) {
         echo "   <option value='" . attr($code_key) . "'";
         if ($code_key == $fldvalue) echo " selected";
@@ -478,7 +547,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 
     else if ($fldtype == 'm_lang') {
       $res = sqlStatement("SELECT * FROM lang_languages  ORDER BY lang_description");
-      echo "  <select multiple name='form_{$i}[]' id='form_{$i}[]' size='3'>\n";
+      echo "  <select multiple name='form_{$i}[]' class='form-control' id='form_{$i}[]' size='3'>\n";
       while ($row = sqlFetchArray($res)) {
         echo "   <option value='" . attr($row['lang_description']) . "'";
         foreach ($glarr as $glrow) {
@@ -509,14 +578,14 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       $themedir = "$webserver_root/interface/themes";
       $dh = opendir($themedir);
       if ($dh) {
-        echo "  <select name='form_$i' id='form_$i'>\n";
+        echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
         while (false !== ($tfname = readdir($dh))) {
           // Only show files that contain style_ as options
           //  Skip style_blue.css since this is used for
           //  lone scripts such as setup.php
           //  Also skip style_pdf.css which is for PDFs and not screen output
           if (!preg_match("/^style_.*\.css$/", $tfname) ||
-            $tfname == 'style_blue.css' || $tfname == 'style_pdf.css')
+            $tfname == 'style_setup.css' || $tfname == 'style_pdf.css')
             continue;
           echo "<option value='" . attr($tfname) . "'";
           // Drop the "style_" part and any replace any underscores with spaces
@@ -540,7 +609,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       $themedir = "$webserver_root/interface/themes";
       $dh = opendir($themedir);
       if ($dh) {
-        echo "  <select name='form_$i' id='form_$i'>\n";
+        echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
         while (false !== ($tfname = readdir($dh))) {
           // Only show files that contain tabs_style_ as options
           if (!preg_match("/^tabs_style_.*\.css$/", $tfname)) continue;
@@ -563,7 +632,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      echo "  <select name='form_$i' id='form_$i'>\n";
+      echo "  <select class='form-control' name='form_$i' id='form_$i'>\n";
       for ($h = 0; $h < 24; ++$h) {
         echo "<option value='$h'";
         if ($h == $fldvalue) echo " selected";
@@ -580,7 +649,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       echo " </td>\n";
       echo "<td align='center' style='color:red;'>" . attr($globalTitle) . "</td>\n";
       echo "<td>&nbsp</td>";
-      echo "<td align='center'><input type='checkbox' value='YES' name='toggle_" . $i . "' id='toggle_" . $i . "' " . attr($settingDefault) . "/></td>\n";
+      echo "<td align='center'><input type='checkbox' class='checkbox' value='YES' name='toggle_" . $i . "' id='toggle_" . $i . "' " . attr($settingDefault) . "/></td>\n";
       echo "<input type='hidden' id='globaldefault_" . $i . "' value='" . attr($globalValue) . "'>\n";
       echo "</tr>\n";
     }
@@ -598,7 +667,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 </div>
 
 <p>
- <input type='submit' name='form_save' value='<?php echo xla('Save'); ?>' />
+ <input type='submit'  name='form_save' value='<?php echo xla('Save'); ?>' />
 </p>
 </center>
 
@@ -612,6 +681,13 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 $(document).ready(function(){
   tabbify();
   enable_modals();
+
+  <?php // mdsupport - Highlight search results ?>
+  $('.srch td').wrapInner("<mark></mark>");
+  $('.tab > table').find('tr.srch:first').each(function() {
+      var srch_div = $(this).closest('div').prevAll().length + 1;
+      $('.tabNav > li:nth-child('+srch_div+') a').wrapInner("<mark></mark>");
+  });
 
   // Use the counter ($i) to make the form user friendly for user-specific globals use
   <?php if ($_GET['mode'] == "user") { ?>
