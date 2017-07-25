@@ -46,6 +46,7 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/log.inc");
+require_once("$srcdir/headers.inc.php");
 
 // For logging checksums set this to true.
 define('CHECKSUM_LOGGING', true);
@@ -190,7 +191,7 @@ function echoLine($lino, $codetype, $code, $modifier, $ndc_info='',
   $strike1 = ($id && $del) ? "<strike>" : "";
   $strike2 = ($id && $del) ? "</strike>" : "";
   echo " <tr>\n";
-  echo "  <td class='billcell'>$strike1" .
+  echo "  <td>$strike1" .
     ($codetype == 'COPAY' ? xl($codetype) : $codetype) . $strike2;
   //if the line to ouput is copay, show the date here passed as $ndc_info,
   //since this variable is not applicable in the case of copay.
@@ -206,68 +207,68 @@ function echoLine($lino, $codetype, $code, $modifier, $ndc_info='',
   echo "<input type='hidden' name='bill[".attr($lino)."][billed]' value='".attr($billed)."'>";
   echo "</td>\n";
   if ($codetype != 'COPAY') {
-    echo "  <td class='billcell'>$strike1" . text($code) . "$strike2</td>\n";
+    echo "  <td>$strike1" . text($code) . "$strike2</td>\n";
   } else {
-    echo "  <td class='billcell'>&nbsp;</td>\n";
+    echo "  <td>&nbsp;</td>\n";
   }
   if ($billed) {
     if (modifiers_are_used(true)) {
-      echo "  <td class='billcell'>$strike1" . text($modifier) . "$strike2" .
+      echo "  <td>$strike1" . text($modifier) . "$strike2" .
         "<input type='hidden' name='bill[".attr($lino)."][mod]' value='".attr($modifier)."'></td>\n";
     }
     if (fees_are_used()) {
-      echo "  <td class='billcell' align='right'>" . text(oeFormatMoney($price)) . "</td>\n";
+      echo "  <td align='right'>" . text(oeFormatMoney($price)) . "</td>\n";
       if ($codetype != 'COPAY') {
-        echo "  <td class='billcell' align='center'>" . text($units) . "</td>\n";
+        echo "  <td align='center'>" . text($units) . "</td>\n";
       } else {
-        echo "  <td class='billcell'>&nbsp;</td>\n";
+        echo "  <td>&nbsp;</td>\n";
       }
     }
     if (justifiers_are_used()) {
-      echo "  <td class='billcell' align='center'$usbillstyle>" . text($justify) . "</td>\n";
+      echo "  <td align='center'$usbillstyle>" . text($justify) . "</td>\n";
     }
 
     // Show provider for this line (if using line item billing).
     if($GLOBALS['support_fee_sheet_line_item_provider'] ==1) {
-      echo "  <td class='billcell' align='center'>";
+      echo "  <td align='center'>";
     }
     else 
     {
-      echo "  <td class='billcell' align='center' style='display: none'>";
+      echo "  <td align='center' style='display: none'>";
     }
       genProviderSelect('', '-- '.xl("Default").' --', $provider_id, true);
       echo "</td>\n";
 
     if ($code_types[$codetype]['claim'] && !$code_types[$codetype]['diag']) {
-      echo "  <td class='billcell' align='center'$usbillstyle>" .
+      echo "  <td align='center'$usbillstyle>" .
         htmlspecialchars($notecodes, ENT_NOQUOTES) . "</td>\n";
     }
     else {
-      echo "  <td class='billcell' align='center'$usbillstyle></td>\n";
+      echo "  <td align='center'$usbillstyle></td>\n";
     }
-    echo "  <td class='billcell' align='center'$usbillstyle><input type='checkbox'" .
+    echo "  <td align='center'$usbillstyle><input type='checkbox'" .
       ($auth ? " checked" : "") . " disabled /></td>\n";
-    echo "  <td class='billcell' align='center'><input type='checkbox'" .
+    echo "  <td align='center'><input type='checkbox'" .
       " disabled /></td>\n";
     if($GLOBALS['bill_to_patient'] ==1) {
-    echo "  <td class='billcell' align='center'$usbillstyle><input type='checkbox'" .
+    echo "  <td align='center'$usbillstyle><input type='checkbox'" .
       ($exclude ? " checked" : "") . " disabled /></td>\n";
   }
   }
   else { // not billed
     if (modifiers_are_used(true)) {
       if ($codetype != 'COPAY' && ($code_types[$codetype]['mod'] || $modifier)) {
-        echo "  <td class='billcell'><input type='text' name='bill[".attr($lino)."][mod]' " .
+        echo "  <td><input type='text' name='bill[".attr($lino)."][mod]' " .
              "value='" . attr($modifier) . "' " .
              "title='" . xla("Multiple modifiers can be separated by colons or spaces, maximum of 4 (M1:M2:M3:M4)") . "' " .
              "value='" . attr($modifier) . "' size='" . attr($code_types[$codetype]['mod']) . "'></td>\n";
       } else {
-        echo "  <td class='billcell'>&nbsp;</td>\n";
+        echo "  <td>&nbsp;</td>\n";
       }
     }
     if (fees_are_used()) {
       if ($codetype == 'COPAY' || $code_types[$codetype]['fee'] || $fee != 0) {
-        echo "  <td class='billcell' align='right'>" .
+        echo "  <td align='right'>" .
           "<input type='text' name='bill[".attr($lino)."][price]' " .
           "value='" . attr($price) . "' size='6'";
         if (acl_check('acct','disc'))
@@ -275,7 +276,7 @@ function echoLine($lino, $codetype, $code, $modifier, $ndc_info='',
         else
           echo " style='text-align:right;background-color:transparent' readonly";
         echo "></td>\n";
-        echo "  <td class='billcell' align='center'>";
+        echo "  <td align='center'>";
         if ($codetype != 'COPAY') {
           echo "<input type='text' name='bill[".attr($lino)."][units]' " .
           "value='" . attr($units) . "' size='2' style='text-align:right'>";
@@ -284,53 +285,53 @@ function echoLine($lino, $codetype, $code, $modifier, $ndc_info='',
         }
         echo "</td>\n";
       } else {
-        echo "  <td class='billcell'>&nbsp;</td>\n";
-        echo "  <td class='billcell'>&nbsp;</td>\n";
+        echo "  <td>&nbsp;</td>\n";
+        echo "  <td>&nbsp;</td>\n";
       }
     }
     if (justifiers_are_used()) {
       if ($code_types[$codetype]['just'] || $justify) {
-        echo "  <td class='billcell' align='center'$usbillstyle ";
+        echo "  <td align='center'$usbillstyle ";
         echo "title='" . xla("Select one or more diagnosis codes to justify the service") . "' >";
         echo "<select name='bill[".attr($lino)."][justify]' onchange='setJustify(this)'>";
         echo "<option value='" . attr($justify) . "'>" . text($justify) . "</option></select>";
         echo "</td>\n";
         $justinit .= "setJustify(f['bill[".attr($lino)."][justify]']);\n";
       } else {
-        echo "  <td class='billcell'$usbillstyle>&nbsp;</td>\n";
+        echo "  <td$usbillstyle>&nbsp;</td>\n";
       }
     }
 
     // Show provider for this line (if using line item billing)
     if($GLOBALS['support_fee_sheet_line_item_provider'] ==1) {
-      echo "  <td class='billcell' align='center'>";
+      echo "  <td align='center'>";
     }
     else 
     {
-      echo "  <td class='billcell' align='center' style='display: none'>";
+      echo "  <td align='center' style='display: none'>";
     }
       genProviderSelect("bill[$lino][provid]", '-- '.xl("Default").' --', $provider_id);
       echo "</td>\n";
 
     if ($code_types[$codetype]['claim'] && !$code_types[$codetype]['diag']) {
-      echo "  <td class='billcell' align='center'$usbillstyle><input type='text' name='bill[".attr($lino)."][notecodes]' " .
+      echo "  <td align='center'$usbillstyle><input type='text' name='bill[".attr($lino)."][notecodes]' " .
         "value='" . htmlspecialchars($notecodes, ENT_QUOTES) . "' maxlength='50' size='8' /></td>\n";
     }
     else {
-      echo "  <td class='billcell' align='center'$usbillstyle></td>\n";
+      echo "  <td align='center'$usbillstyle></td>\n";
     }
-    echo "  <td class='billcell' align='center'$usbillstyle><input type='checkbox' name='bill[".attr($lino)."][auth]' " .
+    echo "  <td align='center'$usbillstyle><input type='checkbox' name='bill[".attr($lino)."][auth]' " .
       "value='1'" . ($auth ? " checked" : "") . " /></td>\n";
-    echo "  <td class='billcell' align='center'><input type='checkbox' name='bill[".attr($lino)."][del]' " .
+    echo "  <td align='center'><input type='checkbox' name='bill[".attr($lino)."][del]' " .
       "value='1'" . ($del ? " checked" : "") . " /></td>\n";
         //ADD THE NEW CHECKBOX "Bill to Patient EXCLUDE"
     if($GLOBALS['bill_to_patient'] ==1) {
-      echo "  <td class='billcell' align='center'><input type='checkbox' name='bill[".attr($lino)."][exclude_from_insurance_billing]' " .
+      echo "  <td align='center'><input type='checkbox' name='bill[".attr($lino)."][exclude_from_insurance_billing]' " .
         "value='1'" . ($exclude ? " checked" : "") . " /></td>\n";
     }
   }
 
-  echo "  <td class='billcell'>$strike1" . text($code_text) . "$strike2</td>\n";
+  echo "  <td>$strike1" . text($code_text) . "$strike2</td>\n";
   echo " </tr>\n";
 
   // If NDC info exists or may be required, add a line for it.
@@ -340,8 +341,8 @@ function echoLine($lino, $codetype, $code, $modifier, $ndc_info='',
       $ndcnum = $tmp[1]; $ndcuom = $tmp[2]; $ndcqty = $tmp[3];
     }
     echo " <tr>\n";
-    echo "  <td class='billcell' colspan='2'>&nbsp;</td>\n";
-    echo "  <td class='billcell' colspan='6'>&nbsp;NDC:&nbsp;";
+    echo "  <td colspan='2'>&nbsp;</td>\n";
+    echo "  <td colspan='6'>&nbsp;NDC:&nbsp;";
     echo "<input type='text' name='bill[".attr($lino)."][ndcnum]' value='" . attr($ndcnum) . "' " .
       "size='11' style='background-color:transparent'>";
     echo " &nbsp;Qty:&nbsp;";
@@ -360,8 +361,8 @@ function echoLine($lino, $codetype, $code, $modifier, $ndc_info='',
   }
   else if ($ndc_info) {
     echo " <tr>\n";
-    echo "  <td class='billcell' colspan='2'>&nbsp;</td>\n";
-    echo "  <td class='billcell' colspan='6'>&nbsp;" . xlt("NDC Data") . ": " . text($ndc_info) . "</td>\n";
+    echo "  <td colspan='2'>&nbsp;</td>\n";
+    echo "  <td colspan='6'>&nbsp;" . xlt("NDC Data") . ": " . text($ndc_info) . "</td>\n";
     echo " </tr>\n";
   }
 
@@ -389,31 +390,31 @@ function echoProdLine($lino, $drug_id, $del = FALSE, $units = NULL,
   $strike1 = ($sale_id && $del) ? "<strike>" : "";
   $strike2 = ($sale_id && $del) ? "</strike>" : "";
   echo " <tr>\n";
-  echo "  <td class='billcell'>{$strike1}" . xlt("Product") . "$strike2";
+  echo "  <td>{$strike1}" . xlt("Product") . "$strike2";
   echo "<input type='hidden' name='prod[".attr($lino)."][sale_id]' value='" . attr($sale_id) . "'>";
   echo "<input type='hidden' name='prod[".attr($lino)."][drug_id]' value='" . attr($drug_id) . "'>";
   echo "<input type='hidden' name='prod[".attr($lino)."][billed]' value='" . attr($billed) . "'>";
   echo "</td>\n";
-  echo "  <td class='billcell'>$strike1" . text($drug_id) . "$strike2</td>\n";
+  echo "  <td>$strike1" . text($drug_id) . "$strike2</td>\n";
   if (modifiers_are_used(true)) {
-    echo "  <td class='billcell'>&nbsp;</td>\n";
+    echo "  <td>&nbsp;</td>\n";
   }
   if ($billed) {
     if (fees_are_used()) {
-      echo "  <td class='billcell' align='right'>" . text(oeFormatMoney($price)) . "</td>\n";
-      echo "  <td class='billcell' align='center'>" . text($units) . "</td>\n";
+      echo "  <td align='right'>" . text(oeFormatMoney($price)) . "</td>\n";
+      echo "  <td align='center'>" . text($units) . "</td>\n";
     }
     if (justifiers_are_used()) {
-      echo "  <td class='billcell' align='center'$usbillstyle>&nbsp;</td>\n"; // justify
+      echo "  <td align='center'$usbillstyle>&nbsp;</td>\n"; // justify
     }
-    echo "  <td class='billcell' align='center'>&nbsp;</td>\n";             // provider
-    echo "  <td class='billcell' align='center'$usbillstyle>&nbsp;</td>\n"; // note codes
-    echo "  <td class='billcell' align='center'$usbillstyle>&nbsp;</td>\n"; // auth
-    echo "  <td class='billcell' align='center'><input type='checkbox'" .   // del
+    echo "  <td align='center'>&nbsp;</td>\n";             // provider
+    echo "  <td align='center'$usbillstyle>&nbsp;</td>\n"; // note codes
+    echo "  <td align='center'$usbillstyle>&nbsp;</td>\n"; // auth
+    echo "  <td align='center'><input type='checkbox'" .   // del
       " disabled /></td>\n";
   } else {
     if (fees_are_used()) {
-      echo "  <td class='billcell' align='right'>" .
+      echo "  <td align='right'>" .
         "<input type='text' name='prod[".attr($lino)."][price]' " .
         "value='" . attr($price) . "' size='6'";
       if (acl_check('acct','disc'))
@@ -421,26 +422,26 @@ function echoProdLine($lino, $drug_id, $del = FALSE, $units = NULL,
       else
         echo " style='text-align:right;background-color:transparent' readonly";
       echo "></td>\n";
-      echo "  <td class='billcell' align='center'>";
+      echo "  <td align='center'>";
       echo "<input type='text' name='prod[".attr($lino)."][units]' " .
         "value='" . attr($units) . "' size='2' style='text-align:right'>";
       echo "</td>\n";
     }
     if (justifiers_are_used()) {
-      echo "  <td class='billcell'$usbillstyle>&nbsp;</td>\n"; // justify
+      echo "  <td$usbillstyle>&nbsp;</td>\n"; // justify
     }
-    echo "  <td class='billcell' align='center'>&nbsp;</td>\n"; // provider
-    echo "  <td class='billcell' align='center'$usbillstyle>&nbsp;</td>\n"; // note codes
-    echo "  <td class='billcell' align='center'$usbillstyle>&nbsp;</td>\n"; // auth
-    echo "  <td class='billcell' align='center'><input type='checkbox' name='prod[".attr($lino)."][del]' " .
+    echo "  <td align='center'>&nbsp;</td>\n"; // provider
+    echo "  <td align='center'$usbillstyle>&nbsp;</td>\n"; // note codes
+    echo "  <td align='center'$usbillstyle>&nbsp;</td>\n"; // auth
+    echo "  <td align='center'><input type='checkbox' name='prod[".attr($lino)."][del]' " .
       "value='1'" . ($del ? " checked" : "") . " /></td>\n";
     if($GLOBALS['bill_to_patient'] ==1) { 
-      echo "  <td class='billcell' align='center'><input type='checkbox' name='bill[".attr($lino)."][exclude_from_insurance_billing]' " .
+      echo "  <td align='center'><input type='checkbox' name='bill[".attr($lino)."][exclude_from_insurance_billing]' " .
         "value='1'" . ($del ? " checked" : "") . " /></td>\n";
     }
   }
 
-  echo "  <td class='billcell'>$strike1" . text($code_text) . "$strike2</td>\n";
+  echo "  <td>$strike1" . text($code_text) . "$strike2</td>\n";
   echo " </tr>\n";
 
   if ($fee != 0) $hasCharges = true;
@@ -757,13 +758,15 @@ $billresult = getBillingByEncounter($pid, $encounter, "*");
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<?php 
+  html_header_show();
+  // Include Bootstrap
+  call_required_libraries(true,false,false,false); 
+?>
+
 <style>
 .billcell { font-family: sans-serif; font-size: 10pt }
 </style>
-<script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dialog.js"></script>
 <script language="JavaScript">
 
 var diags = new Array();
@@ -914,7 +917,7 @@ if ($isBilled) {
 else { // the encounter is not yet billed
 ?>
 
-<table width='95%'>
+<table class="table">
 <?php
 $i = 0;
 $last_category = '';
@@ -1033,13 +1036,14 @@ echo " </tr>\n";
 
 </table>
 
-<p style='margin-top:8px;margin-bottom:8px'>
-<table>
+<table class="table">
  <tr>
   <td>
    <input type='button' value='<?php echo xla('Add Copay');?>'
     onclick="copayselect()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </td>
+  </tr>
+  <tr>
   <td>
    <?php echo xlt('Search'); ?>&nbsp;
   </td>
@@ -1066,51 +1070,51 @@ echo " </tr>\n";
    <?php echo xlt('for'); ?>&nbsp;
   </td>
   <td>
-   <input type='text' name='search_term' value=''> &nbsp;
+   <input type='text' class="form-control" name='search_term' value=''> &nbsp;
   </td>
   <td>
    <input type='submit' name='bn_search' value='<?php echo xla('Search');?>'>
   </td>
  </tr>
 </table>
-</p>
+
 <p style='margin-top:16px;margin-bottom:8px'>
 
 <?php } // end encounter not billed ?>
-
-<table cellspacing='5'>
+<div class="table-responsive">
+<table class="table well">
  <tr>
-  <td class='billcell'><b><?php echo xlt('Type');?></b></td>
-  <td class='billcell'><b><?php echo xlt('Code');?></b></td>
+  <td><b><?php echo xlt('Type');?></b></td>
+  <td><b><?php echo xlt('Code');?></b></td>
 <?php if (modifiers_are_used(true)) { ?>
-  <td class='billcell'><b><?php echo xlt('Modifiers');?></b></td>
+  <td><b><?php echo xlt('Modifiers');?></b></td>
 <?php } ?>
 <?php if (fees_are_used()) { ?>
-  <td class='billcell' align='right'><b><?php echo xlt('Price');?></b>&nbsp;</td>
-  <td class='billcell' align='center'><b><?php echo xlt('Units');?></b></td>
+  <td><b><?php echo xlt('Price');?></b>&nbsp;</td>
+  <td><b><?php echo xlt('Units');?></b></td>
 <?php } ?>
 <?php if (justifiers_are_used()) { ?>
-  <td class='billcell' align='center'<?php echo $usbillstyle; ?>><b><?php echo xlt('Justify');?></b></td>
+  <td><?php echo $usbillstyle; ?><b><?php echo xlt('Justify');?></b></td>
 <?php } ?>
 
   <?php // Show provider (only if using line item billing) ?>
   <?php if($GLOBALS['support_fee_sheet_line_item_provider'] ==1) { ?>
-    <td class='billcell' align='center'>
+    <td>
   <?php } else { ?>
-    <td class='billcell' align='center' style='display: none'>
+    <td style='display: none'>
   <?php } ?>
   <b><?php echo xlt('Provider');?></b></td>
 
-  <td class='billcell' align='center'<?php echo $usbillstyle; ?>><b><?php echo xlt('Note Codes');?></b></td>
-  <td class='billcell' align='center'<?php echo $usbillstyle; ?>><b><?php echo xlt('Auth');?></b></td>
-  <td class='billcell' align='center'><b><?php echo xlt('Delete');?></b></td>
+  <td <?php echo $usbillstyle; ?>><b><?php echo xlt('Note Codes');?></b></td>
+  <td <?php echo $usbillstyle; ?>><b><?php echo xlt('Auth');?></b></td>
+  <td ><b><?php echo xlt('Delete');?></b></td>
   <?php if($GLOBALS['bill_to_patient'] ==1) { ?>
-    <td class='billcell' align='center'>
+    <td>
   <?php } else { ?>
-    <td class='billcell' align='center' style='display: none'>
+    <td style='display: none'>
   <?php } ?>
   <b><?php echo xlt('Exclude from Billing');?></b></td>
-  <td class='billcell'><b><?php echo xlt('Description');?></b></td>
+  <td><b><?php echo xlt('Description');?></b></td>
  </tr>
 
 <?php
@@ -1304,7 +1308,7 @@ $encounter_order  = 0 + $tmp['ordering_physician'];
 $encounter_referr  = 0 + $tmp['referring_physician'];
 $encounter_contract  = 0 + $tmp['contract_physician'];
 ?>
-</table>
+</table></div>
 </p>
 
 <br />
@@ -1312,7 +1316,7 @@ $encounter_contract  = 0 + $tmp['contract_physician'];
 
 <?php
 // Choose rendering and supervising providers.
-echo "<span class='billcell'><b>\n";
+echo "<span><b>\n";
 echo xlt('Providers') . ": &nbsp;";
 
 echo "&nbsp;&nbsp;" . xlt('Rendering') . "\n";
@@ -1384,7 +1388,7 @@ if ($prod_lino > 0) { // if any products are in this form
   $trow = sqlQuery("SELECT count(*) AS count FROM list_options WHERE list_id = 'warehouse'");
   if ($trow['count'] > 1) {
     $trow = sqlQuery("SELECT default_warehouse FROM users WHERE username = ?", array($_SESSION['authUser']) );
-    echo "   <span class='billcell'><b>" . xlt('Warehouse') . ":</b></span>\n";
+    echo "   <span><b>" . xlt('Warehouse') . ":</b></span>\n";
     echo generate_select_list('default_warehouse', 'warehouse',
       $trow['default_warehouse'], '');
     echo "&nbsp; &nbsp; &nbsp;\n";
@@ -1398,7 +1402,7 @@ if (true) {
   $trow = sqlQuery("SELECT pricelevel FROM patient_data WHERE " .
     "pid = ? LIMIT 1", array($pid) );
   $pricelevel = $trow['pricelevel'];
-  echo "   <span class='billcell'><b>" . xlt('Price Level') . ":</b></span>\n";
+  echo "   <span><b>" . xlt('Price Level') . ":</b></span>\n";
   echo "   <select name='pricelevel'";
   if ($isBilled) echo " disabled";
   echo ">\n";
