@@ -4,6 +4,7 @@ require_once("$srcdir/calendar.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/appointments.inc.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 $dateFormat = DateFormatRead();
 
@@ -25,23 +26,24 @@ function keywordFilter($arr) {
   }
   else return true;
 }
+
+// get bootstrap and datetimepicker
+call_required_libraries(true, false, false, true);
 ?>
 <html>
 <head>
-  <link href="<?php echo $GLOBALS['standard_js_path'] ?>bootstrap-3-3-4/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="<?php echo $GLOBALS['standard_js_path'] ?>jquery-datetimepicker-2-5-4/build/jquery.datetimepicker.min.css" rel="stylesheet" />
   <link href="css/search.css" rel="stylesheet" />
   
-  <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/lib/moment.min.js'></script>
-  <script src="<?php echo $GLOBALS['standard_js_path'] ?>jquery-datetimepicker-2-5-4/build/jquery.datetimepicker.full.min.js"></script>
   <script type="text/javascript" src="../../library/dialog.js"></script>
 </head>
 <body>
   
   <div class="container-fluid">
-    <div class="row">
+    <div class="row title">
       <h2><button type="button" class="btn btn-default btn-sm" onclick="window.location.href='index.php'">Back to Calendar</button></h2>
+    </div>
+    <div class="row title">
       <h3>Search</h3>
     </div>
     
