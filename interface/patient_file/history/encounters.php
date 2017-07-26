@@ -39,6 +39,7 @@ require_once("$srcdir/invoice_summary.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("../../../custom/code_types.inc.php");
 require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 // "issue" parameter exists if we are being invoked by clicking an issue title
 // in the left_nav menu.  Currently that is just for athletic teams.  In this
@@ -169,12 +170,13 @@ function generatePageElement($start,$pagesize,$billing,$issue,$text)
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+<?php 
+    html_header_show();
+    // Include Bootstrap
+    call_required_libraries(true,false,false,false);
+?>
 <!-- Main style sheet comes after the page-specific stylesheet to facilitate overrides. -->
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/encounters.css" type="text/css">
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/ajtooltip.js"></script>
 
 <script language="JavaScript">
@@ -241,10 +243,10 @@ function efmouseover(elem, ptid, encid, formname, formid) {
 
 </head>
 
-<body class="body_bottom">
+<body>
 <div id="encounters"> <!-- large outer DIV -->
 
-<font class='title'>
+<div class='title' style="padding:10px;">
 <?php
 if ($issue) {
   echo htmlspecialchars(xl('Past Encounters for'), ENT_NOQUOTES) . ' ';
@@ -255,7 +257,7 @@ else {
   echo htmlspecialchars(xl('Past Encounters and Documents'), ENT_NOQUOTES);
 }
 ?>
-</font>
+</div>
 &nbsp;&nbsp;
 <?php
 // Setup the GET string to append when switching between billing and clinical views.
@@ -327,8 +329,9 @@ $getStringForPage="&pagesize=".attr($pagesize)."&pagestart=".attr($pagestart);
 
 <br>
 
-<table>
- <tr class='text'>
+<div class="table-responsive" style="padding:5px;">
+<table class="table well">
+ <tr>
   <th><?php echo htmlspecialchars( xl('Date'), ENT_NOQUOTES); ?></th>
 
 <?php if ($billing_view) { ?>
@@ -343,10 +346,10 @@ $getStringForPage="&pagesize=".attr($pagesize)."&pagestart=".attr($pagestart);
 
 <?php if ($billing_view) { ?>
   <th><?php echo xl('Code','e'); ?></th>
-  <th class='right'><?php echo htmlspecialchars( xl('Chg'), ENT_NOQUOTES); ?></th>
-  <th class='right'><?php echo htmlspecialchars( xl('Paid'), ENT_NOQUOTES); ?></th>
-  <th class='right'><?php echo htmlspecialchars( xl('Adj'), ENT_NOQUOTES); ?></th>
-  <th class='right'><?php echo htmlspecialchars( xl('Bal'), ENT_NOQUOTES); ?></th>
+  <th><?php echo htmlspecialchars( xl('Chg'), ENT_NOQUOTES); ?></th>
+  <th><?php echo htmlspecialchars( xl('Paid'), ENT_NOQUOTES); ?></th>
+  <th><?php echo htmlspecialchars( xl('Adj'), ENT_NOQUOTES); ?></th>
+  <th><?php echo htmlspecialchars( xl('Bal'), ENT_NOQUOTES); ?></th>
 <?php } else { ?>
   <th colspan='5'><?php echo htmlspecialchars( (($GLOBALS['phone_country_code'] == '1') ? xl('Billing') : xl('Coding')), ENT_NOQUOTES); ?></th>
 <?php } ?>
@@ -692,9 +695,9 @@ while ($result4 = sqlFetchArray($res4)) {
                 }
             } // end if there is billing
 
-            echo "<td class='text'>".$binfo[0]."</td>\n";
+            echo "<td>".$binfo[0]."</td>\n";
             for ($i = 1; $i < 5; ++$i) {
-                echo "<td class='text right'>". $binfo[$i]."</td>\n";
+                echo "<td>". $binfo[$i]."</td>\n";
             }
         } // end if authorized
 
@@ -753,11 +756,12 @@ while ($drow /* && $count <= $N */) {
 ?>
 
 </table>
+</div>
 
 </div> <!-- end 'encounters' large outer DIV -->
 
 <div id='tooltipdiv'
- style='position:absolute;width:400pt;border:1px solid black;padding:2px;background-color:#ffffaa;visibility:hidden;z-index:1000;font-size:9pt;'
+ style='position:absolute;border:1px solid black;padding:2px;background-color:#ffffaa;visibility:hidden;z-index:1000;font-size:9pt;'
 ></div>
 
 </body>

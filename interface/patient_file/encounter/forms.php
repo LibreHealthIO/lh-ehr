@@ -21,21 +21,11 @@ require_once("$srcdir/headers.inc.php");
 <html>
 
 <head>
-<?php html_header_show();?>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']?>fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
-
-<!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
-<?php 
-include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); 
-include_js_library("fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js");
+<?php html_header_show();
+//  Include Bootstrap and datepicker Library
+call_required_libraries(true,true,false,true);
+resolveFancyboxCompatibility();
 ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
         
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/ESign/js/jquery.esign.js"></script>
@@ -271,7 +261,7 @@ function divtoggle(spanid, divid) {
 }
 </script>
 
-<style type="text/css">
+<style type="text/css">    
     div.tab {
         min-height: 50px;
         padding:8px;
@@ -296,7 +286,7 @@ function divtoggle(spanid, divid) {
         float:left; 
         display:inline;
         margin-top:10px;
-    }
+    }    
     .flat_button{
     padding: 3px 6px;
     }
@@ -381,7 +371,7 @@ if ( $esign->isButtonViewable() ) {
 <?php if ($GLOBALS['enable_amc_prompting']) { ?>
     <div style='float:right;margin-right:25px;border-style:solid;border-width:1px;'>
         <div style='float:left;margin:5px 5px 5px 5px;'>
-            <table>
+            <table class="table">
             <tr>
             <td>
             <?php // Display the education resource checkbox (AMC prompting)
@@ -500,7 +490,7 @@ if ( $esign->isButtonViewable() ) {
 
 <?php
   if ($result = getFormByEncounter($pid, $encounter, "id, date, form_id, form_name, formdir, user, deleted")) {
-    echo "<table width='100%' id='partable'>";
+    echo "<table class='table' style='table-layout:fixed;width: 100%;'>";
     $divnos=1;
     foreach ($result as $iter) {
         $formdir = $iter['formdir'];
@@ -523,7 +513,7 @@ if ( $esign->isButtonViewable() ) {
         // Create the ESign instance for this form
         $esign = $esignApi->createFormESign( $iter['id'], $formdir, $encounter );
         echo "<tr>";
-        echo "<td style='border-bottom:1px solid'>";
+        echo "<td>";
         // a link to edit the form
         echo "<div class='form_header_controls'>";
         
@@ -573,7 +563,7 @@ if ( $esign->isButtonViewable() ) {
         echo "</td>\n";
         echo "</tr>";
         echo "<tr>";
-        echo "<td valign='top' class='formrow'><div class='tab' id='divid_$divnos' style='display:block'>";
+        echo "<td valign='top' class='formrow'><div id='divid_$divnos' style='display:block'>";
 
         // Use the form's report.php for display.  Forms with names starting with LBF
         // are list-based forms sharing a single collection of code.

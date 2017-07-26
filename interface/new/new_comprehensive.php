@@ -11,6 +11,7 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/erx_javascript.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 // Check authorization.
 if (!acl_check('patients','demo','',array('write','addonly') ))
@@ -65,9 +66,9 @@ $fres = getLayoutRes();
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
-
-<link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
+<?php html_header_show();
+      //  Include Bootstrap, Fancybox, date-time-picker
+      call_required_libraries(true,true,false,true); ?>
 
 <style>
 body, td, input, select, textarea {
@@ -80,25 +81,18 @@ body {
 }
 
 div.section {
+ /*
  border: solid;
  border-width: 1px;
  border-color: #0000ff;
+ */
  margin: 0 0 0 10pt;
  padding: 5pt;
 }
 
 </style>
 
-<link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-
-<script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
-<script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
-
-<script type="text/javascript" src="../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 
 <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
 
@@ -438,9 +432,9 @@ while ($lrow = sqlFetchArray($lres)) {
 
 <span class='title'><?php xl('Search or Add Patient','e'); ?></span>
 
-<table width='100%' cellpadding='0' cellspacing='8'>
+<table class="table">
  <tr>
-  <td align='left' valign='top'>
+  <td align='left'>
 <?php if ($SHORT_FORM) echo "  <center>\n"; ?>
 <?php
 
@@ -510,11 +504,11 @@ while ($frow = sqlFetchArray($fres)) {
       echo " /><b>" . xl_layout_label($group_name) . "</b></span>\n";
         
       echo "<div id='div_$group_seq' class='section' style='display:$display_style;'>\n";
-      echo " <table border='0' cellpadding='0'>\n";
+      echo " <table class='table' >\n";
       $display_style = 'none';
     }
     else if (strlen($last_group) == 0) {
-      echo " <table border='0' cellpadding='0'>\n";
+      echo " <table class='table'>\n";
     }
     $last_group = $this_group;
   }
@@ -580,9 +574,9 @@ if (! $GLOBALS['simplified_demographics']) {
   for($i=1;$i<=3;$i++) {
    $result3 = $insurance_info[$i];
 ?>
-<table border="0">
+<table class='table' border="0">
  <tr>
-  <td valign='top' colspan='2'>
+  <td colspan='2'>
    <span class='required'><?php echo $insurance_headings[$i -1].":"?></span>
    <select name="i<?php echo $i?>provider">
     <option value=""><?php xl('Unassigned','e'); ?></option>
@@ -599,8 +593,8 @@ if (! $GLOBALS['simplified_demographics']) {
   </td>
  </tr>
  <tr>
-  <td valign=top>
-   <table border="0">
+  <td >
+   <table class='table' border="0">
 
     <tr>
      <td>
@@ -690,7 +684,7 @@ if (! $GLOBALS['simplified_demographics']) {
    </table>
   </td>
 
-  <td valign=top>
+  <td >
    <span class=required><?php xl('Subscriber','e'); ?>: </span>
    <input type=entry size=10 name=i<?php echo $i?>subscriber_fname
     value="<?php echo $result3{"subscriber_fname"}?>"
@@ -785,7 +779,7 @@ if (! $GLOBALS['simplified_demographics']) {
 </center>
 
   </td>
-  <td align='right' valign='top' width='1%' nowrap>
+  <td align='right' width='1%' nowrap>
    <!-- Image upload stuff was here but got moved. -->
   </td>
  </tr>
