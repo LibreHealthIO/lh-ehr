@@ -167,8 +167,6 @@ if (isset($_GET['mode'])) {
     //set id for page
     $id = $_GET['id'];
     
-        $imm_obs_data = getImmunizationObservationResults();
-    
     }
 }
 
