@@ -396,19 +396,10 @@ if (!$viewmode) { ?>
 }
 ?>
 </script>
-
-<!-- Script for making fancybox compatible with jquery 3.1.1 as $.browser is removed in jquery 1.9 -->
-<script type="text/javascript">
-    jQuery.browser = {};
-    (function () {
-        jQuery.browser.msie = false;
-        jQuery.browser.version = 0;
-        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
-            jQuery.browser.msie = true;
-            jQuery.browser.version = RegExp.$1;
-        }
-    })();
-</script>
-
-
+<?php 
+  /*
+   Making fancybox compatible with jquery 3.1.1 as $.browser is removed in jquery 1.9
+  */
+  resolveFancyboxCompatibility();
+?>
 </html>

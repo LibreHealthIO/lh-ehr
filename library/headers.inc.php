@@ -65,5 +65,25 @@ function call_required_libraries($bootstrap,$fancybox,$knockout,$datepicker){?>
 }
 ?>
 
+<?php
+/*
+    This function resolves the Console-error "Uncaught TypeError: Cannot read property 'msie' of undefined" . This error comes up when using 
+    fancybox-1.2.6 and fancybox-1.3.4 versions with jQuery version 3.1.1. It is because the $.browser method was removed in jQuery 1.9.
+*/
+function resolveFancyboxCompatibility(){ ?>
+    <script type="text/javascript">
+        jQuery.browser = {};
+        (function () {
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+        })();
+    </script>    
+<?php 
+} ?>
+
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
