@@ -1,0 +1,14 @@
+.glyphicon{
+    padding-right:20px;
+}
+#userdata .dropdown-menu>li{
+    cursor: pointer;
+    padding-right:5px; 
+    padding-left: 10px;  
+    padding-bottom : 0px; 
+    font-weight : 600;
+}   
+#userdata .dropdown-menu>li:hover{
+    text-decoration : underline;
+    color: #31b0d5;
+}
