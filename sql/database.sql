@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `amendments` (
   `amendment_desc` TEXT COMMENT 'Amendment Details',
   `created_by` int(11) NOT NULL COMMENT 'references users.id for session owner',
   `modified_by` int(11) NULL COMMENT 'references users.id for session owner',
-  `created_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'created time',
+  `created_time` timestamp NOT NULL COMMENT 'created time',
   `modified_time` timestamp NULL COMMENT 'modified time',
   PRIMARY KEY amendments_id(`amendment_id`),
   KEY amendment_pid(`pid`)
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `amendments_history` (
   `amendment_note` TEXT COMMENT 'Amendment requested from',
   `amendment_status` VARCHAR(50) NULL COMMENT 'Amendment Request Status',
   `created_by` int(11) NOT NULL COMMENT 'references users.id for session owner',
-  `created_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'created time',
+  `created_time` timestamp NOT NULL COMMENT 'created time',
 KEY amendment_history_id(`amendment_id`)
 ) ENGINE = MyISAM;
     
@@ -156,7 +156,7 @@ CREATE TABLE `batchcom` (
   `msg_type` varchar(60) default NULL,
   `msg_subject` varchar(255) default NULL,
   `msg_text` mediumtext,
-  `msg_date_sent` datetime NOT NULL default '0000-00-00 00:00:00',
+  `msg_date_sent` datetime NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -923,7 +923,7 @@ CREATE TABLE `drug_inventory` (
   `on_hand` int(11) NOT NULL default '0',
   `warehouse_id` varchar(31) NOT NULL DEFAULT '',
   `vendor_id` bigint(20) NOT NULL DEFAULT 0,
-  `last_notify` date NOT NULL default '0000-00-00',
+  `last_notify` date NOT NULL,
   `destroy_date` date default NULL,
   `destroy_method` varchar(255) default NULL,
   `destroy_witness` varchar(255) default NULL,
@@ -985,7 +985,7 @@ CREATE TABLE `drugs` (
   `on_order` int(11) NOT NULL default '0',
   `reorder_point` float NOT NULL DEFAULT 0.0,
   `max_level` float NOT NULL DEFAULT 0.0,
-  `last_notify` date NOT NULL default '0000-00-00',
+  `last_notify` date NOT NULL,
   `reactions` text,
   `form` int(3) NOT NULL default '0',
   `size` float unsigned NOT NULL default '0',
@@ -1158,6 +1158,10 @@ CREATE TABLE `standardized_tables_track` (
 -- Table structure for table `facility`
 -- 
 
+-- 
+-- Table structure for table `facility`
+-- 
+
 DROP TABLE IF EXISTS `facility`;
 CREATE TABLE `facility` (
   `id` int(11) NOT NULL auto_increment,
@@ -1192,9 +1196,7 @@ CREATE TABLE `facility` (
 -- Dumping data for table `facility`
 -- 
 
-INSERT INTO `facility` VALUES (3, 'Your Clinic Name Here', '000-000-0000', '000-000-0000', '', '', '', '', '', '', NULL, NULL, 1, 1, 0, NULL, '', '', '', '', '','#99FFFF','0', '');
-
-
+INSERT INTO `facility` VALUES (3, 'Your Clinic Name Here','','000-000-0000', '000-000-0000', '', '', '', '', '', '', NULL, NULL, 1, 1, 0, NULL, '', '', '', '', '','#99FFFF','0', '');
 
 -- 
 -- Table structure for table `facility_user_ids`
@@ -1308,7 +1310,7 @@ CREATE TABLE `form_annotate_diagram` (
   `imagedata` varchar(255) DEFAULT 'NEW',
   `dyntitle` varchar(255) DEFAULT 'Annotated Diagram',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 -- 
 -- Table structure for table `form_misc_billing_options`
@@ -2469,8 +2471,8 @@ CREATE TABLE `insurance_data` (
   `subscriber_employer_country` varchar(255) default NULL,
   `subscriber_employer_city` varchar(255) default NULL,
   `copay` varchar(255) default NULL,
-  `date` date NOT NULL default '0000-00-00',
-  `eDate` date NOT NULL default '0000-00-00',
+  `date` date NOT NULL,
+  `eDate` date NOT NULL,
   `pid` bigint(20) NOT NULL default '0',
   `subscriber_sex` varchar(25) default NULL,
   `accept_assignment` varchar(5) NOT NULL DEFAULT 'TRUE',
@@ -4720,8 +4722,8 @@ CREATE TABLE `libreehr_postcalendar_events` (
   `pc_counter` mediumint(8) unsigned default '0',
   `pc_topic` int(3) NOT NULL default '1',
   `pc_informant` varchar(20) default NULL,
-  `pc_eventDate` date NOT NULL default '0000-00-00',
-  `pc_endDate` date NOT NULL default '0000-00-00',
+  `pc_eventDate` date NOT NULL,
+  `pc_endDate` date NOT NULL,
   `pc_duration` bigint(20) NOT NULL default '0',
   `pc_recurrtype` int(1) NOT NULL default '0',
   `pc_recurrspec` text,
@@ -6127,14 +6129,14 @@ DROP TABLE IF EXISTS `automatic_notification`;
 CREATE TABLE `automatic_notification` (
   `notification_id` int(5) NOT NULL auto_increment,
   `sms_gateway_type` varchar(255) NOT NULL,
-  `next_app_date` date NOT NULL,
+  `next_app_date` date,
   `next_app_time` varchar(10) NOT NULL,
   `provider_name` varchar(100) NOT NULL,
   `message` text,
   `email_sender` varchar(100) NOT NULL,
   `email_subject` varchar(100) NOT NULL,
   `type` enum('SMS','Email') NOT NULL default 'SMS',
-  `notification_sent_date` datetime NOT NULL,
+  `notification_sent_date` datetime,
   PRIMARY KEY  (`notification_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 ;
 
@@ -6142,7 +6144,7 @@ CREATE TABLE `automatic_notification` (
 -- Dumping data for table `automatic_notification`
 -- 
 
-INSERT INTO `automatic_notification` (`notification_id`, `sms_gateway_type`, `next_app_date`, `next_app_time`, `provider_name`, `message`, `email_sender`, `email_subject`, `type`, `notification_sent_date`) VALUES (1, 'CLICKATELL', '0000-00-00', ':', 'EMR GROUP 1 .. SMS', 'Welcome to EMR GROUP 1.. SMS', '', '', 'SMS', '0000-00-00 00:00:00'),
+INSERT INTO `automatic_notification` (`notification_id`, `sms_gateway_type`, `next_app_date`, `next_app_time`, `provider_name`, `message`, `email_sender`, `email_subject`, `type`, `notification_sent_date`) VALUES (1, 'CLICKATELL', NULL, ':', 'EMR GROUP 1 .. SMS', 'Welcome to EMR GROUP 1.. SMS', '', '', 'SMS', NULL),
 (2, '', '2007-10-02', '05:50', 'EMR GROUP', 'Welcome to EMR GROUP . Email', 'EMR Group', 'Welcome to EMR GROUP', 'Email', '2007-09-30 00:00:00');
 
 
