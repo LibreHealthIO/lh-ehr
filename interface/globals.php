@@ -182,7 +182,7 @@ $javascript_dir = $GLOBALS['standard_js_path']; //Make path available as a varia
 $GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
 
 //module configurations
-$GLOBALS['modules_dir']  = "$webserver_root/modules/";  //CURRENT modules directory.
+$GLOBALS['modules_dir']  = "$web_root/modules/";  //CURRENT modules directory.
 $modules_dir = $GLOBALS['modules_dir'];                //Make path available as a variable.
 $GLOBALS['baseModDir']  = "interface/modules/";        //base directory for the ZEND mods.  Not currently used.
 $GLOBALS['customModDir']= "custom_modules";            //OLD non zend modules, not used.

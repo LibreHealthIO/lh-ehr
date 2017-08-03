@@ -35,7 +35,7 @@ Make the following changes in `php.ini` file. You can find the `php.ini` file by
 * In case of WAMP :
 `C:/WAMP/BIN/PHP/php.ini` OR (left click )  wampmanager icon -> PHP -> php.ini
 * In  case of XAMPP:
-`C:/WAMP/BIN/PHP/php.ini`.
+`C:\xampp\php\php.ini.`.
 
 
 Make the following changes in your php.ini file :

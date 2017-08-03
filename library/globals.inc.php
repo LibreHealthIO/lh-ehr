@@ -120,7 +120,6 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'menu_styling_tabs',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
-                               'drop_bottom',
                                'default_encounter_view',
                                'units_of_measurement',
                                'us_weight_format',
@@ -207,7 +206,7 @@ $GLOBALS_METADATA = array(
         'Default' =>xl('Default'),
       ),
       'Administrator',
-      xl('Tab Menu Style (refresh browser).')
+      xl('Choose Application Menu: Role-based by work flows')
     ),
 
     'css_header' => array(
@@ -318,12 +317,6 @@ $GLOBALS_METADATA = array(
       xl('Phone Number for Vendor Support that Appears on the About Page.')
     ),
 
-   'drop_bottom' => array(
-      xl('Remove Bottom Pane'),
-       'bool',                          // data type
-       '0',                             // default = false
-      xl('Removes the bottom pane by default on start up.')
-    ),
 
 
     'gbl_pt_list_page_size' => array(
