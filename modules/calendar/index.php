@@ -53,6 +53,12 @@ require('includes/session.php');
         echo "   </select>\n";
       }
 
+      // Select all providers if none are selected
+      if(empty($_SESSION['pc_username'])) {
+        $_SESSION['pc_username'] = array();
+        array_push($_SESSION['pc_username'], '__PC_ALL__');
+      }
+
       // PROVIDERS
       foreach($_SESSION['pc_username'] as $provider) {   //if __PC_ALL__ is one of selected, we set session as all the providers
         if($provider == "__PC_ALL__") {
