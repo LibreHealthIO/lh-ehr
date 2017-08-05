@@ -29,6 +29,7 @@ class CreateDocumentsTable extends Migration
 	    $table->string('hash')->comment = "40 character SHA-1 hash of document.";
 	    $table->boolean('imported')->default(0)->comment = "Parsing status for CCR/CCD/CCDA importing. 0 -> False | 1 -> True";
 	    $table->boolean('encounter_check')->default(0)->comment = "If encounter is created while tagging. 0 -> No | 1 -> Yes";
+	    $table->text('notes')->nullable()->comment = "Notes related to docuements."; /*This will remove the need of notes table.*/
 	    $table->tinyInteger('audit_master_approval_status')->default(1)->comment = "approval_status from audit_master table.";
 
 	    /*Establishing Relationships.*/
