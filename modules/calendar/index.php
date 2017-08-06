@@ -132,6 +132,7 @@ require('includes/session.php');
           day: {
             // options apply to basicDay and agendaDay views
             <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: 'H:mm',"; } ?>
+            titleFormat: 'ddd, MMM D, YYYY',
             groupByDateAndResource: true
           }, 
           providerAgenda: {
