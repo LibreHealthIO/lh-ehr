@@ -10,18 +10,21 @@ require('includes/session.php');
   <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
-  
+  <link href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
   <link href='css/index.css' rel='stylesheet' />
   
   <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
-  <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
-  <script type="text/javascript" src="../../library/dialog.js"></script>
+  <script src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
+  <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
+  <script src="../../library/dialog.js"></script>
 </head>
 <body>
   <div id="sidebar">
+    <button id="datepicker">Date Picker</button>
+    
     <form name='theform' id='theform' method='post' onsubmit='return top.restoreSession()'>
     <?php
       // CHEMED
@@ -218,15 +221,30 @@ require('includes/session.php');
             var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
             Cookies.set('fullCalendarCurrentDate', view.intervalStart.format(), {expires: inFifteenMinutes, path: ''});
             Cookies.set('fullCalendarCurrentView', view.name, {expires: inFifteenMinutes, path: ''});
+            
+            // update datepicker
+            $('#datepicker').datetimepicker({ value: view.intervalStart.format() });
         }
       })
       
       // refetch events every few seconds.
       setInterval(function() { $('#calendar').fullCalendar( 'refetchEvents' ) }, <?php if($GLOBALS['calendar_refresh_freq']) echo $GLOBALS['calendar_refresh_freq']; else echo '3000'; ?>);
       
+      // datepicker for calendar
+      $('#datepicker').datetimepicker({ 
+        timepicker: false,
+        // inline: true,
+        weeks:true,
+        todayButton: false,
+        onChangeDateTime: function(d) {
+          $('#calendar').fullCalendar('gotoDate', d);
+        },
+        onChangeMonth: function(d) {
+          $('#calendar').fullCalendar('gotoDate', d);
+        }
+      });
+      
     });
-    
-    
     
     $("#pc_username").change(function() { $('#theform').submit(); });
     $("#pc_facility").change(function() { $('#theform').submit(); });
