@@ -126,7 +126,7 @@ require('includes/session.php');
         views: {
           week: {
             // options apply to basicWeek and agendaWeek views
-            <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: 'H:mm',"; } ?>
+            <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: ['ddd, MMM D', 'H:mm'],"; } ?>
             groupByResource: true
           },
           day: {
