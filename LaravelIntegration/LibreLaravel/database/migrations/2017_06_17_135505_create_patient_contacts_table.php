@@ -20,9 +20,9 @@ class CreatePatientContactsTable extends Migration
             $table->increments('id')->comment = "Primary Key, Autoincrement";
 	    $table->integer('providerId')->comment = "Provider Id";
 	    $table->integer('refProviderId')->comment = "Reference Provider Id";
-	    $table->string('home_phone', 10)->comment = "Contact home phone";
-	    $table->string('work_phone', 10)->comment = "Contact business phone";
-	    $table->string('contact_phone', 10)->comment = "Personal contact phone number.";
+	    $table->string('home_phone', 20)->comment = "Contact home phone";
+	    $table->string('work_phone', 20)->comment = "Contact business phone";
+	    $table->string('contact_phone', 20)->comment = "Personal contact phone number.";
 	    $table->string('contact_relationship', 100)->comment = "what relationship does contact have with patient.";
 	    $table->string('patient_email', 100)->unique()->comment = "Additional field added. Contact email id.";
 	    $table->string('county', 10)->comment = "county";
