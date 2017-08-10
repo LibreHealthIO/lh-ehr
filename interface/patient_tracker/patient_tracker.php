@@ -124,6 +124,13 @@ foreach ( $appointments as $apt ) {
     .table th, .table td { 
      border-top: none !important; 
     }
+    span.glyphicon-cog {
+    font-size: 1.4em;
+    margin-left : 20px;
+}
+    .glyphicon:hover{
+        cursor: pointer;
+    }
 }
 </style>
 
@@ -210,7 +217,64 @@ function openNewTopWindow(newpid,newencounterid) {
 
 ?>
 <span class="title"><?php echo xlt("Flow Board") ?></span>
+<span class="glyphicon glyphicon-cog" data-toggle="collapse" title="Set Flowboard Preferences" href="#pat_settings"></span>
 <body class="body_top" >
+<div id="pat_settings" class="well collapse">
+    <form method='post' name='pt_settings' id="pt_settings" action='<?php echo $action_page; ?>'>
+        <div class="checkbox">
+        <label><input type="checkbox" id="ptkr_pt_list_new_window" name="ptkr_pt_list_new_window" value="1" <?php if($GLOBALS['ptkr_pt_list_new_window']=='1') echo "checked"; ?>>Open Demographics in New Window from Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_visit_reason" value="1" <?php if($GLOBALS['ptkr_visit_reason']=='1') echo "checked"; ?>>Show Visit Reason in Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_show_pid" value="1" <?php if($GLOBALS['ptkr_show_pid']=='1') echo "checked"; ?>>Show Patient ID in Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_show_room" value="1" <?php if($GLOBALS['ptkr_show_room']=='1') echo "checked"; ?>>Show Exam Room Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_show_visit_type" value="1" <?php if($GLOBALS['ptkr_show_visit_type']=='1') echo "checked"; ?>>Show Visit Type in Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_show_encounter" value="1" <?php if($GLOBALS['ptkr_show_encounter']=='1') echo "checked"; ?>>Show Patient Encounter Number in Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_flag_dblbook" value="1" <?php if($GLOBALS['ptkr_flag_dblbook']=='1') echo "checked"; ?>>Flag Double Booked Appt in Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_date_range" value="1" <?php if($GLOBALS['ptkr_date_range']=='1') echo "checked"; ?>>Allow Date Range in Patient Flow Board</label>
+        </div>
+        <div>          
+        <input type='submit'  name='user_save' value='<?php echo xla('Save'); ?>' />
+        </div>          
+    </form>
+</div>
+
+<?php 
+    if(isset($_POST['user_save'])){
+        $setting_names = [
+            'ptkr_pt_list_new_window',
+            'ptkr_visit_reason',
+            'ptkr_show_pid',
+            'ptkr_show_room',
+            'ptkr_show_visit_type',
+            'ptkr_show_encounter',
+            'ptkr_flag_dblbook',
+            'ptkr_date_range'
+        ];
+        foreach($setting_names as $setting)
+        {
+            if(isset($_POST[$setting])) 
+                setUserSetting('global:'.$setting,$_POST[$setting],$_SESSION['authId'],FALSE);
+            else 
+                setUserSetting('global:'.$setting,"",$_SESSION['authId'],FALSE);  
+        }       
+        echo "<script type='text/javascript'>";        
+        echo "self.location.href='patient_tracker.php?skip_timeout_reset=1';";
+        echo "</script>";
+        }
+    ?>
 <div class="well">
 <form method='post' name='theform' id='theform' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()'>
     <div class="table-responsive">      
@@ -287,7 +351,7 @@ function openNewTopWindow(newpid,newencounterid) {
                            value='<?php echo (attr($form_from_date)) ?>'>                
                 <?php if($GLOBALS['ptkr_date_range']) { ?>
                 <td><?php echo xlt('To'); ?>:</td>
-                <td><input type='text' size='9' name='form_to_date' id="form_to_date"
+                <td><input type='text' class="form-control" size='9' name='form_to_date' id="form_to_date"
                            value='<?php echo (attr($form_to_date)) ?>'>
                 </td>
                 <?php } ?>
