@@ -5,7 +5,7 @@
 | Facility Factory
 |--------------------------------------------------------------------------
 |
-| Use this factory to seed factories table and test database.
+| Use this factory to seed facilities table and test database.
 | @author Priyanshu Sinha <pksinha217@gmail.com>
 |
 */
