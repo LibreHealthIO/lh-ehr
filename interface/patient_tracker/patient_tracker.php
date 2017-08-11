@@ -245,6 +245,26 @@ function openNewTopWindow(newpid,newencounterid) {
         <div class="checkbox">
         <label><input type="checkbox" name="ptkr_date_range" value="1" <?php if($GLOBALS['ptkr_date_range']=='1') echo "checked"; ?>>Allow Date Range in Patient Flow Board</label>
         </div>
+        Ending Date for Patient Flow Board
+        <select class="form-control input-sm" name="ptkr_end_date" id="ptkr_end_date">
+            <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>>One Year Ahead</option>
+            <option value="Y2" <?php if($GLOBALS['ptkr_end_date']=='Y2') echo "selected";?>>Two Years Ahead</option>
+            <option value="M6" <?php if($GLOBALS['ptkr_end_date']=='Y3') echo "selected";?>>Six Months Ahead</option>
+            <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='Y4') echo "selected";?>>Three Months Ahead</option>
+            <option value="M1" <?php if($GLOBALS['ptkr_end_date']=='Y5') echo "selected";?>>One Month Ahead</option>
+            <option value="D1" <?php if($GLOBALS['ptkr_end_date']=='Y6') echo "selected";?>>One Day Ahead</option>
+        </select>
+        Patient Flow Board Timer Interval
+        <select class="form-control input-sm" name="pat_trkr_timer" id="pat_trkr_timer">
+            <option value="0" <?php if($GLOBALS['pat_trkr_timer']=='0') echo "selected";?>>No automatic refresh</option>
+            <option value="0:10" <?php if($GLOBALS['pat_trkr_timer']=='0:10') echo "selected";?>>10</option>
+            <option value="0:20" <?php if($GLOBALS['pat_trkr_timer']=='0:20') echo "selected";?>>20</option>
+            <option value="0:30" <?php if($GLOBALS['pat_trkr_timer']=='0:30') echo "selected";?>>30</option>
+            <option value="0:40" <?php if($GLOBALS['pat_trkr_timer']=='0:40') echo "selected";?>>40</option>
+            <option value="0:50"> <?php if($GLOBALS['pat_trkr_timer']=='0:50') echo "selected";?>50</option>
+            <option value="0:59" <?php if($GLOBALS['pat_trkr_timer']=='0:59') echo "selected";?>>60</option>
+        </select>
+        
         <div>          
         <input type='submit'  name='user_save' value='<?php echo xla('Save'); ?>' />
         </div>          
@@ -261,7 +281,9 @@ function openNewTopWindow(newpid,newencounterid) {
             'ptkr_show_visit_type',
             'ptkr_show_encounter',
             'ptkr_flag_dblbook',
-            'ptkr_date_range'
+            'ptkr_date_range',
+            'ptkr_end_date',
+            'pat_trkr_timer'
         ];
         foreach($setting_names as $setting)
         {
@@ -275,13 +297,12 @@ function openNewTopWindow(newpid,newencounterid) {
         echo "</script>";
         }
     ?>
-<div class="well">
 <form method='post' name='theform' id='theform' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()'>
     <div class="table-responsive">      
-        <table class="table">
+        <table class="table well">
             <tr>
-                <td><?php echo xlt('Provider'); ?>:</td>
-                <td><?php
+                <td><?php echo xlt('Provider'); ?>:
+                <?php
 
                     # Build a drop-down list of providers.
                     $uid = $_SESSION['authUserID'];
@@ -296,7 +317,7 @@ function openNewTopWindow(newpid,newencounterid) {
 
                     $ures = sqlStatement($query);
 
-                    echo "   <select name='form_provider' class='form-control'>\n";
+                    echo "   <select name='form_provider' class='form-control input-sm'>\n";
                     if ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0') {
                     echo "    <option value='ALL'>-- " . xlt('All') . " --\n";
                     }
@@ -315,19 +336,15 @@ function openNewTopWindow(newpid,newencounterid) {
                     echo "   </select>\n";
 
                     ?>
-                </td>
-            </tr>
-            <tr>
-                <td><?php echo xlt('Status'); # status code drop down creation ?>:</td>
-                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);
-                ?></td>
-            </tr>
-            <tr>
+                </td>           
+                <td><?php echo xlt('Status'); # status code drop down creation ?>:
+                <?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);
+                ?></td>             
                 <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
                 <td>
-                <?php echo xlt('Category') #category drop down creation ?>:</td>
-                    <td>
-                        <select id="form_apptcat" name="form_apptcat" class="form-control">
+                <?php echo xlt('Category') #category drop down creation ?>:
+                    
+                        <select id="form_apptcat" name="form_apptcat" class="form-control input-sm">
                             <?php
                             $categories=fetchAppointmentCategories();
                             echo "<option value='ALL'>".xlt("All")."</option>";
@@ -344,18 +361,18 @@ function openNewTopWindow(newpid,newencounterid) {
                         </select>
                     </td>
                 <?php } ?>
-            </tr>
-            <tr>
-                <td><?php if($GLOBALS['ptkr_date_range']) { echo xlt('From'); } else { echo xlt('Date'); }?>:</td>
-                <td><input type='text' class="form-control" size='9' name='form_from_date' id="form_from_date"
-                           value='<?php echo (attr($form_from_date)) ?>'>                
+            
+                <td><?php if($GLOBALS['ptkr_date_range']) { echo xlt('From'); } else { echo xlt('Date'); }?>:
+                <input type='text' class="form-control input-sm" size='9' name='form_from_date' id="form_from_date"
+                           value='<?php echo (attr($form_from_date)) ?>'>
+                </td>                
                 <?php if($GLOBALS['ptkr_date_range']) { ?>
-                <td><?php echo xlt('To'); ?>:</td>
-                <td><input type='text' class="form-control" size='9' name='form_to_date' id="form_to_date"
+                <td><?php echo xlt('To'); ?>:
+                <input type='text' class="form-control input-sm" size='9' name='form_to_date' id="form_to_date"
                            value='<?php echo (attr($form_to_date)) ?>'>
                 </td>
                 <?php } ?>
-                </tr>
+            </tr>
                 <tr>
                     <td>
                         <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
@@ -369,9 +386,6 @@ function openNewTopWindow(newpid,newencounterid) {
         </table>
     </div>      
 </form>
-</div>
-
-<div class="well">
 <form name='pattrk' id='pattrk' method='post' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()' enctype='multipart/form-data'>
 
 <div id="flowboard_header">
@@ -493,7 +507,7 @@ function openNewTopWindow(newpid,newencounterid) {
     $prev_appt_date_time = "";
 
     $overbookStatuses = array_map('trim', explode( ',', $GLOBALS['appt_overbook_statuses'] ) );
-	foreach ( $appointments as $appointment ) {
+  foreach ( $appointments as $appointment ) {
 
                 # Collect appt date and set up squashed date for use below
                 $date_appt = $appointment['pc_eventDate'];
@@ -708,7 +722,7 @@ if(!is_null($_POST['form_to_date']) ){
 </table>
 </div>
 </form>
-</div>
+
 
 <script type="text/javascript">
   $(document).ready(function() { 
@@ -751,6 +765,7 @@ if(!is_null($_POST['form_to_date']) ){
         <?php } ?>
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
+    $("#form_apptstatus").addClass('form-control input-sm');
 </script>
 </body>
 </html>
