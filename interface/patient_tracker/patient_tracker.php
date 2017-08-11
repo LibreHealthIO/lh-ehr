@@ -249,10 +249,10 @@ function openNewTopWindow(newpid,newencounterid) {
         <select class="form-control input-sm" name="ptkr_end_date" id="ptkr_end_date">
             <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>>One Year Ahead</option>
             <option value="Y2" <?php if($GLOBALS['ptkr_end_date']=='Y2') echo "selected";?>>Two Years Ahead</option>
-            <option value="M6" <?php if($GLOBALS['ptkr_end_date']=='Y3') echo "selected";?>>Six Months Ahead</option>
-            <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='Y4') echo "selected";?>>Three Months Ahead</option>
-            <option value="M1" <?php if($GLOBALS['ptkr_end_date']=='Y5') echo "selected";?>>One Month Ahead</option>
-            <option value="D1" <?php if($GLOBALS['ptkr_end_date']=='Y6') echo "selected";?>>One Day Ahead</option>
+            <option value="M6" <?php if($GLOBALS['ptkr_end_date']=='M6') echo "selected";?>>Six Months Ahead</option>
+            <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='M3') echo "selected";?>>Three Months Ahead</option>
+            <option value="M1" <?php if($GLOBALS['ptkr_end_date']=='M1') echo "selected";?>>One Month Ahead</option>
+            <option value="D1" <?php if($GLOBALS['ptkr_end_date']=='D1') echo "selected";?>>One Day Ahead</option>
         </select>
         Patient Flow Board Timer Interval
         <select class="form-control input-sm" name="pat_trkr_timer" id="pat_trkr_timer">
