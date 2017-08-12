@@ -1,6 +1,6 @@
 <?php
 /*
- *Claims2OEMR import script
+ *Load Demo Database from Presets
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
  * 
@@ -21,13 +21,14 @@ include_once("$srcdir/api.inc");
 
 ?>	
 <html>
+<span class='title' visibility: hidden><?php echo htmlspecialchars( xl('Demo Data Loading'), ENT_NOQUOTES); ?></span>
 <form action="reload_demo_database.php" method="post">	
 <?php
 if($_POST['formSubmit'] == "Submit") 
 {
 	$action=$_POST['action'];
 	if($action == "none"){
-		echo "<p><b>Please chose a valid preset and an action.</b><p>";
+		echo "<p><b>". xlt("Please chose a valid preset and an action").".</b><p>";
 	}else{
 		$preset=$_POST['preset'];
 		if( ( 0 < $preset ) && ( $preset < 10 ) ){
@@ -103,7 +104,9 @@ if($_POST['formSubmit'] == "Submit")
 echo "<hr>";
 }
 ?>
-<p>Choose a preset to Load from or Save the database to, then click "Submit".</p>
+<p>Choose a LOAD/SAVE Preset Slot for your patient database, then click "Submit".<br>
+This ONLY affects the following tables:  addresses, billing, facility, form_encounter, forms, insurance_companies, insurance_data, patient_data, phone_numbers, x12_partners.
+</p>
 <div>
 <select name="preset">
 	<option value="1">Preset 1</option>

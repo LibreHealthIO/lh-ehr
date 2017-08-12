@@ -68,8 +68,10 @@ if(array_key_exists('action', $_GET) && $_GET['action'] == 'save') {
 <!DOCTYPE html>
 <html>
 	<head>
+			<span class='title' visibility: hidden><?php echo htmlspecialchars( xl('MIPS Measure Selection'), ENT_NOQUOTES); ?></span>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
+
 		<style>
 h1, h2, h3 {
 	margin-bottom: 0.25ex;
@@ -295,7 +297,7 @@ $(document).ready(function() {
 	</head>
 	<body class="body_top">
 		<form action="?action=save" method="post">
-			<h1>PQRS Measures Selector</h1>
+			<h1>MIPS Measure Selector</h1>
 <?php
 
 if(count($updateStatus['off']) || count($updateStatus['on'])) {
