@@ -21,6 +21,7 @@ include_once("$srcdir/api.inc");
 
 ?>	
 <html>
+<span class='title'><?php echo htmlspecialchars( xl('Reset Providers'), ENT_NOQUOTES); ?></span>
 <form action="reset_provider_to_unassigned.php" method="post">	
 <?php
 if($_POST['formSubmit'] == "Submit") 
@@ -28,10 +29,12 @@ if($_POST['formSubmit'] == "Submit")
 sqlStatement("UPDATE `patient_data` SET `patient_data`.`providerID` = '0';");
 echo "providerID set to 0 (\"Unassigned\") for all patients.";
 echo "<hr>";
-}
+}else{
 ?>
-<p>Click "Submit" to remove all Primary Provider assignments.  (Set all patient's "Primary Provider" to "Unassigned".)</p>
-<input type="submit" name="formSubmit" value="Submit" />
+<p><?php echo xlt("WARNING:  This will remove all Primary Provider assignments.  [Set all patient's demographic setting PRIMARY PROVIDER to Unassigned.]");?></p>
+<input type="submit" name="formSubmit" value=<?php echo xlt("Submit");?> />
+<?php }
+?>
 </form>
 </html>
 

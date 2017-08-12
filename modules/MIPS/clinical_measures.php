@@ -129,7 +129,7 @@ $widthDyn = '470px';  //determine what is needed for pqrs
     <script type="text/javascript" src="../../library/overlib_mini.js"></script>
     <script type="text/javascript" src="../../library/textformat.js"></script>
     <script type="text/javascript" src="../../library/dialog.js"></script>
-    <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+    <script type="text/javascript" src="../../assets/js/jquery-min-3-1-1/index.js"></script>
     <script language="JavaScript">
 var mypcc = '<?php echo text($GLOBALS['phone_country_code']) ?>';
 

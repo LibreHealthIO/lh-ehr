@@ -16,7 +16,7 @@
  *
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
-*/
+
 require_once '../../interface/globals.php';
 include_once("$srcdir/api.inc");
 
@@ -26,11 +26,8 @@ $totalEncounters=0;
 <html>
 <head>
 <?php html_header_show();?>
-<title><?php xl('Provider Totals','e'); ?></title>
-<script type="text/javascript" src="../../library/overlib_mini.js"></script>
-<script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<title><?php xlt('Provider Totals'); ?></title>
+
 
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <style type="text/css">
@@ -87,12 +84,9 @@ $query =
 ";";
 $myProviderList=sqlStatement($query);
 
-#echo ( var_dump($myProviderList) ) ;
-//echo "myProviderList = ".$myProviderList;
 
 foreach($myProviderList as $row) {
 	$myProvider=$row['provider'];
-	//echo "<p> provider_id = ".$myProvider;
 	
 	echo "  <tr>\n";
 	$query=
@@ -109,7 +103,7 @@ foreach($myProviderList as $row) {
 	" FROM form_encounter AS fe ".
 	" LEFT OUTER JOIN insurance_data i on (i.pid=fe.pid) ".
 	" INNER JOIN insurance_companies c on (c.id = i.provider) ".
-	" WHERE c.freeb_type = 2 ".
+	" WHERE c.ins_type_code = 2 ".
 	" AND i.type='primary' ".
 	" AND fe.provider_id = ".$myProvider.";";
 	$result=sqlFetchArray(sqlStatement($query1));
@@ -133,9 +127,7 @@ echo " <tr class=\"report_totals\">\n";
 echo "  <td colspan='3'>\n";
 echo xl('Total Number of Encounters','e');
 echo ":\n  </td>\n  <td colspan='1'>\n   ".$totalMedicare."\n  </td> ";
-echo "\n  <td colspan='1'>\n   ".$totalEncounters."\n  </td>
- </tr>
-";
+echo "\n  <td colspan='1'>\n   ".$totalEncounters."\n  </td> </tr>";
 
 ?>
  </tbody>

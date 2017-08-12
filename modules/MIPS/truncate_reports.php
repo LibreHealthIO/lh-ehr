@@ -20,6 +20,11 @@ require_once '../../interface/globals.php';
 include_once("$srcdir/api.inc");
 
 ?>	
+<html>
+<span class='title' visibility: hidden><?php echo htmlspecialchars( xl('Delete all QA Reports'), ENT_NOQUOTES); ?></span>
+<b>This will delete all old reports!</b>
+
+<input type="submit" name="formSubmit" value="Submit" />
 <form action="truncate_reports.php" method="post">	
 <?php
 if($_POST['formSubmit'] == "Submit") 
@@ -30,9 +35,6 @@ echo "Table 'reports_results' truncated and 'report_itemized'.   Old reports del
 }
 //This whole feature needs to be moved to a integrated admin form, and naturally use css buttons and translations.
 ?>
-<html>
-<b>This will delete all old reports!</b>
 
-<input type="submit" name="formSubmit" value="Submit" />
 </html>
 </form>

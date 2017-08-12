@@ -50,14 +50,14 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<link rel="stylesheet" href="../../assets/css/jquery.datetimepicker.css">
 
 <title><?php echo htmlspecialchars( xl('Report Results/History'), ENT_NOQUOTES); ?></title>
 
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../assets/js/jquery-min-3-1-1/index.js"></script>
 <style type="text/css">
 
 /* specifically include & exclude from printing */
