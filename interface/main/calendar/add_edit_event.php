@@ -692,7 +692,7 @@ if ($_POST['form_action'] == "save") {
   if ($info_msg) echo " alert('" . addslashes($info_msg) . "');\n";
   echo " if (opener && !opener.closed && opener.refreshme) {\n " .
        "  opener.refreshme();\n " . // This is for standard calendar page refresh
-       " } else {\n " .
+       " } else if(window.opener.pattrk){\n " .
        "  window.opener.pattrk.submit()\n " . // This is for patient flow board page refresh
        " };\n";
   echo " window.close();\n";
