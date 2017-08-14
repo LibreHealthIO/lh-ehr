@@ -131,11 +131,11 @@
                                                                     $dateGet = date_create($this->vitals->get_date());                    
                                                                     echo date_format($dateGet, "Y-m-d H:i");?>'/>                      
         </th>               
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){ foreach ($this->results as $result) { ?>
         <th class='historicalvalues'>
           <?php echo date_format(date_create($result['date']),"Y-m-d H:i");?>
         </th>
-        <?php } ?>
+        <?php }} ?>
       </tr>
       <?php if ($this->units_of_measurement == 4) { ?>
       <tr class="hide">
@@ -161,11 +161,11 @@
                  value="<?php if ($this->vitals->get_weight() != 0) { echo $this->vitals->get_weight();} ?>"  onchange="convLbtoKg('weight_input');" 
                  title='<?php echo xlt("Decimal pounds or pounds and ounces separated by #(e.g. 5#4)"); ?>'/>
         </td>    
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
         <td  class='historicalvalues'>
           <?php echo $this->vitals->display_weight($result['weight']); ?>
         </td>
-        <?php } ?>
+        <?php }} ?>
         <?php if ($this->units_of_measurement == 3) { ?>
       <tr class="hide">
         <?php } else { ?>
@@ -193,14 +193,14 @@
                                                                       echo sprintf("%.2f",$final_result); } ?>"                          
                  onChange="convKgtoLb('weight_input');"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
         <td  class='historicalvalues'>
           <?php if($result['weight'] != 0){ 
                 $final_result =  $result['weight']*0.45359237;
                 echo sprintf("%.2f",$final_result);
                 }?>
         </td>
-        <?php } ?>
+        <?php }} ?>
       </tr>
       <!--     Math functions above...    -->
       <?php if ($this->units_of_measurement == 4) { ?>
@@ -228,11 +228,11 @@
                  value="<?php if ($this->vitals->get_height() != 0) { ?><?php echo $this->vitals->get_height();
                         } ?>" onChange="convIntoCm('height_input');"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){ foreach ($this->results as $result) { ?>
         <td class='historicalvalues'>
           <?php if ($result['height'] != 0) {echo $result['height'];} ?>
         </td>
-        <?php } ?>   
+        <?php }} ?>   
         <?php if ($this->units_of_measurement == 3) { ?>
       <tr class="hide">
         <?php } else { ?>
@@ -260,14 +260,14 @@
                         echo sprintf('%.2f',$final_result);}?>" 
                  onChange="convCmtoIn('height_input');"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
         <td class='historicalvalues'>
           <?php if($result['height'] != 0){
             $final_result = $result['height'] * 2.54;
             echo sprintf("%.2f",$final_result);
             }?>
         </td>
-        <?php } ?>
+        <?php }} ?>
       </tr>
       <!--    MATH FUNCTIONS ABOVE......      -->
       <tr>
@@ -279,11 +279,11 @@
           <input type="text" class="form-control" size='5'
                  name='bps' id='bps_input' value="<?php echo $this->vitals->get_bps(); ?>"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){ foreach ($this->results as $result) { ?>
         <td class='historicalvalues'>
           <?php echo $result['bps']; ?>
         </td>
-        <?php } ?>
+        <?php }} ?>
       </tr>
       <tr>
         <td class="graph" id="bpd">BP Diastolic
@@ -294,11 +294,11 @@
           <input type="text" class="form-control" size='5'
                  name='bpd' id='bpd_input' value="<?php echo $this->vitals->get_bpd(); ?>"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
         <td  class='historicalvalues'>
           <?php echo $result['bpd']; ?>
         </td>
-        <?php } ?>
+        <?php }} ?>
       </tr>
       <tr>
         <td class="graph" id="pulse">Pulse
@@ -310,13 +310,13 @@
                  value="<?php if($this->vitals->get_pulse() != 0){
                         echo sprintf('%.0f',$this->vitals->get_pulse());}?>"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
         <td class='historicalvalues'>
           <?php if($result['pulse'] != 0){ 
             echo sprintf("%.0f",$result['pulse']);
             }?>
         </td>
-        <?php } ?>
+        <?php } }?>
       </tr>
       <tr>
         <td class="graph" id="respiration">
@@ -330,13 +330,13 @@
                  value="<?php if($this->vitals->get_respiration() != 0){
                         echo sprintf('%.0f',$this->vitals->get_respiration());}?>"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
         <td class='historicalvalues'>
           <?php if($result['respiration'] != 0){
               echo sprintf("%.0f",$result["respiration"]);
               }?>
         </td>
-        <?php } ?>
+        <?php }} ?>
       </tr>
       <?php if ($this->units_of_measurement == 4) { ?>
       <tr class="hide">
@@ -365,13 +365,13 @@
                         echo $this->vitals->get_temperature();
                         } ?>" onChange="convFtoC('temperature_input');"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
         <td class='historicalvalues'>
           <?php if ($result['temperature'] != 0) {
             echo $result['temperature'];
             } ?>
         </td>
-        <?php } ?>
+        <?php }} ?>
         <?php if($this->units_of_measurement == 3){?>
       <tr class="hide">
         <?php } else { ?>
@@ -401,14 +401,14 @@
                                            }?> "
                  onChange="convCtoF('temperature_input');"/>
         </td>
-        <?php foreach ($this->results as $result) { ?>
+        <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
         <td class='historicalvalues'>
           <?php if($result['temperature'] != 0){
             $final_result  =  ($result['temperature'] -32)*0.5556;
             echo sprintf("%.2f",$final_result);
             }?>
         </td>
-        <?php } ?>
+        <?php }} ?>
       </tr>
       <tr>
         <td>Temp Location
@@ -441,13 +441,13 @@
       </option>
     </select>
   </td>
-  <?php foreach ($this->results as $result) { ?>
+  <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
   <td class='historicalvalues'>
     <?php if ($result . temp_method) {
   echo xlt($result['temp_method']);
   } ?>
   </td>
-  <?php } ?>
+  <?php }} ?>
   <tr>
   <td class="graph" id="oxygen_saturation">
     <?php echo xlt("Oxygen Saturation");?>
@@ -460,13 +460,13 @@
            value="<?php if($this->vitals->get_oxygen_saturation() != 0){
                   echo sprintf('%.0f',$this->vitals->get_oxygen_saturation());}?>"/>
   </td>
-  <?php foreach ($this->results as $result) { ?>
+  <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
   <td  class='historicalvalues'>
     <?php if($result.oxygen_saturation != 0){
       echo sprintf("%.0f",$result['oxygen_saturation']);
       }?>
   </td>
-  <?php } ?>
+  <?php }} ?>
 </tr>
 <?php if ($this->units_of_measurement == 4 || $gbl_vitals_options > 0) { ?>
 <tr class="hide">
@@ -492,13 +492,13 @@
                                                                              echo $this->vitals->get_head_circ();
                                                                              } ?>" onChange="convIntoCm('head_circ_input');"/>
   </td>
-  <?php foreach ($this->results as $result) { ?>
+  <?php if(is_array($results)){ foreach ($this->results as $result) { ?>
   <td class='historicalvalues'>
     <?php if ($result['head_circ'] != 0) {
 echo $result['head_circ'];
 } ?>
   </td>
-  <?php } ?>
+  <?php }} ?>
   <?php if($this->units_of_measurement == 3 || $gbl_vitals_options > 0){?>
 <tr class="hide">
   <?php }else{ ?>
@@ -526,14 +526,14 @@ echo $result['head_circ'];
                   echo sprintf('%.2f',$final_result);}?>" 
            onChange="convCmtoIn('head_circ_input');"/>
   </td>
-  <?php foreach ($this->results as $result) { ?>
+  <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
   <td class='historicalvalues'>
     <?php if($result['head_circ'] != 0){
 $final_value = $result['head_circ']*2.54;
 echo sprintf("%.2f",$final_result);
 }?>
   </td>
-  <?php } ?>
+  <?php }} ?>
 </tr>
 <?php if ($this->units_of_measurement == 4 || $gbl_vitals_options > 0) { ?>
 <tr class="hide">
@@ -560,13 +560,13 @@ echo sprintf("%.2f",$final_result);
                   echo $this->vitals->get_waist_circ();
                   } ?>" onChange="convIntoCm('waist_circ_input');"/>
   </td>
-  <?php foreach ($this->results as $result) { ?>
+  <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
   <td class='historicalvalues'>
     <?php if ($result['waist_circ'] != 0) {
 echo $result['waist_circ'];
 } ?>
   </td>
-  <?php } ?>
+  <?php }} ?>
 </tr>
 <?php if($this->units_of_measurement == 3 || $gbl_vitals_options > 0){?>
 <tr class="hide">
@@ -595,14 +595,14 @@ echo $result['waist_circ'];
                   echo sprintf("%.2f",$final_value);                                       
                                      }?>" onChange="convCmtoIn('waist_circ_input');"/>
   </td>
-  <?php foreach ($this->results as $result) { ?>
+  <?php if(is_array($results)){  foreach ($this->results as $result) { ?>
   <td class='historicalvalues'>
     <?php if($result[ 'waist_circ' ]!= 0){
 $final_value = $result[ 'waist_circ' ]*2.54;
 echo sprintf("%.2f",$final_value);      
 }?>
   </td>
-  <?php } ?>
+  <?php }} ?>
 </tr>
 <tr>
   <td class="graph" id="BMI">
@@ -616,13 +616,13 @@ echo sprintf("%.2f",$final_value);
                   echo substr($this->vitals->get_BMI(), 0, 5);
                   }?>"/>
   </td>
-  <?php foreach ($this->results as $result) { ?>
+  <?php if(is_array($results)){ foreach ($this->results as $result) { ?>
   <td class='historicalvalues'>
     <?php if($result['BMI'] != 0){
 echo substr($result['BMI'], 0, 5);
 }?>
   </td>
-  <?php } ?>
+  <?php }} ?>
 </tr>
 <tr>
   <td>
@@ -634,14 +634,14 @@ echo substr($result['BMI'], 0, 5);
     <input type="text" class="form-control" size='15' name="BMI_status" id="BMI_status" 
            value="<?php echo $this->vitals->get_BMI_status();?>"/>
   </td>
-  <?php foreach ($this->results as $result) { ?>
+  <?php if(is_array($results)){ foreach ($this->results as $result) { ?>
   <td  class='historicalvalues'>
     <?php if($result['BMI_status']){
 echo $result['BMI_status'];
 }
 ?>
   </td>
-  <?php } ?>
+  <?php }} ?>
 </tr>
 <tr>
   <td>Other Notes
@@ -652,11 +652,11 @@ echo $result['BMI_status'];
   <input type="text" class="form-control" size='20'
          name="note" id='note' value="<?php echo $this->vitals->get_note();?>" />
 </td>
-<?php foreach ($this->results as $result) { ?>
+<?php if(is_array($results)){ foreach ($this->results as $result) { ?>
 <td class='historicalvalues'>
   <?php echo $result['note'];?>
 </td>
-<?php } ?>
+<?php }} ?>
 </tr>
 <tr>
   <td colspan='3' style='text-align:center'>
@@ -697,10 +697,10 @@ echo $result['BMI_status'];
   vitals[0] = formdate+'-<?php echo $this->vitals->get_height();?>-<?php echo $this->vitals->get_weight();?>-<?php echo $this->vitals->get_head_circ();?>';
   // historic values
   <?php
-  foreach ($this->results as $result) {
+  if(is_array($results)){ foreach ($this->results as $result) {
     ?>   
       vitals[vitals.length] = '<?php echo date_format(date_create($result["date"]),"Ymd"); ?>-<?php echo $result["height"];?>-<?php echo $result["weight"];?>-<?php echo $result["head_circ"];?>'  ;
-    <?php }
+    <?php }}
   ?>
     var patientAge='<?php echo $this->patient_age?>';
   var patient_dob='<?php echo $this->patient_dob;?>';
