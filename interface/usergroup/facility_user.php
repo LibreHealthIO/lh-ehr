@@ -33,6 +33,7 @@ $fake_register_globals=false;
 
 
 require_once("../globals.php");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
@@ -67,12 +68,10 @@ if ( isset($_POST["mode"]) && $_POST["mode"] == "facility_user_id" && isset($_PO
 ?>
 <html>
 <head>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
+<?php call_required_libraries(true,true,false,false);
+      resolveFancyboxCompatibility();
+?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
 
@@ -138,11 +137,11 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
 	<div style="width:400px;">
 		<div>
 
-			<table cellpadding="1" cellspacing="0" class="showborder">
+			<table class="table table-hover" cellpadding="1" cellspacing="0" class="showborder">
 				<tbody><tr height="22" class="showborder_head">
-					<th width="180px"><b><?php echo xlt('Username'); ?></b></th>
-					<th width="270px"><b><?php echo xlt('Full Name'); ?></b></th>
-					<th width="190px"><b><span class="bold"><?php echo xlt('Facility'); ?></span></b></th>
+					<th><b><?php echo xlt('Username'); ?></b></th>
+					<th><b><?php echo xlt('Full Name'); ?></b></th>
+					<th><b><span class="bold"><?php echo xlt('Facility'); ?></span></b></th>
                                         <?php
                                         foreach ($l_arr as $layout_entry) {
                                           echo "<th width='100px'><b><span class='bold'>" . text(xl_layout_label($layout_entry['title'])) . "&nbsp;</span></b></th>";

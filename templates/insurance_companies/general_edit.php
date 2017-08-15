@@ -28,55 +28,55 @@ function jsWaitForDelay(delay) {
 <tr>
     <td><?php echo xlt("Name");?> </td>
     <td>
-        <input type="text" class="form-control" size="40" name="name" value="<?php echo $this->insurancecompany->get_name();?>" onKeyDown="PreventIt(event)" /> 
+        <input type="text" class="form-control input-sm" size="40" name="name" value="<?php echo $this->insurancecompany->get_name();?>" onKeyDown="PreventIt(event)" /> 
         *Required
     </td>
 </tr>
 <tr>
     <td><?php echo xlt("Attn");?> </td>
     <td>
-        <input type="text" class="form-control" size="40" name="attn" value="<?php echo $this->insurancecompany->get_attn();?>" onKeyDown="PreventIt(event)" />
+        <input type="text" class="form-control input-sm" size="40" name="attn" value="<?php echo $this->insurancecompany->get_attn();?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 
 <tr>
     <td><?php echo xlt("Address")."(".xlt("line1").")";?> </td>
     <td>
-        <input type="text" class="form-control" size="40" name="address_line1" value="<?php $this->insurancecompany->address->line1;?>" 
+        <input type="text" class="form-control input-sm" size="40" name="address_line1" value="<?php $this->insurancecompany->address->line1;?>" 
                onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
     <td><?php echo xlt("Address")."(".xlt("line2").")";?> </td>
     <td>
-        <input type="text" class="form-control" size="40" name="address_line2" value="<?php echo $this->insurancecompany->address->line2;?>" 
+        <input type="text" class="form-control input-sm" size="40" name="address_line2" value="<?php echo $this->insurancecompany->address->line2;?>" 
                onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
     <td><?php echo xlt("City").",".xlt("state").",".xlt("zip");?> </td>
     <td class="form-inline">
-        <input type="text" class="form-control" size="25" name="city" value="<?php echo $this->insurancecompany->address->city;?>" onKeyDown="PreventIt(event)" /> , 
-        <input type="text" class="form-control" size="2" maxlength="2" name="state" value="<?php echo $this->insurancecompany->address->state;?>"
+        <input type="text" class="form-control input-sm" size="25" name="city" value="<?php echo $this->insurancecompany->address->city;?>" onKeyDown="PreventIt(event)" /> , 
+        <input type="text" class="form-control input-sm" size="2" maxlength="2" name="state" value="<?php echo $this->insurancecompany->address->state;?>"
                onKeyDown="PreventIt(event)" /> ,
-        <input type="text" class="form-control" size="5" name="zip" value="<?php $this->insurancecompany->address->zip;?>" onKeyDown="PreventIt(event)" />
+        <input type="text" class="form-control input-sm" size="5" name="zip" value="<?php $this->insurancecompany->address->zip;?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
     <td><?php echo xlt("Phone");?> </td>
     <td>
-        <input type="text" class="form-control" NAME="phone" SIZE="12" VALUE="<?php echo$this->insurancecompany->get_phone();?>" onKeyDown="PreventIt(event)" />
+        <input type="text" class="form-control input-sm" NAME="phone" SIZE="12" VALUE="<?php echo$this->insurancecompany->get_phone();?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
     
     <td><?php echo xlt("CMS ID");?> </td>
     <td>
-        <input type="text" class="form-control" size="15" name="cms_id" value="<?php echo $this->insurancecompany->get_cms_id();?>" onKeyDown="PreventIt(event)" />
+        <input type="text" class="form-control input-sm" size="15" name="cms_id" value="<?php echo $this->insurancecompany->get_cms_id();?>" onKeyDown="PreventIt(event)" />
     
         <?php if ($GLOBALS['support_encounter_claims']) {?>
                     &nbsp;&nbsp;For Encounter Claims:
-                    <input type="text" class="form-control" size="15" name="alt_cms_id" value="<?php echo $this->insurancecompany->get_alt_cms_id();?>" onKeyDown="PreventIt(event)" />
+                    <input type="text" class="form-control input-sm" size="15" name="alt_cms_id" value="<?php echo $this->insurancecompany->get_alt_cms_id();?>" onKeyDown="PreventIt(event)" />
         <?php }?>           
                     
 
@@ -87,7 +87,7 @@ function jsWaitForDelay(delay) {
     <td>
         <!--{html_options name="ins_type_code" options=$insurancecompany->ins_type_code_array 
         selected=$insurancecompany->get_ins_type_code()}-->
-        <select class="form-control" name="ins_type_code">
+        <select class="form-control input-sm" name="ins_type_code">
             <?php foreach ($this->insurancecompany->ins_type_code_array   as $key => $value) 
                 { 
                 if($key==$this->insurancecompany->get_ins_type_code() ) { ?>
@@ -104,14 +104,14 @@ This is now deprecated use the newer x12 partner code instead
 <tr>
     <td COLSPAN="1" ALIGN="LEFT" >X12 Receiver ID</td>
     <td COLSPAN="2" ALIGN="LEFT" >
-        <input type="text" class="form-control" name="x12_receiver_id" value="{$insurancecompany->get_x12_receiver_id()}" >
+        <input type="text" class="form-control input-sm" name="x12_receiver_id" value="{$insurancecompany->get_x12_receiver_id()}" >
     </td>
 </tr>-->
 <tr>
     <td><?php echo xlt("Default X12 Partner");?></td>
     <td>
         <!--{html_options name="x12_default_partner_id" options=$x12_partners selected=$insurancecompany->get_x12_default_partner_id()}-->
-        <select class="form-control" name="x12_default_partner_id">
+        <select class="form-control input-sm" name="x12_default_partner_id">
             <?php foreach ($this->x12_partners  as $key => $value) 
                 { 
                 if($key==$this->insurancecompany->get_x12_default_partner_id() ) { ?>

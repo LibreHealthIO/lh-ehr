@@ -25,7 +25,8 @@ require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/auth.inc");
 require_once("$srcdir/formdata.inc.php");
-require_once ($GLOBALS['srcdir'] . "/classes/postmaster.php");
+require_once($GLOBALS['srcdir'] . "/classes/postmaster.php");
+require_once("$srcdir/headers.inc.php");
 
 $alertmsg = '';
 $bg_msg = '';
@@ -374,14 +375,11 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 ?>
 <html>
 <head>
+<?php call_required_libraries(true,true,false,false);
+      resolveFancyboxCompatibility();
+?>
 
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
 <script type="text/javascript">
@@ -425,7 +423,7 @@ function authorized_clicked() {
     <div>
        <table>
       <tr >
-        <td><b><?php echo xlt('User / Groups'); ?></b></td>
+        <td><b><?php echo xlt('User / Groups'); ?></b>&nbsp;&nbsp;</td>
         <td><a href="usergroup_admin_add.php" class="iframe_medium css_button"><span><?php echo xlt('Add User'); ?></span></a>
         </td>
         <td><a href="facility_user.php" class="css_button"><span><?php echo xlt('View Facility Specific User Information'); ?></span></a>
@@ -433,12 +431,10 @@ function authorized_clicked() {
       </tr>
     </table>
     </div>
-    <div style="width:650px;">
-        <div>
 
-<form name='userlist' method='post' action='usergroup_admin.php' onsubmit='return top.restoreSession()'>
+<form name='userlist' method='post' action='usergroup_admin.php' onsubmit='return top.restoreSession()'><br>
     <input type='checkbox' name='form_inactive' value='1' onclick='submit()' <?php if ($form_inactive) echo 'checked '; ?>/>
-    <span class='text' style = "margin-left:-3px"> <?php echo xlt('Include inactive users'); ?> </span>
+    <span class='text'> <?php echo xlt('Include inactive users'); ?> </span>
 </form>
 <?php
 if($set_active_msg == 1){
@@ -450,11 +446,12 @@ if ($show_message == 1){
 }
 
 ?>
-<table cellpadding="1" cellspacing="0" class="showborder">
-    <tbody><tr height="22" class="showborder_head">
-        <th width="180px"><b><?php echo xlt('Username'); ?></b></th>
-        <th width="270px"><b><?php echo xlt('Real Name'); ?></b></th>
-        <th width="320px"><b><span class="bold"><?php echo xlt('Additional Info'); ?></span></b></th>
+<div class="table-responsive">
+<table class="table table-hover">
+    <tr height="22">
+        <th><b><?php echo xlt('Username'); ?></b></th>
+        <th><b><?php echo xlt('Real Name'); ?></b></th>
+        <th><b><span><?php echo xlt('Additional Info'); ?></span></b></th>
         <th><b><?php echo xlt('Authorized'); ?>?</b></th>
 
         <?php
@@ -470,8 +467,8 @@ foreach ($result4 as $iter) {
   } else {
       $iter{"authorized"} = "";
   }
-  print "<tr height=20  class='text' style='border-bottom: 1px dashed;'>
-        <td class='text'><b><a href='user_admin.php?id=" . $iter{"id"} .
+  print "<tr>
+        <td><b><a href='user_admin.php?id=" . $iter{"id"} .
     "' class='iframe_medium' onclick='top.restoreSession()'><span>" . $iter{"username"} . "</span></a></b>" ."&nbsp;</td>
     <td><span class='text'>" . attr($iter{"fname"}) . ' ' . attr($iter{"lname"}) ."</span>&nbsp;</td>
     <td><span class='text'>" . attr($iter{"info"}) . "</span>&nbsp;</td>
@@ -481,7 +478,8 @@ foreach ($result4 as $iter) {
   print "</tr>\n";
 }
 ?>
-    </tbody></table>
+    </table>
+    </div>
 <?php
 if (empty($GLOBALS['disable_non_default_groups'])) {
   $res = sqlStatement("select * from groups order by name");
@@ -500,11 +498,7 @@ if (empty($GLOBALS['disable_non_default_groups'])) {
   }
 }
 ?>
-        </div>
-    </div>
 </div>
-
-
 <script language="JavaScript">
 <?php
   if ($alertmsg = trim($alertmsg)) {

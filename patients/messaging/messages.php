@@ -634,13 +634,13 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
                                 <div class="form-group">
                                     <label class="col-sm-1 col-md-1" for="selSendto"><?php echo xlt('To'); ?></label>
                                     <div class="col-sm-3 col-md-3">
-                                        <select class="form-control" id="selSendto" ng-model="selrecip" ng-options="recip.userid as recip.username for recip in authrecips track by recip.userid"></select>
+                                        <select class="form-control input-sm" id="selSendto" ng-model="selrecip" ng-options="recip.userid as recip.username for recip in authrecips track by recip.userid"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-1 col-md-1" for="title"><?php echo xlt('Subject'); ?></label>
                                     <div class="col-sm-6 col-md-6">
-                                    <input type='text' list='listid' name='title' id='title' class="form-control" ng-model='compose.title'>
+                                    <input type='text' list='listid' name='title' id='title' class="form-control input-sm" ng-model='compose.title'>
                                     <datalist id='listid'>
                                             <option><?php echo xlt('Unassigned'); ?></option>
                                         <option label='<?php echo xlt('Insurance'); ?>' value='<?php echo xlt('Insurance'); ?>'/>

@@ -167,7 +167,7 @@ function cancelClicked() {
  <div class="row">
   <div class="col-xs-12 col-sm-4 col-lg-4 ">
     <?php echo xlt('Consultation Brief Description'); ?>:
-    <textarea class="form-control" name='reason' cols='40' rows='12' wrap='virtual'>
+    <textarea class="form-control input-sm" name='reason' cols='40' rows='12' wrap='virtual'>
       <?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?>
     </textarea>
     <hr>  
@@ -178,7 +178,7 @@ function cancelClicked() {
     <tr>
      <td class='bold'><?php echo xlt('Visit Category:'); ?></td>
      <td class='text'>
-      <select class="form-control" name='pc_catid' id='pc_catid'>
+      <select class="form-control input-sm" name='pc_catid' id='pc_catid'>
       <option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
         <?php
         $cres = sqlStatement("SELECT pc_catid, pc_catname " .
@@ -198,7 +198,7 @@ function cancelClicked() {
     <tr>
      <td class='bold'><?php echo xlt('Place of Service:'); ?></td>
      <td class='text'>
-      <select class="form-control" name='facility_id' onChange="bill_loc()">
+      <select class="form-control input-sm" name='facility_id' onChange="bill_loc()">
         <?php
 
         if ($viewmode) {
@@ -241,7 +241,7 @@ function cancelClicked() {
 ?>
      <td class='bold'><?php echo xlt('Sensitivity:'); ?></td>
      <td class='text'>
-      <select class="form-control" name='form_sensitivity'>
+      <select class="form-control input-sm" name='form_sensitivity'>
 <?php
   foreach ($sensitivities as $value) {
    // Omit sensitivities to which this user does not have access.
@@ -278,7 +278,7 @@ function cancelClicked() {
     <tr>
      <td class='bold' ><?php echo xlt('Date of Service:'); ?></td>
      <td class='text' >
-       <input type='text' class="form-control" size='10' name='form_date' id='form_date' <?php echo $disabled ?>
+       <input type='text' class="form-control input-sm" size='10' name='form_date' id='form_date' <?php echo $disabled ?>
               value='<?php echo $viewmode ? oeFormatShortDate(substr($result['date'], 0, 10)) : date($DateFormat); ?>'
               title='<?php echo xla('Date of Service'); ?>'/>
      </td>
@@ -287,7 +287,7 @@ function cancelClicked() {
     <tr<?php if ($GLOBALS['ippf_specific']) echo " style='visibility:hidden;'"; ?>>
      <td class='bold' ><?php echo xlt('Onset/hosp. date:'); ?></td>
      <td class='text' ><!-- default is blank so that while generating claim the date is blank. -->
-      <input type='text' class="form-control" size='10' name='form_onset_date' id='form_onset_date' 
+      <input type='text' class="form-control input-sm" size='10' name='form_onset_date' id='form_onset_date' 
              value='<?php echo $viewmode && $result['onset_date']!='0000-00-00 00:00:00' ? oeFormatShortDate(substr($result['onset_date'], 0, 10)) : ''; ?>'
              title='<?php echo xla('Date of onset or hospitalization'); ?>'/>
      </td>
@@ -311,7 +311,7 @@ function cancelClicked() {
        onclick="top.restoreSession()"><span><?php echo xlt('Add'); ?></span></a>
     </div>
     
-    <select multiple class="form-control" name='issues[]' size='8' 
+    <select multiple class="form-control input-sm" name='issues[]' size='8' 
       title='<?php echo xla('Hold down [Ctrl] for multiple selections or to unselect'); ?>'>
         <?php
         while ($irow = sqlFetchArray($ires)) {
