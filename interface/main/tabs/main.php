@@ -52,19 +52,14 @@ function isEncounterLocked( encounterId ) {
 }
 var webroot_url="<?php echo $web_root; ?>";
 </script>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" type="text/css" href="css/tabs.css"/>
-<link rel="stylesheet" type="text/css" href="css/menu.css"/>
 
 <?php
-include_js_library("knockout/knockout-3.4.0.js"); 
-include_js_library("jquery-min-2-2-0/index.js");
+    /*  Include Bootstrap and Knockout Libraries    */
+    call_required_libraries(true,false,true,false);
 ?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>
-
-
-
 <script type="text/javascript" src="js/user_data_view_model.js"></script>
 <script type="text/javascript" src="js/patient_data_view_model.js"></script>
 <script type="text/javascript" src="js/tabs_view_model.js"></script>
@@ -116,16 +111,26 @@ include_js_library("jquery-min-2-2-0/index.js");
 </script>
 <div id="mainBox">
     <div id="dialogDiv"></div>
-    <div class="body_top">
-        <span id="menu"  data-bind="template: {name: 'menu-template', data: application_data} "> </span>
-        <span id="userData" data-bind="template: {name: 'user-data-template', data:application_data} "></span>
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>        
+    </div>    
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+        <div id="menu"  data-bind="template: {name: 'menu-template', data: application_data} "> </div>
+        <div id="userData" data-bind="template: {name: 'user-data-template', data:application_data} "></div>
     </div>
+    
     <div id="patientData" class="body_title" data-bind="template: {name: 'patient-data-template', data: application_data} "></div>
     <div class="body_title" data-bind="template: {name: 'tabs-controls', data: application_data} "> </div>
 
     <div class="mainFrames">
         <div id="framesDisplay" data-bind="template: {name: 'tabs-frames', data: application_data}"> </div>
     </div>
+    
 </div>
 <script>
     $("#dialogDiv").hide();
