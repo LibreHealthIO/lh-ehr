@@ -12,7 +12,7 @@
 
 
 require_once(dirname(__FILE__)."/encounter_events.inc.php");
-require_once(dirname(__FILE__)."/../interface/main/calendar/modules/PostCalendar/pnincludes/Date/Calc.php");
+require_once(dirname(__FILE__)."/../library/Calc.php");
 
 
 $COMPARE_FUNCTION_HASH = array(
