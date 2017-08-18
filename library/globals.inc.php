@@ -1548,7 +1548,7 @@ $GLOBALS_METADATA = array(
        'timelineWeek' => xl('Week'),
        'timelineMonth' => xl('Month'),
       ),
-       'timelineDay',                           // default
+       'providerAgenda',                           // default
       xl('This sets the Default Calendar View, Default is Day.')
     ),
 
