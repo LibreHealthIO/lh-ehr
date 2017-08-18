@@ -316,7 +316,7 @@ function setpatient(pid, lname, fname, dob) {
   document.forms[0].elements['form_dob'].value = dob;
 }
 function sel_patient() {
-    dlgopen('../main/calendar/find_patient_popup.php?pflag=0', '_blank', 500, 400);
+    dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_patient_popup.php?pflag=0', '_blank', 500, 400);
 }
 </script>
 

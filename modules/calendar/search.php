@@ -161,7 +161,7 @@ call_required_libraries(true, false, false, true);
     });
     
     function openEvent(eid, date) {
-      dlgopen('../../interface/main/calendar/add_edit_event.php?date='+ moment(date).format('YYYYMMDD') +'&eid=' + eid +'&prov=0', '_blank', 775, 375);
+      dlgopen('add_edit_event.php?date='+ moment(date).format('YYYYMMDD') +'&eid=' + eid +'&prov=0', '_blank', 775, 375);
     }
     
     function goPid(pid) {

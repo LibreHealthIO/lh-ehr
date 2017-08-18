@@ -34,7 +34,7 @@
  $fake_register_globals=false;
  $sanitize_all_escapes=true;
 
-require_once('../../globals.php');
+require_once('../../interface/globals.php');
 require_once($GLOBALS['srcdir'].'/patient.inc');
 require_once($GLOBALS['srcdir'].'/forms.inc');
 require_once($GLOBALS['srcdir'].'/calendar.inc');
@@ -849,20 +849,20 @@ if ($_POST['form_action'] == "save") {
 <?php html_header_show(); ?>
 <title><?php echo $eid ? xlt('Edit') : xlt('Add New') ?> <?php echo xlt('Event');?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
-<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
 <style>
 td { font-size:0.8em; }
 </style>
 
-<style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
+<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 
-<script type="text/javascript" src="../../../library/topdialog.js"></script>
-<script type="text/javascript" src="../../../library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/textformat.js"></script>
-<script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
+<script type="text/javascript" src="../../library/topdialog.js"></script>
+<script type="text/javascript" src="../../library/dialog.js"></script>
+<script type="text/javascript" src="../../library/textformat.js"></script>
+<script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
+<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 
 <script language="JavaScript">
 
@@ -928,7 +928,7 @@ td { font-size:0.8em; }
 
  // This invokes the find-patient popup.
  function sel_patient() {
-  dlgopen('find_patient_popup.php', '_blank', 500, 400);
+  dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_patient_popup.php', '_blank', 500, 400);
  }
 
  // Do whatever is needed when a new event category is selected.
@@ -1072,7 +1072,7 @@ td { font-size:0.8em; }
         <?php }?>
         var c = document.forms[0].form_category;
     var formDate = document.forms[0].form_date;
-        dlgopen('<?php echo $GLOBALS['web_root']; ?>/interface/main/calendar/find_appt_popup.php' +
+        dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_appt_popup.php' +
                 '?providerid=' + s +
                 '&catid=' + c.options[c.selectedIndex].value +
                 '&facility=' + f +
@@ -1554,7 +1554,7 @@ if ($repeatexdate != "") {
 </div>
 
 </body>
-<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language='JavaScript'>
 <?php if ($eid) { ?>

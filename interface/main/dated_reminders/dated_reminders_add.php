@@ -253,7 +253,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
       })       
     
         function sel_patient(){ 
-           window.open('../../main/calendar/find_patient_popup.php', '_newDRPat', '' + ",width="   + 500 + ",height="  + 400 + ",left="    + 25  + ",top="     + 25   + ",screenX=" + 25  + ",screenY=" + 25); 
+           window.open('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_patient_popup.php', '_newDRPat', '' + ",width="   + 500 + ",height="  + 400 + ",left="    + 25  + ",top="     + 25   + ",screenX=" + 25  + ",screenY=" + 25); 
         } 
         
         function setpatient(pid, lname, fname, dob){ 

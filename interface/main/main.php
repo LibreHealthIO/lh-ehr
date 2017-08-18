@@ -13,7 +13,7 @@ Main Screen
   <frame src="messages/messages.php?form_active=1" name="Authorization" id="Authorization" scrolling="auto">
 <?php else: ?>
  <frame src="main_info.php" name="Comment" scrolling="auto">
- <frame src="calendar/find_patient.php?no_nav=1&mode=reset" name="fp" scrolling="auto">
+ <frame src="<?php echo $GLOBALS['web_root']; ?>/modules/calendar/find_patient.php?no_nav=1&mode=reset" name="fp" scrolling="auto">
 <?php endif; ?>
 </frameset>
 <noframes><body bgcolor="#FFFFFF">

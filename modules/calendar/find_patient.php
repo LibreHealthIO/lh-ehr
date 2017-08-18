@@ -8,7 +8,7 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
 //
 
-include_once("../../globals.php");
+include_once("../../interface/globals.php");
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 include_once("$srcdir/calendar.inc");
 include_once("$srcdir/patient.inc");

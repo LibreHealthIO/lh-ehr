@@ -55,7 +55,7 @@ function eventTypeChange(eventname)
 
 // VicarePlus :: This invokes the find-patient popup.
  function sel_patient() {
-  dlgopen('../main/calendar/find_patient_popup.php?pflag=0', '_blank', 500, 400);
+  dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_patient_popup.php?pflag=0', '_blank', 500, 400);
  }
 
 // VicarePlus :: This is for callback by the find-patient popup.

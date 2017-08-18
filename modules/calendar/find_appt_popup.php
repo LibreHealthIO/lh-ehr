@@ -25,7 +25,7 @@
  $fake_register_globals=false;
  $sanitize_all_escapes=true;
 
- include_once("../../globals.php");
+ include_once("../../interface/globals.php");
  include_once("$srcdir/patient.inc");
  ?>
     <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
@@ -473,8 +473,8 @@ form {
 </form>
 </body>
 
-<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
-<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <!-- for the pop up calendar -->
 <script language='JavaScript'>

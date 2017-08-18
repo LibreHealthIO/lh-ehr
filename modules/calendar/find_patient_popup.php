@@ -21,7 +21,7 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
 //
 
-include_once('../../globals.php');
+include_once('../../interface/globals.php');
 include_once("$srcdir/patient.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
