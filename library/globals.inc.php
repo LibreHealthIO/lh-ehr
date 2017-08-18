@@ -1513,6 +1513,18 @@ $GLOBALS_METADATA = array(
        '17',                            // default
       xl('Ending hour of day for calendar events.')
     ),
+    
+    'calendar_refresh_freq' => array(
+      xl('Calendar Refresh Frequency'),
+      array(
+       '1000' => xl('1 second'),
+       '3000' => xl('3 seconds'),
+       '5000' => xl('5 seconds'),
+       '10000' => xl('10 seconds'),
+      ),
+       '3000',                     // default
+      xl('How often the calendar automatically refetches events.')
+    ),
 
     'calendar_interval' => array(
       xl('Calendar Interval'),
@@ -1531,11 +1543,12 @@ $GLOBALS_METADATA = array(
     'calendar_view_type' => array(
       xl('Default Calendar View'),
       array(
-       'day' => xl('Day'),
-       'week' => xl('Week'),
-       'month' => xl('Month'),
+       'providerAgenda' => xl('Agenda'),
+       'timelineDay' => xl('Day'),
+       'timelineWeek' => xl('Week'),
+       'timelineMonth' => xl('Month'),
       ),
-       'day',                           // default
+       'providerAgenda',                           // default
       xl('This sets the Default Calendar View, Default is Day.')
     ),
 

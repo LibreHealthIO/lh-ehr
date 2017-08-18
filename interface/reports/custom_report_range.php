@@ -172,7 +172,7 @@ if ($form_patient == '' ) $form_pid = '';
 
 // CapMinds :: invokes  find-patient popup.
  function sel_patient() {
-  dlgopen('../main/calendar/find_patient_popup.php?pflag=0', '_blank', 500, 400);
+  dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_patient_popup.php', '_blank', 500, 400);
  }
 
 // CapMinds :: callback by the find-patient popup.
