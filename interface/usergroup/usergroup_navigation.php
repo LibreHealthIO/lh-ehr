@@ -58,7 +58,7 @@ include_once("../../library/acl.inc");
     
 <?php if (acl_check('admin', 'calendar')) { ?>
 <td valign="middle" nowrap>
-&nbsp;<a class=menu target=Main href="../main/calendar/index.php?module=PostCalendar&type=admin&func=modifyconfig"
+&nbsp;<a class=menu target=Main href="../../modules/calendar/admin.php"
  onclick="top.restoreSession()"
  title="Calendar Settings"><?php xl('Calendar','e'); ?></a>&nbsp;
 </td>

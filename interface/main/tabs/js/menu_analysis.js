@@ -48,7 +48,7 @@ global_reqs['Patient Reminders']='enable_cdr'
 acl_reqs['Language']=['admin','language'];
 acl_reqs['Forms']=['admin','forms'];
 
-acl_reqs['Calendar']=['admin','calendar','main/calendar/index.php?module=PostCalendar&type=admin&func=modifyconfig']
+acl_reqs['Calendar']=['admin','calendar','../modules/calendar/admin.php']
 
 acl_reqs['Logs']=['admin','users'];
 
