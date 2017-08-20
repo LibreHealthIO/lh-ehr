@@ -10,15 +10,16 @@ call_required_libraries(true, false, false, false);
 // if update category button is used
 if($_POST['updateCat'] == 1) {
   // call for creation/updation of category
-  $res = createUpdateCategory($_SESSION['category'], $_POST['catName'], $_POST['catCol'], 
+  createUpdateCategory($_SESSION['category'], $_POST['catName'], $_POST['catCol'], 
     $_POST['catDes'], $_POST['catType'], $_POST['catDur'], 
     $_POST['catAllDay'], $_SESSION['category'] == "__NEW__");
-  $rows = $res->getRows();
-  foreach($rows as $row) {
-    echo $row;
-  }
 }
 
+// if delete category button is used
+if($_POST['deleteCat'] == 1) {
+  deleteCategory($_SESSION['category']);
+  $_SESSION['category'] = "__NEW__";
+}
 
 // retrieve available categories from admin_helper
 $categories = getCategories();
@@ -156,11 +157,18 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
               <button type="submit" class="btn btn-primary" name="updateCat" value="1">Update</button>
             </div>
           </div>
+          
+          <!-- show delete button only if you select a category -->
+          <?php if(!empty($selectedCat)) { ?>
           <div class="form-group col-xs-3">
             <div class=col-md-12>
-              <button type="submit" class="btn btn-danger" name="deleteCat" value="1">Delete</button>
+              <button type="submit" class="btn btn-danger" name="deleteCat" value="1" 
+              onclick="return confirm('Are you sure you want to do that?');">Delete</button>
             </div>
           </div>
+          <!-- end if -->
+          <?php } ?>
+          
         </div>
         
       </form>

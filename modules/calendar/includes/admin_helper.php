@@ -28,4 +28,10 @@ function createUpdateCategory($catid, $catname, $catcol, $catdes, $cattype, $dur
   return $res;
 }
 
+function deleteCategory($catid) {
+  $query = "DELETE FROM libreehr_postcalendar_categories WHERE pc_catid = $catid";
+  $res = sqlStatement($query);
+  return $res;
+}
+
 ?>
