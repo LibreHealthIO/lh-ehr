@@ -35,7 +35,7 @@ class CreateFacilitiesTable extends Migration
 	    $table->string('facility_npi')->comment = "Defines Group National Provider Identifier, or a kind of UUID.";
 	    $table->string('tax_id_type', 2)->comment = "Indicates that if it is a Employer ID Number or Personal Tax Number.";
 	    $table->string('color', 7)->comment = "To mark the physical location of a appointment is so the user can visually sort them.";
-	    $table->string('primary_business_entity')->comment = "Identifies if this facility is a listing for the actual business running everything.";
+	    $table->boolean('primary_business_entity')->default(0)->comment = "Identifies if this facility is a listing for the actual business running everything. 0 -> False | 1 -> True";
 	    $table->foreign('addressID')->references('id')->on('addresses')->onDelete('cascade');
             $table->timestamps();
         });

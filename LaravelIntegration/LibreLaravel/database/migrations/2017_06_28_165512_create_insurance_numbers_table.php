@@ -27,7 +27,7 @@ class CreateInsuranceNumbersTable extends Migration
 	
 	    /*Establishing Relationship*/
 	    $table->foreign('provider_id')->references('id')->on('users')->onDelete('cascade');
-	    $table->foreign('insurance_company_id')->references('id')->on('users')->onDelete('cascade');
+	    $table->foreign('insurance_company_id')->references('id')->on('insurance_companies')->onDelete('cascade');
             $table->timestamps();
         });
     }
