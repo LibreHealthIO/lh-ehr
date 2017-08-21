@@ -4,17 +4,6 @@
 
 
  <style type="text/css" title="mystyles" media="all">
-<!--
-td {
-	font-size:8pt;
-	font-family:helvetica;
-}
-a {
-	font-size:8pt;
-	font-family:helvetica;
-}
-
--->
 </style>
 </head>
 <body bgcolor="<?php echo $this->style.BGCOLOR2;?>">

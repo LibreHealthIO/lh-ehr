@@ -36,6 +36,7 @@ require_once("../globals.php");
 require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 $alertmsg = '';
 
@@ -98,13 +99,11 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 ?>
 <html>
 <head>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
+<?php 
+    call_required_libraries(true,true,false,false);
+    resolveFancyboxCompatibility();
+?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 
 <script type="text/javascript">
 
@@ -119,7 +118,7 @@ $(document).ready(function(){
         'overlayOpacity' : 0.0,
         'showCloseButton' : true,
         'frameHeight' : 460,
-        'frameWidth' : 650
+        'frameWidth' : 650        
     });
 
     // special size for
@@ -133,26 +132,31 @@ $(document).ready(function(){
 });
 
 </script>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 </head>
 
 <body class="body_top">
 
 <div>
     <div>
-    <table><tr><td>
-        <b><?php echo xlt('Facilities'); ?></b>&nbsp;</td><td>
-         <a href="facilities_add.php" class="iframe addfac_modal css_button"><span><?php echo xlt('Add');?></span></a>
-         </td></tr>
+    <table>
+        <tr>
+            <td>
+                <b><?php echo xlt('Facilities'); ?></b>&nbsp;
+            </td>
+            <td>
+                 <a href="facilities_add.php" class="iframe addfac_modal css_button"><span><?php echo xlt('Add');?></span></a>
+            </td>
+        </tr>
     </table>
     </div>
-    <div class="tabContainer" style="width:550px;">
+    <br>
+    <div>
         <div>
-<table cellpadding="1" cellspacing="0" class="showborder">
-    <tr class="showborder_head" height="22">
-        <th style="border-style:1px solid #000" width="140px"><?php echo xlt('Name'); ?></th>
-        <th style="border-style:1px solid #000" width="320px"><?php echo xlt('Address'); ?></th>
-        <th style="border-style:1px solid #000"><?php echo xlt('Phone'); ?></th>
+    <table class="table table-hover">
+    <tr>
+        <th><?php echo xlt('Name'); ?></th>
+        <th><?php echo xlt('Address'); ?></th>
+        <th><?php echo xlt('Phone'); ?></th>
     </tr>
      <?php
         $fres = 0;
@@ -171,8 +175,8 @@ $(document).ready(function(){
           if ($iter3{state}!="")$varstate=$iter3{state}.",";
     ?>
     <tr height="22">
-       <td valign="top" class="text"><b><a href="facility_admin.php?fid=<?php echo $iter3{id};?>" class="iframe medium_modal"><span><?php echo htmlspecialchars($iter3{name});?></span></a></b>&nbsp;</td>
-       <td valign="top" class="text"><?php echo htmlspecialchars($varstreet.$varcity.$varstate.$iter3{country_code}." ".$iter3{postal_code}); ?>&nbsp;</td>
+       <td><b><a href="facility_admin.php?fid=<?php echo $iter3{id};?>" class="iframe medium_modal"><span><?php echo htmlspecialchars($iter3{name});?></span></a></b>&nbsp;</td>
+       <td><?php echo htmlspecialchars($varstreet.$varcity.$varstate.$iter3{country_code}." ".$iter3{postal_code}); ?>&nbsp;</td>
        <td><?php echo htmlspecialchars($iter3{phone});?>&nbsp;</td>
     </tr>
 <?php
@@ -181,7 +185,7 @@ $(document).ready(function(){
  if (count($result2)<=0)
   {?>
   <tr height="25">
-        <td colspan="3"  style="text-align:center;font-weight:bold;"> <?php echo xlt( "Currently there are no facilities." ); ?></td>
+        <td colspan="3"> <?php echo xlt( "Currently there are no facilities." ); ?></td>
     </tr>
   <?php }
 ?>

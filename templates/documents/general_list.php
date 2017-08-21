@@ -28,25 +28,16 @@
 	</tr>
 </table>
 </div>
-<div id="documents_actions">
-		<!--{if $message}
-			<div class='text' style="margin-bottom:-10px; margin-top:-8px"><i>{$message}</i></div><br>
-		{/if}-->
-                                        <?php
-                                            if($this->message){ ?>
-                                                <div class='text' style="margin-bottom:-10px; margin-top:-8px"><i><?php echo $this->message;    ?></i></div><br>
-                                            <?php } ?>
-                                                
-                                            <?php if($this->messages) {?>    
-                                                <div class='text' style="margin-bottom:-10px; margin-top:-8px"><i><?php echo $this->messages;   ?></i></div><br>
-                                            <?php } 
-                                            echo $this->activity;?>
-                                                
-                                       <!--{if $messages}
-                                                <div class='text' style="margin-bottom:-10px; margin-top:-8px"><i>{$messages}</i></div><br>
-		{/if}
-		{$activity}
-                                        -->
+<div id="documents_actions">		
+    <?php
+        if($this->message){ ?>
+            <div class='text' style="margin-bottom:-10px; margin-top:-8px"><i><?php echo $this->message;    ?></i></div><br>
+        <?php } ?>
+            
+        <?php if($this->messages) {?>    
+            <div class='text' style="margin-bottom:-10px; margin-top:-8px"><i><?php echo $this->messages;   ?></i></div><br>
+        <?php } 
+        echo $this->activity;?>                                      
 </div>
 </body>
 </html>

@@ -1,16 +1,6 @@
 
  <style type="text/css" title="mystyles" media="all">
-<!--
-.treeMenuDefault {
-	font-style: italic;
-}
 
-.treeMenuBold {
-	font-style: italic;
-	font-weight: bold;
-}
-
--->
 </style>
 
 <script type="text/javascript">

@@ -32,6 +32,7 @@
  require_once("$srcdir/formdata.inc.php");
  require_once("$srcdir/options.inc.php");
  require_once("$srcdir/htmlspecialchars.inc.php");
+ require_once("$srcdir/headers.inc.php");
 
  $popup = empty($_GET['popup']) ? 0 : 1;
 
@@ -83,8 +84,10 @@ $res = sqlStatement($query,$sqlBindArray);
 <html>
 
 <head>
+<?php call_required_libraries(true,true,false,false);
+      resolveFancyboxCompatibility();
+?>
 
-<link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 <title><?php echo xlt('Address Book'); ?></title>
 
 <!-- style tag moved into proper CSS file -->
@@ -96,36 +99,44 @@ $res = sqlStatement($query,$sqlBindArray);
 <div id="addressbook_list">
 <form method='post' action='addrbook_list.php' onsubmit='return top.restoreSession()'>
 
-<table>
+<table class="table">
  <tr class='search'> <!-- bgcolor='#ddddff' -->
   <td>
    <?php echo xlt('Organization')?>:
    <input type='entry' name='form_organization' size='10' value='<?php echo attr($_POST['form_organization']); ?>'
-    class='text' title='<?php echo xla("All or part of the organization") ?>' />&nbsp;
+    class='text' title='<?php echo xla("All or part of the organization") ?>' />
+  </td>
+  <td>
    <?php echo xlt('First Name')?>:
    <input type='entry' name='form_fname' size='10' value='<?php echo attr($_POST['form_fname']); ?>'
-    class='text' title='<?php echo xla("All or part of the first name") ?>' />&nbsp;
+    class='text' title='<?php echo xla("All or part of the first name") ?>' />
+  </td>
+  <td>
    <?php echo xlt('Last Name')?>:
    <input type='entry' name='form_lname' size='10' value='<?php echo attr($_POST['form_lname']); ?>'
-    class='text' title='<?php echo xla("All or part of the last name") ?>' />&nbsp;
+    class='text' title='<?php echo xla("All or part of the last name") ?>' />
+  </td>
+  <td>
    <?php echo xlt('Specialty')?>:
    <input type='entry' name='form_specialty' size='10' value='<?php echo attr($_POST['form_specialty']); ?>'
-    class='text' title='<?php echo xla("Any part of the desired specialty") ?>' />&nbsp;
-<?php
+    class='text' title='<?php echo xla("Any part of the desired specialty") ?>' />
+  </td>
+  <td>
+ <?php
   echo xlt('Type') . ": ";
   // Generates a select list named form_abook_type:
-  echo generate_select_list("form_abook_type", "abook_type", $_REQUEST['form_abook_type'], '', 'All');
+  echo generate_select_list("form_abook_type", "abook_type", $_REQUEST['form_abook_type'], '', 'All');  
 ?>
+  </td>
    <input type='checkbox' name='form_external' value='1'<?php if ($form_external) echo ' checked'; ?>
     title='<?php echo xla("Omit internal users?") ?>' />
    <?php echo xlt('External Only')?>&nbsp;&nbsp;
    <input type='submit' title='<?php echo xla("Use % alone in a field to just sort on that column") ?>' class='button' name='form_search' value='<?php echo xla("Search")?>' />
    <input type='button' class='button' value='<?php echo xla("Add New"); ?>' onclick='doedclick_add(document.forms[0].form_abook_type.value)' />
-</td>
 </tr>
 </table>
-
-<table>
+    
+<table class="table">
  <tr class='head'>
   <td title='<?php echo xla('Click to view or edit'); ?>'><?php echo xlt('Organization'); ?></td>
   <td><?php echo xlt('Name'); ?></td>
@@ -181,6 +192,7 @@ $res = sqlStatement($query,$sqlBindArray);
  }
 ?>
 </table>
+<hr>
 <div style="display: none;">
   <a class="iframe addrbookedit_modal"></a>
 </div>
@@ -191,10 +203,7 @@ $res = sqlStatement($query,$sqlBindArray);
 
 <!--Adding Jquery Plugins-->
 
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 
 <script language="JavaScript">
@@ -219,18 +228,6 @@ function doedclick_edit(userid) {
  dlgopen('addrbook_edit.php?userid=' + userid, '_blank', 700, 550);
 }
 
-$(document).ready(function(){
-  // initialise fancy box
-  enable_modals();
-
-  // initialise a link
-  $(".addrbookedit_modal").fancybox( {
-    'overlayOpacity' : 0.0,
-    'showCloseButton' : true,
-    'frameHeight' : 550,
-    'frameWidth' : 700
-  });
-});
 
 </script>
 

@@ -1070,7 +1070,7 @@ echo " </tr>\n";
    <?php echo xlt('for'); ?>&nbsp;
   </td>
   <td>
-   <input type='text' class="form-control" name='search_term' value=''> &nbsp;
+   <input type='text' class="form-control input-sm" name='search_term' value=''> &nbsp;
   </td>
   <td>
    <input type='submit' name='bn_search' value='<?php echo xla('Search');?>'>

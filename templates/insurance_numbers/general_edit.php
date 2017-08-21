@@ -39,7 +39,7 @@ foreach ($this->provider->get_insurance_numbers() as $numset) { ?>
 <?php } } 
 else { ?>
 <tr>
-   <td colspan="5"><?php echo xlt("No entries found").",".xlt("use the form below to add an entry")";?></td>
+   <td colspan="5"><?php echo xlt("No entries found").",".xlt("use the form below to add an entry");?></td>
 </tr>
 <?php } ?>
 
@@ -67,7 +67,7 @@ else { ?>
             <td><?php echo xlt("Insurance Company");?></td>
             <td>
                     <?php if($this->ins->get_id() =="") { ?>
-                    <select class="form-control" name="insurance_company_id">
+                    <select class="form-control input-sm" name="insurance_company_id">
                         <?php foreach ($this->ic_array as $key => $value) 
                         { 
                             if($key==$this->ins->get_insurance_company_id() ) { ?>
@@ -85,7 +85,7 @@ else { ?>
 <tr>
         <td><?php echo xlt("Provider Number");?></td>
         <td>
-           <input type="text" class="form-control" size="20" name="provider_number" value="<?php $this->ins->get_provider_number();?>" onKeyDown="PreventIt(event)" />
+           <input type="text" class="form-control input-sm" size="20" name="provider_number" value="<?php $this->ins->get_provider_number();?>" onKeyDown="PreventIt(event)" />
         </td>
 </tr>
 <tr>
@@ -95,7 +95,7 @@ else { ?>
            values=$ins->provider_number_type_array 
            selected=$ins->get_provider_number_type()}-->
            
-           <select class="form-control" name="provider_number_type">
+           <select class="form-control input-sm" name="provider_number_type">
                         <?php foreach ($this->ic_type_options_array  as $key => $value) 
                         { 
                             if($key==$this->ins->get_provider_number_type() ) { ?>
@@ -112,7 +112,7 @@ else { ?>
 <tr>
         <td><?php echo xlt("Rendering Provider Number");?></td>
         <td>
-                <input type="text" class="form-control" size="20" name="rendering_provider_number" value="<?php echo $this->ins->get_rendering_provider_number();?>" 
+                <input type="text" class="form-control input-sm" size="20" name="rendering_provider_number" value="<?php echo $this->ins->get_rendering_provider_number();?>" 
                        onKeyDown="PreventIt(event)" />
         </td>
 </tr>
@@ -123,7 +123,7 @@ else { ?>
             values=$ins->rendering_provider_number_type_array 
             selected=$ins->get_rendering_provider_number_type()}
            -->
-           <select class="form-control" name="rendering_provider_number_type">
+           <select class="form-control input-sm" name="rendering_provider_number_type">
                <?php foreach ($this->ic_rendering_type_options_array   as $key => $value) 
                         { 
                             if($key==$this->ins->get_rendering_provider_number_type() ) { ?>
@@ -139,7 +139,7 @@ else { ?>
 <tr>
         <td><?php echo xlt("Group Number");?></td>
         <td>
-                <input type="text" class="form-control" size="20" name="group_number" value="<?php echo $this->ins->get_group_number(); ?>" 
+                <input type="text" class="form-control input-sm" size="20" name="group_number" value="<?php echo $this->ins->get_group_number(); ?>" 
                        onKeyDown="PreventIt(event)" />
         </td>
 </tr>
