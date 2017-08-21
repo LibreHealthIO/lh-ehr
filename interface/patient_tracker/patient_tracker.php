@@ -29,6 +29,7 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/patient_tracker.inc.php");
 require_once("$srcdir/user.inc");
+require_once("$srcdir/headers.inc.php");
 
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -118,15 +119,29 @@ foreach ( $appointments as $apt ) {
 ?>
 <html>
 <head>
-<title><?php echo xlt("Flow Board") ?></title>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<style>
+    /*  Removing all borders from tables */
+    .table th, .table td { 
+     border-top: none !important; 
+    }
+    span.glyphicon-cog {
+    font-size: 1.4em;
+    margin-left : 20px;
+}
+    .glyphicon:hover{
+        cursor: pointer;
+    }
+}
+</style>
 
-<script type="text/javascript" src="../../library/dialog.js"></script>
+<title><?php echo xlt("Flow Board") ?></title>
+<?php 
+    //  Include Bootstrap and DateTimePicker
+    call_required_libraries(true,false,false,true);
+?>
+
 <script type="text/javascript" src="../../library/js/common.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script language="JavaScript">
 // Refresh self
 function refreshme() {
@@ -202,13 +217,92 @@ function openNewTopWindow(newpid,newencounterid) {
 
 ?>
 <span class="title"><?php echo xlt("Flow Board") ?></span>
+<span class="glyphicon glyphicon-cog" data-toggle="collapse" title="Set Flowboard Preferences" href="#pat_settings"></span>
 <body class="body_top" >
+<div id="pat_settings" class="well collapse">
+    <form method='post' name='pt_settings' id="pt_settings" action='<?php echo $action_page; ?>'>
+        <div class="checkbox">
+        <label><input type="checkbox" id="ptkr_pt_list_new_window" name="ptkr_pt_list_new_window" value="1" <?php if($GLOBALS['ptkr_pt_list_new_window']=='1') echo "checked"; ?>>Open Demographics in New Window from Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_visit_reason" value="1" <?php if($GLOBALS['ptkr_visit_reason']=='1') echo "checked"; ?>>Show Visit Reason in Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_show_pid" value="1" <?php if($GLOBALS['ptkr_show_pid']=='1') echo "checked"; ?>>Show Patient ID in Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_show_room" value="1" <?php if($GLOBALS['ptkr_show_room']=='1') echo "checked"; ?>>Show Exam Room Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_show_visit_type" value="1" <?php if($GLOBALS['ptkr_show_visit_type']=='1') echo "checked"; ?>>Show Visit Type in Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_show_encounter" value="1" <?php if($GLOBALS['ptkr_show_encounter']=='1') echo "checked"; ?>>Show Patient Encounter Number in Patient Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_flag_dblbook" value="1" <?php if($GLOBALS['ptkr_flag_dblbook']=='1') echo "checked"; ?>>Flag Double Booked Appt in Flow Board</label>
+        </div>
+        <div class="checkbox">
+        <label><input type="checkbox" name="ptkr_date_range" value="1" <?php if($GLOBALS['ptkr_date_range']=='1') echo "checked"; ?>>Allow Date Range in Patient Flow Board</label>
+        </div>
+        Ending Date for Patient Flow Board
+        <select class="form-control input-sm" name="ptkr_end_date" id="ptkr_end_date">
+            <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>>One Year Ahead</option>
+            <option value="Y2" <?php if($GLOBALS['ptkr_end_date']=='Y2') echo "selected";?>>Two Years Ahead</option>
+            <option value="M6" <?php if($GLOBALS['ptkr_end_date']=='M6') echo "selected";?>>Six Months Ahead</option>
+            <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='M3') echo "selected";?>>Three Months Ahead</option>
+            <option value="M1" <?php if($GLOBALS['ptkr_end_date']=='M1') echo "selected";?>>One Month Ahead</option>
+            <option value="D1" <?php if($GLOBALS['ptkr_end_date']=='D1') echo "selected";?>>One Day Ahead</option>
+        </select>
+        Patient Flow Board Timer Interval
+        <select class="form-control input-sm" name="pat_trkr_timer" id="pat_trkr_timer">
+            <option value="0" <?php if($GLOBALS['pat_trkr_timer']=='0') echo "selected";?>>No automatic refresh</option>
+            <option value="0:10" <?php if($GLOBALS['pat_trkr_timer']=='0:10') echo "selected";?>>10</option>
+            <option value="0:20" <?php if($GLOBALS['pat_trkr_timer']=='0:20') echo "selected";?>>20</option>
+            <option value="0:30" <?php if($GLOBALS['pat_trkr_timer']=='0:30') echo "selected";?>>30</option>
+            <option value="0:40" <?php if($GLOBALS['pat_trkr_timer']=='0:40') echo "selected";?>>40</option>
+            <option value="0:50"> <?php if($GLOBALS['pat_trkr_timer']=='0:50') echo "selected";?>50</option>
+            <option value="0:59" <?php if($GLOBALS['pat_trkr_timer']=='0:59') echo "selected";?>>60</option>
+        </select>
+        
+        <div>          
+        <input type='submit'  name='user_save' value='<?php echo xla('Save'); ?>' />
+        </div>          
+    </form>
+</div>
+
+<?php 
+    if(isset($_POST['user_save'])){
+        $setting_names = [
+            'ptkr_pt_list_new_window',
+            'ptkr_visit_reason',
+            'ptkr_show_pid',
+            'ptkr_show_room',
+            'ptkr_show_visit_type',
+            'ptkr_show_encounter',
+            'ptkr_flag_dblbook',
+            'ptkr_date_range',
+            'ptkr_end_date',
+            'pat_trkr_timer'
+        ];
+        foreach($setting_names as $setting)
+        {
+            if(isset($_POST[$setting])) 
+                setUserSetting('global:'.$setting,$_POST[$setting],$_SESSION['authId'],FALSE);
+            else 
+                setUserSetting('global:'.$setting,"",$_SESSION['authId'],FALSE);  
+        }       
+        echo "<script type='text/javascript'>";        
+        echo "self.location.href='patient_tracker.php?skip_timeout_reset=1';";
+        echo "</script>";
+        }
+    ?>
 <form method='post' name='theform' id='theform' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()'>
-    <div id="flow_board_parameters">
-        <table>
+    <div class="table-responsive">      
+        <table class="table well">
             <tr>
-                <td class='label'><?php echo xlt('Provider'); ?>:</td>
-                <td><?php
+                <td><?php echo xlt('Provider'); ?>:
+                <?php
 
                     # Build a drop-down list of providers.
                     $uid = $_SESSION['authUserID'];
@@ -223,7 +317,7 @@ function openNewTopWindow(newpid,newencounterid) {
 
                     $ures = sqlStatement($query);
 
-                    echo "   <select name='form_provider'>\n";
+                    echo "   <select name='form_provider' class='form-control input-sm'>\n";
                     if ($GLOBALS['docs_see_entire_calendar'] =='1' || $_SESSION['userauthorized'] =='0') {
                     echo "    <option value='ALL'>-- " . xlt('All') . " --\n";
                     }
@@ -242,15 +336,15 @@ function openNewTopWindow(newpid,newencounterid) {
                     echo "   </select>\n";
 
                     ?>
-                </td>
-                <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
-                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);
-                ?></td>
+                </td>           
+                <td><?php echo xlt('Status'); # status code drop down creation ?>:
+                <?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$form_apptstatus);
+                ?></td>             
                 <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
                 <td>
-                <?php echo xlt('Category') #category drop down creation ?>:</td>
-                    <td>
-                        <select id="form_apptcat" name="form_apptcat">
+                <?php echo xlt('Category') #category drop down creation ?>:
+                    
+                        <select id="form_apptcat" name="form_apptcat" class="form-control input-sm">
                             <?php
                             $categories=fetchAppointmentCategories();
                             echo "<option value='ALL'>".xlt("All")."</option>";
@@ -267,18 +361,18 @@ function openNewTopWindow(newpid,newencounterid) {
                         </select>
                     </td>
                 <?php } ?>
-            </tr>
-            <tr>
-                <td class='label'><?php if($GLOBALS['ptkr_date_range']) { echo xlt('From'); } else { echo xlt('Date'); }?>:</td>
-                <td><input type='text' size='9' name='form_from_date' id="form_from_date"
-                           value='<?php echo (attr($form_from_date)) ?>'>                
+            
+                <td><?php if($GLOBALS['ptkr_date_range']) { echo xlt('From'); } else { echo xlt('Date'); }?>:
+                <input type='text' class="form-control input-sm" size='9' name='form_from_date' id="form_from_date"
+                           value='<?php echo (attr($form_from_date)) ?>'>
+                </td>                
                 <?php if($GLOBALS['ptkr_date_range']) { ?>
-                <td class='label'><?php echo xlt('To'); ?>:</td>
-                <td><input type='text' size='9' name='form_to_date' id="form_to_date"
+                <td><?php echo xlt('To'); ?>:
+                <input type='text' class="form-control input-sm" size='9' name='form_to_date' id="form_to_date"
                            value='<?php echo (attr($form_to_date)) ?>'>
                 </td>
                 <?php } ?>
-                </tr>
+            </tr>
                 <tr>
                     <td>
                         <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
@@ -290,35 +384,32 @@ function openNewTopWindow(newpid,newencounterid) {
                     </td>
                 </tr>
         </table>
-    </div>
+    </div>      
 </form>
-
 <form name='pattrk' id='pattrk' method='post' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()' enctype='multipart/form-data'>
 
 <div id="flowboard_header">
   <?php if (count($chk_prov) == 1) {?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>
-      <h2><span style='float: left'><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></span></h2>
+      <h3><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></h3>
     <?php } else { ?>
-      <h2><span style='float: left'><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' : '. xlt('Date') . ' ' . text($form_from_date) ?></span></h2>
+      <h3><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' : '. xlt('Date') . ' ' . text($form_from_date) ?></h3>
     <?php } ?>
   <?php } else { ?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>
-      <h2><span style='float: left'><?php echo xlt('Appointments Date Range'). ' : ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></span></h2>
+      <h3><?php echo xlt('Appointments Date Range'). ' : ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></h3>
   <?php } else { ?>
-      <h2><span style='float: left'><?php echo xlt('Appointment Date'). ' : ' . text($form_from_date) ?></span></h2>
+      <h3><?php echo xlt('Appointment Date'). ' : ' . text($form_from_date) ?></h3>
   <?php } ?>
   <?php } ?>
- <div id= 'inanewwindow' class='inanewwindow'>
- <span style='float: right'>
+ <div id= 'inanewwindow'> 
  <input type='hidden' name='setting_new_window' value='1' />
  <input type='checkbox' name='form_new_window' value='1'<?php echo $new_window_checked; ?> /><?php
-  echo xlt('Open Patient in New Window'); ?>
- </span>
+  echo xlt('Open Patient in New Window'); ?> 
  </div>
  </div>
 <?php if ($GLOBALS['pat_trkr_timer'] =='0') { ?>
-<table border='0' cellpadding='5' cellspacing='0'>
+<table class="table">
  <tr>
   <td  align='center'><br>
    <a href='javascript:;' class='css_button_small' align='center' style='color:gray' onclick="document.getElementById('pattrk').submit();"><span><?php echo xlt('Refresh Screen'); ?></span></a>
@@ -327,87 +418,86 @@ function openNewTopWindow(newpid,newencounterid) {
 </table>
 <?php } ?>
 
-<table border='0' cellpadding='1' cellspacing='2' width='100%'>
- <tr>
-     <td colspan="12">
-         <b><small>
-             <?php
-             $statuses_output =  xlt('Total patients')  . ':' . text($appointments_status['count_all']);
-             unset($appointments_status['count_all']);
-             foreach($appointments_status as $status_symbol => $count){
-                 $statuses_output .= " | " . text(xl_list_label($statuses_list[$status_symbol]))  .":" . $count;
-             }
-             echo $statuses_output;
-             ?>
-         </small></b>
-     </td>
+<div class="table-responsive">
+<table class="table">
+ <tr>     
+    <b><small>
+        <?php
+        $statuses_output =  xlt('Total patients')  . ':' . text($appointments_status['count_all']);
+        unset($appointments_status['count_all']);
+        foreach($appointments_status as $status_symbol => $count){
+            $statuses_output .= " | " . text(xl_list_label($statuses_list[$status_symbol]))  .":" . $count;
+        }
+        echo $statuses_output;
+        ?>
+    </small></b>     
  </tr>
-<div id="flowboard_details">
+
  <tr bgcolor="#cccff">
   <?php if ($GLOBALS['ptkr_show_pid']) { ?>
-   <td class="dehead" align="center">
+   <td>
    <?php  echo xlt('PID'); ?>
   </td>
   <?php } ?>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Patient'); ?>
   </td>
   <?php if ($GLOBALS['ptkr_visit_reason']) { ?>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Reason'); ?>
   </td>
   <?php } ?>
   <?php if ($GLOBALS['ptkr_show_encounter']) { ?>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Encounter'); ?>
   </td>
   <?php } ?>
   <?php if ($GLOBALS['ptkr_show_room']) { ?>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Exam Room #'); ?>
   </td>
   <?php } ?>
   <?php if($GLOBALS['ptkr_date_range']) { ?>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Appt Date'); ?>
   </td>
   <?php } ?>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Appt Time'); ?>
   </td>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Arrive Time'); ?>
   </td>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Status'); ?>
   </td>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Current Status Time'); ?>
   </td>
    <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
-   <td class="dehead" align="center">
+   <td>
    <?php  echo xlt('Category'); ?>
   </td>
   <?php } ?>
   <?php if (count($chk_prov) > 1) { ?>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Provider'); ?>
   </td>
   <?php } ?>
- <td class="dehead" align="center">
+ <td>
    <?php  echo xlt('Total Time'); ?>
   </td>
- <td class="dehead" align="center">
+ <td>
    <?php  echo xlt('Check Out Time'); ?>
   </td>
-   <td class="dehead" align="center">
+   <td>
    <?php  echo xlt('Updated By'); ?>
   </td>
  <?php if ($GLOBALS['drug_screen']) { ?> 
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Random Drug Screen'); ?>
   </td>
-  <td class="dehead" align="center">
+  <td>
    <?php  echo xlt('Drug Screen Completed'); ?>
   </td>
  <?php } ?>
@@ -417,7 +507,7 @@ function openNewTopWindow(newpid,newencounterid) {
     $prev_appt_date_time = "";
 
     $overbookStatuses = array_map('trim', explode( ',', $GLOBALS['appt_overbook_statuses'] ) );
-	foreach ( $appointments as $appointment ) {
+  foreach ( $appointments as $appointment ) {
 
                 # Collect appt date and set up squashed date for use below
                 $date_appt = $appointment['pc_eventDate'];
@@ -460,42 +550,42 @@ function openNewTopWindow(newpid,newencounterid) {
 ?>
         <tr bgcolor='<?php echo $bgcolor ?>'>
         <?php if ($GLOBALS['ptkr_show_pid']) { ?>
-        <td class="detail" align="center">
+        <td class="detail">
         <?php echo text($appt_pid) ?>
          </td>
         <?php } ?>
-        <td class="detail" align="center">
+        <td class="detail">
         <a href="#" onclick="return topatient('<?php echo attr($appt_pid);?>','<?php echo attr($appt_enc);?>')" >
         <?php echo text($ptname); ?></a>
          </td>
          <!-- reason -->
          <?php if ($GLOBALS['ptkr_visit_reason']) { ?>
-         <td class="detail" align="center">
+         <td class="detail">
          <?php echo text($reason_visit) ?>
          </td>
          <?php } ?>
          <?php if ($GLOBALS['ptkr_show_encounter']) { ?>
-         <td class="detail" align="center">
+         <td class="detail">
          <?php if($appt_enc != 0) echo text($appt_enc); ?></a>
          </td>
          <?php } ?>
          <?php if ($GLOBALS['ptkr_show_room']) { ?>
-         <td class="detail" align="center">
+         <td class="detail">
          <?php echo getListItemTitle('patient_flow_board_rooms', $appt_room);?>
          </td>
          <?php } ?>
          <?php if($GLOBALS['ptkr_date_range']) { ?>
-         <td class="detail" align="center">
+         <td class="detail">
          <?php echo oeFormatShortDate($date_appt) ?>
          </td>
          <?php }
             // flag possible double booked, ignoring canceled appt types
             //  and skipping of ALL providers are viewed
-            $apptflagtd = '<td class="detail" align="center">';
+            $apptflagtd = '<td class="detail">';
             if ((count($chk_prov) == 1 ) and $appt_canceled != true) {
                 if ($GLOBALS['ptkr_flag_dblbook']) {
                     if ($appt_date_time === $prev_appt_date_time) {
-                        $apptflagtd = '<td class="detail" align="center" bgcolor="orange">';  //TODO Make color configurable
+                        $apptflagtd = '<td class="detail" bgcolor="orange">';  //TODO Make color configurable
                     }
                     $prev_appt_date_time = $appt_date_time;
                 }
@@ -504,10 +594,10 @@ function openNewTopWindow(newpid,newencounterid) {
             echo oeFormatTime($appt_time);
          ?>
          </td>
-         <td class="detail" align="center">
+         <td class="detail">
         <?php echo ($newarrive ? oeFormatTime($newarrive) : '&nbsp;') ?>
          </td>
-         <td class="detail" align="center"> 
+         <td class="detail"> 
          <?php if (empty($tracker_id)) { #for appt not yet with tracker id and for recurring appt ?>
            <a href=""  onclick="return calendarpopup(<?php echo attr($appt_eid).",".attr($date_squash); # calls popup for add edit calendar event?>)">
          <?php } else { ?>
@@ -546,16 +636,16 @@ function openNewTopWindow(newpid,newencounterid) {
         #end time in current status
         ?>
          <?php if ($GLOBALS['ptkr_show_visit_type']) { ?>
-         <td class="detail" align="center">
+         <td class="detail">
          <?php echo text(xl_appt_category($appointment['pc_title'])) ?>
          </td>
          <?php } ?>
          <?php if (count($chk_prov) > 1) { ?>
-         <td class="detail" align="center">
+         <td class="detail">
          <?php echo text($docname); ?>
          </td>
          <?php } ?>
-         <td class="detail" align="center"> 
+         <td class="detail"> 
          <?php       
          
          # total time in practice
@@ -576,24 +666,24 @@ function openNewTopWindow(newpid,newencounterid) {
         ?>       
         <?php echo text($appointment['pc_time']); ?>
          </td>
-        <td class="detail" align="center">
+        <td class="detail">
          <?php 
          if (strtotime($newend) != '') {
             echo oeFormatTime($newend) ;
          }
          ?>
          </td>
-         <td class="detail" align="center">
+         <td class="detail">
          <?php echo text($appointment['user']) ?>
          </td>
          <?php if ($GLOBALS['drug_screen']) { ?> 
          <?php if (strtotime($newarrive) != '') { ?> 
-         <td class="detail" align="center">
+         <td class="detail">
          <?php if (text($appointment['random_drug_test']) == '1') {  echo xl('Yes'); }  else { echo xl('No'); }?>
          </td>
          <?php } else {  echo "  <td>"; }?>
          <?php if (strtotime($newarrive) != '' && $appointment['random_drug_test'] == '1') { ?> 
-         <td class="detail" align="center">
+         <td class="detail">
          <?php if (strtotime($newend) != '') { # the following block allows the check box for drug screens to be disabled once the status is check out ?>
              <input type=checkbox  disabled='disable' class="drug_screen_completed" id="<?php echo htmlspecialchars($appointment['pt_tracker_id'], ENT_NOQUOTES) ?>"  <?php if ($appointment['drug_screen_completed'] == "1") echo "checked";?>>
          <?php } else { ?>
@@ -606,7 +696,7 @@ function openNewTopWindow(newpid,newencounterid) {
         <?php
     } //end for
 ?>
-</div>
+
 <?php
 //saving the filter for auto refresh
 if(!is_null($_POST['form_provider']) ){
@@ -630,7 +720,9 @@ if(!is_null($_POST['form_to_date']) ){
 ?>
 
 </table>
+</div>
 </form>
+
 
 <script type="text/javascript">
   $(document).ready(function() { 
@@ -673,6 +765,7 @@ if(!is_null($_POST['form_to_date']) ){
         <?php } ?>
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
+    $("#form_apptstatus").addClass('form-control input-sm');
 </script>
 </body>
 </html>
