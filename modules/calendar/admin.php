@@ -44,7 +44,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
 
 <html>
 <head>
-  <title>Calendar Administration</title>
+  <title><?php echo xlt('Calendar Administration');?></title>
   <link href="css/admin.css" rel="stylesheet" />
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-3-1-1/index.js"></script>
 </head>
@@ -54,9 +54,9 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
       
       <form class="form-horizontal" id="cat-select-form" action="" method="POST">
         <div class="form-group col-xs-12">
-          <label for="category">Select Category</label>
+          <label for="category"><?php echo xlt('Select Category');?></label>
           <select class="form-control" id="category" name="category" required>
-            <option value="__NEW__">New Category</option>
+            <option value="__NEW__"><?php echo xlt('New Category');?></option>
             <?php 
             foreach($categories as $category) {
               $catid = $category['pc_catid'];
@@ -81,7 +81,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
           if(!empty($selectedCat)) {
             echo "<h4>". $selectedCat['pc_catname'] . "</h4>";
           } else {
-            echo "<h4>New Category</h4>";
+            echo "<h4>" . xlt('New Category') . "</h4>";
           }
         ?>
       </div>
@@ -89,17 +89,17 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         
         <div class="row">
           <div class="form-group col-xs-6">
-            <label class="control-label col-md-2" for="catName">Name</label>
+            <label class="control-label col-md-2" for="catName"><?php echo xlt('Name');?></label>
             <div class="col-md-10">
-              <input type="text" class="form-control" id="catName" name="catName" placeholder="Category Name" required 
+              <input type="text" class="form-control" id="catName" name="catName" placeholder="<?php echo xlt('Category Name');?>" required 
               <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_catname'] . "\"";  ?> >
             </div>
           </div>
           
           <div class="form-group col-xs-6">
-            <label class="control-label col-md-2" for="catCol">Color</label>
+            <label class="control-label col-md-2" for="catCol"><?php echo xlt('Color');?></label>
             <div class="col-md-10">
-              <input type="color" class="form-control" id="catCol" name="catCol" placeholder="Select a Color" required
+              <input type="color" class="form-control" id="catCol" name="catCol" placeholder="<?php echo xlt('Select a Color');?>" required
               <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_catcolor'] . "\"";
               else echo "value=\"#e5e5e5\"";  ?> >
             </div>
@@ -108,24 +108,24 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         
         <div class="row">
           <div class="form-group col-xs-6">
-            <label class="control-label col-md-2" for="catDur">Duration (Minutes)</label>
+            <label class="control-label col-md-2" for="catDur"><?php echo xlt('Duration (Minutes)');?></label>
             <div class="col-md-10">
-              <input type="number" class="form-control" id="catDur" name="catDur" placeholder="Minutes" required
+              <input type="number" class="form-control" id="catDur" name="catDur" placeholder="<?php echo xlt('Minutes');?>" required
               <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_duration']/60 . "\"" ?> 
               <?php if(!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 1) echo " disabled"; ?> >
             </div>
           </div>
           
           <div class="form-group col-xs-6">
-            <label class="control-label col-md-2" for="catAllDay">All Day</label>
+            <label class="control-label col-md-2" for="catAllDay"><?php echo xlt('All Day');?></label>
             <div class="col-md-10">
               <div class="radio-inline">
                 <label><input type="radio" id="allDay1" name="catAllDay" value="1" required
-                <?php if(!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 1) echo " checked"; ?>>Yes</label>
+                <?php if(!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 1) echo " checked"; ?>><?php echo xlt('Yes');?></label>
               </div>
               <div class="radio-inline">
                 <label><input type="radio" id="allDay0" name="catAllDay" value="0" required
-                <?php if(!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 0) echo " checked"; ?>>No</label>
+                <?php if(!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 0) echo " checked"; ?>><?php echo xlt('No');?></label>
               </div>
             </div>
           </div>
@@ -133,20 +133,20 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
       
         <div class="row">
           <div class="form-group col-xs-6">
-            <label class="control-label col-md-2" for="catDes">Description</label>
+            <label class="control-label col-md-2" for="catDes"><?php echo xlt('Description');?></label>
             <div class="col-md-10">
-              <textarea rows="2" class="form-control" id="catDes" name="catDes" placeholder="Category Description" 
+              <textarea rows="2" class="form-control" id="catDes" name="catDes" placeholder="<?php echo xlt('Category Description');?>" 
               required><?php if(!empty($selectedCat)) echo $selectedCat['pc_catdesc']; ?></textarea>
             </div>
           </div>
           
           <div class="form-group col-xs-6">
-            <label class="control-label col-md-2" for="catType">Type</label>
+            <label class="control-label col-md-2" for="catType"><?php echo xlt('Type');?></label>
             <div class="col-md-10">
               <select class="form-control" id="catType" name="catType" required>
-                <option value="0">Patient</option>
-                <option value="1" <?php if(!empty($selectedCat) && $selectedCat['pc_cattype'] == 1) echo "selected" ?>>Provider</option>
-                <option value="2" <?php if(!empty($selectedCat) && $selectedCat['pc_cattype'] == 2) echo "selected" ?>>Clinic</option>
+                <option value="0"><?php echo xlt('Patient');?></option>
+                <option value="1" <?php if(!empty($selectedCat) && $selectedCat['pc_cattype'] == 1) echo "selected" ?>><?php echo xlt('Provider');?></option>
+                <option value="2" <?php if(!empty($selectedCat) && $selectedCat['pc_cattype'] == 2) echo "selected" ?>><?php echo xlt('Clinic');?></option>
               </select>
             </div>
           </div>
@@ -155,7 +155,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         <div class="row">
           <div class="form-group col-xs-9"> 
             <div class=col-md-12>
-              <button type="submit" class="btn btn-primary" name="updateCat" value="1">Update</button>
+              <button type="submit" class="btn btn-primary" name="updateCat" value="1"><?php echo xlt('Update');?></button>
             </div>
           </div>
           
@@ -164,7 +164,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
           <div class="form-group col-xs-3">
             <div class=col-md-12>
               <button type="submit" class="btn btn-danger" name="deleteCat" value="1" 
-              onclick="return confirm('Are you sure you want to do that?');">Delete</button>
+              onclick="return confirm('<?php echo xlt('Are you sure you want to do that?');?>');"><?php echo xlt('Delete');?></button>
             </div>
           </div>
           <!-- end if -->
