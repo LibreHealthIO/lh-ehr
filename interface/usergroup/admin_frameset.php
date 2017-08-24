@@ -18,7 +18,7 @@ include_once("../../library/acl.inc");
 <?php } else if (acl_check('admin', 'practice')) { ?>
    src="<?php echo $GLOBALS['webroot'] ?>/controller.php?practice_settings"
 <?php } else if (acl_check('admin', 'calendar')) { ?>
-   src="../main/calendar/index.php?module=PostCalendar&type=admin&func=modifyconfig"
+   src="../../modules/calendar/admin.php"
 <?php } else if ( (!$GLOBALS['disable_phpmyadmin_link']) && (acl_check('admin', 'database')) ) { ?>
    src="../../phpmyadmin/index.php"
 <?php } else { ?>

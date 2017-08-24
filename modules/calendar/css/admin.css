@@ -1,0 +1,21 @@
+.block {
+  margin: 20px 5px 20px 5px;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,.2);
+  -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2), 0 2px 10px 0 rgba(0,0,0,.2);
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.2), 0 2px 10px 0 rgba(0,0,0,.2);
+}
+
+.cat-head {
+  padding: 5px;
+  text-align: center;
+  font-weight: bolder;
+  background: #e5e5e5;
+}
+
+.cat-body {
+  padding: 10px 0px 10px 20px;
+}
+
+.btn {
+  color: white!important;
+}
