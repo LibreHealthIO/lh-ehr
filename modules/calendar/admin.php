@@ -33,7 +33,7 @@ if(isset($_POST['category'])) {
 $selectedCat = array();
 if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
   foreach($categories as $category) {
-    if($category['pc_catid'] == $_POST['category']) {
+    if($category['pc_catid'] == $_SESSION['category']) {
       $selectedCat = $category;
       break;
     }
@@ -62,7 +62,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
               $catid = $category['pc_catid'];
               $catname = $category['pc_catname'];
               echo "<option value='$catid'"; 
-                if($catid == $_POST['category']) {
+                if($catid == $_SESSION['category']) {
                   echo " selected";
                 }
               echo ">$catname</option>";

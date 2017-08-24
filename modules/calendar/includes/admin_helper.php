@@ -16,14 +16,14 @@ function createUpdateCategory($catid, $catname, $catcol, $catdes, $cattype, $dur
   if($new) {
     $query = "INSERT INTO libreehr_postcalendar_categories(pc_catname, 
       pc_catcolor, pc_catdesc, pc_cattype, pc_duration, pc_end_all_day)
-      VALUES('$catname', '$catcol', '$catdes', $cattype, $duration, $allday);";
-      $res = sqlStatement($query);
+      VALUES(?, ?, ?, ?, ?, ?);";
+      $res = sqlStatement($query, array($catname, $catcol, $catdes, $cattype, $duration, $allday));
   } else {
     $query = "UPDATE libreehr_postcalendar_categories SET 
-      pc_catname = '$catname', pc_catcolor = '$catcol', pc_catdesc = '$catdes',
-      pc_cattype = $cattype, pc_duration = $duration, pc_end_all_day = $allday 
-      WHERE pc_catid = $catid;";
-    $res = sqlStatement($query);
+      pc_catname = ?, pc_catcolor = ?, pc_catdesc = ?,
+      pc_cattype = ?, pc_duration = ?, pc_end_all_day = ? 
+      WHERE pc_catid = ?;";
+    $res = sqlStatement($query, array($catname, $catcol, $catdes, $cattype, $duration, $allday, $catid));
   }
   return $res;
 }
