@@ -44,6 +44,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
 
 <html>
 <head>
+  <title>Calendar Administration</title>
   <link href="css/admin.css" rel="stylesheet" />
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-3-1-1/index.js"></script>
 </head>

@@ -394,7 +394,7 @@
             "requirement" : 0,
             "acl_req" : [ "admin", "forms" ]
         }, { 
-            "label" : "Calendar Categories",
+            "label" : "Calendar Administration",
             "menu_id" : "adm0",
             "target" : "lst",
             "url" : "/modules/calendar/admin.php",
