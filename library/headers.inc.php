@@ -39,7 +39,7 @@ function include_js_library($path)
     This function can be used to call various frequently used libraries.
     Parameters for this function are boolean. Use true or false for including the required libraries.   
 */
-function call_required_libraries($bootstrap,$fancybox,$knockout,$datepicker){?>
+function call_required_libraries($bootstrap=false,$fancybox=false,$knockout=false,$datepicker=false){?>
     <!-- All these libraries require jQuery to be loaded initially for best performance -->
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-3-1-1/index.js"></script>
     <?php 
