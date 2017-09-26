@@ -505,8 +505,4 @@ if ($fake_register_globals) {
 //TODO:  Check out the loading of the following include..."bootstrap" is probably not the best name.
 include_once __DIR__ . '/../library/pluginsystem/bootstrap.php';
 
-/*include expanded query include functions if Facility based access control is on.
-This should probably be implemented elsewhere as part of the above include. */
-if ($GLOBALS['facility_acl'] === true){
-include_once "$srcdir/fac_acl.inc.php";}
 ?>

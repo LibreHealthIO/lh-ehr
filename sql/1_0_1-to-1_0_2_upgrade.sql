@@ -769,3 +769,11 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 ('ICD10', 'CMS', '2017-10-01', '2018-ICD-10-PCS-General-Equivalence-Mappings.zip', 'bb73c80e272da28712887d7979b1cebf');
 #EndIf
 
+#IfMissingColumn patient_data facility
+ALTER TABLE patient_data ADD COLUMN facility INT(11) NOT NULL default '1' AFTER `lname`;
+#EndIf
+
+#IfNotRow layout_options field_id facility
+INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`, `source`, `conditions`) VALUES
+('DEM', 'facility', '1Face Sheet', 'Facility', 32, 35, 1, 0, 0, '', 1, 1, '', '', '', 0, '', 'F', '');
+#EndIf
