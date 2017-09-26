@@ -147,7 +147,7 @@ function fetch_reminders($pid, $appt_date) {
  }
 
  function oldEvt(eventid) {
-    dlgopen('../main/calendar/add_edit_event.php?eid=' + eventid, 'blank', 775, 375);
+    dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/add_edit_event.php?eid=' + eventid, 'blank', 775, 375);
  }
 
  function refreshme() {

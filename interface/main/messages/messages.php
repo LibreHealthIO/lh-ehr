@@ -45,7 +45,7 @@ require_once("$srcdir/gprelations.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/headers.inc.php");
 //Include Bootstrap
-call_required_libraries(bootstrap=true,fancybox=false,knockout=false,datepicker=false);
+call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
 ?>
 <html>
 <head>
@@ -424,7 +424,7 @@ $(document).ready(function(){
 
  // This invokes the find-patient popup.
  function sel_patient() {
-  dlgopen('../../main/calendar/find_patient_popup.php', '_blank', 500, 400);
+  dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_patient_popup.php', '_blank', 500, 400);
  }
  
   function addtolist(sel){

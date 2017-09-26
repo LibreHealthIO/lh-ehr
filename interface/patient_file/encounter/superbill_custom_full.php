@@ -44,6 +44,7 @@ require_once("$srcdir/sql.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 // Translation for form fields.
 function ffescape($field) {
@@ -233,12 +234,14 @@ if ($fend > $count) $fend = $count;
 
 <html>
 <head>
+<style>
+  
+</style>
 <title><?php echo xlt("Codes"); ?></title>
-<?php html_header_show(); ?>
-<link rel="stylesheet" href="<?php echo attr($css_header);?>" type="text/css">
-<script type="text/javascript" src="../../../library/dialog.js"></script>
-<script type="text/javascript" src="../../../library/textformat.js"></script>
-
+<?php 
+      html_header_show();
+      call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
+?>
 <script language="JavaScript">
 
 // This is for callback by the find-code popup.
@@ -377,11 +380,8 @@ foreach ($code_types as $key => $value) {
 <br>
 
 <center>
-<table border='0' cellpadding='0' cellspacing='0'>
-
- <tr>
-  <td colspan="3"> <?php echo xlt('Not all fields are required for all codes or code types.'); ?><br><br></td>
- </tr>
+ <?php echo xlt('Not all fields are required for all codes or code types.'); ?>
+<table class="table">
 
  <tr>
   <td><?php echo xlt('Type'); ?>:</td>
@@ -390,7 +390,7 @@ foreach ($code_types as $key => $value) {
   <td>
 
    <?php if ($mode != "modify") { ?>
-     <select name="code_type">
+     <select name="code_type" class="form-control input-sm">
    <?php } ?>
 
    <?php $external_sets = array(); ?>
@@ -410,34 +410,35 @@ foreach ($code_types as $key => $value) {
    <?php } ?>
 
    <?php if ($mode == "modify") { ?>
-      <input type='text' size='4' name='code_type' readonly='readonly' style='display:none' value='<?php echo attr($code_type) ?>' />
+      <input type='text' class="form-control input-sm" name='code_type' readonly='readonly' style='display:none' value='<?php echo attr($code_type) ?>' />
       <?php echo attr($code_type_name_external) ?>
    <?php } ?>
-
-   &nbsp;&nbsp;
-   <?php echo xlt('Code'); ?>:
-
+   </td>
+   <td>
+   <?php echo xlt('Code'); ?>:      
    <?php if ($mode == "modify") { ?>
-     <input type='text' size='6' name='code' readonly='readonly' value='<?php echo attr($code) ?>' />
+     <input type='text' name='code' class="form-control input-sm" readonly='readonly' value='<?php echo attr($code) ?>' />
    <?php } else { ?>
-     <input type='text' size='6' name='code' value='<?php echo attr($code) ?>'
+     <input type='text' size='6' name='code' class="form-control input-sm" value='<?php echo attr($code) ?>'
       onkeyup='maskkeyup(this,getCTMask())'
       onblur='maskblur(this,getCTMask())'
      />
    <?php } ?>
+   </td>
 
 <?php if (modifiers_are_used()) { ?>
-   &nbsp;&nbsp;<?php echo xlt('Modifier'); ?>:
+    <td>
+   <?php echo xlt('Modifier'); ?>:
    <?php if ($mode == "modify") { ?>
-     <input type='text' size='3' name='modifier' readonly='readonly' value='<?php echo attr($modifier) ?>'>
+     <input type='text' class="form-control input-sm" size='3' name='modifier' readonly='readonly' value='<?php echo attr($modifier) ?>'>
    <?php } else { ?>
-     <input type='text' size='3' name='modifier' value='<?php echo attr($modifier) ?>'>
+     <input type='text' class="form-control input-sm" size='3' name='modifier' value='<?php echo attr($modifier) ?>'>
    <?php } ?>
 <?php } else { ?>
    <input type='hidden' name='modifier' value=''>
 <?php } ?>
-
-   &nbsp;&nbsp;
+    </td>
+    <td>
    <input type='checkbox' name='active' value='1'<?php if (!empty($active) || ($mode == 'modify' && $active == NULL) ) echo ' checked'; ?> />
    <?php echo xlt('Active');
    if($GLOBALS['bill_to_patient'] ==1) {?>
@@ -454,9 +455,9 @@ foreach ($code_types as $key => $value) {
   <td>
 
    <?php if ($mode == "modify") { ?>
-     <input type='text' size='50' name="code_text" readonly="readonly" value='<?php echo attr($code_text) ?>'>
+     <input type='text'  class="form-control input-sm" size='50' name="code_text" readonly="readonly" value='<?php echo attr($code_text) ?>'>
    <?php } else { ?>
-     <input type='text' size='50' name="code_text" value='<?php echo attr($code_text) ?>'>
+     <input type='text'  class="form-control input-sm" size='50' name="code_text" value='<?php echo attr($code_text) ?>'>
    <?php } ?>
 
   </td>
@@ -469,12 +470,15 @@ foreach ($code_types as $key => $value) {
 <?php
 generate_form_field(array('data_type'=>1,'field_id'=>'superbill','list_id'=>'superbill'), $superbill);
 ?>
-   &nbsp;&nbsp;
+   </td>
+   <td>
    <input type='checkbox' title='<?php echo xlt("Syndromic Surveillance Report") ?>' name='reportable' value='1'<?php if (!empty($reportable)) echo ' checked'; ?> />
-   <?php echo xlt('Diagnosis Reporting'); ?>
-   &nbsp;&nbsp;&nbsp;&nbsp;
+   <?php echo xlt('Diagnosis Reporting'); ?>   
+   </td>
+   <td>
    <input type='checkbox' title='<?php echo xlt("Service Code Finance Reporting") ?>' name='financial_reporting' value='1'<?php if (!empty($financial_reporting)) echo ' checked'; ?> />
    <?php echo xlt('Service Reporting'); ?>
+   </td>
   </td>
  </tr>
 
@@ -482,7 +486,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'superbill','list_id'=>'sup
   <td><?php echo xlt('CYP Factor'); ?>:</td>
   <td></td>
   <td>
-   <input type='text' size='10' maxlength='20' name="cyp_factor" value='<?php echo attr($cyp_factor) ?>'>
+   <input type='text'  class="form-control input-sm" size='10' maxlength='20' name="cyp_factor" value='<?php echo attr($cyp_factor) ?>'>
   </td>
  </tr>
 
@@ -490,7 +494,7 @@ generate_form_field(array('data_type'=>1,'field_id'=>'superbill','list_id'=>'sup
   <td><?php echo xlt('Relate To'); ?>:</td>
   <td></td>
   <td>
-   <input type='text' size='50' name='related_desc'
+   <input type='text'  class="form-control input-sm" size='50' name='related_desc'
     value='<?php echo attr($related_desc) ?>' onclick="sel_related()"
     title='<?php echo xla('Click to select related code'); ?>' readonly />
    <input type='hidden' name='related_code' value='<?php echo attr($related_code) ?>' />
@@ -544,22 +548,21 @@ if ($taxline) {
    <input type="hidden" name="code_type_name_external" value="<?php echo attr($code_type_name_external) ?>">
    <input type="hidden" name="code_external" value="<?php echo attr($code_external) ?>">
    <?php if ($mode == "modify") { ?>
-     <a href='javascript:submitModifyComplete();' class='link'>[<?php echo xlt('Update'); ?>]</a>
+     <a href='javascript:submitModifyComplete();' class='css_button'><?php echo xlt('Update'); ?></a>
    <?php } else { ?>
-     <a href='javascript:submitUpdate();' class='link'>[<?php echo xlt('Update'); ?>]</a>
+     <a href='javascript:submitUpdate();' class='btn btn-primary'><?php echo xlt('Update'); ?></a>
      &nbsp;&nbsp;
-     <a href='javascript:submitAdd();' class='link'>[<?php echo xlt('Add as New'); ?>]</a>
+     <a href='javascript:submitAdd();' class='btn btn-primary'><?php echo xlt('Add as New'); ?></a>
    <?php } ?>
   </td>
  </tr>
 
 </table>
-<br>
-<table border='0' cellpadding='5' cellspacing='0' width='96%'>
+<table class="table">
  <tr>
 
   <td class='text'>
-   <select name='filter[]' multiple='multiple'>
+   <select class="form-control input-sm" name='filter[]' multiple='multiple'>
 <?php
 foreach ($code_types as $key => $value) {
   echo "<option value='" . attr($value['id']) . "'";
@@ -568,10 +571,10 @@ foreach ($code_types as $key => $value) {
 }
 ?>
    </select>
-   &nbsp;&nbsp;&nbsp;&nbsp;
+  
 
-   <input type="text" name="search" size="5" value="<?php echo attr($search) ?>">&nbsp;
-   <input type="submit" name="go" value='<?php echo xla('Search'); ?>'>&nbsp;&nbsp;
+  <input type="text" class="form-control input-sm" name="search" size="5" value="<?php echo attr($search) ?>"><br>
+   <input type="submit" class="btn btn-primary" name="go" value='<?php echo xla('Search'); ?>'>&nbsp;&nbsp;
    <input type='checkbox' title='<?php echo xlt("Only Show Diagnosis Reporting Codes") ?>' name='search_reportable' value='1'<?php if (!empty($search_reportable)) echo ' checked'; ?> />
    <?php echo xlt('Diagnosis Reporting Only'); ?>
    &nbsp;&nbsp;&nbsp;&nbsp;
@@ -599,7 +602,7 @@ foreach ($code_types as $key => $value) {
 
 </form>
 
-<table border='0' cellpadding='5' cellspacing='0' width='96%'>
+<table class="table">
  <tr>
   <td><span class='bold'><?php echo xlt('Code'); ?></span></td>
   <td><span class='bold'><?php echo xlt('Mod'); ?></span></td>
@@ -709,6 +712,9 @@ if (!empty($all)) {
   echo "alert('" . addslashes($alertmsg) . "');\n";
  }
 ?>
+</script>
+<script type="text/javascript">
+    $("#form_superbill").addClass('form-control input-sm');
 </script>
 
 </body>

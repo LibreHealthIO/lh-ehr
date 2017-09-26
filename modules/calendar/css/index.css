@@ -1,0 +1,90 @@
+body {
+  overflow: hidden;
+}
+
+#sidebar {
+  float:left;
+  width:15%;
+  min-width: 120px;
+  /*min-width:140px;*/
+  /*clear:left;*/
+}
+
+#calendar-container {
+  /*width: 100%;*/
+  /*overflow-x: scroll;*/
+  float: right;
+  width: 85%;
+  max-width: calc(100% - 120px);
+  height: 100%;
+  overflow: hidden;
+}
+
+#datepicker {
+  padding: 4px;
+  margin: 10px 10px 10px 0;
+  width: 90%;
+  font-size: 11px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+#pc_facility {
+  padding: 4px;
+  margin: 10px 10px 10px 0;
+  width: 90%;
+  font-size: 11px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+#pc_facility * {
+  width: 5px;
+}
+
+#pc_username {
+  margin: 10px 10px 0 0;
+  width: 90%;
+  overflow-y: auto;
+  font-size: 11px;
+  padding: 5px 0 5px 0;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+#facilityColor {
+  margin: 10px 10px 10px 0;
+  width: 90%;
+}
+
+#facilityColor table {
+  width: 100%;
+  font-size: 12px;
+}
+
+#facilityColor td div {
+  padding: 2px 4px 2px 4px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+.fc-time, .fc-title {
+  margin: 0;
+  color: #000;
+}
+
+.tooltipevent {
+  padding:5px;
+  border-radius: 0.25em;
+  background:#fff;
+  position:absolute;
+  z-index:10001;
+}

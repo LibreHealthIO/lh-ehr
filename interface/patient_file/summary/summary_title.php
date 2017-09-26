@@ -14,7 +14,7 @@ require_once("$srcdir/classes/Pharmacy.class.php");
 <script language='JavaScript'>
 
  function newEvt() {
-  dlgopen('../../main/calendar/add_edit_event.php?patientid=<?php echo $pid ?>',
+  dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/add_edit_event.php?patientid=<?php echo $pid ?>',
    '_blank', 550, 270);
   return false;
  }

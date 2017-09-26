@@ -35,12 +35,6 @@ function tf_filter_patient_select_pnuserapi( $username )
 }
 add_action( 'filter_patient_select_pnuserapi', 'tf_filter_patient_select_pnuserapi' );
 
-function add_tags_filters_navigation()
-{
-    include __DIR__."/views/tags_filters_left_nav.php";
-}
-add_action('after_main_box', 'add_tags_filters_navigation');
-
 function add_tag_filters_menu( &$menu_list )
 {
     $option_id = 'test';

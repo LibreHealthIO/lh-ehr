@@ -394,10 +394,10 @@
             "requirement" : 0,
             "acl_req" : [ "admin", "forms" ]
         }, { 
-            "label" : "Calendar",
+            "label" : "Calendar Administration",
             "menu_id" : "adm0",
             "target" : "lst",
-            "url" : "/interface/main/calendar/index.php?module=PostCalendar&type=admin&func=modifyconfig",
+            "url" : "/modules/calendar/admin.php",
             "children" : [ ],
             "requirement" : 0,
             "acl_req" : [ "admin", "calendar" ]

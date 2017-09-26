@@ -12,7 +12,7 @@
 
 
 require_once(dirname(__FILE__)."/encounter_events.inc.php");
-require_once(dirname(__FILE__)."/../interface/main/calendar/modules/PostCalendar/pnincludes/Date/Calc.php");
+require_once(dirname(__FILE__)."/../library/Calc.php");
 
 
 $COMPARE_FUNCTION_HASH = array(
@@ -79,11 +79,11 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
 
     $query = "SELECT " .
     "e.pc_eventDate, e.pc_endDate, e.pc_startTime, e.pc_endTime, e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, e.pc_recurrfreq, e.pc_catid, e.pc_eid, " .
-    "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, " .
+    "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, e.pc_aid, e.pc_eid, e.pc_alldayevent, e.pc_pid, " .
     "p.fname, p.mname, p.lname, p.pid, p.phone_home, p.phone_cell, " .
     "u.fname AS ufname, u.mname AS umname, u.lname AS ulname, u.id AS uprovider_id, " .
     "$tracker_fields" .
-    "c.pc_catname, c.pc_catid " .
+    "c.pc_catname, c.pc_catid, c.pc_catcolor " .
     "FROM libreehr_postcalendar_events AS e " .
     "$tracker_joins" .
     "LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .

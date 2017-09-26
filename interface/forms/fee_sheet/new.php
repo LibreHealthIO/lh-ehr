@@ -761,7 +761,7 @@ $billresult = getBillingByEncounter($pid, $encounter, "*");
 <?php 
   html_header_show();
   // Include Bootstrap
-  call_required_libraries(bootstrap=true,fancybox=false,knockout=false,datepicker=false); 
+  call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
 ?>
 
 <style>
@@ -890,7 +890,7 @@ function setJustify(seljust) {
 // Open the add-event dialog.
 function newEvt() {
  var f = document.forms[0];
- var url = '../../main/calendar/add_edit_event.php?patientid=<?php echo attr($pid); ?>';
+ var url = '<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/add_edit_event.php?patientid=<?php echo attr($pid); ?>';
  if (f.ProviderID && f.ProviderID.value) {
   url += '&userid=' + parseInt(f.ProviderID.value);
  }
@@ -1070,7 +1070,7 @@ echo " </tr>\n";
    <?php echo xlt('for'); ?>&nbsp;
   </td>
   <td>
-   <input type='text' class="form-control" name='search_term' value=''> &nbsp;
+   <input type='text' class="form-control input-sm" name='search_term' value=''> &nbsp;
   </td>
   <td>
    <input type='submit' name='bn_search' value='<?php echo xla('Search');?>'>
