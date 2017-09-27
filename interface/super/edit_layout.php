@@ -958,7 +958,7 @@ while ($row = sqlFetchArray($res)) {
   if ($row['group_name'] != $prevgroup) {
     if ($firstgroup == false) { echo "</tbody></table></div>\n"; }
     echo "<div id='".$row['group_name']."' class='group'>";
-    echo "<div class='text bold layouts_title' style='position:relative; background-color: #eef'>";
+    echo "<div class='text bold layouts_title' style='background-color: #eef'>";
     // echo preg_replace("/^\d+/", "", $row['group_name']);
     echo substr($row['group_name'], 1);
     echo "&nbsp; ";

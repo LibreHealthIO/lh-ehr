@@ -239,8 +239,8 @@ if ($fend > $count) $fend = $count;
 </style>
 <title><?php echo xlt("Codes"); ?></title>
 <?php 
-      html_header_show(); 
-      call_required_libraries(true,false,false,false);
+      html_header_show();
+      call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
 ?>
 <script language="JavaScript">
 

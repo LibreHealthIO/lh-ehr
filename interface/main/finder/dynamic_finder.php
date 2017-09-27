@@ -17,7 +17,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/headers.inc.php");
 
 // Including Bootstrap library.
-call_required_libraries(true,false,false,false);
+call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
 
 $popup = empty($_REQUEST['popup']) ? 0 : 1;
 $defaultFilterName = empty($_REQUEST['defaultFilterName']) ? null : $_REQUEST['defaultFilterName'];

@@ -100,13 +100,12 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 <html>
 <head>
 <?php 
-    call_required_libraries(true,true,false,false);
+    call_required_libraries($bootstrap=true,$fancybox=true,$knockout=false,$datepicker=false);
     resolveFancyboxCompatibility();
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 
 <script type="text/javascript">
-
 
 $(document).ready(function(){
 

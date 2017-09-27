@@ -28,7 +28,7 @@ function keywordFilter($arr) {
 }
 
 // get bootstrap and datetimepicker
-call_required_libraries(true, false, false, true);
+call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=true);
 ?>
 <html>
 <head>

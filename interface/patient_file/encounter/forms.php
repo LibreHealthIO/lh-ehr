@@ -23,7 +23,7 @@ require_once("$srcdir/headers.inc.php");
 <head>
 <?php html_header_show();
 //  Include Bootstrap and datepicker Library
-call_required_libraries(true,true,false,true);
+call_required_libraries($bootstrap=true,$fancybox=true,$knockout=false,$datepicker=true);
 resolveFancyboxCompatibility();
 ?>
 <script type="text/javascript" src="../../../library/js/common.js"></script>

@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="<?php echo $this->css_header;?>" type="text/css">
-<?php call_required_libraries(true,true,false,false);?>
+<?php call_required_libraries($bootstrap=true,$fancybox=true,$knockout=false,$datepicker=false);?>
 <script type="text/javascript" src="<?php echo $GLOBALS['rootdir'] . '/../library/js/common.js';?>"></script>
 </head>
 

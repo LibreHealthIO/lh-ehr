@@ -56,7 +56,7 @@ var webroot_url="<?php echo $web_root; ?>";
 
 <?php
     /*  Include Bootstrap and Knockout Libraries    */
-    call_required_libraries(true,false,true,false);
+    call_required_libraries($bootstrap=true,$fancybox=false,$knockout=true,$datepicker=false);
 ?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>

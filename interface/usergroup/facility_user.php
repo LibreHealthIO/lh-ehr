@@ -68,7 +68,8 @@ if ( isset($_POST["mode"]) && $_POST["mode"] == "facility_user_id" && isset($_PO
 ?>
 <html>
 <head>
-<?php call_required_libraries(true,true,false,false);
+<?php call_required_libraries($bootstrap=true,$fancybox=true,$knockout=false,$datepicker=false);
+
       resolveFancyboxCompatibility();
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>

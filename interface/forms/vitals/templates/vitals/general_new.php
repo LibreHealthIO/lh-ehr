@@ -7,7 +7,7 @@
     <?php 
       html_header_show();       
       // Include Bootstrap and datetimepicker
-      call_required_libraries(true,false,false,true);
+      call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=true);
     ?>    
     <script type="text/javascript">
       var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';
