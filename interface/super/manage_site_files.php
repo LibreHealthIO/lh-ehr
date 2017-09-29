@@ -46,7 +46,7 @@ if (!in_array($form_filename, $my_files)) $form_filename = '';
 $filepath = "$OE_SITE_DIR/$form_filename";
 
 $imagedir     = "$OE_SITE_DIR/images";
-$educationdir = "$OE_SITE_DIR/documents/education";
+$educationdir = "$OE_SITE_DIR/filemanager/files/education";
 
 if (!empty($_POST['bn_save'])) {
   if ($form_filename) {
@@ -191,13 +191,13 @@ function msfFileChanged() {
  </tr>
 
  <tr bgcolor='#dddddd' class='dehead'>
-  <td colspan='2' align='center'><?php echo text(xl('Upload Patient Education PDF to') . " $educationdir"); ?></td>
+  <td colspan='2' align='center'><?php echo text(xlt('Upload Patient Education PDF to .') . " $educationdir"); ?></td>
  </tr>
  <tr>
   <td valign='top' class='detail' nowrap>
    <?php echo xlt('Source File'); ?>:
    <input type="file" name="form_education" size="40" />&nbsp;
-   <?php echo xlt('Name must be like codetype_code_language.pdf, for example icd9_274.11_en.pdf'); ?>
+   <?php echo xlt('File name must end in .pdf.'); ?>
   </td>
  </tr>
 
