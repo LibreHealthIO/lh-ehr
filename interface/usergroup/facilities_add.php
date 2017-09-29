@@ -208,19 +208,19 @@ function displayAlert()
     <input type=hidden name=mode value="facility">
     <table border=0 cellpadding=0 cellspacing=0>
         <tr>
-        <td><span class="text"><?php echo xlt('Name'); ?>: </span></td><td><input type=entry name=facility size=20 value=""><span class="mandatory">&nbsp;*</span></td>
+        <td width='150px'><span class="text"><?php echo xlt('Name'); ?>: </span></td><td width='220px'><input type=entry name=facility size=20 value=""><span class="mandatory">&nbsp;*</span></td>
         <td width=20>&nbsp;</td>
-        <td><span class="text"><?php echo xlt('Phone'); ?>: </span></td><td><input type=entry name=phone size=20 value=""></td>
+        <td width='150px'><span class='text'><?php echo xlt('Legal Entity'); ?>: </span></td><td width='220px'><input type='entry' name='alias' size='20' value=""><span class="mandatory">&nbsp;*</span></td>
         </tr>
         <tr>
         <td><span class="text"><?php echo xlt('Address'); ?>: </span></td><td><input type=entry size=20 name=street value=""></td>
         <td>&nbsp;</td>
-        <td><span class="text"><?php echo xlt('Fax'); ?>: </span></td><td><input type=entry name=fax size=20 value=""></td>
+        <td><span class="text"><?php echo xlt('Phone'); ?>: </span></td><td><input type=entry name=phone size=20 value=""></td>
         </tr>
         <tr>
         <td><span class="text"><?php echo xlt('City'); ?>: </span></td><td><input type=entry size=20 name=city value=""></td>
         <td>&nbsp;</td>
-        <td><span class="text"><?php echo xlt('Zip Code'); ?>: </span></td><td><input type=entry size=20 name=postal_code value=""></td>
+        <td><span class="text"><?php echo xlt('Fax'); ?>: </span></td><td><input type=entry name=fax size=20 value=""></td>
         </tr>
         <tr>
         <td><span class="text"><?php echo xlt('State'); ?>: </span></td><td><input type=entry size=20 name=state value=""></td>
@@ -228,10 +228,13 @@ function displayAlert()
         <td><span class="text"><?php echo xlt('Tax ID'); ?>: </span></td><td><select name=tax_id_type><option value="EI"><?php echo xlt('EIN'); ?></option><option value="SY"><?php echo xlt('SSN'); ?></option></select><input type=entry size=11 name=federal_ein value=""></td>
         </tr>
         <tr>
-        <td height="22"><span class="text"><?php echo xlt('Country'); ?>: </span></td><td><input type=entry size=20 name=country_code value=""></td>
+        <td><span class="text"><?php echo xlt('Zip Code'); ?>: </span></td><td><input type=entry size=20 name=postal_code value=""></td>
         <td>&nbsp;</td>
         <td><span class="text"><?php if($GLOBALS['simplified_demographics']) {  echo xlt('Facility Code'); } else { echo xlt('Facility NPI'); }; ?>:
         </span></td><td><input type=entry size=20 name=facility_npi value=""></td>
+        </tr>
+        <tr>
+        <td><span class=text><?php echo xlt('Country'); ?>: </span></td><td><input type=entry size=20 name=country_code value="<?php echo htmlspecialchars($facility{"country_code"}, ENT_QUOTES) ?>"></td>
         </tr>
         <tr>
         <td><span class="text"><?php echo xlt('Website'); ?>: </span></td><td><input type=entry size=20 name=website value=""></td>
