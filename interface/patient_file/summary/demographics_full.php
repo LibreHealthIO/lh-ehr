@@ -457,7 +457,7 @@ function insurance_active(current){
     <tr>
         <td>
             <a href="demographics.php" onclick="top.restoreSession()">
-            <font class=title><?php xl('Current Patient','e'); ?></font>
+            <font class=title><?php echo htmlspecialchars(getPatientName($pid),ENT_NOQUOTES); ?></font>
             </a>
             &nbsp;&nbsp;
         </td>
