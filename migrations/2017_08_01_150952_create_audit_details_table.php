@@ -14,7 +14,7 @@ class CreateAuditDetailsTable extends Migration
     public function up()
     {
         Schema::create('audit_details',function(Blueprint $table){
-			$table->engine = 'InnoDB'->comment = "Primary key, auto increment";
+			$table->engine = 'InnoDB';
 			$table->bigIncrement('id')->comment = "Libreehr table's field name";
 			$table->string('table_name',100)->commnet = "Libreehr table's field value";
 			$table->string('field_name',100);
