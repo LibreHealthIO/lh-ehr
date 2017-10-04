@@ -36,16 +36,7 @@
         "target" : "pat",
         "url" : "/interface/new/new.php",
         "children" : [ ],
-        "requirement" : 0,
-        "global_req" : "full_new_patient_form"
-    }, { 
-        "label" : "New",
-        "menu_id" : "new0",
-        "target" : "pat",
-        "url" : "/interface/new/new.php",
-        "children" : [ ],
-        "requirement" : 0,
-        "global_req" : "!full_new_patient_form"
+        "requirement" : 0
     }, { 
         "label" : "Summary",
         "menu_id" : "dem1",
