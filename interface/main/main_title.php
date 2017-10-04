@@ -49,17 +49,6 @@ function toencounter(rawdata) {
     parent.left_nav.setRadio(frame, 'enc');
     top.frames[frame].location.href  = '../patient_file/encounter/encounter_top.php?set_encounter=' + enc;
 }
-function showhideMenu() {
-    var m = parent.document.getElementById("fsbody");
-    var targetWidth = '<?php echo $_SESSION['language_direction'] == 'ltr' ? '0,*' : '*,0'; ?>';
-    if (m.cols == targetWidth) {
-        m.cols = '<?php echo $_SESSION['language_direction'] == 'ltr' ?  $GLOBALS['gbl_nav_area_width'] .',*' : '*,' . $GLOBALS['gbl_nav_area_width'] ?>';
-        document.getElementById("showMenuLink").innerHTML = '<?php echo htmlspecialchars( xl('Hide Menu'), ENT_QUOTES); ?>';
-    } else {
-        m.cols = targetWidth;
-        document.getElementById("showMenuLink").innerHTML = '<?php echo htmlspecialchars( xl('Show Menu'), ENT_QUOTES); ?>';
-    }
-}
 </script>
 </head>
 <body class="body_title">
@@ -84,9 +73,7 @@ $res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"
 </tr>
 <?php } //end of acl_check('patients','demo','',array('write','addonly') if ?>
 
-    <tr><td valign="baseline"><B>
-        <a class="text" style='vertical-align:text-bottom;' href="main_title.php" id='showMenuLink' onclick='javascript:showhideMenu();return false;'><?php xl('Hide Menu','e'); ?></a></B>
-    </td></tr></table>
+    </table>
 </td>
 <td style="margin:3px 0px 3px 0px;vertical-align:middle;">
         <div style='margin-left:10px; float:left; display:none' id="current_patient_block">
