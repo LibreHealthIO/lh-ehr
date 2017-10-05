@@ -124,7 +124,7 @@ include_once("$srcdir/sql.inc");
         <table width="100%" height="90%">
             <td align='center' valign='middle' width='34%'>
                 <div class="login-box">
-                    <img src="<?php echo "$web_root/sites/" . $_SESSION['site_id'] ?>/images/login_logo.png"/>
+<div class="logo-left"><?php echo $logocode;?></div>
                     <div class="table-right">
                         <table width="100%">
                             <?php if (count($result) != 1) { ?>

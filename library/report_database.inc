@@ -61,7 +61,8 @@ function listingReportDatabase($start_date='',$end_date='') {
                            MAX(if( `field_id` = 'progress', `field_value`, 0 )) as `progress`,
                            MAX(if( `field_id` = 'total_items', `field_value`, 0 )) as `total_items`,
                            MAX(if( `field_id` = 'progress_items', `field_value`, 0 )) as `progress_items`,
-                           MAX(if( `field_id` = 'type', `field_value`, 0 )) as `type`
+                           MAX(if( `field_id` = 'type', `field_value`, 0 )) as `type`,
+                           MAX(if( `field_id` = 'title', `field_value`, 0 )) as `title`
                            FROM `report_results`
                            GROUP BY `report_id`
                          ) AS pt
@@ -297,9 +298,12 @@ function collectItemizedRuleDisplayTitle($report_id, $itemized_test_id, $numerat
         // We have a hit, build on the $dispTitle created above
         if (isset($row['is_main'])) {
           $tempCqmAmcString = "";
-          if (($type_report == "cqm") || ($type_report == "cqm_2011") || ($type_report == "cqm_2014")) {
+          if (($type_report == "cqm") || ($type_report == "cqm_2011") || ($type_report == "cqm_2014")|| ($type_report == "pqrs_individual_2015")|| ($type_report == "pqrs_groups_2015")|| ($type_report == "pqrs_individual_2016")|| ($type_report == "pqrs_groups_2016")) {
             if (!empty($row['cqm_pqri_code'])) {
               $tempCqmAmcString .= " " . xlt('PQRI') . ":" . text($row['cqm_pqri_code']) . " ";
+            }
+                if (!empty($row['pqrs_code'])) {
+              $tempCqmAmcString .= " " . xlt('PQRS') . ":" . text($row['pqrs_code']) . " ";
             }
             if (!empty($row['cqm_nqf_code'])) {
               $tempCqmAmcString .= " " . xlt('NQF') . ":" . text($row['cqm_nqf_code']) . " ";
@@ -385,6 +389,9 @@ function collectItemizedPatientsCdrReport($report_id,$itemized_test_id,$pass='al
     case "exception":
       $pass_sql=4;
       break;
+    case "hide":
+      $pass_sql=9;
+      break;
   }
 
   $sqlParameters = array($report_id,$itemized_test_id,$numerator_label);
@@ -395,6 +402,7 @@ function collectItemizedPatientsCdrReport($report_id,$itemized_test_id,$pass='al
   else if ($pass == "fail") {
     $exlPidArr = array();
     $exludeResult = collectItemizedPatientsCdrReport($report_id,$itemized_test_id,'exclude',$numerator_label,false,$sqllimit,$fstart);
+ //if(!is_array($excludeResult)) { var_dump(debug_backtrace()); }
     foreach($exludeResult as $exlResArr){
       $exlPidArr[] = $exlResArr['pid'];
     }
