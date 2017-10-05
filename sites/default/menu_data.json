@@ -253,6 +253,37 @@
     } ],
     "requirement" : 0
 }, { 
+    "label" : "New Crop",
+    "menu_id" : "feeimg",
+    "children" : [ { 
+        "label" : "e-Rx",
+        "menu_id" : "ncr0",
+        "target" : "pat",
+        "url" : "/interface/eRx.php",
+        "children" : [ ],
+        "requirement" : 1,
+        "acl_req" : [ "patients", "rx" ]
+    }, { 
+        "label" : "e-Rx Renewal",
+        "menu_id" : "ncr1",
+        "target" : "pat",
+        "url" : "/interface/eRx.php?page=status",
+        "children" : [ ],
+        "requirement" : 1,
+        "acl_req" : [ "patients", "rx" ]
+    }, { 
+        "label" : "e-Rx EPCS",
+        "menu_id" : "ncr2",
+        "target" : "pat",
+        "url" : "/interface/eRx.php?page=epcs-admin",
+        "children" : [ ],
+        "requirement" : 0,
+        "acl_req" : [ "patients", "rx" ],
+        "global_req" : "newcrop_user_role_erxadmin"
+    } ],
+    "requirement" : 0,
+    "global_req" : "erx_enable"
+}, { 
     "label" : "Administration",
     "menu_id" : "admimg",
     "children" : [ { 
@@ -421,6 +452,15 @@
             "requirement" : 0,
             "acl_req" : [ "admin", "database" ],
             "global_req" : "!disable_sql_admin_link"
+        }, { 
+            "label" : "eRx Logs",
+            "menu_id" : "adm0",
+            "target" : "adm",
+            "url" : "/interface/logview/erx_logview.php",
+            "children" : [ ],
+            "requirement" : 0,
+            "acl_req" : [ "admin", "super" ],
+            "global_req" : [ "erx_enable", "newcrop_user_role" ]
         }, { 
             "label" : "Certificates",
             "menu_id" : "adm0",
