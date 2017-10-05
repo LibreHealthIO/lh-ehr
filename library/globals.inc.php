@@ -216,12 +216,7 @@ $GLOBALS_METADATA = array(
       xl('Pick a CSS theme.')
     ),
 
-    'gbl_nav_area_width' => array(
-      xl('Navigation Area Width'),
-       'num',
-       '150',
-      xl('Width in pixels of the left navigation frame.')
-    ),
+
 
     'libreehr_name' => array(
       xl('Application Title'),
@@ -233,7 +228,6 @@ $GLOBALS_METADATA = array(
     'full_new_patient_form' => array(
       xl('New Patient Form'),
       array(
-        '0' => xl('Old-style static form without search or duplication check'),
         '1' => xl('All demographics fields, with search and duplication check'),
         '2' => xl('Mandatory or specified fields only, search and dup check'),
         '3' => xl('Mandatory or specified fields only, dup check, no search'),
@@ -252,19 +246,6 @@ $GLOBALS_METADATA = array(
       xl('Type of columns displayed for patient search results')
     ),
 
-    'gbl_tall_nav_area' => array(
-      xl('Tall Navigation Area'),
-       'bool',                          // data type
-       '0',                             // default = false
-      xl('Navigation area uses full height of frameset')
-    ),
-
-    'gbl_nav_visit_forms' => array(
-      xl('Navigation Area Visit Forms'),
-       'bool',                          // data type
-       '1',                             // default = true
-      xl('Navigation area includes encounter forms')
-    ),
 
     'simplified_demographics' => array(
       xl('Simplified Demographics'),
@@ -289,15 +270,16 @@ $GLOBALS_METADATA = array(
 
 
     // TajEmo Work BY CB 2012/06/21 10:42:31 AM added option to Hide Fees
-    'enable_fees_in_left_menu' => array(
-      xl('Enable Fees In Left Menu'),
+    'enable_fees_in_menu' => array(
+      xl('Enable Fees In Menu'),
        'bool',                          // data type
        '1',                             // default = true
-      xl('Enable Fees In Left Menu')
+      xl('Enable Fees In Menu')
     ),
     // EDI history  2012-09-13
-    'enable_edihistory_in_left_menu' => array(
-      xl('Enable EDI History In Left Menu'),
+    
+    'enable_edihistory_in_menu' => array(
+      xl('Enable EDI History In Fees Menu'),
        'bool',                          // data type
        '1',                             // default = true
       xl('EDI History (under Fees) for storing and interpreting EDI claim response files')
@@ -1732,7 +1714,7 @@ $GLOBALS_METADATA = array(
     'pat_trkr_timer' => array(
       xl('Patient Flow Board Timer Interval'),
       array(
-       '0' => 'No automatic refresh',
+       '0' => xl('No automatic refresh'),
        '0:10' => '10',
        '0:20' => '20',
        '0:30' => '30',

@@ -92,8 +92,6 @@ else {
   $frame1url = "TAB_ONE_DEFAULT"; 
 }
 
-$nav_area_width = '130';
-if (!empty($GLOBALS['gbl_nav_area_width'])) $nav_area_width = $GLOBALS['gbl_nav_area_width'];
 require_once("tabs/redirect.php");
 ?>
 <html>
@@ -135,51 +133,5 @@ $sidebar_tpl = "<frameset rows='*,0' frameborder='0' border='0' framespacing='0'
 $main_tpl = "<frameset rows='60%,*' id='fsright' bordercolor='#999999' frameborder='1'>" ;
 $main_tpl .= "<frame src='". $frame1url ."' name='RTop' scrolling='auto' />
    <frame src='messages/messages.php?form_active=1' name='RBot' scrolling='auto' /></frameset>";
-// Please keep in mind that border (mozilla) and framespacing (ie) are the
-// same thing. use both.
-// frameborder specifies a 3d look, not whether there are borders.
-
-  if (empty($GLOBALS['gbl_tall_nav_area'])) {
-    // not tall nav area ?>
-<frameset rows='<?php echo attr($GLOBALS['titleBarHeight']) + 5 ?>,*' frameborder='1' border='1' framespacing='1' onunload='imclosing()'>
- <frame src='main_title.php' name='Title' scrolling='no' frameborder='1' noresize />
- <?php if($lang_dir != 'rtl'){ ?>
- 
-     <frameset cols='<?php echo attr($nav_area_width) . ',*'; ?>' id='fsbody' frameborder='1' border='4' framespacing='4'>
-     <?php echo $sidebar_tpl ?>
-     <?php echo $main_tpl ?>
-     </frameset>
- 
- <?php }else{ ?>
- 
-     <frameset cols='<?php echo  '*,' . attr($nav_area_width); ?>' id='fsbody' frameborder='1' border='4' framespacing='4'>
-     <?php echo $main_tpl ?>
-     <?php echo $sidebar_tpl ?>
-     </frameset>
- 
- <?php }?>
-   
- </frameset>
-</frameset>
-
-<?php } else { // use tall nav area ?>
-
-<frameset cols='<?php echo attr($nav_area_width); ?>,*' id='fsbody' frameborder='1' border='4' framespacing='4' onunload='imclosing()'>
- <frameset rows='*,0' frameborder='0' border='0' framespacing='0'>
-  <frame src='left_nav.php' name='left_nav' />
-  <frame src='daemon_frame.php' name='Daemon' scrolling='no' frameborder='0'
-   border='0' framespacing='0' />
- </frameset>
- <frameset rows='<?php echo attr($GLOBALS['titleBarHeight']) + 5 ?>,*' frameborder='1' border='1' framespacing='1'>
-  <frame src='main_title.php' name='Title' scrolling='no' frameborder='1' />
-  <frameset rows='60%,*' id='fsright' bordercolor='#999999' frameborder='1' border='4' framespacing='4'>
-   <frame src='<?php echo $frame1url ?>' name='RTop' scrolling='auto' />
-   <frame src='messages/messages.php?form_active=1' name='RBot' scrolling='auto' />
-  </frameset>
- </frameset>
-</frameset>
-
-<?php } // end tall nav area ?>
-
-
+?>
 </html>
