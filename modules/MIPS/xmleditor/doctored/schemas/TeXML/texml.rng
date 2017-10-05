@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <define name="nomath">
+    <choice>
+      <text/>
+      <ref name="TeXML"/>
+      <ref name="cmd"/>
+      <ref name="env"/>
+      <ref name="group"/>
+      <ref name="ctrl"/>
+      <ref name="spec"/>
+    </choice>
+  </define>
+  <define name="content">
+    <choice>
+      <ref name="nomath"/>
+      <ref name="math"/>
+      <ref name="dmath"/>
+    </choice>
+  </define>
+  <define name="TeXML">
+    <element name="TeXML">
+      <ref name="attlist.TeXML"/>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.TeXML" combine="interleave">
+    <optional>
+      <attribute name="mode">
+        <choice>
+          <value>text</value>
+          <value>math</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="escape">
+        <choice>
+          <value>0</value>
+          <value>1</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="emptylines">
+        <choice>
+          <value>0</value>
+          <value>1</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="ligatures">
+        <choice>
+          <value>0</value>
+          <value>1</value>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <define name="env">
+    <element name="env">
+      <ref name="attlist.env"/>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.env" combine="interleave">
+    <attribute name="name"/>
+    <optional>
+      <attribute name="begin"/>
+    </optional>
+    <optional>
+      <attribute name="end"/>
+    </optional>
+  </define>
+  <define name="group">
+    <element name="group">
+      <ref name="attlist.group"/>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.group" combine="interleave">
+    <empty/>
+  </define>
+  <define name="math">
+    <element name="math">
+      <ref name="attlist.math"/>
+      <zeroOrMore>
+        <ref name="nomath"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.math" combine="interleave">
+    <empty/>
+  </define>
+  <define name="dmath">
+    <element name="dmath">
+      <ref name="attlist.dmath"/>
+      <zeroOrMore>
+        <ref name="nomath"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.dmath" combine="interleave">
+    <empty/>
+  </define>
+  <define name="cmd">
+    <element name="cmd">
+      <ref name="attlist.cmd"/>
+      <zeroOrMore>
+        <choice>
+          <ref name="opt"/>
+          <ref name="parm"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.cmd" combine="interleave">
+    <attribute name="name"/>
+  </define>
+  <define name="inopt">
+    <choice>
+      <text/>
+      <ref name="spec"/>
+      <ref name="ctrl"/>
+      <ref name="cmd"/>
+      <ref name="math"/>
+    </choice>
+  </define>
+  <define name="opt">
+    <element name="opt">
+      <ref name="attlist.opt"/>
+      <zeroOrMore>
+        <ref name="inopt"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.opt" combine="interleave">
+    <empty/>
+  </define>
+  <define name="parm">
+    <element name="parm">
+      <ref name="attlist.parm"/>
+      <zeroOrMore>
+        <ref name="inopt"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.parm" combine="interleave">
+    <empty/>
+  </define>
+  <define name="ctrl">
+    <element name="ctrl">
+      <ref name="attlist.ctrl"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="attlist.ctrl" combine="interleave">
+    <attribute name="ch"/>
+  </define>
+  <define name="spec">
+    <element name="spec">
+      <ref name="attlist.spec"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="attlist.spec" combine="interleave">
+    <attribute name="cat">
+      <choice>
+        <value>esc</value>
+        <value>bg</value>
+        <value>eg</value>
+        <value>mshift</value>
+        <value>align</value>
+        <value>parm</value>
+        <value>sup</value>
+        <value>sub</value>
+        <value>tilde</value>
+        <value>comment</value>
+        <value>vert</value>
+        <value>lt</value>
+        <value>gt</value>
+      </choice>
+    </attribute>
+  </define>
+  <start>
+    <choice>
+      <ref name="math"/>
+      <ref name="spec"/>
+      <ref name="parm"/>
+      <ref name="cmd"/>
+      <ref name="env"/>
+      <ref name="ctrl"/>
+      <ref name="group"/>
+      <ref name="TeXML"/>
+      <ref name="opt"/>
+      <ref name="dmath"/>
+    </choice>
+  </start>
+</grammar>

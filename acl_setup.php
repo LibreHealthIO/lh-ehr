@@ -189,6 +189,8 @@
      // xl('Accounting')
 $breakglass  = $gacl->add_group('breakglass' , 'Emergency Login'    , $users, 'ARO');
      // xl('Emergency Login')
+$pqrsreporter = $gacl->add_group('pqrsreporter',  'MIPS Reporter',   $users, 'ARO');
+	// xl('PQRS Reporter')
 
 
  // Create a Users section for the AROs (humans).
@@ -382,6 +384,47 @@ $breakglass  = $gacl->add_group('breakglass' , 'Emergency Login'    , $users, 'A
   1, 1, 'write', 'Things that back office can read and modify'
  );
      // xl('Things that back office can read and modify')
+
+
+// Set permissions for MIPS reporters.
+//
+$gacl->add_acl(
+	array(
+		'placeholder' => array('filler')
+	),
+	NULL, array($pqrsreporter), NULL, NULL,
+	1, 1, 'view', 'Things that PQRS reporters can only read'
+);
+	// xl('Things that MIPS reporters can only read')
+$gacl->add_acl(
+	array(
+		'placeholder' => array('filler')
+	),
+	NULL, array($pqrsreporter), NULL, NULL,
+	1, 1, 'addonly', 'Things that MIPS reporters can read and enter but not modify'
+);
+	// xl('Things that MIPS reporters can read and enter but not modify')
+$gacl->add_acl(
+	array(
+		'placeholder' => array('filler')
+	),
+	NULL, array($pqrsreporter), NULL, NULL,
+	1, 1, 'wsome', 'Things that MIPS reporters can read and partly modify'
+);
+	// xl('Things that MIPS reporters can read and partly modify')
+$gacl->add_acl(
+	array(
+		'acct' => array('disc', 'rep'),
+		'admin' => array('drugs'),
+		'encounters' => array('auth_a', 'coding_a', 'notes_a', 'date_a'),
+		'patients' => array('appt', 'demo', 'med', 'trans', 'docs', 'notes', 'sign'),
+		'sensitivities' => array('normal', 'high')
+	),
+	NULL, array($pqrsreporter), NULL, NULL,
+	1, 1, 'write', 'Things that MIPS reporters can read and modify'
+);
+	// xl('Things that MIPS reporters can read and modify')
+
 
  // Set permissions for Emergency Login.
  //
