@@ -261,16 +261,14 @@
         "target" : "pat",
         "url" : "/interface/eRx.php",
         "children" : [ ],
-        "requirement" : 1,
-        "acl_req" : [ "patients", "rx" ]
+        "requirement" : 0
     }, { 
         "label" : "e-Rx Renewal",
         "menu_id" : "ncr1",
         "target" : "pat",
         "url" : "/interface/eRx.php?page=status",
         "children" : [ ],
-        "requirement" : 1,
-        "acl_req" : [ "patients", "rx" ]
+        "requirement" : 0
     }, { 
         "label" : "e-Rx EPCS",
         "menu_id" : "ncr2",
@@ -278,11 +276,10 @@
         "url" : "/interface/eRx.php?page=epcs-admin",
         "children" : [ ],
         "requirement" : 0,
-        "acl_req" : [ "patients", "rx" ],
         "global_req" : "newcrop_user_role_erxadmin"
     } ],
     "requirement" : 0,
-    "global_req" : "erx_enable"
+    "global_req_strict" : [ "erx_enable", "newcrop_user_role" ]
 }, { 
     "label" : "Administration",
     "menu_id" : "admimg",
