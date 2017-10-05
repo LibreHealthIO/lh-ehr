@@ -5019,7 +5019,7 @@ CREATE TABLE `patient_data` (
   `financial` varchar(255) NOT NULL default '',
   `fitness` int(11) NOT NULL default '0',
   `fname` varchar(255) NOT NULL default '',
-  `guardiansname` TEXT
+  `guardiansname` TEXT,
   `hipaa_allowemail` VARCHAR(3) NOT NULL DEFAULT 'NO',
   `hipaa_allowsms` VARCHAR(3) NOT NULL DEFAULT 'NO',
   `hipaa_mail` varchar(3) NOT NULL default '',
