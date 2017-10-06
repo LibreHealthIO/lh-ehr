@@ -1,6 +1,6 @@
 <?php
-//require_once '../../../globals.php';
-//require_once($GLOBALS['srcdir'].'/acl.inc');
+require_once '../../../interface/globals.php';
+require_once($GLOBALS['srcdir'].'/acl.inc');
 ?>
 <html>
  
