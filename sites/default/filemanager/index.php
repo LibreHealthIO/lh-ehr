@@ -4,13 +4,14 @@
 ?>
 <html>
  
-<head>   
+<head>  
+<span class='title' visibility: hidden><?php echo 'File Manager'; ?></span> 
  	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<!-- 1 -->
+
 <link href="assets/css/dropzone.css" type="text/css" rel="stylesheet" />
 <link href="assets/css/styles.css" rel="stylesheet"/> 
-<!-- 2 -->
+
 <script src="assets/js/dropzone.js"></script>
 
  <h1> Drop your file in the box, or click in the box to browse for your files.</h1>
@@ -18,7 +19,7 @@
  
 <body>
  
-<!-- 3 -->
+
 <form action="upload.php" class="dropzone"></form>
 
  	<div class="filemanager">
@@ -39,8 +40,6 @@
 	</div>  
 		<script src="assets/js/jquerycurrent.js"></script>
 	<script src="assets/js/script.js"></script>
-	<?php //echo $OE_SITE_DIR;
-	?>
 </body>
  
 </html> 
