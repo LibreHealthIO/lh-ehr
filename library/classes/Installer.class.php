@@ -193,7 +193,11 @@ class Installer
             $chr = substr($query,strlen($query)-1,1);
             if ($chr == ";") { // valid query, execute
                     $query = rtrim($query,";");
-                    $this->execute_sql( $query );
+                    $query_status=$this->execute_sql( $query );
+                    if($query_status==false)
+                    {
+                        echo $this->error_message;
+                    }
                     $query = "";
             }
     }
