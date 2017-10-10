@@ -172,6 +172,7 @@
  Add("fname"      , $row['fname']);
  Add("mname"      , $row['mname']);
  Add("title"      , $row['title']);
+ Add("ss"         , Digits($row['ss']));
  Add("dob"        , LWDate($row['DOB']));
  Add("sex"        , Sex($row['sex']));
  Add("street"     , $row['street']);
