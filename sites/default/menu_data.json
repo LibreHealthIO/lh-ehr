@@ -973,6 +973,7 @@
         "url" : "/modules/MIPS/clinical_measures.php?type=pqrs",
         "children" : [ ],
         "requirement" : 0
+        "global_req" : "enable_pqrs" 
     }, { 
         "label" : "Select Measures",
         "menu_id" : "rep0",
@@ -980,6 +981,7 @@
         "url" : "/modules/MIPS/measure_activate.php",
         "children" : [ ],
         "requirement" : 0
+        "global_req" : "enable_pqrs" 
     }, { 
         "label" : "Delete Old Reports",
         "menu_id" : "rep0",
@@ -987,6 +989,7 @@
         "url" : "/modules/MIPS/truncate_reports.php",
         "children" : [ ],
         "requirement" : 0
+        "global_req" : "enable_pqrs" 
     },{ 
         "label" : "Report Database Import",
         "menu_id" : "rep0",
@@ -994,6 +997,8 @@
         "url" : "/modules/MIPS/import_data.php",
         "children" : [ ],
         "requirement" : 0
+        "acl_req" : [ "admin", "super" ]
+        "global_req" : "pqrs_demosystem"
     },{ 
         "label" : "Remove_Provider_Assignments",
         "menu_id" : "rep0",
@@ -1001,6 +1006,8 @@
         "url" : "/modules/MIPS/reset_provider_to_unassigned.php",
         "children" : [ ],
         "requirement" : 0
+        "acl_req" : [ "admin", "super" ]
+        "global_req" : "enable_pqrs" 
     },{ 
         "label" : "Provider Encounter Counts",
         "menu_id" : "rep0",
@@ -1015,6 +1022,7 @@
         "url" : "/modules/filemanager/index.php",
         "children" : [ ],
         "requirement" : 0
+        "acl_req" : [ "admin", "super" ]
     },{ 
         "label" : "Change Demo Database",
         "menu_id" : "rep0",
@@ -1022,6 +1030,8 @@
         "url" : "/modules/MIPS/reload_demo_database.php",
         "children" : [ ],
         "requirement" : 0
+        "acl_req" : [ "admin", "super" ]
+        "global_req" : "pqrs_demosystem"
     },{ 
         "label" : "XML Editor",
         "menu_id" : "rep0",
@@ -1038,6 +1048,7 @@
         "requirement" : 0
     } ],
     "requirement" : 0
+    "global_req" : "enable_pqrs"    
 }, { 
     "label" : "Help",
     "menu_id" : "modimg",

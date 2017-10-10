@@ -18,9 +18,12 @@
  */
 require_once '../../interface/globals.php';
 include_once("$srcdir/api.inc");
+include_once("$srcdir/acl.inc");
+
 
 ?>	
 <html>
+<?php if (acl_check('admin', 'practice' )) { ?>
 <span class='title'><?php echo htmlspecialchars( xl('Reset Providers'), ENT_NOQUOTES); ?></span>
 <form action="reset_provider_to_unassigned.php" method="post">	
 <?php
@@ -36,8 +39,7 @@ echo "<hr>";
 <?php }
 ?>
 </form>
+<?php }
+else {echo "You do not have access to this feature.";}
+?>
 </html>
-
-
-
-

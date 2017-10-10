@@ -17,9 +17,10 @@
  */
 require_once '../../interface/globals.php';
 include_once("$srcdir/api.inc");
-
+include_once("$srcdir/acl.inc");
 ?>	
 <html>
+<?php if (acl_check('admin', 'practice' )) { ?>
 <span class='title' visibility: hidden>Import Database</span>
 <h1>Import Processed x12 837 file data</h1>
 <b>This tool truncates all data from previous imports, and loads the new data uploaded to the sites directory.  It also removes all users with an ID number greater than 1000.  Imported data user (providers) 
@@ -79,6 +80,9 @@ echo "Database updated!";
 }else{
     echo "<input type='submit' name='formSubmit' value='Submit' />";}
 ?>
-
-</html>
+<?php }
+else {echo "You do not have access to this feature.";}
+?>
 </form>
+</html>
+

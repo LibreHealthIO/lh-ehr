@@ -18,11 +18,13 @@
  */
 require_once '../../interface/globals.php';
 include_once("$srcdir/api.inc");
-
+ include_once("$srcdir/acl.inc");
 ?>	
 <html>
 <span class='title' visibility: hidden><?php echo htmlspecialchars( xl('Delete all QA Reports'), ENT_NOQUOTES); ?></span>
 <b>This will delete all old reports!</b>
+<BR>
+<?php if (acl_check('admin', 'practice' )) { ?>
 
 <input type="submit" name="formSubmit" value="Submit" />
 <form action="truncate_reports.php" method="post">	
@@ -31,9 +33,10 @@ if($_POST['formSubmit'] == "Submit")
 {
 sqlStatement("TRUNCATE TABLE `report_results`;");
 sqlStatement("TRUNCATE TABLE `report_itemized`;");
-echo "Table 'reports_results' truncated and 'report_itemized'.   Old reports deleted.";
+echo "Table 'reports_results' and 'report_itemized' truncated.   Old reports deleted.";
 }
 //This whole feature needs to be moved to a integrated admin form, and naturally use css buttons and translations.
+}else {echo "You do not have access to this feature.";}
 ?>
 
 </html>

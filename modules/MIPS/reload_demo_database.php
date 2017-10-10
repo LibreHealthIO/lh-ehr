@@ -18,9 +18,11 @@
  */
 require_once '../../interface/globals.php';
 include_once("$srcdir/api.inc");
+include_once("$srcdir/acl.inc");
 
 ?>	
 <html>
+<?php if (acl_check('admin', 'practice' )) { ?>
 <span class='title' visibility: hidden><?php echo htmlspecialchars( xl('Demo Data Loading'), ENT_NOQUOTES); ?></span>
 <form action="reload_demo_database.php" method="post">	
 <?php
@@ -125,5 +127,8 @@ This ONLY affects the following tables:  addresses, billing, facility, form_enco
 </div>
 <input type="submit" name="formSubmit" value="Submit" />
 </form>
+<?php }
+else {echo "You do not have access to this feature.";}
+?>
 </html>
-</form>
+
