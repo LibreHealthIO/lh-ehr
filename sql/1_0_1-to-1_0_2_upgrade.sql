@@ -770,7 +770,7 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 #EndIf
 
 #IfMissingColumn patient_data facility
-ALTER TABLE patient_data ADD COLUMN facility INT(11) NOT NULL default '1' AFTER `lname`;
+ALTER TABLE patient_data ADD COLUMN facility INT(11) NOT NULL default '1' AFTER `DOB`;
 #EndIf
 
 #IfNotRow layout_options field_id facility
