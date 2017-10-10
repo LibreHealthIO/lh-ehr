@@ -99,4 +99,4 @@ CREATE TABLE IF NOT EXISTS `form_ub04_billing_options` (
   comments                     varchar(255) default NULL,
   replacement_claim            tinyint(1)   default 0,
   PRIMARY KEY (id)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
