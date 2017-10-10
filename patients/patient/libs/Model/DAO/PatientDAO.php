@@ -166,18 +166,6 @@ class PatientDAO extends Phreezable
     public $Pid;
 
     /** @var string */
-    public $Genericname1;
-
-    /** @var string */
-    public $Genericval1;
-
-    /** @var string */
-    public $Genericname2;
-
-    /** @var string */
-    public $Genericval2;
-
-    /** @var string */
     public $HipaaMail;
 
     /** @var string */

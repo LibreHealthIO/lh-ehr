@@ -97,10 +97,6 @@ if ($_POST['form_create']) {
     "$mypubpid",
     $pid,
     "", // providerID
-    "", // genericname1
-    "", // genericval1
-    "", // genericname2
-    "", // genericval2
     "", //billing_note
     "", // phone_cell
     "", // hipaa_mail

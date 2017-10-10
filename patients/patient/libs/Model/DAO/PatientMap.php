@@ -107,10 +107,6 @@ class PatientMap implements IDaoMap, IDaoMap2
             self::$FM["FinancialReview"] = new FieldMap("FinancialReview","patient_data","financial_review",false,FM_TYPE_DATETIME,null,null,false);
             self::$FM["Pubpid"] = new FieldMap("Pubpid","patient_data","pubpid",false,FM_TYPE_VARCHAR,255,null,false);
             self::$FM["Pid"] = new FieldMap("Pid","patient_data","pid",false,FM_TYPE_BIGINT,20,null,false);
-            /* self::$FM["Genericname1"] = new FieldMap("Genericname1","patient_data","genericname1",false,FM_TYPE_VARCHAR,255,null,false);
-            self::$FM["Genericval1"] = new FieldMap("Genericval1","patient_data","genericval1",false,FM_TYPE_VARCHAR,255,null,false);
-            self::$FM["Genericname2"] = new FieldMap("Genericname2","patient_data","genericname2",false,FM_TYPE_VARCHAR,255,null,false);
-            self::$FM["Genericval2"] = new FieldMap("Genericval2","patient_data","genericval2",false,FM_TYPE_VARCHAR,255,null,false); */
             self::$FM["HipaaMail"] = new FieldMap("HipaaMail","patient_data","hipaa_mail",false,FM_TYPE_VARCHAR,3,null,false);
             self::$FM["HipaaVoice"] = new FieldMap("HipaaVoice","patient_data","hipaa_voice",false,FM_TYPE_VARCHAR,3,null,false);
             self::$FM["HipaaNotice"] = new FieldMap("HipaaNotice","patient_data","hipaa_notice",false,FM_TYPE_VARCHAR,3,null,false);
