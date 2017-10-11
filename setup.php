@@ -13,7 +13,7 @@ ini_set("session.bug_compat_warn","off");
 
 $state = $_POST["state"];
 
-// Make this true for IPPF.
+// Make this true for IPPF.  // TODO - REMOVE THIS
 $ippf_specific = false;
 
 // If this script was invoked with no site ID, then ask for one.
@@ -190,7 +190,7 @@ else {
     
   case 2:
     echo "<b>Step $state</b><br><br>\n";
-    echo "Now you need to supply the MySQL server information and path information. Detailed instructions on each item can be found in the <a href='INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual file.
+    echo "Now you need to supply the MySQL server information and path information. Detailed instructions on each item can be found in the <a href='Documentation/1_Installing/InstallingLibreEHR.html' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual file.
 <br><br>\n
 <FORM METHOD='POST'>
 <INPUT TYPE='HIDDEN' NAME='state' VALUE='3'>
@@ -244,7 +244,7 @@ else {
     $siteslist = array();
     while (false !== ($sfname = readdir($dh))) {
       if (substr($sfname, 0, 1) == '.') continue;
-      if ($sfname == 'CVS'            ) continue;
+      if ($sfname == 'CVS'            ) continue;  //TODO REMOVE this
       if ($sfname == $site_id         ) continue;
       $sitedir = "$OE_SITES_BASE/$sfname";
       if (!is_dir($sitedir)               ) continue;
@@ -525,10 +525,27 @@ else {
         $gotFileFlag = 1;
       }
     }
-echo "<li>To ensure proper functioning of LibreHealth EHR you must make sure that settings in php.ini file include  \"short_open_tag = On\", \"display_errors = Off\", \"register_globals = Off\", \"max_execution_time\" set to at least 60, \"max_input_time\" set to at least 90, \"post_max_size\" set to at least 30M, and \"memory_limit\" set to at least \"128M\".</li>\n";
-echo "<li>In order to take full advantage of the patient documents capability you must make sure that settings in php.ini file include \"file_uploads = On\", that \"upload_max_filesize\" is appropriate for your use and that \"upload_tmp_dir\" is set to a correct value that will work on your system.</li>\n";
+echo "<li>To ensure proper functioning of LibreHealth EHR you must make sure that settings in php.ini file include: 
+<ul>
+<li>\"short_open_tag = On\"</li>
+<li>\"display_errors = Off\"</li>
+<li>\"register_globals = Off\"</li>
+<li>\"max_execution_time\" set to at least 60</li>
+<li>\"max_input_time\" set to at least 90</li>
+<li>\"post_max_size\" set to at least 30M</li>
+<li>\"memory_limit\" set to at least \"128M\"</li>
+<li>\"key_buffer_size\" set to 10M</li>
+<li>\"innodb_buffer_pool_size\" set to 70% of available RAM.</li>
+</ul>";
+echo "
+<li>In order to take full advantage of the patient documents capability you must make sure that settings in php.ini file include:
+<ul>
+<li>\"file_uploads = On\"</li>
+<li>\"upload_max_filesize\" is appropriate for your use (32M seems good)</li>
+<li>\"upload_tmp_dir\" is set to a correct value that will work on your system.</li>
+</ul>";
 if (!$gotFileFlag) {
-    echo "<li>If you are having difficulty finding your php.ini file, then refer to the <a href='INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual for suggestions.</li>\n";
+    echo "<li>If you are having difficulty finding your php.ini file, then refer to the <a href='Documentation/1_Installing/InstallingLibreEHR.html' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual for suggestions.</li>\n";
 }
 echo "</ul>";
 
@@ -569,7 +586,7 @@ it is important to secure these directories. Additionally, some settings are req
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deny from all<br>
 &nbsp;&nbsp;&lt;/Directory&gt;<br><br>";
 
-echo "If you are having difficulty finding your apache configuration file, then refer to the <a href='INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual for suggestions.<br><br>\n";
+echo "If you are having difficulty finding your apache configuration file, then refer to the <a href='Documentation/1_Installing/InstallingLibreEHR.html' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual for suggestions.<br><br>\n";
 echo "<br>We recommend you print these instructions for future reference.<br><br>";
 echo "Click 'continue' for further instructions.";
 
@@ -588,9 +605,9 @@ break;
 echo "<p>Welcome to LibreHealth EHR.  This utility will step you through the installation and configuration of LibreHealth EHR for your practice.</p>\n";
 echo "<ul><li>Before proceeding, be sure that you have a properly installed and configured MySQL server available, and a PHP configured webserver.</li>\n";
 
-echo "<li>Detailed installation instructions can be found in the <a href='INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual file.</li>\n";
+echo "<li>Detailed installation instructions can be found in the <a href='Documentation/1_Installing/InstallingLibreEHR.html' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual file.</li>\n";
 
-Echo "<li>If you are upgrading from a previous version, do NOT use this script.  Please read the 'Upgrading' section found in the <a href='INSTALL' target='_blank'><span STYLE='text-decoration: underline;'>'INSTALL'</span></a> manual file.</li></ul>";
+Echo "<li>If you are upgrading from a previous version, do NOT use this script.  Please read the 'Upgrading' section found in the <a href='Documentation/1_Installing/InstallingLibreEHR.html' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual file.</li></ul>";
 
 if ($checkPermissions) {
 	echo "<p>We will now ensure correct file and directory permissions before starting installation:</p>\n";
