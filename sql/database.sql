@@ -327,7 +327,24 @@ INSERT INTO `clinical_plans` ( `id`, `pid`, `normal_flag`, `cqm_flag`, `cqm_2011
 INSERT INTO `clinical_plans` ( `id`, `pid`, `normal_flag`, `cqm_flag`, `cqm_measure_group` ) VALUES ('dm_plan', 0, 1, 0, '');
 INSERT INTO `clinical_plans` ( `id`, `pid`, `normal_flag`, `cqm_flag`, `cqm_measure_group` ) VALUES ('prevent_plan', 0, 1, 0, '');
 
+--
+-- Table structure for table `clinical_rules`
+--
 
+DROP TABLE IF EXISTS `clinical_rules`;
+CREATE TABLE `clinical_rules` (
+  `id` varchar(35) NOT NULL DEFAULT '',
+  `pid` bigint(20) NOT NULL DEFAULT '0' COMMENT '0 is default for all patients, while > 0 is id from patient_data table',
+  `active_alert_flag` tinyint(1) DEFAULT NULL COMMENT 'Active Alert Widget Module flag - note not yet utilized',
+  `passive_alert_flag` tinyint(1) DEFAULT NULL COMMENT 'Passive Alert Widget Module flag',
+  `patient_reminder_flag` tinyint(1) DEFAULT NULL COMMENT 'Clinical Reminder Module flag',
+  `release_version` varchar(255) NOT NULL DEFAULT '' COMMENT 'Clinical Rule Release Version',
+  `web_reference` varchar(255) NOT NULL DEFAULT '' COMMENT 'Clinical Rule Web Reference',
+  `access_control` varchar(255) NOT NULL DEFAULT 'patients:med' COMMENT 'ACO link for access control',
+  `pqrs_code` varchar(35) DEFAULT NULL COMMENT 'Measure number',
+  `pqrs_individual_2016_flag` tinyint(4) DEFAULT NULL COMMENT 'Is MIPS flag',
+  `pqrs_group_type` varchar(2) DEFAULT 'X' COMMENT 'XML output scheme type',
+  `active` tinyint(4) DEFAULT NULL COMMENT 'Is this measure turned on?');
 --
 -- Table structure for table `clinical_plans_rules`
 --
@@ -946,7 +963,7 @@ CREATE TABLE `facility` (
 -- Dumping data for table `facility`
 -- 
 
-INSERT INTO `facility` VALUES (3, 'Your Clinic Name Here', '', '000-000-0000', '000-000-0000', '', '', '', '', '', '', NULL, NULL, 1, 1, 0, NULL, '', '', '', '', '','#99FFFF','0', '');
+INSERT INTO `facility` VALUES (3, 'Your Clinic Name Here', 'Your Clinic Name Here', '000-000-0000', '000-000-0000', '', '', '', '', '', '', NULL, NULL, 1, 1, 0, NULL, '', '', '', '', '','#99FFFF','0', '');
 
 
 

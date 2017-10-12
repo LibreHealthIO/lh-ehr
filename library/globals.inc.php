@@ -3088,7 +3088,7 @@ $GLOBALS_METADATA = array(
     
     'report_itemizing_pqrs' => array(
       xl('Enable MIPS report itemization'),     // for itemizing reports
-      'text',                           // data type
+      'bool',                           // data type
       '1',                     // default
       xl('Creates patient lists from reports')
     ),
