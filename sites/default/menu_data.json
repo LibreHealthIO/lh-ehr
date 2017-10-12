@@ -992,8 +992,9 @@
         "children" : [ ],
         "requirement" : 1,
         "global_req" : "addr_label_type"
-    "requirement" : 0
-}, { 
+    } ],
+   "requirement" : 0
+   }, { 
     "label" : "QA Measures",
     "menu_id" : "mips",
     "children" : [ { 
@@ -1009,7 +1010,7 @@
         "target" : "rep",
         "url" : "/modules/MIPS/clinical_measures.php?type=pqrs",
         "children" : [ ],
-        "requirement" : 0
+        "requirement" : 0,
         "global_req" : "enable_pqrs" 
     }, { 
         "label" : "Select Measures",
@@ -1017,7 +1018,7 @@
         "target" : "rep",
         "url" : "/modules/MIPS/measure_activate.php",
         "children" : [ ],
-        "requirement" : 0
+        "requirement" : 0,
         "global_req" : "enable_pqrs" 
     }, { 
         "label" : "Delete Old Reports",
@@ -1025,7 +1026,7 @@
         "target" : "rep",
         "url" : "/modules/MIPS/truncate_reports.php",
         "children" : [ ],
-        "requirement" : 0
+        "requirement" : 0,
         "global_req" : "enable_pqrs" 
     },{ 
         "label" : "Report Database Import",
@@ -1033,8 +1034,8 @@
         "target" : "rep",
         "url" : "/modules/MIPS/import_data.php",
         "children" : [ ],
-        "requirement" : 0
-        "acl_req" : [ "admin", "super" ]
+        "requirement" : 0,
+        "acl_req" : [ "admin", "super" ],
         "global_req" : "pqrs_demosystem"
     },{ 
         "label" : "Remove_Provider_Assignments",
@@ -1042,8 +1043,8 @@
         "target" : "rep",
         "url" : "/modules/MIPS/reset_provider_to_unassigned.php",
         "children" : [ ],
-        "requirement" : 0
-        "acl_req" : [ "admin", "super" ]
+        "requirement" : 0,
+        "acl_req" : [ "admin", "super" ],
         "global_req" : "enable_pqrs" 
     },{ 
         "label" : "Provider Encounter Counts",
@@ -1058,7 +1059,7 @@
         "target" : "rep",
         "url" : "/modules/filemanager/index.php",
         "children" : [ ],
-        "requirement" : 0
+        "requirement" : 0,
         "acl_req" : [ "admin", "super" ]
     },{ 
         "label" : "Change Demo Database",
@@ -1066,8 +1067,8 @@
         "target" : "rep",
         "url" : "/modules/MIPS/reload_demo_database.php",
         "children" : [ ],
-        "requirement" : 0
-        "acl_req" : [ "admin", "super" ]
+        "requirement" : 0,
+        "acl_req" : [ "admin", "super" ],
         "global_req" : "pqrs_demosystem"
     },{ 
         "label" : "XML Editor",
@@ -1084,8 +1085,8 @@
         "children" : [ ],
         "requirement" : 0
     } ],
-    "requirement" : 0
-    "global_req" : "enable_pqrs"    
+    "requirement" : 0,
+    "global_req" : "enable_pqrs"  
 }, { 
     "label" : "Help",
     "menu_id" : "modimg",
