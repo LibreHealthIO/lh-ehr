@@ -51,7 +51,6 @@ class C_Pharmacy extends Controller {
 
     function list_action($sort = "") {
 
-        //echo "inside list_action() ";
 
         if (!empty($sort)) {
 
