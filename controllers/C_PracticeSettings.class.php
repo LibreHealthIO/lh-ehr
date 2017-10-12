@@ -38,7 +38,6 @@ class C_PracticeSettings extends Controller {
         //this dance is so that the controller system which only cares about the name part of the first two arguments get what it wants
         //and the rest gets passed as normal argument values, really this all goes back to workarounds for problems with call_user_func
         //and value passing
-        //echo "i am inside pharmacy function";
         $fga = func_get_args();
         $fga = array_slice($fga, 1);
         $args = array_merge(array("pharmacy" => "", $arg => ""), $fga);

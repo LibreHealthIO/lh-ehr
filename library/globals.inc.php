@@ -1537,10 +1537,10 @@ $GLOBALS_METADATA = array(
     'calendar_appt_style' => array(
       xl('Appointment Display Style'),
       array(
-        '1' => 'Last name',
-        '2' => 'Last name, first name',
-        '3' => 'Last name, first name (title)',
-        '4' => 'Last name, first name (title: description)',
+                '1' => xl('Last name'),
+                '2' => xl('Last name, first name'),
+                '3' => xl('Last name, first name (title)'),
+                '4' => xl('Last name, first name (title: description)'),
       ),
        '2',                             // default
       xl('This determines how appointments display on the calendar.')
@@ -3087,7 +3087,7 @@ $GLOBALS_METADATA = array(
     ),
     
     'report_itemizing_pqrs' => array(
-      xl('Enable MIPS report itemization'),		// for itemizing reports
+      xl('Enable MIPS report itemization'),     // for itemizing reports
       'text',                           // data type
       '1',                     // default
       xl('Creates patient lists from reports')
@@ -3095,28 +3095,28 @@ $GLOBALS_METADATA = array(
     
 
     'pqrs_creator' => array(
-      xl('MIPS Report Creator Name'),		// for XML generation
+      xl('MIPS Report Creator Name'),       // for XML generation
       'text',                           // data type
       'FIXME creator FIXME!!!',                     // default
       xl('MIPS Report Creator Name')
     ),
 
     'pqrs_registry_name' => array(
-      xl('MIPS Registry Name'),		// for XML generation
+      xl('MIPS Registry Name'),     // for XML generation
       'text',                           // data type
       'FIXME registry name FIXME!!!',               // default
       xl('MIPS Registry Name')
     ),
 
     'pqrs_registry_id' => array(
-      xl('MIPS Registry ID'),		// for XML generation
+      xl('MIPS Registry ID'),       // for XML generation
       'text',                           // data type
       'FIXME registry id FIXME!!!',                 // default
       xl('MIPS Registry ID')
     ),
 
     'pqrs_vendor_unique_id' => array(
-      xl('MIPS VENDOR UNIQUE ID'),	// for XML generation
+      xl('MIPS VENDOR UNIQUE ID'),  // for XML generation
       'text',                           // data type
       'FIXME vendor unique id FIXME!!!',            // default
       xl('MIPS Registry Name')
