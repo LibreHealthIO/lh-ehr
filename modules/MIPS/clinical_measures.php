@@ -117,6 +117,8 @@ if(!empty($report_id)) {
   $page_subtitle = '';
   $dis_text = '';
 }
+$DateFormat = DateFormatRead();
+$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $widthDyn = '470px';  //determine what is needed for pqrs
 
@@ -125,6 +127,7 @@ $widthDyn = '470px';  //determine what is needed for pqrs
   <head>
 <?php html_header_show();?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">  <!--should include stylesheet in project-->
+    <link rel="stylesheet" href="../../assets/css/jquery-datetimepicker/jquery.datetimepicker.css">
     <title><?php echo $page_titles[$type_report]; ?></title>
     <script type="text/javascript" src="../../library/overlib_mini.js"></script>
     <script type="text/javascript" src="../../library/textformat.js"></script>
@@ -315,7 +318,28 @@ function Form_Validate() {
                     <td class='label'>
                       <?php echo htmlspecialchars(xl('Begin Date'), ENT_NOQUOTES); ?>:
                     </td>
+                   <tr>
+                      <td class='label'>
+                         <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
+                      </td>
+                      <td>
+                         <input type='text' name='form_begin_date' id='form_begin_date' size='20'
+                                value='<?php echo htmlspecialchars( $_POST['form_begin_date'], ENT_QUOTES); ?>'
+                                title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
+                      </td>
+                   </tr>
+
+                <tr>
+                        <td class='label'>
+                              <?php echo htmlspecialchars( xl('End Date'), ENT_NOQUOTES); ?>:
+                        </td>
                     <td>
+                           <input type='text' name='form_end_date' id='form_end_date' size='20'
+                                  value='<?php echo htmlspecialchars( $_POST['form_end_date'], ENT_QUOTES); ?>'
+                                  title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
+                        </td>
+                </tr>
+<!--                    <td>
                       <input <?php echo $dis_text; ?> type='text' name='form_begin_date' id="form_begin_date" size='20'
                         value='<?php echo htmlspecialchars($begin_date, ENT_QUOTES); ?>'
                         onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
@@ -347,7 +371,7 @@ function Form_Validate() {
                         title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
 <?php } ?>
                     </td>
-                  </tr>
+                  </tr>-->
 <?php if(in_array($type_report, array('pqrs','pqrs_individual_2016'))) { ?>
                   <tr>
                     <td class='label'>
@@ -365,7 +389,7 @@ function Form_Validate() {
 
 //  Nothing.  Do NOTHING!  --leebc
 ?>
-		<input type='hidden' id='form_plan_filter' name='form_plan_filter' value=''>
+        <input type='hidden' id='form_plan_filter' name='form_plan_filter' value=''>
 <?php
 
  }  ?>
@@ -414,19 +438,19 @@ function Form_Validate() {
                   <td scope="row">
                     <div style='margin-left:15px'>
                         <span>
-<?php 	if (isset($report_view['title'])) {
-		$report_title=$report_view['title'];
-    	} else {
-		$report_title="";
-    	}
-	if ($report_title != "" ) {
-		echo ("Report Title:  $report_title \n");
-	}  ?>
+<?php   if (isset($report_view['title'])) {
+        $report_title=$report_view['title'];
+        } else {
+        $report_title="";
+        }
+    if ($report_title != "" ) {
+        echo ("Report Title:  $report_title \n");
+    }  ?>
 
                         </span>
                     </div>
-		  </td>
-		</tr>
+          </td>
+        </tr>
 <?php if(empty($report_id)) { ?>
                       <a id='submit_button' href='#' class='css_button' onclick='runReport();'>
                         <span>
@@ -511,7 +535,7 @@ function Form_Validate() {
             $tempMeasuresString = '';
 
             switch($type_report) {
-	            case 'pqrs':
+                case 'pqrs':
               case 'pqrs_individual_2016':
                 if(!empty($row['pqrs_code'])) {
                   $tempMeasuresString .= ' '.htmlspecialchars(xl('PQRS').':'.$row['pqrs_code'], ENT_NOQUOTES).' ';
@@ -669,6 +693,20 @@ function Form_Validate() {
       <input type='hidden' name='form_new_report_id' id='form_new_report_id' value=''/>
     </form>
   </body>
+  <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $(function() {
+        $("#form_begin_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#form_end_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+    });
+</script>
   <!-- stuff for the popup calendar -->
   <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
   <script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
@@ -676,8 +714,8 @@ function Form_Validate() {
   <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
   <script language="Javascript">
 <?php if(in_array($type_report, array('pqrs', 'pqrs_individual_2016'))) { ?>
-    Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
+  //  Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
 <?php } ?>
-    Calendar.setup({inputField:"form_target_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_target_date", showsTime:'true'});
+  //  Calendar.setup({inputField:"form_target_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_target_date", showsTime:'true'});
   </script>
 </html>

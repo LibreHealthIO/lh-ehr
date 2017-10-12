@@ -50,7 +50,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="../../assets/css/jquery.datetimepicker.css">
+<link rel="stylesheet" href="../../assets/css/jquery-datetimepicker/jquery.datetimepicker.css">
 
 <title><?php echo htmlspecialchars( xl('Report Results/History'), ENT_NOQUOTES); ?></title>
 
@@ -319,7 +319,7 @@ function deleteReport(report_id){
     var answer = confirm('Are you sure you want to delete this report?');
     if (answer == true) {
 //        console.log('Delete Report -- report_id: ' + report_id );
-	manageReport(report_id,'DELETE','deleted');
+    manageReport(report_id,'DELETE','deleted');
     }
 }
 
@@ -329,7 +329,7 @@ function renameReport(report_id){
         confirm('You didn\'t supply a new name.');
     } else {
 //        console.log('Rename Report -- report_id: ' + report_id + ', New Name: ' + newname);
-	manageReport(report_id,'RENAME',newname);
+    manageReport(report_id,'RENAME',newname);
 
     }
 top.restoreSession();  $("#theform").submit();
