@@ -276,7 +276,7 @@
         "url" : "/interface/eRx.php?page=epcs-admin",
         "children" : [ ],
         "requirement" : 1,
-        "global_req" : "newcrop_user_role_erxadmin"
+        "global_req" : "erxadmin"
     } ],
     "requirement" : 1,
     "global_req" : [ "erx_enable", "newcrop_user_role" ]
