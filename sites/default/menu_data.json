@@ -275,11 +275,11 @@
         "target" : "pat",
         "url" : "/interface/eRx.php?page=epcs-admin",
         "children" : [ ],
-        "requirement" : 0,
+        "requirement" : 1,
         "global_req" : "newcrop_user_role_erxadmin"
     } ],
-    "requirement" : 0,
-    "global_req_strict" : [ "erx_enable", "newcrop_user_role" ]
+    "requirement" : 1,
+    "global_req" : [ "erx_enable", "newcrop_user_role" ]
 }, { 
     "label" : "Administration",
     "menu_id" : "admimg",
@@ -993,8 +993,8 @@
         "requirement" : 1,
         "global_req" : "addr_label_type"
     } ],
-   "requirement" : 0
-   }, { 
+    "requirement" : 0
+}, { 
     "label" : "QA Measures",
     "menu_id" : "mips",
     "children" : [ { 
@@ -1011,7 +1011,7 @@
         "url" : "/modules/MIPS/clinical_measures.php?type=pqrs",
         "children" : [ ],
         "requirement" : 0,
-        "global_req" : "enable_pqrs" 
+        "global_req" : "enable_pqrs"
     }, { 
         "label" : "Select Measures",
         "menu_id" : "rep0",
@@ -1019,7 +1019,7 @@
         "url" : "/modules/MIPS/measure_activate.php",
         "children" : [ ],
         "requirement" : 0,
-        "global_req" : "enable_pqrs" 
+        "global_req" : "enable_pqrs"
     }, { 
         "label" : "Delete Old Reports",
         "menu_id" : "rep0",
@@ -1027,8 +1027,8 @@
         "url" : "/modules/MIPS/truncate_reports.php",
         "children" : [ ],
         "requirement" : 0,
-        "global_req" : "enable_pqrs" 
-    },{ 
+        "global_req" : "enable_pqrs"
+    }, { 
         "label" : "Report Database Import",
         "menu_id" : "rep0",
         "target" : "rep",
@@ -1037,7 +1037,7 @@
         "requirement" : 0,
         "acl_req" : [ "admin", "super" ],
         "global_req" : "pqrs_demosystem"
-    },{ 
+    }, { 
         "label" : "Remove_Provider_Assignments",
         "menu_id" : "rep0",
         "target" : "rep",
@@ -1045,15 +1045,15 @@
         "children" : [ ],
         "requirement" : 0,
         "acl_req" : [ "admin", "super" ],
-        "global_req" : "enable_pqrs" 
-    },{ 
+        "global_req" : "enable_pqrs"
+    }, { 
         "label" : "Provider Encounter Counts",
         "menu_id" : "rep0",
         "target" : "rep",
         "url" : "/modules/MIPS/provider_encounter_counts.php",
         "children" : [ ],
         "requirement" : 0
-    },{ 
+    }, { 
         "label" : "Upload Claim Files",
         "menu_id" : "rep0",
         "target" : "rep",
@@ -1061,7 +1061,7 @@
         "children" : [ ],
         "requirement" : 0,
         "acl_req" : [ "admin", "super" ]
-    },{ 
+    }, { 
         "label" : "Change Demo Database",
         "menu_id" : "rep0",
         "target" : "rep",
@@ -1070,7 +1070,7 @@
         "requirement" : 0,
         "acl_req" : [ "admin", "super" ],
         "global_req" : "pqrs_demosystem"
-    },{ 
+    }, { 
         "label" : "XML Editor",
         "menu_id" : "rep0",
         "target" : "rep",
@@ -1086,7 +1086,7 @@
         "requirement" : 0
     } ],
     "requirement" : 0,
-    "global_req" : "enable_pqrs"  
+    "global_req" : "enable_pqrs"
 }, { 
     "label" : "Help",
     "menu_id" : "modimg",
