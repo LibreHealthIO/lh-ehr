@@ -375,7 +375,7 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 ?>
 <html>
 <head>
-<?php call_required_libraries($bootstrap=true,$fancybox=true,$knockout=false,$datepicker=false);
+<?php call_required_libraries($jqueryold=false,$bootstrap=true,$fancybox=true,$knockout=false,$datepicker=false);
       resolveFancyboxCompatibility();
 ?>
 

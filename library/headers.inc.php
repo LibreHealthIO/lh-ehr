@@ -40,10 +40,14 @@ function include_css_library($path)
     This function can be used to call various frequently used libraries.
     Parameters for this function are boolean. Use true or false for including the required libraries.   
 */
-function call_required_libraries($bootstrap,$fancybox,$knockout,$datepicker){?>
+function call_required_libraries($jqueryold,$bootstrap,$fancybox,$knockout,$datepicker){?>
     <!-- All these libraries require jQuery to be loaded initially for best performance -->
-    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-3-1-1/index.js"></script>
     <?php 
+    if($jqueryold===true){   ?>
+    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-7-2/index.js"></script>
+    <?php }else{?>
+    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-3-1-1/index.js"></script>
+    <?php
     if($bootstrap===true){   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/css/bootstrap.min.css" type="text/css">
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
