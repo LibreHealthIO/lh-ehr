@@ -68,7 +68,7 @@ if ( isset($_POST["mode"]) && $_POST["mode"] == "facility_user_id" && isset($_PO
 ?>
 <html>
 <head>
-<?php     call_required_libraries("jquery-min-1-3-2","bootstrap","fancybox");
+<?php     call_required_libraries(array ("jquery-min-1-3-2","bootstrap","fancybox");
 
       resolveFancyboxCompatibility();
 ?>

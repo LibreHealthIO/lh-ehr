@@ -100,7 +100,7 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 <html>
 <head>
 <?php 
-  call_required_libraries("jquery-min-1-3-2","bootstrap","fancybox");
+  call_required_libraries(array ("jquery-min-1-3-2","bootstrap","fancybox"));
     resolveFancyboxCompatibility();
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>

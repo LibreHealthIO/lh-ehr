@@ -68,7 +68,7 @@ $fres = getLayoutRes();
 <head>
 <?php html_header_show();
       //  Include Bootstrap, Fancybox, date-time-picker
-  call_required_libraries("jquery-min-1-3-2","bootstrap","datepicker","fancybox");
+  call_required_libraries(array ("jquery-min-1-3-2","bootstrap","datepicker","fancybox"));
 ?>
 
 <style>

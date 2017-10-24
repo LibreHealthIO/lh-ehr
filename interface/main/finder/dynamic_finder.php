@@ -17,7 +17,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/headers.inc.php");
 
 // Including Bootstrap library.
-  call_required_libraries("jquery-min-3-1-1","bootstrap");
+  call_required_libraries(array ("jquery-min-3-1-1","bootstrap"));
 
 $popup = empty($_REQUEST['popup']) ? 0 : 1;
 $defaultFilterName = empty($_REQUEST['defaultFilterName']) ? null : $_REQUEST['defaultFilterName'];

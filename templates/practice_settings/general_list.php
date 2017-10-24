@@ -2,7 +2,7 @@
 <head>
 <link rel="stylesheet" href="<?php echo $this->css_header;?>" type="text/css">
 <?php
-   call_required_libraries("jquery-min-3-1-1","bootstrap","fancybox");
+   call_required_libraries(array ("jquery-min-3-1-1","bootstrap","fancybox"));
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['rootdir'] . '/../library/js/common.js';?>"></script>
 </head>

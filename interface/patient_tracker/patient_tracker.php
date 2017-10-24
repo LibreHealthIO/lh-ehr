@@ -137,7 +137,7 @@ foreach ( $appointments as $apt ) {
 <title><?php echo xlt("Flow Board") ?></title>
 <?php 
     //  Include Bootstrap and DateTimePicker
-  call_required_libraries("jquery-min-1-9-1","bootstrap","datepicker");
+  call_required_libraries(array ("jquery-min-1-9-1","bootstrap","datepicker"));
 ?>
 
 <script type="text/javascript" src="../../library/js/common.js"></script>

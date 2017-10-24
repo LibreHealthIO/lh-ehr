@@ -56,7 +56,7 @@ var webroot_url="<?php echo $web_root; ?>";
 
 <?php
     /*  Include Bootstrap and Knockout Libraries    */
-  call_required_libraries("jquery-min-2-2-0","bootstrap","knockout");
+  call_required_libraries(array ("jquery-min-2-2-0","bootstrap","knockout"));
 ?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>

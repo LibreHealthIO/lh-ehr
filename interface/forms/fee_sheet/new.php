@@ -761,7 +761,6 @@ $billresult = getBillingByEncounter($pid, $encounter, "*");
 <?php 
   html_header_show();
   // Include Bootstrap
-  call_required_libraries("jquery-min-1-4-2","bootstrap");
 ?>
 
 <style>

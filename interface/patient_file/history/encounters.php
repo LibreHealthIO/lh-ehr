@@ -173,7 +173,7 @@ function generatePageElement($start,$pagesize,$billing,$issue,$text)
 <?php 
     html_header_show();
     // Include Bootstrap
-  call_required_libraries("jquery-min-1-2-1","bootstrap");
+  call_required_libraries(array ("jquery-min-1-2-1","bootstrap"));
 ?>
 <!-- Main style sheet comes after the page-specific stylesheet to facilitate overrides. -->
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/encounters.css" type="text/css">

@@ -4,7 +4,7 @@ require_once("$srcdir/headers.inc.php");
 require_once("includes/admin_helper.php");
 
 // get bootstrap
-  call_required_libraries("jquery-min-3-1-1","bootstrap");
+  call_required_libraries(array ("jquery-min-3-1-1","bootstrap"));
 
 
 // if update category button is used

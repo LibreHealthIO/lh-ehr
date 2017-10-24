@@ -375,7 +375,6 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 ?>
 <html>
 <head>
-<?php call_required_libraries("jquery-min-1-3-2","bootstrap","fancybox");
       resolveFancyboxCompatibility();
 ?>
 
