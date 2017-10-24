@@ -120,7 +120,8 @@ function resolveFancyboxCompatibility(){ ?>
         })();
     </script>    
 <?php 
-} ?>
-
+} 
+//The following seem to always get called.  I don't believe this is proper.
+?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
