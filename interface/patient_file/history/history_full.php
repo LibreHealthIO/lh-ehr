@@ -50,7 +50,7 @@ if ( !acl_check('patients','med','',array('write','addonly') ))
 <?php 
     html_header_show();
     //  Include datepicker library
-    call_required_libraries($jqueryold=false,$bootstrap=false,$fancybox=false,$knockout=false,$datepicker=true);
+  call_required_libraries("jquery-min-3-1-1","datepicker");
 ?>
 
 <style>

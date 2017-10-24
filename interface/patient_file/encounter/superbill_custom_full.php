@@ -240,7 +240,7 @@ if ($fend > $count) $fend = $count;
 <title><?php echo xlt("Codes"); ?></title>
 <?php 
       html_header_show();
-      call_required_libraries($jqueryold=false,$bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
+  call_required_libraries("jquery-min-3-1-1","bootstrap");
 ?>
 <script language="JavaScript">
 
