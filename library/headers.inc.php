@@ -46,22 +46,22 @@ function call_required_libraries($library_array){?>
     <?php 
     if(in_array ("jquery-min-1-2-1",$library_array)){   ?>
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-2-1/index.js"></script>    
-    <?php 
+    <?php }
     if(in_array ("jquery-min-1-2-2",$library_array)){   ?>
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-2-2/index.js"></script>    
-    <?php 
+    <?php }
     if(in_array ("jquery-min-1-3-2",$library_array)){   ?>
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-3-2/index.js"></script>    
-    <?php 
+    <?php }
     if(in_array ("jquery-min-1-4-2",$library_array)){   ?>
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-4-2/index.js"></script>    
-    <?php 
+    <?php }
     if(in_array ("jquery-min-1-4-3",$library_array)){   ?>
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-4-3/index.js"></script>  
-    <?php 
+    <?php }
     if(in_array ("jquery-min-1-5-0",$library_array)){   ?>
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-5-0/index.js"></script>
-    <?php 
+    <?php }
     if(in_array ("jquery-min-1-6-4",$library_array)){   ?>
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-6-4/index.js"></script>        
     <?php}
