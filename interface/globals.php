@@ -227,7 +227,7 @@ include_once (dirname(__FILE__) . "/../library/date_functions.php");
 $GLOBALS['weight_loss_clinic'] = false;
 $GLOBALS['ippf_specific'] = false;
 $GLOBALS['cene_specific'] = false;
-
+$GLOBALS['facility_acl'] = false;
 // Defaults for drugs and products.
 $GLOBALS['inhouse_pharmacy'] = false;
 $GLOBALS['sell_non_drug_products'] = 0;
@@ -366,6 +366,7 @@ else {
   $GLOBALS['phone_country_code'] = '1';
   $GLOBALS['disable_non_default_groups'] = true;
   $GLOBALS['ippf_specific'] = false;
+  $GLOBALS['facility_acl'] = false;
   $GLOBALS['default_tab_1'] = "/interface/main/finder/dynamic_finder.php";
   $GLOBALS['default_tab_2'] = "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1";  
 }
@@ -501,6 +502,7 @@ if ($fake_register_globals) {
   extract($_POST,EXTR_SKIP);
 }
 
-
+//TODO:  Check out the loading of the following include..."bootstrap" is probably not the best name.
 include_once __DIR__ . '/../library/pluginsystem/bootstrap.php';
+
 ?>
