@@ -256,7 +256,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
 <!-- supporting javascript code -->
 <?php
    // Including Bootstrap and Fancybox.
-   call_required_libraries($bootstrap=true,$fancybox=true,$knockout=false,$datepicker=false);
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
    include_js_library("jscolor-1-4-5/jscolor.js");
 ?>
 

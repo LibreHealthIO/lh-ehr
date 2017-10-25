@@ -45,7 +45,7 @@ require_once("$srcdir/gprelations.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/headers.inc.php");
 //Include Bootstrap
-call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap"));
 ?>
 <html>
 <head>

@@ -761,7 +761,7 @@ $billresult = getBillingByEncounter($pid, $encounter, "*");
 <?php
   html_header_show();
   // Include Bootstrap
-  call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap"));
 ?>
 
 <style>
@@ -1437,12 +1437,6 @@ if (true) {
 <input type='button' value='<?php echo xla('Cancel');?>'
  onclick="top.restoreSession();location='<?php echo "$rootdir/patient_file/encounter/$returnurl" ?>'" />
 
-<?php if ($code_types['UCSMC']) { ?>
-<p style='font-family:sans-serif;font-size:8pt;color:#666666;'>
-&nbsp;<br>
-<?php echo xlt('UCSMC codes provided by the University of Calgary Sports Medicine Centre');?>
-</p>
-<?php } ?>
 
 </center>
 

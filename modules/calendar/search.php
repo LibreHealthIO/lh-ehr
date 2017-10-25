@@ -28,7 +28,7 @@ function keywordFilter($arr) {
 }
 
 // get bootstrap and datetimepicker
-call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=true);
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 ?>
 <html>
 <head>
