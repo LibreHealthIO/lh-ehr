@@ -314,14 +314,10 @@ function Form_Validate() {
               <div style='float:left'>
                 <table class='text'>
 <?php if(in_array($type_report, array('pqrs', 'pqrs_individual_2016'))) { ?>
-                  <tr>
+
                     <td class='label'>
                       <?php echo htmlspecialchars(xl('Begin Date'), ENT_NOQUOTES); ?>:
                     </td>
-                   <tr>
-                      <td class='label'>
-                         <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
-                      </td>
                       <td>
                          <input type='text' name='form_begin_date' id='form_begin_date' size='20'
                                 value='<?php echo htmlspecialchars( $_POST['form_begin_date'], ENT_QUOTES); ?>'
@@ -379,7 +375,7 @@ function Form_Validate() {
                     </td>
                     <td>
                       <select <?php echo $dis_text; ?> id='form_rule_filter' name='form_rule_filter'>
-                        <option value='pqrs_individual_2016' <?php if ($rule_filter == "pqrs_individual_2016") {echo "selected";} ?>><?php echo xlt('Individual Measures'); ?></option>
+                        <option value='pqrs_individual_2016' <?php if ($rule_filter == "pqrs_individual_2016") {echo "selected";} ?>><?php echo xlt('Registry Measures'); ?></option>
                       </select>
                     </td>
                   </tr>
@@ -473,7 +469,7 @@ function Form_Validate() {
                         <input id="xmloptimize" type="checkbox" name="xmloptimize" value="1" />
                       <a href="#"  id="xml_pqrs" class='css_button' onclick='GenXml("PQRS");'>
                         <span>
-                          <?php echo htmlspecialchars(xl('Generate XML for PQRS'), ENT_NOQUOTES); ?>
+                          <?php echo htmlspecialchars(xl('Generate XML for MIPS'), ENT_NOQUOTES); ?>
                         </span>
                       </a>
 <?php   } 
@@ -538,14 +534,24 @@ function Form_Validate() {
                 case 'pqrs':
               case 'pqrs_individual_2016':
                 if(!empty($row['pqrs_code'])) {
-                  $tempMeasuresString .= ' '.htmlspecialchars(xl('PQRS').':'.$row['pqrs_code'], ENT_NOQUOTES).' ';
+                  $tempMeasuresString .= ' '.htmlspecialchars(xl('MIPS ').preg_replace('/PQRS_/', '',$row['pqrs_code']), ENT_NOQUOTES).' ';
+                 
                 }
                 break;
 
             }
 
             if(!empty($tempMeasuresString)) {
-              echo '('.$tempMeasuresString.')';
+                $patterns = array();
+                $patterns[0] = '/PQRS_0/';
+                $patterns[1] = '/pre_0/';
+
+                $mipsnumber = preg_replace($patterns, '_', $row['pqrs_code']);
+                $measureURL = 'http://suncoastconnection.com/standards/Registrymeasures/2017_Measure'. $mipsnumber.'_Registry.pdf';
+                ?>
+                <a href='<?php echo $measureURL;?>' target="_blank"><?php echo $tempMeasuresString;?></a>
+                <?php
+             
             }
 
             if(!(empty($row['concatenated_label']))) {

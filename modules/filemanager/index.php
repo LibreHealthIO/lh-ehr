@@ -60,3 +60,4 @@ require_once '../../interface/globals.php';
 
 </body>
  
+</html> 
