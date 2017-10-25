@@ -10,7 +10,7 @@ LibreEHR Directory structure
 2. **CONTRIB**
 
 
-3. **CONTROLERS**
+3. **CONTROLLERS**
 
 
 4. **CUSTOM**
