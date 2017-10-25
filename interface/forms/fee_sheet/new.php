@@ -917,7 +917,7 @@ if ($isBilled) {
 else { // the encounter is not yet billed
 ?>
 
-<table class="table">
+<table width='95%'>
 <?php
 $i = 0;
 $last_category = '';
@@ -1036,14 +1036,13 @@ echo " </tr>\n";
 
 </table>
 
-<table class="table">
+<p style='margin-top:8px;margin-bottom:8px'>
+<table>
  <tr>
   <td>
    <input type='button' value='<?php echo xla('Add Copay');?>'
     onclick="copayselect()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </td>
-  </tr>
-  <tr>
   <td>
    <?php echo xlt('Search'); ?>&nbsp;
   </td>
@@ -1070,19 +1069,20 @@ echo " </tr>\n";
    <?php echo xlt('for'); ?>&nbsp;
   </td>
   <td>
-   <input type='text' class="form-control input-sm" name='search_term' value=''> &nbsp;
+   <input type='text' name='search_term' value=''> &nbsp;
   </td>
   <td>
    <input type='submit' name='bn_search' value='<?php echo xla('Search');?>'>
   </td>
  </tr>
 </table>
+</p>
 
 <p style='margin-top:16px;margin-bottom:8px'>
 
 <?php } // end encounter not billed ?>
-<div class="table-responsive">
-<table class="table well">
+
+<table cellspacing='5'>
  <tr>
   <td class='billcell'><b><?php echo xlt('Type');?></b></td>
   <td class='billcell'><b><?php echo xlt('Code');?></b></td>
@@ -1308,7 +1308,7 @@ $encounter_order  = 0 + $tmp['ordering_physician'];
 $encounter_referr  = 0 + $tmp['referring_physician'];
 $encounter_contract  = 0 + $tmp['contract_physician'];
 ?>
-</table></div>
+</table>
 </p>
 
 <br />
