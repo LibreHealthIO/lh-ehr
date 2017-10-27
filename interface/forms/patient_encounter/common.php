@@ -162,12 +162,12 @@ function cancelClicked() {
 
 <br> <br>
 
-<div class="container">
+<div>
 
  <div class="row">
   <div class="col-xs-12 col-sm-4 col-lg-4 ">
     <?php echo xlt('Consultation Brief Description'); ?>:
-    <textarea class="form-control input-sm" name='reason' cols='40' rows='12' wrap='virtual'>
+    <textarea class="form-control input-sm" style="resize:none" name='reason' cols='40' rows='12' wrap='virtual'>
       <?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?>
     </textarea>
     <hr>  
@@ -178,7 +178,7 @@ function cancelClicked() {
     <tr>
      <td class='bold'><?php echo xlt('Visit Category:'); ?></td>
      <td class='text'>
-      <select name='pc_catid' id='pc_catid'>
+      <select style="width:150px" name='pc_catid' id='pc_catid'>
       <option value='_blank'><?php echo xlt('Select One'); ?></option>
         <?php
         $cres = sqlStatement("SELECT pc_catid, pc_catname " .
@@ -198,7 +198,7 @@ function cancelClicked() {
     <tr>
      <td class='bold'><?php echo xlt('Place of Service:'); ?></td>
      <td class='text'>
-      <select name='facility_id' onChange="bill_loc()">
+      <select style="width:150px" name='facility_id' onChange="bill_loc()">
         <?php
 
         if ($viewmode) {
@@ -241,7 +241,7 @@ function cancelClicked() {
 ?>
      <td class='bold'><?php echo xlt('Sensitivity:'); ?></td>
      <td class='text'>
-      <select name='form_sensitivity'>
+      <select style="width:150px" name='form_sensitivity'>
 <?php
   foreach ($sensitivities as $value) {
    // Omit sensitivities to which this user does not have access.
