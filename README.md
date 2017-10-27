@@ -29,7 +29,7 @@ For detailed and step-by-step Installation Instructions refer [Installation Inst
 
 ## Windows :: 
 
-Firstly make sure that you have [WAMP](http://www.wampserver.com/en/) or [XAMPP](https://www.apachefriends.org/index.html) server installed and the time zone is set correctly.
+Firstly make sure that you have [WAMP](http://www.wampserver.com/en/) or [XAMPP](https://www.apachefriends.org/index.html) server installed with php 7.0.24 or lower and the time zone is set correctly.
 
 Make the following changes in `php.ini` file. You can find the `php.ini` file by looking at the following destination :
 * In case of WAMP :
