@@ -128,6 +128,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'ledger_begin_date',
                                'print_next_appointment_on_ledger',
                                'calendar_view_type',
+                               'calendar_refresh_freq',
                                'event_color',
                                'pat_trkr_timer',
                                'ptkr_visit_reason',
@@ -1499,12 +1500,12 @@ $GLOBALS_METADATA = array(
     'calendar_refresh_freq' => array(
       xl('Calendar Refresh Frequency'),
       array(
-       '1000' => xl('1 second'),
-       '3000' => xl('3 seconds'),
-       '5000' => xl('5 seconds'),
-       '10000' => xl('10 seconds'),
+        'none' => xl('No Refresh'),
+        '60000' => xl('60 seconds'),
+        '360000' => xl('5 minutes'),
+        '720000' => xl('10 minutes'),
       ),
-       '3000',                     // default
+       '360000',                     // default
       xl('How often the calendar automatically refetches events.')
     ),
 

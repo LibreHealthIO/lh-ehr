@@ -211,7 +211,7 @@ require('includes/session.php');
           dlgopen('add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
           '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
            ,'_blank', 775, 375);
-			  },
+              },
         eventClick: function(calEvent, jsEvent, view) {
           var pccattype = (calEvent['pc_pid'] && calEvent['pc_pid'] > 0) ? 0 :  1;
           console.log(pccattype);
@@ -229,7 +229,9 @@ require('includes/session.php');
       })
       
       // refetch events every few seconds.
-      setInterval(function() { $('#calendar').fullCalendar( 'refetchEvents' ) }, <?php if($GLOBALS['calendar_refresh_freq']) echo $GLOBALS['calendar_refresh_freq']; else echo '3000'; ?>);
+      <?php if($GLOBALS['calendar_refresh_freq'] != 'none') { ?>
+         setInterval(function() { $('#calendar').fullCalendar( 'refetchEvents' ) }, <?php if($GLOBALS['calendar_refresh_freq']) echo $GLOBALS['calendar_refresh_freq']; else echo '720000'; ?>);
+      <?php } ?>
       
       // datepicker for calendar
       $('#datepicker').datetimepicker({ 
