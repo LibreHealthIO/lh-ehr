@@ -155,14 +155,14 @@ require('includes/session.php');
         slotDuration: '00:<?php echo $GLOBALS['calendar_interval'] ?>:00',
         <?php if($GLOBALS['time_display_format'] == 0) { echo "timeFormat: 'H:mm',"; } ?>   // uppercase H for 24-hour clock
         resources: {
-          url: 'includes/get_providers.php',
+          url: 'includes/get_providers.php?skip_timeout_reset=1',
           type: 'POST',
           error: function() {
               alert('There was an error while fetching providers.');
           }
         },
         events: {
-          url: 'includes/get_provider_events.php',
+          url: 'includes/get_provider_events.php?skip_timeout_reset=1',
           type: 'POST',
           error: function() {
               alert('There was an error while fetching appointments.');
