@@ -380,7 +380,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
       <p align="center">
         <input type="submit" id="sendButton" value="<?php echo xla('Send This Message') ?>" />
       </p>
-    </form>
+    </form> <br>
     <?php 
         $_GET['sentBy'] = array($_SESSION['authId']);
         $_GET['sd'] = date('Y/m/d'); 
