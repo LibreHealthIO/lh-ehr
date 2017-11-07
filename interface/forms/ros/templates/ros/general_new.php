@@ -3,10 +3,9 @@ require_once("../../globals.php");
 
 $srcdir = $GLOBALS['srcdir'];
 require_once("$srcdir/headers.inc.php");
-echo $GLOBALS['srcdir'];
 
 
-  call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
+call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
 
 ?>
 <html>

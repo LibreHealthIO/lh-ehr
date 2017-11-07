@@ -2,6 +2,9 @@
 <?php
 include_once("../../globals.php");
 include_once("$srcdir/api.inc");
+require_once("$srcdir/headers.inc.php");
+//Include Bootstrap
+call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
 formHeader("Form: reviewofs");
 $returnurl = 'encounter_top.php';
 ?>
@@ -153,10 +156,12 @@ $returnurl = 'encounter_top.php';
 
 <span class=text><?php xl('Additional Notes: ','e'); ?></span><br><textarea cols=40 rows=8 wrap=virtual name="additional_notes" ></textarea><br>
 <br>
-<a href="javascript:top.restoreSession();document.my_form.submit();" class="link_submit">[<?php xl('Save','e');?>]</a>
-<br>
-<a href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="link"
- onclick="top.restoreSession()">[<?php xl('Don\'t Save','e');?>]</a>
+<a href="javascript:top.restoreSession();document.my_form.submit();" class="btn btn-primary"><?php xl('Save','e');?></a>
+
+<a href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="btn-primary btn"
+ onclick="top.restoreSession()"><?php xl('Don\'t Save','e');?></a>
+
+
 </form>
 <?php
 formFooter();
