@@ -1,7 +1,23 @@
+<?php
+require_once("../../globals.php");
+
+$srcdir = $GLOBALS['srcdir'];
+require_once("$srcdir/headers.inc.php");
+
+
+call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
+
+?>
 <html>
 <head>
+
 <?php html_header_show();?>
+
+
+
  <style type="text/css" title="mystyles" media="all">
+
+
 ttd {
 	font-size:12pt;
 	font-family:helvetica;
@@ -1621,7 +1637,7 @@ a {
 	<input type="submit" name="Submit" value=<?php echo  xl('Save Form','e','"','"'); ?>>
 </td>
 <td>
-	<a href="<?php echo $this->dont_save_link;?>" class="link" onclick="top.restoreSession()">[<?php xl("Don't Save","e"); ?>]</a>
+	<a href="<?php echo $this->dont_save_link;?>" class="btn btn-danger" onclick="top.restoreSession()"><?php xl("Don't Save","e"); ?></a>
 </td>
 </tr>
 </table>

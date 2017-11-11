@@ -161,11 +161,11 @@ require_once("$srcdir/dated_reminder_functions.php");
         <?php  
           // initialize html string        
           $pdHTML = '<div class="dr_container"><table><tr><td valign="top">                         
-                        <p><a class="hideDR css_button_small" href="#"><span>'.xlt('Hide Reminders').'</span></a><br /></p>
-                        <div class="drHide">'.
-                        '<p><a title="'.xla('View Past and Future Reminders').'" onclick="openLogScreen()" class="css_button_small" href="#"><span>'.xlt('View Log').'</span></a><br /></p>'
-                        .'<p><a onclick="openAddScreen(0)" class="css_button_small" href="#"><span>'.xlt('Send A Dated Reminder').'</span></a></p></div> 
-                        </td><td class="drHide drTD">'; 
+                        <a class="hideDR css_button_small" href="#"><span>'.xlt('Hide Reminders').'</span></a>
+                        '.
+                        '<a title="'.xla('View Past and Future Reminders').'" onclick="openLogScreen()" class="css_button_small" href="#"><span>'.xlt('View Log').'</span></a>'
+                        .'<a onclick="openAddScreen(0)" class="css_button_small" href="#"><span>'.xlt('Send A Dated Reminder').'</span></a>
+                        </td></tr><tr><td class="drHide drTD">'; 
                         
           $pdHTML .= getRemindersHTML($reminders,$today);
           $pdHTML .= '</td></tr></table></div>';

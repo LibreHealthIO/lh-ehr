@@ -127,13 +127,13 @@
     <form method="get" id="logForm" onsubmit="return top.restoreSession()">         
       <h1><?php echo xlt('Dated Message Log') ?></h1>  
       <h2><?php echo xlt('filters') ?> :</h2>
-      <blockquote><?php echo xlt('Date The Message Was Sent') ?><br />
+      <?php echo xlt('Date The Message Was Sent') ?><br />
 <!----------------------------------------------------------------------------------------------------------------------------------------------------->  
-      <?php echo xlt('Start Date') ?> : <input id="sd" type="text" name="sd" value=""title='<?php echo xla('yyyy-mm-dd'); ?>' />   &nbsp;&nbsp;&nbsp;
+      <?php echo xlt('Start Date') ?> : <input style="margin-left:1px"  id="sd" type="text" name="sd" value=""title='<?php echo xla('yyyy-mm-dd'); ?>' />   &nbsp;&nbsp;&nbsp;
 <!----------------------------------------------------------------------------------------------------------------------------------------------------->   
       <?php echo xlt('End Date') ?> : <input id="ed" type="text" name="ed" value="" title='<?php echo xla('yyyy-mm-dd'); ?>' />   <br /><br />
 <!----------------------------------------------------------------------------------------------------------------------------------------------------->   
-      </blockquote>
+      
       <table style="width:100%">
         <tr>
           <td style="width:50%">
@@ -166,7 +166,7 @@
       <input type="checkbox" name="pending" id="pending"><label for="pending"><?php echo xlt('Pending') ?></label>          
 <!----------------------------------------------------------------------------------------------------------------------------------------------------->  
       <br /><br />  
-      <button value="Refresh" id="submitForm"><?php echo xlt('Refresh') ?></button>
+      <button style="margin-bottom:16px" value="Refresh" id="submitForm"><?php echo xlt('Refresh') ?></button>
     </form>
     
     <div id="resultsDiv"></div> 
