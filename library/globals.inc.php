@@ -1508,6 +1508,17 @@ $GLOBALS_METADATA = array(
        '360000',                     // default
       xl('How often the calendar automatically refetches events.')
     ),
+    
+    'calendar_provider_view_type' => array(
+      xl('Resource Title'),
+      array(
+        'full' => xl('Provider Full Name'),
+        'last' => xl('Provider Last Name'),
+        'resource' => xl('Resource Title'),
+      ),
+       'full',                     // default
+      xl('Name Choice for Resource in Calendar.')
+    ),
 
     'calendar_interval' => array(
       xl('Calendar Interval'),
@@ -1527,6 +1538,7 @@ $GLOBALS_METADATA = array(
       xl('Default Calendar View'),
       array(
        'providerAgenda' => xl('Agenda'),
+       'providerAgenda2Day' => xl('Agenda 2 Day'),
        'timelineDay' => xl('Day'),
        'timelineWeek' => xl('Week'),
        'timelineMonth' => xl('Month'),
