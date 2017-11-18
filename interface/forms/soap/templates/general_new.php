@@ -1,3 +1,14 @@
+<?php
+
+require_once("../../globals.php");
+$srcdir = $GLOBALS['srcdir'];
+require_once("$srcdir/headers.inc.php");
+
+
+call_required_libraries($bootstrap=true,$fancybox=false,$knockout=false,$datepicker=false);
+?>
+
+
 <html>
 <head>
 <?php html_header_show();?>
@@ -66,7 +77,7 @@ a {
 	</tr>
 	<tr>
 		<td><input type="submit" name="Submit" value=<?php echo  xl('Save Form','e','"','"'); ?>></td>
-    <td><a href="<?php echo $this->dont_save_link;?>" class="link" onclick="top.restoreSession()">[<?php echo  xl("Don't Save","e"); ?>]</a></td>
+    <td><a href="<?php echo $this->dont_save_link;?>" class="btn btn-danger" onclick="top.restoreSession()"><?php echo  xl("Don't Save","e"); ?></a></td>
 	</tr>
 </table>
 <input type="hidden" name="id" value="<?php echo $this->data->get_id();?>" />

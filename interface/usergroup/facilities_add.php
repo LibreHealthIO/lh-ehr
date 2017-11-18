@@ -53,6 +53,14 @@ $alertmsg = '';
 <script src="<?php echo $GLOBALS['standard_js_path']; ?>anchorposition/AnchorPosition.js"></script>
 <script src="<?php echo $GLOBALS['standard_js_path']; ?>popupwindow/PopupWindow.js"></script>
 <script src="<?php echo $GLOBALS['standard_js_path']; ?>colorpicker2/ColorPicker2.js"></script>
+
+<style>
+  #facility_table
+  {
+    border-collapse:separate;
+    border-spacing:0 5px;
+  }
+</style>
 <?php
 // Old Browser comp trigger on js
 
@@ -206,7 +214,7 @@ function displayAlert()
 
 <form name='facility' method='post' action="facilities.php" target='_parent'>
     <input type=hidden name=mode value="facility">
-    <table border=0 cellpadding=0 cellspacing=0>
+    <table  cellpadding=0 cellspacing=0 id="facility_table">
         <tr>
         <td width='150px'><span class="text"><?php echo xlt('Name'); ?>: </span></td><td width='220px'><input type=entry name=facility size=20 value=""><span class="mandatory">&nbsp;*</span></td>
         <td width=20>&nbsp;</td>

@@ -1151,7 +1151,7 @@ function make_insurance()
   // Continue with display of the data entry form.
 ?>
 
- <tr bgcolor="#cccccc">
+ <tr bgcolor="#cccccc" >
   <td class="dehead" id='td_total_1'></td>
   <td class="dehead" id='td_total_2'></td>
   <td class="dehead" id='td_total_3'></td>
@@ -1167,13 +1167,17 @@ function make_insurance()
    <input type='text' name='form_paytotal'  value=''
     style='color:#00aa00;width:50px' readonly  />
   </td>
+ </tr> 
+ 
+ <tr>
+  <td><input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Generate Invoice'), ENT_QUOTES);?>' /></td>
+  <td><input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' /></td>
  </tr>
 
 </table>
 
-<p>
-<input type='submit' name='form_save' value='<?php echo htmlspecialchars( xl('Generate Invoice'), ENT_QUOTES);?>' /> &nbsp;
-<input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
+
+
 
 <input type="hidden" name="hidden_patient_code" id="hidden_patient_code" value="<?php echo attr($pid);?>"/>
 <input type='hidden' name='ajax_mode' id='ajax_mode' value='' />
