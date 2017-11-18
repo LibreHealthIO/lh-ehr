@@ -135,8 +135,8 @@ require('includes/session.php');
   <script>
     $(document).ready(function() {
       var title_week = '<?php echo xlt('week'); ?>';
-      var title_agenda2 = '<?php echo xlt('agenda 2 day'); ?>';
-      var title_agenda = '<?php echo xlt('agenda'); ?>';
+      var title_agenda2 = '<?php echo xlt('2 day'); ?>';
+      var title_agenda = '<?php echo xlt('1 day'); ?>';
       var title_search = '<?php echo xlt('search'); ?>';
       var title_print = '<?php echo xlt('print'); ?>';
       var lang_default = '<?php echo $default_lang_id['lang_code']; ?>';
@@ -148,7 +148,7 @@ require('includes/session.php');
         header: {
         left: 'prev,next,today print,search',
         center: 'title',
-        right: 'providerAgenda,providerAgenda2Day,timelineDay,providerAgendaWeek,timelineMonth'
+        right: 'providerAgenda,providerAgenda2Day,providerAgendaWeek,timelineMonth'
         },
         views: {
           providerAgendaWeek: {
@@ -157,19 +157,21 @@ require('includes/session.php');
             type: 'agenda',
             duration: { days: 7 },
             buttonText: title_week,
+            allDaySlot: false,
             displayEventTime: false,
             groupByResource: true
           },
-          day: {
+ //         day: {
             // options apply to basicDay and agendaDay views
-            <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: 'H:mm',"; } ?>
-            titleFormat: 'ddd, MMM D, YYYY',
-            groupByDateAndResource: true
-          }, 
+ //           <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: 'H:mm',"; } ?>
+ //           titleFormat: 'ddd, MMM D, YYYY',
+ //           groupByDateAndResource: true
+ //         }, 
           providerAgenda2Day: {
             type: 'agenda',
             duration: { days: 2 },
             buttonText: title_agenda2,
+            allDaySlot: false,
             displayEventTime: false,
             groupByResource: true
           },
@@ -177,6 +179,7 @@ require('includes/session.php');
             type: 'agenda',
             duration: { days: 1 },
             buttonText: title_agenda,
+            allDaySlot: false,
             displayEventTime: false,
             groupByDateAndResource: true
           }

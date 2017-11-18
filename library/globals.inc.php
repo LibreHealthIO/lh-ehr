@@ -1537,14 +1537,13 @@ $GLOBALS_METADATA = array(
     'calendar_view_type' => array(
       xl('Default Calendar View'),
       array(
-       'providerAgenda' => xl('Agenda'),
-       'providerAgenda2Day' => xl('Agenda 2 Day'),
-       'timelineDay' => xl('Day'),
+       'providerAgenda' => xl('1 Day'),
+       'providerAgenda2Day' => xl('2 Day'),
        'timelineWeek' => xl('Week'),
        'timelineMonth' => xl('Month'),
       ),
        'providerAgenda',                           // default
-      xl('This sets the Default Calendar View, Default is Day.')
+      xl('This sets the Default Calendar View, Default is 1 Day.')
     ),
 
     'calendar_appt_style' => array(
