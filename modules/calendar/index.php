@@ -1,4 +1,21 @@
 <?php
+/*
+ *  index.php main program for the Calendar
+ *
+ * Copyright (C) 2017 Ujjwal Arora <arora.ujjwal@gmail.com>
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Ujjwal Arora <arora.ujjwal@gmail.com >
+ * @author Terry Hill <teryhill@librehealth.io >
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
+ *
+ */
 require_once('../../interface/globals.php');
 require_once('../../library/calendar.inc');
 require_once('../../library/patient.inc');
@@ -17,13 +34,14 @@ require('includes/session.php');
   <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
+  <script src='full_calendar/locale-all.js'></script>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
   <script src="../../library/dialog.js"></script>
 </head>
 <body>
   <div id="sidebar">
-    <button id="datepicker">Date Picker</button>
+    <button id="datepicker"><?php echo xlt('Date Picker'); ?></button>
     
     <form name='theform' id='theform' method='post' onsubmit='return top.restoreSession()'>
     <?php
@@ -34,6 +52,8 @@ require('includes/session.php');
       } else {
          $provinfo = getProviderInfo();
       }
+      
+       $default_lang_id = sqlQuery('SELECT lang_code FROM lang_languages WHERE lang_id = ?',array($_SESSION['language_choice']));
       
       // lemonsoftware
       if ($_SESSION['authorizeduser'] == 1) {
@@ -114,31 +134,52 @@ require('includes/session.php');
   
   <script>
     $(document).ready(function() {
+      var title_week = '<?php echo xlt('week'); ?>';
+      var title_agenda2 = '<?php echo xlt('2 day'); ?>';
+      var title_agenda = '<?php echo xlt('1 day'); ?>';
+      var title_search = '<?php echo xlt('search'); ?>';
+      var title_print = '<?php echo xlt('print'); ?>';
+      var lang_default = '<?php echo $default_lang_id['lang_code']; ?>';
 
       $('#calendar').fullCalendar({
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+        locale: lang_default,
         height: 'parent',
         header: {
         left: 'prev,next,today print,search',
         center: 'title',
-        right: 'timelineMonth,timelineWeek,timelineDay,providerAgenda'
+        right: 'providerAgenda,providerAgenda2Day,providerAgendaWeek,timelineMonth'
         },
         views: {
-          week: {
+          providerAgendaWeek: {
             // options apply to basicWeek and agendaWeek views
             <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: ['ddd, MMM D', 'H:mm'],"; } ?>
+            type: 'agenda',
+            duration: { days: 7 },
+            buttonText: title_week,
+            allDaySlot: false,
+            displayEventTime: false,
             groupByResource: true
           },
-          day: {
+ //         day: {
             // options apply to basicDay and agendaDay views
-            <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: 'H:mm',"; } ?>
-            titleFormat: 'ddd, MMM D, YYYY',
-            groupByDateAndResource: true
-          }, 
+ //           <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: 'H:mm',"; } ?>
+ //           titleFormat: 'ddd, MMM D, YYYY',
+ //           groupByDateAndResource: true
+ //         }, 
+          providerAgenda2Day: {
+            type: 'agenda',
+            duration: { days: 2 },
+            buttonText: title_agenda2,
+            allDaySlot: false,
+            displayEventTime: false,
+            groupByResource: true
+          },
           providerAgenda: {
             type: 'agenda',
             duration: { days: 1 },
-            buttonText: 'agenda',
+            buttonText: title_agenda,
+            allDaySlot: false,
             displayEventTime: false,
             groupByDateAndResource: true
           }
@@ -170,7 +211,7 @@ require('includes/session.php');
         },
         customButtons: {
           print: {
-              text: 'print',
+              text: title_print,
               click: function() { // Printing currently works for a single provider.
                 if($('#calendar').fullCalendar('getResources').length > 1) {
                   alert("Please select only a single provider.");
@@ -184,7 +225,7 @@ require('includes/session.php');
               }
             },
             search: {
-              text: 'search',
+              text: title_search,
               click: function() {
                 window.location.href = 'search.php';
               }
@@ -237,8 +278,8 @@ require('includes/session.php');
       $('#datepicker').datetimepicker({ 
         timepicker: false,
         // inline: true,
-        weeks:true,
-        todayButton: false,
+        //weeks:true,
+        todayButton: true,
         onChangeDateTime: function(d) {
           $('#calendar').fullCalendar('gotoDate', d);
         },
@@ -246,6 +287,7 @@ require('includes/session.php');
           $('#calendar').fullCalendar('gotoDate', d);
         }
       });
+      $.datetimepicker.setLocale('<?php echo $default_lang_id['lang_code'];?>');
       
     });
     
