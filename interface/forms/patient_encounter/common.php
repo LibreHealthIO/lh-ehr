@@ -131,7 +131,7 @@ function cancelClicked() {
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<form id="new-encounter-form" method='post' action="<?php echo $rootdir ?>/forms/patient_encounter/save.php" name='new_encounter'
+<form method='post' action="<?php echo $rootdir ?>/forms/patient_encounter/save.php" name='new_encounter'>
 
 <div style='float:left'>
 <?php if ($viewmode) { ?>
@@ -162,31 +162,31 @@ function cancelClicked() {
 
 <br> <br>
 
-<div class="container">
+<div>
 
  <div class="row">
   <div class="col-xs-12 col-sm-4 col-lg-4 ">
     <?php echo xlt('Consultation Brief Description'); ?>:
-    <textarea class="form-control input-sm" name='reason' cols='40' rows='12' wrap='virtual'>
+    <textarea class="form-control input-sm" style="resize:none" name='reason' cols='40' rows='12' wrap='virtual'>
       <?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?>
     </textarea>
     <hr>  
   </div>
   <div class="col-xs-12 col-sm-4 col-lg-4 ">
-   <table class="table">
+   <table>
 
     <tr>
      <td class='bold'><?php echo xlt('Visit Category:'); ?></td>
      <td class='text'>
-      <select class="form-control input-sm" name='pc_catid' id='pc_catid'>
-      <option value='_blank'>-- <?php echo xlt('Select One'); ?> --</option>
+      <select style="width:150px" name='pc_catid' id='pc_catid'>
+      <option value='_blank'><?php echo xlt('Select One'); ?></option>
         <?php
         $cres = sqlStatement("SELECT pc_catid, pc_catname " .
           "FROM libreehr_postcalendar_categories ORDER BY pc_catname");
         while ($crow = sqlFetchArray($cres)) {
           $catid = $crow['pc_catid'];
           if ($catid < 9 && $catid != 5) continue;
-          echo "       <option value='" . attr($catid) . "'";
+          echo "<option value='" . attr($catid) . "'";
           if ($viewmode && $crow['pc_catid'] == $result['pc_catid']) echo " selected";
           echo ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
         }
@@ -198,7 +198,7 @@ function cancelClicked() {
     <tr>
      <td class='bold'><?php echo xlt('Place of Service:'); ?></td>
      <td class='text'>
-      <select class="form-control input-sm" name='facility_id' onChange="bill_loc()">
+      <select style="width:150px" name='facility_id' onChange="bill_loc()">
         <?php
 
         if ($viewmode) {
@@ -241,7 +241,7 @@ function cancelClicked() {
 ?>
      <td class='bold'><?php echo xlt('Sensitivity:'); ?></td>
      <td class='text'>
-      <select class="form-control input-sm" name='form_sensitivity'>
+      <select style="width:150px" name='form_sensitivity'>
 <?php
   foreach ($sensitivities as $value) {
    // Omit sensitivities to which this user does not have access.
@@ -278,7 +278,7 @@ function cancelClicked() {
     <tr>
      <td class='bold' ><?php echo xlt('Date of Service:'); ?></td>
      <td class='text' >
-       <input type='text' class="form-control input-sm" size='10' name='form_date' id='form_date' <?php echo $disabled ?>
+       <input type='text' size='10' name='form_date' id='form_date' <?php echo $disabled ?>
               value='<?php echo $viewmode ? oeFormatShortDate(substr($result['date'], 0, 10)) : date($DateFormat); ?>'
               title='<?php echo xla('Date of Service'); ?>'/>
      </td>
@@ -287,7 +287,7 @@ function cancelClicked() {
     <tr<?php if ($GLOBALS['ippf_specific']) echo " style='visibility:hidden;'"; ?>>
      <td class='bold' ><?php echo xlt('Onset/hosp. date:'); ?></td>
      <td class='text' ><!-- default is blank so that while generating claim the date is blank. -->
-      <input type='text' class="form-control input-sm" size='10' name='form_onset_date' id='form_onset_date' 
+      <input type='text' size='10' name='form_onset_date' id='form_onset_date' 
              value='<?php echo $viewmode && $result['onset_date']!='0000-00-00 00:00:00' ? oeFormatShortDate(substr($result['onset_date'], 0, 10)) : ''; ?>'
              title='<?php echo xla('Date of onset or hospitalization'); ?>'/>
      </td>
@@ -310,7 +310,7 @@ function cancelClicked() {
       <a href="../../patient_file/summary/add_edit_issue.php" class="css_button_small link_submit iframe"
        onclick="top.restoreSession()"><span><?php echo xlt('Add'); ?></span></a>
     </div>
-    
+    <div>
     <select multiple class="form-control input-sm" name='issues[]' size='8' 
       title='<?php echo xla('Hold down [Ctrl] for multiple selections or to unselect'); ?>'>
         <?php
@@ -333,13 +333,13 @@ function cancelClicked() {
         }
         ?>
    </select>
+   </div>
 
    <p><i><?php echo xlt('To link this encounter/consult to an existing issue, click the '
    . 'desired issue above to highlight it and then click [Save]. '
    . 'Hold down [Ctrl] button to select multiple issues.'); ?>
    </i></p>
 
-  </td>
  </div> 
 
 </div>
