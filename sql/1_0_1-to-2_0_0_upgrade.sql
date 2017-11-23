@@ -196,6 +196,6 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 #EndIf
 
 #IfMissingColumn clinical_rules active
-  ALTER TABLE clinical_rules ADD COLUMN active tinyint(4) DEFAULT NULL COMMENT 'Is this measure turned on?');
+  ALTER TABLE clinical_rules ADD COLUMN active tinyint(4) DEFAULT NULL COMMENT 'Is this measure turned on?';
 #EndIf
 
