@@ -195,3 +195,19 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 ('ICD10', 'CMS', '2017-10-01', '2018-ICD-10-PCS-General-Equivalence-Mappings.zip', 'bb73c80e272da28712887d7979b1cebf');
 #EndIf
 
+#IfMissingColumn clinical_rules active
+  ALTER TABLE clinical_rules ADD COLUMN active tinyint(4) DEFAULT NULL COMMENT 'Is this measure turned on?';
+#EndIf
+
+#IfMissingColumn clinical_rules pqrs_individual_2016_flag
+  ALTER TABLE clinical_rules ADD COLUMN pqrs_individual_2016_flag tinyint(4) DEFAULT NULL COMMENT 'Is MIPS flag';
+#EndIf
+
+#IfMissingColumn clinical_rules pqrs_group_type
+  ALTER TABLE clinical_rules ADD COLUMN pqrs_group_type varchar(2) DEFAULT 'X' COMMENT 'XML output scheme type';
+#EndIf
+
+#IfMissingColumn clinical_rules pqrs_code
+  ALTER TABLE clinical_rules ADD COLUMN pqrs_code varchar(35) DEFAULT NULL COMMENT 'Measure number';
+#EndIf
+

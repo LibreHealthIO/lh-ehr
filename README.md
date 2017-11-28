@@ -9,13 +9,13 @@ That same software is designed to save clinics both time and money, which gives 
 
 We are current and former contributors to OpenEMR and thank that community for years of hard work. We intend to honor that legacy by allowing this new community to leverage the good things in OpenEMR, share what we create and not be afraid to break backward compatibility in the name of forward progress and modern development models.
 
-We are collaborating closely with the LibreHealth Project [LibreHealth.io](http://LibreHealth.io), an umbrella organization for health IT projects with similar goals.   
+We are collaborating closely with the LibreHealth Project [LibreHealth.io](http://LibreHealth.io), an umbrella organization for health IT projects with similar goals.
 
 Our project is primarily licensed under Mozilla Public License Version 2.
 
 Code inherited from OpenEMR is licensed under GPL 2 or higher.
 
-The project is part of the Software Freedom Conservancy family [sfconservancy.org](http://sfconservancy.org)  
+The project is part of the Software Freedom Conservancy family [sfconservancy.org](http://sfconservancy.org)
  
 ***Thank you for your support!***
 
@@ -36,21 +36,25 @@ Make the following changes in `php.ini` file. You can find the `php.ini` file by
 `C:/WAMP/BIN/PHP/php.ini` OR (left click )  wampmanager icon -> PHP -> php.ini
 * In  case of XAMPP:
 `C:\xampp\php\php.ini.`.
-
+In Linux it located in
+`/etc/php/7.0/php.ini` or similar
 
 Make the following changes in your php.ini file :
 (Search for the following and make necessary changes)
 
-* `short_open_tag` = On
-* `max_execution_time` = 600
-* `max_input_time` = 600
-* `max_input_vars` = 5000
-* `memory_limit` = 1024M
-* `error_reporting` = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
-* `register_argc_argv` = On
-* `post_max_size` = 32M
-* `upload_max_filesize` = 16M
-* `session.gc_maxlifetime` = 14400
+```
+max_execution_time = 600
+max_input_time = 600
+max_input_vars = 3000
+memory_limit = 512M
+post_max_size = 32M
+upload_max_filesize = 32M
+session.gc_maxlifetime = 14400
+short_open_tag = On
+display_errors = Off
+upload_tmp_dir is set to a correct default value that will work on your system
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
+``` 
 
 Make sure you have disabled strict mode in Mysql . 
 
@@ -59,6 +63,7 @@ Make sure you have disabled strict mode in Mysql .
 Make the following changes in the `my.ini/my.cnf`:
 Find it here `C:\WAMP\BIN\MYSQL\MySQL Server 5.6\my.ini` OR `C:\xampp\mysql\bin\my.ini` 
 OR (left click ) wampmanager icon -> MYSQL -> my.ini
+In Linux it's typically located in /etc/mysql
 
     1.  Look for the following line:
         sql-mode = STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
