@@ -155,6 +155,11 @@ a:hover {
     padding-bottom: 55px;
 }
 
+.sorting_1:hover{
+    cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
+    color:#ff5555;
+}
+
 /*=============================================================
  * Here we have taken variables from globals.php and turned them into CSS classes
  * these should be used in place of the GLOBAL variables -- JRM March 2008
