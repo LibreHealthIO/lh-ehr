@@ -216,6 +216,24 @@ function openNewTopWindow(newpid,newencounterid) {
    }
 
 ?>
+<?php
+ if (isset($_POST['setting_new_window'])) {
+   if (isset($_POST['form_new_window'])) {
+     $new_window_checked = " checked";
+   }
+   else {
+     $new_window_checked = '';
+   }
+ }
+ else {
+   if ($GLOBALS['ptkr_pt_list_new_window']) {
+     $new_window_checked = " checked";
+   }
+   else {
+     $new_window_checked = '';
+   }
+ }
+ ?>
 <span class="title"><?php echo xlt("Flow Board") ?></span>
 <span class="glyphicon glyphicon-cog" data-toggle="collapse" title="Set Flowboard Preferences" href="#pat_settings"></span>
 <body class="body_top" >
@@ -402,6 +420,12 @@ function openNewTopWindow(newpid,newencounterid) {
       <h3><?php echo xlt('Appointment Date'). ' : ' . text($form_from_date) ?></h3>
   <?php } ?>
   <?php } ?>
+ <div id= 'inanewwindow' class='inanewwindow'>
+ <span style='float: right'>
+ <input type='hidden' name='setting_new_window' value='1' />
+ <input type='checkbox' name='form_new_window' value='1'<?php echo $new_window_checked; ?> /><?php
+  echo xlt('Open Patient in New Window'); ?>
+ </span>
  </div>
 <?php if ($GLOBALS['pat_trkr_timer'] =='0') { ?>
 <table class="table">
