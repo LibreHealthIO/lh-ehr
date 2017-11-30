@@ -155,6 +155,7 @@ a:hover {
     padding-bottom: 55px;
 }
 
+/* This asset was homemade by https://github.com/aethelwulffe */
 .sorting_1:hover{
     cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
     color:#ff5555;
