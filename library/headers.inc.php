@@ -96,4 +96,4 @@ function resolveFancyboxCompatibility(){ ?>
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<link rel="stylesheet" href="<?php echo $GLOBALS['assets'] ?>/fonts/font-awesome-4-7-0/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $GLOBALS['assets'] ?>/fonts/font-awesome-4-6-3/css/font-awesome.min.css" type="text/css">
