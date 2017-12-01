@@ -880,7 +880,7 @@
         "children" : [ ],
         "requirement" : 0
     }, { 
-        "label" : "Password",
+        "label" : "Pass Phrase",
         "menu_id" : "pwd0",
         "target" : "msc",
         "url" : "/interface/usergroup/user_info.php",
