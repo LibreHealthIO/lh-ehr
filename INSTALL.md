@@ -326,31 +326,31 @@ localhost/libreEHR/setup.php
 #### Step 2
 Leave default as the "Site ID:" and press continue.
 
-![First Step](/pictures/screenshots/Libre1.png)
+![First Step](./Documentation/1_Installing/images/windows_installation/Step_1.png)
 
 Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file, or have the correct version of XAMP.
 
-![Second Step](/pictures/screenshots/Libre2.png)
+![Second Step](./Documentation/1_Installing/images/windows_installation/Step_2.png)
 
 Then after the second step, continue and leave the option "Have setup create the database" and press continue
 
-![Third Step](/pictures/screenshots/Libre3.png)
+![Third Step](./Documentation/1_Installing/images/windows_installation/Step_3.png)
 
 For the fourth step, enter a "Password" and "Initial User Password" you are free to change, the "Initial User" to your own username, but for convenience you can also leave it as admin. Then press continue
 
-![Fourth Step](/pictures/screenshots/Libre4.png)
+![Fourth Step](./Documentation/1_Installing/images/windows_installation/Step_4.png)
 
 Then after the fourth step, you can press continue through the others as long as the steps above were followed with clarity, the rest should have no errors, and each remaining page can be continued without change.
 
-![Fifth Step](/pictures/screenshots/Libre5.png)
+![Fifth Step](./Documentation/1_Installing/images/windows_installation/Step_5.png)
 
-![Sixth Step](/pictures/screenshots/Libre6.png)
+![Sixth Step](./Documentation/1_Installing/images/windows_installation/Step_6.png)
 
-![Seventh Step](/pictures/screenshots/Libre7.png)
+![Seventh Step](./Documentation/1_Installing/images/windows_installation/Step_7.png)
 
-![Eigth Step](/pictures/screenshots/Libre8.png)
+![Eigth Step](./Documentation/1_Installing/images/windows_installation/Step_8.png)
 
-![Ninth Step](/pictures/screenshots/Libre9.png)
+![Ninth Step](./Documentation/1_Installing/images/windows_installation/Step_9.png)
 
 **Yay, you have successfull setup LibreEHR!**
 
