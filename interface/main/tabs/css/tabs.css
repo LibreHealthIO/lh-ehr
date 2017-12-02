@@ -261,6 +261,13 @@ div.closeDlgIframe {
     position: absolute;
     right: 0;
 }
+
+/*#messagesNotification
+{
+    position: absolute;
+    right: 50px;
+}*/
+
 .patientInfo
 {
     padding: 1px;

@@ -12,6 +12,8 @@ $sanitize_all_escapes=true;
 require_once("../../globals.php");
 require_once $GLOBALS['srcdir'].'/headers.inc.php';
 require_once $GLOBALS['srcdir'].'/ESign/Api.php';
+/* for getPnotesByUser(). */
+require_once($GLOBALS['srcdir'] . '/pnotes.inc');
 $esignApi = new Api();
 
 ?>
@@ -120,7 +122,19 @@ var webroot_url="<?php echo $web_root; ?>";
         </button>        
     </div>    
     <div class="collapse navbar-collapse" id="navbar-collapse">
-        <div id="menu"  data-bind="template: {name: 'menu-template', data: application_data} "> </div>
+        <div id="menu" data-bind="template: {name: 'menu-template', data: application_data} "></div>
+        <?php
+            /* 
+             * This will query the database about the available messages.
+             * A string on upper right side of the page will appear informing the number of unread messages.
+             */
+            
+            // See getPnotesByUser() on Library/pnotes.inc.php to understand the arguments
+            $unreadMessages = getPnotesByUser(true, false, $_SESSION['authUser'], true);
+            // If there are more than 0 unread messages, create a phrase (eg. 3 unreadm messages), if there are NONE, the phrase is empty
+            $notification = $unreadMessages > 0 ? $unreadMessages . " unread messages" : "";
+        ?>
+       <!-- <div id="messagesNotification"><?= $notification ?></div>-->
         <div id="userData" data-bind="template: {name: 'user-data-template', data:application_data} "></div>
     </div>
     
