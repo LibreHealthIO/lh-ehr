@@ -178,7 +178,7 @@ function refreshbegin(first){
 
 // used to display the patient demographic and encounter screens
 function topatient(newpid, enc) {
- if (document.pattrk.form_new_window.checked) {
+ if (document.pt_settings.form_new_window.checked) {
    openNewTopWindow(newpid,enc);
  }
  else {
