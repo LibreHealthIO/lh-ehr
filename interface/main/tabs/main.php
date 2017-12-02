@@ -131,10 +131,10 @@ var webroot_url="<?php echo $web_root; ?>";
             
             // See getPnotesByUser() on Library/pnotes.inc.php to understand the arguments
             $unreadMessages = getPnotesByUser(true, false, $_SESSION['authUser'], true);
-            // If there are more than 0 unread messages, create a phrase (eg. 3 unreadm messages), if there are NONE, the phrase is empty
+            // If there are more than 0 unread messages, create a phrase (eg. 3 unread messages), if there are NONE, the phrase is empty
             $notification = $unreadMessages > 0 ? $unreadMessages . " unread messages" : "";
         ?>
-       <!-- <div id="messagesNotification"><?= $notification ?></div>-->
+        <div id="messagesNotification"><?= $notification ?></div>
         <div id="userData" data-bind="template: {name: 'user-data-template', data:application_data} "></div>
     </div>
     

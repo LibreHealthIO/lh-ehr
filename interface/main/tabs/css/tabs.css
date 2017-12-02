@@ -262,11 +262,12 @@ div.closeDlgIframe {
     right: 0;
 }
 
-/*#messagesNotification
+#messagesNotification
 {
     position: absolute;
     right: 50px;
-}*/
+    padding: 3px;
+}
 
 .patientInfo
 {
