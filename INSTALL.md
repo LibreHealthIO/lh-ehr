@@ -285,7 +285,7 @@ To run LibreEHR on Windows, [XAMPP](https://sourceforge.net/projects/xampp/files
 
 1. Must have php [7.0](https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/_) or [5.6](https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/) ([5.6.30](https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/5.6.30/) recommended)
 
-2. php 7.1x isn't supported
+2. php 7.1x is not currently supported
 
 Clone the LibreEHR [repository](https://github.com/LibreHealthIO/LibreEHR) into your console eg. [GitBash](https://git-for-windows.github.io/), [Cmder](http://cmder.net/)
 
@@ -318,17 +318,16 @@ Navigate to LibreEHR Setup:
 localhost/libreEHR/setup.php
 
 **Note:**
-1. Make sure that your XAMPP control panel has apache, mySQL, and Filezilla turned on
+1. Make sure that your XAMPP control panel has Apache and MySQL turned on
 2. Apache needs to be on port 80, 443
 3. mySQL needs to be on port 3306
-4. Filezilla needs to be on port 21, 14147
 
 #### Step 2
 Leave default as the "Site ID:" and press continue.
 
 ![First Step](./Documentation/1_Installing/images/windows_installation/Step_1.png)
 
-Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file, or have the correct version of XAMP.
+Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file, or have the correct version of XAMPP.
 
 ![Second Step](./Documentation/1_Installing/images/windows_installation/Step_2.png)
 
