@@ -352,6 +352,8 @@ Then after the fourth step, you can press continue through the others as long as
 
 ![Ninth Step](./Documentation/1_Installing/images/windows_installation/Step_9.png)
 
+![Tenth Step](./Documentation/1_Installing/images/windows_installation/Step_10.png)
+
 **Yay, you have successfull setup LibreEHR!**
 
 ## FAQ
