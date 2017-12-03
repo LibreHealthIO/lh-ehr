@@ -265,8 +265,17 @@ div.closeDlgIframe {
 #messagesNotification
 {
     position: absolute;
-    right: 50px;
-    padding: 3px;
+    right: 30px;
+    padding: 5px;
+    width: 150px;
+    cursor: pointer;
+    color: #1057c9;
+    font-weight: bold;
+}
+
+#messagesNotification:hover
+{
+    color: #fd5d00;
 }
 
 .patientInfo
