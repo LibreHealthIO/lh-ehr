@@ -445,9 +445,9 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
        prev(w_count);
       }
       var tot_res = res_array.length/w_count;
-	  if(tot_res > 0){
-		document.getElementById('alert_msg').innerHTML='<?php echo xla('Showing result');?> '+cur_res+' <?php echo xla('of');?> '+tot_res;
-	  }
+      if(tot_res > 0){
+        document.getElementById('alert_msg').innerHTML='<?php echo xla('Showing result');?> '+cur_res+' <?php echo xla('of');?> '+tot_res;
+      }
     }
     
   }
@@ -629,12 +629,21 @@ foreach ($ar as $key => $val) {
             echo "<hr />";
             echo "<div class='text insurance'>";
             echo "<h1>".xl('Insurance Data').":</h1>";
+            if ($GLOBALS['insurance_address_demographics_report'] =='1') {    
             print "<br><span class=bold>".xl('Primary Insurance Data').":</span><br>";
-            printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"primary"), $N);		
-            print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";	
+                printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"primary"), $N);             
+                print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";    
+                printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"secondary"), $N);
+                print "<span class=bold>".xl('Tertiary Insurance Data').":</span><br>";
+                printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"tertiary"), $N);
+            }else{
+                print "<br><span class=bold>".xl('Primary Insurance Data').":</span><br>";
+            printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"primary"), $N);       
+            print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";    
             printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"secondary"), $N);
             print "<span class=bold>".xl('Tertiary Insurance Data').":</span><br>";
             printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"tertiary"), $N);
+            }        
             echo "</div>";
 
         } elseif ($val == "billing") {
