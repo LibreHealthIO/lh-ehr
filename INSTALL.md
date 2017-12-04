@@ -191,11 +191,16 @@ OR (left click ) wampmanager icon -> MYSQL -> my.ini
 In Linux it's typically located in /etc/mysql
 
     1.  Look for the following line:
+    sql-mode = STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+    or sometimes it maybe sql_mode
 
     2.  Change it to:
 ```
         sql_mode="" (Blank)
 ```
+
+(XAMPP)
+If you don't find this parametery in my.ini file, you should run server, open http://localhost/phpmyadmin/ , click on the "variables" tab, search for "sql mode" and then check that it is set to:"" (Blank)
 
 In order to take full advantage of the patient documents capability you must make sure that settings in `php.ini` file include `file_uploads = On`, that `upload_max_filesize` is appropriate for your use, and that `upload_tmp_dir` is set to a correct value that will work on your system.
 
