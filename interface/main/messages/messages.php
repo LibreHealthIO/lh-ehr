@@ -110,7 +110,7 @@ else {
   <tr>
     <td>
       <span class="title"><?php echo htmlspecialchars( xl('Messages'), ENT_NOQUOTES); ?></span>
-      <!-- Closing for first a tag is included in $lnkvar -->
+      <!-- Closing for first anchor tag is included in $lnkvar -->
       <a class='more' href=<?php echo $lnkvar; ?></a>
     </td>
   </tr>
