@@ -713,8 +713,12 @@ else if ($_POST["mode"] == "download_certificates") {
           <td><?php xl('Email', 'e'); ?>:</td>
           <td><input type='text' name='client_cert_email' size=20 />
         </tr>
+        <tr>
+          <td colspan=2>
+            <input type='submit' onclick='return create_client_certificate_click();' value='<?php xl('Create Client Certificate', 'e'); ?>'>
+          </td>
+        </tr>
       </table>
-      </br> <input type='submit' onclick='return create_client_certificate_click();' value='<?php xl('Create Client Certificate', 'e'); ?>'>
     </form>
   </div>
   <br>
