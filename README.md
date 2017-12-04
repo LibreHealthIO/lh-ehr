@@ -78,7 +78,7 @@ In Linux it's typically located in /etc/mysql
 Restart WAMPP/XAMPP Server.
 
 (XAMPP)
- If you don't find this parametery in my.ini file, you should run server, open http://localhost/phpmyadmin/ , click on the "variables" tab, search for "sql mode" and then check that it is set to:"" (Blank)
+ If you don't find this parameter in the my.ini file, you should run server, open http://localhost/phpmyadmin/, click on the "variables" tab, search for "sql mode", and then set it to:""
 
 You can fork & clone the repository for local development. To get started you need to:
  - Clone the repository
