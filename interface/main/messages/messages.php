@@ -106,7 +106,15 @@ else {
 }
 ?>
 <br>
-<table class="table"><tr><td><span class="title"><?php echo htmlspecialchars( xl('Messages'), ENT_NOQUOTES); ?></span> <a class='more' href=<?php echo $lnkvar; ?> ></a></td></tr></table>
+<table class="table">
+  <tr>
+    <td>
+      <span class="title"><?php echo htmlspecialchars( xl('Messages'), ENT_NOQUOTES); ?></span>
+      <!-- Closing for first a tag is included in $lnkvar -->
+      <a class='more' href=<?php echo $lnkvar; ?></a>
+    </td>
+  </tr>
+</table>
 <?php
 //show the activity links
 if (empty($task) || $task=="add" || $task=="delete") { ?>
