@@ -178,7 +178,7 @@ function refreshbegin(first){
 
 // used to display the patient demographic and encounter screens
 function topatient(newpid, enc) {
- if (document.pattrk.form_new_window.checked) {
+ if (document.pt_settings.form_new_window.checked) {
    openNewTopWindow(newpid,enc);
  }
  else {
@@ -239,6 +239,12 @@ function openNewTopWindow(newpid,newencounterid) {
 <body class="body_top" >
 <div id="pat_settings" class="well collapse">
     <form method='post' name='pt_settings' id="pt_settings" action='<?php echo $action_page; ?>'>
+
+        <div class="checkbox">
+        <!-- This hidden field must not be deleted -->
+        <input type='hidden' name='setting_new_window' value='1' />
+        <label><input type='checkbox' name='form_new_window' value='1' <?php echo $new_window_checked; ?> /><?= xlt('Open Patient in New Window'); ?></label>
+        </div>
         <div class="checkbox">
         <label><input type="checkbox" id="ptkr_pt_list_new_window" name="ptkr_pt_list_new_window" value="1" <?php if($GLOBALS['ptkr_pt_list_new_window']=='1') echo "checked"; ?>><?php echo xlt("Open Demographics in New Window from Patient Flow Board"); ?></label>
         </div>
@@ -421,11 +427,6 @@ function openNewTopWindow(newpid,newencounterid) {
   <?php } ?>
   <?php } ?>
  <div id= 'inanewwindow' class='inanewwindow'>
- <span style='float: right'>
- <input type='hidden' name='setting_new_window' value='1' />
- <input type='checkbox' name='form_new_window' value='1'<?php echo $new_window_checked; ?> /><?php
-  echo xlt('Open Patient in New Window'); ?>
- </span>
  </div>
 <?php if ($GLOBALS['pat_trkr_timer'] =='0') { ?>
 <table class="table">
