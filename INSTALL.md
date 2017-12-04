@@ -200,7 +200,7 @@ In Linux it's typically located in /etc/mysql
 ```
 
 (XAMPP)
- If you don't find this parametery in my.ini file, you should run server, open http://localhost/phpmyadmin/ , click on the "variables" tab, search for "sql mode" and then check that it is set to:"" (Blank)
+ If you don't find this parameter in the my.ini file, you should run server, open http://localhost/phpmyadmin/, click on the "variables" tab, search for "sql mode", and then set it to:""
 
 In order to take full advantage of the patient documents capability you must make sure that settings in `php.ini` file include `file_uploads = On`, that `upload_max_filesize` is appropriate for your use, and that `upload_tmp_dir` is set to a correct value that will work on your system.
 
