@@ -469,7 +469,14 @@ function getRecInsuranceData ($pid, $ins_type) {
     //column name->dates->values
     //$return{"lname"}[0..n]{"date"}
     //$return{"lname"}[0..n]{"value"}
-    $res = sqlStatement("select *, ic.name as provider_name from insurance_data left join insurance_companies as ic on ic.id = provider where pid=? and type=? order by date", array($pid,$ins_type) );
+
+    $res = sqlStatement(
+    "select *, ic.name as provider_name ".
+     "FROM insurance_data left join insurance_companies as ic on ic.id = provider INNER JOIN addresses ON ic.id = addresses.foreign_id ".    
+     "WHERE pid=? and type=? ".
+     "ORDER BY date", 
+    array($pid,$ins_type) 
+    );
     
     while($result = sqlFetchArray($res)) {
         foreach ($result as $key => $val) {
