@@ -309,7 +309,6 @@ if(count($updateStatus['off']) || count($updateStatus['on'])) {
 }
 
 ?>
-			<p><input type="submit" value="Update" /></p>
 			<div id="measures">
 				<ul>
 
