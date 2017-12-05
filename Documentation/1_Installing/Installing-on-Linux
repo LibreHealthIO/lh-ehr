@@ -1,0 +1,78 @@
+### Step 1. Install dependencies
+#### Arch
+First install the community repositories
+```
+pacman -Syu
+pacman -S mariadb apache imagemagick libtiff curl
+```
+
+Then run `sudo systemctl enable httpd` to start the apache server.
+
+Install php after apache.
+
+If you already have php installed, remove file with `rm /etc/httpd/modules/libphp7.so`
+This would make apache use php 7.0.
+
+LibreEHR doesn't yet support php 7.1 and above, so to install php7.0 you have to download the [php70](https://aur.archlinux.org/packages/php70/) AUR repo. Using yaourt makes the process easy `yaourt -S php70`, but you can use any other way to install these repos.
+
+This should install all the dependencies that are required.
+
+#### Ubuntu
+
+
+#### Other
+
+
+### Step 2. Configure php
+edit the php.ini, usually located at `/etc/php/php.ini`, or if using the AUR `/etc/php70/php.ini`
+
+uncomment extensions by removing the semicolon in these lines
+```
+... curl.so
+... gd.so
+... ldap.so
+... mcrypt.so
+... mysqli.so
+... xsl.so
+... zip.so
+```
+
+### Step 3. Configure apache
+Depending on distros, the apache server is referred to as either 'httpd', 'apache', or 'apache2'. Replace the
+
+Go to check that `/etc/httpd/modules/libphp7.so` exists, as well as `/etc/httpd/conf/extra/php70_module` exists. If they don't you might have to recompile php70. Then edit /etc/httpd/conf/httpd.conf and then add this bit of code to the end of the file.
+
+```
+LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+LoadModule php7_module modules/libphp7.so
+AddHandler php7-script php
+Include conf/extra/php7_module.conf
+```
+
+If using php70 replace the last line to `Include conf/extra/php70_module.conf`, but do not change the first three.
+
+
+Note the User and Group variables in the config files, as well as the DocumentRoot variable.You will need them later.
+
+Restart apache to apply the changes. On Arch, the command is `sudo systemctl restart httpd`.
+
+### Step 4. Configure MySQL (or MariaDB)
+Follow the excellent [guide]("https://wiki.archlinux.org/index.php/MySQL#Configuration") over at ArchWiki.
+
+Other distros have their respective guides on configuring MySQL.
+
+### Step 5. Download Source
+This downloads the source and puts it into the apache directory. Replace [path to Document Root]
+`git clone https://github.com/LibreHealthIO/LibreEHR [path to Document Root]`
+Now you should be able to access the setup at http://localhost/LibreEHR/setup.php.
+
+The apache user is what was noted in Step 3.
+
+Just follow the instructions, and click continue just once, even if it's taking a while. If there you get stuck at step 3, check Troublshooting.
+
+### Step 6. Troublshooting
+#### No Webserver
+`sudo systemctl status httpd` will show you errors if apache won't launch.
+
+#### Stuck at step 3
+Error log at `/var/log/httpd/error.log` could show what problems you're having. This means it's likely that `mysqli.so` wasn't uncommented.
