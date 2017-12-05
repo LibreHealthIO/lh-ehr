@@ -202,6 +202,11 @@ div.closeDlgIframe {
     display: block;
 }
 
+.patientDataColumn > div
+{
+    margin-top: -1%;
+}
+
 .patientEncountersColumn
 {
 }
@@ -213,6 +218,8 @@ div.closeDlgIframe {
     border: 1px solid black;
     background: white;
     cursor: pointer;
+    margin-top: -0.32%;
+    z-index: 12;
 }
 
 .patientEncounterList  table.encounters
@@ -229,6 +236,7 @@ div.closeDlgIframe {
 .patientEncounterList > div
 {
     padding: 2px;
+    margin-top: -2%;
 }
 .patientEncounterList:hover
 {
