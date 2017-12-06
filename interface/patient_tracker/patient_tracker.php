@@ -163,13 +163,19 @@ function calendarpopup(eid,date_squash) {
  return false;
 }
 
-// auto refresh screen pat_trkr_timer is the timer variable
+// auto refresh screen pat_trkr_timer is the timer variable AND IF settings aren't opened
 function refreshbegin(first){
   <?php if ($GLOBALS['pat_trkr_timer'] != '0') { ?>
     var reftime="<?php echo attr($GLOBALS['pat_trkr_timer']); ?>";
     var parsetime=reftime.split(":");
     parsetime=(parsetime[0]*60)+(parsetime[1]*1)*1000;
-    if (first != '1') {
+
+    var expanded = document.getElementById("pat_settings_toggle").getAttribute('aria-expanded');
+
+    // expanded variable is the status of the pat_settings div. if it is opened, this variable will evaluate to true
+    // otherwise, false. this can be used to check if options are opened
+    if (first != '1' && (expanded == "false" || expanded == null)) {
+      console.log("Refreshing!");
       refreshme();
     }
     setTimeout("refreshbegin('0')",parsetime);
@@ -235,7 +241,7 @@ function openNewTopWindow(newpid,newencounterid) {
  }
  ?>
 <span class="title"><?php echo xlt("Flow Board") ?></span>
-<span class="glyphicon glyphicon-cog" data-toggle="collapse" title="Set Flowboard Preferences" href="#pat_settings"></span>
+<span class="glyphicon glyphicon-cog" data-toggle="collapse" title="Set Flowboard Preferences" href="#pat_settings" id="pat_settings_toggle" aria-expanded="false"></span>
 <body class="body_top" >
 <div id="pat_settings" class="well collapse">
     <form method='post' name='pt_settings' id="pt_settings" action='<?php echo $action_page; ?>'>
