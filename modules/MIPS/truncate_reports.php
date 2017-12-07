@@ -24,7 +24,7 @@
 	include_once("$srcdir/acl.inc");
 
 	// Warning message created here and echoed on its place. The single ' is shown as ` don't know why. This must be fixed.
-	$reportDeleteWarning = xlt("This will delete all old reports and it's irreversible!");
+	$reportDeleteWarning = xlt("This will irreversibly delete all existing reports!");
 ?>	
 <html>
 	<span class='title' visibility: hidden><?php echo htmlspecialchars( xl('Delete all QA Reports'), ENT_NOQUOTES); ?></span>
