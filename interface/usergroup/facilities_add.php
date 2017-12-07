@@ -52,7 +52,6 @@ $alertmsg = '';
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 <script src="<?php echo $GLOBALS['standard_js_path']; ?>anchorposition/AnchorPosition.js"></script>
 <script src="<?php echo $GLOBALS['standard_js_path']; ?>popupwindow/PopupWindow.js"></script>
-<script src="<?php echo $GLOBALS['standard_js_path']; ?>colorpicker2/ColorPicker2.js"></script>
 <?php
 // Old Browser comp trigger on js
 
@@ -166,17 +165,7 @@ $(document).ready(function(){
           parent.$.fn.fancybox.close();
      });
 });
-var cp = new ColorPicker('window');
-  // Runs when a color is clicked
-function pickColor(color) {
-    document.getElementById('ncolor').value = color;
-}
-var field;
-function pick(anchorname,target) {
-    var cp = new ColorPicker('window');
-    field=target;
-        cp.show(anchorname);
-}
+
 function displayAlert()
 {
     if(document.getElementById('primary_business_entity').checked==false)
@@ -184,6 +173,13 @@ function displayAlert()
     else if(document.getElementById('primary_business_entity').checked==true)
     alert("<?php echo addslashes(xl('Once the Primary Business Facility is set, it should not be changed. Changing the facility will affect the working in NewCrop ePrescription.'));?>");
 }
+
+  function changeColor(id) {
+    // Gets the value from the color input
+    newColor = document.getElementById(id).value;
+    // Set the display input to the new color
+    document.getElementById('ncolor').value = newColor;
+  }
 </script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
@@ -250,7 +246,16 @@ function displayAlert()
         <tr>
           <td><span class='text'><?php echo xlt('Service Location'); ?>: </span></td> <td><input type='checkbox' name='service_location' value = '1'></td>
           <td>&nbsp;</td>
-          <td><span class='text'><?php echo xlt('Color'); ?>: </span><span class="mandatory">&nbsp;*</span></td> <td><input type=entry name=ncolor id=ncolor size=20 value="">[<a href="javascript:void(0);" onClick="pick('pick','newcolor');return false;" NAME="pick" ID="pick"><?php echo xlt('Pick'); ?></a>]</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="text"><?php echo htmlspecialchars(xl('Color'),ENT_QUOTES); ?>:</span>
+            <span class="mandatory">&nbsp;*</span>
+          </td>
+          <td>
+            <span>Pick:&nbsp;<input type="color" id="colorPicker" onChange="changeColor('colorPicker')"></span>
+            <span><input type=entry name=ncolor id=ncolor size=10 value="#000000"></span>
+          </td>
         </tr>
     <?php
      $disabled='';
