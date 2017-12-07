@@ -253,7 +253,7 @@ function displayAlert()
             <span class="mandatory">&nbsp;*</span>
           </td>
           <td>
-            <span>Pick:&nbsp;<input type="color" id="colorPicker" onChange="changeColor('colorPicker')"></span>
+            <span class="text">Pick:&nbsp;<input type="color" id="colorPicker" onChange="changeColor('colorPicker')"></span>
             <span><input type=entry name=ncolor id=ncolor size=10 value="#000000"></span>
           </td>
         </tr>

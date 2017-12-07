@@ -203,7 +203,7 @@ parent.$.fn.fancybox.close();
         <span class="mandatory">&nbsp;*</span>
       </td>
       <td>
-        <span>Pick:&nbsp;<input type="color" id="colorPicker" onChange="changeColor('colorPicker')" value="<?php echo htmlspecialchars($facility{"color"}, ENT_QUOTES) ?>"></span>
+        <span class="text">Pick:&nbsp;<input type="color" id="colorPicker" onChange="changeColor('colorPicker')" value="<?php echo htmlspecialchars($facility{"color"}, ENT_QUOTES) ?>"></span>
         <span><input type=entry name=ncolor id=ncolor size=10 value="<?php echo htmlspecialchars($facility{"color"}, ENT_QUOTES) ?>"></span>
       </td>
     </tr>
