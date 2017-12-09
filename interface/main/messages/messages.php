@@ -45,7 +45,7 @@ require_once("$srcdir/gprelations.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/headers.inc.php");
 //Include Bootstrap
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap"));
+call_required_libraries(array("jquery-min-3-1-1","bootstrap", "jquery-ui"));
 ?>
 <html>
 <head>
@@ -54,16 +54,15 @@ require_once("$srcdir/headers.inc.php");
 </head>
 
 <body class="body_top">
+<span class="title" style="display: none"><?php echo xlt('Message and Reminder Center'); ?></span>
 
-<span class="title"><?php echo xlt('Message and Reminder Center'); ?></span>
-<br /><br />
 <span class="title"><?php echo xlt('Reminders'); ?></span>
 
 <?php       
         
-        // TajEmo Work by CB 2012/01/11 02:51:25 PM adding dated reminders
-        // I am asuming that at this point security checks have been performed
-        require_once '../dated_reminders/dated_reminders.php';   
+  // TajEmo Work by CB 2012/01/11 02:51:25 PM adding dated reminders
+  // I am asuming that at this point security checks have been performed
+  require_once '../dated_reminders/dated_reminders.php';   
         
 // Check to see if the user has Admin rights, and if so, allow access to See All.
 $showall = isset($_GET['show_all']) ? $_GET['show_all'] : "" ;
@@ -97,24 +96,17 @@ $task= isset($_REQUEST['task']) ? $_REQUEST['task'] : "";
 if (acl_check('admin', 'super'    )) {
 if ($show_all=='yes') {
     $showall = "yes";
-    $lnkvar="'messages.php?show_all=no&$activity_string_html' name='Just Mine' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('Just Mine'), ENT_NOQUOTES).")";
+    $lnkvar="<a class='more' href='messages.php?show_all=no&$activity_string_html' name='Just Mine' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('Just Mine'), ENT_NOQUOTES).")</a>";
 }
 else {
     $showall = "no";
-    $lnkvar="'messages.php?show_all=yes&$activity_string_html' name='See All' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('See All'), ENT_NOQUOTES).")";
+    $lnkvar="<a class='more' href='messages.php?show_all=yes&$activity_string_html' name='See All' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('See All'), ENT_NOQUOTES).")</a>";
 }
 }
 ?>
 <br>
-<table class="table">
-  <tr>
-    <td>
-      <span class="title"><?php echo htmlspecialchars( xl('Messages'), ENT_NOQUOTES); ?></span>
-      <!-- Closing for first anchor tag is included in $lnkvar -->
-      <a class='more' href=<?php echo $lnkvar; ?></a>
-    </td>
-  </tr>
-</table>
+<span class="title"><?php echo htmlspecialchars( xl('Messages'), ENT_NOQUOTES); ?><?php echo $lnkvar; ?></span>
+<br><br>
 <?php
 //show the activity links
 if (empty($task) || $task=="add" || $task=="delete") { ?>

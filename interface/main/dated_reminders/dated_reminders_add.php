@@ -375,11 +375,10 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
         </tr>
       </table> 
     </fieldset>
-    
-    
       <p align="center">
         <input type="submit" id="sendButton" value="<?php echo xla('Send This Message') ?>" />
       </p>
+      <br><br>
     </form>
     <?php 
         $_GET['sentBy'] = array($_SESSION['authId']);
