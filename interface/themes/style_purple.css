@@ -18,6 +18,10 @@ a:hover {
   color: #ff5555;
 }
 
+.centerBody {
+    text-align: center;
+}
+
 .menu {
     font-family: sans-serif;
     font-style: italic;
