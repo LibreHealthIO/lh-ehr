@@ -32,8 +32,8 @@
                 &nbsp;
             </span>
             <span class="patientDataColumn patientEncountersColumn" id="patient_data_column_right">
-                <!-- ko if: patient -->                
-                <!-- ko with: patient -->                
+                <!-- ko if: patient -->
+                <!-- ko with: patient -->
                 <div>
                     <span>Selected Encounter:</span>
                     <!-- ko if:selectedEncounter() -->
@@ -42,9 +42,9 @@
                     <!-- /ko -->
                     <!-- ko if:!selectedEncounter() -->
                         <?php echo xlt("None") ?>
-                    <!-- /ko -->                
+                    <!-- /ko -->
                 </div>
-                <span class="patientEncounterList" >
+                <span class="patientEncounterList">
                     <div data-bind="click: clickNewEncounter"><?php echo xlt("New Encounter");?></div>
                     <div data-bind="click: clickEncounterList"><?php echo xlt("Past Encounter List");?>
                         (<span data-bind="text:encounterArray().length"></span>)
@@ -64,8 +64,8 @@
                         </tbody>
                     </table>
                 </span>
-                <!-- /ko -->                
-                <!-- /ko -->                
+                <!-- /ko -->
+                <!-- /ko -->
 
             </span>
         </div>

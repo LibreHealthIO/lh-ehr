@@ -1487,8 +1487,8 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
         //////
 
     // appointments expand collapse widget
-        $widgetTitle = xl("Appointments");
-        $widgetLabel = "appointments";
+        $widgetTitle = xl("Future Appointments");
+        $widgetLabel = "future_appointments";
         $widgetButtonLabel = xl("Add");
         $widgetButtonLink = "return newEvt();";
         $widgetButtonClass = "";

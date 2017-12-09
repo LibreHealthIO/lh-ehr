@@ -142,7 +142,7 @@ a:hover {
 }
 
 .sorting_1:hover{
-    cursor:pointer;
+    cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
     color:#ff5555;
 }
 
@@ -708,7 +708,7 @@ input[type="text"] {
   background: #ffffff;
   border: 1px solid #444444;
   padding: 3px;
-  margin: 3px;
+ /* margin: 3px;*/ /* removed this because it was causing layout problems */
 }
 
 #logout_link:before {

@@ -547,71 +547,66 @@ else if ($_POST["mode"] == "download_certificates") {
       xl('LibreEHR already has a Certificate Authority configured.', 'e');
     }
   ?>
-  <form method='post' name=ssl_certificate_frm action='ssl_certificates_admin.php'>
-  <input type='hidden' name='mode' value='download_certificates'>
   <div class='borderbox'>
-    <b><?php xl('Create the SSL Certificate Authority and Server certificates.', 'e'); ?></b><br>
-    <br>
-    1. <?php xl('Fill in the values below', 'e'); ?><br>
-    2. <?php xl('Click Download Certificate to download the certificates in the file ssl.zip', 'e'); ?> <br>
-    3. <?php xl('Extract the zip file', 'e'); echo ": ssl.zip "; ?><br></br>
-    <?php xl('The zip file will contain the following items', 'e'); ?> <br>
-    <ul>
-      <li>Server.crt : <?php xl('The Apache SSL server certificate and public key', 'e'); ?>
-      <li>Server.key : <?php xl('The corresponding private key', 'e'); ?>
-      <li>CertificateAuthority.crt : <?php xl('The Certificate Authority certificate', 'e'); ?>
-      <li>CertificateAuthority.key : <?php xl('The corresponding private key', 'e'); ?>
-      <li>admin.p12 : <?php xl('A client certificate for the admin user', 'e'); ?>
-    </ul>
-        <table border=0>
-      <tr class='text'>
-        <td><?php xl('Host Name', 'e'); ?> *:</td>
-        <td><input name='commonName' type='text' value=''></td>
-        <td><?php xl('Example', 'e') ; echo ': hostname.domain.com'; ?></td>
-      </tr>
-      <tr class='text'>
-        <td><?php xl('Email Address', 'e'); ?>:</td>
-        <td><input name='emailAddress' type='text' value=''></td>
-        <td><?php xl('Example', 'e') ; echo ': web_admin@domain.com'; ?></td>
-      </tr>
-      <tr class='text'>
-        <td><?php xl('Organization Name', 'e'); ?>:</td>
-        <td><input name='organizationName' type='text' value=''></td>
-        <td><?php xl('Example', 'e'); echo ': My Company Ltd'; ?></td>
-      </tr>
-      <tr class='text'>
-        <td><?php xl('Organizational Unit Name', 'e'); ?>:</td>
-        <td><input name='organizationalUnitName' type='text' value=''></td>
-        <td><?php xl('Example', 'e'); echo ': LibreEHR'; ?></td>
-      </tr>
-      <tr class='text'>
-        <td><?php xl('Locality', 'e'); ?>:</td>
-        <td><input name='localityName' type='text' value=''></td>
-        <td><?php xl('Example', 'e') ; echo ': City'; ?></td>
-      </tr>
-      <tr class='text'>
-        <td><?php xl('State Or Province', 'e'); ?>:</td>
-        <td><input name='stateOrProvinceName' type='text' value=''></td>
-        <td><?php xl('Example', 'e') ; echo ': California'; ?></td>
-      </tr>
-      <tr class='text'>
-        <td><?php xl('Country', 'e'); ?>:</td>
-        <td><input name='countryName' type='text' value='' maxlength='2'></td>
-        <td><?php xl('Example', 'e'); echo ': US'; echo ' ('; xl('Should be two letters', 'e'); echo ')'; ?></td>
-      </tr>
-      <tr class='text'>
-        <td><?php xl('Client certificate validation period', 'e'); ?>:</td>
-        <td><input name='clientCertValidity' type='text' onkeypress='return isNumberKey(event)' value='365'></td>
-        <td><?php xl('days', 'e'); ?></td>
-      </tr>
-      <tr>
-        <td colspan=3 align='center'>
-          <input name='sslcrt' type='submit' onclick='return download_click();' value='<?php xl('Download Certificates', 'e'); ?>'>
-        </td>
-      </tr>
-    </table>
+    <form method='post' name=ssl_certificate_frm action='ssl_certificates_admin.php'>
+      <input type='hidden' name='mode' value='download_certificates'>
+      <b><?php xl('Create the SSL Certificate Authority and Server certificates.', 'e'); ?></b><br>
+      <br>
+      1. <?php xl('Fill in the values below', 'e'); ?>
+      <br>
+      2. <?php xl('Click Download Certificate to download the certificates in the file ssl.zip', 'e'); ?>
+      <br>
+      3. <?php xl('Extract the zip file', 'e'); echo ": ssl.zip "; ?>
+      <br>
+      </br>
+      <?php xl('The zip file will contain the following items', 'e'); ?> <br>
+      <ul>
+        <li>Server.crt : <?php xl('The Apache SSL server certificate and public key', 'e'); ?>
+        <li>Server.key : <?php xl('The corresponding private key', 'e'); ?>
+        <li>CertificateAuthority.crt : <?php xl('The Certificate Authority certificate', 'e'); ?>
+        <li>CertificateAuthority.key : <?php xl('The corresponding private key', 'e'); ?>
+        <li>admin.p12 : <?php xl('A client certificate for the admin user', 'e'); ?>
+      </ul>
+      <table border=0>
+        <tr class='text'>
+          <td><?php xl('Host Name', 'e'); ?> *:</td>
+          <td><input name='commonName' type='text' value='' placeholder='hostname.domain.com'></td>
+        </tr>
+        <tr class='text'>
+          <td><?php xl('Email Address', 'e'); ?>:</td>
+          <td><input name='emailAddress' type='text' value='' placeholder='web_admin@domain.com'></td>
+        </tr>
+        <tr class='text'>
+          <td><?php xl('Organization Name', 'e'); ?>:</td>
+          <td><input name='organizationName' type='text' value='' placeholder='My Company Ltd'></td>
+        </tr>
+        <tr class='text'>
+          <td><?php xl('Organizational Unit Name', 'e'); ?>:</td>
+          <td><input name='organizationalUnitName' type='text' value='' placeholder='LibreEHR'></td>
+        </tr>
+        <tr class='text'>
+          <td><?php xl('Locality', 'e'); ?>:</td>
+          <td><input name='localityName' type='text' value='' placeholder='San Francisco'></td>
+        </tr>
+        <tr class='text'>
+          <td><?php xl('State Or Province', 'e'); ?>:</td>
+          <td><input name='stateOrProvinceName' type='text' value='' placeholder='California'></td>
+        </tr>
+        <tr class='text'>
+          <td><?php xl('Country (2 letters)', 'e'); ?>:</td>
+          <td><input name='countryName' type='text' value='' maxlength='2' placeholder='US'></td>
+        </tr>
+        <tr class='text'>
+          <td><?php xl('Client certificate validation period (in days)', 'e'); ?>:</td>
+          <td><input name='clientCertValidity' type='text' onkeypress='return isNumberKey(event)' value='365'></td>
+        </tr>
+        <tr>
+          <td colspan=3 align='center'>
+            <input name='sslcrt' type='submit' onclick='return download_click();' value='<?php xl('Download Certificates', 'e'); ?>'></td>
+        </tr>
+      </table>
+    </form>
   </div>
-  </form>
   <br>
 
   <div class="borderbox">
@@ -713,8 +708,12 @@ else if ($_POST["mode"] == "download_certificates") {
           <td><?php xl('Email', 'e'); ?>:</td>
           <td><input type='text' name='client_cert_email' size=20 />
         </tr>
+        <tr>
+          <td colspan=2>
+            <input type='submit' onclick='return create_client_certificate_click();' value='<?php xl('Create Client Certificate', 'e'); ?>'>
+          </td>
+        </tr>
       </table>
-      </br> <input type='submit' onclick='return create_client_certificate_click();' value='<?php xl('Create Client Certificate', 'e'); ?>'>
     </form>
   </div>
   <br>
