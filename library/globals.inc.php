@@ -1660,64 +1660,64 @@ $GLOBALS_METADATA = array(
     ),
 
     'disable_pat_trkr' => array(
-      xl('Disable Patient Flow Board'),
+      xl('Patient Flow Board: Disable'),
        'bool',                          // data type
        '0',                             // default
       xl('Do not display the patient flow board.')
     ),
 
     'ptkr_pt_list_new_window' => array(
-      xl('Open Demographics in New Window from Patient Flow Board'),
+      xl('Patient Flow Board: Open Demographics in New Window'),
        'bool',                          // data type
        '0',                             // default = false
       xl('When Checked, Demographics Will Open in New Window from Patient Flow Board.')
     ),
 
     'ptkr_visit_reason' => array(
-      xl('Show Visit Reason in Patient Flow Board'),
+      xl('Patient Flow Board: Show Visit Reason'),
        'bool',                          // data type
        '0',                             // default = false
       xl('When Checked, Visit Reason Will Show in Patient Flow Board.')
     ),
 
     'ptkr_show_pid' => array(
-      xl('Show Patient ID in Patient Flow Board'),
+      xl('Patient Flow Board: Show Patient ID'),
        'bool',                          // data type
        '1',                             // default = true
       xl('When Checked, Patient ID Will Show in Patient Flow Board.')
     ),
     'ptkr_show_room' => array(
-      xl('Show Exam Room Patient Flow Board'),
+      xl('Patient Flow Board: Show Exam Room'),
       'bool',                          // data type
       '1',                             // default = true
       xl('When Checked, Exam Room Will Show in Patient Flow Board.')
     ),
     'ptkr_show_visit_type' => array(
-      xl('Show Visit Type in Patient Flow Board'),
+      xl('Patient Flow Board: Show Visit Type'),
       'bool',                          // data type
       '1',                             // default = true
       xl('When Checked, Visit Type Will Show in Patient Flow Board.')
     ),
     'ptkr_show_encounter' => array(
-      xl('Show Patient Encounter Number in Patient Flow Board'),
+      xl('Patient Flow Board: Show Patient Encounter Number'),
        'bool',                          // data type
        '1',                             // default = true
       xl('When Checked, Patient Encounter Number Will Show in Patient Flow Board.')
     ),
       'ptkr_flag_dblbook' => array(
-          xl('Flag Double Booked Appt in Flow Board'),
+          xl('Patient Flow Board: Flag Double Booked Appt'),
           'bool',                          // data type
           '1',                             // default = true
           xl('When Checked, double booked appointments will be flagged in orange in Patient Flow Board.')
     ),
     'ptkr_date_range' => array(
-      xl('Allow Date Range in Patient Flow Board'),
+      xl('Patient Flow Board: Allow Date Range'),
        'bool',                          // data type
        '0',                             // default = false
       xl('This Allows a Date Range to be Selected in Patient Flow Board.')
     ),
     'ptkr_end_date' => array(
-      xl('Ending Date for Patient Flow Board'),
+      xl('Patient Flow Board: Ending Date'),
       array(
         'Y1' => xl('One Year Ahead'),
         'Y2' => xl('Two Years Ahead'),
@@ -1730,7 +1730,7 @@ $GLOBALS_METADATA = array(
       xl('This is the Ending date for the Patient Flow Board Date Range. (only applicable if Allow Date Range in option above is Enabled)')
     ),
     'pat_trkr_timer' => array(
-      xl('Patient Flow Board Timer Interval'),
+      xl('Patient Flow Board: Timer Interval'),
       array(
        '0' => xl('No automatic refresh'),
        '0:10' => '10',
@@ -1745,21 +1745,21 @@ $GLOBALS_METADATA = array(
     ),
 
     'status_default' => array(
-      xl('Default Status for the Patient Flow Board'),
+      xl('Patient Flow Board: Default Status'),
       'status',                           // data type
       '',                                 // default = none
       xl('Default Status for the Patient Flow Board Screen.')
     ),
 
     'checkout_roll_off' => array(
-      xl('Number of Minutes to display completed checkouts'),
+      xl('Patient Flow Board: Number of Minutes to display completed checkouts'),
        'num',
        '0',                             // default
       xl('Number of Minutes to display completed checkouts. Zero is continuous display')
     ),
 
     'drug_screen' => array(
-      xl('Enable Random Drug Testing'),
+      xl('Patient Flow Board: Enable Random Drug Testing'),
       'bool',                           // data type
       '0',                              // default
       xl('Allow Patient Flow Board to Select Patients for Drug Testing.')
