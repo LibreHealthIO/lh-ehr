@@ -768,6 +768,13 @@ $GLOBALS_METADATA = array(
 
   ),
 
+    'insurance_address_demographics_report' => array(
+      xl('Show Insurance Address on Demographics Report'),
+       'bool',                          // data type
+       '0',                             // default = false
+      xl('This will Show the Insurance Address on the Demographics Report')
+    ),
+
 
     'hide_billing_widget' => array(
       xl('Hide Billing Widget'),
