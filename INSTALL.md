@@ -300,7 +300,7 @@ If there are other files that you have customized, then you will also need to tr
  
  There will be 4 php files located in `xampp\php`, but the one needed is the one that's type is "Configuration Settings" that  change the following in the php.ini file:
  
-**Note: You can use Crtl+F in your text editor to find the specific lines that you need to change accordingly.**
+**Note: You can use the search option (Ctrl+F in some editors) in your text editor to find the specific lines that you need to change accordingly.**
  ```
  max_execution_time = 600
  max_input_time = 600
@@ -321,7 +321,7 @@ If there are other files that you have customized, then you will also need to tr
  **[How to disable Mysql strict mode?](#how-to-disable-mysql-strict-mode-?)**
  
  #### Step 1
-Launch XAMPP Control Panel and navigate to LibreEHR Setup: `\LibreEHR\setup.php`
+Launch XAMPP Control Panel and navigate to LibreEHR Setup in your browser: `\LibreEHR\setup.php`
  
  **Note:**
  1. Make sure that your XAMPP control panel has Apache and MySQL turned on
@@ -360,7 +360,7 @@ Launch XAMPP Control Panel and navigate to LibreEHR Setup: `\LibreEHR\setup.php`
  
  ![Tenth Step](./Documentation/1_Installing/images/windows_installation/Step_10.png)
  
- **Once you see the screen above, you have successfull setup LibreEHR! Congratulations!**
+ **Once you see the screen above, you have successfully setup LibreEHR! Congratulations!**
  
 
 ## FAQ
