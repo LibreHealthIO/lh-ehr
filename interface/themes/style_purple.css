@@ -160,7 +160,7 @@ a:hover {
 }
 
 .sorting_1:hover{
-    cursor:pointer;
+    cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
     color:#ff5555;
 }
 
@@ -990,4 +990,3 @@ font-size:9pt;
 .report_search_bar{
 	background-color:#C9DCFF;
 }
-

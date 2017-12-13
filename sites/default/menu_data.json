@@ -880,7 +880,7 @@
         "children" : [ ],
         "requirement" : 0
     }, { 
-        "label" : "Password",
+        "label" : "Pass Phrase",
         "menu_id" : "pwd0",
         "target" : "msc",
         "url" : "/interface/usergroup/user_info.php",
@@ -1074,7 +1074,7 @@
         "label" : "XML Editor",
         "menu_id" : "rep0",
         "target" : "rep",
-        "url" : "/modules/MIPS/xmleditor",
+        "url" : "/modules/MIPS/xmleditor/index.php",
         "children" : [ ],
         "requirement" : 0
     }, { 

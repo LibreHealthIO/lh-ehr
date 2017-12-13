@@ -1,4 +1,63 @@
 
+v1.9.0 (2017-11-13)
+-------------------
+
+Bugfixes:
+- when navigating prev/next using resource column grouping, renders duplicate resources (#380)
+- when navigating prev/next, prevent unnecessary resource rerenders (introduced in v1.8.0)
+- `addResource` with parentId does not render with correct nesting (#379)
+- `resourcesInitiallyExpanded` not compatible with resource groups (#378)
+- switching to view with async resources, nowIndicator causes JS error ([core-3918])
+
+[core-3918]: https://github.com/fullcalendar/fullcalendar/issues/3918
+
+
+v1.8.1 (2017-10-23)
+-------------------
+
+Bugfixes:
+- `resourceGroupField` not working (#370)
+- timeline slot headers would not render in localized text (#367)
+- fc-content-skeleton DOM element would repeatedly render on navigation in
+  vertical resource view (#363)
+
+
+v1.8.0 (2017-10-10)
+-------------------
+
+Features:
+- `resourcesInitiallyExpanded` set to `false` for collapsing by default (#40)
+- performance gains with positioning/sizing (#277, #320) thx @MartijnWelker
+
+Bugfixes:
+- `updateEvent` makes events disappear (#350)
+- `addResource` scrollTo param broken (#335)
+- `filterResourcesWithEvents` considers current view's range (#334)
+
+Incompatibilities:
+- Vertical resource view (agenda or basic), when waiting to receive asynchronous
+  event sources, previously would render generic date columns as placeholders.
+  Now, empty rectangles will simply be rendered.
+
+
+v1.7.1 (2017-09-06)
+-------------------
+
+- vertical divider in timeline view in bootstrap3 theme ugly (#341)
+- render all helper elements while DnD, an event w/ multiple resourceIds (#155)
+- Composer.json fixes, Packagist now working
+
+
+v1.7.0 (2017-08-30)
+-------------------
+
+- Bootstrap 3 theme support (more info in [core release notes][core-3.5.0])
+- fixed resources businessHours leak in other views (#204)
+- fixed timeline business hours on single day not rendered (#299)
+
+[core-3.5.0]: https://github.com/fullcalendar/fullcalendar/releases/tag/v3.5.0
+
+
 v1.6.2 (2017-04-27)
 -------------------
 

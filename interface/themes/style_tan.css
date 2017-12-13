@@ -159,6 +159,11 @@ a:hover {
     margin-left: 2px;
 }
 
+.sorting_1:hover{
+    cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
+    color:#ff5555;
+}
+
 /*=============================================================
  * Here we have taken variables from globals.php and turned them into CSS classes
  * these should be used in place of the GLOBAL variables -- JRM March 2008
@@ -669,7 +674,7 @@ input[type="text"] {
   background: #ffffff;
   border: 1px solid #444444;
   padding: 3px;
-  margin: 3px;
+ /* margin: 3px;*/ /* removed this because it was causing layout problems */
 }
 
 #logout_link:before {

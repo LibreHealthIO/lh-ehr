@@ -18,7 +18,7 @@ function user_data_view_model(username,fname,lname,authGrp)
 
 function logout()
 {
-    top.window.location=webroot_url+"/interface/logout.php"
+    top.window.location=webroot_url+"/interface/logout.php";
 }
 
 function changePassword()
@@ -36,4 +36,11 @@ function userPrefs()
 {
     navigateTab(webroot_url+"/interface/super/edit_globals.php?mode=user","msc");
     activateTabByName("msc",true);
+}
+
+// this function is calling when clicking on "x unread messages" anchor on upper right corner
+// this opens the messages tab
+function unreadMessages() {
+    navigateTab(webroot_url+"/interface/main/messages/messages.php?form_active=1", "pat");
+    activateTabByName("pat", true);
 }
