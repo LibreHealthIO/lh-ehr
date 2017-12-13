@@ -11,9 +11,12 @@
 /* Imports area */
 
 /* How to use: font-family: 'Roboto', sans-serif; */
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@font-face {
+    font-family: "Roboto";
+    src: url("theme_assets/Roboto-Regular.ttf");
+}
 
-/* Body must have Google font family and !important attached */
+/* Body must have Roboto font family and !important attached */
 
 body {
     margin: 0px 0px 0px 2px;
