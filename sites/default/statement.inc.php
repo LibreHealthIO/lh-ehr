@@ -103,6 +103,7 @@ function create_HTML_statement($stmt) {
 
   #minimum_amount_due_to _print
   if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
+  if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
 
   // Don't print if decreased
   if ($GLOBALS['disallow_print_deceased']) return "";
@@ -447,7 +448,7 @@ function create_statement($stmt) {
 
  #minimum_amount_to _print
  if ($stmt[amount] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
- if ($stmt['statement_print'] == "NO") && $GLOBALS['use_statement_print_exclusion']) return "";
+ if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
 
  // Don't print if decreased
  if ($GLOBALS['disallow_print_deceased']) return "";
