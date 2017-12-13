@@ -1074,7 +1074,7 @@
         "label" : "XML Editor",
         "menu_id" : "rep0",
         "target" : "rep",
-        "url" : "/modules/MIPS/xmleditor",
+        "url" : "/modules/MIPS/xmleditor/index.php",
         "children" : [ ],
         "requirement" : 0
     }, { 
