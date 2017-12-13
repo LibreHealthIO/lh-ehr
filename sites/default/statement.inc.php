@@ -517,7 +517,18 @@ if ($GLOBALS['use_dunning_message']) {
  $label_addressee = xl('ADDRESSEE');
  $label_remitto = xl('REMIT TO');
  $label_chartnum = xl('Chart Number');
+ if ($GLOBALS['show_insurance_name_on_custom_statement']) { 
+ if (strlen($stmt['insconum2']) !=0){
+    $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
+ }
+else
+ {
+   $label_insinfo = xl('Insurance Company '). $stmt['insconum1'] ;
+ }
+ }else{
  $label_insinfo = xl('Insurance information on file');
+ }    
+ 
  $label_totaldue = xl('Total amount due');
  $label_payby = xl('If paying by');
  $label_cards = xl('VISA/MC/AMEX/Dis');

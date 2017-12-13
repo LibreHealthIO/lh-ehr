@@ -298,6 +298,9 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
         $stmt['level_closed'] = $row['last_level_closed'];
         $stmt['patient'] = $row['fname'] . ' ' . $row['lname'];
       $stmt['encounter'] = $row['encounter'];
+        $stmt['insconum1'] = "";
+        $stmt['insconum2'] = "";
+        $stmt['insconum3'] = "";
         #If you use the field in demographics layout called
         #guardiansname this will allow you to send statements to the parent
         #of a child or a guardian etc
@@ -313,6 +316,24 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
         $stmt['ins_paid'] = 0;
         $stmt['today'] = $today;
         $stmt['duedate'] = $duedate;
+        $patient_id = $row['pid'];
+        for ($i = 1; $i <= 3; ++$i) {
+         $payerid = arGetPayerID($patient_id, $svcdate, $i);
+
+         if ($payerid) {
+          $tmp = sqlQuery("SELECT name FROM insurance_companies WHERE id = $payerid");
+          if ($i == 1) {
+          $stmt['insconum1'] = $tmp['name'];
+          }
+          if ($i == 2) {
+          $stmt['insconum2'] = $tmp['name'];
+          }
+          if ($i == 3) {
+          $stmt['insconum3'] = $tmp['name'];
+          }
+
+         }
+        }
       } else {
         // Report the oldest due date.
         if ($duedate < $stmt['duedate']) {
