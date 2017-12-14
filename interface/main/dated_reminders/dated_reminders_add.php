@@ -277,7 +277,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
     </script> 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
   </head>
-  <body class="body_top">    
+  <body class="body_top centerBody">    
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
@@ -375,11 +375,10 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
         </tr>
       </table> 
     </fieldset>
-    
-    
       <p align="center">
         <input type="submit" id="sendButton" value="<?php echo xla('Send This Message') ?>" />
       </p>
+      <br><br>
     </form>
     <?php 
         $_GET['sentBy'] = array($_SESSION['authId']);
@@ -418,6 +417,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
         }
         echo '</tbody></table>'; 
     ?>
+    <br><br>
   </body>  
 
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
