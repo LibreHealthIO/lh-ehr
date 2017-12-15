@@ -87,6 +87,7 @@ imagemagick
 php-mbstring
 php-zip
 php-ldap
+php-xml
 ```
 
 Copy the LibreHealthEHR folder into the root folder of the webserver. On Mandrake Linux, for example, use the command:
