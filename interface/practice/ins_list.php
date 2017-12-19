@@ -121,6 +121,8 @@ td { font-size:10pt; }
   }
 ?>
 </table>
+<br><br>
+<input type='button' value='<?php xl('Cancel','e'); ?>' onclick='parent.$.fn.fancybox.close();'/>
 
 </center>
 </form>
