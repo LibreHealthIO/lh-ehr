@@ -253,7 +253,7 @@
 
             var itemOpts = {
                 'left':     itemLeft,
-                'top':      itemTop,
+                'top':      '0px',
                 'width':    width + 'px',
                 'height':   height + 'px'
             };
@@ -276,9 +276,11 @@
                     var orig_item   = opts.itemArray[opts.itemCurrent].orig;
                     var orig_pos    = $.fn.fancybox.getPosition(orig_item);
 
+                    // Problems displaying the popup > 'Add patient > Search/Add Insurer' ! This commented line was the original and the other one is modified.
                     $("#fancy_outer").css({
                         'left':     (orig_pos.left  - 20 - opts.padding) + 'px',
-                        'top':      (orig_pos.top   - 20 - opts.padding) + 'px',
+                        //'top':      (orig_pos.top   - 20 - opts.padding) + 'px',
+                        'top': '0px',
                         'width':    $(orig_item).width() + (opts.padding * 2),
                         'height':   $(orig_item).height() + (opts.padding * 2)
                     });
@@ -401,7 +403,9 @@
     $.fn.fancybox.scrollBox = function() {
         var w = $.fn.fancybox.getViewport();
         
-        if (opts.centerOnScroll && $("#fancy_outer").is(':visible')) {
+
+        // Problems displaying the popup > 'Add patient > Search/Add Insurer' ! This was commented. The popup will now have "position: fixed".
+       /* if (opts.centerOnScroll && $("#fancy_outer").is(':visible')) {
             var ow  = $("#fancy_outer").outerWidth();
             var oh  = $("#fancy_outer").outerHeight();
 
@@ -426,7 +430,7 @@
         
         if ($("#fancy_loading").is(':visible')) {
             $("#fancy_loading").css({'left': ((w[0] - 40) * 0.5 + w[2]), 'top': ((w[1] - 40) * 0.5 + w[3])});
-        }
+        }*/
     };
 
     $.fn.fancybox.getNumeric = function(el, prop) {
@@ -460,7 +464,7 @@
             return;
         }
 
-        $("#fancy_loading > div").css('top', (loadingFrame * -40) + 'px');
+      $("#fancy_loading > div").css('top', (loadingFrame * -40) + 'px');
 
         loadingFrame = (loadingFrame + 1) % 12;
     };
@@ -470,7 +474,10 @@
 
         var w = $.fn.fancybox.getViewport();
 
-        $("#fancy_loading").css({'left': ((w[0] - 40) * 0.5 + w[2]), 'top': ((w[1] - 40) * 0.5 + w[3])}).show();
+        // Problems displaying the popup > 'Add patient > Search/Add Insurer' ! This line below was the original and the other one is modified.
+      //  $("#fancy_loading").css({'left': ((w[0] - 40) * 0.5 + w[2]), 'top': ((w[1] - 40) * 0.5 + w[3])}).show();
+        $("#fancy_loading").css({'left': ((w[0] - 40) * 0.5 + w[2]), 'top': '0px'}).show();
+
         $("#fancy_loading").bind('click', $.fn.fancybox.close);
 
         loadingTimer = setInterval($.fn.fancybox.animateLoading, 66);
