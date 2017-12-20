@@ -26,6 +26,7 @@
 $sanitize_all_escapes=true; 
 $fake_register_globals=false; 
 require_once(dirname(__FILE__) . "/../globals.php");
+require_once("$srcdir/headers.inc.php");
 //
 if (!acl_check('acct', 'eob')) die(xlt("Access Not Authorized"));
 //
@@ -40,9 +41,11 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <title><?php echo xlt("edi history"); ?></title>
+    <title><?php echo xlt("EDI History"); ?></title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-    
+    <?php
+        call_required_libraries(['bootstrap']);
+    ?>
     <link rel="stylesheet" href="<?php echo $css_header?>" type="text/css" />
 
     <link rel="stylesheet" href="<?php echo $web_root?>/library/css/jquery-ui-1.8.21.custom.css" type="text/css" />
@@ -104,13 +107,19 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         <tr>
         <td colspan='4'>
         
+        <style>
+            td {
+                padding: 5px;
+            }
+        </style>
+
         <form id="formcsvtables" name="view_csv" action="edi_history_main.php" target="_blank" method="post">
             <fieldset style='float:left'>
                 <legend><?php echo xlt("View CSV tables"); ?>:</legend>
                 <table cols='4'>
                     <tr>
                         <td colspan='4'>
-                            <?php echo xlt("Select a percentage of the rows or or select dates"); ?>
+                            <?php echo xlt("Select a percentage of the rows or select dates"); ?>
                         </td>
                     </tr>
                     <tr>
@@ -118,10 +127,10 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                             <?php echo xlt("Select CSV table"); ?>:
                         </td>
                         <td align='center'>
-                            <?php echo xlt("Pct (%) of rows"); ?>
+                            <?php echo xlt("% of rows"); ?>
                         </td>
                         <td align='left'>
-                            <?php echo xlt("Start Date"); ?>: &nbsp;&nbsp;&nbsp;&nbsp; <?php echo xlt("End Date"); ?>:
+                            <?php echo xlt("Start Date"); ?> & <?php echo xlt("End Date"); ?>
                         </td>
                         <td align='center'>
                             <?php echo xlt("Submit"); ?>
@@ -129,12 +138,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                     </tr>
                     <tr height='1.5em'>
                         <td align='center'>                 
-                            <select id='csvselect' name="csvtables"> 
+                            <select id='csvselect' name="csvtables" class="form-control form-rounded"> 
                             </select>               
                         </td>                       
                             
                         <td align='center'>
-                            <select id="csvpct" name="csvpctrows">
+                            <select id="csvpct" name="csvpctrows" class="form-control form-rounded">
                                 <option value="5" selected="selected">5%</option>
                                 <option value="10">10%</option>
                                 <option value="25">25%</option>
@@ -145,9 +154,9 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                         </td>
                         <!-- datekeyup(e, defcc, withtime)  dateblur(e, defcc, withtime) -->
                         <td align='left'>
-                           <input type='text' size='8' name='csv_date_start' id='caldte1' value='' title='yyyy-mm-dd Start Date' />
+                           <input type='text' class="form-control form-rounded" placeholder="<?php echo xlt('Start Date'); ?>" size='8' name='csv_date_start' id='caldte1' value='' title='yyyy-mm-dd Start Date' />
                         
-                           <input type='text' size='8' name='csv_date_end' id='caldte2' value='' title='yyyy-mm-dd End Date' />
+                           <input type='text' class="form-control form-rounded" placeholder="<?php echo xlt('End Date'); ?>" size='8' name='csv_date_end' id='caldte2' value='' title='yyyy-mm-dd End Date' />
                         </td>
                         
                         <!--
@@ -172,29 +181,18 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         <form id="formcsvhist" name="csv_ch" action="edi_history_main.php" target="_blank" method="get">
            <fieldset style='float:left'>
               <legend><?php echo xlt("Per Encounter"); ?></legend>
+
               <table cols='2'> 
                     <tr>
-                        <td colspan='2'>
-                            <?php echo xlt("Enter Encounter Number"); ?>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>
-                            <?php echo xlt("Encounter"); ?>
-                        </td>
-                        <td>
-                            <?php echo xlt("Submit"); ?>
-                        </td>   
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="csvenctr" type="text" size=7 name="chenctr" value="" />
+                            <input id="csvenctr" class="form-control form-rounded" placeholder="Encounter Number" type="text" size=15 name="chenctr" value="" />
                         </td>
                         <td>
                             <input id="showhistory" type="button" value="<?php echo xla("Submit"); ?>" />
                         </td>
                     </tr>
               </table>
+              <br><br><br><br><br>
             </fieldset>
         </form>
                 
@@ -219,6 +217,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                 <label for="era_file"><?php echo xlt("Filename"); ?>:</label>
                 <input id="era_file" type="file" size=20 name="fileUplEra"  />
                 <input type="submit" name="fileERA" value="<?php echo xla("Submit"); ?>" /> 
+                <br><br><br><br><br><br><br><br><br><br><br>
             </fieldset>
             </form> 
         </td>
@@ -227,13 +226,13 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         <fieldset style='float:left'>
           <legend><?php echo xlt("RA for Patient, Encounter, or Trace"); ?>:</legend>
             <label for="pid835"><?php echo xlt("Patient ID"); ?>:</label>
-            <input type="text" size=10 name="pid835" value="" />    
-            <input type="submit" name="subpid835" value="<?php echo xla("Submit"); ?>" /> <br />
+            <input type="text" class="form-control form-rounded" size=10 name="pid835" value="" />    
+            <input type="submit"  name="subpid835" value="<?php echo xla("Submit"); ?>" /> <br />
             <label for="enctr835"><?php echo xlt("Encounter"); ?>:</label>
-            <input type="text" size=10 name="enctr835" value="" />
+            <input type="text" class="form-control form-rounded" size=10 name="enctr835" value="" />
             <input type="submit" name="subenctr835" value="<?php echo xla("Submit"); ?>" /> <br />
             <label for="trace835"><?php echo xlt("Check No"); ?>:</label>
-            <input type="text" size=10 name="trace835" value="" />
+            <input type="text" class="form-control form-rounded" size=10 name="trace835" value="" />
             <input type="submit" name="subtrace835" value="<?php echo xla("Submit"); ?>" />
         </fieldset>
         </form> 
@@ -250,7 +249,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                     <fieldset>
                         <legend><?php echo xlt("View Batch Claim x12 text"); ?>:</legend>
                         <label for="enctr"><?php echo xlt("Enter Encounter"); ?>:</label>
-                        <input type="text" name="enctrbatch" size=10 value="" /> 
+                        <input type="text" class="form-rounded form-control" name="enctrbatch" size=10 value="" /> 
                         <input type="submit" name="Batch-enctr" value="<?php echo xla("Submit"); ?>" />
                     </fieldset>
                 </form>
@@ -260,7 +259,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                 <fieldset>
                     <legend><?php echo xlt("View ERA x12 text"); ?></legend>
                     <label for="enctrERA"><?php echo xlt("Enter Encounter"); ?>:</label>
-                    <input type="text" name="enctrEra" size=10 value="" />
+                    <input type="text" class="form-rounded form-control" name="enctrEra" size=10 value="" />
                     <input type="submit" name="eraText" value="<?php echo xla("Submit"); ?>" />
                 </fieldset>
                 </form>

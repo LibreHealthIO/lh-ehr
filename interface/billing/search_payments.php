@@ -39,6 +39,7 @@ require_once(dirname(__FILE__) . "/../../library/classes/X12Partner.class.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/payment.inc.php");
+require_once("$srcdir/headers.inc.php");
 //===============================================================================
 //Deletion of payment and its corresponding distributions.
 //===============================================================================
@@ -378,6 +379,9 @@ document.onclick=HideTheAjaxDivs;
 .left{border-left:1px solid black;}
 .right{border-right:1px solid black;}
 </style>
+<?php
+  call_required_libraries(['bootstrap']);
+?>
 </head>
 <body class="body_top" onLoad="OnloadAction()">
 <form name='new_payment' method='post'  style="display:inline" >
@@ -432,7 +436,7 @@ document.onclick=HideTheAjaxDivs;
                 <table  border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td align="left" class="text"><?php echo htmlspecialchars( xl('From'), ENT_QUOTES).':' ?></td>
-                    <td><input type='text'  style="width:90px;" name='FromDate' id='FromDate' class="text" value='<?php echo attr($FromDate); ?>' />
+                    <td><input type='text'  style="width:90px;" name='FromDate' id='FromDate' class="text form-control form-rounded" value='<?php echo attr($FromDate); ?>' />
                        <script>
                            $(function() {
                                $("#FromDate").datetimepicker({
@@ -443,7 +447,7 @@ document.onclick=HideTheAjaxDivs;
                        </script></td>
                     <td width="53">&nbsp;</td>
                     <td align="left" class="text"><?php echo htmlspecialchars( xl('To'), ENT_QUOTES).':' ?></td>
-                    <td><input type='text'  style="width:103px;"  name='ToDate' id='ToDate' class="text" value='<?php echo attr($ToDate); ?>' />
+                    <td><input type='text'  style="width:103px;"  name='ToDate' id='ToDate' class="text form-control form-rounded" value='<?php echo attr($ToDate); ?>' />
                        <script>
                            $(function() {
                                $("#ToDate").datetimepicker({
@@ -461,12 +465,12 @@ document.onclick=HideTheAjaxDivs;
         <td align="left"><?php  echo generate_select_list("payment_method", "payment_method", "$PaymentMethod", "Payment Method"," ","class1 text");?></td>
         <td></td>
         <td align="left" class="text"><?php echo htmlspecialchars( xl('Check Number'), ENT_QUOTES).':' ?></td>
-        <td><input type="text" name="check_number"   autocomplete="off"  value="<?php echo htmlspecialchars(formData('check_number'));?>"  id="check_number"  class=" class1 text "   /></td>
+        <td><input type="text" name="check_number"   autocomplete="off"  value="<?php echo htmlspecialchars(formData('check_number'));?>"  id="check_number"  class=" class1 text form-control form-rounded"   /></td>
           </tr>
           <tr>
             <td align="right"></td>
         <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment Amount'), ENT_QUOTES).':' ?></td>
-        <td align="left"><input   type="text" name="payment_amount"   autocomplete="off"  id="payment_amount" onKeyUp="ValidateNumeric(this);"  value="<?php echo htmlspecialchars(formData('payment_amount'));?>"  style="text-align:right"    class="class1 text "   /></td>
+        <td align="left"><input   type="text" name="payment_amount"   autocomplete="off"  id="payment_amount" onKeyUp="ValidateNumeric(this);"  value="<?php echo htmlspecialchars(formData('payment_amount'));?>"  style="text-align:right"    class="class1 text form-control form-rounded"   /></td>
         <td align="left" ></td>
         <td align="left" class="text"><?php echo htmlspecialchars( xl('Paying Entity'), ENT_QUOTES).':' ?></td>
         <td align="left"><?php  echo generate_select_list("type_name", "payment_type", "$type_name","Paying Entity"," ","class1 text","SearchPayingEntityAction()");?>     </td>
@@ -485,7 +489,7 @@ document.onclick=HideTheAjaxDivs;
             <table width="335" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="280">
-                <input type="hidden" id="hidden_ajax_close_value" value="<?php echo htmlspecialchars($div_after_save);?>" /><input name='type_code'  id='type_code' class="text "
+                <input type="hidden" id="hidden_ajax_close_value" value="<?php echo htmlspecialchars($div_after_save);?>" /><input name='type_code'  id='type_code' class="text form-control form-rounded"
                 style=" width:280px;"   onKeyDown="PreventIt(event)" value="<?php echo htmlspecialchars($div_after_save);?>"  autocomplete="off"   /><br> 
                 <!--onKeyUp="ajaxFunction(event,'non','search_payments.php');"-->
                     <div id='ajax_div_insurance_section'>

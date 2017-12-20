@@ -38,6 +38,7 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/classes/Note.class.php");
+require_once("$srcdir/headers.inc.php");
 
 $DEBUG = 0; // set to 0 for production, 1 to test
 
@@ -405,6 +406,10 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
 <title><?php xl('EOB Posting - Search','e'); ?></title>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 
+<?php
+  call_required_libraries(['bootstrap']);
+?>
+
 <script language="JavaScript">
 
 var mypcc = '1';
@@ -432,7 +437,7 @@ function npopup(pid) {
 
 <form method='post' action='sl_eob_search.php' enctype='multipart/form-data'>
 
-<table border='0' cellpadding='5' cellspacing='0'>
+<table style="border-collapse: separate; border: 0px; border-spacing: 5px; padding: 5px;">
  <tr>
 
 <?php
@@ -442,7 +447,7 @@ function npopup(pid) {
   echo "  </td>\n";
   echo "  <td>\n";
   $insurancei = getInsuranceProviders();
-  echo "   <select name='form_payer_id'>\n";
+  echo "   <select class='form-control form-rounded' name='form_payer_id'>\n";
   echo "    <option value='0'>-- " . xl('Patient') . " --</option>\n";
   foreach ($insurancei as $iid => $iname) {
     echo "<option value='$iid'";
@@ -457,14 +462,14 @@ function npopup(pid) {
    <?php xl('Source:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_source' size='10' value='<?php echo $_POST['form_source']; ?>'
+   <input  type='text' class='form-control form-rounded' name='form_source' size='10' value='<?php echo $_POST['form_source']; ?>'
     title='<?php xl("A check number or claim number to identify the payment","e"); ?>'>
   </td>
   <td>
    <?php xl('Pay Date:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_paydate' size='10' value='<?php echo $_POST['form_paydate']; ?>'
+   <input type='text' class='form-control form-rounded' name='form_paydate' size='10' value='<?php echo $_POST['form_paydate']; ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='<?php xl("Date of payment yyyy-mm-dd","e"); ?>'>
   </td>
@@ -473,7 +478,7 @@ function npopup(pid) {
    <?php xl('Deposit Date:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_deposit_date' size='10' value='<?php echo $_POST['form_deposit_date']; ?>'
+   <input type='text' class='form-control form-rounded' name='form_deposit_date' size='10' value='<?php echo $_POST['form_deposit_date']; ?>'
     onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
     title='<?php xl("Date of bank deposit yyyy-mm-dd","e"); ?>'>
   </td>
@@ -482,7 +487,7 @@ function npopup(pid) {
    <?php xl('Amount:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_amount' size='10' value='<?php echo $_POST['form_amount']; ?>'
+   <input type='text' class='form-control form-rounded' name='form_amount' size='10' value='<?php echo $_POST['form_amount']; ?>'
     title='<?php xl("Paid amount that you will allocate","e"); ?>'>
   </td>
   <td align='right'>
@@ -492,46 +497,46 @@ function npopup(pid) {
  </tr>
 </table>
 
-<table border='0' cellpadding='5' cellspacing='0'>
+<table  style="border-collapse: separate; border: 0px; border-spacing: 5px; padding: 5px;">
 
- <tr bgcolor='#ddddff'>
+ <tr>
   <td>
    <?php xl('Name:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_name' size='10' value='<?php echo $_POST['form_name']; ?>'
+   <input type='text' class='form-control form-rounded' name='form_name' size='10' value='<?php echo $_POST['form_name']; ?>'
     title='<?php xl("Any part of the patient name, or \"last,first\", or \"X-Y\"","e"); ?>'>
   </td>
   <td>
    <?php xl('Chart ID:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_pid' size='10' value='<?php echo $_POST['form_pid']; ?>'
+   <input type='text' class='form-control form-rounded' name='form_pid' size='10' value='<?php echo $_POST['form_pid']; ?>'
     title='<?php xl("Patient chart ID","e"); ?>'>
   </td>
   <td>
    <?php xl('Encounter:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_encounter' size='10' value='<?php echo $_POST['form_encounter']; ?>'
+   <input type='text' class='form-control form-rounded' name='form_encounter' size='10' value='<?php echo $_POST['form_encounter']; ?>'
     title='<?php xl("Encounter number","e"); ?>'>
   </td>
   <td>
    <?php xl('Svc Date:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_date' size='10' value='<?php echo $_POST['form_date']; ?>'
+   <input type='text' class='form-control form-rounded' name='form_date' size='10' value='<?php echo $_POST['form_date']; ?>'
     title='<?php xl("Date of service mm/dd/yyyy","e"); ?>'>
   </td>
   <td>
    <?php xl('To:','e'); ?>
   </td>
   <td>
-   <input type='text' name='form_to_date' size='10' value='<?php echo $_POST['form_to_date']; ?>'
+   <input type='text' class='form-control form-rounded' name='form_to_date' size='10' value='<?php echo $_POST['form_to_date']; ?>'
     title='<?php xl("Ending DOS mm/dd/yyyy if you wish to enter a range","e"); ?>'>
   </td>
   <td>
-   <select name='form_category'>
+   <select name='form_category' class='form-control form-rounded'>
 <?php
  foreach (array(xl('Open'), xl('All'), xl('Due Pt'), xl('Due Ins')) as $value) {
   echo "    <option value='$value'";
@@ -547,7 +552,7 @@ function npopup(pid) {
  </tr>
 
  <!-- Support for X12 835 upload -->
- <tr bgcolor='#ddddff'>
+ <tr>
   <td colspan='12'>
    <?php xl('Or upload ERA file:','e'); ?>
    <input type="hidden" name="MAX_FILE_SIZE" value="5000000" />

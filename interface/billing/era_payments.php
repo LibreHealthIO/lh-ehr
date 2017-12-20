@@ -34,6 +34,8 @@ require_once($GLOBALS['OE_SITE_DIR'] . "/statement.inc.php");
 require_once("$srcdir/parse_era.inc.php");
 require_once("$srcdir/sl_eob.inc.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/headers.inc.php");
+
 //===============================================================================
 // This is called back by parse_era() if we are processing X12 835's.
 $alertmsg = '';
@@ -85,7 +87,9 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <head>
 <?php if (function_exists('html_header_show')) html_header_show(); ?>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-
+<?php
+  call_required_libraries(['bootstrap']);
+?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 
@@ -201,7 +205,7 @@ document.onclick=HideTheAjaxDivs;
       <tr>
         <td  align="left"  class="text"></td>
         <td  align="left"  class="text"><?php echo htmlspecialchars( xl('Date'), ENT_QUOTES).':' ?></td>
-        <td  align="left"  class="text"><input type='text' size='8' name='check_date' id='check_date' value="<?php echo formData('check_date') ?>"  class="class1 text " onKeyDown="PreventIt(event)" />
+        <td  align="left"  class="text"><input type='text' size='8' name='check_date' id='check_date' value="<?php echo formData('check_date') ?>"  class="class1 text form-control form-rounded" onKeyDown="PreventIt(event)" />
         
        <script>
            $(function() {
@@ -217,7 +221,7 @@ document.onclick=HideTheAjaxDivs;
       <tr>
         <td  align="left"  class="text"></td>
         <td  align="left"  class="text"><?php echo htmlspecialchars( xl('Post To Date'), ENT_QUOTES).':' ?></td>
-        <td  align="left"  class="text"><input type='text' size='8' name='post_to_date' id='post_to_date'  value="<?php echo formData('post_to_date') ?>" class="class1 text "   onKeyDown="PreventIt(event)"  />
+        <td  align="left"  class="text"><input type='text' size='8' name='post_to_date' id='post_to_date'  value="<?php echo formData('post_to_date') ?>" class="class1 text form-control form-rounded"   onKeyDown="PreventIt(event)"  />
        <script>
            $(function() {
                $("#post_to_date").datetimepicker({
@@ -231,7 +235,7 @@ document.onclick=HideTheAjaxDivs;
       <tr>
         <td  align="left"  class="text"></td>
         <td  align="left"  class="text"><?php echo htmlspecialchars( xl('Deposit Date'), ENT_QUOTES).':' ?></td>
-        <td  align="left"  class="text"><input type='text' size='8' name='deposit_date' id='deposit_date'  onKeyDown="PreventIt(event)"   class="text " value="<?php echo formData('deposit_date') ?>"    />
+        <td  align="left"  class="text"><input type='text' size='8' name='deposit_date' id='deposit_date'  onKeyDown="PreventIt(event)"   class="text form-control form-rounded" value="<?php echo formData('deposit_date') ?>"    />
        <script>
            $(function() {
                $("#deposit_date").datetimepicker({
@@ -252,7 +256,7 @@ document.onclick=HideTheAjaxDivs;
         <table width="335" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="280">
-                <input type="hidden" id="hidden_ajax_close_value" value="<?php echo formData('type_code') ?>" /><input name='type_code'  id='type_code' class="text "
+                <input type="hidden" id="hidden_ajax_close_value" value="<?php echo formData('type_code') ?>" /><input name='type_code'  id='type_code' class="text form-control form-rounded"
                 style=" width:280px;"   onKeyDown="PreventIt(event)" value="<?php echo formData('type_code') ?>"  autocomplete="off"   /><br> 
                 <!--onKeyUp="ajaxFunction(event,'non','search_payments.php');"-->
                     <div id='ajax_div_insurance_section'>

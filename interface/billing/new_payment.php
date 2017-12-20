@@ -41,6 +41,7 @@ require_once(dirname(__FILE__) . "/../../library/classes/X12Partner.class.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/payment.inc.php");
+require_once("$srcdir/headers.inc.php");
 //===============================================================================
     $screen='new_payment';
 //===============================================================================
@@ -137,6 +138,10 @@ $DateFormat=DateFormatRead();
 
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
+
+<?php
+  call_required_libraries(['bootstrap']);
+?>
 
 <?php include_once("{$GLOBALS['srcdir']}/payment_jav.inc.php"); ?>
 <script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
@@ -360,8 +365,8 @@ return false;
  if($payment_id*1>0)
   {
   ?>
-<table width="999" border="0" cellspacing="0" cellpadding="10" bgcolor="#DEDEDE"><tr><td>
-    <table width="979" border="0" cellspacing="0" cellpadding="0">
+<table style="width:'999px' border:'0px' cellspacing:'0px' cellpadding='10px'"><tr><td>
+    <table style="width:'979px' border:'0px' cellspacing:'0px' cellpadding:'0px'">
       <tr>
         <td colspan="13" align="left" >
                 <!--Distribute section-->
