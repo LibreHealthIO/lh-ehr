@@ -232,8 +232,9 @@
   
   
     // Print or download statements if requested.
-    //
-  if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $_POST['form_portalnotify'] && $_POST['form_cb']) {
+    // This code will only be ran IF form_cb has AT LEAST 1 checkbox selected
+
+    if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && isset($_POST['form_cb'])) {
   
     $fhprint = fopen($STMT_TEMP_FILE, 'w');
     $sqlBindArray = array();
