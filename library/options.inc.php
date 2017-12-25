@@ -94,7 +94,7 @@ function generate_select_list($tag_name, $list_id, $currvalue, $title, $empty_na
     if ($multiple) {
         $tag_name_esc = $tag_name_esc . "[]";
     }
-    $s .= "<select name='$tag_name_esc'";
+    $s .= "<select name='$tag_name_esc' class='form-control' style='width: auto; display: inline-block'";
 
     if ($multiple) {
         $s .= " multiple='multiple'";
@@ -3232,7 +3232,7 @@ function genProviderSelect($selname, $toptext, $default=0, $disabled=false, $all
   }
 
   $res = sqlStatement($query);
-  echo "   <select name='" . attr($selname) . "'";
+  echo "   <select class='form-control' style='width: auto; display: inline-block' name='" . attr($selname) . "'";
   if ($disabled) echo " disabled";
   echo ">\n";
   echo "    <option value=''>" . text($toptext) . "\n";
