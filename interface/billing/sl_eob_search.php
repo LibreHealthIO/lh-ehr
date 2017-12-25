@@ -46,20 +46,22 @@
   $where = '';
   $eraname = '';
   $eracount = 0;
+  
   /* Load dependencies only if we need them */
   if( ( isset($GLOBALS['portal_onsite_enable'])) || ($GLOBALS['portal_onsite_enable']) ){
       /*  Addition of onsite portal patient notify of invoice and reformated invoice - sjpadgett 01/2017 */
       require_once("../../patients/lib/portal_mail.inc");
       require_once("../../patients/lib/appsql.class.php");
-      
+  
+      // if patient portal is allowed (YES) AND portal_onsite IS ENABLED this function returns true
       function is_auth_portal( $pid = 0){
           if ($pData = sqlQuery("SELECT * FROM `patient_data` WHERE `pid` = ?", array($pid) )) {
-              if($pData['allow_patient_portal'] != "YES")
-                  return false;
-                  else return true;
+              if($pData['allow_patient_portal'] == "YES" && $GLOBALS['portal_onsite_enable'] == '1') return true;
+              else return false;
           }
           else return false;
       }
+  
       function notify_portal($thispid, array $invoices, $template, $invid){
           $builddir = $GLOBALS['OE_SITE_DIR'] .  '/onsite_portal_documents/templates/' . $thispid;
           if( ! is_dir($builddir) )
@@ -72,12 +74,14 @@
           //addPnote($thispid, $note,1,1, xlt('Bill/Collect'), '-patient-');
           return true;
       }
+  
       function fixup_invoice($template, $ifile){
           $data = file_get_contents($template);
           if($data == "") return false;
           if( !file_put_contents($ifile, $data) ) return false;
           return true;
       }
+      
       function SavePatientAudit( $pid, $invs ){
           $appsql = new ApplicationTable();
           try{
@@ -232,18 +236,17 @@
   
   
     // Print or download statements if requested.
-    // This code will only be ran IF form_cb has AT LEAST 1 checkbox selected
-
-    if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && isset($_POST['form_cb'])) {
+    //
+  if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $_POST['form_portalnotify'] && $_POST['form_cb']) {
   
-    $fhprint = fopen($STMT_TEMP_FILE, 'w');
-    $sqlBindArray = array();
-    $where = "";
-    foreach ($_POST['form_cb'] as $key => $value) {
-        $where .= " OR f.id = ?";
-        array_push($sqlBindArray, $key);
-    }
-    $where = substr($where, 4);
+      $fhprint = fopen($STMT_TEMP_FILE, 'w');
+      $sqlBindArray = array();
+      $where = "";
+      foreach ($_POST['form_cb'] as $key => $value) {
+          $where .= " OR f.id = ?";
+          array_push($sqlBindArray, $key);
+      }
+      $where = substr($where, 4);
     // need to only use summary invoice for multi visits
     foreach ($_POST['form_invpids'] as $key => $v) {
       $inv_pid[$key] = key($v);
@@ -703,6 +706,7 @@
             $orow = -1;
             
               while ($row = sqlFetchArray($t_res)) {
+            
                 $balance = sprintf("%.2f", $row['charges'] + $row['copays'] - $row['payments'] - $row['adjustments']);
             
                 if ($_POST['form_category'] != 'All' && $eracount == 0 && $balance == 0) continue;
