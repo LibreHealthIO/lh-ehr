@@ -24,6 +24,10 @@ a:hover {
   color: #ff5555;
 }
 
+.centerBody {
+    text-align: center;
+}
+
 .menu {
     font-family: 'FontAwesome';
     font-style: italic;

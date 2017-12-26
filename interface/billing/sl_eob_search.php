@@ -49,9 +49,9 @@ $eracount = 0;
 /* Load dependencies only if we need them */
 if( ( isset($GLOBALS['portal_onsite_enable'])) || ($GLOBALS['portal_onsite_enable']) ){
     /*  Addition of onsite portal patient notify of invoice and reformated invoice - sjpadgett 01/2017 */
-    require_once("../../patients/lib/portal_mail.inc");
-    require_once("../../patients/lib/appsql.class.php");
-
+    require_once("../../patient_portal/lib/portal_mail.inc");
+    require_once("../../patient_portal/lib/appsql.class.php");
+    
     function is_auth_portal( $pid = 0){
         if ($pData = sqlQuery("SELECT * FROM `patient_data` WHERE `pid` = ?", array($pid) )) {
             if($pData['allow_patient_portal'] != "YES")
