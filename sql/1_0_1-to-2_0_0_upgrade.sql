@@ -356,6 +356,13 @@ UPDATE categories_seq SET id = (select MAX(id) from categories);
   ALTER TABLE clinical_rules ADD COLUMN pqrs_code varchar(35) DEFAULT NULL COMMENT 'Measure number';
 #EndIf
 
+#IfMissingColumn patient_data statement_y_n
+SET @group_name = (SELECT group_name FROM layout_options WHERE field_id='vfc' AND form_id='DEM');
+SET @backup_group_name = (SELECT group_name FROM layout_options WHERE field_id='deceased_date' AND form_id='DEM');
+SET @seq = (SELECT MAX(seq) FROM layout_options WHERE group_name = IFNULL(@group_name,@backup_group_name) AND form_id='DEM');
+INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`) VALUES ('DEM', 'statement_y_n', IFNULL(@group_name,@backup_group_name), 'Print Statement', @seq+1, 1, 1, 5, 0, 'yesno', 1, 3, '', '', 'Do Not Print a Patient Statement If NO' ) ;
+ALTER TABLE patient_data ADD COLUMN statement_y_n text NOT NULL default '';
+
 #IfNotTable onsite_mail
 CREATE TABLE `onsite_mail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -484,5 +491,6 @@ INSERT INTO categories select (select MAX(id) from categories) + 1, 'Patient', '
 INSERT INTO categories select (select MAX(id) from categories) + 1, 'Reviewed', '', (select id from categories where name = 'Onsite Portal'), rght + 3, rght + 4 from categories where name = 'Categories';
 UPDATE categories SET rght = rght + 6 WHERE name = 'Categories';
 UPDATE categories_seq SET id = (select MAX(id) from categories);
+
 #EndIf
 

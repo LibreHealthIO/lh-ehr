@@ -2,6 +2,7 @@
 
 // Copyright (C) 2005-2006 Rod Roark <rod@sunsetsystems.com>
 // Copyright (C) 2016       Raymond Magauran <magauran@medfetch.com>
+// Copyright (C) 2015-2018  Terry Hill <teryhill@librehealth.io>
 //
 // Windows compatibility mods 2009 Bill Cernansky [mi-squared.com]
 //
@@ -102,6 +103,7 @@ function create_HTML_statement($stmt) {
 
   #minimum_amount_due_to _print
   if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
+  if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
 
   // Don't print if decreased
   if ($GLOBALS['disallow_print_deceased']) return "";
@@ -262,7 +264,7 @@ function create_HTML_statement($stmt) {
   $label_call = xl('Please call if any of the above information is incorrect.');
   $label_prompt = xl('We appreciate prompt payment of balances due.');
   $label_dept = xl('Billing Department');
-  $label_bill_phone = $GLOBALS['billing_phone_number'];
+  $label_bill_phone = (!empty($GLOBALS['billing_phone_number']) ? $GLOBALS['billing_phone_number'] : $billing_phone );
   $label_appointments = xl('Future Appointments').':';
   // This is the top portion of the page.
   $out .= "\n\n\n";
@@ -446,6 +448,7 @@ function create_statement($stmt) {
 
  #minimum_amount_to _print
  if ($stmt[amount] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
+ if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
 
  // Don't print if decreased
  if ($GLOBALS['disallow_print_deceased']) return "";
@@ -659,7 +662,7 @@ else {
   $label_call = xl('Please call if any of the above information is incorrect.');
   $label_prompt = xl('We appreciate prompt payment of balances due.');
  $label_dept = xl('Billing Department');
-  $label_bill_phone = $GLOBALS['billing_phone_number'];
+ $label_bill_phone = (!empty($GLOBALS['billing_phone_number']) ? $GLOBALS['billing_phone_number'] : $billing_phone );
  $label_appointments = xl('Future Appointments') .':';
 
  // This is the bottom portion of the page.

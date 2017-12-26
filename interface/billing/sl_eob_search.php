@@ -64,7 +64,7 @@ if( ( isset($GLOBALS['portal_onsite_enable'])) || ($GLOBALS['portal_onsite_enabl
         $builddir = $GLOBALS['OE_SITE_DIR'] .  '/onsite_portal_documents/templates/' . $thispid;
         if( ! is_dir($builddir) )
             mkdir($builddir, 0755, true);
-        if( fixup_invoice($template, $builddir.'/invoice'.$invid.'.tpl') != true ) return false; 
+        if( fixup_invoice($template, $builddir.'/invoice'.$invid.'.tpl') != true ) return false;
         if( SavePatientAudit( $thispid, $invoices ) != true ) return false; // this is all the invoice data for new invoicing feature to come
         $note =  xl('You have an invoice due for payment. You may view and pay in your Patient Documents.');
         if(sendMail( $_SESSION['authUserID'], $note, xlt('Bill/Collect'), '', '0', $_SESSION['authUserID'], $_SESSION['authUser'], $thispid, $invoices[0]['patient'] ) != 1)
@@ -196,15 +196,15 @@ function upload_file_to_client_pdf($file_to_send) {
         $pdf->ezSetY($pdf->ez['pageHeight'] - $pdf->ez['topMargin']);
         str_replace("\014", "", $OneLine);
       }
-    
+
     if(stristr($OneLine, 'REMIT TO') == true || stristr($OneLine, 'Visit Date') == true || stristr($OneLine, 'Future Appointments') == true || stristr($OneLine, 'Current') == true )//lines are made bold when 'REMIT TO' or 'Visit Date' is there.
-     $pdf->ezText('<b>'.$OneLine.'</b>', 12, array('justification' => 'left', 'leading' => 6)); 
+     $pdf->ezText('<b>'.$OneLine.'</b>', 12, array('justification' => 'left', 'leading' => 6));
     else
-     $pdf->ezText($OneLine, 12, array('justification' => 'left', 'leading' => 6)); 
-     
-    $countline++; 
+     $pdf->ezText($OneLine, 12, array('justification' => 'left', 'leading' => 6));
+
+    $countline++;
    }
-    
+
     $fh = @fopen($STMT_TEMP_FILE_PDF, 'w');//stored to a pdf file
     if ($fh) {
       fwrite($fh, $pdf->ezOutput());
@@ -250,7 +250,7 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
 
     $res = sqlStatement("SELECT " .
       "f.id, f.date, f.pid, f.encounter, f.stmt_count, f.last_stmt_date, f.last_level_closed, f.last_level_billed, f.billing_note as enc_billing_note, " .
-      "p.fname, p.mname, p.lname, p.street, p.city, p.state, p.postal_code, p.billing_note as pat_billing_note " .
+      "p.fname, p.mname, p.lname, p.street, p.city, p.state, p.statement_y_n, p.postal_code, p.billing_note as pat_billing_note " .
       "FROM form_encounter AS f, patient_data AS p " .
       "WHERE ( $where ) AND " .
       "p.pid = f.pid " .
@@ -291,6 +291,7 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
         if (!empty($stmt)) ++$stmt_count;
         $stmt['cid'] = $row['pid'];
         $stmt['pid'] = $row['pid'];
+        $stmt['statement_print'] = $row['statement_y_n'];
         $stmt['dun_count'] = $row['stmt_count'];
         $stmt['bill_note'] = $row['pat_billing_note'];
         $stmt['enc_bill_note'] = $row['enc_billing_note'];
@@ -328,10 +329,10 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
         $line = array();
         $line['dos']     = $svcdate;
         if ($GLOBALS['use_custom_statement']) {
-          $line['desc']    = ($key == 'CO-PAY') ? "Patient Payment" : $value['code_text']; 
+          $line['desc']    = ($key == 'CO-PAY') ? "Patient Payment" : $value['code_text'];
       } else {
         $line['desc']    = ($key == 'CO-PAY') ? "Patient Payment" : "Procedure $key";
-        } 
+        }
         $line['amount']  = sprintf("%.2f", $value['chg']);
         $line['adjust']  = sprintf("%.2f", $value['adj']);
         $line['paid']    = sprintf("%.2f", $value['chg'] - $value['bal']);
@@ -356,7 +357,7 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
        $inv_count += 1;
        $pvoice[] = $stmt;
         // we don't want to send the portal multiple invoices, thus this. Last invoice for pid is summary.
-        if($inv_pid[$inv_count] != $inv_pid[$inv_count+1]){ 
+        if($inv_pid[$inv_count] != $inv_pid[$inv_count+1]){
           fwrite($fhprint, make_statement($stmt));
             if( !notify_portal($stmt['pid'], $pvoice, $STMT_TEMP_FILE, $stmt['pid'] . "-" . $stmt['encounter'])){
                $alertmsg = xlt('Notification FAILED');
@@ -368,7 +369,7 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
        }
         else    continue;
     }
-    
+
   } // end while
 
     if (!empty($stmt)) ++$stmt_count;
@@ -797,7 +798,7 @@ if ($_POST['form_search'] || $_POST['form_print']) {
   <td class="detail" align="left">
    <input type='checkbox' name='form_cb[<?php echo($row['id']) ?>]'<?php echo $isduept ?> />
    <?php if ($in_collections) echo "<b><font color='red'>IC</font></b>"; ?>
-     <?php if ( function_exists('is_auth_portal') ? is_auth_portal( $row['pid'] ) : false){ 
+     <?php if ( function_exists('is_auth_portal') ? is_auth_portal( $row['pid'] ) : false){
         echo(' PPt');   echo("<input type='hidden' name='form_invpids[". $row['id'] ."][". $row['pid'] ."]' />"); $is_portal = true;
         }?>
   </td>
