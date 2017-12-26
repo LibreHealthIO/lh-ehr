@@ -291,9 +291,9 @@ input     { font-size:10pt; }
 
 <?php // mdsupport - Optional server based searching mechanism for large number of fields on this screen. ?>
 <span style='float: right;'>
-    <input name='srch_desc' size='20'
+    <input name='srch_desc' type="text" class="form-rounded form-control" size='20'
         value='<?php echo (!empty($_POST['srch_desc']) ? htmlspecialchars($_POST['srch_desc']) : '') ?>' />
-    <input type='submit' name='form_search' value='<?php echo xla('Search'); ?>' />
+    <input type='submit' style="float: right;" name='form_search' value='<?php echo xla('Search'); ?>' />
 </span>
 
 <!--tabNav-->
