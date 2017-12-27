@@ -123,6 +123,20 @@ This is now deprecated use the newer x12 partner code instead
         </select>
     </td>
 </tr>
+
+<tr>
+   <?php if ($this->insurancecompany->get_ins_inactive() == 0) { ?>
+     <td><?php echo xlt("Deactivate");?></td>
+      <td>
+      <input type="checkbox" class="control-label col-sm-2" size="1" name='ins_inactive' class="checkbox" value="1" onKeyDown="PreventIt(event)" />
+      </td>
+   <?php } else { ?> 
+      <td><?php echo xlt("Activate");?></td>
+      <td>
+      <input type="checkbox" class="control-label col-sm-2" size="1" name='ins_inactive' class="checkbox" value="0" onKeyDown="PreventIt(event)" />
+      </td>
+   <?php }?>
+<tr>
 <tr height="25"><td colspan=2>&nbsp;</td></tr>
 <tr>
     <td colspan="2"><a href="javascript:submit_insurancecompany();" class="css_button"><span><?php echo xlt("Save");?></span></a>

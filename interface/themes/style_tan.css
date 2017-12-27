@@ -21,6 +21,10 @@ a:hover {
   color: #ff5555;
 }
 
+.centerBody {
+    text-align: center;
+}
+
 .menu {
     font-style: italic;
     font-size: 0.95em;

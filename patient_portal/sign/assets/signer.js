@@ -51,7 +51,7 @@ function focusPad(){
 function signDoc(othis) {
     try{
         if( webRoot !== undefined && webRoot !== null)
-            var libUrl = webRoot+'/patients/';
+            var libUrl = webRoot+'/patient_portal/';
     }
     catch(e){   var libUrl = "./";} 
     var xmlhttp;
@@ -83,7 +83,7 @@ function getSignature(othis) {
     }
     try{
         if( webRoot !== undefined && webRoot !== null)
-            var libUrl = webRoot+'/patients/';
+            var libUrl = webRoot+'/patient_portal/';
     }
     catch(e){   var libUrl = "./";}
     var xmlhttp;
