@@ -255,7 +255,7 @@
   
       $res = sqlStatement("SELECT " .
         "f.id, f.date, f.pid, f.encounter, f.stmt_count, f.last_stmt_date, f.last_level_closed, f.last_level_billed, f.billing_note as enc_billing_note, " .
-        "p.fname, p.mname, p.lname, p.street, p.city, p.state, p.postal_code, p.billing_note as pat_billing_note " .
+        "p.fname, p.mname, p.lname, p.street, p.city, p.state, p.statement_y_n, p.postal_code, p.billing_note as pat_billing_note " .
         "FROM form_encounter AS f, patient_data AS p " .
         "WHERE ( $where ) AND " .
         "p.pid = f.pid " .
@@ -296,6 +296,7 @@
           if (!empty($stmt)) ++$stmt_count;
           $stmt['cid'] = $row['pid'];
           $stmt['pid'] = $row['pid'];
+          $stmt['statement_print'] = $row['statement_y_n'];
           $stmt['dun_count'] = $row['stmt_count'];
           $stmt['bill_note'] = $row['pat_billing_note'];
           $stmt['enc_bill_note'] = $row['enc_billing_note'];
