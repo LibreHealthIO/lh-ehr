@@ -207,7 +207,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
 ?>
 <html>
   <head>
-    <!-- Get Bootstrap and jQuery (required for bootstrap)-->
+    <!-- Get Bootstrap and jQuery (required for bootstrap) -->
     <?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
     <?php html_header_show(); ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css" />
