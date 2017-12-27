@@ -2135,7 +2135,7 @@ $GLOBALS_METADATA = array(
     'portal_onsite_address' => array(
       xl('Onsite Patient Portal Site Address'),
        'text',                          // data type
-       'https://your_web_site.com/libreehr/patients',
+       'https://your_web_site.com/libreehr/patient_portal',
       xl('Website link for the Onsite Patient Portal.')
     ),
 

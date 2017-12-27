@@ -113,7 +113,7 @@ function doSubs($s) {
     $nextLocation = $keyLocation + 1;
 
     if (keySearch($s, '{PatientSignature}')) {
-        $fn = $GLOBALS['web_root'] . '/patients/sign/assets/signhere.png';
+        $fn = $GLOBALS['web_root'] . '/patient_portal/sign/assets/signhere.png';
         $sigfld = '<span>';
         $sigfld .= '<img style="cursor:pointer;color:red" class="signature" type="patient-signature" id="patientSignature" onclick="getSignature(this)"'.
         'alt="' . xla("Click in signature on file") . '" src="'.$fn.'">';

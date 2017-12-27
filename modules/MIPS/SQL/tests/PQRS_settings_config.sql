@@ -240,7 +240,7 @@ REPLACE INTO `globals` (`gl_name`, `gl_index`, `gl_value`) VALUES
 ('enable_scanner', 0, ''),
 ('scanner_output_directory', 0, '/mnt/scan_docs'),
 ('portal_onsite_enable', 0, ''),
-('portal_onsite_address', 0, 'https://your_web_site.com/openemr/patients'),
+('portal_onsite_address', 0, 'https://your_web_site.com/openemr/patient_portal'),
 ('portal_onsite_document_download', 0, ''),
 ('portal_offsite_enable', 0, ''),
 ('portal_offsite_providerid', 0, ''),

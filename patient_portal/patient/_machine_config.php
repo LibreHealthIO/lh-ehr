@@ -56,7 +56,7 @@ GlobalConfig::$CONNECTION_SETTING->Multibyte = true;
 /**
  * the root url of the application with trailing slash, for example http://localhost/patient/
  */
-GlobalConfig::$ROOT_URL = RequestUtil::GetServerRootUrl() . $GLOBALS['web_root'] . '/patients/patient/';
+GlobalConfig::$ROOT_URL = RequestUtil::GetServerRootUrl() . $GLOBALS['web_root'] . '/patient_portal/patient/';
 
 /**
  * timezone
