@@ -458,7 +458,7 @@ page.patient.save({
             success: function(){
                 if( live != 1){
                     setTimeout("app.appendAlert('Patient was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',2000,'collectionAlert')",200);
-                    setTimeout("window.location.href = '"+webRoot+"/patients/home.php'",2500);
+                    setTimeout("window.location.href = '"+webRoot+"/patient_portal/home.php'",2500);
                     }
                 else
                     eModal.close(true)

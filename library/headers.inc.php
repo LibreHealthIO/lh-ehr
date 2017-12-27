@@ -46,7 +46,7 @@ function call_required_libraries($library_array){
  * When one is found, use that value in the URL string, then add "index.js"
  */
     foreach($library_array as $v){ 
-        if (preg_match("/jquery-min-/",$v)) {?>
+    if (preg_match("/jquery-min-/",$v)) {?>
     <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$v ; ?>/index.js"></script>    
     <?php 
     } }
@@ -72,6 +72,11 @@ function call_required_libraries($library_array){
     }
     if (in_array('font-awesome', $library_array)) {?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['assets'] ?>/fonts/font-awesome-4-6-3/css/font-awesome.min.css" type="text/css">
+    <?php
+    }
+    if (in_array("jquery-ui",$library_array)){   ?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>jquery-ui-1-12-1/jquery-ui.css" media="screen" />
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-ui-1-12-1/jquery-ui.js"></script>
     <?php
     }
 }

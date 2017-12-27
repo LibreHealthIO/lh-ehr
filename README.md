@@ -3,9 +3,9 @@
 LibreHealth EHR is a free and open-source electronic health records and
 medical practice management application. 
 
-The mission of LibreHealth is to help provide high quality medical care to all people, regardless of race, socioeconomic status or geographic location, by giving medical practices and clinics across the globe access to medical software, free of charge.
+The mission of LibreHealth is to help provide high quality medical care to all people, regardless of race, socioeconomic status, or geographic location, by providing medical practices and clinics across the globe access to free of charge medical software.
 
-That same software is designed to save clinics both time and money, which gives practitioners more time to spend with individual patients, thereby affording patients with higher quality care.
+That same software is designed to save clinics both time and money, which gives practitioners more time to spend with individual patients, thereby supplying patients with higher quality care.
 
 We are current and former contributors to OpenEMR and thank that community for years of hard work. We intend to honor that legacy by allowing this new community to leverage the good things in OpenEMR, share what we create and not be afraid to break backward compatibility in the name of forward progress and modern development models.
 
@@ -13,33 +13,33 @@ We are collaborating closely with the LibreHealth Project [LibreHealth.io](http:
 
 Our project is primarily licensed under Mozilla Public License Version 2.
 
-Code inherited from OpenEMR is licensed under GPL 2 or higher.
+The code inherited from OpenEMR is licensed under GPL 2 or higher.
 
-The project is part of the Software Freedom Conservancy family [sfconservancy.org](http://sfconservancy.org)
+This project is part of the Software Freedom Conservancy family [sfconservancy.org](http://sfconservancy.org)
  
 ***Thank you for your support!***
 
 
 # Contributing code
-Code contributions are very welcome! Browse the [Issue tracker](https://github.com/LibreHealthIO/LibreEHR/issues) for issues that need code and/or come up with your own ideas & code. Please open a [Pull Request](https://github.com/LibreHealthIO/LibreEHR/pulls) to contribute your own code.
+Code contributions are very welcome! Browse the [Issue tracker](https://github.com/LibreHealthIO/LibreEHR/issues) for issues that need code and/or come up with your own ideas to code. Please open a [Pull Request](https://github.com/LibreHealthIO/LibreEHR/pulls) to contribute your own code.
 
 ## Local Development
 
-For detailed and step-by-step Installation Instructions refer [Installation Instructions](/INSTALL.md)
+For detailed and step-by-step Installation Instructions refer to [Installation Instructions](/INSTALL.md)
 
 ## Windows :: 
 
-Firstly make sure that you have [WAMP](http://www.wampserver.com/en/) or [XAMPP](https://www.apachefriends.org/index.html) server installed and the time zone is set correctly.
+First off, make sure that you have the [WAMP](http://www.wampserver.com/en/) or [XAMPP](https://www.apachefriends.org/index.html) server installed and that the time zone is set correctly.
 
-Make the following changes in `php.ini` file. You can find the `php.ini` file by looking at the following destination :
-* In case of WAMP :
+Make the following changes in `php.ini` file. You can find the `php.ini` file by looking at the following destination:
+* In the case of WAMP :
 `C:/WAMP/BIN/PHP/php.ini` OR (left click )  wampmanager icon -> PHP -> php.ini
-* In  case of XAMPP:
+* In the case of XAMPP:
 `C:\xampp\php\php.ini.`.
-In Linux it located in
-`/etc/php/7.0/php.ini` or similar
+In Linux, it is located in:
+`/etc/php/7.0/php.ini` or something similar.
 
-Make the following changes in your php.ini file :
+Make the following changes in your php.ini file:
 (Search for the following and make necessary changes)
 
 ```
@@ -78,7 +78,7 @@ In Linux it's typically located in /etc/mysql
 Restart WAMPP/XAMPP Server.
 
 (XAMPP)
- If you don't find this parameter in the my.ini file, you should run server, open http://localhost/phpmyadmin/, click on the "variables" tab, search for "sql mode", and then set it to:""
+ If you don't find this parameter in the my.ini file, you should run the server, open http://localhost/phpmyadmin/, click on the "variables" tab, search for "sql mode", and then set it to: ""
 
 You can fork & clone the repository for local development. To get started you need to:
  - Clone the repository
