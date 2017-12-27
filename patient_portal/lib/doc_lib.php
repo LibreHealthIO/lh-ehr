@@ -52,7 +52,7 @@ $dispose = $_POST['handler'];
 
 try{
     $form_filename = $_REQUEST['docid'] . '_' . $GLOBALS['pid'] . '.pdf';
-    $templatedir = $GLOBALS['OE_SITE_DIR'] . "/../../patients/patient_documents";
+    $templatedir = $GLOBALS['OE_SITE_DIR'] . "/../../patient_portal/patient_documents";
     $templatepath = "$templatedir/$form_filename";
     $htmlout = '';
     $pdf = new HTML2PDF( $GLOBALS['pdf_layout'], $GLOBALS['pdf_size'], $GLOBALS['pdf_language'], true,
