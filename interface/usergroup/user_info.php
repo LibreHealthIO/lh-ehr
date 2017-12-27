@@ -8,9 +8,8 @@
   <head>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <script src="checkpwd_validation.js" type="text/javascript"></script>
-    <script src="<?php echo $webroot;?>/library/js/jquery-1.9.1.min.js" type="text/javascript"></script>
     <?php
-      call_required_libraries(['bootstrap']);
+      call_required_libraries(['bootstrap', 'jquery-min-1-9-1']);
       ?>
     <script language='JavaScript'>
       //Validating password and display message if password field is empty - starts
