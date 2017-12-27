@@ -1123,6 +1123,13 @@ $GLOBALS_METADATA = array(
       xl('This will Show Aging on the custom Statement.')
     ),
 
+    'show_insurance_name_on_custom_statement' => array(
+      xl('Show Insurance Company Name on Custom Statement'),
+       'bool',                          // data type
+       '0',                             // default = false
+      xl('This will Show Insurance Company Name on the custom Statement Instead of Insurance information on file.')
+    ),
+
     'use_statement_print_exclusion' => array(
       xl('Allow Statement to be Excluded from Printing'),
        'bool',                          // data type
