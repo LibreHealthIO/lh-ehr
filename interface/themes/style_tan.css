@@ -159,6 +159,10 @@ a:hover {
     padding-bottom: 55px;
 }
 
+.tab-button {
+    margin-left: 2px;
+}
+
 .sorting_1:hover{
     cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
     color:#ff5555;
