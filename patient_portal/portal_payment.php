@@ -818,7 +818,7 @@ $("#payfrm").on('submit', function(e){
     var extra = "&inv_values="+inv_values+"&extra_values="+extra_values;
 
     var flag = 0
-    var liburl ='<?php echo $GLOBALS["webroot"] ?>/patients/lib/paylib.php';
+    var liburl ='<?php echo $GLOBALS["webroot"] ?>/patient_portal/lib/paylib.php';
     $.ajax({
         type: "POST",
         url: liburl,
@@ -877,7 +877,7 @@ function getAuth(){
     style="text-align: center; margin: auto;">
 
     <form id="payfrm" method='post'
-        action='<?php echo $GLOBALS["webroot"] ?>/patients/portal_payment.php'>
+        action='<?php echo $GLOBALS["webroot"] ?>/patient_portal/portal_payment.php'>
         <input type='hidden' name='form_pid' value='<?php echo attr($pid) ?>' />
         <input type='hidden' name='form_save'
             value='<?php echo xlt('Invoice');?>' />

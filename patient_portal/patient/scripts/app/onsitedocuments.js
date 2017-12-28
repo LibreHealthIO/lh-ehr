@@ -279,7 +279,7 @@ var page = {
             restoreDocumentEdits();
         }
         else{
-            var liburl = webRoot+'/patients/lib/download_template.php';
+            var liburl = webRoot+'/patient_portal/lib/download_template.php';
             $.ajax({
                 type: "POST",
                 url: liburl,

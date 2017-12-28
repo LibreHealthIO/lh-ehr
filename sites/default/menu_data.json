@@ -830,7 +830,7 @@
         "label" : "Portal Dashboard",
         "menu_id" : "por2",
         "target" : "por",
-        "url" : "/patients/patient/provider",
+        "url" : "/patient_portal/patient/provider",
         "children" : [ ],
         "requirement" : 0,
         "global_req_strict" : "portal_onsite_enable",
