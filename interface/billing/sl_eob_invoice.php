@@ -1,7 +1,7 @@
 <?php
 /**
  * This provides for manual posting of EOBs.  It is invoked from
- * sl_eob_search.php.  For automated (X12 835) remittance posting
+ * apply_payments.php.  For automated (X12 835) remittance posting
  * see sl_eob_process.php.
  *
  * Copyright (C) 2014-2017 Terry Hill <teryhill@librehealth.io> 
