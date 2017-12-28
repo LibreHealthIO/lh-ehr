@@ -54,8 +54,11 @@ $eracount = 0;
     
     function is_auth_portal( $pid = 0){
         if ($pData = sqlQuery("SELECT * FROM `patient_data` WHERE `pid` = ?", array($pid) )) {
-            if($pData['allow_patient_portal'] != "YES") return false;
-            else return true;
+            if($pData['allow_patient_portal'] != "YES") {
+                return false;
+            } else {
+                return true;
+            } 
         }
         else return false;
     }
@@ -232,8 +235,7 @@ $today = date("Y-m-d");
 
   // Print or download statements if requested.
   //
-  if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $_POST['form_portalnotify'] && $_POST['form_cb']) {
-
+  if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && isset($_POST['form_cb'])) {
     $fhprint = fopen($STMT_TEMP_FILE, 'w');
     $sqlBindArray = array();
     $where = "";
