@@ -1,36 +1,34 @@
 <html>
   <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-    <script
-      src="https://code.jquery.com/jquery-1.12.4.min.js"
-      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-      crossorigin="anonymous"></script>
+    <?php call_required_libraries(['jquery-min-1-9-1', 'bootstrap']); ?>
     <script type="text/javascript">
       // Resizes the panels to be the height of the largest panel
-          window.onload = function resizePanel(){
-              var h = $("#largest-panel").height();
-              $(".panel").height(h);
-          }
+      function resizePanel() {
+        var h = $("#largest-panel").height();
+        // Hack to ensure panels do not 
+        $(".panel").height(h);
+      }
+
+      window.onload = resizePanel();
     </script>
+    <style type="text/css">
+      /* For the rare case when you open it as sole tab
+         and then add another tab */
+      #largest-panel {
+        overflow: scroll;
+      }
+    </style>
   </head>
   <!-- Made each section panels, to organize and add Bootstrap -->
-  <body bgcolor="<?php echo $this->style['BGCOLOR2'];?>">
+  <body onresize ="resizePanel()">
     <form
       name="ros"
       method="post"
       action="<?php echo $this->form_action;?>/interface/forms/ros/save.php"
       onsubmit="return top.restoreSession()"
     >
-      <span class="title" ><?php xlt('Review of Systems','e'); ?></span><br><br>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <h2><?php xlt('Review of Systems','e'); ?></h2>
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Constitutional");?></h3>
         </div>
@@ -147,7 +145,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Eyes");?></h3>
         </div>
@@ -244,7 +242,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Ears");?>, <?php echo xlt("Nose");?>, <?php echo xlt("Mouth");?>, <?php echo xlt("Throat");?></h3>
         </div>
@@ -371,7 +369,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Breast");?></h3>
         </div>
@@ -418,7 +416,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Respiratory");?></h3>
         </div>
@@ -495,7 +493,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Cardiovascular");?></h3>
         </div>
@@ -602,12 +600,12 @@
             }?> 
           </div>
           <div>
-            <?php echo xlt("Arrythmia");?>:
+            <?php echo xlt("Arryhthmia");?>:
             <?php foreach ($this->form->get_options() as $value) {
-              if($value==$this->form->get_arrythmia() ){?>
-                <label><input type="radio" name="arrythmia" value="<?php echo $value;?>" checked="checked" /><?php echo $value;?></label>
+              if($value==$this->form->get_arryhthmia() ){?>
+                <label><input type="radio" name="arryhthmia" value="<?php echo $value;?>" checked="checked" /><?php echo $value;?></label>
               <?php } else {?>
-                <label><input type="radio" name="arrythmia" value="<?php echo $value;?>"/><?php echo $value;?></label>
+                <label><input type="radio" name="arryhthmia" value="<?php echo $value;?>"/><?php echo $value;?></label>
               <?php }
             }?> 
           </div>
@@ -623,7 +621,7 @@
           </div>
         </div>
       </div>
-      <div id="largest-panel" class="col-sm-3 col-md-3 panel panel-primary">
+      <div id="largest-panel" class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Gastrointestinal");?></h3>
         </div>
@@ -790,7 +788,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Genitourinary General");?></h3>
         </div>
@@ -887,7 +885,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Genitourinary Male");?></h3>
         </div>
@@ -954,7 +952,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Genitourinary Female");?></h3>
         </div>
@@ -1082,7 +1080,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Musculoskeletal");?></h3>
         </div>
@@ -1179,7 +1177,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Neurologic");?></h3>
         </div>
@@ -1296,7 +1294,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Skin");?></h3>
         </div>
@@ -1353,7 +1351,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Psychiatric");?></h3>
         </div>
@@ -1410,7 +1408,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Endocrine");?></h3>
         </div>
@@ -1447,7 +1445,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 panel panel-primary">
+      <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Hematologic/Allergic/Immunologic");?></h3>
         </div>

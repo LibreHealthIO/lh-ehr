@@ -12,13 +12,15 @@ $returnurl = 'encounter_top.php';
 		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 		<!-- Get Bootstrap and jQuery (required for bootstrap) -->
 		<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
-		<script type="text/javascript">
-			// Resizes the panels to be the height of the largest panel
-	        window.onload = function resizePanel(){
-	            var h = $("#largest-panel").height();
-	            $(".panel").height(h);
-	        }
-		</script>
+	    <script type="text/javascript">
+	      // Resizes the panels to be the height of the largest panel
+	      function resizePanel() {
+	        var h = $("#largest-panel").height();
+	        $(".panel").height(h);
+	      }
+
+	      window.onload = resizePanel();
+	    </script>
 	</head>
 	<body class="body_top" onresize = "resizePanel()">
 		<form method=post action="<?php echo $rootdir;?>/forms/reviewofs/save.php?mode=new"
