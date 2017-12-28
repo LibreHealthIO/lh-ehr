@@ -1,27 +1,25 @@
 <html>
   <head>
-  <!-- Function serves no use -->
-  <?php html_header_show();?>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-  <script
-    src="https://code.jquery.com/jquery-1.12.4.min.js"
-    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-    crossorigin="anonymous"></script>
-  <script type="text/javascript">
-    // Resizes the panels to be the height of the largest panel
-        window.onload = function resizePanel(){
-            var h = $("#largest-panel").height();
-            $(".panel").height(h);
-        }
-  </script>
+    <script
+      src="https://code.jquery.com/jquery-1.12.4.min.js"
+      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+      crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      // Resizes the panels to be the height of the largest panel
+          window.onload = function resizePanel(){
+              var h = $("#largest-panel").height();
+              $(".panel").height(h);
+          }
+    </script>
   </head>
   <!-- Made each section panels, to organize and add Bootstrap -->
   <body bgcolor="<?php echo $this->style['BGCOLOR2'];?>">
@@ -1528,8 +1526,8 @@
       </div>
       <div>
         <!-- Save/Cancel buttons -->
-        <input type="button" id="save" value="<?php echo xlta('Save'); ?>"> &nbsp;
-        <input type="button" id="dontsave" class="deleter" value="<?php echo xlta('Cancel'); ?>"> &nbsp;
+        <input type="button" id="save" value="<?php echo xlt('Save'); ?>"> &nbsp;
+        <input type="button" id="dontsave" class="deleter" value="<?php echo xlt('Cancel'); ?>"> &nbsp;
       </div>
   </body>
 </html>
