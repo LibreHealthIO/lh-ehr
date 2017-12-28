@@ -458,6 +458,9 @@
               $cell_count    = 0;
               $item_count    = 0;
               $display_style = 'block';
+              /* this is the div width which must be a fixed and absolute VALUE
+                 in order to avoid breaklining problems when opening more tabs */
+              $div_width     = '1200px'; 
               $group_seq     = 0; // this gives the DIV blocks unique IDs
               
               while ($frow = sqlFetchArray($fres)) {
@@ -552,12 +555,13 @@
                 $insurance_info[1] = getInsuranceData($pid,"primary");
                 $insurance_info[2] = getInsuranceData($pid,"secondary");
                 $insurance_info[3] = getInsuranceData($pid,"tertiary");
+                $subscriber_placeholder = "'" . xl("Student/leave blank if unemployed") . "'";
               
                 echo "<br /><span class='bold'><input type='checkbox' name='form_cb_ins' value='1' " .
                   "onclick='return divclick(this,\"div_ins\");'";
                 if ($display_style == 'block') echo " checked";
                 echo " /><b>" . xl('Insurance') . "</b></span>\n";
-                echo "<div id='div_ins' class='section' style='display:$display_style;'>\n";
+                echo "<div id='div_ins' class='section' style='display:$display_style; width:$div_width;'>\n";
               
                 for($i=1;$i<=3;$i++) {
                  $result3 = $insurance_info[$i];
@@ -619,12 +623,11 @@
                       <td><input type=entry size=16 name=i<?php echo $i?>group_number value="<?php echo $result3{"group_number"}?>" onkeyup='policykeyup(this)'></td>
                     </tr>
                     <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
-                      <td class='required'><?php xl('Subscriber Employer (SE)','e'); ?><br><span style='font-weight:normal'>
-                        (<?php xl('if unemployed enter Student','e'); ?>,<br><?php xl('PT Student, or leave blank','e'); ?>): </span>
+                      <td class='required'><?php xl('Subscriber Employer (SE)','e'); ?>
                       </td>
                       <td><input type=entry size=25 name=i<?php echo $i?>subscriber_employer
                         value="<?php echo $result3{"subscriber_employer"}?>"
-                        onchange="capitalizeMe(this);" /></td>
+                        onchange="capitalizeMe(this);" placeholder=<?php echo $subscriber_placeholder; ?>></td>
                     </tr>
                     <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
                       <td><span class=required><?php xl('SE Address','e'); ?>: </span></td>
@@ -670,6 +673,17 @@
                           // Modified 7/2009 by BM to incorporate data types
                           generate_form_field(array('data_type'=>$GLOBALS['country_data_type'],'field_id'=>('i'.$i.'subscriber_employer_country'),'list_id'=>$GLOBALS['country_list'],'fld_length'=>'10','max_length'=>'63','edit_options'=>'C'), $result3['subscriber_employer_country']);
                           ?>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span class='required'><?php xl('Accept Assignment','e'); ?>: </span>
+                      </td>
+                      <td>
+                        <select name=i<?php echo $i?>accept_assignment>
+                          <option value="TRUE" <?php if (strtoupper($result3{"accept_assignment"}) == "TRUE") echo "selected"?>><?php xl('YES','e'); ?></option>
+                          <option value="FALSE" <?php if (strtoupper($result3{"accept_assignment"}) == "FALSE") echo "selected"?>><?php xl('NO','e'); ?></option>
+                        </select>
                       </td>
                     </tr>
                   </table>
@@ -809,17 +823,7 @@
                         <input type=text size="6" name=i<?php echo $i?>copay value="<?php echo $result3{"copay"}?>">
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                        <span class='required'><?php xl('Accept Assignment','e'); ?>: </span>
-                      </td>
-                      <td>
-                        <select name=i<?php echo $i?>accept_assignment>
-                          <option value="TRUE" <?php if (strtoupper($result3{"accept_assignment"}) == "TRUE") echo "selected"?>><?php xl('YES','e'); ?></option>
-                          <option value="FALSE" <?php if (strtoupper($result3{"accept_assignment"}) == "FALSE") echo "selected"?>><?php xl('NO','e'); ?></option>
-                        </select>
-                      </td>
-                    </tr>
+                
                   </table>
                 </td>
               </tr>
