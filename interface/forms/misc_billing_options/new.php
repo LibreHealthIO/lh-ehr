@@ -81,7 +81,7 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
           <!-- Can't use bootstrap because checkboxes are by default styled o the left -->
           <div id="box-10a">
             <label>
-              <span class="lead"><?php echo xlt('BOX 10 A. Employment related '); ?>: </span>
+              <span class="text"><?php echo xlt('BOX 10 A. Employment related '); ?>: </span>
               <input type=checkbox name="employment_related" value="1" <?php if ($obj['employment_related'] == "1") echo "checked";?>>
             </label>
             <br><br>
@@ -89,10 +89,10 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
 
           <div id="box-10b">
             <label>
-              <span class="lead"><?php echo xlt('BOX 10 B. Auto Accident '); ?>: </span>
+              <span class="text"><?php echo xlt('BOX 10 B. Auto Accident '); ?>: </span>
               <input type=checkbox name="auto_accident" value="1" <?php if ($obj['auto_accident'] == "1") echo "checked";?>>
             </label>
-            <span class="lead"><?php echo xlt('State'); ?>: </span>
+            <span class="text"><?php echo xlt('State'); ?>: </span>
             <div style="width: 150px; display: inline-block">
               <?php
                 echo generate_select_list('accident_state', 'state', $obj{"accident_state"}, 'State');
@@ -103,17 +103,17 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
 
           <div id="box-10c">
             <label>
-              <span class="lead"><?php echo xlt('BOX 10 C. Other Accident '); ?>: </span>
+              <span class="text"><?php echo xlt('BOX 10 C. Other Accident '); ?>: </span>
               <input type=checkbox name="other_accident" value="1" <?php if ($obj['other_accident'] == "1") echo "checked";?>>
             </label>
             <br><br>
           </div>
 
           <div id="box-10d">
-            <span class="lead"><?php echo xlt('BOX 10 D. EPSDT Referral Code ');?></span>
+            <span class="text"><?php echo xlt('BOX 10 D. EPSDT Referral Code ');?></span>
             <input class="form-control" type=text style="width: 50px; display: inline-block" name="medicaid_referral_code" value="<?php echo attr($obj{"medicaid_referral_code"});?>" >&nbsp;&nbsp;&nbsp;&nbsp;
             <label>
-              <span class="lead"><?php echo xlt('EPSDT '); ?>: </span>
+              <span class="text"><?php echo xlt('EPSDT '); ?>: </span>
               <input type=checkbox name="epsdt_flag" value="1" <?php if ($obj['epsdt_flag'] == "1") echo "checked";?>>
             </label>
             <br><br>
@@ -124,12 +124,12 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
           <span class=text title="<?php echo xla('For HCFA 02/12 Box 15 is Other Date with a qualifier to specify what the date indicates');?>"></span>
 
           <div id="box-14">
-            <span class="lead"><?php echo xlt('BOX 14. Is Populated from the Encounter Screen as the Onset Date');?>.</span>    
+            <span class="text"><?php echo xlt('BOX 14. Is Populated from the Encounter Screen as the Onset Date');?>.</span>    
             <br><br>
           </div>
 
           <div id="box-16">
-            <span class="lead"><?php echo xlt('BOX 16. Date unable to work');?></span>
+            <span class="text"><?php echo xlt('BOX 16. Date unable to work');?></span>
             <br><br>
             <span><?php echo xlt('From Date');?>:</span>
             <?php $off_work_from = $obj{"off_work_from"}; ?>
@@ -157,7 +157,7 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
           </div>
 
           <div id="box-17">
-            <span class="lead"><?php echo xlt('BOX 17. Provider Information') ?>:</span>
+            <span class="text"><?php echo xlt('BOX 17. Provider Information') ?>:</span>
             <br><br>
             <span><?php echo xlt('Provider') ?></span>
             <?php  # Build a drop-down list of providers. # Added (TLH)
@@ -172,7 +172,7 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
           </div>
 
           <div id="box-18">
-            <span class="lead"><?php echo xlt('BOX 18. Hospitalization date');?></span>
+            <span class="text"><?php echo xlt('BOX 18. Hospitalization date');?></span>
             <br><br>
             <span><?php echo xlt('From Date');?>:</span>
             <?php $hospitalization_date_from = $obj{"hospitalization_date_from"}; ?>
@@ -201,10 +201,10 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
 
           <div id="box-20">
             <label>
-              <span class="lead"><?php echo xlt('BOX 20. Is Outside Lab used?'); ?>: </span>
+              <span class="text"><?php echo xlt('BOX 20. Is Outside Lab used?'); ?>: </span>
               <input type=checkbox name="outside_lab" value="1" <?php if ($obj['outside_lab'] == "1") echo "checked";?>>
             </label>
-            <span class="lead"><?php echo xlt('Amount Charges'); ?>: </span>
+            <span class="text"><?php echo xlt('Amount Charges'); ?>: </span>
             <input
               class="form-control"
               style="display: inline-block; width: 75px"
@@ -218,7 +218,7 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
           </div>
 
           <div id="box-22">
-            <span class="lead"><?php echo xlt('BOX 22. Medicaid Information ');?></span>
+            <span class="text"><?php echo xlt('BOX 22. Medicaid Information ');?></span>
             <br><br>
             <span><?php echo xlt('Resubmission Code (ICD-9) '); ?>:</span>
             <input class="form-control" style="display: inline-block; width: 100px" type=entry size=9 name="medicaid_resubmission_code" value="<?php echo attr($obj{"medicaid_resubmission_code"});?>" >
@@ -228,24 +228,24 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
           </div>
 
           <div id="box-23">
-            <span class="lead"><?php echo xlt('BOX 23. Prior Authorization No. ');?></span>
+            <span class="text"><?php echo xlt('BOX 23. Prior Authorization No. ');?></span>
             <input class="form-control" style="display: inline-block; width: 175px" type=entry size=15 name="prior_auth_number" value="<?php echo attr($obj{"prior_auth_number"});?>" >
             <br><br>
           </div>
 
           <div id="x12-only">
             <label>
-              <span class="lead"><?php echo xlt('X12 only: Replacement Claim '); ?>: </span>
+              <span class="text"><?php echo xlt('X12 only: Replacement Claim '); ?>: </span>
               <input type=checkbox name="replacement_claim" value="1" <?php if ($obj['replacement_claim'] == "1") echo "checked";?>>
             </label>
             <br><br>
-            <span class="lead"><?php echo xlt('X12 only ICN resubmission No. ');?></span>
+            <span class="text"><?php echo xlt('X12 only ICN resubmission No. ');?></span>
             <input class="form-control" style="display: inline-block; width: 250px" type=entry size=35 name="icn_resubmission_number" value="<?php echo attr($obj{"icn_resubmission_number"});?>" >
             <br><br>
           </div>
 
           <div id="additional-notes">
-            <span class="lead"><?php echo xlt('Additional Notes'); ?>: </span>
+            <span class="text"><?php echo xlt('Additional Notes'); ?>: </span>
             <br>
             <textarea class="form-control" cols=40 rows=8 wrap=virtual name="comments"><?php echo text($obj{"comments"});?></textarea>
             <br><br>
