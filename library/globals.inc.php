@@ -1137,6 +1137,19 @@ $GLOBALS_METADATA = array(
       xl('Total Minimum Dollar Amount of Statement to Allow Printing.(only applicable if Allow Statement to be Excluded from Printing is enabled)')
     ),
 
+    'insurance_statement_exclude' => array(
+       xl('Do Not Print Statements For Insurance Companies'),
+       array(
+            '0' => xl('Primary'),
+            '1' => xl('Secondary'),
+            '2' => xl('Tertiary'),
+            '3' => xl('All'),
+            '4' => xl('None')
+             ),                          // data type
+       '1',                              // default = true
+       xl('Do Not Print Statements for Insurance Companies Statement to Allow Printing.(only applicable if Allow Statement to be Excluded from Printing is enabled).')
+     ),
+
     'disallow_print_deceased' => array(
       xl('Disallow Printing for Deceased Patients'),
        'bool',                         // data type

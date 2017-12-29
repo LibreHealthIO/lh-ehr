@@ -211,3 +211,17 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
   ALTER TABLE clinical_rules ADD COLUMN pqrs_code varchar(35) DEFAULT NULL COMMENT 'Measure number';
 #EndIf
 
+#IfMissingColumn patient_data statement_y_n
+SET @group_name = (SELECT group_name FROM layout_options WHERE field_id='vfc' AND form_id='DEM');
+SET @backup_group_name = (SELECT group_name FROM layout_options WHERE field_id='deceased_date' AND form_id='DEM');
+SET @seq = (SELECT MAX(seq) FROM layout_options WHERE group_name = IFNULL(@group_name,@backup_group_name) AND form_id='DEM');
+INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`) VALUES ('DEM', 'statement_y_n', IFNULL(@group_name,@backup_group_name), 'Print Statement', @seq+1, 1, 1, 5, 0, 'yesno', 1, 3, '', '', 'Do Not Print a Patient Statement If NO' ) ;
+ALTER TABLE patient_data ADD COLUMN statement_y_n text NOT NULL default '';
+#EndIf
+
+#IfMissingColumn insurance_companies ins_inactive
+  ALTER TABLE insurance_companies ADD COLUMN ins_inactive tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 = Yes Is This Record Inactive?';
+#EndIf
+#IfMissingColumn insurance_companies allow_print_statement
+  ALTER TABLE insurance_companies ADD COLUMN allow_print_statement tinyint(1) NOT NULL DEFAULT '0' COMMENT ' 1 = Yes Print Statements';
+#EndIf
