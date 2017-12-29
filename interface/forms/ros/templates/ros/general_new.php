@@ -21,13 +21,13 @@
   </head>
   <!-- Made each section panels, to organize and add Bootstrap -->
   <body onresize ="resizePanel()">
+    <h2><?php echo xlt('Review of Systems'); ?></h2>
     <form
       name="ros"
       method="post"
       action="<?php echo $this->form_action;?>/interface/forms/ros/save.php"
       onsubmit="return top.restoreSession()"
     >
-      <h2><?php xlt('Review of Systems','e'); ?></h2>
       <div class="col-xs-6 col-sm-4 col-md-3 panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo xlt("Constitutional");?></h3>
