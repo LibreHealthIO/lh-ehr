@@ -104,7 +104,12 @@ function create_HTML_statement($stmt) {
   #minimum_amount_due_to _print
   if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
   if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
-  if ($stmt['insurance_no_statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
+  if ($GLOBALS['use_statement_print_exclusion'] && $GLOBALS['insurance_statement_exclude'] !=4 ){
+   if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) return "";
+   if ($GLOBALS['insurance_statement_exclude'] ==1 && $stmt['insurance_no_statement_print_sec']) return "";
+   if ($GLOBALS['insurance_statement_exclude'] ==2 && $stmt['insurance_no_statement_print_tri']) return "";
+   if ($GLOBALS['insurance_statement_exclude'] ==3) return "";
+  }
 
   // Don't print if decreased
   if ($GLOBALS['disallow_print_deceased']) return "";
@@ -545,13 +550,6 @@ if ($GLOBALS['use_dunning_message']) {
    {
      $label_insinfo = xl('Insurance Company '). $stmt['insconum1'] ;
    }
- if (strlen($stmt['insconum2']) !=0){
-    $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
- }
-else
- {
-   $label_insinfo = xl('Insurance Company '). $stmt['insconum1'] ;
- }
  }else{
  $label_insinfo = xl('Insurance information on file');
  }    
