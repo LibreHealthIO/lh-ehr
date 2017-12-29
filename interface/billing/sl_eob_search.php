@@ -325,6 +325,7 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
          $payerid = arGetPayerID($patient_id, $svcdate, $i);
 
          if ($payerid) {
+
           $tmp = sqlQuery("SELECT name, allow_print_statement FROM insurance_companies WHERE id = $payerid");
           if ($i == 1) {
           $stmt['insconum1'] = $tmp['name'];

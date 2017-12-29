@@ -163,13 +163,19 @@ function calendarpopup(eid,date_squash) {
  return false;
 }
 
-// auto refresh screen pat_trkr_timer is the timer variable
+// auto refresh screen pat_trkr_timer is the timer variable AND IF settings aren't opened
 function refreshbegin(first){
   <?php if ($GLOBALS['pat_trkr_timer'] != '0') { ?>
     var reftime="<?php echo attr($GLOBALS['pat_trkr_timer']); ?>";
     var parsetime=reftime.split(":");
     parsetime=(parsetime[0]*60)+(parsetime[1]*1)*1000;
-    if (first != '1') {
+
+    var expanded = document.getElementById("pat_settings_toggle").getAttribute('aria-expanded');
+
+    // expanded variable is the status of the pat_settings div. if it is opened, this variable will evaluate to true
+    // otherwise, false. this can be used to check if options are opened
+    if (first != '1' && (expanded == "false" || expanded == null)) {
+      console.log("Refreshing!");
       refreshme();
     }
     setTimeout("refreshbegin('0')",parsetime);
@@ -178,7 +184,7 @@ function refreshbegin(first){
 
 // used to display the patient demographic and encounter screens
 function topatient(newpid, enc) {
- if (document.pt_settings.form_new_window.checked) {
+ if (document.pt_settings.ptkr_pt_list_new_window.checked) {
    openNewTopWindow(newpid,enc);
  }
  else {
@@ -205,46 +211,21 @@ function openNewTopWindow(newpid,newencounterid) {
 </head>
 
 
- <?php
-  if ($GLOBALS['pat_trkr_timer'] == '0') {
-    // if the screen is not set up for auto refresh, use standard page call
-    $action_page = "patient_tracker.php";
-   }
-   else {
-    // if the screen is set up for auto refresh, this will allow it to be closed by auto logoff
-    $action_page = "patient_tracker.php?skip_timeout_reset=1";
-   }
-
-?>
 <?php
- if (isset($_POST['setting_new_window'])) {
-   if (isset($_POST['form_new_window'])) {
-     $new_window_checked = " checked";
-   }
-   else {
-     $new_window_checked = '';
-   }
- }
- else {
-   if ($GLOBALS['ptkr_pt_list_new_window']) {
-     $new_window_checked = " checked";
-   }
-   else {
-     $new_window_checked = '';
-   }
- }
- ?>
+    if ($GLOBALS['pat_trkr_timer'] == '0') {
+      // if the screen is not set up for auto refresh, use standard page call
+      $action_page = "patient_tracker.php";
+    }
+    else {
+      // if the screen is set up for auto refresh, this will allow it to be closed by auto logoff
+      $action_page = "patient_tracker.php?skip_timeout_reset=1";
+    }
+?>
 <span class="title"><?php echo xlt("Flow Board") ?></span>
-<span class="glyphicon glyphicon-cog" data-toggle="collapse" title="Set Flowboard Preferences" href="#pat_settings"></span>
+<span class="glyphicon glyphicon-cog" data-toggle="collapse" title="Set Flowboard Preferences" href="#pat_settings" id="pat_settings_toggle" aria-expanded="false"></span>
 <body class="body_top" >
 <div id="pat_settings" class="well collapse">
     <form method='post' name='pt_settings' id="pt_settings" action='<?php echo $action_page; ?>'>
-
-        <div class="checkbox">
-        <!-- This hidden field must not be deleted -->
-        <input type='hidden' name='setting_new_window' value='1' />
-        <label><input type='checkbox' name='form_new_window' value='1' <?php echo $new_window_checked; ?> /><?= xlt('Open Patient in New Window'); ?></label>
-        </div>
         <div class="checkbox">
         <label><input type="checkbox" id="ptkr_pt_list_new_window" name="ptkr_pt_list_new_window" value="1" <?php if($GLOBALS['ptkr_pt_list_new_window']=='1') echo "checked"; ?>><?php echo xlt("Open Demographics in New Window from Patient Flow Board"); ?></label>
         </div>
@@ -289,7 +270,8 @@ function openNewTopWindow(newpid,newencounterid) {
             <option value="0:59" <?php if($GLOBALS['pat_trkr_timer']=='0:59') echo "selected";?>>60</option>
         </select>
         
-        <div>          
+        <div> 
+        <br>        
         <input type='submit'  name='user_save' value='<?php echo xla('Save'); ?>' />
         </div>          
     </form>

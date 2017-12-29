@@ -545,6 +545,13 @@ if ($GLOBALS['use_dunning_message']) {
    {
      $label_insinfo = xl('Insurance Company '). $stmt['insconum1'] ;
    }
+ if (strlen($stmt['insconum2']) !=0){
+    $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
+ }
+else
+ {
+   $label_insinfo = xl('Insurance Company '). $stmt['insconum1'] ;
+ }
  }else{
  $label_insinfo = xl('Insurance information on file');
  }    

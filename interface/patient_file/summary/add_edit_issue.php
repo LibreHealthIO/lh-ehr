@@ -626,181 +626,218 @@ function divclick(cb, divid) {
 
 <body class="body_top" style="padding-right:0.5em">
 
-<form method='post' name='theform'
- action='add_edit_issue.php?issue=<?php echo attr($issue); ?>&thispid=<?php echo attr($thispid); ?>&thisenc=<?php echo attr($thisenc); ?>'
- onsubmit='return validate()'>
+<form
+  method='post'
+  name='theform'
+  action='add_edit_issue.php?issue=<?php echo attr($issue); ?>&thispid=<?php echo attr($thispid); ?>&thisenc=<?php echo attr($thisenc); ?>'
+  onsubmit='return validate()'
+>
 
 <table border='0' width='100%'>
-
- <tr>
-  <td valign='top' width='1%' nowrap><b><?php echo xlt('Type'); ?>:</b></td>
-  <td>
-<?php
- $index = 0;
- foreach ($ISSUE_TYPES as $value) {
-  if ($issue || $thistype) {
-    if ($index == $type_index) {
-      echo text($value[1]);
-      echo "<input type='hidden' name='form_type' value='".attr($index)."'>\n";
-    }
-  } else {
-    echo "   <input type='radio' name='form_type' value='".attr($index)."' onclick='newtype($index)'";
-    if ($index == $type_index) echo " checked";
-    echo " />" . text($value[1]) . "&nbsp;\n";
-  }
-  ++$index;
- }
-?>
-  </td>
- </tr>
-
- <tr id='row_titles'>
-  <td valign='top' nowrap>&nbsp;</td>
-  <td valign='top'>
-   <select name='form_titles' size='4' onchange='set_text()'>
-   </select> <?php echo xlt('(Select one of these, or type your own title)'); ?>
-  </td>
- </tr>
-
- <tr>
-  <td valign='top' id='title_diagnosis' nowrap><b><?php echo xlt('Title'); ?>:</b></td>
-  <td>
-   <input type='text' size='40' name='form_title' value='<?php echo attr($irow['title']) ?>' style='width:100%' />
-  </td>
- </tr>
-
- <tr id='row_codeSelect2'>
- <td><b><?php echo xlt('Active Issue Codes'); ?>:</b>
- </td>
- <td>
-  <select name='form_codeSelect2' size='4' onchange="codeBoxFunction2()" style="max-width:100%;">
-  </select>
- </td>
- </tr>
-
- <tr id='row_diagnosis'>
-  <td valign='top' nowrap><b><?php echo xlt('Coding'); ?>:</b></td>
-  <td>
-   <input type='text' size='50' name='form_diagnosis'
-    value='<?php echo attr($irow['diagnosis']) ?>' onclick='sel_diagnosis()'
-    title='<?php echo xla('Click to select or change coding'); ?>'
-    style='width:100%' readonly />
-  </td>
- </tr>
-
- <tr>
-  <td valign='top' nowrap><b><?php echo xlt('Begin Date'); ?>:</b></td>
-  <td>
-
-   <input type='text' size='10' name='form_begin' id='form_begin'
-    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['begdate']))) ?>'
-    title='<?php echo xla('yyyy-mm-dd date of onset, surgery or start of medication'); ?>' />
-  </td>
- </tr>
-
- <tr id='row_enddate'>
-  <td valign='top' nowrap><b><?php echo xlt('End Date'); ?>:</b></td>
-  <td>
-   <input type='text' size='10' name='form_end' id='form_end'
-    value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['enddate']))) ?>'
-    title='<?php echo xla('yyyy-mm-dd date of recovery or end of medication'); ?>' />
-    &nbsp;(<?php echo xlt('leave blank if still active'); ?>)
-  </td>
- </tr>
-
- <tr id='row_active'>
-  <td valign='top' nowrap><b><?php echo xlt('Active'); ?>:</b></td>
-  <td>
-   <input type='checkbox' name='form_active' value='1' <?php echo attr($irow['enddate']) ? "" : "checked"; ?>
-    onclick='activeClicked(this);'
-    title='<?php echo xla('Indicates if this issue is currently active'); ?>' />
-  </td>
- </tr>
-
- 
- <tr id='row_occurrence'>
-  <td valign='top' nowrap><b><?php echo xlt('Occurrence'); ?>:</b></td>
-  <td>
-   <?php
-    // Modified 6/2009 by BM to incorporate the occurrence items into the list_options listings
-    generate_form_field(array('data_type'=>1,'field_id'=>'occur','list_id'=>'occurrence','empty_title'=>'SKIP'), $irow['occurrence']);
-   ?>
-  </td>
- </tr>
-
- <tr id='row_classification'>
-  <td valign='top' nowrap><b><?php echo xlt('Classification'); ?>:</b></td>
-  <td>
-   <select name='form_classification'>
-<?php
- foreach ($ISSUE_CLASSIFICATIONS as $key => $value) {
-  echo "   <option value='".attr($key)."'";
-  if ($key == $irow['classification']) echo " selected";
-  echo ">".text($value)."\n";
- }
-?>
-   </select>
-  </td>
- </tr>
-
- <!-- Reaction For Medication Allergy -->
-  <tr id='row_severity'>
-    <td valign='top' nowrap><b><?php echo xlt('Severity'); ?>:</b></td>
-    <td><?php
-        $severity=$irow['severity_al'];
-        generate_form_field(array('data_type'=>1,'field_id'=>'severity_id','list_id'=>'severity_ccda','empty_title'=>'SKIP'), $severity);
-      ?>  
+  <h1><?php echo xlt('Add Issue'); ?></h1>
+  <tr>
+    <td valign='top' width='1%' nowrap><b><?php echo xlt('Type'); ?>:</b></td>
+    <td>
+      <?php
+        $index = 0;
+        foreach ($ISSUE_TYPES as $value) {
+          if ($issue || $thistype) {
+            if ($index == $type_index) {
+              echo text($value[1]);
+              echo "<input type='hidden' name='form_type' value='".attr($index)."'>\n";
+            }
+          } else {
+              echo "   <input type='radio' name='form_type' value='".attr($index)."' onclick='newtype($index)'";
+              if ($index == $type_index) echo " checked";
+                echo " />" . text($value[1]) . "&nbsp;\n";
+          }
+          ++$index;
+        }
+      ?>
     </td>
   </tr>
-  <tr id='row_reaction'>
-   <td valign='top' nowrap><b><?php echo xlt('Reaction'); ?>:</b></td>
-   <td>
-     <?php
-        echo generate_select_list('form_reaction', 'reaction', $irow['reaction'], '', '', '', '');
-     ?>
-   </td>
+
+  <tr id='row_titles'>
+    <td valign='top' nowrap>&nbsp;</td>
+    <td valign='top'>
+      <select name='form_titles' size='4' onchange='set_text()'></select>
+      <?php echo xlt('(Select one of these, or type your own title)'); ?>
+    </td>
   </tr>
- <!-- End of reaction -->
 
- <tr id='row_referredby'>
-  <td valign='top' nowrap><b><?php echo xlt('Referred by'); ?>:</b></td>
-  <td>
-   <input type='text' size='40' name='form_referredby' value='<?php echo attr($irow['referredby']) ?>'
-    style='width:100%' title='<?php echo xla('Referring physician and practice'); ?>' />
-  </td>
- </tr>
+  <tr>
+    <td valign='top' id='title_diagnosis' nowrap><b><?php echo xlt('Title'); ?>:</b></td>
+    <td>
+      <input
+        type='text'
+        size='40'
+        name='form_title'
+        value='<?php echo attr($irow['title']) ?>'
+        style='width:100%'
+      />
+    </td>
+  </tr>
 
- <tr id='row_comments'>
-  <td valign='top' nowrap><b><?php echo xlt('Comments'); ?>:</b></td>
-  <td>
-   <textarea name='form_comments' rows='4' cols='40' wrap='virtual' style='width:100%'><?php echo text($irow['comments']) ?></textarea>
-  </td>
- </tr>
+  <tr id='row_codeSelect2'>
+    <td><b><?php echo xlt('Active Issue Codes'); ?>:</b></td>
+    <td>
+      <select name='form_codeSelect2' size='4' onchange="codeBoxFunction2()" style="max-width:100%;"></select>
+    </td>
+  </tr>
 
- <tr<?php if ($GLOBALS['ippf_specific']) echo " style='display:none;'"; ?>>
-  <td valign='top' nowrap><b><?php echo xlt('Outcome'); ?>:</b></td>
-  <td>
-   <?php
-    echo generate_select_list('form_outcome', 'outcome', $irow['outcome'], '', '', '', 'outcomeClicked(this);');
-   ?>
-  </td>
- </tr>
+  <tr id='row_diagnosis'>
+    <td valign='top' nowrap><b><?php echo xlt('Coding'); ?>:</b></td>
+    <td>
+      <input
+        type='text'
+        size='50'
+        name='form_diagnosis'
+        value='<?php echo attr($irow['diagnosis']) ?>' onclick='sel_diagnosis()'
+        title='<?php echo xla('Click to select or change coding'); ?>'
+        style='width:100%'
+        readonly
+      />
+    </td>
+  </tr>
 
- <tr<?php if ($GLOBALS['ippf_specific']) echo " style='display:none;'"; ?>>
-  <td valign='top' nowrap><b><?php echo xlt('Destination'); ?>:</b></td>
-  <td>
-<?php if (true) { ?>
-   <input type='text' size='40' name='form_destination' value='<?php echo attr($irow['destination']) ?>'
-    style='width:100%' title='GP, Secondary care specialist, etc.' />
-<?php } else { // leave this here for now, please -- Rod ?>
-   <?php echo rbinput('form_destination', '1', 'GP'                 , 'destination') ?>&nbsp;
-   <?php echo rbinput('form_destination', '2', 'Secondary care spec', 'destination') ?>&nbsp;
-   <?php echo rbinput('form_destination', '3', 'GP via physio'      , 'destination') ?>&nbsp;
-   <?php echo rbinput('form_destination', '4', 'GP via podiatry'    , 'destination') ?>
-<?php } ?>
-  </td>
- </tr>
+  <tr>
+    <td valign='top' nowrap><b><?php echo xlt('Begin Date'); ?>:</b></td>
+    <td>
+      <input
+        type='text'
+        size='10'
+        name='form_begin'
+        id='form_begin'
+        value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['begdate']))) ?>'
+        title='<?php echo xla('yyyy-mm-dd date of onset, surgery or start of medication'); ?>'
+      />
+    </td>
+  </tr>
 
+  <tr id='row_enddate'>
+    <td valign='top' nowrap><b><?php echo xlt('End Date'); ?>:</b></td>
+    <td>
+      <input
+        type='text'
+        size='10'
+        name='form_end'
+        id='form_end'
+        value='<?php echo htmlspecialchars(oeFormatShortDate(attr($irow['enddate']))) ?>'
+        title='<?php echo xla('yyyy-mm-dd date of recovery or end of medication'); ?>'
+      />
+      &nbsp;(<?php echo xlt('leave blank if still active'); ?>)
+    </td>
+  </tr>
+
+  <tr id='row_active'>
+    <td valign='top' nowrap><b><?php echo xlt('Active'); ?>:</b></td>
+    <td>
+      <input
+        type='checkbox'
+        name='form_active'
+        value='1'
+        <?php echo attr($irow['enddate']) ? "" : "checked"; ?>
+        onclick='activeClicked(this);'
+        title='<?php echo xla('Indicates if this issue is currently active'); ?>'
+      />
+    </td>
+  </tr>
+
+  <tr id='row_occurrence'>
+    <td valign='top' nowrap><b><?php echo xlt('Occurrence'); ?>:</b></td>
+    <td>
+      <?php
+        // Modified 6/2009 by BM to incorporate the occurrence items into the list_options listings
+        generate_form_field(array('data_type'=>1,'field_id'=>'occur','list_id'=>'occurrence','empty_title'=>'SKIP'), $irow['occurrence']);
+      ?>
+    </td>
+  </tr>
+
+  <tr id='row_classification'>
+    <td valign='top' nowrap><b><?php echo xlt('Classification'); ?>:</b></td>
+    <td>
+      <select name='form_classification'>
+        <?php
+          foreach ($ISSUE_CLASSIFICATIONS as $key => $value) {
+            echo "   <option value='".attr($key)."'";
+            if ($key == $irow['classification']) echo " selected";
+              echo ">".text($value)."\n";
+          }
+        ?>
+      </select>
+    </td>
+  </tr>
+
+  <!-- Reaction For Medication Allergy -->
+  <tr id='row_severity'>
+    <td valign='top' nowrap><b><?php echo xlt('Severity'); ?>:</b></td>
+    <td>
+      <?php
+        $severity=$irow['severity_al'];
+        generate_form_field(array('data_type'=>1,'field_id'=>'severity_id','list_id'=>'severity_ccda','empty_title'=>'SKIP'), $severity);
+      ?>
+    </td>
+  </tr>
+
+  <tr id='row_reaction'>
+    <td valign='top' nowrap><b><?php echo xlt('Reaction'); ?>:</b></td>
+    <td>
+      <?php
+        echo generate_select_list('form_reaction', 'reaction', $irow['reaction'], '', '', '', '');
+      ?>
+    </td>
+  </tr>
+
+  <!-- End of reaction -->
+  <tr id='row_referredby'>
+    <td valign='top' nowrap><b><?php echo xlt('Referred by'); ?>:</b></td>
+    <td>
+      <input
+        type='text'
+        size='40'
+        name='form_referredby'
+        value='<?php echo attr($irow['referredby']) ?>'
+        style='width:100%'
+        title='<?php echo xla('Referring physician and practice'); ?>'
+      />
+    </td>
+  </tr>
+
+  <tr id='row_comments'>
+    <td valign='top' nowrap><b><?php echo xlt('Comments'); ?>:</b></td>
+    <td>
+      <textarea name='form_comments' rows='4' cols='40' wrap='virtual' style='width:100%'><?php echo text($irow['comments']) ?></textarea>
+    </td>
+  </tr>
+
+   <tr<?php if ($GLOBALS['ippf_specific']) echo " style='display:none;'"; ?>>
+    <td valign='top' nowrap><b><?php echo xlt('Outcome'); ?>:</b></td>
+    <td>
+      <?php
+        echo generate_select_list('form_outcome', 'outcome', $irow['outcome'], '', '', '', 'outcomeClicked(this);');
+      ?>
+    </td>
+   </tr>
+
+  <tr<?php if ($GLOBALS['ippf_specific']) echo " style='display:none;'"; ?>>
+    <td valign='top' nowrap><b><?php echo xlt('Destination'); ?>:</b></td>
+    <td>
+      <?php if (true) { ?>
+        <input
+          type='text'
+          size='40'
+          name='form_destination'
+          value='<?php echo attr($irow['destination']) ?>'
+          style='width:100%' title='GP, Secondary care specialist, etc.'
+        />
+      <?php } else { // leave this here for now, please -- Rod ?>
+        <?php echo rbinput('form_destination', '1', 'GP'                 , 'destination') ?>&nbsp;
+        <?php echo rbinput('form_destination', '2', 'Secondary care spec', 'destination') ?>&nbsp;
+        <?php echo rbinput('form_destination', '3', 'GP via physio'      , 'destination') ?>&nbsp;
+        <?php echo rbinput('form_destination', '4', 'GP via podiatry'    , 'destination') ?>
+      <?php } ?>
+    </td>
+  </tr>
 </table>
 
 <?php

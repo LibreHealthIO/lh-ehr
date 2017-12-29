@@ -21,6 +21,10 @@ a:hover {
   color: #ff5555;
 }
 
+.centerBody {
+    text-align: center;
+}
+
 .menu {
     font-style: italic;
     font-size: 0.95em;
@@ -153,6 +157,10 @@ a:hover {
 
 .sidebar ul.mainmenu {
     padding-bottom: 55px;
+}
+
+.tab-button {
+    margin-left: 2px;
 }
 
 .sorting_1:hover{

@@ -18,6 +18,10 @@ a:hover {
   color: #ff5555;
 }
 
+.centerBody {
+    text-align: center;
+}
+
 .menu {
     font-family: sans-serif;
     font-style: italic;
@@ -162,6 +166,10 @@ a:hover {
 .sorting_1:hover{
     cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
     color:#ff5555;
+}
+
+.tab-button {
+    margin-left: 2px;
 }
 
 /*=============================================================
