@@ -1,7 +1,7 @@
 <html>
 	<head>
 	<?php html_header_show();?>
-
+	<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
 
 	<style type="text/css" title="mystyles" media="all">
 	td {
@@ -36,32 +36,33 @@
 
 	</head>
 	<body bgcolor="<?php echo $this->style["BGCOLOR2"];?>">
-	<p><span class="title"><?php echo  xl('SOAP','e'); ?></span></p>
+	<p><span class="title" style="display: none"><?php echo  xl('SOAP','e'); ?></span></p>
+	<h2>SOAP</h2>
 		<form name="soap" method="post" action="<?php echo $this->form_action;?>/interface/forms/soap/save.php"
 		 onsubmit="return top.restoreSession()">
-			<table>
+			<table class="table table-bordered table-hover table-condensed">
 				<tr>
 					<td align="left"><?php echo  xl('Subjective','e'); ?></td>
 					<td width="90%">
-						<textarea name="subjective" cols="60" rows="6"><?php echo $this->data->get_subjective();?></textarea>
+						<textarea class="form-control" style="width: auto;" name="subjective" cols="60" rows="6"><?php echo $this->data->get_subjective();?></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td align="left"><?php echo  xl('Objective','e'); ?></td>
 					<td width="90%">
-						<textarea name="objective" cols="60" rows="6"><?php echo $this->data->get_objective();?></textarea>
+						<textarea class="form-control" style="width: auto;" name="objective" cols="60" rows="6"><?php echo $this->data->get_objective();?></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td align="left"><?php echo  xl('Assessment','e'); ?></td>
 					<td width="90%">
-						<textarea name="assessment" cols="60" rows="6"><?php echo $this->data->get_assessment();?></textarea>
+						<textarea class="form-control" style="width: auto;" name="assessment" cols="60" rows="6"><?php echo $this->data->get_assessment();?></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td align="left"><?php echo  xl('Plan','e'); ?></td>
 					<td width="90%">
-						<textarea name="plan" cols="60" rows="6"><?php echo $this->data->get_plan();?></textarea>
+						<textarea class="form-control" style="width: auto;" name="plan" cols="60" rows="6"><?php echo $this->data->get_plan();?></textarea>
 					</td>
 				</tr>
 				<tr>
