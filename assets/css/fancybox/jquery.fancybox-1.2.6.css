@@ -9,7 +9,7 @@ div#fancy_overlay {
 }
 
 div#fancy_loading {
-	position: fixed;
+	position: absolute;
 	height: 40px;
 	width: 40px;
 	cursor: pointer;
@@ -20,7 +20,7 @@ div#fancy_loading {
 }
 
 div#fancy_loading div {
-	position: relative;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 40px;
@@ -29,7 +29,7 @@ div#fancy_loading div {
 }
 
 div#fancy_outer {
-	position: fixed;
+	position: absolute;
     top: 0;
     left: 0;
     z-index: 90;
