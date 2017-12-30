@@ -37,7 +37,7 @@
 	</head>
 	<body bgcolor="<?php echo $this->style["BGCOLOR2"];?>">
 	<p><span class="title" style="display: none"><?php echo  xl('SOAP','e'); ?></span></p>
-	<h2>SOAP</h2>
+	<h2><?php echo xlt('SOAP'); ?></h2>
 		<form name="soap" method="post" action="<?php echo $this->form_action;?>/interface/forms/soap/save.php"
 		 onsubmit="return top.restoreSession()">
 			<table class="table table-bordered table-hover table-condensed">
@@ -65,7 +65,6 @@
 						<textarea class="form-control" style="width: auto;" name="plan" cols="60" rows="6"><?php echo $this->data->get_plan();?></textarea>
 					</td>
 				</tr>
-				<tr>
 			</table>
 			<div>
 				<!-- Save/Cancel buttons -->
