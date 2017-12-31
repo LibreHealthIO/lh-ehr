@@ -39,6 +39,7 @@
   require_once("$srcdir/options.inc.php");
   require_once("$srcdir/formatting.inc.php");
   require_once("$srcdir/erx_javascript.inc.php");
+  require_once("$srcdir/headers.inc.php");
   
    // Session pid must be right or bad things can happen when demographics are saved!
    //
@@ -87,12 +88,16 @@
     <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
     <script type="text/javascript" src="../../../library/dialog.js"></script>
     <script type="text/javascript" src="../../../library/textformat.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
     <script type="text/javascript" src="../../../library/js/common.js"></script>
-    <script type="text/javascript" src="../../../library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
-    <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
-    <link rel="stylesheet" type="text/css" href="../../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
+    
+    <?php 
+
+      include_once("{$GLOBALS['srcdir']}/options.js.php"); 
+      call_required_libraries(array('fancybox', 'jquery-min-1-7-2'));
+
+    ?>
+
     <script type="text/javascript">
       $(document).ready(function(){
           tabbify();
