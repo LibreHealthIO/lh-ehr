@@ -39,7 +39,6 @@
   require_once("$srcdir/options.inc.php");
   require_once("$srcdir/formatting.inc.php");
   require_once("$srcdir/erx_javascript.inc.php");
-  require_once("$srcdir/headers.inc.php");
   
    // Session pid must be right or bad things can happen when demographics are saved!
    //
@@ -94,7 +93,7 @@
     <?php 
 
       include_once("{$GLOBALS['srcdir']}/options.js.php"); 
-      call_required_libraries(array('fancybox', 'jquery-min-1-7-2', 'jquery-ui'));
+      call_required_libraries(array('fancybox', 'jquery-min-1-7-2', ));
 
     ?>
 
@@ -509,30 +508,20 @@
         
         ?>
       <br>
-
-      <!-- Set up accordion from jQuery UI -->
-      <script>
-        $(function() {
-          $("#accordion").accordion();
-        });
-      </script>
-
-      <div id="accordion">
-        <h3><?php xl("Demographics", "e" )?></h3>
-        <div>
-          <div id="DEM" >
-            <ul class="tabNav">
-              <?php display_layout_tabs('DEM', $result, $result2); ?>
-            </ul>
-            <div class="tabContainer">
-              <?php display_layout_tabs_data_editable('DEM', $result, $result2); ?>
-            </div>
-          </div>
+      <div class="section-header">
+        <span class="text"><b> <?php xl("Demographics", "e" )?></b></span>
+      </div>
+      <div id="DEM" >
+        <ul class="tabNav">
+          <?php display_layout_tabs('DEM', $result, $result2); ?>
+        </ul>
+        <div class="tabContainer">
+          <?php display_layout_tabs_data_editable('DEM', $result, $result2); ?>
         </div>
-
-        <h3><?php xl("Insurance", "e" )?></h3>
-        <div>
-          <?php
+      </div>
+      <br>
+      <div id="DEM" >
+        <?php
           if (! $GLOBALS['simplified_demographics']) {
           
                $insurance_headings = array(xl("Primary Insurance Provider"), xl("Secondary Insurance Provider"), xl("Tertiary Insurance provider"));
@@ -549,7 +538,9 @@
           
              ?>
         <input type="hidden" name="total_insurances" id="total_insurances" value=<?php echo count($insurance_types);?>>
-
+        <div class="section-header">
+          <span class="text"><b><?php xl("Insurance", "e" )?></b></span>
+        </div>
         <div id="INSURANCE" >
           <ul class="tabNav">
             <?php
@@ -1018,10 +1009,8 @@
           </div>
         </div>
         <?php } // end of "if not simplified_demographics" ?>
-        </div>
       </div>
-
-      
+      </div>
     </form>
     <br>
     <script language="JavaScript">
