@@ -512,8 +512,11 @@
 
       <!-- Set up accordion from jQuery UI -->
       <script>
+        /* heightStyle: "content" forces the accordion to use only the space needed */
         $(function() {
-          $("#accordion").accordion();
+          $("#accordion").accordion({
+            heightStyle: "content"
+          });
         });
       </script>
 
