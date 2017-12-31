@@ -661,13 +661,15 @@
                         <td><input type=entry size=16 name=i<?php echo $i?>group_number value="<?php echo $result3{"group_number"}?>" onkeyup='policykeyup(this)'></td>
                       </tr>
                       <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
-                        <td class='bold'><?php xl('Subscriber Employer (SE)','e'); ?><br><span style='font-weight:normal'>
-                          (<?php xl('if unemployed enter Student','e'); ?>,<br><?php xl('PT Student, or leave blank','e'); ?>) </span>
+                        <td class='bold'>
+                          <?php xl('Subscriber Employer (SE)','e'); ?>
                         </td>
                         <td class='bold'>:</td>
-                        <td><input type=entry size=25 name=i<?php echo $i?>subscriber_employer
-                          value="<?php echo $result3{"subscriber_employer"}?>"
-                          onchange="capitalizeMe(this);" /></td>
+                        <td>
+                          <input type=entry size=25 name=i<?php echo $i?>subscriber_employer
+                            value="<?php echo $result3{"subscriber_employer"}?>"
+                            onchange="capitalizeMe(this);" placeholder=<?php echo '"'.xl('Student or blank if unemployed').'"'; ?>/>
+                        </td>
                       </tr>
                       <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
                         <td><span class=bold><?php xl('SE Address','e'); ?></span></td>
