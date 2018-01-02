@@ -32,35 +32,44 @@ $fake_register_globals=false;
 //
 
 require_once(dirname(__FILE__) . "/../globals.php");
+require_once("$srcdir/headers.inc.php");
 
 ?>
 <html>
-<head>
-<title><?php echo xlt('Import');?></title>
-<link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
-</head>
-<body class="body_top" >
-<center>
-<p><b><?php echo xlt("Steps for uploading CCR XML");?></b></p>
-<table style="width:85%;font-size:14px;" >
-  <tr>
-    <td>1.</td>
-    <td><?php echo xlt('To upload CCR document of already existing patient use Patient Summary Screen->Documents. For CCR document of a new patient use Miscellanous->New Documents screen').'.'; ?></td>
-  </tr>
-  <tr>
-    <td>2.</td>
-    <td><?php echo xlt('Upload the xml file under the category CCR').'.'; ?></td>
-  </tr>
-  <tr>
-    <td>3.</td>
-    <td><?php echo xlt('After Uploading click the button "Import"').'.'; ?></td>
-  </tr>
-  <tr>
-    <td>4.</td>
-    <td><?php echo xlt('Approve the patient from Patient/Client->Import->Pending Approval').'.'; ?></td>
-  </tr>
-</table>
-</center>
-</form>
-</body>
+  <head>
+      <title>
+          <?php echo xlt('Import');?>
+      </title>
+      <span class="title" style="display: none"><?php echo xlt("Steps for uploading CCR XML");?></span>
+      <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
+      <?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
+  </head>
+
+  <body class="body_top">
+      <center>
+          <h2><?php echo xlt("Steps for uploading CCR XML");?></h2>
+          <table class="table table-bordered table-hover" style="width:85%;font-size:14px;">
+              <tr>
+                  <td>
+                      <?php echo xlt('1. To upload CCR document of already existing patient use Patient Summary Screen->Documents. For CCR document of a new patient use Miscellanous->New Documents screen').'.'; ?>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <?php echo xlt('2. Upload the xml file under the category CCR').'.'; ?>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <?php echo xlt('3. After Uploading click the button "Import"').'.'; ?>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <?php echo xlt('4. Approve the patient from Patient/Client->Import->Pending Approval').'.'; ?>
+                  </td>
+              </tr>
+          </table>
+      </center>
+  </body>
 </html>
