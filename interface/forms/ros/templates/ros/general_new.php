@@ -1,3 +1,11 @@
+<!-- Form generated from formsWiz -->
+<?php
+include_once("../../globals.php");
+include_once("$srcdir/api.inc");
+include_once("$srcdir/headers.inc.php");
+formHeader("Review of Systems");
+$returnurl = 'encounter_top.php';
+?>
 <html>
   <head>
     <?php call_required_libraries(['jquery-min-1-9-1', 'bootstrap']); ?>
