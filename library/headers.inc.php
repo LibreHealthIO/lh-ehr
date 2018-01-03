@@ -95,6 +95,17 @@ function call_required_libraries($library_array){
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-ui-1-12-1/jquery-ui.js"></script>
     <?php
     }
+
+    if (in_array("common", $library_array)) {   ?>
+        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/common.js"></script>
+    <?php
+    }
+
+    if (in_array("gritter", $library_array)) {   ?>
+        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.gritter.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot']; ?>/library/css/jquery.gritter.css" />
+    <?php
+    }
 }
 ?>
 
