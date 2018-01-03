@@ -50,7 +50,7 @@ function call_required_libraries($library_array){
      * When one is found, use that value in the URL string, then add "index.js"
      * In order to decrease the chance of including and library calling problems, some measures were taken:
      * - The array in the argument is completely converted to lower-case, meaning that there is not any sensitivity between jQuery & jquery or fancyBox & fancybox
-     * - Some cases can be called with or without "-". For example: "font-awesome" and "fontawesome" => those 2 are the same thing
+     * - Some libraries can be called with or without "-". For example: "font-awesome" and "fontawesome" => those 2 are the same thing
      */
     
     $library_array = array_map('strtolower', $library_array);
