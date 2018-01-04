@@ -27,7 +27,6 @@
   require_once("$srcdir/htmlspecialchars.inc.php");  
   require_once("$srcdir/dated_reminder_functions.php"); 
   require_once("$srcdir/formatting.inc.php");
-  require_once("$srcdir/headers.inc.php");
   $DateFormat = DateFormatRead();
   $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   
