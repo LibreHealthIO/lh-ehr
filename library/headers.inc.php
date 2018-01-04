@@ -52,8 +52,6 @@ function call_required_libraries($library_array){
      * - The array in the argument is completely converted to lower-case, meaning that there is not any sensitivity between jQuery & jquery or fancyBox & fancybox
      * - Some libraries can be called with or without "-". For example: "font-awesome" and "fontawesome" => those 2 are the same thing
      */
-    
-    $library_array = array_map('strtolower', $library_array);
 
     foreach ($library_array as $v){ 
         if (preg_match("/jquery-min-/", $v)) {?>
@@ -85,12 +83,12 @@ function call_required_libraries($library_array){
     <?php
     }
 
-    if (in_array('font-awesome', $library_array) || in_array('fontawesome', $library_array)) {   ?>
+    if (in_array('font-awesome', $library_array)) {   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['assets'] ?>/fonts/font-awesome-4-6-3/css/font-awesome.min.css" type="text/css">
     <?php
     }
 
-    if (in_array("jquery-ui", $library_array) || in_array("jqueryui", $library_array)) {   ?>
+    if (in_array("jquery-ui", $library_array)) {   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>jquery-ui-1-12-1/jquery-ui.css" media="screen" />
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-ui-1-12-1/jquery-ui.js"></script>
     <?php
