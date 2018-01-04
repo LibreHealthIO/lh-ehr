@@ -646,7 +646,9 @@ font-weight: bold;
     padding-right: 10px; /* sliding doors padding */
     text-decoration: none;
 }
-
+.css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
+  background: red !important;
+}
 .css_button span {
     background: transparent url( 'theme_assets/bg_button_span.gif' ) no-repeat;
     display: block;
