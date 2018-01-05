@@ -180,7 +180,8 @@ error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ``` 
 Make sure that settings in MYSQL /etc/mysql/my.cnf file include: 
 ```
-key_buffer_size set to 1024M
+key_buffer_size set to 256M
+table_open_cache set to 256
 innodb_buffer_pool_size set to 70% of available RAM.
 ```
 Make sure you have disabled strict mode in Mysql . 
