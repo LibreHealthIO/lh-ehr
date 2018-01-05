@@ -547,7 +547,8 @@ echo "
 
 echo "<li>To ensure proper functioning of LibreHealth EHR you must make sure that settings in MYSQL /etc/mysql/my.cnf file include: 
 <ul>
-<li>\"key_buffer_size\" set to 1024M</li>
+<li>\"key_buffer_size\" set to 256M</li>
+<li>\"table_open_cache\" set to 256</li>
 <li>\"innodb_buffer_pool_size\" set to 70% of available RAM.</li>
 </ul>";
 
