@@ -46,7 +46,7 @@ $GLOBALS['PATIENT_REPORT_ACTIVE'] = true;
 $PDF_OUTPUT = empty($_POST['pdf']) ? 0 : intval($_POST['pdf']);
 
 if ($PDF_OUTPUT) {
-  require_once($GLOBALS['modules_dir'] . "/html2pdf/vendor/autoload.php");
+  require_once($GLOBALS['modules_dir'] . "../../../../modules/html2pdf/vendor/autoload.php");
   $pdf = new HTML2PDF ($GLOBALS['pdf_layout'],
                        $GLOBALS['pdf_size'],
                        $GLOBALS['pdf_language'],
@@ -163,10 +163,10 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
       $j("."+class_name).each(function(){
       val = document.getElementById(this.id).innerHTML;
       $j("#"+this.id).replaceWith(val);
-      
+
     });
   }
-  var res_id = 0;            
+  var res_id = 0;
   function doSearch(form_id,form_dir,exact,class_name,keys,case_sensitive) { // Uses jquery SearchHighlight Plug in
     var options ={};
     var keys = keys.replace(/^\s+|\s+$/g, '') ;
@@ -184,7 +184,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
         $j(this).attr("id",'result_'+res_id);
       });
   }
-  
+
   function remove_mark(form_id,form_dir){ // Removes all <mark> and </mark> tags
     var match1 = null;
     var src_str = document.getElementById('search_div_'+form_id+'_'+form_dir).innerHTML;
@@ -200,7 +200,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     }
     document.getElementById('search_div_'+form_id+'_'+form_dir).innerHTML=src_str;
   }
-  function mark_hilight(form_id,form_dir,keys,case_sensitive){ // Adds <mark>match_val</mark> tags    
+  function mark_hilight(form_id,form_dir,keys,case_sensitive){ // Adds <mark>match_val</mark> tags
     keys = keys.replace(/^\s+|\s+$/g, '') ;
     if(keys == '') return;
     var src_str = $j('#search_div_'+form_id+'_'+form_dir).html();
@@ -228,7 +228,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
       doSearch(form_id,form_dir,'partial','hilite',keys,'false');
     }
   }
-  
+
   var forms_array;
   var res_array   = Array();
   function find_all(){ // for each report the function mark_hilight() is called
@@ -246,12 +246,12 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     else{
       document.getElementById('alert_msg').innerHTML='';
     }
-    
+
     forms_arr = document.getElementById('forms_to_search');
     for (var i = 0; i < forms_arr.options.length; i++) {
      if(forms_arr.options[i].selected ==true){
           $j('.class_'+forms_arr.options[i].value).each(function(){
-          id_arr = this.id.split('search_div_');  
+          id_arr = this.id.split('search_div_');
           var re = new RegExp('_','i');
           new_id = id_arr[1].replace(re, "|");
           new_id_arr = new_id.split('|');
@@ -259,7 +259,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
           form_dir = new_id_arr[1];
           mark_hilight(form_id,form_dir,keys,case_sensitive);
         });
-          
+
       }
     }
     if($j('.hilite').length <1){
@@ -274,10 +274,10 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     }
 
   }
-  
+
   function remove_mark_all(){ // clears previous search results if exists
     $j('.report_search_div').each(function(){
-      var id_arr = this.id.split('search_div_');  
+      var id_arr = this.id.split('search_div_');
       var re = new RegExp('_','i');
       var new_id = id_arr[1].replace(re, "|");
       var new_id_arr = new_id.split('|');
@@ -327,7 +327,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     }
     element = document.getElementById(res_array[last_visited]);
     element.scrollIntoView(false);
-    
+
   }
 
   function prev(w_count){
@@ -360,9 +360,9 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
         return;
       }
     $j("#"+res_array[last_visited]).addClass("next");
-    
+
     }
-    
+
     element = document.getElementById(res_array[last_visited]);
     element.scrollIntoView(false);
   }
@@ -396,9 +396,9 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
       }
     }else{
       return 1;
-    } 
+    }
   }
-  
+
   function next_prev(action){
     var w_count =0;
     case_sensitive = false;
@@ -419,7 +419,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     for (var i = 0; i < forms_arr.options.length; i++) {
      if(forms_arr.options[i].selected ==true){
           $j('.class_'+forms_arr.options[i].value).each(function(){
-          id_arr = this.id.split('search_div_');  
+          id_arr = this.id.split('search_div_');
           var re = new RegExp('_','i');
           new_id = id_arr[1].replace(re, "|");
           new_id_arr = new_id.split('|');
@@ -449,7 +449,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
         document.getElementById('alert_msg').innerHTML='<?php echo xla('Showing result');?> '+cur_res+' <?php echo xla('of');?> '+tot_res;
       }
     }
-    
+
   }
 </script>
 </head>
@@ -489,7 +489,7 @@ if ($printable) {
    $practice_logo = "$OE_SITE_DIR/images/practice_logo.png";
    if (file_exists($practice_logo)) {
         echo "<img src='$practice_logo' align='left'><br />\n";
-     } 
+     }
 ?>
 <h2><?php echo $facility['name'] ?></h2>
 <?php echo $facility['street'] ?><br>
@@ -502,7 +502,7 @@ if ($printable) {
 
 <?php
 
-} 
+}
 else { // not printable
 ?>
 
@@ -594,7 +594,7 @@ foreach ($ar as $key => $val) {
     if (stristr($key,"include_")) {
 
         if ($val == "demographics") {
-            
+
             echo "<hr />";
             echo "<div class='text demographics' id='DEM'>\n";
             print "<h1>".xl('Patient Data').":</h1>";
@@ -629,21 +629,21 @@ foreach ($ar as $key => $val) {
             echo "<hr />";
             echo "<div class='text insurance'>";
             echo "<h1>".xl('Insurance Data').":</h1>";
-            if ($GLOBALS['insurance_address_demographics_report'] =='1') {    
+            if ($GLOBALS['insurance_address_demographics_report'] =='1') {
             print "<br><span class=bold>".xl('Primary Insurance Data').":</span><br>";
-                printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"primary"), $N);             
-                print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";    
+                printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"primary"), $N);
+                print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";
                 printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"secondary"), $N);
                 print "<span class=bold>".xl('Tertiary Insurance Data').":</span><br>";
                 printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"tertiary"), $N);
             }else{
                 print "<br><span class=bold>".xl('Primary Insurance Data').":</span><br>";
-            printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"primary"), $N);       
-            print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";    
+            printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"primary"), $N);
+            print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";
             printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"secondary"), $N);
             print "<span class=bold>".xl('Tertiary Insurance Data').":</span><br>";
             printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"tertiary"), $N);
-            }        
+            }
             echo "</div>";
 
         } elseif ($val == "billing") {
@@ -862,7 +862,7 @@ foreach ($ar as $key => $val) {
             $pdf->writeHTML($content, false);
             $pagecount = $pdf->pdf->setSourceFile($from_file);
             for($i = 0; $i < $pagecount; ++$i){
-              $pdf->pdf->AddPage();  
+              $pdf->pdf->AddPage();
               $itpl = $pdf->pdf->importPage($i + 1, '/MediaBox');
               $pdf->pdf->useTemplate($itpl);
             }
@@ -997,22 +997,22 @@ foreach ($ar as $key => $val) {
                     echo ' '. xl('Provider') . ': ' . text(getProviderName(getProviderIdOfEncounter($form_encounter)));
                 }
                 echo "<br>\n";
-   
+
                 // call the report function for the form
-                ?>                
+                ?>
                 <div name="search_div" id="search_div_<?php echo attr($form_id)?>_<?php echo attr($res[1])?>" class="report_search_div class_<?php echo attr($res[1]); ?>">
                 <?php
                 if (substr($res[1],0,3) == 'LBF')
                   call_user_func("lbf_report", $pid, $form_encounter, $N, $form_id, $res[1]);
                 else
                   call_user_func($res[1] . "_report", $pid, $form_encounter, $N, $form_id);
-                
+
                 $esign = $esignApi->createFormESign( $formId, $res[1], $form_encounter );
                 if ( $esign->isLogViewable("report") ) {
                     $esign->renderLog();
                 }
                 ?>
-                
+
                 </div>
                 <?php
 
@@ -1034,7 +1034,7 @@ foreach ($ar as $key => $val) {
                 }
 
                 print "</div>";
-            
+
             } // end auth-check for encounter forms
 
         } // end if('issue_')... else...
