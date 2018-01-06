@@ -495,20 +495,20 @@ else {
     }
     // Display the Messages table header.
     echo "
-    <table class='table well'><tr><td><table class='table'style=\"border-left: 1px #000000 solid; border-right: 1px #000000 solid; border-top: 1px #000000 solid;\">
+    <table class='table well'><tr><td><table class='table table-bordered table-hover'>
     <form name=MessageList action=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&$activity_string_html\" method=post>
     <input type=hidden name=task value=delete>
-        <tr height=\"24\" style=\"background:lightgrey\">
-            <td align=\"center\" width=\"25\" style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><input type=checkbox id=\"checkAll\" onclick=\"selectAll()\"></td>
-            <td width=\"20%\" style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\" class=bold>&nbsp;<b>" .
+        <tr height=\"24\">
+            <td align=\"center\" width=\"25\"><input type=checkbox id=\"checkAll\" onclick=\"selectAll()\"></td>
+            <td width=\"20%\">&nbsp;<b>" .
               htmlspecialchars( xl('From'), ENT_NOQUOTES) . "</b> $sortlink[0]</td>
-            <td width=\"20%\" style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\" class=bold>&nbsp;<b>" .
+            <td width=\"20%\">&nbsp;<b>" .
               htmlspecialchars( xl('Patient'), ENT_NOQUOTES) . "</b> $sortlink[1]</td>
-            <td style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\" class=bold>&nbsp;<b>" .
+            <td>&nbsp;<b>" .
               htmlspecialchars( xl('Type'), ENT_NOQUOTES) . "</b> $sortlink[2]</td>
-            <td width=\"15%\" style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\" class=bold>&nbsp;<b>" .
+            <td width=\"15%\">&nbsp;<b>" .
               htmlspecialchars( xl('Date'), ENT_NOQUOTES) . "</b> $sortlink[3]</td>
-            <td width=\"15%\" style=\"border-bottom: 1px #000000 solid; \" class=bold>&nbsp;<b>" .
+            <td width=\"15%\">&nbsp;<b>" .
               htmlspecialchars( xl('Status'), ENT_NOQUOTES) . "</b> $sortlink[4]</td>
         </tr>";
         // Display the Messages table body.
@@ -552,8 +552,8 @@ else {
     </form></table>
     <table class='table well'>
         <tr>
-            <td class=\"text\"><a href=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&task=addnew&$activity_string_html\" onclick=\"top.restoreSession()\">" .
-              htmlspecialchars( xl('Add New'), ENT_NOQUOTES) . "</a> &nbsp; <a href=\"javascript:confirmDeleteSelected()\" onclick=\"top.restoreSession()\">" .
+            <td class=\"text\"><a role='button' href=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&task=addnew&$activity_string_html\" onclick=\"top.restoreSession()\">" .
+              htmlspecialchars( xl('Add New'), ENT_NOQUOTES) . "</a> &nbsp; <a role='button' class='deleter' href=\"javascript:confirmDeleteSelected()\" onclick=\"top.restoreSession()\">" .
               htmlspecialchars( xl('Delete'), ENT_NOQUOTES) . "</a></td>
             <td align=right class=\"text amount-msg\">$prevlink &nbsp; $end of $total &nbsp; $nextlink</td>
         </tr>
