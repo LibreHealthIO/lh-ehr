@@ -171,7 +171,7 @@
 <html>
   <head>
     <?php
-        call_required_libraries('jquery-min-3-1-1');
+        call_required_libraries(array('jquery-min-3-1-1'));
     ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <script type="text/javascript">
