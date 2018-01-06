@@ -418,7 +418,9 @@ Restart apache service by using `sudo apache2ctl restart` on a terminal for Linu
 For Windows, restart apache service by using the XAMPP control interface, located in system tray (if running) or from `xampp-control.exe` in `C:\xampp`. You can restart apache by navigating to `C:\xampp\apache\bin` using CMD and executing `httpd -k restart`.
 
 
-**Q. How to run patient portal?**
+**Q. I am getting a Internal Server Error when trying to run portal dashboard!**
+
+To run the patient portal these items have to be configured:
 
 [Linux] Enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
 
