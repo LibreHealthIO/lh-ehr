@@ -34,13 +34,14 @@
   
    
   require_once("../globals.php");
-  require_once("../../library/acl.inc");
+  require_once("$srcdir/acl.inc");
   require_once("$srcdir/sql.inc");
   require_once("$srcdir/formdata.inc.php");
   require_once("$srcdir/calendar.inc");
   require_once("$srcdir/options.inc.php");
   require_once("$srcdir/erx_javascript.inc.php");
-  
+  require_once("$srcdir/headers.inc.php");
+
   if (!$_GET["id"] || !acl_check('admin', 'users'))
     exit();
   
@@ -198,11 +199,13 @@
   ?>
 <html>
   <head>
+    <?php
+        call_required_libraries(array('common', 'jquery-min-3-1-1'));
+    ?>
+
     <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
-    <script type="text/javascript" src="../../library/dialog.js"></script>
-    <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
-    <script type="text/javascript" src="../../library/js/common.js"></script>
     <script src="checkpwd_validation.js" type="text/javascript"></script>
+    
     <script language="JavaScript">
       function checkChange()
       {
