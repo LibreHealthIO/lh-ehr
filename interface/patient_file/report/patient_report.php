@@ -31,6 +31,8 @@
   require_once("$srcdir/forms.inc");
   require_once("$srcdir/patient.inc");
   require_once("$srcdir/formatting.inc.php");
+  require_once("$srcdir/headers.inc.php");
+
   $DateFormat = DateFormatRead();
   $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   
@@ -48,14 +50,10 @@
   <head>
     <?php
       html_header_show();
-      
+      call_required_libraries(array('jquery-min-3-1-1', 'datepicker'));
     ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-    <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
-    <script type="text/javascript" src="../../../library/textformat.js"></script>
-    <!-- include jQuery support -->
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
+    
     <script language='JavaScript'>
       function checkAll(check) {
        var f = document.forms['report_form'];
