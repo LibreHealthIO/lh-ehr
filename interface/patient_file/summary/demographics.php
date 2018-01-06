@@ -190,7 +190,7 @@
       html_header_show();
       call_required_libraries(array('fancybox', 'jquery-min-3-1-1', 'common', 'gritter'));
       include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php");
-      ?>
+    ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
     <style type="text/css">
