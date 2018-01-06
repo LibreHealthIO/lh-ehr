@@ -2404,7 +2404,7 @@ INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq
 ('DEM', 'vfc', '2Privacy', 'VFC',55,1,1,20,0, 'eligibility',1,1, '', '', 'Eligibility status for Vaccine for Children supplied vaccine',0, '', 'F', NULL),
 ('DEM', 'deceased_date', '2Privacy', 'Date Deceased',60,4,1,0,20, '',1,1, '', 'D', 'If person is deceased then enter date of death.',0, '', 'F', ''),
 ('DEM', 'deceased_reason', '2Privacy', 'Reason Deceased',65,2,1,30,255, '',1,1, '', '', 'Reason for Death',0, '', 'F', ''),
-('DEM', 'statement_y_n', '2Privacy', 'Print Statement',70,1,1,5,0, 'yesno',1,3, '', '', 'Do Not Print a Patient Statement If NO'),
+('DEM', 'statement_y_n', '2Privacy', 'Print Statement',70,1,1,5,0, 'yesno',1,3, '', '', 'Do Not Print a Patient Statement If NO',0, '', 'F', ''),
 ('DEM', 'industry', '4Employer', 'Industry',5,26,1,0,0, 'Industry',1,1, '', '', 'Industry',0, '', 'F', ''),
 ('DEM', 'occupation', '4Employer', 'Occupation',10,26,1,0,0, 'Occupation',1,1, '', '', 'Occupation',0, '', 'F', ''),
 ('DEM', 'em_name', '4Employer', 'Employer Name',15,2,1,20,63, '',1,1, '', 'C', 'Employer Name',0, '', 'F', ''),
