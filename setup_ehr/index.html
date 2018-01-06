@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="images/ehr-design-doc-assets-master/logos_and_icons/sprite0_icons/sprite0_r2O_12.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreHealth EHR-Setup</title>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="css/libre_ehr.css">
+    <script src="https://use.fontawesome.com/a76076fa8f.js"></script>
+
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-default navbar-fixed-bottom">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand header-nav" href="#" style="margin-top:-10px;">
+                        <img src="images/ehr-design-doc-assets-master/logos_and_icons/logo_source/LibreHealth.png" alt="nkeksi-logo" title="librehealthehr-logo" width="140">
+                    </a>
+                </div>
+        </nav>
+
+        <h1 class="white">Welcome to LibrehealthEHR</h1>
+        <div class="divider">
+            <div class="divider-child"></div>
+        </div>
+        <p class="clearfix"></p>
+        <p class="text-center white">This utility will step you through the installation and configuration of LibrehealthEHR for your practice</p>
+        <p class="clearfix"></p>
+        <div class="container">
+            <div class="card">
+                <img src="images/clinics/msg.png" id="med-imgs" class="med-img img-responsive img-circle">
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-paper-plane-o librehealth-color" aria-hidden="true"></i>&nbsp;&nbsp;Before proceding, be sure that you have properly installed and configured MySQL server available, and PHP configured web server.</li>
+                        <li><i class="fa fa-paper-plane-o librehealth-color" aria-hidden="true"></i>&nbsp;&nbsp;Detailed installation instruction can be found in the <a href="https://github.com/LibreHealthIO/LibreEHR/blob/master/INSTALL.md" class="green" target="_blank">INSTALL manual</a> file.</li>
+                        <li><i class="fa fa-paper-plane-o librehealth-color" aria-hidden="true"></i>&nbsp;&nbsp;If you are upgrading from a previous version, do NOT use this script.Please read the upgrading section found in the <a href="https://github.com/LibreHealthIO/LibreEHR/blob/master/INSTALL.md#upgrading" target="_blank" class="green">INSTALL manual</a> file.</li>
+                    </ul>
+                    <p class="clearfix"></p>
+                    <p>We will now ensure correct file and directory permissions before starting installation.</p>
+
+                <h4 class="green">Ensuring following files are word writable...</h4>
+
+                <ul class="files-list">
+                    <li>'C:\xampp\htdocs\LibreEHR\sites\default\sqlconf.php' file is <span class="green">ready</span></li>
+                    <li>'C:\xampp\htdocs\LibreEHR\interface modules\zend_modules\config\application.config.php' file is <span class="green">ready</span></li>
+                </ul>
+                <p class="clearfix"></p>
+                <h4 class="green">Ensuring following directories have proper write permissions...</h4>
+                <ul class="files-list">
+                    <li>'C:\xampp\htdocs\LibreEHR\sites\default\documents' directory <span class="green">ready</span></li>
+                    <li>'C:\xampp\htdocs\LibreEHR\sites\default\era' directory <span class="green">ready</span></li>
+                    <li>'C:\xampp\htdocs\LibreEHR\sites\default\edi' directory <span class="green">ready</span></li>
+                    <li>'C:\xampp\htdocs\LibreEHR\sites\default\letter_templates' directory <span class="green">ready</span></li>
+                </ul>
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
+                <div class="control-btn">
+                    <a href="step1.html">
+                        <button type="button" id="adminBtn">Continue</button>
+                    </a>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+
+
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+<p class="clearfix"></p>
+    </div>
+
+
+</body>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="css/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/libre_ehr.js"></script>
+</html>

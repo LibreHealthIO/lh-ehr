@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="images/ehr-design-doc-assets-master/logos_and_icons/sprite0_icons/sprite0_r2O_12.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreHealth EHR-Setup</title>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="css/libre_ehr.css">
+    <script src="https://use.fontawesome.com/a76076fa8f.js"></script>
+
+</head>
+<body>
+<div class="container-fluid">
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand header-nav" href="#" style="margin-top:-10px;">
+                <img src="images/ehr-design-doc-assets-master/logos_and_icons/logo_source/LibreHealth.png" alt="nkeksi-logo" title="librehealthehr-logo" width="140">
+            </a>
+        </div>
+    </nav>
+
+    <h1 class="white">Welcome to LibrehealthEHR</h1>
+    <div class="divider">
+        <div class="divider-child"></div>
+    </div>
+    <p class="clearfix"></p>
+    <p class="text-center white">This utility will step you through the installation and configuration of LibrehealthEHR for your practice</p>
+    <p class="clearfix"></p>
+    <div class="container">
+        <div class="card">
+            <img src="images/clinics/msg.png" id="med-imgs" class="med-img img-responsive img-circle">
+            <div class="step-div">
+                <div class="step step-1 completed-step"></div>
+                <div class="step step-2 completed-step"></div>
+                <div class="step step-3 completed-step"></div>
+                <div class="step step-4 active-step"></div>
+                <div class="step step-5"></div>
+                <div class="step step-6"></div>
+                <div class="pull-right step-count"><span class="librehealth-color">4</span>/6</div>
+            </div>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+
+           <h3>Installing and Configuring access controls (PHP-GACL)</h3>
+            <p class="clearfix"></p>
+            <h5 class="librehealth-color">Configuration</h5>
+            <p>driver = <span class="blueblack">mysqli,</span></p>
+            <p>host = <span class="blueblack">localhost,</span></p>
+            <p>user = <span class="blueblack">libreehr,</span></p>
+            <p>database = <span class="blueblack">libreehr,</span></p>
+
+            <p>table prefix = gacl_ Testing database connection...</p>
+            <p><span class="green">Success!</span> connected to <span class="blueblack">mysqli</span> database on<span class="blueblack"> localhost</span></p>
+            <p>Testing database type...</p>
+            <p><span class="green">Success!</span> Compatible database type <span class="blueblack">mysqli</span> detected</p>
+            <p>Making sure database <span class="blueblack">libreehr</span> exists</p>
+            <p><span class="green">Success!</span> Good database  <span class="blueblack">libreehr</span> alredy exists!</p>
+            <p><span class="green">Success!</span> first step of Access Control Information successful!!!</p>
+            <p class="clearfix"></p>
+            <h4 class="librehealth-color">LibreEHR ACL Setup </h4>
+            <p>All done and configuring access controls (php-GACL)! Gave the 'aturing' user (password is 'librehEHR totally awesome'.) administrator access.</p>
+
+
+
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <div class="alert-success text-center" style="padding: 10px;">
+               Done installing and configuring access controls (php-GACL)!<br>
+                Next step will configure PHP.
+            </div>
+
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <div class="control-btn">
+                <a href="step3.html">
+                    <button type="button" class="prev-btn">BACK</button>
+                </a>
+                <span>&nbsp;</span>
+                <a href="step5.html">
+                    <button type="button" id="adminBtn" class="next-btn">NEXT</button>
+                </a>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+</div>
+
+
+</body>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="css/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/libre_ehr.js"></script>
+</html>
