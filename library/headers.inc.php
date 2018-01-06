@@ -21,18 +21,22 @@
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <?php
 
-function include_js_library($path)
-{
+    function include_js_library($path)
+    {
 ?>
+
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$path;?>"></script>
+
 <?php
-}
-function include_css_library($path)
-{
+    }
+
+    function include_css_library($path)
+    {
 ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path'].$path;?>" media="screen" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path'].$path;?>" media="screen" />
+
 <?php
-}
+    }
 ?>
 
 <?php 
@@ -42,41 +46,62 @@ function include_css_library($path)
     Strings equate to the directory name in the /assets/ directory.   
 */
 function call_required_libraries($library_array){
-/* First checking for any library in a directory matching the string "/jquery-min-/".
- * When one is found, use that value in the URL string, then add "index.js"
- */
-    foreach($library_array as $v){ 
-    if (preg_match("/jquery-min-/",$v)) {?>
-    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$v ; ?>/index.js"></script>    
-    <?php 
-    } }
+    /* First checking for any library in a directory matching the string "/jquery-min-/".
+     * When one is found, use that value in the URL string, then add "index.js"
+     * In order to decrease the chance of including and library calling problems, some measures were taken:
+     * - The array in the argument is completely converted to lower-case, meaning that there is not any sensitivity between jQuery & jquery or fancyBox & fancybox
+     * - Some libraries can be called with or without "-". For example: "font-awesome" and "fontawesome" => those 2 are the same thing
+     */
+
+    foreach ($library_array as $v){ 
+        if (preg_match("/jquery-min-/", $v)) {?>
+            <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$v ; ?>/index.js"></script>    
+        <?php 
+        }
+    }   
         
-    if (in_array("bootstrap",$library_array)){   ?>
+    if (in_array("bootstrap", $library_array)) {   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/css/bootstrap.min.css" type="text/css">
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
     <?php
     }
-    if (in_array("fancybox",$library_array)){   ?>
+
+    if (in_array("fancybox", $library_array)) {   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>fancybox/jquery.fancybox-1.2.6.css" media="screen" />
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>fancybox/jquery.fancybox-1.2.6.js"></script>
     <?php
     }
-    if (in_array("knockout",$library_array)){   ?>
+
+    if (in_array("knockout", $library_array)) {   ?>
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>knockout/knockout-3.4.0.js"></script>
     <?php
     }
-    if (in_array("datepicker",$library_array)){   ?>
+
+    if (in_array("datepicker", $library_array)) {   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" media="screen" />
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
     <?php
     }
-    if (in_array('font-awesome', $library_array)) {?>
+
+    if (in_array('font-awesome', $library_array)) {   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['assets'] ?>/fonts/font-awesome-4-6-3/css/font-awesome.min.css" type="text/css">
     <?php
     }
-    if (in_array("jquery-ui",$library_array)){   ?>
+
+    if (in_array("jquery-ui", $library_array)) {   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>jquery-ui-1-12-1/jquery-ui.css" media="screen" />
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-ui-1-12-1/jquery-ui.js"></script>
+    <?php
+    }
+
+    if (in_array("common", $library_array)) {   ?>
+        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/common.js"></script>
+    <?php
+    }
+
+    if (in_array("gritter", $library_array)) {   ?>
+        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.gritter.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot']; ?>/library/css/jquery.gritter.css" />
     <?php
     }
 }
@@ -87,7 +112,7 @@ function call_required_libraries($library_array){
     This function resolves the Console-error "Uncaught TypeError: Cannot read property 'msie' of undefined" . This error comes up when using 
     fancybox-1.2.6 and fancybox-1.3.4 versions with jQuery version 3.1.1. It is because the $.browser method was removed in jQuery 1.9.
 */
-function resolveFancyboxCompatibility(){ ?>
+function resolveFancyboxCompatibility() { ?>
     <script type="text/javascript">
         jQuery.browser = {};
         (function () {
