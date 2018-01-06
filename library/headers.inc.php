@@ -48,10 +48,12 @@
 function call_required_libraries($library_array){
     /* First checking for any library in a directory matching the string "/jquery-min-/".
      * When one is found, use that value in the URL string, then add "index.js"
-     * In order to decrease the chance of including and library calling problems, some measures were taken:
-     * - The array in the argument is completely converted to lower-case, meaning that there is not any sensitivity between jQuery & jquery or fancyBox & fancybox
-     * - Some libraries can be called with or without "-". For example: "font-awesome" and "fontawesome" => those 2 are the same thing
      */
+
+    ?>
+    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
+    <?php
 
     foreach ($library_array as $v){ 
         if (preg_match("/jquery-min-/", $v)) {?>
@@ -128,5 +130,3 @@ function resolveFancyboxCompatibility() { ?>
 } 
 //The following seem to always get called.  I don't believe this is proper.
 ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
