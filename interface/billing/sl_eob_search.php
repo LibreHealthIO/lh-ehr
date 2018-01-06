@@ -51,7 +51,7 @@ if( ( isset($GLOBALS['portal_onsite_enable'])) || ($GLOBALS['portal_onsite_enabl
     /*  Addition of onsite portal patient notify of invoice and reformated invoice - sjpadgett 01/2017 */
     require_once("../../patient_portal/lib/portal_mail.inc");
     require_once("../../patient_portal/lib/appsql.class.php");
-    
+
     function is_auth_portal( $pid = 0){
         if ($pData = sqlQuery("SELECT * FROM `patient_data` WHERE `pid` = ?", array($pid) )) {
             if($pData['allow_patient_portal'] != "YES")
@@ -152,7 +152,7 @@ function upload_file_to_client_pdf($file_to_send) {
   global $STMT_TEMP_FILE_PDF;
   global $srcdir;
   if ($GLOBALS['statement_appearance'] == '1') {
-    require_once("$srcdir/html2pdf/vendor/autoload.php");
+    require_once ($GLOBALS['modules_dir'] . "html2pdf/vendor/autoload.php");
     $pdf2 = new HTML2PDF ($GLOBALS['pdf_layout'],
     $GLOBALS['pdf_size'],
     $GLOBALS['pdf_language'],
