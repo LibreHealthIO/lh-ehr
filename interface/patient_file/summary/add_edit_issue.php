@@ -380,7 +380,10 @@ if (!empty($irow['type'])) {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+<?php
+  html_header_show();
+  call_required_libraries(array('datepicker', 'jquery-min-3-1-1'));
+?>
 <title><?php echo $issue ? xlt('Edit') : xlt('Add New'); ?><?php echo " ".xlt('Issue'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
@@ -400,13 +403,6 @@ div.section {
 }
 
 </style>
-
-<link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
-
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language="JavaScript">
 
