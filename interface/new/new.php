@@ -5,7 +5,10 @@ if ($GLOBALS['full_new_patient_form']) {
   require("new_comprehensive.php");
   exit;
 }
+
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/headers.inc.php");
+
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -33,15 +36,13 @@ $form_regdate   = $_POST['regdate'  ] ? trim($_POST['regdate'  ]) : date('Y-m-d'
 <html>
 
 <head>
-<?php html_header_show(); ?>
+<?php
+  html_header_show();
+  call_required_libraries(array('datepicker', 'jquery-min-3-1-1'));
+  include_once("{$GLOBALS['srcdir']}/options.js.php");
+?>
 <link rel="stylesheet" href="<?php echo xl($css_header,'e');?>" type="text/css">
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
-<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
-
-<script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
 
 <script LANGUAGE="JavaScript">
 
