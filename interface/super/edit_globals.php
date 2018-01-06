@@ -312,7 +312,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 ?>
 </ul> 
 
-<div class="tabContainer well" style="height: 350px; overflow: auto;">
+<div class="tabContainer well" style="height: 75%; overflow: auto;">
 <?php
 $i = 0;
 foreach ($GLOBALS_METADATA as $grpname => $grparr) {
