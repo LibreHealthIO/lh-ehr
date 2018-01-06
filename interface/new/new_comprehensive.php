@@ -66,10 +66,12 @@
   ?>
 <html>
   <head>
-    <?php html_header_show();
-      //  Include Bootstrap, Fancybox, date-time-picker
-      call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox"));
-      ?>
+    <?php
+      html_header_show();
+      //  Include Bootstrap, Fancybox, date-time-picker and common.js
+      call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox", "common"));
+      include_once("{$GLOBALS['srcdir']}/options.js.php");
+    ?>
     <style>
       body, td, input, select, textarea {
       font-family: Arial, Helvetica, sans-serif;
@@ -88,9 +90,9 @@
       padding: 5pt;
       }
     </style>
-    <script type="text/javascript" src="../../library/js/common.js"></script>
-    <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
-    <SCRIPT LANGUAGE="JavaScript"><!--
+
+    <SCRIPT LANGUAGE="JavaScript">
+      <!--
       //Visolve - sync the radio buttons - Start
       if((top.window.parent) && (parent.window)){
               var wname = top.window.parent.left_nav;
@@ -415,8 +417,7 @@
        dlgopen(url, '_blank', 700, 500);
       }
       
-      //-->
-      
+      //--> 
     </script>
   </head>
   <body class="body_top">
