@@ -31,6 +31,7 @@ require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 require_once($GLOBALS['srcdir'].'/csv_like_join.php');
 require_once($GLOBALS['srcdir'].'/htmlspecialchars.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
+require_once("$srcdir/headers.inc.php");
 ?>
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <?php
