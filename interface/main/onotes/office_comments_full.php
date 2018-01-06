@@ -62,22 +62,24 @@ if ($userauthorized) { $backurl="office_comments.php"; }
 else { $backurl="../main_info.php"; }
 ?>
 
-<a href="office_comments.php" onclick='top.restoreSession()'>
-
 <span class="title"><?php echo xlt('Office Notes'); ?></span>
-<span class="back"><?php echo text($tback); ?></span></a>
+<a href="office_comments.php" onclick='top.restoreSession()'>
+  <button type="button"><?php echo xlt('Back'); ?></button>
+</a>
 
-<br>
+</br></br>
 <input type="hidden" name="mode" value="new">
 <input type="hidden" name="offset" value="<?php echo attr($offset); ?>">
 <input type="hidden" name="active" value="<?php echo attr($active); ?>">
 
 <textarea name="note" rows="6" cols="40" wrap="virtual"></textarea>
 <br>
-<a href="javascript:top.restoreSession();document.new_note.submit();" class="link_submit">[<?php echo xlt('Add New Note'); ?>]</a>
+<a href="javascript:top.restoreSession();document.new_note.submit();" class="link_submit">
+  <button type="button"><?php echo xlt('Add new'); ?></button>
+</a>
 </form>
 
-<br/>
+<br/></br></br>
 
 <form method="post" name="update_activity" action="office_comments_full.php" onsubmit='return top.restoreSession()'>
 
@@ -88,16 +90,23 @@ elseif ($active==1) { $active_class="link_selected"; }
 elseif ($active==0) { $inactive_class="link_selected"; }
 ?>
 
-<span class="text"><?php echo xlt('View:'); ?> </span> 
-<a href="office_comments_full.php?offset=0&active=all" class="<?php echo attr($all_class);?>" onclick='top.restoreSession()'>[<?php echo xlt('All'); ?>]</a>
-<a href="office_comments_full.php?offset=0&active=1" class="<?php echo attr($active_class);?>" onclick='top.restoreSession()'>[<?php echo xlt('Only Active'); ?>]</a>
-<a href="office_comments_full.php?offset=0&active=0" class="<?php echo attr($inactive_class);?>" onclick='top.restoreSession()'>[<?php echo xlt('Only Inactive'); ?>]</a>
+<span class="text"><?php echo xlt('View filters:'); ?> </span></br>
+<a href="office_comments_full.php?offset=0&active=all" class="<?php echo attr($all_class);?>" onclick='top.restoreSession()'>
+  <button type="button" class="css_button_small"><?php echo xlt('All'); ?></button>
+</a>
+<a href="office_comments_full.php?offset=0&active=1" class="<?php echo attr($active_class);?>" onclick='top.restoreSession()'>
+  <button type="button" class="css_button_small"><?php echo xlt('Only Active'); ?></button>
+</a>
+<a href="office_comments_full.php?offset=0&active=0" class="<?php echo attr($inactive_class);?>" onclick='top.restoreSession()'>
+  <button type="button" class="css_button_small"><?php echo xlt('Only Inactive'); ?></button>
+</a>
+</br>
 
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="offset" value="<?php echo attr($offset);?>">
 <input type="hidden" name="active" value="<?php echo attr($active);?>">
 <br/>
-<a href="javascript:top.restoreSession();document.update_activity.submit();" class="link_submit">[<?php echo xlt('Change Activity'); ?>]</a>
+
 
 <table border="0" class="existingnotes">
 <?php
@@ -108,23 +117,23 @@ if ($result = getOnoteByDate("", $active, "id,date,body,user,activity",$N,$offse
 $result_count = 0;
 foreach ($result as $iter) {
     $result_count++;
-    
+
     if (getdate() == strtotime($iter{"date"})) {
         $date_string = "Today, " . date( "D F dS" ,strtotime($iter{"date"}));
     } else {
         $date_string = date( "D F dS" ,strtotime($iter{"date"}));
     }
-    
+
     if ($iter{"activity"}) { $checked = "checked"; }
     else { $checked = ""; }
 
     print "<tr><td><input type=hidden value='' name='act".attr($iter{"id"})."' id='act".attr($iter{"id"})."'>";
     print "<input name='box".attr($iter{"id"})."' id='box".attr($iter{"id"})."' onClick='javascript:document.update_activity.act".attr($iter{"id"}).".value=this.checked' type=checkbox $checked></td>";
-    print "<td><label for='box".attr($iter{"id"})."' class='bold'>".text($date_string) . "</label>";
+    print "<td style='min-width:150px;><label for='box".attr($iter{"id"})."' class='bold'>".text($date_string) . "</label>";
     print " <label for='box".attr($iter{"id"})."' class='bold'>(". text($iter{"user"}).")</label></td>";
-    print "<td><label for='box".attr($iter{"id"})."' class='text'>" . text($iter{"body"}) . "&nbsp;</label></td></tr>\n";
-    
-    
+    print "<td><label for='box".attr($iter{"id"})."' class='text'><div style='max-width:30%; min-width:10%;'>" . text($iter{"body"}) . "&nbsp;</div></label></td></tr>\n";
+
+
     $notes_count++;
 }
 }else{
@@ -134,22 +143,26 @@ print "<tr><td></td><td></td><td></td></tr>\n";
 
 ?>
 </table>
-
-<a href="javascript:top.restoreSession();document.update_activity.submit();" class="link_submit">[<?php echo xlt('Change Activity'); ?>]</a>
+</br>
+<a href="javascript:top.restoreSession();document.update_activity.submit();" class="link_submit">
+  <button type="button" class="css_button"><?php echo xlt('Change Activity'); ?></button>
+</a></br>
 </form>
 
 <hr>
 <table width="400" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
+<tr><td style="float:right;">
 <?php
 if ($offset>($N-1)) {
-echo "<a class='link' href=office_comments_full.php?active=".attr($active)."&offset=".attr($offset-$N)." onclick='top.restoreSession()'>[".xlt('Previous')."]</a>";
+echo "<a class='link' href=office_comments_full.php?active=".attr($active)."&offset=".attr($offset-$N)." onclick='top.restoreSession()'>
+<button type='button' class='css_button'>".xlt('Previous')."</button></a>";
 }
 ?>
-</td><td align=right>
+</td><td style="float:right;">
 <?php
 if ($result_count == $N) {
-echo "<a class='link' href=office_comments_full.php?active=".attr($active)."&offset=".attr($offset+$N)." onclick='top.restoreSession()'>[".xlt('Next')."]</a>";
+echo "<a class='link' href=office_comments_full.php?active=".attr($active)."&offset=".attr($offset+$N)." onclick='top.restoreSession()'>
+<button type='button' class='css_button'>".xlt('Next')."</button></a>";
 }
 ?>
 </td></tr>

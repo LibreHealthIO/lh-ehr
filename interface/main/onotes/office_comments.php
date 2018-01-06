@@ -27,18 +27,17 @@ $N = 10;
 
 <html>
 <head>
-
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-
+  <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 </head>
 <body class="body_top">
 
-<div id="officenotes_list">
-<a href="office_comments_full.php" onclick='top.restoreSession()'>
-<font class="title"><?php echo xlt('Office Notes'); ?></font>
-<font class="more"><?php echo text($tmore);?></font></a>
+  <div id="officenotes_list">
 
-<br>
+    <span class="title"><?php echo xlt('Office Notes'); ?></span>
+    <a href="office_comments_full.php" onclick='top.restoreSession()'>
+      <button type="button"><?php echo xlt('More'); ?></button>
+    </a>
+  </br></br>
 
 <table border=0 width=100%>
 
@@ -51,20 +50,20 @@ $notes_count = 0;//number of notes so far displayed
 foreach ($result as $iter) {
     if ($notes_count >= $N) {
         //we have more active notes to print, but we've reached our display maximum (defined at top of this file)
-        print "<tr><td colspan=3 align=center><a target=Main href='office_comments_full.php?active=1' class='alert' onclick='top.restoreSession()'>".xlt("Some office notes were not displayed. Click here to view all.")."</a></td></tr>\n";
+        print "<tr><td colspan=3 align=left></br><a target=Main href='office_comments_full.php?active=1' class='alert' onclick='top.restoreSession()'>".xlt("Some office notes were not displayed. Click here to view all.")."</a></td></tr>\n";
         break;
     }
-    
-    
+
+
     if (getdate() == strtotime($iter{"date"})) {
         $date_string = "Today, " . date( "D F dS" ,strtotime($iter{"date"}));
     } else {
         $date_string = date( "D F dS" ,strtotime($iter{"date"}));
     }
-    
-    print "<tr><td width=20% valign=top><font class='bold'>".text($date_string)."</font> <font class='bold'>(".text($iter{"user"}).")</font><br>" . "<font class='text'>" . text($iter{"body"}) . "</font></td></tr>\n";
-    
-    
+
+    print "<tr><td width=30% valign=top><font class='bold'>".text($date_string)."</font> <font class='bold'>(".text($iter{"user"}).")</font></br>" . "<div  class='text' style='max-width:30%; word-wrap: break-word;'>" . text($iter{"body"}) . "</div></br></td></tr>\n";
+
+
     $notes_count++;
 }
 
