@@ -2,12 +2,17 @@
   include_once("../globals.php");
   include_once("$srcdir/sql.inc");
   include_once("$srcdir/auth.inc");
-  ?>
+  include_once("$srcdir/headers.inc.php");
+?>
 <html>
   <head>
+    <?php
+        // include jquery
+        call_required_libraries(array('jquery-min-3-1-1'));
+    ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <script src="checkpwd_validation.js" type="text/javascript"></script>
-    <script src="<?php echo $webroot;?>/library/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+
     <script language='JavaScript'>
       //Validating password and display message if password field is empty - starts
       var webroot='<?php echo $webroot?>';
