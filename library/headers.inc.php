@@ -50,11 +50,6 @@ function call_required_libraries($library_array){
      * When one is found, use that value in the URL string, then add "index.js"
      */
 
-    ?>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-    <?php
-
     foreach ($library_array as $v){ 
         if (preg_match("/jquery-min-/", $v)) {?>
             <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$v ; ?>/index.js"></script>    
@@ -127,6 +122,9 @@ function resolveFancyboxCompatibility() { ?>
         })();
     </script>    
 <?php 
-} 
-//The following seem to always get called.  I don't believe this is proper.
+}
+// always include this when headers is included
+// (don't know if it's a good practice because this is included even before <html>)
 ?>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
