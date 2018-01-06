@@ -92,8 +92,11 @@
       padding: 5pt;
       }
     </style>
+
+
     <SCRIPT LANGUAGE="JavaScript">
       <!--
+
       //Visolve - sync the radio buttons - Start
       if((top.window.parent) && (parent.window)){
               var wname = top.window.parent.left_nav;
@@ -418,8 +421,6 @@
        dlgopen(url, '_blank', 700, 500);
       }
       
-      //-->
-
     </script>
   </head>
   <body class="body_top">
@@ -570,6 +571,7 @@
                 echo " /><b>" . xl('Insurance') . "</b></span>\n";
 
                 echo "<div id='div_ins' class='section' style='display:$display_style; width:$div_width;'>\n";
+
               
                 for($i=1;$i<=3;$i++) {
                  $result3 = $insurance_info[$i];
@@ -694,7 +696,6 @@
                           <option value="TRUE" <?php if (strtoupper($result3{"accept_assignment"}) == "TRUE") echo "selected"?>><?php xl('YES','e'); ?></option>
                           <option value="FALSE" <?php if (strtoupper($result3{"accept_assignment"}) == "FALSE") echo "selected"?>><?php xl('NO','e'); ?></option>
                         </select>
-
                       </td>
                     </tr>
                   </table>
