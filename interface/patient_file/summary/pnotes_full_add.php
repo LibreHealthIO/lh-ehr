@@ -149,7 +149,7 @@
   <head>
     <?php
       html_header_show();
-      call_required_libraries('jquery-min-3-1-1', 'fancybox', 'common');
+      call_required_libraries(array('jquery-min-3-1-1', 'fancybox', 'common'));
     ?>
     <link rel='stylesheet' href="<?php echo $css_header;?>" type="text/css">
     <script type="text/javascript">
