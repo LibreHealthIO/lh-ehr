@@ -23,9 +23,9 @@
   $fake_register_globals=false;
   $sanitize_all_escapes=true;     
     
-    require_once("../../globals.php"); 
-    require_once("$srcdir/htmlspecialchars.inc.php");  
-    require_once("$srcdir/dated_reminder_functions.php"); 
+  require_once("../../globals.php"); 
+  require_once("$srcdir/htmlspecialchars.inc.php");  
+  require_once("$srcdir/dated_reminder_functions.php"); 
   require_once("$srcdir/formatting.inc.php");
   $DateFormat = DateFormatRead();
   $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
