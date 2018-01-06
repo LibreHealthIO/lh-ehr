@@ -31,6 +31,7 @@
   include_once("../../globals.php");
   include_once("$srcdir/sql.inc");
   include_once("$srcdir/options.inc.php");
+  include_once("$srcdir/headers.inc.php");
   
   $amendments = $_REQUEST["ids"];
   $amendments = rtrim($amendments,",");
