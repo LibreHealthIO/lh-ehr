@@ -236,9 +236,25 @@ Deny from all
 </Directory>
 ```
 
-For proper access to all pages of the website, enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
 
-If you are using Wamp, to run patient portal is needed change the following code:
+**Note:** If you are running the patient portal these items have to be configured:</br>
+
+[Linux] Enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
+
+[Windows] Open apache configuration file and uncomment this line by removing the '#':
+```
+#LoadModule rewrite_module modules/mod_rewrite.so
+```
+Search for:
+```
+AllowOverride None
+```
+and change it to:
+```
+AllowOverride All
+```
+
+If you are using Wamp, change the following code in your apache configuration file:
 ```
 <Directory "librehealthehrwebroot">
 AllowOverride FileInfo
@@ -400,6 +416,40 @@ In Linux, this file is located in `/etc/mysql/mysql.conf.d/mysqld.cnf`. In Windo
 
 Restart apache service by using `sudo apache2ctl restart` on a terminal for Linux.
 For Windows, restart apache service by using the XAMPP control interface, located in system tray (if running) or from `xampp-control.exe` in `C:\xampp`. You can restart apache by navigating to `C:\xampp\apache\bin` using CMD and executing `httpd -k restart`.
+
+
+**Q. How to run patient portal?**
+
+[Linux] Enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
+
+
+[Windows] Open apache configuration file and uncomment this line by removing the '#':
+```
+#LoadModule rewrite_module modules/mod_rewrite.so
+```
+Search for:
+```
+AllowOverride None
+```
+and change it to:
+```
+AllowOverride All
+```
+
+
+If you are using Wamp, change the following code in your apache configuration file:
+```
+<Directory "librehealthehrwebroot">
+AllowOverride FileInfo
+</Directory>
+```
+to:
+```
+<Directory "librehealthehrwebroot">
+AllowOverride All
+</Directory>
+```
+
 
 **Q. I need help! How do I reach you?**
 
