@@ -238,6 +238,19 @@ Deny from all
 
 For proper access to all pages of the website, enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
 
+If you are using Wamp, to run patient portal is needed change the following code:
+```
+<Directory "librehealthehrwebroot">
+AllowOverride FileInfo
+</Directory>
+```
+to:
+```
+<Directory "librehealthehrwebroot">
+AllowOverride All
+</Directory>
+```
+
 The final screen includes some additional instructions and important information. We suggest you print these instructions for future reference.
 
 Once the system has been configured properly, you may login.  Connect to the webserver where the files are stored with your web browser.  Login to the system using the username that you picked (default is `admin`), and the password.  From there, select the `Administration` option, and customize the system to your needs.  Add users and groups as is needed. For information on using LibreHealthEHR, consult the User Documentation located in the `Documentation` folder, the documentation at [LibreHealth](http://librehealth.io/).
