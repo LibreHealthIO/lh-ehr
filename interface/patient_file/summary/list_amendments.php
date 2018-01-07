@@ -38,7 +38,6 @@
     <?php
     	html_header_show();
     	call_required_libraries(array('jquery-min-3-1-1'));
-    	include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php");
     ?>
     
     <!-- page styles -->
@@ -56,7 +55,8 @@
     <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
-    
+    <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
+
     <script type="text/javascript">
       function checkForAmendments() {
       	var amendments = "";

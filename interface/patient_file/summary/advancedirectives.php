@@ -9,8 +9,8 @@
   <head>
     <?php
       html_header_show();
-      call_required_libraries(array('jquery-min-3-1-1');
-      include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php");
+      call_required_libraries(array('jquery-min-3-1-1'));
+      
     ?>
     <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
@@ -18,7 +18,7 @@
     <style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
     <script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
     <script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
-
+    <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
     <SCRIPT LANGUAGE="JavaScript">
       var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
       function validate(f) {
