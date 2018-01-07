@@ -228,9 +228,6 @@ function getLanguageTitle($val) {
  return $languageTitle;    
 }
 
-
-
-
 /**
  * Returns language directionality as string 'rtl' or 'ltr'
  * @param int $lang_id language code
@@ -245,26 +242,6 @@ function getLanguageDir($lang_id) {
 
     return !empty($row['lang_is_rtl']) ? 'rtl' : 'ltr';
 }
-
-//----------------------------------
-
-// ----------------------------------------------------------------------------
-/**
-HEADER HTML
-
-shows some informations for pages html header 
-
-@param none
-@return void
-*/
-function html_header_show() {
-    
-    // Below line was commented by the UTF-8 project on 05-2009 by BM.
-    //  We commented this out since we are now standardizing encoding
-    //  in the globals.php file.
-    // echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> '."\n";
-}
-
 
 // ----------------------------------------------------------------------------
 /**

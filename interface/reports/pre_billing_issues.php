@@ -34,7 +34,6 @@
 ?>
 <html>
     <head>
-        <?php if (function_exists('html_header_show')) html_header_show(); ?>
         <link rel=stylesheet href="<?php echo $css_header; ?>" type="text/css">
         <title><?php echo xlt('Pre-billing Issues Report') ?></title>
         <style type="text/css">

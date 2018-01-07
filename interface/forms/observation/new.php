@@ -60,7 +60,7 @@ $check_res = $formid ? $check_res : array();
 ?>
 <html>
     <head>
-        <?php html_header_show(); ?>
+        
         <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>

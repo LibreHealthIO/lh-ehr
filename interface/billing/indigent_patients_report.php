@@ -49,7 +49,7 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <style type="text/css">
 
 /* specifically include & exclude from printing */

@@ -308,7 +308,7 @@ function sel_patient() {
 </script>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<?php html_header_show();?>
+
 <style type="text/css">
 
 /* specifically include & exclude from printing */

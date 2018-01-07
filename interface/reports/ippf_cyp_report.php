@@ -146,7 +146,7 @@ else { // not export
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php xl('CYP Report','e') ?></title>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>

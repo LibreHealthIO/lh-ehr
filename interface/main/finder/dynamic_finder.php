@@ -52,7 +52,7 @@ while ($row = sqlFetchArray($res)) {
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
     <title><?php echo "Patient Finder"; ?></title>
 
 <style type="text/css">

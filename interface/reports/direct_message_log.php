@@ -34,10 +34,10 @@ require_once("../globals.php");
 <html>
 
 <head>
-<?php html_header_show();
-$logstart = (isset($_POST['logstart'])) ? $_POST['logstart'] : 0;
-if (isset($_POST['lognext']) && $_POST['lognext']) $logtop = $logstart + $_POST['lognext'];
-else $logtop = 0;
+<?php
+  $logstart = (isset($_POST['logstart'])) ? $_POST['logstart'] : 0;
+  if (isset($_POST['lognext']) && $_POST['lognext']) $logtop = $logstart + $_POST['lognext'];
+  else $logtop = 0;
 ?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">

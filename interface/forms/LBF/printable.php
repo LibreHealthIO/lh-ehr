@@ -32,7 +32,7 @@ $fres = sqlStatement("SELECT * FROM layout_options " .
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 
 <style>
 body, td {

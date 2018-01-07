@@ -147,7 +147,7 @@ $result = getPnotesByDate("", $active, 'id,date,body,user,activity,title,assigne
 
 <html>
 <head>
-<?php html_header_show();?>
+
 
 <link rel='stylesheet' href="<?php echo $css_header;?>" type="text/css">
 

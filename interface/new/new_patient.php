@@ -4,7 +4,7 @@ $_SESSION["encounter"] = "";
 ?>
 <HTML>
 <head>
-<?php html_header_show();?>
+
 <TITLE>
 <?php echo $libreehr_name; ?>
 </TITLE>

@@ -176,7 +176,7 @@
 
     <head>
 
-        <?php html_header_show();?>
+        
 
         <title><?php echo htmlspecialchars( xl('Eligibility 270 Inquiry Batch'), ENT_NOQUOTES); ?></title>
 

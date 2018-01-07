@@ -34,7 +34,7 @@ $featureData['amendment']['listLink'] = "list_amendments.php";
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php echo text($featureData[$feature]['title']); ?></title>
 </head>
 

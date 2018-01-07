@@ -40,7 +40,7 @@ if (empty($report_id) && !empty($GLOBALS['pat_rem_clin_nice'])) {
 
 <html>
 <head>
-<?php html_header_show();?>
+
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="batchcom.css" type="text/css">
 </head>

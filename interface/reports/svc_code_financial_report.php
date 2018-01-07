@@ -80,7 +80,7 @@ if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<?php html_header_show();?>
+
 <style type="text/css">
 /* specifically include & exclude from printing */
 @media print {

@@ -29,7 +29,7 @@
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title>Coding</title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>

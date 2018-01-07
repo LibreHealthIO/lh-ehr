@@ -4,7 +4,7 @@ include_once("../globals.php");
 
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php xl('Navigation','e'); ?></title>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">

@@ -254,7 +254,7 @@ function process_result_code($row) {
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php echo $report_title; ?></title>
 <style type="text/css">
  body       { font-family:sans-serif; font-size:10pt; font-weight:normal }

@@ -61,7 +61,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php xl('Prescriptions and Dispensations','e'); ?></title>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>

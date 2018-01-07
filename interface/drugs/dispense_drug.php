@@ -199,7 +199,7 @@
 <html>
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <head>
-<?php html_header_show();?>
+
 <style type="text/css">
  body {
   font-family: sans-serif;

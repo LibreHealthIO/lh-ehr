@@ -52,7 +52,7 @@ $obj = $formid ? formFetch("form_aftercare_plan", $formid) : array();
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <script type="text/javascript" src="../../../library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>

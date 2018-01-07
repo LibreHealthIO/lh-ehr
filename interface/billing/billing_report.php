@@ -126,7 +126,6 @@ $oauthorized = $my_authorized;
 
 <html>
 <head>
-<?php if (function_exists('html_header_show')) html_header_show(); ?>
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
 <style>
 .subbtn { margin-top:3px; margin-bottom:3px; margin-left:2px; margin-right:2px }

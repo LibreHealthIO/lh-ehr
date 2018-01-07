@@ -67,7 +67,7 @@ else if ((strtotime($current_date) >= strtotime($pwd_alert)) && strtotime($pwd_a
 <html>
 <head>
 <meta http-equiv="Content-Language" content="en-us">
-<?php html_header_show();?>
+
 <link rel='stylesheet' href="<?php echo $css_header;?>" type="text/css">
 </head>
 <body class="body_bottom">

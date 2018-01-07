@@ -14,7 +14,7 @@ require_once("$srcdir/formatting.inc.php");
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php xl('Charts Checked Out','e'); ?></title>
 
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>

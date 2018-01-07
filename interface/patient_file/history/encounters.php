@@ -170,8 +170,7 @@ function generatePageElement($start,$pagesize,$billing,$issue,$text)
 ?>
 <html>
 <head>
-<?php 
-    html_header_show();
+<?php
     // Include Bootstrap
   call_required_libraries(array("jquery-min-3-1-1","bootstrap"));
 ?>

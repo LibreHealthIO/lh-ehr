@@ -7,7 +7,7 @@ formHeader("Form: bronchitis");
 $returnurl = 'encounter_top.php';
 ?>
 <html><head>
-<?php html_header_show();?>
+
 <SCRIPT LANGUAGE="JavaScript">
 <!-- 
 

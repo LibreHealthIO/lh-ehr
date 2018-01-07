@@ -115,8 +115,6 @@ function checkBackgroundServices(){
 <head>
 <?php
 
-html_header_show();
-
 // If we are saving user_specific globals.
 //
 if ($_POST['form_save'] && $_GET['mode'] == "user") {

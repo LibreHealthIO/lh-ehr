@@ -152,7 +152,7 @@ if ($_POST['form_submit'] && !empty($_POST['form_line'])) {
 <html>
 
 <head>
-<?php html_header_show();?>
+
 
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
 <title><?php  xl('Procedure Results','e'); ?></title>

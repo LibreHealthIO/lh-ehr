@@ -378,7 +378,7 @@ else {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php echo htmlspecialchars(xl('Inventory Activity')) ?></title>
 
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>

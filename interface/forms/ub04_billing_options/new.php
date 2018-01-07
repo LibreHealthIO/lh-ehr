@@ -91,7 +91,7 @@ if (!$obj['other_2_id']){
 
 <html>
 <head>
-<?php html_header_show();?>
+
 <!-- page styles -->
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">

@@ -4,8 +4,7 @@
 <html>
   <head>
     <!-- {math equation="number * constant" number=$this->vitals->get_weight() constant=0.45359237 format="%.2f"}{/if}" -->
-    <?php 
-      html_header_show();       
+    <?php   
       // Include Bootstrap and datetimepicker
   call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
     ?>    

@@ -398,8 +398,6 @@ function process_form($ar) {
 ?>
 <html>
 <head>
-<?php if (function_exists(html_header_show)) html_header_show(); ?>
-
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script>

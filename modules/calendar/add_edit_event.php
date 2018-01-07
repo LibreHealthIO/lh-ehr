@@ -846,7 +846,7 @@ if ($_POST['form_action'] == "save") {
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php echo $eid ? xlt('Edit') : xlt('Add New') ?> <?php echo xlt('Event');?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">

@@ -52,7 +52,7 @@ else {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php echo xlt('Patient List By Referrer'); ?></title>
 <!--<script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>

@@ -200,8 +200,6 @@ $form_proc_code = $tmp_code_array[1];
 ?>
 <html>
 <head>
-
-<?php if (function_exists('html_header_show')) html_header_show(); ?>
 <style type="text/css">
 /* specifically include & exclude from printing */
 @media print {
