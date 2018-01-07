@@ -1403,7 +1403,7 @@ if (true) {
     "pid = ? LIMIT 1", array($pid) );
   $pricelevel = $trow['pricelevel'];
   echo "   <span class='billcell'><b>" . xlt('Price Level') . ":</b></span>\n";
-  echo "   <select name='pricelevel'";
+  echo "   <select class='form-control' style='width: auto; display: inline-block;' name='pricelevel'";
   if ($isBilled) echo " disabled";
   echo ">\n";
   while ($plrow = sqlFetchArray($plres)) {
@@ -1434,7 +1434,8 @@ if (true) {
 <input type='hidden' name='form_checksum' value='<?php echo $current_checksum; ?>' />
 <input type='hidden' name='form_alertmsg' value='<?php echo attr($alertmsg); ?>' />
 
-<input type='button' value='<?php echo xla('Cancel');?>'
+<!-- Class='deleter' makes button -->
+<input type='button' class='deleter' value='<?php echo xla('Cancel');?>'
  onclick="top.restoreSession();location='<?php echo "$rootdir/patient_file/encounter/$returnurl" ?>'" />
 
 

@@ -186,21 +186,28 @@
   ?>
 <html>
   <head>
-    <?php 
-      html_header_show();
-      call_required_libraries(array('fancybox', 'jquery-min-3-1-1', 'common', 'gritter'));
-      include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php");
-    ?>
+
+    <?php html_header_show(); ?>
+
+    <!-- Dynamically required libraries -->
+    <?php call_required_libraries(array('jquery-min-1-6-4', 'fancybox', 'common', 'gritter')); ?>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
     <style type="text/css">
       .inactive_font_style{
-      font-family:sans-serif;
-      font-size:10pt;
+        font-family:sans-serif;
+        font-size:10pt;
       }
     </style>
+
+    <!-- Scripts -->
+
     <script type="text/javascript" src="../../../library/dynarch_calendar.js"></script>
+    <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
     <script type="text/javascript" src="../../../library/dynarch_calendar_setup.js"></script>
+
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/interface/main/messages/hoverover.js.php"></script>
     <script type="text/javascript" language="JavaScript">
       var mypcc = '<?php echo htmlspecialchars($GLOBALS['phone_country_code'],ENT_QUOTES); ?>';
@@ -239,8 +246,7 @@
       dlgopen('../upload_dialog.php?patientid=' + pid + '&file=' + what,
        '_blank', 500, 400);
       return false;
-      }
-      
+      }  
     </script>
     <script type="text/javascript">
       function toggleIndicator(target,div) {
@@ -473,14 +479,14 @@
       $(window).load(function() {
        setMyPatient();
       });
-      
     </script>
     <style type="css/text">
       #pnotes_ps_expand {
-      height:auto;
-      width:100%;
+        height:auto;
+        width:100%;
       }
     </style>
+
   </head>
   <body class="body_top">
     <a href='../reminder/active_reminder_popup.php' id='reminder_popup_link' style='visibility: hidden;' class='iframe' onclick='top.restoreSession()'></a>
