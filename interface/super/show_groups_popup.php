@@ -4,14 +4,14 @@
    */
   
   include_once("../globals.php");
-  
+  include_once("$srcdir/headers.inc.php");
   ?>
 <html>
   <head>
     <?php
       html_header_show();
       call_required_libraries(array('jquery-min-3-1-1'));
-      ?>
+    ?>
     <title><?php xl('List groups','e'); ?></title>
     <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
     <style>
