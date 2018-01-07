@@ -1,6 +1,6 @@
 <?php
 //our api for 3rd party developers
-include_once("/../interface/globals.php");
+include_once("../../interface/globals.php");
 include_once("{$GLOBALS['srcdir']}/sql.inc");
 include_once("{$GLOBALS['srcdir']}/billing.inc");
 include_once("{$GLOBALS['srcdir']}/formdata.inc.php");
