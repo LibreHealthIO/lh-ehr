@@ -12,7 +12,7 @@
     <?php
       html_header_show();
       call_required_libraries(array('jquery-min-3-1-1'));
-      ?>
+    ?>
     <title><?php xl('List lists','e'); ?></title>
     <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
     <style>
