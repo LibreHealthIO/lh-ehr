@@ -103,10 +103,10 @@
       <a class="css_button" href="<?php echo $this->web_path;?>" onclick="top.restoreSession()"><span><?php echo xlt("Download");?></span></a>
       <a class="css_button" href='' onclick='return showpnotes(<?php $this->file->get_id();?>)'><span><?php echo xlt("Show Notes");?></span></a>
       <?php echo $this->delete_string;?>
-      <?php if(($this->file->get_ccr_type($file->get_id()=="CCR") &&
+      <?php if(($this->file->get_ccr_type($this->file->get_id()=="CCR") &&
         ($this->file->get_mimetype($this->file->get_id()) == "application/xml" )) || 
-        ($this->file->get_mimetype($file->get_id()) ==  "text/xml" && 
-                $this->file->get_imported($file->get_id()) == 0)  ) { ?>
+        ($this->file->get_mimetype($this->file->get_id()) ==  "text/xml" && 
+                $this->file->get_imported($this->file->get_id()) == 0)  ) { ?>
       <a class="css_button" href='javascript:' onclick='return import_ccr(<?php echo $this->file->get_id();?>)'><span>Import<?php echo xlt("Import");?></span></a>
       <?php }?>
     </td>
@@ -275,7 +275,7 @@
       <?php if($this->file->get_mimetype() =="image/tiff" ) { ?>
       <embed frameborder="0" type="<?php echo $this->file->get_mimetype();?>" src="<?php echo $this->web_path;?>as_file=false"></embed>
       <?php } else if($this->file->get_mimetype()=="image/png" || $this->file->get_mimetype() == "image/jpg"
-        ||  $file->get_mimetype() == "image/gif" || $file->get_mimetype() == "application/pdf"  ) { ?>
+        ||  $this->file->get_mimetype() == "image/gif" || $this->file->get_mimetype() == "application/pdf"  ) { ?>
       <iframe frameborder="0" type="<?php echo $this->file->get_mimetype();?>" src="<?php echo $this->web_path;?>as_file=false"></iframe>
       <?php } else if($this->file->get_ccr_type($this->file->get_id()) != "CCR" &&
         $this->file->get_ccr_type($this->file->get_id()) != "CCD") {?>
