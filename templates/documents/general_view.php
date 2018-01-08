@@ -1,4 +1,5 @@
 <head>
+  <link rel="stylesheet" href="<?php echo $GLOBALS['css_header'];?>" type="text/css">
   <style type="text/css">@import url(library/dynarch_calendar.css);</style>
   <script type="text/javascript" src="library/dialog.js"></script>
   <script type="text/javascript" src="library/textformat.js"></script>
