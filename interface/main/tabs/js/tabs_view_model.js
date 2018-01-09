@@ -80,7 +80,13 @@ function tabRefresh(data,evt)
 
 function tabClose(data,evt)
 {
-        app_view_model.application_data.tabs.tabsList.remove(data);
+
+    app_view_model.application_data.tabs.tabsList.remove(data);
+
+    // after closing a tab, if there is only 1 tab remaining, and if that tab is locked, this unlocks it
+    if (app_view_model.application_data.tabs.tabsList().length == 1) {
+        app_view_model.application_data.tabs.tabsList()[0].visible(true);
+    }
 }
 
 function tabCloseByName(name)

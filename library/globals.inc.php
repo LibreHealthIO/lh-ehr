@@ -554,9 +554,9 @@ $GLOBALS_METADATA = array(
     ),
 
     'disable_sql_admin_link' => array(
-     xl('Disable SQL Admin Tool Link'),
+     xl('Disable SQL Admin'),
       'bool',                           // data type
-      '0',                              // default = false
+      '1',                              // default = true
      xl('Removes menu selection for configured SQL Admin Tool')
     ),
 
@@ -1121,6 +1121,13 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '0',                             // default = false
       xl('This will Show Aging on the custom Statement.')
+    ),
+
+    'show_insurance_name_on_custom_statement' => array(
+      xl('Show Insurance Company Name on Custom Statement'),
+       'bool',                          // data type
+       '0',                             // default = false
+      xl('This will Show Insurance Company Name on the custom Statement Instead of Insurance information on file.')
     ),
 
     'use_statement_print_exclusion' => array(
@@ -2135,7 +2142,7 @@ $GLOBALS_METADATA = array(
     'portal_onsite_address' => array(
       xl('Onsite Patient Portal Site Address'),
        'text',                          // data type
-       'https://your_web_site.com/libreehr/patients',
+       'https://your_web_site.com/libreehr/patient_portal',
       xl('Website link for the Onsite Patient Portal.')
     ),
 
