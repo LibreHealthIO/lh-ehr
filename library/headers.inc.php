@@ -70,6 +70,10 @@ function call_required_libraries($library_array){
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
     <?php
     }
+    if (in_array('font-awesome', $library_array)) {?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['assets'] ?>/fonts/font-awesome-4-6-3/css/font-awesome.min.css" type="text/css">
+    <?php
+    }
     if (in_array("jquery-ui",$library_array)){   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>jquery-ui-1-12-1/jquery-ui.css" media="screen" />
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-ui-1-12-1/jquery-ui.js"></script>

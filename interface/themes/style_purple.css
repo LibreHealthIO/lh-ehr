@@ -168,6 +168,10 @@ a:hover {
     color:#ff5555;
 }
 
+.tab-button {
+    margin-left: 2px;
+}
+
 /*=============================================================
  * Here we have taken variables from globals.php and turned them into CSS classes 
  * these should be used in place of the GLOBAL variables -- JRM March 2008
@@ -631,7 +635,7 @@ font-weight: bold;
     padding: 0px 0px 0px 10px;
 }
 
-.css_button {
+.css_button, a[role="button"] {
     background: transparent url( 'theme_assets/bg_button_a.gif' ) no-repeat scroll top right;
     color: #444;
     display: block;
@@ -642,7 +646,9 @@ font-weight: bold;
     padding-right: 10px; /* sliding doors padding */
     text-decoration: none;
 }
-
+.css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
+  background: red !important;
+}
 .css_button span {
     background: transparent url( 'theme_assets/bg_button_span.gif' ) no-repeat;
     display: block;

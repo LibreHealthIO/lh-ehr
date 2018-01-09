@@ -355,6 +355,10 @@ UPDATE categories_seq SET id = (select MAX(id) from categories);
 #IfMissingColumn clinical_rules pqrs_code
   ALTER TABLE clinical_rules ADD COLUMN pqrs_code varchar(35) DEFAULT NULL COMMENT 'Measure number';
 #EndIf
+#IfMissingColumn insurance_companies ins_inactive
+  ALTER TABLE insurance_companies ADD COLUMN ins_inactive tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 = Yes Is This Record Inactive?';
+#EndIf
+
 
 #IfMissingColumn patient_data statement_y_n
 SET @group_name = (SELECT group_name FROM layout_options WHERE field_id='vfc' AND form_id='DEM');
