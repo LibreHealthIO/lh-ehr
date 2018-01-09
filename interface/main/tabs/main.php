@@ -57,8 +57,8 @@ var webroot_url="<?php echo $web_root; ?>";
 <link rel="stylesheet" type="text/css" href="css/tabs.css"/>
 
 <?php
-    /*  Include Bootstrap and Knockout Libraries    */
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","knockout"));
+    /*  Include Bootstrap, Knockout Libraries and Font Awesome library   */
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","knockout", "font-awesome"));
 ?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>

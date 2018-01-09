@@ -159,6 +159,10 @@ a:hover {
     padding-bottom: 55px;
 }
 
+.tab-button {
+    margin-left: 2px;
+}
+
 .sorting_1:hover{
     cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
     color:#ff5555;
@@ -639,7 +643,7 @@ tr.odd {
 #dateNAV {
     font-size:1.1em !important;
 }
-.css_button, input[type="button"],input[type="submit"], button {
+.css_button, input[type="button"],input[type="submit"], button, a[role="button"] {
   background: #063f80;
   color: #ffffff !important;
   display: inline-block;
@@ -657,7 +661,7 @@ tr.odd {
 .css_button span, input[type="button"] span, button span {
   display: inline-block;
 }
-.css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"] {
+.css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
   background: red !important;
 }
 .css_button:hover, input[type="button"]:hover, input[type="submit"]:hover, button:hover {
