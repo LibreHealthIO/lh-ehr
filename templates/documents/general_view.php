@@ -1,12 +1,16 @@
+<?php
+  // This is required for (at least) date formats
+  require_once($GLOBALS['srcdir']."/formatting.inc.php");
+  require_once($GLOBALS['srcdir']."/headers.inc.php");
+  $DateFormat = DateFormatRead();
+?>
 <head>
+
+  <?php
+    call_required_libraries(array('jquery-min-3-1-1', 'datepicker'));
+  ?>
+
   <link rel="stylesheet" href="<?php echo $GLOBALS['css_header'];?>" type="text/css">
-  <style type="text/css">@import url(library/dynarch_calendar.css);</style>
-  <script type="text/javascript" src="library/dialog.js"></script>
-  <script type="text/javascript" src="library/textformat.js"></script>
-  <script type="text/javascript" src="library/dynarch_calendar.js"></script>
-  <?php  include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-  <script type="text/javascript" src="library/dynarch_calendar_setup.js"></script>
-  <script type="text/javascript" src="library/js/jquery-1.9.1.min.js"></script>
   <script language="JavaScript">
     var mypcc = '<?php  echo $GLOBALS['phone_country_code']; ?>';
     
@@ -167,10 +171,13 @@
             <?php echo xlt("Date").":";?>
             <input type='text' size='10' name='docdate' id='docdate'
               value='<?php echo $this->docdate;?>' title='yyyy-mm-dd document date'
-              onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
-            <img src='interface/pic/show_calendar.gif' id='img_docdate' align='absbottom'
-              width='24' height='22' border='0' alt='[?]' style='cursor:pointer'
-              title='Click here to choose a date' />
+               />
+            <script>
+              $("#docdate").datetimepicker({
+                  timepicker: false,
+                  format: "<?= $DateFormat; ?>"
+              });
+            </script>
             <select name="issue_id"><?php echo $this->issues_list;?></select>
           </div>
         </form>
@@ -284,6 +291,3 @@
     </td>
   </tr>
 </table>
-<script language='JavaScript'>
-  Calendar.setup (   {   inputField:"docdate", ifFormat:"%Y-%m-%d", button:"img_docdate"  }  );
-</script>
