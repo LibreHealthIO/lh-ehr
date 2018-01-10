@@ -8,11 +8,10 @@
   <head>
     <?php
         // include jquery
-        call_required_libraries(array('jquery-min-3-1-1'));
+        call_required_libraries(array('jquery-min-3-1-1', 'bootstrap'));
     ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <script src="checkpwd_validation.js" type="text/javascript"></script>
-
     <script language='JavaScript'>
       //Validating password and display message if password field is empty - starts
       var webroot='<?php echo $webroot?>';
@@ -55,7 +54,7 @@
     <FORM NAME="user_form" METHOD="POST" ACTION="user_info.php"
       onsubmit="top.restoreSession()">
       <input type=hidden name=secure_pwd value="<?php echo $GLOBALS['secure_password']; ?>">
-      <TABLE>
+      <TABLE style="border-collapse: separate; border-spacing: 5px">
         <TR>
           <TD><span class=text><?php xl('Full Name','e'); ?>: </span></TD>
           <TD><span class=text><?php echo htmlspecialchars($iter["fname"] . " " . $iter["lname"], ENT_NOQUOTES); ?></span></td>
@@ -66,15 +65,15 @@
         </TR>
         <TR>
           <TD><span class=text><?php xl('Current Pass Phrase','e'); ?>: </span></TD>
-          <TD><input type=password name=curPass size=20 value="" autocomplete='off'></td>
+          <TD><input type=password name=curPass size=20 value="" autocomplete='off' class="form-control form-rounded"></td>
         </TR>
         <TR>
           <TD><span class=text><?php xl('New Pass Phrase','e'); ?>: </span></TD>
-          <TD><input type=password name=newPass size=20 value="" autocomplete='off'></td>
+          <TD><input type=password name=newPass size=20 value="" autocomplete='off' class="form-control form-rounded"></td>
         </TR>
         <TR>
           <TD><span class=text><?php xl('Repeat New Pass Phrase','e'); ?>: </span></TD>
-          <TD><input type=password name=newPass2 size=20 value="" autocomplete='off'></td>
+          <TD><input type=password name=newPass2 size=20 value="" autocomplete='off' class="form-control form-rounded"></td>
         </TR>
       </TABLE>
       <br>&nbsp;&nbsp;&nbsp;
