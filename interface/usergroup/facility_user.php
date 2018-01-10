@@ -70,7 +70,7 @@
 <html>
   <head>
     <?php     
-    	call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox", "common", "jquery-ui");
+    	call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox", "common", "jquery-ui"));
       	resolveFancyboxCompatibility();
     ?>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
