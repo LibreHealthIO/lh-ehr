@@ -488,10 +488,10 @@ if ($printable) {
   // old code used the global custom dir which is no longer a valid
    $practice_logo = "$OE_SITE_DIR/images/practice_logo.png";
    if (file_exists($practice_logo)) {
-        echo "<img src='$practice_logo' align='left'><br />\n";
+        echo "<img src='$practice_logo' align='left' height='80' width='48'><br />\n";
      }
 ?>
-<h2><?php echo $facility['name'] ?></h2>
+<h2>&nbsp;&nbsp;&nbsp;<?php echo $facility['name'] ?></h2>
 <?php echo $facility['street'] ?><br>
 <?php echo $facility['city'] ?>, <?php echo $facility['state'] ?> <?php echo $facility['postal_code'] ?><br clear='all'>
 <?php echo $facility['phone'] ?><br>
