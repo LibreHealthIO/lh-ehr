@@ -28,9 +28,7 @@
   ?>
 <html>
   <head>
-    <?php
-      call_required_libraries(array('jquery-min-3-1-1'));
-    ?>
+    <script type="text/JavaScript" src="../../library/js/jquery121.js"></script>
     <script type="text/JavaScript" src="../../library/js/jquery.livequery101.js"></script> 
     <script type="text/JavaScript">
       jQuery(document).ready(function() {
