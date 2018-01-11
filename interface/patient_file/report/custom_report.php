@@ -122,9 +122,9 @@ function postToGet($arin) {
 <link rel="stylesheet" type="text/css" href="<?php echo $webserver_root; ?>/library/ESign/css/esign_report.css" />
 <?php } else {?>
 <html>
-<head>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/ESign/css/esign_report.css" />
+  <head>
+    <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+    <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/ESign/css/esign_report.css" />
 <?php } ?>
 
 
@@ -496,9 +496,9 @@ if ($printable) {
 <?php echo $facility['city'] ?>, <?php echo $facility['state'] ?> <?php echo $facility['postal_code'] ?><br clear='all'>
 <?php echo $facility['phone'] ?><br>
 
-<a href="javascript:window.close();"><span class='title'><?php echo $titleres['fname'] . " " . $titleres['lname']; ?></span></a><br>
+<span class='title'><?php echo $titleres['fname'] . " " . $titleres['lname']; ?></span></br>
 <span class='text'><?php xl('Generated on','e'); ?>: <?php echo oeFormatShortDate(); ?></span>
-<br><br>
+</br></br>
 
 <?php
 
@@ -778,7 +778,6 @@ foreach ($ar as $key => $val) {
     } else {
 
         // Documents is an array of checkboxes whose values are document IDs.
-        //
         if ($key == "documents") {
 
             echo "<hr />";
@@ -811,13 +810,16 @@ foreach ($ar as $key => $val) {
                 if($couch_docid && $couch_revid){
                   $url_file = $d->get_couch_url($pid,$encounter);
                 }
+
                 // Collect filename and path
                 $from_all = explode("/",$url_file);
                 $from_filename = array_pop($from_all);
                 $from_pathname_array = array();
+
                 for ($i=0;$i<$d->get_path_depth();$i++) {
                   $from_pathname_array[] = array_pop($from_all);
                 }
+
                 $from_pathname_array = array_reverse($from_pathname_array);
                 $from_pathname = implode("/",$from_pathname_array);
 
@@ -830,6 +832,7 @@ foreach ($ar as $key => $val) {
                     '/documents/' . $from_pathname . '/' . $from_filename;
                   $to_file = substr($from_file, 0, strrpos($from_file, '.')) . '_converted.jpg';
                 }
+
                 //Extract the extension by the mime/type and not the file name extension
                 $image_data = getimagesize($from_file);
                 $extension = image_type_to_extension($image_data[2]);
@@ -855,9 +858,11 @@ foreach ($ar as $key => $val) {
           // Most clinic documents are expected to be PDFs, and in that happy case
           // we can avoid the lengthy image conversion process.
           if ($PDF_OUTPUT && $extension == ".pdf") {
+
             // HTML to PDF conversion will fail if there are open tags.
             echo "</div></div>\n";
             $content = getContent();
+
             // $pdf->setDefaultFont('Arial');
             $pdf->writeHTML($content, false);
             $pagecount = $pdf->pdf->setSourceFile($from_file);
@@ -866,8 +871,10 @@ foreach ($ar as $key => $val) {
               $itpl = $pdf->pdf->importPage($i + 1, '/MediaBox');
               $pdf->pdf->useTemplate($itpl);
             }
+
             // Make sure whatever follows is on a new page.
             $pdf->pdf->AddPage();
+
             // Resume output buffering and the above-closed tags.
             ob_start();
             echo "<div><div class='text documents'>\n";
@@ -876,6 +883,7 @@ foreach ($ar as $key => $val) {
             if (! is_file($to_file)) exec("convert -density 200 \"$from_file\" -append -resize 850 \"$to_file\"");
             if (is_file($to_file)) {
               if ($PDF_OUTPUT) {
+
                 // OK to link to the image file because it will be accessed by the
                 // HTML2PDF parser and not the browser.
                 echo "<img src='$to_file'><br><br>";
@@ -931,6 +939,7 @@ foreach ($ar as $key => $val) {
                             "FROM lists WHERE id = '$rowid'");
             $diagnosis = $irow['diagnosis'];
             if ($prevIssueType != $irow['type']) {
+
                 // output a header for each Issue Type we encounter
                 $disptype = $ISSUE_TYPES[$irow['type']][0];
                 echo "<div class='issue_type'>" . $disptype . ":</div>\n";
@@ -939,6 +948,7 @@ foreach ($ar as $key => $val) {
             echo "<div class='text issue'>";
             echo "<span class='issue_title'>" . $irow['title'] . ":</span>";
             echo "<span class='issue_comments'> " . $irow['comments'] . "</span>\n";
+
             // Show issue's chief diagnosis and its description:
             if ($diagnosis) {
                 echo "<div class='text issue_diag'>";
