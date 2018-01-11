@@ -182,7 +182,15 @@ Make sure that settings in MYSQL /etc/mysql/my.cnf file include:
 ```
 key_buffer_size set to 256M
 table_open_cache set to 256
-innodb_buffer_pool_size set to 70% of available RAM.
+innodb_buffer_pool_size set to 1024M, but can be set to bigger if needed
+innodb_log_file_size set to 256M and uncommented.
+```
+Also add that settings below other "innodb_..." variables:
+```
+innodb_io_capacity = 2000
+innodb_read_io_threads = 64
+innodb_thread_concurrency = 0
+innodb_write_io_threads = 64
 ```
 Make sure you have disabled strict mode in Mysql . 
 
