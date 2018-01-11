@@ -549,7 +549,12 @@ echo "<li>To ensure proper functioning of LibreHealth EHR you must make sure tha
 <ul>
 <li>\"key_buffer_size\" set to 256M</li>
 <li>\"table_open_cache\" set to 256</li>
-<li>\"innodb_buffer_pool_size\" set to 70% of available RAM.</li>
+<li>\"innodb_buffer_pool_size\" set to 1024M, but can be set to bigger if needed</li>
+<li>\"innodb_log_file_size\" set to 256M and uncommented</li>
+<li>\"innodb_io_capacity\" set to 2000</li>
+<li>\"innodb_read_io_threads\" set to 64</li>
+<li>\"innodb_thread_concurrency\" set to 0</li>
+<li>\"innodb_write_io_threads\" set to 64</li>
 </ul>";
 
 if (!$gotFileFlag) {
