@@ -150,6 +150,14 @@ include_once("$srcdir/sql.inc");
                                 </tr>
                             <?php endif; ?>
 
+                            <?php if (isset($_GET['loginfirst'])): ?>
+                                <tr>
+                                    <td colspan='2' class='text' style='color:red'>
+                                        <?php echo xlt('A login is required to access this platform.'); ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+
                             <?php if (isset($_SESSION['relogin']) && ($_SESSION['relogin'] == 1)): ?>
                                 <tr>
                                     <td colspan='2' class='text'

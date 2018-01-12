@@ -118,7 +118,10 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
     $tmp = $_GET['site'];
   }
   else {
-    if (empty($ignoreAuth)) header('Location: login/login.php?site='.$tmp);
+    if (empty($ignoreAuth)) {
+        header('Location: login/login.php?loginfirst&site='.$tmp);
+        die();
+    }
     $tmp = $_SERVER['HTTP_HOST'];
     if (!is_dir($GLOBALS['OE_SITES_BASE'] . "/$tmp")) $tmp = "default";
   }
