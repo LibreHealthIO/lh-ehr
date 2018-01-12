@@ -1,6 +1,6 @@
 <?php
 /**
- * pre Measure 0047 -- Initial Patient Population
+ * pre Measure 0008 -- Denominator 2
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
   * 
@@ -17,30 +17,25 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
  
-class pre_0047_InitialPatientPopulation extends PQRSFilter
+class pre_0008_Denominator2 extends PQRSFilter
 {
     public function getTitle() 
     {
-        return "Initial Patient Population";
+        return "Denominator 2";
     }
     
     public function test( PQRSPatient $patient, $beginDate, $endDate )
     {
-$query =
+	 $query =	    
 "SELECT COUNT(b1.code) as count ".  
-" FROM billing AS b1". 
+" FROM billing AS b1 ".  
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " JOIN patient_data AS p ON (b1.pid = p.pid)".
-" INNER JOIN pqrs_ccco AS codelist_a ON (b1.code = codelist_a.code)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '65' ".
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0047_a');";
-
+" AND b1.code = 'G8923';";
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
-if ($result['count']> 0){ return true;} else {return false;}  
-
+if ($result['count']> 0){ return false;} else {return true;}   
     }
 }
 

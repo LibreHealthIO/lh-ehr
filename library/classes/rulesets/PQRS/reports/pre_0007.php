@@ -1,6 +1,6 @@
 <?php
 /**
- * pre Measure 0128 -- Exclusion 
+ * Pre Measure 0007 -- Call to createPopulationCriteria()
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
   * 
@@ -17,27 +17,16 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
 
-class pre_0128_Exclusion extends PQRSFilter
-{
-    public function getTitle() 
-    {
-        return "Exclusion";
-    }
-    
-    public function test( PQRSPatient $patient, $beginDate, $endDate )
-    {
-$query =
-" SELECT COUNT(b1.code) AS count".  
-" FROM billing AS b1".
-" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
-" WHERE b1.pid = ? ".
-" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND b1.code = 'G9716'; ";
+class pre_0007 extends AbstractPQRSReport {   
+    public function createPopulationCriteria() {
+		$populationCriteria = array();
 
-$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id))); 
+		$populationCriteria[] = new pre_0007_PopulationCriteria1();
+		$populationCriteria[] = new pre_0007_PopulationCriteria2();   
 
-if ($result['count']> 0){ return true;} else {return false;} 
+		return $populationCriteria;    
     }
+
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * pre Measure 0047 -- Population Criteria
+ * Pre Measure 0008 -- Call to createPopulationCriteria()
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
   * 
@@ -16,32 +16,16 @@
  *
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
- 
-class pre_0047_PopulationCriteria implements PQRSPopulationCriteriaFactory
-{
-    public function getTitle()
+
+class pre_0008 extends AbstractPQRSReport
+{   
+    public function createPopulationCriteria()
     {
-        return "Population Criteria";
-    }
-    
-    public function createInitialPatientPopulation()
-    {
-        return new pre_0047_InitialPatientPopulation();
-    }
-    
-    public function createNumerators()
-    {
-        return new pre_0047_Numerator();
-    }
-    
-    public function createDenominator()
-    {
-        return new pre_0047_Denominator();
-    }
-    
-    public function createExclusion()
-    {
-        return new pre_0047_Exclusion();
+		$populationCriteria = array();
+                $populationCriteria[] = new pre_0008_PopulationCriteria1();
+                $populationCriteria[] = new pre_0008_PopulationCriteria2();
+                return $populationCriteria;
+
     }
 }
 

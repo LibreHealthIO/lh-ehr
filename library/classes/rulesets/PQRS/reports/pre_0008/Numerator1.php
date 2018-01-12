@@ -1,6 +1,6 @@
 <?php
-/*
- * pre Measure 0001 -- Denominator
+/**
+ * pre Measure 0008 -- Numerator 1
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
   * 
@@ -17,16 +17,26 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
  
-class pre_0001_Denominator extends PQRSFilter
+class pre_0008_Numerator1 extends PQRSFilter
 {
-    public function getTitle() 
+    public function getTitle()
     {
-        return "Denominator";
+        return "Numerator";
     }
-    
+
     public function test( PQRSPatient $patient, $beginDate, $endDate )
     {
-return true;
+$query =        
+"SELECT COUNT(b1.code) as count".  
+" FROM billing AS b1".
+" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
+" WHERE b1.pid = ? ".
+" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
+" AND b1.code ='G8450';";
+//G8452 is hard fail
+$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
+if ($result['count']> 0){ return true;} else {return false;}    
+	
     }
 }
 
