@@ -499,7 +499,7 @@ if ($printable) {
 <?php if ($PDF_OUTPUT) {
   echo "<span class='title'>" . $titleres['fname'] . " " . $titleres['lname'] . "</span><br>";
 }else{
-  echo "<a href='javascript:window.close();'><span class='title'>" . $titleres['fname'] . " " . $titleres['lname'] . "</span></a><br>";
+  echo "<a href='javascript:window.close();' title='Close'><span class='title'>" . $titleres['fname'] . " " . $titleres['lname'] . "</span></a><br>";
 }
 ?>
 
