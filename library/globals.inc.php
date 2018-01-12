@@ -3146,7 +3146,12 @@ $GLOBALS_METADATA = array(
       'FIXME vendor unique id FIXME!!!',            // default
       xl('MIPS Registry Name')
     ),
-
+     'pqrs_attestation_date' => array(
+      xl('Default Direct Entry Date'),	
+      'text',                           // data type
+      '2017-06-06',            // default
+      xl('Default date that direct entry encounters will be created on.')
+    ),
   ),
 
 );
