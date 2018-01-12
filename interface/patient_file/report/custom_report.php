@@ -496,7 +496,13 @@ if ($printable) {
 <?php echo $facility['city'] ?>, <?php echo $facility['state'] ?> <?php echo $facility['postal_code'] ?><br clear='all'>
 <?php echo $facility['phone'] ?><br>
 
-<span class='title'><?php echo $titleres['fname'] . " " . $titleres['lname']; ?></span><br>
+<?php if ($PDF_OUTPUT) {
+  echo "<span class='title'>" . $titleres['fname'] . " " . $titleres['lname'] . "</span><br>";
+}else{
+  echo "<a href='javascript:window.close();'><span class='title'>" . $titleres['fname'] . " " . $titleres['lname'] . "</span></a><br>";
+}
+?>
+
 <span class='text'><?php xl('Generated on','e'); ?>: <?php echo oeFormatShortDate(); ?></span>
 <br><br>
 
