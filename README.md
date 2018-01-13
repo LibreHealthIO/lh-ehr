@@ -1,3 +1,4 @@
+
 # Welcome to LibreHealth EHR!!!
 
 LibreHealth EHR is a free and open-source electronic health records and
@@ -85,7 +86,6 @@ You can fork & clone the repository for local development. To get started you ne
  - Run index.php file which then redirects to setup page! Follow the instructions and you are done!!
  
 Sometimes , installation may take more time than usual on some systems. In that case, you would need to increase `max_execution_time` in your php.ini file and then restart your server.
-
 
 
 
