@@ -153,7 +153,7 @@ include_once("$srcdir/sql.inc");
                             <?php if (isset($_GET['loginfirst'])): ?>
                                 <tr>
                                     <td colspan='2' class='text' style='color:red'>
-                                        <?php echo xlt('A login is required to access this platform.'); ?>
+                                        <?php echo xlt('You have been logged out due to inactivity, or you have experienced an error. Please re-enter access credentials.'); ?>
                                     </td>
                                 </tr>
                             <?php endif; ?>
