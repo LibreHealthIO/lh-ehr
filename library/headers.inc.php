@@ -92,13 +92,13 @@ function call_required_libraries($library_array){
     }
 
     if (in_array("common", $library_array)) {   ?>
-        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>common/common.js"></script>
+        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/common.js"></script>
     <?php
     }
 
     if (in_array("gritter", $library_array)) {   ?>
-        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-gritter/jquery.gritter.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>jquery-gritter/jquery.gritter.css" />
+        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.gritter.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot']; ?>/library/css/jquery.gritter.css" />
     <?php
     }
 }
@@ -126,5 +126,5 @@ function resolveFancyboxCompatibility() { ?>
 // always include this when headers is included
 // (don't know if it's a good practice because this is included even before <html>)
 ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>textformat/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>dialog/dialog.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
