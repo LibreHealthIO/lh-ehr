@@ -3,15 +3,18 @@ include_once("../globals.php");
 include_once("$srcdir/log.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/headers.inc.php");
 /** Current format of date  */
 $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 <html>
 <head>
-<?php html_header_show();?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
+<?php
+  html_header_show();
+  call_required_libraries(array('jquery-min-3-1-1', 'datepicker'));
+?>
+
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <style>
 #logview {
@@ -369,8 +372,6 @@ foreach ($ret as $iter) {
 <?php } ?>
 
 </body>
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language="javascript">
 
