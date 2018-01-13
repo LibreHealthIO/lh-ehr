@@ -58,7 +58,7 @@ $check_res = $formid ? $check_res : array();
 ?>
 <html>
     <head>
-        <?php html_header_show(); ?>
+        
         <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
         <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>

@@ -78,7 +78,6 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 <html>
 <head>
-<?php if (function_exists('html_header_show')) html_header_show(); ?>
 <style type="text/css">
 /* specifically include & exclude from printing */
 @media print {

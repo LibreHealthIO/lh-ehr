@@ -41,7 +41,7 @@ $fake_register_globals=false;
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <link rel=stylesheet href='<?php echo $css_header ?>' type='text/css'>
 
 <style>

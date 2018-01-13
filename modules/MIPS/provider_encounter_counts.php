@@ -25,7 +25,7 @@ $totalEncounters=0;
 ?>	
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php xlt('Provider Totals'); ?></title>
 
 

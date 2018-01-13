@@ -1,8 +1,5 @@
 <html>
 <head>
-<?php html_header_show();?>
-
-
  <style type="text/css" title="mystyles" media="all">
 </style>
 </head>

@@ -15,7 +15,7 @@ require_once("$srcdir/options.inc.php");
 
 <html>
 <head>
-<?php html_header_show();?>
+
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script language="javascript">
 // Called by the deleteme.php window on a successful delete.

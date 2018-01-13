@@ -98,7 +98,7 @@ if ($_POST['bn_submit']) {
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <!-- There is a problem with cross site scripting with iframes -->
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>    
 <link rel=stylesheet href="<?php echo $css_header; ?>" type="text/css">

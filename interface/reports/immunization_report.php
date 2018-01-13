@@ -258,7 +258,7 @@ if ($_POST['form_get_hl7']==='true') {
 
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php xl('Immunization Registry','e'); ?></title>
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/dialog.js"></script>

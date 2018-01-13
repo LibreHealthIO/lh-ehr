@@ -49,7 +49,7 @@ $form_diagnosis = (isset($_POST['form_diagnosis'])) ? $_POST['form_diagnosis'] :
 
 <html>
 <head>
-<?php html_header_show();?>
+
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
 

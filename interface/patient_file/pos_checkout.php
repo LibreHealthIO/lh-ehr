@@ -185,7 +185,7 @@ function generate_receipt($patient_id, $encounter=0) {
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <title><?php echo xlt('Receipt for Payment'); ?></title>
 <script type="text/javascript" src="../../library/js/jquery-1.2.2.min.js"></script>

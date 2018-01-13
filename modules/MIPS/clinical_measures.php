@@ -125,7 +125,6 @@ $widthDyn = '470px';  //determine what is needed for pqrs
 ?>
 <html>
   <head>
-<?php html_header_show();?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">  <!--should include stylesheet in project-->
     <link rel="stylesheet" href="../../assets/css/jquery-datetimepicker/jquery.datetimepicker.css">
     <title><?php echo $page_titles[$type_report]; ?></title>

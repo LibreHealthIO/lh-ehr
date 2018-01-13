@@ -42,7 +42,7 @@ $target_element = $_GET['target_element'];
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php echo xlt('Code Finder'); ?></title>
 <link rel="stylesheet" href='<?php echo attr($css_header) ?>' type='text/css'>
 

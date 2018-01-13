@@ -52,7 +52,7 @@ $fake_register_globals=false;
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">

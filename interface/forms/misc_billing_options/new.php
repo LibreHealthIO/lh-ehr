@@ -1,4 +1,4 @@
-<?php
+\<?php
 /*
  *  new.php for the creation of the misc_billing_form
  *

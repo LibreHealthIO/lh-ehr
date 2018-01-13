@@ -98,7 +98,7 @@ else { // not export
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php xl('Pending Followup from Results','e') ?></title>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>

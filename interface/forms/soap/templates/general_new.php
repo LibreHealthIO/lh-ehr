@@ -1,39 +1,36 @@
 <html>
 	<head>
-	<?php html_header_show();?>
-	<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
+		<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
 
-	<style type="text/css" title="mystyles" media="all">
-	td {
-		font-size:12pt;
-		font-family:helvetica;
-	}
-	li{
-		font-size:11pt;
-		font-family:helvetica;
-		margin-left: 15px;
-	}
-	a {
-		font-size:11pt;
-		font-family:helvetica;
-	}
-	.title {
-		font-family: sans-serif;
-		font-size: 12pt;
-		font-weight: bold;
-		text-decoration: none;
-		color: #000000;
-	}
+		<style type="text/css" title="mystyles" media="all">
+			td {
+				font-size:12pt;
+				font-family:helvetica;
+			}
+			li{
+				font-size:11pt;
+				font-family:helvetica;
+				margin-left: 15px;
+			}
+			a {
+				font-size:11pt;
+				font-family:helvetica;
+			}
+			.title {
+				font-family: sans-serif;
+				font-size: 12pt;
+				font-weight: bold;
+				text-decoration: none;
+				color: #000000;
+			}
 
-	.form_text{
-		font-family: sans-serif;
-		font-size: 9pt;
-		text-decoration: none;
-		color: #000000;
-	}
-
-	</style>
-
+			.form_text{
+				font-family: sans-serif;
+				font-size: 9pt;
+				text-decoration: none;
+				color: #000000;
+			}
+		</style>
 	</head>
 	<body bgcolor="<?php echo $this->style["BGCOLOR2"];?>">
 	<p><span class="title" style="display: none"><?php echo  xl('SOAP','e'); ?></span></p>

@@ -50,7 +50,7 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap", "jquery-ui"));
 <html>
 <head>
 
-<?php html_header_show();?>
+
 </head>
 
 <body class="body_top">

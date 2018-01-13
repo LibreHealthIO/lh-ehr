@@ -9,7 +9,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">

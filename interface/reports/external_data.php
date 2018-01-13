@@ -44,7 +44,7 @@ $to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
 ?>
 <html>
     <head>
-        <?php html_header_show(); ?>
+        
         <title><?php xlt('External Data'); ?></title>
         <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
         <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>

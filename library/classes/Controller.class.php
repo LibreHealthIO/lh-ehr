@@ -9,7 +9,7 @@ class Controller {
        var $_args = array();
        
        const PROCESS = "true";
-       const HEADER = "<html><head><?php html_header_show();?></head><body>";
+       const HEADER = "<html><head></head><body>";
        const FOOTER = "</body></html>";
        const CONTROLLER = "controller.php?";       
 

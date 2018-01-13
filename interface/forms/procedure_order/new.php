@@ -209,7 +209,6 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
   <head>
     <!-- Get Bootstrap and jQuery (required for bootstrap) -->
     <?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
-    <?php html_header_show(); ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css" />
 
     <style>
@@ -222,7 +221,6 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
        padding-right:2px;
       }
     </style>
-
 
     <script type="text/javascript" src="../../../library/dialog.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>

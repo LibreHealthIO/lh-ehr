@@ -95,7 +95,7 @@ if ($_POST['form_xmit']) {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
 <title><?php echo xlt('Procedure Orders and Reports'); ?></title>

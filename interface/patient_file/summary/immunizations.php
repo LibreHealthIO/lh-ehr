@@ -206,7 +206,7 @@ if (!$administered_by && !$administered_by_id) {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 
 <!-- supporting javascript code -->
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>

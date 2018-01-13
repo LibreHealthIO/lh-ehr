@@ -89,7 +89,7 @@ $res = sqlStatement($query);
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php echo xlt('Patient Billing Encounter by Carrier Report'); ?></title>
 <style type="text/css">
 

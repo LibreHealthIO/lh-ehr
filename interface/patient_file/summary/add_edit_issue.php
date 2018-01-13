@@ -380,7 +380,7 @@ if (!empty($irow['type'])) {
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title><?php echo $issue ? xlt('Edit') : xlt('Add New'); ?><?php echo " ".xlt('Issue'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 

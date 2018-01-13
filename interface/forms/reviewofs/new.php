@@ -13,13 +13,13 @@ $returnurl = 'encounter_top.php';
 		<!-- Get Bootstrap and jQuery (required for bootstrap) -->
 		<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
 	    <script type="text/javascript">
-	      // Resizes the panels to be the height of the largest panel
-	      function resizePanel() {
-	        var h = $("#largest-panel").height();
-	        $(".panel").height(h);
-	      }
+			// Resizes the panels to be the height of the largest panel
+			function resizePanel() {
+				var h = $("#largest-panel").height();
+				$(".panel").height(h);
+			}
 
-	      window.onload = resizePanel();
+			window.onload = resizePanel();
 	    </script>
 	</head>
 	<body class="body_top" onresize = "resizePanel()">

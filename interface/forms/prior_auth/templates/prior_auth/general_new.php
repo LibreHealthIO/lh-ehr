@@ -1,7 +1,5 @@
 <html>
 <head>
-<?php echo html_header_show();?>
-
  <style type="text/css" title="mystyles" media="all">
 td {
 	font-size:12pt;

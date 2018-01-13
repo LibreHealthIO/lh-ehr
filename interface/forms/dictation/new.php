@@ -12,7 +12,6 @@ $returnurl = 'encounter_top.php';
 ?>
 <html>
 	<head>
-		<?php html_header_show();?>
 		<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
 		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 	</head>

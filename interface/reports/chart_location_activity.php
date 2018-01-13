@@ -19,7 +19,7 @@ $form_patient_id = trim($_POST['form_patient_id']);
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+
 <title><?php echo xlt('Chart Location Activity'); ?></title>
 
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>

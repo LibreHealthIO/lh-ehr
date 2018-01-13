@@ -67,7 +67,7 @@ function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+
 <title>
 <?php echo htmlspecialchars(xl('Clinical Reports'),ENT_NOQUOTES); ?>
 </title>
