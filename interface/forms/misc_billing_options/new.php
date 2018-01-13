@@ -39,6 +39,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("date_qualifier_options.php");
 require_once("$srcdir/formsoptions.inc.php");
 require_once("$srcdir/headers.inc.php");
+formHeader("Misc Billing Options");
 
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
