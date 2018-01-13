@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  *
  * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
  *
@@ -134,7 +134,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
         $scope.cUserId = $scope.isPortal ? $scope.isPortal : $scope.isDashboard;
         $scope.username = "<?php echo $_SESSION['portal_username'] ? $_SESSION['portal_username'] : $_SESSION['authUser'];?>";
         $scope.authrecips = <?php echo json_encode(getAuthPortalUsers());?>;
-    
+
     $scope.init = function () {
        $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
        $scope.getSentMessages();
@@ -151,7 +151,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
         }
         return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
     };
-    
+
     // filter the items
     $scope.search = function () {
         $scope.filteredItems = $filter('filter')($scope.items, function (item) {
@@ -165,12 +165,12 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
         // now group by pages
         $scope.groupToPages();
     };
-    
+
     // calculate page in place
     $scope.groupToPages = function () {
         $scope.selected = null;
         $scope.pagedItems = [];
-        
+
         for (var i = 0; i < $scope.filteredItems.length; i++) {
           if (i % $scope.itemsPerPage === 0) {
             $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [ $scope.filteredItems[i] ];
@@ -179,7 +179,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
           }
         }
     };
-    
+
     $scope.range = function (start, end) {
         var ret = [];
         if (!end) {
@@ -191,36 +191,36 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
         }
         return ret;
     };
-    
+
     $scope.prevPage = function () {
         if ($scope.currentPage > 0) {
             $scope.currentPage--;
         }
         return false;
     };
-    
+
     $scope.nextPage = function () {
         if ($scope.currentPage < $scope.pagedItems.length - 1) {
             $scope.currentPage++;
         }
         return false;
     };
-    
+
     $scope.setPage = function () {
         $scope.currentPage = this.n;
     };
-    
+
     $scope.deleteItem = function (idx) {
-            if( !confirm('Confirm to Delete Selected?') ) return false;         
+            if( !confirm('Confirm to Delete Selected?') ) return false;
         var itemToDelete = $scope.pagedItems[$scope.currentPage][idx];
         var idxInItems = $scope.items.indexOf(itemToDelete);
             $scope.deleteMessage(itemToDelete.id);
         $scope.items.splice(idxInItems,1);
         $scope.search();
-        
+
         return false;
     };
-        
+
         $scope.batchDelete = function ( i ) {
             if( !confirm('Confirm to delete all selected?') ) return false;
             angular.forEach(i, function(o, key) {
@@ -233,7 +233,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
             })
             location.reload(true);
         };
-        
+
         $scope.deleteMessage = function (id){ /* @todo add array for mass delete */
             $http.post('handle_note.php', $.param( {'task':'delete','noteid':id} ))
             .success(function(data, status, headers, config) {
@@ -241,8 +241,8 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
             }).error(function(data, status, headers, config) {
                 alert('Failed Status: '+ data);
             });
-        };      
-    
+        };
+
     $scope.isMessageSelected = function () {
         if (typeof $scope.selected!=="undefined" && $scope.selected!==null) {
             return true;
@@ -251,14 +251,14 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
             return false;
         }
     };
-    $scope.isSentSelected = function () { 
+    $scope.isSentSelected = function () {
             $scope.isSent = true; $scope.isTrash = $scope.isAll = $scope.isInbox = false;
             $scope.items = [];
         $scope.items = $scope.sentItems;
         $scope.search();
         return true;
     }
-        
+
         $scope.isTrashSelected = function () {
             $scope.isTrash = true; $scope.isSent = $scope.isAll = $scope.isInbox = false;
             $scope.items = [];
@@ -266,14 +266,14 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
             $scope.search();
             return true;
         }
-        
-    $scope.isInboxSelected = function () { 
+
+    $scope.isInboxSelected = function () {
             $scope.isInbox = true; $scope.isTrash = $scope.isAll = $scope.isSent = false;
         $scope.items = $scope.inboxItems;
         $scope.search();
         return true;
     }
-    $scope.isAllSelected = function () { 
+    $scope.isAllSelected = function () {
             $scope.isAll = true; $scope.isTrash = $scope.isSent = $scope.isInbox = false;
         $scope.items = $scope.allItems;
         $scope.search();
@@ -295,24 +295,24 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
         };
         $scope.selMessage = function (idx) {
             $scope.selected = $scope.allItems[idx];
-            
+
     };
-    
+
     $scope.readAll = function () {
         for (var i in $scope.items) {
                 $scope.items[i].message_status = 'Read';
         }
     };
-    
+
     $scope.closeMessage = function () {
         $scope.selected = null;
     };
-    
+
     $scope.renderMessageBody = function(html)
     {
         return html;
     };
-        
+
         $scope.getInbox = function () {
             $http.post('handle_note.php', $.param({'task':'getinbox','owner':$scope.cUserId}))
             .success(function(data, status, headers, config) {
@@ -325,7 +325,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
                 alert('Failed Status: '+data);
             });
         };
-    
+
     $scope.getAllMessages = function () {
             $http.post('handle_note.php', $.param({'task':'getall','owner':$scope.cUserId}))
         .success(function(data, status, headers, config) {
@@ -338,7 +338,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
             alert('Failed Status: '+data);
         });
     };
-        
+
         $scope.getDeletedMessages = function () {
             $http.post('handle_note.php', $.param({'task':'getdeleted','owner':$scope.cUserId}))
             .success(function(data, status, headers, config) {
@@ -352,7 +352,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
                 alert('Failed Status: '+data);
             });
         };
-    
+
     $scope.getSentMessages = function () {
             $http.post('handle_note.php', $.param({'task':'getsent','owner':$scope.cUserId}))
         .success(function(data, status, headers, config) {
@@ -363,7 +363,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
             alert('Failed Status: '+data);
         });
     }
-        
+
         $scope.submitForm = function(compose){
             var subject = compose.title;
             $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
@@ -382,7 +382,7 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
                 compose.recipient_id=$scope.selrecip;
                 compose.recipient_name=$("#selSendto option:selected").text();
     }
-    
+
             return true; // okay to submit - add some validation
                 }
         $('#modalCompose').on('show.bs.modal', function(e) {
@@ -418,12 +418,12 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
                 $(e.currentTarget).find('input[name="title"]').prop( "disabled", false );
             }
         }); // on modal - do the prelim to save
-        
+
         $('#modalCompose').on('hidden.bs.modal', function(e){
             // cleanup
 
         });
-        
+
         // initialize application
         if(!$scope.isInit)
                 $scope.init();
@@ -455,20 +455,20 @@ app.controller('inboxCtrl', ['$scope', '$filter','$http', function ($scope, $fil
     return null;
   }
 })
-    
+
     .controller('messageCtrl', ['$scope', function ($scope) {
         $scope.message = function(idx) {
             return items(idx);
         };
     }]);   // end messageCtrl
-    
-    
+
+
 })(); // application end
 </script>
     <ng ng-app="emrMessageApp">
     <div class="container" id='main' style="display:none">
         <div class='header logo'>
-        <h2><img style='width:25%;height:auto;' class='logo' src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/>  <?php echo xlt('Patient Messaging'); ?></h2>
+        <h2><img style='width:25%;height:auto;' class='logo' src='<?php echo $GLOBALS['portal_images_path']; ?>/logo-full-con.png'/>  <?php echo xlt('Patient Messaging'); ?></h2>
         </div>
         <div class="row" ng-controller="inboxCtrl">
             <aside class="col-md-1" style='padding:0 0;margin:0 0;text-align:left;'>
