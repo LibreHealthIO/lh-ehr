@@ -554,9 +554,9 @@ $GLOBALS_METADATA = array(
     ),
 
     'disable_sql_admin_link' => array(
-     xl('Disable SQL Admin Tool Link'),
+     xl('Disable SQL Admin'),
       'bool',                           // data type
-      '0',                              // default = false
+      '1',                              // default = true
      xl('Removes menu selection for configured SQL Admin Tool')
     ),
 
@@ -3146,7 +3146,12 @@ $GLOBALS_METADATA = array(
       'FIXME vendor unique id FIXME!!!',            // default
       xl('MIPS Registry Name')
     ),
-
+     'pqrs_attestation_date' => array(
+      xl('Default Direct Entry Date'),	
+      'text',                           // data type
+      '2017-06-06',            // default
+      xl('Default date that direct entry encounters will be created on.')
+    ),
   ),
 
 );

@@ -193,6 +193,9 @@ $GLOBALS['mod_nn'] = 0;                                //Nation Notes Module val
 // images directory
 $GLOBALS['images_path'] = "$web_root/assets/images/";
 
+//patient portal images directory
+$GLOBALS['portal_images_path'] = "$web_root/patient_portal/images/";
+
 // css directory
 $GLOBALS['css_path'] = "$web_root/assets/css/";
 
@@ -327,7 +330,8 @@ if (!empty($glrow)) {
         // the $css_header_value is set above
         $new_theme = 'rtl_' . $temp_css_theme_name;
 
-        // Check file existance
+        // Check file existence
+  
         if( file_exists( $include_root.'/themes/'.$new_theme ) ) {
             $GLOBALS['css_header'] = $rootdir.'/themes/'.$new_theme;
         } else {
