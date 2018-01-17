@@ -913,7 +913,7 @@
     "label" : "Popups",
     "menu_id" : "popup",
     "children" : [ {
-        "label" : "Issues and Encounters",
+        "label" : "Issues",
         "menu_id" : "Popup:Issues",
         "url" : "/interface/patient_file/problem_encounter.php",
         "target" : "pop",
