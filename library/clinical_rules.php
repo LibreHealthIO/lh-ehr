@@ -697,11 +697,11 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
   }
 
   // Collect applicable patient pids in only medicare
-if (strpos($type, 'pqrs_individual') !== false ) {
-	$onlyMedicarePatients=true;	
-} else {
+//if (strpos($type, 'pqrs_individual') !== false ) {
+//	$onlyMedicarePatients=true;	
+//} else {
 	$onlyMedicarePatients=false;
-}
+//}
 
   $patientData = array();
   $patientData = buildPatientArray($patient_id,$provider,$pat_prov_rel,$start,$batchSize, false, $onlyMedicarePatients);

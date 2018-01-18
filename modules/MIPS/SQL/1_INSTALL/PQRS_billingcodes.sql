@@ -72,16 +72,13 @@ CREATE TABLE IF NOT EXISTS `codes` (
   `taxrates` varchar(255) NOT NULL default '',
   `cyp_factor` float NOT NULL default '0' COMMENT 'quantity representing a years supply',
   `active` tinyint(1) default '1' COMMENT '0 = inactive, 1 = active',
+  `exclude_from_insurance_billing` TINYINT(1) DEFAULT '0' COMMENT '0 = include, 1 = exclude',
   `reportable` tinyint(1) default '0' COMMENT '0 = non-reportable, 1 = reportable',
   `financial_reporting` tinyint(1) default '0' COMMENT '0 = negative, 1 = considered important code in financial reporting',
   PRIMARY KEY  (`id`),
   KEY `code` (`code`),
   KEY `code_type` (`code_type`)
 ) AUTO_INCREMENT=16643 ;
-
---
--- Dumping data for table `codes`
---
 
 
 
