@@ -97,8 +97,8 @@ function call_required_libraries($library_array){
     }
 
     if (in_array("gritter", $library_array)) {   ?>
-        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.gritter.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot']; ?>/library/css/jquery.gritter.css" />
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-gritter/jquery.gritter.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>jquery-gritter/jquery.gritter.css" />
     <?php
     }
 }
@@ -128,4 +128,3 @@ function resolveFancyboxCompatibility() { ?>
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-
