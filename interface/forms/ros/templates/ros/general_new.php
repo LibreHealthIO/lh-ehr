@@ -1,3 +1,8 @@
+<?php
+  include_once("../../globals.php");
+  include_once("$srcdir/api.inc");
+  formHeader("Review of Systems");
+?>
 <html>
   <head>
     <?php call_required_libraries(['jquery-min-1-9-1', 'bootstrap']); ?>
