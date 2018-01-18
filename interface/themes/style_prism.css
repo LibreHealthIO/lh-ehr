@@ -1,28 +1,50 @@
+/* Theme: Prism
+ *
+ * @package LibreHealth EHR
+ * @author MigDinny <github.com/MigDinny>
+ * @link http://librehealth.io
+ * 
+ * This style is a replacement and its code (not its design) is based on Tan Theme
+ * This Theme must have some color sets associated (Green, Blue and Orange) to be chosen
+ */
 
-.nav-menu-img {
-    display:none !important;
+/* Imports area */
+
+/* How to use: font-family: 'Roboto', sans-serif; */
+@font-face {
+    font-family: "Roboto";
+    src: url("theme_assets/Roboto-Regular.ttf");
 }
+
+/* Body must have Roboto font family and !important attached */
 
 body {
     margin: 0px 0px 0px 2px;
     /* set the base font and size for all DOM children */
-    font-family: 'open sans', 'source_sans_pro','FontAwesome'!important; 
+    font-family: 'Roboto', sans-serif !important; 
     content: "\f0c4";
+    background-color: #e9ffff;
 }
 
 a {
-  color: #0000cc;
-  text-decoration: none;
-}
+    color: #0000cc;
+    text-decoration: none;
+} 
+
 a:visited {
-  color: #0000cc;
-}
-a:hover {
-  color: #ff5555;
+    color: #0000cc;
 }
 
-.centerBody {
-    text-align: center;
+a:hover {
+    color: #ff5555;
+}
+
+#framesDisplay {
+    background-color: #e9ffff;
+}
+
+.nav-menu-img {
+    display: none !important;
 }
 
 .menu {
@@ -159,10 +181,6 @@ a:hover {
     padding-bottom: 55px;
 }
 
-.tab-button {
-    margin-left: 2px;
-}
-
 .sorting_1:hover{
     cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
     color:#ff5555;
@@ -172,10 +190,10 @@ a:hover {
  * Here we have taken variables from globals.php and turned them into CSS classes
  * these should be used in place of the GLOBAL variables -- JRM March 2008
  *=============================================================*/
-.body_top { background-color: #fffbeb; margin: 8px }    /* $top_bg_line */
-.bgcolor2 { background-color: #fffbeb; }    /* $GLOBALS['style']['BGCOLOR2'] */
+.body_top { background-color: #faffff; margin: 8px }    /* $top_bg_line */
+.bgcolor2 { background-color: #caf7f7; }    /* $GLOBALS['style']['BGCOLOR2'] */
 .body_bottom { background: url('../pic/aquabg.gif') repeat; margin: 8px }  /* $bottom_bg_line */
-.body_title { background-color: #fedf98; }  /* $title_bg_line */
+.body_title { background-color: #e9ffff; }  /* $title_bg_line */
 .body_nav { background-color: #fefdcf; }    /* $nav_bg_line */
 .body_filler { background-color: #f7f0d5; } /* $login_filler_line */
 .body_login { background: url('../pic/aquabg.gif') repeat; } /* $login_body_line */
@@ -188,15 +206,28 @@ a:hover {
 .navbar { height: 22px; }                   /* $GLOBALS['navBarHeight'] */
 .titlebar { height: 20px; }                 /* $GLOBALS['titleBarHeight'] */
 
+#navbar-collapse {
+    background-color: #9dffec;
+    box-shadow: 0px 0px 3px 2px #9dffec;
+    z-index: 10;
+}
 
 .navbar-custom {
     padding:0px;
 }
 
+#patient_data_column_left {
+    padding: 10px;
+}
+
+#patient_data_column_right {
+    padding: 10px;
+}
+
 
 /* style taken out of the addressbook code and put here instead */
 #addressbook_list td {
-font-family: 'source_sans_pro','FontAwesome', Arial, Helvetica, sans-serif;
+/*font-family: 'source_sans_pro','FontAwesome', Arial, Helvetica, sans-serif;*/
 padding-left: 4px;
 padding-right: 4px;
 }
@@ -216,7 +247,7 @@ font-weight:bold;
 font-size:0.8em;
 }
 #addressbook_list .inputtext {
-font-family: 'source_sans_pro','FontAwesome',monospace;
+/*font-family: 'source_sans_pro','FontAwesome',monospace;*/
 font-size:0.8em;
 font-weight:normal;
 border-style:solid;
@@ -225,7 +256,7 @@ border-color: #000000;
 background-color:transparent;
 }
 #addressbook_list .button {
-font-family: 'source_sans_pro','FontAwesome',sans-serif;
+/*font-family: 'source_sans_pro','FontAwesome',sans-serif;*/
 font-size:0.8em;
 font-weight:bold;
 }
@@ -233,11 +264,11 @@ font-weight:bold;
 /* styles taken out of templates/report/general_default.html */
 #reports_list td {
 font-size:0.8em;
-font-family: 'source_sans_pro','FontAwesome',helvetica;
+/*font-family: 'source_sans_pro','FontAwesome',helvetica;*/
 }
 #reports_list a {
 font-size:0.8em;
-font-family: 'source_sans_pro','FontAwesome',helvetica;
+/*font-family: 'source_sans_pro','FontAwesome',helvetica;*/
 }
 
 /* styles taken out of templates/documents/general_list.html */
@@ -250,11 +281,11 @@ font-family: 'source_sans_pro','FontAwesome',helvetica;
 }
 #documents_list td {
 font-size:8pt;
-font-family: 'source_sans_pro','FontAwesome',helvetica;
+/*font-family: 'source_sans_pro','FontAwesome',helvetica;*/
 }
 #documents_list a {
 font-size:8pt;
-font-family: 'source_sans_pro','FontAwesome',helvetica;
+/*font-family: 'source_sans_pro','FontAwesome',helvetica;*/
 }
 #documents_list .treeMenuDefault {
 font-style: italic;
@@ -643,7 +674,7 @@ tr.odd {
 #dateNAV {
     font-size:1.1em !important;
 }
-.css_button, input[type="button"],input[type="submit"], button, a[role="button"] {
+.css_button, input[type="button"],input[type="submit"], button {
   background: #063f80;
   color: #ffffff !important;
   display: inline-block;
@@ -661,7 +692,7 @@ tr.odd {
 .css_button span, input[type="button"] span, button span {
   display: inline-block;
 }
-.css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
+.css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"] {
   background: red !important;
 }
 .css_button:hover, input[type="button"]:hover, input[type="submit"]:hover, button:hover {
@@ -728,7 +759,7 @@ top: 0.0875em;
 border-left:1pt solid black;
 }
 ul.tabNav a {
-    background: #F8E6CBE6;
+    background: #caf7f7;
 color: #333;
 display: block;
 padding: 8px;
@@ -812,7 +843,7 @@ margin-bottom: 2em;
 .section-header {
     clear: both;
     border: 1px solid black;
-background-color: #f8e8cb;
+background-color: #caf7f7;
 border-radius: 5px 5px 0px 0px;
 box-shadow: 2px 0px 5px #c0c0c0;
 padding: 6px;
@@ -820,7 +851,7 @@ padding: 6px;
 .section-header-dynamic {
 clear: both;
 border: 1px solid black;
-background-color: #f8e8cb;
+background-color: #caf7f7;
 border-radius: 5px 5px 0px 0px;
 box-shadow: 2px 0px 5px #c0c0c0;
 padding: 6px;
@@ -962,7 +993,7 @@ font-size:9pt;
 
 /* Style for red font */
 .redtext {
-    font-family: 'source_sans_pro','FontAwesome', sans-serif;
+    /*font-family: 'source_sans_pro','FontAwesome', sans-serif;*/
     text-decoration: none;
     color: #FF0000;
     font-size: 10pt;
@@ -1473,6 +1504,7 @@ table.dataTable#therapy_groups_list tbody td{
 
 .btn-link {
     color: #444444 !important;
+}
 .calendar {
     z-index:2;
 }

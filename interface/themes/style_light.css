@@ -685,7 +685,7 @@ tr.odd, td.even {
   background: #1050b6;
 }
 
-.css_button, input[type="button"],input[type="submit"], button {
+.css_button, input[type="button"],input[type="submit"], button, a[role="button"] {
   background: #2672ec;
   color: #ffffff !important;
   display: block;
@@ -701,7 +701,7 @@ tr.odd, td.even {
 .css_button span, input[type="button"] span, button span {
   display: block;
 }
-.css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"] {
+.css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
   background: red !important;
 }
 .css_button:hover, input[type="button"]:hover, input[type="submit"]:hover, button:hover {
