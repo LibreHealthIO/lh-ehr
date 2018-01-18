@@ -90,7 +90,7 @@ body
 .handle {
     width: 5px;
     text-align: center;
-    z-index: 11;
+    /*z-index: 11;*/ /* this must not exist because it will be shown over menu dropdowns */
     transition: all ease-in 0.1s;
 }
 
