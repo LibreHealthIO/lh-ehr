@@ -3,14 +3,15 @@
   include_once("$srcdir/sql.inc");
   include_once("$srcdir/auth.inc");
   include_once("$srcdir/headers.inc.php");
-  ?>
+?>
 <html>
   <head>
+    <?php
+        // include jquery
+        call_required_libraries(array('jquery-min-3-1-1', 'bootstrap'));
+    ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <script src="checkpwd_validation.js" type="text/javascript"></script>
-    <?php
-      call_required_libraries(['bootstrap', 'jquery-min-1-9-1']);
-      ?>
     <script language='JavaScript'>
       //Validating password and display message if password field is empty - starts
       var webroot='<?php echo $webroot?>';
@@ -84,4 +85,3 @@
 <?php
   //  da39a3ee5e6b4b0d3255bfef95601890afd80709 == blank
   ?>
-  
