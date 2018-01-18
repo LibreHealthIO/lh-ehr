@@ -81,7 +81,7 @@ class FormROS extends ORDataObject {
     var $edema = "N/A";
     var $legpain_cramping = "N/A";
     var $history_murmur = "N/A";
-    var $arryhmia = "N/A";
+    var $arryhthmia = "N/A";
     var $heart_problem = "N/A";
     var $dysphagia = "N/A";
 	var $heartburn = "N/A";
@@ -656,12 +656,12 @@ class FormROS extends ORDataObject {
 			$this->history_murmur = $data;
 		}
 	}
-	function get_arrythmia(){
-		return $this->arrythmia;
+	function get_arryhthmia(){
+		return $this->arryhthmia;
 	}
-	function set_arrythmia($data){
+	function set_arryhthmia($data){
 		if(!empty($data)){
-			$this->arrythmia = $data;
+			$this->arryhthmia = $data;
 		}
 	}
 	function get_heart_problem(){

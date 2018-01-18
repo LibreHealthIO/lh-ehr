@@ -271,26 +271,87 @@
   <form method='post' name='theform' id='theform' action='edit_globals.php?mode=user' onsubmit='return top.restoreSession()'>
   <?php } else { ?>
   <form method='post' name='theform' id='theform' action='edit_globals.php' onsubmit='return top.restoreSession()'>
-  <?php } ?>
+
+<?php } ?>
+
+<div style="display:none">
   <?php if ($_GET['mode'] == "user") { ?>
-  <p><b><?php echo xlt('Edit User Settings'); ?></b>
+    <p><b><?php echo xlt('Edit User Settings'); ?></b>
   <?php } else { ?>
-  <p><b><?php echo xlt('Edit Global Settings'); ?></b>
+    <p><b><?php echo xlt('Edit Global Settings'); ?></b>
   <?php } ?>
-  <?php // mdsupport - Optional server based searching mechanism for large number of fields on this screen. ?>
-  <span style='float: right;'>
-  <input name='srch_desc' size='20'
-    value='<?php echo (!empty($_POST['srch_desc']) ? htmlspecialchars($_POST['srch_desc']) : '') ?>' />
-  <input type='submit' name='form_search' value='<?php echo xla('Search'); ?>' />
-  </span>
-  <!--tabNav-->
-  <ul class="tabNav">
-  <?php
-    $i = 0;
-    foreach ($GLOBALS_METADATA as $grpname => $grparr) {
-      if ( $_GET['mode'] != "user" || ($_GET['mode'] == "user" && in_array($grpname, $USER_SPECIFIC_TABS)) ) {
-        echo " <li" . ($i ? "" : " class='current'") ."><a href='/play/javascript-tabbed-navigation/'>" . xlt($grpname) . "</a></li>\n";
-        ++$i;
+</div>
+<?php // mdsupport - Optional server based searching mechanism for large number of fields on this screen. ?>
+<div style="float: right;">
+  <input type='submit' style="float: right;" name='form_search' value='<?php echo xla('Search'); ?>' />
+</div>
+<div style='float: right;'>
+    <input name='srch_desc' type="text" class="form-rounded form-control" size='20'
+        value='<?php echo (!empty($_POST['srch_desc']) ? htmlspecialchars($_POST['srch_desc']) : '') ?>' />
+</div>
+
+<!--tabNav-->
+<ul class="tabNav">
+<?php
+$i = 0;
+foreach ($GLOBALS_METADATA as $grpname => $grparr) {
+  if ( $_GET['mode'] != "user" || ($_GET['mode'] == "user" && in_array($grpname, $USER_SPECIFIC_TABS)) ) {
+    echo " <li" . ($i ? "" : " class='current'") ."><a href='/play/javascript-tabbed-navigation/'>" . xlt($grpname) . "</a></li>\n";
+    ++$i;
+  }
+}
+?>
+</ul> 
+
+<div class="tabContainer well" style="height: 75%; overflow: auto;">
+<?php
+$i = 0;
+foreach ($GLOBALS_METADATA as $grpname => $grparr) {
+ if ( $_GET['mode'] != "user" || ($_GET['mode'] == "user" && in_array($grpname, $USER_SPECIFIC_TABS)) ) {
+  echo " <div class='tab" . ($i ? "" : " current") .
+    "' style='height:auto;width:97%;'>\n";
+
+  echo " <table class='table table-hover'>";
+
+  if ($_GET['mode'] == "user") {
+   echo "<tr>";
+   echo "<th>&nbsp</th>";
+   echo "<th>" . htmlspecialchars( xl('User Specific Setting'), ENT_NOQUOTES) . "</th>";
+   echo "<th>" . htmlspecialchars( xl('Default Setting'), ENT_NOQUOTES) . "</th>";
+   echo "<th>&nbsp</th>";
+   echo "<th>" . htmlspecialchars( xl('Set to Default'), ENT_NOQUOTES) . "</th>";
+   echo "</tr>";
+  }
+
+  foreach ($grparr as $fldid => $fldarr) {
+   if ( $_GET['mode'] != "user" || ($_GET['mode'] == "user" && in_array($fldid, $USER_SPECIFIC_GLOBALS)) ) {
+    list($fldname, $fldtype, $flddef, $flddesc, $fldlist) = $fldarr;
+    // mdsupport - Check for matches
+    $srch_cl = '';
+    if (!empty($_POST['srch_desc']) && (stristr(($fldname.$flddesc), $_POST['srch_desc']) !== FALSE)) {
+        $srch_cl = 'class="srch"';
+    }
+
+    // Most parameters will have a single value, but some will be arrays.
+    // Here we cater to both possibilities.
+    $glres = sqlStatement("SELECT gl_index, gl_value FROM globals WHERE " .
+      "gl_name = ? ORDER BY gl_index", array($fldid));
+    $glarr = array();
+    while ($glrow = sqlFetchArray($glres)) $glarr[] = $glrow;
+
+    // $fldvalue is meaningful only for the single-value cases.
+    $fldvalue = count($glarr) ? $glarr[0]['gl_value'] : $flddef;
+
+    // Collect user specific setting if mode set to user
+    $userSetting = "";
+    $settingDefault = "checked='checked'";
+    if ($_GET['mode'] == "user") {
+      $userSettingArray = sqlQuery("SELECT * FROM user_settings WHERE setting_user=? AND setting_label=?",array($_SESSION['authId'],"global:".$fldid));
+      $userSetting = $userSettingArray['setting_value'];
+      $globalValue = $fldvalue;
+      if (!empty($userSettingArray)) {
+        $fldvalue = $userSetting;
+        $settingDefault = "";
       }
     }
     ?>
