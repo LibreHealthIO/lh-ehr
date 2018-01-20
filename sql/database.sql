@@ -1925,6 +1925,7 @@ CREATE TABLE `history_data` (
   `value_2` varchar(255) default NULL,
   `additional_history` text,
   `exams` text,
+  `usertext11` longtext,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
