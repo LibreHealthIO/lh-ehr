@@ -1388,8 +1388,9 @@ function updateHistoryData($pid,$new)
                 $real[$key] = $value;
         $real['id'] = "";
     // need to unset date, so can reset it below
-    unset($real['date']);
-
+        unset($real['date']);
+        unset($real['usertext11']);
+        
         $arraySqlBind = array();
         $sql = "insert into history_data set `date` = NOW(), ";
         while(list($key, $value) = each($real)) {
