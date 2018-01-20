@@ -15,16 +15,16 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package OpenEMR
+ * @package LibreHEalth EHR
  * @author Jerry Padgett <sjpadgett@gmail.com>
- * @link http://www.open-emr.org
+ * @link http://librehealth.io
  */
 var isWin = /^win/.test(process.platform);
 if( isWin ){
-	var Service = require('node-windows').Service;
+    var Service = require('node-windows').Service;
 }
 else{
-	var Service = require('node-linux').Service;
+    var Service = require('node-linux').Service;
 }
 var svc = new Service({
   name:'CCDA Service',
@@ -33,9 +33,9 @@ var svc = new Service({
 svc.on('uninstall',function(){
     console.log('Uninstall complete.');
     if(!isWin)
-    	console.log('The service exists: ',svc.exists());
+        console.log('The service exists: ',svc.exists());
     else
-    	console.log('The service exists: ',svc.exists);
+        console.log('The service exists: ',svc.exists);
   });
 
 svc.uninstall();

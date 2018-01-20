@@ -15,46 +15,46 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package OpenEMR
+ * @package LibreHealth EHR
  * @author Jerry Padgett <sjpadgett@gmail.com>
- * @link http://www.open-emr.org
+ * @link http://librehealth.io
  */
 var isWin = /^win/.test(process.platform);
 var f = __dirname +''//serveccda.njs';
 
 if( isWin ){
-	var Service = require('node-windows').Service;
-	//f =  '\\xampp\\htdocs\\openemr\\services\\ccdaservice\\serveccda.njs';
+    var Service = require('node-windows').Service;
+    //f =  '\\xampp\\htdocs\\libreehr\\services\\ccdaservice\\serveccda.njs';
 }
 else{
-	var Service = require('node-linux').Service;
+    var Service = require('node-linux').Service;
 }
 var svc = new Service({
-	name : 'CCDA Service',
-	description : 'The ccda document server.',
-	script : require('path').join(__dirname,'serveccda.njs'),
-	user: "root",
+    name : 'CCDA Service',
+    description : 'The ccda document server.',
+    script : require('path').join(__dirname,'serveccda.njs'),
+    user: "root",
     group: "root",
     wait: 2,
     grow: .5
 });
 
 svc.on('install', function() {
-	svc.start();
+    svc.start();
 });
 env: [ {
-	name : "HOME",
-	value : process.env["USERPROFILE"]
+    name : "HOME",
+    value : process.env["USERPROFILE"]
 }, {
-	//name: "TEMP",
+    //name: "TEMP",
     //value: require('path').join(process.env["USERPROFILE"],"/temp")
 } ]
 svc.on('alreadyinstalled', function() {
-	console.log('This service is already installed.');
+    console.log('This service is already installed.');
 });
 
 svc.on('start', function() {
-	console.log(svc.name + ' started!\n');
+    console.log(svc.name + ' started!\n');
 });
 
 svc.install();

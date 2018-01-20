@@ -1,6 +1,6 @@
 # Prepare
 
-* Import to database, table background_services: ccdaservice/support/background_services.sql - Now included in database.sql and upgrade 5.0.1
+* Import to database, table background_services: ccdaservice/support/background_services.sql - Now included in database.sql and 2_0_0_upgrade.sql
 * If not already completed, you must install the CCM features using the Modules->Manage Modules click Unregistered tab.
 * The Carecoordination module setting for Mirth IP must be set to localhost. Menu item: Modules->Manage Modules click in Carecoordination Config, the settings tab.
 * Ignore any errors that do not throw you back to command prompt when using npm install as some libs need to be compiled and is verbose about it.
@@ -13,7 +13,7 @@
 
 - sudo apt-get install -y nodejs
 
-Navigate to: openemr/ccdaservice and run the following to install requires dependencies.
+Navigate to: libreehr/ccdaservice and run the following to install requires dependencies.
 
 - sudo npm install libxmljs -g
 
@@ -33,7 +33,7 @@ Navigate to: openemr/ccdaservice and run the following to install requires depen
 
 ####  - Important to start Node.js cmd prompt as adminisrator.
 
-Navigate to: openemr/ccdaservice and run the following:
+Navigate to: libreehr/ccdaservice and run the following:
 
 - npm install libxmljs -g
 
@@ -45,7 +45,7 @@ Navigate to: openemr/ccdaservice and run the following:
 
 - npm install --production
 
-* The service will automatically be installed when OpenEMR is log into the first time and with both installs, ccda service is monitored by ssmanager started by background services.
+* The service will automatically be installed when Libreehr is log into the first time and with both installs, ccda service is monitored by ssmanager started by background services.
 
 ## Developing
 * Note that these scripts run in strict mode so javascript will hold you very much accountable with how objects and variables are handled.
@@ -57,5 +57,5 @@ Navigate to: openemr/ccdaservice and run the following:
 * node unservice is service uninstall
 
 ## License
-   		Copyright 2017 sjpadgett@gmail.com
-		GNU GPL
+        Copyright 2017 sjpadgett@gmail.com
+        GNU GPL

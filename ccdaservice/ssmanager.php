@@ -16,9 +16,9 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package OpenEMR
+ * @package LibreHealth EHR
  * @author Jerry Padgett <sjpadgett@gmail.com>
- * @link http://www.open-emr.org
+ * @link http://librehealth.io
  */
 require_once(dirname(__FILE__) . "/../library/log.inc");
 
@@ -151,7 +151,7 @@ function server_logit($success, $text, $pid = 0, $event = "ccdaservice-manager")
 {
     $pid = isset($_SESSION['pid'])?$_SESSION['pid']:$pid;
     $event = isset($_SESSION['ptName']) ? ('Ccda Access: ' . $_SESSION['ptName']) : "Ccda Service Access";
-    $where = isset($_SESSION['ptName']) ? "Portal Patient" : 'OpenEMR:  ' . $_SESSION['authUser'];
+    $where = isset($_SESSION['ptName']) ? "Portal Patient" : 'Libreehr:  ' . $_SESSION['authUser'];
     
     newEvent($event, "Service_Manager", $where, $success, $text, $pid, 'server', 's2', 's3');
 }

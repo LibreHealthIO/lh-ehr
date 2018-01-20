@@ -16,9 +16,9 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package OpenEMR
+ * @package LibreHealth EHR
  * @author Jerry Padgett <sjpadgett@gmail.com>
- * @link http://www.open-emr.org
+ * @link http://librehealth.io
  */
 //authencate for portal or main- never know where it gets used
 session_start();
@@ -73,7 +73,7 @@ if (!isset($_SESSION ['site_id'])) {
     $_SESSION ['site_id'] = 'default'; // do believe globals does this but I go rogue at times.
 }
 
-$server_url = 'http://localhost'. $GLOBALS['webroot'];  // I alias into openemr directory on my sights causing webroot to be empty.
+$server_url = 'http://localhost'. $GLOBALS['webroot'];  // I alias into libreehr directory on my sights causing webroot to be empty.
                                                                                             //I've have actually seen this return 'default' due to apache config'ed with localhost alias on more than one virtual host?? Watch
 //global $server_url; // can't find where this is defined!
 // CCM returns entire cda with service doing templates
