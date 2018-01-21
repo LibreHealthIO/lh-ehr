@@ -484,7 +484,7 @@ if ($printable) {
   echo '<page_header style="text-align:right;" class="custom-tag"> ' . xlt("PATIENT") . ':' . text($titleres['lname']) . ', ' . text($titleres['fname']) . ' - ' . $titleres['DOB_TS'] . '</page_header>    ';
   echo '<page_footer style="text-align:right;" class="custom-tag">' . xlt('Generated on') . ' ' . oeFormatShortDate() . ' - ' . text($facility['name']) . ' ' . text($facility['phone']) . '</page_footer>';
 
-  echo "<img src='../../../sites/default/images/practice_logo.png' align='left' style='width : 45px ; height : 56px'><br>";
+  echo "<img src='../../../sites/default/images/practice_logo.png' align='left' style='width : 56px ; height : 90.6px'><br>";
 ?>
 <h2><?php echo $facility['name'] ?></h2>
 <?php echo $facility['street'] ?><br>
