@@ -375,11 +375,11 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
           echo ' ' . xl('on') . ' ' . oeFormatShortDate(substr($enrow['date'], 0, 10));
         ?>
       </p>
-    <div class="container">
+
       <center>
         <p>
-          <table class="table" id='proctable'>
-            <tr style="background-color: rgba(56, 193, 228, 0.5)">
+          <table class="table table-hover table-bordered" width='95%' id='proctable'>
+            <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Ordering Provider','e'); ?>:</b></td>
               <td valign='top'>
                 <?php
@@ -389,7 +389,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               </td>
             </tr>
 
-            <tr style="background-color: rgba(57, 128, 235, 0.5)">
+            <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Sending To','e'); ?>:</b></td>
               <td valign='top'>
                 <select class='form-control' style='width: auto;' name='form_lab_id' onchange='lab_id_changed()'>
@@ -406,7 +406,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               </td>
             </tr>
 
-            <tr style="background-color: rgba(56, 193, 228, 0.5)">
+            <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Order Date','e'); ?>:</b></td>
               <td valign='top'>
                 <?php
@@ -424,7 +424,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               </td>
             </tr>
 
-            <tr style="background-color: rgba(57, 128, 235, 0.5)">
+            <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Internal Time Collected','e'); ?>:</b></td>
               <td valign='top'>
                 <?php
@@ -442,7 +442,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               </td>
             </tr>
 
-            <tr style="background-color: rgba(56, 193, 228, 0.5)">
+            <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Priority','e'); ?>:</b></td>
               <td valign='top'>
                 <?php
@@ -452,7 +452,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               </td>
             </tr>
 
-            <tr style="background-color: rgba(57, 128, 235, 0.5)">
+            <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Status','e'); ?>:</b></td>
               <td valign='top'>
                 <?php
@@ -462,14 +462,17 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               </td>
             </tr>
 
-            <tr style="background-color: rgba(56, 193, 228, 0.5)">
+            <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Clinical History','e'); ?>:</b></td>
               <td valign='top'>
-              <div class="form-group">
-                  <textarea class="form-control" rows="3" maxlength="255" name="form_clinical_hx">
-                    <?php echo attr($row['clinical_hx']); ?>   
-                  </textarea>
-              </div>
+               <input
+                type='text'
+                maxlength='255'
+                name='form_clinical_hx'
+                style='width:100%'
+                class='inputtext form-control'
+                value='<?php echo attr($row['clinical_hx']); ?>'
+               />
               </td>
             </tr>
 
@@ -533,7 +536,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
                 $ptid = $oprow['procedure_type_id'];
               }
           ?>
-            <tr style="background-color: rgba(57, 128, 235, 0.5)">
+            <tr>
             <!--<td width='1%' valign='top'><b>
             <?php echo xl('Procedure') . ' ' . ($i + 1); ?>:</b></td>-->
             <?php if(empty($formid) || empty($oprow['procedure_order_title'])) {?> 
@@ -569,7 +572,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
                 />
               </td>
             </tr>
-            <tr style="background-color: rgba(56, 193, 228, 0.5)">
+            <tr>
               <td valign='top'> 
                 <input
                   type='hidden'
@@ -648,7 +651,6 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
         </p>
 
       </center>
-    </div>
 
       <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
       <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
