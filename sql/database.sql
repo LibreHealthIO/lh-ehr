@@ -1925,7 +1925,7 @@ CREATE TABLE `history_data` (
   `value_2` varchar(255) default NULL,
   `additional_history` text,
   `exams` text,
-  `usertext11` longtext,
+  `risk_factors` longtext,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -2448,7 +2448,7 @@ INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`d
 ('LBTphreq','body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5),
 ('LBTlegal','body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5),
 ('LBTbill' ,'body','1','Details',10,3,2,30,0,'',1,3,'','','Content',5),
-('HIS','usertext11'       ,'1General'       ,'Risk Factors',1,21,1,0,0,'riskfactors',1,1,'','' ,'Risk Factors', 0),
+('HIS','risk_factors'       ,'1General'       ,'Risk Factors',1,21,1,0,0,'riskfactors',1,1,'','' ,'Risk Factors', 0),
 ('HIS','exams'            ,'1General'       ,'Exams/Tests' ,2,23,1,0,0,'exams'      ,1,1,'','' ,'Exam and test results', 0),
 ('HIS','history_father'   ,'2Family History','Father'                 , 1, 2,1,20,  0,'',1,1,'','' ,'', 0),
 ('HIS','dc_father'        ,'2Family History','Diagnosis Code'         , 2,15,1, 0,255,'',1,1,'','', '', 0),
