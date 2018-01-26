@@ -865,13 +865,7 @@
         "children" : [ ],
         "requirement" : 0,
         "global_req" : "!disable_chart_tracker"
-    }, {
-        "label" : "Ofc Notes",
-        "menu_id" : "ono0",
-        "target" : "msc",
-        "url" : "/interface/main/onotes/office_comments.php",
-        "children" : [ ],
-        "requirement" : 0
+
     }, {
         "label" : "BatchCom",
         "menu_id" : "adm0",
