@@ -192,15 +192,14 @@ var webroot_url="<?php echo $web_root; ?>";
 
                         prev.css('flex', leftPercentage.toString());
                         next.css('flex', rightPercentage.toString());
-
-                        $(document).on("mouseup", function() {
-                          $('body').css('cursor', priorCursor);
-                            $('.draggable').removeClass('draggable').css('z-index', z_idx);
-
-                            // Deactivate Frame Barrier!
-                            $("#frameBarrier").css("visibility", "hidden");
-                        });
                     }
+                    $(document).on("mouseup", function() {
+                        $('body').css('cursor', priorCursor);
+                        $('.draggable').removeClass('draggable').css('z-index', z_idx);
+                        
+                        // Deactivate Frame Barrier!
+                        $("#frameBarrier").css("visibility", "hidden");
+                    });
                 });
                 e.preventDefault(); // Disable selection
             });

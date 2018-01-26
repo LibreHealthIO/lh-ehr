@@ -236,7 +236,36 @@ Deny from all
 </Directory>
 ```
 
-For proper access to all pages of the website, enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
+
+**Note:** If you are running the patient portal these items have to be configured:</br>
+
+[Linux] Enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
+
+[Windows] Open apache configuration file and uncomment this line by removing the '#':
+```
+#LoadModule rewrite_module modules/mod_rewrite.so
+```
+Search for:
+```
+AllowOverride None
+```
+and change it to:
+```
+AllowOverride All
+```
+
+If you are using Wamp, change the following code in your apache configuration file:
+```
+<Directory "librehealthehrwebroot">
+AllowOverride FileInfo
+</Directory>
+```
+to:
+```
+<Directory "librehealthehrwebroot">
+AllowOverride All
+</Directory>
+```
 
 The final screen includes some additional instructions and important information. We suggest you print these instructions for future reference.
 
@@ -387,6 +416,42 @@ In Linux, this file is located in `/etc/mysql/mysql.conf.d/mysqld.cnf`. In Windo
 
 Restart apache service by using `sudo apache2ctl restart` on a terminal for Linux.
 For Windows, restart apache service by using the XAMPP control interface, located in system tray (if running) or from `xampp-control.exe` in `C:\xampp`. You can restart apache by navigating to `C:\xampp\apache\bin` using CMD and executing `httpd -k restart`.
+
+
+**Q. I am getting a Internal Server Error when trying to run portal dashboard!**
+
+To run the patient portal these items have to be configured:
+
+[Linux] Enable the `mod_rewrite` module by issuing `a2enmod rewrite` on a terminal.
+
+
+[Windows] Open apache configuration file and uncomment this line by removing the '#':
+```
+#LoadModule rewrite_module modules/mod_rewrite.so
+```
+Search for:
+```
+AllowOverride None
+```
+and change it to:
+```
+AllowOverride All
+```
+
+
+If you are using Wamp, change the following code in your apache configuration file:
+```
+<Directory "librehealthehrwebroot">
+AllowOverride FileInfo
+</Directory>
+```
+to:
+```
+<Directory "librehealthehrwebroot">
+AllowOverride All
+</Directory>
+```
+
 
 **Q. I need help! How do I reach you?**
 

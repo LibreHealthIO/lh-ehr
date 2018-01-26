@@ -34,10 +34,12 @@ class SecureAppController extends AppBaseController
      */
     public function UserPage()
     {
-        $this->RequirePermission(SecureApp::$PERMISSION_USER,
+        $this->RequirePermission(
+            SecureApp::$PERMISSION_USER,
                 'SecureApp.LoginForm',
                 'Login is required to access the secure user page',
-                'You do not have permission to access the secure user page');
+            'You do not have permission to access the secure user page'
+        );
 
         $this->Assign("currentUser", $this->GetCurrentUser());
 
@@ -50,10 +52,12 @@ class SecureAppController extends AppBaseController
      */
     public function AdminPage()
     {
-        $this->RequirePermission(SecureApp::$PERMISSION_ADMIN,
+        $this->RequirePermission(
+            SecureApp::$PERMISSION_ADMIN,
                 'SecureApp.LoginForm',
                 'Login is required to access the admin page',
-                'Admin permission is required to access the admin page');
+            'Admin permission is required to access the admin page'
+        );
 
         $this->Assign("currentUser", $this->GetCurrentUser());
 
@@ -85,9 +89,7 @@ class SecureAppController extends AppBaseController
             // login success
             $this->SetCurrentUser($user);
             $this->Redirect('SecureApp.UserPage');
-        }
-        else
-        {
+        } else {
             // login failed
             $this->Redirect('SecureApp.LoginForm','Unknown username/password combination');
         }

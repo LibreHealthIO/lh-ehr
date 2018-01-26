@@ -25,7 +25,7 @@
  * @author Rod Roark <rod@sunsetsystems.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
 
@@ -50,24 +50,34 @@ $groupLevel   = 0;      // 0 if not in a {GRP} section
 $groupCount   = 0;      // 0 if no items in the group yet
 $itemSeparator = '; ';  // separator between group items
 $tcnt=$grcnt=$ckcnt=0;
+$html_flag = false;
+
+// Flags to ignore new lines
+
 // Check if the current location has the specified {string}.
-function keySearch(&$s, $key) {
+function keySearch(&$s, $key)
+{
   global $keyLocation, $keyLength;
   $keyLength = strlen($key);
-  if ($keyLength == 0) return false;
+    if ($keyLength == 0) {
+        return false;
+    }
+
   return $key == substr($s, $keyLocation, $keyLength);
 }
 
 // Replace the {string} at the current location with the specified data.
 // Also update the location to resume scanning accordingly.
-function keyReplace(&$s, $data) {
+function keyReplace(&$s, $data)
+{
   global $keyLocation, $keyLength, $nextLocation;
   $nextLocation = $keyLocation + strlen($data);
   return substr($s, 0, $keyLocation) . $data . substr($s, $keyLocation + $keyLength);
 }
 
 // Do some final processing of field data before it's put into the document.
-function dataFixup($data, $title='') {
+function dataFixup($data, $title = '')
+{
   global $groupLevel, $groupCount, $itemSeparator;
   if ($data !== '') {
     // Replace some characters that can mess up XML without assuming XML content type.
@@ -76,8 +86,14 @@ function dataFixup($data, $title='') {
     $data = str_replace('>', '[greater]', $data);
     // If in a group, include labels and separators.
     if ($groupLevel) {
-      if ($title !== '') $data = $title . ': ' . $data;
-      if ($groupCount) $data = $itemSeparator . $data;
+            if ($title !== '') {
+                $data = $title . ': ' . $data;
+            }
+
+            if ($groupCount) {
+                $data = $itemSeparator . $data;
+            }
+
       ++$groupCount;
     }
   }
@@ -85,69 +101,74 @@ function dataFixup($data, $title='') {
 }
 
 // Return a string naming all issues for the specified patient and issue type.
-function getIssues($type) {
+function getIssues($type)
+{
   // global $itemSeparator;
   $tmp = '';
-  $lres = sqlStatement("SELECT title, comments FROM lists WHERE " .
-    "pid = ? AND type = ? AND enddate IS NULL " .
-    "ORDER BY begdate", array($GLOBALS['pid'], $type));
+    $lres = sqlStatement("SELECT title, comments FROM lists WHERE " . "pid = ? AND type = ? AND enddate IS NULL " . "ORDER BY begdate", array(
+        $GLOBALS['pid'],
+        $type
+    ));
   while ($lrow = sqlFetchArray($lres)) {
-    if ($tmp) $tmp .= '; ';
+        if ($tmp) {
+            $tmp .= '; ';
+        }
+
     $tmp .= $lrow['title'];
-    if ($lrow['comments']) $tmp .= ' (' . $lrow['comments'] . ')';
+        if ($lrow['comments']) {
+            $tmp .= ' (' . $lrow['comments'] . ')';
+        }
   }
   return $tmp;
 }
 
 // Top level function for scanning and replacement of a file's contents.
-function doSubs($s) {
+function doSubs($s)
+{
   global $ptrow, $hisrow, $enrow, $nextLocation, $keyLocation, $keyLength;
   global $groupLevel, $groupCount, $itemSeparator, $pid, $encounter;
   global $tcnt,$grcnt,$ckcnt;
+  global $html_flag;
 
   $nextLocation = 0;
   $groupLevel   = 0;
   $groupCount   = 0;
 
-  while (($keyLocation = strpos($s, '{', $nextLocation)) !== FALSE) {
+  while (($keyLocation = strpos($s, '{', $nextLocation)) !== false) {
     $nextLocation = $keyLocation + 1;
 
     if (keySearch($s, '{PatientSignature}')) {
         $fn = $GLOBALS['web_root'] . '/patient_portal/sign/assets/signhere.png';
         $sigfld = '<span>';
-        $sigfld .= '<img style="cursor:pointer;color:red" class="signature" type="patient-signature" id="patientSignature" onclick="getSignature(this)"'.
-        'alt="' . xla("Click in signature on file") . '" src="'.$fn.'">';
+        $sigfld .= '<img style="cursor:pointer;color:red" class="signature" type="patient-signature" id="patientSignature" onclick="getSignature(this)"' . 'alt="' . xla("Click in signature on file") . '" src="' . $fn . '">';
         $sigfld .= '</span>';
         $s = keyReplace($s,$sigfld);
-    }
-    else if (keySearch($s, '{AdminSignature}')) {
-        //$fn = "document.getElementById('adminSignature')";
+    } else if (keySearch($s, '{AdminSignature}')) {
+        $fn = $GLOBALS['web_root'] . '/patient_portal/sign/assets/signhere.png';
         $sigfld = '<span>';
-        $sigfld .= '<img style="cursor:pointer;color:red" class="signature" type="admin-signature" id="adminSignature" onclick="getSignature(this)"'.
-        'alt="' . xla("Click in signature on file") . '" src="'.$fn.'">';
+        $sigfld .= '<img style="cursor:pointer;color:red" class="signature" type="admin-signature" id="adminSignature" onclick="getSignature(this)"' . 'alt="' . xla("Click in signature on file") . '" src="' . $fn . '">';
         $sigfld .= '</span>';
         $s = keyReplace($s,$sigfld);
-    }
-    else if (keySearch($s, '{TextInput}')) {
+   } else if (keySearch($s, '{ParseAsHTML}')) {
+        $html_flag = true;
+        $s = keyReplace($s, "");
+   } else if (keySearch($s, '{TextInput}')) {
         $sigfld = '<span>';
         $sigfld .= '<input class="templateInput" type="text" style="color:black;" data-textvalue="" onblur="templateText(this);">';
         $sigfld .= '</span>';
         $s = keyReplace($s,$sigfld);
-    }
-    else if (keySearch($s, '{smTextInput}')) {
+   } else if (keySearch($s, '{smTextInput}')) {
         $sigfld = '<span>';
         $sigfld .= '<input class="templateInput" type="text" style="color:black;max-width:50px;" data-textvalue="" onblur="templateText(this);">';
         $sigfld .= '</span>';
         $s = keyReplace($s,$sigfld);
-    }    
-    else if (keySearch($s, '{CheckMark}')) {
+   } else if (keySearch($s, '{CheckMark}')) {
         $ckcnt++;
         $sigfld = '<span class="checkMark" data-id="check'.$ckcnt.'">';
         $sigfld .= '<input type="checkbox"  id="check'.$ckcnt.'" data-value="" onclick="templateCheckMark(this);">';
         $sigfld .= '</span>';
         $s = keyReplace($s,$sigfld);
-    }
-    else if (keySearch($s, '{ynRadioGroup}')) {
+   } else if (keySearch($s, '{ynRadioGroup}')) {
         $grcnt++;
         $sigfld = '<span class="ynuGroup" data-value="N/A" data-id="'.$grcnt.'" id="rgrp'.$grcnt.'">';
         $sigfld .= '<label><input onclick="templateRadio(this)" type="radio" name="ynradio'.$grcnt.'" data-id="'.$grcnt.'" value="Yes">'.xlt("Yes").'</label>';
@@ -155,65 +176,59 @@ function doSubs($s) {
         $sigfld .= '<label><input onclick="templateRadio(this)" type="radio" name="ynradio'.$grcnt.'" checked="checked" data-id="'.$grcnt.'" value="N/A">N/A</label>';
         $sigfld .= '</span>';
         $s = keyReplace($s,$sigfld);
-    }
-   else  if (keySearch($s, '{PatientName}')) {
+   } else if (keySearch($s, '{PatientName}')) {
       $tmp = $ptrow['fname'];
       if ($ptrow['mname']) {
-        if ($tmp) $tmp .= ' ';
+            if ($tmp) {
+                $tmp .= ' ';
+            }
+
         $tmp .= $ptrow['mname'];
       }
       if ($ptrow['lname']) {
-        if ($tmp) $tmp .= ' ';
+          if ($tmp) {
+              $tmp .= ' ';
+          }
+
         $tmp .= $ptrow['lname'];
       }
       $s = keyReplace($s, dataFixup($tmp, xl('Name')));
-    }
-
-    else if (keySearch($s, '{PatientID}')) {
+    } else if (keySearch($s, '{PatientID}')) {
       $s = keyReplace($s, dataFixup($ptrow['pubpid'], xl('Chart ID')));
-    }
-
-    else if (keySearch($s, '{Address}')) {
+    } else if (keySearch($s, '{Address}')) {
       $s = keyReplace($s, dataFixup($ptrow['street'], xl('Street')));
-    }
-
-    else if (keySearch($s, '{City}')) {
+    } else if (keySearch($s, '{City}')) {
       $s = keyReplace($s, dataFixup($ptrow['city'], xl('City')));
-    }
-
-    else if (keySearch($s, '{State}')) {
+    } else if (keySearch($s, '{State}')) {
       $s = keyReplace($s, dataFixup(getListItemTitle('state', $ptrow['state']), xl('State')));
-    }
-
-    else if (keySearch($s, '{Zip}')) {
+    } else if (keySearch($s, '{Zip}')) {
       $s = keyReplace($s, dataFixup($ptrow['postal_code'], xl('Postal Code')));
+    } else if (keySearch($s, '{PatientPhone}')) {
+      $ptphone = $ptrow['phone_contact'];
+      if (empty($ptphone)) {
+          $ptphone = $ptrow['phone_home'];
     }
 
-    else if (keySearch($s, '{PatientPhone}')) {
-      $ptphone = $ptrow['phone_contact'];
-      if (empty($ptphone)) $ptphone = $ptrow['phone_home'];
-      if (empty($ptphone)) $ptphone = $ptrow['phone_cell'];
-      if (empty($ptphone)) $ptphone = $ptrow['phone_biz'];
+      if (empty($ptphone)) {
+          $ptphone = $ptrow['phone_cell'];
+    }
+
+      if (empty($ptphone)) {
+          $ptphone = $ptrow['phone_biz'];
+    }
+
       if (preg_match("/([2-9]\d\d)\D*(\d\d\d)\D*(\d\d\d\d)/", $ptphone, $tmp)) {
         $ptphone = '(' . $tmp[1] . ')' . $tmp[2] . '-' . $tmp[3];
       }
       $s = keyReplace($s, dataFixup($ptphone, xl('Phone')));
-    }
-
-    else if (keySearch($s, '{PatientDOB}')) {
+    } else if (keySearch($s, '{PatientDOB}')) {
       $s = keyReplace($s, dataFixup(oeFormatShortDate($ptrow['DOB']), xl('Birth Date')));
-    }
-
-    else if (keySearch($s, '{PatientSex}')) {
+    } else if (keySearch($s, '{PatientSex}')) {
       $s = keyReplace($s, dataFixup(getListItemTitle('sex', $ptrow['sex']), xl('Sex')));
-    }
-
-    else if (keySearch($s, '{DOS}')) {
+    } else if (keySearch($s, '{DOS}')) {
       //$s = @keyReplace($s, dataFixup(oeFormatShortDate(substr($enrow['date'], 0, 10)), xl('Service Date'))); // changed DOS to todays date- add future enc DOS
       $s = @keyReplace($s, dataFixup(oeFormatShortDate(substr(date("Y-m-d"), 0, 10)), xl('Service Date')));
-    }
-
-    else if (keySearch($s, '{ChiefComplaint}')) {
+    } else if (keySearch($s, '{ChiefComplaint}')) {
       $cc = $enrow['reason'];
       $patientid = $ptrow['pid'];
       $DOS = substr($enrow['date'], 0, 10);
@@ -225,31 +240,32 @@ function doSubs($s) {
         }
       }
       $s = keyReplace($s, dataFixup($cc, xl('Chief Complaint')));
-    }
-
-    else if (keySearch($s, '{ReferringDOC}')) {
+    } else if (keySearch($s, '{ReferringDOC}')) {
       $tmp = empty($ptrow['ur_fname']) ? '' : $ptrow['ur_fname'];
       if (!empty($ptrow['ur_mname'])) {
-        if ($tmp) $tmp .= ' ';
+          if ($tmp) {
+              $tmp .= ' ';
+          }
+
         $tmp .= $ptrow['ur_mname'];
       }
       if (!empty($ptrow['ur_lname'])) {
-        if ($tmp) $tmp .= ' ';
+          if ($tmp) {
+              $tmp .= ' ';
+          }
+
         $tmp .= $ptrow['ur_lname'];
       }
       $s = keyReplace($s, dataFixup($tmp, xl('Referer')));
-    }
-
-    else if (keySearch($s, '{Allergies}')) {
-      $tmp = generate_plaintext_field(array('data_type'=>'24','list_id'=>''), '');
+    } else if (keySearch($s, '{Allergies}')) {
+      $tmp = generate_plaintext_field(array(
+          'data_type' => '24',
+          'list_id' => ''
+      ), '');
       $s = keyReplace($s, dataFixup($tmp, xl('Allergies')));
-    }
-
-    else if (keySearch($s, '{Medications}')) {
+    } else if (keySearch($s, '{Medications}')) {
       $s = keyReplace($s, dataFixup(getIssues('medication'), xl('Medications')));
-    }
-
-    else if (keySearch($s, '{ProblemList}')) {
+    } else if (keySearch($s, '{ProblemList}')) {
       $s = keyReplace($s, dataFixup(getIssues('medical_problem'), xl('Problem List')));
     }
 
@@ -260,10 +276,11 @@ function doSubs($s) {
       ++$groupLevel;
       $groupCount = 0;
       $s = keyReplace($s, '');
+    } else if (keySearch($s, '{/GRP}')) {
+        if ($groupLevel > 0) {
+            -- $groupLevel;
     }
 
-    else if (keySearch($s, '{/GRP}')) {
-      if ($groupLevel > 0) --$groupLevel;
       $s = keyReplace($s, '');
     }
 
@@ -352,7 +369,7 @@ if ($encounter) {
     "encounter = ?", array($pid, $encounter));
 }
 
-$templatedir   = $GLOBALS['OE_SITE_DIR'] .  '/onsite_portal_documents/templates';
+$templatedir   = $GLOBALS['OE_SITE_DIR'] .  '/documents/onsite_portal_documents/templates';
 $templatepath  = "$templatedir/$form_filename";
 // test if this is folder with template, if not, must be for a specific patient
  if( ! file_exists($templatepath) ){
@@ -368,36 +385,47 @@ $ext = strtolower(array_pop((explode('.', $fname))));
 if ('dotx' == $ext) {
   // PHP does not seem to recognize this type.
   $mimetype = 'application/msword';
-}
-else if (function_exists('finfo_open')) {
+} else if (function_exists('finfo_open')) {
   $finfo = finfo_open(FILEINFO_MIME_TYPE);
   $mimetype = finfo_file($finfo, $templatepath);
   finfo_close($finfo);
-}
-else if (function_exists('mime_content_type')) {
+} else if (function_exists('mime_content_type')) {
   $mimetype = mime_content_type($templatepath);
+} else {
+    if ('doc' == $ext) {
+        $mimetype = 'application/msword';
+    } else if ('dot' == $ext) {
+        $mimetype = 'application/msword';
+    } else if ('htm' == $ext) {
+        $mimetype = 'text/html';
+    } else if ('html' == $ext) {
+        $mimetype = 'text/html';
+    } else if ('odt' == $ext) {
+        $mimetype = 'application/vnd.oasis.opendocument.text';
+    } else if ('ods' == $ext) {
+        $mimetype = 'application/vnd.oasis.opendocument.spreadsheet';
+    } else if ('ott' == $ext) {
+        $mimetype = 'application/vnd.oasis.opendocument.text';
+    } else if ('pdf' == $ext) {
+        $mimetype = 'application/pdf';
+    } else if ('ppt' == $ext) {
+        $mimetype = 'application/vnd.ms-powerpoint';
+    } elseif ('ps' == $ext) {
+        $mimetype = 'application/postscript';
+    } else if ('rtf' == $ext) {
+        $mimetype = 'application/rtf';
+    } else if ('txt' == $ext) {
+        $mimetype = 'text/plain';
+    } else if ('xls' == $ext) {
+        $mimetype = 'application/vnd.ms-excel';
 }
-else {
-  if ('doc'  == $ext) $mimetype = 'application/msword'                             ; else
-  if ('dot'  == $ext) $mimetype = 'application/msword'                             ; else
-  if ('htm'  == $ext) $mimetype = 'text/html'                                      ; else
-  if ('html' == $ext) $mimetype = 'text/html'                                      ; else
-  if ('odt'  == $ext) $mimetype = 'application/vnd.oasis.opendocument.text'        ; else
-  if ('ods'  == $ext) $mimetype = 'application/vnd.oasis.opendocument.spreadsheet' ; else
-  if ('ott'  == $ext) $mimetype = 'application/vnd.oasis.opendocument.text'        ; else
-  if ('pdf'  == $ext) $mimetype = 'application/pdf'                                ; else
-  if ('ppt'  == $ext) $mimetype = 'application/vnd.ms-powerpoint'                  ; else
-  if ('ps'   == $ext) $mimetype = 'application/postscript'                         ; else
-  if ('rtf'  == $ext) $mimetype = 'application/rtf'                                ; else
-  if ('txt'  == $ext) $mimetype = 'text/plain'                                     ; else
-  if ('xls'  == $ext) $mimetype = 'application/vnd.ms-excel'                       ;
 }
 
-$zipin = new ZipArchive;
+$zipin = new ZipArchive();
 if ($zipin->open($templatepath) === true) {
     $xml = '';
   // Must be a zip archive.
-  $zipout = new ZipArchive;
+    $zipout = new ZipArchive();
   $zipout->open($fname, ZipArchive::OVERWRITE);
   for ($i = 0; $i < $zipin->numFiles; ++$i) {
     $ename = $zipin->getNameIndex($i);
@@ -409,13 +437,16 @@ if ($zipin->open($templatepath) === true) {
   $zipout->close();
   $zipin->close();
   $html = nl2br($xml);
-}
-else {
+} else {
   // Not a zip archive.
   $edata = file_get_contents($templatepath);
   $edata = doSubs($edata);
+    if ($html_flag) { // return raw html template
+        $html = $edata;
+    } else { // add br for lf in text template
 
   $html = nl2br($edata);
+    }
 }
 echo  $html;
 ?>

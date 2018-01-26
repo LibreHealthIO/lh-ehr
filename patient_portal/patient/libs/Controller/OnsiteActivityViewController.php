@@ -30,14 +30,16 @@ require_once ( "Model/OnsiteActivityView.php" );
  * @author ClassBuilder
  * @version 1.0
  */
-class OnsiteActivityViewController extends AppBaseController{
+class OnsiteActivityViewController extends AppBaseController
+{
 
     /**
      * Override here for any controller-specific functionality
      *
      * @inheritdocs
      */
-    protected function Init(){
+    protected function Init()
+    {
         parent::Init();
 
         // $this->RequirePermission(User::$PERMISSION_USER,'SecureApp.LoginForm');
@@ -46,10 +48,12 @@ class OnsiteActivityViewController extends AppBaseController{
     /**
      * Displays a list view of Onsite Activity View objects
      */
-    public function ListView(){
+    public function ListView()
+    {
         $user = 0;
-        if( isset( $_SESSION['authUser'] ) ) $user = $_SESSION['authUser'];
-        else{
+        if (isset($_SESSION['authUser'])) {
+            $user = $_SESSION['authUser'];
+        } else {
             header( "refresh:6;url= ./provider" );
             echo 'Redirecting in about 5 secs. Session shared with Onsite Portal<br> Shared session not allowed!.';
             exit();
@@ -61,7 +65,8 @@ class OnsiteActivityViewController extends AppBaseController{
     /**
      * API Method queries for OnsiteActivityView records and render as JSON
      */
-    public function Query(){
+    public function Query()
+    {
         self::CreateView( '' );
         try{
             $criteria = new OnsiteActivityViewCriteria();
@@ -69,7 +74,9 @@ class OnsiteActivityViewController extends AppBaseController{
             $criteria->Status_Equals = $status;
 
             $filter = RequestUtil::Get( 'filter' );
-            if( $filter ) $criteria->AddFilter( new CriteriaFilter( 'Id,Date,PatientId,Activity,RequireAudit,PendingAction,ActionTaken,Status,Narrative,TableAction,TableArgs,ActionUser,ActionTakenTime,Checksum,Title,Fname,Lname,Mname,Dob,Ss,Street,PostalCode,City,State,Referrerid,Providerid,RefProviderid,Pubpid,CareTeam,Username,Authorized,Ufname,Umname,Ulname,Facility,Active,Utitle,PhysicianType', '%' . $filter . '%' ) );
+            if ($filter) {
+                $criteria->AddFilter(new CriteriaFilter('Id,Date,PatientId,Activity,RequireAudit,PendingAction,ActionTaken,Status,Narrative,TableAction,TableArgs,ActionUser,ActionTakenTime,Checksum,Title,Fname,Lname,Mname,Dob,Ss,Street,PostalCode,City,State,Referrerid,Providerid,RefProviderid,Pubpid,CareTeam,Username,Authorized,Ufname,Umname,Ulname,Facility,Active,Utitle,PhysicianType', '%' . $filter . '%'));
+            }
 
             // TODO: this is generic query filtering based only on criteria properties
             foreach( array_keys( $_REQUEST ) as $prop ){
@@ -89,7 +96,9 @@ class OnsiteActivityViewController extends AppBaseController{
             // if a sort order was specified then specify in the criteria
             $output->orderBy = RequestUtil::Get( 'orderBy' );
             $output->orderDesc = RequestUtil::Get( 'orderDesc' ) != '';
-            if( $output->orderBy ) $criteria->SetOrder( $output->orderBy, $output->orderDesc );
+            if ($output->orderBy) {
+                $criteria->SetOrder($output->orderBy, $output->orderDesc);
+            }
 
             $page = RequestUtil::Get( 'page' );
 
@@ -122,7 +131,8 @@ class OnsiteActivityViewController extends AppBaseController{
     /**
      * API Method retrieves a single OnsiteActivityView record and render as JSON
      */
-    public function Read(){
+    public function Read()
+    {
         try{
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $onsiteactivityview = $this->Phreezer->Get( 'OnsiteActivityView', $pk );
@@ -131,7 +141,8 @@ class OnsiteActivityViewController extends AppBaseController{
             $this->RenderExceptionJSON( $ex );
         }
     }
-    public function CreateView( $viewcriteria ){
+    public function CreateView($viewcriteria)
+    {
         $sql = "CREATE OR REPLACE VIEW onsite_activity_view As Select
   onsite_portal_activity.status,
   onsite_portal_activity.narrative,
@@ -184,21 +195,25 @@ class OnsiteActivityViewController extends AppBaseController{
     /**
      * API Method inserts a new OnsiteActivityView record and render response as JSON
      */
-    public function Create(){
+    public function Create()
+    {
         ;
     }
 
     /**
      * API Method updates an existing OnsiteActivityView record and render response as JSON
      */
-    public function Update(){
+    public function Update()
+    {
         try{
             // TODO: views are read-only by default. uncomment at your own discretion
             throw new Exception( 'Database views are read-only and cannot be updated' );
 
             $json = json_decode( RequestUtil::GetBody() );
 
-            if( ! $json ){throw new Exception( 'The request body does not contain valid JSON' );}
+            if (! $json) {
+                throw new Exception('The request body does not contain valid JSON');
+            }
 
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $onsiteactivityview = $this->Phreezer->Get( 'OnsiteActivityView', $pk );
@@ -260,7 +275,9 @@ class OnsiteActivityViewController extends AppBaseController{
             // this table does not have an auto-increment primary key, so it is semantically correct to
             // issue a REST PUT request, however we have no way to know whether to insert or update.
             // if the record is not found, this exception will indicate that this is an insert request
-            if( is_a( $ex, 'NotFoundException' ) ){return $this->Create();}
+            if (is_a($ex, 'NotFoundException')) {
+                return $this->Create();
+            }
 
             $this->RenderExceptionJSON( $ex );
         }
@@ -269,7 +286,8 @@ class OnsiteActivityViewController extends AppBaseController{
     /**
      * API Method deletes an existing OnsiteActivityView record and render response as JSON
      */
-    public function Delete(){
+    public function Delete()
+    {
         try{
             // TODO: views are read-only by default. uncomment at your own discretion
             throw new Exception( 'Database views are read-only and cannot be updated' );

@@ -87,7 +87,7 @@ tr, td, th {
 
 /* :..[ Buttons ]..: */
 
-button, .button, .css_button, ul.button-bar li a {
+button, .button, .css_button, ul.button-bar li a, a[role="button"] {
 	/* 	(X-browser-) inline-block */
 	position: relative;
 	display: -moz-inline-stack;  /* Fx: TODO: also test -moz-inline-box?! */

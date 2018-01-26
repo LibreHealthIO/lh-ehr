@@ -20,7 +20,7 @@
 ?>
 
 <script type="text/javascript">
-    $LAB.script("scripts/app/onsiteactivityviews.js").wait(function(){
+    $LAB.script("<?php echo $GLOBALS['web_root']; ?>/patient_portal/patient/scripts/app/onsiteactivityviews.js").wait(function(){
         $(document).ready(function(){
             actpage.init();
         });
