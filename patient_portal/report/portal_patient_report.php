@@ -22,7 +22,7 @@
  * @author Jerry Padgett <sjpadgett@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
 session_start();
@@ -35,8 +35,7 @@ $landingpage = "../index.php?site=".$_SESSION['site_id'];
 if ( isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite']) ) {
     $pid = $_SESSION['pid'];
     $user = $_SESSION['sessionUser'];
-}
-else {
+} else {
     session_destroy();
     header('Location: '.$landingpage.'&w');
     exit;
@@ -410,8 +409,11 @@ while ($prow = sqlFetchArray($pres)) {
     echo "' />$disptitle</td>\n";
     echo "     <td>" . $prow['begdate'];
 
-    if ($prow['enddate']) { echo " - " . $prow['enddate']; }
-    else { echo " Active"; }
+    if ($prow['enddate']) {
+        echo " - " . $prow['enddate'];
+    } else {
+        echo " Active";
+    }
 
     echo "</td>\n";
     echo "</tr>\n";
@@ -457,7 +459,9 @@ while($result = sqlFetchArray($res)) {
         if ($isfirst == 0) {
             foreach($registry_form_name as $var) {
                 if ($toprint = $html_strings[$var]) {
-                    foreach($toprint as $var) {print $var;}
+                    foreach ($toprint as $var) {
+                        print $var;
+                    }
                 }
             }
             $html_strings = array();
@@ -485,20 +489,33 @@ while($result = sqlFetchArray($res)) {
                 " (" . date("Y-m-d",strtotime($result{"date"})) .
                 ")\n";
         echo "<div class='encounter_forms'>\n";
-    }
-    else {
+    } else {
         $form_name = trim($result{"form_name"});
         //if form name is not in registry, look for the closest match by
         // finding a registry name which is  at the start of the form name.
         //this is to allow for forms to put additional helpful information
         //in the database in the same string as their form name after the name
         $form_name_found_flag = 0;
-        foreach($registry_form_name as $var) {if ($var == $form_name) {$form_name_found_flag = 1;}}
+        foreach ($registry_form_name as $var) {
+            if ($var == $form_name) {
+                $form_name_found_flag = 1;
+            }
+        }
+
         // if the form does not match precisely with any names in the registry, now see if any front partial matches
         // and change $form_name appropriately so it will print above in $toprint = $html_strings[$var]
-        if (!$form_name_found_flag) { foreach($registry_form_name as $var) {if (strpos($form_name,$var) == 0) {$form_name = $var;}}}
+        if (!$form_name_found_flag) {
+            foreach ($registry_form_name as $var) {
+                if (strpos($form_name, $var) == 0) {
+                    $form_name = $var;
+                }
+            }
+        }
 
-        if (!is_array($html_strings[$form_name])) {$html_strings[$form_name] = array();}
+        if (!is_array($html_strings[$form_name])) {
+            $html_strings[$form_name] = array();
+        }
+
         array_push($html_strings[$form_name], "<input type='checkbox' ".
                                                 " name='" . $result{"formdir"} . "_" . $result{"form_id"} . "'".
                                                 " id='" . $result{"formdir"} . "_" . $result{"form_id"} . "'".
@@ -509,7 +526,9 @@ while($result = sqlFetchArray($res)) {
 }
 foreach($registry_form_name as $var) {
     if ($toprint = $html_strings[$var]) {
-        foreach($toprint as $var) {print $var;}
+        foreach ($toprint as $var) {
+            print $var;
+        }
     }
 }
 ?>
@@ -552,7 +571,10 @@ while($row = sqlFetchArray($res)) {
     array($poid));
   while($oprow = sqlFetchArray($opres)) {
     $tmp = $oprow['procedure_name'];
-    if (empty($tmp)) $tmp = $oprow['procedure_code'];
+        if (empty($tmp)) {
+            $tmp = $oprow['procedure_code'];
+        }
+
     echo text($tmp) . "<br />";
   }
   echo "</td>\n";
@@ -572,7 +594,10 @@ $sql = "SELECT d.id, d.url, c.name FROM documents AS d " .
         "LEFT JOIN categories AS c ON c.id = ctd.category_id WHERE " .
         "d.foreign_id = " . $db->qstr($pid);
 $result = $db->Execute($sql);
-if ($db->ErrorMsg()) echo $db->ErrorMsg();
+if ($db->ErrorMsg()) {
+    echo $db->ErrorMsg();
+}
+
 while ($result && !$result->EOF) {
     echo "<li class='bold'>";
     echo '<input type="checkbox" name="documents[]" value="' .
