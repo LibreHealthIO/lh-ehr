@@ -22,7 +22,7 @@
  * @author Jerry Padgett <sjpadgett@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
  
@@ -33,14 +33,16 @@ $ignoreAuth = true;
 require_once ( "../../../interface/globals.php" );
 require_once 'sigconvert.php';
 $errors = array ();
-$signer = filter_input( INPUT_POST, 'signer', FILTER_SANITIZE_STRING );
-$type = filter_input( INPUT_POST, 'type', FILTER_SANITIZE_STRING );
-$pid = filter_input( INPUT_POST, 'pid', FILTER_SANITIZE_STRING );
+$signer = filter_input(INPUT_POST, 'signer', FILTER_DEFAULT);
+$type = filter_input(INPUT_POST, 'type', FILTER_DEFAULT);
+$pid = filter_input(INPUT_POST, 'pid', FILTER_DEFAULT);
 $output = filter_input( INPUT_POST, 'output', FILTER_UNSAFE_RAW );
 $user = filter_input( INPUT_POST, 'user', FILTER_UNSAFE_RAW );
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' ){
-    if( $type == 'admin-signature' ) $signer = $user;
+    if ($type == 'admin-signature') {
+        $signer = $user;
+    }
 
     if( ! json_decode( $output ) ){
         exit();
@@ -100,8 +102,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ){
 
         $qstr = "UPDATE onsite_signatures SET pid=?,lastmod=?,status=?, user=?, signature=?, sig_hash=?, ip=?,sig_image=? WHERE pid=? && user=?";
             $rcnt = sqlStatement( $qstr, array($pid,$lastmod,$status,$user,$svgsig,$sig_hash,$ip,$image_data,$pid,$user) );
-        }
-        else{
+        } else{
             $qstr = "INSERT INTO onsite_signatures (pid,lastmod,status,type,user,signator, signature, sig_hash, ip, created, sig_image) VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
                 sqlStatement( $qstr, array($pid , $lastmod, $status,$type, $user, $signer, $svgsig, $sig_hash, $ip, $created, $image_data) );
         }

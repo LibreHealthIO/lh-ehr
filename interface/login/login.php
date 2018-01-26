@@ -150,6 +150,14 @@ include_once("$srcdir/sql.inc");
                                 </tr>
                             <?php endif; ?>
 
+                            <?php if (isset($_GET['loginfirst'])): ?>
+                                <tr>
+                                    <td colspan='2' class='text' style='color:red'>
+                                        <?php echo xlt('You have been logged out due to inactivity, or you have experienced an error. Please re-enter access credentials.'); ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+
                             <?php if (isset($_SESSION['relogin']) && ($_SESSION['relogin'] == 1)): ?>
                                 <tr>
                                     <td colspan='2' class='text'

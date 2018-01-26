@@ -283,18 +283,21 @@ input     { font-size:10pt; }
   <form method='post' name='theform' id='theform' action='edit_globals.php' onsubmit='return top.restoreSession()'>
 <?php } ?>
 
-<?php if ($_GET['mode'] == "user") { ?>
-  <p><b><?php echo xlt('Edit User Settings'); ?></b>
-<?php } else { ?>
-  <p><b><?php echo xlt('Edit Global Settings'); ?></b>
-<?php } ?>
-
+<div style="display:none">
+  <?php if ($_GET['mode'] == "user") { ?>
+    <p><b><?php echo xlt('Edit User Settings'); ?></b>
+  <?php } else { ?>
+    <p><b><?php echo xlt('Edit Global Settings'); ?></b>
+  <?php } ?>
+</div>
 <?php // mdsupport - Optional server based searching mechanism for large number of fields on this screen. ?>
-<span style='float: right;'>
-    <input name='srch_desc' size='20'
+<div style="float: right;">
+  <input type='submit' style="float: right;" name='form_search' value='<?php echo xla('Search'); ?>' />
+</div>
+<div style='float: right;'>
+    <input name='srch_desc' type="text" class="form-rounded form-control" size='20'
         value='<?php echo (!empty($_POST['srch_desc']) ? htmlspecialchars($_POST['srch_desc']) : '') ?>' />
-    <input type='submit' name='form_search' value='<?php echo xla('Search'); ?>' />
-</span>
+</div>
 
 <!--tabNav-->
 <ul class="tabNav">
@@ -309,7 +312,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 ?>
 </ul> 
 
-<div class="tabContainer well">
+<div class="tabContainer well" style="height: 75%; overflow: auto;">
 <?php
 $i = 0;
 foreach ($GLOBALS_METADATA as $grpname => $grparr) {

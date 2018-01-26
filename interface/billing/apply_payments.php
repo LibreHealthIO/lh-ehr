@@ -245,9 +245,15 @@ $today = date("Y-m-d");
     }
     $where = substr($where, 4);
   // need to only use summary invoice for multi visits
+
+
+if ($_POST['form_portalnotify']) {
   foreach ($_POST['form_invpids'] as $key => $v) {
-    $inv_pid[$key] = key($v);
+            if ($_POST['form_cb'][$key]) {
+                array_push($inv_pid, key($v));
   }
+        }
+    }
 
     $res = sqlStatement("SELECT " .
       "f.id, f.date, f.pid, f.encounter, f.stmt_count, f.last_stmt_date, f.last_level_closed, f.last_level_billed, f.billing_note as enc_billing_note, " .

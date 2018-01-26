@@ -28,7 +28,7 @@ use ESign\Api;
  * @author Terry Hill <teryhill@librehealth.io>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
 
@@ -75,8 +75,9 @@ $GLOBALS['PATIENT_REPORT_ACTIVE'] = true;
 $PDF_OUTPUT = empty($_POST['pdf']) ? 0 : intval($_POST['pdf']);
 
 if ($PDF_OUTPUT) {
-  require_once("$srcdir/html2pdf/vendor/autoload.php");
-  $pdf = new HTML2PDF ($GLOBALS['pdf_layout'],
+  require_once($GLOBALS['modules_dir'] . "html2pdf/vendor/autoload.php");
+    $pdf = new HTML2PDF(
+        $GLOBALS['pdf_layout'],
                        $GLOBALS['pdf_size'],
                        $GLOBALS['pdf_language'],
                        true, // default unicode setting is true
@@ -98,7 +99,10 @@ $auth_demo     = true; //acl_check('patients'  , 'demo');
 $esignApi = new Api();
 
 $printable = empty($_GET['printable']) ? false : true;
-if ($PDF_OUTPUT) { $printable = true; }
+if ($PDF_OUTPUT) {
+    $printable = true;
+}
+
 unset($_GET['printable']);
 
 // Number of columns in tables for insurance and encounter forms.
@@ -115,7 +119,10 @@ function getContent() {
   $wsrlen = strlen($webserver_root);
   while (true) {
     $i = stripos($content, " src='/", $i + 1);
-    if ($i === false) break;
+        if ($i === false) {
+            break;
+        }
+
     if (substr($content, $i+6, $wrlen) === $web_root &&
         substr($content, $i+6, $wsrlen) !== $webserver_root)
     {
@@ -179,7 +186,7 @@ input[type="checkbox"], input[type="radio"] {
 <?php if (!$PDF_OUTPUT) { ?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/ESign/css/esign_report.css" />
-<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-5-0/index.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-5/index.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/library/js/SearchHighlight.js"></script>
 <script type="text/javascript">var $j = jQuery.noConflict();</script>
 
@@ -490,8 +497,11 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
 <div id="report_custom" style="width:100%;">  <!-- large outer DIV -->
 
 <?php
-if (sizeof($_GET) > 0) { $ar = $_GET; }
-else { $ar = $_POST; }
+if (sizeof($_GET) > 0) {
+    $ar = $_GET;
+} else {
+    $ar = $_POST;
+}
 
 if ($printable) {
   /*******************************************************************
@@ -534,8 +544,7 @@ if ($printable) {
 
 <?php
 
-}
-else { // not printable
+} else { // not printable
 ?>
 
 <!-- old href was here
@@ -609,16 +618,19 @@ $inclookupres = sqlStatement("select distinct formdir from forms where pid = '$p
 while($result = sqlFetchArray($inclookupres)) {
   // include_once("{$GLOBALS['incdir']}/forms/" . $result{"formdir"} . "/report.php");
   $formdir = $result['formdir'];
-  if (substr($formdir,0,3) == 'LBF')
+  if (substr($formdir, 0, 3) == 'LBF') {
     include_once($GLOBALS['incdir'] . "/forms/LBF/report.php");
-  else
+  } else {
     include_once($GLOBALS['incdir'] . "/forms/$formdir/report.php");
+}
 }
 
 // For each form field from patient_report.php...
 //
 foreach ($ar as $key => $val) {
-    if ($key == 'pdf') continue;
+    if ($key == 'pdf') {
+        continue;
+    }
 
     // These are the top checkboxes (demographics, allergies, etc.).
     //
@@ -747,12 +759,10 @@ foreach ($ar as $key => $val) {
                   // Figure out which name to use (ie. from cvx list or from the custom list)
                   if ($GLOBALS['use_custom_immun_list']) {
                      $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
-                  }
-                  else {
+                  } else {
                      if (!empty($row['code_text_short'])) {
                         $vaccine_display = htmlspecialchars( xl($row['code_text_short']), ENT_NOQUOTES);
-                     }
-                     else {
+                     } else {
                         $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
                      }
                   }
@@ -807,16 +817,21 @@ foreach ($ar as $key => $val) {
             echo "<div class='text documents'>";
             foreach($val as $valkey => $valvalue) {
                 $document_id = $valvalue;
-                if (!is_numeric($document_id)) continue;
+                if (!is_numeric($document_id)) {
+                    continue;
+                }
+
                 $d = new Document($document_id);
                 $fname = basename($d->get_url());
                 $couch_docid = $d->get_couch_docid();
                 $couch_revid = $d->get_couch_revid();
                 $extension = substr($fname, strrpos($fname,"."));
                 echo "<h1>" . xl('Document') . " '" . $fname ."'</h1>";
-                $n = new Note();
-                $notes = $n->notes_factory($d->get_id());
-                if (!empty($notes)) echo "<table>";
+                $notes = $d->get_notes();
+                if (!empty($notes)) {
+                    echo "<table>";
+                }
+
                 foreach ($notes as $note) {
                     echo '<tr>';
                     echo '<td>' . xl('Note') . ' #' . $note->get_id() . '</td>';
@@ -828,7 +843,10 @@ foreach ($ar as $key => $val) {
                     echo '<td>'.$note->get_note().'<br><br></td>';
                     echo '</tr>';
                 }
-                if (!empty($notes)) echo "</table>";
+
+                if (!empty($notes)) {
+                    echo "</table>";
+                }
 
                 $url_file = $d->get_url_filepath();
                 if($couch_docid && $couch_revid){
@@ -847,8 +865,7 @@ foreach ($ar as $key => $val) {
                 if($couch_docid && $couch_revid) {
                   $from_file = $GLOBALS['OE_SITE_DIR'] . '/documents/temp/' . $from_filename;
                   $to_file = substr($from_file, 0, strrpos($from_file, '.')) . '_converted.jpg';
-                }
-                else {
+                } else {
                   $from_file = $GLOBALS["fileroot"] . "/sites/" . $_SESSION['site_id'] .
                     '/documents/' . $from_pathname . '/' . $from_filename;
                   $to_file = substr($from_file, 0, strrpos($from_file, '.')) . '_converted.jpg';
@@ -862,16 +879,17 @@ foreach ($ar as $key => $val) {
                     echo "<img src='$from_rel'";
                     // Flag images with excessive width for possible stylesheet action.
                     $asize = getimagesize($from_file);
-                    if ($asize[0] > 750) echo " class='bigimage'";
+                    if ($asize[0] > 750) {
+                        echo " class='bigimage'";
+                    }
+
                     echo " /><br><br>";
-                  }
-                  else {
+                    } else {
                     echo "<img src='" . $GLOBALS['webroot'] .
                       "/controller.php?document&retrieve&patient_id=&document_id=" .
                       $document_id . "&as_file=false'><br><br>";
                   }
-                }
-                else {
+                } else {
 
           // Most clinic documents are expected to be PDFs, and in that happy case
           // we can avoid the lengthy image conversion process.
@@ -892,16 +910,16 @@ foreach ($ar as $key => $val) {
             // Resume output buffering and the above-closed tags.
             ob_start();
             echo "<div><div class='text documents'>\n";
+          } else {
+              if (! is_file($to_file)) {
+                  exec("convert -density 200 \"$from_file\" -append -resize 850 \"$to_file\"");
           }
-          else {
-            if (! is_file($to_file)) exec("convert -density 200 \"$from_file\" -append -resize 850 \"$to_file\"");
             if (is_file($to_file)) {
               if ($PDF_OUTPUT) {
                 // OK to link to the image file because it will be accessed by the
                 // HTML2PDF parser and not the browser.
                 echo "<img src='$to_file'><br><br>";
-              }
-              else {
+              } else {
                 echo "<img src='" . $GLOBALS['webroot'] .
                   "/controller.php?document&retrieve&patient_id=&document_id=" .
                   $document_id . "&as_file=false&original_file=false'><br><br>";
@@ -935,9 +953,7 @@ foreach ($ar as $key => $val) {
             }
             echo "</div>";
           }
-        }
-
-        else if (strpos($key, "issue_") === 0) {
+        } else if (strpos($key, "issue_") === 0) {
             // display patient Issues
 
             if ($first_issue) {
@@ -1005,8 +1021,7 @@ foreach ($ar as $key => $val) {
                 if ($res[1] == 'newpatient') {
                     echo "<div class='text encounter'>\n";
                     echo "<h1>" . xl($formres["form_name"]) . "</h1>";
-                }
-                else {
+                } else {
                     echo "<div class='text encounter_form'>";
                     echo "<h1>" . xl_form_title($formres["form_name"]) . "</h1>";
                 }
@@ -1023,10 +1038,11 @@ foreach ($ar as $key => $val) {
                 ?>
                 <div name="search_div" id="search_div_<?php echo attr($form_id)?>_<?php echo attr($res[1])?>" class="report_search_div class_<?php echo attr($res[1]); ?>">
                 <?php
-                if (substr($res[1],0,3) == 'LBF')
+                if (substr($res[1], 0, 3) == 'LBF') {
                   call_user_func("lbf_report", $pid, $form_encounter, $N, $form_id, $res[1]);
-                else
+                } else {
                   call_user_func($res[1] . "_report", $pid, $form_encounter, $N, $form_id);
+                }
 
                 $esign = $esignApi->createFormESign( $formId, $res[1], $form_encounter );
                 if ( $esign->isLogViewable("report") ) {
@@ -1039,7 +1055,8 @@ foreach ($ar as $key => $val) {
 
                 if ($res[1] == 'newpatient') {
                     // display billing info
-                    $bres = sqlStatement("SELECT b.date, b.code, b.code_text " .
+                    $bres = sqlStatement(
+                      "SELECT b.date, b.code, b.code_text " .
                       "FROM billing AS b, code_types AS ct WHERE " .
                       "b.pid = ? AND " .
                       "b.encounter = ? AND " .
@@ -1064,8 +1081,9 @@ foreach ($ar as $key => $val) {
 
 } // end $ar loop
 
-if ($printable)
+if ($printable) {
   echo "<br /><br />" . xl('Signature') . ": _______________________________<br />";
+}
 ?>
 
 </div> <!-- end of report_custom DIV -->
@@ -1078,8 +1096,7 @@ if ($PDF_OUTPUT) {
   if ($PDF_OUTPUT == 1) {
     $pdf->Output('report.pdf', $GLOBALS['pdf_output']); // D = Download, I = Inline
   }
-}
-else {
+} else {
 ?>
 </body>
 </html>

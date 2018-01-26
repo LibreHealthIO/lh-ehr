@@ -48,10 +48,22 @@ class PortalPatientController extends AppBaseController{
      */
     public function ListView(){
         $rid = $pid = $user = $encounter = 0;
-        if( isset( $_GET['id'] ) ) $rid = ( int ) $_GET['id'];
-        if( isset( $_GET['pid'] ) ) $pid = ( int ) $_GET['pid'];
-        if( isset( $_GET['user'] ) ) $user = $_GET['user'];
-        if( isset( $_GET['enc'] ) ) $encounter = $_GET['enc'];
+        if (isset($_GET['id'])) {
+            $rid = ( int ) $_GET['id'];
+        }
+
+        if (isset($_GET['pid'])) {
+            $pid = ( int ) $_GET['pid'];
+        }
+
+        if (isset($_GET['user'])) {
+            $user = $_GET['user'];
+        }
+
+        if (isset($_GET['enc'])) {
+            $encounter = $_GET['enc'];
+        }
+
         $this->Assign( 'recid', $rid );
         $this->Assign( 'cpid', $pid );
         $this->Assign( 'cuser', $user );
@@ -73,7 +85,9 @@ class PortalPatientController extends AppBaseController{
             // if a sort order was specified then specify in the criteria
             $output->orderBy = RequestUtil::Get( 'orderBy' );
             $output->orderDesc = RequestUtil::Get( 'orderDesc' ) != '';
-            if( $output->orderBy ) $criteria->SetOrder( $output->orderBy, $output->orderDesc );
+            if ($output->orderBy) {
+                $criteria->SetOrder($output->orderBy, $output->orderDesc);
+            }
 
             $page = RequestUtil::Get( 'page' );
 
@@ -102,7 +116,7 @@ class PortalPatientController extends AppBaseController{
             $appsql = new ApplicationTable();
             $edata = $appsql->getPortalAudit( $ppid, 'review' );
             $changed = unserialize( $edata['table_args'] );
-            $newv = Array ();
+            $newv = array ();
             foreach( $changed as $key => $val ){
                 $newv[lcfirst( ucwords( preg_replace_callback( "/(\_(.))/", create_function( '$matches', 'return strtoupper($matches[2]);' ), strtolower( $key ) ) ) )] = $val;
             }
@@ -120,7 +134,9 @@ class PortalPatientController extends AppBaseController{
 
             $json = json_decode( RequestUtil::GetBody() );
 
-            if( ! $json ){throw new Exception( 'The request body does not contain valid JSON' );}
+            if (! $json) {
+                throw new Exception('The request body does not contain valid JSON');
+            }
 
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $patient = $this->Phreezer->Get( 'Patient', $pk );
@@ -212,7 +228,7 @@ class PortalPatientController extends AppBaseController{
         $ja = $p->GetArray();
         $ja['note'] = $p->Note;
         try{
-            $audit = Array ();
+            $audit = array ();
             // date("Y-m-d H:i:s");
             $audit['patient_id'] = $ja['pid'];
             $audit['activity'] = "profile";
@@ -229,8 +245,9 @@ class PortalPatientController extends AppBaseController{
 
             $edata = $appsql->getPortalAudit( $ja['pid'], 'review' );
             $audit['date'] = $edata['date'];
-            if( $edata['id'] > 0 ) $appsql->portalAudit( 'update', $edata['id'], $audit );
-            else{
+            if ($edata['id'] > 0) {
+                $appsql->portalAudit('update', $edata['id'], $audit);
+            } else {
                 $appsql->portalAudit( 'insert', '', $audit );
             }
         } catch( Exception $ex ){

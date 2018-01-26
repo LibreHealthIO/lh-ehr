@@ -34,40 +34,38 @@ include_once("$srcdir/api.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formsoptions.inc.php");
+require_once("$srcdir/headers.inc.php");
 
-formHeader("Form:Clinical Instructions Form");
+formHeader("Clinical Instructions Form");
 $returnurl = 'encounter_top.php';
 $form_name = 'form_clinical_instructions';
 $formid = 0 + (isset($_GET['id']) ? $_GET['id'] : '');
 if (empty($formid)) {
-        $formid = checkFormIsActive($form_name,$encounter);
+    $formid = checkFormIsActive($form_name,$encounter);
 }
 $check_res = $formid ? formFetch("form_clinical_instructions", $formid) : array();
 ?>
 <html>
     <head>
         <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
+        <?php call_required_libraries(['bootstrap']); ?>
     </head>
     <body class="body_top">
-        <p><span class="forms-title"><?php echo xlt('Clinical Instructions Form'); ?></span></p>
-        </br>
+        <h2><?php echo xlt('Clinical Instructions Form'); ?></h2>
+        <h3><?php echo xlt('Instructions').':'; ?></h3>
+
+        <!-- Begin form -->
         <?php echo "<form method='post' name='my_form' " . "action='$rootdir/forms/clinical_instructions/save.php?id=" . attr($formid) . "'>\n"; ?>
-        <table style="">
-            <tr id="">
-                <td>
-                    <label>
-                        <?php echo xlt('Instructions').':'; ?>
-                    </label>
-                </td>
-                <td>
-                    <textarea name="instruction" id ="instruction" style="width:500px;height:100px;"><?php echo text($check_res['instruction']); ?></textarea>
-                </td>
-                <td>
-                    <input type='submit'  value='<?php echo xla('Save'); ?>' class="button-css">&nbsp; 
-                </td>
-            </tr>
-        </table>
-    </form>    
+            <div class="container" style="width: 500px; float: left;">
+                <textarea class="form-control" name="instruction" id ="instruction" rows=3>
+                    <?php echo text($check_res['instruction']); ?>
+                </textarea>
+                <br/>
+                <input type='submit' value='<?php echo xla('Save'); ?>' class="button-css" style="float: right">&nbsp;
+            </div>
+
+        </form>
+    <!-- formFooter() closes body and html tags -->
     <?php
     formFooter();
     ?>

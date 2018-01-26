@@ -48,7 +48,6 @@
         </form>
         </div>
 </h1>
-<!--
     <!-- underscore template for the collection -->
     <script type="text/template" id="onsitePortalActivityCollectionTemplate">
         <table class="collection table table-bordered table-hover">
@@ -98,7 +97,6 @@
 
         <%=  view.getPaginationHtml(page) %>
     </script>
--->
     <!-- underscore template for the model -->
     <script type="text/template" id="onsitePortalActivityModelTemplate">
         <form class="form-inline" onsubmit="return false;">
