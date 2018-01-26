@@ -70,7 +70,9 @@ class OnsitePortalActivityController extends AppBaseController
             // if a sort order was specified then specify in the criteria
             $output->orderBy = RequestUtil::Get('orderBy');
             $output->orderDesc = RequestUtil::Get('orderDesc') != '';
-            if ($output->orderBy) $criteria->SetOrder($output->orderBy, $output->orderDesc);
+            if ($output->orderBy) {
+                $criteria->SetOrder($output->orderBy, $output->orderDesc);
+            }
 
             $page = RequestUtil::Get('page');
 
@@ -85,9 +87,7 @@ class OnsitePortalActivityController extends AppBaseController
                 $output->totalPages = $onsiteportalactivities->TotalPages;
                 $output->pageSize = $onsiteportalactivities->PageSize;
                 $output->currentPage = $onsiteportalactivities->CurrentPage;
-            }
-            else
-            {
+            } else {
                 // return all results
                 $onsiteportalactivities = $this->Phreezer->Query('OnsitePortalActivity',$criteria);
                 $output->rows = $onsiteportalactivities->ToObjectArray(true, $this->SimpleObjectParams());
@@ -165,9 +165,7 @@ class OnsitePortalActivityController extends AppBaseController
             if (count($errors) > 0)
             {
                 $this->RenderErrorJSON('Please check the form for errors',$errors);
-            }
-            else
-            {
+            } else {
                 $onsiteportalactivity->Save();
                 $this->RenderJSON($onsiteportalactivity, $this->JSONPCallback(), true, $this->SimpleObjectParams());
             }
@@ -222,9 +220,7 @@ class OnsitePortalActivityController extends AppBaseController
             if (count($errors) > 0)
             {
                 $this->RenderErrorJSON('Please check the form for errors',$errors);
-            }
-            else
-            {
+            } else {
                 $onsiteportalactivity->Save();
                 $this->RenderJSON($onsiteportalactivity, $this->JSONPCallback(), true, $this->SimpleObjectParams());
             }

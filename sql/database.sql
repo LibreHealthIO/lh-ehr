@@ -221,7 +221,7 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` VALUES (1, 'Categories', '', 0, 0, 25);
+INSERT INTO `categories` VALUES (1, 'Categories', '', 0, 0, 31);
 INSERT INTO `categories` VALUES (2, 'Lab Report', '', 1, 1, 2);
 INSERT INTO `categories` VALUES (3, 'Medical Record', '', 1, 3, 4);
 INSERT INTO `categories` VALUES (4, 'Patient Information', '', 1, 5, 10);
@@ -234,6 +234,9 @@ INSERT INTO `categories` VALUES (10, 'Patient Photograph', '', 4, 8, 9);
 INSERT INTO `categories` VALUES (11, 'CCR', '', 1, 19, 20);
 INSERT INTO `categories` VALUES (12, 'CCD', '', 1, 21, 22);
 INSERT INTO `categories` VALUES (13, 'CCDA', '', 1, 23, 24);
+INSERT INTO `categories` VALUES (14, 'Onsite Portal', '', 1, 25, 30);
+INSERT INTO `categories` VALUES (15, 'Patient', '', 14, 26, 27);
+INSERT INTO `categories` VALUES (16, 'Reviewed', '', 14, 28, 29);
 
 
 --
@@ -250,7 +253,7 @@ CREATE TABLE `categories_seq` (
 -- Dumping data for table `categories_seq`
 --
 
-INSERT INTO `categories_seq` VALUES (13);
+INSERT INTO `categories_seq` VALUES (16);
 
 
 --

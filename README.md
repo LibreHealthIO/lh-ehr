@@ -27,7 +27,7 @@ Code contributions are very welcome! Browse the [Issue tracker](https://github.c
 
 For detailed and step-by-step Installation Instructions refer to [Installation Instructions](/INSTALL.md)
 
-## Windows :: 
+## Windows : 
 
 First off, make sure that you have the [WAMP](http://www.wampserver.com/en/) or [XAMPP](https://www.apachefriends.org/index.html) server installed and that the time zone is set correctly.
 

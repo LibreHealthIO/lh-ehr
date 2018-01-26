@@ -13,7 +13,7 @@
  * @author Jerry Padgett <sjpadgett@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
 
@@ -50,8 +50,9 @@ define('C_USER', IS_PORTAL ?  IS_PORTAL : IS_DASHBOARD);
 if(isset($_REQUEST['fullscreen'])){
     $_SESSION['whereto'] = 'messagespanel';
     define('IS_FULLSCREEN', true);
+} else {
+    define('IS_FULLSCREEN', false);
 }
-else define('IS_FULLSCREEN', false);
 
 define('CHAT_HISTORY',      '150');
 define('CHAT_ONLINE_RANGE', '1');
@@ -279,12 +280,16 @@ class Model extends SMA_Common\Model
         while($row = sqlFetchArray($response)) {
             if(IS_PORTAL){
                 $u = json_decode( $row['recip_id'], true );
-              if(!is_array($u)) continue;
+                if (!is_array($u)) {
+                    continue;
+                }
+
                 if( (in_array(C_USER,$u)) || $row['sender_id'] == C_USER ){
                       $result[] = $row; // only current patient messages
                 }
+            } else {
+                $result[] = $row; // admin gets all
             }
-            else $result[] = $row; // admin gets all
         }
         return $result;
     }
@@ -374,10 +379,11 @@ class Controller extends SMA_Common\Controller
         $this->setCookie('username', $username, 9999 * 9999);
         $recipid = $this->getPost('recip_id');
 
-        if(IS_PORTAL)
+        if (IS_PORTAL) {
             $senderid = IS_PORTAL;
-            else
+        } else {
                 $senderid = IS_DASHBOARD;
+        }
 
         $result = array('success' => false);
         if ($username && $message) {
@@ -403,11 +409,12 @@ class Controller extends SMA_Common\Controller
 
     private function _parseAdminCommand($message)
     {
-        if (strpos($message,'/clear') !== FALSE) {
+        if (strpos($message, '/clear') !== false) {
             $this->getModel()->removeMessages();
             return true;
         }
-        if (strpos($message,'/online') !== FALSE) {
+
+        if (strpos($message, '/online') !== false) {
             $online = $this->getModel()->getOnline(false);
             $ipArr = array();
             foreach ($online as $item) {
@@ -438,10 +445,13 @@ class Controller extends SMA_Common\Controller
             $this->setHeader(array('Content-Type' => 'application/json'));
             return json_encode($onlines);
         }
-        if(IS_PORTAL)
+
+        if (IS_PORTAL) {
             $userid = IS_PORTAL;
-        else
+        } else {
             $userid = IS_DASHBOARD;
+        }
+
         $this->getModel()->updateOnline($hash, $ip, $user, $userid);
         $this->getModel()->clearOffline();
        // $this->getModel()->removeOldMessages(); // @todo For soft delete when I decide. DO NOT REMOVE
@@ -502,6 +512,18 @@ $msgApp = new Controller();
             });
         };
     });
+    MsgApp.directive('tooltip', function(e){
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs){
+                $(element).hover(function(){
+                    $(element).tooltip('show');
+                }, function(){
+                    $(element).tooltip('hide');
+                });
+            }
+        };
+    });
     MsgApp.filter('unique', function() {
        return function(collection, keyname) {
           var output = [],
@@ -534,6 +556,7 @@ $msgApp = new Controller();
         $scope.historyFromId = null;
         $scope.onlines = []; // all online users id and ip's
         $scope.user = "<?php echo $_SESSION['ptName'] ? $_SESSION['ptName'] : $_SESSION['authUser'];?>" // current user - dashboard user is from session authUserID
+        $scope.userid = "<?php echo IS_PORTAL ? $_SESSION['pid'] : $_SESSION['authUserID'];?>"
         $scope.isPortal = "<?php echo IS_PORTAL;?>" ;
         $scope.isFullScreen = "<?php echo IS_FULLSCREEN; ?>";
         $scope.pusers = []; // selected recipients for chat
@@ -541,18 +564,28 @@ $msgApp = new Controller();
         $scope.me = {
             username: $scope.user,
             message: null,
-            sender_id: 0,
+            sender_id: $scope.userid,
             recip_id: 0
+        };
+        $scope.options =  {
+            height: 200,
+            focus: true,
+            placeholder: 'Start typing your message...',
+            //direction: 'rtl',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link','picture', 'video', 'hr']],
+                ['view', ['fullscreen', 'codeview']]
+            ]
         };
 
        $scope.checkAll = function() {
            $scope.pusers = [];
            $scope.pusers = $scope.chatusers.map(function(item) { return item.recip_id; });
            $scope.getAuthUsers();
-           /* $scope.pusers = [];
-           angular.forEach($filter('unique')($scope.chatusers, "recip_id"), function (m, k) {
-               $scope.pusers.push(m.recip_id);
-           }); */
          };
         $scope.uncheckAll = function() {
             $scope.pusers = [];
@@ -589,7 +622,7 @@ $msgApp = new Controller();
         };
 
         $scope.editmsg = function() {
-            $('.summernote').summernote({focus: true});
+            $('.summernote').summernote();
         };
 
         $scope.saveedit = function() {
@@ -597,7 +630,7 @@ $msgApp = new Controller();
             $scope.me.message = makrup;
             $scope.saveMessage();
             $('.summernote').summernote('code', ''); //add this options to reset editor or not-default is persistant content
-            $('.summernote').summernote('destroy');
+            //$('.summernote').summernote('destroy');
         };
 
         $scope.saveMessage = function(form, callback) {
@@ -706,7 +739,6 @@ $msgApp = new Controller();
         $scope.pingServer = function(msgItem) {
             return $http.post($scope.urlListOnlines+'&username='+$scope.user, {}).success(function(data) {
                 $scope.online = data;
-                //$scope.getOnlines();
             });
 
         };
@@ -745,8 +777,7 @@ $msgApp = new Controller();
 
         $scope.openModal = function(e) {
             var mi = $('#popeditor').modal({backdrop: "static"});
-           // $('.summernote').summernote({focus: true});
-           $scope.editmsg();
+           //$scope.editmsg();
         };
 
         $scope.playAudio = function() {
@@ -874,14 +905,16 @@ input,button,.alert,.modal-content {
     margin-left:5px;
 }
 .sidebar{
-    background-color:ghostwhite;
+    background-color: lightgrey;
     height:100%;
     margin-top:5px;
     margin-right:0;
     padding-right:5px;
+    max-height: 530px;
+    overflow: auto;
 }
 .rtsidebar{
-    background-color:ghostwhite;
+    background-color: lightgrey;
     height:100%;
     margin-top:5px;
     margin-right:0;
@@ -892,7 +925,7 @@ input,button,.alert,.modal-content {
 }
 label {display: block;}
 legend{
-font-size:16px;
+font-size:14px;
 margin-bottom:2px;
 background:#fff;
 }
@@ -909,12 +942,11 @@ background:#fff;
         <!-- <h2 class="hidden-xs">Secure Chat</h2> -->
         <div class="row">
             <div class="col-md-2 sidebar">
-                <h4><span class="label label-danger"><?php echo xlt('Send to Recipients'); ?></span></h4>
-
-                <label ng-repeat="user in chatusers | unique : 'username'" ng-if="pusers.indexOf(user.recip_id) !== -1">
+                <h4><span class="label label-danger"><?php echo xlt('In Current Chat'); ?></span></h4>
+                <label ng-repeat="user in chatusers | unique : 'username'" ng-if="pusers.indexOf(user.recip_id) !== -1 && user.recip_id != me.sender_id">
                     <input type="checkbox" data-checklist-model="pusers" data-checklist-value="user.recip_id"> {{user.username}}
                 </label>
-                <h4><span class="label label-danger"><?php echo xlt('Authorized Recipients'); ?></span></h4>
+                <h4><span class="label label-warning"><?php echo xlt('Authorized Users'); ?></span></h4>
                 <span>
                     <button id="chkall" class="btn btn-xs btn-success" ng-show="!isPortal" ng-click="checkAll()" type="button"><?php echo xlt('All'); ?></button>
                     <button id="chknone" class="btn btn-xs btn-success" ng-show="!isPortal" ng-click="uncheckAll()" type="button"><?php echo xlt('None'); ?></button>
@@ -929,8 +961,8 @@ background:#fff;
                         <div class="clearfix">
                             <a class="btn btn-sm btn-primary pull-right ml10" href=""
                                 data-toggle="modal" data-target="#clear-history"><?php echo xlt('Clear history'); ?></a>
-                             <a class="btn btn-sm btn-success pull-left ml10" href="./../patient/provider" ng-show="!isPortal"><?php echo xlt('Home Please'); ?></a>
-                             <a class="btn btn-sm btn-success pull-left ml10" href="./../home.php" ng-show="isFullScreen"><?php echo xlt('Home Please'); ?></a>
+                            <a class="btn btn-sm btn-success pull-left ml10" href="./../patient/provider" ng-show="!isPortal"><?php echo xlt('Home'); ?></a>
+                            <a class="btn btn-sm btn-success pull-left ml10" href="./../home.php" ng-show="isFullScreen"><?php echo xlt('Home'); ?></a>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -949,7 +981,7 @@ background:#fff;
                                     src="<?php echo $GLOBALS['images_path']; ?>/favicon-32x32.png"
                                     alt="">
                                 <div class="direct-chat-text right">
-                                    <div style="padding-left: 0px; padding-right: 0px;" ng-click="makeCurrent(message)" ng-bind-html=renderMessageBody(message.message)></div>
+                                    <div style="padding-left: 0px; padding-right: 0px;" title="<?php echo xlt('Click to make chat this current  recipient only...'); ?>" ng-click="makeCurrent(message)" ng-bind-html=renderMessageBody(message.message)></div>
                                 </div>
                             </div>
                         </div>
@@ -962,15 +994,12 @@ background:#fff;
                                         <button type="button" class="btn btn-success btn-flat" ng-click="openModal(event)"><?php echo xlt('Edit'); ?></button>
                                     </span>
                                 </div>
-                                <!--<button id="edit" class="btn btn-xs btn-primary" ng-click="editmsg()" type="button">?php echo xlt('Image'); ?></button>
-                                <button id="save" class="btn btn-xs btn-primary" ng-click="saveedit()" type="button">?php echo xlt('Save'); ?></button>
-                                 <pre>{{pusers|json}}</pre> <pre>{{messages|json}}</pre>-->
                             </form>
                         </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-2 sidebar">
+        <div class="col-md-2 rtsidebar">
                 <h4><span class="label label-info"><?php echo xlt('Online'); ?> : {{ online.total || '0' }}</span></h4>
                 <label ng-repeat="ol in onlines | unique : 'username'">
                     <input type="checkbox" data-checklist-model="onlines" data-checklist-value="ol"> {{ol.username}}
@@ -990,7 +1019,7 @@ background:#fff;
                         <h4 class="modal-title"><?php echo xlt('Style your messsage and/or add Image/Video'); ?></h4>
                     </div>
                     <div class="modal-body">
-                        <summernote focus height="200"></summernote>
+                        <summernote config="options"></summernote>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm" data-dismiss="modal"><?php echo xlt('Dismiss'); ?></button>

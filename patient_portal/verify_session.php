@@ -31,7 +31,7 @@
  * Moved out of individual get_* portal functions for re-use by
  * Kevin Yeh (kevin.y@integralemr.com) May 2013
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
  
@@ -53,14 +53,13 @@
     // kick out if patient not authenticated
     if ( isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite']) ) {
     $pid = $_SESSION['pid'];
-    }
-    else {
+} else {
             session_destroy();
     header('Location: '.$landingpage.'&w');
             exit;
     }
     //
 
-    $ignoreAuth=true; // ignore the standard authentication for a regular LibreEHR user
+    $ignoreAuth=true; // ignore the standard authentication for a regular LibreHealth EHR user
     require_once(dirname(__file__) . './../interface/globals.php');
 ?>

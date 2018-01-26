@@ -66,8 +66,7 @@ $landingpage = "index.php?site=".$_SESSION['site_id'];
 // kick out if patient not authenticated
 if ( isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite']) ) {
   $pid = $_SESSION['pid'];
-}
-else {
+} else {
   session_destroy();
   header('Location: '.$landingpage.'&w');
   exit;
@@ -77,13 +76,13 @@ else {
 $ignoreAuth = 1;
 global $ignoreAuth;
 
- include_once("../interface/globals.php");
- include_once("$srcdir/patient.inc");
- include_once("$srcdir/forms.inc");
+require_once("../interface/globals.php");
+require_once("$srcdir/patient.inc");
+require_once("$srcdir/forms.inc");
 
- // Exit if the modify calendar for portal flag is not set
+ // Exit if the modify calendar for portal flag is not set-pulled Temporarily
  /* if (!($GLOBALS['portal_onsite_appt_modify'])) {
-   echo htmlspecialchars( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
+   echo add_escape_custom( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
    exit;
  } */
 
@@ -95,20 +94,26 @@ global $ignoreAuth;
  $default_catid = $_GET['catid'] ? $_GET['catid'] : '5';
  $patientid     = $_GET['patid'];
  //
- if ($date)
+
+if ($date) {
   $date = substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6);
- else
+} else {
   $date = date("Y-m-d");
+}
+
  //
  $starttimem = '00';
- if (isset($_GET['starttimem']))
+if (isset($_GET['starttimem'])) {
   $starttimem = substr('00' . $_GET['starttimem'], -2);
+}
+
  //
  if (isset($_GET['starttimeh'])) {
   $starttimeh = $_GET['starttimeh'];
   if (isset($_GET['startampm'])) {
-   if ($_GET['startampm'] == '2' && $starttimeh < 12)
+     if ($_GET['startampm'] == '2' && $starttimeh < 12) {
     $starttimeh += 12;
+  }
   }
  } else {
   $starttimeh = date("G");
@@ -192,10 +197,8 @@ if (!is_array($_POST['form_provider'])) {
     "1, " .
     "1," .(int)$_POST['facility']. ")"); // FF stuff
   } // INSERT single
-            }
 
- else
- {
+  } else {
 # appointment was edited and re-saved
             sqlStatement("UPDATE libreehr_postcalendar_events SET " .
             "pc_catid = '"       . add_escape_custom($_POST['form_category'])             . "', " .
@@ -301,9 +304,10 @@ if (!is_array($_POST['form_provider'])) {
    $repeatfreq = $matches[1];
   }
   $hometext = $row['pc_hometext'];
-  if (substr($hometext, 0, 6) == ':text:') $hometext = substr($hometext, 6);
+    if (substr($hometext, 0, 6) == ':text:') {
+        $hometext = substr($hometext, 6);
  }
- else {
+} else {
   $patientid=$_GET['pid'];
  }
 
@@ -312,8 +316,13 @@ if (!is_array($_POST['form_provider'])) {
   $prow = sqlQuery("SELECT lname, fname, phone_home, phone_biz, DOB " .
    "FROM patient_data WHERE pid = ?", array($patientid) );
   $patientname = $prow['lname'] . ", " . $prow['fname'];
-  if ($prow['phone_home']) $patienttitle .= " H=" . $prow['phone_home'];
-  if ($prow['phone_biz']) $patienttitle  .= " W=" . $prow['phone_biz'];
+    if ($prow['phone_home']) {
+        $patienttitle .= " H=" . $prow['phone_home'];
+    }
+
+    if ($prow['phone_biz']) {
+        $patienttitle  .= " W=" . $prow['phone_biz'];
+ }
  }
 
  // Get the providers list.
@@ -338,7 +347,9 @@ if (!is_array($_POST['form_provider'])) {
  $startampm = '1';
  if ($starttimeh >= 12) { // p.m. starts at noon and not 12:01
   $startampm = '2';
-  if ($starttimeh > 12) $starttimeh -= 12;
+    if ($starttimeh > 12) {
+        $starttimeh -= 12;
+ }
  }
 
 ?>
@@ -379,7 +390,9 @@ if (!is_array($_POST['form_provider'])) {
   // echo " rectypes[" . $crow['pc_catid'] . "] = " . $crow['pc_recurrtype'] . "\n";
   $catoptions .= "    <option value='" . attr($crow['pc_catid']) . "'";
   if ($eid) {
-   if ($crow['pc_catid'] == $row['pc_catid']) $catoptions .= " selected";
+        if ($crow['pc_catid'] == $row['pc_catid']) {
+            $catoptions .= " selected";
+        }
   } else {
    if ($crow['pc_catid'] == $default_catid) {
     $catoptions .= " selected";
@@ -392,11 +405,13 @@ if (!is_array($_POST['form_provider'])) {
   if ($duration) {
    $prefcat_options .= "    <option value='" . $crow['pc_catid'] . "'";
    if ($eid) {
-    if ($crow['pc_catid'] == $row['pc_prefcatid']) $prefcat_options .= " selected";
+            if ($crow['pc_catid'] == $row['pc_prefcatid']) {
+                $prefcat_options .= " selected";
    }
    $prefcat_options .= ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
   }
 
+ }
  }
 ?>
 

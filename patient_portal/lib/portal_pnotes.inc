@@ -14,19 +14,32 @@
  * @author Jerry Padgett <sjpadgett@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 
 require_once("$srcdir/pnotes.inc");
 
-function addPortalMailboxPnote($pid, $newtext, $authorized = '0', $activity = '1',
-        $title='Unassigned', $assigned_to = '', $datetime = '', $message_status = "New",$master_note = '0')
-{
-    if (empty($datetime)) $datetime = date('Y-m-d H:i:s');
+function addPortalMailboxPnote(
+    $pid,
+    $newtext,
+    $authorized = '0',
+    $activity = '1',
+    $title = 'Unassigned',
+    $assigned_to = '',
+    $datetime = '',
+    $message_status = "New",
+    $master_note = '0'
+) {
+
+    if (empty($datetime)) {
+        $datetime = date('Y-m-d H:i:s');
+    }
 
     // make inactive if set as Done
-    if ($message_status == "Done") $activity = 0;
+    if ($message_status == "Done") {
+        $activity = 0;
+    }
     
     $user = $_SESSION['authUser']?$_SESSION['authUser']:$pid;
     
@@ -37,9 +50,11 @@ function addPortalMailboxPnote($pid, $newtext, $authorized = '0', $activity = '1
     
     $body = $newtext;
 
-    return sqlInsert("INSERT INTO pnotes (date, body, pid, user, groupname, " .
+    return sqlInsert(
+        "INSERT INTO pnotes (date, body, pid, user, groupname, " .
             "authorized, activity, title, assigned_to, message_status, portal_relation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            array($datetime, $body, $pid, $user, 'Default', $authorized, $activity, $title, $assigned_to, $message_status,$master_note) );
+        array($datetime, $body, $pid, $user, 'Default', $authorized, $activity, $title, $assigned_to, $message_status,$master_note)
+    );
 }
 
 function getPortalPatientNotes($pid = '', $limit = '', $offset = 0, $search = '')
@@ -157,12 +172,12 @@ function updatePortalPnoteMessageStatus($id, $message_status)
 {
     if ($message_status == "Done") {
         sqlStatement("update pnotes set message_status = ?, activity = '0' where id = ?", array($message_status, $id) );
-    }
-    else {
+    } else {
         sqlStatement("update pnotes set message_status = ?, activity = '1' where id = ?", array($message_status, $id) );
     }
 }
-function getMails($pid,$dotype,$nsrch,$nfsrch){
+function getMails($pid, $dotype, $nsrch, $nfsrch)
+{
 
     if($pid){
         if($dotype == "inbox"){
@@ -189,7 +204,8 @@ function getMails($pid,$dotype,$nsrch,$nfsrch){
     }
 }
 
-function getMailDetails($id){
+function getMailDetails($id)
+{
     if($pid){
         $result = getPnoteById($id);
         if($result['assigned_to'] == '-patient-' && $result['message_status'] == 'New'){
@@ -201,7 +217,8 @@ function getMailDetails($id){
     }
 }
 
-function sendMail($pid,$note,$title='Unassigned',$to, $noteid){
+function sendMail($pid, $note, $title = 'Unassigned', $to, $noteid)
+{
     if($pid){
         addPortalMailboxPnote($pid,$note,'1','1',$title,$to,'','New',$noteid);
         return 1;
@@ -211,7 +228,8 @@ function sendMail($pid,$note,$title='Unassigned',$to, $noteid){
 }
 
 
-function updateStatus($id,$status){
+function updateStatus($id, $status)
+{
     if($pid){
         updatePortalPnoteMessageStatus($id,$status);
     }else{

@@ -865,7 +865,8 @@
         "children" : [ ],
         "requirement" : 0,
         "global_req" : "!disable_chart_tracker"
-    }, { 
+
+    }, {
         "label" : "BatchCom",
         "menu_id" : "adm0",
         "target" : "msc",
