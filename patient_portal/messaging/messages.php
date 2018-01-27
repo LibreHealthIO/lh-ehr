@@ -1,5 +1,5 @@
 <?php
-/**
+/** 
  *
  * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
  *
@@ -160,7 +160,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
         }
         return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
     };
-
+    
     // filter the items
     $scope.search = function () {
         $scope.filteredItems = $filter('filter')($scope.items, function (item) {
@@ -174,12 +174,12 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
         // now group by pages
         $scope.groupToPages();
     };
-
+    
     // calculate page in place
     $scope.groupToPages = function () {
         $scope.selected = null;
         $scope.pagedItems = [];
-
+        
         for (var i = 0; i < $scope.filteredItems.length; i++) {
           if (i % $scope.itemsPerPage === 0) {
             $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [ $scope.filteredItems[i] ];
@@ -188,7 +188,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
           }
         }
     };
-
+    
     $scope.range = function (start, end) {
         var ret = [];
         if (!end) {
@@ -200,37 +200,39 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
         }
         return ret;
     };
-
+    
     $scope.prevPage = function () {
         if ($scope.currentPage > 0) {
             $scope.currentPage--;
         }
         return false;
     };
-
+    
     $scope.nextPage = function () {
         if ($scope.currentPage < $scope.pagedItems.length - 1) {
             $scope.currentPage++;
         }
         return false;
     };
-
+    
     $scope.setPage = function () {
         $scope.currentPage = this.n;
     };
-
+    
     $scope.deleteItem = function (idx) {
-            if( !confirm($scope.xLate.confirm.one) ) return false;
-            var itemToDelete = $scope.allItems[idx];
+
+    if( !confirm($scope.xLate.confirm.one) ) return false;
+    var itemToDelete = $scope.allItems[idx];
+
         var idxInItems = $scope.items.indexOf(itemToDelete);
             $scope.deleteMessage(itemToDelete.mail_chain); // Just this user's message
         $scope.items.splice(idxInItems,1);
         $scope.search();
-            $scope.init()
+        $scope.init()
 
         return false;
     };
-
+        
         $scope.batchDelete = function ( i ) {
             if( !confirm($scope.xLate.confirm.all) ) return false;
             var itemToDelete = [];
@@ -249,14 +251,15 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
         };
 
         $scope.deleteMessage = function (id){
+
             $http.post('handle_note.php', $.param( {'task':'delete','noteid':id} ))
             .success(function(data, status, headers, config) {
                 return true;
             }).error(function(data, status, headers, config) {
                 alert(data);
             });
-        };
-
+        };      
+    
     $scope.isMessageSelected = function () {
         if (typeof $scope.selected!=="undefined" && $scope.selected!==null) {
             return true;
@@ -265,14 +268,14 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
             return false;
         }
     };
-    $scope.isSentSelected = function () {
+    $scope.isSentSelected = function () { 
             $scope.isSent = true; $scope.isTrash = $scope.isAll = $scope.isInbox = false;
             $scope.items = [];
         $scope.items = $scope.sentItems;
         $scope.search();
         return true;
     }
-
+        
         $scope.isTrashSelected = function () {
             $scope.isTrash = true; $scope.isSent = $scope.isAll = $scope.isInbox = false;
             $scope.items = [];
@@ -280,14 +283,14 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
             $scope.search();
             return true;
         }
-
-    $scope.isInboxSelected = function () {
+        
+    $scope.isInboxSelected = function () { 
             $scope.isInbox = true; $scope.isTrash = $scope.isAll = $scope.isSent = false;
         $scope.items = $scope.inboxItems;
         $scope.search();
         return true;
     }
-    $scope.isAllSelected = function () {
+    $scope.isAllSelected = function () { 
             $scope.isAll = true; $scope.isTrash = $scope.isSent = $scope.isInbox = false;
         $scope.items = $scope.allItems;
         $scope.search();
@@ -310,24 +313,24 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
         };
         $scope.selMessage = function (idx) {
             $scope.selected = $scope.allItems[idx];
-
+            
     };
-
+    
     $scope.readAll = function () {
         for (var i in $scope.items) {
                 $scope.items[i].message_status = 'Read';
         }
     };
-
+    
     $scope.closeMessage = function () {
         $scope.selected = null;
     };
-
+    
     $scope.renderMessageBody = function(html)
     {
         return html;
     };
-
+        
         $scope.getInbox = function () {
             $http.post('handle_note.php', $.param({'task':'getinbox','owner':$scope.cUserId}))
             .success(function(data, status, headers, config) {
@@ -339,7 +342,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
                 alert(data);
             });
         };
-
+    
     $scope.getAllMessages = function () {
             $http.post('handle_note.php', $.param({'task':'getall','owner':$scope.cUserId}))
         .success(function(data, status, headers, config) {
@@ -351,7 +354,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
                 alert(data);
         });
     };
-
+        
         $scope.getDeletedMessages = function () {
             $http.post('handle_note.php', $.param({'task':'getdeleted','owner':$scope.cUserId}))
             .success(function(data, status, headers, config) {
@@ -364,7 +367,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
                 alert(data);
             });
         };
-
+    
     $scope.getSentMessages = function () {
             $http.post('handle_note.php', $.param({'task':'getsent','owner':$scope.cUserId}))
         .success(function(data, status, headers, config) {
@@ -374,7 +377,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
                 alert(data);
         });
     }
-
+        
         $scope.submitForm = function(compose){
             $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
             // re-enable title for submit
@@ -456,6 +459,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
                 $(e.currentTarget).find('select[id="selSendto"]').prop( "disabled", false );
                 $(e.currentTarget).find('input[name="title"]').prop( "disabled", false );
             }
+
             if($scope.compose.task != 'reply'){
                     $scope.$apply();
             }
@@ -468,7 +472,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
             // cleanup
 
         });
-
+        
         // initialize application
         if( !$scope.isInit ){
                 $scope.init();
@@ -501,14 +505,14 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
     return null;
   }
 })
-
+    
     .controller('messageCtrl', ['$scope', function ($scope) {
         $scope.message = function(idx) {
             return items(idx);
         };
     }]);   // end messageCtrl
-
-
+    
+    
 })(); // application end
 </script>
     <ng ng-app="emrMessageApp">

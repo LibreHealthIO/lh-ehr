@@ -26,7 +26,6 @@ require_once("$srcdir/forms.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
-require_once("$srcdir/headers.inc.php");
 require_once("../../orders/qoe.inc.php");
 require_once("../../orders/gen_hl7_order.inc.php");
 require_once("../../../custom/code_types.inc.php");
@@ -206,147 +205,120 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
   array($pid, $encounter));
 ?>
 <html>
-  <head>
-    <!-- Get Bootstrap and jQuery (required for bootstrap) -->
-    <?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
-    <?php html_header_show(); ?>
-    <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css" />
+<head>
+<?php html_header_show(); ?>
+<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css" />
 
-    <style>
-      td {
-       font-size:10pt;
-      }
+<style>
 
-      .inputtext {
-       padding-left:2px;
-       padding-right:2px;
-      }
-    </style>
+td {
+ font-size:10pt;
+}
+
+.inputtext {
+ padding-left:2px;
+ padding-right:2px;
+}
+
+</style>
 
 
-    <script type="text/javascript" src="../../../library/dialog.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+<script type="text/javascript" src="../../../library/dialog.js"></script>
+<script type="text/javascript" src="../../../library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 
-    <script language='JavaScript'>
-      // This invokes the find-procedure-type popup.
-      // formseq = 0-relative index in the form.
-      var gbl_formseq;
-      function sel_proc_type(formseq) {
-       var f = document.forms[0];
-       // if (!f.form_lab_id.value) {
-       //  alert('<?php echo xls('Please select a procedure provider'); ?>');
-       //  return;
-       // }
-       gbl_formseq = formseq;
-       var ptvarname = 'form_proc_type[' + formseq + ']';
-       /********************************************************************
-       dlgopen('../../orders/types.php?popup=1' +
-        '&labid=' + f.form_lab_id.value +
-        '&order=' + f[ptvarname].value +
-        '&formid=<?php echo $formid; ?>' +
-        '&formseq=' + formseq,
-        '_blank', 800, 500);
-       ********************************************************************/
-       // This replaces the above for an easier/faster order picker tool.
-       dlgopen('../../orders/find_order_popup.php' +
-        '?labid=' + f.form_lab_id.value +
-        '&order=' + f[ptvarname].value +
-        '&formid=<?php echo $formid; ?>' +
-        '&formseq=' + formseq,
-        '_blank', 800, 500);
-      }
+<script language='JavaScript'>
 
-      // This is for callback by the find-procedure-type popup.
-      // Sets both the selected type ID and its descriptive name.
-      function set_proc_type(typeid, typename) {
-       var f = document.forms[0];
-       var ptvarname = 'form_proc_type[' + gbl_formseq + ']';
-       var ptdescname = 'form_proc_type_desc[' + gbl_formseq + ']';
-       f[ptvarname].value = typeid;
-       f[ptdescname].value = typename;
-      }
+// This invokes the find-procedure-type popup.
+// formseq = 0-relative index in the form.
+var gbl_formseq;
+function sel_proc_type(formseq) {
+ var f = document.forms[0];
+ // if (!f.form_lab_id.value) {
+ //  alert('<?php echo xls('Please select a procedure provider'); ?>');
+ //  return;
+ // }
+ gbl_formseq = formseq;
+ var ptvarname = 'form_proc_type[' + formseq + ']';
+ /********************************************************************
+ dlgopen('../../orders/types.php?popup=1' +
+  '&labid=' + f.form_lab_id.value +
+  '&order=' + f[ptvarname].value +
+  '&formid=<?php echo $formid; ?>' +
+  '&formseq=' + formseq,
+  '_blank', 800, 500);
+ ********************************************************************/
+ // This replaces the above for an easier/faster order picker tool.
+ dlgopen('../../orders/find_order_popup.php' +
+  '?labid=' + f.form_lab_id.value +
+  '&order=' + f[ptvarname].value +
+  '&formid=<?php echo $formid; ?>' +
+  '&formseq=' + formseq,
+  '_blank', 800, 500);
+}
 
-      // This is also for callback by the find-procedure-type popup.
-      // Sets the contents of the table containing the form fields for questions.
-      function set_proc_html(s, js) {
-       document.getElementById('qoetable[' + gbl_formseq + ']').innerHTML = s;
-       eval(js);
-      }
+// This is for callback by the find-procedure-type popup.
+// Sets both the selected type ID and its descriptive name.
+function set_proc_type(typeid, typename) {
+ var f = document.forms[0];
+ var ptvarname = 'form_proc_type[' + gbl_formseq + ']';
+ var ptdescname = 'form_proc_type_desc[' + gbl_formseq + ']';
+ f[ptvarname].value = typeid;
+ f[ptdescname].value = typename;
+}
 
-      // New lab selected so clear all procedures and questions from the form.
-      function lab_id_changed() {
-       var f = document.forms[0];
-       for (var i = 0; true; ++i) {
-        var ix = '[' + i + ']';
-        if (!f['form_proc_type' + ix]) break;
-        f['form_proc_type' + ix].value = '-1';
-        f['form_proc_type_desc' + ix].value = '';
-        document.getElementById('qoetable' + ix).innerHTML = '';
-       }
-      }
+// This is also for callback by the find-procedure-type popup.
+// Sets the contents of the table containing the form fields for questions.
+function set_proc_html(s, js) {
+ document.getElementById('qoetable[' + gbl_formseq + ']').innerHTML = s;
+ eval(js);
+}
 
-      // Add a line for entry of another procedure.
-      function addProcLine() {
-       var f = document.forms[0];
-       var table = document.getElementById('proctable');
-       var e = document.getElementById("procedure_type_names");
-       var prc_name = e.options[e.selectedIndex].value;
-       // Compute i = next procedure index.
-       var i = 0;
-       for (; f['form_proc_type[' + i + ']']; ++i);
-       var row = table.insertRow(table.rows.length);
-       var cell = row.insertCell(0);
-       cell.vAlign = 'top';
-       //cell.innerHTML = "<b><?php echo xl('Procedure'); ?> " + (i + 1) + ":</b>";
-       cell.innerHTML = "<b>"+prc_name+"<input type='hidden' name='form_proc_order_title[" + i + "]' value='"+ prc_name +"'></b>";
-       var cell = row.insertCell(1);
-       cell.vAlign = 'top';
-       cell.innerHTML =
-        "<input type='text' size='50' name='form_proc_type_desc[" + i + "]'" +
-        " onclick='sel_proc_type(" + i + ")'" +
-        " onfocus='this.blur()'" +
-        " title='<?php echo xla('Click to select the desired procedure'); ?>'" +
-        "  style='width:100%;cursor:pointer;cursor:hand' readonly />" +
-        " <input type='hidden' name='form_proc_type[" + i + "]' value='-1' />" +
-        "<br /><?php echo xla('Diagnosis Codes'); ?>: " +
-        "<input type='text' size='50' name='form_proc_type_diag[" + i + "]'" +
-        " onclick='sel_related(this.name)'" +
-        " title='<?php echo xla('Click to add a diagnosis'); ?>'" +
-        " onfocus='this.blur()'" +
-        " style='cursor:pointer;cursor:hand' readonly />" +
-        " <div style='width:95%;' id='qoetable[" + i + "]'></div>";
-       sel_proc_type(i);
-       return false;
-      }
+// New lab selected so clear all procedures and questions from the form.
+function lab_id_changed() {
+ var f = document.forms[0];
+ for (var i = 0; true; ++i) {
+  var ix = '[' + i + ']';
+  if (!f['form_proc_type' + ix]) break;
+  f['form_proc_type' + ix].value = '-1';
+  f['form_proc_type_desc' + ix].value = '';
+  document.getElementById('qoetable' + ix).innerHTML = '';
+ }
+}
 
-      // The name of the form field for find-code popup results.
-      var rcvarname;
-
-      // This is for callback by the find-code popup.
-      // Appends to or erases the current list of related codes.
-      function set_related(codetype, code, selector, codedesc) {
-       var f = document.forms[0];
-       var s = f[rcvarname].value;
-       if (code) {
-        if (s.length > 0) s += ';';
-        s += codetype + ':' + code;
-       } else {
-        s = '';
-       }
-       f[rcvarname].value = s;
-      }
-
-      // This invokes the find-code popup.
-      function sel_related(varname) {
-       rcvarname = varname;
-       // codetype is just to make things easier and avoid mistakes.
-       // Might be nice to have a lab parameter for acceptable code types.
-       // Also note the controlling script here runs from interface/patient_file/encounter/.
-       dlgopen('find_code_popup.php?codetype=<?php echo attr(collect_codetypes("diagnosis","csv")) ?>', '_blank', 500, 400);
-      }
-
-      var transmitting = false;
-
+// Add a line for entry of another procedure.
+function addProcLine() {
+ var f = document.forms[0];
+ var table = document.getElementById('proctable');
+ var e = document.getElementById("procedure_type_names");
+ var prc_name = e.options[e.selectedIndex].value;
+ // Compute i = next procedure index.
+ var i = 0;
+ for (; f['form_proc_type[' + i + ']']; ++i);
+ var row = table.insertRow(table.rows.length);
+ var cell = row.insertCell(0);
+ cell.vAlign = 'top';
+ //cell.innerHTML = "<b><?php echo xl('Procedure'); ?> " + (i + 1) + ":</b>";
+ cell.innerHTML = "<b>"+prc_name+"<input type='hidden' name='form_proc_order_title[" + i + "]' value='"+ prc_name +"'></b>";
+ var cell = row.insertCell(1);
+ cell.vAlign = 'top';
+ cell.innerHTML =
+  "<input type='text' size='50' name='form_proc_type_desc[" + i + "]'" +
+  " onclick='sel_proc_type(" + i + ")'" +
+  " onfocus='this.blur()'" +
+  " title='<?php echo xla('Click to select the desired procedure'); ?>'" +
+  "  style='width:100%;cursor:pointer;cursor:hand' readonly />" +
+  " <input type='hidden' name='form_proc_type[" + i + "]' value='-1' />" +
+  "<br /><?php echo xla('Diagnosis Codes'); ?>: " +
+  "<input type='text' size='50' name='form_proc_type_diag[" + i + "]'" +
+  " onclick='sel_related(this.name)'" +
+  " title='<?php echo xla('Click to add a diagnosis'); ?>'" +
+  " onfocus='this.blur()'" +
+  " style='cursor:pointer;cursor:hand' readonly />" +
+  " <div style='width:95%;' id='qoetable[" + i + "]'></div>";
+ sel_proc_type(i);
+ return false;
+}
       // Issue a Cancel/OK warning if a previously transmitted order is being transmitted again.
       function validate(f) {
       <?php if (!empty($row['date_transmitted'])) { ?>
@@ -675,3 +647,4 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
     </form>
   </body>
 </html>
+

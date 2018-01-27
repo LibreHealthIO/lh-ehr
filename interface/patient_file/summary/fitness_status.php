@@ -50,7 +50,7 @@ if (!($auth_notes_a || $auth_notes || $auth_relaxed)) {
 
 <body class="body_bottom">
 
-<font class='title'><?php xl('Stength and Conditioning','e'); ?></font>
+<font class='title'><?php xl('Strength and Conditioning','e'); ?></font>
 
 <br>
 

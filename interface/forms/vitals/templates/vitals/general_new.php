@@ -7,8 +7,8 @@
     <?php 
       html_header_show();       
       // Include Bootstrap and datetimepicker
-      call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
-    ?>
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
+    ?>    
     <script type="text/javascript">
       var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';
       // Only load jquery if not already closing. This page serves two purposes now,
@@ -127,7 +127,7 @@
         <th><?php echo xlt("Unit");?>
         </th>
         <th class='currentvalues' title='Date and time of this observation'>
-          <input class='form-control' style='width: auto;' type='text' size='14' name='date' id='date' value='<?php 
+          <input type='text' size='14' name='date' id='date' value='<?php 
                                                                     $dateGet = date_create($this->vitals->get_date());                    
                                                                     echo date_format($dateGet, "Y-m-d H:i");?>'/>                      
         </th>               
@@ -674,8 +674,8 @@ echo $result['BMI_status'];
 </tr>
 <tr>
   <td colspan='3' style='text-align:center'>
-    <input type="submit" name="Submit" value="Save Form">
-    <input type="button" class="deleter" id="cancel" value="Don't Save">
+    <input type="submit" class="editonly" name="Submit" value="Save Form">
+    <input type="button" class="editonly" id="cancel" value="Don't Save">
   </td>
 </tr>
 </table>
