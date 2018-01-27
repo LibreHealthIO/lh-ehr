@@ -490,14 +490,8 @@ if ($printable) {
   // in HTML view it's just one line at the top of page 1
   echo '<page_header style="text-align:right;" class="custom-tag"> ' . xlt("PATIENT") . ':' . text($titleres['lname']) . ', ' . text($titleres['fname']) . ' - ' . $titleres['DOB_TS'] . '</page_header>    ';
   echo '<page_footer style="text-align:right;" class="custom-tag">' . xlt('Generated on') . ' ' . oeFormatShortDate() . ' - ' . text($facility['name']) . ' ' . text($facility['phone']) . '</page_footer>';
-
-  // Use logo if it exists as 'practice_logo.png' in the site dir
-  // old code used the global custom dir which is no longer a valid
-   $practice_logo = "$OE_SITE_DIR/images/practice_logo.png";
-   if (file_exists($practice_logo)) {
-        echo "<img src='$practice_logo' align='left' height='80' width='48'><br />\n";
-     }
 ?>
+  
 <h2>&nbsp;&nbsp;&nbsp;<?php echo $facility['name'] ?></h2>
 <?php echo $facility['street'] ?><br>
 <?php echo $facility['city'] ?>, <?php echo $facility['state'] ?> <?php echo $facility['postal_code'] ?><br clear='all'>
