@@ -1,21 +1,46 @@
 <?php
 /**
- * This file contains functions for handling on-site portal notes attached to patient files.
+ * This file contains functions for handling on-site portal mail.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Jerry Padgett <sjpadgett@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
  *
  */
 
-function addPortalMailboxMail($owner, $newtext, $authorized = '0', $activity = '1',
-        $title='Unassigned', $assigned_to = '', $datetime = '', $message_status = "New",$master_note = '0', $sid='', $sn='', $rid='', $rn='')
-{
-    if (empty($datetime)) $datetime = date('Y-m-d H:i:s');
+function addPortalMailboxMail(
+    $owner,
+    $newtext,
+    $authorized = '0',
+    $activity = '1',
+    $title = 'Unassigned',
+    $assigned_to = '',
+    $datetime = '',
+    $message_status = "New",
+    $master_note = '0',
+    $sid = '',
+    $sn = '',
+    $rid = '',
+    $rn = '',
+    $replyid = 0
+) {
+
+    if (empty($datetime)) {
+        $datetime = date('Y-m-d H:i:s');
+    }
     $user = $_SESSION['portal_username'] ? $_SESSION['portal_username'] : $_SESSION['authUser'];
     // make inactive if set as Done
-    if ($message_status == "Done") $activity = 0;
+    if ($message_status == "Done") {
+        $activity = 0;
+    }
     
     $body = $newtext;
     if($master_note == '0'){
@@ -23,9 +48,25 @@ function addPortalMailboxMail($owner, $newtext, $authorized = '0', $activity = '
         $master_note = $n['newid']+1;
     }
 
-    return sqlInsert("INSERT INTO onsite_mail (date, body, owner, user, groupname, " .
-            "authorized, activity, title, assigned_to, message_status, mail_chain, sender_id, sender_name, recipient_id, recipient_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            array($datetime, $body, $owner, $user, 'Default', $authorized, $activity, $title, $assigned_to, $message_status,$master_note,$sid,$sn,$rid,$rn) );
+    if($replyid){
+        if($owner != $sid){
+            $hold = $master_note;
+            $master_note = $replyid;
+            $replyid = $hold;
+        } else{
+            $replyid = $master_note;
+        }
+    } else if($owner != $sid){
+        $replyid = $master_note-1;
+    } else{
+        $replyid = $master_note;
+    }
+
+    return sqlInsert(
+        "INSERT INTO onsite_mail (date, body, owner, user, groupname, " .
+            "authorized, activity, title, assigned_to, message_status, mail_chain, sender_id, sender_name, recipient_id, recipient_name, reply_mail_chain) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
+        array($datetime, $body, $owner, $user, 'Default', $authorized, $activity, $title, $assigned_to, $message_status,$master_note,$sid,$sn,$rid,$rn,$replyid)
+    );
 }
 function getPortalPatientDeleted($owner = '', $limit = '', $offset = 0, $search = '')
 {
@@ -46,17 +87,21 @@ function getPortalPatientDeleted($owner = '', $limit = '', $offset = 0, $search 
     p.sender_name,
     p.recipient_id,
     p.recipient_name,
-    p.mail_chain
+    p.mail_chain,
+    p.reply_mail_chain
     FROM
     onsite_mail AS p
-    WHERE p.deleted != 0 AND p.owner != ? AND p.recipient_id = ?
+    WHERE p.deleted != 0 AND p.owner = ? AND p.recipient_id = ?
     $search
     ORDER BY `date` asc
     $limit
     ";
     $all = $row = array();
     $data = array($owner,$owner);
-    if($search) $data = array($owner,$owner,$owner,$owner);
+    if ($search) {
+        $data = array($owner,$owner,$owner);
+    }
+
     $res = sqlStatement($sql, $data);
     for($iter = 0;$row = sqlFetchArray($res);$iter++){
         $all[$iter] = $row;
@@ -64,7 +109,6 @@ function getPortalPatientDeleted($owner = '', $limit = '', $offset = 0, $search 
     return $all;
 }
 
-// received notes
 function getPortalPatientNotes($owner = '', $limit = '', $offset = 0, $search = '')
 {
     if($limit){
@@ -84,17 +128,21 @@ function getPortalPatientNotes($owner = '', $limit = '', $offset = 0, $search = 
     p.sender_name,
     p.recipient_id,
     p.recipient_name,
-    p.mail_chain
+    p.mail_chain,
+    p.reply_mail_chain
     FROM
     onsite_mail AS p
-    WHERE p.deleted != 1 AND p.owner != ? AND p.recipient_id = ? 
+    WHERE p.deleted != 1 AND p.owner = ? AND p.recipient_id = ?
     $search
     ORDER BY `date` asc
     $limit
     ";
     $all = $row = array();
     $data = array($owner,$owner);
-    if($search) $data = array($owner,$owner,$owner,$owner);
+    if ($search) {
+        $data = array($owner,$owner,$owner);
+    }
+
     $res = sqlStatement($sql, $data);
     for($iter = 0;$row = sqlFetchArray($res);$iter++){
         $all[$iter] = $row;
@@ -155,6 +203,7 @@ function getPortalPatientSentNotes($owner = '', $limit = '', $offset = 0, $searc
     p.message_status,
     'Message' as `type`,
     p.mail_chain,
+    p.reply_mail_chain,
     p.owner,
     p.sender_id,
     p.sender_name,
@@ -181,15 +230,15 @@ function updatePortalMailMessageStatus($id, $message_status)
 {
     if ($message_status == "Done") {
         sqlStatement("update onsite_mail set message_status = ?, activity = '0' where id = ?", array($message_status, $id) );
-    }
-    elseif($message_status == "Delete") {
-        sqlStatement("update onsite_mail set message_status = ?, activity = '1', deleted = '1',delete_date = ? where id = ?", array($message_status, date('Y-m-d H:i:s'), $id) );
-    }
-    else {
+    } elseif($message_status == "Delete") {
+        sqlStatement("update onsite_mail set message_status = ?, activity = '1', deleted = '1',delete_date = ? where mail_chain = ? OR id = ?", array($message_status, date('Y-m-d H:i:s'), $id, $id) );
+    } else {
         sqlStatement("update onsite_mail set message_status = ?, activity = '1' where id = ?", array($message_status, $id) );
     }
 }
-function getMails($owner,$dotype,$nsrch,$nfsrch){
+
+function getMails($owner, $dotype, $nsrch, $nfsrch)
+{
     if($owner){
         if($dotype == "inbox"){
             if($nsrch && $nfsrch){
@@ -212,13 +261,13 @@ function getMails($owner,$dotype,$nsrch,$nfsrch){
             return $result_sent_notes;
         }elseif($dotype == "all"){
             $result = array();
-            $result_notes = getPortalPatientNotes($owner,'','0',"OR (p.deleted != 1 AND (p.sender_id = ? OR p.recipient_id = ?)) ");
+            $result_notes = getPortalPatientNotes($owner,'','0',"OR (p.deleted != 1 AND (p.owner = ?)) ");
             $result_notifications = getPortalPatientNotifications($owner);
             $result = array_merge((array)$result_notes,(array)$result_notifications);
             return $result;
         }elseif($dotype == "deleted"){
             $result = array();
-            $result = getPortalPatientDeleted($owner,'','0',"OR (p.deleted = 1 AND (p.sender_id = ? OR p.recipient_id = ?)) ");
+            $result = getPortalPatientDeleted($owner,'','0',"OR (p.deleted = 1 AND (p.owner = ?)) ");
             return $result;
             }
     }else{
@@ -226,7 +275,8 @@ function getMails($owner,$dotype,$nsrch,$nfsrch){
     }
 }
 
-function getMailDetails($id){
+function getMailDetails($id)
+{
     if($owner){
         $result = getMailById($id);
         if($result['owner'] == $owner && $result['message_status'] == 'New'){
@@ -238,9 +288,10 @@ function getMailDetails($id){
     }
 }
 
-function sendMail($owner,$note,$title='Unassigned',$to, $noteid,$sid,$sn,$rid,$rn){
+function sendMail($owner, $note, $title = 'Unassigned', $to, $noteid, $sid, $sn, $rid, $rn, $status = 'New', $replyid = '')
+{
     if($owner){
-        addPortalMailboxMail($owner,$note,'1','1',$title,$to,'','New',$noteid,$sid,$sn,$rid,$rn);
+        addPortalMailboxMail($owner,$note,'1','1',$title,$to,'',$status,$noteid,$sid,$sn,$rid,$rn,$replyid);
         return 1;
     }else{
         return 'failed';
@@ -248,7 +299,8 @@ function sendMail($owner,$note,$title='Unassigned',$to, $noteid,$sid,$sn,$rid,$r
 }
 
 
-function updateStatus($id,$status){
+function updateStatus($id, $status)
+{
         updatePortalMailMessageStatus($id,$status);
         return 1;
 }

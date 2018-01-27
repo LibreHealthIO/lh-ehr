@@ -47,16 +47,37 @@ class PatientController extends AppBaseController{
     /**
      * Displays a list view of Patient objects
      */
-    public function ListView(){
-        $rid = $pid = $user = $encounter = 0;
-        if( isset( $_GET['id'] ) ) $rid = ( int ) $_GET['id'];
-        if( isset( $_GET['pid'] ) ) $pid = ( int ) $_GET['pid'];
-        if( isset( $_GET['user'] ) ) $user = $_GET['user'];
-        if( isset( $_GET['enc'] ) ) $encounter = $_GET['enc'];
+    public function ListView()
+    {
+
+        $rid = $pid = $user = $encounter = $register = 0;
+
+        if (isset($_GET['id'])) {
+            $rid = ( int ) $_GET['id'];
+        }
+
+        if (isset($_GET['pid'])) {
+            $pid = ( int ) $_GET['pid'];
+        }
+
+        if (isset($_GET['user'])) {
+            $user = $_GET['user'];
+        }
+
+        if (isset($_GET['enc'])) {
+            $encounter = $_GET['enc'];
+        }
+
+        if (isset($_GET['register'])) {
+            $register = $_GET['register'];
+        }
+
         $this->Assign( 'recid', $rid );
         $this->Assign( 'cpid', $pid );
         $this->Assign( 'cuser', $user );
         $this->Assign( 'encounter', $encounter );
+        $this->Assign('register', $register);
+        $trow = array();
         $ptdata = $this->startupQuery($pid);
         foreach( $ptdata[0] as $key => $v){
             $trow[lcfirst($key)] = $v;
@@ -99,12 +120,14 @@ class PatientController extends AppBaseController{
             // if a sort order was specified then specify in the criteria
             $output->orderBy = RequestUtil::Get( 'orderBy' );
             $output->orderDesc = RequestUtil::Get( 'orderDesc' ) != '';
-            if( $output->orderBy ) $criteria->SetOrder( $output->orderBy, $output->orderDesc );
+            if ($output->orderBy) {
+                $criteria->SetOrder($output->orderBy, $output->orderDesc);
+            }
 
             $page = RequestUtil::Get( 'page' );
 
             // return all results
-            $patientdata = $this->Phreezer->Query( 'PatientReporter', $criteria );
+            $patientdata = $this->Phreezer->Query('Patient', $criteria);
             $output->rows = $patientdata->ToObjectArray( true, $this->SimpleObjectParams() );
             $output->totalResults = count( $output->rows );
             $output->totalPages = 1;
@@ -138,7 +161,9 @@ class PatientController extends AppBaseController{
 
             $json = json_decode( RequestUtil::GetBody() );
 
-            if( ! $json ){throw new Exception( 'The request body does not contain valid JSON' );}
+            if (! $json) {
+                throw new Exception('The request body does not contain valid JSON');
+            }
 
             $patient = new Patient( $this->Phreezer );
 
@@ -225,7 +250,7 @@ class PatientController extends AppBaseController{
             $errors = $patient->GetValidationErrors();
 
             if( count( $errors ) > 0 ){
-                $this->RenderErrorJSON( 'Please check the form for errors', $errors );
+                $this->RenderErrorJSON('Please check the form for errors' . $errors, $errors);
             } else{
                 $patient->Save();
                 $this->RenderJSON( $patient, $this->JSONPCallback(), true, $this->SimpleObjectParams() );
@@ -243,7 +268,9 @@ class PatientController extends AppBaseController{
 
             $json = json_decode( RequestUtil::GetBody() );
 
-            if( ! $json ){throw new Exception( 'The request body does not contain valid JSON' );}
+            if (! $json) {
+                throw new Exception('The request body does not contain valid JSON');
+            }
 
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $patient = $this->Phreezer->Get( 'Patient', $pk );
@@ -333,7 +360,7 @@ class PatientController extends AppBaseController{
         $appsql = new ApplicationTable();
         $ja = $p->GetArray();
         try{
-            $audit = Array ();
+            $audit = array ();
             // date("Y-m-d H:i:s");
             $audit['patient_id'] = $ja['pid'];
             $audit['activity'] = "profile";
@@ -350,7 +377,9 @@ class PatientController extends AppBaseController{
 
             $edata = $appsql->getPortalAudit( $ja['pid'], 'review' );
             $audit['date'] = $edata['date'];
-            if( $edata['id'] > 0 ) $appsql->portalAudit( 'update', $edata['id'], $audit );
+            if ($edata['id'] > 0) {
+                $appsql->portalAudit('update', $edata['id'], $audit);
+            }
         } catch( Exception $ex ){
             $this->RenderExceptionJSON( $ex );
         }

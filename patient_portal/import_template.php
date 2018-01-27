@@ -13,7 +13,7 @@
  * @author Jerry Padgett <sjpadgett@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 $sanitize_all_escapes=true;
@@ -23,25 +23,23 @@ require_once("../interface/globals.php");
 if($_POST['mode'] == 'get'){
     echo file_get_contents($_POST['docid']);
     exit;
-}
-else if($_POST['mode'] == 'save'){
+} else if ($_POST['mode'] == 'save') {
     file_put_contents($_POST['docid'], $_POST['content']);
     exit(true);
-}
-else if($_POST['mode'] == 'delete'){
+} else if ($_POST['mode'] == 'delete') {
     unlink($_POST['docid']);
     exit(true);
 }
 // so it is an import
 if(!isset($_POST['up_dir'])){
 
-define("UPLOAD_DIR", $GLOBALS['OE_SITE_DIR'] .  '/onsite_portal_documents/templates/');
+    define("UPLOAD_DIR", $GLOBALS['OE_SITE_DIR'] .  '/documents/onsite_portal_documents/templates/');
+} else {
+    if ($_POST['up_dir'] > 0) {
+        define("UPLOAD_DIR", $GLOBALS['OE_SITE_DIR'] .  '/documents/onsite_portal_documents/templates/'. $_POST['up_dir'] . '/');
+    } else {
+        define("UPLOAD_DIR", $GLOBALS['OE_SITE_DIR'] .  '/documents/onsite_portal_documents/templates/');
 }
-else {
-    if($_POST['up_dir'] > 0)
-        define("UPLOAD_DIR", $GLOBALS['OE_SITE_DIR'] .  '/onsite_portal_documents/templates/'. $_POST['up_dir'] . '/');
-    else 
-        define("UPLOAD_DIR", $GLOBALS['OE_SITE_DIR'] .  '/onsite_portal_documents/templates/');
 }
 
 if (!empty($_FILES["tplFile"])) {

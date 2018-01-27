@@ -25,7 +25,7 @@
  * @author Cassian LUP <cassi.lup@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
  require_once (dirname( __FILE__ )."/lib/appsql.class.php" );
