@@ -483,18 +483,7 @@ if ($printable) {
   // in HTML view it's just one line at the top of page 1
   echo '<page_header style="text-align:right;" class="custom-tag"> ' . xlt("PATIENT") . ':' . text($titleres['lname']) . ', ' . text($titleres['fname']) . ' - ' . $titleres['DOB_TS'] . '</page_header>    ';
   echo '<page_footer style="text-align:right;" class="custom-tag">' . xlt('Generated on') . ' ' . oeFormatShortDate() . ' - ' . text($facility['name']) . ' ' . text($facility['phone']) . '</page_footer>';
-
-  //use logo if it exists in directory
-  if (file_exists("$OE_SITE_DIR/images/practice_logo.png"))  $practice_logo = "$OE_SITE_DIR/images/practice_logo.png";
-  else if (file_exists("$OE_SITE_DIR/images/practice_logo.gif"))  $practice_logo = "$OE_SITE_DIR/images/practice_logo.gif";
-  else if (file_exists("$OE_SITE_DIR/images/practice_logo.jpg"))  $practice_logo = "$OE_SITE_DIR/images/practice_logo.jpg";
-  else if (file_exists("$OE_SITE_DIR/images/practice_logo.jpeg")) $practice_logo =  "$OE_SITE_DIR/images/practice_logo.jpeg";
-  else $practice_logo = '';
-   $dir = explode('/', $practice_logo) ;
-   $practice_logo = "$dir[4]/$dir[5]/$dir[6]/$dir[7]/$dir[8]" ;
-   if ($practice_logo) {
-        echo "<img src='../../../../$practice_logo' align='left' style='width : 56px ; height : 90.6px'><br />\n";
-   }
+  
 ?>
 <h2><?php echo $facility['name'] ?></h2>
 <?php echo $facility['street'] ?><br>
