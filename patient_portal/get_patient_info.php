@@ -26,7 +26,7 @@
  * @author Cassian LUP <cassi.lup@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
 
@@ -43,35 +43,32 @@
         if (!isset($_SESSION['itsme'])) {
                 session_destroy();
         header('Location: '.$landingpage.'&w');
-        exit;
+    exit();
     }
-    //
-require_once (dirname( __FILE__ )."/lib/appsql.class.php" );
-$logit = new ApplicationTable();
 
     //some validation
         if (!isset($_POST['uname']) || empty($_POST['uname'])) {
                 session_destroy();
         header('Location: '.$landingpage.'&w&c');
-        exit;
+    exit();
     }
         if (!isset($_POST['pass']) || empty($_POST['pass'])) {
                 session_destroy();
                 header('Location: '.$landingpage.'&w&c');
-        exit;
+    exit();
         }
-    //
+
+require_once(dirname(__FILE__) . "/lib/appsql.class.php");
+$logit = new ApplicationTable();
 
 
     // set the language
     if (!empty($_POST['languageChoice'])) {
-            $_SESSION['language_choice'] = $_POST['languageChoice'];
-    }
-    else if (empty($_SESSION['language_choice'])) {
+            $_SESSION['language_choice'] = (int)$_POST['languageChoice'];
+} else if (empty($_SESSION['language_choice'])) {
         // just in case both are empty, then use english
         $_SESSION['language_choice'] = 1;
-    }
-    else {
+} else {
         // keep the current session language token
     }
 
@@ -103,16 +100,21 @@ $logit = new ApplicationTable();
     DEFINE("COL_POR_USER","portal_username");
     DEFINE("COL_POR_SALT","portal_salt");
     DEFINE("COL_POR_PWD_STAT","portal_pwd_status");
-    $sql= "SELECT ".implode(",",array(COL_ID,COL_PID,COL_POR_PWD,COL_POR_SALT,COL_POR_PWD_STAT))
-          ." FROM ".TBL_PAT_ACC_ON
-          ." WHERE ".COL_POR_USER."=?";
-            $auth = privQuery($sql, array($_POST['uname']));
-            if($auth===false)
-            {
+    $sql = "SELECT " . implode(",", array(
+        COL_ID,
+        COL_PID,
+        COL_POR_PWD,
+        COL_POR_SALT,
+        COL_POR_PWD_STAT
+    )) . " FROM " . TBL_PAT_ACC_ON . " WHERE " . COL_POR_USER . "=?";
+    $auth = privQuery($sql, array(
+        $_POST['uname']
+    ));
+    if ($auth === false) {
                 $logit->portalLog('login attempt','',($_POST['uname'].':invalid username'),'','0');
                 session_destroy();
-                header('Location: '.$landingpage.'&w');
-                exit;
+                header('Location: ' . $landingpage . '&w&u');
+                exit();
             }
             if(empty($auth[COL_POR_SALT]))
             {
@@ -120,24 +122,24 @@ $logit = new ApplicationTable();
                 {
                     $logit->portalLog('login attempt','',($_POST['uname'].':pass not salted'),'','0');
                     session_destroy();
-                    header('Location: '.$landingpage.'&w');
-                    exit;                        
+                    header('Location: ' . $landingpage . '&w&p');
+                    exit();
                 }
                 $new_salt=oemr_password_salt();
                 $new_hash=oemr_password_hash($plain_code,$new_salt);
-                $sqlUpdatePwd= " UPDATE " . TBL_PAT_ACC_ON
-                              ." SET " .COL_POR_PWD."=?, "
-                              . COL_POR_SALT . "=? "
-                              ." WHERE ".COL_ID."=?";
-                privStatement($sqlUpdatePwd,array($new_hash,$new_salt,$auth[COL_ID]));   
-            }
-            else {
-                if(oemr_password_hash($plain_code,$auth[COL_POR_SALT])!=$auth[COL_POR_PWD])
-                {
+    $sqlUpdatePwd = " UPDATE " . TBL_PAT_ACC_ON . " SET " . COL_POR_PWD . "=?, " . COL_POR_SALT . "=? " . " WHERE " . COL_ID . "=?";
+    privStatement($sqlUpdatePwd, array(
+        $new_hash,
+        $new_salt,
+        $auth[COL_ID]
+    ));
+} else {
+    $tmp = oemr_password_hash($plain_code, $auth[COL_POR_SALT]);
+    if ($tmp != $auth[COL_POR_PWD]) {
                     $logit->portalLog('login attempt','',($_POST['uname'].':invalid password'),'','0');
                     session_destroy();
-                    header('Location: '.$landingpage.'&w');
-                    exit;                        
+        header('Location: ' . $landingpage . '&w&p');
+        exit();
 
                 }
 
@@ -145,43 +147,45 @@ $logit = new ApplicationTable();
             $_SESSION['portal_username']=$_POST['uname'];
     $sql = "SELECT * FROM `patient_data` WHERE `pid` = ?";
 
-    if ($userData = sqlQuery($sql, array($auth['pid']) )) { // if query gets executed
+if ($userData = sqlQuery($sql, array(
+    $auth['pid']
+))) { // if query gets executed
 
         if (empty($userData)) {
             $logit->portalLog('login attempt','',($_POST['uname'].':not active patient'),'','0');
             session_destroy();
                             header('Location: '.$landingpage.'&w');
-            exit;
+        exit();
                     }
 #         if ($userData['email'] != $_POST['passaddon']) {
 #           $logit->portalLog('login attempt','',($_POST['uname'].':invalid email'),'','0');
 #           session_destroy();
 #           header('Location: '.$landingpage.'&w');
-#           exit;
+#           exit();
 #                  }
 
 #        if (substr($userData['ss'],-4) != $_POST['passaddon']) {
 #           session_destroy();
 #           header('Location: '.$landingpage.'&w');
-#           exit;
+#           exit();
 #                  }
 
         if ($userData['allow_patient_portal'] != "YES") {
             // Patient has not authorized portal, so escape
+        $logit->portalLog('login attempt', '', ($_POST['uname'] . ':allow portal turned off'), '', '0');
             session_destroy();
                             header('Location: '.$landingpage.'&w');
-            exit;
+        exit();
                     }
 
         if ($auth['pid'] != $userData['pid']) {
             // Not sure if this is even possible, but should escape if this happens
             session_destroy();
             header('Location: '.$landingpage.'&w');
-            exit;
+        exit();
         }
 
-        if ( $password_update)
-            {
+    if ($password_update) {
                 $code_new=$_POST['pass_new'];
                 $code_new_confirm=$_POST['pass_new_confirm'];
                 if(!(empty($_POST['pass_new'])) && !(empty($_POST['pass_new_confirm'])) && ($code_new == $code_new_confirm)) {
@@ -189,10 +193,20 @@ $logit = new ApplicationTable();
                 $new_hash=oemr_password_hash($code_new,$new_salt);
 
                 // Update the password and continue (patient is authorized)
-                privStatement("UPDATE ".TBL_PAT_ACC_ON
-                              ."  SET ".COL_POR_PWD."=?,".COL_POR_SALT."=?,".COL_POR_PWD_STAT."=1 WHERE id=?", array($new_hash,$new_salt,$auth['id']) );
+            privStatement(
+                "UPDATE " . TBL_PAT_ACC_ON . "  SET " . COL_POR_PWD . "=?," . COL_POR_SALT . "=?," . COL_POR_PWD_STAT . "=1 WHERE id=?",
+                array(
+                        $new_hash,
+                        $new_salt,
+                        $auth['id']
+                )
+            );
                 $authorizedPortal = true;
-                $logit->portalLog('password update',$auth['pid'],($_SESSION['portal_username'].': '.$_SESSION['ptName'].':success'));
+            $logit->portalLog(
+                'password update',
+                $auth['pid'],
+                ($_SESSION['portal_username'] . ': ' . $_SESSION['ptName'] . ':success')
+            );
             }
         }
         if ($auth['portal_pwd_status'] == 0) {
@@ -200,7 +214,7 @@ $logit = new ApplicationTable();
                 // Need to enter a new password in the index.php script
                 $_SESSION['password_update'] = 1;
                                 header('Location: '.$landingpage);
-                exit;
+            exit();
             }
         }
 
@@ -224,23 +238,18 @@ $logit = new ApplicationTable();
             $_SESSION['ptName'] = $userData['fname'].' '.$userData['lname'];
 
             $logit->portalLog('login',$_SESSION['pid'],($_SESSION['portal_username'].': '.$_SESSION['ptName'].':success'));
-        }
-        else {
+    } else {
             $logit->portalLog('login','',($_POST['uname'].':not authorized'),'','0');
             session_destroy();
             header('Location: '.$landingpage.'&w');
-            exit;
-        }
+        exit();
 
     }
-    else { //problem with query
+} else { // problem with query
         session_destroy();
         header('Location: '.$landingpage.'&w');
-        exit;
+    exit();
     }
 
-    //require_once('home.php');
     header('Location: ./home.php');
-    exit;
-
-?>
+exit();

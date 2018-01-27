@@ -1,61 +1,156 @@
 <?php
-  /*
-   * Stats Full
-   *
-   * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
-   * Copyright (C) 2005-2014 Rod Roark <rod@sunsetsystems.com>
-   *
-   * LICENSE: This program is free software; you can redistribute it and/or 
-   * modify it under the terms of the GNU General Public License 
-   * as published by the Free Software Foundation; either version 3 
-   * of the License, or (at your option) any later version. 
-   * This program is distributed in the hope that it will be useful, 
-   * but WITHOUT ANY WARRANTY; without even the implied warranty of 
-   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-   * GNU General Public License for more details. 
-   * You should have received a copy of the GNU General Public License 
-   * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
-   * 
-   * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
-   * See the Mozilla Public License for more details.
-   * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
-   *
-   * @package LibreHealth EHR 
-   * @author Rod Roark <rod@sunsetsystems.com>
-   * @link http://librehealth.io 
-   */
-  
-  //SANITIZE ALL ESCAPES
-  $sanitize_all_escapes=true;
-  //
-  
-  //STOP FAKE REGISTER GLOBALS
-  $fake_register_globals=false;
-  //
-  
-  require_once('../../globals.php');
-  require_once($GLOBALS['srcdir'].'/lists.inc');
-  require_once($GLOBALS['srcdir'].'/acl.inc');
-  require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
-  require_once($GLOBALS['srcdir'].'/options.inc.php');
-  require_once("$srcdir/headers.inc.php");
-  
-   // Check authorization.
-   if (acl_check('patients','med')) {
-    $tmp = getPatientData($pid, "squad");
-    if ($tmp['squad'] && ! acl_check('squads', $tmp['squad']))
-     die(htmlspecialchars( xl('Not authorized'), ENT_NOQUOTES) );
-   }
-   else {
-    die(htmlspecialchars( xl('Not authorized'), ENT_NOQUOTES) );
-   }
-  
-   // Collect parameter(s)
-   $category = empty($_REQUEST['category']) ? '' : $_REQUEST['category'];
-  
-  // Get patient's preferred language for the patient education URL.
-  $tmp = getPatientData($pid, 'language');
-  $language = $tmp['language'];
+/*
+ * Stats Full
+ *
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * Copyright (C) 2005-2014 Rod Roark <rod@sunsetsystems.com>
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @link http://librehealth.io
+ */
+
+//SANITIZE ALL ESCAPES
+$sanitize_all_escapes=true;
+//
+
+//STOP FAKE REGISTER GLOBALS
+$fake_register_globals=false;
+//
+
+require_once('../../globals.php');
+require_once($GLOBALS['srcdir'].'/lists.inc');
+require_once($GLOBALS['srcdir'].'/acl.inc');
+require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
+require_once($GLOBALS['srcdir'].'/options.inc.php');
+
+ // Check authorization.
+ if (acl_check('patients','med')) {
+  $tmp = getPatientData($pid, "squad");
+  if ($tmp['squad'] && ! acl_check('squads', $tmp['squad']))
+   die(htmlspecialchars( xl('Not authorized'), ENT_NOQUOTES) );
+ }
+ else {
+  die(htmlspecialchars( xl('Not authorized'), ENT_NOQUOTES) );
+ }
+
+ // Collect parameter(s)
+ $category = empty($_REQUEST['category']) ? '' : $_REQUEST['category'];
+
+// Get patient's preferred language for the patient education URL.
+$tmp = getPatientData($pid, 'language');
+$language = $tmp['language'];
+?>
+<html>
+
+<head>
+<?php html_header_show();?>
+
+<link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
+
+<span class="title" style="display: none;">Issues</span>
+
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.js"></script>
+
+<script language="JavaScript">
+
+// callback from add_edit_issue.php:
+function refreshIssue(issue, title) {
+    top.restoreSession();
+    location.reload();
+}
+
+function dopclick(id,category) {
+    <?php if (acl_check('patients','med','','write')): ?>
+    if (category == 0) category = '';
+    dlgopen('add_edit_issue.php?issue=' + encodeURIComponent(id) + '&thistype=' + encodeURIComponent(category), '_blank', 550, 400);
+    <?php else: ?>
+    alert("<?php echo addslashes( xl('You are not authorized to add/edit issues') ); ?>");
+    <?php endif; ?>
+}
+
+// Process click on number of encounters.
+function doeclick(id) {
+    dlgopen('../problem_encounter.php?issue=' + id, '_blank', 550, 400);
+}
+
+// Process click on diagnosis for patient education popup.
+function educlick(codetype, codevalue) {
+  dlgopen('../education.php?type=' + encodeURIComponent(codetype) +
+    '&code=' + encodeURIComponent(codevalue) +
+    '&language=<?php echo urlencode($language); ?>',
+    '_blank', 1024, 750,true); // Force a new window instead of iframe to address cross site scripting potential
+}
+
+// Add Encounter button is clicked.
+function newEncounter() {
+ var f = document.forms[0];
+ top.restoreSession();
+ location.href='../../forms/patient_encounter/new.php?autoloaded=1&calenc=';
+}
+
+</script>
+
+</head>
+
+<body class="body_top">
+
+<br>
+<div style="text-align:center" class="buttons">
+  <a href='javascript:;' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
+</div>
+<br>
+<br>
+
+<div id='patient_stats'>
+
+<form method='post' action='stats_full.php' onsubmit='return top.restoreSession()'>
+
+<table>
+
+<?php
+$encount = 0;
+$lasttype = "";
+$first = 1; // flag for first section
+foreach ($ISSUE_TYPES as $focustype => $focustitles) {
+
+  if ($category) {
+    // Only show this category
+    if ($focustype != $category) continue;
+  }
+
+  if ($first) {
+    $first = 0;
+  }
+  else {
+    echo "</table>";
+  }
+
+  // Show header
+  $disptype = $focustitles[0];
+  if(($focustype=='allergy' || $focustype=='medication') && $GLOBALS['erx_enable'])
+  echo "<a href='../../eRx.php?page=medentry' class='css_button_small' onclick='top.restoreSession()' ><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
+  else
+  echo "<a href='javascript:;' class='css_button_small' onclick='dopclick(0,\"" . htmlspecialchars($focustype,ENT_QUOTES)  . "\")'><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
+  echo "  <span class='title'>" . htmlspecialchars($disptype,ENT_NOQUOTES) . "</span>\n";
+  // echo " <table style='margin-bottom:1em;text-align:center'>";
+  echo " <table style='margin-bottom:1em;'>";
   ?>
 <html>
   <head>
@@ -281,6 +376,57 @@
         top.restoreSession();
         location.href='demographics.php';
     }
-    
   </script>
+<?php
+    echo "  <td>" . text($row['referredby']) . "</td>\n";
+    echo "  <td>" . text($row['modifydate']) . "</td>\n";
+    echo "  <td>" . text($row['comments']) . "</td>\n";
+    echo "  <td id='e_$rowid' class='noclick center' title='" . xla('View related encounters') . "'>";
+    echo "  <input type='button' value='" . attr($ierow['count']) . "' class='editenc' id='" . attr($rowid) . "' />";
+    echo "  </td>";
+    echo " </tr>\n";
+  }
+}
+echo "</table>";
+?>
+
+</table>
+
+</form>
+</div> <!-- end patient_stats -->
+
+</body>
+
+<script language="javascript">
+// jQuery stuff to make the page a little easier to use
+
+$(document).ready(function(){
+    $(".statrow").mouseover(function() { $(this).toggleClass("highlight"); });
+    $(".statrow").mouseout(function() { $(this).toggleClass("highlight"); });
+
+    $(".statrow").click(function() { dopclick(this.id,0); });
+    $(".editenc").click(function(event) { doeclick(this.id); });
+    $("#newencounter").click(function() { newEncounter(); });
+    $("#history").click(function() { GotoHistory(); });
+    $("#back").click(function() { GoBack(); });
+
+    $(".noneCheck").click(function() {
+      top.restoreSession();
+      $.post( "../../../library/ajax/lists_touch.php", { type: this.name, patient_id: <?php echo htmlspecialchars($pid,ENT_QUOTES); ?> });
+      $(this).hide();
+    });
+});
+
+var GotoHistory = function() {
+    top.restoreSession();
+    location.href='../history/history_full.php';
+}
+
+var GoBack = function () {
+    top.restoreSession();
+    location.href='demographics.php';
+}
+
+</script>
+
 </html>

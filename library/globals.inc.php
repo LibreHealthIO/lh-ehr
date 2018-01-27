@@ -2146,6 +2146,47 @@ $GLOBALS_METADATA = array(
       xl('Website link for the Onsite Patient Portal.')
     ),
 
+    'portal_onsite_two_basepath' => array(
+      xl('Portal Uses Server Base Path (internal)'),
+      'bool',
+      '0',
+      xl('Use servers protocol and host in urls (portal internal only).')
+    ),
+
+    'portal_onsite_two_register' => array(
+      xl('Allow Onsite New Patient Registration Widget'),
+        'bool',                           // data type
+        '1',
+      xl('Enable Onsite Patient Portal new patient to self register.')
+    ),
+
+    'portal_two_payments' => array(
+      xl('Allow Onsite Online Payments'),
+        'bool',                           // data type
+        '0',
+      xl('Allow Onsite Patient to make payments online.')
+    ),
+
+    'portal_two_pass_reset' => array(
+      xl('Allow Patients to Reset Credentials'),
+        'bool',                           // data type
+        '0',
+      xl('Patient may change their logon from portal login dialog.')
+    ),
+
+    //Terry Fix this in the 3rd release of portal
+    'ccda_alt_service_enable' => array(
+      xl('Enable C-CDA Alternate Service'),
+      array(
+          0 => xl('Off'),
+          1 => xl('Care Coordination Only'),
+          2 => xl('Portal Only'),
+          3 => xl('Both'),
+      ),
+      '0',
+      xl('Enable C-CDA Alternate Service')
+    ),
+
     'portal_onsite_document_download' => array(
       xl('Enable Onsite Patient Portal Document Download'),
        'bool',                          // data type
@@ -3146,7 +3187,12 @@ $GLOBALS_METADATA = array(
       'FIXME vendor unique id FIXME!!!',            // default
       xl('MIPS Registry Name')
     ),
-
+     'pqrs_attestation_date' => array(
+      xl('Default Direct Entry Date'),  
+      'text',                           // data type
+      '2017-06-06',            // default
+      xl('Default date that direct entry encounters will be created on.')
+    ),
   ),
 
 );

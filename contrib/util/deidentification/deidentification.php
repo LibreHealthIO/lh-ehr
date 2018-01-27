@@ -12,12 +12,12 @@
 
 	There is no turnging back.......
 
-	To use: 
-	
+	To use:
+
 	1) Enter values for host, user, database, password
 	2) type: php deidentification.php
-	
-	Your database now has deidientified all data and can never be restored. 
+
+	Your database now has deidientified all data and can never be restored.
 
  * Copyright (C) 2017 Daniel Pflieger <growlingflea@gmail.com daniel@mi-squared.com >
  *
@@ -36,9 +36,9 @@
  * @author  Daniel Pflieger <growlingflea@gmail.com> <daniel@mi-squared.com>
  *
 
-	
+
     NOTE:  IT IS STILL THE RESPONSIBILITY OF THE USER TO ENSURE THAT ALL PERSONAL IDENTIFIABLE INFORMATION HAS BEEN DELETED FROM THE DATABASE.  THE END USER
-    MUST MAKE SURE THAT ALL TEXT AREAS IN FORMS DO NOT INCLUDE THE PATIENTS REAL NAME. 
+    MUST MAKE SURE THAT ALL TEXT AREAS IN FORMS DO NOT INCLUDE THE PATIENTS REAL NAME.
 */
 
 
@@ -63,7 +63,7 @@ $DEBUG = false;
 
 
 
-$con = mysqli_connect($host,$user,$pass,$database) or die("Some error occurred during connection. must enter Host, Username, password, and database in mysqli_connect() " . mysqli_error($con)); 
+$con = mysqli_connect($host,$user,$pass,$database) or die("Some error occurred during connection. must enter Host, Username, password, and database in mysqli_connect() " . mysqli_error($con));
 echo("\n Successfully connected to database....... Waiting...... \n ");
 
 
@@ -250,7 +250,7 @@ function deIdInsuranceDataTable($con, $pid){
             continue;
         }else{
 
-            $string = "update insurance_data set 
+            $string = "update insurance_data set
               subscriber_lname = '{$demographic_array['lname']}',
               subscriber_fname = '{$demographic_array['fname']}',
               subscriber_mname = '{$demographic_array['mname']}',
@@ -262,7 +262,7 @@ function deIdInsuranceDataTable($con, $pid){
               subscriber_city = '{$demographic_array['city']}',
               subscriber_state = '{$demographic_array['state']}',
               subscriber_phone = '{$demographic_array['phone_home']}'
-              
+
               where pid = $pid and type = '{$ty}'; ";
 
             $update = mysqli_query($con, $string) or print("update did not work");
@@ -289,11 +289,11 @@ function deIdFacilityTable($con){
     $result = mysqli_query($con, $query);
     while($row = mysqli_fetch_array($result)){
 
-        $string = "update facility set 
-          
+        $string = "update facility set
+
               `name`    = 'Facility_{$row['id']}',
               `phone`   = '(000) 000-0000'
-    
+
             where `id` = {$row['id']}";
 
         mysqli_query($con, $string) or print "Error altering facility table \n";
@@ -342,18 +342,18 @@ function deIdUsersTable($con){
 
        if(strpos($row['newcrop_user_role'], 'doctor') !==false){
 
-           $string .= "fname = 'Doctor.{$row['id']}', 
+           $string .= "fname = 'Doctor.{$row['id']}',
                        lname = 'Doctor.{$row['id']}' ";
 
 
        }else if(strpos($row['newcrop_user_role'], 'nurse') !==false){
 
-           $string .= "fname = 'Nurse.{$row['id']}', 
+           $string .= "fname = 'Nurse.{$row['id']}',
                        lname = 'Nurse.{$row['id']}' ";
 
        }else{
 
-           $string .= "fname = 'noNewCrop', 
+           $string .= "fname = 'noNewCrop',
                        lname = 'Nurse{$row['id']}'";
 
        }
@@ -378,7 +378,6 @@ function deIdForms($con){
     removeColumn($con, "form_dictation", "additional_notes", "");
 
     removeColumn($con, "phone_numbers", "prefix", "555");
-    removeColumn($con, "onotes", "body", "Internal Office notes posted here");
     removeColumn($con, "pnotes", "body", "DATETIME (FROMUSER to USER) Note about Patient posted here");
 
     echo "successfuly altered user forms table \n ";
