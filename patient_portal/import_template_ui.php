@@ -13,7 +13,7 @@
  * @author Jerry Padgett <sjpadgett@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
 $sanitize_all_escapes=true;
@@ -21,17 +21,20 @@ $fake_register_globals=false;
 require_once("../interface/globals.php");
 $getdir = isset($_POST['sel_pt']) ? $_POST['sel_pt'] : 0;
 if( $getdir > 0){
-    $tdir = $GLOBALS['OE_SITE_DIR'] .  '/onsite_portal_documents/templates/' . $getdir . '/';
+    $tdir = $GLOBALS['OE_SITE_DIR'] .  '/documents/onsite_portal_documents/templates/' . $getdir . '/';
     if(!is_dir($tdir)){
         if (!mkdir($tdir, 0755, true)) {
             die(xl('Failed to create folder'));
         }
     }
-}
-else
+} else {
 
-$tdir = $GLOBALS['OE_SITE_DIR'] .  '/onsite_portal_documents/templates/';
-function getAuthUsers(){
+    $tdir = $GLOBALS['OE_SITE_DIR'] .  '/documents/onsite_portal_documents/templates/';
+
+}
+
+function getAuthUsers()
+{
     $response = sqlStatement( "SELECT patient_data.pid, Concat_Ws(' ', patient_data.fname, patient_data.lname) as ptname FROM patient_data WHERE allow_patient_portal = 'YES'" );
     $resultpd = array ();
     while( $row = sqlFetchArray($response) ){
@@ -39,18 +42,23 @@ function getAuthUsers(){
     }
     return $resultpd;
 }
-function getTemplateList($dir){
+function getTemplateList($dir)
+{
     $retval = array();
-    if(substr($dir, -1) != "/") $dir .= "/";
+    if (substr($dir, -1) != "/") {
+        $dir .= "/";
+    }
+
     $d = @dir($dir) or die("File List: Failed opening directory " . text($dir) . " for reading");
     while(false !== ($entry = $d->read())) {
-        if($entry[0] == "." || substr($entry,-3) != 'tpl') continue;
+        if ($entry[0] == "." || substr($entry, -3) != 'tpl') {
+            continue;
+        }
         
         if(is_dir("$dir$entry")) {
             $retval[] = array(
                     'pathname' => "$dir$entry",
                     'name' => "$entry",
-                    //'type' => filetype("$dir$entry"),
                     'size' => 0,
                     'lastmod' => filemtime("$dir$entry")
             );
@@ -58,7 +66,6 @@ function getTemplateList($dir){
             $retval[] = array(
                     'pathname' => "$dir$entry",
                     'name' => "$entry",
-                    //'type' => ($finfo) ? finfo_file($finfo, "$dir$entry") : mime_content_type("$dir$entry"),
                     'size' => filesize("$dir$entry"),
                     'lastmod' => filemtime("$dir$entry")
             );
@@ -72,22 +79,23 @@ function getTemplateList($dir){
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LibreEHR <?php echo xlt(' Portal'); ?> ." | ". <?php echo xlt('Import'); ?></title>
+<title>LibreEHR <?php echo xlt(' Portal'); ?> | <?php echo xlt('Import'); ?></title>
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 <meta name="description" content="Developed By sjpadgett@gmail.com">
 
 <link href="<?php echo $GLOBALS['fonts_path']; ?>/font-awesome-4-6-3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
-<link href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <?php if ($_SESSION['language_direction'] == 'rtl') { ?>
-    <link href="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-rtl-3-3-4/dist/css/bootstrap-rtl.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-rtl-3-3-4/dist/css/bootstrap-rtl.min.css" rel="stylesheet" type="text/css" />
 <?php } ?>
 
 <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-<script src="<?php echo $GLOBALS['standard_js_path']; ?>/jquery-min-1-11-3/index.js" type="text/javascript"></script>
-<script src="<?php echo $GLOBALS['standard_js_path']; ?>/bootstrap-3-3-4/dist/js/bootstrap.min.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>/summernote-0-8-2/dist/summernote.css" />
-<script type='text/javascript' src="<?php echo $GLOBALS['standard_js_path']; ?>/summernote-0-8-2/dist/summernote.js"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-1-11-3/index.js" type="text/javascript"></script>
+<script src="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/js/bootstrap.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>summernote-0-8-2/dist/summernote.css" />
+<script type='text/javascript' src="<?php echo $GLOBALS['standard_js_path']; ?>summernote-0-8-2/dist/summernote.js"></script>
+<script type='text/javascript' src="<?php echo $GLOBALS['standard_js_path']; ?>summernote-0-8-2/dist/plugin/nugget/summernote-ext-nugget.js"></script>
 </head>
 <script>
 var currentEdit = "";
@@ -104,7 +112,7 @@ var tsave = function() {
     
 var tdelete = function(docname) {
     var delok = confirm("<?php echo xls('You are about to delete template'); ?>: "+docname+"\n<?php echo xls('Is this Okay?'); ?>");
-    if(delok === true) getDocument(docname, 'delete', '')
+    if(delok === true) {getDocument(docname, 'delete', '')}
     return false;
     };  
  function getDocument(docname, mode, content){
@@ -125,7 +133,32 @@ var tdelete = function(docname) {
                         $('#templatecontent').summernote('destroy');
                         $('#templatecontent').empty().append(templateHtml);
                         $('#popeditor').modal({backdrop: "static"});
-                        $('#templatecontent').summernote({focus: true});
+                        $('#templatecontent').summernote({
+                           // height: 200,
+                            focus: true,
+                            placeholder: '',
+                            toolbar: [
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['insert', ['link','picture', 'video', 'hr']],
+                                ['view', ['fullscreen', 'codeview']],
+                                ['insert', ['nugget']],
+                                ['edit',['undo','redo']]
+                                ],
+                                nugget: {
+                                    list: [
+                                        '{ParseAsHTML}{TextInput}', '{smTextInput}', '{CheckMark}', '{ynRadioGroup}', '{DOS}','{ReferringDOC}', '{PatientID}',
+                                        '{PatientName}', '{PatientSex}', '{PatientDOB}', '{PatientPhone}', '{PatientSignature}', '{Address}', '{City}', '{State}', '{Zip}',
+                                        '{AdminSignature}', '{Medications}', '{ProblemList}', '{Allergies}', '{ChiefComplaint}'
+                                    ],
+                                    label: 'Tags / Directives',
+                                    tooltip: 'Insert at current cursor location.'
+                                },
+                             options:{'label': 'Tags/Directives',
+                                    'tooltip': 'Insert Tag or Directive'}
+                            });
                         }
                     else if(mode == 'save'){
                         $('#templatecontent').summernote('destroy');
@@ -157,7 +190,8 @@ var tdelete = function(docname) {
 <input class="btn btn-info" type="file" name="tplFile">
 <br>
 <button class="btn btn-primary" type="button" onclick="location.href='./patient/provider'"><?php echo xlt('Home'); ?></button>
-<input type='hidden' name="up_dir" value='<?php global $getdir; echo $getdir;?>' />
+<input type='hidden' name="up_dir" value='<?php global $getdir;
+echo $getdir;?>' />
 <button class="btn btn-success" type="submit" name="upload_submit" id="upload_submit"><?php echo xlt('Upload Template for'); ?> <span style="font-size:14px;" class="label label-default" id='ptstatus'></span></button>
 
 </form>
@@ -174,10 +208,11 @@ var tdelete = function(docname) {
 $ppt = getAuthUsers();
 global $getdir;
 foreach ($ppt as $pt){
-    if($getdir != $pt['pid'])
+    if ($getdir != $pt['pid']) {
         echo "<option value=".attr($pt['pid']).">".text($pt['ptname'])."</option>";
-    else 
+    } else {
         echo "<option value='".attr($pt['pid'])."' selected='selected'>".text($pt['ptname'])."</option>";
+}
 }
 echo "</select></div>";
 echo '<button type="submit" class="btn btn-default">'.xlt('Refresh').'</button>';

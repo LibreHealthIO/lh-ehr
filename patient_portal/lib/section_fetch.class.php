@@ -11,7 +11,7 @@
  * @author Jerry Padgett <sjpadgett@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  *
  */
 //namespace OnsitePortal;

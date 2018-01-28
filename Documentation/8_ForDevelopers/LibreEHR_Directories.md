@@ -57,7 +57,7 @@ This Directory contains the programs used by the onsite portal to create the CCR
 
 This directory contains the programs that are contributed to codebase but not used in the actual software. It also contains the loads for ICD10, SNOWMED and RXNORM. There is a UTIL directory that contains some useful tools. I have used dupcheck check for duplicate patients. The merging of  patients is now an menu item under Administration->Other.
 
-**CONTROLLERS** 
+**CONTROLLERS**
 
 This directory contains some of the various controllers. I do not believe that all of the controllers are stored here.
 
@@ -81,7 +81,7 @@ This is where images are stored that are used in the core software and do not va
 
 This directory contains the majority of the code. The directories contained in the interface directory are as follows:
 
-**batchcom** 
+**batchcom**
 Code in this directory is for running batch communication. I do not know if it is usable or not.
 
 **billing**
@@ -96,16 +96,16 @@ This directory contains programs for displaying instruction when using the exter
 **drugs**
 This directory contains programs related to drugs.
 
-**esign** 
+**esign**
 This directory is for the ESIGN programs.
 
 **fax**
 This directory contains programs for the hylafax fax server.
 
-**forms** 
+**forms**
 This Directory has the forms used in the system.
 
-**forms_admin** 
+**forms_admin**
 This directory has the programs to administer the forms directory.
 
 **Includes**
@@ -165,10 +165,10 @@ This directory contains the programs for facility, address book, user info and u
 
 Files in the root of the interface directory:
 
-This file is not used 
+This file is not used
 errorWin.php  
 
-These eRx files are used by newcrop e-prescribing, 
+These eRx files are used by newcrop e-prescribing,
 eRx.php            
 eRxGlobals.php
 eRxPage.php
@@ -177,7 +177,7 @@ eRxStore.php
 eRxXMLBuilder.php
 
 
-globals.php is a configuration file for the software. 
+globals.php is a configuration file for the software.
 
 
 index.php
@@ -201,13 +201,13 @@ Contains various ajax programs
 Contains programs used in pass phrase authentication.
 
 **classes**
-Contains various classes 
+Contains various classes
 
 **css**
 CSS files for the system. Should be migrated to the public/assets directory
 
 **custom_template**
-Uses ckeditor to create custom templates. 
+Uses ckeditor to create custom templates.
 
 **edihistory**
 Currently outdated, being moved to /modules or external plugin:  Edi History  module used for claim and payment display and manipliation
@@ -294,7 +294,6 @@ lists.inc
 log.inc
 maviq_phone_api.php
 menuarrow.gif
-onotes.inc
 openssl.cnf
 options.inc.php
 options.js.php
@@ -345,7 +344,7 @@ This is the directory where multi-site information is stored. Items that are onl
 
 **SQL**
 
-This is the directory that stores SQL filed for table creation. This currently contains the main sql file , database.sql , for the creation of a new database and the upgrade scripts from one version to the next. 
+This is the directory that stores SQL filed for table creation. This currently contains the main sql file , database.sql , for the creation of a new database and the upgrade scripts from one version to the next.
 
 **TEMPLATES**
 

@@ -70,10 +70,6 @@ include_once("../../library/acl.inc");
 <?php xl('Reports','e'); ?></a>&nbsp;
 </td>
 
-<td align="center" nowrap>
-&nbsp;<a href="onotes/office_comments.php" target="Main" class="menu" onclick="top.restoreSession()">
-<?php xl('Notes','e'); ?></a>&nbsp;
-</td>
 
 <td align="center" nowrap>
 &nbsp;<a href="../usergroup/addrbook_list.php" target="Main" class="menu" onclick="top.restoreSession()">
@@ -127,7 +123,7 @@ include_once("../../library/acl.inc");
 </td>
 
 <td align="center" nowrap>
-&nbsp;<a href="http://librehealth.io/wiki/index.php/Users_Guide" target="_blank" class="menu"> 
+&nbsp;<a href="http://librehealth.io/wiki/index.php/Users_Guide" target="_blank" class="menu">
 <?php xl('Manual','e'); ?></a>&nbsp;&nbsp;
 </td>
 

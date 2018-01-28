@@ -31,6 +31,19 @@
  *
  */
 
+// Default values for optional variables that are allowed to be set by callers.
+
+// Unless specified explicitly, apply Auth functions
+if (!isset($ignoreAuth)) {
+    $ignoreAuth = false;
+}
+// Same for onsite
+if (!isset($ignoreAuth_onsite_portal)) {
+    $ignoreAuth_onsite_portal = false;
+}
+
+
+
 // Is this windows or non-windows? Create a boolean definition.
 if (!defined('IS_WINDOWS'))
  define('IS_WINDOWS', (stripos(PHP_OS,'WIN') === 0));
@@ -118,7 +131,10 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
     $tmp = $_GET['site'];
   }
   else {
-    if (empty($ignoreAuth)) die("Site ID is missing from session data!");
+    if (empty($ignoreAuth)) {
+        header('Location: login/login.php?loginfirst&site='.$tmp);
+        die();
+    }
     $tmp = $_SERVER['HTTP_HOST'];
     if (!is_dir($GLOBALS['OE_SITES_BASE'] . "/$tmp")) $tmp = "default";
   }
@@ -313,6 +329,14 @@ if (!empty($glrow)) {
             // the $css_header_value is set above
             $rtl_override = true;
         }
+    } elseif (isset($_SESSION['language_choice'])) {
+        //this will support the onsite patient portal which will have a language choice but not yet a set language direction
+        $_SESSION['language_direction'] = getLanguageDir($_SESSION['language_choice']);
+        if ( $_SESSION['language_direction'] == 'rtl' &&
+        !strpos($GLOBALS['css_header'], 'rtl')) {
+
+            // the $css_header_value is set above
+            $rtl_override = true;
     }
 
     else {
@@ -439,6 +463,10 @@ $GLOBALS['backpic'] = $backpic;
 // 1 = send email message to given id for Emergency Login user activation,
 // else 0.
 $GLOBALS['Emergency_Login_email'] = $GLOBALS['Emergency_Login_email_id'] ? 1 : 0;
+
+if (($ignoreAuth_onsite_portal === true) && ($GLOBALS['portal_onsite_enable'] == 1)) {
+    $ignoreAuth = true;
+}
 
 if (!isset($ignoreAuth) || !$ignoreAuth) {
   include_once("$srcdir/auth.inc");

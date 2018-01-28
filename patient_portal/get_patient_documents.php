@@ -1,6 +1,6 @@
 <?php
 /*
- * Download documents from LibreEHR to the patient portal in a zip file(get_patient_documents.php)
+ * Download documents from LibreHealth EHR to the patient portal in a zip file(get_patient_documents.php)
  *
  * This program is used to download patient documents in a zip file in the Patient Portal.
  * The original author did not pursue this but I thought it would be a good addition to 
@@ -29,7 +29,7 @@
  * @author Terry Hill <teryhill@librehealth.io> 
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the authors and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the authors and to the LibreHealth EHR community.
  * 
  */
     

@@ -47,7 +47,7 @@ $where = '';
 $eraname = '';
 $eracount = 0;
 /* Load dependencies only if we need them */
-if( ( isset($GLOBALS['portal_onsite_enable'])) || ($GLOBALS['portal_onsite_enable']) ){
+if( ! empty($GLOBALS['portal_onsite_enable']) ){
     /*  Addition of onsite portal patient notify of invoice and reformated invoice - sjpadgett 01/2017 */
     require_once("../../patient_portal/lib/portal_mail.inc");
     require_once("../../patient_portal/lib/appsql.class.php");
@@ -233,7 +233,7 @@ $today = date("Y-m-d");
 
   // Print or download statements if requested.
   //
-if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $_POST['form_portalnotify'] && $_POST['form_cb']) {
+if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && $_POST['form_cb']) {
 
     $fhprint = fopen($STMT_TEMP_FILE, 'w');
     $sqlBindArray = array();
@@ -244,9 +244,15 @@ if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf']) || $
     }
     $where = substr($where, 4);
   // need to only use summary invoice for multi visits
+
+
+if ($_POST['form_portalnotify']) {
   foreach ($_POST['form_invpids'] as $key => $v) {
-    $inv_pid[$key] = key($v);
+            if ($_POST['form_cb'][$key]) {
+                array_push($inv_pid, key($v));
   }
+        }
+    }
 
     $res = sqlStatement("SELECT " .
       "f.id, f.date, f.pid, f.encounter, f.stmt_count, f.last_stmt_date, f.last_level_closed, f.last_level_billed, f.billing_note as enc_billing_note, " .

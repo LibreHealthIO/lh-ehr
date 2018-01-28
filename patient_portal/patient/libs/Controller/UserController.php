@@ -51,8 +51,10 @@ class UserController extends AppBaseController
     public function ListView()
     {
         $rid=0;
-        if (isset($_GET['id']) )
+        if (isset($_GET['id'])) {
             $rid = (int) $_GET['id'];
+        }
+
         $this->Assign ( 'recid', $rid );
         $this->Render();
     }
@@ -73,7 +75,9 @@ class UserController extends AppBaseController
             // if a sort order was specified then specify in the criteria
             $output->orderBy = RequestUtil::Get('orderBy');
             $output->orderDesc = RequestUtil::Get('orderDesc') != '';
-            if ($output->orderBy) $criteria->SetOrder($output->orderBy, $output->orderDesc);
+            if ($output->orderBy) {
+                $criteria->SetOrder($output->orderBy, $output->orderDesc);
+            }
 
             $page = RequestUtil::Get('page');
 
@@ -194,9 +198,7 @@ class UserController extends AppBaseController
             if (count($errors) > 0)
             {
                 $this->RenderErrorJSON('Please check the form for errors',$errors);
-            }
-            else
-            {
+            } else {
                 $user->Save();
                 $this->RenderJSON($user, $this->JSONPCallback(), true, $this->SimpleObjectParams());
             }
@@ -293,9 +295,7 @@ class UserController extends AppBaseController
             if (count($errors) > 0)
             {
                 $this->RenderErrorJSON('Please check the form for errors',$errors);
-            }
-            else
-            {
+            } else {
                 $user->Save();
                 $this->RenderJSON($user, $this->JSONPCallback(), true, $this->SimpleObjectParams());
             }
