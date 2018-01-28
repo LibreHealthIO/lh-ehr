@@ -338,6 +338,7 @@ if (!empty($glrow)) {
             // the $css_header_value is set above
             $rtl_override = true;
     }
+    }
 
     else {
         //$_SESSION['language_direction'] is not set, so will use the default language
