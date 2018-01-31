@@ -76,14 +76,15 @@ $PDF_OUTPUT = empty($_POST['pdf']) ? 0 : intval($_POST['pdf']);
 
 if ($PDF_OUTPUT) {
   require_once($GLOBALS['modules_dir'] . "html2pdf/vendor/autoload.php");
+
     $pdf = new HTML2PDF(
         $GLOBALS['pdf_layout'],
-                       $GLOBALS['pdf_size'],
-                       $GLOBALS['pdf_language'],
-                       true, // default unicode setting is true
-                       'UTF-8', // default encoding setting is UTF-8
-                       array($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin'],$GLOBALS['pdf_bottom_margin'])
-          );
+        $GLOBALS['pdf_size'],
+        $GLOBALS['pdf_language'],
+        true, // default unicode setting is true
+        'UTF-8', // default encoding setting is UTF-8
+         array($GLOBALS['pdf_left_margin'],$GLOBALS['pdf_top_margin'],$GLOBALS['pdf_right_margin'],$GLOBALS['pdf_bottom_margin'])
+     );
   ob_start();
 }
 
