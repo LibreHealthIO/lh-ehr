@@ -74,7 +74,8 @@ if (stristr(PHP_OS, 'WIN')) {
   $perl_bin_dir        = 'C:/xampp/perl/bin';
   $temporary_files_dir = 'C:/windows/temp';
   $backup_log_dir      = 'C:/windows/temp';
-} else {
+}
+else {
   // Everything else
   $mysql_bin_dir       = '/usr/bin';
   $perl_bin_dir        = '/usr/bin';
@@ -604,6 +605,12 @@ $GLOBALS_METADATA = array(
       xl('Support export/import of configuration data via the Backup page.')
     ),
 
+    'tags_filters_enabled' => array(
+      xl('Enable Demographics Tag filtering feature'),
+       'bool',                          // data type
+       '0',                             // default
+      xl('Enable patient Tag filtering feature.')
+    ),
     'restrict_user_facility' => array(
       xl('Restrict Users to Facilities'),
        'bool',                          // data type
@@ -616,7 +623,6 @@ $GLOBALS_METADATA = array(
        '0',                             // default
       xl('Restrict User access to patients by assigned patient facility.')
     ),
-
     'set_facility_cookie' => array(
       xl('Remember Selected Facility'),
        'bool',                          // data type
@@ -2372,7 +2378,7 @@ $GLOBALS_METADATA = array(
 
     'SMTP_PASS' => array(
       xl('SMTP Password for Authentication'),
-      'pass',                           // data type
+      'text',                           // data type
       '',                               // default
       xl('Must be empty if SMTP authentication is not used.')
     ),
