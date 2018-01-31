@@ -46,7 +46,7 @@ $GLOBALS['PATIENT_REPORT_ACTIVE'] = true;
 $PDF_OUTPUT = empty($_POST['pdf']) ? 0 : intval($_POST['pdf']);
 
 if ($PDF_OUTPUT) {
-  require_once($GLOBALS['modules_dir'] . "/html2pdf/vendor/autoload.php");
+  require_once($GLOBALS['modules_dir'] . "html2pdf/vendor/autoload.php");
   $pdf = new HTML2PDF ($GLOBALS['pdf_layout'],
                        $GLOBALS['pdf_size'],
                        $GLOBALS['pdf_language'],
@@ -122,9 +122,9 @@ function postToGet($arin) {
 <link rel="stylesheet" type="text/css" href="<?php echo $webserver_root; ?>/library/ESign/css/esign_report.css" />
 <?php } else {?>
 <html>
-<head>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/ESign/css/esign_report.css" />
+  <head>
+    <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+    <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/ESign/css/esign_report.css" />
 <?php } ?>
 
 
@@ -142,6 +142,13 @@ function postToGet($arin) {
     z-index:10;
     border-bottom: solid thin #6D6D6D;
     padding:0% 2% 0% 2.5%;
+  }
+  @media print
+  {
+      .no-print, .no-print *
+      {
+          display: none !important;
+      }
   }
 </style>
 
@@ -163,10 +170,10 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
       $j("."+class_name).each(function(){
       val = document.getElementById(this.id).innerHTML;
       $j("#"+this.id).replaceWith(val);
-      
+
     });
   }
-  var res_id = 0;            
+  var res_id = 0;
   function doSearch(form_id,form_dir,exact,class_name,keys,case_sensitive) { // Uses jquery SearchHighlight Plug in
     var options ={};
     var keys = keys.replace(/^\s+|\s+$/g, '') ;
@@ -184,7 +191,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
         $j(this).attr("id",'result_'+res_id);
       });
   }
-  
+
   function remove_mark(form_id,form_dir){ // Removes all <mark> and </mark> tags
     var match1 = null;
     var src_str = document.getElementById('search_div_'+form_id+'_'+form_dir).innerHTML;
@@ -200,7 +207,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     }
     document.getElementById('search_div_'+form_id+'_'+form_dir).innerHTML=src_str;
   }
-  function mark_hilight(form_id,form_dir,keys,case_sensitive){ // Adds <mark>match_val</mark> tags    
+  function mark_hilight(form_id,form_dir,keys,case_sensitive){ // Adds <mark>match_val</mark> tags
     keys = keys.replace(/^\s+|\s+$/g, '') ;
     if(keys == '') return;
     var src_str = $j('#search_div_'+form_id+'_'+form_dir).html();
@@ -228,7 +235,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
       doSearch(form_id,form_dir,'partial','hilite',keys,'false');
     }
   }
-  
+
   var forms_array;
   var res_array   = Array();
   function find_all(){ // for each report the function mark_hilight() is called
@@ -246,12 +253,12 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     else{
       document.getElementById('alert_msg').innerHTML='';
     }
-    
+
     forms_arr = document.getElementById('forms_to_search');
     for (var i = 0; i < forms_arr.options.length; i++) {
      if(forms_arr.options[i].selected ==true){
           $j('.class_'+forms_arr.options[i].value).each(function(){
-          id_arr = this.id.split('search_div_');  
+          id_arr = this.id.split('search_div_');
           var re = new RegExp('_','i');
           new_id = id_arr[1].replace(re, "|");
           new_id_arr = new_id.split('|');
@@ -259,7 +266,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
           form_dir = new_id_arr[1];
           mark_hilight(form_id,form_dir,keys,case_sensitive);
         });
-          
+
       }
     }
     if($j('.hilite').length <1){
@@ -274,10 +281,10 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     }
 
   }
-  
+
   function remove_mark_all(){ // clears previous search results if exists
     $j('.report_search_div').each(function(){
-      var id_arr = this.id.split('search_div_');  
+      var id_arr = this.id.split('search_div_');
       var re = new RegExp('_','i');
       var new_id = id_arr[1].replace(re, "|");
       var new_id_arr = new_id.split('|');
@@ -327,7 +334,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     }
     element = document.getElementById(res_array[last_visited]);
     element.scrollIntoView(false);
-    
+
   }
 
   function prev(w_count){
@@ -360,9 +367,9 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
         return;
       }
     $j("#"+res_array[last_visited]).addClass("next");
-    
+
     }
-    
+
     element = document.getElementById(res_array[last_visited]);
     element.scrollIntoView(false);
   }
@@ -396,9 +403,9 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
       }
     }else{
       return 1;
-    } 
+    }
   }
-  
+
   function next_prev(action){
     var w_count =0;
     case_sensitive = false;
@@ -419,7 +426,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
     for (var i = 0; i < forms_arr.options.length; i++) {
      if(forms_arr.options[i].selected ==true){
           $j('.class_'+forms_arr.options[i].value).each(function(){
-          id_arr = this.id.split('search_div_');  
+          id_arr = this.id.split('search_div_');
           var re = new RegExp('_','i');
           new_id = id_arr[1].replace(re, "|");
           new_id_arr = new_id.split('|');
@@ -449,7 +456,7 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
         document.getElementById('alert_msg').innerHTML='<?php echo xla('Showing result');?> '+cur_res+' <?php echo xla('of');?> '+tot_res;
       }
     }
-    
+
   }
 </script>
 </head>
@@ -483,26 +490,20 @@ if ($printable) {
   // in HTML view it's just one line at the top of page 1
   echo '<page_header style="text-align:right;" class="custom-tag"> ' . xlt("PATIENT") . ':' . text($titleres['lname']) . ', ' . text($titleres['fname']) . ' - ' . $titleres['DOB_TS'] . '</page_header>    ';
   echo '<page_footer style="text-align:right;" class="custom-tag">' . xlt('Generated on') . ' ' . oeFormatShortDate() . ' - ' . text($facility['name']) . ' ' . text($facility['phone']) . '</page_footer>';
-
-  // Use logo if it exists as 'practice_logo.png' in the site dir
-  // old code used the global custom dir which is no longer a valid
-   $practice_logo = "$OE_SITE_DIR/images/practice_logo.png";
-   if (file_exists($practice_logo)) {
-        echo "<img src='$practice_logo' align='left'><br />\n";
-     } 
 ?>
-<h2><?php echo $facility['name'] ?></h2>
+  
+<h2>&nbsp;&nbsp;&nbsp;<?php echo $facility['name'] ?></h2>
 <?php echo $facility['street'] ?><br>
 <?php echo $facility['city'] ?>, <?php echo $facility['state'] ?> <?php echo $facility['postal_code'] ?><br clear='all'>
 <?php echo $facility['phone'] ?><br>
 
-<a href="javascript:window.close();"><span class='title'><?php echo $titleres['fname'] . " " . $titleres['lname']; ?></span></a><br>
+<span class='title'><?php echo $titleres['fname'] . " " . $titleres['lname']; ?></span><br>
 <span class='text'><?php xl('Generated on','e'); ?>: <?php echo oeFormatShortDate(); ?></span>
 <br><br>
 
 <?php
 
-} 
+}
 else { // not printable
 ?>
 
@@ -594,7 +595,7 @@ foreach ($ar as $key => $val) {
     if (stristr($key,"include_")) {
 
         if ($val == "demographics") {
-            
+
             echo "<hr />";
             echo "<div class='text demographics' id='DEM'>\n";
             print "<h1>".xl('Patient Data').":</h1>";
@@ -629,21 +630,21 @@ foreach ($ar as $key => $val) {
             echo "<hr />";
             echo "<div class='text insurance'>";
             echo "<h1>".xl('Insurance Data').":</h1>";
-            if ($GLOBALS['insurance_address_demographics_report'] =='1') {    
+            if ($GLOBALS['insurance_address_demographics_report'] =='1') {
             print "<br><span class=bold>".xl('Primary Insurance Data').":</span><br>";
-                printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"primary"), $N);             
-                print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";    
+                printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"primary"), $N);
+                print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";
                 printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"secondary"), $N);
                 print "<span class=bold>".xl('Tertiary Insurance Data').":</span><br>";
                 printRecDataOne($insurance_data_array_custom, getRecInsuranceData ($pid,"tertiary"), $N);
             }else{
                 print "<br><span class=bold>".xl('Primary Insurance Data').":</span><br>";
-            printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"primary"), $N);       
-            print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";    
+            printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"primary"), $N);
+            print "<span class=bold>".xl('Secondary Insurance Data').":</span><br>";
             printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"secondary"), $N);
             print "<span class=bold>".xl('Tertiary Insurance Data').":</span><br>";
             printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"tertiary"), $N);
-            }        
+            }
             echo "</div>";
 
         } elseif ($val == "billing") {
@@ -778,7 +779,6 @@ foreach ($ar as $key => $val) {
     } else {
 
         // Documents is an array of checkboxes whose values are document IDs.
-        //
         if ($key == "documents") {
 
             echo "<hr />";
@@ -811,13 +811,16 @@ foreach ($ar as $key => $val) {
                 if($couch_docid && $couch_revid){
                   $url_file = $d->get_couch_url($pid,$encounter);
                 }
+
                 // Collect filename and path
                 $from_all = explode("/",$url_file);
                 $from_filename = array_pop($from_all);
                 $from_pathname_array = array();
+
                 for ($i=0;$i<$d->get_path_depth();$i++) {
                   $from_pathname_array[] = array_pop($from_all);
                 }
+
                 $from_pathname_array = array_reverse($from_pathname_array);
                 $from_pathname = implode("/",$from_pathname_array);
 
@@ -830,6 +833,7 @@ foreach ($ar as $key => $val) {
                     '/documents/' . $from_pathname . '/' . $from_filename;
                   $to_file = substr($from_file, 0, strrpos($from_file, '.')) . '_converted.jpg';
                 }
+
                 //Extract the extension by the mime/type and not the file name extension
                 $image_data = getimagesize($from_file);
                 $extension = image_type_to_extension($image_data[2]);
@@ -855,19 +859,23 @@ foreach ($ar as $key => $val) {
           // Most clinic documents are expected to be PDFs, and in that happy case
           // we can avoid the lengthy image conversion process.
           if ($PDF_OUTPUT && $extension == ".pdf") {
+
             // HTML to PDF conversion will fail if there are open tags.
             echo "</div></div>\n";
             $content = getContent();
+
             // $pdf->setDefaultFont('Arial');
             $pdf->writeHTML($content, false);
             $pagecount = $pdf->pdf->setSourceFile($from_file);
             for($i = 0; $i < $pagecount; ++$i){
-              $pdf->pdf->AddPage();  
+              $pdf->pdf->AddPage();
               $itpl = $pdf->pdf->importPage($i + 1, '/MediaBox');
               $pdf->pdf->useTemplate($itpl);
             }
+
             // Make sure whatever follows is on a new page.
             $pdf->pdf->AddPage();
+
             // Resume output buffering and the above-closed tags.
             ob_start();
             echo "<div><div class='text documents'>\n";
@@ -876,6 +884,7 @@ foreach ($ar as $key => $val) {
             if (! is_file($to_file)) exec("convert -density 200 \"$from_file\" -append -resize 850 \"$to_file\"");
             if (is_file($to_file)) {
               if ($PDF_OUTPUT) {
+
                 // OK to link to the image file because it will be accessed by the
                 // HTML2PDF parser and not the browser.
                 echo "<img src='$to_file'><br><br>";
@@ -931,6 +940,7 @@ foreach ($ar as $key => $val) {
                             "FROM lists WHERE id = '$rowid'");
             $diagnosis = $irow['diagnosis'];
             if ($prevIssueType != $irow['type']) {
+
                 // output a header for each Issue Type we encounter
                 $disptype = $ISSUE_TYPES[$irow['type']][0];
                 echo "<div class='issue_type'>" . $disptype . ":</div>\n";
@@ -939,6 +949,7 @@ foreach ($ar as $key => $val) {
             echo "<div class='text issue'>";
             echo "<span class='issue_title'>" . $irow['title'] . ":</span>";
             echo "<span class='issue_comments'> " . $irow['comments'] . "</span>\n";
+
             // Show issue's chief diagnosis and its description:
             if ($diagnosis) {
                 echo "<div class='text issue_diag'>";
@@ -997,22 +1008,22 @@ foreach ($ar as $key => $val) {
                     echo ' '. xl('Provider') . ': ' . text(getProviderName(getProviderIdOfEncounter($form_encounter)));
                 }
                 echo "<br>\n";
-   
+
                 // call the report function for the form
-                ?>                
+                ?>
                 <div name="search_div" id="search_div_<?php echo attr($form_id)?>_<?php echo attr($res[1])?>" class="report_search_div class_<?php echo attr($res[1]); ?>">
                 <?php
                 if (substr($res[1],0,3) == 'LBF')
                   call_user_func("lbf_report", $pid, $form_encounter, $N, $form_id, $res[1]);
                 else
                   call_user_func($res[1] . "_report", $pid, $form_encounter, $N, $form_id);
-                
+
                 $esign = $esignApi->createFormESign( $formId, $res[1], $form_encounter );
                 if ( $esign->isLogViewable("report") ) {
                     $esign->renderLog();
                 }
                 ?>
-                
+
                 </div>
                 <?php
 
@@ -1034,7 +1045,7 @@ foreach ($ar as $key => $val) {
                 }
 
                 print "</div>";
-            
+
             } // end auth-check for encounter forms
 
         } // end if('issue_')... else...
@@ -1045,6 +1056,9 @@ foreach ($ar as $key => $val) {
 
 if ($printable)
   echo "<br /><br />" . xl('Signature') . ": _______________________________<br />";
+
+if (!$PDF_OUTPUT && $printable)
+  echo "<br><a href='javascript:window.close();' class='no-print'><h2>Close</h2></a>"
 ?>
 
 </div> <!-- end of report_custom DIV -->

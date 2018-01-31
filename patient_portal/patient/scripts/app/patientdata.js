@@ -70,6 +70,12 @@ var page = {
         this.collectionView.on('rendered',function(){
             if(!page.isInitialized){
                 var m = page.patientData.first();
+                m = (m === undefined) ? "" : m;
+                if(m){
+                    if(m.get('pid') < 1){
+                        m = "";
+                    }
+                }
                 page.showDetailForm(m);
                 
             }
@@ -99,7 +105,7 @@ var page = {
                         },
                     },
                     yearStart: datepicker_yearStart,
-                    rtl: datepicker_rtl,
+                    //rtl: datepicker_rtl,
                     format: datepicker_format,
                         timepicker:false
                 });
@@ -111,10 +117,10 @@ var page = {
             examinerIdValues.fetch({
                 success: function(c){
                     var dd = $('#providerid');
-                    var ddd = $('#careTeam');
+                    //var ddd = $('#careTeam');
                     var dddd = $('#refProviderid');
                     dd.append('<option value="0">Unassigned</option>');
-                    ddd.append('<option value="0">Unassigned</option>');
+                    //ddd.append('<option value="0">Unassigned</option>');
                     dddd.append('<option value="0">Unassigned</option>');
                     c.forEach(function(item,index) {
                         if( item.get( 'authorized') != '1' ) return;
@@ -127,26 +133,24 @@ var page = {
                             uname,
                             page.patient.get('providerid') == item.get( 'id')
                         ));
-                        ddd.append(app.getOptionHtml(
-                                uid,
-                                uname,
-                                page.patient.get('careTeam') == item.get( 'id')
-                        ));
+                       // ddd.append(app.getOptionHtml(
+                       //         uid,
+                       //         uname,
+                       //         page.patient.get('careTeam') == item.get( 'id')
+                       // ));
                         dddd.append(app.getOptionHtml(
                                 uid,
                                 uname,
                                 page.patient.get('refProviderid') == item.get( 'id')
                         ));/**/
                     });
-                    //dd.combobox();
-                    //ddd.combobox();
-                    //dddd.combobox();
                 if( page.portalpatient.get('pid') ){
                     $("#replaceAllButton").show();
                     page.isEdited = true;
                     $.each(page.portalpatient.attributes, function(key, value) {
                         if( value != page.patient.get(key) ){
-                            if(key=='providerid' || key=='refProviderid' || key=='careTeam' ){
+                            //if(key=='providerid' || key=='refProviderid' || key=='careTeam' ){
+                            if(key=='providerid' || key=='refProviderid') {
                                 var os = 0+value-1;
                                 if( os > -1 ){
                                     var em = examinerIdValues.at(os)
@@ -188,7 +192,7 @@ var page = {
                         },
                     },
                     yearStart: datetimepicker_yearStart,
-                    rtl: datetimepicker_rtl,
+                    //rtl: datetimepicker_rtl,
                     format: datetimepicker_format,
                     step: datetimepicker_step,
                     timepicker:true
@@ -230,12 +234,6 @@ var page = {
         $('#'+a+'InputContainer span.help-inline').html('');
         $('#'+a+'InputContainer span.help-inline').html( '<a class="editval" style="color:red;font-size:16px" onclick="page.revertVal(this); return false;" data-tstate=chart data-id="'+a+'">'+v+'</a>');    
         $('#'+a+'InputContainer span.help-inline').show();    
-        /*if( !$("#donePatientButton").is(":visible") ){
-            $("#donePatientButton").show();            
-        }
-        if( !$("#savePatientButton").is(":visible") ){
-            $('#savePatientButton').show();
-        }*/
     },
     revertVal:function( el ){
         var a = $(el).data('id');
@@ -402,15 +400,15 @@ page.patient.save({
             'phoneBiz': $('input#phoneBiz').val(),
             'phoneContact': $('input#phoneContact').val(),
             'phoneCell': $('input#phoneCell').val(),
-            'pharmacyId': $('input#pharmacyId').val(),
+            'pharmacyId': $('input#pharmacyId').val() || 0,
             'status': $('select#status').val(),
             'contactRelationship': $('input#contactRelationship').val(),
-            'date': $('input#date').val()+' '+$('input#date-time').val(),
+            'date': $('input#date').val(),
             'sex': $('select#sex').val(),
             'referrer': $('input#referrer').val(),
             'referrerid': $('input#referrerid').val(),
             'providerid': $('select#providerid').val(),
-            'refProviderid': $('select#refProviderid').val(),
+            'refProviderid': $('select#refProviderid').val() || 0,
             'email': $('input#email').val(),
             'emailDirect': $('input#emailDirect').val(),
             'ethnoracial': $('input#ethnoracial').val(),
@@ -424,7 +422,7 @@ page.patient.save({
         //    'billingNote': $('textarea#billingNote').val(),
         //    'homeless': $('input#homeless').val(),
         //    'financialReview': $('input#financialReview').val()+' '+$('input#financialReview-time').val(),
-            'pubpid': $('input#pubpid').val(),
+        //    'pubpid': $('input#pubpid').val(),
             'pid': $('input#pid').val(),
             'hipaaMail': $('input[name=hipaaMail]:checked').val(),
             'hipaaVoice': $('input[name=hipaaVoice]:checked').val(),
@@ -444,12 +442,12 @@ page.patient.save({
             'allowImmRegUse': $('input[name=allowImmRegUse]:checked').val(),
             'allowImmInfoShare': $('input[name=allowImmInfoShare]:checked').val(),
             'allowHealthInfoEx': $('input[name=allowHealthInfoEx]:checked').val(),
-            //'allowPatientPortal': $('input[name=allowPatientPortal]:checked').val(),
+            'allowPatientPortal': $('input[name=allowPatientPortal]:checked').val(),
             //'deceasedDate': $('input#deceasedDate').val()+' '+$('input#deceasedDate-time').val(),
             //'deceasedReason': $('input#deceasedReason').val(),
             'soapImportStatus': $('input#soapImportStatus').val(),
             //'cmsportalLogin': $('input#cmsportalLogin').val(),
-            'careTeam': $('select#careTeam').val(),
+            //'careTeam': $('select#careTeam').val() || 0,
             'county': $('input#county').val(),
             'industry': $('textarea#industry').val(),
             'note': $('textarea#note').val()
@@ -460,8 +458,12 @@ page.patient.save({
                     setTimeout("app.appendAlert('Patient was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',2000,'collectionAlert')",200);
                     setTimeout("window.location.href = '"+webRoot+"/patient_portal/home.php'",2500);
                     }
-                else
+                else if( live == 1 && register != '0'){ // for testing
+                    //alert('Save Success')
+                    }
+                else {
                     eModal.close(true)
+                }
 
                 app.hideProgress('modelLoader');
                 if (isNew) {
