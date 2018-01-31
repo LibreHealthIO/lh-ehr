@@ -86,8 +86,8 @@ function update_tags_filters()
 }
 add_action( 'update_plugin', 'update_tags_filters' );
 
-///////////////////////////////////////////////////////////////////////////////
-////test add of facility acl stuff.
+//-----------------------------------------------------------------
+//START functions User Facility ACL.
 function get_facilities_to_show( $username )
 {
     // User facility is stored in users_facility table as facility_id
@@ -175,4 +175,5 @@ function tf_no_access_to_patient( $args )
 add_action( 'demographics_check_auth', 'tf_no_access_to_patient' );
 
 
-//////////////////////////////////////////////////////////////////////
+// END Functions for User Facility Access Control
+//----------------------------------------------------
