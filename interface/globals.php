@@ -198,7 +198,7 @@ $javascript_dir = $GLOBALS['standard_js_path']; //Make path available as a varia
 $GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
 
 //module configurations
-$GLOBALS['modules_dir']  = "$web_root/modules/";  //CURRENT modules directory.
+$GLOBALS['modules_dir']  = "$webserver_root/modules/";  //CURRENT modules directory.
 $modules_dir = $GLOBALS['modules_dir'];                //Make path available as a variable.
 $GLOBALS['baseModDir']  = "interface/modules/";        //base directory for the ZEND mods.  Not currently used.
 $GLOBALS['customModDir']= "custom_modules";            //OLD non zend modules, not used.
@@ -246,7 +246,7 @@ include_once (dirname(__FILE__) . "/../library/date_functions.php");
 $GLOBALS['weight_loss_clinic'] = false;
 $GLOBALS['ippf_specific'] = false;
 $GLOBALS['cene_specific'] = false;
-
+$GLOBALS['facility_acl'] = false;
 // Defaults for drugs and products.
 $GLOBALS['inhouse_pharmacy'] = false;
 $GLOBALS['sell_non_drug_products'] = 0;
@@ -271,7 +271,6 @@ if (!empty($glrow)) {
       $gl_user[$iter]=$row;
     }
   }
-}
   // Set global parameters from the database globals table.
   // Some parameters require custom handling.
   //
@@ -339,6 +338,7 @@ if (!empty($glrow)) {
             // the $css_header_value is set above
             $rtl_override = true;
     }
+    }
 
     else {
         //$_SESSION['language_direction'] is not set, so will use the default language
@@ -356,6 +356,7 @@ if (!empty($glrow)) {
         $new_theme = 'rtl_' . $temp_css_theme_name;
 
         // Check file existence
+  
         if( file_exists( $include_root.'/themes/'.$new_theme ) ) {
             $GLOBALS['css_header'] = $rootdir.'/themes/'.$new_theme;
         } else {
@@ -394,6 +395,7 @@ else {
   $GLOBALS['phone_country_code'] = '1';
   $GLOBALS['disable_non_default_groups'] = true;
   $GLOBALS['ippf_specific'] = false;
+  $GLOBALS['facility_acl'] = false;
   $GLOBALS['default_tab_1'] = "/interface/main/finder/dynamic_finder.php";
   $GLOBALS['default_tab_2'] = "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1";
 }
