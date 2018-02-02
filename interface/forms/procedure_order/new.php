@@ -627,6 +627,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             &nbsp;
             <input
               type='button'
+              id="print_button"
               value='<?php echo xla('Print'); ?>'
               onclick="Print()"
             />
@@ -655,6 +656,14 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
         </p>
 
       </center>
+      <?php
+          $query = sqlStatement('SELECT * FROM list_options WHERE list_id="order_type"');
+          $i = 0 ;
+          while($array = sqlFetchArray($query)){
+            $paper[$i] = $array['toggle_setting_2'];
+            $i++;
+          }
+      ?>
 
       <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
       <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
@@ -669,6 +678,40 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
                   format: "<?= $DateFormat; ?>"
               });
               $.datetimepicker.setLocale('<?= $DateLocale;?>');
+
+              var paper = <?php echo json_encode($paper);?>;
+              $('#procedure_type_names').on('blur', function(){
+                var item = this.value;
+                switch(item)
+                {
+                  case "enc_checkup_procedure":
+                  var index = 0;
+                  break;
+                  case "imaging":
+                  var index = 1;
+                  break;
+                  case "intervention":
+                  var index = 2;
+                  break;
+                  case "laboratory_test":
+                  var index = 3;
+                  break;
+                  case "patient_characteristics":
+                  var index = 4;
+                  break;
+                  case "physical_exam":
+                  var index = 5;
+                  break;
+                  case "procedure":
+                  var index = 6;
+                  break;
+                  case "risk_category":
+                  var index = 7;
+                  break;
+                }
+                if(paper[index] == 1) $('#print_button').show();
+                else  $('#print_button').hide();
+              })
           });
       </script>
 
