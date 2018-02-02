@@ -1440,9 +1440,9 @@ function getPatientAge($dobYMD, $nowYMD=null)
         $age = $yearDiff;
         if (($monthDiff == 0) && ($dayDiff < 0)) { $age -= 1; }
         else if ($monthDiff < 0) { $age -= 1; }
-    }
-    else  {
-        $age = "$ageInMonths " . xl('month');
+    
+    } else  {
+        $age = "$ageInMonths " . xl('months');
     }
 
     return $age;
