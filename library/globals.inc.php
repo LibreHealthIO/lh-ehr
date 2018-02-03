@@ -106,7 +106,6 @@ if (stristr(PHP_OS, 'WIN')) {
 // List of user specific tabs and globals
 $USER_SPECIFIC_TABS = array('Appearance',
                             'Locale',
-                            'Features',
                             'Report',
                             'Encounter',
                             'Claim',
@@ -609,12 +608,6 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '0',                             // default
       xl('Restrict non-authorized users to the Schedule Facilities set in User admin.')
-    ),
-        'facility_acl' => array(
-      xl('Restrict User access by Facility'),
-       'bool',                          // data type
-       '0',                             // default
-      xl('Restrict User access to patients by assigned patient facility.')
     ),
 
     'set_facility_cookie' => array(
