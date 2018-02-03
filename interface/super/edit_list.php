@@ -861,7 +861,7 @@ while ($row = sqlFetchArray($res)) {
 </p>
 
 <center>
-<?php if ($list_id != ' '): ?>
+<?php if ($list_id != ' ') { ?>
 <table cellpadding='2' cellspacing='0'>
  <tr class='head'>
 <?php if ($list_id == 'feesheet') { ?>
@@ -1049,7 +1049,7 @@ if ($list_id) {
 </center>
 
 </form>
-<?php endif; ?>
+<?php } ?>
 <!-- template DIV that appears when user chooses to make a new list -->
 <div id="newlistdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <?php xl('List Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="newlistname" id="newlistname">
