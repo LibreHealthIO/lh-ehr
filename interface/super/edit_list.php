@@ -32,7 +32,7 @@ require_once("$srcdir/lists.inc");
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/options.inc.php");
 
-$list_id = empty($_REQUEST['list_id']) ? 'language' : $_REQUEST['list_id'];
+$list_id = empty($_REQUEST['list_id']) ? ' ' : $_REQUEST['list_id'];
 
 // Check authorization.
 $thisauth = acl_check('admin', 'super');
@@ -844,9 +844,13 @@ else {
     "ORDER BY IF(LENGTH(ld.definition),ld.definition,lo.title), lo.seq");
 }
 
+echo "<option disabled value=' ' style='display: none;'";
+if($list_id == ' ') echo " selected";
+echo "></option>\n";
 while ($row = sqlFetchArray($res)) {
   $key = $row['option_id'];
   echo "<option value='$key'";
+  if ($key == $list_id && $list_id != ' ') echo " selected";
   echo ">" . $row['title'] . "</option>\n";
 }
 
@@ -857,7 +861,7 @@ while ($row = sqlFetchArray($res)) {
 </p>
 
 <center>
-
+<?php if ($list_id != ' '): ?>
 <table cellpadding='2' cellspacing='0'>
  <tr class='head'>
 <?php if ($list_id == 'feesheet') { ?>
@@ -1045,7 +1049,7 @@ if ($list_id) {
 </center>
 
 </form>
-
+<?php endif; ?>
 <!-- template DIV that appears when user chooses to make a new list -->
 <div id="newlistdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <?php xl('List Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="newlistname" id="newlistname">
