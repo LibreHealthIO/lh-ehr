@@ -680,7 +680,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               $.datetimepicker.setLocale('<?= $DateLocale;?>');
 
               var paper = <?php echo json_encode($paper);?>;
-              $('#procedure_type_names').on('blur', function(){
+              $('#procedure_type_names').on('change', function(){
                 var item = this.value;
                 
                 if(paper[item] == 1) $('#print_button').show();
