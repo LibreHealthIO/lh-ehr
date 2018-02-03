@@ -1,7 +1,7 @@
 <?php
 /*
 
-@version   v5.20.2  27-Dec-2015
+@version   v5.21.0-dev  ??-???-2016
 @copyright (c) 2000-2013 John Lim (jlim#natsoft.com). All rights reserved.
 @copyright (c) 2014      Damien Regad, Mark Newnham and the ADOdb community
   Latest version is available at http://adodb.sourceforge.net
@@ -522,7 +522,7 @@ class ADODB_Active_Record {
 			$activetab->_created = time();
 			$s = serialize($activetab);
 			if (!function_exists('adodb_write_file')) {
-				include(ADODB_DIR.'/adodb-csvlib.inc.php');
+				include_once(ADODB_DIR.'/adodb-csvlib.inc.php');
 			}
 			adodb_write_file($fname,$s);
 		}
@@ -1124,7 +1124,7 @@ global $_ADODB_ACTIVE_DBS;
 	// arrRef will be the structure that knows about our objects.
 	// It is an associative array.
 	// We will, however, return arr, preserving regular 0.. order so that
-	// obj[0] can be used by bootstrap developpers.
+	// obj[0] can be used by app developpers.
 	$arrRef = array();
 	$bTos = array(); // Will store belongTo's indices if any
 	foreach($rows as $row) {
