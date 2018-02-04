@@ -66,10 +66,14 @@
   ?>
 <html>
   <head>
-    <?php html_header_show();
-      //  Include Bootstrap, Fancybox, date-time-picker
-      call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox"));
-      ?>
+
+    <?php
+      html_header_show();
+      //  Include Bootstrap, Fancybox, date-time-picker and common.js
+      call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox", "common"));
+      include_once("{$GLOBALS['srcdir']}/options.js.php");
+    ?>
+
     <style>
       body, td, input, select, textarea {
       font-family: Arial, Helvetica, sans-serif;
@@ -88,9 +92,11 @@
       padding: 5pt;
       }
     </style>
-    <script type="text/javascript" src="../../library/js/common.js"></script>
-    <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
-    <SCRIPT LANGUAGE="JavaScript"><!--
+
+
+    <SCRIPT LANGUAGE="JavaScript">
+      <!--
+
       //Visolve - sync the radio buttons - Start
       if((top.window.parent) && (parent.window)){
               var wname = top.window.parent.left_nav;
@@ -415,8 +421,6 @@
        dlgopen(url, '_blank', 700, 500);
       }
       
-      //-->
-      
     </script>
   </head>
   <body class="body_top">
@@ -458,9 +462,11 @@
               $cell_count    = 0;
               $item_count    = 0;
               $display_style = 'block';
+
               /* this is the div width which must be a fixed and absolute VALUE
                  in order to avoid breaklining problems when opening more tabs */
               $div_width     = '1200px'; 
+
               $group_seq     = 0; // this gives the DIV blocks unique IDs
               
               while ($frow = sqlFetchArray($fres)) {
@@ -555,13 +561,17 @@
                 $insurance_info[1] = getInsuranceData($pid,"primary");
                 $insurance_info[2] = getInsuranceData($pid,"secondary");
                 $insurance_info[3] = getInsuranceData($pid,"tertiary");
+
                 $subscriber_placeholder = "'" . xl("Student/leave blank if unemployed") . "'";
+
               
                 echo "<br /><span class='bold'><input type='checkbox' name='form_cb_ins' value='1' " .
                   "onclick='return divclick(this,\"div_ins\");'";
                 if ($display_style == 'block') echo " checked";
                 echo " /><b>" . xl('Insurance') . "</b></span>\n";
+
                 echo "<div id='div_ins' class='section' style='display:$display_style; width:$div_width;'>\n";
+
               
                 for($i=1;$i<=3;$i++) {
                  $result3 = $insurance_info[$i];
@@ -623,11 +633,13 @@
                       <td><input type=entry size=16 name=i<?php echo $i?>group_number value="<?php echo $result3{"group_number"}?>" onkeyup='policykeyup(this)'></td>
                     </tr>
                     <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
+
                       <td class='required'><?php xl('Subscriber Employer (SE)','e'); ?>
                       </td>
                       <td><input type=entry size=25 name=i<?php echo $i?>subscriber_employer
                         value="<?php echo $result3{"subscriber_employer"}?>"
                         onchange="capitalizeMe(this);" placeholder=<?php echo $subscriber_placeholder; ?>></td>
+
                     </tr>
                     <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
                       <td><span class=required><?php xl('SE Address','e'); ?>: </span></td>
