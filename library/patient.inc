@@ -166,6 +166,7 @@ function getProviders() {
     $rez = sqlStatement($sql);
     for($iter=0; $row=sqlFetchArray($rez); $iter++) {
         if (($row["fname"] != "") && ($row["lname"] != "")) {
+          if ($row["suffix"] != "") $row["lname"] .= ", ".$row["suffix"];
             array_push($returnval, $row["fname"] . " " . $row["lname"]);
         }
     }
@@ -1082,6 +1083,7 @@ function updatePatientData($pid, $new, $create=false)
   // the code below does not yet attempt it.
 
   $new['DOB'] = fixDate($new['DOB']);
+  $user=$_SESSION['authUser'];
 
   if ($create) {
     $sql = "INSERT INTO patient_data SET pid = '$pid', date = NOW()";
@@ -1206,6 +1208,7 @@ function newInsuranceData(
   $inactive = 0,
   $inactive_time = 0)
 {
+    $user=$_SESSION['authUser'];
   if (strlen($type) <= 0) return FALSE;
 
   // If a bad date was passed, err on the side of caution.
@@ -1437,9 +1440,9 @@ function getPatientAge($dobYMD, $nowYMD=null)
         $age = $yearDiff;
         if (($monthDiff == 0) && ($dayDiff < 0)) { $age -= 1; }
         else if ($monthDiff < 0) { $age -= 1; }
-    }
-    else  {
-        $age = "$ageInMonths month"; 
+    
+    } else  {
+        $age = "$ageInMonths " . xl('months');
     }
 
     return $age;
@@ -1817,6 +1820,31 @@ function getEffectiveInsurances($patient_id, $encdate) {
     $insarr[] = $tmp;
   }
   return $insarr;
+}
+
+/**
+ * Get all insurance companies
+ *
+ *
+ */
+
+function getAllinsurances($pid){
+   $insarr = array();
+   $sql = "SELECT a.type, a.provider, a.plan_name, a.policy_number, a.group_number,
+           a.subscriber_lname, a.subscriber_fname, a.subscriber_relationship, a.subscriber_employer,
+           b.name, c.line1, c.line2, c.city, c.state, c.zip
+           FROM `insurance_data` AS a
+           RIGHT JOIN insurance_companies AS b
+           ON a.provider = b.id
+           RIGHT JOIN addresses AS c
+           ON a.provider = c.foreign_id
+           WHERE a.pid = $pid  ";
+   $inco = sqlStatement($sql);
+
+    while($icl = sqlFetchArray($inco)){
+      $insarr[] = $icl;
+    }
+   return $insarr;
 }
 
 /**
