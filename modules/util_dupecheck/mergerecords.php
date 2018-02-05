@@ -1,7 +1,7 @@
 <?php 
-require_once("../../../interface/globals.php");
-require_once("../../../library/pnotes.inc");
-require_once("../../../library/log.inc");
+require_once("../../interface/globals.php");
+require_once("../../library/pnotes.inc");
+require_once("../../library/log.inc");
 require_once("./Utils.php");
 
 $parameters = GetParameters();
