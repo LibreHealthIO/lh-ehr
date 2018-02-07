@@ -101,6 +101,13 @@ function call_required_libraries($library_array){
         <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>jquery-gritter/jquery.gritter.css" />
     <?php
     }
+
+    if(in_array("select2", $library_array)) { ?>
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>select2/select2.full.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>select2/select2.min.css">
+    <?php
+    }
+    
 }
 ?>
 

@@ -618,10 +618,9 @@ function writeITLine($it_array) {
 <?php html_header_show();?>
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/select2/select2.full.min.js"></script>
+
+<?php call_required_libraries(['jquery-min-3-3-1', 'select2']); ?>
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
-<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/assets/css/select2/select2.min.css" type="text/css">
 
 <title><?php  xl('List Editor','e'); ?></title>
 
