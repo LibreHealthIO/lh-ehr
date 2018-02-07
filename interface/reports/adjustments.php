@@ -47,9 +47,9 @@ else {
 <head>
 <title><?php echo xlt('Adjustments'); ?></title>
 
-<script type="text/javascript" src="../../library/overlib_mini.js"></script>
-<script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 
 <script language="JavaScript">
 
@@ -242,8 +242,8 @@ if (! $_POST['form_csvexport']) {
 
 </body>
 
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
+<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script>
     $(function() {
