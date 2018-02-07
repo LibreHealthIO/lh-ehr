@@ -129,7 +129,7 @@ else {
                <td class='label'><?php echo xlt('Adjustment Code'); # Adjustment code drop down creation ?>;
             </td>
             <td>
-               <?php generate_form_field(array('data_type'=>1,'field_id'=>'adjreason','list_id'=>'adjreason'),$_POST['form_adjreason']);?>
+               <?php generate_form_field(array('data_type'=>1,'field_id'=>'adjreason','list_id'=>'adjreason','empty_title'=>'All'),$_POST['form_adjreason']);?>
             </td>
 
         </tr>
@@ -188,12 +188,22 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport'])
   $from_date = fixDate($_POST['form_from_date']);
   $to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
 
+  if ($adj_reason =='') 
+  {
+      $query = " Select   ar_activity.memo, Sum(ar_activity.adj_amount) As adj_amount " .
+    " From ar_activity" .
+    " Where ar_activity.post_time >= '$from_date' ".
+    " And ar_activity.post_time <= '$to_date' ".
+    " Group By ar_activity.memo ";
+  } else {
+
     $query = " Select   ar_activity.memo, Sum(ar_activity.adj_amount) As adj_amount " .
   " From ar_activity" .
   " Where ar_activity.post_time >= '$from_date' ".
   " And ar_activity.post_time <= '$to_date' ".
   " And ar_activity.memo = '$adj_reason' " .
   " Group By ar_activity.memo ";
+  }
 
 
   $res = sqlStatement($query);
@@ -202,12 +212,11 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport'])
     $adj_name = $row['memo'];
     $total = $row['adj_amount'];
 
-  }
 
     if ($_POST['form_csvexport'])
     {
         echo '"' . $adj_name                                           . '",';
-        echo '"' . oeFormatMoney($total)                               . '",';
+        echo '"' . oeFormatMoney($total)                               . '"' . "\n";
 
     } else {
 ?>
@@ -221,6 +230,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport'])
  </tr>
 <?php
          } // end not export
+  }
 } // end if
 
 if (! $_POST['form_csvexport']) {
