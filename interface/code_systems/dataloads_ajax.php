@@ -59,8 +59,7 @@ $activeAccordionSection = isset($_GET['aas']) ? $_GET['aas'] : '0';
 <script type="text/javascript" src="../../library/js/jquery-ui-1.8.21.custom.min.js"></script>
 <script>
 
-// placemaker for when support DSMIV
-// var db_list = [ "DSMIV", "ICD10", "RXNORM", "SNOMED"];
+
 var db_list = [ "ICD10", "RXNORM", "SNOMED"];
 var accOpts = {
     header: "h3", 
@@ -102,7 +101,7 @@ var accOpts = {
             );
             $("#" + $(ui.newContent).attr('id') + "_unsupportedmsg").hover(
                 function() {
-                $(this).append('<div class="tooltip"><p><?php echo xla("LibreEHR does not recognize the incoming file in the contrib directory. This is most likely because you need to configure the release in the supported_external_dataloads table in the MySQL database."); ?></p></div>');
+                $(this).append('<div class="tooltip"><p><?php echo xla("LibreEHR does not recognize the incoming file in the modules/medical_code_sets directory. This is most likely because you need to configure the release in the supported_external_dataloads table in the MySQL database."); ?></p></div>');
                 },
                 function() {
                 $("div.tooltip").remove();
@@ -110,7 +109,7 @@ var accOpts = {
             );
             $("#" + $(ui.newContent).attr('id') + "_dirmsg").hover(
                 function() {
-                $(this).append('<div class="tooltip"><p><?php echo xla("Please create the following directory before proceeding"); ?>' + ': contrib/' + $(ui.newContent).attr('id').toLowerCase() + '</p></div>');
+                $(this).append('<div class="tooltip"><p><?php echo xla("Please create the following directory before proceeding"); ?>' + ': modules/medical_code_sets/' + $(ui.newContent).attr('id').toLowerCase() + '</p></div>');
                 },
                 function() {
                 $("div.tooltip").remove();
@@ -118,7 +117,7 @@ var accOpts = {
             );
             $("#" + $(ui.newContent).attr('id') + "_msg").hover(
                 function() {
-                $(this).append('<div class="tooltip"><p><?php echo xla("Please place your install files in following directory"); ?>' + ': contrib/' + $(ui.newContent).attr('id').toLowerCase() + '</p></div>');
+                $(this).append('<div class="tooltip"><p><?php echo xla("Please place your install files in following directory"); ?>' + ': modules/medical_code_sets/' + $(ui.newContent).attr('id').toLowerCase() + '</p></div>');
                 },
                 function() {
                 $("div.tooltip").remove();

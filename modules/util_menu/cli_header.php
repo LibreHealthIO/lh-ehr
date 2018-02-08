@@ -11,6 +11,6 @@ namespace pcmedics;
     // root is two levels up from directory containing this header file.
     $libreehr_root_dir = dirname(dirname(dirname(dirname(__FILE__))));
     
-    require_once($libreehr_root_dir."/contrib/util/menu/db_connection.php");
+    require_once($libreehr_root_dir."/modules/menu/db_connection.php");
     ini_set("display_errors","1");
 ?>
