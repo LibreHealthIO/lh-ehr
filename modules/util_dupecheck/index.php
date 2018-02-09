@@ -12,12 +12,12 @@ if (! isset($parameters['sortby'])) { $parameters['sortby'] == "name"; }
 if (! isset($parameters['limit'])) { $parameters['limit'] = 100; }
 
 if (! isset($parameters['match_name']) &&
-    ! isset($parameters['match_dob']) &&
+    ! isset($parameters['match_DOB']) &&
     ! isset($parameters['match_sex']) &&
     ! isset($parameters['match_ssn']))
 {
     $parameters['match_name'] = 'on';
-    $parameters['match_dob'] = 'on';
+    $parameters['match_DOB'] = 'on';
 }
     
 $oemrdb = $GLOBALS['dbh'];
@@ -67,8 +67,8 @@ body {
 Matching criteria:
 <input type="checkbox" name="match_name" id="match_name" <?php if ($parameters['match_name']) echo "CHECKED"; ?>> 
 <label for="match_name">Name</label>
-<input type="checkbox" name="match_dob" id="match_dob" <?php if ($parameters['match_dob']) echo "CHECKED"; ?>> 
-<label for="match_dob">DOB</label>
+<input type="checkbox" name="match_DOB" id="match_DOB" <?php if ($parameters['match_DOB']) echo "CHECKED"; ?>> 
+<label for="match_DOB">DOB</label>
 <input type="checkbox" name="match_sex" id="match_sex" <?php if ($parameters['match_sex']) echo "CHECKED"; ?>> 
 <label for="match_sex">Gender</label>
 <input type="checkbox" name="match_ssn" id="match_ssn" <?php if ($parameters['match_ssn']) echo "CHECKED"; ?>> 
@@ -77,8 +77,8 @@ Matching criteria:
 Order results by:
 <input type='radio' name='sortby' value='name' id="name" <?php if ($parameters['sortby']=='name') echo "CHECKED"; ?>>
 <label for="name">Name</label>
-<input type='radio' name='sortby' value='dob' id="dob" <?php if ($parameters['sortby']=='dob') echo "CHECKED"; ?>>
-<label for="dob">DOB</label>
+<input type='radio' name='sortby' value='DOB' id="DOB" <?php if ($parameters['sortby']=='DOB') echo "CHECKED"; ?>>
+<label for="DOB">DOB</label>
 <input type='radio' name='sortby' value='sex' id="sex" <?php if ($parameters['sortby']=='sex') echo "CHECKED"; ?>>
 <label for="sex">Gender</label>
 <input type='radio' name='sortby' value='ssn' id="ssn" <?php if ($parameters['sortby']=='ssn') echo "CHECKED"; ?>>
@@ -99,10 +99,10 @@ if ($parameters['go'] == "Go") {
     $dupecount = 0;
 
     // for EACH patient in LibreHealth EHR find potential matches
-    $sqlstmt = "select id, pid, fname, lname, dob, sex, ss from patient_data";
+    $sqlstmt = "select id, pid, fname, lname, DOB, sex, ss from patient_data";
     switch ($parameters['sortby']) {
-        case 'dob':
-            $orderby = " ORDER BY dob";
+        case 'DOB':
+            $orderby = " ORDER BY DOB";
             break;
         case 'sex':
             $orderby = " ORDER BY sex";
@@ -125,7 +125,7 @@ if ($parameters['go'] == "Go") {
 
         if ($dupelist[$row['id']] == 1) continue;
 
-        $sqlstmt = "select id, pid, fname, lname, dob, sex, ss ".
+        $sqlstmt = "select id, pid, fname, lname, DOB, sex, ss ".
                     " from patient_data where ";
         $sqland = "";
         if ($parameters['match_name']) {
@@ -141,8 +141,8 @@ if ($parameters['go'] == "Go") {
             $sqlstmt .= $sqland . " ss='".$row['ss']."'";
             $sqland = " AND ";
         }
-        if ($parameters['match_dob']) {
-            $sqlstmt .= $sqland . " dob='".$row['dob']."'";
+        if ($parameters['match_DOB']) {
+            $sqlstmt .= $sqland . " DOB='".$row['DOB']."'";
             $sqland = " AND ";
         }
         $mResults = sqlStatement($sqlstmt);
@@ -156,7 +156,7 @@ if ($parameters['go'] == "Go") {
 
         echo "<tr class='onerow' id='".$row['id']."' oemrid='".$row['id']."' dupecount='".$dupecount."' title='Merge duplicates into this record'>";
         echo "<td>".$row['lname'].", ".$row['fname']."</td>";
-        echo "<td>".$row['dob']."</td>";
+        echo "<td>".$row['DOB']."</td>";
         echo "<td>".$row['sex']."</td>";
         echo "<td>".$row['ss']."</td>";
         echo "<td><input type='button' value=' ? ' class='moreinfo' oemrid='".$row['pid']."' title='More info'></td>";
@@ -166,7 +166,7 @@ if ($parameters['go'] == "Go") {
             if ($row['id'] == $mrow['id']) continue;
             echo "<tr class='onerow' id='".$mrow['id']."' oemrid='".$mrow['id']."' dupecount='".$dupecount."' title='Merge duplicates into this record'>";
             echo "<td>".$mrow['lname'].", ".$mrow['fname']."</td>";
-            echo "<td>".$mrow['dob']."</td>";
+            echo "<td>".$mrow['DOB']."</td>";
             echo "<td>".$mrow['sex']."</td>";
             echo "<td>".$mrow['ss']."</td>";
             echo "<td><input type='button' value=' ? ' class='moreinfo' oemrid='".$mrow['pid']."' title='More info'></td>";
