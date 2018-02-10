@@ -369,6 +369,10 @@ UPDATE categories_seq SET id = (select MAX(id) from categories);
 
 #EndIf
 
+#IfMissingColumn insurance_companies ins_inactive
+  ALTER TABLE insurance_companies ADD COLUMN ins_inactive tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 = Yes Is This Record Inactive?';
+#EndIf
+
 #IfMissingColumn insurance_companies allow_print_statement
   ALTER TABLE insurance_companies ADD COLUMN allow_print_statement tinyint(1) NOT NULL DEFAULT '0' COMMENT ' 1 = Yes Print Statements';
 #EndIf
@@ -381,4 +385,3 @@ ALTER TABLE `background_services` CHANGE `running` `running` TINYINT(1) NOT NULL
 #IfNotColumnType onsite_mail owner varchar(128)
 ALTER TABLE `onsite_mail` CHANGE `owner` `owner` varchar(128) DEFAULT NULL;
 #Endif
-

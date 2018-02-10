@@ -1,5 +1,5 @@
 <?php 
-require_once("../../../interface/globals.php");
+require_once("../../interface/globals.php");
 require_once("./Utils.php");
 
 /* Use this code to identify duplicate patients in LibreHealth EHR
