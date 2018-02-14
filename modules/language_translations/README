@@ -1,5 +1,7 @@
 This directory holds the developer tools to maintain the language translations.
-These were created during development of LibreHealth EHR version 3.0.2
+These were created during development of OpenEMR version 3.0.2.
+
+UPDATE: This tool has not been tested in LibreHealthEHR 2.0
 
 The collectConstants.pl script can be used to collect all of the constants
 from the LibreHealth EHR source code.  This script uses the manuallyAddedConstants.txt and 

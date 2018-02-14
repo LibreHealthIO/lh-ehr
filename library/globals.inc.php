@@ -106,7 +106,6 @@ if (stristr(PHP_OS, 'WIN')) {
 // List of user specific tabs and globals
 $USER_SPECIFIC_TABS = array('Appearance',
                             'Locale',
-                            'Features',
                             'Report',
                             'Encounter',
                             'Claim',
@@ -609,12 +608,6 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '0',                             // default
       xl('Restrict non-authorized users to the Schedule Facilities set in User admin.')
-    ),
-        'facility_acl' => array(
-      xl('Restrict User access by Facility'),
-       'bool',                          // data type
-       '0',                             // default
-      xl('Restrict User access to patients by assigned patient facility.')
     ),
 
     'set_facility_cookie' => array(
@@ -1149,6 +1142,19 @@ $GLOBALS_METADATA = array(
        '1.00',
       xl('Total Minimum Dollar Amount of Statement to Allow Printing.(only applicable if Allow Statement to be Excluded from Printing is enabled)')
     ),
+
+    'insurance_statement_exclude' => array(
+       xl('Do Not Print Statements For Insurance Companies'),
+       array(
+            '0' => xl('Primary'),
+            '1' => xl('Secondary'),
+            '2' => xl('Tertiary'),
+            '3' => xl('All'),
+            '4' => xl('None')
+             ),                          // data type
+       '1',                              // default = true
+       xl('Do Not Print Statements for Insurance Companies Statement to Allow Printing.(only applicable if Allow Statement to be Excluded from Printing is enabled).')
+     ),
 
     'disallow_print_deceased' => array(
       xl('Disallow Printing for Deceased Patients'),

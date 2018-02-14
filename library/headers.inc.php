@@ -68,8 +68,12 @@ function call_required_libraries($library_array){
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>fancybox/jquery.fancybox-1.2.6.js"></script>
     <?php
     }
-
-    if (in_array("knockout", $library_array)) {   ?>
+    if (in_array("fancybox-addpatient",$library_array)){   ?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>fancybox-addpatient/jquery.fancybox-1.2.6.css" media="screen" />
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>fancybox-addpatient/jquery.fancybox-1.2.6.js"></script>
+    <?php
+    }
+    if (in_array("knockout",$library_array)){   ?>
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>knockout/knockout-3.4.0.js"></script>
     <?php
     }
@@ -101,6 +105,13 @@ function call_required_libraries($library_array){
         <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>jquery-gritter/jquery.gritter.css" />
     <?php
     }
+
+    if(in_array("select2", $library_array)) { ?>
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>select2/select2.full.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>select2/select2.min.css">
+    <?php
+    }
+    
 }
 ?>
 

@@ -200,8 +200,7 @@ if ($_POST['form_save']) {
       }
 
       if (!$info_msg) {
-        // The following is cloned from contrib/forms/scanned_notes/new.php:
-        //
+// scanned notes must be installed, and does not natively exist.
         $query = "INSERT INTO form_scanned_notes ( " .
           "notes " .
           ") VALUES ( " .
