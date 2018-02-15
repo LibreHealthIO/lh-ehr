@@ -2158,6 +2158,7 @@ CREATE TABLE `insurance_companies` (
   `x12_default_partner_id` int(11) default NULL,
   `alt_cms_id` varchar(15) NOT NULL DEFAULT '',
   `ins_inactive` tinyint(1) NOT NULL DEFAULT '0',
+  `allow_print_statement` tinyint(1) NOT NULL DEFAULT '0' COMMENT ' 1 = Yes Print Statements',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB;
 

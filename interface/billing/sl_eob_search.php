@@ -308,6 +308,9 @@ if ($_POST['form_portalnotify']) {
         $stmt['insconum1'] = "";
         $stmt['insconum2'] = "";
         $stmt['insconum3'] = "";
+        $stmt['insurance_no_statement_print_pri'] = "";
+        $stmt['insurance_no_statement_print_sec'] = "";
+        $stmt['insurance_no_statement_print_ter'] = "";
         #If you use the field in demographics layout called
         #guardiansname this will allow you to send statements to the parent
         #of a child or a guardian etc
@@ -328,15 +331,19 @@ if ($_POST['form_portalnotify']) {
          $payerid = arGetPayerID($patient_id, $svcdate, $i);
 
          if ($payerid) {
-          $tmp = sqlQuery("SELECT name FROM insurance_companies WHERE id = $payerid");
+
+          $tmp = sqlQuery("SELECT name, allow_print_statement FROM insurance_companies WHERE id = $payerid");
           if ($i == 1) {
           $stmt['insconum1'] = $tmp['name'];
+          $stmt['insurance_no_statement_print_pri'] = $tmp['allow_print_statement'];
           }
           if ($i == 2) {
           $stmt['insconum2'] = $tmp['name'];
+          $stmt['insurance_no_statement_print_sec'] = $tmp['allow_print_statement'];
           }
           if ($i == 3) {
           $stmt['insconum3'] = $tmp['name'];
+          $stmt['insurance_no_statement_print_ter'] = $tmp['allow_print_statement'];
           }
 
          }

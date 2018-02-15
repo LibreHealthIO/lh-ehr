@@ -32,7 +32,7 @@ require_once("$srcdir/lists.inc");
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/options.inc.php");
 
-$list_id = empty($_REQUEST['list_id']) ? 'language' : $_REQUEST['list_id'];
+$list_id = empty($_REQUEST['list_id']) ? ' ' : $_REQUEST['list_id'];
 
 // Check authorization.
 $thisauth = acl_check('admin', 'super');
@@ -618,9 +618,10 @@ function writeITLine($it_array) {
 <?php html_header_show();?>
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 
+<?php call_required_libraries(['jquery-min-3-3-1', 'select2']); ?>
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
+
 <title><?php  xl('List Editor','e'); ?></title>
 
 <style>
@@ -820,7 +821,7 @@ function mysubmit() {
 <input type="hidden" name="formaction" id="formaction">
 
 <p><b><?php xl('Edit list','e'); ?>:</b>&nbsp;
-<select name='list_id' id="list_id">
+<select name='list_id' id="list_id" placeholder="Select a list..">
 <?php
 
 // List order depends on language translation options.
@@ -843,22 +844,24 @@ else {
     "WHERE lo.list_id = 'lists' " .
     "ORDER BY IF(LENGTH(ld.definition),ld.definition,lo.title), lo.seq");
 }
-
+echo "<option value='' disabled selected></option>";
 while ($row = sqlFetchArray($res)) {
   $key = $row['option_id'];
   echo "<option value='$key'";
-  if ($key == $list_id) echo " selected";
+  if ($key == $list_id && $list_id != ' ') echo " selected";
   echo ">" . $row['title'] . "</option>\n";
 }
 
 ?>
 </select>
+<?php if($list_id != ' ') { ?>
 <input type="button" id="<?php echo $list_id; ?>" class="deletelist" value=<?php xl('Delete List','e','\'','\''); ?>>
+<?php } ?>
 <input type="button" id="newlist" class="newlist" value=<?php xl('New List','e','\'','\''); ?>>
 </p>
 
 <center>
-
+<?php if ($list_id != ' ') { ?>
 <table cellpadding='2' cellspacing='0'>
  <tr class='head'>
 <?php if ($list_id == 'feesheet') { ?>
@@ -1046,11 +1049,11 @@ if ($list_id) {
 </center>
 
 </form>
-
+<?php } ?>
 <!-- template DIV that appears when user chooses to make a new list -->
 <div id="newlistdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <?php xl('List Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="newlistname" id="newlistname">
-<br>
+<br />
 <input type="button" class="savenewlist" value=<?php xl('Save New List','e','\'','\''); ?>>
 <input type="button" class="cancelnewlist" value=<?php xl('Cancel','e','\'','\''); ?>>
 </div>
@@ -1059,6 +1062,9 @@ if ($list_id) {
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
+
+    // type-ahead selector
+    $('#list_id').select2();
     $("#form_save").click(function() { SaveChanges(); });
     $("#list_id").change(function() { $('#theform').submit(); });
 
