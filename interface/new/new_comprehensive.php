@@ -220,7 +220,7 @@ function allowOnlyDigits(elem_name){
         {
             evt.preventDefault();
         }
-       }
+       });
        // no matching option was found so create one, append it to the
        // end of the list, and select it.
        theopts[i] = new Option(ins_name, ins_id, false, true);
