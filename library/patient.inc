@@ -931,6 +931,7 @@ function newPatientData(    $db_id="",
             )
 {
     $DOB = fixDate($DOB);
+
     $regdate = fixDate($regdate);
 
     $fitness = 0;
@@ -1057,6 +1058,62 @@ function pdValueOrNull($key, $value) {
     return "'$value'";
   }
 }
+// Supported input date formats are:
+//   yyyy/mm/dd
+//This function is to prevent user from entering the future date
+function fixDOB($date) {
+    $fixed_date  = date("Y-m-d");
+    if ($date == "0000-00-00") {
+        $fixed_date  = date("Y-m-d");
+    }
+    $date = trim($date);
+    if (preg_match("'^[0-9]{1,4}[/.-][0-9]{1,2}[/.-][0-9]{1,4}$'", $date)) {
+        $dmy = preg_split("'[/.-]'", $date);
+        $DOB_day = $dmy[2];
+        $DOB_month = $dmy[1];
+        $DOB_year = $dmy[0];
+        $current_year = date('Y');
+        $current_month = date('m');
+        $current_day = date('d');
+        $year_difference = $current_year - $DOB_year;
+        $month_difference = $current_month - $DOB_month;
+        $date_difference = $current_day - $DOB_day;
+        /* The entered date may have four cases 
+        1.It may be from future year.
+        2.It may be from current year and future month.
+        3.It may be from current year, current month and future date.
+        4.It may be from past year.
+        */
+        if ($year_difference < 0) {
+            //do nothing because it is future year, @default values are returned
+        }
+        if ($year_difference > 0) {
+            //date from past year
+            $fixed_date = sprintf("%04u-%02u-%02u", $dmy[0], $dmy[1], $dmy[2]);
+        }
+        if($year_difference == 0){
+            //year_difference == 0 indicates from same year, check for month difference
+            if($month_difference == 0){
+                //it means current month in current year, check for date difference
+                if ($date_difference == 0) {
+                    //it means current day
+                    $fixed_date = sprintf("%04u-%02u-%02u", $dmy[0], $dmy[1], $dmy[2]);
+                }
+                elseif ($date_difference > 0) {
+                   //it means past day in the current month
+                    $fixed_date = sprintf("%04u-%02u-%02u", $dmy[0], $dmy[1], $dmy[2]);
+                }
+
+            }
+            elseif ($month_difference > 0) {
+                //indicates past month from current year
+                $fixed_date = sprintf("%04u-%02u-%02u", $dmy[0], $dmy[1], $dmy[2]);
+            }
+
+        }
+    }
+    return $fixed_date;
+}
 
 // Create or update patient data from an array.
 //
@@ -1082,7 +1139,7 @@ function updatePatientData($pid, $new, $create=false)
   // row for each update.  A good idea, but nothing is doing that yet so
   // the code below does not yet attempt it.
 
-  $new['DOB'] = fixDate($new['DOB']);
+  $new['DOB'] = fixDOB(fixDate($new['DOB']));
   $user=$_SESSION['authUser'];
 
   if ($create) {
