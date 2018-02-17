@@ -23,7 +23,8 @@ function tabs_view_model()
     this.tabsList=ko.observableArray();
     this.tabsList.push(new tabStatus("One",webroot_url+"/interface/main/main_info.php","lst",true,true,true));
     this.tabsList.push(new tabStatus("Two",webroot_url+"/interface/main/messages/messages.php?form_active=1","pat",true,true,true));
-//    this.tabsList.push(new tabStatus("Three"));
+    this.tabsList.push(new tabStatus("Three", webroot_url + "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1", "flb", true, true, true));
+    //    this.tabsList.push(new tabStatus("Four")) ;
     this.text=ko.observable("Test");
     return this;
 }
@@ -200,7 +201,7 @@ function loadCurrentPatient()
 function menuActionClick(data,evt)
 {
     if(data.enabled())
-    {
+    {        
         if(data.requirement===2)
         {
             var encounterID=app_view_model.application_data.patient().selectedEncounterID();
