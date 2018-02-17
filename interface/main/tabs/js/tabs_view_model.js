@@ -201,7 +201,7 @@ function loadCurrentPatient()
 function menuActionClick(data,evt)
 {
     if(data.enabled())
-    {        
+    {  
         if(data.requirement===2)
         {
             var encounterID=app_view_model.application_data.patient().selectedEncounterID();

@@ -54,16 +54,16 @@ if($GLOBALS['password_expiration_days'] != 0){
   if($row = sqlFetchArray($result)) {
     $pwd_expires_date = $row['pwd_expiration_date'];
   }
-  
+
   // Display the password expiration message (starting from 7 days before the password gets expired)
   $pwd_alert_date = date('Y-m-d', strtotime($pwd_expires_date . '-7 days'));
-  
+
   if (strtotime($pwd_alert_date) != '' &&
       strtotime($current_date) >= strtotime($pwd_alert_date) &&
       (!isset($_SESSION['expiration_msg'])
       or $_SESSION['expiration_msg'] == 0)) {
-        $is_expired = true;
-        $_SESSION['expiration_msg'] = 1; // only show the expired message once
+    $is_expired = true;
+    $_SESSION['expiration_msg'] = 1; // only show the expired message once
   }
 }
 

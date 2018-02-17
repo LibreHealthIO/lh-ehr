@@ -229,5 +229,4 @@ var webroot_url="<?php echo $web_root; ?>";
     
 </script>
 
-
 <?php do_action( 'after_main_box' ); ?>
