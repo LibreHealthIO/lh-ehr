@@ -126,9 +126,30 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
       foreach ($grparr as $fldid => $fldarr) {
         if (in_array($fldid, $USER_SPECIFIC_GLOBALS)) {
           list($fldname, $fldtype, $flddef, $flddesc, $fldlist) = $fldarr;
+          //check and validate input from client side with globals.
+          if(is_array($grparr[$fldid][1])) {
+          $search = $grparr[$fldid][1];
+          $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
+          }
+          elseif ($grparr[$fldid][1] == bool) {
+          $_POST["form_$i"] == 0;
+          $boolean = true;
+          }
+          elseif ($fldid == "css_header") {
+            //styles array created since the globals does not have styles array.
+            $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
+            if (in_array($_POST["form_$i"], $styles_array)) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+          if ($boolean) { 
           $label = "global:".$fldid;
           $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
           setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
+          }
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);
           }
