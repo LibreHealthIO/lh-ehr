@@ -126,30 +126,9 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
       foreach ($grparr as $fldid => $fldarr) {
         if (in_array($fldid, $USER_SPECIFIC_GLOBALS)) {
           list($fldname, $fldtype, $flddef, $flddesc, $fldlist) = $fldarr;
-          //check and validate input from client side with globals.
-          if(is_array($grparr[$fldid][1])) {
-          $search = $grparr[$fldid][1];
-          $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
-          }
-          elseif ($grparr[$fldid][1] == bool) {
-          $_POST["form_$i"] == 0;
-          $boolean = true;
-          }
-          elseif ($fldid == "css_header") {
-            //styles array created since the globals does not have styles array.
-            $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
-            if (in_array($_POST["form_$i"], $styles_array)) {
-              $boolean = true;
-            }
-            else {
-              $boolean = false;
-            }
-          }
-          if ($boolean) { 
           $label = "global:".$fldid;
           $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
           setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
-          }
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);
           }
@@ -246,55 +225,9 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
                 sqlStatement("UPDATE libreehr_module_vars SET pn_value = ? WHERE pn_name = 'pcFirstDayOfWeek'", array($fldvalue));
                 break;
             }
-          //check and validate input from client side with globals.
-          //fields which are not validated
-          //locale > language
-          //  
-          if(is_array($grparr[$fldid][1])) {
-          $search = $grparr[$fldid][1];
-          $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
-          }
-          elseif ($grparr[$fldid][1] == bool) {
-          $_POST["form_$i"] == 0;
-          $boolean = true;
-          }
-
-          elseif ($fldid == "css_header") {
-            //styles array created since the globals does not have styles array.
-            $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
-            if (in_array($_POST["form_$i"], $styles_array)) {
-              $boolean = true;
-            }
-            else {
-              $boolean = false;
-            }
-          }
-          elseif ($fldid == "language_default" OR $fldid="language_menu_other") {
-            $total_languages = sqlStatement('SELECT COUNT(*) FROM `lang_languages`');
-            if($_POST['form_$i'] <= $total_languages) {
-              $boolean = true;
-            }
-            else {
-              $boolean = false;
-            }
-          }
-          elseif ($fldid == "schedule_end" OR $fldid == "schedule_start") {
-            //we rely on face that time wont exceed 24 hrs
-            if ($_POST['form_$i'] < 24) {
-              $boolean = true;
-            }
-            else {
-              $boolean = false;
-            }
-
-          }
-          if ($boolean) {
             // Replace old values
             sqlStatement( 'DELETE FROM `globals` WHERE gl_name = ?', array( $fldid ) );
-
             sqlStatement( 'INSERT INTO `globals` ( gl_name, gl_index, gl_value ) VALUES ( ?, ?, ? )', array( $fldid, 0, $fldvalue )  );
-          }
-
         } else {
           //error_log("No need to update $fldid");
         }
