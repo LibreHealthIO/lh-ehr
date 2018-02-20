@@ -628,6 +628,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             &nbsp;
             <input
               type='button'
+              id="print_button"
               value='<?php echo xla('Print'); ?>'
               onclick="Print()"
             />
@@ -655,6 +656,14 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
           </div>
         </p>
       </center>
+      <?php
+          $query = sqlStatement('SELECT * FROM list_options WHERE list_id="order_type"');
+          $i = 0 ;
+          while($array = sqlFetchArray($query)){
+            $paper[$array['option_id']] = $array['toggle_setting_2'];
+            $i++;
+          }
+      ?>
 
       <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
       <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
@@ -669,6 +678,14 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
                   format: "<?= $DateFormat; ?>"
               });
               $.datetimepicker.setLocale('<?= $DateLocale;?>');
+
+              var paper = <?php echo json_encode($paper);?>;
+              $('#procedure_type_names').on('change', function(){
+                var item = this.value;
+                
+                if(paper[item] == 1) $('#print_button').show();
+                else  $('#print_button').hide();
+              })
           });
       </script>
 
