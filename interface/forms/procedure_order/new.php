@@ -388,6 +388,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             <option value="<?php echo attr($ordered_types['option_id']); ?>" ><?php echo text(xl_list_label($ordered_types['title'])) ; ?></option>
             <?php } ?>
           </select></br>
+        </p>
           <table class="table table-hover table-bordered" width='95%' id='proctable'>
             <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Ordering Provider','e'); ?>:</b></td>
@@ -653,7 +654,6 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             />
           </div>
         </p>
-
       </center>
 
       <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
