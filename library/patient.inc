@@ -1062,18 +1062,21 @@ function fixDOB($date) {
         $DOB_day = $dmy[2];
         $DOB_month = $dmy[1];
         $DOB_year = $dmy[0];
+        
         $normal_date = sprintf("%04u-%02u-%02u", $dmy[0], $dmy[1], $dmy[2]);
         }
         elseif($GLOBALS['date_display_format'] == 1) { 
         $DOB_day = $dmy[1];
         $DOB_month = $dmy[0];
         $DOB_year = $dmy[2];
+        
         $normal_date = sprintf("%04u-%02u-%02u", $dmy[2], $dmy[0], $dmy[1]);
         }
         elseif($GLOBALS['date_display_format'] == 2) {
         $DOB_day = $dmy[0];
         $DOB_month = $dmy[1];
         $DOB_year = $dmy[2];
+        
         $normal_date = sprintf("%04u-%02u-%02u", $dmy[2], $dmy[1], $dmy[0]);
         }
         $current_year = date('Y');
