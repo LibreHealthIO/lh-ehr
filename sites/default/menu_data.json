@@ -150,7 +150,14 @@
         "url" : "/interface/billing/new_payment.php",
         "children" : [ ],
         "requirement" : 0
-    }, { 
+    }, {
+        "label" : "Verify Patient Billing Data",
+        "menu_id" : "npa0",
+        "target" : "pat",
+        "url" : "/interface/reports/pre_billing_issues.php",
+        "children" : [ ],
+        "requirement" : 0
+    }, {
         "label" : "EDI History",
         "menu_id" : "edi0",
         "target" : "pat",
