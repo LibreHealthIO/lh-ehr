@@ -247,22 +247,34 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
                 break;
             }
           //check and validate input from client side with globals.
-          //fields which are not validated
-          //locale > language
-          //  
           if(is_array($grparr[$fldid][1])) {
-          $search = $grparr[$fldid][1];
-          $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
+              $search = $grparr[$fldid][1];
+             $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
+
+          }
+          elseif ($grparr[$fldid][1] == "text") {
+            //for text fields
+              $_POST["form_$i"] = trim(strip_escape_custom($_POST["form_$i"]));
+              $boolean = true;
           }
           elseif ($grparr[$fldid][1] == bool) {
           $_POST["form_$i"] == 0;
           $boolean = true;
           }
-
           elseif ($fldid == "css_header") {
             //styles array created since the globals does not have styles array.
             $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
             if (in_array($_POST["form_$i"], $styles_array)) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+          elseif ($fldid == "theme_tabs_layout") {
+            //menu array created sine the globals dont have the array
+            $menu_array = array('tabs_style_compact.css', 'tabs_style_full.css');
+            if (in_array($_POST["form_$i"], $menu_array)) {
               $boolean = true;
             }
             else {
@@ -286,8 +298,9 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
             else {
               $boolean = false;
             }
-
           }
+
+          //boolean will determine whether the data is valid, else dont update.
           if ($boolean) {
             // Replace old values
             sqlStatement( 'DELETE FROM `globals` WHERE gl_name = ?', array( $fldid ) );
