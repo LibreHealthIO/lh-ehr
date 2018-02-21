@@ -948,13 +948,6 @@
         "children" : [ ],
         "requirement" : 1
     }, { 
-        "label" : "Refer",
-        "menu_id" : "Popup:Refer",
-        "url" : "/interface/../custom/refer.php",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, { 
         "label" : "Superbill",
         "menu_id" : "Popup:Superbill",
         "url" : "/interface/patient_file/printed_fee_sheet.php?fill=1",
