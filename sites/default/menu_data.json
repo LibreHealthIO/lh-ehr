@@ -151,6 +151,13 @@
         "children" : [ ],
         "requirement" : 0
     }, {
+        "label" : "Verify Patient Billing Data",
+        "menu_id" : "npa0",
+        "target" : "pat",
+        "url" : "/interface/reports/pre_billing_issues.php",
+        "children" : [ ],
+        "requirement" : 0
+    }, {
         "label" : "EDI History",
         "menu_id" : "edi0",
         "target" : "pat",
@@ -901,11 +908,15 @@
         "children" : [ ],
         "requirement" : 0
     }, {
-        "label" : "Documents Validation",
-        "menu_id" : "adm0",
-        "target" : "msc",
-        "url" : "/interface/usergroup/docs_validation.php",
-        "children" : [ ],
+        "label" : "Utilities",
+        "children" : [ {
+            "label" : "Documents Validation",
+            "menu_id" : "adm0",
+            "target" : "msc",
+            "url" : "/interface/usergroup/docs_validation.php",
+            "children" : [ ],
+            "requirement" : 0
+        } ],
         "requirement" : 0
     }, {
         "label" : "Document Templates",
@@ -944,13 +955,6 @@
         "label" : "Appts",
         "menu_id" : "Popup:Appts",
         "url" : "/interface/reports/appointments_report.php?patient=",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, {
-        "label" : "Refer",
-        "menu_id" : "Popup:Refer",
-        "url" : "/interface/../custom/refer.php",
         "target" : "pop",
         "children" : [ ],
         "requirement" : 1

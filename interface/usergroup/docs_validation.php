@@ -46,7 +46,13 @@
       $listEmpty = false;
       $fileURL = $row['url'];
       $location = substr($fileURL, strpos($fileURL, "LibreEHR"));
-      $size = ((float)$row['size'])/(10**6) . " MB";
+      $size = ((float)$row['size'])*(0.000001);
+      if ($size < 1) {
+        //if size < 1 MB
+        $size = ($size*1000) . " KB";
+      } else {
+        $size = $size . " MB";
+      }
       $dateAdded = $row['docdate'];
       $storage = null;
       if ($row['storagemethod'] == 0) {
