@@ -39,7 +39,7 @@ include_once("$srcdir/sql.inc");
     <link rel=stylesheet href="<?php echo $css_header; ?>" type="text/css">
     <link rel=stylesheet href="../themes/login.css" type="text/css">
     <link rel="shortcut icon" href="<?php echo $web_root; ?>/favicon.ico" type="image/x-icon">
-
+    <title>Login | <?php echo $GLOBALS['libreehr_name']; ?></title>
 
     <script language='JavaScript' src="../../library/js/jquery-1.4.3.min.js"></script>
     <script language='JavaScript'>
