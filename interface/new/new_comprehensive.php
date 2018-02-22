@@ -1014,5 +1014,6 @@ function allowOnlyDigits(elem_name){
     $("select").change(function() {
         checkSkipConditions();
     });
+    $("#form_email").attr('type','email');
   </script>
 </html>

@@ -768,6 +768,7 @@ if(!is_null($_POST['form_to_date']) ){
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
     $("#form_apptstatus").addClass('form-control input-sm');
+    $('#form_apptstatus').removeAttr('style');
 </script>
 </body>
 </html>
