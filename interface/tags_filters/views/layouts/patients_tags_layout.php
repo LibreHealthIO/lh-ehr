@@ -56,6 +56,10 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
             font-size: 12px;
         }
 
+        thead {
+            margin-top: 1.5px; /**/
+        }
+
         table.display td {
             padding: 3px 18px 3px 10px;
         }
@@ -183,15 +187,23 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
             position: fixed;
             top: 36px;
             right: 0px;
-            padding-right:100px;
+            padding-right:75px; /*was 100px*/
             background-color: #ecf0f1;
+            margin-right: 100px; /**/
+            width: 56%; /**/
         }
 
         #patients-tags-table_length {
             position: fixed;
             top: 36px;
-            width: 100%;
+            width: 44%; /*was 100%*/
             background-color: #ecf0f1;
+        }
+
+        #patients-tags-table_filter label input {
+            float: right; /**/
+            margin-right: -175px; /**/
+            margin-top: -20px; /**/
         }
 
         #<?php echo $this->dataTable->getTableId() ?> thead {
@@ -280,7 +292,7 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
 </head>
 
 
-<body class="body_top">
+<body class="body_top" style="overflow:scroll; height:400px;">
 
 <?php echo $this->content; ?>
 

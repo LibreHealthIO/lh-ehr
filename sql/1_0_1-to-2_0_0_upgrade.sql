@@ -237,6 +237,7 @@ SET @backup_group_name = (SELECT group_name FROM layout_options WHERE field_id='
 SET @seq = (SELECT MAX(seq) FROM layout_options WHERE group_name = IFNULL(@group_name,@backup_group_name) AND form_id='DEM');
 INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`) VALUES ('DEM', 'statement_y_n', IFNULL(@group_name,@backup_group_name), 'Print Statement', @seq+1, 1, 1, 5, 0, 'yesno', 1, 3, '', '', 'Do Not Print a Patient Statement If NO' ) ;
 ALTER TABLE patient_data ADD COLUMN statement_y_n text NOT NULL default '';
+#EndIf
 
 #IfNotTable onsite_mail
 CREATE TABLE `onsite_mail` (
