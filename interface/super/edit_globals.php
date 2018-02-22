@@ -145,6 +145,14 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
               $boolean = false;
             }
           }
+          elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
+            if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
+            $boolean = true;
+            }
+            else {
+              $boolean = "false";
+            }
+          }
           if ($boolean) { 
           $label = "global:".$fldid;
           $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
@@ -727,6 +735,12 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
         echo "</option>\n";
       }
       echo "  </select>\n";
+    }
+    else if ($fldtype == 'color') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
+      echo "  <input type='color' class='form-control input-sm' name='form_$i' id='form_$i' value='" . attr($fldvalue) . "' />\n";
     }
     if ($_GET['mode'] == "user") {
       echo " </td>\n";
