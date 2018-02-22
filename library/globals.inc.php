@@ -116,6 +116,10 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'default_tab_2',
                                'css_header',
                                'menu_styling_tabs',
+                               'primary_color',
+                               'primary_font_color',
+                               'secondary_color',
+                               'secondary_font_color',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
                                'default_encounter_view',
@@ -181,6 +185,11 @@ $GLOBALS_METADATA = array(
       '/interface/main/messages/messages.php?form_active=1',    // default = Messages
       xl('Second TAB on the left')
   ),
+
+    'primary_color'=>array(xl('Primary_color'),  'color', '#ffffff'),
+    'secondary_color'=>array(xl('Secondary_color'),  'color', '#ffffff'),
+    'primary_font_color'=>array(xl('Primary_font_color'),  'color', '#000000'),
+    'secondary_font_color'=>array(xl('Secondary_font_color'),  'color', '#000000'),
 
     'theme_tabs_layout' => array(
       xl('Menu Theme'),
