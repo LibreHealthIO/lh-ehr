@@ -122,7 +122,7 @@ function getInsuranceProvidersExtra() {
     $returnval = array();
      // added a global control to allow additional address information for insurance companies 
 
-        $sql = "select insurance_companies.name, insurance_companies.id, " .
+        $sql = "select insurance_companies.name, insurance_companies.id, insurance_companies.allow_print_statement, " .
           "addresses.zip, addresses.line1, addresses.state " .
           "from insurance_companies, addresses " .
           "where addresses.foreign_id = insurance_companies.id and ins_inactive != 1 " .

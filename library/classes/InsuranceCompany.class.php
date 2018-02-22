@@ -52,6 +52,7 @@ class InsuranceCompany extends ORDataObject{
     var $attn;
     var $cms_id;
     var $alt_cms_id;
+    var $allow_print_statement;
     //this is now deprecated use new x12 partners instead
     var $x12_receiver_id;
     var $x12_default_partner_id;
@@ -189,6 +190,12 @@ class InsuranceCompany extends ORDataObject{
     }
     function get_name() {
         return $this->name;
+    }
+    function set_allow_print_statement($allow_print_statement) {
+        $this->allow_print_statement = $allow_print_statement;
+    }
+    function get_allow_print_statement() {
+        return $this->allow_print_statement;
     }
     function set_attn($attn) {
         $this->attn = $attn;
