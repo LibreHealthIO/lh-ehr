@@ -92,6 +92,7 @@ else {
   $frame1url = "TAB_ONE_DEFAULT"; 
 }
 
+$flb_login= (isset($_POST['authFlowBoard'])) ? $_POST['authFlowBoard'] : 'off';
 require_once("tabs/redirect.php");
 ?>
 <html>

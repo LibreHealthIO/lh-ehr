@@ -106,7 +106,13 @@ var webroot_url="<?php echo $web_root; ?>";
             app_view_model.application_data.tabs.tabsList()[1].url(tab_defaults[1]);
         <?php
         }
+
+        if(isset($_REQUEST['flb_login'])) {
+        $flb_ok = $_REQUEST['flb_login'];
+    }
     ?>
+    
+    flb_ok_confirm=<?php echo json_encode($flb_ok); ?>;
     app_view_model.application_data.user(new user_data_view_model(<?php echo json_encode($_SESSION{"authUser"})
                                                                   .',' . json_encode($userQuery['fname'])
                                                                   .',' . json_encode($userQuery['lname'])
@@ -210,6 +216,17 @@ var webroot_url="<?php echo $web_root; ?>";
 
     $('.handle').drags();
 
+    if(flb_ok_confirm == 'on'){
+        tabCloseByName('pat');
+        tabCloseByName('lst');
+        $("#menu").css("display","none");            
+        $("#patientData").css("display","none");           
+        $(".body_title").css("display","none");           
+    }
+    if(flb_ok_confirm == 'off'){
+        tabCloseByName('flb');
+    }
+    
 </script>
 
 <?php do_action( 'after_main_box' ); ?>

@@ -24,8 +24,10 @@
                     <?php if ($GLOBALS['development_flag'] ) { ?>
                     <li data-bind="click: framesMode"><?php echo xlt("Frames Mode");?></li>
                     <?php } ?>
-                    <li data-bind="click: userPrefs"><?php echo xlt("User Preferences");?></li>
-                    <li data-bind="click: changePassword"><?php echo xlt("Change Pass Phrase");?></li>
+                    <!-- ko if:flb_ok_confirm == 'off' -->
+                        <li data-bind="click: userPrefs"><?php echo xlt("User Preferences");?></li>
+                        <li data-bind="click: changePassword"><?php echo xlt("Change Pass Phrase");?></li>
+                    <!-- /ko -->
                     <li data-bind="click: logout"><?php echo xlt("Logout");?></li>        
                 </ul>
             </li>            

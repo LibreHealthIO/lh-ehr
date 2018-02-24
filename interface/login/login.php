@@ -190,7 +190,7 @@ include_once("$srcdir/sql.inc");
                                     <tr>
                                         <td><span class="text"><?php echo xlt('Language'); ?></span></td>
                                         <td>
-                                            <select class="entryfield" name=languageChoice size="1" style = "height : 28px">
+                                            <select class="entryfield" name=languageChoice size="1" style = "height : 28px; width : 100%">
                                                 <?php
                                                 echo "<option selected='selected' value='" . attr($defaultLangID) . "'>" . xlt('Default') . " - " . xlt($defaultLangName) . "</option>\n";
                                                 foreach ($result3 as $iter) {
@@ -210,11 +210,16 @@ include_once("$srcdir/sql.inc");
                                     </tr>
                                 <?php }
                             } ?>
-
+                            <tr>
+                                <td><span class="text"><?php echo xlt('FlowBoard Login'); ?></span></td>
+                                <td>
+                                    <input class="entryfield" type="checkbox" name="authFlowBoard" style = "height : 28px; width : 100%; margin-left : 0px ">
+                                </td>
+                            </tr>
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input class="button large" type="submit" onClick="transmit_form()"
+                                    <input class="button large" style = "width : 100% " type="submit" onClick="transmit_form()"
                                            value="<?php echo xla('Login'); ?>">
                                 </td>
                             </tr>
