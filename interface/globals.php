@@ -255,7 +255,20 @@ $GLOBALS['sell_non_drug_products'] = 0;
 #mainly to keep left_nave untill it is dumped
 $GLOBALS['development_flag'] = false;
 
+#primary color
+$GLOBALS['primary_color'] = "#ffffff";
+
+#secondary color
+$GLOBALS['secondary_color'] = "#ffffff";
+
+#primary font color
+$GLOBALS['primary_font_color'] = "#000000";
+
+#secondary font color
+$GLOBALS['secondary_font_color'] = "#000000";
+
 $glrow = sqlQuery("SHOW TABLES LIKE 'globals'");
+
 if (!empty($glrow)) {
   // Collect user specific settings from user_settings table.
   //
@@ -266,6 +279,24 @@ if (!empty($glrow)) {
       "WHERE `setting_user` = ? " .
       "AND `setting_label` LIKE 'global:%'", array($_SESSION['authUserID']) );
     for($iter=0; $row=sqlFetchArray($glres_user); $iter++) {
+      //get primary color
+      if ($row['setting_label'] == "global:primary_color"){
+        $GLOBALS['primary_color'] = $row['setting_value'];
+      }
+      //get primary font color
+      if ($row['setting_label'] == "global:primary_font_color"){
+        $GLOBALS['primary_font_color'] = $row['setting_value'];
+      }
+
+      //get secondary  color
+      if ($row['setting_label'] == "global:secondary_color"){
+        $GLOBALS['secondary_color'] = $row['setting_value'];
+      }
+
+      //get secondary font colot
+      if ($row['setting_label'] == "global:secondary_font_color"){
+        $GLOBALS['secondary_font_color'] = $row['setting_value'];
+      }
       //remove global_ prefix from label
       $row['setting_label'] = substr($row['setting_label'],7);
       $gl_user[$iter]=$row;

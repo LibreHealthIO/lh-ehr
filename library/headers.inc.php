@@ -19,6 +19,21 @@
  */
 ?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<style type="text/css">
+
+    /* $bottom_bg_line */
+.body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor1, .textcolor1, .highlightcolor, .logobar {
+  background-color: <?php echo $GLOBALS['primary_color']; ?>;
+  color: <?php echo $GLOBALS['primary_font_color']; ?>;
+
+}
+
+.bgcolor2,  ul.tabNav{
+
+  background-color: <?php echo $GLOBALS['secondary_color']; ?>;
+  color: <?php echo $GLOBALS['secondary_font_color']; ?>;
+}
+</style>
 <?php
 
     function include_js_library($path)
