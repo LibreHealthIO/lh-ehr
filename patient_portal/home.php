@@ -294,7 +294,7 @@ $(document).ready(function(){
 
         </section>
         <!-- /.content -->
-        <div class="footer-main">LibreEHR <?php echo xlt(' Patient Portal'); ?></div>
+        <div class="footer-main">LibreEHR <?php echo xlt(' Patient Portal'); ?> <?php echo "v".text($libreehr_portal_version); ?></div>
     </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
 <div id="openSignModal" class="modal fade" role="dialog">
