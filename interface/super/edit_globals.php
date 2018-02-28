@@ -292,7 +292,8 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
           }
           elseif ($fldid == "schedule_end" OR $fldid == "schedule_start") {
             //we rely on face that time wont exceed 24 hrs
-            if ($_POST['form_$i'] < 24) {
+            //also should not allow negative time.
+            if ($_POST['form_$i'] < 24 && $_POST['form_$i'] >= 0) {
               $boolean = true;
             }
             else {
