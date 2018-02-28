@@ -33,7 +33,7 @@ function validate_html_color_code($arg) {
 $primary_color = validate_html_color_code($_GET['pc']);
 $primary_font_color = validate_html_color_code($_GET['pfontcolor']);
 $secondary_color = validate_html_color_code($_GET['sc']);
-$secondary_font_color = validate_html_color_code($GET['sfontcolor']);
+$secondary_font_color = validate_html_color_code($_GET['sfontcolor']);
 
 //if no color given display default color
 //This condition may also come if the color code supplied is not a valid color code.
@@ -54,13 +54,13 @@ if (empty($secondary_font_color)) {
 	$secondary_font_color = "#ffffff";
 }
 
-echo ".body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor1, .textcolor1, .highlightcolor, .logobar {
+echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar {
   background-color:  #$primary_color;
   color: #$primary_font_color;
 
 }
 
-.bgcolor2,  ul.tabNav{
+td, tr, .table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown{
 
   background-color: #$secondary_color;
   color: #$secondary_font_color;
