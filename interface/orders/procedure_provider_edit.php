@@ -28,6 +28,24 @@ require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
 
+//validation for selection boxes
+//add more protocols which are going to be used, so that we can use it to validate below
+$form_protocol = array(
+  // Add to this list as more protocols are supported.
+  'DL'   => xl('Download'),
+  'SFTP' => xl('SFTP'),
+  'FS'   => xl('Local Filesystem'),
+  );
+
+$form_direction = array(
+  'B' => xl('Bidirectional'),
+  'R' => xl('Results Only'),
+  );
+
+$form_DorP = array(
+  'D' => xl('Debugging'),
+  'P' => xl('Production'),
+  );
 // Collect user id if editing entry
 $ppid = $_REQUEST['ppid'];
 
@@ -74,37 +92,54 @@ if ($_POST['form_save']) {
    $org_qry = "SELECT organization FROM users WHERE id = ?";
    $org_res = sqlQuery($org_qry, array($_POST['form_name']));
    $org_name = $org_res['organization'];
-   $sets =
-    "name = '"  .add_escape_custom($org_name). "', " .
-    "lab_director = "         . invalue('form_name')         . ", " .
-    "npi = "          . invalue('form_npi')          . ", " .
-    "send_app_id = "  . invalue('form_send_app_id')  . ", " .
-    "send_fac_id = "  . invalue('form_send_fac_id')  . ", " .
-    "recv_app_id = "  . invalue('form_recv_app_id')  . ", " .
-    "recv_fac_id = "  . invalue('form_recv_fac_id')  . ", " .
-    "DorP = "         . invalue('form_DorP')         . ", " .
-    "direction = "    . invalue('form_direction')    . ", " .
-    "protocol = "     . invalue('form_protocol')     . ", " .
-    "remote_host = "  . invalue('form_remote_host')  . ", " .
-    "login = "        . invalue('form_login')        . ", " .
-    "password = "     . invalue('form_password')     . ", " .
-    "orders_path = "  . invalue('form_orders_path')  . ", " .
-    "results_path = " . invalue('form_results_path') . ", " .
-    "notes = "        . invalue('form_notes');
-  if ($ppid) {
-    $query = "UPDATE procedure_providers SET $sets " .
-      "WHERE ppid = '"  . add_escape_custom($ppid) . "'";
-    sqlStatement($query);
+   //validate the selection boxes before saving, or else dont save.
+   $fprotocol = $_POST['form_protocol'];
+   $fdirection = $_POST['form_direction'];
+   $fdorp = $_POST['form_DorP'];
+
+   if (array_key_exists($fprotocol, $form_protocol) && array_key_exists($fdirection, $form_direction) && array_key_exists($fdorp, $form_DorP)) {
+      //declare a boolean, which will determine whether to save the changes or not
+    $boolean = true;
+   }
+   else {
+    $boolean = false;
+   }
+
+   if ($boolean) 
+   {
+   
+       $sets =
+        "name = '"  .add_escape_custom($org_name). "', " .
+        "lab_director = "         . invalue('form_name')         . ", " .
+        "npi = "          . invalue('form_npi')          . ", " .
+        "send_app_id = "  . invalue('form_send_app_id')  . ", " .
+        "send_fac_id = "  . invalue('form_send_fac_id')  . ", " .
+        "recv_app_id = "  . invalue('form_recv_app_id')  . ", " .
+        "recv_fac_id = "  . invalue('form_recv_fac_id')  . ", " .
+        "DorP = "         . invalue('form_DorP')         . ", " .
+        "direction = "    . invalue('form_direction')    . ", " .
+        "protocol = "     . invalue('form_protocol')     . ", " .
+        "remote_host = "  . invalue('form_remote_host')  . ", " .
+        "login = "        . invalue('form_login')        . ", " .
+        "password = "     . invalue('form_password')     . ", " .
+        "orders_path = "  . invalue('form_orders_path')  . ", " .
+        "results_path = " . invalue('form_results_path') . ", " .
+        "notes = "        . invalue('form_notes');
+      if ($ppid) {
+        $query = "UPDATE procedure_providers SET $sets " .
+          "WHERE ppid = '"  . add_escape_custom($ppid) . "'";
+        sqlStatement($query);
+      }
+      else {
+        $ppid = sqlInsert("INSERT INTO procedure_providers SET $sets");
+      }
+    }
+    else if ($_POST['form_delete']) {
+      if ($ppid) {
+        sqlStatement("DELETE FROM procedure_providers WHERE ppid = ?", array($ppid));
+      }
+    }
   }
-  else {
-    $ppid = sqlInsert("INSERT INTO procedure_providers SET $sets");
-  }
-}
-else if ($_POST['form_delete']) {
-  if ($ppid) {
-    sqlStatement("DELETE FROM procedure_providers WHERE ppid = ?", array($ppid));
-  }
-}
 
 if ($_POST['form_save'] || $_POST['form_delete']) {
   // Close this window and redisplay the updated list.
@@ -193,10 +228,7 @@ while ($org_row = sqlFetchArray($org_res)) {
   <td>
    <select name='form_DorP' title='<?php echo xla('MSH-11'); ?>'>
 <?php
-foreach(array(
-  'D' => xl('Debugging'),
-  'P' => xl('Production'),
-  ) as $key => $value)
+foreach($form_DorP as $key => $value)
 {
   echo "    <option value='" . attr($key) . "'";
   if ($key == $row['DorP']) echo " selected";
@@ -212,12 +244,7 @@ foreach(array(
   <td>
    <select name='form_protocol'>
 <?php
-foreach(array(
-  // Add to this list as more protocols are supported.
-  'DL'   => xl('Download'),
-  'SFTP' => xl('SFTP'),
-  'FS'   => xl('Local Filesystem'),
-  ) as $key => $value)
+foreach($form_protocol as $key => $value)
 {
   echo "    <option value='" . attr($key) . "'";
   if ($key == $row['protocol']) echo " selected";
@@ -228,10 +255,7 @@ foreach(array(
    &nbsp;
    <select name='form_direction'>
 <?php
-foreach(array(
-  'B' => xl('Bidirectional'),
-  'R' => xl('Results Only'),
-  ) as $key => $value)
+foreach($form_direction as $key => $value)
 {
   echo "    <option value='" . attr($key) . "'";
   if ($key == $row['direction']) echo " selected";
