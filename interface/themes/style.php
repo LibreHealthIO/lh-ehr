@@ -2,8 +2,7 @@
 /** 
  * function to apply selected color in the color picker
  * 
- * Copyright (C) 2017 Art Eaton
- * SOURCE:  Ken Chapple at mi-squared.com
+ * Copyright (C) 2018 Naveen Muthusamy
  * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details. 
