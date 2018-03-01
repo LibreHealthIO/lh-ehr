@@ -26,6 +26,7 @@
 $sanitize_all_escapes=true;
 $fake_register_globals=false;
 require_once('../globals.php');
+require_once("../../library/report_functions.php");
 require_once($GLOBALS['srcdir'].'/patient.inc');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/formatting.inc.php');
@@ -388,20 +389,11 @@ function sel_patient() {
             <?php dropdown_facility($form_facility, 'form_facility', true); ?>
             </td>
       <td><?php echo xlt('Provider'); ?>:</td>
-      <td><?php
-        $query = "SELECT id, lname, fname FROM users WHERE ".
-                "authorized=1 AND active!=0 ORDER BY lname, fname"; 
-        $ures = sqlStatement($query);
-        echo "   <select name='form_provider'>\n";
-        echo "    <option value=''>-- " . xlt('All') . " --\n";
-        while ($urow = sqlFetchArray($ures)) {
-          $provid = $urow['id'];
-          echo "    <option value='" . attr($provid) ."'";
-          if ($provid == $_REQUEST['form_provider']) echo " selected";
-          echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-        }
-        echo "   </select>\n";
-      ?></td>
+      <td>
+        <?php // Build a dropdown list of providers
+          dropDownProviders();
+        ?>
+      </td>
         </tr><tr>
 <?php } ?>
       <td colspan="2">

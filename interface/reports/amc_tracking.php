@@ -34,6 +34,7 @@ $fake_register_globals=false;
 
 require_once("../globals.php");
 require_once("../../library/patient.inc");
+require_once("../../library/report_functions.php");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
@@ -242,30 +243,10 @@ $provider  = trim($_POST['form_provider']);
                <?php echo htmlspecialchars( xl('Provider'), ENT_NOQUOTES); ?>:
             </td>
             <td>
-                <?php
-
-                 // Build a drop-down list of providers.
-                 //
-
-                 $query = "SELECT id, lname, fname FROM users WHERE ".
-                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
-
-                 $ures = sqlStatement($query);
-
-                 echo "   <select name='form_provider'>\n";
-                 echo "    <option value=''>-- " . htmlspecialchars( xl('All'), ENT_NOQUOTES) . " --\n";
-
-                 while ($urow = sqlFetchArray($ures)) {
-                  $provid = $urow['id'];
-                  echo "    <option value='".htmlspecialchars( $provid, ENT_QUOTES)."'";
-                  if ($provid == $_POST['form_provider']) echo " selected";
-                  echo ">" . htmlspecialchars( $urow['lname'] . ", " . $urow['fname'], ENT_NOQUOTES) . "\n";
-                 }
-
-                 echo "   </select>\n";
-
-                ?>
-                        </td>
+              <?php // Build a drop-down list of providers.
+                dropDownProviders();
+              ?>
+            </td>
         </tr>
     </table>
 

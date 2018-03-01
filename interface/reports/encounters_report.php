@@ -29,6 +29,7 @@
 
 require_once("../globals.php");
 require_once $GLOBALS['srcdir'].'/headers.inc.php';
+require_once("../../library/report_functions.php");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/billing.inc");
 require_once("$srcdir/patient.inc");
@@ -216,29 +217,9 @@ $res = sqlStatement($query);
                <?php echo xlt('Provider'); ?>:
             </td>
             <td>
-                <?php
-
-                 // Build a drop-down list of providers.
-                 //
-
-                 $query = "SELECT id, lname, fname FROM users WHERE ".
-                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
-
-                 $ures = sqlStatement($query);
-
-                 echo "   <select name='form_provider'>\n";
-                 echo "    <option value=''>-- " . xlt('All') . " --\n";
-
-                 while ($urow = sqlFetchArray($ures)) {
-                  $provid = $urow['id'];
-                  echo "    <option value='" . attr($provid) . "'";
-                  if ($provid == $_POST['form_provider']) echo " selected";
-                  echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-                 }
-
-                 echo "   </select>\n";
-
-                ?>
+              <?php // Build a drop-down list of providers.
+                dropDownProviders();
+              ?>
             </td>
             <td>
        <label><input type='checkbox' name='form_new_patients' title='First-time visits only'<?php  if ($form_new_patients) echo ' checked'; ?>>

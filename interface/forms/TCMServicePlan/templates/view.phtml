@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Targeted Case Management Service Plan</title>
+		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot']; ?>/interface/themes/style_oemr.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->rootDirectory ?>/forms/TCMAssessment/style.css">
+		<script type="text/javascript" src="<?php echo $this->rootDirectory; ?>/forms/TCMAssessment/js/modernizr-custom-2.6.2.js"></script>
+		<script type="text/javascript">
+			Modernizr.load({
+				test: Modernizr.inputtypes.date,
+				nope: [
+          '<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js',
+					'<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-ui-1.8.21.custom.min.js',
+					'<?php echo $GLOBALS['webroot']; ?>/library/css/jquery-ui-1.8.21.custom.css'
+				],
+				both : [
+          '<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js',
+					'<?php echo $this->rootDirectory; ?>/forms/TCMAssessment/js/knockout-2.2.1.js',
+					'<?php echo $this->rootDirectory; ?>/forms/TCMServicePlan/js/ServicePlanSubModels.js',
+					'<?php echo $this->rootDirectory; ?>/forms/TCMServicePlan/js/ServicePlan.js',
+					'<?php echo $this->rootDirectory; ?>/forms/TCMServicePlan/js/ServicePlanViewModel.js'
+				],
+				complete: function () {
+					$(document).ready(function() {
+
+						ServicePlanVM = new ServicePlanViewModel;
+						ServicePlanVM.Load({
+							AjaxUri: '<?php echo $this->rootDirectory; ?>/forms/TCMServicePlan/ajax.php',
+							WebRoot: '<?php echo $GLOBALS['webroot']; ?>',
+							ExitUri: '<?php echo $GLOBALS['form_exit_url']; ?>',
+							ServicePlanId: '<?php echo $this->servicePlanId; ?>',
+							TestMode: false
+						});
+						ko.applyBindings(ServicePlanVM);
+            
+ 						if (typeof jQuery.ui !== 'undefined') {
+							$('input[type=date]').not('hasDatePicker').datepicker({
+								dateFormat: 'yy-mm-dd'
+							}); 
+						}           
+            
+					});
+				}
+			});
+		</script>
+	</head>
+	<body class="bgcolor2">
+		<div id="activityWait" data-bind="visible: ActivityWait() !== false">
+			<div>
+				<span data-bind="text: ActivityWait">Initializing</span>
+			</div>
+		</div>
+		<div id="hoverMenu">
+			<div>
+				<div class="css_button" data-bind="click: Save"><span>Save Service Plan</span></div>
+				<div class="css_button" data-bind="click: Exit"><span>Cancel</span></div>
+				<div class="css_button" data-bind="click: ServicePlan.ManagerNoteVisibleToggle"><span>Manager Notes</span></div>
+				<div class="css_button" style="float: right;" data-bind="visible: ServicePlan.Finalized.Display, click: ServicePlan.Finalized.VisibleToggle"><span>Finalize</span></div>
+			</div>
+			<div id="managerNotes" data-bind="visible: ServicePlan.ManagerNoteVisible">
+				<div>
+					<textarea data-bind="value: ServicePlan.ManagerNote"></textarea>
+				</div>
+			</div>
+			<div id="finalize" data-bind="visible: ServicePlan.Finalized.Visible">
+				<div>
+					<div>
+						<table>
+							<tbody>
+								<tr>
+									<th>Finalized</th>
+									<td>
+										<div data-bind="visible: ServicePlan.Finalized.DisplayFinalize">Not Finalized</div>
+										<div data-bind="visible: ServicePlan.Finalized.DisplayRevert, text: ServicePlan.Finalized.Finalized"></div>
+									</td>
+									<td>
+										<div style="float: right; " data-bind="visible: ServicePlan.Finalized.DisplayFinalize">
+											<div class="css_button" data-bind="click: Finalize"><span>Finalize Service Plan</span></div>
+										</div>
+										<div style="float: right; " data-bind="visible: ServicePlan.Finalized.DisplayRevert">
+											<div class="css_button" data-bind="click: Unfinalize"><span>Revert Finalization</span></div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div style="clear: both;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="contentWraper">
+			<h1>Targeted Case Management Service Plan</h1>
+			<div id="formAlert" data-bind="visible: ErrorAlert() !== false">
+				<p data-bind="text: ErrorAlert"></p>
+			</div>
+			<div class="form-section">
+				<table>
+					<tbody>
+						<tr>
+							<th>Service Plan Type</th>
+							<td colspan="3" data-bind="text: ServicePlan.TypeDisplay"></td>
+						</tr>
+						<tr>
+							<th style="width: 25%">Clients Name</th>
+							<td style="width: 25%" data-bind="text: ServicePlan.ClientName"></td>
+							<th style="width: 25%">Date of Birth</th>
+							<td style="width: 25%" data-bind="text: ServicePlan.ClientBirth"></td>
+						</tr>
+						<tr>
+							<th>Medicaid #</th>
+							<td data-bind="text: ServicePlan.MedicaidId"></td>
+							<td colspan="2"></td>
+						</tr>
+						<tr>
+							<th>Targeted Case Manager</th>
+							<td data-bind="text: ServicePlan.CaseManagerName"></td>
+							<th>Supervisor</th>
+							<td data-bind="text: ServicePlan.CaseManagerSupervisorName"></td>
+						</tr>
+						<tr>
+							<th>Written Date</th>
+							<td><input type="date" style="width: 10em;" data-bind="value: ServicePlan.DateWritten"></td>
+							<th>Completion Date</th>
+							<td><input type="date" style="width: 10em;" data-bind="value: ServicePlan.DateComplete"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="form-section">
+				<table>
+					<thead>
+						<tr>
+							<th colspan="3">
+								<span class="section-title">Diagnosis</span>
+							</th>
+						</tr>
+						<tr data-bind="visible: ServicePlan.DiagnosisActive().length > 0">
+							<th style="width: 15%">Code</th>
+							<th style="width: 74%">Description</th>
+							<th style="width: 1%;"></th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: ServicePlan.Diagnosis">
+						<tr>
+							<td><input type="text" data-bind="value: Code"></td>
+							<td><input type="text" data-bind="value: Description"></td>
+							<td><button class="ico-minus" title="Remove" data-bind="click: $root.ServicePlan.DiagnosisRemove"></button></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3" class="onlyButton"><button class="ico-plus" title="Add Diagnosis" data-bind="click: ServicePlan.DiagnosisAddNew"></button></td>
+						</tr>
+						<tr>
+							<th colspan="1">
+								CGAS/GAS
+							</th>							
+							<td colspan="2"><input id="text" type="text" data-bind="numeric: ServicePlan.DiagnosisCgas, value: ServicePlan.DiagnosisCgas, valueUpdate: 'afterkeydown'" maxlength="2" style="width: 2em"></td>							
+						</tr>
+						<tr>
+							<th colspan="1">
+								Source of Diagnosis
+							</th>
+							<td colspan="2" style="width: 75%"><input type="text" data-bind="value: ServicePlan.DiagnosisSource"><br>
+								<span class="section-subtitle">(source should include date &amp; clinician)</span>
+							</td>
+						</tr>
+						<tr>
+							<th colspan="1">
+								Agent
+							</th>
+							<td colspan="2" style="width: 75%"><input type="text" data-bind="value: ServicePlan.DiagnosisAgent"></td>
+						</tr>
+						
+					</tfoot>
+				</table>
+			</div>
+			<div class="form-section">
+				<table>
+					<thead>
+						<tr>
+							<th><span class="section-title">Current Service Needs</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><textarea data-bind="value: ServicePlan.CurrentServiceNeeds"></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<h1>Goals/Objectives</h1>
+			<div data-bind="foreach: ServicePlan.Problems">
+				<div class="form-section">
+					<table>
+						<thead>
+							<tr>
+								<th style="width: 16%;">Functional Area</th>
+								<td><input type="text" data-bind="value: Area"></td>
+								<th style="width: 1%;"><button class="ico-minus" title="Remove" data-bind="click: $root.ServicePlan.ProblemsRemove"></button></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>Problem</th>
+								<td colspan="2">
+								<textarea data-bind="value: Problem"></textarea>
+							</tr>
+						</tbody>
+					</table>
+					<div class="sourcesLink">
+						<table>
+							<thead>
+								<tr>
+									<th colspan="2" style="text-align: center; width: 100%;">Goals &amp; Objectives</th>
+									<td style="width: 1%;" class="onlyButton"><button class="ico-plus" title="Add Goal" data-bind="click: GoalsAddNew"></button></td>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: Goals">
+								<tr>
+									<th style="width: 16%;">Goal</th>
+									<td><textarea data-bind="value: Goal"></textarea></td>
+									<th style="width: 1%;"><button class="ico-minus" title="Add Service" data-bind="click: $parent.GoalsRemove"></button></th>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<div class="sourcesLink" style="margin: 5px;">
+											<table>
+												<thead>
+													<tr>
+														<th colspan="3" style="text-align: center;">Objectives</th>
+														<th style="width: 1%;"><button class="ico-plus" title="Add Goal" data-bind="click: ObjectivesAddNew"></button></th>
+													</tr>
+												</thead>
+												<tbody data-bind="foreach: Objectives">
+													<tr>
+														<td rowspan="3" style="width: 60%;"><textarea style="height: 5em;" data-bind="value: Objective"></textarea></td>
+														<th>Target Date</th>
+														<td style="width: 1%;"><input type="date" style="width: 10em;" data-bind="value: TargetDate"></td>
+														<th rowspan="3" style="width: 1%;"><button class="ico-minus" title="Add Service" data-bind="click: $parent.ObjectivesRemove"></button></th>
+													</tr>
+													<tr>
+														<th>Status</th>
+														<td><select data-bind="options: $root.ObjectiveStatus, value: Status, optionsValue: 'Value', optionsText: 'Label', optionsCaption: 'Choose...'"></select></td>
+													</tr>
+													<tr>
+														<th>Progress Rating</th>
+														<td><input type="number" min="1" max="10" style="width: 10em;" data-bind="value: ProgressRate"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<table>
+						<tbody>
+							<tr>
+								<th style="width: 16%;">Activity</th>
+								<td><textarea data-bind="value: Activities"></textarea></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="sourcesLink">
+						<table>
+							<thead>
+								<tr>
+									<th colspan="4" style="text-align: center;">Agency / Agent Responsible</th>
+									<th style="width: 1%;"><button class="ico-plus" title="Add Agent/Agency" data-bind="click: AgentsAddNew"></button></th>
+								</tr>
+								<tr data-bind="visible: AgentsActive().length > 0">
+									<th colspan="2">Type</th>
+									<th>Agency</th>
+									<th>Agent</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: Agents">
+								<tr>
+									<td style="width: 20%;"><div data-bind="visible: Type() !== '0'"><select data-bind="options: $root.AgentsTypes, value: Type, optionsValue: 'Id', optionsText: 'Label', optionsCaption: 'Choose...'"></select></div><div data-bind="visible: Type() === '0'"><input type="text" data-bind="value: TypeOther" /></div></td>
+									<td style="width: 1%;"><button class="ico-pencil" title="Switch Edit Mode" data-bind="click: TypeToggle"></button></td>
+									<td><input type="text" data-bind="value: Agency"></td>
+									<td><input type="text" data-bind="value: Agent"></td>
+									<td><button class="ico-minus" title="Add Service" data-bind="click: $parent.AgentsRemove"></button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="form-section">
+				<table>
+					<tbody>
+						<tr>
+							<td><select data-bind="options: FunctionalTypes, value: ServicePlan.ProblemsSelected, optionsText: 'Label', optionsCaption: 'Select Functional Area...'"></select></td>
+							<td style="width: 1%;"><button class="ico-plus" title="Create Functional Area" data-bind="click: ServicePlan.ProblemsAddNew"></button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="section-discharge" class="form-section">
+				<table>
+					<thead>
+						<tr>
+							<th>Discharge Plan</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><textarea data-bind="value: ServicePlan.DischargePlan"></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

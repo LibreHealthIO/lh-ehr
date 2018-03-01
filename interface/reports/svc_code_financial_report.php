@@ -36,6 +36,7 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
 
 require_once("../globals.php");
+require_once("../../library/report_functions.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
@@ -137,22 +138,10 @@ if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($
             <?php dropdown_facility($form_facility, 'form_facility', true); ?>
             </td>
                         <td><?php echo xlt('Provider'); ?>:</td>
-                <td><?php
-                        // Build a drop-down list of providers.
-                                //
-                                $query = "SELECT id, lname, fname FROM users WHERE ".
-                                  "authorized = 1 ORDER BY lname, fname"; //(CHEMED) facility filter
-                                $ures = sqlStatement($query);
-                                echo "   <select name='form_provider'>\n";
-                                echo "    <option value=''>-- " . xlt('All') . " --\n";
-                                while ($urow = sqlFetchArray($ures)) {
-                                        $provid = $urow['id'];
-                                        echo "    <option value='" . attr($provid) ."'";
-                                        if ($provid == $_POST['form_provider']) echo " selected";
-                                        echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-                                }
-                                echo "   </select>\n";
-                                ?>
+                <td>
+                  <?php // Build a drop-down list of providers.
+                    dropDownProviders();
+                  ?>
                 </td>
         </tr><tr>
                  <td colspan="2">

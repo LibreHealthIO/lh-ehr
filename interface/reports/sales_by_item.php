@@ -25,6 +25,7 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
  
 require_once("../globals.php");
+require_once("../../library/report_functions.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
@@ -359,18 +360,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
             <?php
                 if (acl_check('acct', 'rep_a')) {
                     // Build a drop-down list of providers.
-                    $query = "select id, lname, fname from users where " .
-                        "authorized = 1 order by lname, fname";
-                    $res = sqlStatement($query);
-                    echo "   &nbsp;<select name='form_provider'>\n";
-                    echo "    <option value=''>-- " . xlt('All Providers') . " --\n";
-                    while ($row = sqlFetchArray($res)) {
-                        $provid = $row['id'];
-                        echo "    <option value='". attr($provid) ."'";
-                        if ($provid == $_REQUEST['form_provider']) echo " selected";
-                        echo ">" . text($row['lname']) . ", " . text($row['fname']) . "\n";
-                    }
-                    echo "   </select>\n";
+                    dropDownProviders();
                     } else {
                     echo "<input type='hidden' name='form_provider' value='" . attr($_SESSION['authUserID']) . "'>";
                     }

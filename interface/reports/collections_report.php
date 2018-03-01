@@ -33,6 +33,7 @@ require_once("../../library/patient.inc");
 require_once("../../library/invoice_summary.inc.php");
 require_once("../../library/sl_eob.inc.php");
 require_once("../../library/formatting.inc.php");
+require_once("../../library/report_functions.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 $DateFormat = DateFormatRead();
@@ -474,27 +475,10 @@ function checkAll(checked) {
                            <?php echo xlt('Provider') ?>:
                         </td>
                         <td>
-                        <?php  # Build a drop-down list of providers.
-                               # Added (TLH)
-
-                               $query = "SELECT id, lname, fname FROM users WHERE ".
-                               "authorized = 1  ORDER BY lname, fname"; #(CHEMED) facility filter
-
-                               $ures = sqlStatement($query);
-
-                               echo "   <select name='form_provider'>\n";
-                               echo "    <option value=''>-- " . xlt('All') . " --\n";
-
-                               while ($urow = sqlFetchArray($ures)) {
-                               $provid = $urow['id'];
-                               echo "    <option value='" . attr($provid) . "'";
-                                if ($provid == $_POST['form_provider']) echo " selected";
-                                echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-                                if ($provid == $_POST['form_provider']) $provider_name = $urow['lname'] . ", " . $urow['fname'];
-                               }
-
-                               echo "   </select>\n";
-                        ?>
+                          <?php # Build a drop-down list of providers.
+                                # Added (TLH)
+                            dropDownProviders();
+                          ?>
                         </td>
                     </tr>                    
                         <td class='label'>

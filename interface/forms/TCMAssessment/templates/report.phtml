@@ -1,0 +1,7 @@
+<a href="<?php echo $this->rootDirectory ?>/forms/TCMAssessment/full-report.php?id=<?php echo $this->formData['Assessment']['Id']; ?>">VIEW 'Full Report' / PRINT</a><br>
+<label class="bold">Assessment:</label> <span class="text"><?php echo $this->formData['Assessment']['Type']; ?></span><br>
+<label class="bold">Admit Date:</label> <span class="text"><?php echo $this->formData['Assessment']['AdmitDate']; ?></span><br>
+<label class="bold">Report Date:</label> <span class="text"><?php echo $this->formData['Assessment']['Encounter']['ReportDate']; ?></span><br>
+<label class="bold">Home Visit Date(s):</label> <span class="text"><?php echo $this->formData['Assessment']['HomeVisitDates']; ?></span><br>
+<label class="bold">Case Manager:</label> <span class="text"><?php echo $this->formData['Assessment']['CaseManagerName']; ?></span><br>
+<label class="bold">Supervisor:</label> <span class="text"><?php echo $this->formData['Assessment']['CaseManagerSupervisorName']; ?></span>
