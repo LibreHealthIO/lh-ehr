@@ -5845,6 +5845,9 @@ CREATE TABLE `users` (
   `upin` varchar(255) default NULL,
   `facility` varchar(255) default NULL,
   `facility_id` int(11) NOT NULL default '0',
+  `fullscreen_role` text NOT NULL,
+  `fullscreen_page` text NOT NULL,
+  `fullscreen_enable` int(11) NOT NULL default '0',
   `see_auth` int(11) NOT NULL default '1',
   `active` tinyint(1) NOT NULL default '1',
   `npi` varchar(15) default NULL,
@@ -8218,7 +8221,4 @@ INSERT INTO `menu_trees` (`menu_set`, `entry_id`, `icon`, `helperText`, `parent`
 ('Front Office', 'Flow Board|/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1', '', '', 'View:', 300, NULL);
 
 
-ALTER TABLE users ADD COLUMN fullscreen_role text NOT NULL;
-ALTER TABLE users ADD COLUMN fullscreen_page text NOT NULL;
-ALTER TABLE users ADD COLUMN fullscreen_enable int(11) NOT NULL default 0;
 
