@@ -50,11 +50,8 @@ $alertmsg = '';
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<?php call_required_libraries(array("jquery-min-3-1-1")); ?>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+
+<?php call_required_libraries(array("jquery-min-3-1-1", "fancybox", "common")); ?>
 
 <script src="checkpwd_validation.js" type="text/javascript"></script>
 

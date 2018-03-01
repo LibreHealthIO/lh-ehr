@@ -20,6 +20,7 @@
  * get_fullscreen_pages.php
  * This page responds to an AJAX request to retrieve the
  * pages available for a particular fullscreen role.
+ * 
  * Returns an array of the available pages
  */
 

@@ -97,11 +97,6 @@ if ($_GET["mode"] == "update") {
           //END (CHEMED)
   }
 
-  if ($_GET["role_name"]) {
-    $tqvar = formData('role_name', 'G');
-    sqlStatement("update users set fullscreen_role ='$tqvar' where id = {$_GET["id"]}");
-  }
-
   if ($GLOBALS['restrict_user_facility'] && $_GET["schedule_facility"]) {
       sqlStatement("delete from users_facility
         where tablename='users'
