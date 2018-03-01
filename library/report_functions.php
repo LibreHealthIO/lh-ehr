@@ -28,7 +28,6 @@
 function dropDownProviders() {
 	$query = "SELECT id, lname, fname FROM users WHERE ".
              "authorized = 1  ORDER BY lname, fname"; #(CHEMED) facility filter
-
     $ures = sqlStatement($query);
 
     echo "   <select name='form_provider'>\n";
@@ -43,6 +42,31 @@ function dropDownProviders() {
     }
 
 	echo "   </select>\n";
+}
+
+/*
+ * This function builds a dropdown list of facilities
+ * @params None
+ * @return void - Simply echo HTML encoded string
+ */
+function dropDownFacilities() {                 
+	$query = "SELECT id, name FROM facility ORDER BY name";
+    $fres = sqlStatement($query);
+
+    echo "   <select name='form_facility'>\n";
+    echo "    <option value=''>-- " . xlt('All Facilities', 'e') . " --\n";
+
+    while ($frow = sqlFetchArray($fres)) {
+        $facid = $frow['id'];
+        echo "    <option value='$facid'";
+        if ($facid == $form_facility) echo " selected";
+        echo ">" . htmlspecialchars($frow['name']) . "\n";
+    }
+
+    echo "    <option value='0'";
+    if ($form_facility === '0') echo " selected";
+    echo ">-- " . xl('Unspecified') . " --\n";
+    echo "   </select>\n";
 }
 
 ?>
