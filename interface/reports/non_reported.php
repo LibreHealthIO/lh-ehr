@@ -390,7 +390,7 @@ onsubmit='return top.restoreSession()'>
             '>
             <span>
               <?php xl('Refresh','e'); ?>
-            </spain>
+            </span>
             </a>
             <?php if ($_POST['form_refresh']) { ?>
               <a href='#' class='css_button' id='printbutton'>
