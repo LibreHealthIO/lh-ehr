@@ -1,4 +1,20 @@
 <?php
+/** 
+ * Fullscreen page retriever
+ * 
+ * Copyright (C) 2018 Anirudh Singh
+ * 
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details. 
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * 
+ * @package Librehealth EHR 
+ * @author Anirudh (anirudh.s.c.96@hotmail.com)
+ * @link http://librehealth.io
+ *  
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * 
+ */
 
 /**
  * get_fullscreen_pages.php
