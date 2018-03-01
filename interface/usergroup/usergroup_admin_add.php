@@ -358,7 +358,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
   <td><textarea name=info style="width:120px;" cols=27 rows=4 wrap=auto></textarea></td>
   </tr>
   <tr>
-  <td><span class="text"><?php echo xlt('Full-screen role:'); ?></span></td>
+  <td><span class="text"><?php echo xlt('Full screen role'); ?>:</span></td>
   <td>
   <select style="width:120px;" name="role_name" id="role_name">
     <?php
@@ -375,7 +375,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
     ?>
   </select>
   </td>
-  <td><span class="text"> <?php echo xlt('Full-screen page:'); ?></span></td>
+  <td><span class="text"> <?php echo xlt('Full screen page'); ?>:</span></td>
   <td>
       <select style="width:120px;" name="fullscreen_page" id="fullscreen_page">
       <?php
@@ -386,7 +386,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
           $result[$iter3] = $frow;
           // needs to be worked on for different types of menus
           foreach($result as $iter) {
-            $fres2 = sqlStatement("select id,label from menu_entries where id='".$iter{'entry_id'}."'");
+            $fres2 = sqlStatement("select id,label from menu_entries where id= ?", array($iter{'entry_id'}));
             $frow2 = sqlFetchArray($fres2);
             ?> 
             <option value="<?php echo $frow2{'id'}; ?>"><?php echo xlt($frow2{'label'}); ?></option>
@@ -401,7 +401,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
   </tr>
   <tr>
   <td>
-      <span class="text"> Full-screen page enabled: </span>
+      <span class="text"> <?php echo xlt('Full screen page enabled'); ?>: </span>
   </td>
   <td>
       <input type="checkbox" name="fullscreen_enable"/>

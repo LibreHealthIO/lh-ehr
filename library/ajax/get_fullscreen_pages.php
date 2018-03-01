@@ -17,7 +17,7 @@ $fake_register_globals=false;
 require_once("../../interface/globals.php");
 require_once("$srcdir/sql.inc");
 
-$fQuery = sqlStatement("select entry_id from menu_trees where menu_set='".$_POST['role_name']."'");
+$fQuery = sqlStatement("select entry_id from menu_trees where menu_set= ?", array($_POST['role_name']));
 
 if($fQuery) {
     
@@ -27,7 +27,7 @@ if($fQuery) {
     
       // another posibility to get the "labels" is to segregate the entry_id with a "|" as the delimiter and use the first half
       foreach($result as $iter) {
-        $fres2 = sqlStatement("select id,label from menu_entries where id='".$iter{'entry_id'}."'");
+        $fres2 = sqlStatement("select id,label from menu_entries where id=?", array($iter{'entry_id'}));
         $frow2 = sqlFetchArray($fres2);
         
         $pages[] = ["id" => $frow2{'id'}, "label" => $frow2{'label'}];

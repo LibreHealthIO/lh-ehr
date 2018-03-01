@@ -732,6 +732,11 @@ if(!is_null($_POST['form_to_date']) ){
       refreshbegin('1');
       $('.js-blink-infinite').modernBlink();
 
+
+  // check whether this is a fullscreen page or not
+  if(parent.fullscreen_page == true) {
+      $("#pat_settings_toggle").remove();
+  }
   // toggle of the check box status for drug screen completed and ajax call to update the database
  $(".drug_screen_completed").change(function() {
       top.restoreSession();

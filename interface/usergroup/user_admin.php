@@ -567,7 +567,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
   <td><textarea style="width:150px;" name="comments" wrap=auto rows=4 cols=25><?php echo $iter["info"];?></textarea></td>
   </tr>
   <tr>
-  <td><span class="text"><?php echo xlt('Full-screen role:'); ?></span></td>
+  <td><span class="text"><?php echo xlt('Full screen role'); ?>:</span></td>
   <td>
   <select style="width:120px;" name="role_name">
     <?php
@@ -584,7 +584,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
     ?>
   </select>
   </td>
-  <td><span class="text"> <?php echo xlt('Full-screen page:'); ?></span></td>
+  <td><span class="text"> <?php echo xlt('Full screen page'); ?>:</span></td>
   <td>
       <select style="width:120px;" name="fullscreen_page" id="fullscreen_page">
       <?php
@@ -610,7 +610,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
   </tr>
   <tr>
   <td>
-      <span class="text"> Full-screen page enabled: </span>
+      <span class="text"> <?php echo xlt('Full screen page enabled'); ?>: </span>
   </td>
   <td>
       <input type="checkbox" name="fullscreen_enable" <?php if($iter['fullscreen_enable'] == 1) echo "checked"; ?>/>
