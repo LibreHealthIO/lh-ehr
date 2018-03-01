@@ -8216,3 +8216,9 @@ INSERT INTO `menu_trees` (`menu_set`, `entry_id`, `icon`, `helperText`, `parent`
 ('Front Office', 'Addr Book|/interface/usergroup/addrbook_list.php', '', '', 'View:', 100, NULL),
 ('Front Office', 'Calendar|/interface/main/main_info.php', '', '', 'View:', 200, NULL),
 ('Front Office', 'Flow Board|/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1', '', '', 'View:', 300, NULL);
+
+
+ALTER TABLE users ADD COLUMN fullscreen_role text NOT NULL;
+ALTER TABLE users ADD COLUMN fullscreen_page text NOT NULL;
+ALTER TABLE users ADD COLUMN fullscreen_enable int(11) NOT NULL default 0;
+
