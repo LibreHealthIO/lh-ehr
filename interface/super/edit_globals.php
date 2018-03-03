@@ -271,17 +271,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
               $boolean = false;
             }
           }
-          elseif ($fldid == "theme_tabs_layout") {
-            //menu array created sine the globals dont have the array
-            $menu_array = array('tabs_style_compact.css', 'tabs_style_full.css');
-            if (in_array($_POST["form_$i"], $menu_array)) {
-              $boolean = true;
-            }
-            else {
-              $boolean = false;
-            }
-          }
-          elseif ($fldid == "language_default" OR $fldid="language_menu_other") {
+         elseif ($fldid == "language_default" OR $fldid="language_menu_other") {
             $total_languages = sqlStatement('SELECT COUNT(*) FROM `lang_languages`');
             if($_POST['form_$i'] <= $total_languages) {
               $boolean = true;
