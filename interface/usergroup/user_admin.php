@@ -96,6 +96,7 @@ if ($_GET["mode"] == "update") {
           sqlStatement("UPDATE users, facility SET users.facility = facility.name WHERE facility.id = '$tqvar' AND users.id = {$_GET["id"]}");
           //END (CHEMED)
   }
+
   if ($GLOBALS['restrict_user_facility'] && $_GET["schedule_facility"]) {
       sqlStatement("delete from users_facility
         where tablename='users'
@@ -559,7 +560,56 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
   </select></td>
   <td><span class=text><?php echo xlt('Additional Info'); ?>:</span></td>
   <td><textarea style="width:150px;" name="comments" wrap=auto rows=4 cols=25><?php echo $iter["info"];?></textarea></td>
+  </tr>
+  <tr>
+  <td><span class="text"><?php echo xlt('Full screen role'); ?>:</span></td>
+  <td>
+  <select style="width:120px;" name="role_name">
+    <?php
+      $fres = sqlStatement("select distinct menu_set from menu_trees order by menu_set");
+      if ($fres) {
+        for ($iter3 = 0;$frow = sqlFetchArray($fres);$iter3++)
+          $result[$iter3] = $frow;
+        foreach($result as $iter3) {
+      ?>
+      <option value="<?php echo $iter3{'menu_set'};?>" <?php if ($iter3{'menu_set'} == $iter["fullscreen_role"]) echo "selected"; ?>><?php echo $iter3{'menu_set'}; ?></option>
+      <?php
+        }
+      }
+    ?>
+  </select>
+  </td>
+  <td><span class="text"> <?php echo xlt('Full screen page'); ?>:</span></td>
+  <td>
+      <select style="width:120px;" name="fullscreen_page" id="fullscreen_page">
+      <?php
 
+      $fres = sqlStatement("select entry_id from menu_trees where menu_set='".$iter["fullscreen_role"]."'");
+      if($fres) {
+        for($iter3 = 0;$frow = sqlFetchArray($fres); $iter3++)
+          $result[$iter3] = $frow;
+          // needs to be worked on for different types of menus
+          foreach($result as $iter2) {
+            $fres2 = sqlStatement("select id,label from menu_entries where id='".$iter2{'entry_id'}."'");
+            $frow2 = sqlFetchArray($fres2);
+            ?> 
+            <option value="<?php echo $frow2{'id'}; ?>" <?php if ($frow2{'id'} == $iter["fullscreen_page"]) echo "selected"; ?>><?php echo xlt($frow2{'label'}); ?></option>
+            <?php
+          }
+      }
+      ?>
+      </select>
+
+  
+  </td>
+  </tr>
+  <tr>
+  <td>
+      <span class="text"> <?php echo xlt('Full screen page enabled'); ?>: </span>
+  </td>
+  <td>
+      <input type="checkbox" name="fullscreen_enable" <?php if($iter['fullscreen_enable'] == 1) echo "checked"; ?>/>
+  </td>
   <?php do_action( 'usergroup_admin_edit', $iter ); ?>
 
   </tr>
