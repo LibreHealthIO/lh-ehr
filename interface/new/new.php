@@ -117,7 +117,7 @@ while ($orow = sqlFetchArray($ores)) {
    <span class='bold'><?php xl('First Name','e');?>: </span>
   </td>
   <td>
-   <input type='entry' size='15' name='fname' value='<?php echo $form_fname; ?>'>
+   <input type='entry' size='15' name='fname' value='<?php echo $form_fname; ?>' id="fname">
   </td>
  </tr>
 
@@ -126,7 +126,7 @@ while ($orow = sqlFetchArray($ores)) {
    <span class='bold'><?php xl('Middle Name','e');?>: </span>
   </td>
   <td>
-   <input type='entry' size='15' name='mname' value='<?php echo $form_mname; ?>'>
+   <input type='entry' size='15' name='mname' value='<?php echo $form_mname; ?>' id="mname">
   </td>
  </tr>
 
@@ -135,7 +135,7 @@ while ($orow = sqlFetchArray($ores)) {
    <span class='bold'><?php xl('Last Name','e');?>: </span>
   </td>
   <td>
-   <input type='entry' size='15' name='lname' value='<?php echo $form_lname; ?>'>
+   <input type='entry' size='15' name='lname' value='<?php echo $form_lname; ?>' id="lname">
   </td>
  </tr>
 

@@ -70,7 +70,7 @@
       //  Include Bootstrap, Fancybox, date-time-picker
   call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox-addpatient"));
 ?>
-
+<link rel="stylesheet" type="text/css" href="../../assets/css/jquery-ui-1-12-1/jquery-ui.css">
 <style>
 body, td, input, select, textarea {
  font-family: Arial, Helvetica, sans-serif;
@@ -1016,4 +1016,17 @@ function allowOnlyDigits(elem_name){
     });
     $("#form_email").attr('type','email');
   </script>
+<script type="text/javascript" src="../../assets/js/jquery-ui-1-12-1/jquery-ui.js"></script>
+<script type="text/javascript">
+  $('#form_fname, #form_lname, #form_mname').keyup(function () {
+    var id = $(this).attr('id');
+    var text = $(this).val();
+    var url = "../../library/ajax/suggest_name.php?type=" + id + "&text="  + text;
+    $(this).autocomplete({
+      minLength: 1,
+      source: url
+    });
+
+  });
+</script>
 </html>
