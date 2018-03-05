@@ -122,7 +122,7 @@ function getInsuranceProvidersExtra() {
     $returnval = array();
      // added a global control to allow additional address information for insurance companies 
 
-        $sql = "select insurance_companies.name, insurance_companies.id, " .
+        $sql = "select insurance_companies.name, insurance_companies.id, insurance_companies.allow_print_statement, " .
           "addresses.zip, addresses.line1, addresses.state " .
           "from insurance_companies, addresses " .
           "where addresses.foreign_id = insurance_companies.id and ins_inactive != 1 " .
@@ -166,6 +166,7 @@ function getProviders() {
     $rez = sqlStatement($sql);
     for($iter=0; $row=sqlFetchArray($rez); $iter++) {
         if (($row["fname"] != "") && ($row["lname"] != "")) {
+          if ($row["suffix"] != "") $row["lname"] .= ", ".$row["suffix"];
             array_push($returnval, $row["fname"] . " " . $row["lname"]);
         }
     }
@@ -929,7 +930,7 @@ function newPatientData(    $db_id="",
                 $regdate = ""
             )
 {
-    $DOB = fixDate($DOB);
+    $DOB = fixDOB($DOB);
     $regdate = fixDate($regdate);
 
     $fitness = 0;
@@ -1044,6 +1045,92 @@ function fixDate($date, $default="0000-00-00") {
 
     return $fixed_date;
 }
+/**
+*  checks whether the date of birth is valid.
+*
+*  If the entered date is future date then it convert to current date.
+*
+*  If the entered date is past date it does the same.
+*
+*  @author : Naveen
+*
+*  @return : String
+*/
+function fixDOB($date) {
+        $dmy = preg_split("'[/.-]'", $date);
+        if ($GLOBALS['date_display_format'] == 0) {   
+        $DOB_day = $dmy[2];
+        $DOB_month = $dmy[1];
+        $DOB_year = $dmy[0];
+        
+        $normal_date = sprintf("%04u-%02u-%02u", $dmy[0], $dmy[1], $dmy[2]);
+        }
+        elseif($GLOBALS['date_display_format'] == 1) { 
+        $DOB_day = $dmy[1];
+        $DOB_month = $dmy[0];
+        $DOB_year = $dmy[2];
+        
+        $normal_date = sprintf("%04u-%02u-%02u", $dmy[2], $dmy[0], $dmy[1]);
+        }
+        elseif($GLOBALS['date_display_format'] == 2) {
+        $DOB_day = $dmy[0];
+        $DOB_month = $dmy[1];
+        $DOB_year = $dmy[2];
+        
+        $normal_date = sprintf("%04u-%02u-%02u", $dmy[2], $dmy[1], $dmy[0]);
+        }
+        $current_year = date('Y');
+        $current_month = date('m');
+        $current_day = date('d');
+        $return_date = sprintf("%04u-%02u-%02u", $current_year, $current_month, $current_day);
+        $year_difference = $current_year - $DOB_year;
+        $month_difference = $current_month - $DOB_month;
+        $date_difference = $current_day - $DOB_day;
+        /* The entered date may have four cases 
+        1.It may be from future year.
+        2.It may be from current year and future month.
+        3.It may be from current year, current month and future date.
+        4.It may be from past year.
+        5.It may be from unacceptable past year
+        */
+        if ($year_difference < 0) {
+            //do nothing because it is future year, @default values are returned
+        }
+
+        elseif ($year_difference > 0) {
+
+          if ($year_difference > 150) {
+            //date from unacceptable past year, default values are returned
+            
+          }
+          else {
+            //date from  acceptable past year
+            $return_date = $normal_date;
+          }
+        }
+        elseif($year_difference == 0){
+            //year_difference == 0 indicates from same year, check for month difference
+            if($month_difference == 0){
+                //it means current month in current year, check for date difference
+                if ($date_difference == 0) {
+                    //it means current day
+                    $return_date = $normal_date;
+                }
+                elseif ($date_difference > 0) {
+                   //it means past day in the current month
+                    $return_date = $normal_date;
+                }
+
+            }
+            elseif ($month_difference > 0) {
+                //indicates past month from current year
+                $return_date = $normal_date;
+            }
+
+        }
+
+    return $return_date;
+}
 
 function pdValueOrNull($key, $value) {
   if (($key == 'DOB' || $key == 'regdate' || $key == 'contrastart' ||
@@ -1082,6 +1169,7 @@ function updatePatientData($pid, $new, $create=false)
   // the code below does not yet attempt it.
 
   $new['DOB'] = fixDate($new['DOB']);
+  $user=$_SESSION['authUser'];
 
   if ($create) {
     $sql = "INSERT INTO patient_data SET pid = '$pid', date = NOW()";
@@ -1206,6 +1294,7 @@ function newInsuranceData(
   $inactive = 0,
   $inactive_time = 0)
 {
+    $user=$_SESSION['authUser'];
   if (strlen($type) <= 0) return FALSE;
 
   // If a bad date was passed, err on the side of caution.
@@ -1437,9 +1526,9 @@ function getPatientAge($dobYMD, $nowYMD=null)
         $age = $yearDiff;
         if (($monthDiff == 0) && ($dayDiff < 0)) { $age -= 1; }
         else if ($monthDiff < 0) { $age -= 1; }
-    }
-    else  {
-        $age = "$ageInMonths month"; 
+    
+    } else  {
+        $age = "$ageInMonths " . xl('months');
     }
 
     return $age;
@@ -1817,6 +1906,31 @@ function getEffectiveInsurances($patient_id, $encdate) {
     $insarr[] = $tmp;
   }
   return $insarr;
+}
+
+/**
+ * Get all insurance companies
+ *
+ *
+ */
+
+function getAllinsurances($pid){
+   $insarr = array();
+   $sql = "SELECT a.type, a.provider, a.plan_name, a.policy_number, a.group_number,
+           a.subscriber_lname, a.subscriber_fname, a.subscriber_relationship, a.subscriber_employer,
+           b.name, c.line1, c.line2, c.city, c.state, c.zip
+           FROM `insurance_data` AS a
+           RIGHT JOIN insurance_companies AS b
+           ON a.provider = b.id
+           RIGHT JOIN addresses AS c
+           ON a.provider = c.foreign_id
+           WHERE a.pid = $pid  ";
+   $inco = sqlStatement($sql);
+
+    while($icl = sqlFetchArray($inco)){
+      $insarr[] = $icl;
+    }
+   return $insarr;
 }
 
 /**

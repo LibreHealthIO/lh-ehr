@@ -41,7 +41,9 @@ require_once ( "$srcdir/classes/Document.class.php" );
 require_once ( "$srcdir/classes/Note.class.php" );
 require_once ( "$srcdir/formatting.inc.php" );
 require_once ( "$srcdir/htmlspecialchars.inc.php" );
-require_once ( $GLOBALS['modules_dir'] . "html2pdf/vendor/autoload.php" );
+
+require_once ($GLOBALS['modules_dir'] . "html2pdf/vendor/autoload.php");
+
 require_once (dirname( __FILE__ )."/appsql.class.php" );
 
 $logit = new ApplicationTable();

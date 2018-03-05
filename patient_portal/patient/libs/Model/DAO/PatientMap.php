@@ -149,7 +149,7 @@ class PatientMap implements IDaoMap, IDaoMap2
             self::$FM["AllowPatientPortal"] = new FieldMap("AllowPatientPortal","patient_data","allow_patient_portal",false,FM_TYPE_VARCHAR,3,null,false);
             //self::$FM["DeceasedDate"] = new FieldMap("DeceasedDate","patient_data","deceased_date",false,FM_TYPE_DATETIME,null,null,false);
             //self::$FM["DeceasedReason"] = new FieldMap("DeceasedReason","patient_data","deceased_reason",false,FM_TYPE_VARCHAR,255,null,false);
-            self::$FM["CareTeam"] = new FieldMap("CareTeam","patient_data","care_team",false,FM_TYPE_INT,11,null,false);
+            //self::$FM["CareTeam"] = new FieldMap("CareTeam","patient_data","care_team",false,FM_TYPE_INT,11,null,false);
             self::$FM["County"] = new FieldMap("County","patient_data","county",false,FM_TYPE_VARCHAR,40,null,false);
             self::$FM["Industry"] = new FieldMap("Industry","patient_data","industry",false,FM_TYPE_TEXT,null,null,false);
         }

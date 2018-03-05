@@ -92,7 +92,21 @@ else {
   $frame1url = "TAB_ONE_DEFAULT"; 
 }
 
-require_once("tabs/redirect.php");
+
+$username = (isset($_POST['authUser'])) ? $_POST['authUser'] : '';
+$check_fullscreen = sqlStatement("select fullscreen_enable from users where username = ?", array($username));
+$row = sqlFetchArray($check_fullscreen);
+//echo $row["fullscreen_enable"];
+if($row) {
+  if($row["fullscreen_enable"] == 1) {
+    $fullscreen_url = $web_root."/interface/main/tabs/fullscreen.php?url=TAB_ONE_DEFAULT";
+    header('Location: '.$fullscreen_url);
+    exit();
+  } else {
+    require_once("tabs/redirect.php");
+  }
+}
+//require_once("tabs/redirect.php");
 ?>
 <html>
 <head>

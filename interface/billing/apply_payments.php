@@ -51,7 +51,7 @@ $eracount = 0;
     /*  Addition of onsite portal patient notify of invoice and reformated invoice - sjpadgett 01/2017 */
     require_once("../../patient_portal/lib/portal_mail.inc");
     require_once("../../patient_portal/lib/appsql.class.php");
-    
+
     function is_auth_portal( $pid = 0){
         if ($pData = sqlQuery("SELECT * FROM `patient_data` WHERE `pid` = ?", array($pid) )) {
             if($pData['allow_patient_portal'] != "YES") {
@@ -154,7 +154,7 @@ function upload_file_to_client_pdf($file_to_send) {
   global $STMT_TEMP_FILE_PDF;
   global $srcdir;
   if ($GLOBALS['statement_appearance'] == '1') {
-    require_once("$srcdir/html2pdf/vendor/autoload.php");
+    require_once ($GLOBALS['modules_dir'] . "html2pdf/vendor/autoload.php");
     $pdf2 = new HTML2PDF ($GLOBALS['pdf_layout'],
     $GLOBALS['pdf_size'],
     $GLOBALS['pdf_language'],
@@ -309,6 +309,9 @@ if ($_POST['form_portalnotify']) {
         $stmt['insconum1'] = "";
         $stmt['insconum2'] = "";
         $stmt['insconum3'] = "";
+        $stmt['insurance_no_statement_print_pri'] = "";
+        $stmt['insurance_no_statement_print_sec'] = "";
+        $stmt['insurance_no_statement_print_ter'] = "";
         #If you use the field in demographics layout called
         #guardiansname this will allow you to send statements to the parent
         #of a child or a guardian etc
@@ -329,15 +332,19 @@ if ($_POST['form_portalnotify']) {
          $payerid = arGetPayerID($patient_id, $svcdate, $i);
 
          if ($payerid) {
-          $tmp = sqlQuery("SELECT name FROM insurance_companies WHERE id = $payerid");
+
+          $tmp = sqlQuery("SELECT name, allow_print_statement FROM insurance_companies WHERE id = $payerid");
           if ($i == 1) {
           $stmt['insconum1'] = $tmp['name'];
+          $stmt['insurance_no_statement_print_pri'] = $tmp['allow_print_statement'];
           }
           if ($i == 2) {
           $stmt['insconum2'] = $tmp['name'];
+          $stmt['insurance_no_statement_print_sec'] = $tmp['allow_print_statement'];
           }
           if ($i == 3) {
           $stmt['insconum3'] = $tmp['name'];
+          $stmt['insurance_no_statement_print_ter'] = $tmp['allow_print_statement'];
           }
 
          }

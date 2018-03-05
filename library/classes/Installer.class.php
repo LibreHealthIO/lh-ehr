@@ -8,8 +8,6 @@ class Installer
   public function __construct( $cgi_variables )
   {
     // Installation variables
-    // For a good explanation of these variables, see documentation in
-    //   the contrib/util/installScripts/InstallerAuto.php file.
     $this->iuser                    = $cgi_variables['iuser'];
     $this->iuserpass                = $cgi_variables['iuserpass'];
     $this->iuname                   = $cgi_variables['iuname'];
@@ -40,7 +38,7 @@ class Installer
 
     // Record names of sql table files
     $this->main_sql = dirname(__FILE__) . '/../../sql/database.sql';
-    $this->translation_sql = dirname(__FILE__) . '/../../contrib/util/language_translations/currentLanguage_utf8.sql';
+    $this->translation_sql = dirname(__FILE__) . '/../../modules/language_translations/currentLanguage_utf8.sql';
     $this->devel_translation_sql = "http://opensourceemr.com/cvs/languageTranslations_utf8.sql";
     $this->ippf_sql = dirname(__FILE__) . "/../../sql/ippf_layout.sql";
     $this->icd9 = dirname(__FILE__) . "/../../sql/icd9.sql";

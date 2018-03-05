@@ -74,8 +74,7 @@ if (stristr(PHP_OS, 'WIN')) {
   $perl_bin_dir        = 'C:/xampp/perl/bin';
   $temporary_files_dir = 'C:/windows/temp';
   $backup_log_dir      = 'C:/windows/temp';
-}
-else {
+} else {
   // Everything else
   $mysql_bin_dir       = '/usr/bin';
   $perl_bin_dir        = '/usr/bin';
@@ -116,6 +115,10 @@ $USER_SPECIFIC_TABS = array('Appearance',
 $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'default_tab_2',
                                'css_header',
+                               'primary_color',
+                               'primary_font_color',
+                               'secondary_color',
+                               'secondary_font_color',
                                'menu_styling_tabs',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
@@ -183,13 +186,6 @@ $GLOBALS_METADATA = array(
       xl('Second TAB on the left')
   ),
 
-    'theme_tabs_layout' => array(
-      xl('Menu Theme'),
-      'tabs_css',
-      'tabs_style_full.css',
-      xl('Pick a theme: Windows style (full) or Mac/Linux style (compact) ')
-    ),
-
     'menu_styling_tabs' => array(
       xl('Role-based Menu'),
       array(
@@ -215,8 +211,10 @@ $GLOBALS_METADATA = array(
        'style_light.css',
       xl('Pick a CSS theme.')
     ),
-
-
+    'primary_color'=>array(xl('Primary color'),  'color', '#ffffff'),
+    'primary_font_color'=>array(xl('Primary font color'),  'color', '#000000'),
+    'secondary_color'=>array(xl('Secondary color'),  'color', '#000000'),
+    'secondary_font_color'=>array(xl('Secondary font color'),  'color', '#ffffff'),
 
     'libreehr_name' => array(
       xl('Application Title'),
@@ -1143,6 +1141,19 @@ $GLOBALS_METADATA = array(
        '1.00',
       xl('Total Minimum Dollar Amount of Statement to Allow Printing.(only applicable if Allow Statement to be Excluded from Printing is enabled)')
     ),
+
+    'insurance_statement_exclude' => array(
+       xl('Do Not Print Statements For Insurance Companies'),
+       array(
+            '0' => xl('Primary'),
+            '1' => xl('Secondary'),
+            '2' => xl('Tertiary'),
+            '3' => xl('All'),
+            '4' => xl('None')
+             ),                          // data type
+       '1',                              // default = true
+       xl('Do Not Print Statements for Insurance Companies Statement to Allow Printing.(only applicable if Allow Statement to be Excluded from Printing is enabled).')
+     ),
 
     'disallow_print_deceased' => array(
       xl('Disallow Printing for Deceased Patients'),
@@ -2366,7 +2377,7 @@ $GLOBALS_METADATA = array(
 
     'SMTP_PASS' => array(
       xl('SMTP Password for Authentication'),
-      'text',                           // data type
+      'pass',                           // data type
       '',                               // default
       xl('Must be empty if SMTP authentication is not used.')
     ),

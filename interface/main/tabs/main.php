@@ -70,6 +70,7 @@ var webroot_url="<?php echo $web_root; ?>";
 <script type="text/javascript" src="js/dialog_utils.js"></script>
 
 <link rel='stylesheet' href='<?php echo $web_root; ?>/library/fonts/typicons/typicons.min.css' />
+<link rel="shortcut icon" href="<?php echo $web_root; ?>/favicon.ico" type="image/x-icon">
 
 <?php require_once("templates/tabs_template.php"); ?>
 <?php require_once("templates/menu_template.php"); ?>
@@ -208,7 +209,6 @@ var webroot_url="<?php echo $web_root; ?>";
     })(jQuery);
 
     $('.handle').drags();
-
 </script>
 
 <?php do_action( 'after_main_box' ); ?>

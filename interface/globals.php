@@ -198,7 +198,7 @@ $javascript_dir = $GLOBALS['standard_js_path']; //Make path available as a varia
 $GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
 
 //module configurations
-$GLOBALS['modules_dir']  = "$web_root/modules/";  //CURRENT modules directory.
+$GLOBALS['modules_dir']  = "$webserver_root/modules/";  //CURRENT modules directory.
 $modules_dir = $GLOBALS['modules_dir'];                //Make path available as a variable.
 $GLOBALS['baseModDir']  = "interface/modules/";        //base directory for the ZEND mods.  Not currently used.
 $GLOBALS['customModDir']= "custom_modules";            //OLD non zend modules, not used.
@@ -338,6 +338,7 @@ if (!empty($glrow)) {
             // the $css_header_value is set above
             $rtl_override = true;
     }
+    }
 
     else {
         //$_SESSION['language_direction'] is not set, so will use the default language
@@ -355,6 +356,7 @@ if (!empty($glrow)) {
         $new_theme = 'rtl_' . $temp_css_theme_name;
 
         // Check file existence
+  
         if( file_exists( $include_root.'/themes/'.$new_theme ) ) {
             $GLOBALS['css_header'] = $rootdir.'/themes/'.$new_theme;
         } else {
@@ -460,6 +462,11 @@ $login_screen = $GLOBALS['login_screen'];
 $GLOBALS['css_header'] = $css_header;
 $GLOBALS['backpic'] = $backpic;
 
+//Portal Version tag
+require_once(dirname(__FILE__) . "/../portal_version.php");
+
+$libreehr_portal_version = "$p_major.$p_minor.$p_patch".$p_tag;
+
 // 1 = send email message to given id for Emergency Login user activation,
 // else 0.
 $GLOBALS['Emergency_Login_email'] = $GLOBALS['Emergency_Login_email_id'] ? 1 : 0;
@@ -531,7 +538,6 @@ if ($fake_register_globals) {
   extract($_GET,EXTR_SKIP);
   extract($_POST,EXTR_SKIP);
 }
-
 
 include_once __DIR__ . '/../library/pluginsystem/bootstrap.php';
 ?>

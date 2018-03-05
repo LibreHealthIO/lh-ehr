@@ -126,9 +126,38 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
       foreach ($grparr as $fldid => $fldarr) {
         if (in_array($fldid, $USER_SPECIFIC_GLOBALS)) {
           list($fldname, $fldtype, $flddef, $flddesc, $fldlist) = $fldarr;
+          //check and validate input from client side with globals.
+          if(is_array($grparr[$fldid][1])) {
+          $search = $grparr[$fldid][1];
+          $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
+          }
+          elseif ($grparr[$fldid][1] == bool) {
+          $_POST["form_$i"] == 0;
+          $boolean = true;
+          }
+          elseif ($fldid == "css_header") {
+            //styles array created since the globals does not have styles array.
+            $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
+            if (in_array($_POST["form_$i"], $styles_array)) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+          elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
+            if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
+            $boolean = true;
+            }
+            else {
+              $boolean = "false";
+            }
+          }
+          if ($boolean) { 
           $label = "global:".$fldid;
           $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
           setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
+          }
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);
           }
@@ -225,9 +254,77 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
                 sqlStatement("UPDATE libreehr_module_vars SET pn_value = ? WHERE pn_name = 'pcFirstDayOfWeek'", array($fldvalue));
                 break;
             }
+          //check and validate input from client side with globals.
+          if(is_array($grparr[$fldid][1])) {
+              $search = $grparr[$fldid][1];
+             $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
+
+          }
+          elseif ($grparr[$fldid][1] == "text") {
+            //for text fields
+              $_POST["form_$i"] = trim(strip_escape_custom($_POST["form_$i"]));
+              $boolean = true;
+          }
+          elseif ($grparr[$fldid][1] == bool) {
+          $_POST["form_$i"] == 0;
+          $boolean = true;
+          }
+          elseif ($fldid == "css_header") {
+            //styles array created since the globals does not have styles array.
+            $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
+            if (in_array($_POST["form_$i"], $styles_array)) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+
+          elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
+            if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
+            $boolean = true;
+            }
+            else {
+              $boolean = "false";
+            }
+          }
+          elseif ($fldid == "theme_tabs_layout") {
+            //menu array created sine the globals dont have the array
+            $menu_array = array('tabs_style_compact.css', 'tabs_style_full.css');
+            if (in_array($_POST["form_$i"], $menu_array)) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+          elseif ($fldid == "language_default" OR $fldid="language_menu_other") {
+            $total_languages = sqlStatement('SELECT COUNT(*) FROM `lang_languages`');
+            if($_POST['form_$i'] <= $total_languages) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+          elseif ($fldid == "schedule_end" OR $fldid == "schedule_start") {
+            //we rely on face that time wont exceed 24 hrs
+            if ($_POST['form_$i'] < 24) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+
+          //boolean will determine whether the data is valid, else dont update.
+          if ($boolean) {
             // Replace old values
             sqlStatement( 'DELETE FROM `globals` WHERE gl_name = ?', array( $fldid ) );
+
             sqlStatement( 'INSERT INTO `globals` ( gl_name, gl_index, gl_value ) VALUES ( ?, ?, ? )', array( $fldid, 0, $fldvalue )  );
+          }
+
         } else {
           //error_log("No need to update $fldid");
         }
@@ -648,6 +745,12 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       }
       echo "  </select>\n";
     }
+    elseif ($fldtype == 'color') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
+      echo "  <input type='color' class='form-control input-sm $fldid' name='form_$i' id='form_$i' value='" . attr($fldvalue) . "' />\n";
+    }
     if ($_GET['mode'] == "user") {
       echo " </td>\n";
       echo "<td align='center' style='color:red;'>" . attr($globalTitle) . "</td>\n";
@@ -684,6 +787,31 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 $(document).ready(function(){
   tabbify();
   enable_modals();
+
+//jquery for live theme selection, so once color picker picked up color css attributes will change.
+
+var primary_attributes = 'body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar';
+var secondary_attributes = "td, tr, .table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, input[type='submit'], ul.tabNav a";
+
+$('.primary_color').on("change", function () {
+var primary_color = $('.primary_color').val();
+$(primary_attributes).css('background-color', primary_color);
+});
+
+$('.primary_font_color').on("change", function () {
+var primary_font_color = $('.primary_font_color').val();
+$(primary_attributes).css('color', primary_font_color);
+});
+
+$('.secondary_color').on("change", function () {
+var secondary_color = $('.secondary_color').val();
+$(secondary_attributes).css('background-color', secondary_color);
+});
+
+$('.secondary_font_color').on("change", function () {
+var secondary_font_color = $('.secondary_font_color').val();
+$(secondary_attributes).css('color', secondary_font_color);
+});
 
   <?php // mdsupport - Highlight search results ?>
   $('.srch td').wrapInner("<mark></mark>");

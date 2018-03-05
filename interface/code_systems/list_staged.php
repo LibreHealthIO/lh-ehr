@@ -57,7 +57,7 @@ if (!acl_check('admin', 'super')) {
 }
 
 $db = isset($_GET['db']) ? $_GET['db'] : '0';
-$mainPATH = $GLOBALS['fileroot']."/contrib/".strtolower($db);
+$mainPATH = $GLOBALS['fileroot']."/modules/medical_code_sets/".strtolower($db);
 $file_checksum = "";
 
 //

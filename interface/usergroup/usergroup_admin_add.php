@@ -40,6 +40,7 @@ require_once("$srcdir/sql.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/erx_javascript.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 $alertmsg = '';
 
@@ -49,11 +50,8 @@ $alertmsg = '';
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+
+<?php call_required_libraries(array("jquery-min-3-1-1", "fancybox", "common")); ?>
 
 <script src="checkpwd_validation.js" type="text/javascript"></script>
 
@@ -124,6 +122,7 @@ function submitform() {
                 alertMsg += checkLength(f[i].name,f[i].value,30);
                 alertMsg += checkAlphaNumeric(f[i].name,f[i].value);
              }
+             
           }
        }
        if(alertMsg)
@@ -351,9 +350,59 @@ echo generate_select_list('irnpool', 'irnpool', '',
    }
   ?>
   </select></td>
+  
   <td><span class="text"><?php echo xlt('Additional Info'); ?>: </span></td>
   <td><textarea name=info style="width:120px;" cols=27 rows=4 wrap=auto></textarea></td>
+  </tr>
+  <tr>
+  <td><span class="text"><?php echo xlt('Full screen role'); ?>:</span></td>
+  <td>
+  <select style="width:120px;" name="role_name" id="role_name">
+    <?php
+      $fres = sqlStatement("select distinct menu_set from menu_trees order by menu_set");
+      if ($fres) {
+        for ($iter3 = 0;$frow = sqlFetchArray($fres);$iter3++)
+          $result[$iter3] = $frow;
+        foreach($result as $iter3) {
+      ?>
+      <option value="<?php echo $iter3{'menu_set'};?>"><?php echo xlt($iter3{'menu_set'}); ?></option>
+      <?php
+        }
+      }
+    ?>
+  </select>
+  </td>
+  <td><span class="text"> <?php echo xlt('Full screen page'); ?>:</span></td>
+  <td>
+      <select style="width:120px;" name="fullscreen_page" id="fullscreen_page">
+      <?php
 
+      $fres = sqlStatement("select entry_id from menu_trees where menu_set='Administrators'");
+      if($fres) {
+        for($iter3 = 0;$frow = sqlFetchArray($fres); $iter3++)
+          $result[$iter3] = $frow;
+          // needs to be worked on for different types of menus
+          foreach($result as $iter) {
+            $fres2 = sqlStatement("select id,label from menu_entries where id= ?", array($iter{'entry_id'}));
+            $frow2 = sqlFetchArray($fres2);
+            ?> 
+            <option value="<?php echo $frow2{'id'}; ?>"><?php echo xlt($frow2{'label'}); ?></option>
+            <?php
+          }
+      }
+      ?>
+      </select>
+
+  
+  </td>
+  </tr>
+  <tr>
+  <td>
+      <span class="text"> <?php echo xlt('Full screen page enabled'); ?>: </span>
+  </td>
+  <td>
+      <input type="checkbox" name="fullscreen_enable"/>
+  </td>
   <?php do_action( 'usergroup_admin_add' ); ?>
 
   </tr>
@@ -472,6 +521,32 @@ $(document).ready(function(){
           parent.$.fn.fancybox.close();
      });
 
+     $("#role_name").on('change', function(e) {
+       
+        $.ajax({
+          "url": '../../library/ajax/get_fullscreen_pages.php',
+          "method": "POST",
+          "data" : {
+             "role_name": $("#role_name").val()
+          },
+          success: function(data) {
+            obj = JSON.parse(data);
+            $("#fullscreen_page").empty();
+            obj.forEach(function(item) {
+              option = document.createElement('option');
+              option.text = item.label;
+              option.value = item.id;
+              $("#fullscreen_page").append(option);
+              
+            });
+
+          },
+          error: function(err) {
+            console.log(err);
+          }
+          });
+
+       });  
 });
 </script>
 <table>

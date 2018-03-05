@@ -276,6 +276,13 @@ div.pagebreak {
 page-break-after: always;
 height: ${page_height}pt;
 }
+
+.btn
+{
+    background-color:#65B5F6;
+    border:transparent;
+}
+
 </style>";
 
 $html .= "<title>" . htmlspecialchars($frow['name']) . "</title>
@@ -344,6 +351,9 @@ foreach ($pid_list as $pid) {
 
         $html .= genFacilityTitle(xl('Superbill/Fee Sheet'), -1);
 
+        $html .= " <input type='button' class='btn' value='";
+        $html .= xla('Print');
+        $html .="' id='printbutton' /> "; 
         $html .="
 <table class='bordertbl' cellspacing='0' cellpadding='0' width='100%'>
 <tr>
@@ -545,10 +555,7 @@ foreach ($pid_list as $pid) {
 if ($form_fill != 2) {   //use native browser 'print' for multipage
 $html .= "<div id='hideonprint'>
 <p>
-<input type='button' value='";
-
-$html .= xla('Print');
-$html .="' id='printbutton' /> 
+ 
 </div>";
 }
 
