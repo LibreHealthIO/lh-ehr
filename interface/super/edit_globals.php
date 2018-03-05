@@ -279,6 +279,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
               $boolean = false;
             }
           }
+
           elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
             if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
             $boolean = true;
