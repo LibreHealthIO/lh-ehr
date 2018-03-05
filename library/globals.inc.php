@@ -115,6 +115,10 @@ $USER_SPECIFIC_TABS = array('Appearance',
 $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'default_tab_2',
                                'css_header',
+                               'primary_color',
+                               'primary_font_color',
+                               'secondary_color',
+                               'secondary_font_color',
                                'menu_styling_tabs',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
@@ -207,8 +211,10 @@ $GLOBALS_METADATA = array(
        'style_light.css',
       xl('Pick a CSS theme.')
     ),
-
-
+    'primary_color'=>array(xl('Primary color'),  'color', '#ffffff'),
+    'primary_font_color'=>array(xl('Primary font color'),  'color', '#000000'),
+    'secondary_color'=>array(xl('Secondary color'),  'color', '#000000'),
+    'secondary_font_color'=>array(xl('Secondary font color'),  'color', '#ffffff'),
 
     'libreehr_name' => array(
       xl('Application Title'),

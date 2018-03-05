@@ -209,7 +209,6 @@ var webroot_url="<?php echo $web_root; ?>";
     })(jQuery);
 
     $('.handle').drags();
-
 </script>
 
 <?php do_action( 'after_main_box' ); ?>
