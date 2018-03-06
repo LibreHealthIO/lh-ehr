@@ -20,7 +20,10 @@ function suggest_name($type, $text) {
 	$sql = "SELECT * FROM `patient_data` WHERE $type LIKE '$text%' LIMIT 0,$limit";
 	$query = sqlStatement($sql);
 	while ($row = sqlFetchArray($query)) {
-		$data[] =  $row[$type];
+		$data = array();
+		if (!in_array($row[$type], $data)) {
+			$data[] =  $row[$type];	
+		}
 	}
 	echo json_encode($data);
 }
