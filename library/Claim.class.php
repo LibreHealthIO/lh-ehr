@@ -1112,8 +1112,16 @@ class Claim {
     return cleanDate($this->billing_options['hospitalization_date_from']);
   }
 
+  function hospitalizedFromDateValid() {
+    return $this->hospitalizedFrom()!=='';
+  }
+
   function hospitalizedTo() {
     return cleanDate($this->billing_options['hospitalization_date_to']);
+  }
+
+  function hospitalizedToDateValid() {
+    return $this->hospitalizedTo()!=='';
   }
 
   function isOutsideLab() {
@@ -1156,19 +1164,29 @@ class Claim {
     return x12clean(trim($this->billing_options['comments']));
   }
 
+  function Onset_Date_Misc_Billing() {
+    return cleanDate($this->billing_options['onset_date']);
+  }
+
+  function Onset_Date_Misc_Billing_Valid() {
+    return $this->Onset_Date_Misc_Billing()!=='';
+  }
+
   function dateInitialTreatment() {
     return cleanDate($this->billing_options['date_initial_treatment']);
   }
 
-  function box14qualifier()
-  {
+  function dateInitialTreatmentValid() {
+    return $this->dateInitialTreatment()!=='';
+  }
+
+  function box14qualifier() {
       // If no box qualifier specified use "431" indicating Onset
       return empty($this->billing_options['box_14_date_qual']) ? '431' :
               $this->billing_options['box_14_date_qual'];
   }
   
-  function box15qualifier()
-  {
+  function box15qualifier() {
       // If no box qualifier specified use "454" indicating Initial Treatment
       return empty($this->billing_options['box_15_date_qual']) ? '454' :
               $this->billing_options['box_15_date_qual'];
