@@ -910,7 +910,7 @@
     }, {
         "label" : "Utilities",
         "children" : [ {
-            "label" : "Documents Validation",
+            "label" : "Validate Attached Documents",
             "menu_id" : "adm0",
             "target" : "msc",
             "url" : "/interface/usergroup/docs_validation.php",
