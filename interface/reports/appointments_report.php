@@ -36,6 +36,7 @@ $sanitize_all_escapes=true;
 
 require_once("../globals.php");
 require_once("../../library/patient.inc");
+require_once("../../library/report_functions.php");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
@@ -211,41 +212,14 @@ function fetch_reminders($pid, $appt_date) {
                 <td><?php dropdown_facility($facility , 'form_facility'); ?>
                 </td>
                 <td class='label'><?php echo xlt('Provider'); ?>:</td>
-                <td><?php
-
-                // Build a drop-down list of providers.
-                //
-
-                $query = "SELECT id, lname, fname FROM users WHERE ".
-                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
-
-                $ures = sqlStatement($query);
-
-                echo "   <select name='form_provider'>\n";
-                echo "    <option value=''>-- " . xlt('All') . " --\n";
-
-                while ($urow = sqlFetchArray($ures)) {
-                    $provid = $urow['id'];
-                    echo "    <option value='" . attr($provid) . "'";
-                    if ($provid == $_POST['form_provider']) echo " selected";
-                    echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-                }
-
-                echo "   </select>\n";
-                ?>
+                <td>
+                    <?php // Build a drop-down list of providers.
+                        dropDownProviders();
+                   ?>
                 </td>
             </tr>
             <tr>
-                <td class='label'><?php echo xlt('From'); ?>:</td>
-                <td>
-                    <input type='text' name='form_from_date' id="form_from_date"
-                        size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($from_date))) ?>'/>
-                </td>
-                <td class='label'><?php echo xlt('To'); ?>:</td>
-                <td>
-                    <input type='text' name='form_to_date' id="form_to_date"
-                    size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($to_date))) ?>'/>
-                </td>
+               <?php showFromAndToDates(); ?>
             </tr>
             
             <tr>
@@ -494,6 +468,7 @@ if ($alertmsg) { echo " alert('$alertmsg');\n"; }
 
 </body>
 
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {

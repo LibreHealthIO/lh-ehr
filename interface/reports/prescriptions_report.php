@@ -47,11 +47,12 @@
  require_once("$srcdir/options.inc.php");
  require_once("../drugs/drugs.inc.php");
  require_once("$srcdir/formatting.inc.php");
- require_once "$srcdir/formdata.inc.php";
+ require_once("$srcdir/formdata.inc.php");
+ require_once("../../library/report_functions.php");
 
  /** Current format date */
  $DateFormat = DateFormatRead();
-$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
+ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  $from_date  = fixDate($_POST['form_from_date'], date('Y-m-d'));
  $to_date    = fixDate($_POST['form_to_date'], date('Y-m-d'));
  $form_patient_id = trim($_POST['form_patient_id']);
@@ -122,8 +123,8 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Prescriptions and Dispensations','e'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php date("d F Y", strtotime(oeFormatDateForPrintReport($form_from_date)))
-    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($form_to_date))); ?>
+<?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
 <form name='theform' id='theform' method='post' action='prescriptions_report.php'>
@@ -144,18 +145,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
             <td>
             <?php dropdown_facility(strip_escape_custom($form_facility), 'form_facility', true); ?>
             </td>
-            <td class='label'>
-               <?php xl('From','e'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>' title='yyyy-mm-dd'>
-            </td>
-            <td class='label'>
-               <?php xl('To','e'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>' title='yyyy-mm-dd'>
-            </td>
+            <?php showFromAndToDates(); ?>
         </tr>
         <tr>
             <td class='label'>
@@ -235,8 +225,8 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  <tbody>
 <?php
  if ($_POST['form_refresh']) {
-  $where = "r.date_modified >= '" . prepareDateBeforeSave($form_from_date) . "' AND " .
-   "r.date_modified <= '" . prepareDateBeforeSave($form_to_date) . "'";
+  $where = "r.date_modified >= '" . prepareDateBeforeSave($from_date) . "' AND " .
+   "r.date_modified <= '" . prepareDateBeforeSave($to_date) . "'";
   //if ($form_patient_id) $where .= " AND r.patient_id = '$form_patient_id'";
   if ($form_patient_id) $where .= " AND p.pid = '$form_patient_id'";
   if ($form_drug_name ) $where .= " AND (d.name LIKE '$form_drug_name' OR r.drug LIKE '$form_drug_name')";
@@ -377,7 +367,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>

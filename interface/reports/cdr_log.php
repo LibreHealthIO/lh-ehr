@@ -38,6 +38,7 @@ require_once("../../library/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/clinical_rules.php";
+require_once("../../library/report_functions.php");
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
 $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -102,31 +103,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  <tr>
   <td width='470px'>
     <div style='float:left'>
-
-    <table class='text'>
-
-                   <tr>
-                      <td class='label'>
-                         <?php echo xlt('Begin Date'); ?>:
-                      </td>
-                      <td>
-                         <input type='text' name='form_begin_date' id='form_begin_date' size='20'
-                                value='<?php echo htmlspecialchars(oeFormatShortDate(attr($_POST['form_begin_date']))); ?>' />
-                      </td>
-                   </tr>
-
-                <tr>
-                        <td class='label'>
-                              <?php echo xlt('End Date'); ?>:
-                        </td>
-                        <td>
-                           <input type='text' name='form_end_date' id='form_end_date' size='20'
-                                  value='<?php echo htmlspecialchars(oeFormatShortDate(attr($_POST['form_end_date']))); ?>'/>
-                        </td>
-                </tr>
-    </table>
+      <table class='text'>
+        <tr>
+          <?php showFromAndToDates(); ?>
+        </tr>
+      </table>
     </div>
-
   </td>
   <td align='left' valign='middle' height="100%">
     <table style='border-left:1px solid; width:100%; height:100%' >
@@ -183,7 +165,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  </thead>
  <tbody>  <!-- added for better print-ability -->
  <?php
- $res = listingCDRReminderLog($_POST['form_begin_date'],$_POST['form_end_date']);
+ $res = listingCDRReminderLog($_POST['form_from_date'],$_POST['form_to_date']);
 
  while ($row = sqlFetchArray($res)) {
   //Create category title
@@ -275,15 +257,15 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
-        $("#form_begin_date").datetimepicker({
+        $("#form_from_date").datetimepicker({
             timepicker: true,
             format: "<?= $DateFormat; ?>"
         });
-        $("#form_end_date").datetimepicker({
+        $("#form_to_date").datetimepicker({
             timepicker: true,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 

@@ -36,6 +36,7 @@ include_once("../globals.php");
 include_once("$srcdir/log.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("../../library/report_functions.php");
 $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>

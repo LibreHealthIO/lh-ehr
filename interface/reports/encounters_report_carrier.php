@@ -19,6 +19,7 @@
 
 require_once("../globals.php");
 require_once $GLOBALS['srcdir'].'/headers.inc.php';
+require_once("../../library/report_functions.php");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/billing.inc");
 require_once("$srcdir/patient.inc");
@@ -43,8 +44,8 @@ function show_doc_total($lastdocname, $doc_encounters) {
   }
 }
 
-$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-$form_to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
+$from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+$to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
 $form_provider  = $_POST['form_provider'];
 $form_facility  = $_POST['form_facility'];
 $form_details   = true;
@@ -72,10 +73,10 @@ $query = "SELECT " .
   "c2.id = i2.provider " .
   "LEFT JOIN users AS u ON u.id = fe.provider_id " .
   "WHERE f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'patient_encounter' ";
-if ($form_to_date) {
-  $query .= "AND fe.date >= '$form_from_date 00:00:00' AND fe.date <= '$form_to_date 23:59:59' ";
+if ($to_date) {
+  $query .= "AND fe.date >= '$from_date 00:00:00' AND fe.date <= '$to_date 23:59:59' ";
 } else {
-  $query .= "AND fe.date >= '$form_from_date 00:00:00' AND fe.date <= '$form_from_date 23:59:59' ";
+  $query .= "AND fe.date >= '$from_date 00:00:00' AND fe.date <= '$from_date 23:59:59' ";
 }
 if ($form_provider) {
   $query .= "AND fe.provider_id = '$form_provider' ";
@@ -178,29 +179,9 @@ $res = sqlStatement($query);
                <?php echo xlt('Provider'); ?>:
             </td>
             <td>
-                <?php
-
-                 // Build a drop-down list of providers.
-                 //
-
-                 $query = "SELECT id, lname, fname FROM users WHERE ".
-                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
-
-                 $ures = sqlStatement($query);
-
-                 echo "   <select name='form_provider'>\n";
-                 echo "    <option value=''>-- " . xlt('All') . " --\n";
-
-                 while ($urow = sqlFetchArray($ures)) {
-                  $provid = $urow['id'];
-                  echo "    <option value='" . attr($provid) . "'";
-                  if ($provid == $_POST['form_provider']) echo " selected";
-                  echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-                 }
-
-                 echo "   </select>\n";
-
-                ?>
+              <?php // Build a drop-down list of providers.
+                dropDownProviders();
+              ?>
             </td>
             </tr>
             <tr>
@@ -238,20 +219,7 @@ $res = sqlStatement($query);
             </td>
         </tr>
         <tr>
-            <td class='label'>
-               <?php echo xlt('From'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_from_date' id="form_from_date" size='10'
-                      value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_from_date))) ?>'>
-            </td>
-            <td class='label'>
-               <?php echo xlt('To'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_to_date' id="form_to_date" size='10'
-                      value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>'>
-            </td>
+            <?php showFromAndToDates(); ?>
         </tr>
     </table>
 
@@ -419,7 +387,7 @@ if ($res) {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 
 </script>

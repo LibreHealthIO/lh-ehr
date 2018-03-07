@@ -1,0 +1,11 @@
+<a href="<?php echo $this->rootDirectory ?>/forms/TCMServicePlan/full-report.php?id=<?php echo $this->formData['ServicePlan']['Id']; ?>">VIEW 'Full Report' / PRINT</a><br>
+<label class="bold">Service Plan:</label> <span class="text"><?php echo $this->formData['ServicePlan']['Type']; ?></span><br>
+<label class="bold">Date Written:</label> <span class="text"><?php echo ($this->formData['ServicePlan']['DateWritten'] === null ? 'Not Specified' : $this->formData['ServicePlan']['DateWritten']); ?></span><br>
+<!--<label class="bold">Date Completed:</label> <span class="text"><?php //echo ($this->formData['ServicePlan']['DateComplete'] === null ? '<span style="color: red;">In Progress</span>' : $this->formData['ServicePlan']['DateComplete']); ?></span><br>-->
+<label class="bold">Case Manager:</label> <span class="text"><?php echo $this->formData['ServicePlan']['CaseManagerName']; ?></span><br>
+<label class="bold">Supervisor:</label> <span class="text"><?php echo $this->formData['ServicePlan']['CaseManagerSupervisorName']; ?></span><br>
+<?php if($this->formData['ServicePlan']['FinalizedDate'] !== null) { ?>
+<label class="bold">Finalized:</label> <span class="text"><?php echo $this->formData['ServicePlan']['FinalizedDate']; ?></span>
+<?php } else { ?>
+<label class="bold">Finalized:</label> <span class="text" style="color: red;">In Progress</span><br>
+<?php } ?>

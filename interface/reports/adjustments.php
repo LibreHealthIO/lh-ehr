@@ -16,6 +16,7 @@
  */
 
  require_once("../globals.php");
+ require_once("../../library/report_functions.php");
  require_once "$srcdir/patient.inc";
  require_once "$srcdir/acl.inc";
  require_once "$srcdir/options.inc.php";
@@ -47,6 +48,7 @@ else {
 <head>
 <title><?php echo xlt('Adjustments'); ?></title>
 
+<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
@@ -114,19 +116,8 @@ else {
 
     <table class='text'>
         <tr>
-            <td class='label'>
-               <?php echo xlt('From'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>'>
-            </td>
-            <td class='label'>
-               <?php echo xlt('To'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>'>
-            </td>
-               <td class='label'><?php echo xlt('Adjustment Code'); # Adjustment code drop down creation ?>;
+            <?php showFromAndToDates(); ?>
+               <td class='label'><?php echo xlt('Adjustment Code'); # Adjustment code drop down creation ?>:
             </td>
             <td>
                <?php generate_form_field(array('data_type'=>1,'field_id'=>'adjreason','list_id'=>'adjreason','empty_title'=>'All'),$_POST['form_adjreason']);?>
@@ -185,7 +176,7 @@ else {
 if ($_POST['form_refresh'] || $_POST['form_csvexport'])
 {
   $adj_reason = $_POST['form_adjreason'];
-  $from_date = fixDate($_POST['form_from_date']);
+  $from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
   $to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
 
   if ($adj_reason =='') 
@@ -242,7 +233,6 @@ if (! $_POST['form_csvexport']) {
 
 </body>
 
-<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script>
@@ -255,7 +245,7 @@ if (! $_POST['form_csvexport']) {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>

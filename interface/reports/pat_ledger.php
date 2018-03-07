@@ -26,6 +26,7 @@
 $sanitize_all_escapes=true;
 $fake_register_globals=false;
 require_once('../globals.php');
+require_once("../../library/report_functions.php");
 require_once($GLOBALS['srcdir'].'/patient.inc');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/formatting.inc.php');
@@ -258,11 +259,11 @@ elseif (substr($GLOBALS['ledger_begin_date'],0,1) == 'D') {
    $last_year = mktime(0,0,0,date('m') ,date('d')-$ledger_time,date('Y'));
 }
 
-$form_from_date = date('Y-m-d', $last_year);
+$from_date = date('Y-m-d', $last_year);
 if($_REQUEST['form_from_date']) {
-  $form_from_date = fixDate($_REQUEST['form_from_date'], $last_year);
+  $from_date = fixDate($_REQUEST['form_from_date'], $last_year);
 }
-$form_to_date   = fixDate($_REQUEST['form_to_date']  , date('Y-m-d'));
+$to_date   = fixDate($_REQUEST['form_to_date']  , date('Y-m-d'));
 $form_facility  = $_REQUEST['form_facility'];
 $form_provider  = $_REQUEST['form_provider'];
 $form_patient   = $_REQUEST['form_patient'];
@@ -274,7 +275,7 @@ if ($_REQUEST['form_csvexport']) {
   header("Expires: 0");
   header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
   header("Content-Type: application/force-download");
-  header("Content-Disposition: attachment; filename=svc_financial_report_".attr($form_from_date)."--".attr($form_to_date).".csv");
+  header("Content-Disposition: attachment; filename=svc_financial_report_".attr($from_date)."--".attr($to_date).".csv");
   header("Content-Description: File Transfer");
 } else {
 ?>
@@ -388,35 +389,15 @@ function sel_patient() {
             <?php dropdown_facility($form_facility, 'form_facility', true); ?>
             </td>
       <td><?php echo xlt('Provider'); ?>:</td>
-      <td><?php
-        $query = "SELECT id, lname, fname FROM users WHERE ".
-                "authorized=1 AND active!=0 ORDER BY lname, fname"; 
-        $ures = sqlStatement($query);
-        echo "   <select name='form_provider'>\n";
-        echo "    <option value=''>-- " . xlt('All') . " --\n";
-        while ($urow = sqlFetchArray($ures)) {
-          $provid = $urow['id'];
-          echo "    <option value='" . attr($provid) ."'";
-          if ($provid == $_REQUEST['form_provider']) echo " selected";
-          echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-        }
-        echo "   </select>\n";
-      ?></td>
-        </tr><tr>
-<?php } ?>
-      <td colspan="2">
-        <?php echo xlt('From'); ?>:&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type='text' name='form_from_date' id="form_from_date" size='10'
-            value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_from_date))) ?>'>
-      </td>
-      <td class='label'>
-        <?php echo xlt('To'); ?>:
-      </td>
       <td>
-        <input type='text' name='form_to_date' id="form_to_date" size='10'
-         value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>'>
+        <?php // Build a dropdown list of providers
+          dropDownProviders();
+        ?>
       </td>
-      <?php if($type_form == '0') { ?>
+        </tr><tr>
+<?php }
+      showFromAndToDates();
+      if($type_form == '0') { ?>
       <td><span class='label'><?php echo xlt('Patient'); ?>:&nbsp;&nbsp;</span></td>
       <td>
         <input type='text' size='20' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' id='form_patient' value='<?php echo attr($form_patient) ? attr($form_patient) : xla('Click To Select'); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' />
@@ -460,8 +441,8 @@ function sel_patient() {
 
 <?php
 } // end not export
-  $from_date = $form_from_date . ' 00:00:00';
-  $to_date = $form_to_date . ' 23:59:59';
+  $from_date = $from_date . ' 00:00:00';
+  $to_date = $to_date . ' 23:59:59';
 if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
   $rows = array();
   $sqlBindArray = array();
@@ -533,7 +514,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
     </tr>
     <tr>
         <?php 
-            $title = xl('For Dates') . ': '.$form_from_date.' - '.$form_to_date;
+            $title = xl('For Dates') . ': '.$from_date.' - '.$to_date;
         ?>
     <td class="title" ><?php echo text($title); ?></td>
     </tr>
@@ -741,7 +722,7 @@ if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>

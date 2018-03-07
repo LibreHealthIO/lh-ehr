@@ -34,6 +34,7 @@ $fake_register_globals=false;
 
 require_once("../globals.php");
 require_once("../../library/patient.inc");
+require_once("../../library/report_functions.php");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
@@ -487,38 +488,10 @@ else {
                <?php echo htmlspecialchars( xl('Provider'), ENT_NOQUOTES); ?>:
             </td>
             <td>
-                <?php
-
-                 // Build a drop-down list of providers.
-                 //
-
-                 $query = "SELECT id, lname, fname FROM users WHERE ".
-                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
-
-                 $ures = sqlStatement($query);
-
-                 echo "   <select " . $dis_text . " id='form_provider' name='form_provider'>\n";
-                 echo "    <option value=''>-- " . htmlspecialchars( xl('All (Cumulative)'), ENT_NOQUOTES) . " --\n";
-
-                                 echo "    <option value='collate_outer'";
-                                 if ($provider == 'collate_outer') echo " selected";
-                                 echo ">-- " . htmlspecialchars( xl('All (Collated Format A)'), ENT_NOQUOTES) . " --\n";
-
-                                 echo "    <option value='collate_inner'";
-                                 if ($provider == 'collate_inner') echo " selected";
-                                 echo ">-- " . htmlspecialchars( xl('All (Collated Format B)'), ENT_NOQUOTES) . " --\n";
-
-                 while ($urow = sqlFetchArray($ures)) {
-                  $provid = $urow['id'];
-                  echo "    <option value='".htmlspecialchars( $provid, ENT_QUOTES)."'";
-                  if ($provid == $provider) echo " selected";
-                  echo ">" . htmlspecialchars( $urow['lname'] . ", " . $urow['fname'], ENT_NOQUOTES) . "\n";
-                 }
-
-                 echo "   </select>\n";
-
-                ?>
-                        </td>
+              <?php // Build a drop-down list of providers.     
+                dropDownProviders();
+              ?>
+            </td>
         </tr>
 
                 <tr>

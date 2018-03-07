@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Targeted Case Management Service Plan</title>
+		<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo $this->rootDirectory; ?>/forms/TCMServicePlan/js/ServicePlanSubModels.js"></script>
+		<script type="text/javascript" src="<?php echo $this->rootDirectory; ?>/forms/TCMServicePlan/js/ServicePlanNewViewModel.js"></script>
+		<script type="text/javascript" src="<?php echo $this->rootDirectory; ?>/forms/TCMAssessment/js/knockout-2.2.1.js"></script>
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->rootDirectory; ?>/forms/TCMAssessment/style.css">
+		<script type="text/javascript">
+			$(document).ready(function() {
+				ServicePlanVM = new ServicePlanNewViewModel;
+				ServicePlanVM.Load({
+					AjaxUri: '<?php echo $this->rootDirectory; ?>/forms/TCMServicePlan/ajax.php',
+					WebRoot: '<?php echo $GLOBALS['webroot']; ?>',
+					ExitUri: '<?php echo $GLOBALS['form_exit_url']; ?>',
+					TestMode: false
+				});
+				ko.applyBindings(ServicePlanVM);
+			});
+		</script>
+	</head>
+	<body>
+		<div id="activityWait" data-bind="visible: ActivityWait() !== false">
+			<div>
+				<span data-bind="text: ActivityWait">Initializing</span>
+			</div>
+		</div>
+		<div class="contentWraper">
+			<h1>Targeted Case Management Service Plan</h1>
+			<div id="formAlert" data-bind="visible: ErrorAlert() !== false">
+				<p data-bind="text: ErrorAlert"></p>
+			</div>
+			<div id="section-client-info" class="form-section">
+				<table>
+					<tbody>
+						<tr>
+							<th style="width: 25%">Clients Name</th>
+							<td style="width: 25%" data-bind="text: ServicePlan.ClientName"></td>
+							<th style="width: 25%">Date of Birth</th>
+							<td style="width: 25%" data-bind="text: ServicePlan.ClientBirth"></td>
+						</tr>
+						<tr>
+							<th>Medicaid #</th>
+							<td colspan="3" data-bind="text: ServicePlan.MedicaidId"></td>
+						</tr>
+						<tr>
+							<th>Targeted Case Manager</th>
+							<td data-bind="text: ServicePlan.CaseManagerName"></td>
+							<th>Supervisor</th>
+							<td data-bind="text: ServicePlan.CaseManagerSupervisorName"></td>
+						</tr>
+						<tr>
+							<th>Service Plan Type</th>
+							<td colspan="3">
+								<input id="serviceplan-type-initial" type="radio" data-bind="checked: ServicePlan.Type" value="INITIAL">
+								<label for="serviceplan-type-initial">Initial</label>
+								<input id="serviceplan-type-update" type="radio" data-bind="checked: ServicePlan.Type" value="UPDATE">
+								<label for="serviceplan-type-update">Review</label>
+							</td>
+						</tr>
+						<tr data-bind="visible: ServicePlan.Type() !== undefined && ServicePlan.ServicePlan() === undefined">
+							<th>TCM Assessment</th>
+							<td colspan="3"><select data-bind="options: Assessments, value: ServicePlan.Assessment, optionsText: 'OptionsText', optionsCaption: 'Select Assessment&hellip;'"></select></td>
+						</tr>
+						<tr data-bind="visible: ServicePlan.Type() !== undefined && ServicePlan.ServicePlan() === undefined">
+							<td colspan="4">
+								<div class="sourcesLink">
+									<span data-bind="visible: ServicePlan.Assessment() === undefined">Please select an Assessment above.</span>
+									<table data-bind="with: ServicePlan.Assessment">
+										<tbody>
+											<tr>
+												<th>Type</th>
+												<td colspan="3" data-bind="text: TypeDisplay"></td>
+											</tr>
+											<tr>
+												<th>Clients Name</th>
+												<td data-bind="text: ClientName"></td>
+												<th>Date of Birth</th>
+												<td data-bind="text: ClientBirth"></td>
+											</tr>
+											<tr>
+												<th>Medicaid #</th>
+												<td data-bind="text: MedicaidId"></td>
+												<th>Report Date</th>
+												<td data-bind="text: ReportDate"></td>
+											</tr>
+											<tr>
+												<th style="width: 25%">Targeted Case Manager</th>
+												<td style="width: 25%" data-bind="text: CaseManagerName"></td>
+												<th style="width: 25%">Supervisor</th>
+												<td style="width: 25%" data-bind="text: CaseManagerSupervisorName"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</td>
+						</tr>
+						<tr data-bind="visible: ServicePlan.Type() === 'UPDATE' && ServicePlan.Assessment() === undefined">
+							<th>TCM Service Plan</th>
+							<td colspan="3"><select data-bind="options: ServicePlans, value: ServicePlan.ServicePlan, optionsText: 'OptionsText', optionsCaption: 'Select Service Plan&hellip;'"></select></td>
+						</tr>
+						<tr data-bind="visible: ServicePlan.Type() === 'UPDATE' && ServicePlan.Assessment() === undefined">
+							<td colspan="4">
+								<div class="sourcesLink">
+									<span data-bind="visible: ServicePlan.ServicePlan() === undefined">Please select a Service Plan above.</span>
+									<table data-bind="with: ServicePlan.ServicePlan">
+										<tbody>
+											<tr>
+												<th>Type</th>
+												<td colspan="3" data-bind="text: TypeDisplay"></td>
+											</tr>
+											<tr>
+												<th>Clients Name</th>
+												<td data-bind="text: ClientName"></td>
+												<th>Date of Birth</th>
+												<td data-bind="text: ClientBirth"></td>
+											</tr>
+											<tr>
+												<th>Medicaid #</th>
+												<td data-bind="text: MedicaidId"></td>
+												<th>Report Date</th>
+												<td data-bind="text: ReportDate"></td>
+											</tr>
+											<tr>
+												<th style="width: 25%">Targeted Case Manager</th>
+												<td style="width: 25%" data-bind="text: CaseManagerName"></td>
+												<th style="width: 25%">Supervisor</th>
+												<td style="width: 25%" data-bind="text: CaseManagerSupervisorName"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="css_button" data-bind="click: Save"><span>Create Service Plan</span></div>
+			<div class="css_button" data-bind="click: Cancel"><span>Cancel</span></div>
+		</div>
+	</body>
+</html>

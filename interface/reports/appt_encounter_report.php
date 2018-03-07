@@ -44,6 +44,7 @@
  */
 
 require_once("../globals.php");
+require_once("../../library/report_functions.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("../../custom/code_types.inc.php");
@@ -99,11 +100,11 @@ function postError($msg) {
  }
 
  $form_facility  = isset($_POST['form_facility']) ? $_POST['form_facility'] : '';
- $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
- $form_to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
+ $from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+ $to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
  if ($_POST['form_refresh']) {
-  $form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-  $form_to_date = fixDate($_POST['form_to_date'], "");
+  $from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+  $to_date = fixDate($_POST['form_to_date'], "");
 
   // MySQL doesn't grok full outer joins so we do it the hard way.
   //
@@ -121,10 +122,10 @@ function postError($msg) {
    "LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .
    // "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
    "LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";
-  if ($form_to_date) {
-   $query .= "e.pc_eventDate >= '$form_from_date' AND e.pc_eventDate <= '$form_to_date' ";
+  if ($to_date) {
+   $query .= "e.pc_eventDate >= '$from_date' AND e.pc_eventDate <= '$to_date' ";
   } else {
-   $query .= "e.pc_eventDate = '$form_from_date' ";
+   $query .= "e.pc_eventDate = '$from_date' ";
   }
   if ($form_facility !== '') {
    $query .= "AND e.pc_facility = '" . add_escape_custom($form_facility) . "' ";
@@ -147,12 +148,12 @@ function postError($msg) {
    "LEFT OUTER JOIN patient_data AS p ON p.pid = fe.pid " .
    // "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
    "LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";
-  if ($form_to_date) {
-   // $query .= "LEFT(fe.date, 10) >= '$form_from_date' AND LEFT(fe.date, 10) <= '$form_to_date' ";
-   $query .= "fe.date >= '$form_from_date 00:00:00' AND fe.date <= '$form_to_date 23:59:59' ";
+  if ($to_date) {
+   // $query .= "LEFT(fe.date, 10) >= '$from_date' AND LEFT(fe.date, 10) <= '$to_date' ";
+   $query .= "fe.date >= '$from_date 00:00:00' AND fe.date <= '$to_date 23:59:59' ";
   } else {
-   // $query .= "LEFT(fe.date, 10) = '$form_from_date' ";
-   $query .= "fe.date >= '$form_from_date 00:00:00' AND fe.date <= '$form_from_date 23:59:59' ";
+   // $query .= "LEFT(fe.date, 10) = '$from_date' ";
+   $query .= "fe.date >= '$from_date 00:00:00' AND fe.date <= '$from_date 23:59:59' ";
   }
   if ($form_facility !== '') {
    $query .= "AND fe.facility_id = '" . add_escape_custom($form_facility) . "' ";
@@ -232,39 +233,11 @@ function postError($msg) {
                 <?php xl('Facility','e'); ?>:
             </td>
             <td>
-                <?php
-                 // Build a drop-down list of facilities.
-                 //
-                 $query = "SELECT id, name FROM facility ORDER BY name";
-                 $fres = sqlStatement($query);
-                 echo "   <select name='form_facility'>\n";
-                 echo "    <option value=''>-- " . xl('All Facilities', 'e') . " --\n";
-                 while ($frow = sqlFetchArray($fres)) {
-                  $facid = $frow['id'];
-                  echo "    <option value='$facid'";
-                  if ($facid == $form_facility) echo " selected";
-                  echo ">" . htmlspecialchars($frow['name']) . "\n";
-                 }
-                 echo "    <option value='0'";
-                 if ($form_facility === '0') echo " selected";
-                 echo ">-- " . xl('Unspecified') . " --\n";
-                 echo "   </select>\n";
-                ?>
+              <?php // Build a drop-down list of facilities.
+                dropDownFacilities();
+              ?>
             </td>
-            <td class='label'>
-               <?php xl('DOS','e'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_from_date' id="form_from_date" size='10'
-                      value='<?php  echo htmlspecialchars(oeFormatShortDate($form_from_date)); ?>' title='Date of appointments mm/dd/yyyy' >
-            </td>
-            <td class='label'>
-               <?php xl('To','e'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_to_date' id="form_to_date" size='10'
-                      value='<?php  echo htmlspecialchars(oeFormatShortDate($form_to_date)); ?>' title='Optional end date mm/dd/yyyy' >
-            </td>
+            <?php showFromAndToDates(); ?>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -448,7 +421,7 @@ function postError($msg) {
   <td>
    &nbsp;<?php
     /*****************************************************************
-    if ($form_to_date) {
+    if ($to_date) {
         echo $row['pc_eventDate'] . '<br>';
         echo substr($row['pc_startTime'], 0, 5);
     }
@@ -542,7 +515,7 @@ function postError($msg) {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 

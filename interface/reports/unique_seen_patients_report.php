@@ -31,6 +31,7 @@
 require_once("../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
+require_once("../../library/report_functions.php");
 
 /** Current format date */
 $DateFormat = DateFormatRead();
@@ -142,18 +143,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
     <table class='text'>
         <tr>
-            <td class='label'>
-               <?php xl('Visits From','e'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php echo $form_from_date ?>'/>
-            </td>
-            <td class='label'>
-               <?php xl('To','e'); ?>:
-            </td>
-            <td>
-               <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php echo $form_to_date ?>'/>
-            </td>
+          <?php showFromAndToDates(); ?>
         </tr>
     </table>
 
@@ -325,7 +315,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>

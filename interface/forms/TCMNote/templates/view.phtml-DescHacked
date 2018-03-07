@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Targeted Case Management Notes</title>
+		<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot']; ?>/interface/themes/style_oemr.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->rootDirectory ?>/forms/TCMAssessment/style.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->rootDirectory ?>/forms/TCMNote/jquery-ui-timepicker-addon.css">
+		<script type="text/javascript" src="<?php echo $this->rootDirectory; ?>/forms/TCMAssessment/js/modernizr-custom-2.6.2.js"></script>
+		<script type="text/javascript">
+			Modernizr.load({
+				test: Modernizr.inputtypes.date,
+				nope: [
+					'<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js',
+					'<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-ui-1.8.21.custom.min.js',
+					'<?php echo $this->rootDirectory ?>/forms/TCMNote/js/jquery-ui-timepicker-addon.js',
+					'<?php echo $GLOBALS['webroot']; ?>/library/css/jquery-ui-1.8.21.custom.css'
+				],
+				both : [
+					'<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js',
+					'<?php echo $this->rootDirectory; ?>/forms/TCMAssessment/js/knockout-2.2.1.js',
+					'<?php echo $this->rootDirectory; ?>/forms/TCMNote/js/NoteSubModels.js',
+					'<?php echo $this->rootDirectory; ?>/forms/TCMNote/js/Note.js',
+					'<?php echo $this->rootDirectory; ?>/forms/TCMNote/js/NoteViewModel.js'
+				],
+				complete: function () {
+					$(document).ready(function() {
+						NoteVM = new NoteViewModel;
+						NoteVM.Load({
+							AjaxUri: '<?php echo $this->rootDirectory; ?>/forms/TCMNote/ajax.php',
+							WebRoot: '<?php echo $GLOBALS['webroot']; ?>',
+							ExitUri: '<?php echo $GLOBALS['form_exit_url']; ?>',
+							NoteId: '<?php echo $this->noteId; ?>',
+							TestMode: false
+						});
+						ko.applyBindings(NoteVM);
+/* doesn't work            
+            setTimeout( function() {
+              
+              $("textarea").each( function(i) {
+alert("textarea = " + JSON.stringify( this.style));
+                this.style.height = this.style.scrollHeight;
+                this.style.height = "300px";
+              })
+            }, 1000);
+*/
+/*            
+ 						if (typeof jQuery.ui !== 'undefined') {
+							$('input[type=time]').not('.hasDatePicker').timepicker(); 
+						}                    
+*/            
+					});
+				}
+			});
+      
+		</script>
+	</head>
+	<body class="bgcolor2">
+		<div id="activityWait" data-bind="visible: ActivityWait() !== false">
+			<div>
+				<span data-bind="text: ActivityWait">Initializing</span>
+			</div>
+		</div>
+		<div id="hoverMenu">
+			<div>
+				<div class="css_button" data-bind="click: Save"><span>Save Notes</span></div>
+				<div class="css_button" data-bind="click: Exit"><span>Cancel</span></div>
+				<div class="css_button" data-bind="click: Note.ManagerNoteVisibleToggle"><span>Manager Notes</span></div>
+				<div class="css_button" style="float: right;" data-bind="visible: Note.Finalized.Display, click: Note.Finalized.VisibleToggle"><span>Finalize</span></div>
+			</div>
+			<div id="managerNotes" data-bind="visible: Note.ManagerNoteVisible">
+				<div>
+					<textarea data-bind="value: Note.ManagerNote"></textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="contentWraper" XXstyle="width: 85%">
+			<h1>Targeted Case Management Notes</h1>
+      
+			<div id="formAlert" data-bind="visible: ErrorAlert() !== false">
+				<p data-bind="text: ErrorAlert"></p>
+			</div>
+ 			<div class="form-section">
+				<table>
+					<tbody>
+						<tr>
+							<th style="width: 25%">Client Name&nbsp;</th>
+							<td style="width: 25%; color: firebrick; font-weight: bold; font-size: 120%" data-bind="text: Note.ClientName"></td>
+							<th style="width: 25%">Date Written&nbsp;</th>
+							<td style="width: 25%" data-bind="text: Note.DateWritten"></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			<div class="form-section">
+				<table>
+					<thead>
+						<tr>
+							<th colspan="6">
+								<span class="section-title">Activities</span>
+							</th>
+						</tr>
+						<tr XX-bind="visible: Note.ServicePlan.DiagnosisActive().length > 0">
+							<th XXstyle="width: 18%">Start Time</th>
+							<th XXstyle="width: 5%">End Time</th>
+							<th XXstyle="width: 5%">Minutes</th>
+							<th style="width: 20%">Activity Type</th>
+							<th style="width: 60%">Summary of Activity</th>
+              <th XXstyle="width: 1%;"></th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: Note.Activities" >
+
+ 						<tr style="vertical-align: top; margin-bottom: 2em; background: rgba(255, 0, 0, 0.1);"">
+              <td><input type="time" style="width: 7em" data-bind="value: StartTime"></td>
+							<td style="text-align: right"><input type="time" style="width: 7em" data-bind="value: EndTime"></td>
+              <td style="text-align: right;" data-bind="text: DurationMins, style: { background: (DurationMins() < 0 || DurationMins() > 360) ? 'tomato' : ''}"></td>
+							<td><select data-bind="options: $root.ActivityTypes, value: ActivityTypeId, optionsValue: 'Value', optionsText: 'Label', optionsCaption: 'Activity Type...', attr: { id: 'AT' + $index()}"></select></td>
+              <td rowspan="2"><span data-bind="text: Description" style="white-space: pre-wrap; tab-size: 4"></span></td>
+							<td><button class="ico-minus" title="Remove" data-bind="click: $root.Note.ActivitiesRemove"></button></td>
+						</tr>
+            
+            <tr style="background: rgba(255, 0, 0, 0.1);">
+              <td colspan="4" style="vertical-align: top; text-align: center">
+                <select style="width: 7em" data-bind="options: $root.LocationTypes, value: LocationTypeId, optionsValue: 'Value', optionsText: 'Label', optionsCaption: 'Location...', attr: { id: 'LT' + $index()}"></select >
+                <select style="width: 9em" data-bind="options: $root.ContactTypes, value: ContactTypeId, optionsText: 'Label',  optionsValue: 'Value', optionsCaption: 'Contact Type...', attr: { id: 'CT' + $index()}"></select >
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th colspan="2" style="text-align: right">
+								Total Minutes
+							</th>
+							<td style="text-align: right" data-bind="text: Note.totalActivityMins()">234&nbsp;</td>
+              <td colspan="2"><span style="font-weight: bold;">&nbsp;&nbsp;Total Units</span>&nbsp;&nbsp;<span data-bind="text: Note.totalActivityUnits()">50</span></td>
+              <td colspan="1" class="onlyButton"><button class="ico-plus" title="Add Activity" data-bind="click: Note.ActivitiesAddNew"></button></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+
+			<h1>Progress Towards Goals &amp; Objectives</h1>
+      
+			<div data-bind="foreach: Note.Problems">  
+				<div class="form-section">
+					<table>
+						<thead>
+							<tr>
+								<th style="width: 16%;">Functional Area</th>
+								<td><input type="text" data-bind="value: Area, disable: true"></td>
+								<th style="width: 1%;"><button class="ico-minus" title="Remove" data-bind="click: $root.Note.ProblemsRemove"></button></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>Problem</th>
+								<td colspan="2"><input type="text" data-bind="value: Problem, disable: true"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="sourcesLink">
+						<table>
+							<thead>
+								<tr>
+									<th colspan="2" style="text-align: center; width: 100%;">Goals &amp; Objectives</th>
+                  <td></td>
+									<!-- td style="width: 1%;" class="onlyButton"><button class="ico-plus" title="Add Goal" data-bind="click: GoalsAddNew"></td -->
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: Goals">
+								<tr>
+									<th style="width: 16%;">Goal</th>
+									<td><input type="text" data-bind="value: Goal, disable: true"></td>
+									<!-- th style="width: 1%;"><button class="ico-minus" title="Add Service" data-bind="click: $parent.GoalsRemove"></button></th -->
+								</tr>
+								<tr>
+									<td colspan="3">
+										<div class="sourcesLink" style="margin: 5px;">
+											<table>
+												<thead>
+													<tr>
+														<th colspan="3" style="text-align: center;">Objectives</th>
+														<!-- th style="width: 1%;"><button class="ico-plus" title="Add Goal" data-bind="click: ObjectivesAddNew"></th -->
+													</tr>
+												</thead>
+												<tbody data-bind="foreach: Objectives">
+													<tr>
+														<td rowspan="3" style="width: 60%;"><textarea style="height: 2em;" data-bind="value: Objective, disable: true"></textarea></td>
+														<th>Target Date</th>
+														<td style="width: 1%;"><input type="date" style="width: 10em;" data-bind="value: TargetDate, disable: true"></td>
+														<!-- th rowspan="3" style="width: 1%;"><button class="ico-minus" title="Add Service" data-bind="click: $parent.ObjectivesRemove"></button></th -->
+													</tr>
+													<tr>
+														<th>Status</th>
+														<td><select data-bind="options: $root.ObjectiveStatus, value: Status, optionsValue: 'Value', optionsText: 'Label', optionsCaption: 'Choose...', disable: true"></select></td>
+													</tr>
+													<tr>
+														<th>Progress Rating</th>
+														<td><input type="number" min="1" max="10" style="width: 10em;" data-bind="value: ProgressRate, disable: true"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<table>
+						<tbody>
+							<tr>
+								<th style="width: 16%;">Activities</th>
+								<td><input type="text" data-bind="value: Activities, disable: true"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="sourcesLink">
+						<table>
+							<thead>
+								<tr>
+									<th colspan="4" style="text-align: center;">Agency / Agent Responsible</th>
+									<!-- th style="width: 1%;"><button class="ico-plus" title="Add Agent/Agency" data-bind="click: AgentsAddNew"></button></th -->
+								</tr>
+								<tr data-bind="visible: AgentsActive().length > 0">
+									<th colspan="2">Type</th>
+									<th>Agency</th>
+									<th>Agent</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: Agents">
+								<tr>
+									<td style="width: 20%;"><div data-bind="visible: Type() !== '0'"><select data-bind="options: $root.AgentsTypes, value: Type, optionsValue: 'Id', optionsText: 'Label', optionsCaption: 'Choose...', disable: true"></select></div><div data-bind="visible: Type() === '0'"><input type="text" data-bind="value: TypeOther, disable: true" /></div></td>
+									<!-- td style="width: 1%;"><button class="ico-pencil" title="Switch Edit Mode" data-bind="click: TypeToggle"></button></td>
+									<td><input type="text" data-bind="value: Agency, disable: true"></td -->
+									<td><input type="text" data-bind="value: Agent, disable: true"></td>
+									<!-- td><button class="ico-minus" title="Add Service" data-bind="click: $parent.AgentsRemove"></button></td -->
+								</tr>
+							</tbody>
+						</table>
+					</div>
+          <div style="width: 100%">
+            <div style="font-weight: bold; text-align: center;">Notes</div>
+            <textarea style="width: 100%; height: 5em;" data-bind="value: ProgressNotes" placeholder="Type notes here.  Delete section if not applicable."></textarea>
+          </div>
+				</div>
+			</div>
+			<div class="form-section" data-bind="visible: NoteVM.ServicePlanProblemsInactive().length">
+				<table>
+					<tbody>
+						<tr>
+							<td>
+              <select data-bind="options: $root.ServicePlanProblemsInactive, value: Note.ProblemsSelected, optionsText: 'Label', optionsCaption: 'Add Goal/Objective from Service Plan...'"></select >
+              </td>
+							<td style="width: 1%;"><button class="ico-plus" title="Create Functional Area" data-bind="click: Note.ProblemsAddNew"></button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+ 			<div id="section-discharge" class="form-section" data-bind="visible: Note.TCMServicePlanId() == 0 || Note.TCMServicePlanFinalizedDate() ==  null" style="font-weight: bold">
+        Thirty-day assessment period is in progress.  Goals and objectives will be identified after assessment is completed.
+			</div>
+      <br>
+		</div>
+	</body>
+</html>
