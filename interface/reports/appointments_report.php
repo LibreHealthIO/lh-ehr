@@ -219,16 +219,7 @@ function fetch_reminders($pid, $appt_date) {
                 </td>
             </tr>
             <tr>
-                <td class='label'><?php echo xlt('From'); ?>:</td>
-                <td>
-                    <input type='text' name='form_from_date' id="form_from_date"
-                        size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($from_date))) ?>'/>
-                </td>
-                <td class='label'><?php echo xlt('To'); ?>:</td>
-                <td>
-                    <input type='text' name='form_to_date' id="form_to_date"
-                    size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($to_date))) ?>'/>
-                </td>
+               <?php showFromAndToDates(); ?>
             </tr>
             
             <tr>
@@ -477,6 +468,7 @@ if ($alertmsg) { echo " alert('$alertmsg');\n"; }
 
 </body>
 
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {

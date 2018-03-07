@@ -234,8 +234,8 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
 
     if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($_POST['form_to_date']) && $_POST['form_from_date']) {
-        $form_from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
-        $form_to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
+        $from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
+        $to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
     }
   $form_facility  = $_POST['form_facility'];
 
@@ -337,18 +337,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
             <td>
             <?php dropdown_facility($form_facility, 'form_facility', true); ?>
             </td>
-            <td class='label'>
-                <?php echo xlt('From'); ?>:
-            </td>
-            <td>
-                <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?= oeFormatShortDate(attr($form_from_date)); ?>' />
-            </td>
-            <td class='label'>
-                <?php echo xlt('To'); ?>:
-            </td>
-            <td>
-                <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?= oeFormatShortDate(attr($form_to_date))?>' />
-            </td>
+            <?php showFromAndToDates(); ?>
         </tr>
     </table>
     <table class='text'>
@@ -608,8 +597,8 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
    <?php text(bucks($grandtotal)); ?>
   </b></td>
  </tr>
- <?php $report_from_date = oeFormatShortDate($form_from_date)  ;
-       $report_to_date = oeFormatShortDate($form_to_date)  ;
+ <?php $report_from_date = oeFormatShortDate($from_date)  ;
+       $report_to_date = oeFormatShortDate($to_date)  ;
  ?>
 <div align='right'><span class='title' ><?php echo xlt('Report Date'). ' '; ?><?php echo text($report_from_date);?> - <?php echo text($report_to_date);?></span></div>
 <?php
@@ -646,7 +635,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 

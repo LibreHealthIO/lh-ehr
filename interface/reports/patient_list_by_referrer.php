@@ -21,6 +21,7 @@
  require_once("$srcdir/patient.inc");
  require_once("$srcdir/formatting.inc.php");
  require_once("$srcdir/options.inc.php");
+ require_once("../../library/report_functions.php");
 
  $DateFormat = DateFormatRead();
  $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -111,7 +112,7 @@ $(document).ready(function() {
 <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient List By Referrer'); ?></span>
 
 <div id="report_parameters_daterange">
-<?php echo date("d F Y", strtotime($form_from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($form_to_date)); ?>
+<?php echo date("d F Y", strtotime($from_date)) ." &nbsp; to &nbsp; ". date("d F Y", strtotime($to_date)); ?>
 </div>
 
 <form name='theform' id='theform' method='post' action='patient_list_by_referrer.php'>
@@ -132,24 +133,11 @@ $(document).ready(function() {
             <span class=text><?php echo xlt('Referring Provider'); ?>: </span>
             <td>
               <?php  # Build a drop-down list of providers. # Added (TLH)
-                 genProviderSelect('form_provider', '-- '.xl("All").' --',$_POST['form_provider'], false, true);
+                 genProviderSelect('form_provider', '-- '.xl("All providers").' --',$_POST['form_provider'], false, true);
               ?>
             </td>&nbsp;&nbsp;
         </td>
-        <td class='label'>
-          <?php echo xlt('Visits From'); ?>:
-        </td>
-        <td>
-          <input type='text' name='form_from_date' id="form_from_date" size='10'
-                 value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_from_date))) ?>' />
-        </td>
-        <td class='label'>
-          <?php echo xlt('To'); ?>:
-        </td>
-        <td>
-          <input type='text' name='form_to_date' id="form_to_date" size='10'
-                 value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>' />
-        </td>
+        <?php showFromAndToDates(); ?>
       </tr>
     </table>
 
@@ -403,7 +391,7 @@ if (!$_POST['form_csvexport']) {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>

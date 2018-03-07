@@ -43,8 +43,8 @@ $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 // Collect form parameters (set defaults if empty)
-$begin_date = (isset($_POST['form_begin_date'])) ? trim($_POST['form_begin_date']) : "";
-$end_date = (isset($_POST['form_end_date'])) ? trim($_POST['form_end_date']) : "";
+$form_from_date = (isset($_POST['form_from_date'])) ? trim($_POST['form_from_date']) : "";
+$form_to_date = (isset($_POST['form_to_date'])) ? trim($_POST['form_to_date']) : "";
 $rule = (isset($_POST['form_rule'])) ? trim($_POST['form_rule']) : "";
 $provider  = trim($_POST['form_provider']);
 
@@ -204,23 +204,7 @@ $provider  = trim($_POST['form_provider']);
 
     <table class='text'>
 
-                 <tr>
-                      <td class='label'>
-                        <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
-                      </td>
-                      <td>
-                         <input type='text' name='form_begin_date' id="form_begin_date" size='20' value='<?= htmlspecialchars($begin_date); ?>'/>
-                      </td>
-                 </tr>
-
-                <tr>
-                        <td class='label'>
-                           <?php echo htmlspecialchars( xl('End Date'), ENT_NOQUOTES); ?>:
-                        </td>
-                        <td>
-                           <input type='text' name='form_end_date' id="form_end_date" size='20' value='<?= htmlspecialchars($end_date); ?>'/>
-                        </td>
-                </tr>
+                 <?php showFromAndToDates(); ?>
 
                 <tr>
                         <td class='label'>
@@ -353,7 +337,7 @@ $provider  = trim($_POST['form_provider']);
 <?php
 
   // Send the request for information
-  $resultsArray = amcTrackingRequest($rule,$begin_date,$end_date,$provider);
+  $resultsArray = amcTrackingRequest($rule,$form_from_date,$form_to_date,$provider);
 
 ?>
 
@@ -402,11 +386,11 @@ $provider  = trim($_POST['form_provider']);
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
-        $("#form_begin_date").datetimepicker({
+        $("#form_from_date").datetimepicker({
             timepicker: true,
             format: "<?= $DateFormat; ?>"
         });
-        $("#form_end_date").datetimepicker({
+        $("#form_to_date").datetimepicker({
             timepicker: true,
             format: "<?= $DateFormat; ?>"
         });

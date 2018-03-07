@@ -25,7 +25,8 @@ $fake_register_globals=false;
     require_once("$srcdir/options.inc.php");
     require_once("../drugs/drugs.inc.php");
     require_once("$srcdir/formatting.inc.php");
-  require_once("../../custom/code_types.inc.php");
+    require_once("../../custom/code_types.inc.php");
+    require_once("../../library/report_functions.php");
     $comarr = array('allow_sms'=>xl('Allow SMS'),'allow_voice'=>xl('Allow Voice Message'),'allow_mail'=>xl('Allow Mail Message'),'allow_email'=>xl('Allow Email'));
 $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -40,15 +41,15 @@ function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
         }   
     $type = $_POST["type"];
     $facility = isset($_POST['facility']) ? $_POST['facility'] : '';
-    if($_POST['date_from'] != "")
-        $sql_date_from = $_POST['date_from'];
+    if($_POST['form_from_date'] != "")
+        $from_date = $_POST['form_from_date'];
     else
-    $sql_date_from = fixDate($_POST['date_from'], date($DateFormat));
+        $from_date = fixDate($_POST['form_from_date'], date($DateFormat));
     
-    if($_POST['date_to'] != "")
-        $sql_date_to = $_POST['date_to'];
+    if($_POST['form_to_date'] != "")
+        $to_date = $_POST['form_to_date'];
     else
-        $sql_date_to = fixDate($_POST['date_to']  , add_date(date('Y-m-d H:i:s')));
+        $to_date = fixDate($_POST['form_to_date']  , add_date(date('Y-m-d H:i:s')));
         
     
     $patient_id = trim($_POST["patient_id"]);
@@ -179,8 +180,8 @@ function sel_procedure(e) {
     }
     
     function submitForm() {
-        var d_from = new String($('#date_from').val());
-        var d_to = new String($('#date_to').val());
+        var d_from = new String($('#form_from_date').val());
+        var d_to = new String($('#form_to_date').val());
         
         var d_from_arr = d_from.split('-');
         var d_to_arr = d_to.split('-');
@@ -230,39 +231,30 @@ function sel_procedure(e) {
 Search options include diagnosis, procedure, prescription, medical history, and lab results.
 -->
 <div id="report_parameters_daterange">
-    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($sql_date_from)))
-    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($sql_date_to))); ?>
+    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 <form name='theform' id='theform' method='post' action='clinical_reports.php'>
     <div id="report_parameters">
         <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
         <table>
-              <tr>
+            <tr>
                 <td width='740px'>
                     <div style='float:left'>
                 <table class='text'>
                     <tr>
-                                <td class='label'
-                                    width="100"><?php echo htmlspecialchars(xl('Facility'), ENT_NOQUOTES); ?>:
-                                </td>
+                        <td class='label' width="100"><?php echo htmlspecialchars(xl('Facility'), ENT_NOQUOTES); ?>:
+                        </td>
                         <td width="250"> <?php dropdown_facility($facility,'facility',false); ?> </td>
-                                <td class='label' width="100"><?php echo htmlspecialchars(xl('From'), ENT_NOQUOTES); ?>
-                                    :
-                                </td>
-                                <td>
-                                    <input type='text' name='date_from' id="date_from" size='18' value='<?= htmlspecialchars($sql_date_from); ?>'>
-                                </td>
+
+                        <td class='label'><?php echo htmlspecialchars(xl('Patient ID'),ENT_NOQUOTES); ?>:</td>
+                        <td><input name='patient_id' class="numeric_only" type='text' id="patient_id"
+                            title='<?php echo htmlspecialchars(xl('Optional numeric patient ID'), ENT_QUOTES); ?>'
+                            value='<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>' size='10' maxlength='20'/>
+                        </td>                               
                     </tr>
                     <tr>
-                        <td class='label'><?php echo htmlspecialchars(xl('Patient ID'),ENT_NOQUOTES); ?>:</td>
-                                <td><input name='patient_id' class="numeric_only" type='text' id="patient_id"
-                                           title='<?php echo htmlspecialchars(xl('Optional numeric patient ID'), ENT_QUOTES); ?>'
-                                           value='<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>' size='10'
-                                           maxlength='20'/></td>
-                        <td class='label'><?php echo htmlspecialchars(xl('To'),ENT_NOQUOTES); ?>: </td>
-                                <td>
-                                    <input type='text' name='date_to' id="date_to" size='18' value='<?= htmlspecialchars($sql_date_to); ?>'>
-                                </td>
+                        <?php showFromAndToDates(); ?>
                     </tr>
                     <tr>
                         <td class='label'><?php echo htmlspecialchars(xl('Age Range'),ENT_NOQUOTES); ?>:</td>
@@ -432,8 +424,8 @@ Search options include diagnosis, procedure, prescription, medical history, and 
     </div>
 <!-- end of parameters -->
 <?php
-    $sql_date_from = prepareDateBeforeSave($sql_date_from, true);
-    $sql_date_to   = prepareDateBeforeSave($sql_date_to, true);
+    $from_date = prepareDateBeforeSave($from_date, true);
+    $to_date   = prepareDateBeforeSave($to_date, true);
 // SQL scripts for the various searches
 $sqlBindArray = array();
 if ($_POST['form_refresh']) 
@@ -541,27 +533,27 @@ $sqlstmt = "select
       $whr_stmt="where 1=1";
       if(strlen($form_diagnosis) > 0 || $_POST['form_diagnosis_allergy'] == true || $_POST['form_diagnosis_medprb'] == true) {
         $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date < DATE_ADD(?, INTERVAL 1 DAY) AND DATE(li.date) <= ?";
-        array_push($sqlBindArray, $sql_date_from, $sql_date_to, date("Y-m-d"));
+        array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d"));
     }
     if(strlen($form_lab_results)!=0 || $_POST['lab_results'] == true) {
               $whr_stmt=$whr_stmt." AND pr.date >= ? AND pr.date < DATE_ADD(?, INTERVAL 1 DAY) AND DATE(pr.date) <= ?";
-              array_push($sqlBindArray, $sql_date_from, $sql_date_to, date("Y-m-d"));
+              array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d"));
     }
         if(strlen($form_drug_name)!=0 || $_POST['form_drug'] == true) {
           $whr_stmt=$whr_stmt." AND r.date_modified >= ? AND r.date_modified < DATE_ADD(?, INTERVAL 1 DAY) AND DATE(r.date_modified) <= ?";
-              array_push($sqlBindArray, $sql_date_from, $sql_date_to, date("Y-m-d"));
+              array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d"));
     }
     if($type == 'Medical History') {
          $whr_stmt=$whr_stmt." AND hd.date >= ? AND hd.date < DATE_ADD(?, INTERVAL 1 DAY) AND DATE(hd.date) <= ?";
-             array_push($sqlBindArray, $sql_date_from, $sql_date_to, date("Y-m-d"));
+             array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d"));
     } 
     if($type == 'Procedure') {       
          $whr_stmt=$whr_stmt." AND po.date_ordered >= ? AND po.date_ordered < DATE_ADD(?, INTERVAL 1 DAY) AND DATE(po.date_ordered) <= ?";
-             array_push($sqlBindArray, substr($sql_date_from,0,10), substr($sql_date_to,0,10), date("Y-m-d"));
+             array_push($sqlBindArray, substr($from_date,0,10), substr($to_date,0,10), date("Y-m-d"));
      }
     if($type == "Service Codes") {
              $whr_stmt=$whr_stmt." AND b.date >= ? AND b.date < DATE_ADD(?, INTERVAL 1 DAY) AND DATE(b.date) <= ?";
-             array_push($sqlBindArray, $sql_date_from, $sql_date_to, date("Y-m-d"));
+             array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d"));
     }
         if(strlen($form_lab_results) != 0 || $_POST['lab_results'] == true) {
             $whr_stmt= $whr_stmt." AND (pr.result LIKE ?) ";
@@ -1009,15 +1001,15 @@ if(sqlNumRows($result) > 0)
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
-        $("#date_from").datetimepicker({
+        $("#form_from_date").datetimepicker({
             timepicker: true,
             format: "<?= $DateFormat; ?>"
         });
-        $("#date_to").datetimepicker({
+        $("#form_to_date").datetimepicker({
             timepicker: true,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>

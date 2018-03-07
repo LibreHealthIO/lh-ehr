@@ -25,6 +25,7 @@
  * @params None
  * @return void - Simply echo HTML encoded string
  */
+
 function dropDownProviders() {
 	$query = "SELECT id, lname, fname FROM users WHERE ".
              "authorized = 1  ORDER BY lname, fname"; #(CHEMED) facility filter
@@ -67,6 +68,30 @@ function dropDownFacilities() {
     if ($form_facility === '0') echo " selected";
     echo ">-- " . xl('Unspecified') . " --\n";
     echo "   </select>\n";
+}
+
+/*
+ * This function shows From and To dates
+ */
+function showFromAndToDates() {
+    echo "<td class='label'>";
+    echo xlt('From');
+    echo ":
+        </td>
+         <td>
+            <input type='text' name='form_from_date' id='form_from_date' size='10'
+                value='"; htmlspecialchars(oeFormatShortDate(attr($from_date))); 
+    echo "' />
+         </td>
+         <td class='label'> ";
+    echo xlt('To'); 
+    echo ":
+         </td>
+         <td>
+            <input type='text' name='form_to_date' id='form_to_date' size='10'
+                value=' "; htmlspecialchars(oeFormatShortDate(attr($to_date)));
+    echo "' />
+         </td>";
 }
 
 ?>
