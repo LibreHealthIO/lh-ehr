@@ -8,8 +8,8 @@ $disable_utf8_flag = false;
 
 $host	= 'localhost';
 $port	= '3306';
-$login	= 'libreehr';
-$pass	= 'libreehr';
+$login	= 'root';
+$pass	= 'titi';
 $dbase	= 'libreehr';
 
 $sqlconf = array();
@@ -24,7 +24,7 @@ $sqlconf["dbase"] = $dbase;
 //////////////////////////
 //////////////////////////
 //////DO NOT TOUCH THIS///
-$config = 0; /////////////
+$config = 1; /////////////
 //////////////////////////
 //////////////////////////
 //////////////////////////
