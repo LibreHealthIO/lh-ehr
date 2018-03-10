@@ -74,14 +74,14 @@ if ($_POST['form_to_date'] != "") {
     $age_from = $_POST["age_from"];
     $age_to = $_POST["age_to"];
     $sql_gender = $_POST["gender"];
-    $sql_ethnicity = $_POST["cpms_ethnicity"];
-    $sql_race=$_POST["race"];
-    $form_drug_name = trim($_POST["form_drug_name"]);
-    $form_diagnosis = trim($_POST["form_diagnosis"]);
-    $form_lab_results = trim($_POST["form_lab_results"]);
-    $form_service_codes = trim($_POST["form_service_codes"]);
-    $form_immunization = trim($_POST["form_immunization"]);
-    $communication = trim($_POST["communication"]);
+    // $sql_ethnicity = $_POST["cpms_ethnicity"];
+    // $sql_race=$_POST["race"];
+    // $form_drug_name = trim($_POST["form_drug_name"]);
+    // $form_diagnosis = trim($_POST["form_diagnosis"]);
+    // $form_lab_results = trim($_POST["form_lab_results"]);
+    // $form_service_codes = trim($_POST["form_service_codes"]);
+    // $form_immunization = trim($_POST["form_immunization"]);
+     $communication = trim($_POST["communication"]);
 ?>
 <html>
     <head>
@@ -279,15 +279,9 @@ if ($_POST['form_to_date'] != "") {
                                 <td><input name='patient_id' class="numeric_only" type='text' id="patient_id"
                                            title='<?php echo xla('Optional numeric patient ID'); ?>' value='<?php echo attr($patient_id); ?>'
                                            size='10' maxlength='20'/></td>
-                                <td class='label'><?php echo xlt('Age Range'); ?>:</td>
-                                <td><?php echo xlt('From'); ?> 
-                                    <input name='age_from' class="numeric_only" type='text' id="age_from" value="<?php echo attr($age_from); ?>"
-                                           size='3' maxlength='3'/> <?php echo xlt('To{{range}}'); ?>
-                                    <input name='age_to' class="numeric_only" type='text' id="age_to" value="<?php echo attr($age_to); ?>" size='3'
-                                           maxlength='3'/></td>
+                                <?php showPatientAgeRange(); ?>
                                 <td class='label'><?php echo xlt('Gender'); ?>:</td>
-                                <td colspan="2"><?php echo generate_select_list('gender', 'sex', $sql_gender, 'Select Gender', 'Unassigned', '',
-                                        ''); ?></td>
+                                <td colspan="2"><?php echo generate_select_list('gender', 'sex', $sql_gender, 'Select Gender', 'Unassigned', '', ''); ?></td>
                             </tr>
                             
                         </table>

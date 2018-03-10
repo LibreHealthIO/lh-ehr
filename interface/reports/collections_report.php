@@ -49,13 +49,13 @@ $today = date("Y-m-d");
 
 $from_date      = fixDate($_POST['form_from_date'], "");
 $to_date   = fixDate($_POST['form_to_date'], "");
+$form_facility  = $_POST['form_facility'];
+$form_provider  = $_POST['form_provider'];
 $is_ins_summary = $_POST['form_category'] == 'Ins Summary';
 $is_due_ins     = ($_POST['form_category'] == 'Due Ins') || $is_ins_summary;
 $is_due_pt      = $_POST['form_category'] == 'Due Pt';
 $is_all         = $_POST['form_category'] == 'All';
 $is_ageby_lad   = strpos($_POST['form_ageby'], 'Last') !== false;
-$form_facility  = $_POST['form_facility'];
-$form_provider  = $_POST['form_provider'];
 $form_payer_id  = $_POST['form_payer_id'];
 
 if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport']) {
@@ -428,16 +428,7 @@ function checkAll(checked) {
                         </td>
                         <td>
                         <?php  # added dropdown for payors (TLH)
-                               $insurancei = getInsuranceProviders();
-                               echo "   <select name='form_payer_id'>\n";
-                               echo "    <option value='0'>-- " . xlt('All') . " --</option>\n";
-                               foreach ($insurancei as $iid => $iname) {
-                                 echo "<option value='" . attr($iid) . "'";
-                                 if ($iid == $_POST['form_payer_id']) echo " selected";
-                                    echo ">" . text($iname) . "</option>\n";
-                                 if ($iid == $_POST['form_payer_id']) $ins_co_name = $iname;
-                               }
-                               echo "   </select>\n";
+                            dropDownPayors();
                         ?>            
                         </td>
                     </tr>

@@ -190,16 +190,7 @@ $res = sqlStatement($query);
             </td>
             <td>
             <?php  # added dropdown for payors (TLH)
-                $insurancei = getInsuranceProviders();
-                echo "   <select name='form_payer_id'>\n";
-                echo "    <option value='0'>-- " . xlt('All') . " --</option>\n";
-                foreach ($insurancei as $iid => $iname) {
-                  echo "<option value='" . attr($iid) . "'";
-                  if ($iid == $_POST['form_payer_id']) echo " selected";
-                  echo ">" . text($iname) . "</option>\n";
-                  if ($iid == $_POST['form_payer_id']) $ins_co_name = $iname;
-                }
-                echo "   </select>\n";
+                dropDownPayors();
             ?>
             </td>
             <td class='label'>

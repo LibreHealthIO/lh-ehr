@@ -20,25 +20,25 @@ $sanitize_all_escapes=true;
 //STOP FAKE REGISTER GLOBALS
 $fake_register_globals=false;
 
-    require_once("../globals.php");
-    require_once("$srcdir/patient.inc");
-    require_once("$srcdir/options.inc.php");
-    require_once("../drugs/drugs.inc.php");
-    require_once("$srcdir/formatting.inc.php");
-    require_once("../../custom/code_types.inc.php");
-    require_once("../../library/report_functions.php");
-    $comarr = array('allow_sms'=>xl('Allow SMS'),'allow_voice'=>xl('Allow Voice Message'),'allow_mail'=>xl('Allow Mail Message'),'allow_email'=>xl('Allow Email'));
+require_once("../globals.php");
+require_once("$srcdir/patient.inc");
+require_once("$srcdir/options.inc.php");
+require_once("../drugs/drugs.inc.php");
+require_once("$srcdir/formatting.inc.php");
+require_once("../../custom/code_types.inc.php");
+require_once("../../library/report_functions.php");
+$comarr = array('allow_sms'=>xl('Allow SMS'),'allow_voice'=>xl('Allow Voice Message'),'allow_mail'=>xl('Allow Mail Message'),'allow_email'=>xl('Allow Email'));
 $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
 {
     $DateFormat = DateFormatRead(true);
-        $cd = strtotime($givendate);
+    $cd = strtotime($givendate);
     $newdate = date($DateFormat, mktime(date('H', $cd),
         date('i',$cd), date('s',$cd), date('m',$cd)+$mth,
         date('d',$cd)+$day, date('Y',$cd)+$yr));
-        return $newdate;
-        }   
+    return $newdate;
+}   
     $type = $_POST["type"];
     $facility = isset($_POST['facility']) ? $_POST['facility'] : '';
     if($_POST['form_from_date'] != "")
@@ -257,14 +257,7 @@ Search options include diagnosis, procedure, prescription, medical history, and 
                         <?php showFromAndToDates(); ?>
                     </tr>
                     <tr>
-                        <td class='label'><?php echo htmlspecialchars(xl('Age Range'),ENT_NOQUOTES); ?>:</td>
-                        <td><?php echo htmlspecialchars(xl('From'),ENT_NOQUOTES); ?> 
-                                    <input name='age_from' class="numeric_only" type='text' id="age_from"
-                                           value="<?php echo htmlspecialchars($age_from, ENT_QUOTES); ?>" size='3'
-                                           maxlength='3'/> <?php echo htmlspecialchars(xl('To'), ENT_NOQUOTES); ?>
-                                    <input name='age_to' class="numeric_only" type='text' id="age_to"
-                                           value="<?php echo htmlspecialchars($age_to, ENT_QUOTES); ?>" size='3'
-                                           maxlength='3'/></td>
+                       <?php showPatientAgeRange(); ?>
                         <td class='label'><?php echo htmlspecialchars(xl('Problem DX'),ENT_NOQUOTES); ?>:</td>
                                 <td><input type='text' name='form_diagnosis' size='10' maxlength='250'
                                            value='<?php echo htmlspecialchars($form_diagnosis, ENT_QUOTES); ?>'

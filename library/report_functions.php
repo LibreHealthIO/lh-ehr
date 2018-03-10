@@ -71,6 +71,25 @@ function dropDownFacilities() {
 }
 
 /*
+ * This function builds a dropdown of payors.
+ * Used in encounters_report_carrier and collections_report
+ * @params None
+ * @return void - Simply echo HTML encoded string
+ */
+function dropDownPayors() {
+    $insurancei = getInsuranceProviders();
+    echo "   <select name='form_payer_id'>\n";
+    echo "    <option value='0'>-- " . xlt('All Payors') . " --</option>\n";
+    foreach ($insurancei as $iid => $iname) {
+        echo "<option value='" . attr($iid) . "'";
+        if ($iid == $_POST['form_payer_id']) echo " selected";
+        echo ">" . text($iname) . "</option>\n";
+        if ($iid == $_POST['form_payer_id']) $ins_co_name = $iname;
+    }
+    echo "   </select>\n";
+}
+
+/*
  * This function shows From and To dates
  */
 function showFromAndToDates() {
@@ -92,6 +111,24 @@ function showFromAndToDates() {
                 value=' "; htmlspecialchars(oeFormatShortDate(attr($to_date)));
     echo "' />
          </td>";
+}
+
+/*
+ * This function shows the patients' age range
+ * in clinical and patient_list_creation reports
+ */
+function showPatientAgeRange() {
+    echo "<td class='label'>";
+        echo xlt('Age'); 
+    echo ":</td>
+    <td>"; 
+        echo xlt('From');
+            echo "<input name='age_from' class='numeric_only' type='text' id='age_from' value='";echo attr($age_from);
+            echo "' size='3' maxlength='3'/>";
+        echo xlt('To{{range}}');
+            echo "<input name='age_to' class='numeric_only' type='text' id='age_to' value='";echo attr($age_to);
+            echo "' size='3' maxlength='3'/>
+    </td>";
 }
 
 ?>
