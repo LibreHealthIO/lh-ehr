@@ -131,4 +131,49 @@ function showPatientAgeRange() {
     </td>";
 }
 
+/*
+ * This function shows the Submit button
+ * It equally displays Print and Export to CSV buttons
+ * @params form_csvexport : Tells whether to display CSV export button
+ * @return void - Simply echo HTML encoded string
+ */
+function showSubmitPrintButtons(string $form_csvexport='') {
+    echo "<td align='left' valign='middle' height='100%'>
+        <table style='border-left:1px solid; width:80%; height:100%; margin-left:3%;'>
+            <tr>
+                <td>
+                    <div style='margin-left:5px'>
+                        <a href='#' class='css_button' onclick='$(\"#form_refresh\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
+                            <span>";
+                                echo xlt('Submit');
+                            echo "</span>
+                        </a>";
+                        if ($_POST['form_refresh']) {
+                            echo "<a href='#' class='css_button' id='printbutton'>
+                                <span>";
+                                    echo xlt('Print');
+                                echo "</span>
+                            </a>";
+                            if ($form_csvexport == 'form_csvexport') {
+                                echo "<a href='#' class='css_button' onclick='$(\"#form_csvexport\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
+                                    <span>";
+                                        echo xlt('Export to CSV');
+                                    echo "</span>
+                                </a>";
+                            }
+                            if ($form_csvexport == 'form_labels') { // This is for Unique-seen-patients report
+                                echo "<a href='#' class='css_button' onclick='$(\"#form_labels\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
+                                    <span>";
+                                        echo xl('Labels','e');
+                                    echo "</span>
+                                </a>";
+                            }
+                        }
+                    echo "</div>
+                </td>
+            </tr>
+        </table>
+    </td>";
+}
+
 ?>

@@ -268,24 +268,25 @@ function fetch_reminders($pid, $appt_date) {
 
         </td>
         <td align='left' valign='middle' height="100%">
-        <table style='border-left: 1px solid; width: 100%; height: 100%'>
-            <tr>
-                <td>
-                <div style='margin-left: 15px'>
-                                <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                <span> <?php echo xlt('Submit'); ?> </span> </a> 
-                                <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
-        <a href='#' class='css_button' id='printbutton'> 
+            <table style='border-left: 1px solid; width: 100%; height: 100%'>
+                <tr>
+                    <td>
+                        <div style='margin-left: 15px'>
+                            <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                                <span> <?php echo xlt('Submit'); ?> </span> </a> 
+                            <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
+                                <a href='#' class='css_button' id='printbutton'> 
                                     <span> <?php echo xlt('Print'); ?> </span> </a> 
                                 <a href='#' class='css_button' onclick='window.open("../patient_file/printed_fee_sheet.php?fill=2","_blank")' onsubmit='return top.restoreSession()'> 
                                     <span> <?php echo xlt('Superbills'); ?> </span> </a> 
-                               <a href='#' class='css_button' onclick='window.open("../patient_file/addr_appt_label.php","_blank")' onsubmit='return top.restoreSession()'> 
+                                <a href='#' class='css_button' onclick='window.open("../patient_file/addr_appt_label.php","_blank")' onsubmit='return top.restoreSession()'> 
                                     <span> <?php echo xlt('Address Labels'); ?> </span> </a> 
-                                <?php } ?></div>
-                </td>
-            </tr>
-                        <tr>&nbsp;&nbsp;<?php echo xlt('Most column headers can be clicked to change sort order') ?></tr>
-        </table>
+                            <?php } ?>
+                        </div>
+                    </td>
+                </tr>
+                <tr>&nbsp;&nbsp;<?php echo xlt('Most column headers can be clicked to change sort order') ?></tr>
+            </table>
         </td>
     </tr>
 </table>

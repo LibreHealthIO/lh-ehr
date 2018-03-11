@@ -57,7 +57,7 @@ function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
 {
     $DateFormat = DateFormatRead();
         $cd = strtotime($givendate);
-    $newdate = date($DateFormat . ' H:i:s', mktime(date('h', $cd),
+        $newdate = date($DateFormat . ' H:i:s', mktime(date('h', $cd),
         date('i',$cd), date('s',$cd), date('m',$cd)+$mth,
         date('d',$cd)+$day, date('Y',$cd)+$yr));
         return $newdate;
@@ -289,7 +289,7 @@ if ($_POST['form_to_date'] != "") {
                     </div>
                 </td>
                 <td height="100%" valign='middle' width="175">
-                    <table style='border-left:1px solid; width:100%; height:100%'>
+                    <table style='border-left:1px solid; width:80%; height:100%'>
                             <tr>
                             <td width="130px">
                                 <div style='margin-left:15px'><a href='#' class='css_button' onclick='submitForm();'> <span>

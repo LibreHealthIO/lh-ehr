@@ -156,7 +156,7 @@ if ($form_patient == '' ) $form_pid = '';
 <!-- Required for the popup date selectors -->
 <div id="overDiv"
     style="position: absolute; visibility: hidden; z-index: 1000;"></div>
-<?php if ($GLOBALS['drug_screen']) { #setting the title of the page based o if drug screening is enabled ?> 
+<?php if ($GLOBALS['drug_screen']) { #setting the title of the page based on if drug screening is enabled ?> 
 <span class='title'><?php echo xlt('Patient Flow Board'); ?> - <?php echo xlt('Drug Screen Report'); ?></span>
 <?php } else { ?>
 <span class='title'><?php echo xlt('Patient Flow Board Report'); ?></span>
@@ -246,24 +246,8 @@ if ($form_patient == '' ) $form_pid = '';
         </div>
 
         </td>
-        <td align='left' valign='middle' height="100%">
-        <table style='border-left: 1px solid; width: 100%; height: 100%'>
-            <tr>
-                <td>
-                <div style='margin-left: 15px'>
-                                <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                <span> <?php echo xlt('Submit'); ?> </span> </a> 
-                                <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
-                <a href='#' class='css_button' id='printbutton'> 
-                                    <span> <?php echo xlt('Print'); ?> </span> </a> 
-                                <?php } ?>
-                </div>
-                    </td>
-            </tr>
-                        <tr>&nbsp;&nbsp;<?php echo xlt('Most column headers can be clicked to change sort order') ?></tr>
-        </table>
-        </td>
-    </tr>
+        <?php showSubmitPrintButtons(); ?>
+
 </table>
 
 </div>

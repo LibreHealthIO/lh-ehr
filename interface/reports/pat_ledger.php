@@ -413,7 +413,7 @@ function sel_patient() {
     </div>
   </td>
   <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
+    <table style='border-left:1px solid; width:70%; height:100%' >
         <tr>
             <td>
                 <div style='margin-left:15px'>

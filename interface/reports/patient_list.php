@@ -143,7 +143,7 @@ else {
             </td>
             <td>
               <?php
-                generate_form_field(array('data_type' => 10, 'field_id' => 'provider','empty_title' => '-- All --'), $_POST['form_provider']);
+                generate_form_field(array('data_type' => 10, 'field_id' => 'provider','empty_title' => '-- All Providers --'), $_POST['form_provider']);
               ?>
             </td>
             <?php showFromAndToDates(); ?>
@@ -151,33 +151,7 @@ else {
       </table>
     </div>
   </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
-        <tr>
-            <td>
-                <div style='margin-left:15px'>
-                  <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php xl('Submit','e'); ?>
-                    </span>
-                  </a>
-                  <a href='#' class='css_button' onclick='$("#form_csvexport").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php xl('Export to CSV','e'); ?>
-                    </span>
-                  </a>
-                  <?php if ($_POST['form_refresh']) { ?>
-                  <a href='#' id='printbutton' class='css_button'>
-                    <span>
-                      <?php xl('Print','e'); ?>
-                    </span>
-                  </a>
-                  <?php } ?>
-                </div>
-            </td>
-        </tr>
-    </table>
-  </td>
+  <?php showSubmitPrintButtons('form_csvexport'); ?>
  </tr>
 </table>
 </div> <!-- end of parameters -->

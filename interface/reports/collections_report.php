@@ -334,7 +334,7 @@ function checkAll(checked) {
 
 <table>
  <tr>
-  <td width='610px'>
+  <td width='650px'>
     <div style='float:left'>
 
     <table class='text'>
@@ -482,29 +482,7 @@ function checkAll(checked) {
     </div>
 
   </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
-        <tr>
-            <td>
-                <div style='margin-left:15px'>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php echo xlt('Submit'); ?>
-                    </span>
-                    </a>
-
-                    <?php if ($_POST['form_refresh']) { ?>
-                    <a href='#' class='css_button' onclick='window.print()'>
-                        <span>
-                            <?php echo xlt('Print'); ?>
-                        </span>
-                    </a>
-                    <?php } ?>
-                </div>
-            </td>
-        </tr>
-    </table>
-  </td>
+  <?php showSubmitPrintButtons(); ?>
  </tr>
 </table>
 </div>

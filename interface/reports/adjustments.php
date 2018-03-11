@@ -110,54 +110,27 @@ else {
 <input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>
 
 <table>
- <tr>
-  <td width='100%'>
-    <div style='float:left'>
+  <tr>
+    <td width='50%'>
+      <div style='float:left'>
 
-    <table class='text'>
-        <tr>
-            <?php showFromAndToDates(); ?>
-               <td class='label'><?php echo xlt('Adjustment Code'); # Adjustment code drop down creation ?>:
-            </td>
-            <td>
-               <?php generate_form_field(array('data_type'=>1,'field_id'=>'adjreason','list_id'=>'adjreason','empty_title'=>'All'),$_POST['form_adjreason']);?>
-            </td>
+      <table class='text'>
+          <tr>
+              <?php showFromAndToDates(); ?>
+                 <td class='label'><?php echo xlt('Adjustment Code'); # Adjustment code drop down creation ?>:
+              </td>
+              <td>
+                 <?php generate_form_field(array('data_type'=>1,'field_id'=>'adjreason','list_id'=>'adjreason','empty_title'=>'All'),$_POST['form_adjreason']);?>
+              </td>
 
-        </tr>
-    </table>
+          </tr>
+      </table>
 
-    </div>
+      </div>
 
-  </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:80%; height:100%' >
-        <tr>
-            <td>
-                <div style='margin-left:5px'>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php echo xlt('Submit'); ?>
-                    </span>
-                    </a>
-
-                    <?php if ($_POST['form_refresh']) { ?>
-                    <a href='#' class='css_button' id='printbutton'>
-                        <span>
-                            <?php echo xlt('Print'); ?>
-                        </span>
-                    </a>
-                    <a href='#' class='css_button' onclick='$("#form_csvexport").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php echo xlt('Export to CSV'); ?>
-                    </span>
-                    </a>
-                    <?php } ?>
-                </div>
-            </td>
-        </tr>
-    </table>
-  </td>
- </tr>
+    </td>
+    <?php showSubmitPrintButtons('form_csvexport'); ?>
+  </tr>
 </table>
 
 </form>
