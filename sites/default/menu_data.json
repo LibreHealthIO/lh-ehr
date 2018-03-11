@@ -514,7 +514,7 @@
     "children" : [ { 
         "label" : "Clients",
         "children" : [ { 
-            "label" : "List",
+            "label" : "Patient List",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/patient_list.php",
@@ -528,7 +528,7 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Rx",
+            "label" : "Prescriptions and Dispensations",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/prescriptions_report.php",
@@ -590,7 +590,7 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Appt-Enc",
+            "label" : "Appointments and Encounters",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/appt_encounter_report.php",
@@ -625,7 +625,7 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Chart Activity",
+            "label" : "Chart Location Activity",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/chart_location_activity.php",
@@ -633,7 +633,7 @@
             "requirement" : 0,
             "global_req" : "!disable_chart_tracker"
         }, { 
-            "label" : "Charts Out",
+            "label" : "Charts Checked Out",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/charts_checked_out.php",
@@ -641,7 +641,7 @@
             "requirement" : 0,
             "global_req" : "!disable_chart_tracker"
         }, { 
-            "label" : "Services",
+            "label" : "Services by Category",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/services_by_category.php",
@@ -659,28 +659,28 @@
     }, { 
         "label" : "Financial",
         "children" : [ { 
-            "label" : "Sales",
+            "label" : "Sales by Item",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/sales_by_item.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Cash Rec",
+            "label" : "Cash Receipts by Provider",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/billing/sl_receipts_report.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Front Rec",
+            "label" : "Front Office Receipts",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/front_receipts_report.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Pmt Method",
+            "label" : "Receipts Summary",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/receipts_by_method_report.php",
@@ -694,7 +694,7 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Pat Ledger",
+            "label" : "Patient Ledger by Date",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/pat_ledger.php?form=0",
@@ -743,13 +743,13 @@
     }, { 
         "label" : "Procedures",
         "children" : [ { 
-            "label" : "Pending Res",
+            "label" : "Pending Orders",
             "url" : "/interface/orders/pending_orders.php",
             "target" : "rep",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Statistics",
+            "label" : "Procedure Statistics",
             "url" : "/interface/orders/procedure_stats.php",
             "target" : "rep",
             "children" : [ ],
@@ -759,21 +759,21 @@
     }, { 
         "label" : "Insurance",
         "children" : [ { 
-            "label" : "Distribution",
+            "label" : "Patient Insurance Distribution",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/insurance_allocation_report.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Indigents",
+            "label" : "Indigent Patients",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/billing/indigent_patients_report.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Unique SP",
+            "label" : "Unique Seen Patients",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/unique_seen_patients_report.php",
