@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+	
+    <title>PubRTC + Mobile</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+    
+    <script type="text/javascript">
+	    var host = "localhost";
+	    if ((host == window.location.host) && (window.location.protocol != "https:"))
+	        window.location.protocol = "https";
+	</script>
+    <script src="js/modernizr.custom.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<style>
+		#vid-box{
+			display: inline-block;
+			text-align:center;
+			width:100%;
+		}
+		#vid-box video{
+			width:47%;
+		}
+	</style>	
+</head>
+<body>
+<div class = "bodyDiv">
+
+<!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<!-- My Phone Number & Dial Areas -->
+<!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+	<div id="vid-box" class="video2"></div>
+	<div id="vid-thumb"></div>
+	
+<!--
+	<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
+	    <input type="text" name="username" id="username" placeholder="Pick a username!" />
+	    <input type="submit" name="login_submit" value="Log In">
+	</form>
+-->
+    <form name="loginForm" id="login" action="#" onsubmit="return errWrap(login,this);">
+        <span class="input input--nao">
+            <input class="input__field input__field--nao" type="text" name="username" id="username" placeholder="Enter your name here..."/>
+                <label class="input__label input__label--nao" for="username">
+                    <span class="input__label-content input__label-content--nao">                                          
+                    </span>
+                </label>
+                <svg class="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
+                    <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"/>
+                </svg>
+        </span>
+            
+        <button class="cbutton cbutton--effect-radomir" type="submit" name="login_submit" value="Log In" style="margin-top: 40px; margin-left:-10px">
+            <i class="cbutton__icon fa fa-fw fa fa-sign-in"></i>
+        </button>
+    </form>
+    
+    <form name="callForm" id="call" action="#" onsubmit="return errWrap(makeCall,this);">
+        <span class="input input--nao">
+            <input class="input__field input__field--nao" type="text" name="number" id="call" placeholder="Type Name to Call Here"/>
+					<label class="input__label input__label--nao" for="number">
+						<span class="input__label-content input__label-content--nao">                                          
+                        </span>
+					</label>
+				<svg class="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
+				    <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"/>
+				</svg>
+        </span>
+        <button class="cbutton cbutton--effect-radomir md-trigger" type="submit" value="Call" style="margin-top: 40px; margin-left:-10px" data-modal="modal-13">
+            <i class="cbutton__icon fa fa-fw fa fa fa-phone-square"></i>
+        </button>
+	</form>
+	
+	<div id="inCall" class="ptext">
+		<button id="end" onclick="end()" >End</button> 
+        <button id="mute" onclick="mute()">Mute</button> 
+        <button id="pause" onclick="pause()">Pause</button>
+	</div>
+    
+	<div id="logs" class="ptext"></div>
+
+<p class="ptext"><b>To Use:</b></p>
+<p class="ptext">Type a username and click the log-in icon. If input turns green you are ready to receive/place a call.</p>
+<p class="ptext">Next, type the name of the person you want to have join the conference, and click the Call icon  Add as many people as you like.</p>
+
+<!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- -->
+<!-- WebRTC Peer Connections -->
+<!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- -->
+<script src="js/jquery-min-3-1-1/index.js"></script>
+<script src="js/pubnub.min.js"></script>
+<script src="js/webrtc.js"></script>
+<script src="js/rtc-controller.js"></script>
+
+<script type="text/javascript">
+
+var video_out = document.getElementById("vid-box");
+var vid_thumb = document.getElementById("vid-thumb");
+var vidCount  = 0;
+    
+function login(form) {
+	var phone = window.phone = PHONE({
+	    number        : form.username.value || "Anonymous", // listen on username line else Anonymous
+	    publish_key   : 'pub-c-a7f74a96-7dfe-418d-95c7-aa64eb57d6fa', // Your Pub Key
+	    subscribe_key : 'sub-c-52e400aa-fcba-11e7-9936-9295006507e1', // Your Sub Key
+	});
+	var ctrl = window.ctrl = CONTROLLER(phone, get_xirsys_servers);
+	ctrl.ready(function(){
+		form.username.style.background="#55ff5b"; 
+		form.login_submit.hidden="true"; 
+		ctrl.addLocalStream(vid_thumb);
+		addLog("Logged in as " + form.username.value); 
+	});
+	ctrl.receive(function(session){
+	    session.connected(function(session){ video_out.appendChild(session.video); addLog(session.number + " has joined."); vidCount++; });
+	    session.ended(function(session) { ctrl.getVideoElement(session.number).remove(); addLog(session.number + " has left.");    vidCount--;});
+	});
+	ctrl.videoToggled(function(session, isEnabled){
+		ctrl.getVideoElement(session.number).toggle(isEnabled);
+		addLog(session.number+": video enabled - " + isEnabled);
+	});
+	ctrl.audioToggled(function(session, isEnabled){
+		ctrl.getVideoElement(session.number).css("opacity",isEnabled ? 1 : 0.75);
+		addLog(session.number+": audio enabled - " + isEnabled);
+	});
+	return false;
+}
+
+function makeCall(form){
+	if (!window.phone) alert("Login First!");
+	var num = form.number.value;
+	if (phone.number()==num) return false; // No calling yourself!
+	ctrl.isOnline(num, function(isOn){
+		if (isOn) ctrl.dial(num);
+		else alert("User if Offline");
+	});
+	return false;
+}
+
+function mute(){
+	var audio = ctrl.toggleAudio();
+	if (!audio) $("#mute").html("Unmute");
+	else $("#mute").html("Mute");
+}
+
+function end(){
+	ctrl.hangup();
+}
+
+function pause(){
+	var video = ctrl.toggleVideo();
+	if (!video) $('#pause').html('Unpause'); 
+	else $('#pause').html('Pause'); 
+}
+
+function getVideo(number){
+	return $('*[data-number="'+number+'"]');
+}
+
+function addLog(log){
+	$('#logs').append("<p>"+log+"</p>");
+}
+
+function get_xirsys_servers() {
+    var servers;
+    $.ajax({
+        type: 'POST',
+        url: 'https://service.xirsys.com/ice',
+        data: {
+            room: 'default',
+            application: 'default',
+            domain: 'suncoastconnection.com',
+            ident: 'aethelwulffe',
+            secret: 'sec-c-ZTlmODkyNDgtNTZhOC00NGYzLTllMjYtMzE4M2Q2ODg1ZWFj',
+            secure: 1,
+        },
+        success: function(res) {
+	        console.log(res);
+            res = JSON.parse(res);
+            if (!res.e) servers = res.d.iceServers;
+        },
+        async: false
+    });
+    return servers;
+}
+
+function errWrap(fxn, form){
+	try {
+		return fxn(form);
+	} catch(err) {
+		alert("WebRTC is currently only supported by Chrome, Opera, and Firefox");
+		return false;
+	}
+}
+
+</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+		Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-46933211-3', 'auto');
+	ga('send', 'pageview');
+
+</script>
+
+</div>
+</body>
+</html>

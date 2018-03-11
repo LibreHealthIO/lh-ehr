@@ -6,6 +6,13 @@
     "children" : [ ],
     "requirement" : 0
 }, { 
+    "label" : "Conference",
+    "menu_id" : "msg0",
+    "target" : "pat",
+    "url" : "/modules/RTC/group.html",
+    "children" : [ ],
+    "requirement" : 0
+}, {  
     "label" : "Flow Board",
     "menu_id" : "pfb0",
     "target" : "flb",
