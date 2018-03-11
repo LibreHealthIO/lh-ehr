@@ -9,6 +9,6 @@
     font-weight : 600;
 }   
 #userdata .dropdown-menu>li:hover{
-    text-decoration : underline;
-    color: #31b0d5;
+   /* text-decoration : underline;*/
+    background-color: #5cb5f3f2;
 }

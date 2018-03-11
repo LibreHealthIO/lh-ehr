@@ -107,13 +107,43 @@ and open the template in the editor.
 /*
     Latest additions in order to make navbar theme independent by using Bootstrap.
 */
+
+
+
+.dropdown-menu {
+  
+    background-color: #004f87;
+    padding: 0px 0px;
+}
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #5cb5f3f2 !important;
+}
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background-color: #5cb5f3f2 !important;
+    border-color: #337ab7;
+}
 .nav>li>a{
-    color: #1057c9;
+    color: #ffff;
     cursor: pointer;
     font-size: 14px;
     font-weight : 600;
-    padding-right : 10px;
+    padding : 20px;
 }
+.nav .open>a .nav
+.open>a:focus, .nav
+.open>a:hover,
+ .nav .open>a:active{
+background-color:#0d9edb;
+color:#ffff;
+}
+
+li.dropdown.open > a:focus {
+  color: #000;
+  background-color:#0d9edb;
+;
+}
+
 .nav>li>a:hover > ul{
     display:none;
 }
@@ -150,9 +180,10 @@ and open the template in the editor.
     padding-left: 20px;  
     padding-bottom : 0px; 
     font-weight : 600;
+	color:#ffff;
 }   
 .dropdown-menu>li>a:hover{
-    text-decoration : underline;
+    /*text-decoration : underline;*/
     color: #31b0d5;        
 }
 .navbar-collapse{
@@ -160,8 +191,8 @@ and open the template in the editor.
     padding-right : 20px;      
 }
 .navbar-nav>li>a{
-    padding-top : 5px;
-    padding-bottom : 5px;
+    padding-top : 20px;
+    padding-bottom : 20px;
 }
 .glyphicon{
     padding-right:20px;
