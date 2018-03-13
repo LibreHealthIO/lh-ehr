@@ -686,8 +686,6 @@ tr.odd, td.even {
 }
 
 .css_button, input[type="button"],input[type="submit"], button, a[role="button"] {
-  background: #2672ec;
-  color: #ffffff !important;
   display: block;
   float: left;
   font-weight: 300;

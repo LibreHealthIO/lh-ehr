@@ -213,8 +213,8 @@ $GLOBALS_METADATA = array(
     ),
     'primary_color'=>array(xl('Primary color'),  'color', '#ffffff'),
     'primary_font_color'=>array(xl('Primary font color'),  'color', '#000000'),
-    'secondary_color'=>array(xl('Secondary color'),  'color', '#000000'),
-    'secondary_font_color'=>array(xl('Secondary font color'),  'color', '#ffffff'),
+    'secondary_color'=>array(xl('Secondary color'),  'color', '#ffffff'),
+    'secondary_font_color'=>array(xl('Secondary font color'),  'color', '#000000'),
 
     'libreehr_name' => array(
       xl('Application Title'),
