@@ -45,7 +45,7 @@ if(($_GET['access_group'][$i] == "Emergency Login") && ($_GET['active'] == 'on')
     $uname=$row['username'];
     $mail = new MyMailer();
         $mail->SetLanguage("en",$GLOBALS['fileroot'] . "/library/" );
-        $mail->From = "admin@".$mail_id[1].".".$mail_id[2];     
+        $mail->From = "admin@".$mail_id[1].".".$mail_id[2];
         $mail->FromName = "Administrator LibreEHR";
         $text_body  = "Hello Security Admin,\n\n The Emergency Login user ".$uname.
                                                 " was activated at ".date('l jS \of F Y h:i:s A')." \n\nThanks,\nAdmin LibreEHR.";
@@ -103,19 +103,6 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
               $tqvar = formData('mname','P');
               sqlStatement("update users set mname='$tqvar' where id= ? ", array($_POST["id"]));
       }
-      if ($_POST["role_name"]) {
-        $tqvar = formData('role_name', 'P');
-        sqlStatement("update users set fullscreen_role='$tqvar' where id= ?", array($_POST["id"]));
-      }
-      if ($_POST["fullscreen_page"]) {
-        $tqvar = formData('fullscreen_page', 'P');
-        sqlStatement("update users set fullscreen_page='$tqvar' where id=?", array($_POST["id"]));
-      }
-      if ($_POST["fullscreen_enable"]) {
-        sqlStatement("update users set fullscreen_enable=1 where id=?", array($_POST["id"]));
-      } else {
-        sqlStatement("update users set fullscreen_enable=0 where id=?", array($_POST["id"]));       
-      }
       if ($_POST["facility_id"]) {
               $tqvar = formData('facility_id','P');
               sqlStatement("update users set facility_id = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -169,7 +156,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
           "' WHERE id = '" . formData('id','P') . "'");
       }
 
-     if ($_POST["adminPass"] && $_POST["clearPass"]) { 
+     if ($_POST["adminPass"] && $_POST["clearPass"]) {
         require_once("$srcdir/authentication/password_change.php");
         $clearAdminPass=$_POST['adminPass'];
         $clearUserPass=$_POST['clearPass'];
@@ -177,7 +164,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         $success=update_password($_SESSION['authId'],$_POST['id'],$clearAdminPass,$clearUserPass,$password_err_msg);
         if(!$success)
         {
-            error_log($password_err_msg);    
+            error_log($password_err_msg);
             $alertmsg.=$password_err_msg;
         }
      }
@@ -185,11 +172,11 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       $tqvar  = $_POST["authorized"] ? 1 : 0;
       $actvar = $_POST["active"]     ? 1 : 0;
       $calvar = $_POST["calendar"]   ? 1 : 0;
-  
+
       sqlStatement("UPDATE users SET authorized = $tqvar, active = $actvar, " .
         "calendar = $calvar, see_auth = ? WHERE " .
         "id = ? ", array($_POST['see_auth'], $_POST["id"]));
-      //Display message when Emergency Login user was activated 
+      //Display message when Emergency Login user was activated
       $bg_count=count($_POST['access_group']);
       for($i=0;$i<$bg_count;$i++){
         if(($_POST['access_group'][$i] == "Emergency Login") && ($_POST['pre_active'] == 0) && ($actvar == 1)){
@@ -202,7 +189,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
          $set_active_msg=1;
         }
       }
-    }   
+    }
       if ($_POST["comments"]) {
         $tqvar = formData('comments','P');
         sqlStatement("update users set info = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -214,7 +201,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         $physician_type = formData('physician_type');
         sqlStatement("update users set physician_type = '$physician_type' where id = ? ", array($_POST["id"]));
       }
-      
+
       if (isset($phpgacl_location) && acl_check('admin', 'acl')) {
         // Set the access control group of user
         $user_data = sqlFetchArray(sqlStatement("select username from users where id= ?", array($_POST["id"])));
@@ -236,7 +223,7 @@ if (isset($_POST["mode"])) {
     // $_POST["info"] = addslashes($_POST["info"]);
 
     $calvar = $_POST["calendar"] ? 1 : 0;
-    $fullscreen_enable = $_POST["fullscreen_enable"] ? 1 : 0;
+
     $res = sqlStatement("select distinct username from users where username != ''");
     $doit = true;
     while ($row = sqlFetchArray($res)) {
@@ -255,8 +242,8 @@ if (isset($_POST["mode"])) {
     } else {
         $exp_date = date('Y-m-d');
     }
-    
-    $insertUserSQL=            
+
+    $insertUserSQL=
             "insert into users set " .
             "username = '"         . trim(formData('rumple'       )) .
             "', password = '"      . 'NoLongerUsed'                  .
@@ -272,12 +259,9 @@ if (isset($_POST["mode"])) {
             "', info = '"          . trim(formData('info'         )) .
             "', federaldrugid = '" . trim(formData('federaldrugid')) .
             "', upin = '"          . trim(formData('upin'         )) .
-            "', npi  = '"          . trim(formData('npi'          )) .
+            "', npi  = '"          . trim(formData('npi'          )).
             "', taxonomy = '"      . trim(formData('taxonomy'     )) .
             "', facility_id = '"   . trim(formData('facility_id'  )) .
-            "', fullscreen_role = '". trim(formData('role_name'    )) .
-            "', fullscreen_page = '". trim(formData('fullscreen_page')) .
-            "', fullscreen_enable = '". $fullscreen_enable .
             "', specialty = '"     . trim(formData('specialty'    )) .
             "', see_auth = '"      . trim(formData('see_auth'     )) .
             "', cal_ui = '"        . trim(formData('cal_ui'       )) .
@@ -286,7 +270,7 @@ if (isset($_POST["mode"])) {
             "', calendar = '"      . $calvar                         .
             "', pwd_expiration_date = '" . trim("$exp_date") .
             "'";
-    
+
     $clearAdminPass=$_POST['adminPass'];
     $clearUserPass=$_POST['stiltskin'];
     $password_err_msg="";
@@ -308,10 +292,10 @@ if (isset($_POST["mode"])) {
         set_user_aro($_POST['access_group'], trim(formData('rumple')),
           trim(formData('fname')), trim(formData('mname')), trim(formData('lname')));
       }
-        
+
     }
 
-        
+
 
     } else {
       $alertmsg .= xl('User','','',' ') . trim(formData('rumple')) . xl('already exists.','',' ');
@@ -391,7 +375,7 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 ?>
 <html>
 <head>
-<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox-custom"));
       resolveFancyboxCompatibility();
 ?>
 
@@ -414,7 +398,7 @@ $(document).ready(function(){
         'frameHeight' : 450,
         'frameWidth' : 660
     });
-    
+
     $(function(){
         // add drag and drop functionality to fancybox
         $("#fancy_outer").easydrag();
