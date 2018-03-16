@@ -17,8 +17,10 @@
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
  */
+
 ?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" type="text/css" href=<?php echo $web_root; ?>/interface/themes/style.php?pc=<?php echo str_replace("#", "",$GLOBALS['primary_color']);?>&pfontcolor=<?php echo str_replace("#", "", $GLOBALS['primary_font_color']);?>&sc=<?php echo str_replace("#", "", $GLOBALS['secondary_color']);?>&sfontcolor=<?php echo str_replace("#", "",$GLOBALS['secondary_font_color']);?>>
 <?php
 
     function include_js_library($path)
