@@ -103,6 +103,19 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
               $tqvar = formData('mname','P');
               sqlStatement("update users set mname='$tqvar' where id= ? ", array($_POST["id"]));
       }
+      if ($_POST["role_name"]) {
+        $tqvar = formData('role_name', 'P');
+        sqlStatement("update users set fullscreen_role='$tqvar' where id= ?", array($_POST["id"]));
+      }
+      if ($_POST["fullscreen_page"]) {
+        $tqvar = formData('fullscreen_page', 'P');
+        sqlStatement("update users set fullscreen_page='$tqvar' where id=?", array($_POST["id"]));
+      }
+      if ($_POST["fullscreen_enable"]) {
+        sqlStatement("update users set fullscreen_enable=1 where id=?", array($_POST["id"]));
+      } else {
+        sqlStatement("update users set fullscreen_enable=0 where id=?", array($_POST["id"]));
+      }
       if ($_POST["facility_id"]) {
               $tqvar = formData('facility_id','P');
               sqlStatement("update users set facility_id = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -223,7 +236,7 @@ if (isset($_POST["mode"])) {
     // $_POST["info"] = addslashes($_POST["info"]);
 
     $calvar = $_POST["calendar"] ? 1 : 0;
-
+    $fullscreen_enable = $_POST["fullscreen_enable"] ? 1 : 0;
     $res = sqlStatement("select distinct username from users where username != ''");
     $doit = true;
     while ($row = sqlFetchArray($res)) {
@@ -259,9 +272,12 @@ if (isset($_POST["mode"])) {
             "', info = '"          . trim(formData('info'         )) .
             "', federaldrugid = '" . trim(formData('federaldrugid')) .
             "', upin = '"          . trim(formData('upin'         )) .
-            "', npi  = '"          . trim(formData('npi'          )).
+            "', npi  = '"          . trim(formData('npi'          )) .
             "', taxonomy = '"      . trim(formData('taxonomy'     )) .
             "', facility_id = '"   . trim(formData('facility_id'  )) .
+            "', fullscreen_role = '". trim(formData('role_name'    )) .
+            "', fullscreen_page = '". trim(formData('fullscreen_page')) .
+            "', fullscreen_enable = '". $fullscreen_enable .
             "', specialty = '"     . trim(formData('specialty'    )) .
             "', see_auth = '"      . trim(formData('see_auth'     )) .
             "', cal_ui = '"        . trim(formData('cal_ui'       )) .
