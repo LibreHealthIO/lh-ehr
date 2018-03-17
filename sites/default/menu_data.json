@@ -140,7 +140,7 @@
         "label" : "Posting",
         "menu_id" : "bil0",
         "target" : "pat",
-        "url" : "/interface/billing/sl_eob_search.php",
+        "url" : "/interface/billing/apply_payments.php",
         "children" : [ ],
         "requirement" : 0
     }, {
