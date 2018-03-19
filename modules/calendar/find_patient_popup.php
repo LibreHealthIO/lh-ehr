@@ -164,7 +164,7 @@ form {
    </select>
  <?php echo htmlspecialchars( xl('for:'), ENT_NOQUOTES); ?>
    <input type='text' id='searchparm' name='searchparm' size='12' value='<?php echo htmlspecialchars( $_REQUEST['searchparm'], ENT_QUOTES); ?>'
-    title='<?php echo htmlspecialchars( xl('If name, any part of lastname or lastname,firstname'), ENT_QUOTES); ?>'>
+    title='<?php echo htmlspecialchars( xl('If name, any part of lastname or lastname,firstname'), ENT_QUOTES); ?>' autofocus>
    &nbsp;
    <input type='submit' id="submitbtn" value='<?php echo htmlspecialchars( xl('Search'), ENT_QUOTES); ?>'>
    <!-- &nbsp; <input type='button' value='<?php echo htmlspecialchars( xl('Close'), ENT_QUOTES); ?>' onclick='window.close()' /> -->
@@ -231,10 +231,12 @@ foreach ($result as $iter) {
 
 <script language="javascript">
 
-// jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
-    $("#searchparm").focus();
+    var query = $("#searchparm");
+    var querylen = query.val().length;
+    query[0].focus();
+    query[0].setSelectionRange(querylen, querylen);
     $(".oneresult").mouseover(function() { $(this).toggleClass("highlight"); });
     $(".oneresult").mouseout(function() { $(this).toggleClass("highlight"); });
     $(".oneresult").click(function() { SelectPatient(this); });
@@ -242,8 +244,18 @@ $(document).ready(function(){
     $(".noresult").click(function () { SubmitForm(this);});
 
     //$(".event").dblclick(function() { EditEvent(this); });
-    $("#theform").submit(function() { SubmitForm(this); });
+    $('#searchparm').keyup(function (e) { 
 
+      setTimeout(function(){ 
+      if(e.keyCode == 8 || e.keyCode == 46 || e.keyCode == 37 || e.keyCode == 39) {
+        //no response for del,backspace, arrow keys
+      }
+      else {
+        //submit the form
+      $("#theform").submit();
+      SubmitForm(this);
+      } }, 700);
+    });
 });
 
 // show the 'searching...' status and submit the form
