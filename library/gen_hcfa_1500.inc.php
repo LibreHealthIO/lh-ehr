@@ -364,10 +364,17 @@ function gen_hcfa_1500_page($pid, $encounter, &$log, &$claim) {
   put_hcfa(29, 55, 17, 'Signature on File');
 
   // Box 14. Date of Current Illness/Injury/Pregnancy
+  if ($claim->Onset_Date_Misc_Billing()) {
+    $tmp = $claim->Onset_Date_Misc_Billing();
+    put_hcfa(32, 2, 2, substr($tmp,4,2));
+    put_hcfa(32, 5, 2, substr($tmp,6,2));
+    put_hcfa(32, 8, 4, substr($tmp,0,4));
+  } elseif ($claim->onsetDate()) {
   $tmp = $claim->onsetDate();
   put_hcfa(32, 2, 2, substr($tmp,4,2));
   put_hcfa(32, 5, 2, substr($tmp,6,2));
   put_hcfa(32, 8, 4, substr($tmp,0,4));
+  }
   
   if(hcfa_1500_version_02_12() && !empty($tmp))
   {
