@@ -714,6 +714,7 @@ if (! $_REQUEST['form_csvexport']) {
     echo "</span>";
     echo '<script>document.getElementById("report_results").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
+    echo '<script> alert("No matches found. Try search again.") ;</script>';
   }
         
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
