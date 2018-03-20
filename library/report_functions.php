@@ -137,7 +137,7 @@ function showPatientAgeRange() {
  * @params form_csvexport : Tells whether to display CSV export button
  * @return void - Simply echo HTML encoded string
  */
-function showSubmitPrintButtons(string $form_csvexport='') {
+function showSubmitPrintButtons($form_csvexport='') {
     echo "<td align='left' valign='middle' height='100%'>
         <table style='border-left:1px solid; width:80%; height:100%; margin-left:3%;'>
             <tr>
