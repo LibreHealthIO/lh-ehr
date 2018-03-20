@@ -420,15 +420,22 @@ if ($_POST['form_portalnotify']) {
     $countCase1 = (string)$GLOBALS['stmts_below_minimum_amount'];
     $countCase2 = (string)$GLOBALS['stmts_set_no_patient'];
     $countCase3 = (string)$GLOBALS['stmts_not_allowed_insurance_company'];
-    //reason for case 1
-    $reason = "/n/n" . $countCase1 . " SELECTED STATEMENTS NOT PRINTED: ";
-    $reason .= "Statement amount value less than minimum amount value to print.";
-    //reason for case 2
-    $reason .= "/n/n" . $countCase2 . " SELECTED STATEMENTS NOT PRINTED: ";
-    $reason .= "The patient is set to no statement";
-    //reason for case 3
-    $reason .= "/n/n" . $countCase3 . " SELECTED STATEMENTS NOT PRINTED: ";
-    $reason .= "The insurance company does not allow statements";
+    $reason = "\n\n";
+    if ($countCase1 != 0) {
+      //reason for case 1
+      $reason .= $countCase1 . " SELECTED STATEMENTS NOT PRINTED: ";
+      $reason .= "Statement amount value less than minimum amount value to print.";
+    }
+    if ($countCase2 != 0) {
+      //reason for case 2
+      $reason .= "\n\n" . $countCase2 . " SELECTED STATEMENTS NOT PRINTED: ";
+      $reason .= "The patient is set to no statement";
+    }
+    if ($countCase3 != 0) {
+      //reason for case 3
+      $reason .= "\n\n" . $countCase3 . " SELECTED STATEMENTS NOT PRINTED: ";
+      $reason .= "The insurance company does not allow statements";
+    }
     fwrite($fhprint, $reason);
     fclose($fhprint);
     sleep(1);
