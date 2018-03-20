@@ -106,13 +106,22 @@ function create_HTML_statement($stmt) {
 
   #minimum_amount_due_to _print
   if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) {
-    //increment whenever statement is ignored due to if condition
+    //increment whenever amount value of statement is less than minimum amount value and
+    //to keep count of such ignored statements in final print
     $GLOBALS['stmts_below_minimum_amount']++;
     return "";
   }
 
-  if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
+  if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) {
+    //increment whenever the patient is set to no statement and
+    //to keep count of such ignored statements in final print
+    $GLOBALS['stmts_set_no_patient']++;
+    return "";
+  }
   if ($GLOBALS['use_statement_print_exclusion'] && $GLOBALS['insurance_statement_exclude'] !=4 ){
+   //increment whenever the insurance company does not allow statements and
+   //to keep count of such ignored statements in final print
+   $GLOBALS['stmts_not_allowed_insurance_company']++;
    if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) return "";
    if ($GLOBALS['insurance_statement_exclude'] ==1 && $stmt['insurance_no_statement_print_sec']) return "";
    if ($GLOBALS['insurance_statement_exclude'] ==2 && $stmt['insurance_no_statement_print_tri']) return "";
@@ -472,13 +481,22 @@ function create_statement($stmt) {
 
  #minimum_amount_to _print
  if ($stmt[amount] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) {
-    //increment whenever statement is ignored due to if condition
+    //increment whenever amount value of statement is less than minimum amount value and
+    //to keep count of such ignored statements in final print
     $GLOBALS['stmts_below_minimum_amount']++;
     return "";
   }
 
- if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
+ if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) {
+    //increment whenever the patient is set to no statement and
+    //to keep count of such ignored statements in final print
+    $GLOBALS['stmts_set_no_patient']++;
+    return "";
+  };
  if ($GLOBALS['use_statement_print_exclusion'] && $GLOBALS['insurance_statement_exclude'] !=4 ){
+   //increment whenever the insurance company does not allow statements and
+   //to keep count of such ignored statements in final print
+   $GLOBALS['stmts_not_allowed_insurance_company']++;
    if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) return "";
    if ($GLOBALS['insurance_statement_exclude'] ==1 && $stmt['insurance_no_statement_print_sec']) return "";
    if ($GLOBALS['insurance_statement_exclude'] ==2 && $stmt['insurance_no_statement_print_tri']) return "";

@@ -234,9 +234,14 @@ $today = date("Y-m-d");
   // Print or download statements if requested.
   //
 if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && $_POST['form_cb']) {
-    //global variable to keep count of statements ignored
-    //ignored statements have amount value less than minimum amount to print
+    //some global variables to keep count of statements ignored in final print due to:
+    //1) having amount value less than minimum amount to print
     $GLOBALS['stmts_below_minimum_amount'] = 0;
+    //2) the patient is set to no statement
+    $GLOBALS['stmts_set_no_patient'] = 0;
+    //3) the insurance company does not allow statements
+    $GLOBALS['stmts_not_allowed_insurance_company'] = 0;
+
     $fhprint = fopen($STMT_TEMP_FILE, 'w');
     $sqlBindArray = array();
     $where = "";
@@ -411,9 +416,19 @@ if ($_POST['form_portalnotify']) {
     if (!empty($stmt)) ++$stmt_count;
     fwrite($fhprint, make_statement($stmt));
     //logging the reason for not printing some statements
-    $ignoredstmts = (string)$GLOBALS['stmts_below_minimum_amount'];
-    $reason .= "/n/n" . $ignoredstmts . " SELECTED STATEMENTS NOT PRINTED: ";
-    $reason .= "Statement amount value less than minimum value to print.";
+    //as well as count of such statements
+    $countCase1 = (string)$GLOBALS['stmts_below_minimum_amount'];
+    $countCase2 = (string)$GLOBALS['stmts_set_no_patient'];
+    $countCase3 = (string)$GLOBALS['stmts_not_allowed_insurance_company'];
+    //reason for case 1
+    $reason = "/n/n" . $countCase1 . " SELECTED STATEMENTS NOT PRINTED: ";
+    $reason .= "Statement amount value less than minimum amount value to print.";
+    //reason for case 2
+    $reason .= "/n/n" . $countCase2 . " SELECTED STATEMENTS NOT PRINTED: ";
+    $reason .= "The patient is set to no statement";
+    //reason for case 3
+    $reason .= "/n/n" . $countCase3 . " SELECTED STATEMENTS NOT PRINTED: ";
+    $reason .= "The insurance company does not allow statements";
     fwrite($fhprint, $reason);
     fclose($fhprint);
     sleep(1);
