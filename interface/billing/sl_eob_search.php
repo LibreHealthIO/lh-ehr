@@ -234,7 +234,9 @@ $today = date("Y-m-d");
   // Print or download statements if requested.
   //
 if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && $_POST['form_cb']) {
-
+    //global variable to keep count of statements ignored
+    //ignored statements have amount value less than minimum amount to print
+    $GLOBALS['stmts_below_minimum_amount'] = 0;
     $fhprint = fopen($STMT_TEMP_FILE, 'w');
     $sqlBindArray = array();
     $where = "";
@@ -408,6 +410,11 @@ if ($_POST['form_portalnotify']) {
 
     if (!empty($stmt)) ++$stmt_count;
     fwrite($fhprint, make_statement($stmt));
+    //logging the reason for not printing some statements
+    $ignoredstmts = (string)$GLOBALS['stmts_below_minimum_amount'];
+    $reason .= "/n/n" . $ignoredstmts . " SELECTED STATEMENTS NOT PRINTED: ";
+    $reason .= "Statement amount value less than minimum value to print.";
+    fwrite($fhprint, $reason);
     fclose($fhprint);
     sleep(1);
 

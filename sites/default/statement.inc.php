@@ -105,7 +105,12 @@ function create_HTML_statement($stmt) {
   if (! $stmt['pid']) return ""; // get out if no data
 
   #minimum_amount_due_to _print
-  if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
+  if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) {
+    //increment whenever statement is ignored due to if condition
+    $GLOBALS['stmts_below_minimum_amount']++;
+    return "";
+  }
+
   if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
   if ($GLOBALS['use_statement_print_exclusion'] && $GLOBALS['insurance_statement_exclude'] !=4 ){
    if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) return "";
@@ -172,7 +177,7 @@ function create_HTML_statement($stmt) {
   $label_addressee = xl('ADDRESSEE');
   $label_remitto = xl('REMIT TO');
   $label_chartnum = xl('Chart Number');
-  if ($GLOBALS['show_insurance_name_on_custom_statement']) { 
+  if ($GLOBALS['show_insurance_name_on_custom_statement']) {
    if (strlen($stmt['insconum2']) !=0){
       $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
    }
@@ -466,7 +471,12 @@ function create_statement($stmt) {
  if (! $stmt['pid']) return ""; // get out if no data
 
  #minimum_amount_to _print
- if ($stmt[amount] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
+ if ($stmt[amount] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) {
+    //increment whenever statement is ignored due to if condition
+    $GLOBALS['stmts_below_minimum_amount']++;
+    return "";
+  }
+
  if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
  if ($GLOBALS['use_statement_print_exclusion'] && $GLOBALS['insurance_statement_exclude'] !=4 ){
    if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) return "";
@@ -545,7 +555,7 @@ if ($GLOBALS['use_dunning_message']) {
  $label_addressee = xl('ADDRESSEE');
  $label_remitto = xl('REMIT TO');
  $label_chartnum = xl('Chart Number');
- if ($GLOBALS['show_insurance_name_on_custom_statement']) { 
+ if ($GLOBALS['show_insurance_name_on_custom_statement']) {
    if (strlen($stmt['insconum2']) !=0){
       $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
    }
@@ -555,8 +565,8 @@ if ($GLOBALS['use_dunning_message']) {
    }
  }else{
  $label_insinfo = xl('Insurance information on file');
- }    
- 
+ }
+
  $label_totaldue = xl('Total amount due');
  $label_payby = xl('If paying by');
  $label_cards = xl('VISA/MC/AMEX/Dis');
@@ -821,7 +831,7 @@ function osp_create_HTML_statement($stmt) {
   $label_addressee = xl('ADDRESSEE');
   $label_remitto = xl('REMIT TO');
   $label_chartnum = xl('Chart Number');
- if ($GLOBALS['show_insurance_name_on_custom_statement']) { 
+ if ($GLOBALS['show_insurance_name_on_custom_statement']) {
    if (strlen($stmt['insconum2']) !=0){
       $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
    }
@@ -830,7 +840,7 @@ function osp_create_HTML_statement($stmt) {
      $label_insinfo = xl('Insurance Company '). $stmt['insconum1'] ;
    }
  }else{
-    $label_insinfo = xl('Insurance information on file');  
+    $label_insinfo = xl('Insurance information on file');
  }
   $label_totaldue = xl('Total amount due');
   $label_payby = xl('If paying by');
