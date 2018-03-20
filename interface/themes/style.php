@@ -28,12 +28,12 @@ function validate_html_color_code($arg) {
 	}
 	return $color_code;
 }
-
+/*
 $primary_color = validate_html_color_code($_GET['pc']);
 $primary_font_color = validate_html_color_code($_GET['pfontcolor']);
 $secondary_color = validate_html_color_code($_GET['sc']);
 $secondary_font_color = validate_html_color_code($_GET['sfontcolor']);
-
+*/
 //if no color given display default color
 //This condition may also come if the color code supplied is not a valid color code.
 
@@ -42,15 +42,15 @@ if(empty($primary_color)) {
 }
 
 if(empty($primary_font_color)) {
-	$primary_font_color = "#000000";
+	$primary_font_color = "004f87";
 }
 
 if (empty($secondary_color)) {
-	$secondary_color = "#000000";
+	$secondary_color = "004f87";
 }
 
 if (empty($secondary_font_color)) {
-	$secondary_font_color = "#ffffff";
+	$secondary_font_color = "ffffff";
 }
 
 echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar {
