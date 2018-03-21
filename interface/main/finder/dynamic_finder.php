@@ -153,10 +153,13 @@ $(document).ready(function() {
 
   var search = $("#pt_table_filter :input");
   var entries = $("#pt_table_length :input");
+  var paginate_pre = $('.paginate_disabled_previous');
+  var paginate_next = $('.paginate_disabled_next');
 
   search.addClass("form-control form-rounded");
   entries.addClass("form-control form-rounded");
-
+  paginate_pre.css('height','30px');
+  paginate_next.css('height','30px');
 });
 
 </script>

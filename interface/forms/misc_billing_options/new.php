@@ -55,6 +55,18 @@ if (empty($formid)) {
     $formid = checkFormIsActive($form_name,$encounter);
 }
 $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
+function generateDateQualifierSelect($name,$options,$obj)
+{
+    echo     "<select name='".attr($name)."'>";
+    for($idx=0;$idx<count($options);$idx++)
+    {
+        echo "<option value='".attr($options[$idx][1])."'";
+        if($obj[$name]==$options[$idx][1]) echo " selected";
+        echo ">".text($options[$idx][0])."</option>";
+    }
+    echo     "</select>";
+
+}
 
 ?>
 <html>
@@ -121,12 +133,47 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
             <br><br>
           </div>
 
-          <!-- Not sure what this does -->
           <span class="text" title="<?php echo xla("For HCFA 02/12 Onset date specified on the Encounter Form needs a qualifier");?>"></span>
-          <span class=text title="<?php echo xla('For HCFA 02/12 Box 15 is Other Date with a qualifier to specify what the date indicates');?>"></span>
 
           <div id="box-14">
-            <span class="text"><?php echo xlt('BOX 14. Is Populated from the Encounter Screen as the Onset Date');?>.</span>    
+            <span class="text"><?php echo xlt('BOX 14. Onset Date and Qualifier');?>.</span>    
+            <br><br>
+            <?php $onset_date = $obj{"onset_date"}; ?>
+            <input
+              class="form-control"
+              style="display: inline-block; width: 10rem"
+              type="text"
+              name="onset_date"
+              id="onset_date"
+              size='10'
+              value='<?php echo oeFormatShortDate(attr($onset_date)) ?>'
+            />
+           <!-- <td><span class=text><?php echo xlt('BOX 14 Onset Date Qualifier'); ?>: </span>-->
+            &nbsp;
+            <?php generateDateQualifierSelect("box_14_date_qual",$box_14_qualifier_options,$obj); ?></span></td>
+            <br><br>
+          </div>
+          
+          <div id="box-15">
+
+          <span class="text" title="<?php echo xla('For HCFA 02/12 Box 15 is Other Date with a qualifier to specify what the date indicates');?>"></span>
+            <span class="text"><?php echo xlt('BOX 15. Other Date and Qualifier');?>.</span>    
+            <br><br>
+            <?php $date_initial_treatment = $obj{"date_initial_treatment"}; ?>
+            <input
+              class="form-control"
+              style="display: inline-block; width: 10rem"
+              type="text"
+              name="date_initial_treatment"
+              id="date_initial_treatment"
+              size='10'
+              value='<?php echo oeFormatShortDate(attr($date_initial_treatment)) ?>'
+            />
+
+            &nbsp;
+            <?php generateDateQualifierSelect("box_15_date_qual",$box_15_qualifier_options,$obj); ?>
+
+
             <br><br>
           </div>
 
@@ -274,7 +321,7 @@ $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
   </body>
 <script>
     $(function() {
-        $("#hospitalization_date_from, #hospitalization_date_to, #off_work_from, #off_work_to" ).datetimepicker({
+        $("#hospitalization_date_from, #hospitalization_date_to, #off_work_from, #off_work_to, #onset_date, #date_initial_treatment" ).datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });

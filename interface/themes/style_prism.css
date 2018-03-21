@@ -207,7 +207,6 @@ a:hover {
 .titlebar { height: 20px; }                 /* $GLOBALS['titleBarHeight'] */
 
 #navbar-collapse {
-    background-color: #9dffec;
     box-shadow: 0px 0px 3px 2px #9dffec;
     z-index: 10;
 }
@@ -674,7 +673,7 @@ tr.odd {
 #dateNAV {
     font-size:1.1em !important;
 }
-.css_button, input[type="button"],input[type="submit"], button {
+.css_button, button {
   background: #063f80;
   color: #ffffff !important;
   display: inline-block;

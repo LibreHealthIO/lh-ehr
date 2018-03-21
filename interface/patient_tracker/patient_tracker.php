@@ -170,7 +170,16 @@ function refreshbegin(first){
     var parsetime=reftime.split(":");
     parsetime=(parsetime[0]*60)+(parsetime[1]*1)*1000;
 
-    var expanded = document.getElementById("pat_settings_toggle").getAttribute('aria-expanded');
+    // contingency for fullscreen mode. settings toggle does not exist
+    var pat_settings_toggle = document.getElementById("pat_settings_toggle");
+    if(pat_settings_toggle == null) {
+        var expanded = null;
+    } else {
+        var expanded = document.getElementById("pat_settings_toggle").getAttribute('aria-expanded');
+    }
+    
+    
+    
 
     // expanded variable is the status of the pat_settings div. if it is opened, this variable will evaluate to true
     // otherwise, false. this can be used to check if options are opened
@@ -732,6 +741,11 @@ if(!is_null($_POST['form_to_date']) ){
       refreshbegin('1');
       $('.js-blink-infinite').modernBlink();
 
+
+  // check whether this is a fullscreen page or not
+  if(parent.fullscreen_page == true) {
+      $("#pat_settings_toggle").remove();
+  }
   // toggle of the check box status for drug screen completed and ajax call to update the database
  $(".drug_screen_completed").change(function() {
       top.restoreSession();
@@ -768,6 +782,7 @@ if(!is_null($_POST['form_to_date']) ){
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
     $("#form_apptstatus").addClass('form-control input-sm');
+    $('#form_apptstatus').removeAttr('style');
 </script>
 </body>
 </html>

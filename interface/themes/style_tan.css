@@ -644,8 +644,6 @@ tr.odd {
     font-size:1.1em !important;
 }
 .css_button, input[type="button"],input[type="submit"], button, a[role="button"] {
-  background: #063f80;
-  color: #ffffff !important;
   display: inline-block;
   font-weight: 300;
   margin: 4px;

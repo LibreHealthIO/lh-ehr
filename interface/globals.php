@@ -462,6 +462,11 @@ $login_screen = $GLOBALS['login_screen'];
 $GLOBALS['css_header'] = $css_header;
 $GLOBALS['backpic'] = $backpic;
 
+//Portal Version tag
+require_once(dirname(__FILE__) . "/../portal_version.php");
+
+$libreehr_portal_version = "$p_major.$p_minor.$p_patch".$p_tag;
+
 // 1 = send email message to given id for Emergency Login user activation,
 // else 0.
 $GLOBALS['Emergency_Login_email'] = $GLOBALS['Emergency_Login_email_id'] ? 1 : 0;
@@ -533,7 +538,6 @@ if ($fake_register_globals) {
   extract($_GET,EXTR_SKIP);
   extract($_POST,EXTR_SKIP);
 }
-
 
 include_once __DIR__ . '/../library/pluginsystem/bootstrap.php';
 ?>

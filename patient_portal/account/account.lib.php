@@ -122,10 +122,9 @@ function generatePassword($length = 8, $strength = 1)
 
 function validEmail($email)
 {
-    if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i", $email)) {
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return true;
     }
-
     return false;
 }
 

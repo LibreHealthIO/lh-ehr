@@ -496,6 +496,8 @@ $CMS_5010 = true;
     "*Y" .
     "~\n"; 
 
+   // above is for old claims that use the encounter onset date field. Onset is now back in misc_billing_options
+
   if ($claim->onsetDate() && 
       ($claim->onsetDate()!== $claim->serviceDate()) &&
       ($claim->onsetDateValid()) 
@@ -508,24 +510,39 @@ $CMS_5010 = true;
       "~\n";
   }
 
-  if ($claim->dateInitialTreatment() && ($claim->onsetDateValid())) {
+    // Segment DTP*431 (Onset of Current Symptoms or Illness)
+    // Segment DTP*484 (Last Menstrual Period Date)
+
+    if ($claim->miscOnsetDate() && ($claim->box14Qualifier()) && ($claim->miscOnsetDateValid())) {
     ++$edicount;
-    $out .= "DTP" .       // Date of Initial Treatment
-      "*454" .
-      "*D8" .
+        $out .= "DTP" .       // Date Last Seen
+            "*" . $claim->box14Qualifier() .
+            "*" . "D8" .
+            "*" . $claim->miscOnsetDate() .
+            "~\n";
+    }
+
+    // Segment DTP*454 (Initial Treatment Date)
+    // Segment DTP*304 (Last Seen Date)
+    // Segment DTP*453 (Acute Manifestation Date)
+    // Segment DTP*439 (Accident Date)
+    // Segment DTP*455 (Last X-Ray Date)
+    // Segment DTP*471 (Hearing and Vision Prescription Date)
+    // Segment DTP*314 (Disability) omitted.
+    // Segment DTP*360 (Initial Disability Period Start) omitted.
+    // Segment DTP*361 (Initial Disability Period End) omitted.
+    // Segment DTP*297 (Last Worked Date)
+    // Segment DTP*296 (Authorized Return to Work Date)
+
+    if ($claim->dateInitialTreatment() && ($claim->box15Qualifier()) && ($claim->dateInitialTreatmentValid())) {
+    ++$edicount;
+        $out .= "DTP" .       // Date Last Seen
+        "*" . $claim->box15Qualifier() .
+        "*" . "D8" .
       "*" . $claim->dateInitialTreatment() .
       "~\n";
   }
 
-  // Segment DTP*304 (Last Seen Date) omitted.
-  // Segment DTP*453 (Acute Manifestation Date) omitted.
-  // Segment DTP*439 (Accident Date) omitted.
-  // Segment DTP*484 (Last Menstrual Period Date) omitted.
-  // Segment DTP*455 (Last X-Ray Date) omitted.
-  // Segment DTP*471 (Hearing and Vision Prescription Date) omitted.
-  // Segments DTP (Disability Dates) omitted.
-  // Segment DTP*297 (Last Worked Date) omitted.
-  // Segment DTP*296 (Authorized Return to Work Date) omitted.
 
   if (strcmp($claim->facilityPOS(),'21') == 0 && $claim->onsetDateValid() ) {
     ++$edicount;
@@ -535,8 +552,27 @@ $CMS_5010 = true;
       "*" . $claim->onsetDate() .
       "~\n";
   }
+  // Added hospital admit and discharge date for facility 21 
 
-  // Segment DTP*096 (Discharge Date) omitted.
+    if (strcmp($claim->facilityPOS(), '21') == 0 && $claim->hospitalizedFromDateValid()) {
+        ++$edicount;
+        $out .= "DTP" .     // Date of Admission
+        "*" . "435" .
+        "*" . "D8" .
+        "*" . $claim->hospitalizedFrom() .
+        "~\n";
+    }
+
+    // Segment DTP*096 (Discharge Date)
+    if (strcmp($claim->facilityPOS(), '21') == 0 && $claim->hospitalizedToDateValid()) {
+        ++$edicount;
+        $out .= "DTP" .     // Date of Discharge
+        "*" . "96" .
+        "*" . "D8" .
+        "*" . $claim->hospitalizedTo() .
+        "~\n";
+    }
+
   // Segments DTP (Assumed and Relinquished Care Dates) omitted.
   // Segment DTP*444 (Property and Casualty Date of First Contact) omitted.
   // Segment DTP*050 (Repricer Received Date) omitted.

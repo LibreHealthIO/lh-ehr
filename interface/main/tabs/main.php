@@ -217,8 +217,8 @@ var webroot_url="<?php echo $web_root; ?>";
     $("#patientData").on("click", function() {
         $('.handle').drags();
     });
-
-
+  
+  
 </script>
 
 <?php do_action( 'after_main_box' ); ?>

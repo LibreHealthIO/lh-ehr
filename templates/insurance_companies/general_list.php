@@ -8,6 +8,7 @@
         <th><b><?php echo xlt("City").",".xlt("State");?> </b></th>
         <th><b><?php echo xlt("Default X12 Partner");?> </b></th>
         <th><b><?php echo xlt("Inactive");?></b></th>
+        <th><b><?php echo xlt("Statements");?></b></th>
     </tr>
     
     
@@ -29,6 +30,11 @@
         <td>
             <?php if ($insurancecompany->get_ins_inactive() == 1) { ?>
             <?php echo xlt('Yes');?>&nbsp;
+            <?php }?>
+        </td>
+         <td>
+            <?php if ($insurancecompany->get_allow_print_statement() == 1) { ?>
+            <?php echo xlt('No');?>&nbsp;
             <?php }?>
         </td>
     </tr>
