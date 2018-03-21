@@ -347,20 +347,72 @@ function sel_patient() {
     visibility: visible;
     display: inline;
   }
+  .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  /* The Close Button */
+  .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+  }
 }
 </style>
 
 <title><?php echo xlt('Patient Ledger by Date') ?></title>
 
 <script language="JavaScript">
+  
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+function hideNoRecordsModal(){
+  var modal = document.getElementById('noLedgerRecordsAdmin');
+  modal.style.display = "none";
+}
+function showNoRecordsModal(){
+var modal = document.getElementById('noLedgerRecordsAdmin');
+modal.style.display = "block";
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target != modal) {
+        modal.style.display = "none";
+    }
+}
+}
 </script>
 
 </head>
 <body class="body_top">
+  <!-- The Modal -->
+  <div id="noLedgerRecordsAdmin" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>No Records found</p>
+    </div>
+
+  </div>
 <table>
   <tr>
     <td>
@@ -725,12 +777,14 @@ if (! $_REQUEST['form_csvexport']) {
     echo "</span>";
     echo '<script>document.getElementById("report_results").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
-    echo '<script> alert("No matches found. Try search again.") ;</script>';
+    echo '<script> showNoRecordsModal(); </script>';
   }
 
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
 <div class='text'>
-    <?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+    <?php echo xlt('Please input search criteria above, and click Submit to view results.' );
+          echo '<script> hideNoRecordsModal(); </script>';
+    ?>
 </div>
 <?php } ?>
 </form>
