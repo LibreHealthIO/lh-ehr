@@ -870,6 +870,7 @@ if (! $_REQUEST['form_csvexport']) {
     echo '<script>document.getElementById("report_results").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
     echo '<script> showNoRecordsModal(); </script>';
+
   }
 
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
