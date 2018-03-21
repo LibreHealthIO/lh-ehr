@@ -120,20 +120,20 @@ var webroot_url="<?php echo $web_root; ?>";
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-        </button>        
-    </div>    
+        </button>
+    </div>
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <div id="menu" data-bind="template: {name: 'menu-template', data: application_data} "></div>
         <div id="userData" data-bind="template: {name: 'user-data-template', data:application_data} "></div>
     </div>
-    
+
     <div id="patientData" class="body_title" data-bind="template: {name: 'patient-data-template', data: application_data} "></div>
     <div class="body_title" data-bind="template: {name: 'tabs-controls', data: application_data} "> </div>
 
     <div class="mainFrames">
         <div id="framesDisplay" data-bind="template: {name: 'tabs-frames', data: application_data}"> </div>
     </div>
-    
+
 </div>
 <script>
     $("#dialogDiv").hide();
@@ -195,9 +195,8 @@ var webroot_url="<?php echo $web_root; ?>";
                         next.css('flex', rightPercentage.toString());
                     }
                     $(document).on("mouseup", function() {
-                        $('body').css('cursor', priorCursor);
+                        $('body').css('cursor', 'auto');
                         $('.draggable').removeClass('draggable').css('z-index', z_idx);
-                        
                         // Deactivate Frame Barrier!
                         $("#frameBarrier").css("visibility", "hidden");
                     });
@@ -207,8 +206,18 @@ var webroot_url="<?php echo $web_root; ?>";
 
         }
     })(jQuery);
-
+    //calling resize plugin upon
+    //1) initial loading -- with 2 tabs only
     $('.handle').drags();
+    //2) clicks in main navbar area -- opens a new tab
+    $("#navbar-collapse").on("click", function() {
+        $('.handle').drags();
+    })
+    //3) clicks in patient data area -- opens a new tab
+    $("#patientData").on("click", function() {
+        $('.handle').drags();
+    });
+
 
 </script>
 
