@@ -790,8 +790,8 @@ $(document).ready(function(){
 
 //jquery for live theme selection, so once color picker picked up color css attributes will change.
 
-var primary_attributes = 'body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar';
-var secondary_attributes = "td, tr, .table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, input[type='submit'], ul.tabNav a";
+var primary_attributes = ' .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar, .dropdown-menu>li>a, .dropdown-toggle, #menu, .dropdown, .nav>li>a, .glyphicon, #userdata .dropdown-menu>li ';
+var secondary_attributes = "td, tr, .table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, input[type='submit'], ul.tabNav a, .navbar-collapse, input[type='submit'], input[type='button'],input[type='submit'], button, a[role='button']";
 
 $('.primary_color').on("change", function () {
 var primary_color = $('.primary_color').val();
