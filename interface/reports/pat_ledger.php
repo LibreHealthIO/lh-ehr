@@ -561,7 +561,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
 </table>
 </div>
 <div id="report_results">
-<table >
+  <table id="report_table">
  <tr>
     <td class='bold' ><?php echo xlt('Code'); ?></td>
     <td colspan="2" class='bold' ><?php echo xlt('Description'); ?></td>
@@ -709,11 +709,11 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
 }
 if (! $_REQUEST['form_csvexport']) {
   if ( $_REQUEST['form_refresh'] && $orow <= 0) {
-    echo "<span style='font-size:10pt;'>";
-    echo xlt('No matches found. Try search again.');
+    echo "<span style='color:red;'>";
+    echo xlt('No data to display. Select patient and try search again.');
     echo "</span>";
-    echo '<script>document.getElementById("report_results").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
+    echo '<script>document.getElementById("report_table").style.display="none";</script>';
   }
         
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
