@@ -482,7 +482,7 @@ function checkAll(checked) {
     </div>
 
   </td>
-  <?php showSubmitPrintButtons(); ?>
+  <?php showSubmitPrintButtons('form_csvexport'); ?>
  </tr>
 </table>
 </div>

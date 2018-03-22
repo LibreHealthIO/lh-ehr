@@ -15,186 +15,116 @@
  * @link http://librehealth.io
  */
 
- require_once("../globals.php");
- require_once("../../library/report_functions.php");
- require_once "$srcdir/patient.inc";
- require_once "$srcdir/acl.inc";
- require_once "$srcdir/options.inc.php";
- require_once "$srcdir/formatting.inc.php";
- $DateFormat = DateFormatRead();
- $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
-
-
- $from_date = fixDate($_POST['form_from_date']);
- $to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
-
+require_once "reports_controllers/AdjustmentsController.php";
 
 if ($_POST['form_csvexport']) {
-  header("Pragma: public");
-  header("Expires: 0");
-  header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  header("Content-Type: application/force-download");
-  header("Content-Disposition: attachment; filename=adjustment_codes.csv");
-  header("Content-Description: File Transfer");
-  // CSV headers:
-  if (true) {
-    echo '"Adjustment Code",';
-    echo '"Total",'. "\n";
-  }
+    csvexport();
 }
 else {
 ?>
-<html>
-<head>
-<title><?php echo xlt('Adjustments'); ?></title>
+  <html>
+  <head>
+  <title><?php echo xlt('Adjustments'); ?></title>
 
-<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
+  <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
+  <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
+  <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+  <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 
-<script language="JavaScript">
+  <script language="JavaScript">
 
- $(document).ready(function() {
-  var win = top.printLogSetup ? top : opener.top;
-  win.printLogSetup(document.getElementById('printbutton'));
- });
+   $(document).ready(function() {
+    var win = top.printLogSetup ? top : opener.top;
+    win.printLogSetup(document.getElementById('printbutton'));
+   });
 
-</script>
+  </script>
 
-<link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
+  <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 
-<style type="text/css">
+  <style type="text/css">
 
-/* specifically include & exclude from printing */
-@media print {
-    #report_parameters {
-        visibility: hidden;
-        display: none;
-    }
-    #report_parameters_daterange {
-        visibility: visible;
-        display: inline;
-    }
-    #report_results table {
-       margin-top: 0px;
-    }
-}
+  /* specifically include & exclude from printing */
+  @media print {
+      #report_parameters {
+          visibility: hidden;
+          display: none;
+      }
+      #report_parameters_daterange {
+          visibility: visible;
+          display: inline;
+      }
+      #report_results table {
+         margin-top: 0px;
+      }
+  }
 
-/* specifically exclude some from the screen */
-@media screen {
-    #report_parameters_daterange {
-        visibility: hidden;
-        display: none;
-    }
-}
+  /* specifically exclude some from the screen */
+  @media screen {
+      #report_parameters_daterange {
+          visibility: hidden;
+          display: none;
+      }
+  }
 
-</style>
-</head>
+  </style>
+  </head>
 
-<body class="body_top">
+  <body class="body_top">
 
-<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
+  <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Adjustments'); ?></span>
+  <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Adjustments'); ?></span>
 
-<div id="report_parameters_daterange">
-    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
-    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
-</div>
+  <?php report_parameters_daterange(); ?>
 
-<form name='theform' method='post' action='adjustments.php' id='theform'>
+  <form name='theform' method='post' action='adjustments.php' id='theform'>
 
-<div id="report_parameters">
-<input type='hidden' name='form_refresh' id='form_refresh' value=''/>
-<input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>
+  <div id="report_parameters">
+  <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
+  <input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>
 
-<table>
-  <tr>
-    <td width='50%'>
-      <div style='float:left'>
+  <table>
+    <tr>
+      <td width='50%'>
+        <div style='float:left'>
 
-      <table class='text'>
-          <tr>
-              <?php showFromAndToDates(); ?>
-                 <td class='label'><?php echo xlt('Adjustment Code'); # Adjustment code drop down creation ?>:
-              </td>
-              <td>
-                 <?php generate_form_field(array('data_type'=>1,'field_id'=>'adjreason','list_id'=>'adjreason','empty_title'=>'All'),$_POST['form_adjreason']);?>
-              </td>
+        <table class='text'>
+            <tr>
+                <?php showFromAndToDates(); ?>
+                <td class='label'>
+                  <?php echo xlt('Adjustment Code'); # Adjustment code drop down creation ?>:
+                </td>
+                <td>
+                  <?php generate_form_field(array('data_type'=>1,'field_id'=>'adjreason','list_id'=>'adjreason','empty_title'=>'All'),$_POST['form_adjreason']);?>
+                </td>
 
-          </tr>
-      </table>
+            </tr>
+        </table>
 
-      </div>
+        </div>
 
-    </td>
-    <?php showSubmitPrintButtons('form_csvexport'); ?>
-  </tr>
-</table>
+      </td>
+      <?php showSubmitPrintButtons('form_csvexport'); ?>
+    </tr>
+  </table>
 
-</form>
-</div> <!-- end parameters -->
+  </form>
+  </div> <!-- end parameters -->
 
-<div id="report_results">
-<table>
+  <div id="report_results">
+  <table>
 
- <thead>
-  <th align='left'> <?php echo xlt('Adjustment Code'); ?> </th>
-  <th align='right'> <?php echo xlt('Total'); ?> </th>
- </thead>
- <tbody>
-<?php
+   <thead>
+    <th align='left'> <?php echo xlt('Adjustment Code'); ?> </th>
+    <th align='right'> <?php echo xlt('Total'); ?> </th>
+   </thead>
+   <tbody>
+  <?php
 } // end not export
 if ($_POST['form_refresh'] || $_POST['form_csvexport'])
 {
-  $adj_reason = $_POST['form_adjreason'];
-  $from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-  $to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
-
-  if ($adj_reason =='') 
-  {
-      $query = " Select   ar_activity.memo, Sum(ar_activity.adj_amount) As adj_amount " .
-    " From ar_activity" .
-    " Where ar_activity.post_time >= '$from_date' ".
-    " And ar_activity.post_time <= '$to_date' ".
-    " Group By ar_activity.memo ";
-  } else {
-
-    $query = " Select   ar_activity.memo, Sum(ar_activity.adj_amount) As adj_amount " .
-  " From ar_activity" .
-  " Where ar_activity.post_time >= '$from_date' ".
-  " And ar_activity.post_time <= '$to_date' ".
-  " And ar_activity.memo = '$adj_reason' " .
-  " Group By ar_activity.memo ";
-  }
-
-
-  $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res))
-  {
-    $adj_name = $row['memo'];
-    $total = $row['adj_amount'];
-
-
-    if ($_POST['form_csvexport'])
-    {
-        echo '"' . $adj_name                                           . '",';
-        echo '"' . oeFormatMoney($total)                               . '"' . "\n";
-
-    } else {
-?>
- <tr>
-  <td align='left'>
-   <?php echo $adj_name ?>
-  </td>
-  <td align='right'>
-   <?php echo oeFormatMoney($total) ?>
-  </td>
- </tr>
-<?php
-         } // end not export
-  }
+  formRefreshOrCsvexport();
 } // end if
 
 if (! $_POST['form_csvexport']) {

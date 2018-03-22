@@ -74,14 +74,14 @@ if ($_POST['form_to_date'] != "") {
     $age_from = $_POST["age_from"];
     $age_to = $_POST["age_to"];
     $sql_gender = $_POST["gender"];
-    // $sql_ethnicity = $_POST["cpms_ethnicity"];
-    // $sql_race=$_POST["race"];
-    // $form_drug_name = trim($_POST["form_drug_name"]);
-    // $form_diagnosis = trim($_POST["form_diagnosis"]);
-    // $form_lab_results = trim($_POST["form_lab_results"]);
-    // $form_service_codes = trim($_POST["form_service_codes"]);
-    // $form_immunization = trim($_POST["form_immunization"]);
-     $communication = trim($_POST["communication"]);
+    $sql_ethnicity = $_POST["cpms_ethnicity"];
+    $sql_race=$_POST["race"];
+    $form_drug_name = trim($_POST["form_drug_name"]);
+    $form_diagnosis = trim($_POST["form_diagnosis"]);
+    $form_lab_results = trim($_POST["form_lab_results"]);
+    $form_service_codes = trim($_POST["form_service_codes"]);
+    $form_immunization = trim($_POST["form_immunization"]);
+    $communication = trim($_POST["communication"]);
 ?>
 <html>
     <head>
@@ -97,8 +97,8 @@ if ($_POST['form_to_date'] != "") {
         var global_date_format = '%Y-%m-%d';                
         function Form_Validate() {
             var d = document.forms[0];       
-            FromDate = d.date_from.value;
-            ToDate = d.date_to.value;
+            FromDate = d.form_from_date.value;
+            ToDate = d.form_to_date.value;
             if ( (FromDate.length > 0) && (ToDate.length > 0) ) {
                 if ( FromDate > ToDate ){
                     alert("<?php echo xls('To date must be later than From date!'); ?>");
