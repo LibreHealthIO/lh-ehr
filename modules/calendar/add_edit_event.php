@@ -230,24 +230,26 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
         $duration = abs($_POST['form_duration']); // fixes #395
     }
-    //before starttime gets the values from form_hour & form_minute after clicking save
-    //check if they (tmph & tmpm) are within clinic hours
-    $user_ampm = $_POST['form_ampm'];
-    echo var_dump($_POST['form_ampm']);
-    if ($user_ampm == 1) {
-      #AM, 00:00 midnight to 11:59 noon
-      $user_selected_time = $tmph + ($tmpm/60);
-    } else {
-      #PM, 12:00 noon to 23:59 midnight
-      $user_selected_time = 12 + $tmph + ($tmpm/60);
-    }
-    //checked for AM/PM because globals: schedule start and end times are in 24 hour format
-    if ($user_selected_time < $GLOBALS['schedule_start'] || $user_selected_time > $GLOBALS['schedule_end']) {
-      $alert_user_mssg = '<script type="text/javascript">alert("Please select time between clinic hours.");</script>';
-      $close_events_window = '<script type="text/javascript">window.close();</script>';
-      echo $alert_user_mssg;
-      echo $close_events_window;
-      exit();
+    //check for selected appointment time
+    if ($GLOBALS['check_appt_time'] == '1') {
+      //before starttime gets the values from form_hour & form_minute after clicking save,
+      //check if they (tmph & tmpm) are within clinic hours
+      $user_ampm = $_POST['form_ampm'];
+      if ($user_ampm == '1') {
+        #AM, 00:00 midnight to 11:59 noon
+        $user_selected_time = $tmph + ($tmpm/60);
+      } else {
+        #PM, 12:00 noon to 23:59 midnight
+        $user_selected_time = 12 + $tmph + ($tmpm/60);
+      }
+      //checked for AM/PM because globals: schedule start and end times are in 24 hour format
+      if ($user_selected_time < $GLOBALS['schedule_start'] || $user_selected_time > $GLOBALS['schedule_end']) {
+        $alert_user_mssg = '<script type="text/javascript">alert("Please select time between clinic hours.");</script>';
+        $close_events_window = '<script type="text/javascript">window.close();</script>';
+        echo $alert_user_mssg;
+        echo $close_events_window;
+        exit();
+      }
     }
 
     $tmph = sprintf( "%02d", $tmph );
