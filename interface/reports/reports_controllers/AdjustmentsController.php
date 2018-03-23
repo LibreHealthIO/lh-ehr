@@ -52,18 +52,6 @@ function csvexport() {
 }
 
 /*
- * This function just displays the report daterange
- * @params None
- * @return void - Simply echo HTML encoded string
- */
-function report_parameters_daterange() {
-	echo '<div id="report_parameters_daterange">';
-    		date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
-    	. " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date'])));
-	echo '</div>';
-}
-
-/*
  * This function is responsible for checking this condition
  * if($_POST['form_refresh'] || $_POST['form_csvexport']) 
  */

@@ -176,4 +176,16 @@ function showSubmitPrintButtons($form_csvexport='') {
     </td>";
 }
 
+/*
+ * This function just displays the report daterange
+ * @params None
+ * @return void - Simply echo HTML encoded string
+ */
+function reportParametersDaterange() {
+    echo '<div id="report_parameters_daterange">';
+            date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+        . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date'])));
+    echo '</div>';
+}
+
 ?>
