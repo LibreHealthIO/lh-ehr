@@ -83,9 +83,9 @@ function User_Id_Look($thisField) {
 
 function List_Look($thisData, $thisList) {
   if($thisList == 'occurrence') {
-    if(!$thisData || $thisData == '') return xl('Unknown or N/A'); 
+    if(!$thisData || $thisData == '') return xl('Unknown or N/A');
   }
-  if($thisData == '') return ''; 
+  if($thisData == '') return '';
   $fres=sqlStatement("SELECT title FROM list_options WHERE list_id=? ".
         "AND option_id=?", array($thisList, $thisData));
   if($fres) {
@@ -123,7 +123,7 @@ function PrintEncHeader($dt, $rsn, $dr) {
     if(strlen($rsn) > 50) $rsn = substr($rsn,0,50).'...';
     echo "<td colspan='4'><span class='bold'>".xlt('Encounter Dt / Rsn'). ": </span><span class='detail'>".text(substr($dt,0,10))." / ".text($rsn)."</span></td>";
     echo "<td colspan='5'><span class='bold'>" . xlt('Provider'). ": </span><span class='detail'>".text(User_Id_Look($dr))."</span></td>";
-    echo "</tr>\n"; 
+    echo "</tr>\n";
     $orow++;
 }
 function PrintEncFooter() {
@@ -250,11 +250,11 @@ if (substr($GLOBALS['ledger_begin_date'],0,1) == 'Y') {
    $last_year = mktime(0,0,0,date('m'),date('d'),date('Y')-$ledger_time);
 }
 elseif (substr($GLOBALS['ledger_begin_date'],0,1) == 'M') {
-   $ledger_time = substr($GLOBALS['ledger_begin_date'],1,1); 
+   $ledger_time = substr($GLOBALS['ledger_begin_date'],1,1);
    $last_year = mktime(0,0,0,date('m')-$ledger_time ,date('d'),date('Y'));
 }
 elseif (substr($GLOBALS['ledger_begin_date'],0,1) == 'D') {
-   $ledger_time = substr($GLOBALS['ledger_begin_date'],1,1); 
+   $ledger_time = substr($GLOBALS['ledger_begin_date'],1,1);
    $last_year = mktime(0,0,0,date('m') ,date('d')-$ledger_time,date('Y'));
 }
 
@@ -347,25 +347,88 @@ function sel_patient() {
     visibility: visible;
     display: inline;
   }
+  .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  /* The Close Button */
+  .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+  }
 }
 </style>
 
 <title><?php echo xlt('Patient Ledger by Date') ?></title>
 
 <script language="JavaScript">
+  
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+function hideNoRecordsModal(){
+  var modal = document.getElementById('noLedgerRecordsAdmin');
+  modal.style.display = "none";
+}
+function showNoRecordsModal(){
+var modal = document.getElementById('noLedgerRecordsAdmin');
+modal.style.display = "block";
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target != modal) {
+        modal.style.display = "none";
+    }
+}
+}
 </script>
 
 </head>
 <body class="body_top">
-<?php if($type_form == '0') { ?>
-<span class='title' id='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Ledger by Date'); ?></span>
-<?php }else{ ?>
-<span class='title' id='title'><?php echo xlt('Patient Ledger'); ?></span>
-<?php } ?>
+  <!-- The Modal -->
+  <div id="noLedgerRecordsAdmin" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>No Records found</p>
+    </div>
+
+  </div>
+<table>
+  <tr>
+    <td>
+      <?php if($type_form == '0') { ?>
+        <span class='title' id='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Ledger by Date'); ?></span>
+      <?php }else{ ?>
+        <span class='title' id='title'><?php echo xlt('Patient Ledger'); ?></span>
+      <?php } ?>
+    </td>
+    <td>
+      <a href="../patient_file/summary/demographics.php" class="css_button" onclick="top.restoreSession()">
+        <span><?php echo htmlspecialchars(xl('Back To Patient'),ENT_NOQUOTES);?></span>
+      </a>
+    </td>
+  </tr>
+</table>
 <form method='post' action='pat_ledger.php?form=<?php echo attr($type_form);?>&patient_id=<?php echo attr($form_pid);?>' id='theform'>
 <div id="report_parameters">
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
@@ -390,7 +453,7 @@ function sel_patient() {
       <td><?php echo xlt('Provider'); ?>:</td>
       <td><?php
         $query = "SELECT id, lname, fname FROM users WHERE ".
-                "authorized=1 AND active!=0 ORDER BY lname, fname"; 
+                "authorized=1 AND active!=0 ORDER BY lname, fname";
         $ures = sqlStatement($query);
         echo "   <select name='form_provider'>\n";
         echo "    <option value=''>-- " . xlt('All') . " --\n";
@@ -446,7 +509,7 @@ function sel_patient() {
                     <?php if($type_form == '1') { ?>
                     <a href="../patient_file/summary/demographics.php" class="css_button" onclick="top.restoreSession()">
                          <span><?php echo xlt('Back To Patient');?></span></a>
-                    <?php } ?>    
+                    <?php } ?>
                     </div>
                     <?php } ?>
                 </div>
@@ -486,7 +549,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
     $query .= "AND c.ct_proc = '1' ";
     $query .= "AND activity > 0 ORDER BY fe.date, fe.id ";
     $res = sqlStatement($query,$sqlBindArray);
- 
+
     if ($_REQUEST['form_csvexport']) {
       // CSV headers:
       if (true) {
@@ -525,14 +588,14 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
     <td class="title" ><?php echo xlt('Patient Ledger'); ?></td>
   </tr>
     <tr>
-        <?php 
+        <?php
             $title = xl('All Providers');
             if($form_provider) { $title = xl('For Provider') . ': '.User_Id_Look($form_provider); }
         ?>
     <td class="title" ><?php echo text($title); ?></td>
     </tr>
     <tr>
-        <?php 
+        <?php
             $title = xl('For Dates') . ': '.$form_from_date.' - '.$form_to_date;
         ?>
     <td class="title" ><?php echo text($title); ?></td>
@@ -598,7 +661,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
                     $credits = GetAllCredits($prev_encounter_id, $form_pid);
                     if(count($credits) > 0) {
                         if(!$hdr_printed) {
-                            PrintEncHeader($prev_row{'date'}, 
+                            PrintEncHeader($prev_row{'date'},
                             $prev_row{'reason'}, $prev_row{'provider_id'});
                         }
                         PrintCreditDetail($credits, $form_pid);
@@ -611,7 +674,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
             if($erow{'id'}) {
                 // Now print an encounter heading line -
                 if(!$hdr_printed) {
-                    PrintEncHeader($erow{'date'}, 
+                    PrintEncHeader($erow{'date'},
                     $erow{'reason'}, $erow{'provider_id'});
                     $hdr_printed = true;
                 }
@@ -639,9 +702,9 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
                 $enc_bal += $erow['fee'];
                 $orow++;
 
-                if ($_REQUEST['form_csvexport']) { 
+                if ($_REQUEST['form_csvexport']) {
                     echo $csv;
-                } else { 
+                } else {
                     echo $print;
                 }
             }
@@ -652,14 +715,14 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
             $credits = GetAllCredits($prev_encounter_id, $form_pid);
             if(count($credits) > 0) {
                 if(!$hdr_printed) {
-                  PrintEncHeader($prev_row{'date'}, 
+                  PrintEncHeader($prev_row{'date'},
                   $prev_row{'reason'}, $prev_row{'provider_id'});
                 }
                 PrintCreditDetail($credits, $form_pid);
             }
             if($hdr_printed) PrintEncFooter();
         }
-    // This is the end of the encounter/charge loop - 
+    // This is the end of the encounter/charge loop -
         $uac = GetAllUnapplied($form_pid,$from_date,$to_date);
         if(count($uac) > 0) {
             if($orow) {
@@ -671,7 +734,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
     if (!$_REQUEST['form_csvexport'] && $orow) {
       echo "<tr bgcolor='#DDFFFF'>\n";
       echo " <td colspan='2'>&nbsp;</td>";
-      echo " <td class='bold' colspan='2'>" . xlt("Grand Total") ."</td>\n"; 
+      echo " <td class='bold' colspan='2'>" . xlt("Grand Total") ."</td>\n";
       echo " <td class='bold' style='text-align: right;'>". text($total_units) ."</td>\n";
       echo " <td class='bold' style='text-align: right;'>". text(oeFormatMoney($total_chg)) ."</td>\n";
       echo " <td class='bold' style='text-align: right;'>". text(oeFormatMoney($total_pmt)) ."</td>\n";
@@ -689,7 +752,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
                     $next_appoint_date = oeFormatShortDate($events[0]['pc_eventDate']);
                     $next_appoint_time = substr($events[0]['pc_startTime'],0,5);
                     if(strlen(umname) != 0 ) {
-                        $next_appoint_provider = $events[0]['ufname'] . ' ' . $events[0]['umname'] . ' ' .  $events[0]['ulname']; 
+                        $next_appoint_provider = $events[0]['ufname'] . ' ' . $events[0]['umname'] . ' ' .  $events[0]['ulname'];
                     }
                     else
                     {
@@ -700,7 +763,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
   <tr>
     <td class="title" ><?php echo xlt('Next Appointment Date') . ': ' . text($next_appoint_date) . ' ' . xlt('Time') . ' ' . text($next_appoint_time) . ' ' . xlt('Provider') . ' ' . text($next_appoint_provider); ?></td>
   </tr>
-  
+
     <?php
                    }
           } // end ($GLOBALS['print_next_appointment_on_ledger'] == 1)
@@ -714,11 +777,14 @@ if (! $_REQUEST['form_csvexport']) {
     echo "</span>";
     echo '<script>document.getElementById("report_results").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
+    echo '<script> showNoRecordsModal(); </script>';
   }
-        
+
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
 <div class='text'>
-    <?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>
+    <?php echo xlt('Please input search criteria above, and click Submit to view results.' );
+          echo '<script> hideNoRecordsModal(); </script>';
+    ?>
 </div>
 <?php } ?>
 </form>
