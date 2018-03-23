@@ -89,8 +89,8 @@ function saveInsurance($pid)
 function getNewPid()
 {
     $result = sqlQuery("select max(pid)+1 as pid from patient_data");
-    $newpid = 1;
-    if ($result['pid'] > 1) {
+    $newpid = null;
+    if ($result['pid'] >= 1) {
         $newpid = $result['pid'];
     }
     if ($newpid == null) {
