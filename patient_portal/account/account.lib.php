@@ -29,12 +29,8 @@ function isNew($dob = '', $lname = '', $fname = '', $email = '')
     $dob = '%' . trim($dob) . '%';
 
     $semail = '%' . trim($email) . '%';
-    $sql = "select pid from patient_data Where patient_data.lname LIKE ? And patient_data.fname LIKE ? And patient_data.DOB LIKE ? order by date limit 0,1";
-    $data = array(
-            $last,
-            $first,
-            $dob
-    );
+    $sql = "";
+    $data = array();
     if ($email) {
         $sql = "select pid from patient_data Where patient_data.lname LIKE ? And patient_data.fname LIKE ? And patient_data.DOB LIKE ? And patient_data.email LIKE ? order by date limit 0,1";
         $data = array(
@@ -44,6 +40,14 @@ function isNew($dob = '', $lname = '', $fname = '', $email = '')
             $semail
         );
     }
+    else {
+    $sql = "select pid from patient_data Where patient_data.lname LIKE ? And patient_data.fname LIKE ? And patient_data.DOB LIKE ? order by date limit 0,1";
+    $data = array(
+            $last,
+            $first,
+            $dob
+    );
+   }
     $row = sqlQuery($sql, $data);
 
     return $row['pid'] ? $row['pid'] : 0;
