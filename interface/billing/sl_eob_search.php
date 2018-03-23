@@ -428,29 +428,29 @@ if ($_POST['form_portalnotify']) {
     $reason = "\n\n";
     if ($countCase1 != 0) {
       //reason for case 1
-      $reason .= $countCase1 . " SELECTED STATEMENTS NOT PRINTED: ";
+      $reason .= $countCase1 . " SELECTED STATEMENT(S) NOT PRINTED: ";
       $reason .= "Statement amount value less than minimum amount value to print.";
       $reason .= "\n  PATIENT NAMES: ";
       foreach ($GLOBALS['pat_below_minimum_amount'] as $pat_name) {
-        $reason .= "{$pat_name}  ";
+        $reason .= "{$pat_name} | ";
       }
     }
     if ($countCase2 != 0) {
       //reason for case 2
-      $reason .= "\n\n" . $countCase2 . " SELECTED STATEMENTS NOT PRINTED: ";
+      $reason .= "\n\n" . $countCase2 . " SELECTED STATEMENT(S) NOT PRINTED: ";
       $reason .= "The patient is set to no statement";
       $reason .= "\n  PATIENT NAMES: ";
       foreach ($GLOBALS['pat_set_no_stmt'] as $pat_name) {
-        $reason .= "{$pat_name}  ";
+        $reason .= "{$pat_name} | ";
       }
     }
     if ($countCase3 != 0) {
       //reason for case 3
-      $reason .= "\n\n" . $countCase3 . " SELECTED STATEMENTS NOT PRINTED: ";
+      $reason .= "\n\n" . $countCase3 . " SELECTED STATEMENT(S) NOT PRINTED: ";
       $reason .= "The insurance company does not allow statements";
       $reason .= "\n  PATIENT NAMES: ";
       foreach ($GLOBALS['pat_not_allowed_insurance_company'] as $pat_name) {
-        $reason .= "{$pat_name}  ";
+        $reason .= "{$pat_name} | ";
       }
     }
     fwrite($fhprint, $reason);
