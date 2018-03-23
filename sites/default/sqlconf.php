@@ -1,18 +1,14 @@
 <?php
 //  LibreEHR
 //  MySQL Config
-
-$host	= 'localhost';
-$port	= '3306';
-$login	= 'libreehrmy';
-$pass	= 'Paki2050';
-$dbase	= 'libreehrmy';
-
-//Added ability to disable
-//utf8 encoding - bm 05-2009
+//  Referenced from /library/sqlconf.php.
 global $disable_utf8_flag;
 $disable_utf8_flag = false;
-
+$host	= 'localhost';
+$port	= '3306';
+$login	= 'libreehr';
+$pass	= 'libreehr';
+$dbase	= 'libreehr';
 $sqlconf = array();
 global $sqlconf;
 $sqlconf["host"]= $host;
@@ -24,7 +20,7 @@ $sqlconf["dbase"] = $dbase;
 //////////////////////////
 //////////////////////////
 //////DO NOT TOUCH THIS///
-$config = 1; /////////////
+$config = 0; /////////////
 //////////////////////////
 //////////////////////////
 //////////////////////////
