@@ -231,7 +231,7 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         $duration = abs($_POST['form_duration']); // fixes #395
     }
     //check for selected appointment time
-    if ($GLOBALS['check_appt_time'] == '1') {
+    if ($GLOBALS['check_appt_time'] == 1) {
       //before starttime gets the values from form_hour & form_minute after clicking save,
       //check if they (tmph & tmpm) are within clinic hours
       $user_ampm = $_POST['form_ampm'];
