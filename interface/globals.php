@@ -271,7 +271,6 @@ if (!empty($glrow)) {
       $gl_user[$iter]=$row;
     }
   }
-}
   // Set global parameters from the database globals table.
   // Some parameters require custom handling.
   //
