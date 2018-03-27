@@ -91,6 +91,7 @@ function dropDownPayors() {
 
 /*
  * This function shows From and To dates
+ * @return: Echo Html
  */
 function showFromAndToDates() {
     echo "<td class='label'>";
@@ -116,6 +117,7 @@ function showFromAndToDates() {
 /*
  * This function shows the patients' age range
  * in clinical and patient_list_creation reports
+ * @return: Echo Html
  */
 function showPatientAgeRange() {
     echo "<td class='label'>";

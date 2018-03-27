@@ -1,8 +1,8 @@
 <?php
 /*
- * These functions are common functions used in the Adjustments reports. They have pulled out 
- * and placed in this file. This is done to prepare the for building a
- * report generator.
+ * These functions are common functions used in the Adjustments reports. 
+ * They have been pulled out and placed in this file. This is done to prepare 
+ * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
  * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 

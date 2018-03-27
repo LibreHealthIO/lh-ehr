@@ -29,122 +29,128 @@ require_once("$srcdir/billing.inc");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
- $errmsg  = "";
- $alertmsg = ''; // not used yet but maybe later
- $grand_total_charges    = 0;
- $grand_total_copays     = 0;
- $grand_total_encounters = 0;
-
-function postError($msg) {
-  global $errmsg;
-  if ($errmsg) $errmsg .= '<br />';
-  $errmsg .= $msg;
-}
-
-function bucks($amount) {
-  if ($amount) echo oeFormatMoney($amount);
-}
-
-function endDoctor(&$docrow) {
-  global $grand_total_charges, $grand_total_copays, $grand_total_encounters;
-  if (!$docrow['docname']) return;
-
-  echo " <tr class='report_totals'>\n";
-  echo "  <td colspan='5'>\n";
-  echo "   &nbsp;" . xl('Totals for','','',' ') . $docrow['docname'] . "\n";
-  echo "  </td>\n";
-  echo "  <td align='right'>\n";
-  echo "   &nbsp;" . $docrow['encounters'] . "&nbsp;\n";
-  echo "  </td>\n";
-  echo "  <td align='right'>\n";
-  echo "   &nbsp;"; bucks($docrow['charges']); echo "&nbsp;\n";
-  echo "  </td>\n";
-  echo "  <td align='right'>\n";
-  echo "   &nbsp;"; bucks($docrow['copays']); echo "&nbsp;\n";
-  echo "  </td>\n";
-  echo "  <td colspan='2'>\n";
-  echo "   &nbsp;\n";
-  echo "  </td>\n";
-  echo " </tr>\n";
-
-  $grand_total_charges     += $docrow['charges'];
-  $grand_total_copays      += $docrow['copays'];
-  $grand_total_encounters  += $docrow['encounters'];
-
-  $docrow['charges']     = 0;
-  $docrow['copays']      = 0;
-  $docrow['encounters']  = 0;
-
-  $totals = array('grand_total_charges' => $grand_total_charges,
-  				  'grand_total_copays' => $grand_total_copays,
-  				  'grand_total_encounters' => $grand_total_encounters);
-  return $totals;
-}
+$errmsg  = "";
+$alertmsg = ''; // not used yet but maybe later
+$grand_total_charges    = 0;
+$grand_total_copays     = 0;
+$grand_total_encounters = 0;
 
 $form_facility  = isset($_POST['form_facility']) ? $_POST['form_facility'] : '';
 $from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
 $to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
- 	if ($_POST['form_refresh']) {
-	  $from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+if ($_POST['form_refresh']) {
+	$from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
 	  $to_date = fixDate($_POST['form_to_date'], "");
 
-	  // MySQL doesn't grok full outer joins so we do it the hard way.
-	  //
-	  $query = "( " .
-	   "SELECT " .
-	   "e.pc_eventDate, e.pc_startTime, " .
-	   "fe.encounter, fe.date AS encdate, " .
-	   "f.authorized, " .
-	   "p.fname, p.lname, p.pid, " .
-	   "CONCAT( u.lname, ', ', u.fname ) AS docname " .
-	   "FROM libreehr_postcalendar_events AS e " .
-	   "LEFT OUTER JOIN form_encounter AS fe " .
-	   "ON fe.date = e.pc_eventDate AND fe.pid = e.pc_pid " .
-	   "LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'patient_encounter' " .
-	   "LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .
-	   // "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
-	   "LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";
-	  if ($to_date) {
-	   $query .= "e.pc_eventDate >= '$from_date' AND e.pc_eventDate <= '$to_date' ";
-	  } else {
-	   $query .= "e.pc_eventDate = '$from_date' ";
-	  }
-	  if ($form_facility !== '') {
-	   $query .= "AND e.pc_facility = '" . add_escape_custom($form_facility) . "' ";
-	  }
-	  // $query .= "AND ( e.pc_catid = 5 OR e.pc_catid = 9 OR e.pc_catid = 10 ) " .
-	  $query .= "AND e.pc_pid != '' AND e.pc_apptstatus != '?' " .
-	   ") UNION ( " .
-	   "SELECT " .
-	   "e.pc_eventDate, e.pc_startTime, " .
-	   "fe.encounter, fe.date AS encdate, " .
-	   "f.authorized, " .
-	   "p.fname, p.lname, p.pid, " .
-	   "CONCAT( u.lname, ', ', u.fname ) AS docname " .
-	   "FROM form_encounter AS fe " .
-	   "LEFT OUTER JOIN libreehr_postcalendar_events AS e " .
-	   "ON fe.date = e.pc_eventDate AND fe.pid = e.pc_pid AND " .
-	   // "( e.pc_catid = 5 OR e.pc_catid = 9 OR e.pc_catid = 10 ) " .
-	   "e.pc_pid != '' AND e.pc_apptstatus != '?' " .
-	   "LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'patient_encounter' " .
-	   "LEFT OUTER JOIN patient_data AS p ON p.pid = fe.pid " .
-	   // "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
-	   "LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";
-	  if ($to_date) {
-	   // $query .= "LEFT(fe.date, 10) >= '$from_date' AND LEFT(fe.date, 10) <= '$to_date' ";
-	   $query .= "fe.date >= '$from_date 00:00:00' AND fe.date <= '$to_date 23:59:59' ";
-	  } else {
-	   // $query .= "LEFT(fe.date, 10) = '$from_date' ";
-	   $query .= "fe.date >= '$from_date 00:00:00' AND fe.date <= '$from_date 23:59:59' ";
-	  }
-	  if ($form_facility !== '') {
-	   $query .= "AND fe.facility_id = '" . add_escape_custom($form_facility) . "' ";
-	  }
-	  $query .= ") ORDER BY docname, IFNULL(pc_eventDate, encdate), pc_startTime";
-
-	  $res = sqlStatement($query);
+	// MySQL doesn't grok full outer joins so we do it the hard way.
+	//
+	$query = "( " .
+	   	"SELECT " .
+	   	"e.pc_eventDate, e.pc_startTime, " .
+	   	"fe.encounter, fe.date AS encdate, " .
+	   	"f.authorized, " .
+	   	"p.fname, p.lname, p.pid, " .
+	   	"CONCAT( u.lname, ', ', u.fname ) AS docname " .
+	   	"FROM libreehr_postcalendar_events AS e " .
+	   	"LEFT OUTER JOIN form_encounter AS fe " .
+	   	"ON fe.date = e.pc_eventDate AND fe.pid = e.pc_pid " .
+	   	"LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'patient_encounter' " .
+	   	"LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .
+	   	// "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
+	   	"LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";
+	if ($to_date) {
+	   	$query .= "e.pc_eventDate >= '$from_date' AND e.pc_eventDate <= '$to_date' ";
+	} else {
+	   	$query .= "e.pc_eventDate = '$from_date' ";
 	}
+	if ($form_facility !== '') {
+	   	$query .= "AND e.pc_facility = '" . add_escape_custom($form_facility) . "' ";
+	}
+	// $query .= "AND ( e.pc_catid = 5 OR e.pc_catid = 9 OR e.pc_catid = 10 ) " .
+	$query .= "AND e.pc_pid != '' AND e.pc_apptstatus != '?' " .
+	   	") UNION ( " .
+	   	"SELECT " .
+	   	"e.pc_eventDate, e.pc_startTime, " .
+	   	"fe.encounter, fe.date AS encdate, " .
+	   	"f.authorized, " .
+	   	"p.fname, p.lname, p.pid, " .
+	   	"CONCAT( u.lname, ', ', u.fname ) AS docname " .
+	   	"FROM form_encounter AS fe " .
+	   	"LEFT OUTER JOIN libreehr_postcalendar_events AS e " .
+	   	"ON fe.date = e.pc_eventDate AND fe.pid = e.pc_pid AND " .
+	   	// "( e.pc_catid = 5 OR e.pc_catid = 9 OR e.pc_catid = 10 ) " .
+	   	"e.pc_pid != '' AND e.pc_apptstatus != '?' " .
+	   	"LEFT OUTER JOIN forms AS f ON f.pid = fe.pid AND f.encounter = fe.encounter AND f.formdir = 'patient_encounter' " .
+	   	"LEFT OUTER JOIN patient_data AS p ON p.pid = fe.pid " .
+	   	// "LEFT OUTER JOIN users AS u ON BINARY u.username = BINARY f.user WHERE ";
+	   	"LEFT OUTER JOIN users AS u ON u.id = fe.provider_id WHERE ";
+	if ($to_date) {
+	   	// $query .= "LEFT(fe.date, 10) >= '$from_date' AND LEFT(fe.date, 10) <= '$to_date' ";
+	   	$query .= "fe.date >= '$from_date 00:00:00' AND fe.date <= '$to_date 23:59:59' ";
+	} else {
+	   	// $query .= "LEFT(fe.date, 10) = '$from_date' ";
+	   	$query .= "fe.date >= '$from_date 00:00:00' AND fe.date <= '$from_date 23:59:59' ";
+	}
+	if ($form_facility !== '') {
+	   	$query .= "AND fe.facility_id = '" . add_escape_custom($form_facility) . "' ";
+	}
+	$query .= ") ORDER BY docname, IFNULL(pc_eventDate, encdate), pc_startTime";
 
+	$res = sqlStatement($query);
+}
+
+function postError($msg) {
+  	global $errmsg;
+  	if ($errmsg) $errmsg .= '<br />';
+  	$errmsg .= $msg;
+}
+
+function bucks($amount) {
+ 	if ($amount) echo oeFormatMoney($amount);
+}
+
+function endDoctor(&$docrow) {
+	global $grand_total_charges, $grand_total_copays, $grand_total_encounters;
+	if (!$docrow['docname']) return;
+
+	echo " <tr class='report_totals'>\n";
+	echo "  <td colspan='5'>\n";
+	echo "   &nbsp;" . xl('Totals for','','',' ') . $docrow['docname'] . "\n";
+	echo "  </td>\n";
+	echo "  <td align='right'>\n";
+	echo "   &nbsp;" . $docrow['encounters'] . "&nbsp;\n";
+	echo "  </td>\n";
+	echo "  <td align='right'>\n";
+	echo "   &nbsp;"; bucks($docrow['charges']); echo "&nbsp;\n";
+	echo "  </td>\n";
+	echo "  <td align='right'>\n";
+	echo "   &nbsp;"; bucks($docrow['copays']); echo "&nbsp;\n";
+	echo "  </td>\n";
+	echo "  <td colspan='2'>\n";
+	echo "   &nbsp;\n";
+	echo "  </td>\n";
+	echo " </tr>\n";
+
+	$grand_total_charges     += $docrow['charges'];
+	$grand_total_copays      += $docrow['copays'];
+	$grand_total_encounters  += $docrow['encounters'];
+
+	$docrow['charges']     = 0;
+	$docrow['copays']      = 0;
+	$docrow['encounters']  = 0;
+
+	$totals = array('grand_total_charges' => $grand_total_charges,
+	  				'grand_total_copays' => $grand_total_copays,
+	  				'grand_total_encounters' => $grand_total_encounters);
+	return $totals;
+}
+
+/*
+ * This function is for displaying the appointment and encou
+ * @params None
+ * @return void - Simply echo HTML encoded string
+ * @author: Tigpezeghe Rodrige
+ */
 function displayResult($res) {
 	$docrow = array('docname' => '', 'charges' => 0, 'copays' => 0, 'encounters' => 0);
 
