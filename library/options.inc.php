@@ -112,7 +112,7 @@ function generate_select_list($tag_name, $list_id, $currvalue, $title, $empty_na
 
     if ($class) {
                 $class_esc = attr($class);
-        $s .= " class='$class_esc'";
+        $s .= " class='$class_esc form-control form-rounded'";
     }
     if ($onchange) {
         $s .= " onchange='$onchange'";

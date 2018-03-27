@@ -39,6 +39,7 @@ require_once(dirname(__FILE__) . "/../../library/classes/X12Partner.class.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/payment.inc.php");
+require_once("$srcdir/headers.inc.php");
 //===============================================================================
 //Deletion of payment and its corresponding distributions.
 //===============================================================================
@@ -378,6 +379,9 @@ document.onclick=HideTheAjaxDivs;
 .left{border-left:1px solid black;}
 .right{border-right:1px solid black;}
 </style>
+<?php
+  call_required_libraries(['bootstrap']);
+?>
 </head>
 <body class="body_top" onLoad="OnloadAction()">
 <form name='new_payment' method='post'  style="display:inline" >
@@ -406,111 +410,64 @@ document.onclick=HideTheAjaxDivs;
       <tr>
         <td colspan="6" align="left">&nbsp;<font class='title'><?php echo htmlspecialchars( xl('Payment List'), ENT_QUOTES) ?></font></td>
       </tr>
-      <tr height="5">
-        <td colspan="6" align="left" ></td>
-      </tr>
       <tr>
-        <td colspan="6" align="left" ><table width="954" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="5"></td>
-            <td width="106"></td>
-            <td width="128"></td>
-            <td width="5"></td>
-            <td width="82"></td>
-            <td width="128"></td>
-            <td width="5"></td>
-            <td width="113"></td>
-            <td width="125"></td>
-            <td width="5"></td>
-            <td width="90"></td>
-            <td width="162"></td>
-          </tr>
-          <tr>
-            <td align="right"></td>
-            <td align="left" class="text"><?php echo generate_select_list("payment_date", "payment_date", "$PaymentDate", "Payment Date","","class4 text");?></td>
-            <td colspan="4">
-                <table  border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td align="left" class="text"><?php echo htmlspecialchars( xl('From'), ENT_QUOTES).':' ?></td>
-                    <td><input type='text'  style="width:90px;" name='FromDate' id='FromDate' class="text" value='<?php echo attr($FromDate); ?>' />
-                       <script>
-                           $(function() {
-                               $("#FromDate").datetimepicker({
-                                   timepicker: false,
-                                   format: "<?= $DateFormat; ?>"
-                               });
-                           });
-                       </script></td>
-                    <td width="53">&nbsp;</td>
-                    <td align="left" class="text"><?php echo htmlspecialchars( xl('To'), ENT_QUOTES).':' ?></td>
-                    <td><input type='text'  style="width:103px;"  name='ToDate' id='ToDate' class="text" value='<?php echo attr($ToDate); ?>' />
-                       <script>
-                           $(function() {
-                               $("#ToDate").datetimepicker({
-                                   timepicker: false,
-                                   format: "<?= $DateFormat; ?>"
-                               });
-                               $.datetimepicker.setLocale('<?= $DateLocale;?>');
-                           });
-                       </script></td>
-                  </tr>
-                </table>       
-        </td>
-        <td class="text"></td>
-        <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment Method'), ENT_QUOTES).':' ?></td>
-        <td align="left"><?php  echo generate_select_list("payment_method", "payment_method", "$PaymentMethod", "Payment Method"," ","class1 text");?></td>
-        <td></td>
-        <td align="left" class="text"><?php echo htmlspecialchars( xl('Check Number'), ENT_QUOTES).':' ?></td>
-        <td><input type="text" name="check_number"   autocomplete="off"  value="<?php echo htmlspecialchars(formData('check_number'));?>"  id="check_number"  class=" class1 text "   /></td>
-          </tr>
-          <tr>
-            <td align="right"></td>
-        <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment Amount'), ENT_QUOTES).':' ?></td>
-        <td align="left"><input   type="text" name="payment_amount"   autocomplete="off"  id="payment_amount" onKeyUp="ValidateNumeric(this);"  value="<?php echo htmlspecialchars(formData('payment_amount'));?>"  style="text-align:right"    class="class1 text "   /></td>
-        <td align="left" ></td>
-        <td align="left" class="text"><?php echo htmlspecialchars( xl('Paying Entity'), ENT_QUOTES).':' ?></td>
-        <td align="left"><?php  echo generate_select_list("type_name", "payment_type", "$type_name","Paying Entity"," ","class1 text","SearchPayingEntityAction()");?>     </td>
-        <td align="left" ></td>
-        <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment Category'), ENT_QUOTES).':' ?></td>
-        <td align="left"><?php  echo generate_select_list("adjustment_code", "payment_adjustment_code", "$adjustment_code","Paying Category"," ","class1 text");?>          </td>
-            <td></td>
-            <td align="left" class=" text " ><?php echo htmlspecialchars( xl('Pay Status'), ENT_QUOTES).':' ?></td>
-            <td align="left" ><?php echo generate_select_list("PaymentStatus", "payment_status", "$PaymentStatus","Pay Status"," ","class1 text");?></td>
-          </tr>
-          <tr>
-            <td align="right"></td>
-            <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment From'), ENT_QUOTES).':' ?></td>
-            <td align="left" colspan="5" >
+        <td colspan="6" align="left" >
+        <div style="padding: 20px; width: 400px">
+            <table>
+              <?php echo generate_select_list("payment_date", "payment_date", "$PaymentDate", "Payment Date","","class4 text");?>
+              <?php echo htmlspecialchars( xl('From'), ENT_QUOTES).':' ?><input type='text'  style="width:90px;" name='FromDate' id='FromDate' class="text form-control form-rounded" value='<?php echo attr($FromDate); ?>' />
+              <script>
+                   $(function() {
+                       $("#FromDate").datetimepicker({
+                           timepicker: false,
+                           format: "<?= $DateFormat; ?>"
+                       });
+                   });
+              </script>
+              <?php echo htmlspecialchars( xl('To'), ENT_QUOTES).':' ?><input type='text'  style="width:103px;"  name='ToDate' id='ToDate' class="text form-control form-rounded" value='<?php echo attr($ToDate); ?>' />
+               <script>
+                   $(function() {
+                       $("#ToDate").datetimepicker({
+                           timepicker: false,
+                           format: "<?= $DateFormat; ?>"
+                       });
+                       $.datetimepicker.setLocale('<?= $DateLocale;?>');
+                   });
+               </script>
+                <?php echo htmlspecialchars( xl('Payment Method'), ENT_QUOTES).':' ?><?php  echo generate_select_list("payment_method", "payment_method", "$PaymentMethod", "Payment Method"," ","class1 text");?>
 
-            <table width="335" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td width="280">
-                <input type="hidden" id="hidden_ajax_close_value" value="<?php echo htmlspecialchars($div_after_save);?>" /><input name='type_code'  id='type_code' class="text "
-                style=" width:280px;"   onKeyDown="PreventIt(event)" value="<?php echo htmlspecialchars($div_after_save);?>"  autocomplete="off"   /><br> 
-                <!--onKeyUp="ajaxFunction(event,'non','search_payments.php');"-->
-                    <div id='ajax_div_insurance_section'>
-                    <div id='ajax_div_insurance_error'>                 </div>
-                    <div id="ajax_div_insurance" style="display:none;"></div>
+                <?php echo htmlspecialchars( xl('Check Number'), ENT_QUOTES).':' ?>
+                <input type="text" name="check_number"   autocomplete="off"  value="<?php echo htmlspecialchars(formData('check_number'));?>"  id="check_number"  class=" class1 text form-control form-rounded"   />
+                <?php echo htmlspecialchars( xl('Payment Amount'), ENT_QUOTES).':' ?>
+                <input   type="text" name="payment_amount"   autocomplete="off"  id="payment_amount" onKeyUp="ValidateNumeric(this);"  value="<?php echo htmlspecialchars(formData('payment_amount'));?>"  style="text-align:right"    class="class1 text form-control form-rounded"   />
+
+                <?php echo htmlspecialchars( xl('Paying Entity'), ENT_QUOTES).':' ?>
+                <?php  echo generate_select_list("type_name", "payment_type", "$type_name","Paying Entity"," ","class1 text","SearchPayingEntityAction()");?>
+
+                <?php echo htmlspecialchars( xl('Payment Category'), ENT_QUOTES).':' ?>
+                <?php  echo generate_select_list("adjustment_code", "payment_adjustment_code", "$adjustment_code","Paying Category"," ","class1 text");?>
+                <?php echo htmlspecialchars( xl('Pay Status'), ENT_QUOTES).':' ?>
+                <?php echo generate_select_list("PaymentStatus", "payment_status", "$PaymentStatus","Pay Status"," ","class1 text");?>
+                <?php echo htmlspecialchars( xl('Payment From'), ENT_QUOTES).':' ?>
+                <div style="display: inline">
+                  <input type="hidden" id="hidden_ajax_close_value" value="<?php echo htmlspecialchars($div_after_save);?>" /><input name='type_code'  id='type_code' class="text form-control form-rounded"
+                   onKeyDown="PreventIt(event)" value="<?php echo htmlspecialchars($div_after_save);?>"  autocomplete="off"   />
+                  <div id='ajax_div_insurance_section' style="height: 20px; border: 1px solid black">
+                    <div id='ajax_div_insurance_error'>
+                      asdasd
                     </div>
-                    </div>              </td>
-                <td width="50" style="padding-left:5px;"><div  name="div_insurance_or_patient" id="div_insurance_or_patient" class="text"  style="border:1px solid black; padding-left:5px; width:50px; height:17px;"><?php echo htmlspecialchars(formData('hidden_type_code'));?></div><input type="hidden" name="description"  id="description" /><input type="text" name="deposit_date"  id="deposit_date"  style="display:none"/></td>
-              </tr>
-            </table>            </td>
-            <td align="left" class="text"><?php echo htmlspecialchars( xl('Sort Result by'), ENT_QUOTES).':' ?></td>
-            <td align="left" class="text"><?php echo generate_select_list("PaymentSortBy", "payment_sort_by", "$PaymentSortBy","Sort Result by"," ","class1 text");?>            </td>
-            <td align="left" class="text"></td>
-            <td align="left" class="text"><table  border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td><a href="#" class="css_button" onClick="javascript:return SearchPayment();" ><span><?php echo htmlspecialchars( xl('Search'), ENT_QUOTES);?></span></a></td>
-                  </tr>
-                </table></td>
-            <td align="left"></td>
-          </tr>
-          <tr height="5">
-            <td colspan="12" align="left" ></td>
-          </tr>
-        </table></td>
-        </tr>
+                    <div id="ajax_div_insurance" style="display:none;">
+                      
+                    </div>
+                  </div>
+                </div>
+                <?php echo htmlspecialchars( xl('Sort Result by'), ENT_QUOTES).':' ?>
+                <?php echo generate_select_list("PaymentSortBy", "payment_sort_by", "$PaymentSortBy","Sort Result by"," ","class1 text");?>
+                <a href="#" class="css_button" onClick="javascript:return SearchPayment();" ><span><?php echo htmlspecialchars( xl('Search'), ENT_QUOTES);?></span></a>
+            </table>
+        </div>
+        </td>
+      </tr>
     </table>
     </td></tr>
 
