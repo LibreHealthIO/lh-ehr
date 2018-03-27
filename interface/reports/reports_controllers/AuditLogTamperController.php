@@ -64,7 +64,11 @@ if ($form_patient == '' ) $form_pid = '';
 $get_sdate=$start_date ? $start_date : date("Y-m-d H:i:s");
 $get_edate=$end_date ? $end_date : date("Y-m-d H:i:s");
 
-
+/*
+ * This function is responsible for showing the results of the search
+ * @params: None
+ * @return: None
+ */
 function showResults() {
 	$eventname = $_GET['eventname'];
   	$type_event = $_GET['type_event'];
