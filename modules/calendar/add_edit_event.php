@@ -1678,6 +1678,16 @@ function SubmitForm() {
   return true;
 }
 
+$('[name="form_save"]').on('click', function() {
+    var hours = $('[name="form_hour"]').val();
+    var minutes = $('[name="form_minute"]').val();
+
+    if(hours > 6)   //the condition is just for testing purpose I will put the correct one after discussion
+    {
+        window.alert("Time is not valid");
+        $('[name="form_save"]').preventDefault();   
+    }
+});
 </script>
 
 </html>
