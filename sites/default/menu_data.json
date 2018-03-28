@@ -323,14 +323,6 @@
         "requirement" : 0,
         "acl_req" : [ "admin", "users" ]
     }, {
-        "label" : "Users Activity",
-        "menu_id" : "adm0",
-        "target" : "adm",
-        "url" : "/interface/usergroup/users_activity.php",
-        "children" : [ ],
-        "requirement" : 0,
-        "acl_req" : [ "admin", "users" ]
-    }, {
         "label" : "Addr Book",
         "menu_id" : "adb0",
         "target" : "adm",
