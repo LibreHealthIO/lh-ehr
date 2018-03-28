@@ -119,9 +119,8 @@ require_once "reports_controllers/AppointmentsController.php";
                 </td>
                 <td class='label'><?php echo xlt('Provider'); ?>:</td>
                 <td>
-                    <?php // Build a drop-down list of providers.
-                        dropDownProviders();
-                   ?>
+                    <?php // Build a drop-down list of providers. (TRK)
+                        dropDownProviders(); ?>
                 </td>
             </tr>
             <tr>
@@ -136,8 +135,7 @@ require_once "reports_controllers/AppointmentsController.php";
                 <td>
                     <select id="form_apptcat" name="form_apptcat">
                         <?php // Build a drop down of Categories. (TRK)
-                            dropDownCategories();
-                        ?>
+                            dropDownCategories(); ?>
                     </select>
                 </td>
             </tr>
