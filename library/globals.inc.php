@@ -130,6 +130,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'ledger_begin_date',
                                'print_next_appointment_on_ledger',
                                'calendar_view_type',
+                               'calender_event_clinic_hours',
                                'calendar_refresh_freq',
                                'event_color',
                                'pat_trkr_timer',
@@ -1521,6 +1522,13 @@ $GLOBALS_METADATA = array(
       xl('Ending hour of day for calendar events.')
     ),
     
+    'calender_event_clinic_hours' => array(
+      xl('Calendar Event Between Clinic Hours'),
+       'bool',                          // data type
+       '1',                            // default
+      xl('Calender Appointments between Valid Clinic Hours')
+    ),
+
     'calendar_refresh_freq' => array(
       xl('Calendar Refresh Frequency'),
       array(
