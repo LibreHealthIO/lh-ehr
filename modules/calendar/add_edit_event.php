@@ -230,14 +230,19 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
         $duration = abs($_POST['form_duration']); // fixes #395
     }
-       
-     if($tmph*60+$tmpm > $GLOBALS['schedule_end']*60 or $tmph < $GLOBALS['schedule_start']){
-        echo "<html>\n<body>\n<script language='JavaScript'>\n";
-        echo 'alert("Please select time between clinic hours.");';
-        echo " window.close();\n";
-        echo "</script>\n</body>\n</html>\n";
-        exit();    
-     }
+   
+    if($tmph*60+$tmpm+$duration > $GLOBALS['schedule_end']*60 or $tmph < $GLOBALS['schedule_start']){
+       echo "<html>\n<body>\n<script language='JavaScript'>\n";
+       echo 'alert("Please select time between clinic hours ('
+            .xlt($GLOBALS['schedule_start'])
+            .":00 to "
+            .xlt($GLOBALS['schedule_end'])
+            .":00) "
+            .'with valid duration.");';
+       echo " window.close();\n";
+       echo "</script>\n</body>\n</html>\n";
+       exit();    
+    }
      
     $tmph = sprintf( "%02d", $tmph );
     $tmpm = sprintf( "%02d", $tmpm );
