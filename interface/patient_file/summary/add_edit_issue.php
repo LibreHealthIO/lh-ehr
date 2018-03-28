@@ -347,17 +347,17 @@ if ($_POST['form_save']) {
   $tmp_title = addslashes($ISSUE_TYPES[$text_type][2] . ": $form_begin " .
     substr($_POST['form_title'], 0, 40));
 
-  // Close this window and redisplay the updated list of issues.
+ // Close this window and redisplay the updated list of issues.
   //
   echo "<html><body><script language='JavaScript'>\n";
   if ($info_msg) echo " alert('$info_msg');\n";
-
+  echo "alert('successfully added new issue');\n";
   echo " var myboss = opener ? opener : parent;\n";
   echo " if (myboss.refreshIssue) myboss.refreshIssue($issue,'$tmp_title');\n";
   echo " else if (myboss.reloadIssues) myboss.reloadIssues();\n";
   echo " else myboss.location.reload();\n";
   echo " if (parent.$ && parent.$.fancybox) parent.$.fancybox.close();\n";
-  echo " else window.close();\n";
+  echo " else parent.$.fn.fancybox.close();\n";
 
   echo "</script></body></html>\n";
   exit();
