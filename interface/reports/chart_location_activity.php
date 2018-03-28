@@ -7,16 +7,7 @@
 // of the License, or (at your option) any later version.
 
 // This reports checkins and checkouts for a specified patient's chart.
-$fake_register_globals=false;
-$sanitize_all_escapes=true;
-
-require_once("../globals.php");
-require_once("$srcdir/patient.inc");
-require_once("$srcdir/options.inc.php");
-require_once("$srcdir/formatting.inc.php");
-require_once("../../library/report_functions.php");
-
-$form_patient_id = trim($_POST['form_patient_id']);
+require_once "reports_controllers/ChartLocationActivityController.php";
 ?>
 <html>
 <head>
@@ -66,34 +57,8 @@ $form_patient_id = trim($_POST['form_patient_id']);
 
 <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Chart Location Activity'); ?></span>
 
-<?php
-$curr_pid = $pid;
-$ptrow = array();
-if (!empty($form_patient_id)) {
-  $query = "SELECT pid, fname, mname, lname FROM patient_data WHERE " .
-    "pid = ? ORDER BY pid LIMIT 1";
-  $ptrow = sqlQuery($query,array($form_patient_id));
-  if (empty($ptrow)) {
-    $curr_pid = 0;
-    echo "<font color='red'>" . xlt('Chart ID') . " '" . text($form_patient_id) . "' " . xlt('not found!') . "</font><br />&nbsp;<br />";
-  }
-  else {
-    $curr_pid = $ptrow['pid'];
-  }
-}
-else if (!empty($curr_pid)) {
-  $query = "SELECT pid, fname, mname, lname FROM patient_data WHERE " .
-    "pid = ?";
-  $ptrow = sqlQuery($query,array($curr_pid));
-  $form_patient_id = $ptrow['pid'];
-}
-if (!empty($ptrow)) {
-  echo '<span class="title">' . text(xl('for','','',' '));
-  echo text($ptrow['lname']) . ', ' . text($ptrow['fname']) . ' ' . text($ptrow['mname']) . ' ';
-  echo "(" . text($ptrow['pid']) . ")";
-  echo "</span>\n";
-}
-?>
+<?php // check the patient, and if row exists. (TRK)
+  checkPatientId(); ?>
 
 <div id="report_parameters_daterange">
 </div>
@@ -123,62 +88,15 @@ if (!empty($ptrow)) {
 	</div>
 
   </td>
-  <?php showSubmitPrintButtons(); ?>
+  <?php // Show buttons to print and export. (TRK)
+    showSubmitPrintButtons(); ?>
  </tr>
 </table>
 
 </div> <!-- end of parameters -->
 
-<?php
- if ($_POST['form_refresh'] || !empty($ptrow) ) {
-?>
-<div id="report_results">
-<table>
- <thead>
-  <th> <?php echo xlt('Time'); ?> </th>
-  <th> <?php echo xlt('Destination'); ?> </th>
- </thead>
- <tbody>
-<?php
-$row = array();
-if (!empty($ptrow)) {
-  $query = "SELECT ct.ct_when, ct.ct_userid, ct.ct_location, " .
-    "u.username, u.fname, u.mname, u.lname " .
-    "FROM chart_tracker AS ct " .
-    "LEFT OUTER JOIN users AS u ON u.id = ct.ct_userid " .
-    "WHERE ct.ct_pid = ? " .
-    "ORDER BY ct.ct_when DESC";
-  $res = sqlStatement($query,array($curr_pid));
-
-  while ($row = sqlFetchArray($res)) {
-?>
- <tr>
-  <td>
-   <?php echo text(oeFormatShortDate(substr($row['ct_when'], 0, 10))) . text(substr($row['ct_when'], 10)); ?>
-  </td>
-  <td>
-<?php
-    if (!empty($row['ct_location'])) {
-      echo generate_display_field(array('data_type'=>'1','list_id'=>'chartloc'),$row['ct_location']);
-    }
-    else if (!empty($row['ct_userid'])) {
-      echo text($row['lname']) . ', ' . text($row['fname']) . ' ' . text($row['mname']);
-    }
-?>
-  </td>
- </tr>
-<?php
-  } // end while
- } // end if
-?>
-</tbody>
-</table>
-</div> <!-- end of results -->
-<?php } else { ?>
-<div class='text'>
- 	<?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>
-</div>
-<?php } ?>
+<?php // Show results for search. (TRK)
+  showResults(); ?>
 
 </form>
 </body>
