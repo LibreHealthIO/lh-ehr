@@ -806,21 +806,25 @@ var secondary_attributes = "td, tr, .table, .bgcolor1,  ul.tabNav, .navbar, .nav
 $('.primary_color').on("change", function () {
 var primary_color = $('.primary_color').val();
 $(primary_attributes).css('background-color', primary_color);
+$(primary_attributes, parent.document).css('background-color', primary_color);
 });
 
 $('.primary_font_color').on("change", function () {
 var primary_font_color = $('.primary_font_color').val();
 $(primary_attributes).css('color', primary_font_color);
+$(primary_attributes, parent.document).css('color', primary_font_color);
 });
 
 $('.secondary_color').on("change", function () {
 var secondary_color = $('.secondary_color').val();
 $(secondary_attributes).css('background-color', secondary_color);
+$(secondary_attributes, parent.document).css('background-color', secondary_color);
 });
 
 $('.secondary_font_color').on("change", function () {
 var secondary_font_color = $('.secondary_font_color').val();
 $(secondary_attributes).css('color', secondary_font_color);
+$(secondary_attributes, parent.document).css('color', secondary_font_color);
 });
 
   <?php // mdsupport - Highlight search results ?>
