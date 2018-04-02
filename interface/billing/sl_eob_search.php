@@ -234,6 +234,17 @@ $today = date("Y-m-d");
   // Print or download statements if requested.
   //
 if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && $_POST['form_cb']) {
+    //some global variables to keep count of statements ignored
+    //and corresponding patient names, in final print due to:
+    //1) having amount value less than minimum amount to print
+    $GLOBALS['stmts_below_minimum_amount'] = 0;
+    $GLOBALS['pat_below_minimum_amount'] = array();
+    //2) the patient is set to no statement
+    $GLOBALS['stmts_set_no_patient'] = 0;
+    $GLOBALS['pat_set_no_stmt'] = array();
+    //3) the insurance company does not allow statements
+    $GLOBALS['stmts_not_allowed_insurance_company'] = 0;
+    $GLOBALS['pat_not_allowed_insurance_company'] = array();
 
     $fhprint = fopen($STMT_TEMP_FILE, 'w');
     $sqlBindArray = array();
@@ -408,6 +419,41 @@ if ($_POST['form_portalnotify']) {
 
     if (!empty($stmt)) ++$stmt_count;
     fwrite($fhprint, make_statement($stmt));
+
+    //logging the reason for not printing some statements, their count
+    //and corresponding patient names
+    $countCase1 = (string)$GLOBALS['stmts_below_minimum_amount'];
+    $countCase2 = (string)$GLOBALS['stmts_set_no_patient'];
+    $countCase3 = (string)$GLOBALS['stmts_not_allowed_insurance_company'];
+    $reason = "\n\n";
+    if ($countCase1 != 0) {
+      //reason for case 1
+      $reason .= $countCase1 . " SELECTED STATEMENT(S) NOT PRINTED: ";
+      $reason .= "Statement amount value less than minimum amount value to print.";
+      $reason .= "\n  PATIENT NAMES: ";
+      foreach ($GLOBALS['pat_below_minimum_amount'] as $pat_name) {
+        $reason .= "{$pat_name} | ";
+      }
+    }
+    if ($countCase2 != 0) {
+      //reason for case 2
+      $reason .= "\n\n" . $countCase2 . " SELECTED STATEMENT(S) NOT PRINTED: ";
+      $reason .= "The patient is set to no statement";
+      $reason .= "\n  PATIENT NAMES: ";
+      foreach ($GLOBALS['pat_set_no_stmt'] as $pat_name) {
+        $reason .= "{$pat_name} | ";
+      }
+    }
+    if ($countCase3 != 0) {
+      //reason for case 3
+      $reason .= "\n\n" . $countCase3 . " SELECTED STATEMENT(S) NOT PRINTED: ";
+      $reason .= "The insurance company does not allow statements";
+      $reason .= "\n  PATIENT NAMES: ";
+      foreach ($GLOBALS['pat_not_allowed_insurance_company'] as $pat_name) {
+        $reason .= "{$pat_name} | ";
+      }
+    }
+    fwrite($fhprint, $reason);
     fclose($fhprint);
     sleep(1);
 

@@ -422,6 +422,28 @@ function sel_patient() {
     visibility: visible;
     display: inline;
   }
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 }
 </style>
 
@@ -436,10 +458,38 @@ function sel_patient() {
       <?php // can add any additional javascript settings to datetimepicker here; need to prepend first setting with a comma ?>
  });
   });
+  function showNoRecordsModal(){
+    var modal = document.getElementById('noLedgerRecords');
+    modal.style.display = "block";
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+}
 </script>
 
 </head>
 <body class="body_top">
+ <!-- The Modal -->
+  <div id="noLedgerRecords" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>No Records found</p>
+    </div>
+
+  </div>
 <?php if($type_form == '0') { ?>
 <span class='title' id='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Ledger by Date'); ?></span>
 <?php }else{ ?>
@@ -819,6 +869,8 @@ if (! $_REQUEST['form_csvexport']) {
     echo "</span>";
     echo '<script>document.getElementById("report_results").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
+    echo '<script> showNoRecordsModal(); </script>';
+
   }
 
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>

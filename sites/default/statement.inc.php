@@ -39,6 +39,10 @@ $STMT_PRINT_CMD = $GLOBALS['print_command'];
  *      Further customize 2. manually in functions report_2() and create_HTML_statement(), below.
  *
  */
+
+//for getPatientName function
+require_once("../../library/patient.inc");
+
 function make_statement($stmt) {
   if ($GLOBALS['statement_appearance'] == "1") {
     if(is_auth_portal($stmt['pid']) && $_POST['form_portalnotify'])
@@ -105,13 +109,49 @@ function create_HTML_statement($stmt) {
   if (! $stmt['pid']) return ""; // get out if no data
 
   #minimum_amount_due_to _print
-  if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
-  if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
+  if ($stmt['amount'] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) {
+    //increment whenever amount value of statement is less than minimum amount value,
+    //to keep count of such ignored statements in final print
+    $GLOBALS['stmts_below_minimum_amount']++;
+    //also add corresponding patient name
+    array_push($GLOBALS['pat_below_minimum_amount'], getPatientName($stmt['pid']));
+    return "";
+  }
+
+  if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) {
+    //increment whenever the patient is set to no statement,
+    //to keep count of such ignored statements in final print
+    $GLOBALS['stmts_set_no_patient']++;
+    //also add corresponding patient name
+    array_push($GLOBALS['pat_set_no_stmt'], getPatientName($stmt['pid']));
+    return "";
+  }
   if ($GLOBALS['use_statement_print_exclusion'] && $GLOBALS['insurance_statement_exclude'] !=4 ){
-   if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) return "";
-   if ($GLOBALS['insurance_statement_exclude'] ==1 && $stmt['insurance_no_statement_print_sec']) return "";
-   if ($GLOBALS['insurance_statement_exclude'] ==2 && $stmt['insurance_no_statement_print_tri']) return "";
-   if ($GLOBALS['insurance_statement_exclude'] ==3) return "";
+    if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) {
+      //increment whenever the insurance company does not allow statements,
+      //to keep count of such ignored statements in final print
+      $GLOBALS['stmts_not_allowed_insurance_company']++;
+      //also add corresponding patient name
+      array_push($GLOBALS['pat_not_allowed_insurance_company'], getPatientName($stmt['pid']));
+      return "";
+    }
+    if ($GLOBALS['insurance_statement_exclude'] ==1 && $stmt['insurance_no_statement_print_sec']) {
+      //increment whenever the insurance company does not allow statements,
+      //to keep count of such ignored statements in final print
+      $GLOBALS['stmts_not_allowed_insurance_company']++;
+      //also add corresponding patient name
+      array_push($GLOBALS['pat_not_allowed_insurance_company'], getPatientName($stmt['pid']));
+      return "";
+    }
+    if ($GLOBALS['insurance_statement_exclude'] ==2 && $stmt['insurance_no_statement_print_tri']) {
+      //increment whenever the insurance company does not allow statements,
+      //to keep count of such ignored statements in final print
+      $GLOBALS['stmts_not_allowed_insurance_company']++;
+      //also add corresponding patient name
+      array_push($GLOBALS['pat_not_allowed_insurance_company'], getPatientName($stmt['pid']));
+      return "";
+    }
+    if ($GLOBALS['insurance_statement_exclude'] ==3) return "";
   }
 
   // Don't print if decreased
@@ -172,7 +212,7 @@ function create_HTML_statement($stmt) {
   $label_addressee = xl('ADDRESSEE');
   $label_remitto = xl('REMIT TO');
   $label_chartnum = xl('Chart Number');
-  if ($GLOBALS['show_insurance_name_on_custom_statement']) { 
+  if ($GLOBALS['show_insurance_name_on_custom_statement']) {
    if (strlen($stmt['insconum2']) !=0){
       $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
    }
@@ -466,13 +506,49 @@ function create_statement($stmt) {
  if (! $stmt['pid']) return ""; // get out if no data
 
  #minimum_amount_to _print
- if ($stmt[amount] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) return "";
- if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) return "";
+ if ($stmt[amount] <= ($GLOBALS['minimum_amount_to_print']) && $GLOBALS['use_statement_print_exclusion']) {
+    //increment whenever amount value of statement is less than minimum amount value,
+    //to keep count of such ignored statements in final print
+    $GLOBALS['stmts_below_minimum_amount']++;
+    //also add corresponding patient name
+    array_push($GLOBALS['pat_below_minimum_amount'], getPatientName($stmt['pid']));
+    return "";
+  }
+
+ if ($stmt['statement_print'] == "NO" && $GLOBALS['use_statement_print_exclusion']) {
+    //increment whenever the patient is set to no statement,
+    //to keep count of such ignored statements in final print
+    $GLOBALS['stmts_set_no_patient']++;
+    //also add corresponding patient name
+    array_push($GLOBALS['pat_set_no_stmt'], getPatientName($stmt['pid']));
+    return "";
+  };
  if ($GLOBALS['use_statement_print_exclusion'] && $GLOBALS['insurance_statement_exclude'] !=4 ){
-   if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) return "";
-   if ($GLOBALS['insurance_statement_exclude'] ==1 && $stmt['insurance_no_statement_print_sec']) return "";
-   if ($GLOBALS['insurance_statement_exclude'] ==2 && $stmt['insurance_no_statement_print_tri']) return "";
-   if ($GLOBALS['insurance_statement_exclude'] ==3) return "";
+    if ($GLOBALS['insurance_statement_exclude'] ==0 && $stmt['insurance_no_statement_print_pri']) {
+      //increment whenever the insurance company does not allow statements,
+      //to keep count of such ignored statements in final print
+      $GLOBALS['stmts_not_allowed_insurance_company']++;
+      //also add corresponding patient name
+      array_push($GLOBALS['pat_not_allowed_insurance_company'], getPatientName($stmt['pid']));
+      return "";
+    }
+    if ($GLOBALS['insurance_statement_exclude'] ==1 && $stmt['insurance_no_statement_print_sec']) {
+      //increment whenever the insurance company does not allow statements,
+      //to keep count of such ignored statements in final print
+      $GLOBALS['stmts_not_allowed_insurance_company']++;
+      //also add corresponding patient name
+      array_push($GLOBALS['pat_not_allowed_insurance_company'], getPatientName($stmt['pid']));
+      return "";
+    }
+    if ($GLOBALS['insurance_statement_exclude'] ==2 && $stmt['insurance_no_statement_print_tri']) {
+      //increment whenever the insurance company does not allow statements,
+      //to keep count of such ignored statements in final print
+      $GLOBALS['stmts_not_allowed_insurance_company']++;
+      //also add corresponding patient name
+      array_push($GLOBALS['pat_not_allowed_insurance_company'], getPatientName($stmt['pid']));
+      return "";
+    }
+    if ($GLOBALS['insurance_statement_exclude'] ==3) return "";
   }
 
  // Don't print if decreased
@@ -545,7 +621,7 @@ if ($GLOBALS['use_dunning_message']) {
  $label_addressee = xl('ADDRESSEE');
  $label_remitto = xl('REMIT TO');
  $label_chartnum = xl('Chart Number');
- if ($GLOBALS['show_insurance_name_on_custom_statement']) { 
+ if ($GLOBALS['show_insurance_name_on_custom_statement']) {
    if (strlen($stmt['insconum2']) !=0){
       $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
    }
@@ -555,8 +631,8 @@ if ($GLOBALS['use_dunning_message']) {
    }
  }else{
  $label_insinfo = xl('Insurance information on file');
- }    
- 
+ }
+
  $label_totaldue = xl('Total amount due');
  $label_payby = xl('If paying by');
  $label_cards = xl('VISA/MC/AMEX/Dis');
@@ -821,7 +897,7 @@ function osp_create_HTML_statement($stmt) {
   $label_addressee = xl('ADDRESSEE');
   $label_remitto = xl('REMIT TO');
   $label_chartnum = xl('Chart Number');
- if ($GLOBALS['show_insurance_name_on_custom_statement']) { 
+ if ($GLOBALS['show_insurance_name_on_custom_statement']) {
    if (strlen($stmt['insconum2']) !=0){
       $label_insinfo = xl('Insurance Companies '). $stmt['insconum1'] . ', '. $stmt['insconum2'];
    }
@@ -830,7 +906,7 @@ function osp_create_HTML_statement($stmt) {
      $label_insinfo = xl('Insurance Company '). $stmt['insconum1'] ;
    }
  }else{
-    $label_insinfo = xl('Insurance information on file');  
+    $label_insinfo = xl('Insurance information on file');
  }
   $label_totaldue = xl('Total amount due');
   $label_payby = xl('If paying by');

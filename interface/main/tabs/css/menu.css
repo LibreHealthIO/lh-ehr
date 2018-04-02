@@ -108,7 +108,6 @@ and open the template in the editor.
     Latest additions in order to make navbar theme independent by using Bootstrap.
 */
 .nav>li>a{
-    color: #1057c9;
     cursor: pointer;
     font-size: 14px;
     font-weight : 600;

@@ -2,29 +2,29 @@
   /*
    * Patient report
    *
-   * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+   * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
    * No other information in the previous header
    *
-   * LICENSE: This program is free software; you can redistribute it and/or 
-   * modify it under the terms of the GNU General Public License 
-   * as published by the Free Software Foundation; either version 3 
-   * of the License, or (at your option) any later version. 
-   * This program is distributed in the hope that it will be useful, 
-   * but WITHOUT ANY WARRANTY; without even the implied warranty of 
-   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-   * GNU General Public License for more details. 
-   * You should have received a copy of the GNU General Public License 
-   * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
-   * 
+   * LICENSE: This program is free software; you can redistribute it and/or
+   * modify it under the terms of the GNU General Public License
+   * as published by the Free Software Foundation; either version 3
+   * of the License, or (at your option) any later version.
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+   * GNU General Public License for more details.
+   * You should have received a copy of the GNU General Public License
+   * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+   *
    * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
    * See the Mozilla Public License for more details.
    * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
    *
-   * @package LibreHealth EHR 
-   * @author Terry Hill <teryhill@librehealth.io> 
-   * @link http://librehealth.io 
+   * @package LibreHealth EHR
+   * @author Terry Hill <teryhill@librehealth.io>
+   * @link http://librehealth.io
    */
-  
+
   require_once("../../globals.php");
   require_once("$srcdir/lists.inc");
   require_once("$srcdir/acl.inc");
@@ -35,7 +35,7 @@
 
   $DateFormat = DateFormatRead();
   $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
-  
+
   // get various authorization levels
   $auth_notes_a  = acl_check('encounters', 'notes_a');
   $auth_notes    = acl_check('encounters', 'notes');
@@ -44,7 +44,7 @@
   $auth_relaxed  = acl_check('encounters', 'relaxed');
   $auth_med      = acl_check('patients'  , 'med');
   $auth_demo     = acl_check('patients'  , 'demo');
-  
+
   ?>
 <html>
   <head>
@@ -53,7 +53,7 @@
       call_required_libraries(array('jquery-min-3-1-1', 'datepicker'));
     ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-    
+
     <script language='JavaScript'>
       function checkAll(check) {
        var f = document.forms['report_form'];
@@ -62,7 +62,7 @@
        }
        return false;
       }
-      
+
       function show_date_fun(){
         if(document.getElementById('show_date').checked == true){
           document.getElementById('date_div').style.display = '';
@@ -71,7 +71,7 @@
         }
         return;
       }
-      
+
     </script>
   </head>
   <body class="body_top">
@@ -88,6 +88,9 @@
           <input type='hidden' name='ccrAction'>
           <input type='hidden' name='raw'>
           <input type="checkbox" name="show_date" id="show_date" onchange="show_date_fun();" ><span class='text'><?php xl('Use Date Range','e'); ?>
+          <a href="../summary/demographics.php" class="css_button" onclick="top.restoreSession()">
+            <span><?php echo htmlspecialchars(xl('Back To Patient'),ENT_NOQUOTES);?></span>
+          </a>
           <br>
           <div id="date_div" style="display:none" >
             <br>
@@ -247,7 +250,7 @@
                     while ($prow = sqlFetchArray($pres)) {
                         if ($lasttype != $prow['type']) {
                             $lasttype = $prow['type'];
-                    
+
                        /****
                        $disptype = $lasttype;
                        switch ($lasttype) {
@@ -259,17 +262,17 @@
                        }
                        ****/
                             $disptype = $ISSUE_TYPES[$lasttype][0];
-                    
+
                             echo " <tr>\n";
                             echo "  <td colspan='4' class='bold'><b>$disptype</b></td>\n";
                             echo " </tr>\n";
                         }
                         $rowid = $prow['id'];
                         $disptitle = trim($prow['title']) ? $prow['title'] : "[Missing Title]";
-                    
+
                         $ieres = sqlStatement("SELECT encounter FROM issue_encounter WHERE " .
                                             "pid = '$pid' AND list_id = '$rowid'");
-                    
+
                         echo "    <tr class='text'>\n";
                         echo "     <td>&nbsp;</td>\n";
                         echo "     <td>";
@@ -281,7 +284,7 @@
                         echo "     <td>" . htmlspecialchars(oeFormatShortDate($prow['begdate']));
                         if ($prow['enddate']) { echo " - " . htmlspecialchars(oeFormatShortDate($prow['enddate'])); }
                         else { echo " Active"; }
-                    
+
                         echo "</td>\n";
                         echo "</tr>\n";
                     }
@@ -319,13 +322,13 @@
                       if ($result{"form_name"} == "New Patient Encounter") {
                           if ($isfirst == 0) {
                               foreach($registry_form_name as $var) {
-                                  if ($toprint = $html_strings[$var]) { 
+                                  if ($toprint = $html_strings[$var]) {
                                       foreach($toprint as $var) {print $var;}
                                   }
                               }
                               $html_strings = array();
                               echo "</div>\n"; // end DIV encounter_forms
-                              echo "</div>\n\n";  //end DIV encounter_data 
+                              echo "</div>\n\n";  //end DIV encounter_data
                               echo "<br>";
                           }
                           $isfirst = 0;
@@ -336,7 +339,7 @@
                                   " value='" . $result{"encounter"} . "'" .
                                   " class='encounter'".
                                   " >";
-                  
+
                           // show encounter reason, not just 'New Encounter'
                           // trim to a reasonable length for display purposes --cfapress
                           $maxReasonLength = 20;
@@ -344,12 +347,12 @@
                               // The default encoding for this mb_substr() call is set near top of globals.php
                               $result['reason'] = mb_substr($result['reason'], 0, $maxReasonLength) . " ... ";
                           }
-                  
-                          echo $result{"reason"}. 
+
+                          echo $result{"reason"}.
                                   " (" . htmlspecialchars(oeFormatShortDate(date("Y-m-d",strtotime($result{"date"})))) .
                                   ")\n";
                           echo "<div class='encounter_forms'>\n";
-                      } 
+                      }
                       else {
                           $form_name = trim($result{"form_name"});
                           //if form name is not in registry, look for the closest match by
@@ -361,7 +364,7 @@
                           // if the form does not match precisely with any names in the registry, now see if any front partial matches
                           // and change $form_name appropriately so it will print above in $toprint = $html_strings[$var]
                           if (!$form_name_found_flag) { foreach($registry_form_name as $var) {if (strpos($form_name,$var) == 0) {$form_name = $var;}}}
-                       
+
                           if (!is_array($html_strings[$form_name])) {$html_strings[$form_name] = array();}
                           array_push($html_strings[$form_name], "<input type='checkbox' ".
                                                                   " name='" . $result{"formdir"} . "_" . $result{"form_id"} . "'".
@@ -372,7 +375,7 @@
                       }
                   }
                   foreach($registry_form_name as $var) {
-                      if ($toprint = $html_strings[$var]) { 
+                      if ($toprint = $html_strings[$var]) {
                           foreach($toprint as $var) {print $var;}
                       }
                   }
@@ -445,7 +448,7 @@
                 echo '&nbsp;&nbsp;<i>' .  xl_document_category($result->fields['name']) . "</i>";
                 echo '&nbsp;&nbsp;' . xl('Name') . ': <i>' . basename($result->fields['url']) . "</i>";
                 echo '</li>';
-                $result->MoveNext();    
+                $result->MoveNext();
             }
             ?>
         </ul>
@@ -463,10 +466,10 @@
         $("#genfullreport").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$returnurl";?>'; });
         //$("#printform").click(function() { PrintForm(); });
         $(".issuecheckbox").click(function() { issueClick(this); });
-    
+
         // check/uncheck all Forms of an encounter
         $(".encounter").click(function() { SelectForms($(this)); });
-    
+
         $(".generateCCR").click(
             function() {
                     if(document.getElementById('show_date').checked == true){
@@ -520,13 +523,13 @@
                     $("#ccr_form").submit();
             });
         $(".viewCCD").click(
-        function() { 
+        function() {
             var ccrAction = document.getElementsByName('ccrAction');
             ccrAction[0].value = 'viewccd';
                     var raw = document.getElementsByName('raw');
                     raw[0].value = 'no';
             top.restoreSession();
-                    ccr_form.setAttribute("target", "_blank"); 
+                    ccr_form.setAttribute("target", "_blank");
             $("#ccr_form").submit();
                     ccr_form.setAttribute("target", "");
         });
@@ -625,9 +628,9 @@
                     }
             });
     <?php } ?>
-    
+
     });
-    
+
     // select/deselect the Forms related to the selected Encounter
     // (it ain't pretty code folks)
     var SelectForms = function (selectedEncounter) {
@@ -646,19 +649,19 @@
             });
         }
     }
-    
+
     // When an issue is checked, auto-check all the related encounters and forms
     function issueClick(issue) {
         // do nothing when unchecked
         if (! $(issue).attr("checked")) return;
-    
+
         $("#report_form :checkbox").each(function(i, obj) {
             if ($(issue).val().indexOf('/' + $(this).val() + '/') >= 0) {
                 $(this).attr("checked", "checked");
             }
-                
+
         });
     }
-    
+
   </script>
 </html>

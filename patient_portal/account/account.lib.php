@@ -29,12 +29,8 @@ function isNew($dob = '', $lname = '', $fname = '', $email = '')
     $dob = '%' . trim($dob) . '%';
 
     $semail = '%' . trim($email) . '%';
-    $sql = "select pid from patient_data Where patient_data.lname LIKE ? And patient_data.fname LIKE ? And patient_data.DOB LIKE ? order by date limit 0,1";
-    $data = array(
-            $last,
-            $first,
-            $dob
-    );
+    $sql = "";
+    $data = array();
     if ($email) {
         $sql = "select pid from patient_data Where patient_data.lname LIKE ? And patient_data.fname LIKE ? And patient_data.DOB LIKE ? And patient_data.email LIKE ? order by date limit 0,1";
         $data = array(
@@ -44,6 +40,14 @@ function isNew($dob = '', $lname = '', $fname = '', $email = '')
             $semail
         );
     }
+    else {
+    $sql = "select pid from patient_data Where patient_data.lname LIKE ? And patient_data.fname LIKE ? And patient_data.DOB LIKE ? order by date limit 0,1";
+    $data = array(
+            $last,
+            $first,
+            $dob
+    );
+   }
     $row = sqlQuery($sql, $data);
 
     return $row['pid'] ? $row['pid'] : 0;
@@ -89,8 +93,8 @@ function saveInsurance($pid)
 function getNewPid()
 {
     $result = sqlQuery("select max(pid)+1 as pid from patient_data");
-    $newpid = 1;
-    if ($result['pid'] > 1) {
+    $newpid = null;
+    if ($result['pid'] >= 1) {
         $newpid = $result['pid'];
     }
     if ($newpid == null) {
@@ -122,10 +126,9 @@ function generatePassword($length = 8, $strength = 1)
 
 function validEmail($email)
 {
-    if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i", $email)) {
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return true;
     }
-
     return false;
 }
 

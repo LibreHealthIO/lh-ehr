@@ -230,22 +230,30 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
         $duration = abs($_POST['form_duration']); // fixes #395
     }
-    
-    if($GLOBALS['calender_event_clinic_hours'] == 1){
-        if($tmph*60+$tmpm+$duration > $GLOBALS['schedule_end']*60 or $tmph < $GLOBALS['schedule_start']){
-        echo "<html>\n<body>\n<script language='JavaScript'>\n";
-        echo 'alert("Please select time between clinic hours ('
-                .xlt($GLOBALS['schedule_start'])
-                .":00 to "
-                .xlt($GLOBALS['schedule_end'])
-                .":00) "
-                .'with valid duration.");';
-        echo " window.close();\n";
-        echo "</script>\n</body>\n</html>\n";
-        exit();    
-        }
-    }
+
+    //check for selected appointment time
+    if ($GLOBALS['check_appt_time'] == 1) {
+      //before starttime gets the values from form_hour & form_minute after clicking save,
+      //check if they (tmph & tmpm) are within clinic hours
+      $user_ampm = $_POST['form_ampm'];  
+      $user_selected_time = $tmph + ($tmpm/60);
      
+      //checked for AM/PM because globals: schedule start and end times are in 24 hour format
+      if ($user_selected_time < $GLOBALS['schedule_start'] || $user_selected_time + ($duration/60) > $GLOBALS['schedule_end']) {
+        $alert_user_mssg = '<script type="text/javascript">alert("Please select time between clinic hours('
+                            .xlt($GLOBALS['schedule_start'])
+                            .':00 to '
+                            .xlt($GLOBALS['schedule_end'])
+                            .':00) '
+                            .'with valid duration.");'
+                            .');</script>';
+        $close_events_window = '<script type="text/javascript">window.close();</script>';
+        echo $alert_user_mssg;
+        echo $close_events_window;
+        exit();
+      }
+    }
+
     $tmph = sprintf( "%02d", $tmph );
     $tmpm = sprintf( "%02d", $tmpm );
     $starttime = "$tmph:$tmpm:00";
@@ -311,7 +319,7 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
                         "exdate" => ""
                     );
 
- }//if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save") 
+ }//if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
 //=============================================================================================================================
 if ($_POST['form_action'] == "duplicate") {
 
@@ -462,8 +470,8 @@ if ($_POST['form_action'] == "save") {
                         $args['endtime'] = $endtime;
                         $args['locationspec'] = $locationspec;
                         InsertEvent($args);
-                    } 
-                } 
+                    }
+                }
 
                 // after the two diffs above, we must update for remaining providers
                 // those who are intersected in $providers_current and $providers_new
@@ -580,7 +588,7 @@ if ($_POST['form_action'] == "save") {
                     "pc_apptstatus = '" . add_escape_custom($_POST['form_apptstatus']) . "', "  .
                     "pc_prefcatid = '" . add_escape_custom($_POST['form_prefcat']) . "' ,"  .
                     "pc_facility = '" . add_escape_custom((int)$_POST['facility']) ."' ,"  . // FF stuff
-                    "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  . 
+                    "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  .
                     "WHERE pc_eid = '" . add_escape_custom($eid) . "'");
 
                 do_action( 'after_update_event',
@@ -743,13 +751,13 @@ if ($_POST['form_action'] == "save") {
  $repeattype = '0';
  $repeatfreq = '0';
  $patientid = '';
- 
+
  // fix for new calendar
  if (isset($_SESSION['pid']) && $_SESSION['pid'] > 0) $patientid = $_SESSION['pid'];
- 
+
  // used in find_patient.php
  if ($_REQUEST['patientid']) $patientid = $_REQUEST['patientid'];
- 
+
  $patientname = xl('Click to select');
  $patienttitle = "";
  $pcroom = "";
@@ -799,7 +807,7 @@ if ($_POST['form_action'] == "save") {
  } else {
     // a NEW event
     $eventstartdate = $date; // for repeating event stuff - JRM Oct-08
- 
+
     //-------------------------------------
     //(CHEMED)
     //Set default facility for a new event based on the given 'userid'
@@ -818,8 +826,8 @@ if ($_POST['form_action'] == "save") {
               ));
         } else {
           $pref_facility = sqlFetchArray(sqlStatement("
-            SELECT u.facility_id, 
-              f.name as facility 
+            SELECT u.facility_id,
+              f.name as facility
             FROM users u
             LEFT JOIN facility f on (u.facility_id = f.id)
             WHERE u.id = ?
@@ -1110,7 +1118,7 @@ td { font-size:0.8em; }
 <form method='post' name='theform' id='theform' action='add_edit_event.php?eid=<?php echo attr($eid) ?>' />
 <!-- ViSolve : Requirement - Redirect to Create New Patient Page -->
 <input type='hidden' size='2' name='resname' value='empty' />
-<?php 
+<?php
 if ($_POST["resname"]=="noresult"){
 echo '
 <script language="Javascript">
@@ -1133,7 +1141,7 @@ $classpati='';
 <input type="hidden" name="event_start_date" id="event_start_date" value="<?php echo attr($eventstartdate); ?>">
 <center>
 <table border='0' >
-<?php 
+<?php
     $provider_class='';
     $normal='';
     if($_GET['prov']==true){
@@ -1190,8 +1198,8 @@ $classpati='';
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_date' id='form_date'
-    value='<?php echo oeFormatShortDate(attr($date));  ?>'/>  
-    
+    value='<?php echo oeFormatShortDate(attr($date));  ?>'/>
+
 
   </td>
   <td nowrap>
@@ -1202,7 +1210,7 @@ $classpati='';
    <?php echo xlt('Time'); ?>
   </td>
   <td width='1%' nowrap id='tdallday3'>
-   <span>   
+   <span>
     <input type='text' size='2' name='form_hour' value='<?php echo attr($starttimeh) ?>'
      title='<?php echo xla('Event start time'); ?>' /> :
     <input type='text' size='2' name='form_minute' value='<?php echo attr($starttimem) ?>'
@@ -1313,7 +1321,7 @@ $classpati='';
 <?php
 
 // =======================================
-// multi providers 
+// multi providers
 // =======================================
 if  ($GLOBALS['select_multi_providers']) {
 
@@ -1332,7 +1340,7 @@ if  ($GLOBALS['select_multi_providers']) {
             $providers_array = sqlFetchArray($qall);
         }
     }
-    
+
     // build the selection tool
     echo "<select name='form_provider[]' style='width:100%' multiple='multiple' size='5' >";
 
@@ -1351,7 +1359,7 @@ if  ($GLOBALS['select_multi_providers']) {
     echo '</select>';
 
 // =======================================
-// single provider 
+// single provider
 // =======================================
 } else {
 

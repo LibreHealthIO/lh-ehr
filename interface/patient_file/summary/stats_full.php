@@ -113,7 +113,9 @@ function newEncounter() {
 
 <br>
 <div style="text-align:center" class="buttons">
-  <a href='javascript:;' class='css_button' id='back'><span><?php echo htmlspecialchars( xl('Back'), ENT_NOQUOTES); ?></span></a>
+  <a href="demographics.php" class="css_button" onclick="top.restoreSession()">
+    <span><?php echo htmlspecialchars(xl('Back To Patient'),ENT_NOQUOTES);?></span>
+  </a>
 </div>
 <br>
 <br>

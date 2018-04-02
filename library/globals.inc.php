@@ -130,8 +130,8 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'ledger_begin_date',
                                'print_next_appointment_on_ledger',
                                'calendar_view_type',
-                               'calender_event_clinic_hours',
                                'calendar_refresh_freq',
+                               'check_appt_time',
                                'event_color',
                                'pat_trkr_timer',
                                'ptkr_visit_reason',
@@ -214,8 +214,8 @@ $GLOBALS_METADATA = array(
     ),
     'primary_color'=>array(xl('Primary color'),  'color', '#ffffff'),
     'primary_font_color'=>array(xl('Primary font color'),  'color', '#000000'),
-    'secondary_color'=>array(xl('Secondary color'),  'color', '#000000'),
-    'secondary_font_color'=>array(xl('Secondary font color'),  'color', '#ffffff'),
+    'secondary_color'=>array(xl('Secondary color'),  'color', '#ffffff'),
+    'secondary_font_color'=>array(xl('Secondary font color'),  'color', '#000000'),
 
     'libreehr_name' => array(
       xl('Application Title'),
@@ -276,7 +276,7 @@ $GLOBALS_METADATA = array(
       xl('Enable Fees In Menu')
     ),
     // EDI history  2012-09-13
-    
+
     'enable_edihistory_in_menu' => array(
       xl('Enable EDI History In Fees Menu'),
        'bool',                          // data type
@@ -1272,7 +1272,7 @@ $GLOBALS_METADATA = array(
   // Claim Tab
   //
   'Claims' => array(
-  
+
     'claim_type' => array(
      xl('Insurance Claim Type'),
         array(
@@ -1283,7 +1283,7 @@ $GLOBALS_METADATA = array(
         '0',                              // default = CMS 1500
         xl('Insurance Claim Type CMS 1500 , UB-04 or Both Displayed in the Billing Screen'),
     ),
- 
+
     'preprinted_cms_1500' => array(
       xl('Prints the CMS 1500 on the Preprinted form.'),
        'bool',                          // data type
@@ -1407,7 +1407,7 @@ $GLOBALS_METADATA = array(
       '',     // default
       xl('Other Physician #2 Box 79 of the UB04')
     ),
-    
+
   ),
 
 
@@ -1521,12 +1521,13 @@ $GLOBALS_METADATA = array(
        '17',                            // default
       xl('Ending hour of day for calendar events.')
     ),
-    
-    'calender_event_clinic_hours' => array(
-      xl('Calendar Event Between Clinic Hours'),
+
+    'check_appt_time' => array(
+      xl('Check Selected Appointment Time'),
        'bool',                          // data type
-       '1',                            // default
-      xl('Calender Appointments between Valid Clinic Hours')
+       '1',                             // default
+      xl('Do not register appointments with time outside clinic hours.')
+
     ),
 
     'calendar_refresh_freq' => array(
@@ -1540,7 +1541,7 @@ $GLOBALS_METADATA = array(
        '360000',                     // default
       xl('How often the calendar automatically refetches events.')
     ),
-    
+
     'calendar_provider_view_type' => array(
       xl('Resource Title'),
       array(
@@ -1676,7 +1677,7 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '1',                             // default
       xl('Display Canceled Appointments in Calendar.')
-    ), 
+    ),
 
     'auto_create_new_encounters' => array(
       xl('Auto-Create New Encounters'),
@@ -3170,14 +3171,14 @@ $GLOBALS_METADATA = array(
       '0',                               // default
       xl('Show demo system "Save/Load database presets" menu')
     ),
-    
+
     'report_itemizing_pqrs' => array(
       xl('Enable MIPS report itemization'),     // for itemizing reports
       'bool',                           // data type
       '1',                     // default
       xl('Creates patient lists from reports')
     ),
-    
+
 
     'pqrs_creator' => array(
       xl('MIPS Report Creator Name'),       // for XML generation
@@ -3207,7 +3208,7 @@ $GLOBALS_METADATA = array(
       xl('MIPS Registry Name')
     ),
      'pqrs_attestation_date' => array(
-      xl('Default Direct Entry Date'),  
+      xl('Default Direct Entry Date'),
       'text',                           // data type
       '2017-06-06',            // default
       xl('Default date that direct entry encounters will be created on.')
