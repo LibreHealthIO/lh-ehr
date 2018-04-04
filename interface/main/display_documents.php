@@ -30,7 +30,7 @@ require_once('../globals.php');
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/payment_jav.inc.php");
-
+require_once("$srcdir/headers.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 $curdate = date_create(date("Y-m-d"));
@@ -165,7 +165,7 @@ $display_collapse_msg = "display:inline;";
                 size='10' value='<?php echo attr($form_to_doc_date) ?>' title='<?php echo attr($title_tooltip) ?>'>
             <td>
                 <span style='float: left;' id="docrefresh">
-                    <a href='#' class='css_button'  onclick='return validateDate("form_from_doc_date","form_to_doc_date")'> <span><?php echo xlt('Refresh'); ?> </span></a> 
+                    <a href='#' class='css_button cp-misc'  onclick='return validateDate("form_from_doc_date","form_to_doc_date")'> <span><?php echo xlt('Refresh'); ?> </span></a> 
                 </span>
             </td>
         </tr>

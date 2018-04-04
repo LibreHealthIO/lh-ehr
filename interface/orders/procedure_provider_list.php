@@ -26,6 +26,7 @@ require_once("../globals.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
 
 $popup = empty($_GET['popup']) ? 0 : 1;
@@ -82,8 +83,8 @@ function doedclick_edit(ppid) {
 <table>
  <tr class='search'> <!-- bgcolor='#ddddff' -->
   <td>
-   <input type='submit' class='button' name='form_search' value='<?php echo xla("Refresh")?>' />
-   <input type='button' class='button' value='<?php echo xla("Add New"); ?>' onclick='doedclick_add()' />
+   <input type='submit' class='button cp-misc' name='form_search' value='<?php echo xla("Refresh")?>' />
+   <input type='button' class='button cp-positive' value='<?php echo xla("Add New"); ?>' onclick='doedclick_add()' />
   </td>
  </tr>
 </table>

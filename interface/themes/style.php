@@ -70,15 +70,32 @@ echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, 
 
 }
 
-td, tr, .table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, input[type='submit'], ul.tabNav a, .navbar-collapse{
+.table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, ul.tabNav a, .navbar-collapse{
 
   background-color: #$secondary_color;
   color: #$secondary_font_color;
 }
 
-input[type='submit'], input[type='button'],input[type='submit'], button, a[role='button'] {
-	background-color: #$button_color;
-	color: #$button_font_color;
-	border: 2px solid #$button_font_color;
-}";
+.cp-positive {
+background-color: green;
+color: white;
+}
+
+
+.cp-negative {
+background-color: red;
+color: white;
+}
+
+.cp-submit {
+background-color: blue;
+color: white;
+}
+
+.cp-misc {
+	background-color: #888;
+	color: white;
+}
+
+";
 ?>
