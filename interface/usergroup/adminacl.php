@@ -212,10 +212,11 @@ if (!isset($phpgacl_location)) {
      $("#membership_error").empty();
      $("#membership").empty();
      $(xml).find("user").each(function(){
-      username = $(this).find("username").text();       
-      $("#membership").append("<div id='link_" + username + "'><span class='text'>" + username + "</span><a class='link_submit' href='no_javascript' id='" + username + "_membership_list' title='<?php xl('Edit','e'); ?> " + username + "'>(<?php xl('Edit','e'); ?>)</a></span><a class='link_submit' href='no_javascript' id='" + username +  "_membership_hide' style='display: none' title='<?php xl('Hide','e'); ?> " + username + "'>(<?php xl('Hide','e'); ?>)</a><span class='alert' style='display: none;'>&nbsp;&nbsp;<?php xl('This user is not a member of any group','e'); ?>!!!</span><span class='loading' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php xl('LOADING','e'); ?>...</span></div><div id='error_" + username + "'></div><div id='" + username +  "' style='display: none'><table class='lists' border='1' bgcolor='white' cellpadding='3' cellspacing='2'><tr><td align='center'><span class='bold'><?php xl('Active','e'); ?></span></td><td align='center'><span class='bold'><?php xl('Inactive','e'); ?></span></td></tr><tr><td align='center'><select name='active[]' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Remove','e'); ?>' id='" + username  + "_membership_remove' value=' >> '></p></td><td align='center'><select name='inactive[]' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Add','e'); ?>' id='" + username + "_membership_add' value=' << ' ></p></td></tr></table></div>");
+      username = $(this).find("username").text();
+      var link_id  = username.replace(" ", "-");       
+      $("#membership").append("<div id='link_" + link_id + "'><span class='text'>" + username + "</span><a class='link_submit' href='no_javascript' id='" + link_id + "_membership_list' title='<?php xl('Edit','e'); ?> " + link_id + "'>(<?php xl('Edit','e'); ?>)</a></span><a class='link_submit' href='no_javascript' id='" + link_id +  "_membership_hide' style='display: none' title='<?php xl('Hide','e'); ?> " + link_id + "'>(<?php xl('Hide','e'); ?>)</a><span class='alert' style='display: none;'>&nbsp;&nbsp;<?php xl('This user is not a member of any group','e'); ?>!!!</span><span class='loading' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php xl('LOADING','e'); ?>...</span></div><div id='error_" + link_id + "'></div><div id='" + link_id +  "' style='display: none'><table class='lists' border='1' bgcolor='white' cellpadding='3' cellspacing='2'><tr><td align='center'><span class='bold'><?php xl('Active','e'); ?></span></td><td align='center'><span class='bold'><?php xl('Inactive','e'); ?></span></td></tr><tr><td align='center'><select name='active[]' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Remove','e'); ?>' id='" + link_id  + "_membership_remove' value=' >> '></p></td><td align='center'><select name='inactive[]' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Add','e'); ?>' id='" + link_id + "_membership_add' value=' << ' ></p></td></tr></table></div>");
       if ($(this).find("alert").text() == "no membership") {
-       $("#link_" + username + " span.alert").show();              
+       $("#link_" + link_id  + " span.alert").show();              
       } 
      });
      //Show the username list and remove loading indicator      
@@ -292,6 +293,20 @@ if (!isset($phpgacl_location)) {
   function generic_click(cthis) {
    //set up variables and html page pointers
    temparray = cthis.id.split("_");
+   // rebuild array if there are underscores in username
+   if(temparray.length > 3){
+    var temparrayLengthFixed = temparray.length - 3;
+    var taOriginalName = "";
+    for(var taCount = 0; taCount <= temparrayLengthFixed; taCount++){
+      if(taCount > 0){
+        taOriginalName += "_" + temparray[taCount];
+      }else{
+        taOriginalName += temparray[taCount];
+      }
+    }
+    temparray.splice(0, temparrayLengthFixed + 1);
+    temparray.splice(0,0,taOriginalName);
+   }
    identity = temparray[0];
    identityFormatted = identity.replace("-"," ");
    control = temparray[1];
@@ -357,7 +372,6 @@ if (!isset($phpgacl_location)) {
      return_value: return_value
     },
     success: function(xml){
-    
      //SPECIAL CASES to show the add/remove acl form, then exit
      if (identity == "none" && control == "acl") {
       $(contentPointer + " select").empty();
@@ -476,7 +490,7 @@ if (!isset($phpgacl_location)) {
     }   
    });
   return;
-  }                      
+  }
  });
  </script>
         
