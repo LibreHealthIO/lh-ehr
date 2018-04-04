@@ -1,6 +1,6 @@
 <?php
 /**
- * pre Measure 0047 -- Numerator
+ * pre Measure 0008 -- Population Criteria 1
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
   * 
@@ -17,27 +17,31 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
  
-class pre_0047_Numerator extends PQRSFilter
+class pre_0008_PopulationCriteria1 implements PQRSPopulationCriteriaFactory
 {
     public function getTitle()
     {
-        return "Numerator";
+        return "Population Criteria";
     }
-
-    public function test( PQRSPatient $patient, $beginDate, $endDate )
+    
+    public function createInitialPatientPopulation()
     {
-$query =
-" SELECT COUNT(b1.code) AS count".  
-" FROM billing AS b1".
-" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
-" WHERE b1.pid = ? ".
-" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND ( b1.code = '1123F' AND b1.modifier ='') OR( b1.code = '1124F' ); ";
-//1123F-8P hard fail
-$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id))); 
-
-if ($result['count']> 0){ return true;} else {return false;}     
-		
+        return new pre_0008_InitialPatientPopulation1();
+    }
+    
+    public function createNumerators()
+    {
+        return new pre_0008_Numerator1();
+    }
+    
+    public function createDenominator()
+    {
+        return new pre_0008_Denominator1();
+    }
+    
+    public function createExclusion()
+    {
+        return new pre_0008_Exclusion1();
     }
 }
 

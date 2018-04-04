@@ -190,7 +190,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   // Figure out the title and link
   if ($row['type'] == "pqrs_individual_2016") {
     if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2016 PQRS Individual Measures');
+    $type_title = xl('2017 MIPS Measures');
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
   else if ($row['type'] == "pqrs_groups_2016") {

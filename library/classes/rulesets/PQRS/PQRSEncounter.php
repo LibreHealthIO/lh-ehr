@@ -137,10 +137,10 @@ function AddCPT2CodeEncounter($pid,$date,$passedCodes)
 		" `sensitivity`, `billing_note`, `pc_catid`, `provider_id`, ".
 		" `supervisor_id`, `billing_facility`) ".
 		" VALUES ".
-		" ('".$date."', 'PQRS Direct Entry Input:  See Fee Sheet', ".
+		" ('".$date."', 'MIPS Direct Entry Input:  See Fee Sheet', ".
 		" '".$myfacility."','1', ".
 		" '".$pid."','".$myencounterNumber."','0000-00-00 00:00:00', ".
-		" 'normal', 'PQRS CPT2 Entries','9','".$myprovider_id."', ".
+		" 'normal', 'MIPS CPT2 Entries','9','".$myprovider_id."', ".
 		" '0','1');";
 		$result = sqlStatement($query);
 //error_log("DEBUG AddCPT2CodeEncounter() -- Built form_encounter query: \"".$query." with result \"".SqlFetchArray($result)."\"");
@@ -158,9 +158,9 @@ function AddCPT2CodeEncounter($pid,$date,$passedCodes)
 		"  `deleted`, `formdir`) ".
 		" VALUES ".
 		" ('".$date."','".$myencounterNumber."', ".
-		" 'New Patient Encounter', '".$myFormID."', ".
+		" 'Patient Encounter', '".$myFormID."', ".
 		" '".$pid."', '".$myuserID."','Default', '1', ".
-		" '0', 'newpatient');";
+		" '0', 'patient_encounter');";
 		$result = sqlStatement($query);
 //error_log("DEBUG AddCPT2CodeEncounter() -- Built forms-newpatient query: \"".$query." with result \"".SqlFetchArray($result)."\"");
 	}	// End else Create a new encounter

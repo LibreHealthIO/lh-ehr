@@ -1,6 +1,6 @@
 <?php
 /**
- * pre Measure 0007 -- Denominator 1
+ * pre Measure 0008 -- Initial Patient Population 2
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
   * 
@@ -17,28 +17,35 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
  
-class pre_0007_Denominator1 extends PQRSFilter
+class pre_0008_InitialPatientPopulation2 extends PQRSFilter
 {
     public function getTitle() 
     {
-        return "Denominator";
+        return "Initial Patient Population 2";
     }
     
-
     public function test( PQRSPatient $patient, $beginDate, $endDate )
     {
-		$query =
+
+			   $query =
 		"SELECT COUNT(b1.code) as count ". 
-		" FROM billing AS b1". 
+		" FROM billing AS b1".
+		" INNER JOIN billing AS b2 ON (b1.pid = b2.pid) ".  
 		" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".  
 		" JOIN patient_data AS p ON (b1.pid = p.pid)".
-		" INNER JOIN pqrs_efcc1 AS codelist_c ON (b1.code = codelist_c.code)".		
+		" INNER JOIN pqrs_efcc1 AS codelist_a ON (b1.code = codelist_a.code)".
+		" INNER JOIN pqrs_efcc1 AS codelist_c ON (b2.code = codelist_c.code)".		
 		" WHERE b1.pid = ? ".
-		" AND b1.code = 'G8694'";  
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'". 
+		" AND fe.date >= '".$beginDate."' ".
+		" AND fe.date <= '".$endDate."' ".
+		" AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18'  ". 
+		" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0008_a') ".
+		" AND (b2.code = codelist_c.code AND codelist_c.type = 'pqrs_0008_c');";  
 		
 		$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
-if ($result['count']> 0){ return false;}else{return true;}      
-
+		if ($result['count']> 0){ return true;} else {return false;}  
+ 
     }
 }
 

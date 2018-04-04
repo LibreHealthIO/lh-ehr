@@ -1,6 +1,6 @@
 <?php
-/*
- * pre Measure 0001 -- Numerator
+/**
+ * pre Measure 0008 -- Numerator 2
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
   * 
@@ -17,29 +17,26 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
  
-class pre_0001_Numerator extends PQRSFilter
+class pre_0008_Numerator2 extends PQRSFilter
 {
     public function getTitle()
     {
-        return "Numerator";
+        return "Numerator 2";
     }
 
     public function test( PQRSPatient $patient, $beginDate, $endDate )
     {
-	//inverse measure
 $query =
-"SELECT COUNT(b1.code) as count ".  
-" FROM billing AS b1 ".
+"SELECT COUNT(b1.code) as count".  
+" FROM billing AS b1".
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " WHERE b1.pid = ? ".
-" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".  
-" AND b1.code = '3046F';"; 
-//above code can be with 8P.
-//Performance NOT MET is 3044F and 3045F.
-//These need to be a return value (for new engine).
+" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
+" AND b1.code ='G8450';";
+//G8452 is hard fail
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
-if ($result['count'] > 0){ return true;} else {return false;}  
-	
+if ($result['count']> 0){ return true;} else {return false;}   
+
     }
 }
 

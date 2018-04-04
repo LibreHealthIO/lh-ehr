@@ -1,6 +1,6 @@
 <?php
 /**
- * pre Measure 0024 -- Exclusion 
+ * pre Measure 0008 -- Population Criteria 2
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
   * 
@@ -16,17 +16,32 @@
  *
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
-
-class pre_0024_Exclusion extends PQRSFilter
+ 
+class pre_0008_PopulationCriteria2 implements PQRSPopulationCriteriaFactory
 {
-    public function getTitle() 
+    public function getTitle()
     {
-        return "Exclusion";
+        return "Population Criteria 2";
     }
     
-    public function test( PQRSPatient $patient, $beginDate, $endDate )
+    public function createInitialPatientPopulation()
     {
-return false;
+        return new pre_0008_InitialPatientPopulation2();
+    }
+    
+    public function createNumerators()
+    {
+        return new pre_0008_Numerator2();
+    }
+    
+    public function createDenominator()
+    {
+        return new pre_0008_Denominator2();
+    }
+    
+    public function createExclusion()
+    {
+        return new pre_0008_Exclusion2();
     }
 }
 
