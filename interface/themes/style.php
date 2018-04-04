@@ -97,5 +97,10 @@ color: white;
 	color: white;
 }
 
+.cp-output {
+	background-color: purple;
+	color: white;
+}
+
 ";
 ?>

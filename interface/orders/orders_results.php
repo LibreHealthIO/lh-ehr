@@ -715,14 +715,14 @@ if ($form_review) {
  if ($reviewauth) {
  ?>
   <center><p>
-   <input type='submit' name='form_submit' value='<?php xl('Sign Results','e'); ?>' />
+   <input type='submit' name='form_submit' value='<?php xl('Sign Results','e'); ?>' class='cp-positive'/>
   </p></center>
  <?php
  }
  else {
  ?>
   <center><p>
-   <input type='button' name='form_submit' value='<?php xl('Sign Results','e'); ?>' onclick="alert('<?php xl('Not authorized','e') ?>');" />
+   <input type='button' name='form_submit' value='<?php xl('Sign Results','e'); ?>' onclick="alert('<?php xl('Not authorized','e') ?>');" class='cp-positive'/>
   </p></center>
  <?php
  }
