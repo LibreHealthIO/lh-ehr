@@ -783,7 +783,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 </div>
 
 <p>
- <input type='submit'  name='form_save' value='<?php echo xla('Save'); ?>' />
+ <input type='submit'  name='form_save' value='<?php echo xla('Save'); ?>' class="cp-submit" />
 </p>
 </center>
 

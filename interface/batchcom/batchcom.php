@@ -32,6 +32,7 @@ include_once("$srcdir/sql.inc");
 require_once("$srcdir/formatting.inc.php");
 include_once("../../library/acl.inc");
 include_once("batchcom.inc.php");
+require_once("$srcdir/headers.inc.php");
 /** Current format date */
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -301,7 +302,7 @@ if ($_POST['form_action']=='Process') {
     <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
      </tr><tr><td>
 
-    <INPUT TYPE="submit" name="form_action" value=<?php xl('Process','e','\'','\''); ?>> </td><td><?php xl('Process takes some time','e')?></td> <td>&nbsp;</td><td>&nbsp;</td></tr>
+    <INPUT TYPE="submit" class="cp-submit" name="form_action" value=<?php xl('Process','e','\'','\''); ?>> </td><td><?php xl('Process takes some time','e')?></td> <td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
 </div>
 </div>

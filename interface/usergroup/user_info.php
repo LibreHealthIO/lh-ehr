@@ -76,7 +76,7 @@
         </TR>
       </TABLE>
       <br>&nbsp;&nbsp;&nbsp;
-      <INPUT TYPE="Submit" VALUE=<?php echo xla('Save Changes'); ?> onClick="return update_password()">
+      <INPUT TYPE="Submit" VALUE=<?php echo xla('Save Changes'); ?> onClick="return update_password()" class="cp-submit">
     </FORM>
     <br><br>
   </BODY>
