@@ -31,6 +31,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("../orders/lab_exchange_tools.php");
+require_once("$srcdir/headers.inc.php");
 $DateFormat = DateFormatRead();
 
 // Indicates if we are entering in batch mode.
@@ -345,7 +346,7 @@ if ($form_batch) {
    <!-- removed by jcw -- check/submit sequece too tedious.  This is a quick fix -->
 <!--   <input type='checkbox' name='form_all' value='1' <?php if ($_POST['form_all']) echo " checked"; ?>><?php xl('Include Completed','e') ?>
    &nbsp;-->
-   <input type='submit' name='form_refresh' value=<?php xl('Refresh','e'); ?>>
+   <input type='submit' name='form_refresh' value=<?php xl('Refresh','e'); ?> class='cp-misc'>
   </td>
  </tr>
 </table>
@@ -714,14 +715,14 @@ if ($form_review) {
  if ($reviewauth) {
  ?>
   <center><p>
-   <input type='submit' name='form_submit' value='<?php xl('Sign Results','e'); ?>' />
+   <input type='submit' name='form_submit' value='<?php xl('Sign Results','e'); ?>' class='cp-positive'/>
   </p></center>
  <?php
  }
  else {
  ?>
   <center><p>
-   <input type='button' name='form_submit' value='<?php xl('Sign Results','e'); ?>' onclick="alert('<?php xl('Not authorized','e') ?>');" />
+   <input type='button' name='form_submit' value='<?php xl('Sign Results','e'); ?>' onclick="alert('<?php xl('Not authorized','e') ?>');" class='cp-positive'/>
   </p></center>
  <?php
  }
@@ -729,7 +730,7 @@ if ($form_review) {
 else {
 ?>
  <center><p>
-  <input type='submit' name='form_submit' value='<?php xl('Save','e'); ?>' />
+  <input type='submit' name='form_submit' value='<?php xl('Save','e'); ?>' class='cp-submit'/>
  </p></center>
 <?php
 }

@@ -33,7 +33,7 @@ $fake_register_globals=false;
 
 //Include required scripts/libraries
 require_once("../globals.php");
-
+require_once("$srcdir/headers.inc.php");
 
 // Reference website links
 $websites = array(
@@ -106,7 +106,7 @@ $form_diagnosis = (isset($_POST['form_diagnosis'])) ? $_POST['form_diagnosis'] :
 		<tr>
 			<td>
 				<div style='margin-left:15px'>
-					<a href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit();'>
+					<a href='#' class='css_button cp-submit' onclick='top.restoreSession(); $("#theform").submit();'>
 					<span>
 						<?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
 					</span>

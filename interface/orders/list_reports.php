@@ -38,6 +38,7 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/classes/Document.class.php");
 require_once("./receive_hl7_results.inc.php");
 require_once("./gen_hl7_order.inc.php");
+require_once("$srcdir/headers.inc.php");
 /** Current format date */
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -350,7 +351,7 @@ foreach (array(
 ?>
 
    &nbsp;
-   <input type='submit' name='form_refresh' value=<?php echo xla('Submit'); ?>>
+   <input type='submit' name='form_refresh' value=<?php echo xla('Submit'); ?> class="cp-submit">
   </td>
  </tr>
 </table>

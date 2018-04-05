@@ -40,7 +40,7 @@
 	<p><i><?php echo xlt('Supports TripleDES encryption/decryption only.');?></i></p>
     <?php }?>   
     
-    <p><input type="submit" value="<?php echo xlt("Upload");?>" /></p>
+    <p><input type="submit" value="<?php echo xlt("Upload");?>" class="cp-positive"/></p>
 </div>
 
 <input type="hidden" name="patient_id" value="<?php echo $this->patient_id;?>" />

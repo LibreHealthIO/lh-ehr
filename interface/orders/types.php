@@ -11,7 +11,7 @@
 require_once("../globals.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formdata.inc.php");
-
+require_once("$srcdir/headers.inc.php");
 // This script can be run either inside the LibreEHR frameset for order catalog
 // maintenance, or as a popup window for selecting an item to order.  In the
 // popup case the GET variables 'popup' (a boolean) and 'order' (an optional
@@ -263,12 +263,12 @@ if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
 
 <p>
 <?php if ($popup) { ?>
-<input type='submit' name='form_save' value='<?php xl('Save','e'); ?>' />
+<input type='submit' name='form_save' value='<?php xl('Save','e'); ?>' class="cp-submit"/>
 &nbsp;
-<input type='button' value=<?php xl('Cancel','e'); ?> onclick='window.close()' />
+<input type='button' value=<?php xl('Cancel','e'); ?> onclick='window.close()' class="cp-negative"/>
 &nbsp;
 <?php } ?>
-<input type='button' value='<?php xl('Add Top Level','e'); ?>' onclick='anode(0)' />
+<input type='button' value='<?php xl('Add Top Level','e'); ?>' onclick='anode(0)' class="cp-positive"/>
 </p>
 
 </form>
