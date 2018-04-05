@@ -1527,6 +1527,7 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '1',                             // default
       xl('Do not register appointments with time outside clinic hours.')
+
     ),
 
     'calendar_refresh_freq' => array(
