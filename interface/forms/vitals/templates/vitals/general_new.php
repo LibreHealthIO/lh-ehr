@@ -674,8 +674,8 @@ echo $result['BMI_status'];
 </tr>
 <tr>
   <td colspan='3' style='text-align:center'>
-    <input type="submit" name="Submit" value="Save Form">
-    <input type="button" class="deleter" id="cancel" value="Don't Save">
+    <input type="submit" name="Submit" class='cp-submit' value="Save Form">
+    <input type="button" class="deleter cp-negative" id="cancel" value="Don't Save">
   </td>
 </tr>
 </table>

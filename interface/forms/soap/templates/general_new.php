@@ -66,8 +66,8 @@
                     </td>
                 </tr>
     <tr>
-        <td><input type="submit" name="Submit" value=<?php echo  xla('Save'); ?>></td>
-    <td><input type="button" id="dontsave" class="deleter" value="<?php echo xla('Cancel'); ?>"> &nbsp;</td>
+        <td><input type="submit" name="Submit" class='cp-submit' value=<?php echo  xla('Save'); ?>></td>
+    <td><input type="button" id="dontsave" class="deleter cp-negative" value="<?php echo xla('Cancel'); ?>"> &nbsp;</td>
     </tr>
             </table>
 <input type="hidden" name="id" value="<?php echo $this->data->get_id();?>" />

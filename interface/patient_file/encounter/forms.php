@@ -521,7 +521,7 @@ if ( $esign->isButtonViewable() ) {
         if ( $esign->isLocked() ) {
             echo "<a href=# class='css_button_small form-edit-button-locked' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."'><span>".xlt('Locked')."</span></a>";
         } else {
-            echo "<a class='css_button_small form-edit-button' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."' target='".
+            echo "<a class='css_button_small form-edit-button cp-positive' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."' target='".
                     "_parent" .
                     "' href='$rootdir/patient_file/encounter/view_form.php?" .
                     "formname=" . attr($formdir) . "&id=" . attr($iter['form_id']) .
@@ -544,7 +544,7 @@ if ( $esign->isButtonViewable() ) {
                     "&pid=".$pid.
                     "' class='css_button_small' title='" . xl('Delete this form') . "' onclick='top.restoreSession()'><span>" . xl('Delete') . "</span></a>";
             } else {
-                ?><a href='javascript:;' class='css_button_small' style='color:gray'><span><?php xl('Delete','e'); ?></span></a><?php
+                ?><a href='javascript:;' class='css_button_small cp-negative' style='color:gray'><span><?php xl('Delete','e'); ?></span></a><?php
             }
         }
 

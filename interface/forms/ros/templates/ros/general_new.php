@@ -1529,8 +1529,8 @@
       </div>
       <div>
         <!-- Save/Cancel buttons -->
-        <input type="button" id="save" value="<?php echo xlt('Save'); ?>"> &nbsp;
-        <input type="button" id="dontsave" class="deleter" value="<?php echo xlt('Cancel'); ?>"> &nbsp;
+        <input type="button" id="save" class='cp-submit' value="<?php echo xlt('Save'); ?>"> &nbsp;
+        <input type="button" id="dontsave" class="deleter cp-negative" value="<?php echo xlt('Cancel'); ?>"> &nbsp;
       </div>
   </body>
 </html>

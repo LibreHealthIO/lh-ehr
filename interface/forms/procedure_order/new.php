@@ -622,12 +622,14 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
           <div style="display: inline-block;">
             <input
               type='button'
+              class='cp-positive'
               value='<?php echo xla('Add Procedure'); ?>'
               onclick="addProcLine()"
             />
             &nbsp;
             <input
               type='button'
+              class='cp-output'
               id="print_button"
               value='<?php echo xla('Print'); ?>'
               onclick="Print()"
@@ -636,6 +638,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             <input
               type='submit'
               name='bn_save'
+              class='cp-submit'
               value='<?php echo xla('Save'); ?>'
               onclick='transmitting = false;'
             />
@@ -643,12 +646,13 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             <input
               type='submit'
               name='bn_xmit'
+              class='cp-submit'
               value='<?php echo xla('Save and Transmit'); ?>'
               onclick='transmitting = true;'
             />
             &nbsp;
             <input
-              class="deleter"
+              class="deleter cp-negative"
               type='button'
               value='<?php echo xla('Cancel'); ?>'
               onclick="top.restoreSession();location='<?php echo $GLOBALS['form_exit_url']; ?>'"

@@ -507,7 +507,7 @@
         "</span></td>";
       
        if (acl_check('admin', 'super') && $GLOBALS['allow_pat_delete']) {
-        echo "<td style='padding-left:1em;'><a class='css_button iframe' href='../deleter.php?patient=" . 
+        echo "<td style='padding-left:1em;'><a class='css_button iframe cp-negative' href='../deleter.php?patient=" . 
          htmlspecialchars($pid,ENT_QUOTES) . "' onclick='top.restoreSession()'>" .
          "<span>".htmlspecialchars(xl('Delete'),ENT_NOQUOTES).
          "</span></a></td>";
