@@ -281,7 +281,7 @@ function openNewTopWindow(newpid,newencounterid) {
         
         <div> 
         <br>        
-        <input type='submit'  name='user_save' value='<?php echo xla('Save'); ?>' />
+        <input type='submit'  name='user_save' value='<?php echo xla('Save'); ?>' class="cp-submit"/>
         </div>          
     </form>
 </div>
@@ -390,7 +390,7 @@ function openNewTopWindow(newpid,newencounterid) {
             </tr>
                 <tr>
                     <td>
-                        <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                        <a href='#' class='css_button cp-submit' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
                             <span> <?php echo xlt('Submit'); ?> </span> </a>
                         <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
                             <a href='#' class='css_button' id='printbutton'>
