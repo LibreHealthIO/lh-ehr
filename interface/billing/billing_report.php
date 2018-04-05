@@ -46,6 +46,7 @@ require_once("$srcdir/billrep.inc");
 require_once(dirname(__FILE__) . "/../../library/classes/OFX.class.php");
 require_once(dirname(__FILE__) . "/../../library/classes/X12Partner.class.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("adjustment_reason_codes.php");
 
@@ -57,7 +58,7 @@ $daysheet_total = false;
 $provider_run = false;
 $DateFormat = DateFormatRead();
 
-if ($GLOBALS['use_custom_daysheet'] != 0) { 
+if ($GLOBALS['use_custom_daysheet'] != 0) {
   $daysheet = true;
   if ($GLOBALS['daysheet_provider_totals'] == 1) {
    $daysheet_total = true;
@@ -346,7 +347,7 @@ function MarkAsCleared(Type)
     {
      Message='<?php echo htmlspecialchars( xl('After saving the TEXT file(s), click [View Log] to check for errors.'), ENT_QUOTES); ?>';
     }
-  if(confirm(Message + "\n\n\n<?php echo addslashes( xl('Total') ); ?>" + ' ' + CheckBoxBillingCount + ' ' +  "<?php echo addslashes( xl('Selected') ); ?>\n" + 
+  if(confirm(Message + "\n\n\n<?php echo addslashes( xl('Total') ); ?>" + ' ' + CheckBoxBillingCount + ' ' +  "<?php echo addslashes( xl('Selected') ); ?>\n" +
   "<?php echo addslashes( xl('Would You Like them to be Marked as Cleared.') ); ?>"))
    {
     document.getElementById('HiddenMarkAsCleared').value='yes';
@@ -471,23 +472,23 @@ if(!isset($_REQUEST['mode']))//default case
  {
   $_REQUEST['final_this_page_criteria'][0]="(form_encounter.date between '".date("Y-m-d 00:00:00")."' and '".date("Y-m-d 23:59:59")."')";
   $_REQUEST['final_this_page_criteria'][1]="billing.billed = '0'";
-  
+
   $_REQUEST['final_this_page_criteria_text'][0]=xl("Date of Service = Today");
   $_REQUEST['final_this_page_criteria_text'][1]=xl("Billing Status = Unbilled");
-  
+
   $_REQUEST['date_master_criteria_form_encounter_date']="today";
   $_REQUEST['master_from_date_form_encounter_date']=date($DateFormat);
   $_REQUEST['master_to_date_form_encounter_date']=date($DateFormat);
-  
+
   $_REQUEST['radio_billing_billed']=0;
- 
+
  }
 ?>
 <table width='100%' border="0" cellspacing="0" cellpadding="0">
  <tr>
       <td width="25%">&nbsp;</td>
       <td width="50%">
-            <?php include_once("$srcdir/../interface/reports/criteria.tab.php"); ?>      
+            <?php include_once("$srcdir/../interface/reports/criteria.tab.php"); ?>
       </td>
       <td width="25%">
 <?php
@@ -495,7 +496,7 @@ if(!isset($_REQUEST['mode']))//default case
                                                         // Criteria section Ends -->
 // ============================================================================================================================================= -->
 ?>
-      
+
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="15%">&nbsp;</td>
@@ -505,27 +506,27 @@ if(!isset($_REQUEST['mode']))//default case
           </tr>
           <tr>
             <td>&nbsp;</td>
-            <td><a onClick="javascript:return SubmitTheScreenPrint();" href="#" 
+            <td><a onClick="javascript:return SubmitTheScreenPrint();" href="#"
     class='link_submit'  ><?php echo '['. xlt('View Printable Report').']' ?></a></td>
           </tr>
-          
-     <?php if ($daysheet) { ?> 
+
+     <?php if ($daysheet) { ?>
           <tr>
             <td>&nbsp;</td>
-            <td><a onClick="javascript:return SubmitTheEndDayPrint();" href="#" 
+            <td><a onClick="javascript:return SubmitTheEndDayPrint();" href="#"
     class='link_submit'  ><?php echo '['.xlt('End Of Day Report').']' ?></a>
-    <?php if ($daysheet_total) { ?> 
+    <?php if ($daysheet_total) { ?>
     <span class=text><?php echo xlt('Totals'); ?> </span>
     <input type=checkbox  name="end_of_day_totals_only" value="1" <?php if ($obj['end_of_day_totals_only'] === '1') echo "checked";?>>
     <?php } ?>
-    <?php if ($provider_run) { ?> 
+    <?php if ($provider_run) { ?>
     <span class=text><?php echo xlt('Provider'); ?> </span>
     <input type=checkbox  name="end_of_day_provider_only" value="1" <?php if ($obj['end_of_day_provider_only'] === '1') echo "checked";?>>
     <?php } ?>
     </td>
           </tr>
         <?php } ?>
-          
+
           <tr>
             <td>&nbsp;</td>
             <td>
@@ -546,7 +547,7 @@ if(!isset($_REQUEST['mode']))//default case
           </tr>
       </table>
 
-      
+
       </td>
  </tr>
 </table>
@@ -572,27 +573,27 @@ if(!isset($_REQUEST['mode']))//default case
 <input type="submit" class="subbtn" name="bn_ub92" value="Queue UB92" title="<?php echo xla('Queue for UB-92 batch processing')?>">
 -->
 <?php if ($GLOBALS['claim_type'] =='0' || $GLOBALS['claim_type'] =='2' ) { ?>
-<input type="submit" class="subbtn" name="bn_x12" value="<?php echo xla('Generate X12')?>"
+<input type="submit" class="subbtn cp-output" name="bn_x12" value="<?php echo xla('Generate X12')?>"
  title="<?php echo xla('Generate and download X12 batch')?>"
  onclick="MarkAsCleared(1)">
 <?php if ($GLOBALS['support_encounter_claims']) { ?>
-<input type="submit" class="subbtn" name="bn_x12_encounter" value="<?php echo xla('Generate X12 Encounter')?>"
+<input type="submit" class="subbtn cp-output" name="bn_x12_encounter" value="<?php echo xla('Generate X12 Encounter')?>"
  title="<?php echo xla('Generate and download X12 encounter claim batch')?>"
  onclick="MarkAsCleared(1)">
 <?php } ?>
-<input type="submit" class="subbtn" style="width:105px;" name="bn_process_hcfa" value="<?php echo xla('CMS 1500 PDF')?>"
+<input type="submit" class="subbtn cp-output" style="width:105px;" name="bn_process_hcfa" value="<?php echo xla('CMS 1500 PDF')?>"
  title="<?php echo xla('Generate and download CMS 1500 paper claims')?>"
  onclick="MarkAsCleared(2)">
  <?php if ($GLOBALS['preprinted_cms_1500']) { ?>
-<input type="submit" class="subbtn" style="width:210px;" name="bn_process_hcfa_form" value="<?php echo xla('CMS 1500 PREPRINTED FORM')?>"
+<input type="submit" class="subbtn cp-output" style="width:210px;" name="bn_process_hcfa_form" value="<?php echo xla('CMS 1500 PREPRINTED FORM')?>"
  title="<?php echo xla('Generate and download CMS 1500 paper claims on Preprinted form')?>"
- onclick="MarkAsCleared(2)"> 
+ onclick="MarkAsCleared(2)">
  <?php } ?>
-<input type="submit" class="subbtn" style="width:120px;" name="bn_hcfa_txt_file" value="<?php echo xla('CMS 1500 TEXT')?>"
+<input type="submit" class="subbtn cp-output" style="width:120px;" name="bn_hcfa_txt_file" value="<?php echo xla('CMS 1500 TEXT')?>"
  title="<?php echo xla('Making batch text files for uploading to Clearing House and will mark as billed')?>"
  onclick="MarkAsCleared(3)">
-<input type="submit" data-open-popup="true" class="subbtn" name="bn_mark" value="<?php echo xla('Mark as Cleared')?>" title="<?php echo xla('Post to accounting and mark as billed')?>">
-<input type="submit" data-open-popup="true" class="subbtn" name="bn_reopen" value="<?php echo xla('Re-Open')?>" title="<?php echo xla('Mark as not billed')?>">
+<input type="submit" data-open-popup="true" class="subbtn cp-misc" name="bn_mark" value="<?php echo xla('Mark as Cleared')?>" title="<?php echo xla('Post to accounting and mark as billed')?>">
+<input type="submit" data-open-popup="true" class="subbtn cp-misc" name="bn_reopen" value="<?php echo xla('Re-Open')?>" title="<?php echo xla('Mark as not billed')?>">
 <!--
 <input type="submit" class="subbtn" name="bn_electronic_file" value="Make Electronic Batch &amp; Clear" title="<?php echo xla('Download billing file, post to accounting and mark as billed')?>">
 -->
@@ -762,7 +763,7 @@ if(is_array($ret))
 
   $mmo_empty_mod = false;
   $mmo_num_charges = 0;
-  
+
   foreach ($ret as $iter) {
 
     // We include encounters here that have never been billed.  However
@@ -840,7 +841,7 @@ if(is_array($ret))
         "subscriber_city is not null and " .
         "subscriber_state != '' and " .
         "subscriber_state is not null and " .
-        "subscriber_sex != '' and " .        
+        "subscriber_sex != '' and " .
         "subscriber_sex is not null and " .
         "subscriber_DOB != '0000-00-00' and " .
         "subscriber_DOB is not null and " .
@@ -859,7 +860,7 @@ if(is_array($ret))
 
       $ptname = $name['fname'] . " " . $name['lname'];
       $raw_encounter_date = date("Y-m-d", strtotime($iter['enc_date']));
-      $billing_note = $name['billing_note'];       
+      $billing_note = $name['billing_note'];
             //  Add Encounter Date to display with "To Encounter" button 2/17/09  JCH
 
       if ($namecolor != 'black') {
@@ -895,31 +896,31 @@ if(is_array($ret))
              }
          ?>
         </script>
-        <?php        
-                
+        <?php
+
             //  Not sure why the next section seems to do nothing except post "To Encounter" button 2/17/09  JCH
       $lhtml .= "&nbsp;&nbsp;&nbsp;<a class=\"link_submit\" " .
         "href=\"javascript:window.toencounter(" . $iter['enc_pid'] .
         ",'" . addslashes($name['pid']) .
         "','" . addslashes($ptname) . "'," . $iter['enc_encounter'] .
-        ",'" . oeFormatShortDate($raw_encounter_date) . "',' " . 
+        ",'" . oeFormatShortDate($raw_encounter_date) . "',' " .
         xl('DOB') . ": " . oeFormatShortDate($name['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAge($name['DOB_YMD']) . "');
-                 top.window.parent.left_nav.setPatientEncounter(EncounterIdArray[" . $iter['enc_pid'] . "],EncounterDateArray[" . $iter['enc_pid'] . 
+                 top.window.parent.left_nav.setPatientEncounter(EncounterIdArray[" . $iter['enc_pid'] . "],EncounterDateArray[" . $iter['enc_pid'] .
                  "], CalendarCategoryArray[" . $iter['enc_pid'] . "])\">[" .
         xlt('To Enctr') . " " . text(oeFormatShortDate($raw_encounter_date)) . "]</a>";
-        
+
             //  Changed "To xxx" buttons to allow room for encounter date display 2/17/09  JCH
       $lhtml .= "&nbsp;&nbsp;&nbsp;<a class=\"link_submit\" " .
         "href=\"javascript:window.topatient(" . $iter['enc_pid'] .
         ",'" . addslashes($name['pid']) .
         "','" . addslashes($ptname) . "'," . $iter['enc_encounter'] .
-        ",'" . oeFormatShortDate($raw_encounter_date) . "',' " . 
+        ",'" . oeFormatShortDate($raw_encounter_date) . "',' " .
         xl('DOB') . ": " . oeFormatShortDate($name['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAge($name['DOB_YMD']) . "');
-                 top.window.parent.left_nav.setPatientEncounter(EncounterIdArray[" . $iter['enc_pid'] . "],EncounterDateArray[" . $iter['enc_pid'] . 
+                 top.window.parent.left_nav.setPatientEncounter(EncounterIdArray[" . $iter['enc_pid'] . "],EncounterDateArray[" . $iter['enc_pid'] .
                  "], CalendarCategoryArray[" . $iter['enc_pid'] . "])\">[" . xlt('To Dems') . "]</a>";
         $divnos=$divnos+1;
       $lhtml .= "&nbsp;&nbsp;&nbsp;<a  onclick='divtoggle(\"spanid_$divnos\",\"divid_$divnos\");' class='small' id='aid_$divnos' href=\"JavaScript:void(0);".
-        "\">(<span id=spanid_$divnos class=\"indicator\">" . htmlspecialchars( xl('Expand'), ENT_QUOTES) . '</span>)<br></a>';      
+        "\">(<span id=spanid_$divnos class=\"indicator\">" . htmlspecialchars( xl('Expand'), ENT_QUOTES) . '</span>)<br></a>';
       if($GLOBALS['notes_to_display_in_Billing'] == 2 || $GLOBALS['notes_to_display_in_Billing'] == 3){
       $lhtml .= '<span style="margin-left: 20px; font-weight bold; color: red">'.text($billing_note).'</span>';
       }
@@ -974,7 +975,7 @@ if(is_array($ret))
         }
         $lhtml .= "</select>";
         $DivPut='yes';
-        
+
         if($GLOBALS['notes_to_display_in_Billing'] == 1 || $GLOBALS['notes_to_display_in_Billing'] == 3) {
           $lhtml .= "<br><span style='margin-left: 20px; font-weight bold; color: green'>".text($iter['enc_billing_note'])."</span>";
         }
@@ -1218,7 +1219,7 @@ if(is_array($ret))
     }
     $rhtml .= "</tr>\n";
     $last_encounter_id = $this_encounter_id;
-    
+
   } // end foreach
 
   if ($lhtml) {
@@ -1256,21 +1257,21 @@ $(document).ready(function() {
         top.restoreSession();
         dlgopen('customize_log.php', '_blank', 500, 400);
     });
-    
+
     $('input[type="submit"]').click( function() {
         top.restoreSession();
         $(this).attr('data-clicked', true);
     });
-    
+
     $('form[name="update_form"]').submit( function(e) {
         var clickedButton = $("input[type=submit][data-clicked='true'")[0];
-        
+
         // clear clicked button indicator
         $('input[type="submit"]').attr('data-clicked', false);
-        
+
         if ( !clickedButton || $(clickedButton).attr("data-open-popup") !== "true" ) {
             $(this).removeAttr("target");
-            return top.restoreSession(); 
+            return top.restoreSession();
         } else {
             top.restoreSession();
             var w = window.open('about:blank','Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');

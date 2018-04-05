@@ -35,6 +35,7 @@ require_once("$srcdir/sl_eob.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/classes/class.ezpdf.php");//for the purpose of pdf creation
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/classes/Note.class.php");
@@ -623,7 +624,7 @@ function npopup(pid) {
    </select>
   </td>
   <td>
-   <input type='submit' name='form_search' value='<?php xl("Search","e"); ?>'>
+   <input type='submit' name='form_search' class="cp-submit" value='<?php xl("Search","e"); ?>'>
   </td>
  </tr>
 
@@ -894,17 +895,17 @@ if ($_POST['form_search'] || $_POST['form_print']) {
 
 <p>
 <?php if ($eracount) { ?>
-<input type='button' value='<?php xl('Process ERA File','e')?>' onclick='processERA()' /> &nbsp;
+<input type='button' class="cp-submit" value='<?php xl('Process ERA File','e')?>' onclick='processERA()' /> &nbsp;
 <?php } else { ?>
-<input type='button' value='<?php xl('Select All','e')?>' onclick='checkAll(true)' /> &nbsp;
-<input type='button' value='<?php xl('Clear All','e')?>' onclick='checkAll(false)' /> &nbsp;
+<input type='button' class="cp-positive" value='<?php xl('Select All','e')?>' onclick='checkAll(true)' /> &nbsp;
+<input type='button' class="cp-negative" value='<?php xl('Clear All','e')?>' onclick='checkAll(false)' /> &nbsp;
   <?php if ($GLOBALS['statement_appearance'] != '1') { ?>
-<input type='submit' name='form_print' value='<?php xl('Print Selected Statements','e'); ?>' /> &nbsp;
-<input type='submit' name='form_download' value='<?php xl('Download Selected Statements','e'); ?>' /> &nbsp;
+<input type='submit' class="cp-output" name='form_print' value='<?php xl('Print Selected Statements','e'); ?>' /> &nbsp;
+<input type='submit' class="cp-output" name='form_download' value='<?php xl('Download Selected Statements','e'); ?>' /> &nbsp;
 <?php } ?>
-<input type='submit' name='form_pdf' value='<?php xl('PDF Download Selected Statements','e'); ?>' /> &nbsp;
+<input type='submit' class="cp-output" name='form_pdf' value='<?php xl('PDF Download Selected Statements','e'); ?>' /> &nbsp;
 <?php if ($is_portal ){?>
-  <input type='submit' name='form_portalnotify' value='<?php xl('Notify via Patient Portal','e'); ?>' /> &nbsp;
+  <input type='submit' class="cp-misc" name='form_portalnotify' value='<?php xl('Notify via Patient Portal','e'); ?>' /> &nbsp;
   <?php } }?>
 <input type='checkbox' name='form_without' value='1' /> <?php xl('Without Update','e'); ?>
 </p>

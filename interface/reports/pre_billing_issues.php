@@ -1,9 +1,9 @@
 <?php
 /*
-* Copyright (C) 2015-2017 Tony McCormick <tony@mi-squared.com> 
+* Copyright (C) 2015-2017 Tony McCormick <tony@mi-squared.com>
 *
 * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
-* See the Mozilla Public License for more details. 
+* See the Mozilla Public License for more details.
 * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 *
 * @package LibreEHR
@@ -22,6 +22,7 @@
   require_once("$srcdir/formatting.inc.php");
   require_once "$srcdir/formdata.inc.php";
   require_once("$srcdir/patient.inc");
+  require_once("$srcdir/headers.inc.php");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // render page - main
@@ -29,7 +30,7 @@
 
   $form_from_date  = fixDate($_POST['form_from_date'], date('Y-m-01'));
   $form_to_date    = fixDate($_POST['form_to_date'], date('Y-m-d'));
- 
+
 
 ?>
 <html>
@@ -47,7 +48,7 @@
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
         <script language="javascript">
             var concurrentLayout = <?php echo $GLOBALS['concurrent_layout'] ? true : false ?>;
-            
+
             function toencounter(pid, pubpid, pname, enc, datestr, dobstr) {
                 dobstr = dobstr ? dobstr : '';
                 top.restoreSession();
@@ -64,7 +65,7 @@
                         + enc + '&pid=' + pid;
                 }
             }
-            
+
             function topatient(pid, pubpid, pname, enc, datestr, dobstr) {
                 dobstr = dobstr ? dobstr : '';
                 top.restoreSession();
@@ -77,7 +78,7 @@
                       location.href = '../patient_file/summary/demographics_full.php?pid=' + pid;
                 }
             }
-            
+
             $(document).ready(function () {
                 $(".reportrow").mouseover(function () {
                     $(this).addClass("highlight");
@@ -105,7 +106,7 @@
                         $(this).attr('pdob')
                     );
                 });
-                
+
                 $(".reportrow").attr('title', '<?php echo xla('Click through to correct this record') ?>');
             });
         </script>
@@ -116,7 +117,7 @@
 <body class="body_top">
     <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Pre-billing Issues'); ?></span>
 
- <form method='post' action='pre_billing_issues.php' id='theform'>   
+ <form method='post' action='pre_billing_issues.php' id='theform'>
  <div id="report_parameters">
 
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
@@ -126,7 +127,7 @@
     <div style='float:left'>
 
     <table class='text'>
-        
+
         <tr>
             <td class='label'>
                <?php xl('Check encounters From','e'); ?>:
@@ -150,7 +151,7 @@
             </td>
             <td>&nbsp;</td>
         </tr>
-        
+
     </table>
 
     </div>
@@ -161,7 +162,7 @@
         <tr>
             <td>
                 <div style='margin-left:15px'>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                    <a href='#' class='css_button cp-submit' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
                     <span>
                         <?php xl('Submit','e'); ?>
                     </span>
@@ -181,19 +182,19 @@
   </td>
  </tr>
 </table>
-</div>    
-    
-    
-    
-    
-        
+</div>
+
+
+
+
+
     <p>
         <?php echo xlt('Use this report to discover billing errors. You may click through each row to drill into the record that requires an update.') ?>
     </p>
 
  <?php
  if ($_POST['form_refresh']) {
-   require("api/PreBillingIssuesAPI.php");  
+   require("api/PreBillingIssuesAPI.php");
      //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // main
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,13 +210,13 @@ function computeReport() {
     $reportData['patientInsuranceMissingSubscriberRelationship'] = $preBillingIssuesAPI->findPatientInsuranceMissingSubscriberRelationship();
     $reportData['patientInsuranceMissingInsuranceFields'] = $preBillingIssuesAPI->findPatientInsuranceMissingInsuranceFields();
     return $reportData;
-    
+
 }
 $reportData = computeReport();
-?>   
-    
-    
-    
+?>
+
+
+
     <h5><?php echo xlt('Encounters without rendering provider (The Date Range controles what is Displayed here)') ?></h5>
     <div id="report_results">
         <table>
@@ -224,17 +225,17 @@ $reportData = computeReport();
                <th>&nbsp;<?php echo xlt('Encounter Date')?></th>
             </thead>
 
-            <?php foreach ($reportData['encountersMissingProvider'] as $index => $row) { 
+            <?php foreach ($reportData['encountersMissingProvider'] as $index => $row) {
              if (substr($row['Encounter Date'],0,10) >= $form_from_date && substr($row['Encounter Date'],0,10) <= $form_to_date ) {
 ?>
                 <tr class='encrow reportrow'
                     bgcolor='<?php echo $index % 2 == 0 ? "#ffdddd" : "#ddddff" ?>'
-                    pid='<?php echo attr($row['Pt ID']) ?>' 
-                    pubpid='<?php echo attr($row['Pub Pt ID']) ?>' 
-                    pname='<?php echo attr($row['LName'] . ', ' . $row['FName']) ?>' 
+                    pid='<?php echo attr($row['Pt ID']) ?>'
+                    pubpid='<?php echo attr($row['Pub Pt ID']) ?>'
+                    pname='<?php echo attr($row['LName'] . ', ' . $row['FName']) ?>'
                     encid='<?php echo attr(oeFormatShortDate($row['Enc ID'])) ?>'
                     encdate='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($row['Encounter Date'])))) ?>'
-                    pdob='<?php echo attr($row['Pt DOB']) ?>' 
+                    pdob='<?php echo attr($row['Pt DOB']) ?>'
                 >
                     <td class='detail'><?php echo text($row['LName'] . ', ' . $row['FName']) ?></td>
                     <td class='detail'><?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($row['Encounter Date']))), ENT_QUOTES) ?></td>
@@ -251,20 +252,20 @@ $reportData = computeReport();
                <th>&nbsp;<?php echo xlt('Patient Name')?></th>
                <th>&nbsp;<?php echo xlt('Insurance Type')?></th>
                <th>&nbsp;<?php echo xlt('Subscriber Relationship')?></th>
-               <th>&nbsp;<?php echo xlt('Errors')?></th>            
+               <th>&nbsp;<?php echo xlt('Errors')?></th>
             </thead>
-            
-            <?php foreach ($reportData['patientInsuranceMissingSubscriberFields'] as $index => $row) { 
+
+            <?php foreach ($reportData['patientInsuranceMissingSubscriberFields'] as $index => $row) {
                   if (substr($row['End Date'],0,10) == '0000-00-00'){
             ?>
-                <tr class='ptrow reportrow' 
+                <tr class='ptrow reportrow'
                     bgcolor='<?php echo $index % 2 == 0 ? "#ffdddd" : "#ddddff" ?>'
-                    pid='<?php echo attr($row['Pt ID']) ?>' 
-                    pubpid='<?php echo attr($row['Pub Pt ID']) ?>' 
-                    pname='<?php echo attr($row['LName'] . ', ' . $row['FName']) ?>' 
+                    pid='<?php echo attr($row['Pt ID']) ?>'
+                    pubpid='<?php echo attr($row['Pub Pt ID']) ?>'
+                    pname='<?php echo attr($row['LName'] . ', ' . $row['FName']) ?>'
                     encid='<?php echo attr($row['Enc ID']) ?>'
                     encdate='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($row['Encounter Date'])))) ?>'
-                    pdob='<?php echo attr(oeFormatShortDate($row['Pt DOB'])) ?>' 
+                    pdob='<?php echo attr(oeFormatShortDate($row['Pt DOB'])) ?>'
                 >
                     <td class='detail'><?php echo text($row['LName'] . ', ' . $row['FName']) ?></td>
                     <td class='detail'><?php echo text($row['Insurance Type']) ?></td>
@@ -273,7 +274,7 @@ $reportData = computeReport();
                         <?php foreach ($row['decodedErrors'] as $error) { ?>
                             <?php echo text($error) ?> <br>
                         <?php } ?>
-                    </td>                    
+                    </td>
                 </tr>
             <?php } } ?>
         </table>
@@ -284,17 +285,17 @@ $reportData = computeReport();
                <th>&nbsp;<?php echo xlt('Patient Name')?></th>
                <th>&nbsp;<?php echo xlt('Insurance Type')?></th>
             </thead>
-            <?php foreach ($reportData['patientInsuranceMissingSubscriberRelationship'] as $index => $row) { 
+            <?php foreach ($reportData['patientInsuranceMissingSubscriberRelationship'] as $index => $row) {
                   if (substr($row['End Date'],0,10) == '0000-00-00'){
             ?>
-                <tr class='ptrow reportrow' 
+                <tr class='ptrow reportrow'
                     bgcolor='<?php echo $index % 2 == 0 ? "#ffdddd" : "#ddddff" ?>'
-                    pid='<?php echo attr($row['Pt ID']) ?>' 
-                    pubpid='<?php echo attr($row['Pub Pt ID']) ?>' 
-                    pname='<?php echo attr($row['LName'] . ', ' . $row['FName']) ?>' 
+                    pid='<?php echo attr($row['Pt ID']) ?>'
+                    pubpid='<?php echo attr($row['Pub Pt ID']) ?>'
+                    pname='<?php echo attr($row['LName'] . ', ' . $row['FName']) ?>'
                     encid='<?php echo attr($row['Enc ID']) ?>'
                     encdate='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($row['Encounter Date'])))) ?>'
-                    pdob='<?php echo attr(oeFormatShortDate($row['Pt DOB'])) ?>' 
+                    pdob='<?php echo attr(oeFormatShortDate($row['Pt DOB'])) ?>'
                 >
                     <td class='detail'><?php echo text($row['LName'] . ', ' . $row['FName']) ?></td>
                     <td class='detail'><?php echo text($row['Insurance Type']) ?></td>
@@ -308,18 +309,18 @@ $reportData = computeReport();
                <th>&nbsp;<?php echo xlt('Patient Name')?></th>
                <th>&nbsp;<?php echo xlt('Insurance Type')?></th>
                <th>&nbsp;<?php echo xlt('Errors')?></th>
-            </thead>            
-            <?php foreach ($reportData['patientInsuranceMissingInsuranceFields'] as $index => $row) { 
+            </thead>
+            <?php foreach ($reportData['patientInsuranceMissingInsuranceFields'] as $index => $row) {
                   if (substr($row['End Date'],0,10) == '0000-00-00'){
             ?>
-                <tr class='ptrow reportrow' 
+                <tr class='ptrow reportrow'
                     bgcolor='<?php echo $index % 2 == 0 ? "#ffdddd" : "#ddddff" ?>'
-                    pid='<?php echo attr($row['Pt ID']) ?>' 
-                    pubpid='<?php echo attr($row['Pub Pt ID']) ?>' 
-                    pname='<?php echo attr($row['LName'] . ', ' . $row['FName']) ?>' 
+                    pid='<?php echo attr($row['Pt ID']) ?>'
+                    pubpid='<?php echo attr($row['Pub Pt ID']) ?>'
+                    pname='<?php echo attr($row['LName'] . ', ' . $row['FName']) ?>'
                     encid='<?php echo attr($row['Enc ID']) ?>'
                     encdate='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($row['Encounter Date'])))) ?>'
-                    pdob='<?php echo attr(oeFormatShortDate($row['Pt DOB'])) ?>' 
+                    pdob='<?php echo attr(oeFormatShortDate($row['Pt DOB'])) ?>'
                 >
                     <td class='detail'><?php echo text($row['LName'] . ', ' . $row['FName']) ?></td>
                     <td class='detail'><?php echo text($row['Insurance Type']) ?></td>
@@ -336,7 +337,7 @@ $reportData = computeReport();
 <div class='text'>
      <?php echo xl('Please input search criteria above, and click Submit to view results.', 'e' ); ?>
 </div>
-<?php } ?>  
+<?php } ?>
 
 </form>
 </body>
