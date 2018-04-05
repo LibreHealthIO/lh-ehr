@@ -5,7 +5,6 @@
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
- * Copyright (C) 2010-2017 LibreHealth EHR Support LLC
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
@@ -38,6 +37,7 @@ $comarr = array('allow_sms'=>xl('Allow SMS'),'allow_voice'=>xl('Allow Voice Mess
 $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
+/*Attribution: 2010-2017 LibreHealth EHR Support LLC */
 function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
 {
     $DateFormat = DateFormatRead(true);
@@ -73,8 +73,13 @@ $form_service_codes = trim($_POST["form_service_codes"]);
 $form_immunization = trim($_POST["form_immunization"]);
 $communication = trim($_POST["communication"]);
 
+/* This function prepares the result for Clinical report
+ * @params: None
+ * @return: Array ($result, $row_id, $img_id, $k)
+ * @author: Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+ * */
 function prepareResults() {
-	$sqlstmt = "select
+  $sqlstmt = "select
                 concat(pd.fname, ' ', pd.lname) AS patient_name,
                 pd.pid AS patient_id,
                 DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(),pd.dob)), '%Y')+0 AS patient_age,
@@ -83,46 +88,46 @@ function prepareResults() {
                 concat(u.fname, ' ', u.lname)  AS users_provider,
                 REPLACE(REPLACE(concat_ws(',',IF(pd.hipaa_allowemail = 'YES', 'Allow Email','NO'),IF(pd.hipaa_allowsms = 'YES', 'Allow SMS','NO') , IF(pd.hipaa_mail = 'YES', 'Allow Mail Message','NO') , IF(pd.hipaa_voice = 'YES', 'Allow Voice Message','NO') ), ',NO',''), 'NO,','') as communications";
 
-	if(strlen($form_diagnosis) > 0 || $_POST['form_diagnosis_allergy'] == true 
-	    || $_POST['form_diagnosis_medprb'] == true)  {
-	    $sqlstmt=$sqlstmt.",li.date AS lists_date,
-	                li.diagnosis AS lists_diagnosis,
-	                li.title AS lists_title";
-	}
+  if(strlen($form_diagnosis) > 0 || $_POST['form_diagnosis_allergy'] == true 
+      || $_POST['form_diagnosis_medprb'] == true)  {
+      $sqlstmt=$sqlstmt.",li.date AS lists_date,
+                  li.diagnosis AS lists_diagnosis,
+                  li.title AS lists_title";
+  }
 
-	if(strlen($form_drug_name) > 0 || $_POST['form_drug'] == true)  {
-	    $sqlstmt=$sqlstmt.",r.id as id, r.date_modified AS prescriptions_date_modified, r.dosage as dosage, r.route as route, r.interval as hinterval, r.refills as refills, r.drug as drug, 
-	        r.form as hform, r.size as size, r.unit as hunit, d.name as name, d.ndc_number as ndc_number,r.quantity as quantity";
-	}
+  if(strlen($form_drug_name) > 0 || $_POST['form_drug'] == true)  {
+      $sqlstmt=$sqlstmt.",r.id as id, r.date_modified AS prescriptions_date_modified, r.dosage as dosage, r.route as route, r.interval as hinterval, r.refills as refills, r.drug as drug, 
+          r.form as hform, r.size as size, r.unit as hunit, d.name as name, d.ndc_number as ndc_number,r.quantity as quantity";
+  }
 
-	if(strlen($form_lab_results) > 0 || $_POST['lab_results'] == true) {
-	    $sqlstmt = $sqlstmt.",pr.date AS procedure_result_date,
-	                    pr.facility AS procedure_result_facility,
-	                    pr.units AS procedure_result_units,
-	                    pr.result AS procedure_result_result,
-	                    pr.range AS procedure_result_range,
-	                    pr.abnormal AS procedure_result_abnormal,
-	                    pr.comments AS procedure_result_comments,
-	                    pr.document_id AS procedure_result_document_id";
-	}
+  if(strlen($form_lab_results) > 0 || $_POST['lab_results'] == true) {
+      $sqlstmt = $sqlstmt.",pr.date AS procedure_result_date,
+                      pr.facility AS procedure_result_facility,
+                      pr.units AS procedure_result_units,
+                      pr.result AS procedure_result_result,
+                      pr.range AS procedure_result_range,
+                      pr.abnormal AS procedure_result_abnormal,
+                      pr.comments AS procedure_result_comments,
+                      pr.document_id AS procedure_result_document_id";
+  }
 
-	if ( $type == 'Procedure') {
-	    $sqlstmt = $sqlstmt.",po.date_ordered AS procedure_order_date_ordered,
-			            pt.standard_code AS procedure_type_standard_code,
-			            pc.procedure_name as procedure_name,
-			            po.order_priority AS procedure_order_order_priority,
-			            po.order_status AS procedure_order_order_status,
-			            po.encounter_id AS procedure_order_encounter,
-			            po.patient_instructions AS procedure_order_patient_instructions,
-			            po.activity AS procedure_order_activity,
-			            po.control_id AS procedure_order_control_id ";
-	}
+  if ( $type == 'Procedure') {
+      $sqlstmt = $sqlstmt.",po.date_ordered AS procedure_order_date_ordered,
+                  pt.standard_code AS procedure_type_standard_code,
+                  pc.procedure_name as procedure_name,
+                  po.order_priority AS procedure_order_order_priority,
+                  po.order_status AS procedure_order_order_status,
+                  po.encounter_id AS procedure_order_encounter,
+                  po.patient_instructions AS procedure_order_patient_instructions,
+                  po.activity AS procedure_order_activity,
+                  po.control_id AS procedure_order_control_id ";
+  }
 
     if ( $type == 'Medical History') {
         $sqlstmt = $sqlstmt.",hd.date AS history_data_date,
-		            	hd.tobacco AS history_data_tobacco,
-		            	hd.alcohol AS history_data_alcohol,
-		            	hd.recreational_drugs AS history_data_recreational_drugs   ";
+                  hd.tobacco AS history_data_tobacco,
+                  hd.alcohol AS history_data_alcohol,
+                  hd.recreational_drugs AS history_data_recreational_drugs   ";
     }
 
     if($type == 'Service Codes') {
@@ -137,12 +142,12 @@ function prepareResults() {
         $sqlstmt .= ", immc.code_text as imm_code, immc.code_text_short as imm_code_short, immc.id as cvx_code, imm.administered_date as imm_date, imm.amount_administered, imm.amount_administered_unit,  imm.administration_site, imm.note as notes ";
     }
 
-	//from
+  //from
     $sqlstmt=$sqlstmt." from patient_data as pd left outer join users as u on u.id = pd.providerid
             left outer join facility as f on f.id = u.facility_id";
     
     if(strlen($form_diagnosis) > 0 || ($_POST['form_diagnosis_allergy'] == true 
-    	&& $_POST['form_diagnosis_medprb'] == true)){   
+      && $_POST['form_diagnosis_medprb'] == true)){   
         $sqlstmt = $sqlstmt." left outer join lists as li on (li.pid  = pd.pid AND (li.type='medical_problem' OR li.type='allergy')) ";
     }elseif($_POST['form_diagnosis_allergy'] == true){
         $sqlstmt = $sqlstmt." left outer join lists as li on (li.pid  = pd.pid AND (li.type='allergy')) ";
@@ -150,45 +155,45 @@ function prepareResults() {
         $sqlstmt = $sqlstmt." left outer join lists as li on (li.pid  = pd.pid AND (li.type='medical_problem')) ";
     }
 
-	if ( $type == 'Procedure' ||( strlen($form_lab_results)!=0) || $_POST['lab_results'] == true) {
-		$sqlstmt = $sqlstmt." left outer join procedure_order as po on po.patient_id = pd.pid
-		    	left outer join procedure_order_code as pc on pc.procedure_order_id = po.procedure_order_id
-		    	left outer join procedure_report as pp on pp.procedure_order_id   = po.procedure_order_id
-		    	left outer join procedure_type as pt on pt.procedure_code = pc.procedure_code and pt.lab_id = po.lab_id ";
-	}
+  if ( $type == 'Procedure' ||( strlen($form_lab_results)!=0) || $_POST['lab_results'] == true) {
+    $sqlstmt = $sqlstmt." left outer join procedure_order as po on po.patient_id = pd.pid
+          left outer join procedure_order_code as pc on pc.procedure_order_id = po.procedure_order_id
+          left outer join procedure_report as pp on pp.procedure_order_id   = po.procedure_order_id
+          left outer join procedure_type as pt on pt.procedure_code = pc.procedure_code and pt.lab_id = po.lab_id ";
+  }
 
-	if (strlen($form_lab_results)!=0 || $_POST['lab_results'] == true) {
-	    $sqlstmt = $sqlstmt." left outer join procedure_result as pr on pr.procedure_report_id = pp.procedure_report_id ";
-	}
+  if (strlen($form_lab_results)!=0 || $_POST['lab_results'] == true) {
+      $sqlstmt = $sqlstmt." left outer join procedure_result as pr on pr.procedure_report_id = pp.procedure_report_id ";
+  }
 
-	//Immunization added in clinical report
-	if (strlen($form_immunization)!=0 ) {
-	    $sqlstmt = $sqlstmt." LEFT OUTER JOIN immunizations as imm ON imm.patient_id = pd.pid 
-	        	LEFT OUTER JOIN codes as immc ON imm.cvx_code = immc.id ";
-	}
+  //Immunization added in clinical report
+  if (strlen($form_immunization)!=0 ) {
+      $sqlstmt = $sqlstmt." LEFT OUTER JOIN immunizations as imm ON imm.patient_id = pd.pid 
+            LEFT OUTER JOIN codes as immc ON imm.cvx_code = immc.id ";
+  }
 
-	if(strlen($form_drug_name)!=0 || $_POST['form_drug'] == true) { 
-	    $sqlstmt = $sqlstmt." left outer join prescriptions AS r on r.patient_id=pd.pid 
-	        	LEFT OUTER JOIN drugs AS d ON d.drug_id = r.drug_id";
-	}
+  if(strlen($form_drug_name)!=0 || $_POST['form_drug'] == true) { 
+      $sqlstmt = $sqlstmt." left outer join prescriptions AS r on r.patient_id=pd.pid 
+            LEFT OUTER JOIN drugs AS d ON d.drug_id = r.drug_id";
+  }
 
     if ( $type == 'Medical History') {
         $sqlstmt = $sqlstmt." left outer join history_data as hd on hd.pid   =  pd.pid 
-		            	and (isnull(hd.tobacco)  = 0
-		            	or isnull(hd.alcohol)  = 0
-		            	or isnull(hd.recreational_drugs)  = 0)";
+                  and (isnull(hd.tobacco)  = 0
+                  or isnull(hd.alcohol)  = 0
+                  or isnull(hd.recreational_drugs)  = 0)";
     }
 
     if($type == 'Service Codes') {
         $sqlstmt = $sqlstmt." left outer join billing as b on b.pid = pd.pid
-            	left outer join form_encounter as fe on fe.encounter = b.encounter and b.code_type = 'CPT4'
-            	left outer join codes as c on c.code = b.code ";
+              left outer join form_encounter as fe on fe.encounter = b.encounter and b.code_type = 'CPT4'
+              left outer join codes as c on c.code = b.code ";
     }
-		
-	//where
+    
+  //where
     $whr_stmt="where 1=1";
     if(strlen($form_diagnosis) > 0 || $_POST['form_diagnosis_allergy'] == true 
-      	|| $_POST['form_diagnosis_medprb'] == true) {
+        || $_POST['form_diagnosis_medprb'] == true) {
         $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date < DATE_ADD(?,INTERVAL 1 DAY) AND DATE(li.date) <= ?";
         array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d"));
     }
@@ -213,10 +218,10 @@ function prepareResults() {
         array_push($sqlBindArray, substr($from_date,0,10), substr($to_date,0,10), date("Y-m-d"));
     }
 
-	if($type == "Service Codes") {
-	    $whr_stmt=$whr_stmt." AND b.date >= ? AND b.date < DATE_ADD(?, INTERVAL 1 DAY) AND DATE(b.date) <= ?";
-	    array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d"));
-	}
+  if($type == "Service Codes") {
+      $whr_stmt=$whr_stmt." AND b.date >= ? AND b.date < DATE_ADD(?, INTERVAL 1 DAY) AND DATE(b.date) <= ?";
+      array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d"));
+  }
 
     if(strlen($form_lab_results) != 0 || $_POST['lab_results'] == true) {
         $whr_stmt= $whr_stmt." AND (pr.result LIKE ?) ";
@@ -235,10 +240,10 @@ function prepareResults() {
 
     if($type == 'Service Codes') {
         if(strlen($form_service_codes) != 0) {
-            	$whr_stmt = $whr_stmt." AND (b.code = ?) ";
-         		$service_code = explode(":",$form_service_codes);
-             	array_push($sqlBindArray, $service_code[1]);
-       	}
+              $whr_stmt = $whr_stmt." AND (b.code = ?) ";
+            $service_code = explode(":",$form_service_codes);
+              array_push($sqlBindArray, $service_code[1]);
+        }
     }
 
     if(strlen($patient_id) != 0) {
@@ -259,100 +264,100 @@ function prepareResults() {
     if(strlen($sql_gender) != 0) {
         $whr_stmt = $whr_stmt."   and pd.sex = ?";
         array_push($sqlBindArray, $sql_gender);
-   	}
+    }
 
-   	if(strlen($sql_ethnicity) != 0) {
+    if(strlen($sql_ethnicity) != 0) {
         $whr_stmt = $whr_stmt."   and pd.ethnicity = ?";
         array_push($sqlBindArray, $sql_ethnicity);
     }
 
-   	if(strlen($sql_race) != 0) {
+    if(strlen($sql_race) != 0) {
         $whr_stmt = $whr_stmt."   and pd.race = ?";
         array_push($sqlBindArray, $sql_race);
-   	}
+    }
 
- 	if($facility != '') {
-	    $whr_stmt = $whr_stmt."   and f.id = ? ";
-	    array_push($sqlBindArray, $facility);
-  	}
+  if($facility != '') {
+      $whr_stmt = $whr_stmt."   and f.id = ? ";
+      array_push($sqlBindArray, $facility);
+    }
 
-  	if(strlen($form_diagnosis) > 0) {
+    if(strlen($form_diagnosis) > 0) {
         $whr_stmt = $whr_stmt." AND (li.diagnosis LIKE ? or li.diagnosis LIKE ? or li.diagnosis LIKE ? or li.diagnosis = ?) ";
         array_push($sqlBindArray, $form_diagnosis."%", '%'.$form_diagnosis.'%', '%'.$form_diagnosis, $form_diagnosis);
-  	}
+    }
 
-  	//communication preferences added in clinical report
-	if(strlen($communication) > 0 || $_POST['communication_check'] == true){    
-	    if($communication == "allow_sms")  $whr_stmt .= " AND pd.hipaa_allowsms = 'YES' ";
-	    else if($communication == "allow_voice")  $whr_stmt .= " AND pd.hipaa_voice = 'YES' ";
-	    else if($communication == "allow_mail")  $whr_stmt .= " AND pd.hipaa_mail  = 'YES' ";
-	    else if($communication == "allow_email")  $whr_stmt .= " AND pd.hipaa_allowemail  = 'YES' ";
-	    else if($communication == "" && $_POST['communication_check'] == true){
-	        $whr_stmt .= " AND (pd.hipaa_allowsms = 'YES' OR pd.hipaa_voice = 'YES' OR pd.hipaa_mail  = 'YES' OR pd.hipaa_allowemail  = 'YES') ";
-	    }
-	}
+    //communication preferences added in clinical report
+  if(strlen($communication) > 0 || $_POST['communication_check'] == true){    
+      if($communication == "allow_sms")  $whr_stmt .= " AND pd.hipaa_allowsms = 'YES' ";
+      else if($communication == "allow_voice")  $whr_stmt .= " AND pd.hipaa_voice = 'YES' ";
+      else if($communication == "allow_mail")  $whr_stmt .= " AND pd.hipaa_mail  = 'YES' ";
+      else if($communication == "allow_email")  $whr_stmt .= " AND pd.hipaa_allowemail  = 'YES' ";
+      else if($communication == "" && $_POST['communication_check'] == true){
+          $whr_stmt .= " AND (pd.hipaa_allowsms = 'YES' OR pd.hipaa_voice = 'YES' OR pd.hipaa_mail  = 'YES' OR pd.hipaa_allowemail  = 'YES') ";
+      }
+  }
   
-	//Immunization where condition for full text or short text
-	if(strlen($form_immunization) > 0) {
-	    $whr_stmt .= " AND (
-	                immc.code_text LIKE ?
-	                OR immc.code_text_short LIKE ?
-	                ) ";
-	    array_push($sqlBindArray, '%'.$form_immunization.'%', '%'.$form_immunization.'%');
-	}
+  //Immunization where condition for full text or short text
+  if(strlen($form_immunization) > 0) {
+      $whr_stmt .= " AND (
+                  immc.code_text LIKE ?
+                  OR immc.code_text_short LIKE ?
+                  ) ";
+      array_push($sqlBindArray, '%'.$form_immunization.'%', '%'.$form_immunization.'%');
+  }
 
-	// order by
-  	if ($_POST['form_pt_name'] == true){
-    	$odrstmt=$odrstmt.",patient_name";
-  	}
+  // order by
+    if ($_POST['form_pt_name'] == true){
+      $odrstmt=$odrstmt.",patient_name";
+    }
 
-  	if ($_POST['form_pt_age'] == true) {
+    if ($_POST['form_pt_age'] == true) {
         $odrstmt=$odrstmt.",patient_age";
-  	}
+    }
 
-  	if((strlen($form_diagnosis) > 0)){
+    if((strlen($form_diagnosis) > 0)){
         $odrstmt=$odrstmt.",lists_diagnosis";
-  	}elseif (($_POST['form_diagnosis_allergy'] == true) || ($_POST['form_diagnosis_medprb'] == true)){
+    }elseif (($_POST['form_diagnosis_allergy'] == true) || ($_POST['form_diagnosis_medprb'] == true)){
         $odrstmt=$odrstmt.",lists_title";
-  	}
+    }
 
-  	if (($_POST['form_drug'] == true) || (strlen($form_drug_name) > 0)){
+    if (($_POST['form_drug'] == true) || (strlen($form_drug_name) > 0)){
         $odrstmt=$odrstmt.",r.drug";
-  	} 
+    } 
 
-  	if (($_POST['ndc_no'] == true) && (strlen($form_drug_name) > 0)) {
+    if (($_POST['ndc_no'] == true) && (strlen($form_drug_name) > 0)) {
         $odrstmt=$odrstmt.",d.ndc_number";
-  	} 
+    } 
 
-	if (($_POST['lab_results'] == true) || (strlen($form_lab_results) > 0)) {
-	    $odrstmt=$odrstmt.",procedure_result_result";
-	}
+  if (($_POST['lab_results'] == true) || (strlen($form_lab_results) > 0)) {
+      $odrstmt=$odrstmt.",procedure_result_result";
+  }
 
-  	if (strlen($communication) > 0 || $_POST['communication_check'] == true) {
-    	$odrstmt=$odrstmt.",ROUND((LENGTH(communications) - LENGTH(REPLACE(communications, ',', '')))/LENGTH(',')) , communications";
-  	}
+    if (strlen($communication) > 0 || $_POST['communication_check'] == true) {
+      $odrstmt=$odrstmt.",ROUND((LENGTH(communications) - LENGTH(REPLACE(communications, ',', '')))/LENGTH(',')) , communications";
+    }
   
-  	if($odrstmt == '') {
-    	$odrstmt = " ORDER BY patient_id";
+    if($odrstmt == '') {
+      $odrstmt = " ORDER BY patient_id";
     } else {
-    	$odrstmt = " ORDER BY ".ltrim($odrstmt,",");
-  	}
+      $odrstmt = " ORDER BY ".ltrim($odrstmt,",");
+    }
   
-  	if($type == 'Medical History') {
+    if($type == 'Medical History') {
         $sqlstmt="select * from (".$sqlstmt." ".$whr_stmt." ".$odrstmt.",history_data_date desc) a group by patient_id";
     } else {
-    	$sqlstmt=$sqlstmt." ".$whr_stmt." ".$odrstmt;
-  	}
+      $sqlstmt=$sqlstmt." ".$whr_stmt." ".$odrstmt;
+    }
 
-	$result = sqlStatement($sqlstmt,$sqlBindArray);
+  $result = sqlStatement($sqlstmt,$sqlBindArray);
 
-	$row_id = 1.1;//given to each row to identify and toggle
-	$img_id = 1.2;
-	$k=1.3;
+  $row_id = 1.1;//given to each row to identify and toggle
+  $img_id = 1.2;
+  $k=1.3;
 
-	$answer = array('result' => $result, 'row_id' => $row_id, 'img_id' => $img_id, 'k' => $k );
+  $answer = array('result' => $result, 'row_id' => $row_id, 'img_id' => $img_id, 'k' => $k );
 
-	return $answer;
+  return $answer;
 }
 
 ?>
