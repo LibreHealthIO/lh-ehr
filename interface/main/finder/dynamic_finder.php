@@ -158,8 +158,8 @@ $(document).ready(function() {
 
   search.addClass("form-control form-rounded");
   entries.addClass("form-control form-rounded");
-  paginate_pre.css('height','30px');
-  paginate_next.css('height','30px');
+  paginate_pre.css({'height':'30px', 'background-color':'#888'});
+  paginate_next.css({'height':'30px', 'background-color':'#888'});
 });
 
 </script>

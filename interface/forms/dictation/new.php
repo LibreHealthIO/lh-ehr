@@ -36,10 +36,10 @@ $returnurl = 'encounter_top.php';
 			</table>
 			<div>
 				<!-- Save/Cancel buttons -->
-				<a role="button" href="javascript:top.restoreSession(); document.my_form.submit();" class="link_submit">
+				<a role="button" href="javascript:top.restoreSession(); document.my_form.submit();" class="link_submit cp-submit">
 					<?php echo xlt('Save'); ?>
 				</a>
-				<a class="deleter" role="button" href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="link" onclick="top.restoreSession()">
+				<a class="deleter cp-negative" role="button" href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="link" onclick="top.restoreSession()">
 					<?php echo xlt('Don\'t Save'); ?>
 				</a>
 			</div>

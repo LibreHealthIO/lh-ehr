@@ -3028,10 +3028,10 @@ function expand_collapse_widget($title, $label, $buttonLabel, $buttonLink, $butt
     // show button, since authorized
     // first prepare class string
     if ($buttonClass) {
-      $class_string = "css_button_small ".htmlspecialchars( $buttonClass, ENT_NOQUOTES);
+      $class_string = "css_button_small cp-positive".htmlspecialchars( $buttonClass, ENT_NOQUOTES);
     }
     else {
-      $class_string = "css_button_small";
+      $class_string = "css_button_small cp-positive";
     }
     // next, create the link
     if ($linkMethod == "javascript") {

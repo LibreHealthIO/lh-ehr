@@ -892,11 +892,11 @@ function allowOnlyDigits(elem_name){
             <?php if (!$SHORT_FORM) echo "  <center>\n"; ?>
             <br />
             <?php if ($WITH_SEARCH) { ?>
-            <input type="button" id="search" value=<?php xl('Search','e','\'','\''); ?>
+            <input type="button" id="search" class='cp-submit' value=<?php xl('Search','e','\'','\''); ?>
               style='background-color:<?php echo $searchcolor; ?>' />
             &nbsp;&nbsp;
             <?php } ?>
-            <input type="button" name='create' id="create" value=<?php xl('Create New Patient','e','\'','\''); ?> />
+            <input type="button" name='create' id="create" class='cp-positive' value=<?php xl('Create New Patient','e','\'','\''); ?> />
             </center>
           </td>
           <td align='right' width='1%' nowrap>

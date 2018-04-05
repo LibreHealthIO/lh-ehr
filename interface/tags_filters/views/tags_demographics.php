@@ -7,15 +7,15 @@
                     <td>
                         <a id="tags-edit-button" onclick="top.restoreSession()"
                            href="javascript;"
-                           class="css_button_small tags-edit-button"><span>Edit</span></a>
+                           class="css_button_small tags-edit-button cp-positive"><span>Edit</span></a>
 
                         <a id="tags-save-button" style="display: none;" onclick="top.restoreSession()"
                            href="javascript;"
-                           class="css_button_small tags-save-button"><span>Save</span></a>
+                           class="css_button_small tags-save-button cp-submit"><span>Save</span></a>
 
                         <a id="tags-cancel-button" style="display: none;" onclick="top.restoreSession()"
                            href="javascript;"
-                           class="css_button_small tags-cancel-button"><span>Cancel</span></a>
+                           class="css_button_small tags-cancel-button cp-negative"><span>Cancel</span></a>
                     </td>
                     <td>
                         <a href="javascript:;" id="tags_container" class="small" onclick="toggleTagsIndicator()">

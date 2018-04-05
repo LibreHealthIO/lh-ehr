@@ -302,8 +302,8 @@ function generateDateQualifierSelect($name,$options,$obj)
 
           <div>
             <!-- Save/Cancel buttons -->
-            <input type="button" id="save" value="<?php echo xla('Save'); ?>"> &nbsp; 
-            <input type="button" id="dontsave" class="deleter" value="<?php echo xla('Cancel'); ?>"> &nbsp; 
+            <input type="button" id="save" class='cp-submit' value="<?php echo xla('Save'); ?>"> &nbsp; 
+            <input type="button" id="dontsave" class="deleter cp-negative" value="<?php echo xla('Cancel'); ?>"> &nbsp; 
           </div>
         </form>
       </div>
