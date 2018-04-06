@@ -570,6 +570,7 @@ INSERT INTO `menu_trees` (`menu_set`, `entry_id`, `icon`, `helperText`, `parent`
 ('Administrators', 'Reports:repimg', '', '', '', 900, NULL),
 ('Administrators', 'Miscellaneous:misimg', '', '', '', 1000, NULL),
 ('Administrators', 'Globals|/interface/super/edit_globals.php', '', '', 'Administration:admimg', 0, NULL),
+('Administrators', 'Edit Menu|/interface/main/tabs/edit_menu.php', '', '', 'Administration:admimg', 0, NULL),
 ('Administrators', 'Facilities|/interface/usergroup/facilities.php', '', '', 'Administration:admimg', 100, NULL),
 ('Administrators', 'Users|/interface/usergroup/usergroup_admin.php', '', '', 'Administration:admimg', 200, NULL),
 ('Administrators', 'Addr Book|/interface/usergroup/addrbook_list.php', '', '', 'Administration:admimg', 300, NULL),
