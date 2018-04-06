@@ -31,26 +31,6 @@
  $to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
 
 /*
- * This function is for csv export of adjustments
- * @params None
- * @return void - Simply echo HTML encoded string
- */
-
-function csvexport() {
-	header("Pragma: public");
-	header("Expires: 0");
-  	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  	header("Content-Type: application/force-download");
-  	header("Content-Disposition: attachment; filename=adjustment_codes.csv");
-  	header("Content-Description: File Transfer");
-  	// CSV headers:
-  	if (true) {
-    	echo '"Adjustment Code",';
-    	echo '"Total",'. "\n";
-  	}
-}
-
-/*
  * This function is responsible for checking this condition
  * if($_POST['form_refresh'] || $_POST['form_csvexport']) 
  */

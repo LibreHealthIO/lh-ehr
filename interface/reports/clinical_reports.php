@@ -351,7 +351,6 @@ $result = $answer['result'];
 $row_id = $answer['row_id'];
 $img_id = $answer['img_id'];
 $k = $answer['k'];
-//print_r($result);die();
 if(sqlNumRows($result)){
    //Added on 6-jun-2k14(regarding displaying smoking code descriptions)  
    $smoke_codes_arr = getSmokeCodes();

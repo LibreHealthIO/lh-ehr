@@ -188,4 +188,18 @@ function reportParametersDaterange() {
     echo '</div>';
 }
 
+/*
+ * This function is for csv export of reports
+ * @params : $filename - Name of associated report
+ * @return :void 
+ */
+function csvexport($filename) {
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Content-Type: application/force-download");
+    header("Content-Disposition: attachment; filename=" . $filename . ".csv");
+    header("Content-Description: File Transfer");
+}
+
 ?>
