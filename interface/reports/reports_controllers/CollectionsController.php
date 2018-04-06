@@ -250,10 +250,10 @@ function getInsName($payerid) {
   return $tmp['name'];
 }
 
-/* This function prepares the report from form inputs,
- * and displays them. 
+/* This function prepares the report from form inputs, and displays them. 
  * @params: None
- * @return: void
+ * @return: None
+ * @author: Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
  * */
 function prepareAndShowResults() {
   global $form_cb_ssn, $form_cb_dob, $form_cb_pid, $form_cb_adate, $form_cb_policy, $form_cb_phone, $form_cb_city, $form_cb_ins1, $form_cb_referrer, $form_cb_idays, $form_cb_err;

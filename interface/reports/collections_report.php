@@ -163,7 +163,8 @@ function checkAll(checked) {
           <td>
             <table>
               <tr>
-                <?php showFromAndToDates(); ?>
+                <?php // Show from and to dates. (TRK)  
+                  showFromAndToDates(); ?>
                 <td>
                   <select name='form_category'>
                   <?php
