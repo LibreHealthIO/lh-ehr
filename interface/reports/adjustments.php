@@ -18,7 +18,12 @@
 require_once "reports_controllers/AdjustmentsController.php";
 
 if ($_POST['form_csvexport']) {
-    csvexport();
+    csvexport('adjustment_codes'); // CSV headers. (TRK)
+    // CSV headers:
+    if (true) {
+      echo '"Adjustment Code",';
+      echo '"Total",'. "\n";
+    }
 }
 else {
 ?>
@@ -76,7 +81,7 @@ else {
 
   <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Adjustments'); ?></span>
 
-  <?php report_parameters_daterange(); ?>
+  <?php reportParametersDaterange(); #TRK ?>
 
   <form name='theform' method='post' action='adjustments.php' id='theform'>
 
@@ -91,21 +96,22 @@ else {
 
         <table class='text'>
             <tr>
-                <?php showFromAndToDates(); ?>
+                <?php // Show From and To dates fields. (TRK)
+                  showFromAndToDates(); ?>
                 <td class='label'>
                   <?php echo xlt('Adjustment Code'); # Adjustment code drop down creation ?>:
                 </td>
                 <td>
                   <?php generate_form_field(array('data_type'=>1,'field_id'=>'adjreason','list_id'=>'adjreason','empty_title'=>'All'),$_POST['form_adjreason']);?>
                 </td>
-
             </tr>
         </table>
 
         </div>
 
       </td>
-      <?php showSubmitPrintButtons('form_csvexport'); ?>
+      <?php // Show submit, print and export to CSV buttons. (TRK)
+        showSubmitPrintButtons('form_csvexport'); ?>
     </tr>
   </table>
 
@@ -124,7 +130,7 @@ else {
 } // end not export
 if ($_POST['form_refresh'] || $_POST['form_csvexport'])
 {
-  formRefreshOrCsvexport();
+  formRefreshOrCsvexport(); // Pulling out php code. (TRK)
 } // end if
 
 if (! $_POST['form_csvexport']) {

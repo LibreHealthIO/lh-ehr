@@ -25,23 +25,8 @@
  * @link    http://librehealth.io
  */
 
-//SANITIZE ALL ESCAPES
-$sanitize_all_escapes=true;
-//
+require_once "reports_controllers/CdrLogController.php";
 
-//STOP FAKE REGISTER GLOBALS
-$fake_register_globals=false;
-//
-
-require_once("../globals.php");
-require_once("../../library/patient.inc");
-require_once("$srcdir/formatting.inc.php");
-require_once "$srcdir/options.inc.php";
-require_once "$srcdir/clinical_rules.php";
-require_once("../../library/report_functions.php");
-require_once($GLOBALS['srcdir']."/formatting.inc.php");
-$DateFormat = DateFormatRead(true);
-$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 
 <html>
@@ -97,158 +82,42 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 <form method='post' name='theform' id='theform' action='cdr_log.php?search=1' onsubmit='return top.restoreSession()'>
 
-<div id="report_parameters">
-
-<table>
- <tr>
-  <td width='470px'>
-    <div style='float:left'>
-      <table class='text'>
-        <tr>
-          <?php showFromAndToDates(); ?>
-        </tr>
-      </table>
-    </div>
-  </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:90%; height:100%' >
-        <tr>
-            <td>
+  <div id="report_parameters">
+    <table>
+      <tr>
+        <td width='470px'>
+          <div style='float:left'>
+            <table class='text'>
+              <tr>
+                <?php // Show From and To dates fields. (TRK)
+                  showFromAndToDates(); ?>
+              </tr>
+            </table>
+          </div>
+        </td>
+        <td align='left' valign='middle' height="100%">
+          <table style='border-left:1px solid; width:90%; height:100%' >
+            <tr>
+              <td>
                 <div style='margin-left:15px'>
-                    <a id='search_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
+                  <a id='search_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
                     <span>
-                        <?php echo xlt('Search'); ?>
+                      <?php echo xlt('Search'); ?>
                     </span>
-                    </a>
+                  </a>
                 </div>
-            </td>
-        </tr>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
     </table>
-  </td>
- </tr>
-</table>
+  </div>  <!-- end of search parameters -->
 
-</div>  <!-- end of search parameters -->
+  <br>
 
-<br>
-
-<?php if ($_GET['search'] == 1) { ?>
-
- <div id="report_results">
- <table>
-
- <thead>
-  <th align='center'>
-   <?php echo xlt('Date'); ?>
-  </th>
-
-  <th align='center'>
-   <?php echo xlt('Patient ID'); ?>
-  </th>
-
-  <th align='center'>
-   <?php echo xlt('User ID'); ?>
-  </th>
-
-  <th align='center'>
-   <?php echo xlt('Category'); ?>
-  </th>
-
-  <th align='center'>
-   <?php echo xlt('All Alerts'); ?>
-  </th>
-
-  <th align='center'>
-   <?php echo xlt('New Alerts'); ?>
-  </th>
-
- </thead>
- <tbody>  <!-- added for better print-ability -->
- <?php
- $res = listingCDRReminderLog($_POST['form_from_date'],$_POST['form_to_date']);
-
- while ($row = sqlFetchArray($res)) {
-  //Create category title
-  if ($row['category'] == 'clinical_reminder_widget') {
-   $category_title = xl("Passive Alert");
-  }
-  else if ($row['category'] == 'active_reminder_popup') {
-   $category_title = xl("Active Alert");
-  }
-  else if ($row['category'] == 'allergy_alert') {
-   $category_title = xl("Allergy Warning");
-  }
-  else {
-   $category_title = $row['category'];
-  }
-  //Prepare the targets
-  $all_alerts = json_decode($row['value'], true);
-  if (!empty($row['new_value'])) {
-   $new_alerts = json_decode($row['new_value'], true);
-  }
-?>
-  <tr>
-    <td><?= date($DateFormat, strtotime(text($row['date']))); ?></td>
-    <td><?php echo text($row['pid']); ?></td>
-    <td><?php echo text($row['uid']); ?></td>
-    <td><?php echo text($category_title); ?></td>
-    <td>
-     <?php
-      //list off all targets with rule information shown when hover
-      foreach ($all_alerts as $targetInfo => $alert) {
-       if ( ($row['category'] == 'clinical_reminder_widget') || ($row['category'] == 'active_reminder_popup') ) {
-        $rule_title = getListItemTitle("clinical_rules",$alert['rule_id']);
-        $catAndTarget = explode(':',$targetInfo);
-        $category = $catAndTarget[0];
-        $target = $catAndTarget[1];
-        echo "<span title='" .attr($rule_title) . "'>" .
-             generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$category) .
-             ": " . generate_display_field(array('data_type'=>'1','list_id'=>'rule_action'),$target) .
-             " (" . generate_display_field(array('data_type'=>'1','list_id'=>'rule_reminder_due_opt'),$alert['due_status']) . ")" .
-             "<span><br>";
-       }
-       else { // $row['category'] == 'allergy_alert'
-         echo $alert . "<br>";
-       }
-      }
-     ?>
-    </td>
-    <td>
-     <?php
-     if (!empty($row['new_value'])) {
-      //list new targets with rule information shown when hover
-      foreach ($new_alerts as $targetInfo => $alert) {
-       if ( ($row['category'] == 'clinical_reminder_widget') || ($row['category'] == 'active_reminder_popup') ) {
-        $rule_title = getListItemTitle("clinical_rules",$alert['rule_id']);
-        $catAndTarget = explode(':',$targetInfo);
-        $category = $catAndTarget[0];
-        $target = $catAndTarget[1];
-        echo "<span title='" .attr($rule_title) . "'>" .
-             generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$category) .
-             ": " . generate_display_field(array('data_type'=>'1','list_id'=>'rule_action'),$target) .
-             " (" . generate_display_field(array('data_type'=>'1','list_id'=>'rule_reminder_due_opt'),$alert['due_status']) . ")" .
-             "<span><br>";
-       }
-       else { // $row['category'] == 'allergy_alert'
-        echo $alert . "<br>";
-       }
-      }
-     }
-     else {
-      echo "&nbsp;";
-     }
-     ?>
-    </td>
-  </tr>
-
- <?php
- } // $row = sqlFetchArray($res) while
- ?>
- </tbody>
- </table>
- </div>  <!-- end of search results -->
-
-<?php } // end of if search button clicked ?>
+ <?php // Show results for search. (TRK)
+  showResults(); ?>
 
 </form>
 

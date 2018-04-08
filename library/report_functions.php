@@ -5,8 +5,6 @@
  * report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
- * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
- * Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
@@ -91,6 +89,7 @@ function dropDownPayors() {
 
 /*
  * This function shows From and To dates
+ * @return: Echo Html
  */
 function showFromAndToDates() {
     echo "<td class='label'>";
@@ -116,6 +115,7 @@ function showFromAndToDates() {
 /*
  * This function shows the patients' age range
  * in clinical and patient_list_creation reports
+ * @return: Echo Html
  */
 function showPatientAgeRange() {
     echo "<td class='label'>";
@@ -174,6 +174,32 @@ function showSubmitPrintButtons($form_csvexport='') {
             </tr>
         </table>
     </td>";
+}
+
+/*
+ * This function just displays the report daterange
+ * @params None
+ * @return void - Simply echo HTML encoded string
+ */
+function reportParametersDaterange() {
+    echo '<div id="report_parameters_daterange">';
+            date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+        . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date'])));
+    echo '</div>';
+}
+
+/*
+ * This function is for csv export of reports
+ * @params : $filename - Name of associated report
+ * @return :void 
+ */
+function csvexport($filename) {
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Content-Type: application/force-download");
+    header("Content-Disposition: attachment; filename=" . $filename . ".csv");
+    header("Content-Description: File Transfer");
 }
 
 ?>

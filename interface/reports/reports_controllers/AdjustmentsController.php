@@ -1,11 +1,10 @@
 <?php
 /*
- * These functions are common functions used in the Adjustments reports. They have pulled out 
- * and placed in this file. This is done to prepare the for building a
- * report generator.
+ * These functions are common functions used in the Adjustments reports. 
+ * They have been pulled out and placed in this file. This is done to prepare 
+ * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
- * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
@@ -30,38 +29,6 @@
 
  $from_date = fixDate($_POST['form_from_date']);
  $to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
-
-/*
- * This function is for csv export of adjustments
- * @params None
- * @return void - Simply echo HTML encoded string
- */
-
-function csvexport() {
-	header("Pragma: public");
-	header("Expires: 0");
-  	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  	header("Content-Type: application/force-download");
-  	header("Content-Disposition: attachment; filename=adjustment_codes.csv");
-  	header("Content-Description: File Transfer");
-  	// CSV headers:
-  	if (true) {
-    	echo '"Adjustment Code",';
-    	echo '"Total",'. "\n";
-  	}
-}
-
-/*
- * This function just displays the report daterange
- * @params None
- * @return void - Simply echo HTML encoded string
- */
-function report_parameters_daterange() {
-	echo '<div id="report_parameters_daterange">';
-    		date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
-    	. " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date'])));
-	echo '</div>';
-}
 
 /*
  * This function is responsible for checking this condition
