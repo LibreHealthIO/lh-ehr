@@ -1750,6 +1750,9 @@ $GLOBALS_METADATA = array(
         'M6' => xl('Six Months Ahead'),
         'M3' => xl('Three Months Ahead'),
         'M1' => xl('One Month Ahead'),
+        'W3' => xl('Three Weeks Ahead'),
+        'W2' => xl('Two Weeks Ahead'),
+        'W1' => xl('One Week Ahead'),
         'D1' => xl('One Day Ahead'),
       ),
       'Y1',                     // default = One Year
