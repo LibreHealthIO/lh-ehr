@@ -32,10 +32,10 @@ function existsDefault(&$array, $key, $default = '') {
 
   return $default;
 }
-
+/////page title array...not needed as array anymore.
 $page_titles = array(
-  'pqrs'                  => xlt('Physician Quality Reporting System'),
-  'pqrs_individual_2016'  => xlt('Physician Quality Reporting System -- Measures -- 2017'),
+  'pqrs'                  => xlt('Quality Measures 2017'),
+  'pqrs_individual_2016'  => xlt('Quality Measures 2017'),
 );
 
 // See if showing an old report or creating a new report
@@ -48,38 +48,23 @@ $back_link = existsDefault($_GET, 'back');
 if(!empty($report_id)) {
   $report_view = collectReportDatabase($report_id);
 
-  //error_log("report_view is ".print_r($report_view,TRUE),0);
-
   $date_report = $report_view['date_report'];
-
-  
-  
-  $type_report = (
-    in_array(
-      $report_view['type'],
-      array(
-        'pqrs', 'pqrs_individual_2016',
-        
-      )
-    ) ?
-    $report_view['type'] :
-    'standard'
-  );
+ 
+  $type_report = $report_view['type'];
 
   $rule_filter = $report_view['type'];
 
-  if(in_array($type_report, array('pqrs', 'pqrs_individual_2016','mips_2017'))) {
-    $begin_date = $report_view['date_begin'];
-       if (isset($report_view['title'])) {
+  $begin_date = $report_view['date_begin'];
+  
+  if (isset($report_view['title'])) {
 
-           $report_title=$report_view['title'];
+     $report_title=$report_view['title'];
 
-            } else {
+     } else {
 
-                $report_title="";
+       $report_title="";
 
-                }
-  } 
+            }
 
   $target_date = $report_view['date_target'];
   $plan_filter = $report_view['plan'];
@@ -94,22 +79,20 @@ if(!empty($report_id)) {
   $dis_text = ' disabled="disabled" ';
 
 } else {
-  // Collect report type parameter 
+    // This is for a new empty report
+  // Collect report type parameter.  Is no longer needed, but expects and array here.  Check $type_report.
   $type_report = existsDefault($_GET, 'type', 'standard');
   $rule_filter = existsDefault($_POST, 'form_rule_filter', $type_report);
 
-  if(in_array($type_report, array( 'pqrs_individual_2016'))) {
-    $type_report = 'pqrs';
-  } 
+  //  Setting report type
+  $type_report = 'pqrs_individual_2016';
+  
 
   // Collect form parameters (set defaults if empty)
-  if($type_report == 'pqrs') {
-    $begin_date = existsDefault($_POST, 'form_begin_date', '2017-01-01 00:00:00');  //change defaults in 2017
-  }
 
-  if($type_report == 'pqrs') {
-    $target_date = existsDefault($_POST, 'form_target_date', '2017-12-31 23:59:59');  //change defaults in 2017
-  } 
+  $begin_date = existsDefault($_POST, 'form_begin_date', '2017-01-01 00:00:00');  //change defaults in 2017
+  $target_date = existsDefault($_POST, 'form_target_date', '2017-12-31 23:59:59');  //change defaults in 2017
+
   $plan_filter = existsDefault($_POST, 'form_plan_filter', '');
   $organize_method = (empty($plan_filter)) ? 'default' : 'plans';
   $provider = trim(existsDefault($_POST, 'form_provider', ''));
@@ -117,15 +100,17 @@ if(!empty($report_id)) {
   $page_subtitle = '';
   $dis_text = '';
 }
+//end is empty/old report
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 $widthDyn = '470px';  //determine what is needed for pqrs
 
 ?>
+
+
 <html>
   <head>
-<?php html_header_show();?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">  <!--should include stylesheet in project-->
     <link rel="stylesheet" href="../../assets/css/jquery-datetimepicker/jquery.datetimepicker.css">
     <title><?php echo $page_titles[$type_report]; ?></title>
@@ -151,7 +136,7 @@ function runReport() {
   // Showing processing wheel
   $("#processing").show();
 
-  // hide Submit buttons
+  // hide Submit buttons.  Most of these don't exist.
   $("#submit_button").hide();
   $("#xmla_button").hide();
   $("#xmlb_button").hide();
@@ -237,6 +222,21 @@ function GenXml(sNested) {
   return false;
 }
 
+function GenXmlMIPS(sNested) {
+
+  top.restoreSession();
+
+  if(sNested == "PQRS") {
+    var form_rule_filter = theform.form_rule_filter.value;
+    var sLoc = 'generate_MIPS_xml.php?target_date='+theform.form_target_date.value+'&form_provider='+theform.form_provider.value+"&report_id=<?php echo attr($report_id); ?>&xmloptimize="+document.getElementById("xmloptimize").checked;
+  } else {
+    var sLoc = '../../custom/export_registry_xml.php?&target_date='+theform.form_target_date.value+'&nested='+sNested;
+  }
+  dlgopen(sLoc, '_blank', 600, 500);
+
+  return false;
+}
+
 
 
 function validateForm() {
@@ -304,7 +304,12 @@ function Form_Validate() {
     <!-- Required for the popup date selectors -->
     <div id="overDiv" style="position: absolute; visibility: hidden; z-index: 1000;"></div>
 
-    <span class='title'><?php echo xlt('MIPS: ').' '.$page_titles[$rule_filter].$page_subtitle; ?></span>
+    <span class='title' hidden><?php echo xlt('MIPS: ').' '.$page_titles[$rule_filter].$page_subtitle; ?></span>
+    <?php
+    if(!empty($report_id)) {
+        ?>
+        <span class='label'><?php echo xlt('Report Dates:   ').' '.$begin_date.'   ~   '.$target_date; ?></span>
+        <?php } ?>
 
     <form method='post' name='theform' id='theform' action='clinical_measures.php?type=<?php echo attr($type_report) ;?>' onsubmit='return validateForm()'>
       <div id="report_parameters">
@@ -313,11 +318,13 @@ function Form_Validate() {
             <td scope="row" width='<?php echo $widthDyn; ?>'>
               <div style='float:left'>
                 <table class='text'>
-<?php if(in_array($type_report, array('pqrs', 'pqrs_individual_2016'))) { ?>
+                
+                
 
-                    <td class='label'>
-                      <?php echo htmlspecialchars(xl('Begin Date'), ENT_NOQUOTES); ?>:
-                    </td>
+
+                      <td class='label'>
+                         <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES);  ?>:
+                      </td>
                       <td>
                          <input type='text' name='form_begin_date' id='form_begin_date' size='20'
                                 value='<?php echo htmlspecialchars( $_POST['form_begin_date'], ENT_QUOTES); ?>'
@@ -330,82 +337,41 @@ function Form_Validate() {
                               <?php echo htmlspecialchars( xl('End Date'), ENT_NOQUOTES); ?>:
                         </td>
                     <td>
-                           <input type='text' name='form_end_date' id='form_end_date' size='20'
-                                  value='<?php echo htmlspecialchars( $_POST['form_end_date'], ENT_QUOTES); ?>'
+                           <input type='text' name='form_target_date' id='form_target_date' size='20'
+                                  value='<?php echo htmlspecialchars( $_POST['form_target_date'], ENT_QUOTES); ?>'
                                   title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
                         </td>
                 </tr>
-<!--                    <td>
-                      <input <?php echo $dis_text; ?> type='text' name='form_begin_date' id="form_begin_date" size='20'
-                        value='<?php echo htmlspecialchars($begin_date, ENT_QUOTES); ?>'
-                        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-                        title='<?php echo htmlspecialchars(xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-<?php   if(empty($report_id)) { ?>
-                      <img src='../../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                        id='img_begin_date' border='0' alt='[?]' style='cursor:pointer'
-                        title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
-<?php   } ?>
-                    </td>
-                  </tr>
-<?php } ?>
-                  <tr>
-                    <td class='label'>
-<?php if(in_array($type_report, array('pqrs', 'pqrs_individual_2016'))) { ?>
-                      <?php echo htmlspecialchars(xl('End Date'), ENT_NOQUOTES); ?>:
-<?php } else { ?>
-                      <?php echo htmlspecialchars(xl('Target Date'), ENT_NOQUOTES); ?>:
-<?php } ?>
-                    </td>
-                    <td>
-                      <input <?php echo $dis_text; ?> type='text' name='form_target_date' id="form_target_date" size='20'
-                        value='<?php echo htmlspecialchars($target_date, ENT_QUOTES); ?>'
-                        onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)'
-                        title='<?php echo htmlspecialchars(xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-<?php if(empty($report_id)) { ?>
-                      <img src='../../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
-                        id='img_target_date' border='0' alt='[?]' style='cursor:pointer'
-                        title='<?php echo htmlspecialchars(xl('Click here to choose a date'), ENT_QUOTES); ?>'>
-<?php } ?>
-                    </td>
-                  </tr>-->
-<?php if(in_array($type_report, array('pqrs','pqrs_individual_2016'))) { ?>
+               
+
                   <tr>
                     <td class='label'>
                       <?php echo xlt('Report Type'); ?>:
                     </td>
                     <td>
                       <select <?php echo $dis_text; ?> id='form_rule_filter' name='form_rule_filter'>
-                        <option value='pqrs_individual_2016' <?php if ($rule_filter == "pqrs_individual_2016") {echo "selected";} ?>><?php echo xlt('Registry Measures'); ?></option>
+                        <option value='pqrs_individual_2016' selected><?php echo xlt('Registry Measures'); ?></option>
                       </select>
                     </td>
                   </tr>
-<?php }
 
-    if(in_array($type_report, array('pqrs', 'pqrs_individual_2016'))) {
 
-//  Nothing.  Do NOTHING!  --leebc
-?>
-        <input type='hidden' id='form_plan_filter' name='form_plan_filter' value=''>
-<?php
 
- }  ?>
+		<input type='hidden' id='form_plan_filter' name='form_plan_filter' value=''>
+
                   <tr>
                     <td class='label'>
                       <?php echo htmlspecialchars(xl('Provider'), ENT_NOQUOTES); ?>:
                     </td>
                     <td>
                       <select <?php echo $dis_text; ?> id='form_provider' name='form_provider'>
-                        <option value=''>-- <?php echo htmlspecialchars(xl('All (Cumulative)'), ENT_NOQUOTES); ?> --</option>
-<!-- TODO: Requires revision upon publishing of 2017 MIPS standard (not published yet: July 2017) -->
-                        <option value='collate_outer' <?php if($provider == 'collate_outer') {echo 'selected';} ?>>-- <?php echo htmlspecialchars(xl('All (Collated Format A)'), ENT_NOQUOTES); ?> --</option>
-                        <option value='collate_inner' <?php if($provider == 'collate_inner') {echo 'selected';} ?>>-- <?php echo htmlspecialchars(xl('All (Collated Format B)'), ENT_NOQUOTES); ?> --</option>
+
+
 <?php
       // Build a drop-down list of providers.
-      if(!isset($provider_facility_filter)) {
-        $provider_facility_filter = '';
-      }
-      $providers = sqlStatement('SELECT `id`, `lname`, `fname` FROM `users` WHERE `authorized` = 1 '.$provider_facility_filter.' ORDER BY `lname`, `fname`;');
-      // (CHEMED) facility filter
+ 
+      $providers = sqlStatement('SELECT `id`, `lname`, `fname` FROM `users` WHERE `authorized` = 1  ORDER BY `lname`, `fname`;');
+
       while($providerRow = sqlFetchArray($providers)) {
 ?>
                         <option value='<?php echo htmlspecialchars($providerRow['id'], ENT_QUOTES); ?>' <?php if($providerRow['id'] == $provider) echo ' selected'; ?>><?php echo htmlspecialchars($providerRow['lname'].', '.$providerRow['fname'], ENT_NOQUOTES); ?></option>
@@ -418,9 +384,9 @@ function Form_Validate() {
                       <?php echo htmlspecialchars(xl('Provider Relationship'), ENT_NOQUOTES); ?>:
                     </td>
                     <td>
-                      <select <?php echo $dis_text; ?> id='form_pat_prov_rel' name='form_pat_prov_rel' title='<?php echo xlt('Only applicable if a provider or collated list was chosen above. PRIMARY only selects patients that the provider is the primary provider. ENCOUNTER selects all patients that the provider has seen.'); ?>'>
-                        <option value='primary'<?php if($pat_prov_rel == 'primary') {echo 'selected';} ?>><?php echo xlt('Primary'); ?></option>
-                        <option value='encounter'<?php if($pat_prov_rel == 'encounter') {echo 'selected';} ?>><?php echo xlt('Encounter'); ?></option>
+                      <select <?php echo $dis_text; ?> id='form_pat_prov_rel' name='form_pat_prov_rel' title='<?php echo xlt('PRIMARY selects patients that have the selected provider set in Demographics. ENCOUNTER selects all patients that the provider has seen.'); ?>'>
+                        <option value='primary'<?php if($pat_prov_rel == 'primary') {echo ' selected';} ?>><?php echo xlt('Primary'); ?></option>
+                        <option value='encounter'<?php if($pat_prov_rel == 'encounter') {echo ' selected';} ?>><?php echo xlt('Encounter'); ?></option>
                       </select>
                     </td>
                   </tr>
@@ -434,19 +400,20 @@ function Form_Validate() {
                   <td scope="row">
                     <div style='margin-left:15px'>
                         <span>
-<?php   if (isset($report_view['title'])) {
-        $report_title=$report_view['title'];
-        } else {
-        $report_title="";
-        }
-    if ($report_title != "" ) {
-        echo ("Report Title:  $report_title \n");
-    }  ?>
+<?php  //the following isn't really necessary except to echo the title
+ 	if (isset($report_view['title'])) {
+		$report_title=$report_view['title'];
+    	} else {
+		$report_title="";
+    	}
+	if ($report_title != "" ) {
+		echo ("Report Title:  $report_title \n");
+	}  ?>
 
                         </span>
                     </div>
-          </td>
-        </tr>
+		  </td>
+		</tr>
 <?php if(empty($report_id)) { ?>
                       <a id='submit_button' href='#' class='css_button' onclick='runReport();'>
                         <span>
@@ -464,15 +431,21 @@ function Form_Validate() {
                           <?php echo htmlspecialchars(xl('Print'), ENT_NOQUOTES); ?>
                         </span>
                       </a>
-<?php   if(in_array($type_report, array('pqrs_individual_2016'))) { ?>
+
                         Optimize XML report?
                         <input id="xmloptimize" type="checkbox" name="xmloptimize" value="1" />
+                        
                       <a href="#"  id="xml_pqrs" class='css_button' onclick='GenXml("PQRS");'>
                         <span>
-                          <?php echo htmlspecialchars(xl('Generate XML for MIPS'), ENT_NOQUOTES); ?>
+                          <?php echo htmlspecialchars(xl('OLD XML for PQRS'), ENT_NOQUOTES); ?>
                         </span>
                       </a>
-<?php   } 
+                        <a href="#"  id="xml_MIPS" class='css_button' onclick='GenXmlMIPS("PQRS");'>
+                        <span>
+                          <?php echo htmlspecialchars(xl('NEW XML for MIPS'), ENT_NOQUOTES); ?>
+                        </span>
+                      </a>
+<?php
 
       if($back_link == 'list') {
 ?>
@@ -496,15 +469,13 @@ function Form_Validate() {
       <div id="report_results">
         <table>
           <thead>
-            <th><?php echo htmlspecialchars(xl('Title'), ENT_NOQUOTES); ?></th>
-            <th><?php echo htmlspecialchars(xl('Total Patients'), ENT_NOQUOTES); ?></th>
-            <th><?php if(in_array($type_report, array( 'pqrs', 'pqrs_individual_2016'))) { echo htmlspecialchars(xl('Denominator'), ENT_NOQUOTES); } else { echo htmlspecialchars(xl('something else'), ENT_NOQUOTES); }  ?></th>
-
-            <th><?php echo htmlspecialchars(xl('Excluded Patients'), ENT_NOQUOTES); ?></th>
-
-            <th><?php echo htmlspecialchars(xl('Passed Patients').' ('.xl('Numerator').')', ENT_NOQUOTES);  ?></th>
-            <th><?php echo htmlspecialchars(xl('Failed Patients'), ENT_NOQUOTES);  ?></th>
-            <th><?php echo htmlspecialchars(xl('Performance Percentage'), ENT_NOQUOTES); ?></th>
+            <th style="text-align:left"><?php echo htmlspecialchars(xl('Title'), ENT_NOQUOTES); ?></th>
+            <th style="text-align:center"><?php echo htmlspecialchars(xl('Total Patients'), ENT_NOQUOTES); ?></th>
+            <th style="text-align:center"><?php echo htmlspecialchars(xl('Denominator'), ENT_NOQUOTES);  ?></th>
+            <th style="text-align:center"><?php echo htmlspecialchars(xl('Exclusions'), ENT_NOQUOTES); ?></th>
+            <th style="text-align:center"><?php echo htmlspecialchars(xl('Performance Met'), ENT_NOQUOTES);  ?></th>
+            <th style="text-align:center"><?php echo htmlspecialchars(xl('Not Met'), ENT_NOQUOTES);  ?></th>
+            <th style="text-align:center"><?php echo htmlspecialchars(xl('Performance Rate'), ENT_NOQUOTES); ?></th>
           </thead>
           <tbody>  <!-- added for better print-ability -->
 <?php
@@ -512,8 +483,7 @@ function Form_Validate() {
       $firstProviderFlag = true;
       $firstPlanFlag = true;
       $existProvider = false;
-//error_log("Datasheet is [".$dataSheet."]",0);
-//error_log("Datasheet print_r is ".print_r($dataSheet,TRUE),0);
+
       foreach($dataSheet as $row) {
 ?>
             <tr bgcolor='<?php echo $bgcolor ?>'>
@@ -530,16 +500,10 @@ function Form_Validate() {
 
             $tempMeasuresString = '';
 
-            switch($type_report) {
-                case 'pqrs':
-              case 'pqrs_individual_2016':
                 if(!empty($row['pqrs_code'])) {
-                  $tempMeasuresString .= ' '.htmlspecialchars(xl('MIPS ').preg_replace('/PQRS_/', '',$row['pqrs_code']), ENT_NOQUOTES).' ';
-                 
+                  $tempMeasuresString .= ' '.htmlspecialchars(xl('MIPS ').preg_replace('/PQRS_/', '',$row['pqrs_code']), ENT_NOQUOTES).' ';              
                 }
-                break;
-
-            }
+  
 
             if(!empty($tempMeasuresString)) {
                 $patterns = array();
@@ -554,7 +518,7 @@ function Form_Validate() {
              
             }
 
-            if(!(empty($row['concatenated_label']))) {
+            if(!(empty($row['concatenated_label']))) {  ///this condition can be removed...not sure which way yet.
               echo ', '.htmlspecialchars(xl($row['concatenated_label']), ENT_NOQUOTES).' ';
             }
           } else {
@@ -563,7 +527,7 @@ function Form_Validate() {
           }
 ?>
               </td>
-              <td align='center'><?php echo $row['total_patients']; ?></td>
+              <td style="text-align:center"><?php echo $row['total_patients']; ?></td>
 <?php
           if(isset($row['itemized_test_id']) && $row['pass_filter'] > 0) {
             $query = http_build_query(array(
@@ -574,11 +538,12 @@ function Form_Validate() {
               'numerator_label' => attr($row['numerator_label'])
             ));
 ?>
-              <td align='center'><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['pass_filter']; ?></a></td>
+
+              <td style="text-align:center"><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['pass_filter']; ?></a></td>
 <?php
           } else {
 ?>
-              <td align='center'><?php echo $row['pass_filter']; ?></td>
+              <td style="text-align:center"><?php echo $row['pass_filter']; ?></td>
 <?php
           }
 
@@ -594,16 +559,16 @@ function Form_Validate() {
                 'numerator_label' => attr($row['numerator_label']),
               ));
 ?>
-              <td align='center'><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['excluded']; ?></a></td>
+              <td style="text-align:center"><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['excluded']; ?></a></td>
 <?php
             } else {
 ?>
-              <td align='center'><?php echo $row['excluded']; ?></td>
+              <td style="text-align:center"><?php echo $row['excluded']; ?></td>
 <?php
             }
 
 
-// TODO: 
+ 
           if(isset($row['itemized_test_id']) && $row['pass_target'] > 0) {
             $query = http_build_query(array(
               'from_page' => 'pqrs_report',
@@ -613,11 +578,11 @@ function Form_Validate() {
               'numerator_label' => attr($row['numerator_label']),
             ));
 ?>
-              <td align='center'><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['pass_target']; ?></a></td>
+              <td style="text-align:center"><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $row['pass_target']; ?></a></td>
 <?php
           } else {
 ?>
-              <td align='center'><?php echo $row['pass_target']; ?></td>
+              <td style="text-align:center"><?php echo $row['pass_target']; ?></td>
 <?php
           }
 
@@ -637,16 +602,16 @@ function Form_Validate() {
               'numerator_label' => attr($row['numerator_label']),
             ));
 ?>
-              <td align='center'><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $failed_items; ?></a></td>
+              <td style="text-align:center"><a href='../../interface/main/finder/patient_select.php?<?php echo $query; ?>' onclick='top.restoreSession()'><?php echo $failed_items; ?></a></td>
 <?php
           } else {
 ?>
-              <td align='center'><?php echo $failed_items; ?></td>
+              <td style="text-align:center"><?php echo $failed_items; ?></td>
 <?php
           }
 
 ?>
-              <td align='center'><?php echo $row['percentage']; ?></td>
+              <td style="text-align:center"><?php echo $row['percentage']; ?></td>
 <?php
         } elseif(isset($row['is_provider'])) {
           // Display the provider information
@@ -706,22 +671,12 @@ function Form_Validate() {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $("#form_end_date").datetimepicker({
+        $("#form_target_date").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
 </script>
-  <!-- stuff for the popup calendar -->
-  <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
-  <script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php   include_once $GLOBALS['srcdir'].'/dynarch_calendar_en.inc.php'; ?>
-  <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
-  <script language="Javascript">
-<?php if(in_array($type_report, array('pqrs', 'pqrs_individual_2016'))) { ?>
-  //  Calendar.setup({inputField:"form_begin_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_begin_date", showsTime:'true'});
-<?php } ?>
-  //  Calendar.setup({inputField:"form_target_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_target_date", showsTime:'true'});
-  </script>
+
 </html>
