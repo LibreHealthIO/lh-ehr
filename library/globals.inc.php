@@ -206,6 +206,17 @@ $GLOBALS_METADATA = array(
       xl('Choose Application Menu: Role-based by work flows')
     ),
 
+    'role_based_menu_status' => array(
+      xl('Role-based menu status'),
+      array(
+        'enabled' => xl('Enabled'),
+        'disabled' => xl('Disabled')
+
+      ),
+      'Administrator',
+      xl('Choose to enable or disable role-based menus')
+    ),
+
     'css_header' => array(
       xl('Theme'),
        'css',

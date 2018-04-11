@@ -23,7 +23,7 @@ function menu_entry_to_object($row)
 }
 function load_menu($menu_set)
 {
-    if ($GLOBALS['menu_styling_tabs'] > '') { $menu_set=$GLOBALS['menu_styling_tabs']; } else { $menu_set="default";}
+    if ($GLOBALS['menu_styling_tabs'] > '' ) { $menu_set=$GLOBALS['menu_styling_tabs']; } else { $menu_set="default";}
     
     $menuTables=" SHOW TABLES LIKE ?";
     $res=sqlQuery($menuTables,array("menu_trees"));
