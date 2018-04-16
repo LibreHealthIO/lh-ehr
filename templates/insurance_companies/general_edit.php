@@ -153,8 +153,8 @@ This is now deprecated use the newer x12 partner code instead
 <tr>
 <tr height="25"><td colspan=2>&nbsp;</td></tr>
 <tr>
-    <td colspan="2"><a href="javascript:submit_insurancecompany();" class="css_button"><span><?php echo xlt("Save");?></span></a>
-        <a href="controller.php?practice_settings&insurance_company&action=list" class="css_button" onclick="top.restoreSession()">
+    <td colspan="2"><a href="javascript:submit_insurancecompany();" class="css_button cp-submit"><span><?php echo xlt("Save");?></span></a>
+        <a href="controller.php?practice_settings&insurance_company&action=list" class="css_button cp-negative" onclick="top.restoreSession()">
             <span><?php echo xlt("Cancel");?></span></a></td>
 </tr>
 </table>

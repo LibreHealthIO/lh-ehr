@@ -8,6 +8,7 @@
 include_once("../globals.php");
 include_once("$srcdir/registry.inc");
 include_once("$srcdir/sql.inc");
+require_once("$srcdir/headers.inc.php");
 if ($_GET['method'] == "enable"){
     updateRegistered ( $_GET['id'], "state=1" );
 }
@@ -65,7 +66,7 @@ if ($err)
 <span class=bold><?php xl('Registered','e');?></span><br>
 <form method=POST action ='./forms_admin.php'>
 <i><?php xl('click here to update priority, category and nickname settings','e'); ?></i>
-<input type=submit name=update value='<?php xl('update','e'); ?>'><br> 
+<input type=submit name=update class='cp-positive' value='<?php xl('update','e'); ?>'><br> 
 <table border=0 cellpadding=1 cellspacing=2 width="500">
     <tr>
         <td> </td>

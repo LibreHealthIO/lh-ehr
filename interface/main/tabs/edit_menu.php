@@ -51,6 +51,7 @@
 
 require_once('../../globals.php');
 require_once("$srcdir/acl.inc");
+require_once $GLOBALS['srcdir'].'/headers.inc.php';
 
 if (!acl_check('admin', 'super')) die(xl('Not authorized','','','!'));
 
@@ -103,7 +104,7 @@ if (!empty($_POST['menuEdits'])) {
     <input type="hidden" id="menuEdits" name="menuEdits" value="">
 </form>
 
-<?php echo xlt("Save Menu Changes for site ID") . ': ' . $_SESSION['site_id'];?> <input type="button" id="saveDocument" value="Save" />
+<?php echo xlt("Save Menu Changes for site ID") . ': ' . $_SESSION['site_id'];?> <input type="button" id="saveDocument" class='cp-submit' value="Save" />
 
 <div id="jsoneditor"></div>
 

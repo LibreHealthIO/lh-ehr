@@ -399,7 +399,7 @@ input     { font-size:10pt; }
 </div>
 <?php // mdsupport - Optional server based searching mechanism for large number of fields on this screen. ?>
 <div style="float: right;">
-  <input type='submit' style="float: right;" name='form_search' value='<?php echo xla('Search'); ?>' />
+  <input type='submit' style="float: right;" name='form_search' class='cp-submit' value='<?php echo xla('Search'); ?>' />
 </div>
 <div style='float: right;'>
     <input name='srch_desc' type="text" class="form-rounded form-control" size='20'

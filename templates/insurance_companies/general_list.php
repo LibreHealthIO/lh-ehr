@@ -1,5 +1,5 @@
 <a href="controller.php?practice_settings&<?php echo $top_action;?>insurance_company&action=edit" 
-   onclick="top.restoreSession()" class="css_button" >
+   onclick="top.restoreSession()" class="css_button cp-positive" >
 <span><?php echo xlt("Add a company");?> </span></a><br>
 <br>
 <table class="table table-hover ">

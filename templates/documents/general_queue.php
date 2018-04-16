@@ -11,8 +11,8 @@ function submit_documents()
 
 
 <a href="controller.php?practice_settings&<?php echo $this->top_action; ?>document_category&action=list" 
-   onclick="top.restoreSession()" class="css_button" >
-<span><?php echo xlt("Edit Categories");?></span></a><a href="#" onclick="submit_documents();" class="css_button" target="_self" ><span>Update files</span></a>
+   onclick="top.restoreSession()" class="css_button cp-positive" >
+<span><?php echo xlt("Edit Categories");?></span></a><a href="#" onclick="submit_documents();" class="css_button cp-positive" target="_self" ><span>Update files</span></a>
 <input type="hidden" name="process" value="<?php echo self::PROCESS;?>" />
 
 <form name="queue" method="post" action="<?php echo $this->form_action; ?>" onsubmit="return top.restoreSession()">

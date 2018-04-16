@@ -1,4 +1,4 @@
-<a href="<?php echo $this->current_action;?>action=edit&id=default" onclick="top.restoreSession()" class="css_button" >
+<a href="<?php echo $this->current_action;?>action=edit&id=default" onclick="top.restoreSession()" class="css_button cp-positive" >
 <span><?php echo xlt("Add New Partner");?></span></a><br><br>
 <table class="table table-hover">
     <tr>

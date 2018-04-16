@@ -5,6 +5,9 @@
  // modify it under the terms of the GNU General Public License
  // as published by the Free Software Foundation; either version 2
  // of the License, or (at your option) any later version.
+
+ require_once("../../../../../globals");
+ require_once("$srcdir/headers.inc.php");
 ?>
 <?php $action = $viewBean->action?>
 <?php $rule = $viewBean->rule?>
@@ -23,10 +26,10 @@
   <tr>
         <td class="title"><?php echo out( xl( 'Rule Edit' ) ); ?></td>
         <td>
-            <a href="index.php?action=detail!view&id=<?php echo $action->id ?>" class="iframe_medium css_button" onclick="top.restoreSession()">
+            <a href="index.php?action=detail!view&id=<?php echo $action->id ?>" class="iframe_medium css_button cp-negative" onclick="top.restoreSession()">
                 <span><?php echo out( xl( 'Cancel' ) ); ?></span>
             </a>
-            <a href="javascript:;" class="iframe_medium css_button" id="btn_save" onclick="top.restoreSession()"><span><?php echo out( xl('Save' ) );  ?></span></a>
+            <a href="javascript:;" class="iframe_medium css_button cp-submit" id="btn_save" onclick="top.restoreSession()"><span><?php echo out( xl('Save' ) );  ?></span></a>
         </td>
   </tr>
 </table>
