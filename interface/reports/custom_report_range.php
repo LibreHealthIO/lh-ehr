@@ -37,19 +37,20 @@ require_once("$srcdir/report.inc");
 require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/classes/Note.class.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("../../library/report_functions.php");
 $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
-$startdate = $enddate = "";
-if(empty($_POST['start']) || empty($_POST['end'])) {
+$from_date = $to_date = "";
+if(empty($_POST['form_from_date']) || empty($_POST['form_to_date'])) {
     // set some default dates
-    $startdate = date($DateFormat, (time() - 30*24*60*60));
-    $enddate = date($DateFormat, time());
+    $from_date = date($DateFormat, (time() - 30*24*60*60));
+    $to_date = date($DateFormat, time());
 }
 else {
     // set dates
-    $startdate = $_POST['start'];
-    $enddate = $_POST['end'];
+    $from_date = $_POST['form_from_date'];
+    $to_date = $_POST['form_to_date'];
 }
 //Patient related stuff
 if ($_POST["form_patient"])
@@ -190,76 +191,37 @@ if ($form_patient == '' ) $form_pid = '';
 <span class='title'><?php echo xlt('Reports'); ?> - <?php echo xlt('Superbill'); ?></span>
 
 <div id="superbill_description" class='text'>
-<?php echo xlt('Superbills, sometimes referred to as Encounter Forms or Routing Slips, are an essential part of most medical practices.'); ?>
+    <?php echo xlt('Superbills, sometimes referred to as Encounter Forms or Routing Slips, are an essential part of most medical practices.'); ?>
 </div>
 
 <div id="report_parameters">
-
-<form method="post" name="theform" id='theform' action="custom_report_range.php">
-<input type='hidden' name='form_refresh' id='form_refresh' value=''/>
-<table>
- <tr>
-  <td width='650px'>
-    <div style='float:left'>
-
-    <table class='text'>
-        <tr>
-            <td class='label'>
-               <?php echo xlt('Start Date'); ?>:
-            </td>
-            <td>
-               <input type='text' name='start' id="form_from_date" size='10' value='<?= htmlspecialchars($startdate); ?>'>
-            </td>
-            <td class='label'>
-               <?php echo xlt('End Date'); ?>:
-            </td>
-            <td>
-               <input type='text' name='end' id="form_to_date" size='10' value='<?= htmlspecialchars($enddate); ?>'>
-            </td>
-
-            <td>
-            &nbsp;&nbsp;<span class='text'><?php echo xlt('Patient'); ?>: </span>
-            </td>
-            <td>
-            <input type='text' size='20' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' value='<?php echo attr($form_patient) ? attr($form_patient) : xla('Click To Select'); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' />
-            <input type='hidden' name='form_pid' value='<?php echo attr($form_pid); ?>' />
-            </td>
+    <form method="post" name="theform" id='theform' action="custom_report_range.php">
+        <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
+        <table>
+            <tr>
+                <td width='650px'>
+                    <div style='float:left'>
+                        <table class='text'>
+                            <tr>
+                                <?php showFromAndToDates(); ?>
+                                <td>
+                                    &nbsp;&nbsp;<span class='text'><?php echo xlt('Patient'); ?>: </span>
+                                </td>
+                                <td>
+                                    <input type='text' size='20' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' value='<?php echo attr($form_patient) ? attr($form_patient) : xla('Click To Select'); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' />
+                                    <input type='hidden' name='form_pid' value='<?php echo attr($form_pid); ?>' />
+                                </td>
+                            </tr>
+                            <tr><td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <?php showSubmitPrintButtons(); ?>
             </tr>
-            <tr><td>
-        </tr>
-    </table>
-
-    </div>
-
-  </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
-        <tr>
-            <td>
-                <div style='margin-left:15px'>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php echo xlt('Submit'); ?>
-                    </span>
-                    </a>
-
-                    <?php if ($_POST['form_refresh']) { ?>
-                    <a href='#' class='css_button' id='printbutton'>
-                        <span>
-                            <?php echo xlt('Print'); ?>
-                        </span>
-                    </a>
-                    <?php } ?>
-                </div>
-            </td>
-        </tr>
-    </table>
-  </td>
- </tr>
-</table>
+        </table>
+    </form>
 </div> <!-- end of parameters -->
-
-</form>
 
 <div id="superbill_results">
 
@@ -284,7 +246,7 @@ if( !(empty($_POST['start']) || empty($_POST['end']))) {
         $res_query =    "select * from forms where " .
                         "form_name = 'Patient Encounter' and " .
                         "date between ? and ? " ;
-                array_push($sqlBindArray, prepareDateBeforeSave($startdate), prepareDateBeforeSave($enddate));
+                array_push($sqlBindArray, prepareDateBeforeSave($from_date), prepareDateBeforeSave($to_date));
         if($form_pid) {
         $res_query.= " and pid=? "; 
         array_push($sqlBindArray,$form_pid);
@@ -403,7 +365,7 @@ if( !(empty($_POST['start']) || empty($_POST['end']))) {
             timepicker: true,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 
 </script>

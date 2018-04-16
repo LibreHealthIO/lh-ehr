@@ -25,6 +25,7 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
  
 require_once("../globals.php");
+require_once("../../library/report_functions.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
@@ -233,8 +234,8 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
 
 
     if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($_POST['form_to_date']) && $_POST['form_from_date']) {
-        $form_from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
-        $form_to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
+        $from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
+        $to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
     }
   $form_facility  = $_POST['form_facility'];
 
@@ -336,18 +337,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
             <td>
             <?php dropdown_facility($form_facility, 'form_facility', true); ?>
             </td>
-            <td class='label'>
-                <?php echo xlt('From'); ?>:
-            </td>
-            <td>
-                <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?= oeFormatShortDate(attr($form_from_date)); ?>' />
-            </td>
-            <td class='label'>
-                <?php echo xlt('To'); ?>:
-            </td>
-            <td>
-                <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?= oeFormatShortDate(attr($form_to_date))?>' />
-            </td>
+            <?php showFromAndToDates(); ?>
         </tr>
     </table>
     <table class='text'>
@@ -359,18 +349,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
             <?php
                 if (acl_check('acct', 'rep_a')) {
                     // Build a drop-down list of providers.
-                    $query = "select id, lname, fname from users where " .
-                        "authorized = 1 order by lname, fname";
-                    $res = sqlStatement($query);
-                    echo "   &nbsp;<select name='form_provider'>\n";
-                    echo "    <option value=''>-- " . xlt('All Providers') . " --\n";
-                    while ($row = sqlFetchArray($res)) {
-                        $provid = $row['id'];
-                        echo "    <option value='". attr($provid) ."'";
-                        if ($provid == $_REQUEST['form_provider']) echo " selected";
-                        echo ">" . text($row['lname']) . ", " . text($row['fname']) . "\n";
-                    }
-                    echo "   </select>\n";
+                    dropDownProviders();
                     } else {
                     echo "<input type='hidden' name='form_provider' value='" . attr($_SESSION['authUserID']) . "'>";
                     }
@@ -386,34 +365,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
   </div>
 
   </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
-         <tr>
-            <td>
-                <div style='margin-left:15px'>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#form_csvexport").attr("value",""); $("#theform").submit();'>
-                    <span>
-                       <?php echo xlt('Submit'); ?>
-                    </span>
-                    </a>
-
-                    <?php if ($_POST['form_refresh'] || $_POST['form_csvexport']) { ?>
-                    <a href='#' class='css_button' id='printbutton'>
-                    <span>
-                        <?php echo xlt('Print'); ?>
-                    </span>
-                    </a>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value",""); $("#form_csvexport").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php echo xlt('CSV Export'); ?>
-                    </span>
-                    </a>
-                    <?php } ?>
-                </div>
-             </td>
-        </tr>
-    </table>
-  </td>
+  <?php showSubmitPrintButtons('form_csvexport'); ?>
  </tr>
 </table>
 
@@ -618,8 +570,8 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
    <?php text(bucks($grandtotal)); ?>
   </b></td>
  </tr>
- <?php $report_from_date = oeFormatShortDate($form_from_date)  ;
-       $report_to_date = oeFormatShortDate($form_to_date)  ;
+ <?php $report_from_date = oeFormatShortDate($from_date)  ;
+       $report_to_date = oeFormatShortDate($to_date)  ;
  ?>
 <div align='right'><span class='title' ><?php echo xlt('Report Date'). ' '; ?><?php echo text($report_from_date);?> - <?php echo text($report_to_date);?></span></div>
 <?php
@@ -656,7 +608,7 @@ function thisLineItem($patient_id, $encounter_id, $rowcat, $description, $transd
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 

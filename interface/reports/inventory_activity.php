@@ -47,6 +47,7 @@ require_once("../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
+require_once("../../library/report_functions.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -63,7 +64,7 @@ function esc4Export($str) {
 // Get ending inventory for the report's end date.
 // Optionally restricts by product ID and/or warehouse ID.
 function getEndInventory($product_id = 0, $warehouse_id = '~') {
-  global $form_from_date, $form_to_date, $form_product;
+  global $from_date, $to_date, $form_product;
 
   $whidcond = '';
   if ($warehouse_id !== '~') {
@@ -82,20 +83,20 @@ function getEndInventory($product_id = 0, $warehouse_id = '~') {
   // report end date (which is effectively a type of transaction).
   $eirow = sqlQuery("SELECT sum(di.on_hand) AS on_hand " .
     "FROM drug_inventory AS di WHERE " .
-    "( di.destroy_date IS NULL OR di.destroy_date > '$form_to_date' ) " .
+    "( di.destroy_date IS NULL OR di.destroy_date > '$to_date' ) " .
     "$prodcond $whidcond");
 
   // Get sum of sales/adjustments/purchases after the report end date.
   $sarow = sqlQuery("SELECT sum(ds.quantity) AS quantity " .
     "FROM drug_sales AS ds, drug_inventory AS di WHERE " .
-    "ds.sale_date > '$form_to_date' AND " .
+    "ds.sale_date > '$to_date' AND " .
     "di.inventory_id = ds.inventory_id " .
     "$prodcond $whidcond");
 
   // Get sum of transfers out after the report end date.
   $xfrow = sqlQuery("SELECT sum(ds.quantity) AS quantity " .
     "FROM drug_sales AS ds, drug_inventory AS di WHERE " .
-    "ds.sale_date > '$form_to_date' AND " .
+    "ds.sale_date > '$to_date' AND " .
     "di.inventory_id = ds.xfer_inventory_id " .
     "$prodcond $whidcond");
 
@@ -336,8 +337,8 @@ if (! acl_check('acct', 'rep')) die(htmlspecialchars(xl("Unauthorized access."))
 // this is "" or "submit" or "export".
 $form_action = $_POST['form_action'];
 
-$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-$form_to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
+$from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
+$to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
 $form_product  = $_POST['form_product'];
 
 if ($form_action == 'export') {
@@ -446,20 +447,7 @@ else {
        <option value='w'<?php if (!$product_first) echo ' selected'; ?>><?php echo htmlspecialchars(xl('Warehouse')); ?></option>
       </select>
      </td>
-     <td class='label'>
-      <?php echo htmlspecialchars(xl('From')); ?>:
-     </td>
-     <td nowrap>
-      <input type='text' name='form_from_date' id="form_from_date" size='10'
-       value='<?php echo htmlspecialchars(oeFormatShortDate($form_from_date), ENT_QUOTES) ?>'/>
-     </td>
-     <td class='label'>
-      <?php echo htmlspecialchars(xl('To')); ?>:
-     </td>
-     <td nowrap>
-      <input type='text' name='form_to_date' id="form_to_date" size='10'
-       value='<?php echo htmlspecialchars(oeFormatShortDate($form_to_date), ENT_QUOTES) ?>'/>
-     </td>
+     <?php showFromAndToDates(); ?>
     </tr>
     <tr>
      <td class='label'>
@@ -565,8 +553,8 @@ echo "      </select>\n";
 } // end not export
 
 if ($form_action) { // if submit or export
-  $from_date = $form_from_date;
-  $to_date   = $form_to_date;
+  $from_date = $from_date;
+  $to_date   = $to_date;
 
   $product   = "";
   $prodleft  = "";
@@ -590,7 +578,7 @@ if ($form_action) { // if submit or export
     "LEFT JOIN list_options AS lo ON lo.list_id = 'warehouse' AND " .
     "lo.option_id = di.warehouse_id " .
     "LEFT JOIN form_encounter AS fe ON fe.pid = s.pid AND fe.encounter = s.encounter " .
-    "WHERE ( di.destroy_date IS NULL OR di.destroy_date >= '$form_from_date' )";
+    "WHERE ( di.destroy_date IS NULL OR di.destroy_date >= '$from_date' )";
 
   // If a product was specified.
   if ($form_product) {
@@ -613,7 +601,7 @@ if ($form_action) { // if submit or export
     if ($row['inventory_id'] != $last_inventory_id) {
       $last_inventory_id = $row['inventory_id'];
       if (!empty($row['destroy_date']) && $row['on_hand'] != 0
-        && $row['destroy_date'] <= $form_to_date)
+        && $row['destroy_date'] <= $to_date)
       {
         thisLineItem($row['drug_id'], $row['warehouse_id'], 0,
           0, $row['name'], $row['title'], $row['destroy_date'],
@@ -707,7 +695,7 @@ if ($form_action != 'export') {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 

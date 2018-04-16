@@ -33,6 +33,7 @@
     require_once("$srcdir/formatting.inc.php");
     require_once("$srcdir/payment_jav.inc.php");
     require_once("$srcdir/headers.inc.php");
+    require_once("../../library/report_functions.php");
     /** Current format of date  */
     
     $DateFormat=DateFormatRead();
@@ -56,16 +57,16 @@ function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
 {
     $DateFormat = DateFormatRead();
         $cd = strtotime($givendate);
-    $newdate = date($DateFormat . ' H:i:s', mktime(date('h', $cd),
+        $newdate = date($DateFormat . ' H:i:s', mktime(date('h', $cd),
         date('i',$cd), date('s',$cd), date('m',$cd)+$mth,
         date('d',$cd)+$day, date('Y',$cd)+$yr));
         return $newdate;
         }
-if ($_POST['date_from'] != "") {
-        $sql_date_from = $_POST['date_from'];
+if ($_POST['form_from_date'] != "") {
+        $from_date = $_POST['form_from_date'];
 }
-if ($_POST['date_to'] != "") {
-        $sql_date_to = $_POST['date_to'];
+if ($_POST['form_to_date'] != "") {
+        $to_date = $_POST['form_to_date'];
 }
 
     //echo "<pre>";print_r($_POST);
@@ -96,8 +97,8 @@ if ($_POST['date_to'] != "") {
         var global_date_format = '%Y-%m-%d';                
         function Form_Validate() {
             var d = document.forms[0];       
-            FromDate = d.date_from.value;
-            ToDate = d.date_to.value;
+            FromDate = d.form_from_date.value;
+            ToDate = d.form_to_date.value;
             if ( (FromDate.length > 0) && (ToDate.length > 0) ) {
                 if ( FromDate > ToDate ){
                     alert("<?php echo xls('To date must be later than From date!'); ?>");
@@ -147,8 +148,8 @@ if ($_POST['date_to'] != "") {
         <script language="javascript" type="text/javascript">
                     
             function submitForm() {
-                var d_from = new String($('#date_from').val());
-                var d_to = new String($('#date_to').val());
+                var d_from = new String($('#form_from_date').val());
+                var d_to = new String($('#form_to_date').val());
                 
                 var d_from_arr = d_from.split('-');
                 var d_to_arr = d_to.split('-');
@@ -217,8 +218,8 @@ if ($_POST['date_to'] != "") {
 
         <div id="report_parameters_daterange"> 
             <p>
-            <?php echo "<span style='margin-left:5px;'><b>".xlt('Date Range').":</b>&nbsp;".text(date($sql_date_from, strtotime($sql_date_from))) .
-              " &nbsp; to &nbsp; ". text(date($sql_date_to, strtotime($sql_date_to)))."</span>"; ?>
+            <?php echo "<span style='margin-left:5px;'><b>".xlt('Date Range').":</b>&nbsp;".text(date($from_date, strtotime($from_date))) .
+              " &nbsp; to &nbsp; ". text(date($to_date, strtotime($to_date)))."</span>"; ?>
             <span style="margin-left:5px; " ><b><?php echo xlt('Option'); ?>:</b>&nbsp;<?php echo text($_POST['srch_option']); 
             if($_POST['srch_option'] == "Communication" && $_POST['communication'] != ""){
                 if (isset($comarr[$_POST['communication']])) {
@@ -238,16 +239,7 @@ if ($_POST['date_to'] != "") {
                                             <div class="cancel-float" style='float:left'>
                         <table class='text'>
                             <tr>
-                                <td class='label' ><?php echo xlt('From'); ?>: </td>
-                                <td>
-                                    <input type='text' name='date_from' id="date_from" size='18' value='<?php echo attr($sql_date_from); ?>'
-                                           title='<?php echo attr($title_tooltip) ?>'>
-                                </td>
-                                <td class='label'><?php echo xlt('To{{range}}'); ?>: </td>
-                                <td>
-                                    <input type='text' name='date_to' id="date_to" size='18' value='<?php echo attr($sql_date_to); ?>'
-                                           title='<?php echo attr($title_tooltip) ?>'>
-                                </td>
+                                <?php showFromAndToDates(); ?>
                                 <td class='label'><?php echo xlt('Option'); ?>: </td>
                                 <td class='label'>
                                     <select name="srch_option" id="srch_option"
@@ -287,15 +279,9 @@ if ($_POST['date_to'] != "") {
                                 <td><input name='patient_id' class="numeric_only" type='text' id="patient_id"
                                            title='<?php echo xla('Optional numeric patient ID'); ?>' value='<?php echo attr($patient_id); ?>'
                                            size='10' maxlength='20'/></td>
-                                <td class='label'><?php echo xlt('Age Range'); ?>:</td>
-                                <td><?php echo xlt('From'); ?> 
-                                    <input name='age_from' class="numeric_only" type='text' id="age_from" value="<?php echo attr($age_from); ?>"
-                                           size='3' maxlength='3'/> <?php echo xlt('To{{range}}'); ?>
-                                    <input name='age_to' class="numeric_only" type='text' id="age_to" value="<?php echo attr($age_to); ?>" size='3'
-                                           maxlength='3'/></td>
+                                <?php showPatientAgeRange(); ?>
                                 <td class='label'><?php echo xlt('Gender'); ?>:</td>
-                                <td colspan="2"><?php echo generate_select_list('gender', 'sex', $sql_gender, 'Select Gender', 'Unassigned', '',
-                                        ''); ?></td>
+                                <td colspan="2"><?php echo generate_select_list('gender', 'sex', $sql_gender, 'Select Gender', 'Unassigned', '', ''); ?></td>
                             </tr>
                             
                         </table>
@@ -303,7 +289,7 @@ if ($_POST['date_to'] != "") {
                     </div>
                 </td>
                 <td height="100%" valign='middle' width="175">
-                    <table style='border-left:1px solid; width:100%; height:100%'>
+                    <table style='border-left:1px solid; width:80%; height:100%'>
                             <tr>
                             <td width="130px">
                                 <div style='margin-left:15px'><a href='#' class='css_button' onclick='submitForm();'> <span>
@@ -323,8 +309,8 @@ if ($_POST['date_to'] != "") {
             </div>
         <!-- end of parameters -->
         <?php
-    $sql_date_from = prepareDateBeforeSave($sql_date_from);
-    $sql_date_to   = prepareDateBeforeSave($sql_date_to);
+    $from_date = prepareDateBeforeSave($from_date);
+    $to_date   = prepareDateBeforeSave($to_date);
 
         // SQL scripts for the various searches
         $sqlBindArray = array();
@@ -392,17 +378,17 @@ if ($_POST['date_to'] != "") {
                 case "Medications":
                 case "Allergies":
                     $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date < DATE_ADD(?, INTERVAL 1 DAY) AND li.date <= ?";
-                    array_push($sqlBindArray, $sql_date_from, $sql_date_to, date("Y-m-d H:i:s"));
+                    array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d H:i:s"));
                     break;
                 case "Problems":
                     $whr_stmt = $whr_stmt." AND li.title != '' ";
                     $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date < DATE_ADD(?, INTERVAL 1 DAY) AND li.date <= ?";
-                    array_push($sqlBindArray, $sql_date_from, $sql_date_to, date("Y-m-d H:i:s"));
+                    array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d H:i:s"));
                     break;
                 case "Lab results":
                     $whr_stmt=$whr_stmt." AND pr.date >= ? AND pr.date < DATE_ADD(?, INTERVAL 1 DAY) AND pr.date <= ?";
                     $whr_stmt= $whr_stmt." AND (pr.result != '') ";
-                    array_push($sqlBindArray, $sql_date_from, $sql_date_to, date("Y-m-d H:i:s"));
+                    array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d H:i:s"));
                     break;
                 case "Communication":
                     $whr_stmt .= " AND (pd.hipaa_allowsms = 'YES' OR pd.hipaa_voice = 'YES' OR pd.hipaa_mail  = 'YES' OR pd.hipaa_allowemail  = 'YES') ";
@@ -748,15 +734,15 @@ if ($_POST['date_to'] != "") {
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
-        $("#date_from").datetimepicker({
+        $("#form_from_date").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $("#date_to").datetimepicker({
+        $("#form_to_date").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
         </script>
     </body>

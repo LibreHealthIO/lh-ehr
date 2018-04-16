@@ -40,6 +40,7 @@
     require_once "$srcdir/formdata.inc.php";
     include_once("$srcdir/calendar.inc");
     include_once("$srcdir/edi_276.inc.php");
+    require_once("../../library/report_functions.php");
 
     $DateFormat = DateFormatRead();
     $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -284,9 +285,9 @@
         <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('276 Claim Status Request Batch'); ?></span>
 
         <div id="report_parameters_daterange">
-            <?php echo attr(date("d F Y", strtotime($form_from_date))) .
+            <?php echo attr(date("d F Y", strtotime($from_date))) .
                 " &nbsp; " . xlt('to') .
-                "&nbsp; ". attr(date("d F Y", strtotime($form_to_date))); ?>
+                "&nbsp; ". attr(date("d F Y", strtotime($to_date))); ?>
         </div>
 
         <form method='post' name='theform' id='theform' action='edi_276.php' onsubmit="return top.restoreSession()">
@@ -298,20 +299,7 @@
                             <div style='float:left'>
                                 <table class='text'>
                                     <tr>
-                                        <td class='label'>
-                                           <?php echo xlt('From'); ?>:
-                                        </td>
-                                        <td>
-                                        <input type='text' name='form_from_date' id="form_from_date" size='10'
-                                           value='<?php echo attr(oeFormatShortDate($from_date)) ?>'>
-                                        </td>
-                                        <td class='label'>
-                                           <?php echo xlt('To'); ?>:
-                                        </td>
-                                        <td>
-                                        <input type='text' name='form_to_date' id="form_to_date" size='10'
-                                           value='<?php echo attr(oeFormatShortDate($to_date)) ?>'>
-                                        </td>
+                                        <?php showFromAndToDates(); ?>
                                         <td>&nbsp;</td>
                                     </tr>
 
@@ -417,7 +405,7 @@
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>

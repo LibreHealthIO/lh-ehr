@@ -52,18 +52,19 @@
     require_once "$srcdir/formdata.inc.php";
     include_once("$srcdir/calendar.inc");
     include_once("$srcdir/edi.inc");
+    require_once("../../library/report_functions.php");
 
     $DateFormat = DateFormatRead();
     $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
     // Element data seperator       
-    $eleDataSep     = "*";
+    $eleDataSep = "*";
 
     // Segment Terminator   
-    $segTer         = "~";  
+    $segTer = "~";  
 
     // Component Element seperator
-    $compEleSep     = ":";  
+    $compEleSep = ":";  
     
     // filter conditions for the report and batch creation 
 
@@ -180,7 +181,7 @@
 
         <title><?php echo htmlspecialchars( xl('Eligibility 270 Inquiry Batch'), ENT_NOQUOTES); ?></title>
 
-    <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+        <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
         <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 
@@ -300,9 +301,9 @@
         <span class='title'><?php echo htmlspecialchars( xl('Report'), ENT_NOQUOTES); ?> - <?php echo htmlspecialchars( xl('Eligibility 270 Inquiry Batch'), ENT_NOQUOTES); ?></span>
 
         <div id="report_parameters_daterange">
-            <?php echo htmlspecialchars( date("d F Y", strtotime($form_from_date)), ENT_NOQUOTES) .
+            <?php echo htmlspecialchars( date("d F Y", strtotime($from_date)), ENT_NOQUOTES) .
                 " &nbsp; " . htmlspecialchars( xl('to'), ENT_NOQUOTES) . 
-                "&nbsp; ". htmlspecialchars( date("d F Y", strtotime($form_to_date)), ENT_NOQUOTES); ?>
+                "&nbsp; ". htmlspecialchars( date("d F Y", strtotime($to_date)), ENT_NOQUOTES); ?>
         </div>
 
         <form method='post' name='theform' id='theform' action='edi_270.php' onsubmit="return top.restoreSession()">
@@ -314,20 +315,7 @@
                             <div style='float:left'>
                                 <table class='text'>
                                     <tr>
-                                        <td class='label'>
-                                           <?php xl('From','e'); ?>:
-                                        </td>
-                                        <td>
-                                    <input type='text' name='form_from_date' id="form_from_date" size='10'
-                                           value='<?php echo htmlspecialchars(oeFormatShortDate($from_date), ENT_QUOTES) ?>'>
-                                        </td>
-                                        <td class='label'>
-                                           <?php echo htmlspecialchars( xl('To'), ENT_NOQUOTES); ?>:
-                                        </td>
-                                        <td>
-                                    <input type='text' name='form_to_date' id="form_to_date" size='10'
-                                           value='<?php echo htmlspecialchars(oeFormatShortDate($to_date), ENT_QUOTES) ?>'>
-                                        </td>
+                                        <?php showFromAndToDates(); ?>
                                         <td>&nbsp;</td>
                                     </tr>
                                     
@@ -434,7 +422,7 @@
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 

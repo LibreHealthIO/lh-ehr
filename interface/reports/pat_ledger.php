@@ -26,6 +26,7 @@
 $sanitize_all_escapes=true;
 $fake_register_globals=false;
 require_once('../globals.php');
+require_once("../../library/report_functions.php");
 require_once($GLOBALS['srcdir'].'/patient.inc');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/formatting.inc.php');
@@ -450,7 +451,7 @@ window.onclick = function(event) {
             <td>
             <?php dropdown_facility($form_facility, 'form_facility', true); ?>
             </td>
-      <td><?php echo xlt('Provider'); ?>:</td>
+      <td><?php echo xlt('Provider'); ?>:</td
       <td><?php
         $query = "SELECT id, lname, fname FROM users WHERE ".
                 "authorized=1 AND active!=0 ORDER BY lname, fname";
@@ -475,11 +476,16 @@ window.onclick = function(event) {
       <td class='label'>
         <?php echo xlt('To'); ?>:
       </td>
+
       <td>
-        <input type='text' name='form_to_date' id="form_to_date" size='10'
-         value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>'>
+        <?php // Build a dropdown list of providers
+          dropDownProviders();
+        ?>
       </td>
-      <?php if($type_form == '0') { ?>
+        </tr><tr>
+<?php }
+      showFromAndToDates();
+      if($type_form == '0') { ?>
       <td><span class='label'><?php echo xlt('Patient'); ?>:&nbsp;&nbsp;</span></td>
       <td>
         <input type='text' size='20' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' id='form_patient' value='<?php echo attr($form_patient) ? attr($form_patient) : xla('Click To Select'); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' />
@@ -495,7 +501,7 @@ window.onclick = function(event) {
     </div>
   </td>
   <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
+    <table style='border-left:1px solid; width:70%; height:100%' >
         <tr>
             <td>
                 <div style='margin-left:15px'>
@@ -624,7 +630,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
 </table>
 </div>
 <div id="report_results">
-<table >
+<table id="report_table">
  <tr>
     <td class='bold' ><?php echo xlt('Code'); ?></td>
     <td colspan="2" class='bold' ><?php echo xlt('Description'); ?></td>
@@ -772,10 +778,10 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
 }
 if (! $_REQUEST['form_csvexport']) {
   if ( $_REQUEST['form_refresh'] && $orow <= 0) {
-    echo "<span style='font-size:10pt;'>";
-    echo xlt('No matches found. Try search again.');
+    echo "<span style='color:red;'>";
+    echo xlt('No data to display. Select patient and try search again.');
     echo "</span>";
-    echo '<script>document.getElementById("report_results").style.display="none";</script>';
+    echo '<script>document.getElementById("report_table").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
     echo '<script> showNoRecordsModal(); </script>';
   }
@@ -807,7 +813,7 @@ if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>

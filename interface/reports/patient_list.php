@@ -32,6 +32,7 @@
  require_once("$srcdir/patient.inc");
  require_once("$srcdir/formatting.inc.php");
   require_once("$srcdir/options.inc.php");
+  require_once("../../library/report_functions.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -120,8 +121,8 @@ else {
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Patient List','e'); ?></span>
 
 <div id="report_parameters_daterange">
-    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($form_from_date)))
-    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($form_to_date))); ?>
+    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
+    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
 <form name='theform' id='theform' method='post' action='patient_list.php'>
@@ -135,67 +136,22 @@ else {
  <tr>
   <td width='60%'>
     <div style='float:left'>
-
-    <table class='text'>
-        <tr>
-      <td class='label'>
-        <?php xl('Provider','e'); ?>:
-      </td>
-      <td>
-          <?php
-         generate_form_field(array('data_type' => 10, 'field_id' => 'provider',
-           'empty_title' => '-- All --'), $_POST['form_provider']);
-          ?>
-      </td>
+      <table class='text'>
+          <tr>
             <td class='label'>
-               <?php xl('Visits From','e'); ?>:
+              <?php xl('Provider','e'); ?>:
             </td>
             <td>
-                                    <input type='text' name='form_from_date' id="form_from_date"
-                                           size='10' value='<?= $form_from_date; ?>' title='yyyy-mm-dd'>
+              <?php
+                generate_form_field(array('data_type' => 10, 'field_id' => 'provider','empty_title' => '-- All Providers --'), $_POST['form_provider']);
+              ?>
             </td>
-            <td class='label'>
-               <?php xl('To','e'); ?>:
-            </td>
-            <td>
-                                    <input type='text' name='form_to_date' id="form_to_date" size='10'
-                                           value='<?= $form_to_date; ?>' title='yyyy-mm-dd'>
-            </td>
-        </tr>
-    </table>
-
+            <?php showFromAndToDates(); ?>
+          </tr>
+      </table>
     </div>
-
   </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
-        <tr>
-            <td>
-                <div style='margin-left:15px'>
-                                    <a href='#' class='css_button'
-                                       onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php xl('Submit','e'); ?>
-                    </span>
-                    </a>
-                                    <a href='#' class='css_button'
-                                       onclick='$("#form_csvexport").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php xl('Export to CSV','e'); ?>
-                    </span>
-                    </a>
-                    <?php if ($_POST['form_refresh']) { ?>
-                    <a href='#' id='printbutton' class='css_button'>
-                        <span>
-                            <?php xl('Print','e'); ?>
-                        </span>
-                    </a>
-                    <?php } ?>
-                </div>
-            </td>
-        </tr>
-    </table>
-  </td>
+  <?php showSubmitPrintButtons('form_csvexport'); ?>
  </tr>
 </table>
 </div> <!-- end of parameters -->
@@ -383,7 +339,7 @@ if (!$_POST['form_csvexport']) {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </html>
