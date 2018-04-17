@@ -112,6 +112,29 @@ var webroot_url="<?php echo $web_root; ?>";
                                                                   .',' . json_encode($userQuery['lname'])
                                                                   .',' . json_encode($_SESSION['authGroup']); ?>));
 </script>
+
+<style type="text/css">
+
+    #messagesNotification{
+        position: relative;
+        width: 100%;
+        margin: 5px 30px 0 0;
+    }
+
+    span.nt-num{
+        position: absolute;
+        top: -5px;
+        right: 20px;
+        background-color: red;
+        color: white;
+        font-weight: bolder;
+        padding: 0 5px;
+        border: 1px solid red;
+        border-radius: 100%;
+        font-size: 12px;
+    }
+
+</style>
 <div id="mainBox">
     <div id="dialogDiv"></div>
     <div class="navbar-header">
