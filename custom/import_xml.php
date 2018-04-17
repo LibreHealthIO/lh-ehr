@@ -13,6 +13,7 @@
  include_once("../interface/globals.php");
  include_once("$srcdir/patient.inc");
  include_once("$srcdir/acl.inc");
+ require_once("../library/headers.inc.php");
 
  function setInsurance($pid, $ainsurance, $asubscriber, $seq) {
   $iwhich = $seq == '2' ? "secondary" : ($seq == '3' ? "tertiary" : "primary");
@@ -185,7 +186,7 @@
   else
   {
   	echo "<html>\n<body>\n<script language='JavaScript'>\n";
-  	//if ($alertmsg) 
+  	//if ($alertmsg)
 	echo " alert('$alertmsg');\n";
   	/*echo " if (!opener.closed && opener.refreshme) opener.refreshme();\n";
   	echo " window.close();\n";*/
@@ -210,8 +211,8 @@
 <textarea name='form_import_data' rows='10' cols='50' style='width:95%'></textarea>
 
 <p>
-<input type='submit' name='form_import' value=<?php xl('Import Patient','e','\'','\''); ?> /> &nbsp;
-<input type='button' value=<?php xl('Cancel','e','\'','\''); ?> onclick='window.close()' /></p>
+<input type='submit' class="cp-positive" name='form_import' value=<?php xl('Import Patient','e','\'','\''); ?> /> &nbsp;
+<input type='button' class="cp-negative" value=<?php xl('Cancel','e','\'','\''); ?> onclick='window.close()' /></p>
 </form>
 </center>
 

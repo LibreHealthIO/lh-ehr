@@ -13,6 +13,7 @@
 
  include_once("../interface/globals.php");
  include_once("../library/patient.inc");
+ require_once("../library/headers.inc.php");
 
  $out = "";
  $indent = 0;
@@ -264,7 +265,7 @@ paste this into an email or to any other desired destination.','e'); ?></p>
 <?php echo $out ?>
 </textarea>
 
-<p><input type='button' value=<?php xl('OK','e','\'','\''); ?> onclick='window.close()' /></p>
+<p><input type='button' class="cp-output" value=<?php xl('OK','e','\'','\''); ?> onclick='window.close()' /></p>
 </form>
 </center>
 
