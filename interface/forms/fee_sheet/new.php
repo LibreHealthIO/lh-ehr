@@ -1345,7 +1345,7 @@ if ($GLOBALS['contract_physician_in_feesheet']) {
 }
 
 if ($GLOBALS['allow_appointments_in_feesheet']) {
-  echo "<input type='button' value='" . xla('New Appointment') . "' onclick='newEvt()' />\n";
+  echo "<input type='button' class='cp-misc' value='" . xla('New Appointment') . "' onclick='newEvt()' />\n";
 }
 
 echo "</b></span>\n";

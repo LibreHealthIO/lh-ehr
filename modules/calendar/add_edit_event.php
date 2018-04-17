@@ -39,6 +39,7 @@ require_once($GLOBALS['srcdir'].'/patient.inc');
 require_once($GLOBALS['srcdir'].'/forms.inc');
 require_once($GLOBALS['srcdir'].'/calendar.inc');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
+require_once($GLOBALS['srcdir'].'/headers.inc.php');
 require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
@@ -1541,19 +1542,19 @@ if ($repeatexdate != "") {
 </table></td></tr>
 <tr class='text'><td colspan='10'>
 <p>
-<input type='button' name='form_save' id='form_save' value='<?php echo xla('Save');?>' />
+<input type='button' name='form_save' class="cp-submit"  id='form_save' value='<?php echo xla('Save');?>' />
 &nbsp;
 
 <?php if (!($GLOBALS['select_multi_providers'])) { //multi providers appt is not supported by check slot avail window, so skip ?>
-  <input type='button' id='find_available' value='<?php echo xla('Find Available');?>' />
+  <input type='button' class="cp-misc" id='find_available' value='<?php echo xla('Find Available');?>' />
 <?php } ?>
 
 &nbsp;
-<input type='button' name='form_delete' id='form_delete' value='<?php echo xla('Delete');?>'<?php if (!$eid) echo " disabled" ?> />
+<input type='button' class="cp-negative" name='form_delete' id='form_delete' value='<?php echo xla('Delete');?>'<?php if (!$eid) echo " disabled" ?> />
 &nbsp;
-<input type='button' id='cancel' value='<?php echo xla('Cancel');?>' />
+<input type='button' class="cp-negative" id='cancel' value='<?php echo xla('Cancel');?>' />
 &nbsp;
-<input type='button' name='form_duplicate' id='form_duplicate' value='<?php echo xla('Create Duplicate');?>' />
+<input type='button' class="cp-positive" name='form_duplicate' id='form_duplicate' value='<?php echo xla('Create Duplicate');?>' />
 </p></td></tr></table>
 <?php if ($informant) echo "<p class='text'>" . xlt('Last update by') . " " .
   text($informant) . " " . xlt('on') . " " . text(oeFormatDateTime($row['pc_time'])) . "</p>\n"; ?>

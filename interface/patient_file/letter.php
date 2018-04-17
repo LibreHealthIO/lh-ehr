@@ -2,27 +2,27 @@
 /*
  * Letter
  *
- * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2007-2011 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
+ * @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
- * @link http://librehealth.io 
+ * @link http://librehealth.io
  */
 
 // Undo magic quotes and do not allow fake register globals.
@@ -32,6 +32,7 @@ $fake_register_globals = false;
 include_once("../globals.php");
 include_once($GLOBALS['srcdir'] . "/patient.inc");
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+require_once("$srcdir/headers.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -78,7 +79,7 @@ $FIELD_TAG = array(
     'PT_SSN'           => xl('PT_SSN'),
     'PT_EMAIL'         => xl('PT_EMAIL'),
     'PT_DOB'           => xl('PT_DOB')
-    
+
 );
 
 $patdata = sqlQuery("SELECT " .
@@ -90,8 +91,8 @@ $patdata = sqlQuery("SELECT " .
 $alertmsg = ''; // anything here pops up in an alert box
 
 // If the Generate button was clicked...
-if ($_POST['formaction']=="generate") {    
-    
+if ($_POST['formaction']=="generate") {
+
     $form_pid      = $_POST['form_pid'];
     $form_from     = $_POST['form_from'];
     $form_to       = $_POST['form_to'];
@@ -161,7 +162,7 @@ if ($_POST['formaction']=="generate") {
     $cpstring = str_replace('{'.$FIELD_TAG['PT_SSN'].'}'          , $patdata['ss'], $cpstring);
     $cpstring = str_replace('{'.$FIELD_TAG['PT_EMAIL'].'}'        , $patdata['email'], $cpstring);
     $cpstring = str_replace('{'.$FIELD_TAG['PT_DOB'].'}'          , $patdata['DOB'], $cpstring);
-    
+
     if ($form_format == "pdf") {
       // documentation for ezpdf is here --> http://www.ros.co.nz/pdf/
       require_once ($GLOBALS['fileroot'] . "/library/classes/class.ezpdf.php");
@@ -176,7 +177,7 @@ if ($_POST['formaction']=="generate") {
       }
       else {
         $pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Helvetica.afm");
-        $pdf->ezText($cpstring, 12); 
+        $pdf->ezText($cpstring, 12);
       }
       $pdf->ezStream();
       exit;
@@ -195,7 +196,7 @@ if ($_POST['formaction']=="generate") {
      font-size: 12pt;
      background: white;
      color: black;
-    }   
+    }
     .paddingdiv {
      width: 524pt;
      padding: 0pt;
@@ -203,13 +204,13 @@ if ($_POST['formaction']=="generate") {
     }
     .navigate {
      margin-top: 2.5em;
-    }   
+    }
     @media print {
      .navigate {
       display: none;
-     }  
-    }   
-    </style>    
+     }
+    }
+    </style>
     <title><?php xl('Letter','e'); ?></title>
     </head>
         <body>
@@ -245,8 +246,8 @@ else if ($_POST['formaction'] == "loadtemplate" && $_POST['form_template'] != ""
     fclose($fh);
     // translate from constant to the definition
     foreach ($FIELD_TAG as $key => $value) {
-        $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);   
-    } 
+        $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);
+    }
 }
 else if ($_POST['formaction'] == "newtemplate" && $_POST['newtemplatename'] != "") {
     // attempt to save the template
@@ -369,21 +370,21 @@ function insertAtCaret(areaId,text) {
     var txtarea = document.getElementById(areaId);
     var scrollPos = txtarea.scrollTop;
     var strPos = 0;
-    var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+    var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
             "ff" : (document.selection ? "ie" : false ) );
-    if (br == "ie") { 
+    if (br == "ie") {
         txtarea.focus();
         var range = document.selection.createRange();
         range.moveStart ('character', -txtarea.value.length);
         strPos = range.text.length;
     }
     else if (br == "ff") strPos = txtarea.selectionStart;
-                                                                            
-    var front = (txtarea.value).substring(0,strPos);  
-    var back = (txtarea.value).substring(strPos,txtarea.value.length); 
+
+    var front = (txtarea.value).substring(0,strPos);
+    var back = (txtarea.value).substring(strPos,txtarea.value.length);
     txtarea.value=front+text+back;
     strPos = strPos + text.length;
-    if (br == "ie") { 
+    if (br == "ie") {
         txtarea.focus();
         var range = document.selection.createRange();
         range.moveStart ('character', -txtarea.value.length);
@@ -591,9 +592,9 @@ closedir($dh);
 
 </table>
 
-<input type='button' class="addtemplate" value=<?php xl('Save as New','e','\'','\''); ?>>
-<input type='button' name='savetemplate' id="savetemplate" value=<?php xl('Save Changes','e','\'','\''); ?>>
-<input type='button' name='form_generate' id="form_generate" value=<?php xl('Generate Letter','e','\'','\''); ?>>
+<input type='button' class="addtemplate cp-submit" value=<?php xl('Save as New','e','\'','\''); ?>>
+<input type='button' name='savetemplate' class="cp-submit" id="savetemplate" value=<?php xl('Save Changes','e','\'','\''); ?>>
+<input type='button' name='form_generate' class="cp-output" id="form_generate" value=<?php xl('Generate Letter','e','\'','\''); ?>>
 
 </center>
 
@@ -622,14 +623,14 @@ $(document).ready(function(){
     $("#form_template").change(function() { $("#formaction").val("loadtemplate"); $("#theform").submit(); });
 
     $("#savetemplate").click(function() { SaveTemplate(this); });
-    
+
     $("#letter_field").change(function() { insertAtCursor(document.getElementById("form_body"), $(this).val()); $(this).attr("selectedIndex", "0"); });
-    
+
     $(".addtemplate").click(function() { AddTemplate(this); });
     $(".savenewtemplate").click(function() { SaveNewTemplate(this); });
     $(".deletetemplate").click(function() { DeleteTemplate(this); });
     $(".cancelnewtemplate").click(function() { CancelNewTemplate(this); });
-    
+
     // display the 'new group' DIV
     var AddTemplate = function(btnObj) {
         // show the field details DIV
@@ -638,8 +639,8 @@ $(document).ready(function(){
         $(btnObj).parent().append($("#newtemplatedetail"));
         $('#newtemplatedetail > #newtemplatename').focus();
     };
-    
-    // save the new template 
+
+    // save the new template
     var SaveNewTemplate = function(btnObj) {
         // the template name can only have letters, numbers, spaces and underscores
         // AND it cannot start with a number
@@ -654,7 +655,7 @@ $(document).ready(function(){
         $("#formaction").val("newtemplate");
         $("#theform").submit();
     }
-    
+
     // actually delete a template file
 /*
     var DeleteTemplate = function(btnObj) {
@@ -677,8 +678,8 @@ $(document).ready(function(){
         // reset the new group values to a default
         $('#newtemplatedetail > #newtemplatename').val("");
     };
-    
-    
+
+
     // save the template, overwriting the older version
     var SaveTemplate = function(btnObj) {
         if (! confirm("<?php xl('You are about to permanently replace the existing template. Are you sure you wish to continue?','e'); ?>")) {
