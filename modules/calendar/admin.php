@@ -155,7 +155,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         <div class="row">
           <div class="form-group col-xs-9"> 
             <div class=col-md-12>
-              <button type="submit" class="btn btn-primary" name="updateCat" value="1"><?php echo xlt('Update');?></button>
+              <button type="submit" class="btn btn-primary cp-positive" name="updateCat" value="1"><?php echo xlt('Update');?></button>
             </div>
           </div>
           
@@ -163,7 +163,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
           <?php if(!empty($selectedCat)) { ?>
           <div class="form-group col-xs-3">
             <div class=col-md-12>
-              <button type="submit" class="btn btn-danger" name="deleteCat" value="1" 
+              <button type="submit" class="btn btn-danger cp-negative" name="deleteCat" value="1" 
               onclick="return confirm('<?php echo xlt('Are you sure you want to do that?');?>');"><?php echo xlt('Delete');?></button>
             </div>
           </div>

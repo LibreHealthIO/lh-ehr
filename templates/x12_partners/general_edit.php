@@ -183,12 +183,12 @@
         <tr>
             <td colspan="2">
             <?php if ($this->partner->get_id() == "") { ?>
-                                <a class="css_button" href="javascript:add_x12();"><span><?php echo xlt("Save");?></span></a>
+                                <a class="css_button cp-submit" href="javascript:add_x12();"><span><?php echo xlt("Save");?></span></a>
             <?php } else { ?>
-                                <a class="css_button" href="javascript:add_x12();"><span><?php echo xlt("Save");?></span></a>
+                                <a class="css_button cp-submit" href="javascript:add_x12();"><span><?php echo xlt("Save");?></span></a>
             <?php } ?>               
 
-                <a href="controller.php?practice_settings&x12_partner&action=list"  class="css_button" onclick="top.restoreSession()">
+                <a href="controller.php?practice_settings&x12_partner&action=list"  class="css_button cp-negative" onclick="top.restoreSession()">
                     <span><?php echo xlt("Cancel");?></span></a></td>
         </tr>
     </table>

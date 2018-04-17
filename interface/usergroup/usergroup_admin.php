@@ -440,9 +440,9 @@ function authorized_clicked() {
        <table>
       <tr >
         <td><b><?php echo xlt('User / Groups'); ?></b>&nbsp;&nbsp;</td>
-        <td><a href="usergroup_admin_add.php" class="iframe_medium css_button"><span><?php echo xlt('Add User'); ?></span></a>
+        <td><a href="usergroup_admin_add.php" class="iframe_medium css_button cp-positive"><span><?php echo xlt('Add User'); ?></span></a>
         </td>
-        <td><a href="facility_user.php" class="css_button"><span><?php echo xlt('View Facility Specific User Information'); ?></span></a>
+        <td><a href="facility_user.php" class="css_button cp-misc"><span><?php echo xlt('View Facility Specific User Information'); ?></span></a>
         </td>
       </tr>
     </table>

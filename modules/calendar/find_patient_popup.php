@@ -25,6 +25,7 @@ include_once('../../interface/globals.php');
 include_once("$srcdir/patient.inc");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 $info_msg = "";
 
@@ -166,7 +167,7 @@ form {
    <input type='text' id='searchparm' name='searchparm' size='12' value='<?php echo htmlspecialchars( $_REQUEST['searchparm'], ENT_QUOTES); ?>'
     title='<?php echo htmlspecialchars( xl('If name, any part of lastname or lastname,firstname'), ENT_QUOTES); ?>' autofocus>
    &nbsp;
-   <input type='submit' id="submitbtn" value='<?php echo htmlspecialchars( xl('Search'), ENT_QUOTES); ?>'>
+   <input type='submit' id="submitbtn" class='cp-submit' value='<?php echo htmlspecialchars( xl('Search'), ENT_QUOTES); ?>'>
    <!-- &nbsp; <input type='button' value='<?php echo htmlspecialchars( xl('Close'), ENT_QUOTES); ?>' onclick='window.close()' /> -->
    <div id="searchspinner"><img src="<?php echo $GLOBALS['webroot'] ?>/interface/pic/ajax-loader.gif"></div>
 </form>

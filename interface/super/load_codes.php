@@ -31,6 +31,7 @@ require_once($GLOBALS['srcdir'] . '/acl.inc');
 require_once($GLOBALS['srcdir'] . '/htmlspecialchars.inc.php');
 require_once($GLOBALS['srcdir'] . '/formdata.inc.php');
 require_once($GLOBALS['fileroot'] . '/custom/code_types.inc.php');
+require_once("$srcdir/headers.inc.php");
 
 if (!acl_check('admin', 'super')) die(xlt('Not authorized'));
 
@@ -173,7 +174,7 @@ foreach (array('RXCUI') as $codetype) {
  </tr>
  <tr bgcolor='#dddddd'>
   <td align='center' class='detail' colspan='2'>
-   <input type='submit' name='bn_upload' value='<?php echo xlt('Upload and Install') ?>' />
+   <input type='submit' name='bn_upload' class='cp-positive' value='<?php echo xlt('Upload and Install') ?>' />
   </td>
  </tr>
 </table>

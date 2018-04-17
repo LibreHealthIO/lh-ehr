@@ -857,7 +857,7 @@ while ($row = sqlFetchArray($res)) {
 <?php if($list_id != ' ') { ?>
 <input type="button" id="<?php echo $list_id; ?>" class="deletelist" value=<?php xl('Delete List','e','\'','\''); ?>>
 <?php } ?>
-<input type="button" id="newlist" class="newlist" value=<?php xl('New List','e','\'','\''); ?>>
+<input type="button" id="newlist" class="newlist cp-positive" value=<?php xl('New List','e','\'','\''); ?>>
 </p>
 
 <center>
@@ -1054,8 +1054,8 @@ if ($list_id) {
 <div id="newlistdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <?php xl('List Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="newlistname" id="newlistname">
 <br />
-<input type="button" class="savenewlist" value=<?php xl('Save New List','e','\'','\''); ?>>
-<input type="button" class="cancelnewlist" value=<?php xl('Cancel','e','\'','\''); ?>>
+<input type="button" class="savenewlist cp-submit" value=<?php xl('Save New List','e','\'','\''); ?>>
+<input type="button" class="cancelnewlist cp-negative" value=<?php xl('Cancel','e','\'','\''); ?>>
 </div>
 </body>
 <script language="javascript">

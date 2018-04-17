@@ -143,7 +143,7 @@ $(document).ready(function(){
                 <b><?php echo xlt('Facilities'); ?></b>&nbsp;
             </td>
             <td>
-                 <a href="facilities_add.php" class="iframe addfac_modal css_button"><span><?php echo xlt('Add');?></span></a>
+                 <a href="facilities_add.php" class="iframe addfac_modal css_button cp-positive"><span><?php echo xlt('Add');?></span></a>
             </td>
         </tr>
     </table>

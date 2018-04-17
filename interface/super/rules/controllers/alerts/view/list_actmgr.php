@@ -24,6 +24,9 @@
 require_once(dirname(__FILE__)."/../../../../../../library/acl.inc"); 
 global $phpgacl_location;
 require_once("$phpgacl_location/gacl_api.class.php");
+
+ require_once("../../../../../globals");
+ require_once("$srcdir/headers.inc.php");
 ?>
 
 <table class="header">
@@ -33,7 +36,7 @@ require_once("$phpgacl_location/gacl_api.class.php");
   </tr>
   <tr>
         <td>
-        	<a href="javascript:document.cdralertmgr.submit();" class="css_button" onclick="top.restoreSession()"><span><?php echo out( xl('Save') ); ?></span></a><a href="javascript:document.cdralertmgr.reset();" class="css_button" onclick="top.restoreSession()"><span><?php echo out( xl('Reset') ); ?></span></a>
+        	<a href="javascript:document.cdralertmgr.submit();" class="css_button cp-submit" onclick="top.restoreSession()"><span><?php echo out( xl('Save') ); ?></span></a><a href="javascript:document.cdralertmgr.reset();" class="css_button cp-negative" onclick="top.restoreSession()"><span><?php echo out( xl('Reset') ); ?></span></a>
         </td>
   </tr>        
 </table>

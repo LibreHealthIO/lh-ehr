@@ -46,7 +46,7 @@ else { ?>
 
 <tr> <td style="border-style:none;" colspan="5">
     <a href="<?php echo $this->current_action;?>action=edit&id=&provider_id=<?php echo $this->provider->get_id();?>&showform=true"
-       class="css_button" style='margin-top:2px'
+       class="css_button cp-positive" style='margin-top:2px'
        onclick="top.restoreSession()">
             <span><?php echo xlt("Add New");?></span>
     </a>
@@ -147,11 +147,11 @@ else { ?>
 <tr>
         <td colspan="2">                
                 <?php if($this->ins->get_id() == "" ) {?>
-                    <a href="javascript:submit_insurancenumbers_add();" class="css_button"><span>Save</span></a>
+                    <a href="javascript:submit_insurancenumbers_add();" class="css_button cp-submit"><span>Save</span></a>
                 <?php } else { ?>
-                    <a href="javascript:submit_insurancenumbers_update();" class="css_button"><span>Save</span></a>
+                    <a href="javascript:submit_insurancenumbers_update();" class="css_button cp-submit"><span>Save</span></a>
                 <?php } ?>
-                <a href="controller.php?practice_settings&insurance_numbers&action=list" class="css_button" onclick="top.restoreSession()">
+                <a href="controller.php?practice_settings&insurance_numbers&action=list" class="css_button cp-negative" onclick="top.restoreSession()">
                     
                     <span><?php echo xlt("Cancel");?></span></a>
 </td> </tr>
