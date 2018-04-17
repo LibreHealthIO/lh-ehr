@@ -36,6 +36,7 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
 
 require_once("../globals.php");
+require_once("../../library/report_functions.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
@@ -56,8 +57,8 @@ $grand_total_amt_balance  = 0;
   if (! acl_check('acct', 'rep')) die(xlt("Unauthorized access."));
 
 if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($_POST['form_to_date']) && $_POST['form_from_date']) {
-    $form_from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
-    $form_to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
+    $from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
+    $to_date   = fixDate($_POST['form_to_date']  , date(DateFormatRead(true)));
 }
   $form_facility  = $_POST['form_facility'];
   $form_provider  = $_POST['form_provider'];
@@ -67,7 +68,7 @@ if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($
     header("Expires: 0");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Content-Type: application/force-download");
-    header("Content-Disposition: attachment; filename=svc_financial_report_".attr($form_from_date)."--".attr($form_to_date).".csv");
+    header("Content-Disposition: attachment; filename=svc_financial_report_".attr($from_date)."--".attr($to_date).".csv");
     header("Content-Description: File Transfer");
     // CSV headers:
     } // end export
@@ -137,74 +138,23 @@ if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($
             <?php dropdown_facility($form_facility, 'form_facility', true); ?>
             </td>
                         <td><?php echo xlt('Provider'); ?>:</td>
-                <td><?php
-                        // Build a drop-down list of providers.
-                                //
-                                $query = "SELECT id, lname, fname FROM users WHERE ".
-                                  "authorized = 1 ORDER BY lname, fname"; //(CHEMED) facility filter
-                                $ures = sqlStatement($query);
-                                echo "   <select name='form_provider'>\n";
-                                echo "    <option value=''>-- " . xlt('All') . " --\n";
-                                while ($urow = sqlFetchArray($ures)) {
-                                        $provid = $urow['id'];
-                                        echo "    <option value='" . attr($provid) ."'";
-                                        if ($provid == $_POST['form_provider']) echo " selected";
-                                        echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-                                }
-                                echo "   </select>\n";
-                                ?>
+                <td>
+                  <?php // Build a drop-down list of providers.
+                    dropDownProviders();
+                  ?>
                 </td>
-        </tr><tr>
-                 <td colspan="2">
-                          <?php echo xlt('From'); ?>:&nbsp;&nbsp;&nbsp;&nbsp;
-                           <input type='text' name='form_from_date' id="form_from_date" size='10'
-                                  value='<?= ($form_from_date) ? oeFormatShortDate(attr($form_from_date)) : ''; ?>'>
-                        </td>
-                        <td class='label'>
-                           <?php echo xlt('To'); ?>:
-                        </td>
-                        <td>
-                           <input type='text' name='form_to_date' id="form_to_date" size='10'
-                                  value='<?= ($form_to_date) ? oeFormatShortDate(attr($form_to_date)) : ''; ?>'>
-                        </td>
-                        <td>
-                           <input type='checkbox' name='form_details'<?php  if ($_POST['form_details']) echo ' checked'; ?>>
-                           <?php echo xlt('Important Codes'); ?>
-                        </td>
+        </tr>
+        <tr>
+          <?php showFromAndToDates(); ?>
+          <td>
+            <input type='checkbox' name='form_details'<?php  if ($_POST['form_details']) echo ' checked'; ?>>
+            <?php echo xlt('Important Codes'); ?>
+          </td>
         </tr>
     </table>
     </div>
   </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
-        <tr>
-            <td>
-                <div style='margin-left:15px'>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#form_csvexport").attr("value",""); $("#theform").submit();'>
-                    <span>
-                        <?php echo xlt('Submit'); ?>
-                    </span>
-                    </a>
-
-                    <?php if ($_POST['form_refresh'] || $_POST['form_csvexport']) { ?>
-                    <div id="controls">
-                    <a href='#' class='css_button' id='printbutton'>
-                        <span>
-                            <?php echo xlt('Print'); ?>
-                        </span>
-                    </a>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value",""); $("#form_csvexport").attr("value","true"); $("#theform").submit();'>
-                        <span>
-                            <?php echo xlt('CSV Export'); ?>
-                        </span>
-                    </a>
-                    </div>
-                    <?php } ?>
-                </div>
-            </td>
-        </tr>
-    </table>
-  </td>
+  <?php showSubmitPrintButtons('form_csvexport'); ?>
  </tr>
 </table>
 </div> <!-- end of parameters -->
@@ -215,8 +165,8 @@ if (isset($_POST['form_from_date']) && isset($_POST['form_to_date']) && !empty($
 
   if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     $rows = array();
-    $from_date = $form_from_date;
-    $to_date   = $form_to_date;
+    $from_date = $from_date;
+    $to_date   = $to_date;
     $sqlBindArray = array();
     $query = "select b.code,sum(b.units) as units,sum(b.fee) as billed,sum(ar_act.paid) as PaidAmount, " .
         "sum(ar_act.adjust) as AdjustAmount,(sum(b.fee)-(sum(ar_act.paid)+sum(ar_act.adjust))) as Balance, " .
@@ -374,7 +324,7 @@ if (!$_POST['form_refresh'] && !$_POST['form_csvexport']) { ?>
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 <script language="Javascript">

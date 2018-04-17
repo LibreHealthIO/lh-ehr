@@ -33,6 +33,7 @@ require_once("../../library/patient.inc");
 require_once("../../library/invoice_summary.inc.php");
 require_once("../../library/sl_eob.inc.php");
 require_once("../../library/formatting.inc.php");
+require_once("../../library/report_functions.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
 $DateFormat = DateFormatRead();
@@ -46,15 +47,15 @@ $export_dollars = 0;
 
 $today = date("Y-m-d");
 
-$form_date      = fixDate($_POST['form_date'], "");
-$form_to_date   = fixDate($_POST['form_to_date'], "");
+$from_date      = fixDate($_POST['form_from_date'], "");
+$to_date   = fixDate($_POST['form_to_date'], "");
+$form_facility  = $_POST['form_facility'];
+$form_provider  = $_POST['form_provider'];
 $is_ins_summary = $_POST['form_category'] == 'Ins Summary';
 $is_due_ins     = ($_POST['form_category'] == 'Due Ins') || $is_ins_summary;
 $is_due_pt      = $_POST['form_category'] == 'Due Pt';
 $is_all         = $_POST['form_category'] == 'All';
 $is_ageby_lad   = strpos($_POST['form_ageby'], 'Last') !== false;
-$form_facility  = $_POST['form_facility'];
-$form_provider  = $_POST['form_provider'];
 $form_payer_id  = $_POST['form_payer_id'];
 
 if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport']) {
@@ -333,7 +334,7 @@ function checkAll(checked) {
 
 <table>
  <tr>
-  <td width='610px'>
+  <td width='650px'>
     <div style='float:left'>
 
     <table class='text'>
@@ -398,20 +399,7 @@ function checkAll(checked) {
                 <table>
 
                     <tr>
-                        <td class='label'>
-                           <?php echo xlt('Service Date'); ?>:
-                        </td>
-                        <td>
-                           <input type='text' name='form_date' id="form_date" size='10'
-                                value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_date))) ?>' />
-                        </td>
-                        <td class='label'>
-                           <?php echo xlt('To'); ?>:
-                        </td>
-                        <td>
-                           <input type='text' name='form_to_date' id="form_to_date" size='10'
-                            value='<?php echo htmlspecialchars(oeFormatShortDate(attr($form_to_date))) ?>' />
-                        </td>
+                        <?php showFromAndToDates(); ?>
                         <td>
                            <select name='form_category'>
                         <?php
@@ -440,16 +428,7 @@ function checkAll(checked) {
                         </td>
                         <td>
                         <?php  # added dropdown for payors (TLH)
-                               $insurancei = getInsuranceProviders();
-                               echo "   <select name='form_payer_id'>\n";
-                               echo "    <option value='0'>-- " . xlt('All') . " --</option>\n";
-                               foreach ($insurancei as $iid => $iname) {
-                                 echo "<option value='" . attr($iid) . "'";
-                                 if ($iid == $_POST['form_payer_id']) echo " selected";
-                                    echo ">" . text($iname) . "</option>\n";
-                                 if ($iid == $_POST['form_payer_id']) $ins_co_name = $iname;
-                               }
-                               echo "   </select>\n";
+                            dropDownPayors();
                         ?>            
                         </td>
                     </tr>
@@ -474,27 +453,10 @@ function checkAll(checked) {
                            <?php echo xlt('Provider') ?>:
                         </td>
                         <td>
-                        <?php  # Build a drop-down list of providers.
-                               # Added (TLH)
-
-                               $query = "SELECT id, lname, fname FROM users WHERE ".
-                               "authorized = 1  ORDER BY lname, fname"; #(CHEMED) facility filter
-
-                               $ures = sqlStatement($query);
-
-                               echo "   <select name='form_provider'>\n";
-                               echo "    <option value=''>-- " . xlt('All') . " --\n";
-
-                               while ($urow = sqlFetchArray($ures)) {
-                               $provid = $urow['id'];
-                               echo "    <option value='" . attr($provid) . "'";
-                                if ($provid == $_POST['form_provider']) echo " selected";
-                                echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-                                if ($provid == $_POST['form_provider']) $provider_name = $urow['lname'] . ", " . $urow['fname'];
-                               }
-
-                               echo "   </select>\n";
-                        ?>
+                          <?php # Build a drop-down list of providers.
+                                # Added (TLH)
+                            dropDownProviders();
+                          ?>
                         </td>
                     </tr>                    
                         <td class='label'>
@@ -520,29 +482,7 @@ function checkAll(checked) {
     </div>
 
   </td>
-  <td align='left' valign='middle' height="100%">
-    <table style='border-left:1px solid; width:100%; height:100%' >
-        <tr>
-            <td>
-                <div style='margin-left:15px'>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                    <span>
-                        <?php echo xlt('Submit'); ?>
-                    </span>
-                    </a>
-
-                    <?php if ($_POST['form_refresh']) { ?>
-                    <a href='#' class='css_button' onclick='window.print()'>
-                        <span>
-                            <?php echo xlt('Print'); ?>
-                        </span>
-                    </a>
-                    <?php } ?>
-                </div>
-            </td>
-        </tr>
-    </table>
-  </td>
+  <?php showSubmitPrintButtons('form_csvexport'); ?>
  </tr>
 </table>
 </div>
@@ -576,15 +516,15 @@ if ($_POST['form_refresh'] || $_POST['form_export'] || $_POST['form_csvexport'])
       } 
       $where .= ' )';
     }
-    if ($form_date) {
+    if ($from_date) {
       if ($where) $where .= " AND ";
-      if ($form_to_date) {
+      if ($to_date) {
         $where .= "f.date >= ? AND f.date <= ? ";
-        array_push($sqlArray, $form_date.' 00:00:00', $form_to_date.' 23:59:59');
+        array_push($sqlArray, $from_date.' 00:00:00', $to_date.' 23:59:59');
       }
       else {
         $where .= "f.date >= ? AND f.date <= ? ";
-        array_push($sqlArray, $form_date.' 00:00:00', $form_date.' 23:59:59');
+        array_push($sqlArray, $from_date.' 00:00:00', $from_date.' 23:59:59');
       }
     }
     if ($form_facility) {
@@ -1219,7 +1159,7 @@ if (!$_POST['form_csvexport']) {
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
-        $("#form_date").datetimepicker({
+        $("#form_from_date").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });

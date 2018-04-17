@@ -23,6 +23,7 @@
   require_once "$srcdir/formdata.inc.php";
   require_once("$srcdir/patient.inc");
   require_once("$srcdir/headers.inc.php");
+  require_once("../../library/report_functions.php");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // render page - main
@@ -180,6 +181,7 @@
         </tr>
     </table>
   </td>
+  <?php showSubmitPrintButtons(); ?>
  </tr>
 </table>
 </div>

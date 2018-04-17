@@ -38,6 +38,7 @@ require_once("../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
+require_once("../../library/report_functions.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -161,8 +162,8 @@ if (! acl_check('acct', 'rep')) die(htmlspecialchars(xl("Unauthorized access."),
 // this is "" or "submit" or "export".
 $form_action = $_POST['form_action'];
 
-$form_from_date  = fixDate($_POST['form_from_date'], date('Y-m-d'));
-$form_to_date    = fixDate($_POST['form_to_date']  , date('Y-m-d'));
+$from_date  = fixDate($_POST['form_from_date'], date('Y-m-d'));
+$to_date    = fixDate($_POST['form_to_date']  , date('Y-m-d'));
 $form_trans_type = isset($_POST['form_trans_type']) ? $_POST['form_trans_type'] : '0';
 
 $encount = 0;
@@ -267,20 +268,7 @@ foreach (array(
 ?>
       </select>
      </td>
-     <td class='label'>
-      <?php echo htmlspecialchars(xl('From'), ENT_NOQUOTES); ?>:
-     </td>
-     <td nowrap>
-      <input type='text' name='form_from_date' id="form_from_date" size='10'
-       value='<?php echo htmlspecialchars(oeFormatShortDate($form_from_date), ENT_QUOTES) ?>'/>
-     </td>
-     <td class='label'>
-      <?php xl('To','e'); ?>:
-     </td>
-     <td nowrap>
-      <input type='text' name='form_to_date' id="form_to_date" size='10'
-       value='<?php echo htmlspecialchars(oeFormatShortDate($form_to_date), ENT_QUOTES) ?>'/>
-     </td>
+     <?php showFromAndToDates(); ?>
     </tr>
    </table>
   </td>
@@ -348,8 +336,8 @@ foreach (array(
 } // end not export
 
 if ($form_action) { // if submit or export
-  $from_date = $form_from_date;
-  $to_date   = $form_to_date;
+  $from_date = $from_date;
+  $to_date   = $to_date;
 
   $grandtotal = 0;
   $grandqty = 0;
@@ -443,7 +431,7 @@ if ($form_action != 'export') {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 
