@@ -39,24 +39,24 @@ a {
 <table>
 <tr>
 	<td>Prior Authorization Number</td><td><input type="text" size="35" name="prior_auth_number" 
-                            value="<?php echo $this->prior_auth->get_prior_auth_number();?>"></td>
+                            value="<?php echo $prior_auth->get_prior_auth_number();?>"></td>
 </tr>
 <tr>
 	<td><br><br>Comments</td>
 </tr>
 <tr>
-	<td colspan="2"><textarea name="comments" value="<?php echo $this->prior_auth->get_comments();?>" wrap="virtual" cols="75" rows="8">
-            <?php echo $this->prior_auth->get_comments();?></textarea></td>
+	<td colspan="2"><textarea name="comments" value="<?php echo $prior_auth->get_comments();?>" wrap="virtual" cols="75" rows="8">
+            <?php echo $prior_auth->get_comments();?></textarea></td>
 </tr>
-<?php if($this->view != true){?>
+<?php if($view != true){?>
 <tr>
 	<td><br><br><input type="submit" name="Submit" value="Save Form">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo $dont_save_link;?>" class="link">[Don't Save]</a></td>
 </tr>
 <?php }?>
 </table>
-<input type="hidden" name="id" value="<?php echo $this->prior_auth->get_id();?>" />
-<input type="hidden" name="activity" value="<?php echo $this->prior_auth->get_activity();?>">
-<input type="hidden" name="pid" value="<?php echo $this->prior_auth->get_pid();?>">
+<input type="hidden" name="id" value="<?php echo $prior_auth->get_id();?>" />
+<input type="hidden" name="activity" value="<?php echo $prior_auth->get_activity();?>">
+<input type="hidden" name="pid" value="<?php echo $prior_auth->get_pid();?>">
 <input type="hidden" name="process" value="true">
 </form>
 </body>
