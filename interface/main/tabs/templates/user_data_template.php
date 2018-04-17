@@ -7,7 +7,7 @@
     // See getPnotesByUser() on Library/pnotes.inc.php to understand the arguments
     $unreadMessages = getPnotesByUser(true, false, $_SESSION['authUser'], true);
     // If there are more than 0 unread messages, create a phrase (eg. 3 unread messages), if there are NONE, the phrase is empty
-    $notification = $unreadMessages > 0 ? $unreadMessages . " unread messages" : "";
+    $notification = $unreadMessages;
 ?>
 
 <link rel="stylesheet" type="text/css" href=".../../css/userdata.css"/>
@@ -31,6 +31,17 @@
             </li>            
         </ul>     
         
-    <!-- /ko -->   
-    <div id="messagesNotification" data-bind="click: unreadMessages"><?php echo xlt($notification); ?></div> 
+    <!-- /ko -->
+    <div id="messagesNotification" data-bind="click: unreadMessages">
+	    <?php
+		    if($notification > 0){
+			    echo "
+            <span class=\"nt-num\">$notification</span>
+            <img class=\"img-responsive my-img\" src= $web_root/images/msgs.png width=\"20\">";
+		    }
+	    ?>
+	
+	    
+
+    </div>
 </script>
