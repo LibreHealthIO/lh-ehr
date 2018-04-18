@@ -35,7 +35,7 @@ require_once("$srcdir/sl_eob.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/classes/class.ezpdf.php");//for the purpose of pdf creation
 require_once("$srcdir/options.inc.php");
-require_once("$srcdir/headers.inc.php");
+
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/classes/Note.class.php");
@@ -482,7 +482,10 @@ if ($_POST['form_portalnotify']) {
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+<?php
+html_header_show();
+require_once("$srcdir/headers.inc.php");
+?>
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 <title><?php xl('EOB Posting - Search','e'); ?></title>
 <script type="text/javascript" src="../../library/textformat.js"></script>
