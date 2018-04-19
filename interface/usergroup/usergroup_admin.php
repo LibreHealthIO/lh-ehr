@@ -351,8 +351,8 @@ if (isset($_GET["mode"])) {
   // this is commented out.  Somebody must have figured it was too dangerous.
   //
   if ($_GET["mode"] == "delete") {
-    $res = sqlStatement("select distinct username, id from users where id = '" .
-      $_GET["id"] . "'");
+    $res = sqlStatement("select distinct username, id from users where id = ?", array($_GET["id"]));
+      
     for ($iter = 0; $row = sqlFetchArray($res); $iter++)
       $result[$iter] = $row;
 
@@ -362,7 +362,7 @@ if (isset($_GET["mode"])) {
     foreach($result as $iter) {
       sqlStatement("delete from groups where user = '" . $iter{"username"} . "'");
     }
-    sqlStatement("delete from users where id = '" . $_GET["id"] . "'");
+    sqlStatement("delete from users where iid = ?", array($_GET["id"]))
   }
   *******************************************************************/
 
