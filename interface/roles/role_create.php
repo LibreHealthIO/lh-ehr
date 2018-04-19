@@ -51,21 +51,18 @@ if (!acl_check('admin', 'super')) die(xl('Not authorized','','','!'));
 
 
 $menu_data = file_get_contents( $GLOBALS['OE_SITE_DIR'] . "/menu_data.json");
-$role_file = $GLOBALS['OE_SITE_DIR'] . "/roles.json";
 $json_data = json_decode($menu_data, true);
 
 if($_POST) {
 
     // TODO - form validation
     $json_string = getMenuJSONString($_POST, $json_data);
-    $role = new Role($role_file);
+    $role = new Role();
     if($role->getRole($_POST['title']) == null) {
-        
         $result = $role->createNewRole($_POST['title'], $json_string);
         if($result) {
-            //echo "Role created successfully";
         } else {
-            
+            echo " Unable to create role ";
         }
     }
     

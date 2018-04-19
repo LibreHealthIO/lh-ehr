@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  Role Editor
  *
@@ -45,89 +46,18 @@
 
  /* Include our required headers */
 
-require_once('../../globals.php');
-require_once("$srcdir/acl.inc");
-require_once("$srcdir/headers.inc.php");
-require_once("$srcdir/role.php");
-
-if (!acl_check('admin', 'super')) die(xl('Not authorized','','','!'));
-
-$role = new Role();
-$role_list = $role->getRoleList();
-?>
-
-<!DOCTYPE HTML>
-<html>
-<head>
-<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox-custom"));
-      resolveFancyboxCompatibility();
-?>
-    <title><?php echo xlt("Role Management") ?></title>
-    <link href="js/jsoneditor/jsoneditor.css" rel="stylesheet" type="text/css">
-    <script src="js/jsoneditor/jsoneditor.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
-    <script type="text/javascript">
-
-    $(document).ready(function(){
-
-        // fancy box
-        enable_modals();
+ require_once('../../globals.php');
+ require_once("$srcdir/acl.inc");
+ require_once("$srcdir/headers.inc.php");
+ require_once("$srcdir/role.php");
 
 
-        // special size for
-        $(".iframe_medium").fancybox( {
-            'overlayOpacity' : 0.0,
-            'showCloseButton' : true,
-            'frameHeight' : 450,
-            'frameWidth' : 660
-        });
-
-        $(function(){
-            // add drag and drop functionality to fancybox
-            $("#fancy_outer").easydrag();
-        });
-    });
-
-    </script>
-    <style>       
-        body {
-            font: 10.5pt arial;
-            color: #4d4d4d;
-            line-height: 150%;
-            width: 500px;
-        }
-
-        #jsoneditor {
-            width: 500px;
-            height: 500px;
-        }
-    </style>
-</head>
-<body>
-<h1 style="padding-left: 10px;"><?php echo xlt("Manage Roles") ?></h1>
-<div style="padding-left: 10px;">
-
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <tbody>
-            <tr height="22">
-                <th><b>Role title</b></th>
-            </tr>
-            <?php foreach($role_list as $role_title) { ?>
-            <tr>
-                <td> <a href="../../roles/role_edit.php?title=<?php echo $role_title; ?>"  class="iframe_medium" onclick="top.restoreSession()"> <span class="text">  <?php echo $role_title; ?> </span> </a> </td>
-            </tr>
-            <?php 
-            } ?>
-    </tbody></table>
-    </div>
-    <a href="../../roles/role_create.php" class="iframe_medium css_button"><span><?php echo xlt('Add Role'); ?></span></a>
-    
-
-</div>
+ if (!acl_check('admin', 'super')) die(xl('Not authorized','','','!'));
 
 
-</body>
-</html>
+
+
+
+
+
+ ?>

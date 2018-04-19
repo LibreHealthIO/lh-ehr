@@ -116,6 +116,16 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       } else {
         sqlStatement("update users set fullscreen_enable=0 where id=?", array($_POST["id"]));
       }
+
+      if ($_POST["menu_role"]) {
+        $tqvar = formData('menu_role', 'P');
+        if ($tqvar != "") {
+          sqlStatement("update users set menu_role='$tqvar' where id=?", array($_POST["id"]));
+        } else {
+          sqlStatement("update users set menu_role='Sample Role' where id=?", array($_POST["id"]));
+        }
+      }
+      
       if ($_POST["facility_id"]) {
               $tqvar = formData('facility_id','P');
               sqlStatement("update users set facility_id = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -237,6 +247,7 @@ if (isset($_POST["mode"])) {
 
     $calvar = $_POST["calendar"] ? 1 : 0;
     $fullscreen_enable = $_POST["fullscreen_enable"] ? 1 : 0;
+    $menuRole = $_POST["menu_role"] ?: "Sample Role";
     $res = sqlStatement("select distinct username from users where username != ''");
     $doit = true;
     while ($row = sqlFetchArray($res)) {
@@ -278,6 +289,7 @@ if (isset($_POST["mode"])) {
             "', fullscreen_role = '". trim(formData('role_name'    )) .
             "', fullscreen_page = '". trim(formData('fullscreen_page')) .
             "', fullscreen_enable = '". $fullscreen_enable .
+            "', menu_role = '". $menuRole .
             "', specialty = '"     . trim(formData('specialty'    )) .
             "', see_auth = '"      . trim(formData('see_auth'     )) .
             "', cal_ui = '"        . trim(formData('cal_ui'       )) .

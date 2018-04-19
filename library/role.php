@@ -55,7 +55,7 @@ class Role {
      * @param string $location
      */
     public function __construct($location) {
-        $this->file = $location;
+        $this->file =  $GLOBALS['OE_SITE_DIR'] . "/roles.json";
     }
 
     /**
@@ -134,6 +134,26 @@ class Role {
         return null;
     }
 
+    /**
+     * getRoleList
+     * Returns a list containing titles of all the currently existing roles
+     *
+     * @return array $roles
+     */
+    public function getRoleList() {
+
+        $current_roles = file_get_contents($this->file);
+        $current_roles_decoded = json_decode($current_roles);
+
+        $roles = [];
+
+        foreach($current_roles_decoded as $current_role) {
+            $roles[] = $current_role->title;
+        }
+
+        return $roles;
+    }
+
 
 
 
@@ -175,7 +195,7 @@ class MenuItem {
             "target" => $this->target ?: null,
             "url" => $this->url ?: null,
             "children" => $this->children ?: [],
-            "requirement" => $this->requirement ?: null,
+            "requirement" => $this->requirement ?: 0,
             "global_req" => $this->global_req ?:null,
             "parent" => $this->parent ?: null,
             "mainParent" => $this->mainParent ?: null,

@@ -75,12 +75,8 @@ function load_menu($menu_set)
         
     }
 
-    $role_file_location = $GLOBALS['OE_SITE_DIR'] . "/roles.json";
-    $role = new Role($role_file_location);
-
-    $role_data = $role->getRole('asdf');
-   // var_dump(json_decode(json_encode($role_data))->menu_data);
-  //  var_dump(json_decode(json_encode($retval)));
-    return $role_data->menu_data;
-    //return json_decode(json_encode($retval));       
+    $role = new Role();
+    $userQuery = sqlQuery("select menu_role from users where username='".$_SESSION{"authUser"}."'");
+    $role_data = $role->getRole($userQuery["menu_role"]);
+    return $role_data->menu_data;  
 }

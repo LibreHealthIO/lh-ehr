@@ -40,6 +40,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/calendar.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/erx_javascript.inc.php");
+require_once("$srcdir/role.php");
 
 if (!$_GET["id"] || !acl_check('admin', 'users'))
   exit();
@@ -593,6 +594,21 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
   </td>
   <td>
       <input type="checkbox" name="fullscreen_enable" <?php if($iter['fullscreen_enable'] == 1) echo "checked"; ?>/>
+  </td>
+  <td>
+      <span class="text"> <?php echo xlt('Menu role'); ?>: </span>
+  </td>
+  <td>
+      <select style="width:120px;" name="menu_role" id="menu_role">
+      <?php
+         $role = new Role();
+         $role_list = $role->getRoleList();
+         foreach($role_list as $role_title) {
+           ?>  <option value="<?php echo $role_title; ?>"><?php echo xlt($role_title); ?></option>
+          <?php
+         }
+      ?>
+      </select>
   </td>
   <?php do_action( 'usergroup_admin_edit', $iter ); ?>
 

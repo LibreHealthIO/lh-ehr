@@ -5848,6 +5848,7 @@ CREATE TABLE `users` (
   `fullscreen_role` text NOT NULL,
   `fullscreen_page` text NOT NULL,
   `fullscreen_enable` int(11) NOT NULL default '0',
+  `menu_role` varchar(100) NOT NULL default "Default Role",
   `see_auth` int(11) NOT NULL default '1',
   `active` tinyint(1) NOT NULL default '1',
   `npi` varchar(15) default NULL,
