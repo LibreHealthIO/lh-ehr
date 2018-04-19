@@ -45,180 +45,28 @@
 require_once('../globals.php');
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/headers.inc.php");
+require_once("$srcdir/role.php");
 
 if (!acl_check('admin', 'super')) die(xl('Not authorized','','','!'));
 
 
 $menu_data = file_get_contents( $GLOBALS['OE_SITE_DIR'] . "/menu_data.json");
+$role_file = $GLOBALS['OE_SITE_DIR'] . "/roles.json";
 $json_data = json_decode($menu_data, true);
 
-class MenuItem {
-
-    public $label;
-    public $menu_id;
-    public $target;
-    public $url;
-    public $children;
-    public $requirement;
-    public $mainParent;
-    public $parent;
-    public $global_req;
-
-
-    public function __construct($item) {
-       // var_dump($item);
-        $this->label = $item["label"];
-        $this->menu_id = $item["menu_id"];
-        $this->target = $item["target"];
-        $this->url = $item["url"];
-        $this->children = $item["children"];
-        $this->requirement = $item["requirement"];
-        $this->global_req = $item["global_req"];
-        $this->parent = $item["parent"];
-        $this->mainParent = $item["mainParent"];
-    }
-
-
-    public function printJson() {
-        return $this->toJson();
-    }
-
-
-    public function toJson() {
-        return json_encode([
-
-            'label' => $this->label ?: '',
-            'menu_id' => $this->menu_id ?: '',
-            'target' => $this->target ?: '',
-            'url' => $this->url ?: '',
-            'children' => $this->children ?: '',
-            'requirement' => $this->requirement ?: '',
-            'global_req' => $this->global_req ?: '',
-            'parent' => $this->parent ?: '',
-            'mainParent' => $this->mainParent ?: '',
-
-        ], JSON_PRETTY_PRINT);
-    }
-}
-
-function parsePOSTtoMenuData($array, $json_data) {
-    $menuItemsArray = [];
-    $filteredArray = array_filter(array_keys($array), function ($k){ return (strpos($k, "cb-") !== false); }); 
-    $array = array_intersect_key($array, array_flip($filteredArray));
-    foreach($array as $item => $val) {
-        $returnVal = findMenuItem($item, ($json_data));
-        $menuItem = json_encode($returnVal);
-        // check whether the retrieved item is a child or a parent
-        // level 2 child
-        if ($returnVal["mainParent"] != null) {
-            foreach($menuItemsArray as $menuItemParent) {
-                if ($menuItemParent->menu_id == $returnVal["mainParent"]) {
-                    foreach($menuItemParent->children as $menuItemChild) {
-                        if ($menuItemChild->label == $returnVal["parent"]) {
-                            $menuItemChild->children[] = $returnVal;
-                        }
-                    }
-                }
-            }
-        }
-        // level 1 child
-        else if ($returnVal["parent"] != null && $returnVal["mainParent"] == null) {
-            foreach($menuItemsArray as $menuItemParent) {
-                if ($menuItemParent->menu_id == $returnVal["parent"]) {
-                    $menuItemParent->children[] = new MenuItem($returnVal);
-                }
-            }
-        }
-        else {
-            $menuItemsArray[] = new MenuItem($returnVal);
-
-        }
-
-    }
-
-    return $menuItemsArray;
-   
-}
-
-function findMenuItem($item, $json_data) {
-
-    // check if the menu item is a main parent 
-    if (strpos($item, "parent") !== false) {
-        $items = explode('-', $item);
-        $id = $items[2];
-        $title = $items[3];
-        foreach($json_data as $json) {
-            //echo "Title: ".$json["label"]. ", id: ".$json["menu_id"]."<br />";
-            if ( ($json["label"] == $title || $json["label"] == str_replace('_', ' ', $title)) && $json["menu_id"] == $id) {
-                $returnJson = $json;
-                $returnJson["children"] = [];
-                return $returnJson;
-            }
-        }
-    }
-
-    // check if the menu item is a first-child
-    if (strpos($item, "child1") !== false) {
-        $items = explode('-', $item);
-        $parentId = $items[2];
-        $title = $items[3];
-        foreach($json_data as $json) {
-            if (($json["menu_id"] == $parentId)) {
-                foreach($json["children"] as $child) {
-                    if( $child["label"] == $title || $child["label"] == str_replace('_', ' ', $title)) {
-                        $returnJson = $child;
-                        $returnJson["children"] = [];
-                        $returnJson["parent"] = $parentId;
-                        return $returnJson;
-                    }
-                }
-            }
-        }
-    }
-
-    // check if the menu item is a second-child
-    if (strpos($item, "child2") !== false) {
-        $items = explode('-', $item);
-        $parentId = $items[2];
-        $child1Label = $items[3];
-        $title = $items[4];
-        foreach($json_data as $json) {
-            if(($json["menu_id"] == $parentId)) {
-                foreach($json["children"] as $child1) {
-                    if ( $child1["label"] == $child1Label || $child["label"] == str_replace('_', ' ', $child1Label)) {
-                        foreach($child1["children"] as $child2) {
-                            if ($child2["label"] == $title || $child2["label"] == str_replace('_', ' ', $title)) {
-                                $returnJson = $child2;
-                                $returnJson["children"] = [];
-                                $returnJson["parent"] = $child1Label;
-                                $returnJson["mainParent"] = $parentId;
-                                return $returnJson;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return $items;
-    }
-    
-}
-
-
 if($_POST) {
-    //var_dump($_POST);
-    $itemArray = parsePOSTtoMenuData($_POST, $json_data);
-    if(count($itemArray) > 0) {
-        $finalJsonString = "[";
-        foreach($itemArray as $item) {
-            $string = $item->printJson();
-            $finalJsonString = $finalJsonString . $string;
-            if ($item != end($itemArray))
-                $finalJsonString = $finalJsonString . ",";
-        }
-        $finalJsonString = $finalJsonString . "]";
 
-        print($finalJsonString);
+    // TODO - form validation
+    $json_string = getMenuJSONString($_POST, $json_data);
+    $role = new Role($role_file);
+    if($role->getRole($_POST['title']) == null) {
+        
+        $result = $role->createNewRole($_POST['title'], $json_string);
+        if($result) {
+            //echo "Role created successfully";
+        } else {
+            
+        }
     }
     
 }

@@ -55,7 +55,7 @@ class Role {
      * @param string $location
      */
     public function __construct($location) {
-        $this->file = file_get_contents($location);
+        $this->file = $location;
     }
 
     /**
@@ -63,13 +63,40 @@ class Role {
      * 
      * Adds a new role entry in the JSON file with the given data
      * 
-     * @param array $role
+     * @param string $role
+     * @param array $data
      * @return bool
      */
-    public function createNewRole($role) {
+    public function createNewRole($role, $data) {
+        $role = [
+            'title' => $role,
+            'menu_data' => $data
+        ];
+        
+        $current_roles = file_get_contents($this->file);
+        $roles = [];
+        
+        if (!$current_roles) {
+            $roles[] = $role;
+            $roles_json = json_encode($roles,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            if (file_put_contents($this->file, $roles_json)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
 
-        //var_dump($role);
-
+            $current_roles_decoded = json_decode($current_roles, true);
+            $roles = $current_roles_decoded;
+            $roles[] = $role;
+            $roles_json = json_encode($roles,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            if (file_put_contents($this->file, $roles_json)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -95,8 +122,16 @@ class Role {
      */
     public function getRole($role) {
 
+        $current_roles = file_get_contents($this->file);
+        $current_roles_decoded = json_decode($current_roles);
 
-        return $role;
+        foreach($current_roles_decoded as $current_role) {
+            if ($current_role->title == $role) {
+                return $current_role;
+            }
+        }
+
+        return null;
     }
 
 
@@ -104,4 +139,164 @@ class Role {
 
 
     
+}
+
+class MenuItem {
+
+    public $label;
+    public $menu_id;
+    public $target;
+    public $url;
+    public $children;
+    public $requirement;
+    public $mainParent;
+    public $parent;
+    public $global_req;
+
+
+    public function __construct($item) {
+       // var_dump($item);
+        $this->label = $item["label"];
+        $this->menu_id = $item["menu_id"];
+        $this->target = $item["target"];
+        $this->url = $item["url"];
+        $this->children = $item["children"];
+        $this->requirement = $item["requirement"];
+        $this->global_req = $item["global_req"];
+        $this->parent = $item["parent"];
+        $this->mainParent = $item["mainParent"];
+    }
+
+    public function getData() {
+
+        return [
+            "label" => $this->label ?: null,
+            "menu_id" => $this->menu_id ?: null,
+            "target" => $this->target ?: null,
+            "url" => $this->url ?: null,
+            "children" => $this->children ?: [],
+            "requirement" => $this->requirement ?: null,
+            "global_req" => $this->global_req ?:null,
+            "parent" => $this->parent ?: null,
+            "mainParent" => $this->mainParent ?: null,
+        ];
+    }
+
+}
+
+function parsePOSTtoMenuData($array, $json_data) {
+    $menuItemsArray = [];
+    $filteredArray = array_filter(array_keys($array), function ($k){ return (strpos($k, "cb-") !== false); }); 
+    $array = array_intersect_key($array, array_flip($filteredArray));
+    foreach($array as $item => $val) {
+        $returnVal = findMenuItem($item, ($json_data));
+        $menuItem = json_encode($returnVal);
+        // check whether the retrieved item is a child or a parent
+        // level 2 child
+        if ($returnVal["mainParent"] != null) {
+            foreach($menuItemsArray as $menuItemParent) {
+                if ($menuItemParent->menu_id == $returnVal["mainParent"]) {
+                    foreach($menuItemParent->children as $menuItemChild) {
+                        if ($menuItemChild->label == $returnVal["parent"]) {
+                            $menuItemChild->children[] = $returnVal;
+                        }
+                    }
+                }
+            }
+        }
+        // level 1 child
+        else if ($returnVal["parent"] != null && $returnVal["mainParent"] == null) {
+            foreach($menuItemsArray as $menuItemParent) {
+                if ($menuItemParent->menu_id == $returnVal["parent"]) {
+                    $menuItemParent->children[] = new MenuItem($returnVal);
+                }
+            }
+        }
+        else {
+            $menuItemsArray[] = new MenuItem($returnVal);
+
+        }
+
+    }
+    return $menuItemsArray;
+   
+}
+
+function findMenuItem($item, $json_data) {
+
+    // check if the menu item is a main parent 
+    if (strpos($item, "parent") !== false) {
+        $items = explode('-', $item);
+        $id = $items[2];
+        $title = $items[3];
+        foreach($json_data as $json) {
+            //echo "Title: ".$json["label"]. ", id: ".$json["menu_id"]."<br />";
+            if ( ($json["label"] == $title || $json["label"] == str_replace('_', ' ', $title)) && $json["menu_id"] == $id) {
+                $returnJson = $json;
+                $returnJson["children"] = [];
+                return $returnJson;
+            }
+        }
+    }
+
+    // check if the menu item is a first-child
+    if (strpos($item, "child1") !== false) {
+        $items = explode('-', $item);
+        $parentId = $items[2];
+        $title = $items[3];
+        foreach($json_data as $json) {
+            if (($json["menu_id"] == $parentId)) {
+                foreach($json["children"] as $child) {
+                    if( $child["label"] == $title || $child["label"] == str_replace('_', ' ', $title)) {
+                        $returnJson = $child;
+                        $returnJson["children"] = [];
+                        $returnJson["parent"] = $parentId;
+                        return $returnJson;
+                    }
+                }
+            }
+        }
+    }
+
+    // check if the menu item is a second-child
+    if (strpos($item, "child2") !== false) {
+        $items = explode('-', $item);
+        $parentId = $items[2];
+        $child1Label = $items[3];
+        $title = $items[4];
+        foreach($json_data as $json) {
+            if(($json["menu_id"] == $parentId)) {
+                foreach($json["children"] as $child1) {
+                    if ( $child1["label"] == $child1Label || $child["label"] == str_replace('_', ' ', $child1Label)) {
+                        foreach($child1["children"] as $child2) {
+                            if ($child2["label"] == $title || $child2["label"] == str_replace('_', ' ', $title)) {
+                                $returnJson = $child2;
+                                $returnJson["children"] = [];
+                                $returnJson["parent"] = $child1Label;
+                                $returnJson["mainParent"] = $parentId;
+                                return $returnJson;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $items;
+    }
+    
+}
+
+
+function getMenuJSONString($array, $json_data) {
+    $itemArray = parsePOSTtoMenuData($array, $json_data);
+    
+    if(count($itemArray) > 0) {
+        $finalJsonString = [];
+        foreach($itemArray as $item) {
+            $string = $item->getData();
+            //var_dump($string);
+            $finalJsonString[] = $string;
+        }
+        return $finalJsonString;
+    }
 }

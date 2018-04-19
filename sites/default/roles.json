@@ -1,0 +1,67 @@
+[
+    {
+        "title": "asdf",
+        "menu_data": [
+            {
+                "label": "Calendar",
+                "menu_id": "cal0",
+                "target": "cal",
+                "url": "/interface/main/main_info.php",
+                "children": [],
+                "requirement": null,
+                "global_req": null,
+                "parent": null,
+                "mainParent": null
+            },
+            {
+                "label": "Flow Board",
+                "menu_id": "pfb0",
+                "target": "flb",
+                "url": "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1",
+                "children": [],
+                "requirement": null,
+                "global_req": "!disable_pat_trkr",
+                "parent": null,
+                "mainParent": null
+            },
+            {
+                "label": "Messages ",
+                "menu_id": "msg0",
+                "target": "pat",
+                "url": "/interface/main/messages/messages.php?form_active=1",
+                "children": [],
+                "requirement": null,
+                "global_req": null,
+                "parent": null,
+                "mainParent": null
+            }
+        ]
+    },
+    {
+        "title": "rol e2",
+        "menu_data": [
+            {
+                "label": "Flow Board",
+                "menu_id": "pfb0",
+                "target": "flb",
+                "url": "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1",
+                "children": [],
+                "requirement": null,
+                "global_req": "!disable_pat_trkr",
+                "parent": null,
+                "mainParent": null
+            },
+            {
+                "label": "Messages ",
+                "menu_id": "msg0",
+                "target": "pat",
+                "url": "/interface/main/messages/messages.php?form_active=1",
+                "children": [],
+                "requirement": null,
+                "global_req": null,
+                "parent": null,
+                "mainParent": null
+            }
+        ]
+    }
+]

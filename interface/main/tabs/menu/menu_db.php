@@ -6,6 +6,8 @@
  * and open the template in the editor.
  */
 
+require_once("$srcdir/role.php");
+
 function menu_entry_to_object($row)
 {
     $retval=new stdClass();
@@ -72,5 +74,13 @@ function load_menu($menu_set)
             }
         
     }
-    return json_decode(json_encode($retval));       
+
+    $role_file_location = $GLOBALS['OE_SITE_DIR'] . "/roles.json";
+    $role = new Role($role_file_location);
+
+    $role_data = $role->getRole('asdf');
+   // var_dump(json_decode(json_encode($role_data))->menu_data);
+  //  var_dump(json_decode(json_encode($retval)));
+    return $role_data->menu_data;
+    //return json_decode(json_encode($retval));       
 }

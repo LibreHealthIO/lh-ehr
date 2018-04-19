@@ -10,11 +10,12 @@ require_once("menu_updates.php");
 require_once("menu_db.php");
 
 $menu_parsed=load_menu("default");
+
 if(count($menu_parsed)==0)
 {
     $menu_parsed=json_decode($menu_json);
 }
-
+var_dump($menu_parsed);
 menu_update_entries($menu_parsed);
 $menu_restrictions=array();
 menu_apply_restrictions($menu_parsed,$menu_restrictions);
