@@ -375,22 +375,8 @@ echo generate_select_list('irnpool', 'irnpool', '',
   <td><span class="text"> <?php echo xlt('Full screen page'); ?>:</span></td>
   <td>
       <select style="width:120px;" name="fullscreen_page" id="fullscreen_page">
-      <?php
-
-      $fres = sqlStatement("select entry_id from menu_trees where menu_set='Administrators'");
-      if($fres) {
-        for($iter3 = 0;$frow = sqlFetchArray($fres); $iter3++)
-          $result[$iter3] = $frow;
-          // needs to be worked on for different types of menus
-          foreach($result as $iter) {
-            $fres2 = sqlStatement("select id,label from menu_entries where id= ?", array($iter{'entry_id'}));
-            $frow2 = sqlFetchArray($fres2);
-            ?> 
-            <option value="<?php echo $frow2{'id'}; ?>"><?php echo xlt($frow2{'label'}); ?></option>
-            <?php
-          }
-      }
-      ?>
+                <option value="Calendar|/interface/main/main_info.php">Calendar</option>
+                <option value="Flow Board|/interface/patient_tracker/patient_tracker.php">Flow Board</option>
       </select>
 
   
@@ -520,7 +506,7 @@ $(document).ready(function(){
     $("#cancel").click(function() {
           parent.$.fn.fancybox.close();
      });
-
+  /*
      $("#role_name").on('change', function(e) {
        
         $.ajax({
@@ -546,7 +532,7 @@ $(document).ready(function(){
           }
           });
 
-       });  
+       }); */ 
 });
 </script>
 <table>

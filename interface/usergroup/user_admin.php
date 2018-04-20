@@ -580,22 +580,8 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
   <td><span class="text"> <?php echo xlt('Full screen page'); ?>:</span></td>
   <td>
       <select style="width:120px;" name="fullscreen_page" id="fullscreen_page">
-      <?php
-
-      $fres = sqlStatement("select entry_id from menu_trees where menu_set='".$iter["fullscreen_role"]."'");
-      if($fres) {
-        for($iter3 = 0;$frow = sqlFetchArray($fres); $iter3++)
-          $result[$iter3] = $frow;
-          // needs to be worked on for different types of menus
-          foreach($result as $iter2) {
-            $fres2 = sqlStatement("select id,label from menu_entries where id='".$iter2{'entry_id'}."'");
-            $frow2 = sqlFetchArray($fres2);
-            ?> 
-            <option value="<?php echo $frow2{'id'}; ?>" <?php if ($frow2{'id'} == $iter["fullscreen_page"]) echo "selected"; ?>><?php echo xlt($frow2{'label'}); ?></option>
-            <?php
-          }
-      }
-      ?>
+                <option value="Calendar|/interface/main/main_info.php">Calendar</option>
+                <option value="Flow Board|/interface/patient_tracker/patient_tracker.php">Flow Board</option>
       </select>
 
   
