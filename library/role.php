@@ -54,7 +54,7 @@ class Role {
      * 
      * @param string $location
      */
-    public function __construct($location) {
+    public function __construct() {
         $this->file =  $GLOBALS['OE_SITE_DIR'] . "/roles.json";
     }
 
@@ -65,12 +65,14 @@ class Role {
      * 
      * @param string $role
      * @param array $data
+     * @param array $item_list
      * @return bool
      */
-    public function createNewRole($role, $data) {
+    public function createNewRole($role, $data, $item_list) {
         $role = [
             'title' => $role,
-            'menu_data' => $data
+            'menu_data' => $data,
+            'item_list' => $item_list
         ];
         
         $current_roles = file_get_contents($this->file);
@@ -105,10 +107,68 @@ class Role {
      * Changes the data in the specified role to the given data
      * @param string $role
      * @param array $data
-     * @return void
+     * @param array $item_list
+     * @return bool
      */
-    public function editRole($role, $data) {
+    public function editRole($role_title, $data, $item_list) {
+        $role = [
+            'title' => $role_title,
+            'menu_data' => $data,
+            'item_list' => $item_list
+        ];
+        $current_roles = file_get_contents($this->file);
+        $roles = [];
+        
+        if (!$current_roles) {
+            return false;
+        } else {
+            $current_roles_decoded = json_decode($current_roles, true);
+            $roles = $current_roles_decoded;
+            foreach ($roles as $key => $roleToSearch) {
+                if ($roleToSearch['title'] == $role['title']) {
+                    $roles[$key] = $role;
+                }
+            }
+            $roles_json = json_encode($roles,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            if (file_put_contents($this->file, $roles_json)) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+        return true;
+    }
 
+    /**
+     * deleteRole
+     *
+     * Deletes the specified role from the json file
+     * 
+     * @param string $role
+     * @return bool
+     */
+    public function deleteRole($role_title) {
+        $current_roles = file_get_contents($this->file);
+        $roles = [];
+        
+        if (!$current_roles) {
+            return false;
+        } else {
+            $current_roles_decoded = json_decode($current_roles, true);
+            foreach($current_roles_decoded as $rolesToSearch) {
+                if ($rolesToSearch['title'] != $role_title) {
+                    $roles[] = $rolesToSearch;
+                }
+            }
+            $roles_json = json_encode($roles,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            if (file_put_contents($this->file, $roles_json)) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
         return true;
     }
 

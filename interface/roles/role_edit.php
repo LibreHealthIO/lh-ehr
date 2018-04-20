@@ -45,8 +45,7 @@
  */
 
  /* Include our required headers */
-
- require_once('../../globals.php');
+ require_once('../globals.php');
  require_once("$srcdir/acl.inc");
  require_once("$srcdir/headers.inc.php");
  require_once("$srcdir/role.php");
@@ -54,10 +53,189 @@
 
  if (!acl_check('admin', 'super')) die(xl('Not authorized','','','!'));
 
+$role = new Role();
+$menu_data = file_get_contents( $GLOBALS['OE_SITE_DIR'] . "/menu_data.json");
+$json_data = json_decode($menu_data, true);
 
+if (!isset($_GET['title']) || $_GET['title'] == '') {
+    echo "Invalid title";
+}
 
+if ($roleData = $role->getRole($_GET['title'])) {
+    $roleDataJson = json_decode(json_encode(($roleData->menu_data)), true);
+} else {
+    echo "Invalid title";
+}
 
+$roleData->item_list = json_encode($roleData->item_list);
 
-
+if ($_POST) {
+    $json_string = getMenuJSONString($_POST, $json_data);
+    if($role->getRole($_GET['title']) != null) {
+        $menu_item_list = explode(',', $_POST['checkedList']);
+        
+        $result = $role->editRole($_GET['title'], $json_string, $menu_item_list);
+        if($result) {
+            echo " Edited the " . $_GET['title'] . " role. ";
+        } else {
+            echo " Unable to edit role ";
+        }
+    }
+}
 
  ?>
+
+
+ 
+<!DOCTYPE HTML>
+<html>
+<head>
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox-custom"));
+      resolveFancyboxCompatibility();
+?>
+    <title><?php echo xlt("Role Management") ?></title>
+
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+
+        // fancy box
+
+
+        // special size for
+        $(".iframe_medium").fancybox( {
+            'overlayOpacity' : 0.0,
+            'showCloseButton' : true,
+            'frameHeight' : 450,
+            'frameWidth' : 660
+        });
+
+       
+    });
+
+    </script>
+    <style>       
+        body {
+            font: 10.5pt arial;
+            color: #4d4d4d;
+            line-height: 150%;
+            width: 500px;
+        }
+        #jsoneditor {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<h1 style="padding-left: 10px;"><?php echo xlt("Edit a role") ?></h1>
+<div style="padding-left: 10px;">
+    <form method="POST" action="">
+        <label> Role name:  </label>
+        <span class="text"> <?php echo $roleData->title; ?></span>
+        <br />
+        <label> Accessible Menus: </label> <br />
+        <?php
+            echo "<div style='color: green;'>\n";
+                foreach($json_data as $json) {
+                    echo $json["label"]." <input type='checkbox' name='cb-parent-".$json["menu_id"]."-".$json["label"]."' id='cb-parent-".$json["menu_id"]."-".$json["label"]."' /><br /><br />\n";
+                    if($json["children"] != null) {
+                        echo "<div style='padding-left: 30px; display: none;color: red;' id='child1-".$json["menu_id"]."-".$json["label"]."'>\n";
+                        foreach($json["children"] as $child) {
+                            echo $child["label"]."<input type='checkbox' name='cb-child1-".$json["menu_id"]."-".$child["label"]."' id='cb-child1-".$json["menu_id"]."-".$child["label"]."' /><br /><br />\n";
+                            if($child["children"] != null) {
+                                echo "<div style='padding-left: 60px; color: blue; display: none;' id='child2-".$json["menu_id"]."-".$child["label"]."'>\n";
+                                foreach($child["children"] as $child1) {
+                                    echo $child1["label"]."<input type='checkbox' name='cb-child2-".$json["menu_id"]."-".$child["label"]."-".$child1["label"]."' id='cb-child2-".$json["menu_id"]."-".$json["label"]."-".$child1["label"]."' /><br /><br />\n";
+                                    if ($child1["children"] != null) {
+                                        echo "<div style='padding-left: 90px; color: black;' >\n";
+                                        foreach($child1["children"] as $child2) {
+                                            echo $child2["label"]. "<br />\n";
+                                        }
+                                        echo "</div>\n";
+                                    }
+                                }
+                                echo "</div>\n";
+                            }
+                        }
+                        echo "</div>\n";
+                    }
+                }
+            echo "</div>\n";
+        ?>
+        <input type="hidden" name="checkedList" id="checkedList" value="<?php echo $roleData->item_list; ?>" />
+        <input type="submit" name="edit" value="Edit role" />
+    </form>
+    
+<script>
+$(document).ready(function()  {
+
+    function toObject(arr) {
+        var rv = {};
+        for (var i = 0; i < arr.length; ++i)
+            if (arr[i] !== undefined) {
+                rv[arr[i]] = true;
+            } 
+        return rv;
+    }
+
+   var checkedList = <?php echo $roleData->item_list; ?>;
+   $("[id^=cb-").each(function() {
+       if ($.inArray( this.id, checkedList) != -1) {
+           document.getElementById(this.id).checked = true;
+           var parentId =  this.id.slice(10);
+           if($('[id="child1-'+parentId+'"]').length > 0 ) {
+                $('[id="child1-'+parentId+'"]').show();
+           }
+           if( $('[id="child2-'+parentId+'"]').length > 0 ) {
+                $('[id="child2-'+parentId+'"]').show();
+           }
+
+       }
+   });
+   checkedList = toObject(checkedList);
+
+    $('[id^=cb-parent]').change(function(e) {
+            var parentId = e.target.id.slice(10);
+            if($(this).is(':checked')){
+                $('[id="child1-'+parentId+'"]').show();
+                checkedList["cb-parent-" + parentId] = true;
+            } else {
+                $('[id="child1-'+parentId+'"]').hide();
+                delete checkedList["cb-parent-" + parentId];
+            }
+            var array =  Object.keys(checkedList).map(function (key) { return key; });
+            $('input[name="checkedList"]').val(array);
+        });
+
+        $('[id^=cb-child1]').change(function(e) {
+            var parentId = e.target.id.slice(10)
+            if($(this).is(':checked')){
+                $('[id="child2-'+parentId+'"]').show();
+                checkedList["cb-child1-" + parentId] = true;
+            } else {
+                $('[id="child2-'+parentId+'"]').hide();
+                delete checkedList["cb-child1-" + parentId];
+            }
+            var array =  Object.keys(checkedList).map(function (key) { return key; });
+            $('input[name="checkedList"]').val(array);
+        });
+
+        $('[id^=cb-child2]').change(function(e) {
+            var parentId = e.target.id.slice(10)
+            if($(this).is(':checked')){
+                checkedList["cb-child2-" + parentId] = true;
+            } else {
+                delete checkedList["cb-child2-" + parentId];
+            }
+            var array =  Object.keys(checkedList).map(function (key) { return key; });
+            $('input[name="checkedList"]').val(array);
+        });
+
+});
+</script>
+</div>
+
+
+</body>
+</html>

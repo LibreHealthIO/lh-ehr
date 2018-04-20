@@ -604,7 +604,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
          $role = new Role();
          $role_list = $role->getRoleList();
          foreach($role_list as $role_title) {
-           ?>  <option value="<?php echo $role_title; ?>"><?php echo xlt($role_title); ?></option>
+           ?>  <option value="<?php echo $role_title; ?>" <?php if ($iter["menu_role"] == $role_title) echo "selected"; ?>><?php echo xlt($role_title); ?></option>
           <?php
          }
       ?>

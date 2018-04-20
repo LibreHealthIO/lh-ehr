@@ -47,6 +47,25 @@ function activateTab(data)
     }    
 }
 
+function activateTabByName(name,hideOthers)
+{
+    for(var tabIdx=0;tabIdx<app_view_model.application_data.tabs.tabsList().length;tabIdx++)
+    {
+        var curTab=app_view_model.application_data.tabs.tabsList()[tabIdx];
+        if(curTab.name()===name)
+        {
+            curTab.visible(true);
+        }
+        else if(hideOthers)
+        {
+            if(!curTab.locked())
+            {
+                curTab.visible(false);
+            }
+        }
+    }
+}
+
 function tabClicked(data,evt)
 {
     activateTab(data);
@@ -180,7 +199,6 @@ function loadCurrentPatient()
 
 function menuActionClick(data,evt)
 {
-
     if(data.enabled())
     {
         if(data.requirement===2)

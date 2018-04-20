@@ -55,12 +55,13 @@ $json_data = json_decode($menu_data, true);
 
 if($_POST) {
 
-    // TODO - form validation
     $json_string = getMenuJSONString($_POST, $json_data);
     $role = new Role();
     if($role->getRole($_POST['title']) == null) {
-        $result = $role->createNewRole($_POST['title'], $json_string);
+        $menu_item_list = explode(',', $_POST['checkedList']);
+        $result = $role->createNewRole($_POST['title'], $json_string, $menu_item_list);
         if($result) {
+            echo "Role ". $_POST['title']. " created";
         } else {
             echo " Unable to create role ";
         }
@@ -83,7 +84,6 @@ if($_POST) {
 
         // fancy box
 
-        tabbify();
 
         // special size for
         $(".iframe_medium").fancybox( {
@@ -92,12 +92,6 @@ if($_POST) {
             'frameHeight' : 450,
             'frameWidth' : 660
         });
-
-        $(function(){
-            // add drag and drop functionality to fancybox
-            $("#fancy_outer").easydrag();
-        });
-
        
     });
 
@@ -118,7 +112,7 @@ if($_POST) {
 <body>
 <h1 style="padding-left: 10px;"><?php echo xlt("Create a role") ?></h1>
 <div style="padding-left: 10px;">
-    <form method="POST" action="">
+    <form method="POST" action="" id="createRoleForm">
         <label> Role name:  </label>
         <input type="text" name="title" id="title" placeholder="Role name" />
         <br />
@@ -151,32 +145,57 @@ if($_POST) {
                 }
             echo "</div>\n";
         ?>
+        <input type="hidden" name="checkedList" id="checkedList" />
         <input type="submit" name="create" value="Create role" />
     </form>
     
 <script>
+var checkedList = {};
 $(document).ready(function()  {
+
     $('[id^=cb-parent]').change(function(e) {
             var parentId = e.target.id.slice(10);
             //console.log(parentId);
             if($(this).is(':checked')){
                 $('[id="child1-'+parentId+'"]').show();
+                checkedList["cb-parent-" + parentId] = true;
             } else {
                 $('[id="child1-'+parentId+'"]').hide();
+                delete checkedList["cb-parent-" + parentId];
             }
-        });
+            var array =  Object.keys(checkedList).map(function (key) { return key; });
+            $('input[name="checkedList"]').val(array);
+    });
 
-        $('[id^=cb-child1]').change(function(e) {
+    $('[id^=cb-child1]').change(function(e) {
             var parentId = e.target.id.slice(10)
             //console.log(parentId);
             //$('[id="child2-repimg-Procedures"]').show();
             if($(this).is(':checked')){
-                console.log($('[id="child2-repimg-Procedures"]').html());
+               
                 $('[id="child2-'+parentId+'"]').show();
+                checkedList["cb-child1-" + parentId] = true;
             } else {
                 $('[id="child2-'+parentId+'"]').hide();
+                delete checkedList["cb-child1-" + parentId];
             }
-        });
+            var array =  Object.keys(checkedList).map(function (key) { return key; });
+            $('input[name="checkedList"]').val(array);
+    });
+
+    $('[id^=cb-child2]').change(function(e) {
+            var parentId = e.target.id.slice(10)
+            if($(this).is(':checked')){
+                checkedList["cb-child2-" + parentId] = true;
+            } else {
+                delete checkedList["cb-child2-" + parentId];
+            }
+            var array =  Object.keys(checkedList).map(function (key) { return key; });
+            $('input[name="checkedList"]').val(array);
+    });
+
+  
+
 });
 </script>
 </div>

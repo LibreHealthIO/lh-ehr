@@ -117,7 +117,10 @@ $role_list = $role->getRoleList();
             </tr>
             <?php foreach($role_list as $role_title) { ?>
             <tr>
-                <td> <a href="../../roles/role_edit.php?title=<?php echo $role_title; ?>"  class="iframe_medium" onclick="top.restoreSession()"> <span class="text">  <?php echo $role_title; ?> </span> </a> </td>
+                <td> <span class="text">  <?php echo $role_title; ?> </span> </td>
+                <td> <a href="../../roles/role_edit.php?title=<?php echo $role_title; ?>"  class="iframe_medium" onclick="top.restoreSession()"> Edit  </a> </td>
+                <td> <a href="../../roles/role_delete.php?title=<?php echo $role_title; ?>"  class="iframe_medium" onclick="top.restoreSession()"> Delete </a> </td>
+
             </tr>
             <?php 
             } ?>
