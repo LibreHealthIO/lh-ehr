@@ -46,12 +46,12 @@ var fullscreen_page = true;
 <link rel="shortcut icon" href="<?php echo $web_root; ?>/favicon.ico" type="image/x-icon">
 
 <?php $userQuery = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"); ?>
-
+<?php $pageUrl = explode('|', $userQuery['fullscreen_page'])[1]; ?>
 <div id="mainBox">
 
     <div class="body_title" data-bind="template: {name: 'tabs-controls', data: application_data} "> </div>
 
-    <iframe height="800px" src="/LibreEhr/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1" name="flb">
+    <iframe height="800px" src="<?= $web_root.$pageUrl; ?>">
     </iframe>
     
 </div>

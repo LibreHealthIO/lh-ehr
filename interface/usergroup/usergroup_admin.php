@@ -109,7 +109,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       }
       if ($_POST["fullscreen_page"]) {
         $tqvar = formData('fullscreen_page', 'P');
-        sqlStatement("update users set fullscreen_page='$tqvar' where id=?", array($_POST["id"]));
+        sqlStatement('update users set fullscreen_page="'.$tqvar.'" where id=?', array($_POST["id"]));
       }
       if ($_POST["fullscreen_enable"]) {
         sqlStatement("update users set fullscreen_enable=1 where id=?", array($_POST["id"]));
