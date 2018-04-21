@@ -103,10 +103,6 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
               $tqvar = formData('mname','P');
               sqlStatement("update users set mname='$tqvar' where id= ? ", array($_POST["id"]));
       }
-      if ($_POST["role_name"]) {
-        $tqvar = formData('role_name', 'P');
-        sqlStatement("update users set fullscreen_role='$tqvar' where id= ?", array($_POST["id"]));
-      }
       if ($_POST["fullscreen_page"]) {
         $tqvar = formData('fullscreen_page', 'P');
         sqlStatement('update users set fullscreen_page="'.$tqvar.'" where id=?', array($_POST["id"]));
@@ -286,7 +282,6 @@ if (isset($_POST["mode"])) {
             "', npi  = '"          . trim(formData('npi'          )) .
             "', taxonomy = '"      . trim(formData('taxonomy'     )) .
             "', facility_id = '"   . trim(formData('facility_id'  )) .
-            "', fullscreen_role = '". trim(formData('role_name'    )) .
             "', fullscreen_page = '". trim(formData('fullscreen_page')) .
             "', fullscreen_enable = '". $fullscreen_enable .
             "', menu_role = '". $menuRole .

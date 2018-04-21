@@ -76,7 +76,7 @@ if ($_POST) {
         
         $result = $role->editRole($_GET['title'], $json_string, $menu_item_list);
         if($result) {
-            echo " Edited the " . $_GET['title'] . " role. ";
+            header("Location: ".$_SERVER['PHP_SELF']."?title=".$_GET['title']."&edited=true");
         } else {
             echo " Unable to edit role ";
         }
@@ -128,6 +128,10 @@ if ($_POST) {
     </style>
 </head>
 <body>
+<?php if (isset($_GET['edited']) && $_GET['edited'] == true) {
+    ?> <h2><span class="text" style="color: green;"> Role edited successfully </span></h2> <?php
+}
+?>
 <h1 style="padding-left: 10px;"><?php echo xlt("Edit a role") ?></h1>
 <div style="padding-left: 10px;">
     <form method="POST" action="">
@@ -194,7 +198,8 @@ $(document).ready(function()  {
        }
    });
    checkedList = toObject(checkedList);
-
+   var initialCheckedListValue =  Object.keys(checkedList).map(function (key) { return key; });
+   $('input[name="checkedList"]').val(initialCheckedListValue);
     $('[id^=cb-parent]').change(function(e) {
             var parentId = e.target.id.slice(10);
             if($(this).is(':checked')){

@@ -950,3 +950,6 @@ ALTER TABLE users ADD COLUMN fullscreen_enable int(11) NOT NULL default 0;
 ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default User";
 #EndIf
 
+#IfColumn users fullscreen_role
+ALTER TABLE `users` DROP `fullscreen_role`;
+#EndIf

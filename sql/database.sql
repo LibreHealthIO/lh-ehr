@@ -5845,7 +5845,6 @@ CREATE TABLE `users` (
   `upin` varchar(255) default NULL,
   `facility` varchar(255) default NULL,
   `facility_id` int(11) NOT NULL default '0',
-  `fullscreen_role` text NOT NULL,
   `fullscreen_page` text NOT NULL,
   `fullscreen_enable` int(11) NOT NULL default '0',
   `menu_role` varchar(100) NOT NULL default "Default Role",

@@ -1786,7 +1786,6 @@
         ],
         "item_list": [
             "cb-parent-cal0-Calendar",
-            "cb-parent-pfb0-Flow Board",
             "cb-parent-msg0-Messages ",
             "cb-parent-patimg-Patient/Client",
             "cb-child1-patimg-Finder",
@@ -1945,7 +1944,8 @@
             "cb-child1-mips-XML Editor",
             "cb-child1-mips-Alerts Log",
             "cb-parent-modimg-Help",
-            "cb-child1-modimg-About"
+            "cb-child1-modimg-About",
+            "cb-parent-pfb0-Flow Board"
         ]
     }
 ]

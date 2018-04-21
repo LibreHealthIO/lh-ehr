@@ -88,3 +88,11 @@
 #IfMissingColumn history_data risk_factors
 ALTER TABLE `history_data` ADD COLUMN `risk_factors` TEXT NULL DEFAULT NULL AFTER `exams`;
 #EndIf
+
+#IfMissingColumn users menu_role
+ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default User";
+#EndIf
+
+#IfColumn users fullscreen_role
+ALTER TABLE `users` DROP `fullscreen_role`;
+#EndIf

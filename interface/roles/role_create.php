@@ -61,7 +61,8 @@ if($_POST) {
         $menu_item_list = explode(',', $_POST['checkedList']);
         $result = $role->createNewRole($_POST['title'], $json_string, $menu_item_list);
         if($result) {
-            echo "Role ". $_POST['title']. " created";
+
+           header("Location: ".$_SERVER['PHP_SELF']."?title=".$_GET['title']."&created=true");
         } else {
             echo " Unable to create role ";
         }
@@ -110,6 +111,10 @@ if($_POST) {
     </style>
 </head>
 <body>
+<?php if (isset($_GET['created']) && $_GET['created'] == true) {
+    ?> <h2><span class="text" style="color: green;"> Role created successfully </span></h2> <?php
+}
+?>
 <h1 style="padding-left: 10px;"><?php echo xlt("Create a role") ?></h1>
 <div style="padding-left: 10px;">
     <form method="POST" action="" id="createRoleForm">
