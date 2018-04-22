@@ -134,12 +134,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         <tr>
             <td>
                 <div style='margin-left:15px'>
-                    <a id='search_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
+                    <a id='search_button' href='#' class='css_button cp-submit' onclick='top.restoreSession(); $("#theform").submit()'>
                     <span>
                         <?php echo htmlspecialchars( xl('Search'), ENT_NOQUOTES); ?>
                     </span>
                     </a>
-                                        <a id='refresh_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
+                                        <a id='refresh_button' href='#' class='css_button cp-misc' onclick='top.restoreSession(); $("#theform").submit()'>
                                         <span>
                                                 <?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
                                         </span>
@@ -242,12 +242,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
  <tr>
       <td>
-         <a id='delete_button' href='#' class='css_button_small'
+         <a id='delete_button' href='#' class='css_button_small cp-negative'
            onclick='deleteReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
          <span>Delete</span></a>
       </td>
       <td>
-         <a id='rename_button' href='#' class='css_button_small'
+         <a id='rename_button' href='#' class='css_button_small cp-positive'
            onclick='renameReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
          <span>Rename</span></a>
       </td>

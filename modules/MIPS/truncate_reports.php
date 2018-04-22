@@ -42,7 +42,7 @@
 
 	<form action="truncate_reports.php" method="post" <?php echo $formOnSubmit; ?>>
 		<br>
-		<input type="submit" name="formSubmit" value="Submit" />
+		<input type="submit" name="formSubmit" value="Submit" class="cp-submit" />
 		<?php
 			if($_POST['formSubmit'] == "Submit") {
 				sqlStatement("TRUNCATE TABLE `report_results`;");

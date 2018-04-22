@@ -35,7 +35,7 @@ echo "<hr>";
 }else{
 ?>
 <p><?php echo xlt("WARNING:  This will remove all Primary Provider assignments.  [Set all patient's demographic setting PRIMARY PROVIDER to Unassigned.]");?></p>
-<input type="submit" name="formSubmit" value=<?php echo xlt("Submit");?> />
+<input type="submit" class="cp-submit" name="formSubmit" value=<?php echo xlt("Submit");?> />
 <?php }
 ?>
 </form>

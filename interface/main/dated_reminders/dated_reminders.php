@@ -157,8 +157,8 @@
                 <h3>'.xlt("Show Reminders").'</h3>
                 <div>
                   <div class="drHide">
-                    <p><a title="'.xla('View Past and Future Reminders').'" onclick="openLogScreen()" class="css_button_small" href="#"><span>'.xlt('View Log').'</span></a>
-                    <a onclick="openAddScreen(0)" class="css_button_small" href="#"><span>'.xlt('Send A Dated Reminder').'</span></a></p>
+                    <p><a title="'.xla('View Past and Future Reminders').'" onclick="openLogScreen()" class="css_button_small cp-misc" href="#"><span>'.xlt('View Log').'</span></a>
+                    <a onclick="openAddScreen(0)" class="css_button_small cp-misc" href="#"><span>'.xlt('Send A Dated Reminder').'</span></a></p>
                     <br><br>';  
 
    $pdHTML .= getRemindersHTML($reminders,$today);

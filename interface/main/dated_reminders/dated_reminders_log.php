@@ -164,7 +164,7 @@
     <input type="checkbox" name="processed" id="processed"><label for="processed"><?php echo xlt('Processed') ?></label>      
     <input type="checkbox" name="pending" id="pending"><label for="pending"><?php echo xlt('Pending') ?></label>          
     <br /><br />  
-    <button style="margin-bottom:16px" value="Refresh" id="submitForm"><?php echo xlt('Refresh') ?></button>
+    <button style="margin-bottom:16px" value="Refresh" class="cp-submit" id="submitForm"><?php echo xlt('Refresh') ?></button>
   </form>
   
   <div id="resultsDiv"></div>

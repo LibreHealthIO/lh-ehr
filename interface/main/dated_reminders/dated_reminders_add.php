@@ -292,7 +292,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
                value='<?php echo ($patientID > 0 ? attr(getPatName($patientID)) : xla('Click to select patient')); ?>' onclick='sel_patient()' 
                title='<?php xla('Click to select patient'); ?>' readonly /> 
         <input type="hidden" name="PatientID" id="PatientID" value="<?php echo (isset($patientID) ? attr($patientID) : 0) ?>" /> 
-        <button <?php echo ($patientID > 0 ? '' : 'style="display:none"') ?> id="removePatient"><?php echo xlt('unlink patient') ?></button>  
+        <button <?php echo ($patientID > 0 ? '' : 'style="display:none"') ?> id="removePatient" class="cp-misc"><?php echo xlt('unlink patient') ?></button>
     </fieldset> 
     
       
@@ -318,10 +318,10 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
               <input title="<?php echo xlt('Selecting this will create a message that needs to be processed by each recipient individually (this is not a group task).') ?>" type="checkbox" name="sendSeperately" id="sendSeperately" />  <label title="<?php echo xlt('Selecting this will create a message that needs to be processed by each recipient individually (this is not a group task).') ?>" for="sendSeperately">(<?php echo xlt('Each recipient must set their own messages as completed.') ?>)</label>                                       
             </td>
             <td style="text-align:right"> 
-              <a class="css_button_small" style="cursor:pointer" onclick="selectAll();" ><span><?php echo xlt('Send to all') ?></span></a>
+              <a class="css_button_small cp-misc" style="cursor:pointer" onclick="selectAll();" ><span><?php echo xlt('Send to all') ?></span></a>
             </td> 
           </table>
-    </fieldset>   
+    </fieldset>
      
       <br />   
        
@@ -376,7 +376,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
       </table> 
     </fieldset>
       <p align="center">
-        <input type="submit" id="sendButton" value="<?php echo xla('Send This Message') ?>" />
+        <input type="submit" id="sendButton" class="cp-submit" value="<?php echo xla('Send This Message') ?>" />
       </p>
       <br><br>
     </form>
