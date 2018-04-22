@@ -181,9 +181,9 @@ function authorized_clicked() {
 <table><tr><td>
 <span class="title"><?php echo xlt('Add User'); ?></span>&nbsp;</td>
 <td>
-<a class="css_button" name='form_save' id='form_save' href='#' onclick="return submitform()">
+<a class="css_button cp-submit" name='form_save' id='form_save' href='#' onclick="return submitform()">
     <span><?php echo xlt('Save');?></span></a>
-<a class="css_button large_button" id='cancel' href='#'>
+<a class="css_button large_button cp-negative" id='cancel' href='#'>
     <span class='css_button_span large_button_span'><?php echo xlt('Cancel');?></span>
 </a>
 </td></tr></table>
