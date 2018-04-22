@@ -1,6 +1,6 @@
 <?php
 /**
- *  index.php main program for the ward management system
+ *  
  *
  * Copyright (C) 2018 Naveen Muthusamy <kmnaveen101@gmail.com>
  *
