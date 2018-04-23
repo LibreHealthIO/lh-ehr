@@ -12,15 +12,16 @@
 
 <link rel="stylesheet" type="text/css" href=".../../css/userdata.css"/>
 <script type="text/html" id="user-data-template">
-    <!-- ko with: user -->        
-        <ul id="userdata" class="nav navbar-nav navbar-right" title="<?php echo xla('Authorization group') ?>">                  
+    <!-- ko with: user -->
+    <nav class="nav navbar-nav navbar-right" style="margin-right: 10px !important;">
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <ul class="list-unstyled" id="userdata" title="<?php echo xla('Authorization group') ?>">
             <li class="dropdown" > 
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon glyphicon-user"></span>                
+                    <br><span data-bind="text:fname"></span>&nbsp;<span data-bind="text:lname"></span>
                 </a>            
                 <ul class="dropdown-menu">
-                    <li><span data-bind="text:fname"></span>&nbsp;<span data-bind="text:lname"></span></li>
-                    <li class="divider"></li>
                     <?php if ($GLOBALS['development_flag'] ) { ?>
                     <li data-bind="click: framesMode"><?php echo xlt("Frames Mode");?></li>
                     <?php } ?>
@@ -29,7 +30,8 @@
                     <li data-bind="click: logout"><?php echo xlt("Logout");?></li>        
                 </ul>
             </li>            
-        </ul>     
+        </ul>
+    </nav>
         
     <!-- /ko -->
     <div id="messagesNotification" data-bind="click: unreadMessages">
@@ -40,8 +42,5 @@
             <img class=\"img-responsive my-img\" src= $web_root/images/msgs.png width=\"20\">";
 		    }
 	    ?>
-	
-	    
-
     </div>
 </script>
