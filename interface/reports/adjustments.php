@@ -18,7 +18,12 @@
 require_once "reports_controllers/AdjustmentsController.php";
 
 if ($_POST['form_csvexport']) {
-    csvexport(); // Pulling out php code. (TRK)
+    csvexport('adjustment_codes'); // CSV headers. (TRK)
+    // CSV headers:
+    if (true) {
+      echo '"Adjustment Code",';
+      echo '"Total",'. "\n";
+    }
 }
 else {
 ?>

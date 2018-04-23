@@ -26,155 +26,10 @@
  * @link http://librehealth.io 
  */
 
-//SANITIZE ALL ESCAPES
-$sanitize_all_escapes=true;
-//
-
-//STOP FAKE REGISTER GLOBALS
-$fake_register_globals=false;
-//
-
-require_once("../globals.php");
-require_once("$srcdir/patient.inc");
-require_once("$srcdir/acl.inc");
-require_once("$srcdir/formatting.inc.php");
-require_once("../../library/report_functions.php");
-$DateFormat = DateFormatRead();
-$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
-
-function bucks($amount) {
-  if ($amount != 0) return oeFormatMoney($amount);
-  return '';
-}
-
-function esc4Export($str) {
-  return str_replace('"', '\\"', $str);
-}
-
-function thisLineItem($row, $xfer=false) {
-  global $grandtotal, $grandqty, $encount, $form_action;
-
-  $invnumber = '';
-  $dpname = '';
-
-  if (!empty($row['pid'])) {
-    $ttype = xl('Sale');
-    $dpname = $row['plname'];
-    if (!empty($row['pfname'])) {
-      $dpname .= ', ' . $row['pfname'];
-      if (!empty($row['pmname'])) $dpname .= ' ' . $row['pmname'];
-    }
-    $invnumber = empty($row['invoice_refno']) ?
-      "{$row['pid']}.{$row['encounter']}" : $row['invoice_refno'];
-  }
-  else if (!empty($row['distributor_id'])) {
-    $ttype = xl('Distribution');
-    if (!empty($row['organization'])) {
-      $dpname = $row['organization'];
-    }
-    else {
-      $dpname = $row['dlname'];
-      if (!empty($row['dfname'])) {
-        $dpname .= ', ' . $row['dfname'];
-        if (!empty($row['dmname'])) $dpname .= ' ' . $row['dmname'];
-      }
-    }
-  }
-  else if (!empty($row['xfer_inventory_id']) || $xfer) {
-    $ttype = xl('Transfer');
-  }
-  else if ($row['fee'] != 0) {
-    $ttype = xl('Purchase');
-  }
-  else {
-    $ttype = xl('Adjustment');
-  }
-
-  if ($form_action == 'export') {
-    echo '"' . oeFormatShortDate($row['sale_date']) . '",';
-    echo '"' . $ttype                               . '",';
-    echo '"' . esc4Export($row['name'])             . '",';
-    echo '"' . esc4Export($row['lot_number'])       . '",';
-    echo '"' . esc4Export($row['warehouse'])        . '",';
-    echo '"' . esc4Export($dpname)                  . '",';
-    echo '"' . (0 - $row['quantity'])               . '",';
-    echo '"' . bucks($row['fee'])                   . '",';
-    echo '"' . $row['billed']                       . '",';
-    echo '"' . esc4Export($row['notes'])            . '"' . "\n";
-  }
-  else {
-    $bgcolor = (++$encount & 1) ? "#ddddff" : "#ffdddd";
-?>
-
- <tr bgcolor="<?php echo $bgcolor; ?>">
-  <td class="detail">
-   <?php echo htmlspecialchars(oeFormatShortDate($row['sale_date'])); ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($ttype); ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($row['name']); ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($row['lot_number']); ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($row['warehouse']); ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($dpname); ?>
-  </td>
-  <td class="detail" align="right">
-   <?php echo htmlspecialchars(0 - $row['quantity']); ?>
-  </td>
-  <td class="detail" align="right">
-   <?php echo htmlspecialchars(bucks($row['fee'])); ?>
-  </td>
-  <td class="detail" align="center">
-   <?php echo empty($row['billed']) ? '&nbsp;' : '*'; ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($row['notes']); ?>
-  </td>
- </tr>
-<?php
-  } // End not csv export
-
-  $grandtotal   += $row['fee'];
-  $grandqty     -= $row['quantity'];
-
-  // In the special case of a transfer, generate a second line item for
-  // the source lot.
-  if (!empty($row['xfer_inventory_id'])) {
-    $row['xfer_inventory_id'] = 0;
-    $row['lot_number'] = $row['lot_number_2'];
-    $row['warehouse'] = $row['warehouse_2'];
-    $row['quantity'] = 0 - $row['quantity'];
-    $row['fee'] = 0 - $row['fee'];
-    thisLineItem($row, true);
-  }
-
-} // end function
-
-if (! acl_check('acct', 'rep')) die(htmlspecialchars(xl("Unauthorized access."), ENT_NOQUOTES));
-
-// this is "" or "submit" or "export".
-$form_action = $_POST['form_action'];
-
-$from_date  = fixDate($_POST['form_from_date'], date('Y-m-d'));
-$to_date    = fixDate($_POST['form_to_date']  , date('Y-m-d'));
-$form_trans_type = isset($_POST['form_trans_type']) ? $_POST['form_trans_type'] : '0';
-
-$encount = 0;
+require_once "reports_controllers/InventoryTransactionsController.php";
 
 if ($form_action == 'export') {
-  header("Pragma: public");
-  header("Expires: 0");
-  header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  header("Content-Type: application/force-download");
-  header("Content-Disposition: attachment; filename=inventory_transactions.csv");
-  header("Content-Description: File Transfer");
+  csvexport('inventory_transactions'); // CSV headers. (TRK)
   // CSV headers:
   echo '"' . xl('Date'       ) . '",';
   echo '"' . xl('Transaction') . '",';
@@ -189,6 +44,7 @@ if ($form_action == 'export') {
 } // end export
 else {
 ?>
+
 <html>
 <head>
 <?php html_header_show(); ?>
@@ -268,7 +124,8 @@ foreach (array(
 ?>
       </select>
      </td>
-     <?php showFromAndToDates(); ?>
+     <?php // Show From and To dates fields. (TRK)
+      showFromAndToDates(); ?>
     </tr>
    </table>
   </td>
@@ -336,74 +193,7 @@ foreach (array(
 } // end not export
 
 if ($form_action) { // if submit or export
-  $from_date = $from_date;
-  $to_date   = $to_date;
-
-  $grandtotal = 0;
-  $grandqty = 0;
-
-  $query = "SELECT s.sale_date, s.fee, s.quantity, s.pid, s.encounter, " .
-    "s.billed, s.notes, s.distributor_id, s.xfer_inventory_id, " .
-    "p.fname AS pfname, p.mname AS pmname, p.lname AS plname, " .
-    "u.fname AS dfname, u.mname AS dmname, u.lname AS dlname, u.organization, " .
-    "d.name, fe.date, fe.invoice_refno, " .
-    "i1.lot_number, i2.lot_number AS lot_number_2, " .
-    "lo1.title AS warehouse, lo2.title AS warehouse_2 " .
-    "FROM drug_sales AS s " .
-    "JOIN drugs AS d ON d.drug_id = s.drug_id " .
-    "LEFT JOIN drug_inventory AS i1 ON i1.inventory_id = s.inventory_id " .
-    "LEFT JOIN drug_inventory AS i2 ON i2.inventory_id = s.xfer_inventory_id " .
-    "LEFT JOIN patient_data AS p ON p.pid = s.pid " .
-    "LEFT JOIN users AS u ON u.id = s.distributor_id " .
-    "LEFT JOIN list_options AS lo1 ON lo1.list_id = 'warehouse' AND " .
-    "lo1.option_id = i1.warehouse_id " .
-    "LEFT JOIN list_options AS lo2 ON lo2.list_id = 'warehouse' AND " .
-    "lo2.option_id = i2.warehouse_id " .
-    "LEFT JOIN form_encounter AS fe ON fe.pid = s.pid AND fe.encounter = s.encounter " .
-    "WHERE s.sale_date >= ? AND s.sale_date <= ? ";
-  if ($form_trans_type == 2) { // purchase/return
-    $query .= "AND s.pid = 0 AND s.distributor_id = 0 AND s.xfer_inventory_id = 0 AND s.fee != 0 ";
-  }
-  else if ($form_trans_type == 4) { // transfer
-    $query .= "AND s.xfer_inventory_id != 0 ";
-  }
-  else if ($form_trans_type == 5) { // adjustment
-    $query .= "AND s.pid = 0 AND s.distributor_id = 0 AND s.xfer_inventory_id = 0 AND s.fee = 0 ";
-  }
-  else if ($form_trans_type == 6) { // distribution
-    $query .= "AND s.distributor_id != 0 ";
-  }
-  else if ($form_trans_type == 1) { // sale
-    $query .= "AND s.pid != 0 ";
-  }
-  $query .= "ORDER BY s.sale_date, s.sale_id";
-  //
-  $res = sqlStatement($query, array($from_date, $to_date));
-  while ($row = sqlFetchArray($res)) {
-    thisLineItem($row);
-  }
-
-  // Grand totals line.
-  if ($form_action != 'export') { // if submit
-?>
-
- <tr bgcolor="#dddddd">
-  <td class="dehead" colspan="6">
-   <?php echo htmlspecialchars(xl('Grand Total'), ENT_NOQUOTES); ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo htmlspecialchars($grandqty, ENT_NOQUOTES); ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo htmlspecialchars(bucks($grandtotal), ENT_NOQUOTES); ?>
-  </td>
-  <td class="dehead" colspan="2">
-
-  </td>
- </tr>
-
-<?php
-  } // End if submit
+  prepareAndShowResults(); // Prepare and show the result. (TRK)
 } // end if submit or export
 
 if ($form_action != 'export') {

@@ -2,8 +2,6 @@
 /*
  *  Patient Flow Board (Patient Tracker) (Report Based on the appointment report)
  *
- *  
- *
  *  This program used to select and print the information captured in the Patient Flow Board program , 
  *  allowing the user to select and print the desired information.
  * 
@@ -162,11 +160,7 @@ if ($form_patient == '' ) $form_pid = '';
 <span class='title'><?php echo xlt('Patient Flow Board Report'); ?></span>
 <?php } ?>
 
-
-<div id="report_parameters_daterange">
-    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
-    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
-</div>
+<?php reportParametersDaterange(); #TRK ?>
 
 <form method='post' name='theform' id='theform' action='patient_flow_board_report.php' onsubmit='return top.restoreSession()'>
 
@@ -184,38 +178,36 @@ if ($form_patient == '' ) $form_pid = '';
                 </td>
                 <td class='label'><?php echo xlt('Provider'); ?>:</td>
                 <td>
-                  <?php # Build a drop-down list of providers.
-                      dropDownProviders();
-                  ?>  
+                  <?php # Build a drop-down list of providers. (TRK)
+                      dropDownProviders(); ?>  
                 </td>
 
             </tr>
 
             <tr>
-                <?php showFromAndToDates(); ?>
+              <?php // Show From and To dates fields. (TRK) 
+                showFromAndToDates(); ?>
             </tr>
 
             <tr>
-                <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
-                <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$_POST['form_apptstatus']);?></td>
-                <td><?php echo xlt('Category') #category drop down creation ?>:</td>
-                <td>
-                                    <select id="form_apptcat" name="form_apptcat">
-                                        <?php
-                                            $categories=fetchAppointmentCategories();
-                                            echo "<option value='ALL'>".xlt("All")."</option>";
-                                            while($cat=sqlFetchArray($categories))
-                                            {
-                                                echo "<option value='".attr($cat['id'])."'";
-                                                if($cat['id']==$_POST['form_apptcat'])
-                                                {
-                                                    echo " selected='true' ";
-                                                }
-                                                echo    ">".text(xl_appt_category($cat['category']))."</option>";
-                                            }
-                                        ?>
-                                    </select>
-                </td>
+              <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
+              <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$_POST['form_apptstatus']);?></td>
+              <td><?php echo xlt('Category') #category drop down creation ?>:</td>
+              <td>
+                <select id="form_apptcat" name="form_apptcat">
+                  <?php
+                    $categories=fetchAppointmentCategories();
+                    echo "<option value='ALL'>".xlt("All")."</option>";
+                    while($cat=sqlFetchArray($categories)) {
+                      echo "<option value='".attr($cat['id'])."'";
+                      if($cat['id']==$_POST['form_apptcat']) {
+                        echo " selected='true' ";
+                      }
+                      echo    ">".text(xl_appt_category($cat['category']))."</option>";
+                    }
+                  ?>
+                </select>
+              </td>
             </tr>
             <tr>
             <td>
@@ -225,8 +217,7 @@ if ($form_patient == '' ) $form_pid = '';
             <input type='text' size='20' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' value='<?php echo attr($form_patient) ? attr($form_patient) : xla('Click To Select'); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' />
             <input type='hidden' name='form_pid' value='<?php echo attr($form_pid); ?>' />
             </td>
-            
-                <td colspan="2"><label><input type="checkbox" name="show_details" id="show_details" <?php if($chk_show_details) echo "checked";?>>&nbsp;<?php echo xlt('Show Details'); ?></label></td>
+            <td colspan="2"><label><input type="checkbox" name="show_details" id="show_details" <?php if($chk_show_details) echo "checked";?>>&nbsp;<?php echo xlt('Show Details'); ?></label></td>
             </tr>           
             <tr>
  
@@ -246,7 +237,8 @@ if ($form_patient == '' ) $form_pid = '';
         </div>
 
         </td>
-        <?php showSubmitPrintButtons(); ?>
+        <?php // Show print, submit and export buttons. (TRK) 
+          showSubmitPrintButtons(); ?>
 
 </table>
 

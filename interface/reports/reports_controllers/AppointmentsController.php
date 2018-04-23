@@ -5,8 +5,6 @@
  * report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
- * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
- * Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
@@ -73,12 +71,18 @@ $form_orderby = getComparisonOrder( $_REQUEST['form_orderby'] ) ?  $_REQUEST['fo
 
 // Reminders related stuff
 $incl_reminders = isset($_POST['incl_reminders']) ? 1 : 0;
+
+/* Attribution: 2015-2017 Terry Hill <teryhill@librehealth.io> 
+ * and 2005-2010 Rod Roark <rod@sunsetsystems.com>*/
 function fetch_rule_txt ($list_id, $option_id) {
     $rs = sqlQuery('SELECT title, seq from list_options WHERE list_id=? AND option_id=?',
             array($list_id, $option_id));
     $rs['title'] = xl_list_label($rs['title']);
     return $rs;
 }
+
+/* Attribution: 2015-2017 Terry Hill <teryhill@librehealth.io> 
+ * and 2005-2010 Rod Roark <rod@sunsetsystems.com>*/
 function fetch_reminders($pid, $appt_date) {
     $rems = test_rules_clinic('','passive_alert',$appt_date,'reminders-due',$pid);
     $seq_due = array();
