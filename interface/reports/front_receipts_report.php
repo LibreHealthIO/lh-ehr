@@ -35,10 +35,6 @@ $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 $from_date = fixDate($_POST['form_from_date'], date(DateFormatRead(true)));
 $to_date = fixDate($_POST['form_to_date'], date(DateFormatRead(true)));
-function bucks($amt)
-{
-  return ($amt != 0.00) ? oeFormatMoney($amt) : '';
- }
 ?>
 <html>
 <head>
@@ -99,10 +95,7 @@ function bucks($amt)
 
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Front Office Receipts','e'); ?></span>
 
-<div id="report_parameters_daterange">
-    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
-    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
-</div>
+<?php reportParametersDaterange(); #TRK ?>
 
 <form name='theform' method='post' action='front_receipts_report.php' id='theform'>
 
@@ -117,14 +110,16 @@ function bucks($amt)
 
     <table class='text'>
         <tr>
-            <?php showFromAndToDates(); ?>
+          <?php // Show From and To dates fields. (TRK)
+            showFromAndToDates(); ?>
         </tr>
     </table>
 
     </div>
 
   </td>
-  <?php showSubmitPrintButtons(); ?>
+  <?php // Show print and export buttons. (TRK)
+    showSubmitPrintButtons(); ?>
  </tr>
 </table>
 </div> <!-- end of parameters -->

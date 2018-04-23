@@ -5,8 +5,6 @@
  * report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
- * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
- * Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
@@ -188,6 +186,45 @@ function reportParametersDaterange() {
             date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
         . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date'])));
     echo '</div>';
+}
+
+/*
+ * This function is for csv export of reports
+ * @params : $filename - Name of associated report
+ * @return :void 
+ */
+function csvexport($filename) {
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Content-Type: application/force-download");
+    header("Content-Disposition: attachment; filename=" . $filename . ".csv");
+    header("Content-Description: File Transfer");
+}
+
+/* This function format amount(money/currencies).
+ * @params: $amount - Value to be formatted.
+ * @return: none
+ * @attribution: 2015-2017 Terry Hill <teryhill@librehealth.io> 
+ * and 2005-2010 Rod Roark <rod@sunsetsystems.com>*/
+function bucks($amount) {
+  if ($amount) oeFormatMoney($amount);
+}
+
+/*
+ * This function is to show total encounters per provider.
+ * It is used only in Encounter and Appt. Encounter reports.
+ * @params : $lastdocname - Provider's name,
+ *           $doc_encounters - Number of provider's encounters
+ * @return : Echo HTML 
+ */
+function show_doc_total($lastdocname, $doc_encounters) {
+  if ($lastdocname) {
+    echo " <tr>\n";
+    echo "  <td class='detail'>$lastdocname</td>\n";
+    echo "  <td class='detail' align='right'>$doc_encounters</td>\n";
+    echo " </tr>\n";
+  }
 }
 
 ?>

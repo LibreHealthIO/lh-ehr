@@ -71,7 +71,8 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <table border='0' cellpadding='3'>
  <tr>
   <td>
-   <?php showFromAndToDates(); ?>
+   <?php // Show From and To dates fields. (TRK)
+      showFromAndToDates(); ?>
    &nbsp;
    <input type='submit' name='form_refresh' value=<?php xl('Refresh','e'); ?>>
    &nbsp;
