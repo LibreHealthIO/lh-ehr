@@ -88,3 +88,4 @@
 #IfMissingColumn history_data risk_factors
 ALTER TABLE `history_data` ADD COLUMN `risk_factors` TEXT NULL DEFAULT NULL AFTER `exams`;
 #EndIf
+DELETE FROM `code_types` WHERE `code_types`.`ct_key` = 'ICD9';
