@@ -448,7 +448,7 @@ function Form_Validate() {
           </td>
         </tr>
 <?php if(empty($report_id)) { ?>
-                      <a id='submit_button' href='#' class='css_button' onclick='runReport();'>
+                      <a id='submit_button' href='#' class='css_button cp-submit' onclick='runReport();'>
                         <span>
                           <?php echo htmlspecialchars(xl('Submit'), ENT_NOQUOTES); ?>
                         </span>
@@ -459,7 +459,7 @@ function Form_Validate() {
 
     if(!empty($report_id)) {
 ?>
-                      <a href='#' class='css_button' id='printbutton'>
+                      <a href='#' class='css_button cp-output' id='printbutton'>
                         <span>
                           <?php echo htmlspecialchars(xl('Print'), ENT_NOQUOTES); ?>
                         </span>
@@ -467,7 +467,7 @@ function Form_Validate() {
 <?php   if(in_array($type_report, array('pqrs_individual_2016'))) { ?>
                         Optimize XML report?
                         <input id="xmloptimize" type="checkbox" name="xmloptimize" value="1" />
-                      <a href="#"  id="xml_pqrs" class='css_button' onclick='GenXml("PQRS");'>
+                      <a href="#"  id="xml_pqrs" class='css_button cp-output' onclick='GenXml("PQRS");'>
                         <span>
                           <?php echo htmlspecialchars(xl('Generate XML for MIPS'), ENT_NOQUOTES); ?>
                         </span>
@@ -478,7 +478,7 @@ function Form_Validate() {
 ?>
                       <a href='report_results.php' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt('Return To Report Results'); ?></span></a>
 <?php   } else { ?>
-                      <a href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit();'><span><?php echo xlt('Start Another Report'); ?></span></a>
+                      <a href='#' class='css_button cp-submit' onclick='top.restoreSession(); $("#theform").submit();'><span><?php echo xlt('Start Another Report'); ?></span></a>
 <?php
       }
     }

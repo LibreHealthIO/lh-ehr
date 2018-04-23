@@ -349,13 +349,13 @@ if ($noteid) {
 
 <?php if ($noteid) { ?>
 <!-- This is for displaying an existing note. -->
-<input type="button" id="newnote" value="<?php echo htmlspecialchars( xl('Send message'), ENT_QUOTES); ?>">
-<input type="button" id="printnote" value="<?php echo htmlspecialchars( xl('Print message'), ENT_QUOTES); ?>">
-<input type="button" id="cancel" value="<?php echo htmlspecialchars( xl('Cancel'), ENT_QUOTES); ?>">
+<input type="button" id="newnote" class="cp-submit"  value="<?php echo htmlspecialchars( xl('Send message'), ENT_QUOTES); ?>">
+<input type="button" id="printnote" class="cp-output" value="<?php echo htmlspecialchars( xl('Print message'), ENT_QUOTES); ?>">
+<input type="button" id="cancel" class="cp-negative" value="<?php echo htmlspecialchars( xl('Cancel'), ENT_QUOTES); ?>">
 <?php } else { ?>
 <!-- This is for displaying a new note. -->
-<input type="button" id="newnote" value="<?php echo htmlspecialchars( xl('Send message'), ENT_QUOTES); ?>">
-<input type="button" id="cancel" value="<?php echo htmlspecialchars( xl('Cancel'), ENT_QUOTES); ?>">
+<input type="button" id="newnote" class="cp-submit" value="<?php echo htmlspecialchars( xl('Send message'), ENT_QUOTES); ?>">
+<input type="button" id="cancel"  class="cp-negative" value="<?php echo htmlspecialchars( xl('Cancel'), ENT_QUOTES); ?>">
 <?php }
 ?>
 
@@ -552,8 +552,8 @@ else {
     </form></table>
     <table class='table well'>
         <tr>
-            <td class=\"text\"><a role='button' href=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&task=addnew&$activity_string_html\" onclick=\"top.restoreSession()\">" .
-              htmlspecialchars( xl('Add New'), ENT_NOQUOTES) . "</a> &nbsp; <a role='button' class='deleter' href=\"javascript:confirmDeleteSelected()\" onclick=\"top.restoreSession()\">" .
+            <td class=\"text\"><a role='button' class='cp-positive' href=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&task=addnew&$activity_string_html\" onclick=\"top.restoreSession()\">" .
+              htmlspecialchars( xl('Add New'), ENT_NOQUOTES) . "</a> &nbsp; <a role='button' class='deleter cp-negative' href=\"javascript:confirmDeleteSelected()\" onclick=\"top.restoreSession()\">" .
               htmlspecialchars( xl('Delete'), ENT_NOQUOTES) . "</a></td>
             <td align=right class=\"text amount-msg\">$prevlink &nbsp; $end of $total &nbsp; $nextlink</td>
         </tr>
