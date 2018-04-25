@@ -56,8 +56,12 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         <div class="form-group col-xs-12">
           <label for="category"><?php echo xlt('Select Category');?></label>
           <select class="form-control" id="category" name="category" required>
-            <option value="__NEW__"><?php echo xlt('New Category');?></option>
+           <option value="__NEW__" select="selected"><?php echo xlt('New Category');?></option>
             <?php 
+            if (empty($_SESSION['category'])) {
+                error_log("nul?: ".$_SESSION['category'], 0);
+                $_SESSION['category'] = "__NEW__";
+            }
             foreach($categories as $category) {
               $catid = $category['pc_catid'];
               $catname = $category['pc_catname'];
