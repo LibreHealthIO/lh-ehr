@@ -178,7 +178,6 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>  
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>    
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-calendar.js"></script>
-
    <?php call_required_libraries(array("jquery-min-3-3-1","font-awesome", "iziModalToast"));
    ?>
     <script language="JavaScript">
