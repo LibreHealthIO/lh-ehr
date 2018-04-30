@@ -172,6 +172,26 @@ function DOBandEncounter()
     }
 
  }
+
+
+ /*This function is used for setting the date of the first event when using the "day_every_week" repetition mechanism.
+ When the 'start date' is not one of the days chosen for the repetition, the start date needs to be changed to the first
+ occurrence of one of these set days. */
+ function setEventDate($start_date, $recurrence){
+     $timestamp = strtotime($start_date);
+     $day = date('w', $timestamp);
+     //If the 'start date' is one of the set days
+     if(in_array(($day+1), explode(',',$recurrence))){
+         return $start_date;
+     }
+     //else: (we need to change start date to first occurrence of one of the set days)
+
+     $new_date = getTheNextAppointment($start_date, $recurrence);
+
+     return $new_date;
+
+
+ }
 //================================================================================================================
 
 // EVENTS TO FACILITIES (lemonsoftware)
@@ -216,9 +236,6 @@ if ( $eid ) {
 //=============================================================================================================================
 if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
  {
-    // the starting date of the event, pay attention with this value
-    // when editing recurring events -- JRM Oct-08
-    $event_date = fixDate($_POST['form_date']);
 
     // Compute start and end time strings to be saved.
     if ($_POST['form_allday']) {
@@ -250,7 +267,7 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
     $tmph = sprintf( "%02d", $tmph );
     $tmpm = sprintf( "%02d", $tmpm );
     $starttime = "$tmph:$tmpm:00";
-    //$tmph
+    //
     $tmpm += $duration;
     while ($tmpm >= 60) {
         $tmpm -= 60;
@@ -265,7 +282,28 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
     $my_repeat_on_num  = 1;
     $my_repeat_on_day  = 0;
     $my_repeat_on_freq = 0;
-    if (!empty($_POST['form_repeat'])) {
+
+     // the starting date of the event, pay attention with this value
+     // when editing recurring events -- JRM Oct-08
+     $event_date = fixDate($_POST['form_date']);
+
+         //If used new recurrence mechanism of set days every week
+         if(!empty($_POST['days_every_week'])){
+             $my_recurrtype = 3;
+             //loop through checkboxes and insert encounter days into array
+             $days_every_week_arr = array();
+             for($i=1; $i<=7; $i++){
+                 if(!empty($_POST['day_' . $i])){
+                     array_push($days_every_week_arr, $i);
+                 }
+             }
+             $my_repeat_freq = implode(",",$days_every_week_arr);
+             $my_repeat_type = 6;
+             $event_date = fixDate(setEventDate($_POST['form_date'], $my_repeat_freq));
+
+         }
+         elseif (!empty($_POST['form_repeat'])){
+
       $my_recurrtype = 1;
       if ($my_repeat_type > 4) {
         $my_recurrtype = 2;
@@ -382,6 +420,7 @@ if ($_POST['form_action'] == "save") {
                     $args['duration'] = $duration * 60;
                     // this event is forced to NOT REPEAT
                     $args['form_repeat'] = "0";
+                    $args['days_every_week'] = "0";
                     $args['recurrspec'] = $noRecurrspec;
                     $args['form_enddate'] = "0000-00-00";
                     $args['starttime'] = $starttime;
@@ -444,7 +483,7 @@ if ($_POST['form_action'] == "save") {
                 // oct-08 JRM
                 if ($_POST['form_date'] == $_POST['selected_date']) {
                     // user has NOT changed the start date of the event
-                    $event_date = fixDate($_POST['event_start_date']);
+                    if($my_recurrtype != 3) $event_date = fixDate($_POST['event_start_date']);
                 }
 
                 // this difference means that some providers were added
@@ -523,6 +562,7 @@ if ($_POST['form_action'] == "save") {
                 $args['duration'] = $duration * 60;
                 // this event is forced to NOT REPEAT
                 $args['form_repeat'] = "0";
+                $args['days_every_week'] = "0";
                 $args['recurrspec'] = $noRecurrspec;
                 $args['form_enddate'] = "0000-00-00";
                 $args['starttime'] = $starttime;
@@ -554,7 +594,7 @@ if ($_POST['form_action'] == "save") {
     // oct-08 JRM
     if ($_POST['form_date'] == $_POST['selected_date']) {
         // user has NOT changed the start date of the event
-        $event_date = fixDate($_POST['event_start_date']);
+        if($my_recurrtype != 3) $event_date = fixDate($_POST['event_start_date']);
     }
 
                 do_action( 'before_update_event',  $data = [ 'pc_eid' => $eid, ] );
@@ -879,11 +919,9 @@ td { font-size:0.8em; }
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
 <?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
-<script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 
 <script language="JavaScript">
 
- var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 
  var durations = new Array();
@@ -1016,6 +1054,14 @@ td { font-size:0.8em; }
   var mycolor = '#777777';
   var myvisibility = 'hidden';
   if (f.form_repeat.checked) {
+      f.days_every_week.checked = false;
+      document.getElementById("days_label").style.color = mycolor;
+      var days = document.getElementById("days").getElementsByTagName('input');
+      var labels = document.getElementById("days").getElementsByTagName('label');
+      for(var i=0; i < days.length; i++){
+          days[i].disabled = isdisabled;
+          labels[i].style.color = mycolor;
+      }
    isdisabled = false;
    mycolor = '#000000';
    myvisibility = 'visible';
@@ -1025,6 +1071,47 @@ td { font-size:0.8em; }
   f.form_enddate.disabled = isdisabled;
   document.getElementById('tdrepeat1').style.color = mycolor;
   document.getElementById('tdrepeat2').style.color = mycolor;
+ }
+
+ // Event when days_every_week is checked.
+ function set_days_every_week() {
+     var f = document.forms[0];
+     if (f.days_every_week.checked) {
+         //disable regular repeat
+         f.form_repeat.checked = false;
+         f.form_repeat_type.disabled = true;
+         f.form_repeat_freq.disabled = true;
+         document.getElementById('tdrepeat1').style.color = '#777777';
+
+         //enable end_date setting
+         document.getElementById('tdrepeat2').style.color = '#000000';
+         f.form_enddate.disabled = false;
+
+         var isdisabled = false;
+         var mycolor = '#000000';
+         var myvisibility = 'visible';
+     }
+     else{
+         var isdisabled = true;
+         var mycolor = '#777777';
+         var myvisibility = 'hidden';
+     }
+     document.getElementById("days_label").style.color = mycolor;
+     var days = document.getElementById("days").getElementsByTagName('input');
+     var labels = document.getElementById("days").getElementsByTagName('label');
+     for(var i=0; i < days.length; i++){
+         days[i].disabled = isdisabled;
+         labels[i].style.color = mycolor;
+     }
+
+     //If no repetition is checked, disable end_date setting.
+     if(!f.days_every_week.checked  && !f.form_repeat.checked){
+         //disable end_date setting
+         document.getElementById('tdrepeat2').style.color = mycolor;
+         f.form_enddate.disabled = isdisabled;
+     }
+
+
  }
 
  // Constants used by dateChanged() function.
@@ -1319,6 +1406,7 @@ $classpati='';
 if  ($GLOBALS['select_multi_providers']) {
 
     //  there are two posible situations: edit and new record
+    $providers_array = array();
 
     // this is executed only on edit ($eid)
     if ($eid) {
@@ -1421,7 +1509,36 @@ if  ($GLOBALS['select_multi_providers']) {
   </td>
   <td nowrap>
    &nbsp;&nbsp;
-   <input type='checkbox' name='form_repeat' onclick='set_repeat(this)' value='1'<?php if ($repeats) echo " checked" ?>/>
+      <?php
+      //Check if repeat is using the new 'days every week' mechanism.
+      function isDaysEveryWeek($repeat){
+          if($repeat == 3){
+              return true;
+          }
+          else{
+              return false;
+          }
+      }
+
+      //Check if using the regular repeat mechanism.
+      function isRegularRepeat($repeat){
+          if($repeat == 1 || $repeat == 2){
+              return true;
+          }
+          else{
+              return false;
+          }
+      }
+
+
+      /*
+      If the appointment was set with the regular (old) repeat mechanism (using 'every', 'every 2', etc.), then will be
+      checked when editing and will select the proper recurrence pattern. If using the new repeat mechanism, then only that box (and the proper set
+      days) will be checked. That's why I had to add the functions 'isRegularRepeat' and 'isDaysEveryWeek', to check which
+      repeating mechanism is being used, and load settings accordingly.
+      */
+      ?>
+   <input type='checkbox' name='form_repeat' onclick='set_repeat(this)' value='1'<?php if (isRegularRepeat($repeats)) echo " checked" ?>/>
    <input type='hidden' name='form_repeat_exdate' id='form_repeat_exdate' value='<?php echo attr($repeatexdate); ?>' /> <!-- dates excluded from the repeat -->
   </td>
   <td nowrap id='tdrepeat1'><?php echo xlt('Repeats'); ?>
@@ -1434,7 +1551,7 @@ if  ($GLOBALS['select_multi_providers']) {
   as $key => $value)
  {
   echo "    <option value='" . attr($key) . "'";
-  if ($key == $repeatfreq) echo " selected";
+  if ($key == $repeatfreq && isRegularRepeat($repeats)) echo " selected";
   echo ">" . text($value) . "</option>\n";
  }
 ?>
@@ -1448,7 +1565,7 @@ if  ($GLOBALS['select_multi_providers']) {
    5 => '?', 6 => '?') as $key => $value)
  {
   echo "    <option value='" . attr($key) . "'";
-  if ($key == $repeattype) echo " selected";
+  if ($key == $repeattype && isRegularRepeat($repeats)) echo " selected";
   echo ">" . text($value) . "</option>\n";
  }
 ?>
@@ -1456,6 +1573,32 @@ if  ($GLOBALS['select_multi_providers']) {
 
   </td>
  </tr>
+
+    <style>
+        #days_every_week_row input[type="checkbox"]{float:right;}
+        #days_every_week_row div{display: inline-block; text-align: center; width: 12%;}
+        #days_every_week_row div input{width: 100%;}
+    </style>
+
+<tr id="days_every_week_row">
+    <td></td>
+    <td></td>
+    <td><input  type='checkbox' name='days_every_week' onclick='set_days_every_week()' <?php if (isDaysEveryWeek($repeats)) echo " checked" ?>/></td>
+    <td id="days_label"><?php echo xlt('Days Of Week') . ": "; ?></td>
+    <td id="days">
+        <?php
+        foreach (array(1 => xl('Su{{Sunday}}') , 2 => xl('M{{Monday}}'), 3 => xl('Tu{{Tuesday}}'), 4 => xl('W{{Wednesday}}'),
+                     5 => xl('Th{{Thursday}}'), 6 => xl('F{{Friday}}'), 7 => xl('Sa{{Saturday}}')) as $key => $value)
+        {
+            echo " <div><input type='checkbox' name='day_". attr($key) ."'";
+            //Checks appropriate days according to days in recurrence string.
+            if (in_array($key, explode(',',$repeatfreq)) && isDaysEveryWeek($repeats)) echo " checked";
+            echo " /><label>" . text($value) . "</label></div>\n";
+        }
+        ?>
+    </td>
+
+</tr>
 
  <tr>
   <td nowrap>
@@ -1611,14 +1754,33 @@ $(document).ready(function(){
     dateChanged();
 });
 
+
+function are_days_checked(){
+    var days = document.getElementById("days").getElementsByTagName('input');
+    var counter = 0;
+    for(var i=0; i < days.length; i++){
+       if(days[i].checked){
+           counter++;
+       }
+    }
+    return counter;
+}
+
 // Check for errors when the form is submitted.
 function validate(valu) {
      var f = document.getElementById('theform');
-    if (f.form_repeat.checked &&
+    if ((f.form_repeat.checked || f.days_every_week.checked) &&
         (! f.form_enddate.value || f.form_enddate.value < f.form_date.value)) {
         alert('<?php echo addslashes(xl("An end date later than the start date is required for repeated events!")); ?>');
         return false;
     }
+    //Make sure if days_every_week is checked that at least one weekday is checked.
+    if(f.days_every_week.checked && !are_days_checked()){
+        alert('<?php echo xls("Must choose at least one day!"); ?>');
+        return false;
+    }
+
+
     <?php
     if($_GET['prov']!=true){
     ?>

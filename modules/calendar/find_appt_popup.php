@@ -5,15 +5,15 @@
  *
  * Copyright (C) 2005-2013 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
  * @package LibreHealth EHR
@@ -246,6 +246,16 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         $adate['mday'] += 2;
        else
         $adate['mday'] += 1;
+      } else if ($repeattype == 5) { // monday
+       $adate['mday'] += 7;
+      } else if ($repeattype == 6) { // tuesday
+       $adate['mday'] += 7;
+      } else if ($repeattype == 7) { // wednesday
+       $adate['mday'] += 7;
+      } else if ($repeattype == 8) { // thursday
+       $adate['mday'] += 7;
+      } else if ($repeattype == 9) { // friday
+       $adate['mday'] += 7;
       } else {
        die("Invalid repeat type '" . text($repeattype) ."'");
       }
@@ -341,11 +351,11 @@ form {
     font-weight: bold;
     padding: 3px;
 }
-#searchResultsHeader { 
+#searchResultsHeader {
     width: 100%;
     background-color: lightgrey;
 }
-#searchResultsHeader table { 
+#searchResultsHeader table {
     width: 96%;  /* not 100% because the 'searchResults' table has a scrollbar */
     border-collapse: collapse;
 }
@@ -354,7 +364,7 @@ form {
 }
 #searchResults {
     width: 100%;
-    height: 350px; 
+    height: 350px;
     overflow: auto;
 }
 
@@ -408,7 +418,7 @@ form {
 </div>
 
 <div id="searchResults">
-<table> 
+<table>
 <?php
     $lastdate = "";
     $ampmFlag = "am"; // establish an AM-PM line break flag
@@ -422,7 +432,7 @@ form {
 
         $utime = ($slotbase + $i) * $slotsecs;
         $thisdate = date("Y-m-d", $utime);
-        if ($thisdate != $lastdate) { 
+        if ($thisdate != $lastdate) {
             // if a new day, start a new row
             if ($lastdate) {
                 echo "</div>";
@@ -436,7 +446,7 @@ form {
             echo "<div id='am'>AM ";
             $ampmFlag = "am";  // reset the AMPM flag
         }
-        
+
         $ampm = date('a', $utime);
         if ($ampmFlag != $ampm) { echo "</div><div id='pm'>PM "; }
         $ampmFlag = $ampm;

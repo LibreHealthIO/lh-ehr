@@ -1,5 +1,5 @@
 <?php
-// +-----------------------------------------------------------------------------+ 
+// +-----------------------------------------------------------------------------+
 // Copyright (C) 2010 Z&H Consultancy Services Private Limited <sam@zhservices.com>
 //
 //
@@ -19,9 +19,9 @@
 // libreehr/interface/login/GnuGPL.html
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// 
+//
 // Author:   Eldho Chacko <eldho@zhservices.com>
-//           Paul Simon K <paul@zhservices.com> 
+//           Paul Simon K <paul@zhservices.com>
 //
 // +------------------------------------------------------------------------------+
 
@@ -37,61 +37,62 @@ define('REPEAT_EVERY_WEEK',    1);
 define('REPEAT_EVERY_MONTH',   2);
 define('REPEAT_EVERY_YEAR',    3);
 define('REPEAT_EVERY_WORK_DAY',4);
+define('REPEAT_DAYS_EVERY_WEEK', 6);
 //===============================================================================
 //Create event in calender as arrived
 function calendar_arrived($form_pid) {
-	$Today=date('Y-m-d');
-	//Take all recurring events relevent for today.
-	$result_event=sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_recurrtype != '0' and pc_pid = ? and pc_endDate != '0000-00-00'
-		and pc_eventDate < ? and pc_endDate >= ? ",
-		array($form_pid,$Today,$Today));
-	if(sqlNumRows($result_event)==0)//no repeating appointment
-	 {
-		$result_event=sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_pid =?	and pc_eventDate = ?",
-			array($form_pid,$Today));
-		if(sqlNumRows($result_event)==0)//no appointment
-		 {
-			echo "<br><br><br>".htmlspecialchars( xl('Sorry No Appointment is Fixed'), ENT_QUOTES ).". ".htmlspecialchars( xl('No Encounter could be created'), ENT_QUOTES ).".";
-			die;
-		 }
-		else//one appointment
-		 {
-			 $enc = todaysEncounterCheck($form_pid);//create encounter
-			 $zero_enc=0;
-			 sqlStatement("UPDATE libreehr_postcalendar_events SET pc_apptstatus ='@' WHERE pc_pid =? and pc_eventDate = ?",
-				 array($form_pid,$Today));
-		 }
-	 }
-	else//repeating appointment set
-	 {
-		while($row_event=sqlFetchArray($result_event))
-		 {
-			$pc_eid = $row_event['pc_eid'];
-			$pc_eventDate = $row_event['pc_eventDate'];
-			$pc_recurrspec_array = unserialize($row_event['pc_recurrspec']);
-			while(1)
-			 {
-				if($pc_eventDate==$Today)//Matches so insert.
-				 {
-				 if(!$exist_eid=check_event_exist($pc_eid))
-					{ 
-					 update_event($pc_eid);
-					}
-				 else
-					{
-					 sqlStatement("UPDATE libreehr_postcalendar_events SET pc_apptstatus = '@' WHERE pc_eid = ?",
-						 array($exist_eid));
-					}
-					 $enc = todaysEncounterCheck($form_pid);//create encounter
-					 $zero_enc=0;
-				 break;
-				 }
-				elseif($pc_eventDate>$Today)//the frequency does not match today,no need to increment furthur.
-				 {
-					echo "<br><br><br>".htmlspecialchars( xl('Sorry No Appointment is Fixed'), ENT_QUOTES ).". ".htmlspecialchars( xl('No Encounter could be created'), ENT_QUOTES ).".";
-					die;
-				 break;
-				 }
+    $Today=date('Y-m-d');
+    //Take all recurring events relevent for today.
+    $result_event=sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_recurrtype != '0' and pc_pid = ? and pc_endDate != '0000-00-00'
+        and pc_eventDate < ? and pc_endDate >= ? ",
+        array($form_pid,$Today,$Today));
+    if(sqlNumRows($result_event)==0)//no repeating appointment
+     {
+        $result_event=sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_pid =?  and pc_eventDate = ?",
+            array($form_pid,$Today));
+        if(sqlNumRows($result_event)==0)//no appointment
+         {
+            echo "<br><br><br>".htmlspecialchars( xl('Sorry No Appointment is Fixed'), ENT_QUOTES ).". ".htmlspecialchars( xl('No Encounter could be created'), ENT_QUOTES ).".";
+            die;
+         }
+        else//one appointment
+         {
+             $enc = todaysEncounterCheck($form_pid);//create encounter
+             $zero_enc=0;
+             sqlStatement("UPDATE libreehr_postcalendar_events SET pc_apptstatus ='@' WHERE pc_pid =? and pc_eventDate = ?",
+                 array($form_pid,$Today));
+         }
+     }
+    else//repeating appointment set
+     {
+        while($row_event=sqlFetchArray($result_event))
+         {
+            $pc_eid = $row_event['pc_eid'];
+            $pc_eventDate = $row_event['pc_eventDate'];
+            $pc_recurrspec_array = unserialize($row_event['pc_recurrspec']);
+            while(1)
+             {
+                if($pc_eventDate==$Today)//Matches so insert.
+                 {
+                 if(!$exist_eid=check_event_exist($pc_eid))
+                    {
+                     update_event($pc_eid);
+                    }
+                 else
+                    {
+                     sqlStatement("UPDATE libreehr_postcalendar_events SET pc_apptstatus = '@' WHERE pc_eid = ?",
+                         array($exist_eid));
+                    }
+                     $enc = todaysEncounterCheck($form_pid);//create encounter
+                     $zero_enc=0;
+                 break;
+                 }
+                elseif($pc_eventDate>$Today)//the frequency does not match today,no need to increment furthur.
+                 {
+                    echo "<br><br><br>".htmlspecialchars( xl('Sorry No Appointment is Fixed'), ENT_QUOTES ).". ".htmlspecialchars( xl('No Encounter could be created'), ENT_QUOTES ).".";
+                    die;
+                 break;
+                 }
 
         // Added by Rod to handle repeats on nth or last given weekday of a month:
         if ($row_event['pc_recurrtype'] == 2) {
@@ -119,39 +120,39 @@ function calendar_arrived($form_pid) {
         } // end recurrtype 2
 
         else { // pc_recurrtype is 1
-				  $pc_eventDate_array = explode('-', $pc_eventDate);
-				  // Find the next day as per the frequency definition.
-				  $pc_eventDate =& __increment($pc_eventDate_array[2], $pc_eventDate_array[1], $pc_eventDate_array[0],
+                  $pc_eventDate_array = explode('-', $pc_eventDate);
+                  // Find the next day as per the frequency definition.
+                  $pc_eventDate =& __increment($pc_eventDate_array[2], $pc_eventDate_array[1], $pc_eventDate_array[0],
             $pc_recurrspec_array['event_repeat_freq'], $pc_recurrspec_array['event_repeat_freq_type']);
         }
 
-			 }
-		 }
-	 }
-	return $enc;
+             }
+         }
+     }
+    return $enc;
 }
 //===============================================================================
 // Checks for the patient's encounter ID for today, creating it if there is none.
 //
 function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id = '', $billing_fac = '', $provider = '', $cat = '', $return_existing = true){
   global $today;
-	$encounter = todaysEncounterIf($patient_id);
-	if($encounter){
-		if($return_existing){
-			return $encounter;
-		}else{
-			return 0;
-		}
-	}
-	$dos = $enc_date ? $enc_date : $today;
-	$visit_reason = $reason ? $reason : 'Please indicate visit reason';
+    $encounter = todaysEncounterIf($patient_id);
+    if($encounter){
+        if($return_existing){
+            return $encounter;
+        }else{
+            return 0;
+        }
+    }
+    $dos = $enc_date ? $enc_date : $today;
+    $visit_reason = $reason ? $reason : 'Please indicate visit reason';
   $tmprow = sqlQuery("SELECT username, facility, facility_id FROM users WHERE id = ?", array($_SESSION["authUserID"]) );
   $username = $tmprow['username'];
   $facility = $tmprow['facility'];
   $facility_id = $fac_id ? (int)$fac_id : $tmprow['facility_id'];
-	$billing_facility = $billing_fac ? (int)$billing_fac : $tmprow['facility_id'];
-	$visit_provider = $provider ? (int)$provider : '(NULL)';
-	$visit_cat = $cat ? $cat : '(NULL)';
+    $billing_facility = $billing_fac ? (int)$billing_fac : $tmprow['facility_id'];
+    $visit_provider = $provider ? (int)$provider : '(NULL)';
+    $visit_cat = $cat ? $cat : '(NULL)';
   $conn = $GLOBALS['adodb']['db'];
   $encounter = $conn->GenID("sequences");
   addForm($encounter, "Patient Encounter",
@@ -161,11 +162,11 @@ function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id
       "facility = ?, " .
       "facility_id = ?, " .
       "billing_facility = ?, " .
-			"provider_id = ?, " .
+            "provider_id = ?, " .
       "pid = ?, " .
       "encounter = ?," .
-			"pc_catid = ?",
-			array($dos,$visit_reason,$facility,$facility_id,$billing_facility,$visit_provider,$patient_id,$encounter,$visit_cat)
+            "pc_catid = ?",
+            array($dos,$visit_reason,$facility,$facility_id,$billing_facility,$visit_provider,$patient_id,$encounter,$visit_cat)
     ),
     "patient_encounter", $patient_id, "1", "NOW()", $username
   );
@@ -222,18 +223,18 @@ function todaysEncounter($patient_id, $reason='') {
 // get the original event's repeat specs
 function update_event($eid)
  {
-	$origEventRes = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = ?",array($eid));
-	$origEvent=sqlFetchArray($origEventRes);
-	$oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
-	$duration=$origEvent['pc_duration'];
-	$starttime=$origEvent['pc_startTime'];
-	$endtime=$origEvent['pc_endTime'];
-	$selected_date = date("Ymd");
-	if ($oldRecurrspec['exdate'] != "") { $oldRecurrspec['exdate'] .= ",".$selected_date; }
-	else { $oldRecurrspec['exdate'] .= $selected_date; }
-	// mod original event recur specs to exclude this date
-	sqlStatement("UPDATE libreehr_postcalendar_events SET pc_recurrspec = ? WHERE pc_eid = ?",array(serialize($oldRecurrspec),$eid));
-	// specify some special variables needed for the INSERT
+    $origEventRes = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = ?",array($eid));
+    $origEvent=sqlFetchArray($origEventRes);
+    $oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
+    $duration=$origEvent['pc_duration'];
+    $starttime=$origEvent['pc_startTime'];
+    $endtime=$origEvent['pc_endTime'];
+    $selected_date = date("Ymd");
+    if ($oldRecurrspec['exdate'] != "") { $oldRecurrspec['exdate'] .= ",".$selected_date; }
+    else { $oldRecurrspec['exdate'] .= $selected_date; }
+    // mod original event recur specs to exclude this date
+    sqlStatement("UPDATE libreehr_postcalendar_events SET pc_recurrspec = ? WHERE pc_eid = ?",array(serialize($oldRecurrspec),$eid));
+    // specify some special variables needed for the INSERT
   // no recurr specs, this is used for adding a new non-recurring event
     $noRecurrspec = array("event_repeat_freq" => "",
                         "event_repeat_freq_type" => "",
@@ -251,86 +252,91 @@ function update_event($eid)
                             "event_postal" => ""
                         );
     $locationspec = serialize($locationspecs);
-	$args['event_date'] = date('Y-m-d');
-	$args['duration'] = $duration;
-	// this event is forced to NOT REPEAT
-	$args['form_repeat'] = "0";
-	$args['recurrspec'] = $noRecurrspec;
-	$args['form_enddate'] = "0000-00-00";
-	$args['starttime'] = $starttime;
-	$args['endtime'] = $endtime;
-	$args['locationspec'] = $locationspec;
-	$args['form_category']=$origEvent['pc_catid'];             
-	$args['new_multiple_value']=$origEvent['pc_multiple'];             
-	$args['form_provider']=$origEvent['pc_aid'];                           
-	$args['form_pid']=$origEvent['pc_pid'];                  
-	$args['form_title']=$origEvent['pc_title'];  
-	$args['form_allday']=$origEvent['pc_alldayevent'];               
-	$args['form_apptstatus']='@';           
-	$args['form_prefcat']=$origEvent['pc_prefcatid'];              
-	$args['facility']=$origEvent['pc_facility'];
-	$args['billing_facility']=$origEvent['pc_billing_location'];
-	InsertEvent($args,'payment');
+    $args['event_date'] = date('Y-m-d');
+    $args['duration'] = $duration;
+    // this event is forced to NOT REPEAT
+    $args['form_repeat'] = "0";
+    $args['recurrspec'] = $noRecurrspec;
+    $args['form_enddate'] = "0000-00-00";
+    $args['starttime'] = $starttime;
+    $args['endtime'] = $endtime;
+    $args['locationspec'] = $locationspec;
+    $args['form_category']=$origEvent['pc_catid'];
+    $args['new_multiple_value']=$origEvent['pc_multiple'];
+    $args['form_provider']=$origEvent['pc_aid'];
+    $args['form_pid']=$origEvent['pc_pid'];
+    $args['form_title']=$origEvent['pc_title'];
+    $args['form_allday']=$origEvent['pc_alldayevent'];
+    $args['form_apptstatus']='@';
+    $args['form_prefcat']=$origEvent['pc_prefcatid'];
+    $args['facility']=$origEvent['pc_facility'];
+    $args['billing_facility']=$origEvent['pc_billing_location'];
+    InsertEvent($args,'payment');
  }
 //===============================================================================
 // check if event exists
 function check_event_exist($eid)
  {
-	$origEventRes = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = ?",array($eid));
-	$origEvent=sqlFetchArray($origEventRes);
-	$pc_catid=$origEvent['pc_catid'];
-	$pc_aid=$origEvent['pc_aid'];
-	$pc_pid=$origEvent['pc_pid'];
-	$pc_eventDate=date('Y-m-d');
-	$pc_startTime=$origEvent['pc_startTime'];
-	$pc_endTime=$origEvent['pc_endTime'];
-	$pc_facility=$origEvent['pc_facility'];
-	$pc_billing_location=$origEvent['pc_billing_location'];
-	$pc_recurrspec_array = unserialize($origEvent['pc_recurrspec']);
-	$origEvent = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid != ? and pc_catid=? and pc_aid=? ".
-		"and pc_pid=? and pc_eventDate=? and pc_startTime=? and pc_endTime=? and pc_facility=? and pc_billing_location=?",
-		array($eid,$pc_catid,$pc_aid,$pc_pid,$pc_eventDate,$pc_startTime,$pc_endTime,$pc_facility,$pc_billing_location));
-	if(sqlNumRows($origEvent)>0)
-	 {
-	  $origEventRow=sqlFetchArray($origEvent);
-	  return $origEventRow['pc_eid'];
-	 }
-	else
-	 {
-		if(strpos($pc_recurrspec_array['exdate'],date('Ymd')) === false)//;'20110228'
-		 {
-		  return false;
-		 }
-		else
-		 {//this happens in delete case
-		  return true;
-		 }
-	 }
+    $origEventRes = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = ?",array($eid));
+    $origEvent=sqlFetchArray($origEventRes);
+    $pc_catid=$origEvent['pc_catid'];
+    $pc_aid=$origEvent['pc_aid'];
+    $pc_pid=$origEvent['pc_pid'];
+    $pc_eventDate=date('Y-m-d');
+    $pc_startTime=$origEvent['pc_startTime'];
+    $pc_endTime=$origEvent['pc_endTime'];
+    $pc_facility=$origEvent['pc_facility'];
+    $pc_billing_location=$origEvent['pc_billing_location'];
+    $pc_recurrspec_array = unserialize($origEvent['pc_recurrspec']);
+    $origEvent = sqlStatement("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid != ? and pc_catid=? and pc_aid=? ".
+        "and pc_pid=? and pc_eventDate=? and pc_startTime=? and pc_endTime=? and pc_facility=? and pc_billing_location=?",
+        array($eid,$pc_catid,$pc_aid,$pc_pid,$pc_eventDate,$pc_startTime,$pc_endTime,$pc_facility,$pc_billing_location));
+    if(sqlNumRows($origEvent)>0)
+     {
+      $origEventRow=sqlFetchArray($origEvent);
+      return $origEventRow['pc_eid'];
+     }
+    else
+     {
+        if(strpos($pc_recurrspec_array['exdate'],date('Ymd')) === false)//;'20110228'
+         {
+          return false;
+         }
+        else
+         {//this happens in delete case
+          return true;
+         }
+     }
  }
 //===============================================================================
 // insert an event
 // $args is mainly filled with content from the POST http var
 function InsertEvent($args,$from = 'general') {
   $pc_recurrtype = '0';
-  if ($args['form_repeat']) {
-    $pc_recurrtype = $args['recurrspec']['event_repeat_on_freq'] ? '2' : '1';
+  if ($args['form_repeat'] || $args['days_every_week']) {
+    if($args['recurrspec']['event_repeat_freq_type'] == "6"){
+        $pc_recurrtype = 3;
+    }
+    else {
+      $pc_recurrtype = $args['recurrspec']['event_repeat_on_freq'] ? '2' : '1';
+    }
   }
   $form_pid = empty($args['form_pid']) ? '' : $args['form_pid'];
   $form_room = empty($args['form_room']) ? '' : $args['form_room'];
 
-	if($from == 'general'){
+    if($from == 'general'){
     $pc_eid = sqlInsert("INSERT INTO libreehr_postcalendar_events ( " .
-			"pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, " .
-			"pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
-			"pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
-			"pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,pc_room " .
-			") VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,?,?)",
-			array($args['form_category'],(isset($args['new_multiple_value']) ? $args['new_multiple_value'] : ''),$args['form_provider'],$form_pid,
-			$args['form_title'],$args['form_comments'],$_SESSION['authUserID'],$args['event_date'],
-			fixDate($args['form_enddate']),$args['duration'],$pc_recurrtype,serialize($args['recurrspec']),
-			$args['starttime'],$args['endtime'],$args['form_allday'],$args['form_apptstatus'],$args['form_prefcat'],
-			$args['locationspec'],(int)$args['facility'],(int)$args['billing_facility'],$form_room)
-		);
+            "pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, " .
+            "pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
+            "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
+            "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,pc_room " .
+            ") VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,?,?)",
+            array($args['form_category'],(isset($args['new_multiple_value']) ? $args['new_multiple_value'] : ''),$args['form_provider'],$form_pid,
+            $args['form_title'],$args['form_comments'],$_SESSION['authUserID'],$args['event_date'],
+            fixDate($args['form_enddate']),$args['duration'],$pc_recurrtype,serialize($args['recurrspec']),
+            $args['starttime'],$args['endtime'],$args['form_allday'],$args['form_apptstatus'],$args['form_prefcat'],
+            $args['locationspec'],(int)$args['facility'],(int)$args['billing_facility'],$form_room)
+        );
 
             //Manage tracker status.
             if (!empty($form_pid)) {
@@ -340,26 +346,26 @@ function InsertEvent($args,$from = 'general') {
 
             return $pc_eid;
 
-	}elseif($from == 'payment'){
-		sqlStatement("INSERT INTO libreehr_postcalendar_events ( " .
-			"pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, " .
-			"pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
-			"pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
-			"pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location " .
-			") VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-			array($args['form_category'],$args['new_multiple_value'],$args['form_provider'],$form_pid,$args['form_title'],
-				$args['event_date'],$args['form_enddate'],$args['duration'],$pc_recurrtype,serialize($args['recurrspec']),
-				$args['starttime'],$args['endtime'],$args['form_allday'],$args['form_apptstatus'],$args['form_prefcat'], $args['locationspec'],
-				1,1,(int)$args['facility'],(int)$args['billing_facility']));
-	}
+    }elseif($from == 'payment'){
+        sqlStatement("INSERT INTO libreehr_postcalendar_events ( " .
+            "pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, " .
+            "pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
+            "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
+            "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location " .
+            ") VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            array($args['form_category'],$args['new_multiple_value'],$args['form_provider'],$form_pid,$args['form_title'],
+                $args['event_date'],$args['form_enddate'],$args['duration'],$pc_recurrtype,serialize($args['recurrspec']),
+                $args['starttime'],$args['endtime'],$args['form_allday'],$args['form_apptstatus'],$args['form_prefcat'], $args['locationspec'],
+                1,1,(int)$args['facility'],(int)$args['billing_facility']));
+    }
 }
 //================================================================================================================
 /**
- *	__increment()
- *	returns the next valid date for an event based on the
- *	current day,month,year,freq and type
+ *  __increment()
+ *  returns the next valid date for an event based on the
+ *  current day,month,year,freq and type
  *  @private
- *	@returns string YYYY-MM-DD
+ *  @returns string YYYY-MM-DD
  */
 function &__increment($d,$m,$y,$f,$t)
 {

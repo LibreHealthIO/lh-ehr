@@ -1577,6 +1577,30 @@ $GLOBALS_METADATA = array(
        'providerAgenda',                           // default
       xl('This sets the Default Calendar View, Default is 1 Day.')
     ),
+     'first_day_week' => array(
+       xl('First day in the week') ,
+       array(
+         '1' => xl('Monday'),
+         '0' => xl('Sunday'),
+         '6' => xl('Saturday')
+       ),
+       '1',
+       xl('Your first day in the week.')
+     ),
+
+         // Reference - https://en.wikipedia.org/wiki/Workweek_and_weekend#Around_the_world
+    'weekend_days' => array(
+      xl('Your weekend days'),
+      array(
+         '6,0' => xl('Saturday') . ' - ' . xl('Sunday'),
+          '0' => xl('Sunday'),
+          '5' => xl('Friday'),
+          '6' => xl('Saturday'),
+          '5,6' => xl('Friday') .' - ' . xl('Saturday'),
+      ),
+      '6,0'
+      ,xl('which days are your weekend days?')
+    ),
 
     'calendar_appt_style' => array(
       xl('Appointment Display Style'),
