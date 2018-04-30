@@ -93,7 +93,7 @@
 <html>
   <head>
     <?php 
-      call_required_libraries(['bootstrap', 'jquery-min-3-1-1']);
+      call_required_libraries(array('bootstrap', 'jquery-min-3-1-1'));
     ?>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css"> 
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
@@ -112,7 +112,7 @@
                   ?>  
                     return false;
                }
-             )   
+             );
           return false;
         })
       }) 
@@ -129,7 +129,6 @@
   for($i=0; $uRow=sqlFetchArray($uSQL); $i++){ $allUsers[] = $uRow; } 
 ?>     
     <form method="get" id="logForm" onsubmit="return top.restoreSession()">         
-    <h1><?php echo xlt('Dated Message Log') ?></h1>  
     <p class="lead"><?php echo xlt('Filters:')?></p><br/>
     <p class="lead"><?php echo xlt('Date The Message Was Sent') ?></p>
     <?php echo xlt('Start Date') ?> : <input class="form-control" style="display: inline-block; width: auto; margin-left:1px"  id="sd" type="text" name="sd" value=""title='<?php echo xla('yyyy-mm-dd'); ?>' />   &nbsp;&nbsp;&nbsp;

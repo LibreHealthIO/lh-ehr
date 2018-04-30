@@ -95,8 +95,68 @@
           collapsible: true,
           active: false
       });
-   
-     // run updater after 30 seconds
+        var link = '';
+       $(".sendReminder").click(function () {
+         var val = $(this).attr("data-text");
+         if(val = 0){
+             link = "<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_add.php";
+             initIziLink(link);
+         }
+         else {
+             link = "<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_add.php?mID='"+val+"";
+             initIziLink(link);
+         }
+       });
+
+       $("#viewLog-iframe").iziModal({
+           title: 'Dated Message Log',
+           subtitle: 'Filter Message Log at Any Point in time',
+           headerColor: '#88A0B9',
+           closeOnEscape: true,
+           fullscreen:true,
+           overlayClose: false,
+           closeButton: true,
+           theme: 'light',  // light
+           iframe: true,
+           width:900,
+           focusInput: true,
+           padding:5,
+           iframeHeight: 400,
+           iframeURL: "<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_log.php"
+       });
+       
+       function initIziLink(link) {
+           $("#sendReminder-iframe").iziModal({
+               title: 'Send A Reminder',
+               subtitle: 'Get to send a reminder to Patient/Clinician',
+               headerColor: '#88A0B9',
+               closeOnEscape: true,
+               fullscreen:true,
+               overlayClose: false,
+               closeButton: true,
+               theme: 'light',  // light
+               iframe: true,
+               width:700,
+               focusInput: true,
+               padding:5,
+               iframeHeight: 400,
+               iframeURL: link
+           });
+           
+           setTimeout(function () {
+               call_izi();
+           },500);
+       }
+
+      
+
+       function call_izi() {
+           $("#sendReminder-iframe").iziModal('open');
+       }
+
+
+
+       // run updater after 30 seconds
      var updater = setTimeout("updateme(0)", 1);
    });
      
@@ -135,14 +195,14 @@
         // run updater every refreshInterval seconds 
         var repeater = setTimeout("updateme(0)", refreshInterval); 
        });
-     }   
+     }
       
       function openLogScreen(){
-         top.restoreSession(); 
-         dlgopen('<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_log.php', '_drLog', 700, 500);
+          top.restoreSession();
+          $("#viewLog-iframe").iziModal('open');
       }
       
-      
+   
       function goPid(pid) {
         top.restoreSession();
         <?php 
@@ -157,8 +217,10 @@
                 <h3>'.xlt("Show Reminders").'</h3>
                 <div>
                   <div class="drHide">
-                    <p><a title="'.xla('View Past and Future Reminders').'" onclick="openLogScreen()" class="css_button_small cp-misc" href="#"><span>'.xlt('View Log').'</span></a>
-                    <a onclick="openAddScreen(0)" class="css_button_small cp-misc" href="#"><span>'.xlt('Send A Dated Reminder').'</span></a></p>
+                  <div id="viewLog-iframe"></div>
+                  <div id="sendReminder-iframe"></div><!-- to initialize the izimodal -->
+                    <p><a title="'.xla('View Past and Future Reminders').'" onclick="openLogScreen();" class="css_button_small cp-misc" href="#"><span>'.xlt('View Log').'</span></a>
+                    <a data-text="0" class="css_button_small cp-misc sendReminder" href="#"><span>'.xlt('Send A Dated Reminder').'</span></a></p>
                     <br><br>';  
 
    $pdHTML .= getRemindersHTML($reminders,$today);

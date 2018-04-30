@@ -45,7 +45,7 @@ require_once("$srcdir/gprelations.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/headers.inc.php");
 //Include Bootstrap
-call_required_libraries(array("jquery-min-3-1-1","bootstrap", "jquery-ui"));
+call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "jquery-ui", "iziModalToast"));
 ?>
 <html>
 <head>
