@@ -648,12 +648,12 @@ function recurrence_is_current($end_date){
         return true; //recurrence is current
     }
     return false;
+}
 
 function getPatientPictureUrl($pid) {
 $sql = "SELECT picture_url FROM patient_data WHERE pid = '$pid'";
 $query = sqlQ($sql);
 $arr = sqlFetchArray($query);
 return $arr['picture_url'];
-
 }
 ?>
