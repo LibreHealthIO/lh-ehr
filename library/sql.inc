@@ -694,4 +694,58 @@ function sqlRollbackTrans()
     $GLOBALS['adodb']['db']->RollbackTrans();
 }
 
+// this function is used to sync the column structure of the parent table with the child table.Here it is used to sync the original table with the patient table.
+function sync_tables ($parent_table, $child_table) {
+$parent_array = array();
+$child_array = array();
+//get columns from parent table
+$sql = "SHOW COLUMNS FROM `$parent_table`";
+$result = sqlQ($sql);
+while($row = sqlFetchArray($result)){
+  array_push($parent_array, $row['Field']." ".$row['Type']);
+}
+
+//get columns from child table
+$sql = "SHOW COLUMNS FROM `$child_table`";
+$result = sqlQ($sql);
+while($row = sqlFetchArray($result)){
+  array_push($child_array, $row['Field']." ".$row['Type']);
+}
+
+//find the differences in their columns
+if (count($parent_array) > count($child_array)) {
+// it means a column is added to the parent table 
+//perform add column query here
+$diff = array_diff($parent_array, $child_array);
+foreach ($diff as $key) {
+  $first = "ALTER TABLE ";
+  $second = " ".$child_table." ";
+  $third = "ADD COLUMN ";
+  $fourth = $key;
+  $sql = $first.$second.$third.$fourth;
+  sqlStatement($sql);
+  return true;
+}
+
+}
+elseif(count($parent_array) < count($child_array)){
+//it means a column is deleted from the parent table
+$diff = array_diff($child_array, $parent_array);
+foreach ($diff as $key) {
+  $first = "ALTER TABLE ";
+  $second = " ".$child_table." ";
+  $third = "DROP ";
+  $fourth = strstr($key, " ", true);
+  $sql = $first.$second.$third.$fourth;
+  sqlStatement($sql);
+  return true;
+}
+
+}
+elseif (count($parent_array) == count($child_array)) {
+  //IT MEANS BOTH ARE FULLY SYNCED
+  return true;
+}
+
+}
 ?>
