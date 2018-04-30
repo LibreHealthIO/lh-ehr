@@ -4761,6 +4761,7 @@ CREATE TABLE `patient_data` (
   `county` varchar(40) NOT NULL default '',
   `statement_y_n` TEXT,
   `industry` TEXT,
+  `picture_url` varchar(2000) NOT NULL default '',
   UNIQUE KEY `pid` (`pid`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
