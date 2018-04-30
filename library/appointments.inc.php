@@ -38,10 +38,46 @@ $ORDERHASH = array(
     'comment' => array( 'comment', 'date', 'time', 'patient' ),
     'status' => array( 'status', 'date', 'time', 'patient' ),
     'completed' => array( 'completed', 'date', 'time', 'patient' ),
-    'trackerstatus' => array( 'trackerstatus', 'date', 'time', 'patient' ),    
+    'trackerstatus' => array( 'trackerstatus', 'date', 'time', 'patient' ),
 );
 
-function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param = null, $tracker_board = false, $nextX = 0 )
+/*Arrays for the interpretation of recurrence patterns.*/
+$REPEAT_FREQ = array(
+    '1' => xl('Every'),
+    '2' => xl('Every 2nd'),
+    '3' => xl('Every 3rd'),
+    '4' => xl('Every 4th'),
+    '5' => xl('Every 5th'),
+    '6' => xl('Every 6th')
+);
+
+$REPEAT_FREQ_TYPE = array(
+    '0' => xl('day'),
+    '1' => xl('week'),
+    '2' => xl('month'),
+    '3' => xl('year'),
+    '4' => xl('workday')
+);
+
+$REPEAT_ON_NUM = array(
+    '1' => xl('1st'),
+    '2' => xl('2nd'),
+    '3' => xl('3rd'),
+    '4' => xl('4th'),
+    '5' => xl('Last')
+);
+
+$REPEAT_ON_DAY = array(
+    '0' => xl('Sunday'),
+    '1' => xl('Monday'),
+    '2' => xl('Tuesday'),
+    '3' => xl('Wednesday'),
+    '4' => xl('Thursday'),
+    '5' => xl('Friday'),
+    '6' => xl('Saturday')
+);
+
+function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param = null, $tracker_board = false, $nextX = 0, $bind_param = null, $query_param = null )
 {
   //////
   if($nextX) {
@@ -67,8 +103,8 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
 
     // Tracker Board specific stuff
     $tracker_fields = '';
-    $tracker_joins = '';     
-    if ($tracker_board) {     
+    $tracker_joins = '';
+    if ($tracker_board) {
     $tracker_fields = "e.pc_room, e.pc_pid, t.id, t.date, t.apptdate, t.appttime, t.eid, t.pid, t.original_user, t.encounter, t.lastseq, t.random_drug_test, t.drug_screen_completed, " .
     "q.pt_tracker_id, q.start_datetime, q.room, q.status, q.seq, q.user, " .
     "s.toggle_setting_1, s.toggle_setting_2, s.option_id, " ;
@@ -89,7 +125,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
     "LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .
     "LEFT OUTER JOIN users AS u ON u.id = e.pc_aid " .
     "LEFT OUTER JOIN libreehr_postcalendar_categories AS c ON c.pc_catid = e.pc_catid " .
-    "WHERE $where " . 
+    "WHERE $where " .
     "ORDER BY $order_by";
 
 
@@ -116,10 +152,11 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
       case '0' :
 
         $events2[] = $event;
-        
+
         break;
 //////
       case '1' :
+      case '3' :
 
         $event_recurrspec = @unserialize($event['pc_recurrspec']);
 
@@ -131,7 +168,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
 //        $occurance = Date_Calc::dateFormat($nd,$nm,$ny,'%Y-%m-%d');
         $occurance = $event['pc_eventDate'];
 
-        while($occurance < $from_date) { 
+        while($occurance < $from_date) {
           $occurance =& __increment($nd,$nm,$ny,$rfreq,$rtype);
           list($ny,$nm,$nd) = explode('-',$occurance);
         }
@@ -160,7 +197,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
               }
               //////
             }
-            
+
             $occurance =& __increment($nd,$nm,$ny,$rfreq,$rtype);
             list($ny,$nm,$nd) = explode('-',$occurance);
 
@@ -194,7 +231,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
         }
 
         while($occuranceYm <= $stopDateYm) {
- 
+
           // (YYYY-mm)-dd
           $dnum = $rnum;
           do {
@@ -202,7 +239,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
           } while($occurance === -1);
 
           if($occurance >= $from_date && $occurance <= $stopDate) {
-        
+
             $excluded = false;
             if (isset($exdate)) {
                 foreach (explode(",", $exdate) as $exception) {
@@ -228,7 +265,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
 
             }
 
-          }     
+          }
 
           $occuranceYmX = date('Y-m-d',mktime(0,0,0,$nm+$rfreq,$nd,$ny));
           list($ny,$nm,$nd) = explode('-',$occuranceYmX);
@@ -240,7 +277,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
 
     }
 
-  }    
+  }
   return $events2;
 ////////////////////// End of code inserted by epsdky
 }
@@ -254,10 +291,10 @@ function fetchAllEvents( $from_date, $to_date, $provider_id = null, $facility_id
     $facility_filter = '';
     if ( $facility_id ) {
         $event_facility_filter = " AND e.pc_facility = '" . add_escape_custom($facility_id) . "'"; //escape $facility_id
-        $provider_facility_filter = " AND u.facility_id = '" . add_escape_custom($facility_id) . "'"; //escape $facility_id 
+        $provider_facility_filter = " AND u.facility_id = '" . add_escape_custom($facility_id) . "'"; //escape $facility_id
         $facility_filter = $event_facility_filter . $provider_facility_filter;
     }
-    
+
     $where .= $facility_filter;
     $appointments = fetchEvents( $from_date, $to_date, $where );
     return $appointments;
@@ -271,7 +308,7 @@ function fetchAppointments( $from_date, $to_date, $patient_id = null, $provider_
         $where .= " AND e.pc_pid = '$patient_id'";
     } else {
         $where .= " AND e.pc_pid != ''";
-    }       
+    }
 
     $facility_filter = '';
     if ( $facility_id ) {
@@ -279,9 +316,9 @@ function fetchAppointments( $from_date, $to_date, $patient_id = null, $provider_
         $provider_facility_filter = " AND u.facility_id = '" . add_escape_custom($facility_id) . "'"; // escape $facility_id
         $facility_filter = $event_facility_filter . $provider_facility_filter;
     }
-    
+
     $where .= $facility_filter;
-    
+
     //Appointment Status Checking
     $filter_appstatus = '';
     if($pc_appstatus != ''){
@@ -293,21 +330,21 @@ function fetchAppointments( $from_date, $to_date, $patient_id = null, $provider_
         {
             $where .= " AND e.pc_catid=".intval($pc_catid); // using intval to escape this parameter
         }
-        
+
     //Without Provider checking
     $filter_woprovider = '';
     if($with_out_provider != ''){
         $filter_woprovider = " AND e.pc_aid = ''";
     }
     $where .= $filter_woprovider;
-    
+
     //Without Facility checking
     $filter_wofacility = '';
     if($with_out_facility != ''){
         $filter_wofacility = " AND e.pc_facility = 0";
     }
     $where .= $filter_wofacility;
-    
+
     $appointments = fetchEvents( $from_date, $to_date, $where, '', $tracker_board, $nextX );
     return $appointments;
 }
@@ -372,18 +409,18 @@ function getAvailableSlots( $from_date, $to_date, $provider_id = null, $facility
 
         if ( $next_appointment_time && $same_day ) {
             // check the start time of the next appointment
-                
+
             $start_datetime = strtotime( $date." ".$start_time );
             $next_appointment_datetime = strtotime( $next_appointment_date." ".$next_appointment_time );
             $curr_time = $start_datetime;
             while ( $curr_time < $next_appointment_datetime - (getSlotSize() / 2) ) {
                 //create a new appointment ever 15 minutes
                 $time = date( "H:i:s", $curr_time );
-                $available_slot = createAvailableSlot( 
-                    $appointments[$i]['pc_eventDate'], 
-                    $time, 
-                    $appointments[$i]['ufname'], 
-                    $appointments[$i]['ulname'], 
+                $available_slot = createAvailableSlot(
+                    $appointments[$i]['pc_eventDate'],
+                    $time,
+                    $appointments[$i]['ufname'],
+                    $appointments[$i]['ulname'],
                     $appointments[$i]['umname'] );
                 $availableSlots []= $available_slot;
                 $curr_time += getSlotSize(); // add a 15-minute slot
@@ -445,14 +482,14 @@ function compareAppointments( $appointment1, $appointment2 )
     return 0;
 }
 
-function compareBasic( $e1, $e2 ) 
+function compareBasic( $e1, $e2 )
 {
     if ( $e1 < $e2 ) {
         return -1;
     } else if ( $e1 > $e2 ) {
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -549,17 +586,74 @@ function fetchAppointmentCategories( $appt_prov_inc = false )
     } else {
         $order = "category";
     }
-   
-    if (!$appt_prov_inc) {     
+
+    if (!$appt_prov_inc) {
        $where = "pc_recurrtype=0 and pc_cattype=0 and pc_active = 1 ";
     } else {
-       $where = "pc_active = 1 "; 
+       $where = "pc_active = 1 ";
     }
-    
-     $catSQL= " SELECT pc_catid as id, pc_catname as category, pc_catid, pc_catname, pc_cattype, pc_recurrtype, pc_duration, pc_end_all_day " 
+
+     $catSQL= " SELECT pc_catid as id, pc_catname as category, pc_catid, pc_catname, pc_cattype, pc_recurrtype, pc_duration, pc_end_all_day "
             . " FROM libreehr_postcalendar_categories " .
               "WHERE " . $where .
-              "ORDER BY " . $order;    
+              "ORDER BY " . $order;
      return sqlStatement($catSQL);
+}
+
+function interpretRecurrence($recurr_freq, $recurr_type){
+    global $REPEAT_FREQ, $REPEAT_FREQ_TYPE, $REPEAT_ON_NUM, $REPEAT_ON_DAY;
+    $interpreted = "";
+    $recurr_freq = unserialize($recurr_freq);
+    if($recurr_type == 1){
+        $interpreted = $REPEAT_FREQ[$recurr_freq['event_repeat_freq']];
+        $interpreted .= " " . $REPEAT_FREQ_TYPE[$recurr_freq['event_repeat_freq_type']];
+    }
+    elseif($recurr_type == 2){
+        $interpreted = $REPEAT_FREQ[$recurr_freq['event_repeat_on_freq']];
+        $interpreted .= " " . $REPEAT_ON_NUM[$recurr_freq['event_repeat_on_num']];
+        $interpreted .= " " . $REPEAT_ON_DAY[$recurr_freq['event_repeat_on_day']];
+    }
+
+    return $interpreted;
+}
+
+function fetchRecurrences($pid){
+    $query = "SELECT `pc_title`, `pc_endDate`, `pc_recurrtype`, `pc_recurrspec` FROM openemr_postcalendar_events
+WHERE `pc_pid` = ?  AND `pc_recurrtype` > 0;";
+    $sqlBindArray = array();
+    array_push($sqlBindArray, $pid);
+    $res = sqlStatement($query, $sqlBindArray);
+    $row = 0;
+    while($res_arr[$row] = sqlFetchArray($res)) {
+        $res_arr[$row]['pc_recurrspec'] = interpretRecurrence($res_arr[$row]['pc_recurrspec'], $res_arr[$row]['pc_recurrtype']);
+        $row++;
+    }
+    return $res_arr;
+}
+
+function ends_in_a_week($end_date){
+    $timestamp_in_a_week = strtotime('+7 day');
+    $timestamp_end_date = strtotime($end_date);
+    if($timestamp_in_a_week > $timestamp_end_date){
+        return true; //ends in a week
+    }
+    return false; // ends in more than a week
+}
+
+//Checks if recurrence is current (didn't end yet).
+function recurrence_is_current($end_date){
+    $end_date_timestamp = strtotime($end_date);
+    $current_timestamp = time();
+    if($current_timestamp <= $end_date_timestamp){
+        return true; //recurrence is current
+    }
+    return false;
+}
+
+function getPatientPictureUrl($pid) {
+$sql = "SELECT picture_url FROM patient_data WHERE pid = '$pid'";
+$query = sqlQ($sql);
+$arr = sqlFetchArray($query);
+return $arr['picture_url'];
 }
 ?>

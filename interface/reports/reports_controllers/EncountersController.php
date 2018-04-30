@@ -1,7 +1,7 @@
-<?php 
+<?php
 /*
- * These functions are common functions used in Encounters report. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Encounters report.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -23,6 +23,7 @@ require_once("../../library/report_functions.php");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/billing.inc");
 require_once("$srcdir/patient.inc");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
@@ -112,7 +113,7 @@ $res = sqlStatement($query);
  */
 function showResults() {
 	global $form_details, $res;
-	if ($res) {	
+	if ($res) {
         $lastdocname = "";
         $doc_encounters = 0;
         while ($row = sqlFetchArray($res)) {
@@ -127,7 +128,7 @@ function showResults() {
             $errmsg  = "";
             if ($form_details) {
                 // Fetch all other forms for this encounter.
-                $encnames = '';      
+                $encnames = '';
                 $encarr = getFormByEncounter($patient_id, $row['encounter'],
                   "formdir, user, form_name, form_id");
                 if($encarr!='') {
@@ -136,7 +137,7 @@ function showResults() {
                     	if ($encnames) $encnames .= '<br />';
                     	$encnames .= text($enc['form_name']); // need to html escape it here for output below
                   	}
-                }     
+                }
 
                 // Fetch coding and compute billing status.
                 $coded = "";
@@ -188,7 +189,7 @@ function showResults() {
             $lastdocname = $docname;
         }
             if (!$form_details) show_doc_total($lastdocname, $doc_encounters);
-    } 
+    }
 }
 
 ?>

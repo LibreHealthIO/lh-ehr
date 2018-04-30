@@ -1,7 +1,7 @@
-<?php 
+<?php
 /*
- * These functions are common functions used in Customer Report Range (Superbill) report. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Customer Report Range (Superbill) report.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -25,6 +25,7 @@ require_once("$srcdir/forms.inc");
 require_once("$srcdir/billing.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/report.inc");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/classes/Document.class.php");
 require_once("$srcdir/classes/Note.class.php");
 require_once("$srcdir/formatting.inc.php");
@@ -88,24 +89,24 @@ function showResults(){
 	    array_push($sqlBindArray, prepareDateBeforeSave($from_date), prepareDateBeforeSave($to_date));
 
 	    if($form_pid) {
-	        $res_query.= " and pid=? "; 
+	        $res_query.= " and pid=? ";
 	        array_push($sqlBindArray,$form_pid);
 	    }
 
 	    $res_query.= " order by date DESC" ;
 	    $res =sqlStatement($res_query,$sqlBindArray);
-	    
+
 	    while($result = sqlFetchArray($res)) {
 	        if ($result{"form_name"} == "Patient Encounter") {
 	        	$patient_encounter[] = $result{"form_id"}.":".$result{"encounter"};
-	            $pids[] = $result{"pid"};   
+	            $pids[] = $result{"pid"};
 	        }
 	    }
 
 	    $N = 6;
 
 	    $iCounter = 0;
-	    if(empty($patient_encounter)){ 
+	    if(empty($patient_encounter)){
 	    	$patient_encounter = array();
 	    	echo "<div class='text'><p style='color:red; text-align:center; margin-top: -40px'>No Results to display. Enter details and try again.</p></div>";
 	    }

@@ -2,27 +2,27 @@
 /*
  * Immunization report
  * This report lists  patient immunizations for a given date range.
- * 
+ *
  * Copyright (C) 2011 Ensoftek Inc.
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
+ * @package LibreHealth EHR
  * @author Ensoftek Inc.
- * @link http://librehealth.io 
+ * @link http://librehealth.io
  */
 
 require_once "reports_controllers/ImmunizationController.php";
@@ -128,25 +128,25 @@ onsubmit='return top.restoreSession()'>
       <tr>
         <td>
           <div style='margin-left:15px'>
-            <a href='#' class='css_button' 
+            <a href='#' class='css_button cp-misc'
             onclick='
-            $("#form_refresh").attr("value","true"); 
-            $("#form_get_hl7").attr("value","false"); 
+            $("#form_refresh").attr("value","true");
+            $("#form_get_hl7").attr("value","false");
             $("#theform").submit();
             '>
             <span>
               <?php xl('Refresh','e'); ?>
-            </spain>
+            </span>
             </a>
             <?php if ($_POST['form_refresh']) { ?>
-              <a href='#' class='css_button' id='printbutton'>
+              <a href='#' class='css_button cp-output' id='printbutton'>
                 <span>
                   <?php xl('Print','e'); ?>
                 </span>
               </a>
-              <a href='#' class='css_button' onclick=
+              <a href='#' class='css_button cp-output' onclick=
               "if(confirm('<?php xl('This step will generate a file which you have to save for future use. The file cannot be generated again. Do you want to proceed?','e'); ?>')) {
-                     $('#form_get_hl7').attr('value','true'); 
+                     $('#form_get_hl7').attr('value','true');
                      $('#theform').submit();
               }">
                 <span>

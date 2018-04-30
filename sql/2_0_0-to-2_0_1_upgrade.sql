@@ -89,3 +89,6 @@
 ALTER TABLE `history_data` ADD COLUMN `risk_factors` TEXT NULL DEFAULT NULL AFTER `exams`;
 #EndIf
 DELETE FROM `code_types` WHERE `code_types`.`ct_key` = 'ICD9';
+#IfMissingColumn patient_data picture_url
+  ALTER TABLE `patient_data` ADD COLUMN `picture_url` VARCHAR(2000) NOT NULL AFTER `industry`;
+#EndIf

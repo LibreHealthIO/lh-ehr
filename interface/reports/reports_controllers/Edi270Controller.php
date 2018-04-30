@@ -1,7 +1,7 @@
 <?php
 /*
- * These functions are common functions used in Eligibility 270 Inquiry Batch (EDI_270) report. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Eligibility 270 Inquiry Batch (EDI_270) report.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -29,6 +29,7 @@
     require_once("$srcdir/forms.inc");
     require_once("$srcdir/billing.inc");
     require_once("$srcdir/patient.inc");
+    require_once("$srcdir/headers.inc.php");
     require_once("$srcdir/formatting.inc.php");
     require_once "$srcdir/options.inc.php";
     require_once "$srcdir/formdata.inc.php";
@@ -39,16 +40,16 @@
     $DateFormat = DateFormatRead();
     $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
-    // Element data seperator       
+    // Element data seperator
     $eleDataSep = "*";
 
-    // Segment Terminator   
-    $segTer = "~";  
+    // Segment Terminator
+    $segTer = "~";
 
     // Component Element seperator
-    $compEleSep = ":";  
-    
-    // filter conditions for the report and batch creation 
+    $compEleSep = ":";
+
+    // filter conditions for the report and batch creation
 
     $from_date      = fixDate($_POST['form_from_date'], date($DateFormat));
     $to_date        = fixDate($_POST['form_to_date'], date($DateFormat));
@@ -62,7 +63,7 @@
 
     $where  = "e.pc_pid IS NOT NULL AND e.pc_eventDate >= ?";
     array_push($sqlBindArray, $from_date);
-    
+
     //$where .="and e.pc_eventDate = (select max(pc_eventDate) from libreehr_postcalendar_events where pc_aid = d.id)";
 
     if ($to_date) {
@@ -92,7 +93,7 @@
                                    e.pc_facility,
                                    p.lname,
                                    p.fname,
-                                   p.mname, 
+                                   p.mname,
                                    DATE_FORMAT(p.dob, '%%Y%%m%%d') as dob,
                                    p.ss,
                                    p.sex,
@@ -131,19 +132,19 @@
                             LEFT JOIN insurance_companies as c ON (c.id = i.provider)
                             WHERE %s ", $where );
 
-    // Run the query 
+    // Run the query
     $res            = sqlStatement($query, $sqlBindArray);
-    
-    // Get the facilities information 
+
+    // Get the facilities information
     $facilities     = getUserFacilities($_SESSION['authId']);
 
-    // Get the Providers information 
+    // Get the Providers information
     $providers      = getUsernames();
 
-    //Get the x12 partners information 
+    //Get the x12 partners information
     $clearinghouses = getX12Partner();
-        
-        
+
+
     if (isset($_POST['form_savefile']) && !empty($_POST['form_savefile']) && $res) {
         header('Content-Type: text/plain');
         header(sprintf('Content-Disposition: attachment; filename="elig-270..%s.%s.txt"',
@@ -151,7 +152,7 @@
             $to_date
         ));
         print_elig($res,$X12info,$segTer,$compEleSep);
-        exit; 
+        exit;
     }
 
 ?>

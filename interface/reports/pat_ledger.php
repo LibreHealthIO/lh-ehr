@@ -147,7 +147,7 @@ function sel_patient() {
         ?>
       </td>
         </tr><tr>
-<?php } 
+<?php }
       // Show From and To dates fields. (TRK)
       showFromAndToDates();
       if($type_form == '0') { ?>
@@ -170,17 +170,17 @@ function sel_patient() {
         <tr>
             <td>
                 <div style='margin-left:15px'>
-                    <a href='#' class='css_button' onclick="checkSubmit();" >
+                    <a href='#' class='css_button cp-submit' onclick="checkSubmit();" >
                     <span><?php echo xlt('Submit'); ?></span></a>
 
             <?php if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) { ?>
                     <div id="controls">
-                    <a href='#' class='css_button' id='printbutton'>
+                    <a href='#' class='css_button cp-output' id='printbutton'>
                          <span><?php echo xlt('Print Ledger'); ?></span></a>
                     <?php if($type_form == '1') { ?>
-                    <a href="../patient_file/summary/demographics.php" class="css_button" onclick="top.restoreSession()">
+                    <a href="../patient_file/summary/demographics.php" class="css_button cp-misc" onclick="top.restoreSession()">
                          <span><?php echo xlt('Back To Patient');?></span></a>
-                    <?php } ?>    
+                    <?php } ?>
                     </div>
                     <?php } ?>
                 </div>
@@ -207,7 +207,7 @@ if (! $_REQUEST['form_csvexport']) {
     echo '<script>document.getElementById("report_table").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';
   }
-        
+
 if (!$_REQUEST['form_refresh'] && !$_REQUEST['form_csvexport']) { ?>
 <div class='text'>
     <?php echo xlt('Please input search criteria above, and click Submit to view results.' ); ?>

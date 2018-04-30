@@ -1,10 +1,10 @@
 <?php
 /*
- * These functions are common functions used in the Audit Log Tamper reports. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in the Audit Log Tamper reports.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
- * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com> 
+ * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
@@ -28,6 +28,7 @@ $fake_register_globals=false;
 
 include_once("../globals.php");
 include_once("$srcdir/log.inc");
+require_once("$srcdir/headers.inc.php");
 include_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("../../library/report_functions.php");
@@ -51,8 +52,8 @@ if ($start_date && $end_date)
 {
     if($start_date > $end_date){
         echo "<table><tr class='alert'><td colspan=7>"; echo xlt('Start Date should not be greater than End Date');
-        echo "</td></tr></table>"; 
-        $err_message=1; 
+        echo "</td></tr></table>";
+        $err_message=1;
     }
 }
 
@@ -73,14 +74,14 @@ function showResults() {
   	$type_event = $_GET['type_event'];
   	echo "<input type=hidden name=event value="; echo attr($eventname)."-".attr($type_event).">";
   	$type_event = "update";
-  	$tevent=""; 
+  	$tevent="";
   	$gev="";
   	if($eventname != "" && $type_event != "") {
       	$getevent=$eventname."-".$type_event;
   	}
-        
-    if(($eventname == "") && ($type_event != "")){  
-      	$tevent=$type_event;    
+
+    if(($eventname == "") && ($type_event != "")){
+      	$tevent=$type_event;
   	}else if($type_event =="" && $eventname != ""){
       	$gev=$eventname;
   	}else if ($eventname == ""){
@@ -96,18 +97,18 @@ function showResults() {
 	      	//translate comments
 	      	$patterns = array ('/^success/','/^failure/','/ encounter/');
 	      	$replace = array ( xl('success'), xl('failure'), xl('encounter','',' '));
-	      
+
 	      	$dispCheck = false;
 	      	$log_id = $iter['id'];
 	      	$commentEncrStatus = "No";
 	      	$logEncryptData = logCommentEncryptData($log_id);
-	      
+
 	      	if(count($logEncryptData) > 0){
 	          	$commentEncrStatus = $logEncryptData['encrypt'];
 	          	$checkSumOld = $logEncryptData['checksum'];
 	          	$concatLogColumns = $iter['date'].$iter['event'].$iter['user'].$iter['groupname'].$iter['comments'].$iter['patient_id'].$iter['success'].$iter['checksum'].$iter['crt_user'];
 	          	$checkSumNew = sha1($concatLogColumns);
-	          
+
 	          	if($checkSumOld != $checkSumNew){
 	              	$dispCheck = true;
 	          	}else{
@@ -117,7 +118,7 @@ function showResults() {
 	      	}else{
 	          	continue;
 	      	}
-	      
+
 	      	if($commentEncrStatus == "Yes"){
 	          	$decrypt_comment =  trim(aes256Decrypt($iter["comments"]));
 	          	$trans_comments = preg_replace($patterns, $replace, $decrypt_comment);
@@ -125,7 +126,7 @@ function showResults() {
 	          	$comments = trim($iter["comments"]);
 	          	$trans_comments = preg_replace($patterns, $replace, $comments);
 	      	}
-	      
+
 	      	//Alter Checksum value records only display here
 	      	if($dispCheck){
 	          	$dispArr[] = $icnt++;
@@ -143,9 +144,9 @@ function showResults() {
 	        }
 	    }
     }
-    
+
     if( count($dispArr) == 0 ){
-      	echo '<TR class="oneresult">'; 
+      	echo '<TR class="oneresult">';
           		$colspan = 4;
           		if($check_sum) $colspan=6;
         	echo '<TD class="text" colspan="'; echo $colspan; echo '" align="center">';

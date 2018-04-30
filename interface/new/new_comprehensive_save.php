@@ -28,8 +28,8 @@
   // here, we lock the patient data table while we find the most recent max PID
   // other interfaces can still read the data during this lock, however
   // sqlStatement("lock tables patient_data read");
-  
-  $result = sqlQuery("SELECT MAX(pid)+1 AS pid FROM patient_data");
+
+  $result = sqlQuery("SELECT MAX(id)+2 AS pid FROM patient_data");
   
   $newpid = 1;
   
@@ -41,7 +41,65 @@
     // sqlStatement("unlock tables");
     die("Internal error: setpid($newpid) failed!");
   }
-  
+  $pid = substr(time(), 0,5).$newpid;
+    //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
+  if (realpath("../../profile_pictures/")) {
+      
+  }
+  else {
+    mkdir("../../profile_pictures/", 0755);
+  }
+  //for profile picture upload
+  //mime check done.
+  //size check done.
+  //extension check done.
+  //if any validation needed be added, please add it below.
+  $bool = 0;
+  $target_file =  basename($_FILES["profile_picture"]["name"]);
+  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  $verify_image = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+  if($verify_image) {
+    $mime = $verify_image["mime"];
+    $mime_types = array('image/png',
+                            'image/jpeg',
+                            'image/gif',
+                            'image/bmp',
+                            'image/vnd.microsoft.icon');
+    //mime check with all image formats.
+    if (in_array($mime, $mime_types)) {
+          $bool = 1;
+        //if mime type matches, then do a size check
+        //size check
+        if ($_FILES["profile_picture"]["size"] > 20971520) {
+          $bool = 0;
+        }
+        else {
+          $bool = 1;
+        }    
+    }
+    else {
+      $bool = 0;
+    }
+        
+  }
+  else {
+        $bool = 0;
+  }
+  $picture_url = "";
+  //begin file uploading
+  $destination_directory = "../../profile_pictures/";
+  if ($bool) {
+    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$imageFileType)) {
+        $picture_url = $pid.".".$imageFileType;
+    }
+    else {
+      //may be failed due to directory permissions.
+    }
+  }
+  else {
+    //don't upload checks failed.
+  }
+
   // Update patient_data and employer_data:
   //
   $newdata = array();
@@ -67,6 +125,7 @@
     if ($field_id == 'pubpid' && empty($value)) $value = $pid;
     $newdata[$tblname][$colname] = $value;
   }
+  $newdata['patient_data']['picture_url'] = $picture_url;
   updatePatientData($pid, $newdata['patient_data'], true);
   updateEmployerData($pid, $newdata['employer_data'], true);
   

@@ -48,7 +48,7 @@ function dropDownProviders() {
  * @params None
  * @return void - Simply echo HTML encoded string
  */
-function dropDownFacilities() {                 
+function dropDownFacilities() {
 	$query = "SELECT id, name FROM facility ORDER BY name";
     $fres = sqlStatement($query);
 
@@ -98,11 +98,11 @@ function showFromAndToDates() {
         </td>
          <td>
             <input type='text' name='form_from_date' id='form_from_date' size='10'
-                value='"; htmlspecialchars(oeFormatShortDate(attr($from_date))); 
+                value='"; htmlspecialchars(oeFormatShortDate(attr($from_date)));
     echo "' />
          </td>
          <td class='label'> ";
-    echo xlt('To'); 
+    echo xlt('To');
     echo ":
          </td>
          <td>
@@ -119,9 +119,9 @@ function showFromAndToDates() {
  */
 function showPatientAgeRange() {
     echo "<td class='label'>";
-        echo xlt('Age'); 
+        echo xlt('Age');
     echo ":</td>
-    <td>"; 
+    <td>";
         echo xlt('From');
             echo "<input name='age_from' class='numeric_only' type='text' id='age_from' value='";echo attr($age_from);
             echo "' size='3' maxlength='3'/>";
@@ -143,26 +143,26 @@ function showSubmitPrintButtons($form_csvexport='') {
             <tr>
                 <td>
                     <div style='margin-left:5px'>
-                        <a href='#' class='css_button' onclick='$(\"#form_refresh\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
+                        <a href='#' class='css_button cp-submit' onclick='$(\"#form_refresh\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
                             <span>";
                                 echo xlt('Submit');
                             echo "</span>
                         </a>";
                         if ($_POST['form_refresh']) {
-                            echo "<a href='#' class='css_button' id='printbutton'>
+                            echo "<a href='#' class='css_button cp-output' id='printbutton'>
                                 <span>";
                                     echo xlt('Print');
                                 echo "</span>
                             </a>";
                             if ($form_csvexport == 'form_csvexport') {
-                                echo "<a href='#' class='css_button' onclick='$(\"#form_csvexport\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
+                                echo "<a href='#' class='css_button cp-output' onclick='$(\"#form_csvexport\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
                                     <span>";
                                         echo xlt('Export to CSV');
                                     echo "</span>
                                 </a>";
                             }
                             if ($form_csvexport == 'form_labels') { // This is for Unique-seen-patients report
-                                echo "<a href='#' class='css_button' onclick='$(\"#form_labels\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
+                                echo "<a href='#' class='css_button cp-misc' onclick='$(\"#form_labels\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
                                     <span>";
                                         echo xl('Labels','e');
                                     echo "</span>
@@ -191,7 +191,7 @@ function reportParametersDaterange() {
 /*
  * This function is for csv export of reports
  * @params : $filename - Name of associated report
- * @return :void 
+ * @return :void
  */
 function csvexport($filename) {
     header("Pragma: public");
@@ -205,7 +205,7 @@ function csvexport($filename) {
 /* This function format amount(money/currencies).
  * @params: $amount - Value to be formatted.
  * @return: none
- * @attribution: 2015-2017 Terry Hill <teryhill@librehealth.io> 
+ * @attribution: 2015-2017 Terry Hill <teryhill@librehealth.io>
  * and 2005-2010 Rod Roark <rod@sunsetsystems.com>*/
 function bucks($amount) {
   if ($amount) oeFormatMoney($amount);
@@ -216,7 +216,7 @@ function bucks($amount) {
  * It is used only in Encounter and Appt. Encounter reports.
  * @params : $lastdocname - Provider's name,
  *           $doc_encounters - Number of provider's encounters
- * @return : Echo HTML 
+ * @return : Echo HTML
  */
 function show_doc_total($lastdocname, $doc_encounters) {
   if ($lastdocname) {

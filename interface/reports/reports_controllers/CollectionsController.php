@@ -1,7 +1,7 @@
-<?php 
+<?php
 /*
- * These functions are common functions used in Collection report. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Collection report.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -19,7 +19,7 @@
 
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
- 
+
 require_once("../globals.php");
 require_once("../../library/patient.inc");
 require_once("../../library/invoice_summary.inc.php");
@@ -28,6 +28,7 @@ require_once("../../library/formatting.inc.php");
 require_once("../../library/report_functions.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
+require_once("$srcdir/headers.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -117,12 +118,6 @@ $grand_total_adjustments = 0;
 $grand_total_paid        = 0;
 $grand_total_agedbal = array();
 for ($c = 0; $c < $form_age_cols; ++$c) $grand_total_agedbal[$c] = 0;
-
-/*Attribution: 2010-2017 LibreHealth EHR Support LLC*/
-function bucks($amount) {
-	if ($amount)
-    	echo oeFormatMoney($amount); // was printf("%.2f", $amount);
-}
 
 /*Attribution: 2010-2017 LibreHealth EHR Support LLC*/
 function endPatient($ptrow) {
@@ -250,7 +245,7 @@ function getInsName($payerid) {
   return $tmp['name'];
 }
 
-/* This function prepares the report from form inputs, and displays them. 
+/* This function prepares the report from form inputs, and displays them.
  * @params: None
  * @return: None
  * @author: Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
@@ -268,18 +263,18 @@ function prepareAndShowResults() {
     if ($_POST['form_export'] || $_POST['form_csvexport']) {
       $where = "( 1 = 2";
       foreach ($_POST['form_cb'] as $key => $value) {
-        list($key_newval['pid'], $key_newval['encounter']) = explode(".", $key); 
-        $newkey = $key_newval['pid']; 
+        list($key_newval['pid'], $key_newval['encounter']) = explode(".", $key);
+        $newkey = $key_newval['pid'];
         $newencounter =  $key_newval['encounter'];
         # added this condition to handle the downloading of individual invoices (TLH)
-        if($_POST['form_individual'] ==1){         
+        if($_POST['form_individual'] ==1){
           $where .= " OR f.encounter = ? ";
           array_push($sqlArray, $newencounter);
         } else {
           $where .= " OR f.pid = ? ";
           array_push($sqlArray, $newkey);
         }
-      } 
+      }
       $where .= ' )';
     }
 
@@ -306,7 +301,7 @@ function prepareAndShowResults() {
       $where .= "f.provider_id = ? ";
       array_push($sqlArray, $form_provider);
     }
-    
+
     if (! $where) {
       $where = "1 = 1";
     }
@@ -335,9 +330,9 @@ function prepareAndShowResults() {
       "LEFT OUTER JOIN users AS w ON w.id = f.provider_id " .
       "WHERE $where " .
       "ORDER BY f.pid, f.encounter";
- 
+
     $eres = sqlStatement($query, $sqlArray);
-    
+
     while ($erow = sqlFetchArray($eres)) {
       $patient_id = $erow['pid'];
       $encounter_id = $erow['encounter'];
@@ -497,22 +492,22 @@ function prepareAndShowResults() {
       echo '"' . xl('Insurance') . '",';
       echo '"' . xl('Name') . '",';
       if ($form_cb_ssn) {
-        echo '"' . xl('SSN') . '",';   
+        echo '"' . xl('SSN') . '",';
       }
       if ($form_cb_dob) {
-        echo '"' . xl('DOB') . '",';   
+        echo '"' . xl('DOB') . '",';
       }
       if ($form_cb_pubid) {
-        echo '"' . xl('Pubid') . '",';   
+        echo '"' . xl('Pubid') . '",';
       }
       if ($form_cb_policy) {
-        echo '"' . xl('Policy') . '",';   
+        echo '"' . xl('Policy') . '",';
       }
       if ($form_cb_phone) {
-        echo '"' . xl('Phone') . '",';   
+        echo '"' . xl('Phone') . '",';
       }
       if ($form_cb_city) {
-        echo '"' . xl('City') . '",';   
+        echo '"' . xl('City') . '",';
       }
       echo '"' . xl('Invoice') . '",';
       echo '"' . xl('DOS') . '",';
@@ -525,7 +520,7 @@ function prepareAndShowResults() {
       echo '"' . xl('IDays') . '",';
       if ($form_cb_err) {
         echo '"' . xl('LADate') . '",';
-        echo '"' . xl('Error') . '"' . "\n";        
+        echo '"' . xl('Error') . '"' . "\n";
       } else {
         echo '"' . xl('LADate') . '"' . "\n";
       }
@@ -691,7 +686,7 @@ function prepareAndShowResults() {
         echo "  <td class='detail' colspan='$initial_colspan'>";
         echo "&nbsp;</td>\n";
       }
-      
+
       echo '<td class="detail">
          &nbsp;<a href="../billing/sl_eob_invoice.php?id='; echo attr($row['id']) . '"
           target="_blank">'; echo empty($row['irnumber']) ? $row['invnumber'] : $row['irnumber']; echo '</a>
@@ -727,12 +722,12 @@ function prepareAndShowResults() {
       } else {
         echo '<td class="detail" align="right">'; bucks($balance); echo '&nbsp;</td>';
       } // end else
-      
+
       if ($form_cb_idays) {
         echo "  <td class='detail' align='right'>";
         echo attr($row['inactive_days']); echo "&nbsp;</td>\n";
       }
-      
+
       echo '<td class="detail" align="center">';
         echo $row['duncount'] ? $row['duncount'] : "&nbsp;";
       echo '</td>
@@ -758,22 +753,22 @@ function prepareAndShowResults() {
         echo '"' . $row['ins1']                         . '",';
         echo '"' . $ptname                              . '",';
         if ($form_cb_ssn) {
-          echo '"' . $row['ss']                          . '",';        
+          echo '"' . $row['ss']                          . '",';
         }
         if ($form_cb_dob) {
-          echo '"' . oeFormatShortDate($row['DOB'])       . '",';        
-        } 
+          echo '"' . oeFormatShortDate($row['DOB'])       . '",';
+        }
         if ($form_cb_pubid) {
-              echo '"' . $row['pid']                       . '",';        
+              echo '"' . $row['pid']                       . '",';
         }
         if ($form_cb_policy) {
-          echo '"' . $row['policy']                       . '",';        
+          echo '"' . $row['policy']                       . '",';
         }
         if ($form_cb_phone) {
-          echo '"' . $row['phone']                       . '",';        
+          echo '"' . $row['phone']                       . '",';
         }
         if ($form_cb_city) {
-          echo '"' . $row['city']                       . '",';        
+          echo '"' . $row['city']                       . '",';
         }
         echo '"' . (empty($row['irnumber']) ? $row['invnumber'] : $row['irnumber']) . '",';
         echo '"' . oeFormatShortDate($row['dos'])       . '",';
@@ -790,7 +785,7 @@ function prepareAndShowResults() {
         } else {
           echo '"' . oeFormatShortDate($row['ladate'])    . '"' . "\n";
         }
-      } 
+      }
     } // end $form_csvexport
   }
 

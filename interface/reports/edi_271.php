@@ -7,7 +7,7 @@
 // of the License, or (at your option) any later version.
 
 require_once "reports_controllers/Edi271Controller.php";
-	
+
 ?>
 <html>
 <head>
@@ -46,8 +46,8 @@ require_once "reports_controllers/Edi271Controller.php";
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
 
 <script type="text/javascript">
-		function edivalidation(){ 
-			
+		function edivalidation(){
+
 			var mypcc = "<?php echo htmlspecialchars( xl('Required Field Missing: Please choose the EDI-271 file to upload'), ENT_QUOTES);?>";
 
 			if(document.getElementById('uploaded').value == ""){
@@ -58,7 +58,7 @@ require_once "reports_controllers/Edi271Controller.php";
 			{
 				$("#theform").submit();
 			}
-			
+
 		}
 </script>
 
@@ -83,7 +83,7 @@ require_once "reports_controllers/Edi271Controller.php";
 					$messageEDI = "";
 			}
 	?>
-	
+
 <div>
 
 <span class='title'><?php echo htmlspecialchars( xl('EDI-271 File Upload'), ENT_NOQUOTES); ?></span>
@@ -108,7 +108,7 @@ require_once "reports_controllers/Edi271Controller.php";
 					<tr>
 						<td>
 							<div style='margin-left:15px'>
-								<a href='#' class='css_button' onclick='return edivalidation(); '><span><?php echo htmlspecialchars( xl('Upload'), ENT_NOQUOTES); ?></span>
+								<a href='#' class='css_button cp-misc' onclick='return edivalidation(); '><span><?php echo htmlspecialchars( xl('Upload'), ENT_NOQUOTES); ?></span>
 								</a>
 							</div>
 						</td>
@@ -117,7 +117,7 @@ require_once "reports_controllers/Edi271Controller.php";
 			</td>
 		</tr>
 	</table>
-</div> 
+</div>
 
 <input type="hidden" name="form_orderby" value="<?php echo htmlspecialchars( $form_orderby, ENT_QUOTES); ?>" />
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
