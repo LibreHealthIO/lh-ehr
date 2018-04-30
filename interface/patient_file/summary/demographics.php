@@ -1668,11 +1668,11 @@
 //this code is executed when user edit or upload a profile picture
 if (isset($_FILES["profile_picture"])) { 
   //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
-  if (realpath("../../profile_pictures/")) {
+  if (realpath("../../../profile_pictures/")) {
       
   }
   else {
-    mkdir("../../profile_pictures/", 0755);
+    mkdir("../../../profile_pictures/", 0755);
   }
   //for profile picture upload
   //mime check done.
