@@ -562,4 +562,10 @@ function fetchAppointmentCategories( $appt_prov_inc = false )
               "ORDER BY " . $order;    
      return sqlStatement($catSQL);
 }
+function getPatientPictureUrl($pid) {
+$sql = "SELECT picture_url FROM patient_data WHERE pid = '$pid'";
+$query = sqlQ($sql);
+$arr = sqlFetchArray($query);
+return $arr['picture_url'];
+}
 ?>

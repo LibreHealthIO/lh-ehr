@@ -475,8 +475,18 @@ function allowOnlyDigits(elem_name){
     </script>
   </head>
   <body class="body_top">
-    <form action='new_comprehensive_save.php' name='demographics_form' method='post' onkeyup="checkInputFormat(f)" onsubmit='return validate(this)'>
+    <form action='new_comprehensive_save.php' name='demographics_form' method='post' onkeyup="checkInputFormat(f)" onsubmit='return validate(this)' enctype="multipart/form-data">
       <span class='title'><?php xl('Search or Add Patient','e'); ?></span>
+      <table cellspacing="4" cellpadding="5" align="right">
+      <tr>
+      <td colspan="1"><img id="prof_img" style="display: none; border-radius: 40px;">
+      <a id="show_upload_button" style="display: none;"><?php echo xlt('Remove Profile Picture'); ?></a>
+      </td>
+      <td><input type="file" name="profile_picture" id="files" onchange="readURL(this);" class="hidden" />
+      <label for="files" class="btn cp-positive" id="file_input_button"><?php echo xlt('Add Profile Picture'); ?></label></b>
+      </td>
+      </tr>
+      </table>
       <table class="table">
         <tr>
           <td align='left'>
@@ -598,7 +608,6 @@ function allowOnlyDigits(elem_name){
                 ++$item_count;
                 generate_form_field($frow, $currvalue);
               }
-              
               end_group();
               ?>
             <?php
@@ -1015,5 +1024,28 @@ function allowOnlyDigits(elem_name){
         checkSkipConditions();
     });
     $("#form_email").attr('type','email');
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#prof_img')
+                    .attr('src', e.target.result)
+                    .width(64)
+                    .height(64);
+                $('#prof_img').css("display", "block"); 
+                $('#file_input_button').css("display", "none"); 
+                $('#show_upload_button').css("display", "block");  
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $('#show_upload_button').click(function () {
+      $('#prof_img').css("display", "none"); 
+      $('#file_input_button').css("display", "block"); 
+      $('#show_upload_button').css("display", "none"); 
+    });
   </script>
 </html>
