@@ -118,6 +118,14 @@ function call_required_libraries($library_array){
         <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>select2/select2.min.css">
     <?php
     }
+	
+	if(in_array("iziModalToast", $library_array)) { ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>iziModalToast/iziModal.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>iziModalToast/iziToast.min.css">
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>iziModalToast/iziModal.min.js"></script>
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>iziModalToast/iziToast.min.js"></script>
+		<?php
+	}
 
 }
 ?>
