@@ -1,7 +1,7 @@
 <?php
 /*
- * These functions are common functions used in Alerts Log. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Alerts Log.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -30,6 +30,7 @@ require_once("../globals.php");
 require_once("../../library/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
+require_once("$srcdir/headers.inc.php");
 require_once "$srcdir/clinical_rules.php";
 require_once("../../library/report_functions.php");
 require_once($GLOBALS['srcdir']."/formatting.inc.php");

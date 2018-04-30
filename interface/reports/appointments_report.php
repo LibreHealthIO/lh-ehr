@@ -7,28 +7,28 @@
  * 2012-01-01 - Added display of home and cell phone and fixed header
  * 2015-06-19 - brought up to security standards teryhill@librehealth.io
  *
- * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
- * @author Rod Roark <rod@sunsetsystems.com> 
- * @author Terry Hill <teryhill@librehealth.io> 
- * @link http://librehealth.io 
+ * @package LibreHealth EHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @link http://librehealth.io
  */
 require_once "reports_controllers/AppointmentsController.php";
 ?>
@@ -127,7 +127,7 @@ require_once "reports_controllers/AppointmentsController.php";
                 <?php // Show From and To dates fields. (TRK)
                     showFromAndToDates(); ?>
             </tr>
-            
+
             <tr>
                 <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
                 <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$_POST['form_apptstatus']);?></td>
@@ -145,10 +145,10 @@ require_once "reports_controllers/AppointmentsController.php";
                     <?php  if ( $show_available_times ) echo ' checked'; ?>> <?php  echo xlt('Show Available Times'); # check this to show available times on the report ?>
                 </label></td>
                 <td></td>
-                <td><label><input type="checkbox" name="incl_reminders" id="incl_reminders" 
+                <td><label><input type="checkbox" name="incl_reminders" id="incl_reminders"
                     <?php echo ($incl_reminders ? ' checked':''); # This will include the reminder for the patients on the report ?>>
                     <?php echo xlt('Show Reminders'); ?></label></td>
-            
+
             <tr>
                 <td></td>
                 <?php # these two selects will show entries that do not have a facility or a provider ?>
@@ -156,7 +156,7 @@ require_once "reports_controllers/AppointmentsController.php";
                 <td></td>
                 <td><label><input type="checkbox" name="with_out_facility" id="with_out_facility" <?php if($chk_with_out_facility) echo "checked";?>>&nbsp;<?php echo xlt('Without Facility'); ?></label></td>
             </tr>
-            
+
         </table>
 
         </div>
@@ -167,15 +167,15 @@ require_once "reports_controllers/AppointmentsController.php";
                 <tr>
                     <td>
                         <div style='margin-left: 15px'>
-                            <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                                <span> <?php echo xlt('Submit'); ?> </span> </a> 
+                            <a href='#' class='css_button cp-submit' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                                <span> <?php echo xlt('Submit'); ?> </span> </a>
                             <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
-                                <a href='#' class='css_button' id='printbutton'> 
-                                    <span> <?php echo xlt('Print'); ?> </span> </a> 
-                                <a href='#' class='css_button' onclick='window.open("../patient_file/printed_fee_sheet.php?fill=2","_blank")' onsubmit='return top.restoreSession()'> 
-                                    <span> <?php echo xlt('Superbills'); ?> </span> </a> 
-                                <a href='#' class='css_button' onclick='window.open("../patient_file/addr_appt_label.php","_blank")' onsubmit='return top.restoreSession()'> 
-                                    <span> <?php echo xlt('Address Labels'); ?> </span> </a> 
+                                <a href='#' class='css_button cp-output' id='printbutton'>
+                                    <span> <?php echo xlt('Print'); ?> </span> </a>
+                                <a href='#' class='css_button cp-misc' onclick='window.open("../patient_file/printed_fee_sheet.php?fill=2","_blank")' onsubmit='return top.restoreSession()'>
+                                    <span> <?php echo xlt('Superbills'); ?> </span> </a>
+                                <a href='#' class='css_button cp-misc' onclick='window.open("../patient_file/addr_appt_label.php","_blank")' onsubmit='return top.restoreSession()'>
+                                    <span> <?php echo xlt('Address Labels'); ?> </span> </a>
                             <?php } ?>
                         </div>
                     </td>
@@ -218,11 +218,11 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
             <th><?php echo xlt('Home'); //Sorting by phone# not really useful ?></th>
 
                 <th><?php echo xlt('Cell'); //Sorting by phone# not really useful ?></th>
-                
+
         <th><a href="nojs.php" onclick="return dosort('type')"
     <?php if ($form_orderby == "type") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Type'); ?></a>
         </th>
-        
+
         <th><a href="nojs.php" onclick="return dosort('status')"
             <?php if ($form_orderby == "status") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Status'); ?></a>
         </th>
@@ -230,7 +230,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
     <tbody>
         <!-- added for better print-ability -->
     <?php // TODO: Pull this out
-    
+
     $lastdocname = "";
     //Appointment Status Checking
         $form_apptstatus = $_POST['form_apptstatus'];
@@ -242,32 +242,32 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
                 $form_apptcat=intval($_POST['form_apptcat']);
             }
         }
-            
+
     //Without provider and facility data checking
     $with_out_provider = null;
     $with_out_facility = null;
     if( isset($_POST['with_out_provider']) ){
         $with_out_provider = $_POST['with_out_provider'];
     }
-    
+
     if( isset($_POST['with_out_facility']) ){
         $with_out_facility = $_POST['with_out_facility'];
     }
     $appointments = fetchAppointments( $from_date, $to_date, $patient, $provider, $facility, $form_apptstatus, $with_out_provider, $with_out_facility,$form_apptcat );
-    
+
     if ( $show_available_times ) {
         $availableSlots = getAvailableSlots( $from_date, $to_date, $provider, $facility );
         $appointments = array_merge( $appointments, $availableSlots );
     }
     $appointments = sortAppointments( $appointments, $form_orderby );
     $pid_list = array();  // Initialize list of PIDs for Superbill option
-    $totalAppontments = count($appointments);   
-    
+    $totalAppontments = count($appointments);
+
     foreach ( $appointments as $appointment ) {
                 array_push($pid_list,$appointment['pid']);
         $patient_id = $appointment['pid'];
         $docname  = $appointment['ulname'] . ', ' . $appointment['ufname'] . ' ' . $appointment['umname'];
-                
+
         $errmsg  = "";
         $pc_apptstatus = $appointment['pc_apptstatus'];
         ?>
@@ -292,7 +292,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td class="detail">&nbsp;<?php echo text($appointment['phone_cell']) ?></td>
 
         <td class="detail">&nbsp;<?php echo text(xl_appt_category($appointment['pc_catname'])) ?></td>
-        
+
         <td class="detail">&nbsp;
             <?php
                 //Appointment Status
@@ -331,7 +331,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
     </tr>
     <?php
     } // End of row 2 display
-    
+
     $lastdocname = $docname;
     }
     // assign the session key with the $pid_list array - note array might be empty -- handle on the printed_fee_sheet.php page.

@@ -1,7 +1,7 @@
-<?php 
+<?php
 /*
- * These functions are common functions used in Patient Ledger report. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Patient Ledger report.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -23,6 +23,7 @@ require_once('../globals.php');
 require_once("../../library/report_functions.php");
 require_once($GLOBALS['srcdir'].'/patient.inc');
 require_once($GLOBALS['srcdir'].'/acl.inc');
+require_once("$srcdir/headers.inc.php");
 require_once($GLOBALS['srcdir'].'/formatting.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
@@ -78,9 +79,9 @@ function User_Id_Look($thisField) {
 
 function List_Look($thisData, $thisList) {
   if($thisList == 'occurrence') {
-    if(!$thisData || $thisData == '') return xl('Unknown or N/A'); 
+    if(!$thisData || $thisData == '') return xl('Unknown or N/A');
   }
-  if($thisData == '') return ''; 
+  if($thisData == '') return '';
   $fres=sqlStatement("SELECT title FROM list_options WHERE list_id=? ".
         "AND option_id=?", array($thisList, $thisData));
   if($fres) {
@@ -118,7 +119,7 @@ function PrintEncHeader($dt, $rsn, $dr) {
     if(strlen($rsn) > 50) $rsn = substr($rsn,0,50).'...';
     echo "<td colspan='4'><span class='bold'>".xlt('Encounter Dt / Rsn'). ": </span><span class='detail'>".text(substr($dt,0,10))." / ".text($rsn)."</span></td>";
     echo "<td colspan='5'><span class='bold'>" . xlt('Provider'). ": </span><span class='detail'>".text(User_Id_Look($dr))."</span></td>";
-    echo "</tr>\n"; 
+    echo "</tr>\n";
     $orow++;
 }
 function PrintEncFooter() {
@@ -245,11 +246,11 @@ if (substr($GLOBALS['ledger_begin_date'],0,1) == 'Y') {
    $last_year = mktime(0,0,0,date('m'),date('d'),date('Y')-$ledger_time);
 }
 elseif (substr($GLOBALS['ledger_begin_date'],0,1) == 'M') {
-   $ledger_time = substr($GLOBALS['ledger_begin_date'],1,1); 
+   $ledger_time = substr($GLOBALS['ledger_begin_date'],1,1);
    $last_year = mktime(0,0,0,date('m')-$ledger_time ,date('d'),date('Y'));
 }
 elseif (substr($GLOBALS['ledger_begin_date'],0,1) == 'D') {
-   $ledger_time = substr($GLOBALS['ledger_begin_date'],1,1); 
+   $ledger_time = substr($GLOBALS['ledger_begin_date'],1,1);
    $last_year = mktime(0,0,0,date('m') ,date('d')-$ledger_time,date('Y'));
 }
 
@@ -297,7 +298,7 @@ function prepareAndShowResults() {
     $query .= "AND c.ct_proc = '1' ";
     $query .= "AND activity > 0 ORDER BY fe.date, fe.id ";
     $res = sqlStatement($query,$sqlBindArray);
- 
+
     if ($_REQUEST['form_csvexport']) {
       	// CSV headers:
       	if (true) {
@@ -335,7 +336,7 @@ function prepareAndShowResults() {
 			  	echo '<tr>';
 			    	echo '<td class="title" >'; echo xlt('Patient Ledger'); echo '</td>';
 			  	echo '</tr>';
-			    echo '<tr>'; 
+			    echo '<tr>';
 			        $title = xl('All Providers');
 			        if($form_provider) { $title = xl('For Provider') . ': '.User_Id_Look($form_provider); }
 			    	echo '<td class="title" >'; echo text($title); echo '</td>';
@@ -406,7 +407,7 @@ function prepareAndShowResults() {
                 $credits = GetAllCredits($prev_encounter_id, $form_pid);
                 if(count($credits) > 0) {
                     if(!$hdr_printed) {
-                        PrintEncHeader($prev_row{'date'}, 
+                        PrintEncHeader($prev_row{'date'},
                         $prev_row{'reason'}, $prev_row{'provider_id'});
                     }
                     PrintCreditDetail($credits, $form_pid);
@@ -420,7 +421,7 @@ function prepareAndShowResults() {
         if($erow{'id'}) {
             // Now print an encounter heading line -
             if(!$hdr_printed) {
-                PrintEncHeader($erow{'date'}, 
+                PrintEncHeader($erow{'date'},
                     $erow{'reason'}, $erow{'provider_id'});
                 $hdr_printed = true;
             }
@@ -447,9 +448,9 @@ function prepareAndShowResults() {
             $enc_chg += $erow['fee'];
             $enc_bal += $erow['fee'];
             $orow++;
-			if ($_REQUEST['form_csvexport']) { 
+			if ($_REQUEST['form_csvexport']) {
                 echo $csv;
-            } else { 
+            } else {
                 echo $print;
             }
         }
@@ -461,7 +462,7 @@ function prepareAndShowResults() {
         $credits = GetAllCredits($prev_encounter_id, $form_pid);
         if(count($credits) > 0) {
             if(!$hdr_printed) {
-                PrintEncHeader($prev_row{'date'}, 
+                PrintEncHeader($prev_row{'date'},
                 $prev_row{'reason'}, $prev_row{'provider_id'});
             }
             PrintCreditDetail($credits, $form_pid);
@@ -469,7 +470,7 @@ function prepareAndShowResults() {
         if($hdr_printed) PrintEncFooter();
     }
 
-    // This is the end of the encounter/charge loop - 
+    // This is the end of the encounter/charge loop -
     $uac = GetAllUnapplied($form_pid,$from_date,$to_date);
     if(count($uac) > 0) {
         if($orow) {
@@ -482,7 +483,7 @@ function prepareAndShowResults() {
     if (!$_REQUEST['form_csvexport'] && $orow) {
       	echo "<tr bgcolor='#DDFFFF'>\n";
       	echo " <td colspan='2'>&nbsp;</td>";
-     	echo " <td class='bold' colspan='2'>" . xlt("Grand Total") ."</td>\n"; 
+     	echo " <td class='bold' colspan='2'>" . xlt("Grand Total") ."</td>\n";
       	echo " <td class='bold' style='text-align: right;'>". text($total_units) ."</td>\n";
       	echo " <td class='bold' style='text-align: right;'>". text(oeFormatMoney($total_chg)) ."</td>\n";
       	echo " <td class='bold' style='text-align: right;'>". text(oeFormatMoney($total_pmt)) ."</td>\n";
@@ -500,11 +501,11 @@ function prepareAndShowResults() {
             $next_appoint_date = oeFormatShortDate($events[0]['pc_eventDate']);
             $next_appoint_time = substr($events[0]['pc_startTime'],0,5);
             if(strlen(umname) != 0 ) {
-                $next_appoint_provider = $events[0]['ufname'] . ' ' . $events[0]['umname'] . ' ' .  $events[0]['ulname']; 
+                $next_appoint_provider = $events[0]['ufname'] . ' ' . $events[0]['umname'] . ' ' .  $events[0]['ulname'];
             } else {
                 $next_appoint_provider = $events[0]['ufname'] . ' ' .  $events[0]['ulname'];
             }
-            if(strlen($next_appoint_time) != 0) {    
+            if(strlen($next_appoint_time) != 0) {
 		  		echo '<tr>';
 		    		echo '<td class="title" >'; echo xlt('Next Appointment Date') . ': ' . text($next_appoint_date) . ' ' . xlt('Time') . ' ' . text($next_appoint_time) . ' ' . xlt('Provider') . ' ' . text($next_appoint_provider); echo '</td>';
 		  		echo '</tr>';

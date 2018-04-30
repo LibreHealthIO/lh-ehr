@@ -693,6 +693,7 @@ tr.odd, td.even {
   padding-right: 10px;
   /* sliding doors padding */
   text-decoration: none;
+  color: #ffffff !important;
   padding: 5px 12px 5px;
   border: none;
 }
@@ -1158,6 +1159,3 @@ div.notab-right {
 .report_search_bar {
   background-color: #EADDB4;
 }
-
-
-

@@ -142,7 +142,7 @@ function cloneClicked() {
      LibreHealth EHR's admin->acl menu.</li>
  <li>Reviewing <?php echo $OE_SITE_DIR; ?>/config.php is a good idea. This file
      contains some settings that you may want to change.</li>
- <li>There's much information and many extra tools bundled within the LibreHealth EHR installation directory. 
+ <li>There's much information and many extra tools bundled within the LibreHealth EHR installation directory.
      Please refer to LibreHealth EHR/Documentation. Many forms and other useful scripts can be found at LibreHealth EHR/contrib.</li>
  <li>To ensure a consistent look and feel through out the application using
      <a href='http://www.mozilla.org/products/firefox/'>Firefox</a> is recommended.</li>
@@ -174,7 +174,7 @@ if (($config == 1) && ($state < 4)) {
 }
 else {
   switch ($state) {
-    
+
   case 1:
     echo "<b>Step $state</b><br><br>\n";
     echo "Now I need to know whether you want me to create the database on my own or if you have already created the database for me to use.  For me to create the database, you will need to supply the MySQL root password.\n
@@ -188,7 +188,7 @@ else {
 <br>\n
 <INPUT TYPE='SUBMIT' VALUE='Continue'><br></FORM><br>\n";
     break;
-    
+
   case 2:
     echo "<b>Step $state</b><br><br>\n";
     echo "Now you need to supply the MySQL server information and path information. Detailed instructions on each item can be found in the <a href='https://github.com/LibreHealthIO/LibreEHR/blob/master/INSTALL.md' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual file.
@@ -273,7 +273,7 @@ else {
       echo " <td class='text'>(Clone the source site's database instead of creating a fresh one.)</td>\n";
       echo "</tr>\n";
     }
-    
+
     echo "<TR VALIGN='TOP' class='noclone'><TD COLSPAN=2><font color='red'>LibreHealth EHR USER:</font></TD></TR>";
     echo "<TR VALIGN='TOP' class='noclone'><TD><span class='text'>Initial User:</span></TD><TD><INPUT SIZE='30' TYPE='TEXT' NAME='iuser' VALUE='admin'></TD><TD><span class='text'>(This is the login name of user that will be created for you. Limit this to one word.)</span></TD></TR>
 <TR VALIGN='TOP' class='noclone'><TD><span class='text'>Initial User Password:</span></TD><TD><INPUT SIZE='30' TYPE='PASSWORD' NAME='iuserpass' VALUE=''></TD><TD><span class='text'>(This is the password for the initial user account above.)</span></TD></TR>
@@ -292,7 +292,7 @@ else {
 
     // Form Validation
     //   (applicable if not cloning from another database)
-    if (empty($installer->clone_database)) { 
+    if (empty($installer->clone_database)) {
       if ( ! $installer->login_is_valid() ) {
         echo "ERROR. Please pick a proper 'Login Name'.<br>\n";
         echo "Click Back in browser to re-enter.<br>\n";
@@ -314,7 +314,7 @@ else {
       echo "Click Back in browser to re-enter.<br>\n";
       break;
     }
-    
+
     echo "<b>Step $state</b><br><br>\n";
     echo "Configuring LibreHealth EHR...<br><br>\n";
 
@@ -403,7 +403,7 @@ else {
       echo "OK.<br>\n";
       flush();
     }
-    
+
     // Load the database files
     $dump_results = $installer->load_dumpfiles();
     if ( ! $dump_results ) {
@@ -461,7 +461,7 @@ else {
       echo "OK<br>\n";
       flush();
     }
-    
+
     if ( ! empty($installer->clone_database) ) {
       // Database was cloned, skip ACL setup.
       echo "Click 'continue' for further instructions.";
@@ -469,9 +469,9 @@ else {
     }
     else {
       echo "\n<br>Next step will install and configure access controls (php-GACL).<br>\n";
-      $next_state = 4; 
+      $next_state = 4;
     }
-    
+
     echo "
 <FORM METHOD='POST'>\n
 <INPUT TYPE='HIDDEN' NAME='state' VALUE='$next_state'>
@@ -488,7 +488,7 @@ else {
   case 4:
     echo "<b>Step $state</b><br><br>\n";
     echo "Installing and Configuring Access Controls (php-GACL)...<br><br>";
-    
+
     if ( ! $installer->install_gacl() ) {
       echo $installer->error_message;
       break;
@@ -499,20 +499,20 @@ else {
     }
 
     echo "Gave the '$installer->iuser' user (password is '$installer->iuserpass') administrator access.<br><br>";
-    
+
     echo "Done installing and configuring access controls (php-GACL).<br>";
     echo "Next step will configure PHP.";
-    
+
     echo "<br><FORM METHOD='POST'>\n
 <INPUT TYPE='HIDDEN' NAME='state' VALUE='5'>\n
 <INPUT TYPE='HIDDEN' NAME='site' VALUE='$site_id'>\n
 <INPUT TYPE='HIDDEN' NAME='iuser' VALUE='$installer->iuser'>\n
-<INPUT TYPE='HIDDEN' NAME='iuserpass' VALUE='$installer->iuserpass'>\n	
+<INPUT TYPE='HIDDEN' NAME='iuserpass' VALUE='$installer->iuserpass'>\n
 <br>\n
 <INPUT TYPE='SUBMIT' VALUE='Continue'><br></FORM><br>\n";
 
     break;
-    
+
   case 5:
     echo "<b>Step $state</b><br><br>\n";
     echo "Configuration of PHP...<br><br>\n";
@@ -526,7 +526,7 @@ else {
         $gotFileFlag = 1;
       }
     }
-echo "<li>To ensure proper functioning of LibreHealth EHR you must make sure that settings in php.ini file include: 
+echo "<li>To ensure proper functioning of LibreHealth EHR you must make sure that settings in php.ini file include:
 <ul>
 <li>\"short_open_tag = On\"</li>
 <li>\"display_errors = Off\"</li>
@@ -546,9 +546,9 @@ echo "
 <li>\"upload_tmp_dir\" is set to a correct default value that will work on your system.</li>
 </ul>";
 
-echo "<li>To ensure proper functioning of LibreHealth EHR you must make sure that settings in MYSQL /etc/mysql/my.cnf file include: 
+echo "<li>To ensure proper functioning of LibreHealth EHR you must make sure that settings in MYSQL /etc/mysql/my.cnf file include:
 <ul>
-<li>\"key_buffer_size\" set to 10M</li>
+<li>\"key_buffer_size\" set to 2% of your system's RAM (Less thatn 2% recommended) </li>
 <li>\"innodb_buffer_pool_size\" set to 70% of available RAM.</li>
 </ul>";
 
@@ -632,7 +632,7 @@ if ($checkPermissions) {
 		}
 	}
 	if ($errorWritable) {
-		echo "<p><FONT COLOR='red'>You can't proceed until all above files are ready (world-writable).</FONT><br>\n";	
+		echo "<p><FONT COLOR='red'>You can't proceed until all above files are ready (world-writable).</FONT><br>\n";
 		echo "In linux, recommend changing file permissions with the 'chmod 666 filename' command.<br>\n";
 		echo "Fix above file permissions and then click the 'Check Again' button to re-check files.<br>\n";
     echo "<FORM METHOD='POST'><INPUT TYPE='SUBMIT' VALUE='Check Again'></p>" .

@@ -85,11 +85,11 @@ require_once "reports_controllers/InventoryListController.php";
    <table style='border-left:1px solid; width:100%; height:100%'>
     <tr>
      <td valign='middle'>
-      <a href='#' class='css_button' onclick='mysubmit("submit")' style='margin-left:1em'>
+      <a href='#' class='css_button cp-submit' onclick='mysubmit("submit")' style='margin-left:1em'>
        <span><?php echo htmlspecialchars(xl('Submit'), ENT_NOQUOTES); ?></span>
       </a>
 <?php if ($form_action) { ?>
-      <a href='#' class='css_button' id='printbutton' style='margin-left:1em'>
+      <a href='#' class='css_button cp-ouput' id='printbutton' style='margin-left:1em'>
        <span><?php echo htmlspecialchars(xl('Print'), ENT_NOQUOTES); ?></span>
       </a>
 <?php } ?>
@@ -118,9 +118,9 @@ require_once "reports_controllers/InventoryListController.php";
   </tr>
  </thead>
  <tbody>
-<?php 
+<?php
 $encount = 0;
-  prepareAndShowResults(); // prepare and show results. (TRK)  
+  prepareAndShowResults(); // prepare and show results. (TRK)
 ?>
  </tbody>
 </table>
