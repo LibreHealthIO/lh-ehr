@@ -41,7 +41,7 @@ require_once "reports_controllers/Edi276Controller.php";
         <?php html_header_show();?>
 
         <title><?php echo xlt('276 Claim Status Request Batch'); ?></title>
-        
+
         <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
         <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
 
@@ -95,7 +95,7 @@ require_once "reports_controllers/Edi276Controller.php";
                     if(document.getElementById('removedrows').value == ""){
                         document.getElementById('removedrows').value = "'" + id + "'";
                     }else{
-                        document.getElementById('removedrows').value = document.getElementById('removedrows').value + ",'" + id + "'";                  
+                        document.getElementById('removedrows').value = document.getElementById('removedrows').value + ",'" + id + "'";
                     }
                 }
 
@@ -229,12 +229,12 @@ require_once "reports_controllers/Edi276Controller.php";
                                 <tr>
                                     <td>
                                         <div style='margin-left:15px'>
-                                            <a href='#' class='css_button' onclick='validate_policy(); $("#theform").submit();'>
+                                            <a href='#' class='css_button cp-misc' onclick='validate_policy(); $("#theform").submit();'>
                                             <span>
                                                 <?php echo xlt('Refresh'); ?>
                                             </span>
                                             </a>
-                                            <a href='#' class='css_button' onclick='return validate_batch();'>
+                                            <a href='#' class='css_button cp-misc' onclick='return validate_batch();'>
                                                 <span>
                                                     <?php echo xlt('Create batch'); ?>
                                                     <input type='hidden' name='form_savefile' id='form_savefile' value=''></input>
@@ -248,7 +248,7 @@ require_once "reports_controllers/Edi276Controller.php";
                         </td>
                     </tr>
                 </table>
-            </div> 
+            </div>
 
             <div class='text'>
                 <?php echo xlt('Please choose date range criteria above and click Refresh to view results.'); ?>

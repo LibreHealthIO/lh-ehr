@@ -1,7 +1,7 @@
-<?php 
+<?php
 /*
- * These functions are common functions used in Immunization report. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Immunization report.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -19,19 +19,20 @@
 
 require_once("../globals.php");
 require_once("$srcdir/patient.inc");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("../../library/report_functions.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 if(isset($_POST['form_from_date'])) {
-  $from_date = $_POST['form_from_date'] !== "" ? 
+  $from_date = $_POST['form_from_date'] !== "" ?
     fixDate($_POST['form_from_date'], date('Y-m-d')) :
     0;
 }
 
 if(isset($_POST['form_to_date'])) {
-  $to_date =$_POST['form_to_date'] !== "" ? 
+  $to_date =$_POST['form_to_date'] !== "" ?
     fixDate($_POST['form_to_date'], date('Y-m-d')) :
     0;
 }
@@ -53,8 +54,8 @@ function tr($a) {
 
 function format_cvx_code($cvx_code) {
   if ( $cvx_code < 10 ) {
-    return "0$cvx_code"; 
-  }    
+    return "0$cvx_code";
+  }
   return $cvx_code;
 }
 
@@ -95,8 +96,8 @@ if ($_POST['form_get_hl7']==='true') {
       "p.status, ".
       "p.sex, ".
       "p.ethnoracial, ".
-      "p.race, ". 
-      "p.ethnicity, ".   
+      "p.race, ".
+      "p.ethnicity, ".
       "c.code_text, ".
       "c.code, ".
       "c.code_type, ".
@@ -134,11 +135,11 @@ if($from_date!=0 or $to_date!=0) {
 
 $query .= "i.patient_id=p.pid and ".
 $query_codes . "i.cvx_code = c.code and ";
-  
+
 //do not show immunization added erroneously
 $query .=  "i.added_erroneously = 0";
 
-//echo "<p> DEBUG query: $query </p>\n"; // debugging 
+//echo "<p> DEBUG query: $query </p>\n"; // debugging
 
 $D="\r";
 $nowdate = date('Ymd');
@@ -148,7 +149,7 @@ $filename = "imm_reg_". $now . ".hl7";
 
 // GENERATE HL7 FILE
 if ($_POST['form_get_hl7']==='true') {
-  $content = ''; 
+  $content = '';
   $res = sqlStatement($query);
 
   while ($r = sqlFetchArray($res)) {
@@ -166,7 +167,7 @@ if ($_POST['form_get_hl7']==='true') {
     $content .= "PID|" . // [[ 3.72 ]]
         "|" . // 1. Set id
         "|" . // 2. (B)Patient id
-        $r['patientid']. "^^^MPI&2.16.840.1.113883.19.3.2.1&ISO^MR" . "|". // 3. (R) Patient indentifier list. TODO: Hard-coded the OID from NIST test. 
+        $r['patientid']. "^^^MPI&2.16.840.1.113883.19.3.2.1&ISO^MR" . "|". // 3. (R) Patient indentifier list. TODO: Hard-coded the OID from NIST test.
         "|" . // 4. (B) Alternate PID
         $r['patientname']."|" . // 5.R. Name
         "|" . // 6. Mather Maiden Name
@@ -205,10 +206,10 @@ if ($_POST['form_get_hl7']==='true') {
         ""  . // 39. Tribal Citizenship
         "$D" ;
     $content .= "ORC" . // ORC mandatory for RXA
-        "|" . 
+        "|" .
         "RE" .
         "$D" ;
-    $content .= "RXA|" . 
+    $content .= "RXA|" .
         "0|" . // 1. Give Sub-ID Counter
         "1|" . // 2. Administrattion Sub-ID Counter
         $r['administered_date']."|" . // 3. Date/Time Start of Administration

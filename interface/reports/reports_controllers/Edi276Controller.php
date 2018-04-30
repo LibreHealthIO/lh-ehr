@@ -1,7 +1,7 @@
 <?php
 /*
- * These functions are common functions used in Eligibility Response (EDI_271 File Upload) report. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Eligibility Response (EDI_271 File Upload) report.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -30,6 +30,7 @@ require_once("../globals.php");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/billing.inc");
 require_once("$srcdir/patient.inc");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
 require_once "$srcdir/formdata.inc.php";
@@ -79,7 +80,7 @@ if($form_provider != "") {
     array_push($sqlBindArray, $form_provider);
 }
 
-if($exclude_policy != "") {  
+if($exclude_policy != "") {
 	$arrayExplode   =   explode(",", $exclude_policy);
     array_walk($arrayExplode, 'arrFormated');
     $exclude_policy = implode(",",$arrayExplode);
@@ -151,7 +152,7 @@ if (isset($_POST['form_savefile']) && !empty($_POST['form_savefile']) && $res) {
         $to_date
     ));
     print_clstr($res,$X12info,$segTer,$compEleSep);
-    exit; 
+    exit;
 }
 
 ?>

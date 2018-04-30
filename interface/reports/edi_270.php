@@ -87,28 +87,28 @@ require_once "reports_controllers/Edi270Controller.php";
             var stringDelete = "<?php echo htmlspecialchars( xl('Do you want to remove this record?'), ENT_QUOTES); ?>?";
             var stringBatch  = "<?php echo htmlspecialchars( xl('Please select X12 partner, required to create the 270 batch'), ENT_QUOTES); ?>";
 
-            // for form refresh 
+            // for form refresh
 
             function refreshme() {
                 document.forms[0].submit();
             }
 
-            //  To delete the row from the reports section 
+            //  To delete the row from the reports section
             function deletetherow(id){
                 var suredelete = confirm(stringDelete);
                 if(suredelete == true){
                     document.getElementById('PR'+id).style.display="none";
                     if(document.getElementById('removedrows').value == ""){
-                        document.getElementById('removedrows').value = "'" + id + "'"; 
+                        document.getElementById('removedrows').value = "'" + id + "'";
                     }else{
-                        document.getElementById('removedrows').value = document.getElementById('removedrows').value + ",'" + id + "'"; 
-                    
+                        document.getElementById('removedrows').value = document.getElementById('removedrows').value + ",'" + id + "'";
+
                     }
                 }
-                
+
             }
 
-            //  To validate the batch file generation - for the required field [clearing house/x12 partner] 
+            //  To validate the batch file generation - for the required field [clearing house/x12 partner]
             function validate_batch()
             {
                 if(document.getElementById('form_x12').value=='')
@@ -120,12 +120,12 @@ require_once "reports_controllers/Edi270Controller.php";
                 {
                     document.getElementById('form_savefile').value = "true";
                     document.theform.submit();
-                    
+
                 }
 
             }
 
-            // To Clear the hidden input field 
+            // To Clear the hidden input field
 
             function validate_policy()
             {
@@ -134,14 +134,14 @@ require_once "reports_controllers/Edi270Controller.php";
                 return true;
             }
 
-            // To toggle the clearing house empty validation message 
+            // To toggle the clearing house empty validation message
             function toggleMessage(id,x12){
-                
+
                 var spanstyle = new String();
 
                 spanstyle       = document.getElementById(id).style.visibility;
                 selectoption    = document.getElementById(x12).value;
-                
+
                 if(selectoption != '')
                 {
                     document.getElementById(id).style.visibility = "hidden";
@@ -180,7 +180,7 @@ require_once "reports_controllers/Edi270Controller.php";
                                             showFromAndToDates(); ?>
                                         <td>&nbsp;</td>
                                     </tr>
-                                    
+
                                     <tr>
                                         <td class='label'>
                                             <?php echo htmlspecialchars( xl('Facility'), ENT_NOQUOTES); ?>:
@@ -204,7 +204,7 @@ require_once "reports_controllers/Edi270Controller.php";
                                         <td>&nbsp;
                                         </td>
                                     </tr>
-                                    
+
                                     <tr>
                                         <td class='label'>
                                             <?php echo htmlspecialchars( xl('X12 Partner'), ENT_NOQUOTES); ?>:
@@ -212,18 +212,18 @@ require_once "reports_controllers/Edi270Controller.php";
                                         <td colspan='5'>
                                             <select name='form_x12' id='form_x12' onchange='return toggleMessage("emptyVald","form_x12");' >
                                                         <option value=''>--<?php echo htmlspecialchars( xl('select'), ENT_NOQUOTES); ?>--</option>
-                                                        <?php 
+                                                        <?php
                                                             if(isset($clearinghouses) && !empty($clearinghouses))
                                                             {
                                                                 foreach($clearinghouses as $clearinghouse): ?>
                                                                     <option value='<?php echo htmlspecialchars( $clearinghouse['id']."|".$clearinghouse['id_number']."|".$clearinghouse['x12_sender_id']."|".$clearinghouse['x12_receiver_id']."|".$clearinghouse['x12_version']."|".$clearinghouse['processing_format'], ENT_QUOTES); ?>'
                                                                         <?php echo $clearinghouse['id'] == $X12info[0] ? " selected " : null; ?>
                                                                     ><?php echo htmlspecialchars( $clearinghouse['name'], ENT_NOQUOTES); ?></option>
-                                                        <?php   endforeach; 
+                                                        <?php   endforeach;
                                                             }
-                                                            
+
                                                         ?>
-                                                </select> 
+                                                </select>
                                                 <span id='emptyVald' style='color:red;font-size:12px;'> * <?php echo htmlspecialchars( xl('Clearing house info required for EDI 270 batch creation.'), ENT_NOQUOTES); ?></span>
                                         </td>
                                     </tr>
@@ -235,19 +235,19 @@ require_once "reports_controllers/Edi270Controller.php";
                                 <tr>
                                     <td>
                                         <div style='margin-left:15px'>
-                                            <a href='#' class='css_button' onclick='validate_policy(); $("#theform").submit();'>
+                                            <a href='#' class='css_button cp-misc' onclick='validate_policy(); $("#theform").submit();'>
                                             <span>
                                                 <?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
                                             </span>
                                             </a>
-                                                                                        
-                                            <a href='#' class='css_button' onclick='return validate_batch();'>
+
+                                            <a href='#' class='css_button cp-misc' onclick='return validate_batch();'>
                                                 <span>
                                                     <?php echo htmlspecialchars( xl('Create batch'), ENT_NOQUOTES); ?>
                                                     <input type='hidden' name='form_savefile' id='form_savefile' value=''></input>
                                                 </span>
                                             </a>
-                                            
+
                                         </div>
                                     </td>
                                 </tr>
@@ -255,7 +255,7 @@ require_once "reports_controllers/Edi270Controller.php";
                         </td>
                     </tr>
                 </table>
-            </div> 
+            </div>
 
             <div class='text'>
                 <?php echo htmlspecialchars( xl('Please choose date range criteria above, and click Refresh to view results.'), ENT_NOQUOTES); ?>

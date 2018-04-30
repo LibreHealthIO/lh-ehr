@@ -1,7 +1,7 @@
-<?php 
+<?php
 /*
- * These functions are common functions used in Inventory Activity report. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in Inventory Activity report.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -27,6 +27,7 @@ $fake_register_globals=false;
 
  require_once("../globals.php");
  require_once("$srcdir/acl.inc");
+ require_once("$srcdir/headers.inc.php");
  require_once("$srcdir/options.inc.php");
  require_once("$include_root/drugs/drugs.inc.php");
 
@@ -158,7 +159,7 @@ function prepareAndShowResults() {
           echo "  <td align='right'>$stock_months</td>\n";
           echo "  <td style='color:red'>$warnings</td>\n";
         echo " </tr>\n";
-    } 
+    }
   }
 }
 

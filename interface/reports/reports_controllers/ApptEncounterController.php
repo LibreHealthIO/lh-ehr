@@ -24,6 +24,7 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/billing.inc");
+require_once("$srcdir/headers.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -97,7 +98,7 @@ if ($_POST['form_refresh']) {
 	$res = sqlStatement($query);
 }
 
-/* Attribution: 2015-2017 Terry Hill <teryhill@librehealth.io> 
+/* Attribution: 2015-2017 Terry Hill <teryhill@librehealth.io>
  * and 2005-2010 Rod Roark <rod@sunsetsystems.com>*/
 function postError($msg) {
   	global $errmsg;
@@ -105,7 +106,7 @@ function postError($msg) {
   	$errmsg .= $msg;
 }
 
-/* Attribution: 2015-2017 Terry Hill <teryhill@librehealth.io> 
+/* Attribution: 2015-2017 Terry Hill <teryhill@librehealth.io>
  * and 2005-2010 Rod Roark <rod@sunsetsystems.com>*/
 function endDoctor(&$docrow) {
 	global $grand_total_charges, $grand_total_copays, $grand_total_encounters;
@@ -212,7 +213,7 @@ function displayResult($res) {
         }
       } // End IPPF stuff
     } // end while
-               
+
     $copays -= getPatientCopay($patient_id,$encounter);
 
     // The following is removed, perhaps temporarily, because gcac reporting

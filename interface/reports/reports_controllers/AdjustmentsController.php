@@ -1,7 +1,7 @@
 <?php
 /*
- * These functions are common functions used in the Adjustments reports. 
- * They have been pulled out and placed in this file. This is done to prepare 
+ * These functions are common functions used in the Adjustments reports.
+ * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
  *
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
@@ -24,6 +24,7 @@
  require_once "$srcdir/acl.inc";
  require_once "$srcdir/options.inc.php";
  require_once "$srcdir/formatting.inc.php";
+ require_once("$srcdir/headers.inc.php");
  $DateFormat = DateFormatRead();
  $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -32,14 +33,14 @@
 
 /*
  * This function is responsible for checking this condition
- * if($_POST['form_refresh'] || $_POST['form_csvexport']) 
+ * if($_POST['form_refresh'] || $_POST['form_csvexport'])
  */
 function formRefreshOrCsvexport() {
 	$adj_reason = $_POST['form_adjreason'];
   	$from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
   	$to_date   = fixDate($_POST['form_to_date'], date('Y-m-d'));
 
-  	if ($adj_reason =='') 
+  	if ($adj_reason =='')
   	{
     	$query = " Select   ar_activity.memo, Sum(ar_activity.adj_amount) As adj_amount " .
    		" From ar_activity" .

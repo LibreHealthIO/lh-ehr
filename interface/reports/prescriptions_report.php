@@ -4,31 +4,31 @@
  *
  * This report lists prescriptions and their dispensations according
  * to various input selection criteria.
- * 
+ *
  * Fix drug name search to work in a broader sense - tony@mi-squared.com 2010
  *
- * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2006-2015 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
+ * @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Tony McCormick <tony@mi-squared.com>
- * @link http://librehealth.io 
+ * @link http://librehealth.io
  */
  // Copyright (C) 2006-2015 Rod Roark <rod@sunsetsystems.com>
  //
@@ -39,26 +39,11 @@
 
  // This report lists prescriptions and their dispensations according
  // to various input selection criteria.
- // 
+ //
  // Fix drug name search to work in a broader sense - tony@mi-squared.com 2010
- 
- require_once("../globals.php");
- require_once("$srcdir/patient.inc");
- require_once("$srcdir/options.inc.php");
- require_once("../drugs/drugs.inc.php");
- require_once("$srcdir/formatting.inc.php");
- require_once("$srcdir/formdata.inc.php");
- require_once("../../library/report_functions.php");
 
- /** Current format date */
- $DateFormat = DateFormatRead();
- $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
- $from_date  = fixDate($_POST['form_from_date'], date('Y-m-d'));
- $to_date    = fixDate($_POST['form_to_date'], date('Y-m-d'));
- $form_patient_id = trim($_POST['form_patient_id']);
- $form_drug_name  = trim($_POST['form_drug_name']);
- $form_lot_number = trim($_POST['form_lot_number']);
- $form_facility   = isset($_POST['form_facility']) ? $_POST['form_facility'] : '';
+require_once "reports_controllers/PrescriptionsController.php";
+
 ?>
 <html>
 <head>
@@ -101,7 +86,7 @@
     }
     #report_results table {
        margin-top: 0px;
-    }    
+    }
 }
 
 /* specifically exclude some from the screen */
@@ -122,10 +107,7 @@
 
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Prescriptions and Dispensations','e'); ?></span>
 
-<div id="report_parameters_daterange">
-<?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
-    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
-</div>
+<?php reportParametersDaterange(); #TRK ?>
 
 <form name='theform' id='theform' method='post' action='prescriptions_report.php'>
 
@@ -145,7 +127,8 @@
             <td>
             <?php dropdown_facility(strip_escape_custom($form_facility), 'form_facility', true); ?>
             </td>
-            <?php showFromAndToDates(); ?>
+            <?php // Show From and To dates fields. (TRK)
+              showFromAndToDates(); ?>
         </tr>
         <tr>
             <td class='label'>
@@ -175,7 +158,8 @@
     </div>
 
   </td>
-  <?php showSubmitPrintButtons(); ?>
+  <?php   // Show print, submit and export buttons. (TRk)
+    showSubmitPrintButtons(); ?>
  </tr>
 </table>
 </div> <!-- end of parameters -->
@@ -203,123 +187,7 @@
  <tbody>
 <?php
  if ($_POST['form_refresh']) {
-  $where = "r.date_modified >= '" . prepareDateBeforeSave($from_date) . "' AND " .
-   "r.date_modified <= '" . prepareDateBeforeSave($to_date) . "'";
-  //if ($form_patient_id) $where .= " AND r.patient_id = '$form_patient_id'";
-  if ($form_patient_id) $where .= " AND p.pid = '$form_patient_id'";
-  if ($form_drug_name ) $where .= " AND (d.name LIKE '$form_drug_name' OR r.drug LIKE '$form_drug_name')";
-  if ($form_lot_number) $where .= " AND i.lot_number LIKE '$form_lot_number'";
-
-  $query = "SELECT r.id, r.patient_id, " .
-   "r.date_modified, r.dosage, r.route, r.interval, r.refills, r.drug, " .
-   "d.name, d.ndc_number, d.form, d.size, d.unit, d.reactions, " .
-   "s.sale_id, s.sale_date, s.quantity, " .
-   "i.manufacturer, i.lot_number, i.expiration, " .
-   "p.pid, ".
-   "p.fname, p.lname, p.mname, u.facility_id " .
-   "FROM prescriptions AS r " .
-   "LEFT OUTER JOIN drugs AS d ON d.drug_id = r.drug_id " .
-   "LEFT OUTER JOIN drug_sales AS s ON s.prescription_id = r.id " .
-   "LEFT OUTER JOIN drug_inventory AS i ON i.inventory_id = s.inventory_id " .
-   "LEFT OUTER JOIN patient_data AS p ON p.pid = r.patient_id " .
-   "LEFT OUTER JOIN users AS u ON u.id = r.provider_id " .
-   "WHERE $where " .
-   //"ORDER BY p.lname, p.fname, r.patient_id, r.id, s.sale_id";
-   "ORDER BY p.lname, p.fname, p.pid, r.id, s.sale_id";
-
-  // echo "<!-- $query -->\n"; // debugging
-  $res = sqlStatement($query);
-
-  $last_patient_id      = 0;
-  $last_prescription_id = 0;
-  while ($row = sqlFetchArray($res)) {
-   // If a facility is specified, ignore rows that do not match.
-   if ($form_facility !== '') {
-     if ($form_facility) {
-       if ($row['facility_id'] != $form_facility) continue;
-     }
-     else {
-       if (!empty($row['facility_id'])) continue;
-     }
-   }
-   $patient_name    = $row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname'];
-   //$patient_id      = $row['patient_id'];
-   $patient_id      = $row['pid'];
-   $prescription_id = $row['id'];
-   $drug_name       = empty($row['name']) ? $row['drug'] : $row['name'];
-   $ndc_number      = $row['ndc_number'];
-   $drug_units      = $row['size'] . ' ' .
-                   generate_display_field(array('data_type'=>'1','list_id'=>'drug_units'), $row['unit']);
-   $refills         = $row['refills'];
-   $reactions       = $row['reactions'];
-   $instructed      = $row['dosage'] . ' ' .
-                   generate_display_field(array('data_type'=>'1','list_id'=>'drug_form'), $row['form']) .
-                   ' ' .
-                       generate_display_field(array('data_type'=>'1','list_id'=>'drug_interval'), $row['interval']);
-   //if ($row['patient_id'] == $last_patient_id) {
-   if (strcmp($row['pid'], $last_patient_id) == 0) {
-    $patient_name = '&nbsp;';
-    $patient_id   = '&nbsp;';
-    if ($row['id'] == $last_prescription_id) {
-     $prescription_id = '&nbsp;';
-     $drug_name       = '&nbsp;';
-     $ndc_number      = '&nbsp;';
-     $drug_units      = '&nbsp;';
-     $refills         = '&nbsp;';
-     $reactions       = '&nbsp;';
-     $instructed      = '&nbsp;';
-    }
-   }
-?>
- <tr>
-  <td>
-   <?php echo $patient_name ?>
-  </td>
-  <td>
-   <?php echo $patient_id ?>
-  </td>
-  <td>
-   <?php echo $prescription_id ?>
-  </td>
-  <td>
-   <?php echo $drug_name ?>
-  </td>
-  <td>
-   <?php echo $ndc_number ?>
-  </td>
-  <td>
-   <?php echo $drug_units ?>
-  </td>
-  <td>
-   <?php echo $refills ?>
-  </td>
-  <td>
-   <?php echo $instructed ?>
-  </td>
-  <td>
-   <?php echo $reactions ?>
-  </td>
-  <td>
-   <a href='../drugs/dispense_drug.php?sale_id=<?php echo $row['sale_id'] ?>'
-    style='color:#0000ff' target='_blank'>
-    <?php echo oeFormatShortDate($row['sale_date']) ?>
-   </a>
-  </td>
-  <td>
-   <?php echo $row['quantity'] ?>
-  </td>
-  <td>
-   <?php echo $row['manufacturer'] ?>
-  </td>
-  <td>
-   <?php echo $row['lot_number'] ?>
-  </td>
- </tr>
-<?php
-   $last_prescription_id = $row['id'];
-   //$last_patient_id = $row['patient_id'];
-   $last_patient_id = $row['pid'];
-  } // end while
+  prepareAndShowResults(); // prepare and show results. (TRK)
  } // end if
 ?>
 </tbody>

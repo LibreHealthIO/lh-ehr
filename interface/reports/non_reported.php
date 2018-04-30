@@ -3,34 +3,34 @@
  * Non Reported Diagnosis report
  * This report lists non reported patient diagnoses for a given date range.
  * Ensoftek: Jul-2015: Modified HL7 generation to 2.5.1 spec and MU2 compliant.
- * This implementation is only for the A01 profile which will suffice for MU2 certification.                   
+ * This implementation is only for the A01 profile which will suffice for MU2 certification.
  *
  * Copyright (C) 2016 <dan@mi-squared.com>
  * Copyright (C) 2015 Ensoftek <rammohan@ensoftek.com>
  * Copyright (C) 2010 Tomasz Wyderka <wyderkat@cofoh.com>
  * Copyright (C) 2008 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
+ * @package LibreHealth EHR
  * @author MI-Squared <dan@mi-squared.com>
  * @author Ensoftek <rammohan@ensoftek.com>
  * @author Tomasz Wyderka <wyderkat@cofoh.com>
  * @author Rod Roark <rod@sunsetsystems.com>
- * @link http://librehealth.io 
+ * @link http://librehealth.io
  */
 
 require_once "reports_controllers/NonReportedController.php";
@@ -112,7 +112,7 @@ onsubmit='return top.restoreSession()'>
             <?php // Build a drop-down list of codes. (TRK)
               dropDownCodes(); ?>
           </td>
-          <?php // Show From and To dates fields. (TRK) 
+          <?php // Show From and To dates fields. (TRK)
             showFromAndToDates(); ?>
         </tr>
       </table>
@@ -123,10 +123,10 @@ onsubmit='return top.restoreSession()'>
       <tr>
         <td>
           <div style='margin-left:15px'>
-            <a href='#' class='css_button' 
+            <a href='#' class='css_button cp-misc'
             onclick='
-            $("#form_refresh").attr("value","true"); 
-            $("#form_get_hl7").attr("value","false"); 
+            $("#form_refresh").attr("value","true");
+            $("#form_get_hl7").attr("value","false");
             $("#theform").submit();
             '>
             <span>
@@ -134,14 +134,14 @@ onsubmit='return top.restoreSession()'>
             </spain>
             </a>
             <?php if ($_POST['form_refresh']) { ?>
-              <a href='#' class='css_button' id='printbutton'>
+              <a href='#' class='css_button cp-output' id='printbutton'>
                 <span>
                   <?php echo xlt('Print'); ?>
                 </span>
               </a>
-              <a href='#' class='css_button' onclick=
+              <a href='#' class='css_button cp-output' onclick=
               "if(confirm('<?php xl('This step will generate a file which you have to save for future use. The file cannot be generated again. Do you want to proceed?','e'); ?>')) {
-                     $('#form_get_hl7').attr('value','true'); 
+                     $('#form_get_hl7').attr('value','true');
                      $('#theform').submit();
               }">
                 <span>

@@ -29,6 +29,7 @@ $fake_register_globals=false;
 //
 
 require_once("../globals.php");
+require_once("$srcdir/headers.inc.php");
 ?>
 
 <html>
@@ -83,7 +84,7 @@ require_once("../globals.php");
       	  <div style='float:left'>
       	    <!-- <table class='text'> -->
               <div style='margin-left:15px'>
-                <a id='refresh_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
+                <a id='refresh_button' href='#' class='css_button cp-submit' onclick='top.restoreSession(); $("#theform").submit()'>
                     <span>
                       <?php echo xlt('Refresh'); ?>
                     </span>
@@ -187,4 +188,3 @@ require_once("../globals.php");
 
 </body>
 </html>
-
