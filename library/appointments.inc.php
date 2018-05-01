@@ -128,14 +128,19 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
         $exdate = $event_recurrspec['exdate'];
 
         list($ny,$nm,$nd) = explode('-',$event['pc_eventDate']);
-//        $occurance = Date_Calc::dateFormat($nd,$nm,$ny,'%Y-%m-%d');
         $occurance = $event['pc_eventDate'];
 
+        // Fix for calendar issue.
+        // The __increment() method is called below before
+        // Remove this when tested thoroughly
+        /* start
         while($occurance < $from_date) { 
           $occurance =& __increment($nd,$nm,$ny,$rfreq,$rtype);
           list($ny,$nm,$nd) = explode('-',$occurance);
         }
-
+    
+        end 
+        */
         while($occurance <= $stopDate) {
 
             $excluded = false;
