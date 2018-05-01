@@ -1,0 +1,10 @@
+Instructions:
+-------------
+
+1. Clone the repo and checkout the branch GSoC_LibreEHR.
+
+2. Run command: php artisan make:database
+   It will create database named LibreLaravel. Make sure that you have added your .env file in /LaravelIntegration/LibreLaravel/ directory. Name provided in .env file is used while creating database.
+
+3. Run command: php artisan migrate
+   It will migrate all tables to created database.
