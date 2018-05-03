@@ -945,3 +945,4 @@ ALTER TABLE users ADD COLUMN fullscreen_page text NOT NULL;
 #IfMissingColumn users fullscreen_enable
 ALTER TABLE users ADD COLUMN fullscreen_enable int(11) NOT NULL default 0;
 #EndIf
+

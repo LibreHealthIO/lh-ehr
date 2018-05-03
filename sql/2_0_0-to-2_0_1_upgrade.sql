@@ -92,3 +92,28 @@ DELETE FROM `code_types` WHERE `code_types`.`ct_key` = 'ICD9';
 #IfMissingColumn patient_data picture_url
   ALTER TABLE `patient_data` ADD COLUMN `picture_url` VARCHAR(2000) NOT NULL AFTER `industry`;
 #EndIf
+
+
+#IfMissingColumn users menu_role
+ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default User";
+#EndIf
+
+#IfMissingColumn users fullscreen_page
+ALTER TABLE users ADD COLUMN fullscreen_page text NOT NULL;
+#EndIf
+
+#IfMissingColumn users fullscreen_enable
+ALTER TABLE users ADD COLUMN fullscreen_enable int(11) NOT NULL default 0;
+#EndIf
+
+#IfMissingColumn users menu_role
+ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default User";
+#EndIf
+
+#IfColumn users fullscreen_role
+ALTER TABLE `users` DROP `fullscreen_role`;
+#EndIf
+
+DROP TABLE IF EXISTS `menu_trees`;
+
+DROP TABLE IF EXISTS `menu_entries`;

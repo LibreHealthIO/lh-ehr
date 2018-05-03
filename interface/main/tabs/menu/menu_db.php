@@ -6,6 +6,8 @@
  * and open the template in the editor.
  */
 
+require_once("$srcdir/role.php");
+
 function menu_entry_to_object($row)
 {
     $retval=new stdClass();
@@ -23,54 +25,15 @@ function menu_entry_to_object($row)
 }
 function load_menu($menu_set)
 {
-    if ($GLOBALS['menu_styling_tabs'] > '') { $menu_set=$GLOBALS['menu_styling_tabs']; } else { $menu_set="default";}
-    
-    $menuTables=" SHOW TABLES LIKE ?";
-    $res=sqlQuery($menuTables,array("menu_trees"));
-    if($res===false)
-    {
-        return array();
-    }
+ 
+    if ($GLOBALS['role_based_menu_status']) {
 
-    $menuQuery=" SELECT * FROM menu_trees, menu_entries WHERE menu_trees.entry_id=menu_entries.id AND menu_set=? ORDER BY parent, seq";
-    $res=sqlStatement($menuQuery,array($menu_set));
+        $role = new Role();
+    $userQuery = sqlQuery("select menu_role from users where username= ? ", array($_SESSION{"authUser"}));
+        $role_data = $role->getRole($userQuery["menu_role"]);
+        return $role_data->menu_data;  
+    } else {
+        return [];
+    }
     
-    $retval=array();
-    $entries=array();
-    $parent_not_found=array();
-    while($row=  sqlFetchArray($res))
-    {
-        $entries[$row['entry_id']]=menu_entry_to_object($row);
-        if(empty($row['parent']))
-        {
-            array_push($retval,$entries[$row['entry_id']]);
-        }
-        else
-        {
-            if(isset($entries[$row['parent']]))
-            {
-                $parent=$entries[$row['parent']];
-                array_push($parent->children,$entries[$row['entry_id']]);
-                
-            }
-            else
-            {
-                array_push($parent_not_found,$entries[$row['entry_id']]);
-            }
-        }
-    }
-    foreach($parent_not_found as $row)
-    {
-            if(isset($entries[$row->parent]))
-            {
-                $parent=$entries[$row->parent];;
-                array_push($parent->children,$row);
-            }
-            else
-            {
-                array_push($parent_not_found2,$row);
-            }
-        
-    }
-    return json_decode(json_encode($retval));       
 }

@@ -41,6 +41,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/erx_javascript.inc.php");
 require_once("$srcdir/headers.inc.php");
+require_once("$srcdir/role.php");
 
 $alertmsg = '';
 
@@ -355,22 +356,18 @@ echo generate_select_list('irnpool', 'irnpool', '',
   <td><textarea name=info style="width:120px;" cols=27 rows=4 wrap=auto></textarea></td>
   </tr>
   <tr>
-  <td><span class="text"><?php echo xlt('Full screen role'); ?>:</span></td>
+  <td><span class="text"><?php echo xlt('Menu role'); ?>:</span></td>
   <td>
-  <select style="width:120px;" name="role_name" id="role_name">
-    <?php
-      $fres = sqlStatement("select distinct menu_set from menu_trees order by menu_set");
-      if ($fres) {
-        for ($iter3 = 0;$frow = sqlFetchArray($fres);$iter3++)
-          $result[$iter3] = $frow;
-        foreach($result as $iter3) {
-      ?>
-      <option value="<?php echo $iter3{'menu_set'};?>"><?php echo xlt($iter3{'menu_set'}); ?></option>
+  <select style="width:120px;" name="menu_role" id="menu_role">
       <?php
-        }
-      }
-    ?>
-  </select>
+         $role = new Role();
+         $role_list = $role->getRoleList();
+         foreach($role_list as $role_title) {
+           ?>  <option value="<?php echo $role_title; ?>"><?php echo xlt($role_title); ?></option>
+          <?php
+         }
+      ?>
+      </select>
   </td>
   <td><span class="text"> <?php echo xlt('Full screen page'); ?>:</span></td>
   <td>
@@ -392,6 +389,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
   <?php do_action( 'usergroup_admin_add' ); ?>
 
   </tr>
+
   <tr height="25"><td colspan="4">&nbsp;</td></tr>
 <?php
  }

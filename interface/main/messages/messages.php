@@ -8,15 +8,15 @@
  *
  * Copyright (c) 2010 LibreHealth EHR Support LLC
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
  * @package LibreHealth EHR
@@ -24,7 +24,7 @@
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
  * @author Rod Roark <rod@sunsetsystems.com>
  * @author Brady Miller <brady@sparmy.com>
- * @link http://librehealth.io 
+ * @link http://librehealth.io
  */
 
 //SANITIZE ALL ESCAPES
@@ -54,16 +54,17 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "jq
 </head>
 
 <body class="body_top">
-<span class="title" style="display: none"><?php echo xlt('Message and Reminder Center'); ?></span>
 
+<span class="title"><?php echo xlt('Message and Reminder Center'); ?></span>
+<br /><br />
 <span class="title"><?php echo xlt('Reminders'); ?></span>
 
-<?php       
-        
+<?php
+
   // TajEmo Work by CB 2012/01/11 02:51:25 PM adding dated reminders
   // I am asuming that at this point security checks have been performed
-  require_once '../dated_reminders/dated_reminders.php';   
-        
+  require_once '../dated_reminders/dated_reminders.php';
+
 // Check to see if the user has Admin rights, and if so, allow access to See All.
 $showall = isset($_GET['show_all']) ? $_GET['show_all'] : "" ;
 if ($showall == "yes") {
@@ -296,7 +297,7 @@ if ($noteid) {
     echo "  <td class='text'><b>";
     echo xlt('Linked document') . ":</b>\n";
     while ($gprow = sqlFetchArray($tmp)) {
-      $d = new Document($gprow['id1']); 
+      $d = new Document($gprow['id1']);
       echo "   <a href='";
       echo $GLOBALS['webroot'] . "/controller.php?document&retrieve";
       echo "&patient_id="  . $d->get_foreign_id();
@@ -426,7 +427,7 @@ $(document).ready(function(){
  function sel_patient() {
   dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_patient_popup.php', '_blank', 500, 400);
  }
- 
+
   function addtolist(sel){
     var itemtext = document.getElementById('assigned_to_text');
     var item = document.getElementById('assigned_to');
@@ -442,7 +443,7 @@ $(document).ready(function(){
       }
     }
   }
- 
+
 </script><?php
 }
 else {
