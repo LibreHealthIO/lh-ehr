@@ -51,81 +51,12 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "jq
 <head>
 
 <?php html_header_show();?>
-<style>
-  .listbox{
-    border: 2px solid #000;
-    width: 150px;
-    max-height: 125px;
-    overflow: auto;
-    background-color: #f6f6f6;
-    color: #2ECC40;
-    font-weight: bold;
-    font-size: 14px;
-  }
-  .listbox> ul{
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 0;
-  }
-  .listbox> ul> li{
-    border: 1px solid #000;
-    padding: 2px 15px;
-  }
-</style>
 </head>
 
 <body class="body_top">
-<span class="title" style="display: none"><?php echo xlt('Message and Reminder Center'); ?></span>
-<span class="title"><?php echo xlt("Who's Online?"); ?></span>
-<button class="cp-misc" id="ref-list"><?php echo xlt("Refresh"); ?></button>
-<br>
-<br>
-<div class="listbox">
-<?php
-  //creating list for first time upon initial loading
 
-  //select users whose last activity during
-  //present date is logging in successfully
-  $query = "SELECT `user`
-            FROM `log`
-            WHERE `date` IN (SELECT  max(`date`)
-                             FROM `log`
-                             WHERE DATE_FORMAT(`date`,'%Y-%M-%d') = DATE_FORMAT(now(),'%Y-%M-%d')
-                             GROUP BY `user`)
-                  AND `event` = 'login' AND `success` = 1";
-  $query .= " LIMIT 500";
-  $res = sqlStatement($query);
-  //creating list of active users
-  $list_items = "";
-  while ($row = sqlFetchArray($res)) {
-    $userq = strtoupper($row['user']);
-    $list_item = "<li>{$userq}</li>";
-    $list_items .= $list_item;
-  }
-  $list_string = "<ul>{$list_items}</ul>";
-  //output list HTML
-  echo $list_string;
-?>
-</div>
-<script type="text/javascript">
-  $(document).ready(function() {
-    //recreating list of logged in users
-    //after every interval of 5 seconds
-    //to make sure shown users are active
-    $("#ref-list").on("click", function() {
-      $.ajax({
-          type: "GET",
-          url: "user_activity.php",
-          dataType: "html",
-          success: function(response) {
-            $(".listbox").empty().append(response);
-          }
-      });
-    });
-  });
-</script>
-
-<br>
+<span class="title"><?php echo xlt('Message and Reminder Center'); ?></span>
+<br /><br />
 <span class="title"><?php echo xlt('Reminders'); ?></span>
 
 <?php
