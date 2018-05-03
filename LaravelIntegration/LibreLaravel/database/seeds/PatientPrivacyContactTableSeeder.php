@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class PatientPrivacyContactSeeder extends Seeder
+class PatientPrivacyContactTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

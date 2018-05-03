@@ -21,6 +21,6 @@ $factory->define(App\Address::class, function (Faker\Generator $faker) {
         'zip' => $faker->postcode,
         'plus_four' => str_random(4),
         'country' => $faker->country,
-	'country_code' => $faker->countryCode,
+	    'country_code' => $faker->countryCode,
     ];
 });

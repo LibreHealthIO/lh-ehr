@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 |
 | Use this to generate fake data for patient_datas table. 
-| Further used in PatientDataSeeder.php.
+| Further used in PatientDataTableSeeder.phpr.php.
 | @author Priyanshu Sinha <pksinha217@gmail.com>
 |
 */

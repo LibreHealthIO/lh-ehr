@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ContactSeeder extends Seeder
+class ContactTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

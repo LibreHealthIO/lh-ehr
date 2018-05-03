@@ -2,16 +2,16 @@
 
 use Illuminate\Database\Seeder;
 
-class PatientFaceSheetSeeder extends Seeder
+class PatientContactCommunicationTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * Seeder for patient_face_sheets table.
+     * Use this to seed patient_contact_communications table.
      * @author Priyanshu Sinha <pksinha217@gmail.com>
      * @return void
      */
     public function run()
     {
-        factory(App\PatientFaceSheet::class, 25)->create();
+        factory(App\PatientContactCommunication::class, 25)->create();
     }
 }
