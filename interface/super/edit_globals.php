@@ -167,7 +167,7 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
     }
   }
   echo "<script type='text/javascript'>";
-  if (!$action['css_header']) {
+  if (!$action['css_header']||!$action['menu_styling_tabs']) {
     echo "top.location.reload(true);";
   }
   echo "self.location.href='edit_globals.php?mode=user&unique=yes';";
@@ -283,6 +283,16 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
           elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
             if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
             $boolean = true;
+            }
+            else {
+              $boolean = "false";
+            }
+          }
+          elseif ($fldid == "theme_tabs_layout") {
+            //menu array created sine the globals dont have the array
+            $menu_array = array('tabs_style_compact.css', 'tabs_style_full.css');
+            if (in_array($_POST["form_$i"], $menu_array)) {
+              $boolean = true;
             }
             else {
               $boolean = false;
@@ -780,7 +790,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 </form>
 
 </body>
-<!--<script type="text/javascript" src="../super/js/edit_globals.js"></script>-->
+<script type="text/javascript" src="../super/js/edit_globals.js"></script>
 
 <script language="JavaScript">
 
