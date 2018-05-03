@@ -15,7 +15,6 @@ if(count($menu_parsed)==0)
 {
     $menu_parsed=json_decode($menu_json);
 }
-//var_dump($menu_parsed);
 menu_update_entries($menu_parsed);
 $menu_restrictions=array();
 menu_apply_restrictions($menu_parsed,$menu_restrictions);
@@ -25,9 +24,7 @@ menu_apply_restrictions($menu_parsed,$menu_restrictions);
     function menu_entry(object)
     {
         var self=this;
-        //console.log(app_view_model);
         self.label=ko.observable(object.label);
-        //console.log(object);
         self.header=false;
         if('url' in object && object.url !== null )
         {

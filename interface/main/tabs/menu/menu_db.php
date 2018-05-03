@@ -26,9 +26,10 @@ function menu_entry_to_object($row)
 function load_menu($menu_set)
 {
  
-    if ($GLOBALS['role_based_menu_status'] == 'enabled') {
+    if ($GLOBALS['role_based_menu_status']) {
+
         $role = new Role();
-        $userQuery = sqlQuery("select menu_role from users where username='".$_SESSION{"authUser"}."'");
+    $userQuery = sqlQuery("select menu_role from users where username= ? ", array($_SESSION{"authUser"}));
         $role_data = $role->getRole($userQuery["menu_role"]);
         return $role_data->menu_data;  
     } else {
