@@ -31,6 +31,7 @@ require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 require_once($GLOBALS['srcdir'].'/csv_like_join.php');
 require_once($GLOBALS['srcdir'].'/htmlspecialchars.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
+require_once($GLOBALS['srcdir'].'/headers.inc.php');
 ?>
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <?php
@@ -348,15 +349,27 @@ if ($_POST['form_save']) {
     substr($_POST['form_title'], 0, 40));
 
   // Close this window and redisplay the updated list of issues.
-  echo "<html><body><script language='JavaScript'>\n";
+  echo "<html><body>\n";
+  require_once('../../globals.php');
+  require_once($GLOBALS['srcdir'].'/headers.inc.php');
+  call_required_libraries(array("jquery-min-3-1-1", "font-awesome" , "iziModalToast"));
+  echo "<script language='JavaScript'>\n";
   if ($info_msg) echo " alert('$info_msg');\n";
-//  echo "alert('successfully added new issue');\n";
+  echo "var alertMsg = 'successfully added new issue';\n";
+  echo "
+    iziToast.success({
+            title: 'Success -',
+            message: alertMsg,
+            position: 'center',
+            icon: 'fa fa-thumbs-o-up'
+        });
+  ";
   echo " var myboss = opener ? opener : parent;\n";
   echo " if (myboss.refreshIssue) myboss.refreshIssue($issue,'$tmp_title');\n";
   echo " else if (myboss.reloadIssues) myboss.reloadIssues();\n";
   echo " else myboss.location.reload();\n";
-  echo " if (parent.$ && parent.$.fancybox) parent.$.fancybox.close();\n";
-  echo " else {window.close();window.setTimeout(function(){parent.$.fn.fancybox.close();},100);}\n";
+  echo " if (parent.$ && parent.$.iziModal) $('#izi-iframe').iziModal('close')\n";
+  echo " else {window.setTimeout(function(){parent.$('#izi-iframe').iziModal('close');},2000);}\n";
 
   echo "</script></body></html>\n";
   exit();
@@ -404,10 +417,64 @@ div.section {
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/textformat.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.9.1.min.js"></script>
+	<?php call_required_libraries(array("jquery-min-3-1-1","font-awesome" , "iziModalToast")); ?>
 <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language="JavaScript">
+
+    $(document).ready(function () {
+
+        // This invokes the find-code popup.
+        $(".triggerCoding").click(function () {
+	        <?php
+	        $url = '../encounter/find_code_popup.php?codetype=';
+	        if($irow['type'] == 'medical_problem') {
+		        $url .= collect_codetypes("medical_problem", "csv");
+	        }
+	        else {
+		        $url .= collect_codetypes("diagnosis","csv");
+		        $tmp  = collect_codetypes("drug","csv");
+		        if($irow['type'] == 'allergy') {
+			        if ($tmp) $url .= ",$tmp";
+		        }
+		        else if($irow['type'] == 'medication') {
+			        if ($tmp) $url .= ",$tmp&default=$tmp";
+		        }
+	        }
+	        ?>
+            var link = '<?php echo $url; ?>';
+            initIziLink(link);
+        });
+        
+        function initIziLink(link) {
+            $("#coding-iframe").iziModal({
+                title: "<?php echo xlt('Select a coding'); ?>",
+                subtitle: 'Get coding for patient',
+                headerColor: '#88A0B9',
+                closeOnEscape: true,
+                fullscreen:true,
+                overlayClose: false,
+                closeButton: true,
+                theme: 'light',  // light
+                iframe: true,
+                width:400,
+                focusInput: true,
+                padding:2,
+                iframeHeight: 300,
+                iframeURL: link
+            });
+            setTimeout(function () {
+                call_izi();
+            },500);
+
+        }
+        
+        function call_izi() {
+            $("#coding-iframe").iziModal('open');
+        }
+    
+        
+    });
 
 
  var aitypes = new Array(); // issue type attributes
@@ -572,26 +639,6 @@ function set_related(codetype, code, selector, codedesc) {
  if(title == '') f.form_title.value = codedesc;
 }
 
-// This invokes the find-code popup.
-function sel_diagnosis() {
-<?php
-$url = '../encounter/find_code_popup.php?codetype=';
-if($irow['type'] == 'medical_problem') {
-  $url .= collect_codetypes("medical_problem", "csv");
-}
-else {
-  $url .= collect_codetypes("diagnosis","csv");
-  $tmp  = collect_codetypes("drug","csv");
-  if($irow['type'] == 'allergy') {
-    if ($tmp) $url .= ",$tmp";
-  }
-  else if($irow['type'] == 'medication') {
-    if ($tmp) $url .= ",$tmp&default=$tmp";
-  }
-}
-?>
- dlgopen('<?php echo $url; ?>', '_blank', 700, 500);
-}
 
 // Check for errors when the form is submitted.
 function validate() {
@@ -601,7 +648,13 @@ function validate() {
   return false;
  }
  if (! f.form_title.value) {
-  alert("<?php echo addslashes(xl('Please enter a title!')); ?>");
+  errorMessage = "<?php echo addslashes(xl('Please enter a title!')); ?>";
+     iziToast.warning({
+         title: 'Warning -',
+         message: errorMessage,
+         position: 'bottomRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
+         icon: 'fa fa-exclamation-triangle'
+     });
   return false;
  }
  top.restoreSession();
@@ -633,7 +686,6 @@ function divclick(cb, divid) {
 >
 
 <table border='0' width='100%'>
-  <h1><?php echo xlt('Add Issue'); ?></h1>
   <tr>
     <td valign='top' width='1%' nowrap><b><?php echo xlt('Type'); ?>:</b></td>
     <td>
@@ -684,14 +736,17 @@ function divclick(cb, divid) {
     </td>
   </tr>
 
-  <tr id='row_diagnosis'>
+    <div id="coding-iframe"></div><!-- to initialize the izimodal -->
+
+    <tr id='row_diagnosis'>
     <td valign='top' nowrap><b><?php echo xlt('Coding'); ?>:</b></td>
     <td>
       <input
         type='text'
         size='50'
         name='form_diagnosis'
-        value='<?php echo attr($irow['diagnosis']) ?>' onclick='sel_diagnosis()'
+        class='triggerCoding'
+        value='<?php echo attr($irow['diagnosis']) ?>'
         title='<?php echo xla('Click to select or change coding'); ?>'
         style='width:100%'
         readonly
