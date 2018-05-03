@@ -5,12 +5,12 @@
  * Generic script to list stored reports. Part of the module to allow the tracking,
  * storing, and viewing of reports.
  *
- * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2012 Brady Miller <brady@sparmy.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 3 
+ * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,7 +23,7 @@
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
+ * @package LibreHealth EHR
  * @author  Art Eaton <art@suncoastconnection.com>  (MIPS/MACRA Refactor)
  * @author  Bryan Lee <bryan@suncoastconnection.com>
  * @author  Brady Miller <brady@sparmy.com>
@@ -134,12 +134,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         <tr>
             <td>
                 <div style='margin-left:15px'>
-                    <a id='search_button' href='#' class='css_button cp-submit' onclick='top.restoreSession(); $("#theform").submit()'>
+                    <a id='search_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
                     <span>
                         <?php echo htmlspecialchars( xl('Search'), ENT_NOQUOTES); ?>
                     </span>
                     </a>
-                                        <a id='refresh_button' href='#' class='css_button cp-misc' onclick='top.restoreSession(); $("#theform").submit()'>
+                                        <a id='refresh_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
                                         <span>
                                                 <?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
                                         </span>
@@ -190,7 +190,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   // Figure out the title and link
   if ($row['type'] == "pqrs_individual_2016") {
     if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2016 PQRS Individual Measures');
+    $type_title = xl('2017 MIPS Measures');
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
   else if ($row['type'] == "pqrs_groups_2016") {
@@ -242,12 +242,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
  <tr>
       <td>
-         <a id='delete_button' href='#' class='css_button_small cp-negative'
+         <a id='delete_button' href='#' class='css_button_small'
            onclick='deleteReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
          <span>Delete</span></a>
       </td>
       <td>
-         <a id='rename_button' href='#' class='css_button_small cp-positive'
+         <a id='rename_button' href='#' class='css_button_small'
            onclick='renameReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
          <span>Rename</span></a>
       </td>

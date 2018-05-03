@@ -309,6 +309,7 @@ if(count($updateStatus['off']) || count($updateStatus['on'])) {
 }
 
 ?>
+			<p><input type="submit" value="Update" /></p>
 			<div id="measures">
 				<ul>
 
@@ -426,7 +427,7 @@ foreach($rules as $rule) {
 					</li>
 				</ul>
 			</div>
-			<p><input type="submit" value="Update" class="cp-submit"/></p>
+			<p><input type="submit" value="Update" /></p>
 		</form>
 	</body>
 </html>
