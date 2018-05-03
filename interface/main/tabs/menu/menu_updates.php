@@ -79,24 +79,6 @@ if (sqlNumRows($lres)) {
         array_push($menu_list->children,$formEntry);
       }
     }    
-    /** do they same for the menus defined in $GLOBALS['menu_styling_tabs'] => array(
-      xl('Tabs Menu Style (refresh browser)'),
-      array(
-        'AnsServ' =>xl('Answering Service'),
-        'Front Office' =>xl('Front Office'),
-        'Clinical Staff'  =>xl('Clinical Staff'),
-        /**
-          * Menu additions :
-          * Add line below here and populate menu_trees with its menu
-          * 'Back Office' =>xl('Back Office')
-          * Privileges to access a menu are (need to be) handled later
-          *
-        'Administrator' =>xl('Administrator'),
-        'Default' =>xl('Default'),
-      ),
-      'Administrator',
-      xl('Tab Menu Style (refresh browser).')
-    ),*/
     
 }
 function menu_update_entries(&$menu_list)

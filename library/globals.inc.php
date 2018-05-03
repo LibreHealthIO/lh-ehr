@@ -119,7 +119,6 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'primary_font_color',
                                'secondary_color',
                                'secondary_font_color',
-                               'menu_styling_tabs',
                                'gbl_pt_list_page_size',
                                'gbl_pt_list_new_window',
                                'default_encounter_view',
@@ -187,33 +186,11 @@ $GLOBALS_METADATA = array(
       xl('Second TAB on the left')
   ),
 
-    'menu_styling_tabs' => array(
-      xl('Role-based Menu'),
-      array(
-        'AnsServ' =>xl('Answering Service'),
-        'Front Office' =>xl('Front Office'),
-        'Clinical Staff'  =>xl('Clinical Staff'),
-        /**
-          * Menu additions :
-          * Add line below here and populate menu_trees with its menu
-          * 'Back Office' =>xl('Back Office')
-          * Priviedges to access a menu are handled later
-          */
-        'Administrators' =>xl('Administrator'),
-        'Default' =>xl('Default'),
-      ),
-      'Administrator',
-      xl('Choose Application Menu: Role-based by work flows')
-    ),
 
     'role_based_menu_status' => array(
-      xl('Role-based menu status'),
-      array(
-        'enabled' => xl('Enabled'),
-        'disabled' => xl('Disabled')
-
-      ),
-      'Administrator',
+      xl('Enable Role-based menu system'),
+       'bool',                          // data type
+       '0',                             // default = false
       xl('Choose to enable or disable role-based menus')
     ),
 
