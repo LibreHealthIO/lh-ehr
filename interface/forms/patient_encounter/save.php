@@ -146,7 +146,26 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categ
 ?>
 <html>
 <body>
+<?php
+	require_once("../../globals.php");
+	require_once("$srcdir/headers.inc.php");
+?>
+
+<?php call_required_libraries(array("jquery-min-3-1-1" , "font-awesome", "iziModalToast")); ?>
+
 <script language='JavaScript'>
+
+    iziToast.success({
+        title: 'Success -',
+        message: "Successfully added new encounter",
+        position: 'center',
+        icon: 'fa fa-thumbs-o-up'
+
+    });
+    
+    setTimeout(function () {
+        parent.$("#izi-iframe").iziModal('close');
+    }, 2000);
     EncounterDateArray=new Array;
     CalendarCategoryArray=new Array;
     EncounterIdArray=new Array;
@@ -170,6 +189,9 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,libreehr_postcalendar_categ
  parent.left_nav.setRadio(window.name, 'enc');
 <?php } // end if new encounter ?>
  parent.left_nav.loadFrame('enc2', window.name, '<?php echo $nexturl; ?>');
+
+ 
+
 </script>
 
 </body>
