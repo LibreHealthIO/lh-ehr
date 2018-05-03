@@ -165,7 +165,14 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
         $exdate = $event_recurrspec['exdate'];
 
         list($ny,$nm,$nd) = explode('-',$event['pc_eventDate']);
+//        $occurance = Date_Calc::dateFormat($nd,$nm,$ny,'%Y-%m-%d');
         $occurance = $event['pc_eventDate'];
+
+
+        while($occurance < $from_date) {
+          $occurance =& __increment($nd,$nm,$ny,$rfreq,$rtype);
+          list($ny,$nm,$nd) = explode('-',$occurance);
+        }
 
         while($occurance <= $stopDate) {
 
