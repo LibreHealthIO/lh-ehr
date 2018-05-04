@@ -120,7 +120,6 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'secondary_color',
                                'secondary_font_color',
                                'gbl_pt_list_page_size',
-                              // 'gbl_pt_list_new_window',
                                'default_encounter_view',
                                'units_of_measurement',
                                'us_weight_format',
@@ -143,7 +142,6 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'ptkr_flag_dblbook',
                                'status_default',
                                'checkout_roll_off',
-                              // 'ptkr_pt_list_new_window',
                                'erx_import_status_message',
                                'floating_message_alerts',
                                'floating_message_alerts_timer',
@@ -299,13 +297,7 @@ $GLOBALS_METADATA = array(
        '10',
       xl('Number of patients to display per page in the patient list.')
     ),
-
-   /* 'gbl_pt_list_new_window' => array(
-      xl('Patient List New Window'),
-      'bool',                           // data type
-      '0',                              // default = false
-      xl('Default state of New Window checkbox in the patient list.')
-    ),*/
+    
 
     'gbl_vitals_options' => array(
       xl('Vitals Form Options'),
@@ -1704,12 +1696,6 @@ $GLOBALS_METADATA = array(
       xl('Do not display the patient flow board.')
     ),
 
-    /*'ptkr_pt_list_new_window' => array(
-      xl('Patient Flow Board: Open Demographics in New Window'),
-       'bool',                          // data type
-       '0',                             // default = false
-      xl('When Checked, Demographics Will Open in New Window from Patient Flow Board.')
-    ),*/
 
     'ptkr_visit_reason' => array(
       xl('Patient Flow Board: Show Visit Reason'),
