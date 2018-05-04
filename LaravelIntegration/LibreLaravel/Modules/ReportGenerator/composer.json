@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/reportgenerator",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\ReportGenerator\\Providers\\ReportGeneratorServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ReportGenerator\\": ""
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "ReportGenerator",
+    "alias": "reportgenerator",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\ReportGenerator\\Providers\\ReportGeneratorServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}
