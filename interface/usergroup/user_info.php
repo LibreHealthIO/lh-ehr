@@ -153,7 +153,7 @@ if (isset($_FILES)) {
     if (in_array($mime, $mime_types)) {
           $bool = 1;
         //if mime type matches, then do a size check
-        //size check
+        //size check for 20mb
         if ($_FILES["profile_picture"]["size"] > 20971520) {
           $bool = 0;
         }
