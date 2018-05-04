@@ -1,0 +1,85 @@
+<?php
+/*
+ *  report.php used by the misc_billing_form
+ *
+ *  This program is used by the misc_billing_form
+ *  The changes to this file as of November 16 2016 to add needed items to the HCFA Print and Electronic Transmission
+ *  are covered under the terms of the Mozilla Public License, v. 2.0
+ *
+ * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ *
+ *
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
+ *
+ */
+include_once(dirname(__FILE__).'/../../globals.php');
+include_once($GLOBALS["srcdir"]."/api.inc");
+function enhanced_prior_auth_report( $pid, $encounter, $cols, $id) {
+    $count = 0;
+    $data = formFetch("form_enhanced_prior_auth", $id);
+    if ($data) {
+    print "<table><tr>";
+        foreach($data as $key => $value) {
+            if ($key == "id" || $key == "pid" || $key == "user" || $key == "groupname" || $key == "authorized" || $key == "activity" || $key == "date" || $value == "" || $value == "0" || $value == "0000-00-00 00:00:00" || $value =="0000-00-00") {
+                continue;
+            }
+            if($key!=='used') {
+             if ($value == "1") {
+                $value = "Yes";
+             }
+            }
+            if($key==='prior_auth_number')
+            {
+               $key = ' Prior Authorization Number ';
+               $value = $value . " ";
+            }
+            if($key==='auth_for')
+            {
+               $key = ' Authorized for ';
+               $value = $value . ' Visits';
+            }
+            if($key==='ddesc')
+            {
+               $key = ' Description ';
+            }
+            if($key==='auth_from')
+            {
+                $key = ' Authorized from ';
+               $value = oeFormatShortDate($value);
+            }
+            if($key==='auth_to')
+            {
+               $key = ' Authorized to ';
+               $value = oeFormatShortDate($value);
+            }
+            $key=ucwords(str_replace("_"," ",$key));
+            print "<td><span class=bold> &nbsp;&nbsp;$key: </span><span class=text>" . text($value) . "</span></td>";
+            $count++;
+            if ($count == $cols) {
+                $count = 0;
+                print "</tr><tr>\n";
+            }
+        }
+    }
+    print "</tr></table>";
+}
+?>

@@ -17,7 +17,7 @@
  * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
- 
+
 function checkFormIsActive ($form_name, $encounter)
 {
    # This check if an active file exists and uses it as opposed to creating a new instance of the form.
@@ -32,6 +32,21 @@ function checkFormIsActive ($form_name, $encounter)
     }
 
 return $formid;
+}
+
+function FindAuthUsed ($form_name, $pid, $encounter )
+{
+   # Count the prior auths and determine the used number.
+   # Pass the PID, Auth Number, and form name.
+   # Make sure we have the correct auth.
+
+   $query_get_authnum = sqlquery("SELECT f.prior_auth_number, f.auth_to FROM $form_name AS f " .
+                          "WHERE pid = ? AND f.auth_to >= ? AND archived = '0' ORDER BY f.id DESC", array($pid, date("Y-m-d")));
+
+    $query_auth_count = sqlquery("SELECT count(*) AS count FROM $form_name " .
+                          "WHERE pid = ? AND prior_auth_number = ? ", array($pid,$query_get_authnum['prior_auth_number']));
+
+return $query_auth_count;
 }
 
 
