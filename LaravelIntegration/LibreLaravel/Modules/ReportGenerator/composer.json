@@ -1,10 +1,10 @@
 {
     "name": "nwidart/reportgenerator",
-    "description": "",
+    "description": "This module is a Report Generator tool for LibreHealth EHR system.",
     "authors": [
         {
-            "name": "Nicolas Widart",
-            "email": "n.widart@gmail.com"
+            "name": "Tigpezeghe Rodrige K.",
+            "email": "tigrodrige@gmail.com"
         }
     ],
     "extra": {
@@ -13,7 +13,7 @@
                 "Modules\\ReportGenerator\\Providers\\ReportGeneratorServiceProvider"
             ],
             "aliases": {
-                
+
             }
         }
     },

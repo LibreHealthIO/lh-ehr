@@ -1,0 +1,21 @@
+#second {
+    height: 250px;
+}
+
+#card-header {
+    text-align: center;
+}
+
+#draggable{
+    max-width: 24.5%;
+    height: 50px;
+    border: 1px solid lightgrey;
+    margin: auto 1px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+#generate-button {
+    float: right;
+    margin-top: -7px;
+    margin-bottom: -7px;
+}
