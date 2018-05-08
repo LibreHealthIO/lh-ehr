@@ -197,10 +197,7 @@ function refreshbegin(first){
 
 // used to display the patient demographic and encounter screens
 function topatient(newpid, enc) {
- if (document.pt_settings.ptkr_pt_list_new_window.checked) {
-   openNewTopWindow(newpid,enc);
- }
- else {
+ 
    top.restoreSession();
      if (enc > 0) {
        top.RTop.location= "<?php echo $GLOBALS['webroot']; ?>/interface/patient_file/summary/demographics.php?set_pid=" + newpid + "&set_encounterid=" + enc;
@@ -208,16 +205,8 @@ function topatient(newpid, enc) {
      else {
        top.RTop.location = "<?php echo $GLOBALS['webroot']; ?>/interface/patient_file/summary/demographics.php?set_pid=" + newpid;
      }
- }
 }
 
-// opens the demographic and encounter screens in a new window
-function openNewTopWindow(newpid,newencounterid) {
- document.fnew.patientID.value = newpid;
- document.fnew.encounterID.value = newencounterid;
- top.restoreSession();
- document.fnew.submit();
- }
 
 </script>
 
@@ -239,9 +228,7 @@ function openNewTopWindow(newpid,newencounterid) {
 <body class="body_top" >
 <div id="pat_settings" class="well collapse">
     <form method='post' name='pt_settings' id="pt_settings" action='<?php echo $action_page; ?>'>
-        <div class="checkbox">
-        <label><input type="checkbox" id="ptkr_pt_list_new_window" name="ptkr_pt_list_new_window" value="1" <?php if($GLOBALS['ptkr_pt_list_new_window']=='1') echo "checked"; ?>><?php echo xlt("Open Demographics in New Window from Patient Flow Board"); ?></label>
-        </div>
+
         <div class="checkbox">
         <label><input type="checkbox" name="ptkr_visit_reason" value="1" <?php if($GLOBALS['ptkr_visit_reason']=='1') echo "checked"; ?>><?php echo xlt("Show Visit Reason in Patient Flow Board"); ?></label>
         </div>
@@ -293,7 +280,6 @@ function openNewTopWindow(newpid,newencounterid) {
 <?php
     if(isset($_POST['user_save'])){
         $setting_names = [
-            'ptkr_pt_list_new_window',
             'ptkr_visit_reason',
             'ptkr_show_pid',
             'ptkr_show_room',
