@@ -238,7 +238,7 @@ require('includes/session.php');
           else {
             picture = " ";
           }
-          var tooltip = '<div class="tooltipevent"><table><tr>' + picture+'<td>' + calEvent.description + '</td></tr></table></div>';
+          var tooltip = '<div class="tooltipevent"><table><tr>' + picture+'<td style="color:red;">' + calEvent.description + '</td></tr></table></div>';
           var $tooltip = $(tooltip).appendTo('body');
 
          $(this).mouseover(function(e) {
