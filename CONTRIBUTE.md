@@ -22,7 +22,7 @@ Note if on Windows download and install Git Bash and use it to run the commands 
 
 	7) Set up a connection to the main LibreEHR github respository:
 	   git remote add upstream git://github.com/LibreHealthIO/lh-ehr.git
-	   (now the main openemr github repository is called ‘upstream’)
+	   (now the main LibreHealthEHR github repository is called ‘upstream’)
 
 	8) All the pieces are now set up. You have your local repository that is connected to your public github repository(origin) and is connected to the
 	   official Libreehr github repository(upstream)
