@@ -1,6 +1,6 @@
 SETTING UP GIT/GITHUB
 
-How to setup git/github and your local syterm to get started with contributing to librehealthehr
+How to setup git/github and your local system to get started with contributing to librehealthehr
 
 Note if on Windows download and install Git Bash and use it to run the comands below
 
