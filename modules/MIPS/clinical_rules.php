@@ -31,10 +31,7 @@
  * @link    http://librehealth.io
  */
 
-require_once(dirname(__FILE__) . "/patient.inc");
-require_once(dirname(__FILE__) . "/forms.inc");
-require_once(dirname(__FILE__) . "/formdata.inc.php");
-require_once(dirname(__FILE__) . "/options.inc.php");
+
 require_once(dirname(__FILE__) . "/report_database.inc");
 
 /**
@@ -739,7 +736,7 @@ function test_rules_clinic($provider='',$type='',$dateTarget='',$mode='',$patien
     // Note these rules are only used in report mode.
       if ( $rowRule['pqrs_individual_2016_flag']  ) {
 
-      require_once( dirname(__FILE__)."/classes/rulesets/ReportManager.php");
+      require_once( dirname(__FILE__)."/rulesets/ReportManager.php");
       $manager = new ReportManager();
       if ($rowRule['pqrs_individual_2016_flag'] ) {
 	error_log("*DEBUG*: clinical_rules: Site: ".$_SESSION['site_id']."  About to runReport for ".$rowRule['id']);

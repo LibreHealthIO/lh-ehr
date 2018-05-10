@@ -1,3 +1,4 @@
+<?php
 /* Copyright (C) 2015 - 2017      Suncoast Connection
  * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
@@ -12,15 +13,21 @@
  *
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
-DROP TABLE IF EXISTS pqrs_direct_entry_lookup;
-CREATE TABLE IF NOT EXISTS `pqrs_direct_entry_lookup` (
-measure_number varchar(50),
-type varchar(100),
-value varchar(3072),
-status INT(1) );
 
-INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `value`,`status`) VALUES
+$query =
+"DROP TABLE IF EXISTS `pqrs_direct_entry_lookup`;";
+sqlStatementNoLog($query);
 
+$query =
+"CREATE TABLE `pqrs_direct_entry_lookup` (
+`measure_number` varchar(50),
+`type` varchar(100),
+`value` varchar(3072),
+`status` INT(1) );";
+sqlStatementNoLog($query);
+
+
+$query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `value`,`status`) VALUES
 ('PQRS_0001', 'description', 'Blood Glucose',''),
 ('PQRS_0001', 'question', 'What was the patient\'s most recent hemoglobin A1c (HbA1c) level?',''),
 ('PQRS_0001', 'answer', '1|A1c (HbA1c) level < 7.0%|3044F',9),
@@ -1005,22 +1012,22 @@ INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `value`,`statu
 ('PQRS_0353', 'answer', '2|Operative report does not identify the prosthetic implant specifications, reason not given (G9303)|G9303',9),
 
 ('PQRS_0354', 'description', 'Anastomotic Leak Intervention',''),
-('PQRS_0354', 'question', 'Intervention (via return to operating room, interventional radiology, or interventional gastroenterology) for presence of leak of endoluminal contents (such as air, fluid, GI contents, or contrast material) through an anastomosis. The presence of an infection/abscess thought to be related to an anastomosis, even if the leak cannot be definitively identified as visualized during an operation, or by contrast extravasation would also be considered an anastomotic leak<br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The "Performance Not Met" numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
+('PQRS_0354', 'question', 'Intervention (via return to operating room, interventional radiology, or interventional gastroenterology) for presence of leak of endoluminal contents (such as air, fluid, GI contents, or contrast material) through an anastomosis. The presence of an infection/abscess thought to be related to an anastomosis, even if the leak cannot be definitively identified as visualized during an operation, or by contrast extravasation would also be considered an anastomotic leak<br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The <b>Performance Not Met</b> numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
 ('PQRS_0354', 'answer', '1|Intervention for presence of leak of endoluminal contents through an anastomosis required (G9306)|G9306',1),
 ('PQRS_0354', 'answer', '2|Intervention for presence of leak of endoluminal contents through an anastomosis not required (G9305)|G9305',9),
 
 ('PQRS_0355', 'description', 'Unplanned Reoperation within the 30 Day Postoperative Period',''),
-('PQRS_0355', 'question', 'Unplanned return to the operating room for a surgical procedure, for any reason, within 30 days of the principal operative procedure<br>*** Please see Measure Documentation for Definitions and Instructions ***<br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The "Performance Not Met" numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.<br>NUMERATOR NOTE: This measure is not intended to capture patients who go back to the operating room within 30 days for a follow-up procedure based on the pathology results from the principal operative procedure or concurrent procedure. Examples: Exclude breast biopsies with return for re-excisions; insertion of port-a-cath for chemotherapy. The return to the OR may occur at any hospital or surgical facility.',''),
+('PQRS_0355', 'question', 'Unplanned return to the operating room for a surgical procedure, for any reason, within 30 days of the principal operative procedure<br>*** Please see Measure Documentation for Definitions and Instructions ***<br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The <b>Performance Not Met</b> numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.<br>NUMERATOR NOTE: This measure is not intended to capture patients who go back to the operating room within 30 days for a follow-up procedure based on the pathology results from the principal operative procedure or concurrent procedure. Examples: Exclude breast biopsies with return for re-excisions; insertion of port-a-cath for chemotherapy. The return to the OR may occur at any hospital or surgical facility.',''),
 ('PQRS_0355', 'answer', '1|Unplanned return to the operating room for a surgical procedure, for any reason, within 30 days of the principal operative procedure (G9308)|G9308',1),
 ('PQRS_0355', 'answer', '2|No return to the operating room for a surgical procedure, for any reason, within 30 days of the principal operative procedure (G9307)|G9307',9),
 
 ('PQRS_0356', 'description', ' Unplanned Hospital Readmission within 30 Days of Principal Procedure',''),
-('PQRS_0356', 'question', 'Inpatient readmission to the same hospital for any reason or an outside hospital (if known to the surgeon), within 30 days of the principal surgical procedure<br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The "Performance Not Met" numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
+('PQRS_0356', 'question', 'Inpatient readmission to the same hospital for any reason or an outside hospital (if known to the surgeon), within 30 days of the principal surgical procedure<br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The <b>Performance Not Met</b> numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
 ('PQRS_0356', 'answer', '1|Unplanned hospital readmission within 30 days of principal procedure (G9310)|G9310',1),
 ('PQRS_0356', 'answer', '2|No unplanned hospital readmission within 30 days of principal procedure (G9309)|G9309',9),
 
 ('PQRS_0357', 'description', 'Surgical Site Infection (SSI)',''),
-('PQRS_0357', 'question', 'Number of patients with a surgical site infection<br><b>*** Please see Measure Documentation for extensive Definitions and Instructions ***</b><br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The "Performance Not Met" numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify. ',''),
+('PQRS_0357', 'question', 'Number of patients with a surgical site infection<br><b>*** Please see Measure Documentation for extensive Definitions and Instructions ***</b><br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The <b>Performance Not Met</b> numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify. ',''),
 ('PQRS_0357', 'answer', '1|Surgical site infection (G9312)|G9312',1),
 ('PQRS_0357', 'answer', '2|No surgical site infection (G9311)|G9311',9),
 
@@ -1490,8 +1497,6 @@ INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `value`,`statu
 ('PQRS_0457', 'answer', '1|Patient spent less than three days in hospice care (G9860)|G9860',1),
 ('PQRS_0457', 'answer', '2|Patient spent greater than or equal to three days in hospice care (G9861)|G9861',9),
 
-
-/*Pre-Measures*/
 
 ('pre_0001', 'description', 'Pre-selection of patients for Measure 001',''),
 ('pre_0007', 'description', 'Pre-selection of patients for Measure 007',''),
@@ -2019,4 +2024,8 @@ INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `value`,`statu
 
 ('PQRS_0XXX', 'question', 'Please see measure documentation for specifics.',''),
 
-('end', 'blank', '','' );
+('end', 'blank', '','' );";
+sqlStatementNoLog($query);
+
+
+?>

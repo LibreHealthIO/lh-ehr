@@ -38,7 +38,8 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
 //
 
-require_once 'mips_headers.inc.php';
+require_once ('mips_headers.inc.php');
+require_once ('clinical_rules.php');
 /** Current format of date  */
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -190,7 +191,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   // Figure out the title and link
   if ($row['type'] == "pqrs_individual_2016") {
     if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2017 MIPS Measures');
+    $type_title = xl('2018 MIPS Measures');
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
   else if ($row['type'] == "pqrs_groups_2016") {
@@ -200,7 +201,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   }
   else if ($row['type'] == "pqrs_individual_2017" ) {
     if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2017 MIPS Measures');
+    $type_title = xl('2018 MIPS Measures');
 
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }

@@ -21,7 +21,7 @@ $sanitize_all_escapes = true;
 // STOP FAKE REGISTER GLOBALS
 $fake_register_globals = false;
 
-require_once 'mips_headers.inc.php';
+require_once ('mips_headers.inc.php');
 
 $BLACKLIST = array('0001','0146','0164','0192','0238','0322','0323','0324','0328','0329','0330','0331','0333','0334',
 '0345','0346','0347','0348','0388','0392','0393','0405','0406','0416','0432','0433','0434','0437','0439','0441');
@@ -166,7 +166,7 @@ if(!empty($report_id)) {
 		fwrite($myFileHandle, "    <taxpayerIdentificationNumber>$PROVIDER_TIN</taxpayerIdentificationNumber>\n");
 		if ($entityType == "individual"){
 		fwrite($myFileHandle, "    <nationalProviderIdentifier>$PROVIDER_NPI</nationalProviderIdentifier>\n");                                    }
-		fwrite($myFileHandle, "    <performanceYear>2017</performanceYear>\n");
+		fwrite($myFileHandle, "    <performanceYear>2018</performanceYear>\n");
 		//begin <measurementSet>
 		fwrite($myFileHandle, "    <measurementSet>\n");
 		fwrite($myFileHandle, "         <submissionMethod>registry</submissionMethod>\n");

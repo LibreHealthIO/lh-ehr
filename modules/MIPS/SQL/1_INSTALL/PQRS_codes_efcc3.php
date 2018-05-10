@@ -1,4 +1,4 @@
-
+<?php
 /*
  * Copyright (C),2016 Suncoast Connection
  *
@@ -8,16 +8,23 @@
  * @link    http://suncoastconnection.com
 */
 
-DROP TABLE IF EXISTS pqrs_efcc3;
-CREATE TABLE IF NOT EXISTS `pqrs_efcc3` (
+
+
+$query =
+"DROP TABLE IF EXISTS pqrs_efcc3;";
+sqlStatementNoLog($query);
+
+$query =
+"CREATE TABLE IF NOT EXISTS `pqrs_efcc3` (
 id int NOT NULL auto_increment,
 type varchar(15),
 code varchar(15),
 PRIMARY KEY  (`id`)
-);
+);";
+sqlStatementNoLog($query);
 
-
-INSERT INTO `pqrs_efcc3` (`type`, `code`) VALUES 
+$query =
+"INSERT INTO `pqrs_efcc3` (`type`, `code`) VALUES 
 ('pqrs_0195_a', '36221'),
 ('pqrs_0195_a', '36222'), 
 ('pqrs_0195_a', '36223'),
@@ -2951,4 +2958,5 @@ INSERT INTO `pqrs_efcc3` (`type`, `code`) VALUES
 ('pqrs_0411_b', 'F33.41'),
 ('pqrs_0411_b', 'F33.42'),
 ('pqrs_0411_b', 'F33.9'),
-('pqrs_0411_b', 'F34.1');
+('pqrs_0411_b', 'F34.1');";
+sqlStatementNoLog($query);

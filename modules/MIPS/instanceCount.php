@@ -5,8 +5,8 @@
   require_once("$srcdir/acl.inc");
  include_once("$srcdir/api.inc");
   require_once("$srcdir/formatting.inc.php");
-  require_once "$srcdir/options.inc.php";
-  require_once "$srcdir/formdata.inc.php";
+ require_once("$srcdir/options.inc.php");
+
 
  $form_from_date  = fixDate($_POST['form_from_date'], date('Y-m-01',strtotime("-1 month")));
   $form_to_date    = fixDate($_POST['form_to_date'], date('Y-m-t',strtotime("-1 month")));

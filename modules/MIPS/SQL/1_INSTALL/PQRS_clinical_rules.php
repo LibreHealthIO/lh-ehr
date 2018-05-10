@@ -1,3 +1,4 @@
+<?php
 /* Copyright (C) 2015 - 2017      Suncoast Connection
  * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
@@ -13,9 +14,12 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
 
-DROP TABLE IF EXISTS `clinical_rules`;
+$query =
+"DROP TABLE IF EXISTS `clinical_rules`;";
+sqlStatementNoLog($query);
 
-CREATE TABLE `clinical_rules` (
+$query =
+"CREATE TABLE `clinical_rules` (
   `id` varchar(35) NOT NULL DEFAULT '',
   `pid` bigint(20) NOT NULL DEFAULT '0' COMMENT '0 is default for all patients, while > 0 is id from patient_data table',
   `active_alert_flag` tinyint(1) DEFAULT NULL COMMENT 'Active Alert Widget Module flag - note not yet utilized',
@@ -27,10 +31,11 @@ CREATE TABLE `clinical_rules` (
   `pqrs_code` varchar(35) DEFAULT NULL COMMENT 'Measure number',
   `pqrs_individual_2016_flag` tinyint(4) DEFAULT NULL COMMENT 'Is MIPS flag',
   `pqrs_group_type` varchar(2) DEFAULT 'X' COMMENT 'XML output scheme type',
-  `active` tinyint(4) DEFAULT NULL COMMENT 'Is this measure turned on?');
+  `active` tinyint(4) DEFAULT NULL COMMENT 'Is this measure turned on?');";
+sqlStatementNoLog($query);
 
-
-INSERT INTO `clinical_rules` (`id`, `pid`, `active_alert_flag`, `passive_alert_flag`, `patient_reminder_flag`, `release_version`, `web_reference`, `access_control`, `pqrs_code`, `pqrs_individual_2016_flag`, `pqrs_group_type`, `active`) VALUES
+$query =
+"INSERT INTO `clinical_rules` (`id`, `pid`, `active_alert_flag`, `passive_alert_flag`, `patient_reminder_flag`, `release_version`, `web_reference`, `access_control`, `pqrs_code`, `pqrs_individual_2016_flag`, `pqrs_group_type`, `active`) VALUES
 
 ('PQRS_0001', 0, 0, 0, 0, '2017', '', 'patients:med', 'PQRS_0001', 1, 'X', 0),
 ('PQRS_0005', 0, 0, 0, 0, '2017', '', 'patients:med', 'PQRS_0005', 1, 'X', 0),
@@ -392,7 +397,12 @@ INSERT INTO `clinical_rules` (`id`, `pid`, `active_alert_flag`, `passive_alert_f
 ( 'pre_0454', 0, 0, 0, 0, '2017', '', 'patients:med',  'pre_0454', 1, 'Z', 0),
 ( 'pre_0455', 0, 0, 0, 0, '2017', '', 'patients:med',  'pre_0455', 1, 'Z', 0),
 ( 'pre_0456', 0, 0, 0, 0, '2017', '', 'patients:med',  'pre_0456', 1, 'Z', 0),
-( 'pre_0457', 0, 0, 0, 0, '2017', '', 'patients:med',  'pre_0457', 1, 'Z', 0);
+( 'pre_0457', 0, 0, 0, 0, '2017', '', 'patients:med',  'pre_0457', 1, 'Z', 0);";
+sqlStatementNoLog($query);
 
-ALTER TABLE `clinical_rules`
-  ADD PRIMARY KEY (`id`,`pid`);
+$query =
+"ALTER TABLE `clinical_rules`
+  ADD PRIMARY KEY (`id`,`pid`);";
+sqlStatementNoLog($query);
+
+?>

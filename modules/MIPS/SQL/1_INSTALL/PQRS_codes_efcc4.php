@@ -1,3 +1,4 @@
+<?php
 /* Copyright (C) 2015 - 2017      Suncoast Connection
  * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
@@ -13,16 +14,22 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
 
-DROP TABLE IF EXISTS pqrs_efcc4;
-CREATE TABLE IF NOT EXISTS `pqrs_efcc4` (
+
+$query =
+"DROP TABLE IF EXISTS pqrs_efcc4;";
+sqlStatementNoLog($query);
+
+$query =
+"CREATE TABLE IF NOT EXISTS `pqrs_efcc4` (
 id int NOT NULL auto_increment,
 type varchar(15),
 code varchar(15),
 PRIMARY KEY  (`id`)
-);
+);";
+sqlStatementNoLog($query);
 
-
-INSERT INTO `pqrs_efcc4` (`type`, `code`) VALUES
+$query =
+"INSERT INTO `pqrs_efcc4` (`type`, `code`) VALUES
 ('pqrs_0413_a', '36223'),
 ('pqrs_0413_a', '36224'),
 ('pqrs_0413_a', '36225'),
@@ -3549,42 +3556,5 @@ INSERT INTO `pqrs_efcc4` (`type`, `code`) VALUES
 ('pqrs_0418_b', 'S92.902A'),
 ('pqrs_0418_b', 'S92.902B'),
 ('pqrs_0418_b', 'S92.909A'),
-('pqrs_0418_b', 'S92.909B');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+('pqrs_0418_b', 'S92.909B');";
+sqlStatementNoLog($query);

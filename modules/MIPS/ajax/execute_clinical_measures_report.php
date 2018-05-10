@@ -31,7 +31,7 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
 
 require_once '../../interface/globals.php';
-require_once $srcdir.'/clinical_rules.php';
+require_once '../clinical_rules.php';
 
 // To improve performance and not freeze the session when running this
 // report, turn off session writing. Note that php session variables
