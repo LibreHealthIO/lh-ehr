@@ -44,6 +44,7 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  //Check access control
@@ -1714,6 +1715,23 @@ if ($repeatexdate != "") {
 </div>
 
 </body>
+<div id="reasons_modal">
+<?php
+$sql = "SELECT * FROM `list_options` WHERE list_id='cancellation_reasons'";
+$query = sqlStatement($sql);
+while ($r = sqlFetchArray($query)) {
+    echo "<input type='radio' value='". $r['title']."' name='reason_for_cancellation'>".$r['title']."<br/>";
+}
+echo "<input type='radio' value='others' name='reason_for_cancellation' id='reason_others'>others";
+?>
+<br/><br/>
+<div id="reason_textarea" style="display: none;">
+    <b style="margin-left: 1em;"><?php echo xlt('Please Add your reason'); ?></b><br/><br/>
+    <textarea id="others_textarea" rows="3" cols="50" style="margin-left: 1em;"></textarea>
+</div>
+<br/><br/>
+<input type="submit" class="cp-submit" value="Submit" style="margin-left: 20em;">
+</div>
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language='JavaScript'>
@@ -1733,7 +1751,7 @@ $(function() {
     $.datetimepicker.setLocale('<?= $DateLocale;?>');
 });
 </script>
-
+<?php call_required_libraries($library_array); ?>
 <script language="javascript">
 // jQuery stuff to make the page a little easier to use
 
@@ -1857,6 +1875,33 @@ function SubmitForm() {
   return true;
 }
 
+$('#reasons_modal').iziModal({
+               title: "<?php echo xlt('Reason for Cancellation'); ?>",
+               subtitle: "<?php echo xlt('Choose the reason for Cancellation.if the reason is not listed then please use the others'); ?>",
+               headerColor: '#eee',
+               closeOnEscape: true,
+               fullscreen:true,
+               overlayClose: false,
+               closeButton: false,
+               theme: 'light',  // light
+           });
+
+$("#form_apptstatus").change(function() {
+    
+    var selected_text = $("#form_apptstatus option:selected").text();
+    if (selected_text == "x Canceled") {
+        $("#reasons_modal").iziModal('open');
+    }
+})
+
+$('#reason_others').click(function () {
+    $('#reason_textarea').css("display", "block");
+});
+$('#others_textarea').keyup(function () {
+    var value = $('#others_textarea').val();
+    $('#reason_others').val(value);
+});
 </script>
+
 
 </html>

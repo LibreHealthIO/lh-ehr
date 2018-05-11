@@ -117,3 +117,8 @@ ALTER TABLE `users` DROP `fullscreen_role`;
 DROP TABLE IF EXISTS `menu_trees`;
 
 DROP TABLE IF EXISTS `menu_entries`;
+
+-- appointment cancellation reasons
+INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
+('cancellation_reasons', '1', 'Bad Weather', 0, 0, 0, '', '', '', 0, 0, 1, ''),
+('cancellation_reasons', '2', 'Personal issues', 0, 0, 0, '', '', '', 0, 0, 1, '');
