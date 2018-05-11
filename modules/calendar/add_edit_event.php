@@ -148,8 +148,6 @@ function DOBandEncounter()
     // Manage tracker status.
     // And auto-create a new encounter if appropriate.
     if (!empty($_POST['form_pid'])) {
-        print_r($_POST);
-        die();
      if ($GLOBALS['auto_create_new_encounters'] && $event_date == date('Y-m-d') && (is_checkin($_POST['form_apptstatus']) == '1') && !is_tracker_encounter_exist($event_date,$appttime,$_POST['form_pid'],$_GET['eid']))
      {
          $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false);
@@ -164,12 +162,12 @@ function DOBandEncounter()
                     // parameter is actually erroneous(is eid of the recurrent appt and not the new separated appt), so need to use the
                     // temporary-eid-for-manage-tracker global instead.
                     $temp_eid = (isset($GLOBALS['temporary-eid-for-manage-tracker'])) ? $GLOBALS['temporary-eid-for-manage-tracker'] : $_GET['eid'];
-            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['reason_for_cancellation'], $_POST['form_apptstatus'],$_POST['form_room'],$encounter);
+            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_reason_to_cancel'], $_POST['form_apptstatus'],$_POST['form_room'],$encounter);
                  }
      } else {
              # Capture the appt status and room number for patient tracker.
              if (!empty($_GET['eid'])) {
-                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],$_POST['reason_for_cancellation'], $_POST['form_apptstatus'],$_POST['form_room']);
+                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_reason_to_cancel'], $_POST['form_apptstatus'],$_POST['form_room']);
              }
      }
     }
@@ -1682,6 +1680,7 @@ if ($repeatexdate != "") {
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_dob' id='form_dob' />
+   <input type='hidden' size='10' name='form_reason_to_cancel' id='form_reason_to_cancel' />
   </td>
  </tr>
 
@@ -1759,7 +1758,12 @@ $(function() {
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
-    $("#form_save").click(function() { validate("save"); });
+    $("#form_save").click(function() { 
+        var reason = $("input[name='form_reason_for_cancellation']:checked").val();
+        if (reason) {
+            $('#form_reason_to_cancel').val(reason);
+        }
+        validate("save"); });
     $("#form_duplicate").click(function() { validate("duplicate"); });
     $("#find_available").click(function() { find_available(''); });
     $("#form_delete").click(function() { deleteEvent(); });
