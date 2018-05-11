@@ -4107,11 +4107,12 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('ub_admit_type','5','Trauma',50,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('ub_admit_type','9','Information Not Available',60,0);
 
--- appointment cancellation reasons
-INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
-('cancellation_reasons', '1', 'Bad Weather', 0, 0, 0, '', '', '', 0, 0, 1, ''),
-('cancellation_reasons', '2', 'Personal issues', 0, 0, 0, '', '', '', 0, 0, 1, '');
-
+-- Appointment Cancellation Reasons
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘lists’,’cancellation_reasons’,’Cancellation Reasons’, 1,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’1’,’No reason given’,5,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’2’,’Work’,10,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’3’,’Sick’,20,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’4’,’Weather’,25,0);
 --
 -- Table structure for table `lists`
 --
@@ -4831,6 +4832,7 @@ CREATE TABLE IF NOT EXISTS `patient_tracker_element` (
   `status`             varchar(31)  NOT NULL default '',
   `seq`                varchar(4)   NOT NULL default '' COMMENT 'This is a numerical sequence for this pt_tracker_id events',
   `user`               varchar(255) NOT NULL default '' COMMENT 'This is the user that created this element',
+  `reason`             varchar(1000)  NOT NULL default '',
   KEY  (`pt_tracker_id`,`seq`)
 ) ENGINE=InnoDB;
 

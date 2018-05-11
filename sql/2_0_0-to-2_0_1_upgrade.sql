@@ -118,7 +118,15 @@ DROP TABLE IF EXISTS `menu_trees`;
 
 DROP TABLE IF EXISTS `menu_entries`;
 
--- appointment cancellation reasons
-INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
-('cancellation_reasons', '1', 'Bad Weather', 0, 0, 0, '', '', '', 0, 0, 1, ''),
-('cancellation_reasons', '2', 'Personal issues', 0, 0, 0, '', '', '', 0, 0, 1, '');
+--Appointment Cancellation Reasons
+#IfNotRow2D list_options list_id lists option_id cancellation_reasons
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘lists’,’cancellation_reasons’,’Cancellation Reasons’, 1,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’1’,’No reason given’,5,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’2’,’Work’,10,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’3’,’Sick’,20,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’4’,’Weather’,25,0);
+#EndIf
+
+#IfColumn reason patient_tracker_element
+ALTER TABLE `patient_tracker_element` ADD `reason` VARCHAR(1000) NOT NULL AFTER `user`;
+#EndIf

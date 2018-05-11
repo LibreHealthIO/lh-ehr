@@ -148,6 +148,8 @@ function DOBandEncounter()
     // Manage tracker status.
     // And auto-create a new encounter if appropriate.
     if (!empty($_POST['form_pid'])) {
+        print_r($_POST);
+        die();
      if ($GLOBALS['auto_create_new_encounters'] && $event_date == date('Y-m-d') && (is_checkin($_POST['form_apptstatus']) == '1') && !is_tracker_encounter_exist($event_date,$appttime,$_POST['form_pid'],$_GET['eid']))
      {
          $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false);
@@ -162,12 +164,12 @@ function DOBandEncounter()
                     // parameter is actually erroneous(is eid of the recurrent appt and not the new separated appt), so need to use the
                     // temporary-eid-for-manage-tracker global instead.
                     $temp_eid = (isset($GLOBALS['temporary-eid-for-manage-tracker'])) ? $GLOBALS['temporary-eid-for-manage-tracker'] : $_GET['eid'];
-            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room'],$encounter);
+            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['reason_for_cancellation'], $_POST['form_apptstatus'],$_POST['form_room'],$encounter);
                  }
      } else {
              # Capture the appt status and room number for patient tracker.
              if (!empty($_GET['eid'])) {
-                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room']);
+                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],$_POST['reason_for_cancellation'], $_POST['form_apptstatus'],$_POST['form_room']);
              }
      }
     }
@@ -1686,6 +1688,23 @@ if ($repeatexdate != "") {
 </table></td></tr>
 <tr class='text'><td colspan='10'>
 <p>
+<div id="reasons_modal">
+<?php
+$sql = "SELECT * FROM `list_options` WHERE list_id='cancellation_reasons'";
+$query = sqlStatement($sql);
+while ($r = sqlFetchArray($query)) {
+    echo "<input type='radio' value='". $r['title']."' name='form_reason_for_cancellation'>".$r['title']."<br/>";
+}
+echo "<input type='radio' value='others' name='form_reason_for_cancellation' id='reason_others'>others";
+?>
+<br/><br/>
+<div id="reason_textarea" style="display: none;">
+    <b style="margin-left: 1em;"><?php echo xlt('Please Add your reason'); ?></b><br/><br/>
+    <textarea id="others_textarea" rows="3" cols="50" style="margin-left: 1em;"></textarea>
+</div>
+<br/><br/>
+<input type="button" class="cp-submit" value="Submit" style="margin-left: 20em;" id="close_reason_modal">
+</div>
 <input type='button' name='form_save' class="cp-submit"  id='form_save' value='<?php echo xla('Save');?>' />
 &nbsp;
 
@@ -1703,7 +1722,7 @@ if ($repeatexdate != "") {
 <?php if ($informant) echo "<p class='text'>" . xlt('Last update by') . " " .
   text($informant) . " " . xlt('on') . " " . text(oeFormatDateTime($row['pc_time'])) . "</p>\n"; ?>
 </center>
-</form>
+
 
 <div id="recurr_popup" style="visibility: hidden; position: absolute; top: 50px; left: 50px; width: 400px; border: 3px outset yellow; background-color: yellow; padding: 5px;">
 <?php echo xlt('Apply the changes to the Current event only, to this and all Future occurrences, or to All occurrences?') ?>
@@ -1715,23 +1734,7 @@ if ($repeatexdate != "") {
 </div>
 
 </body>
-<div id="reasons_modal">
-<?php
-$sql = "SELECT * FROM `list_options` WHERE list_id='cancellation_reasons'";
-$query = sqlStatement($sql);
-while ($r = sqlFetchArray($query)) {
-    echo "<input type='radio' value='". $r['title']."' name='reason_for_cancellation'>".$r['title']."<br/>";
-}
-echo "<input type='radio' value='others' name='reason_for_cancellation' id='reason_others'>others";
-?>
-<br/><br/>
-<div id="reason_textarea" style="display: none;">
-    <b style="margin-left: 1em;"><?php echo xlt('Please Add your reason'); ?></b><br/><br/>
-    <textarea id="others_textarea" rows="3" cols="50" style="margin-left: 1em;"></textarea>
-</div>
-<br/><br/>
-<input type="submit" class="cp-submit" value="Submit" style="margin-left: 20em;">
-</div>
+</form>
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language='JavaScript'>
@@ -1893,6 +1896,10 @@ $("#form_apptstatus").change(function() {
         $("#reasons_modal").iziModal('open');
     }
 })
+
+$('#close_reason_modal').click(function () {
+   $("#reasons_modal").iziModal('close'); 
+});
 
 $('#reason_others').click(function () {
     $('#reason_textarea').css("display", "block");

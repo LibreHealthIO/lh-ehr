@@ -179,7 +179,7 @@ if ($enc_yn['encounter'] == '0' || $enc_yn == '0') return(false);
 
  # this function will return the tracker id that is managed
  # or will return false if no tracker id was managed (in the case of a recurrent appointment)
-function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$room='',$enc_id='') {
+function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$reason,$status='',$room='',$enc_id='') {
 
   #First ensure the eid is not a recurrent appointment. If it is, then do not do anything and return false.
   $pc_appt =  sqlQuery("SELECT `pc_recurrtype` FROM `libreehr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
@@ -210,9 +210,9 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
     #If there is a status or a room, then add a tracker item.
     if (!empty($status) || !empty($room)) {
     sqlInsert("INSERT INTO `patient_tracker_element` " .
-              "(`pt_tracker_id`, `start_datetime`, `user`, `status`, `room`, `seq`) " .
-              "VALUES (?,?,?,?,?,'1')",
-              array($tracker_id,$datetime,$user,$status,$room));
+              "(`pt_tracker_id`, `start_datetime`, `user`, `status`, `room`, `seq`, `reason`) " .
+              "VALUES (?,?,?,?,?,'1',?)",
+              array($tracker_id,$datetime,$user,$status,$room,$reason));
     }
   }
   else {
@@ -225,9 +225,9 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
                    array(($tracker['lastseq']+1),$tracker_id));
       #Add a tracker item.
       sqlInsert("INSERT INTO `patient_tracker_element` " .
-                "(`pt_tracker_id`, `start_datetime`, `user`, `status`, `room`, `seq`) " .
-                "VALUES (?,?,?,?,?,?)",
-                array($tracker_id,$datetime,$user,$status,$room,($tracker['lastseq']+1)));
+                "(`pt_tracker_id`, `start_datetime`, `user`, `status`, `room`, `seq`, `reason`) " .
+                "VALUES (?,?,?,?,?,?,?)",
+                array($tracker_id,$datetime,$user,$status,$room,($tracker['lastseq']+1),$reason));
         do_action( 'tracker_status_changed', $args = [ 'tracker_id' => $tracker_id, 'current_status' => $status, 'last_status' => $tracker['laststatus'] ] );
     }
     if (!empty($enc_id)) {
