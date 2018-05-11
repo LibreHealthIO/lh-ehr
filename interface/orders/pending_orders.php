@@ -2,27 +2,27 @@
 /*
  * Pending Orders
  *
- * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2010-2013 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
+ * @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
- * @link http://librehealth.io 
+ * @link http://librehealth.io
  */
 
 require_once("../globals.php");
@@ -30,6 +30,7 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once "$srcdir/options.inc.php";
+require_once "$srcdir/headers.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
 $DateFormat = DateFormatRead();
@@ -129,11 +130,11 @@ else { // not export
    <input type='text' name='form_to_date' id="form_to_date" size='10'
           value='<?= htmlspecialchars(oeFormatShortDate($form_to_date)); ?>'/>
    &nbsp;
-   <input type='submit' name='form_refresh' value="<?php xl('Refresh','e') ?>">
+   <input type='submit' class="cp-misc" name='form_refresh' value="<?php xl('Refresh','e') ?>">
    &nbsp;
-   <input type='submit' name='form_csvexport' value="<?php xl('Export to CSV','e') ?>">
+   <input type='submit' class="cp-output" name='form_csvexport' value="<?php xl('Export to CSV','e') ?>">
    &nbsp;
-   <input type='button' value='<?php echo xla('Print'); ?>' id='printbutton' />
+   <input type='button' class="cp-output" value='<?php echo xla('Print'); ?>' id='printbutton' />
   </td>
  </tr>
 

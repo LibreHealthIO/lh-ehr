@@ -2,15 +2,15 @@
 /**
  * Display Measures Engine Report Form
  * Copyright (C) 2015 - 2017      Suncoast Connection
- * 
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
- * See the Mozilla Public License for more details. 
+ * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- * 
+ *
  * @author  Art Eaton <art@suncoastconnection.com>
  * @author  Bryan lee <leebc 11 at acm dot org>
  * @author  Sam Likins <sam.likins@wsi-services.com>
- * @package LibreHealthEHR 
+ * @package LibreHealthEHR
  * @link    http://suncoastconnection.com
  * @link    http://librehealth.io
  *
@@ -23,7 +23,7 @@ $sanitize_all_escapes = true;
 $fake_register_globals = false;
 
 require_once 'mips_headers.inc.php';
-
+require_once '../../library/headers.inc.php';
 
 function existsDefault(&$array, $key, $default = '') {
   if(array_key_exists($key, $array)) {
@@ -52,14 +52,14 @@ if(!empty($report_id)) {
 
   $date_report = $report_view['date_report'];
 
-  
-  
+
+
   $type_report = (
     in_array(
       $report_view['type'],
       array(
         'pqrs', 'pqrs_individual_2016',
-        
+
       )
     ) ?
     $report_view['type'] :
@@ -79,28 +79,28 @@ if(!empty($report_id)) {
                 $report_title="";
 
                 }
-  } 
+  }
 
   $target_date = $report_view['date_target'];
   $plan_filter = $report_view['plan'];
   $organize_method = $report_view['organize_mode'];
   $provider  = $report_view['provider'];
   $pat_prov_rel = $report_view['pat_prov_rel'];
-  
+
 
   $dataSheet = json_decode($report_view['data'], true);
- 
+
   $page_subtitle = ' - '.xlt('Date of Report').': '.text($date_report);
   $dis_text = ' disabled="disabled" ';
 
 } else {
-  // Collect report type parameter 
+  // Collect report type parameter
   $type_report = existsDefault($_GET, 'type', 'standard');
   $rule_filter = existsDefault($_POST, 'form_rule_filter', $type_report);
 
   if(in_array($type_report, array( 'pqrs_individual_2016'))) {
     $type_report = 'pqrs';
-  } 
+  }
 
   // Collect form parameters (set defaults if empty)
   if($type_report == 'pqrs') {
@@ -109,7 +109,7 @@ if(!empty($report_id)) {
 
   if($type_report == 'pqrs') {
     $target_date = existsDefault($_POST, 'form_target_date', '2017-12-31 23:59:59');  //change defaults in 2017
-  } 
+  }
   $plan_filter = existsDefault($_POST, 'form_plan_filter', '');
   $organize_method = (empty($plan_filter)) ? 'default' : 'plans';
   $provider = trim(existsDefault($_POST, 'form_provider', ''));
@@ -472,7 +472,7 @@ function Form_Validate() {
                           <?php echo htmlspecialchars(xl('Generate XML for MIPS'), ENT_NOQUOTES); ?>
                         </span>
                       </a>
-<?php   } 
+<?php   }
 
       if($back_link == 'list') {
 ?>
@@ -535,7 +535,7 @@ function Form_Validate() {
               case 'pqrs_individual_2016':
                 if(!empty($row['pqrs_code'])) {
                   $tempMeasuresString .= ' '.htmlspecialchars(xl('MIPS ').preg_replace('/PQRS_/', '',$row['pqrs_code']), ENT_NOQUOTES).' ';
-                 
+
                 }
                 break;
 
@@ -551,7 +551,7 @@ function Form_Validate() {
                 ?>
                 <a href='<?php echo $measureURL;?>' target="_blank"><?php echo $tempMeasuresString;?></a>
                 <?php
-             
+
             }
 
             if(!(empty($row['concatenated_label']))) {
@@ -603,7 +603,7 @@ function Form_Validate() {
             }
 
 
-// TODO: 
+// TODO:
           if(isset($row['itemized_test_id']) && $row['pass_target'] > 0) {
             $query = http_build_query(array(
               'from_page' => 'pqrs_report',
@@ -626,7 +626,7 @@ function Form_Validate() {
           if(isset($row['is_main'])) {
               $failed_items = $row['pass_filter'] - $row['pass_target'] - $row['excluded'];
 
-          } 
+          }
 
           if(isset($row['itemized_test_id']) && ($failed_items > 0) ) {
             $query = http_build_query(array(

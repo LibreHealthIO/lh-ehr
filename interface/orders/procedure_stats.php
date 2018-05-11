@@ -28,6 +28,7 @@ require_once("../../library/patient.inc");
 require_once("../../library/acl.inc");
 require_once("../../custom/code_types.inc.php");
 require_once "$srcdir/options.inc.php";
+require_once "$srcdir/headers.inc.php";
 require_once "$srcdir/formdata.inc.php";
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
 $DateFormat = DateFormatRead();
@@ -365,7 +366,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
 ?>
   </td>
   <td align='right' valign='top' class='detail' nowrap>
-   <input type='submit' name='form_submit' value='<?php xl('Submit','e'); ?>'
+   <input type='submit' class="cp-submit" name='form_submit' value='<?php xl('Submit','e'); ?>'
     title='<?php xl('Click to generate the report','e'); ?>' />
   </td>
  </tr>
@@ -420,7 +421,7 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
       "AND po.date_ordered <= ? ";
 
     array_push($sqlBindArray, $from_date, $to_date);
-  
+
     if ($form_facility) {
       $query .= "AND fe.facility_id = ? ";
       array_push($sqlBindArray, $form_facility);
