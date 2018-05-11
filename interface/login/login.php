@@ -32,6 +32,7 @@ $sanitize_all_escapes = true;
 $ignoreAuth = true;
 include_once("../globals.php");
 include_once("$srcdir/sql.inc");
+require '../../library/headers.inc.php';
 ?>
 <html>
 <head>
@@ -214,7 +215,7 @@ include_once("$srcdir/sql.inc");
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input class="button large" type="submit" onClick="transmit_form()"
+                                    <input class="cp-submit large" type="submit" onClick="transmit_form()"
                                            value="<?php echo xla('Login'); ?>">
                                 </td>
                             </tr>
