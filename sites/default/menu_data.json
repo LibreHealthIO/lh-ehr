@@ -933,7 +933,15 @@
             "url" : "/interface/usergroup/docs_validation.php",
             "children" : [ ],
             "requirement" : 0
-        } ],
+        }, {
+            "label" : "UI-Editor",
+            "menu_id" : "adm0",
+            "target" : "msc",
+            "url" : "/interface/utilities/ui-editor.php",
+            "children" : [ ],
+            "requirement" : 0
+        } 
+    ],
         "requirement" : 0
     }, { 
         "label" : "Document Templates",
