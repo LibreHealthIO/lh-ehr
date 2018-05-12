@@ -1762,8 +1762,17 @@ $(document).ready(function(){
         var reason = $("input[name='form_reason_for_cancellation']:checked").val();
         if (reason) {
             $('#form_reason_to_cancel').val(reason);
+        
+        validate("save");
         }
-        validate("save"); });
+        else {
+            var selected_text = $("#form_apptstatus option:selected").text();
+            if (selected_text == "x Canceled") {
+                $("#reasons_modal").iziModal('open');
+            }
+        }
+         });
+    
     $("#form_duplicate").click(function() { validate("duplicate"); });
     $("#find_available").click(function() { find_available(''); });
     $("#form_delete").click(function() { deleteEvent(); });
