@@ -741,6 +741,17 @@ if ($_POST['form_action'] == "save") {
                 sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_eid = ?", array($eid) );
             }
         }
+
+        #pass status Deleted to tracker when deleting appointment by clicking delete
+        if (!empty($_GET['eid'])) {
+            $tmph = $_POST['form_hour'] + 0;
+            $tmpm = $_POST['form_minute'] + 0;
+            if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
+            $appttime = "$tmph:$tmpm:00";
+            $event_date = $POST['form_date'];
+
+            manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],'Deleted',$_POST['form_room']);
+        }
  }
 
  if ($_POST['form_action'] != "") {
