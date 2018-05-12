@@ -162,12 +162,12 @@ function DOBandEncounter()
                     // parameter is actually erroneous(is eid of the recurrent appt and not the new separated appt), so need to use the
                     // temporary-eid-for-manage-tracker global instead.
                     $temp_eid = (isset($GLOBALS['temporary-eid-for-manage-tracker'])) ? $GLOBALS['temporary-eid-for-manage-tracker'] : $_GET['eid'];
-            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_reason_to_cancel'], $_POST['form_apptstatus'],$_POST['form_room'],$encounter);
+            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"], $_POST['form_apptstatus'],$_POST['form_room'],$_POST['form_reason_to_cancel'], $encounter);
                  }
      } else {
              # Capture the appt status and room number for patient tracker.
              if (!empty($_GET['eid'])) {
-                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_reason_to_cancel'], $_POST['form_apptstatus'],$_POST['form_room']);
+                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"], $_POST['form_apptstatus'],$_POST['form_room'], '', $_POST['form_reason_to_cancel']);
              }
      }
     }

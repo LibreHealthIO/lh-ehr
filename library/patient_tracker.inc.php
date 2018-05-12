@@ -179,7 +179,7 @@ if ($enc_yn['encounter'] == '0' || $enc_yn == '0') return(false);
 
  # this function will return the tracker id that is managed
  # or will return false if no tracker id was managed (in the case of a recurrent appointment)
-function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$reason,$status='',$room='',$enc_id='') {
+function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$room='',$enc_id='', $reason='') {
 
   #First ensure the eid is not a recurrent appointment. If it is, then do not do anything and return false.
   $pc_appt =  sqlQuery("SELECT `pc_recurrtype` FROM `libreehr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
