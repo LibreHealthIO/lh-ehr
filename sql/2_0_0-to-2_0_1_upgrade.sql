@@ -117,3 +117,6 @@ ALTER TABLE `users` DROP `fullscreen_role`;
 DROP TABLE IF EXISTS `menu_trees`;
 
 DROP TABLE IF EXISTS `menu_entries`;
+#IfMissingColumn form_misc_billing_options onset_date
+ ALTER TABLE `form_misc_billing_options` ADD `onset_date` DATE NOT NULL ;
+#EndIf
