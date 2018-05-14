@@ -44,4 +44,7 @@ Create a working branch
 ° git commit -m "Good short comment about the fix including the issue#" 
 ° git push origin <workbranchname> 
 
+NOTE before creating any new branch to work on run the commands below on your terminal so as to get latest changes
+° git checkout master
+° git pull upstream master
 
