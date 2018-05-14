@@ -1694,7 +1694,7 @@ $query = sqlStatement($sql);
 while ($r = sqlFetchArray($query)) {
     echo "<input type='radio' value='". $r['title']."' name='form_reason_for_cancellation'>".$r['title']."<br/>";
 }
-echo "<input type='radio' value='others' name='form_reason_for_cancellation' id='reason_others'>others";
+echo "<input type='radio' value='other' name='form_reason_for_cancellation' id='reason_others'>other";
 ?>
 <br/><br/>
 <div id="reason_textarea" style="display: none;">
@@ -1895,7 +1895,7 @@ function SubmitForm() {
 
 $('#reasons_modal').iziModal({
                title: "<?php echo xlt('Reason for Cancellation'); ?>",
-               subtitle: "<?php echo xlt('Choose the reason for Cancellation.if the reason is not listed then please use the others'); ?>",
+               subtitle: "<?php echo xlt('Choose the reason for Cancellation. If the reason is not listed then please use the other'); ?>",
                headerColor: '#eee',
                closeOnEscape: true,
                fullscreen:true,

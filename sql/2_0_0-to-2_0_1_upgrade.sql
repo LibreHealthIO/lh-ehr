@@ -127,6 +127,6 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’4’,’Weather’,25,0);
 #EndIf
 
-#IfColumn reason patient_tracker_element
-ALTER TABLE `patient_tracker_element` ADD `reason` VARCHAR(1000) NOT NULL AFTER `user`;
+#IfMissingColumn patient_tracker_element reason
+ALTER TABLE `patient_tracker_element` ADD `reason` VARCHAR(255) NOT NULL AFTER `user`;
 #EndIf

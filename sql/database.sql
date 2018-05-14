@@ -4832,7 +4832,7 @@ CREATE TABLE IF NOT EXISTS `patient_tracker_element` (
   `status`             varchar(31)  NOT NULL default '',
   `seq`                varchar(4)   NOT NULL default '' COMMENT 'This is a numerical sequence for this pt_tracker_id events',
   `user`               varchar(255) NOT NULL default '' COMMENT 'This is the user that created this element',
-  `reason`             varchar(1000)  NOT NULL default '',
+  `reason`             varchar(255)  NOT NULL default '',
   KEY  (`pt_tracker_id`,`seq`)
 ) ENGINE=InnoDB;
 
