@@ -76,7 +76,7 @@ if (isset($_POST['bn_process_hcfa']) || isset($_POST['bn_process_hcfa_form']) ) 
 }
 
 if (isset($_POST['bn_process_ub04'])) {
-  $pdf =& new Cezpdf('LETTER');
+  $pdf = new Cezpdf('LETTER');
   $pdf->ezSetMargins(trim($_POST['ubtop_margin'])+0,0,trim($_POST['ubleft_margin'])+0,0);
   $pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Courier.afm");
 }
