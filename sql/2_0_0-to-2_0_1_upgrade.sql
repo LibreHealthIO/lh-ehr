@@ -117,3 +117,7 @@ ALTER TABLE `users` DROP `fullscreen_role`;
 DROP TABLE IF EXISTS `menu_trees`;
 
 DROP TABLE IF EXISTS `menu_entries`;
+
+#IfMissingColumn users picture_url
+ALTER TABLE `users` ADD `picture_url` VARCHAR(2000) NOT NULL AFTER `suffix`;
+#EndIf

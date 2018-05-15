@@ -70,6 +70,23 @@ function trimAll(sString)
     return sString;
 } 
 
+function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#prof_img')
+                    .attr('src', e.target.result)
+                    .width(64)
+                    .height(64);
+                $('#prof_img').css("display", "block"); 
+                $('#file_input_button').text("Edit Profile Picture");
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+}
+
 function submitform() {
     if (document.forms[0].rumple.value.length>0 && document.forms[0].stiltskin.value.length>0 && document.getElementById('fname').value.length >0 && document.getElementById('lname').value.length >0) {
        top.restoreSession();
@@ -181,6 +198,7 @@ function authorized_clicked() {
 <body class="body_top">
 <table><tr><td>
 <span class="title"><?php echo xlt('Add User'); ?></span>&nbsp;</td>
+
 <td>
 <a class="css_button cp-submit" name='form_save' id='form_save' href='#' onclick="return submitform()">
     <span><?php echo xlt('Save');?></span></a>
@@ -189,15 +207,20 @@ function authorized_clicked() {
 </a>
 </td></tr></table>
 <br><br>
-
-<table border=0>
-
-<tr><td valign=top>
-<form name='new_user' method='post'  target="_parent" action="usergroup_admin.php"
+<form name='new_user' method='post'  target="_parent" action="usergroup_admin.php" enctype="multipart/form-data" 
  onsubmit='return top.restoreSession()'>
+<table border=0>
+<tr>
+<td><img id="prof_img" style="display: none; border-radius: 40px; border: 8px solid #888;"></td>
+<td style="padding-left: 350px;">
+<input type="file" name="profile_picture" id="files"  class="hidden" style="display: none;" onchange="readURL(this);" />
+<label for="files" class="css_button cp-positive" id="file_input_button"><?php echo xlt('Add Profile Picture'); ?>
+</label>
+</td>
+</tr>
+<tr><td valign=top>
 <input type='hidden' name='mode' value='new_user'>
 <input type='hidden' name='secure_pwd' value="<?php echo $GLOBALS['secure_password']; ?>">
-
 <span class="bold">&nbsp;</span>
 </td><td>
 <table border=0 cellpadding=0 cellspacing=0 style="width:600px;">
@@ -206,6 +229,7 @@ function authorized_clicked() {
 <td style="width:150px;"><span class="text"><?php echo xlt('Pass Phrase'); ?>: </span></td><td style="width:250px;"><input type="entry" style="width:120px;" name=stiltskin><span class="mandatory">&nbsp;*</span></td>
 </tr>
 <tr>
+
     <td style="width:150px;"></td><td  style="width:220px;"></span></td>
     <TD style="width:200px;"><span class=text><?php echo xlt('Your Pass Phrase'); ?>: </span></TD>
     <TD class='text' style="width:280px;"><input type='password' name=adminPass style="width:120px;"  value="" autocomplete='off'><font class="mandatory">*</font></TD>
@@ -398,6 +422,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
 </table>
 
 <br>
+
 <input type="hidden" name="newauthPass">
 </form>
 </td>
