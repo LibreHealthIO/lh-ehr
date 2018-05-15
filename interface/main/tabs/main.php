@@ -246,7 +246,10 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php
     if($_SESSION['authUser'] == "admin") {
         //only admin can use the updater
-        echo "<div id='updater-icon'><i class='fa fa-refresh'></i></div><div id='updater-iframe'></div>";
+        echo  "<div id='updater-icon'>
+                <i class='fa fa-refresh'></i>
+                </div>
+                <div id='updater-iframe'></div>";
     }
 ?>
 <?php do_action( 'after_main_box' ); ?>
