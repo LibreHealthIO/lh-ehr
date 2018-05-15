@@ -28,8 +28,7 @@ $sanitize_all_escapes=true;
 //STOP FAKE REGISTER GLOBALS
 $fake_register_globals=false;
 //
-
-require_once("../../globals.php");
+require_once ('../../interface/globals.php');
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
@@ -189,7 +188,7 @@ if ($from_page == "pqrs_report") {
  <tr>
   <td class='text'>
   <?php if ($from_page == "pqrs_report") { ?>
-   <a href='../../../modules/MIPS/clinical_measures.php?report_id=<?php echo attr($report_id) ?>' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt("Return To Report Results"); ?></span></a>
+   <a href='clinical_measures.php?report_id=<?php echo attr($report_id) ?>' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt("Return To Report Results"); ?></span></a>
   <?php } ?>
   </td>
   <td class='text' align='center'>
@@ -231,10 +230,10 @@ if ($fend > $count) $fend = $count;
      echo "<td colspan='6' class='text'>";
      echo "<b>";
      if ($pass_id == "fail") {
-       echo xlt("Failed Patients");
+       echo xlt("Performance Not Met");
      }
      else if ($pass_id == "pass") {
-       echo xlt("Passed Patients");
+       echo xlt("Performance Met");
      }
      else if ($pass_id == "exclude") {
        echo xlt("Excluded Patients");
@@ -292,7 +291,7 @@ if ($fend > $count) $fend = $count;
 	$number_answers_of_measure = implode(" ",$pqrs_result);
 //error_log("***** DEBUG *****  patient_select() -- number_answers_of_measure=\"".$number_answers_of_measure."\"  $from_page=\"".$from_page);
 
-	echo "<b>Report Year:</b> ".$report_year."<br>";
+	//echo "<b>Report Year:</b> ".$report_year."<br>";
 	echo "<b>Measure Number:</b>".$measure_number ."<br>";
 	echo "<p>";
 	echo "<b>Description:</b>  ".$measure_description."<br>";
@@ -423,7 +422,7 @@ if ($result) {
  <tr>
   <td class='text'>
   <?php if ($from_page == "pqrs_report") { ?>
-   <a href='../../reports/clinical_measures.php?report_id=<?php echo attr($report_id) ?>' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt("Return To Report Results"); ?></span></a>
+   <a href='clinical_measures.php?report_id=<?php echo attr($report_id) ?>' class='css_button' onclick='top.restoreSession()'><span><?php echo xlt("Return To Report Results"); ?></span></a>
   <?php }   ?>
   </td>
   <td class='text' align='center'>

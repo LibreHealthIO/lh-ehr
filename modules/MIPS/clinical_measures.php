@@ -208,20 +208,6 @@ function collectStatus(report_id) {
   var repeater = setTimeout("collectStatus("+report_id+")", 10000);
 }
 
-function GenXml(sNested) {
-
-  top.restoreSession();
-
-  if(sNested == "PQRS") {
-    var form_rule_filter = theform.form_rule_filter.value;
-    var sLoc = 'generate_pqrs_xml.php?target_date='+theform.form_target_date.value+'&form_provider='+theform.form_provider.value+"&report_id=<?php echo attr($report_id); ?>&xmloptimize="+document.getElementById("xmloptimize").checked;
-  } else {
-    var sLoc = '../../custom/export_registry_xml.php?&target_date='+theform.form_target_date.value+'&nested='+sNested;
-  }
-  dlgopen(sLoc, '_blank', 600, 500);
-
-  return false;
-}
 
 function GenXmlMIPS(sNested) {
 
@@ -396,25 +382,7 @@ function Form_Validate() {
               </div>
             </td>
             <td align='left' valign='middle' height="100%">
-              <table style='border-left:1px solid; width:100%; height:100%' >
-                <tr>
-                  <td scope="row">
-                    <div style='margin-left:15px'>
-                        <span>
-<?php  //the following isn't really necessary except to echo the title
- 	if (isset($report_view['title'])) {
-		$report_title=$report_view['title'];
-    	} else {
-		$report_title="";
-    	}
-	if ($report_title != "" ) {
-		echo ("Report Title:  $report_title \n");
-	}  ?>
 
-                        </span>
-                    </div>
-		  </td>
-		</tr>
 <?php if(empty($report_id)) { ?>
                       <a id='submit_button' href='#' class='css_button' onclick='runReport();'>
                         <span>
@@ -436,11 +404,6 @@ function Form_Validate() {
                         Optimize XML report?
                         <input id="xmloptimize" type="checkbox" name="xmloptimize" value="1" />
                         
-                      <a href="#"  id="xml_pqrs" class='css_button' onclick='GenXml("PQRS");'>
-                        <span>
-                          <?php echo htmlspecialchars(xl('OLD XML for PQRS'), ENT_NOQUOTES); ?>
-                        </span>
-                      </a>
                         <a href="#"  id="xml_MIPS" class='css_button' onclick='GenXmlMIPS("PQRS");'>
                         <span>
                           <?php echo htmlspecialchars(xl('NEW XML for MIPS'), ENT_NOQUOTES); ?>
@@ -460,7 +423,7 @@ function Form_Validate() {
                     </div>
                   </td>
                 </tr>
-              </table>
+
             </td>
           </tr>
         </table>
@@ -665,7 +628,7 @@ function Form_Validate() {
       <input type='hidden' name='form_new_report_id' id='form_new_report_id' value=''/>
     </form>
   </body>
-  <script type="text/javascript" src="../../assets/js/jquery-datetimepicker-2-5-4/jquery.datetimepicker.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
         $("#form_begin_date").datetimepicker({

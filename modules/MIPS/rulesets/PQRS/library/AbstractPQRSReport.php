@@ -17,7 +17,7 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
 
-require_once( dirname(__FILE__)."/../../../../clinical_rules.php" );
+require_once( dirname(__FILE__)."/../../../clinical_rules.php" );
 
 abstract class AbstractPQRSReport implements RsReportIF
 {

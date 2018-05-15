@@ -296,7 +296,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 function manageReport(report_id,action,newname){
         $.ajax({
                 type: 'POST',
-                url: '<?php echo $GLOBALS['webroot']; ?>/library/classes/rulesets/PQRS/PQRSReportManager.php',
+                url: '<?php echo $GLOBALS['webroot']; ?>/MIPS/rulesets/PQRS/PQRSReportManager.php',
                 dataType: 'text',
                 data: {
                         action: action,
