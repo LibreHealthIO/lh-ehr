@@ -3201,12 +3201,16 @@ $GLOBALS_METADATA = array(
       xl('MIPS Registry ID')
     ),
 
-    'pqrs_vendor_unique_id' => array(
-      xl('MIPS VENDOR UNIQUE ID'),  // for XML generation
-      'text',                           // data type
-      'FIXME vendor unique id FIXME!!!',            // default
-      xl('MIPS Registry Name')
+    'pqrs_entityType' => array(
+      xl('Reporting Entity Type'),	// for XML generation
+            array(
+        'individual' => 'Per Provider NPI',
+        'group' => 'For whole Tax ID'
+      ),                           // data type
+      'FIXME entityType FIXME!!!',            // default
+      xl('Group or Individual reporting')
     ),
+
      'pqrs_attestation_date' => array(
       xl('Default Direct Entry Date'),
       'text',                           // data type
