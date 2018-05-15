@@ -5898,6 +5898,7 @@ CREATE TABLE `users` (
   `cpoe` tinyint(1) NULL DEFAULT NULL,
   `physician_type` VARCHAR(50) DEFAULT NULL,
   `suffix` varchar(255) DEFAULT NULL,
+  `picture_url` varchar(2000) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
