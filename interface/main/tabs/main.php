@@ -58,7 +58,7 @@ var webroot_url="<?php echo $web_root; ?>";
 
 <?php
     /*  Include Bootstrap, Knockout Libraries and Font Awesome library   */
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","knockout", "font-awesome"));
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","knockout", "font-awesome", "iziModalToast"));
 ?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>
@@ -246,7 +246,7 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php
     if($_SESSION['authUser'] == "admin") {
         //only admin can use the updater
-        echo "<div id='updater-icon'><i class='fa fa-refresh'></i></div>";
+        echo "<div id='updater-icon'><i class='fa fa-refresh'></i></div><div id='updater-iframe'></div>";
     }
 ?>
 <?php do_action( 'after_main_box' ); ?>
@@ -266,3 +266,24 @@ var webroot_url="<?php echo $web_root; ?>";
     font-size: 18px; /* Increase font size */
     }
 </style>
+<script>
+$("#updater-iframe").iziModal({
+           title: '<i class="fa fa-refresh"></i> <?php echo xlt("Updater"); ?>',
+           subtitle: '<?php echo xlt("Configuration settings for updater"); ?>',
+           headerColor: '#F69600',
+           closeOnEscape: true,
+           fullscreen:true,
+           overlayClose: false,
+           closeButton: true,
+           theme: 'dark',  // light
+           iframe: true,
+           width:900,
+           focusInput: true,
+           padding:5,
+           iframeHeight: 400,
+           iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/index.php"
+});
+$('#updater-icon').click(function () {
+    $('#updater-iframe').iziModal('open');
+});
+</script>
