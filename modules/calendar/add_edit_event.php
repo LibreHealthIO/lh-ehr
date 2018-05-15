@@ -44,6 +44,7 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  //Check access control
@@ -161,12 +162,12 @@ function DOBandEncounter()
                     // parameter is actually erroneous(is eid of the recurrent appt and not the new separated appt), so need to use the
                     // temporary-eid-for-manage-tracker global instead.
                     $temp_eid = (isset($GLOBALS['temporary-eid-for-manage-tracker'])) ? $GLOBALS['temporary-eid-for-manage-tracker'] : $_GET['eid'];
-            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room'],$encounter);
+            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"], $_POST['form_apptstatus'],$_POST['form_room'],$_POST['form_reason_to_cancel'], $encounter);
                  }
      } else {
              # Capture the appt status and room number for patient tracker.
              if (!empty($_GET['eid'])) {
-                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room']);
+                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"], $_POST['form_apptstatus'],$_POST['form_room'], '', $_POST['form_reason_to_cancel']);
              }
      }
     }
@@ -1679,12 +1680,30 @@ if ($repeatexdate != "") {
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_dob' id='form_dob' />
+   <input type='hidden' size='10' name='form_reason_to_cancel' id='form_reason_to_cancel' />
   </td>
  </tr>
 
 </table></td></tr>
 <tr class='text'><td colspan='10'>
 <p>
+<div id="reasons_modal">
+<?php
+$sql = "SELECT * FROM `list_options` WHERE list_id='cancellation_reasons'";
+$query = sqlStatement($sql);
+while ($r = sqlFetchArray($query)) {
+    echo "<input type='radio' value='". $r['title']."' name='form_reason_for_cancellation'>".$r['title']."<br/>";
+}
+echo "<input type='radio' value='other' name='form_reason_for_cancellation' id='reason_others'>other";
+?>
+<br/><br/>
+<div id="reason_textarea" style="display: none;">
+    <b style="margin-left: 1em;"><?php echo xlt('Please Add your reason'); ?></b><br/><br/>
+    <textarea id="others_textarea" rows="3" cols="50" style="margin-left: 1em;"></textarea>
+</div>
+<br/><br/>
+<input type="button" class="cp-submit" value="Submit" style="margin-left: 20em;" id="close_reason_modal">
+</div>
 <input type='button' name='form_save' class="cp-submit"  id='form_save' value='<?php echo xla('Save');?>' />
 &nbsp;
 
@@ -1702,7 +1721,7 @@ if ($repeatexdate != "") {
 <?php if ($informant) echo "<p class='text'>" . xlt('Last update by') . " " .
   text($informant) . " " . xlt('on') . " " . text(oeFormatDateTime($row['pc_time'])) . "</p>\n"; ?>
 </center>
-</form>
+
 
 <div id="recurr_popup" style="visibility: hidden; position: absolute; top: 50px; left: 50px; width: 400px; border: 3px outset yellow; background-color: yellow; padding: 5px;">
 <?php echo xlt('Apply the changes to the Current event only, to this and all Future occurrences, or to All occurrences?') ?>
@@ -1714,6 +1733,7 @@ if ($repeatexdate != "") {
 </div>
 
 </body>
+</form>
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language='JavaScript'>
@@ -1733,12 +1753,28 @@ $(function() {
     $.datetimepicker.setLocale('<?= $DateLocale;?>');
 });
 </script>
-
+<?php call_required_libraries($library_array); ?>
 <script language="javascript">
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
-    $("#form_save").click(function() { validate("save"); });
+    $("#form_save").click(function() { 
+        var reason = $("input[name='form_reason_for_cancellation']:checked").val();
+        if (reason) {
+            $('#form_reason_to_cancel').val(reason);
+            validate("save");
+        }
+        else {
+            var selected_text = $("#form_apptstatus option:selected").text();
+            if (selected_text == "x Canceled") {
+                $("#reasons_modal").iziModal('open');
+            }
+            else {
+                validate("save");
+            }
+        }
+         });
+
     $("#form_duplicate").click(function() { validate("duplicate"); });
     $("#find_available").click(function() { find_available(''); });
     $("#form_delete").click(function() { deleteEvent(); });
@@ -1857,6 +1893,37 @@ function SubmitForm() {
   return true;
 }
 
+$('#reasons_modal').iziModal({
+               title: "<?php echo xlt('Reason for Cancellation'); ?>",
+               subtitle: "<?php echo xlt('Choose the reason for Cancellation. If the reason is not listed then please use the other'); ?>",
+               headerColor: '#eee',
+               closeOnEscape: true,
+               fullscreen:true,
+               overlayClose: false,
+               closeButton: true,
+               theme: 'light',  // light
+           });
+
+$("#form_apptstatus").change(function() {
+    
+    var selected_text = $("#form_apptstatus option:selected").text();
+    if (selected_text == "x Canceled") {
+        $("#reasons_modal").iziModal('open');
+    }
+})
+
+$('#close_reason_modal').click(function () {
+   $("#reasons_modal").iziModal('close'); 
+});
+
+$('#reason_others').click(function () {
+    $('#reason_textarea').css("display", "block");
+});
+$('#others_textarea').keyup(function () {
+    var value = $('#others_textarea').val();
+    $('#reason_others').val(value);
+});
 </script>
+
 
 </html>
