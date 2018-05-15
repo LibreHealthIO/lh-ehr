@@ -243,5 +243,26 @@ var webroot_url="<?php echo $web_root; ?>";
   
   
 </script>
-
+<?php
+    if($_SESSION['authUser'] == "admin") {
+        //only admin can use the updater
+        echo "<div id='updater-icon'><i class='fa fa-refresh'></i></div>";
+    }
+?>
 <?php do_action( 'after_main_box' ); ?>
+<style type="text/css">
+    #updater-icon {
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #F69600; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 40px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+    }
+</style>
