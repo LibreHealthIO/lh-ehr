@@ -118,6 +118,20 @@ DROP TABLE IF EXISTS `menu_trees`;
 
 DROP TABLE IF EXISTS `menu_entries`;
 
+
+--Appointment Cancellation Reasons
+#IfNotRow2D list_options list_id lists option_id cancellation_reasons
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘lists’,’cancellation_reasons’,’Cancellation Reasons’, 1,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’1’,’No reason given’,5,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’2’,’Work’,10,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’3’,’Sick’,20,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’4’,’Weather’,25,0);
+#EndIf
+
+#IfMissingColumn patient_tracker_element reason
+ALTER TABLE `patient_tracker_element` ADD `reason` VARCHAR(255) NOT NULL AFTER `user`;
+
 #IfMissingColumn users picture_url
 ALTER TABLE `users` ADD `picture_url` VARCHAR(2000) NOT NULL AFTER `suffix`;
+
 #EndIf
