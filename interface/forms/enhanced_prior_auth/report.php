@@ -1,24 +1,11 @@
 <?php
 /*
- *  report.php used by the misc_billing_form
+ *  report.php used by the Enhanced Prior Authorization
  *
- *  This program is used by the misc_billing_form
- *  The changes to this file as of November 16 2016 to add needed items to the HCFA Print and Electronic Transmission
- *  are covered under the terms of the Mozilla Public License, v. 2.0
+ *  This program is used by the enhanced_prior_authorization
  *
- * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * @copyright Copyright (C) 2018 Terry Hill <teryhill@librehealth.io>
  *
- *
- * LICENSE: This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 3
- * of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see http://opensource.org/licenses/gpl-license.php.
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
@@ -33,6 +20,7 @@
  */
 include_once(dirname(__FILE__).'/../../globals.php');
 include_once($GLOBALS["srcdir"]."/api.inc");
+include_once("$srcdir/formatting.inc.php");
 function enhanced_prior_auth_report( $pid, $encounter, $cols, $id) {
     $count = 0;
     $data = formFetch("form_enhanced_prior_auth", $id);

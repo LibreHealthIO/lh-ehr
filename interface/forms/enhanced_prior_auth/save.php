@@ -1,8 +1,8 @@
 <?php
 /*
- *  save.php for the saving of information from the misc_billing_form
+ *  save.php for the saving of information from the Enhanced Prior Authorization
  *
- *  This program saves data from the Enhanced Prior Authorization Form
+ *  This program saves data from the enhanced_prior_authorization Form
  *
  * @copyright Copyright (C) 2018 Terry Hill <teryhill@librehealth.io>
  *
@@ -34,9 +34,14 @@ if (! $encounter) { // comes from globals.php
 
 $id = formData('id','G') + 0;
 $test_used = '16';
+$table = 'form_enhanced_prior_auth';
+$pid = $_POST["pid"];
+$casenum = $_POST["case_num"];
 
 $auth_number_update = $_POST["prior_auth_number"];
-#error_log("post archive before the first if check: ".$_POST["archived"], 0);
+$numberauth = FindCaseUsed($table, $pid , $casenum);
+$number_auth = $numberauth['count'];
+
 if ($_POST["used"] >= $_POST["auth_for"]) {
     $_POST["archived"] = '1';
 }
@@ -48,7 +53,6 @@ if (strtotime($_POST["auth_to"]) <= strtotime(date("Y-m-d"))) {
 $archived = $_POST["archived"];
 
   if (empty($id)) {
-      $number_auth = $_POST["used"] + 1;
 
       $sets = "pid = {$_SESSION["pid"]},
       groupname = '" . $_SESSION["authProvider"] . "',
@@ -106,13 +110,12 @@ else {
       code5             = '" . formData("code5") . "',
       code6             = '" . formData("code6") . "',
       code7             = '" . formData("code7") . "',
-      used              = '" . formData("used") . "',
+      used              = '" . $number_auth . "',
       archived          = '" . formData("archived") . "',
       override          = '" . formData("override") . "'";
 
   sqlStatement("UPDATE form_enhanced_prior_auth SET $sets WHERE id = $id");
   if ($archived){ // check archived and if it is then archive all instances of that auth.
-    #error_log("Inside the if check: ".$archived, 0);
     sqlStatement("UPDATE form_enhanced_prior_auth set archived = '1' WHERE prior_auth_number = $auth_number_update");
   }
 }

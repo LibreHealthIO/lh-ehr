@@ -33,6 +33,18 @@ function checkFormIsActive ($form_name, $encounter)
 
 return $formid;
 }
+#copy this and use case num from the calendar in place of encounter.
+function FindCaseUsed ($form_name, $pid, $casenum )
+{
+   # Count the prior auths and determine the used number.
+   # Pass the PID, Auth Number, and form name.
+   # Make sure we have the correct auth.
+   $query_get_casenum = sqlquery("SELECT f.case_number, f.auth_to FROM $form_name AS f " .
+                          "WHERE pid = ? AND f.case_number = ? AND archived = '0' ", array($pid, $casenum));
+    $query_casenum_count = sqlquery("SELECT count(*) AS count FROM $form_name " .
+                          "WHERE pid = ? AND case_number = ? ", array($pid,$query_get_casenum['case_number']));
+return $query_casenum_count;
+}
 
 function FindAuthUsed ($form_name, $pid, $encounter )
 {
@@ -41,12 +53,29 @@ function FindAuthUsed ($form_name, $pid, $encounter )
    # Make sure we have the correct auth.
 
    $query_get_authnum = sqlquery("SELECT f.prior_auth_number, f.auth_to FROM $form_name AS f " .
-                          "WHERE pid = ? AND f.auth_to >= ? AND archived = '0' ORDER BY f.id DESC", array($pid, date("Y-m-d")));
+                          "WHERE pid = ? AND f.case_number >= ? AND archived = '0' ORDER BY f.id DESC", array($pid, date("Y-m-d")));
 
     $query_auth_count = sqlquery("SELECT count(*) AS count FROM $form_name " .
                           "WHERE pid = ? AND prior_auth_number = ? ", array($pid,$query_get_authnum['prior_auth_number']));
 
 return $query_auth_count;
+}
+
+function table_exists($table)
+{
+    
+    $sql = "SHOW TABLES LIKE '{$table}'";
+    $query = sqlQ($sql);
+    $result = sqlNumRows($query);
+    if( $result == '1' )
+    {
+            return true;
+    }
+    else
+    {
+            return false;
+    }
+    $result->free();
 }
 
 

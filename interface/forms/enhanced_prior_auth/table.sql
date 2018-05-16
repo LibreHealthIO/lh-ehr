@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `form_enhanced_prior_auth` (
   `id`                int(11) NOT NULL AUTO_INCREMENT,
-  `date`              datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date`              datetime NOT NULL,
   `pid`               int(11) DEFAULT NULL,
   `user`              varchar(255) default NULL,
   `groupname`         varchar(255) default NULL,
@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS `form_enhanced_prior_auth` (
   `ddesc`             varchar(120) NOT NULL,
   `auth_for`          int(5) DEFAULT NULL,
   `case_number`       varchar(120) NOT NULL,
-  `auth_from`         date DEFAULT NULL,
-  `auth_to`           date DEFAULT NULL,
+  `auth_from`         date NOT NULL,
+  `auth_to`           date NOT NULL,
   `units`             varchar(11) DEFAULT NULL,
   `auth_length`       int(11) DEFAULT NULL,
   `dollar`            int(10) DEFAULT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `form_enhanced_prior_auth` (
   `code6`             int(10) DEFAULT NULL,
   `code7`             int(10) DEFAULT NULL,
   `used`              int(10) DEFAULT NULL,
-  `archived`          int(2) DEFAULT NULL,
-  `override`          int(1) DEFAULT NULL,
+  `archived`          int(1) NOT NULL DEFAULT '0',
+  `override`          int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;

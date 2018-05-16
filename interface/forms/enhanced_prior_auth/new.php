@@ -48,26 +48,16 @@ $form_name = 'form_enhanced_prior_auth';
 if (empty($formid)) {
     $formid = checkFormIsActive($form_name,$encounter);
 }
-$authcount = FindAuthUsed($form_name,$pid,$encounter);
-$number_auth = $authcount['count'];
-#error_log("Auth Count befor if: ".strlen($authcount['count']), 0);
-if ($number_auth != '0'){
-    # Make sure we have the correct auth.
-    # copy forward the the data
-   $obj = sqlquery("SELECT * FROM $form_name AS f " .
-                          "WHERE pid = ? AND archived = '0' ORDER BY f.id DESC", array($pid));
-#    error_log("used: ".$obj{"used"}, 0); 
-#    error_log("used: ".$number_auth, 0);    
-      $used = $number_auth;
-} else {
-#error_log(print_r($authcount, true));
-$used = 0;
+
 $obj = $formid ? formFetch("form_enhanced_prior_auth", $formid) : array();
+
+if (empty($obj{"archived"})) {
+    $archived = 0 ;
+} else {
+    $archived = $obj{"archived"};
 }
-#error_log("archived: ".$obj{"archived"}, 0);
-$archived = $obj{"archived"};
-#error_log("archived: ".$archived, 0);
-#error_log(print_r($obj, true));
+$used = $obj{"used"};
+
 ?>
 <html>
   <head>
@@ -99,16 +89,16 @@ function showHint(str) {
 
             if (EnteredDate > today) {
                 alert("FROM: date is greater than TO: date ");
-				return false;
+                return false;
             }
             var AuthReq = document.getElementById("noAuthReq").checked;
             var Claims = document.getElementById("claims").value;
             //var ClearReq = document.getElementById("clear_req").checked; // Not needed will delete
-			var n = Claims.length;
+            var n = Claims.length;
 
             if(document.getElementById("noAuthReq").checked && n === 0){
-			      alert("Please fill in number of claims");
-			      return false;
+                  alert("Please fill in number of claims");
+                  return false;
             }
         }
 
@@ -168,7 +158,7 @@ function showHint(str) {
    <span class="text"><?php echo xlt('From Date'); ?>:</span>
     <td>
         <?php $auth_from = $obj{"auth_from"}; ?>
-	            <input
+                <input
               class="form-control"
               style="display: inline-block; width: 10rem"
               type="text"
@@ -178,9 +168,9 @@ function showHint(str) {
               value='<?php echo oeFormatShortDate(attr($auth_from)) ?>'
             />
 
-	    <span><?php echo xlt('To Date');?>:</span>
+        <span><?php echo xlt('To Date');?>:</span>
         <?php $auth_to = $obj{"auth_to"}; ?>
-	            <input
+                <input
               class="form-control"
               style="display: inline-block; width: 10rem"
               type="text"
@@ -239,7 +229,7 @@ function showHint(str) {
           </div>
 
 <!--          <div id="authalert">
-          	<span class="text"><?php echo xlt('Authorization Alert'); ?>:</span>
+            <span class="text"><?php echo xlt('Authorization Alert'); ?>:</span>
             <input class="form-control" style="display: inline-block; width: 105px" type=entry size="5" value="" />
             <select><option name="units" value="" /></option>
                 <option name="units" value="days" <?php if(alert == "days") { ?>selected <?php } ?>/><?php echo xlt('Days'); ?></option>

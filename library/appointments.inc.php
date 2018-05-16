@@ -115,7 +115,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
 
     $query = "SELECT " .
     "e.pc_eventDate, e.pc_endDate, e.pc_startTime, e.pc_endTime, e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, e.pc_recurrfreq, e.pc_catid, e.pc_eid, " .
-    "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, e.pc_aid, e.pc_eid, e.pc_alldayevent, e.pc_pid, " .
+    "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, e.pc_aid, e.pc_eid, e.pc_alldayevent, e.pc_pid, e.case_number, " .
     "p.fname, p.mname, p.lname, p.pid, p.phone_home, p.phone_cell, " .
     "u.fname AS ufname, u.mname AS umname, u.lname AS ulname, u.id AS uprovider_id, " .
     "$tracker_fields" .
@@ -609,13 +609,23 @@ $arr = sqlFetchArray($query);
 return $arr['picture_url'];
 
 }
+# Used in Demographics 
 
 function getAuthorizationInformation($pid) {
-$sql = "SELECT * FROM form_enhanced_prior_auth WHERE pid = '$pid' ORDER BY used DESC";
+$sql = "SELECT * FROM form_enhanced_prior_auth WHERE pid = '$pid' ORDER BY id DESC";
 $query = sqlQ($sql);
 $auth_info = sqlFetchArray($query);
-#error_log(print_r($auth_info, true));
 return $auth_info;
+}
+#used in get_provider_events
+function getCaseNumberInformation($pid , $casenum, $appt_date) {
+$sql = "SELECT * FROM form_enhanced_prior_auth WHERE pid = '$pid' AND case_number = '$casenum' AND auth_to >= $appt_date AND archived = '0' ORDER BY id DESC ";
+$query = sqlQ($sql);
+$case_info = sqlFetchArray($query);
+#error_log("pid: ".$pid, 0);
+#error_log("casenum: ".$casenum, 0);
+#error_log(print_r($case_info, true));
+return $case_info;
 }
 
 function interpretRecurrence($recurr_freq, $recurr_type){
