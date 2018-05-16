@@ -3,9 +3,10 @@
  *  new.php for the creation of the misc_billing_form
  *
  *  This program creates the misc_billing_form
+ *  2018-05-16 -- Added the log_form_misc_billing_options table to track changes to form. (TRK)
  *
  * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
- *
+ * @copyright Copyright (C) 2017-2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +25,7 @@
  *
  * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
+ * @author Tigpezeghe Rodrige <tigrodrige@gmail.com>
  * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
@@ -44,7 +46,6 @@ formHeader("Misc Billing Options");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
-    
 if (! $encounter) { // comes from globals.php
  die(xl("Internal error: we do not seem to be in an encounter!"));
 }
@@ -55,6 +56,7 @@ if (empty($formid)) {
     $formid = checkFormIsActive($form_name,$encounter);
 }
 $obj = $formid ? formFetch("form_misc_billing_options", $formid) : array();
+
 function generateDateQualifierSelect($name,$options,$obj)
 {
     echo     "<select name='".attr($name)."'>";
@@ -65,7 +67,6 @@ function generateDateQualifierSelect($name,$options,$obj)
         echo ">".text($options[$idx][0])."</option>";
     }
     echo     "</select>";
-
 }
 
 ?>
@@ -81,6 +82,7 @@ function generateDateQualifierSelect($name,$options,$obj)
      <div id="form-div">
       <div class='container'>
         <style>
+        #scrollspy-me{position: relative;}
           * {
             font-weight:normal;
             color: black;
@@ -136,7 +138,7 @@ function generateDateQualifierSelect($name,$options,$obj)
           <span class="text" title="<?php echo xla("For HCFA 02/12 Onset date specified on the Encounter Form needs a qualifier");?>"></span>
 
           <div id="box-14">
-            <span class="text"><?php echo xlt('BOX 14. Onset Date and Qualifier');?>.</span>    
+            <span class="text"><?php echo xlt('BOX 14. Onset Date and Qualifier');?>.</span>
             <br><br>
             <?php $onset_date = $obj{"onset_date"}; ?>
             <input
@@ -153,11 +155,11 @@ function generateDateQualifierSelect($name,$options,$obj)
             <?php generateDateQualifierSelect("box_14_date_qual",$box_14_qualifier_options,$obj); ?></span></td>
             <br><br>
           </div>
-          
+
           <div id="box-15">
 
           <span class="text" title="<?php echo xla('For HCFA 02/12 Box 15 is Other Date with a qualifier to specify what the date indicates');?>"></span>
-            <span class="text"><?php echo xlt('BOX 15. Other Date and Qualifier');?>.</span>    
+            <span class="text"><?php echo xlt('BOX 15. Other Date and Qualifier');?>.</span>
             <br><br>
             <?php $date_initial_treatment = $obj{"date_initial_treatment"}; ?>
             <input
@@ -172,7 +174,6 @@ function generateDateQualifierSelect($name,$options,$obj)
 
             &nbsp;
             <?php generateDateQualifierSelect("box_15_date_qual",$box_15_qualifier_options,$obj); ?>
-
 
             <br><br>
           </div>
@@ -225,24 +226,24 @@ function generateDateQualifierSelect($name,$options,$obj)
             <br><br>
             <span><?php echo xlt('From Date');?>:</span>
             <?php $hospitalization_date_from = $obj{"hospitalization_date_from"}; ?>
-            <input 
+            <input
               class="form-control"
               style="display: inline-block; width: 100px"
-              type='text' 
-              name='hospitalization_date_from' 
+              type='text'
+              name='hospitalization_date_from'
               id="hospitalization_date_from"
-              size='10' 
+              size='10'
               value='<?php echo oeFormatShortDate(attr($hospitalization_date_to)) ?>'
             />
             <span><?php echo xlt('To Date');?>:</span>
             <?php $hospitalization_date_from = $obj{"hospitalization_date_to"}; ?>
-            <input 
+            <input
               class="form-control"
               style="display: inline-block; width: 100px"
-              type='text' 
-              name='hospitalization_date_to' 
+              type='text'
+              name='hospitalization_date_to'
               id="hospitalization_date_to"
-              size='10' 
+              size='10'
               value='<?php echo oeFormatShortDate(attr($hospitalization_date_to)) ?>'
             />
             <br><br>
@@ -302,21 +303,85 @@ function generateDateQualifierSelect($name,$options,$obj)
 
           <div>
             <!-- Save/Cancel buttons -->
-            <input type="button" id="save" class='cp-submit' value="<?php echo xla('Save'); ?>"> &nbsp; 
-            <input type="button" id="dontsave" class="deleter cp-negative" value="<?php echo xla('Cancel'); ?>"> &nbsp; 
+            <input type="button" id="save" class='cp-submit' value="<?php echo xla('Save'); ?>"> &nbsp;
+            <input type="button" id="dontsave" class="deleter cp-negative" value="<?php echo xla('Cancel'); ?>"> &nbsp;
           </div>
         </form>
-      </div>
-     </div>
-    </div>
+    </div> <!-- ./container -->
+    <div class="container-fluid" style="margin-top:20px;">
+        <h4 style="text-align:center"><strong>All changes to form</strong></h4>
+        <div class="row" id="scroll-box">
+            <div data-spy="scroll" data-target="#list-example" data-offset="10" class="scrollspy-example col-sm-12" style="position: relative; overflow: scroll; height:300px">
+                <?php
+                $query = "SELECT * FROM log_form_misc_billing_options WHERE encounter_id=$encounter ORDER BY date DESC";
+                $res = sqlStatement($query);
+                        echo '<table class="table table-bordered table-hover table-sm"><tr class="info">
+                        <th><strong>User</strong></th>
+                        <th><strong>Date</strong></th>
+                        <th><strong>employment_related</strong></th>
+                        <th><strong>auto_accident</strong></th>
+                        <th><strong>accident_state</strong></th>
+                        <th><strong>other_accident</strong></th>
+                        <th><strong>medicaid_referral_code</strong></th>
+                        <th><strong>epsdt_flag</strong></th>
+                        <th><strong>box_14_date_qual</strong></th>
+                        <th><strong>box_15_date_qual</strong></th>
+                        <th><strong>off_work_from</strong></th>
+                        <th><strong>off_work_to</strong></th>
+                        <th><strong>provider_id</strong></th>
+                        <th><strong>provider_qualifier_code</strong></th>
+                        <th><strong>hospitalization_date_from</strong></th>
+                        <th><strong>hospitalization_date_to</strong></th>
+                        <th><strong>outside_lab</strong></th>
+                        <th><strong>lab_amount</strong></th>
+                        <th><strong>medicaid_resubmission_code</strong></th>
+                        <th><strong>medicaid_original_reference</strong></th>
+                        <th><strong>prior_auth_number</strong></th>
+                        <th><strong>replacement_claim</strong></th>
+                        <th><strong>icn_resubmission_number</strong></th>
+                        <th><strong>comments</strong></th>
+                        </tr>';
+                        while($row = sqlFetchArray($res)){
+                            //print_r($row);
+                            echo '<tr id="'; echo $row['date']; echo '"><td>'.$row['user'].'</td>
+                            <td>'.$row['date'].'</td>
+                            <td>'.$row['employment_related'].'</td>
+                            <td>'.$row['auto_accident'].'</td>
+                            <td>'.$row['accident_state'].'</td>
+                            <td>'.$row['other_accident'].'</td>
+                            <td>'.$row['medicaid_referral_code'].'</td>
+                            <td>'.$row['epsdt_flag'].'</td>
+                            <td>'.$row['box_14_date_qual'].'</td>
+                            <td>'.$row['box_15_date_qual'].'</td>
+                            <td>'.$row['off_work_from'].'</td>
+                            <td>'.$row['off_work_to'].'</td>
+                            <td>'.$row['provider_id'].'</td>
+                            <td>'.$row['provider_qualifier_code'].'</td>
+                            <td>'.$row['hospitalization_date_from'].'</td>
+                            <td>'.$row['hospitalization_date_to'].'</td>
+                            <td>'.$row['outside_lab'].'</td>
+                            <td>'.$row['lab_amount'].'</td>
+                            <td>'.$row['medicaid_resubmission_code'].'</td>
+                            <td>'.$row['medicaid_original_reference'].'</td>
+                            <td>'.$row['prior_auth_number'].'</td>
+                            <td>'.$row['replacement_claim'].'</td>
+                            <td>'.$row['icn_resubmission_number'].'</td>
+                            <td>'.$row['comments'].'</td></tr>';
+                        }
+                        echo '</table>';
+                ?>
+            </div>
+        </div> <!-- #/scrol-box -->
+    </div> <!-- ./container-fluid -->
+</div> <!-- #/form-div -->
+</div> <!-- #/form-main -->
 
     <script language="javascript">
-    // jQuery stuff to make the page a little easier to use
-
-    $(document).ready(function(){
-        $("#save").click(function() { top.restoreSession(); document.my_form.submit(); });
-        $("#dontsave").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/encounter_top.php";?>'; });
-    });
+        // jQuery stuff to make the page a little easier to use
+        $(document).ready(function(){
+            $("#save").click(function() { top.restoreSession(); document.my_form.submit(); });
+            $("#dontsave").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/encounter_top.php";?>'; });
+        });
     </script>
   </body>
 <script>

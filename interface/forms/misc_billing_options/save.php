@@ -5,8 +5,10 @@
  *  This program saves data from the misc_billing_form
  *  The changes to this file as of November 16 2016 to add needed items to the HCFA Print and Electronic Transmission
  *  are covered under the terms of the Mozilla Public License, v. 2.0
+ *  2018-05-16 -- Added the log_form_misc_billing_options table to track changes to form. (TRK)
  *
  * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
+ * @copyright Copyright (C) 2017-2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
  *
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -26,6 +28,7 @@
  *
  * @package LibreHealth EHR
  * @author Terry Hill <teryhill@librehealth.io>
+ * @author Tigpezeghe Rodrige <tigrodrige@gmail.com>
  * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
@@ -41,12 +44,12 @@ if (! $encounter) { // comes from globals.php
  die(xl("Internal error: we do not seem to be in an encounter!"));
 }
 
-if ($_POST["off_work_from"] == "0000-00-00" || $_POST["off_work_from"] == "") 
-    { $_POST["is_unable_to_work"] = "0"; $_POST["off_work_to"] = "";} 
+if ($_POST["off_work_from"] == "0000-00-00" || $_POST["off_work_from"] == "")
+    { $_POST["is_unable_to_work"] = "0"; $_POST["off_work_to"] = "";}
     else {$_POST["is_unable_to_work"] = "1";}
 
-if ($_POST["hospitalization_date_from"] == "0000-00-00" || $_POST["hospitalization_date_from"] == "") 
-    { $_POST["is_hospitalized"] = "0"; $_POST["hospitalization_date_to"] = "";} 
+if ($_POST["hospitalization_date_from"] == "0000-00-00" || $_POST["hospitalization_date_from"] == "")
+    { $_POST["is_hospitalized"] = "0"; $_POST["hospitalization_date_to"] = "";}
     else {$_POST["is_hospitalized"] = "1";}
 
 $id = formData('id','G') + 0;
@@ -54,16 +57,18 @@ $id = formData('id','G') + 0;
 $sets = "pid = {$_SESSION["pid"]},
   groupname = '" . $_SESSION["authProvider"] . "',
   user = '" . $_SESSION["authUser"] . "',
-  authorized = $userauthorized, activity=1, date = NOW(),
+  authorized = $userauthorized,
+  activity = 1,
+  date = NOW(),
   employment_related          = '" . formData("employment_related") . "',
   auto_accident               = '" . formData("auto_accident") . "',
   accident_state              = '" . formData("accident_state") . "',
   other_accident              = '" . formData("other_accident") . "',
   outside_lab                 = '" . formData("outside_lab") . "',
   medicaid_referral_code      = '" . formData("medicaid_referral_code") . "',
-  epsdt_flag                  = '" . formData("epsdt_flag") . "',  
+  epsdt_flag                  = '" . formData("epsdt_flag") . "',
   provider_id                 = '" . formData("provider_id")  . "',
-  provider_qualifier_code     = '" . formData("provider_qualifier_code") . "',     
+  provider_qualifier_code     = '" . formData("provider_qualifier_code") . "',
   lab_amount                  = '" . formData("lab_amount") . "',
   is_unable_to_work           = '" . formData("is_unable_to_work") . "',
   onset_date                  = '" . prepareDateBeforeSave(formData("onset_date")) . "',
@@ -88,6 +93,10 @@ if (empty($id)) {
 }
 else {
   sqlStatement("UPDATE form_misc_billing_options SET $sets WHERE id = $id");
+
+  // The two lines below log the changes made to the form in the log_form_misc_billing_options table. (TRK)
+  $sets = $sets . ",form_misc_billing_id = $id, encounter_id = $encounter";
+  sqlInsert("INSERT INTO log_form_misc_billing_options SET $sets");
 }
 
 formHeader("Redirecting....");
