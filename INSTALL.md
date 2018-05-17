@@ -97,19 +97,19 @@ Make sure the webserver is running, and point a web-browser to `setup.php` locat
 The setup script will step you through the configuration of the LibreHealthEHR.
 
 The first screen of the setup script will ensure that the webserver user (in linux, often is `apache`, `www-data`, or `nobody`) has write privileges on certain files and directories.
-The files include `librehealthehr/sites/default/sqlconf.php` and `librehealthehr/interface/modules/zend_modules/config/application.config.php`.
+These files are limited to cacl/admin/templates_c, and the base /sites/ directory.
 
-In linux, these can be set by `chmod a+w filename` command to grant global write permissions to the file. The directories include:
+In linux, if there are permissions issues, these can be set by `chmod a+w filename` command to grant global write permissions to the file. The directories include:
 ```
 librehealthehr/gacl/admin/templates_c
 librehealthehr/sites/default/edi
 librehealthehr/sites/default/era
 librehealthehr/sites/default/documents
-librehealthehr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
-librehealthehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache.
 ```
-
-**Note:** In linux, if the webserver user name is `apache`, then the command `chown -R apache:apache directory_name` will grant global write permissions to the directories, and we recommend making these changes permanent. Should the page display errors related to file or directory writing priviledges you may click the 'Check Again' button to try again (after fixing permissions).
+-where "default" is the name of your configured site.  This directory does not exist at the time of installation.
+**Note:** 
+The librehealthehr/sites/ directories will not 
+In linux, if the webserver user name is `apache`, then the command `chown -R apache:apache directory_name` will grant global write permissions to the directories, and we recommend making these changes permanent. Should the page display errors related to file or directory writing priviledges you may click the 'Check Again' button to try again (after fixing permissions).
 
 
 #### Step 1

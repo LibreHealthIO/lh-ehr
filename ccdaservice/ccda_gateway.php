@@ -89,34 +89,5 @@ if (!$parameterArray ['view']) {
 print_r($h.$ccdaxml.$h);
 //service_shutdown(1); //In ssmanager  0= terminate and disable 1 = soft=terminate but still active w/no restart, > 1 just restart based on B.S timer
 exit;
-
-function portalccdafetching($pid, $server_url, $parameterArray)
-{
-    
-    session_write_close();
-    $site_id = $_SESSION ['site_id'];
-    $parameters = http_build_query($parameterArray); // future use
-    try {
-        $ch = curl_init();
-        $url = $server_url . "/interface/modules/zend_modules/public/encounterccdadispatch/index?site=$site_id&me=".session_id()."&param=1&view=1&combination=$pid&recipient=patient";
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, 0); // set true for look see
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie");
-        curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie");
-        //curl_setopt ($ch, CURLOPT_COOKIE, 'XDEBUG_SESSION=1'); // break on first line in public/index.php - uncomment and start any xdebug session and fetch a ccda in app.
-        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        $result = curl_exec($ch) or die(curl_error($ch));
-        curl_close($ch);
-    } catch (Exception $e) {
-        return false;
-    }
-
-        return $result;
-}
+portalccdafetching
 return 0;
