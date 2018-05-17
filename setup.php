@@ -72,12 +72,13 @@ $billingLogDirectory = "$OE_SITE_DIR/logs";
 $lettersDirectory = "$OE_SITE_DIR/letter_templates";
 $gaclWritableDirectory = dirname(__FILE__)."/gacl/admin/templates_c";
 
-$zendModuleConfigFile = dirname(__FILE__)."/interface/modules/zend_modules/config/application.config.php";
+//$Libre_Get_Modules = dirname(__FILE__)."/modules/modules.config.php";  //TODO stub
 
 //These are files and dir checked before install for
 // correct permissions.
 if (is_dir($OE_SITE_DIR)) {
-  $writableFileList = array($installer->conffile,$zendModuleConfigFile);
+  //$Libre_Get_Modules could be added to the 'writable' array. Remove if unneeded when module registry methods are finalized
+  $writableFileList = array($installer->conffile);  
   $writableDirList = array($docsDirectory, $billingDirectory, $billingDirectory2, $lettersDirectory, $gaclWritableDirectory);
 }
 else {
@@ -99,7 +100,7 @@ else if ($state > 3) {
 <HTML>
 <HEAD>
 <TITLE>LibreHealth EHR Setup Tool</TITLE>
-<LINK REL=STYLESHEET HREF="interface/themes/style_sky_blue.css">
+<LINK REL=STYLESHEET HREF="interface/themes/style_setup.css">
 
 <style>
 .noclone { }
