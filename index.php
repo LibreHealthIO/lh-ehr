@@ -26,6 +26,10 @@ if ($config == 1) {
     if ($site_id != 'default'){
     header("Location: setup.php");
     }else{
-        echo "Site ID ".$site_id." may not be configured directly.<br>".
-        "No configured site directory found.";}
+        echo "<p>Direct configuration of Site ID \" ".$site_id." \" is not permitted.</p>".
+        "<p>If you know the name of the EHR site you want to access<br>".
+        "Try adding \"?site=<i>mysitename</i>\" to the URL address.</p>";
+        echo "<p>If you wish to install a new site, you may <br>".
+        " <a href='setup.php'>CLICK HERE</a> to do so.</p>";
+    }
 }

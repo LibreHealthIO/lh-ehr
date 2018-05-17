@@ -177,7 +177,7 @@ else {
 
   case 1:
     echo "<b>Step $state</b><br><br>\n";
-    echo "Now I need to know whether you want me to create the database on my own or if you have already created the database for me to use.  For me to create the database, you will need to supply the MySQL root password.\n
+    echo "Now I need to know whether you want me to create the database on my own or if you have already created a database for me to use.  For me to create the database, you will need to supply the MySQL root password.\n
 <span class='title'> <br />NOTE: clicking on \"Continue\" may delete or cause damage to data on your system. Before you continue please backup your data.</span>
 <br><br>\n
 <FORM METHOD='POST'>\n
