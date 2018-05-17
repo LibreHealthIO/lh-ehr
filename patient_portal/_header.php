@@ -147,7 +147,7 @@
                         <ul class="dropdown-menu">
  <!-- this goes in the 3rd release of portal -->
                             <?php if ($GLOBALS['ccda_alt_service_enable'] > 1) { ?>
-                                <li><a id="callccda" href="<?php echo $GLOBALS['web_root']; ?>/ccdaservice/ccda_gateway.php?action=startandrun">
+                                <li><a id="callccda" href="<?php echo $GLOBALS['web_root']; ?>/modules/ccdaservice/ccda_gateway.php?action=startandrun">
                                         <i class="fa fa-envelope" aria-hidden="true"></i><span><?php echo xlt('View CCD'); ?></span></a></li>
                             <?php } ?>
 <!-- end  -->
