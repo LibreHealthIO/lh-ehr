@@ -15,11 +15,17 @@ else
 
 if (empty($site_id) || preg_match('/[^A-Za-z0-9\\-.]/', $site_id))
     die("Site ID '".htmlspecialchars($site_id,ENT_NOQUOTES)."' contains invalid characters.");
-
-require_once "sites/$site_id/sqlconf.php";
+    
+$config = 0;
+if (is_file("sites/" .$site_id."/sqlconf.php")){
+require_once "sites/$site_id/sqlconf.php";}
 
 if ($config == 1) {
     header("Location: interface/login/login.php?site=$site_id");
 } else {
-    header("Location: setup.php?site=$site_id");
+    if ($site_id != 'default'){
+    header("Location: setup.php");
+    }else{
+        echo "Site ID ".$site_id." may not be configured directly.<br>".
+        "No configured site directory found.";}
 }

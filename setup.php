@@ -36,8 +36,9 @@ if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
     "If it is a hostname then it is taken from the hostname in the URL. " .
     "Otherwise you must append \"?site=<i>siteid</i>\" to the URL used for " .
     "logging in.</p>\n";
-  echo "<p>It is OK for one of the sites to have \"default\" as its ID. This " .
-    "is the ID that will be used if it cannot otherwise be determined.</p>\n";
+  echo "<p>It is permitted to leave \"default\" as your site ID. This " .
+    "is the ID that will be used if it cannot otherwise be determined, but".
+    "it is better for system upgrades to NOT use the default site ID.</p>\n";
   echo "<form method='post'><input type='hidden' name='state' value='0'>" .
     "Site ID: <input type='text' name='site' value='default'>&nbsp;" .
     "<input type='submit' value='Continue'><br></form><br>\n";
@@ -45,8 +46,8 @@ if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
   exit();
 }
 
-// Support "?site=siteid" in the URL, otherwise assume "default".
-$site_id = 'default';
+// Support "?site=siteid" in the URL, otherwise assume "clinic", to protect the default directory.
+$site_id = 'clinic';
 if (!$COMMAND_LINE && !empty($_REQUEST['site'])) {
   $site_id = trim($_REQUEST['site']);
 }
