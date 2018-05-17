@@ -14,8 +14,6 @@ ini_set("session.bug_compat_warn","off");
 
 $state = $_POST["state"];
 
-// Make this true for IPPF.  // TODO - REMOVE THIS
-$ippf_specific = false;
 
 // If this script was invoked with no site ID, then ask for one.
 if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
@@ -88,7 +86,7 @@ else {
 
 // Include the sqlconf file if it exists yet.
 $config = 0;
-if (file_exists($OE_SITE_DIR)) {
+if (file_exists($OE_SITE_DIR)) {  //this looks at sqlconf file, NOT a DIR.  Rename.
   include_once($installer->conffile);
 }
 else if ($state > 3) {
