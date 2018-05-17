@@ -40,7 +40,7 @@ if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
     "is the ID that will be used if it cannot otherwise be determined, but".
     "it is better for system upgrades to NOT use the default site ID.</p>\n";
   echo "<form method='post'><input type='hidden' name='state' value='0'>" .
-    "Site ID: <input type='text' name='site' value='myclinic'>&nbsp;" .
+    "Site ID: <input type='text' name='site' value='default'>&nbsp;" .
     "<input type='submit' value='Continue'><br></form><br>\n";
   echo "</body></html>\n";
   exit();
@@ -82,7 +82,7 @@ if (is_dir($OE_SITE_DIR)) {
 }
 else {
   $writableFileList = array();
-  $writableDirList = array($OE_SITES_BASE, $gaclWritableDirectory, $requiredDirectory1, $requiredDirectory2);
+  $writableDirList = array($OE_SITES_BASE, $gaclWritableDirectory);
 }
 
 // Include the sqlconf file if it exists yet.
