@@ -5,7 +5,7 @@
  *
  * @copyright Copyright (C) 2016 Terry Hill <teryhill@librehealth.io>
  *
- * No header existed on this file so no other copyright information 
+ * No header existed on this file so no other copyright information
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,20 @@
  * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
- 
+
+// Default values for optional variables that are allowed to be set by callers.
+
+// Unless specified explicitly, apply Auth functions
+if (!isset($ignoreAuth)) {
+    $ignoreAuth = false;
+}
+// Same for onsite
+if (!isset($ignoreAuth_onsite_portal)) {
+    $ignoreAuth_onsite_portal = false;
+}
+
+
+
 // Is this windows or non-windows? Create a boolean definition.
 if (!defined('IS_WINDOWS'))
  define('IS_WINDOWS', (stripos(PHP_OS,'WIN') === 0));
@@ -73,7 +86,7 @@ if (isset($sanitize_all_escapes) && $sanitize_all_escapes) {
 $webserver_root = dirname(dirname(__FILE__));
 if (IS_WINDOWS) {
  //convert windows path separators
- $webserver_root = str_replace("\\","/",$webserver_root); 
+ $webserver_root = str_replace("\\","/",$webserver_root);
 }
 // Collect the apache server document root (and convert to windows slashes, if needed)
 $server_document_root = realpath($_SERVER['DOCUMENT_ROOT']);
@@ -118,7 +131,10 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
     $tmp = $_GET['site'];
   }
   else {
-    if (empty($ignoreAuth)) die("Site ID is missing from session data!");
+    if (empty($ignoreAuth)) {
+        header('Location: login/login.php?loginfirst&site='.$tmp);
+        die();
+    }
     $tmp = $_SERVER['HTTP_HOST'];
     if (!is_dir($GLOBALS['OE_SITES_BASE'] . "/$tmp")) $tmp = "default";
   }
@@ -153,7 +169,7 @@ require_once($GLOBALS['OE_SITE_DIR'] . "/config.php");
 // then set to iso-8859-1.
 //THIS NEEDS TO BE IMPROVED!!!
 require_once(dirname(__FILE__) . "/../library/sqlconf.php");
-if (!$disable_utf8_flag) {    
+if (!$disable_utf8_flag) {
  ini_set('default_charset', 'utf-8');
  $HTML_CHARSET = "UTF-8";
  mb_internal_encoding('UTF-8');
@@ -182,7 +198,7 @@ $javascript_dir = $GLOBALS['standard_js_path']; //Make path available as a varia
 $GLOBALS['current_version_js_path'] = "$web_root/assets/js/current_version";
 
 //module configurations
-$GLOBALS['modules_dir']  = "$web_root/modules/";  //CURRENT modules directory.
+$GLOBALS['modules_dir']  = "$webserver_root/modules/";  //CURRENT modules directory.
 $modules_dir = $GLOBALS['modules_dir'];                //Make path available as a variable.
 $GLOBALS['baseModDir']  = "interface/modules/";        //base directory for the ZEND mods.  Not currently used.
 $GLOBALS['customModDir']= "custom_modules";            //OLD non zend modules, not used.
@@ -192,6 +208,9 @@ $GLOBALS['mod_nn'] = 0;                                //Nation Notes Module val
 
 // images directory
 $GLOBALS['images_path'] = "$web_root/assets/images/";
+
+//patient portal images directory
+$GLOBALS['portal_images_path'] = "$web_root/patient_portal/images/";
 
 // css directory
 $GLOBALS['css_path'] = "$web_root/assets/css/";
@@ -204,7 +223,7 @@ $GLOBALS['incdir'] = $include_root;
 // Location of the login screen file
 $GLOBALS['login_screen'] = $GLOBALS['rootdir'] . "/login_screen.php";
 
-// Variable set for Eligibility Verification [EDI-271] path 
+// Variable set for Eligibility Verification [EDI-271] path
 $GLOBALS['edi_271_file_path'] = $GLOBALS['OE_SITE_DIR'] . "/edi/";
 
 // Include the translation engine. This will also call sql.inc to
@@ -232,7 +251,7 @@ $GLOBALS['cene_specific'] = false;
 $GLOBALS['inhouse_pharmacy'] = false;
 $GLOBALS['sell_non_drug_products'] = 0;
 
-#Use this to turn on and off the development mode 
+#Use this to turn on and off the development mode
 #mainly to keep left_nave untill it is dumped
 $GLOBALS['development_flag'] = false;
 
@@ -258,7 +277,7 @@ if (!empty($glrow)) {
   $GLOBALS['language_menu_show'] = array();
   $glres = sqlStatement("SELECT gl_name, gl_index, gl_value FROM globals " .
     "ORDER BY gl_name, gl_index");
-  while ($glrow = sqlFetchArray($glres)) {    
+  while ($glrow = sqlFetchArray($glres)) {
     $gl_name  = $glrow['gl_name'];
     $gl_value = $glrow['gl_value'];
     // Adjust for user specific settings
@@ -269,7 +288,7 @@ if (!empty($glrow)) {
         }
       }
     }
-    if ($gl_name == 'language_menu_other') {       
+    if ($gl_name == 'language_menu_other') {
       $GLOBALS['language_menu_show'][] = $gl_value;
     }
     else if ($gl_name == 'css_header') {
@@ -289,8 +308,8 @@ if (!empty($glrow)) {
       $GLOBALS[$gl_name] = $gl_value;
     }
   }
-  
-  # Put this here to default the globals entry for concurrent_layout while that code is being removed 
+
+  # Put this here to default the globals entry for concurrent_layout while that code is being removed
   $GLOBALS['concurrent_layout'] = 3;
 
   // Language cleanup stuff.
@@ -298,36 +317,46 @@ if (!empty($glrow)) {
   if ((count($GLOBALS['language_menu_show']) >= 1) || $GLOBALS['language_menu_showall']) {
     $GLOBALS['language_menu_login'] = true;
   }
-  
-  
+
+
 // Additional logic to override theme name.
 // For RTL languages we substitute the theme name with the name of RTL-adapted CSS file.
     $rtl_override = false;
     if( isset( $_SESSION['language_direction'] )) {
-        if( $_SESSION['language_direction'] == 'rtl' && 
+        if( $_SESSION['language_direction'] == 'rtl' &&
         !strpos($GLOBALS['css_header'], 'rtl')  ) {
 
             // the $css_header_value is set above
             $rtl_override = true;
         }
-    }     
-    
-    else { 
+    } elseif (isset($_SESSION['language_choice'])) {
+        //this will support the onsite patient portal which will have a language choice but not yet a set language direction
+        $_SESSION['language_direction'] = getLanguageDir($_SESSION['language_choice']);
+        if ( $_SESSION['language_direction'] == 'rtl' &&
+        !strpos($GLOBALS['css_header'], 'rtl')) {
+
+            // the $css_header_value is set above
+            $rtl_override = true;
+    }
+    }
+
+    else {
         //$_SESSION['language_direction'] is not set, so will use the default language
         $default_lang_id = sqlQuery('SELECT lang_id FROM lang_languages WHERE lang_description = ?',array($GLOBALS['language_default']));
-        
+
         if ( getLanguageDir( $default_lang_id['lang_id'] ) === 'rtl' && !strpos($GLOBALS['css_header'], 'rtl')) { // @todo eliminate 1 SQL query
             $rtl_override = true;
         }
     }
-    
+
 
     // change theme name, if the override file exists.
     if( $rtl_override ) {
         // the $css_header_value is set above
         $new_theme = 'rtl_' . $temp_css_theme_name;
 
-        // Check file existance 
+        // Check file existence
+  
         if( file_exists( $include_root.'/themes/'.$new_theme ) ) {
             $GLOBALS['css_header'] = $rootdir.'/themes/'.$new_theme;
         } else {
@@ -337,7 +366,7 @@ if (!empty($glrow)) {
     }
     unset( $temp_css_theme_name, $new_theme,$rtl_override);
     // end of RTL section
-  
+
   //
   // End of globals table processing.
 }
@@ -367,7 +396,7 @@ else {
   $GLOBALS['disable_non_default_groups'] = true;
   $GLOBALS['ippf_specific'] = false;
   $GLOBALS['default_tab_1'] = "/interface/main/finder/dynamic_finder.php";
-  $GLOBALS['default_tab_2'] = "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1";  
+  $GLOBALS['default_tab_2'] = "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1";
 }
 
 // If >0 this will enforce a separate PHP session for each top-level
@@ -433,9 +462,18 @@ $login_screen = $GLOBALS['login_screen'];
 $GLOBALS['css_header'] = $css_header;
 $GLOBALS['backpic'] = $backpic;
 
+//Portal Version tag
+require_once(dirname(__FILE__) . "/../portal_version.php");
+
+$libreehr_portal_version = "$p_major.$p_minor.$p_patch".$p_tag;
+
 // 1 = send email message to given id for Emergency Login user activation,
 // else 0.
 $GLOBALS['Emergency_Login_email'] = $GLOBALS['Emergency_Login_email_id'] ? 1 : 0;
+
+if (($ignoreAuth_onsite_portal === true) && ($GLOBALS['portal_onsite_enable'] == 1)) {
+    $ignoreAuth = true;
+}
 
 if (!isset($ignoreAuth) || !$ignoreAuth) {
   include_once("$srcdir/auth.inc");
@@ -500,7 +538,6 @@ if ($fake_register_globals) {
   extract($_GET,EXTR_SKIP);
   extract($_POST,EXTR_SKIP);
 }
-
 
 include_once __DIR__ . '/../library/pluginsystem/bootstrap.php';
 ?>

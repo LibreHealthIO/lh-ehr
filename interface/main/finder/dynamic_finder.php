@@ -102,10 +102,6 @@ $(document).ready(function() {
   }
  } );
 
- // This puts our custom HTML into the table header.
- $("div.mytopdiv").html("<form name='myform'><input type='checkbox' name='form_new_window' value='1'<?php
-  if (!empty($GLOBALS['gbl_pt_list_new_window'])) echo ' checked'; ?> /><?php
-  echo xlt('Open in New Window'); ?></form>");
 
  // This is to support column-specific search fields.
  // Borrowed from the multi_filter.html example.
@@ -131,32 +127,28 @@ $(document).ready(function() {
   {
       return;
   }
-  if (document.myform.form_new_window.checked) {
-   openNewTopWindow(newpid);
-  }
-  else {
+
    top.restoreSession();
    top.RTop.location = "../../patient_file/summary/demographics.php?set_pid=" + newpid;
-  }
+
  } );
 
 });
 
-function openNewTopWindow(pid) {
- document.fnew.patientID.value = pid;
- top.restoreSession();
- document.fnew.submit();
-}
+
 
 // this will add bootstrap classes to search all columns and entries inputs
 $(document).ready(function() {
 
   var search = $("#pt_table_filter :input");
   var entries = $("#pt_table_length :input");
+  var paginate_pre = $('.paginate_disabled_previous');
+  var paginate_next = $('.paginate_disabled_next');
 
   search.addClass("form-control form-rounded");
   entries.addClass("form-control form-rounded");
-
+  paginate_pre.css({'height':'30px', 'background-color':'#888'});
+  paginate_next.css({'height':'30px', 'background-color':'#888'});
 });
 
 </script>

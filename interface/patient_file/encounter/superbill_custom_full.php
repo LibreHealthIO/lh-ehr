@@ -548,11 +548,11 @@ if ($taxline) {
    <input type="hidden" name="code_type_name_external" value="<?php echo attr($code_type_name_external) ?>">
    <input type="hidden" name="code_external" value="<?php echo attr($code_external) ?>">
    <?php if ($mode == "modify") { ?>
-     <a href='javascript:submitModifyComplete();' class='css_button'><?php echo xlt('Update'); ?></a>
+     <a href='javascript:submitModifyComplete();' class='css_button cp-submit'><?php echo xlt('Update'); ?></a>
    <?php } else { ?>
-     <a href='javascript:submitUpdate();' class='btn btn-primary'><?php echo xlt('Update'); ?></a>
+     <a href='javascript:submitUpdate();' class='btn btn-primary cp-submit'><?php echo xlt('Update'); ?></a>
      &nbsp;&nbsp;
-     <a href='javascript:submitAdd();' class='btn btn-primary'><?php echo xlt('Add as New'); ?></a>
+     <a href='javascript:submitAdd();' class='btn btn-primary cp-positive'><?php echo xlt('Add as New'); ?></a>
    <?php } ?>
   </td>
  </tr>
@@ -574,7 +574,7 @@ foreach ($code_types as $key => $value) {
   
 
   <input type="text" class="form-control input-sm" name="search" size="5" value="<?php echo attr($search) ?>"><br>
-   <input type="submit" class="btn btn-primary" name="go" value='<?php echo xla('Search'); ?>'>&nbsp;&nbsp;
+   <input type="submit" class="btn btn-primary cp-submit" name="go" value='<?php echo xla('Search'); ?>'>&nbsp;&nbsp;
    <input type='checkbox' title='<?php echo xlt("Only Show Diagnosis Reporting Codes") ?>' name='search_reportable' value='1'<?php if (!empty($search_reportable)) echo ' checked'; ?> />
    <?php echo xlt('Diagnosis Reporting Only'); ?>
    &nbsp;&nbsp;&nbsp;&nbsp;

@@ -45,7 +45,7 @@ if(($_GET['access_group'][$i] == "Emergency Login") && ($_GET['active'] == 'on')
     $uname=$row['username'];
     $mail = new MyMailer();
         $mail->SetLanguage("en",$GLOBALS['fileroot'] . "/library/" );
-        $mail->From = "admin@".$mail_id[1].".".$mail_id[2];     
+        $mail->From = "admin@".$mail_id[1].".".$mail_id[2];
         $mail->FromName = "Administrator LibreEHR";
         $text_body  = "Hello Security Admin,\n\n The Emergency Login user ".$uname.
                                                 " was activated at ".date('l jS \of F Y h:i:s A')." \n\nThanks,\nAdmin LibreEHR.";
@@ -103,6 +103,25 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
               $tqvar = formData('mname','P');
               sqlStatement("update users set mname='$tqvar' where id= ? ", array($_POST["id"]));
       }
+      if ($_POST["fullscreen_page"]) {
+        $tqvar = formData('fullscreen_page', 'P');
+        sqlStatement('update users set fullscreen_page="'.$tqvar.'" where id=?', array($_POST["id"]));
+      }
+      if ($_POST["fullscreen_enable"]) {
+        sqlStatement("update users set fullscreen_enable=1 where id=?", array($_POST["id"]));
+      } else {
+        sqlStatement("update users set fullscreen_enable=0 where id=?", array($_POST["id"]));
+      }
+
+      if ($_POST["menu_role"]) {
+        $tqvar = formData('menu_role', 'P');
+        if ($tqvar != "") {
+          sqlStatement("update users set menu_role='$tqvar' where id=?", array($_POST["id"]));
+        } else {
+          sqlStatement("update users set menu_role='Sample Role' where id=?", array($_POST["id"]));
+        }
+      }
+      
       if ($_POST["facility_id"]) {
               $tqvar = formData('facility_id','P');
               sqlStatement("update users set facility_id = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -156,7 +175,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
           "' WHERE id = '" . formData('id','P') . "'");
       }
 
-     if ($_POST["adminPass"] && $_POST["clearPass"]) { 
+     if ($_POST["adminPass"] && $_POST["clearPass"]) {
         require_once("$srcdir/authentication/password_change.php");
         $clearAdminPass=$_POST['adminPass'];
         $clearUserPass=$_POST['clearPass'];
@@ -164,7 +183,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         $success=update_password($_SESSION['authId'],$_POST['id'],$clearAdminPass,$clearUserPass,$password_err_msg);
         if(!$success)
         {
-            error_log($password_err_msg);    
+            error_log($password_err_msg);
             $alertmsg.=$password_err_msg;
         }
      }
@@ -172,11 +191,11 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       $tqvar  = $_POST["authorized"] ? 1 : 0;
       $actvar = $_POST["active"]     ? 1 : 0;
       $calvar = $_POST["calendar"]   ? 1 : 0;
-  
+
       sqlStatement("UPDATE users SET authorized = $tqvar, active = $actvar, " .
         "calendar = $calvar, see_auth = ? WHERE " .
         "id = ? ", array($_POST['see_auth'], $_POST["id"]));
-      //Display message when Emergency Login user was activated 
+      //Display message when Emergency Login user was activated
       $bg_count=count($_POST['access_group']);
       for($i=0;$i<$bg_count;$i++){
         if(($_POST['access_group'][$i] == "Emergency Login") && ($_POST['pre_active'] == 0) && ($actvar == 1)){
@@ -189,7 +208,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
          $set_active_msg=1;
         }
       }
-    }   
+    }
       if ($_POST["comments"]) {
         $tqvar = formData('comments','P');
         sqlStatement("update users set info = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -201,7 +220,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         $physician_type = formData('physician_type');
         sqlStatement("update users set physician_type = '$physician_type' where id = ? ", array($_POST["id"]));
       }
-      
+
       if (isset($phpgacl_location) && acl_check('admin', 'acl')) {
         // Set the access control group of user
         $user_data = sqlFetchArray(sqlStatement("select username from users where id= ?", array($_POST["id"])));
@@ -223,7 +242,8 @@ if (isset($_POST["mode"])) {
     // $_POST["info"] = addslashes($_POST["info"]);
 
     $calvar = $_POST["calendar"] ? 1 : 0;
-
+    $fullscreen_enable = $_POST["fullscreen_enable"] ? 1 : 0;
+    $menuRole = $_POST["menu_role"] ?: "Sample Role";
     $res = sqlStatement("select distinct username from users where username != ''");
     $doit = true;
     while ($row = sqlFetchArray($res)) {
@@ -242,8 +262,73 @@ if (isset($_POST["mode"])) {
     } else {
         $exp_date = date('Y-m-d');
     }
-    
-    $insertUserSQL=            
+
+if (isset($_FILES)) {
+  //images will be saved with their name
+  $uid =  trim(formData('rumple')).time();
+    //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
+  if (realpath("../../profile_pictures/")) {
+      
+  }
+  else {
+    mkdir("../../profile_pictures/", 0755);
+  }
+  //for profile picture upload
+  //mime check done.
+  //size check done.
+  //extension check done.
+  //if any validation needed be added, please add it below.
+  $bool = 0;
+  $target_file =  basename($_FILES["profile_picture"]["name"]);
+  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  $verify_image = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+  if($verify_image) {
+    $mime = $verify_image["mime"];
+    $mime_types = array('image/png',
+                            'image/jpeg',
+                            'image/gif',
+                            'image/bmp',
+                            'image/vnd.microsoft.icon');
+    //mime check with all image formats.
+    if (in_array($mime, $mime_types)) {
+          $bool = 1;
+        //if mime type matches, then do a size check
+        //size check for 20mb
+        if ($_FILES["profile_picture"]["size"] > 20971520) {
+          $bool = 0;
+        }
+        else {
+          $bool = 1;
+        }    
+    }
+    else {
+      $bool = 0;
+    }
+        
+  }
+  else {
+        $bool = 0;
+  }
+  $picture_url = "";
+  //begin file uploading
+  $destination_directory = "../../profile_pictures/";
+  if ($bool) {
+    if (file_exists($destination_directory.$uid.".".$imageFileType)) {
+      unlink($destination_directory.$uid.".".$imageFileType);
+    }
+    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$uid.".".$imageFileType)) {
+        $picture_url = $uid.".".$imageFileType;
+    }
+    else {
+      //may be failed due to directory permissions.
+    }
+  }
+  else {
+    //don't upload checks failed.
+  }
+}
+
+    $insertUserSQL=
             "insert into users set " .
             "username = '"         . trim(formData('rumple'       )) .
             "', password = '"      . 'NoLongerUsed'                  .
@@ -259,18 +344,22 @@ if (isset($_POST["mode"])) {
             "', info = '"          . trim(formData('info'         )) .
             "', federaldrugid = '" . trim(formData('federaldrugid')) .
             "', upin = '"          . trim(formData('upin'         )) .
-            "', npi  = '"          . trim(formData('npi'          )).
+            "', npi  = '"          . trim(formData('npi'          )) .
             "', taxonomy = '"      . trim(formData('taxonomy'     )) .
             "', facility_id = '"   . trim(formData('facility_id'  )) .
+            "', fullscreen_page = '". trim(formData('fullscreen_page')) .
+            "', fullscreen_enable = '". $fullscreen_enable .
+            "', menu_role = '". $menuRole .
             "', specialty = '"     . trim(formData('specialty'    )) .
             "', see_auth = '"      . trim(formData('see_auth'     )) .
             "', cal_ui = '"        . trim(formData('cal_ui'       )) .
             "', default_warehouse = '" . trim(formData('default_warehouse')) .
             "', irnpool = '"       . trim(formData('irnpool'      )) .
             "', calendar = '"      . $calvar                         .
+            "', picture_url = '"      . $picture_url                         .
             "', pwd_expiration_date = '" . trim("$exp_date") .
             "'";
-    
+
     $clearAdminPass=$_POST['adminPass'];
     $clearUserPass=$_POST['stiltskin'];
     $password_err_msg="";
@@ -292,10 +381,10 @@ if (isset($_POST["mode"])) {
         set_user_aro($_POST['access_group'], trim(formData('rumple')),
           trim(formData('fname')), trim(formData('mname')), trim(formData('lname')));
       }
-        
+
     }
 
-        
+
 
     } else {
       $alertmsg .= xl('User','','',' ') . trim(formData('rumple')) . xl('already exists.','',' ');
@@ -335,8 +424,8 @@ if (isset($_GET["mode"])) {
   // this is commented out.  Somebody must have figured it was too dangerous.
   //
   if ($_GET["mode"] == "delete") {
-    $res = sqlStatement("select distinct username, id from users where id = '" .
-      $_GET["id"] . "'");
+    $res = sqlStatement("select distinct username, id from users where id = ?", array($_GET["id"]));
+      
     for ($iter = 0; $row = sqlFetchArray($res); $iter++)
       $result[$iter] = $row;
 
@@ -346,7 +435,7 @@ if (isset($_GET["mode"])) {
     foreach($result as $iter) {
       sqlStatement("delete from groups where user = '" . $iter{"username"} . "'");
     }
-    sqlStatement("delete from users where id = '" . $_GET["id"] . "'");
+    sqlStatement("delete from users where iid = ?", array($_GET["id"]))
   }
   *******************************************************************/
 
@@ -375,7 +464,7 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 ?>
 <html>
 <head>
-<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox-custom"));
       resolveFancyboxCompatibility();
 ?>
 
@@ -398,7 +487,7 @@ $(document).ready(function(){
         'frameHeight' : 450,
         'frameWidth' : 660
     });
-    
+
     $(function(){
         // add drag and drop functionality to fancybox
         $("#fancy_outer").easydrag();
@@ -424,9 +513,9 @@ function authorized_clicked() {
        <table>
       <tr >
         <td><b><?php echo xlt('User / Groups'); ?></b>&nbsp;&nbsp;</td>
-        <td><a href="usergroup_admin_add.php" class="iframe_medium css_button"><span><?php echo xlt('Add User'); ?></span></a>
+        <td><a href="usergroup_admin_add.php" class="iframe_medium css_button cp-positive"><span><?php echo xlt('Add User'); ?></span></a>
         </td>
-        <td><a href="facility_user.php" class="css_button"><span><?php echo xlt('View Facility Specific User Information'); ?></span></a>
+        <td><a href="facility_user.php" class="css_button cp-misc"><span><?php echo xlt('View Facility Specific User Information'); ?></span></a>
         </td>
       </tr>
     </table>

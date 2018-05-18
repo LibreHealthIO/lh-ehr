@@ -4,6 +4,7 @@ require_once("../../library/create_ssl_certificate.php");
 require_once("../../library/sql.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/translation.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 /********************************************************************************\
  * Copyright (C) Visolve (vicareplus_engg@visolve.com)                          *
@@ -602,7 +603,7 @@ else if ($_POST["mode"] == "download_certificates") {
         </tr>
         <tr>
           <td colspan=3 align='center'>
-            <input name='sslcrt' type='submit' onclick='return download_click();' value='<?php xl('Download Certificates', 'e'); ?>'></td>
+            <input name='sslcrt' type='submit' class='cp-output' onclick='return download_click();' value='<?php xl('Download Certificates', 'e'); ?>'></td>
         </tr>
       </table>
     </form>
@@ -710,7 +711,7 @@ else if ($_POST["mode"] == "download_certificates") {
         </tr>
         <tr>
           <td colspan=2>
-            <input type='submit' onclick='return create_client_certificate_click();' value='<?php xl('Create Client Certificate', 'e'); ?>'>
+            <input type='submit' class='cp-positive' onclick='return create_client_certificate_click();' value='<?php xl('Create Client Certificate', 'e'); ?>'>
           </td>
         </tr>
       </table>

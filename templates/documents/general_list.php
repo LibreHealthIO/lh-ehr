@@ -15,6 +15,12 @@
   <body class="body_top">
 <?php } ?>
 
+<?php if ((int)$GLOBALS["_GET"]["patient_id"] != 0): ?>
+    <a href="interface/patient_file/summary/demographics.php" class="css_button" onclick="top.restoreSession()">
+        <span><?php echo htmlspecialchars(xl('Back To Patient'),ENT_NOQUOTES);?></span>
+    </a>
+<?php endif; ?>
+
 <div class="title">Documents</div>
 <div id="documents_list">
 <table>
@@ -28,16 +34,16 @@
 	</tr>
 </table>
 </div>
-<div id="documents_actions">		
+<div id="documents_actions">
     <?php
         if($this->message){ ?>
             <div class='text' style="margin-bottom:-10px; margin-top:-8px"><i><?php echo $this->message;    ?></i></div><br>
         <?php } ?>
-            
-        <?php if($this->messages) {?>    
+
+        <?php if($this->messages) {?>
             <div class='text' style="margin-bottom:-10px; margin-top:-8px"><i><?php echo $this->messages;   ?></i></div><br>
-        <?php } 
-        echo $this->activity;?>                                      
+        <?php }
+        echo $this->activity;?>
 </div>
 </body>
 </html>

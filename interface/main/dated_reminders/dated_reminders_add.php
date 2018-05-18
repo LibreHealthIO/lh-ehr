@@ -27,6 +27,7 @@
   require_once("$srcdir/htmlspecialchars.inc.php");  
   require_once("$srcdir/dated_reminder_functions.php"); 
   require_once("$srcdir/formatting.inc.php");
+  require_once("$srcdir/headers.inc.php");
   $DateFormat = DateFormatRead();
   $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   
@@ -122,16 +123,31 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
            if(!$ReminderSent){ 
              $output .= '<div style="text-size:2em; text-align:center; color:red">* '.xlt('Please select a valid recipient').'</div> ';
            }else{    
-// --------- echo javascript            
-             echo '<html><body>'
-                  ."<script type=\"text/javascript\" src=\"". $webroot ."/interface/main/tabs/js/include_opener.js\"></script>"    
-                  .'<script language="JavaScript">'; 
+// --------- echo javascript
+	           require_once("$srcdir/headers.inc.php");
+             echo '<html><body>';
+	           call_required_libraries(array("font-awesome", "iziModalToast"));
+             echo "<script type=\"text/javascript\" src=\"". $webroot ."/interface/main/tabs/js/include_opener.js\"></script>"
+                  .'<script language="JavaScript">';
+             
 // ------------ 1) refresh parent window this updates if sent to self 
              echo '  if (opener && !opener.closed && opener.updateme) opener.updateme("new");';     
 // ------------ 2) communicate with user      
-             echo '   alert("'.addslashes(xl('Message Sent')).'");';                 
-// ------------ 3) close this window 
-             echo '  window.close();';
+             echo ' var successMsg = "'.addslashes(xl('Message successfully sent')).'";';
+             echo "
+                    iziToast.success({
+                    title: 'Success -',
+                    message: successMsg,
+                    position: 'center',
+                    icon: 'fa fa-inbox'
+        
+                });
+             ";
+// ------------ 3)leave sufficient time for alert and close this window
+             echo "  setTimeout(function () {
+                parent.$('#sendReminder-iframe').iziModal('close');
+           },2000);
+                    ";
              echo '</script></body></html>';                 
 // --------- stop script from executing further
              exit; 
@@ -161,9 +177,10 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/topdialog.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>  
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>    
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-calendar.js"></script>
-    <script language="JavaScript"> 
+   <?php call_required_libraries(array("jquery-min-3-3-1","font-awesome", "iziModalToast"));
+   ?>
+    <script language="JavaScript">
       $(document).ready(function (){   
         
         $('#timeSpan').change(function(){ 
@@ -197,11 +214,10 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
           } 
           var curr_year = d.getFullYear(); 
           $('#dueDate').val(curr_year + "-" + curr_month + "-" + curr_date); 
-        })    
+        });
         
         
         $("#sendButton").click(function(){
-          $('#errorMessage').html('');
           errorMessage = ''; 
           var PatientID = $('#PatientID').val();
           var dueDate = $('#dueDate').val();
@@ -226,11 +242,16 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
           // check if message is set                                   
           if(message == ''){
              errorMessage = errorMessage + '* <?php echo xla('Please enter a message') ?><br />';
+             
           }  
               
           if(errorMessage != ''){
-            // handle invalid queries
-            $('#errorMessage').html(errorMessage);
+              iziToast.warning({
+                  title: 'Warning -',
+                  message: errorMessage,
+                  position: 'bottomRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
+                  icon: 'fa fa-exclamation-triangle'
+              });
           }
           else{
             // handle valid queries
@@ -239,25 +260,25 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
             $("#addDR").submit();
           }
           return false;
-        }) 
+        });
          
         $("#removePatient").click(function(){
           $("#PatientID").val("0");   
           $("#patientName").val("<?php echo xla('Click to select patient'); ?>");   
           $(this).hide();
           return false;
-        })
+        });
           // update word counter
           var messegeTextarea=$("#message")[0];
           limitText(messegeTextarea.form.message,messegeTextarea.form.countdown,<?php echo $max_reminder_words ?>);
-      })       
+      });
     
         function sel_patient(){ 
            window.open('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_patient_popup.php', '_newDRPat', '' + ",width="   + 500 + ",height="  + 400 + ",left="    + 25  + ",top="     + 25   + ",screenX=" + 25  + ",screenY=" + 25); 
         } 
         
         function setpatient(pid, lname, fname, dob){ 
-              $("#patientName").val(fname +' '+ lname)  
+              $("#patientName").val(fname +' '+ lname);
               $("#PatientID").val(pid);   
               $("#removePatient").show();
               return false;
@@ -281,18 +302,14 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-
-    <h1><?php echo xlt('Send a Reminder') ?></h1>
     <form id="addDR" style="margin:0 0 10px 0;" id="newMessage" method="post" onsubmit="return top.restoreSession()">
-     <div style="text-align:center; color:red" id="errorMessage"></div>   
-     
      <fieldset>          
         <?php echo xlt('Link To Patient') ?> :
         <input type='text' size='10' id='patientName' name='patientName' style='width:200px;cursor:pointer;cursor:hand' 
                value='<?php echo ($patientID > 0 ? attr(getPatName($patientID)) : xla('Click to select patient')); ?>' onclick='sel_patient()' 
                title='<?php xla('Click to select patient'); ?>' readonly /> 
         <input type="hidden" name="PatientID" id="PatientID" value="<?php echo (isset($patientID) ? attr($patientID) : 0) ?>" /> 
-        <button <?php echo ($patientID > 0 ? '' : 'style="display:none"') ?> id="removePatient"><?php echo xlt('unlink patient') ?></button>  
+        <button <?php echo ($patientID > 0 ? '' : 'style="display:none"') ?> id="removePatient" class="cp-misc"><?php echo xlt('unlink patient') ?></button>
     </fieldset> 
     
       
@@ -318,10 +335,10 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
               <input title="<?php echo xlt('Selecting this will create a message that needs to be processed by each recipient individually (this is not a group task).') ?>" type="checkbox" name="sendSeperately" id="sendSeperately" />  <label title="<?php echo xlt('Selecting this will create a message that needs to be processed by each recipient individually (this is not a group task).') ?>" for="sendSeperately">(<?php echo xlt('Each recipient must set their own messages as completed.') ?>)</label>                                       
             </td>
             <td style="text-align:right"> 
-              <a class="css_button_small" style="cursor:pointer" onclick="selectAll();" ><span><?php echo xlt('Send to all') ?></span></a>
+              <a class="css_button_small cp-misc" style="cursor:pointer" onclick="selectAll();" ><span><?php echo xlt('Send to all') ?></span></a>
             </td> 
           </table>
-    </fieldset>   
+    </fieldset>
      
       <br />   
        
@@ -376,7 +393,7 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
       </table> 
     </fieldset>
       <p align="center">
-        <input type="submit" id="sendButton" value="<?php echo xla('Send This Message') ?>" />
+        <input type="submit" id="sendButton" class="cp-submit" value="<?php echo xla('Send This Message') ?>" />
       </p>
       <br><br>
     </form>

@@ -17,7 +17,7 @@
     <div class="container">
         <hr>
         <footer>
-            <p class="muted"><small><?php echo xlt('LibreHealth EHR Onsite Patient Portal'); ?> Rel v1.0 Copyright &copy <?php echo date('Y'); ?></small></p>
+            <p class="muted"><small> LibreHealth EHR <?php echo xlt('Onsite Patient Portal'); ?> Copyright  &copy 2016-<?php echo date('Y'); ?></small></p>
         </footer>
     </div>
     </body>

@@ -7,115 +7,30 @@
  * 2012-01-01 - Added display of home and cell phone and fixed header
  * 2015-06-19 - brought up to security standards teryhill@librehealth.io
  *
- * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
- * @author Rod Roark <rod@sunsetsystems.com> 
- * @author Terry Hill <teryhill@librehealth.io> 
- * @link http://librehealth.io 
+ * @package LibreHealth EHR
+ * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Terry Hill <teryhill@librehealth.io>
+ * @link http://librehealth.io
  */
-
-$fake_register_globals=false;
-$sanitize_all_escapes=true;
-
-require_once("../globals.php");
-require_once("../../library/patient.inc");
-require_once("$srcdir/formatting.inc.php");
-require_once "$srcdir/options.inc.php";
-require_once "$srcdir/formdata.inc.php";
-require_once "$srcdir/appointments.inc.php";
-require_once "$srcdir/clinical_rules.php";
-$DateFormat = DateFormatRead();
-$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
-
-# Clear the pidList session whenever load this page.
-# This session will hold array of patients that are listed in this 
-# report, which is then used by the 'Superbills' and 'Address Labels'
-# features on this report.
-unset($_SESSION['pidList']);
-
-$alertmsg = ''; // not used yet but maybe later
-$patient = $_REQUEST['patient'];
-
-if ($patient && ! $_POST['form_from_date']) {
-    // If a specific patient, default to 2 years ago.
-    $tmp = date('Y') - 2;
-    $from_date = date("$tmp-m-d");
-} else {
-    $from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-    $to_date = fixDate($_POST['form_to_date'], date('Y-m-d'));
-}
-
-$show_available_times = false;
-if ( $_POST['form_show_available'] ) {
-    $show_available_times = true;
-}
-
-$chk_with_out_provider = false;
-if ( $_POST['with_out_provider'] ) {
-    $chk_with_out_provider = true;
-}
-
-$chk_with_out_facility = false;
-if ( $_POST['with_out_facility'] ) {
-    $chk_with_out_facility = true;
-}
-
-//$to_date   = fixDate($_POST['form_to_date'], '');
-$provider  = $_POST['form_provider'];
-$facility  = $_POST['form_facility'];  //(CHEMED) facility filter
-$form_orderby = getComparisonOrder( $_REQUEST['form_orderby'] ) ?  $_REQUEST['form_orderby'] : 'date';
-
-// Reminders related stuff
-$incl_reminders = isset($_POST['incl_reminders']) ? 1 : 0;
-function fetch_rule_txt ($list_id, $option_id) {
-    $rs = sqlQuery('SELECT title, seq from list_options WHERE list_id=? AND option_id=?',
-            array($list_id, $option_id));
-    $rs['title'] = xl_list_label($rs['title']);
-    return $rs;
-}
-function fetch_reminders($pid, $appt_date) {
-    $rems = test_rules_clinic('','passive_alert',$appt_date,'reminders-due',$pid);
-    $seq_due = array();
-    $seq_cat = array();
-    $seq_act = array();
-    foreach ($rems as $ix => $rem) {
-        $rem_out = array();
-        $rule_txt = fetch_rule_txt ('rule_reminder_due_opt', $rem['due_status']);
-        $seq_due[$ix] = $rule_txt['seq'];
-        $rem_out['due_txt'] = $rule_txt['title'];
-        $rule_txt = fetch_rule_txt ('rule_action_category', $rem['category']);
-        $seq_cat[$ix] = $rule_txt['seq'];
-        $rem_out['cat_txt'] = $rule_txt['title'];
-        $rule_txt = fetch_rule_txt ('rule_action', $rem['item']);
-        $seq_act[$ix] = $rule_txt['seq'];
-        $rem_out['act_txt'] = $rule_txt['title'];
-        $rems_out[$ix] = $rem_out;
-    }
-    array_multisort($seq_due, SORT_DESC, $seq_cat, SORT_ASC, $seq_act, SORT_ASC, $rems_out);
-    $rems = array();
-    foreach ($rems_out as $ix => $rem) {
-        $rems[$rem['due_txt']] .= (isset($rems[$rem['due_txt']]) ? ', ':'').
-            $rem['act_txt'].' '.$rem['cat_txt'];
-    }
-    return $rems;
-}
+require_once "reports_controllers/AppointmentsController.php";
 ?>
 
 <html>
@@ -138,23 +53,19 @@ function fetch_reminders($pid, $appt_date) {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
-
  function dosort(orderby) {
     var f = document.forms[0];
     f.form_orderby.value = orderby;
     f.submit();
     return false;
  }
-
  function oldEvt(eventid) {
     dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/add_edit_event.php?eid=' + eventid, 'blank', 775, 375);
  }
-
  function refreshme() {
     // location.reload();
     document.forms[0].submit();
  }
-
 </script>
 
 <style type="text/css">
@@ -172,7 +83,6 @@ function fetch_reminders($pid, $appt_date) {
                 margin-top: 0px;
         }
 }
-
 /* specifically exclude some from the screen */
 @media screen {
     #report_parameters_daterange {
@@ -191,10 +101,7 @@ function fetch_reminders($pid, $appt_date) {
 
 <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Appointments'); ?></span>
 
-<div id="report_parameters_daterange">
-    <?php date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_from_date'])))
-    . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
-</div>
+<?php reportParametersDaterange(); #TRK ?>
 
 <form method='post' name='theform' id='theform' action='appointments_report.php' onsubmit='return top.restoreSession()'>
 
@@ -211,64 +118,26 @@ function fetch_reminders($pid, $appt_date) {
                 <td><?php dropdown_facility($facility , 'form_facility'); ?>
                 </td>
                 <td class='label'><?php echo xlt('Provider'); ?>:</td>
-                <td><?php
-
-                // Build a drop-down list of providers.
-                //
-
-                $query = "SELECT id, lname, fname FROM users WHERE ".
-                  "authorized = 1 $provider_facility_filter ORDER BY lname, fname"; //(CHEMED) facility filter
-
-                $ures = sqlStatement($query);
-
-                echo "   <select name='form_provider'>\n";
-                echo "    <option value=''>-- " . xlt('All') . " --\n";
-
-                while ($urow = sqlFetchArray($ures)) {
-                    $provid = $urow['id'];
-                    echo "    <option value='" . attr($provid) . "'";
-                    if ($provid == $_POST['form_provider']) echo " selected";
-                    echo ">" . text($urow['lname']) . ", " . text($urow['fname']) . "\n";
-                }
-
-                echo "   </select>\n";
-                ?>
+                <td>
+                    <?php // Build a drop-down list of providers. (TRK)
+                        dropDownProviders(); ?>
                 </td>
             </tr>
             <tr>
-                <td class='label'><?php echo xlt('From'); ?>:</td>
-                <td>
-                    <input type='text' name='form_from_date' id="form_from_date"
-                        size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($from_date))) ?>'/>
-                </td>
-                <td class='label'><?php echo xlt('To'); ?>:</td>
-                <td>
-                    <input type='text' name='form_to_date' id="form_to_date"
-                    size='10' value='<?php echo htmlspecialchars(oeFormatShortDate(attr($to_date))) ?>'/>
-                </td>
+                <?php // Show From and To dates fields. (TRK)
+                    showFromAndToDates(); ?>
             </tr>
-            
+
             <tr>
                 <td class='label'><?php echo xlt('Status'); # status code drop down creation ?>:</td>
                 <td><?php generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'All'),$_POST['form_apptstatus']);?></td>
                 <td><?php echo xlt('Category') #category drop down creation ?>:</td>
                 <td>
-                                    <select id="form_apptcat" name="form_apptcat">
-                                        <?php
-                                            $categories=fetchAppointmentCategories();
-                                            echo "<option value='ALL'>".xlt("All")."</option>";
-                                            while($cat=sqlFetchArray($categories))
-                                            {
-                                                echo "<option value='".attr($cat['id'])."'";
-                                                if($cat['id']==$_POST['form_apptcat'])
-                                                {
-                                                    echo " selected='true' ";
-                                                }
-                                                echo    ">".text(xl_appt_category($cat['category']))."</option>";
-                                            }
-                                        ?>
-                                    </select>
-                                </td>
+                    <select id="form_apptcat" name="form_apptcat">
+                        <?php // Build a drop down of Categories. (TRK)
+                            dropDownCategories(); ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td></td>
@@ -276,10 +145,10 @@ function fetch_reminders($pid, $appt_date) {
                     <?php  if ( $show_available_times ) echo ' checked'; ?>> <?php  echo xlt('Show Available Times'); # check this to show available times on the report ?>
                 </label></td>
                 <td></td>
-                <td><label><input type="checkbox" name="incl_reminders" id="incl_reminders" 
+                <td><label><input type="checkbox" name="incl_reminders" id="incl_reminders"
                     <?php echo ($incl_reminders ? ' checked':''); # This will include the reminder for the patients on the report ?>>
                     <?php echo xlt('Show Reminders'); ?></label></td>
-            
+
             <tr>
                 <td></td>
                 <?php # these two selects will show entries that do not have a facility or a provider ?>
@@ -287,31 +156,32 @@ function fetch_reminders($pid, $appt_date) {
                 <td></td>
                 <td><label><input type="checkbox" name="with_out_facility" id="with_out_facility" <?php if($chk_with_out_facility) echo "checked";?>>&nbsp;<?php echo xlt('Without Facility'); ?></label></td>
             </tr>
-            
+
         </table>
 
         </div>
 
         </td>
         <td align='left' valign='middle' height="100%">
-        <table style='border-left: 1px solid; width: 100%; height: 100%'>
-            <tr>
-                <td>
-                <div style='margin-left: 15px'>
-                                <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
-                <span> <?php echo xlt('Submit'); ?> </span> </a> 
-                                <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
-        <a href='#' class='css_button' id='printbutton'> 
-                                    <span> <?php echo xlt('Print'); ?> </span> </a> 
-                                <a href='#' class='css_button' onclick='window.open("../patient_file/printed_fee_sheet.php?fill=2","_blank")' onsubmit='return top.restoreSession()'> 
-                                    <span> <?php echo xlt('Superbills'); ?> </span> </a> 
-                               <a href='#' class='css_button' onclick='window.open("../patient_file/addr_appt_label.php","_blank")' onsubmit='return top.restoreSession()'> 
-                                    <span> <?php echo xlt('Address Labels'); ?> </span> </a> 
-                                <?php } ?></div>
-                </td>
-            </tr>
-                        <tr>&nbsp;&nbsp;<?php echo xlt('Most column headers can be clicked to change sort order') ?></tr>
-        </table>
+            <table style='border-left: 1px solid; width: 90%; height: 100%'>
+                <tr>
+                    <td>
+                        <div style='margin-left: 15px'>
+                            <a href='#' class='css_button cp-submit' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                                <span> <?php echo xlt('Submit'); ?> </span> </a>
+                            <?php if ($_POST['form_refresh'] || $_POST['form_orderby'] ) { ?>
+                                <a href='#' class='css_button cp-output' id='printbutton'>
+                                    <span> <?php echo xlt('Print'); ?> </span> </a>
+                                <a href='#' class='css_button cp-misc' onclick='window.open("../patient_file/printed_fee_sheet.php?fill=2","_blank")' onsubmit='return top.restoreSession()'>
+                                    <span> <?php echo xlt('Superbills'); ?> </span> </a>
+                                <a href='#' class='css_button cp-misc' onclick='window.open("../patient_file/addr_appt_label.php","_blank")' onsubmit='return top.restoreSession()'>
+                                    <span> <?php echo xlt('Address Labels'); ?> </span> </a>
+                            <?php } ?>
+                        </div>
+                    </td>
+                </tr>
+                <tr>&nbsp;&nbsp;<?php echo xlt('Most column headers can be clicked to change sort order') ?></tr>
+            </table>
         </td>
     </tr>
 </table>
@@ -348,19 +218,19 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
             <th><?php echo xlt('Home'); //Sorting by phone# not really useful ?></th>
 
                 <th><?php echo xlt('Cell'); //Sorting by phone# not really useful ?></th>
-                
+
         <th><a href="nojs.php" onclick="return dosort('type')"
     <?php if ($form_orderby == "type") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Type'); ?></a>
         </th>
-        
+
         <th><a href="nojs.php" onclick="return dosort('status')"
             <?php if ($form_orderby == "status") echo " style=\"color:#00cc00\"" ?>><?php  echo xlt('Status'); ?></a>
         </th>
     </thead>
     <tbody>
         <!-- added for better print-ability -->
-    <?php
-    
+    <?php // TODO: Pull this out
+
     $lastdocname = "";
     //Appointment Status Checking
         $form_apptstatus = $_POST['form_apptstatus'];
@@ -372,37 +242,34 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
                 $form_apptcat=intval($_POST['form_apptcat']);
             }
         }
-            
+
     //Without provider and facility data checking
     $with_out_provider = null;
     $with_out_facility = null;
-
     if( isset($_POST['with_out_provider']) ){
         $with_out_provider = $_POST['with_out_provider'];
     }
-    
+
     if( isset($_POST['with_out_facility']) ){
         $with_out_facility = $_POST['with_out_facility'];
     }
     $appointments = fetchAppointments( $from_date, $to_date, $patient, $provider, $facility, $form_apptstatus, $with_out_provider, $with_out_facility,$form_apptcat );
-    
+
     if ( $show_available_times ) {
         $availableSlots = getAvailableSlots( $from_date, $to_date, $provider, $facility );
         $appointments = array_merge( $appointments, $availableSlots );
     }
-
     $appointments = sortAppointments( $appointments, $form_orderby );
     $pid_list = array();  // Initialize list of PIDs for Superbill option
-    $totalAppontments = count($appointments);   
-    
+    $totalAppontments = count($appointments);
+
     foreach ( $appointments as $appointment ) {
                 array_push($pid_list,$appointment['pid']);
         $patient_id = $appointment['pid'];
         $docname  = $appointment['ulname'] . ', ' . $appointment['ufname'] . ' ' . $appointment['umname'];
-                
+
         $errmsg  = "";
         $pc_apptstatus = $appointment['pc_apptstatus'];
-
         ?>
 
         <tr valign='top' id='p1.<?php echo attr($patient_id) ?>' bgcolor='<?php echo $bgcolor ?>'>
@@ -425,7 +292,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         <td class="detail">&nbsp;<?php echo text($appointment['phone_cell']) ?></td>
 
         <td class="detail">&nbsp;<?php echo text(xl_appt_category($appointment['pc_catname'])) ?></td>
-        
+
         <td class="detail">&nbsp;
             <?php
                 //Appointment Status
@@ -464,7 +331,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
     </tr>
     <?php
     } // End of row 2 display
-    
+
     $lastdocname = $docname;
     }
     // assign the session key with the $pid_list array - note array might be empty -- handle on the printed_fee_sheet.php page.
@@ -485,15 +352,12 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
     name='form_refresh' id='form_refresh' value='' /></form>
 
 <script type="text/javascript">
-
 <?php
 if ($alertmsg) { echo " alert('$alertmsg');\n"; }
 ?>
-
 </script>
-
 </body>
-
+<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
@@ -508,5 +372,4 @@ if ($alertmsg) { echo " alert('$alertmsg');\n"; }
         $.datetimepicker.setLocale('<?= $DateLocale;?>');
     });
 </script>
-
 </html>

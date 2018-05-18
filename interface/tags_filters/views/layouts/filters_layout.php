@@ -14,11 +14,6 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
             background-color: #e0e0e0;
         }
 
-        table{
-            box-sizing: border-box;
-            table-layout: fixed;
-        }
-
         #<?php echo $this->dataTable->getTableId(); ?> {
             font-size: 14px;
         }
@@ -39,7 +34,7 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
             width: 100%;
             margin: 0;
             line-height: 12px;
-            font-size; 12px;
+            font-size: 12px;
             text-align: left;
             float: left;
         }
@@ -58,6 +53,10 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
 
         #time {
             font-size: 12px;
+        }
+
+        thead {
+            margin-top: 1.5px; /**/
         }
 
         table.display td {
@@ -187,15 +186,23 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
             position: fixed;
             top: 36px;
             right: 0px;
-            padding-right:100px;
+            padding-right:75px; /*was 100px*/
             background-color: #ecf0f1;
+            margin-right: 100px; /**/
+            width: 56%;/**/
         }
 
         #filters-table_length {
             position: fixed;
             top: 36px;
-            width: 100%;
+            width: 44%; /*was 100%*/
             background-color: #ecf0f1;
+        }
+
+        #filters-table_filter label input {
+            float: right; /**/
+            margin-right: -175px; /**/
+            margin-top: -20px; /**/
         }
 
         #<?php echo $this->dataTable->getTableId() ?> thead {
@@ -210,7 +217,6 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
                                                           color: transparent;
                                                       }
 
-
         p.tt-suggestion {
             width: 400px;
             border-color: grey;
@@ -224,7 +230,6 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
         .clear-date {
             cursor: pointer;
         }
-
 
     </style>
     <link href="<?php echo $GLOBALS['webroot'] ?>/interface/tags_filters/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -278,16 +283,13 @@ $controllerUrl = $GLOBALS['webroot']."/interface/tags_filters/index.php?action="
                 $('#createModal textarea, #createModal input, #createModal select').val('');
             });
 
-
-
         });
 
 
     </script>
 </head>
 
-
-<body class="body_top">
+<body class="body_top" style="overflow:scroll; height:400px;">
 
 <?php echo $this->content; ?>
 

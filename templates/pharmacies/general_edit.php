@@ -67,8 +67,8 @@
 </tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr>
-    <td colspan="2"><a href="javascript:submit_pharmacy();" class="css_button"><span><?php echo xlt("Save");?></span></a>
-        <a href="controller.php?practice_settings&pharmacy&action=list" class="css_button" onclick="top.restoreSession()">
+    <td colspan="2"><a href="javascript:submit_pharmacy();" class="css_button cp-submit"><span><?php echo xlt("Save");?></span></a>
+        <a href="controller.php?practice_settings&pharmacy&action=list" class="css_button cp-negative" onclick="top.restoreSession()">
                     <span><?php echo xlt("Cancel");?></span></a>
     </td>
 </tr>

@@ -33,12 +33,13 @@
  require_once("$srcdir/patient.inc");
  require_once("../drugs/drugs.inc.php");
  require_once("$srcdir/formatting.inc.php");
+ require_once("../../library/report_functions.php");
 
 $DateFormat = DateFormatRead(true);
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
- $form_from_date  = fixDate($_POST['form_from_date'], date($DateFormat));
- $form_to_date    = fixDate($_POST['form_to_date']  , date($DateFormat));
+ $from_date  = fixDate($_POST['form_from_date'], date($DateFormat));
+ $to_date    = fixDate($_POST['form_to_date']  , date($DateFormat));
 ?>
 <html>
 <head>
@@ -68,36 +69,20 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <form name='theform' method='post' action='destroyed_drugs_report.php'>
 
 <table border='0' cellpadding='3'>
-
  <tr>
   <td>
-    <td class='label'>
-   <?php xl('From','e'); ?>:
-    </td>
-    <td>
-      <input type='text' name='form_from_date' id="form_from_date" size='10'
-             value='<?php echo htmlspecialchars(oeFormatShortDate($from_date), ENT_QUOTES) ?>'>
-    </td>
-    <td class='label'>
-      <?php echo htmlspecialchars(xl('To'), ENT_NOQUOTES); ?>:
-    </td>
-    <td>
-      <input type='text' name='form_to_date' id="form_to_date" size='10'
-             value='<?php echo htmlspecialchars(oeFormatShortDate($to_date), ENT_QUOTES) ?>'>
-    </td>
-
+   <?php // Show From and To dates fields. (TRK)
+      showFromAndToDates(); ?>
    &nbsp;
    <input type='submit' name='form_refresh' value=<?php xl('Refresh','e'); ?>>
    &nbsp;
    <input type='button' value='<?php echo xla('Print'); ?>' id='printbutton' />
   </td>
  </tr>
-
  <tr>
   <td height="1">
   </td>
  </tr>
-
 </table>
 
 <table border='0' cellpadding='1' cellspacing='2' width='98%'>
@@ -130,8 +115,8 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <?php
 
  if ($_POST['form_refresh']) {
-  $where = "i.destroy_date >= '$form_from_date' AND " .
-   "i.destroy_date <= '$form_to_date'";
+  $where = "i.destroy_date >= '$from_date' AND " .
+   "i.destroy_date <= '$to_date'";
 
   $query = "SELECT i.inventory_id, i.lot_number, i.on_hand, i.drug_id, " .
    "i.destroy_date, i.destroy_method, i.destroy_witness, i.destroy_notes, " .
@@ -189,8 +174,11 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
 
 </table>
+
 </form>
+
 </center>
+
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
@@ -202,7 +190,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-     $.datetimepicker.setLocale('<?= $DateLocale;?>');
+     $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 </body>

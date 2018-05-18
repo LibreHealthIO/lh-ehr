@@ -146,7 +146,7 @@ function cancelClicked() {
 
 <div>
     <div style = 'float:left; margin-left:8px;margin-top:-3px'>
-      <a href="javascript:saveClicked();" class="css_button link_submit"><span><?php echo xlt('Save'); ?></span></a>
+      <a href="javascript:saveClicked();" class="css_button link_submit cp-submit"><span><?php echo xlt('Save'); ?></span></a>
       <?php if ($viewmode || !isset($_GET["autoloaded"]) || $_GET["autoloaded"] != "1") { ?>
     </div>
 
@@ -154,7 +154,7 @@ function cancelClicked() {
       <a href="<?php echo "$rootdir/patient_file/encounter/encounter_top.php"; ?>"
         class="css_button link_submit" onClick="top.restoreSession()"><span><?php echo xlt('Cancel'); ?></span></a>
   <?php } else { // not $viewmode ?>
-      <a href="" class="css_button link_submit" onClick="return cancelClicked()">
+      <a href="" class="css_button link_submit cp-negative" onClick="return cancelClicked()">
       <span><?php echo xlt('Cancel'); ?></span></a>
   <?php } // end not $viewmode ?>
     </div>
@@ -307,7 +307,7 @@ function cancelClicked() {
    <?php echo xlt('Issues (Injuries/Medical/Allergy)'); ?>
     </div>
     <div>
-      <a href="../../patient_file/summary/add_edit_issue.php" class="css_button_small link_submit iframe"
+      <a href="../../patient_file/summary/add_edit_issue.php" class="css_button_small link_submit iframe cp-positive"
        onclick="top.restoreSession()"><span><?php echo xlt('Add'); ?></span></a>
     </div>
     <div>

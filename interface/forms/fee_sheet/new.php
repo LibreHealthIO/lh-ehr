@@ -1040,7 +1040,7 @@ echo " </tr>\n";
 <table>
  <tr>
   <td>
-   <input type='button' value='<?php echo xla('Add Copay');?>'
+   <input type='button' class="cp-positive" value='<?php echo xla('Add Copay');?>'
     onclick="copayselect()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </td>
   <td>
@@ -1072,7 +1072,7 @@ echo " </tr>\n";
    <input type='text' name='search_term' value=''> &nbsp;
   </td>
   <td>
-   <input type='submit' name='bn_search' value='<?php echo xla('Search');?>'>
+   <input type='submit' class="cp-submit" name='bn_search' value='<?php echo xla('Search');?>'>
   </td>
  </tr>
 </table>
@@ -1345,7 +1345,7 @@ if ($GLOBALS['contract_physician_in_feesheet']) {
 }
 
 if ($GLOBALS['allow_appointments_in_feesheet']) {
-  echo "<input type='button' value='" . xla('New Appointment') . "' onclick='newEvt()' />\n";
+  echo "<input type='button' class='cp-misc' value='" . xla('New Appointment') . "' onclick='newEvt()' />\n";
 }
 
 echo "</b></span>\n";
@@ -1421,13 +1421,13 @@ if (true) {
 &nbsp; &nbsp; &nbsp;
 
 <?php if (!$isBilled) { ?>
-<input type='submit' name='bn_save' value='<?php echo xla('Save');?>' />
+<input type='submit' class="cp-submit" name='bn_save' value='<?php echo xla('Save');?>' />
 &nbsp;
 <?php if (!$hasCharges) { ?>
-<input type='submit' name='bn_save_close' value='<?php echo xla('Mark as Billed');?>' />
+<input type='submit' class="cp-misc" name='bn_save_close' value='<?php echo xla('Mark as Billed');?>' />
 &nbsp;
 <?php } ?>
-<input type='submit' name='bn_refresh' value='<?php echo xla('Refresh');?>'>
+<input type='submit' class="cp-misc" name='bn_refresh' value='<?php echo xla('Refresh');?>'>
 &nbsp;
 <?php } ?>
 
@@ -1435,7 +1435,7 @@ if (true) {
 <input type='hidden' name='form_alertmsg' value='<?php echo attr($alertmsg); ?>' />
 
 <!-- Class='deleter' makes button -->
-<input type='button' class='deleter' value='<?php echo xla('Cancel');?>'
+<input type='button' class='deleter cp-negative' value='<?php echo xla('Cancel');?>'
  onclick="top.restoreSession();location='<?php echo "$rootdir/patient_file/encounter/$returnurl" ?>'" />
 
 

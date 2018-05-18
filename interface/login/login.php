@@ -32,7 +32,9 @@ $sanitize_all_escapes = true;
 $ignoreAuth = true;
 include_once("../globals.php");
 include_once("$srcdir/sql.inc");
+
 include_once("$srcdir/headers.inc.php");
+
 ?>
 <html>
 <head>
@@ -42,6 +44,8 @@ include_once("$srcdir/headers.inc.php");
     ?>
     <link rel=stylesheet href="<?php echo $css_header; ?>" type="text/css">
     <link rel=stylesheet href="../themes/login.css" type="text/css">
+    <link rel="shortcut icon" href="<?php echo $web_root; ?>/favicon.ico" type="image/x-icon">
+    <title>Login | <?php echo $GLOBALS['libreehr_name']; ?></title>
 
     <script language='JavaScript'>
         function transmit_form() {
@@ -153,6 +157,14 @@ include_once("$srcdir/headers.inc.php");
                                 </tr>
                             <?php endif; ?>
 
+                            <?php if (isset($_GET['loginfirst'])): ?>
+                                <tr>
+                                    <td colspan='2' class='text' style='color:red'>
+                                        <?php echo xlt('You have been logged out due to inactivity, or you have experienced an error. Please re-enter access credentials.'); ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+
                             <?php if (isset($_SESSION['relogin']) && ($_SESSION['relogin'] == 1)): ?>
                                 <tr>
                                     <td colspan='2' class='text'
@@ -207,7 +219,7 @@ include_once("$srcdir/headers.inc.php");
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input class="button large" type="submit" onClick="transmit_form()"
+                                    <input class="cp-submit large" type="submit" onClick="transmit_form()"
                                            value="<?php echo xla('Login'); ?>">
                                 </td>
                             </tr>

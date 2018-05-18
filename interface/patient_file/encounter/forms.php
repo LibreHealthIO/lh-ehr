@@ -27,10 +27,10 @@ require_once("$srcdir/headers.inc.php");
 resolveFancyboxCompatibility();
 ?>
 <script type="text/javascript" src="../../../library/js/common.js"></script>
-        
+
 <script src="<?php echo $GLOBALS['webroot'] ?>/library/ESign/js/jquery.esign.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/ESign/css/esign.css" />
-<?php 
+<?php
 $esignApi = new Api();
 ?>
 
@@ -48,29 +48,29 @@ if (file_exists(dirname(__FILE__) . "/../../forms/track_anything/style.css")) { 
 $.noConflict();
 jQuery(document).ready( function($) {
     var formConfig = <?php echo $esignApi->formConfigToJson(); ?>;
-    $(".esign-button-form").esign( 
+    $(".esign-button-form").esign(
         formConfig,
-        {       
+        {
             afterFormSuccess : function( response ) {
                 if ( response.locked ) {
                     var editButtonId = "form-edit-button-"+response.formDir+"-"+response.formId;
                     $("#"+editButtonId).replaceWith( response.editButtonHtml );
                 }
-                
+
                 var logId = "esign-signature-log-"+response.formDir+"-"+response.formId;
                 $.post( formConfig.logViewAction, response, function( html ) {
-                    $("#"+logId).replaceWith( html );  
+                    $("#"+logId).replaceWith( html );
                 });
             }
         }
     );
 
     var encounterConfig = <?php echo $esignApi->encounterConfigToJson(); ?>;
-    $(".esign-button-encounter").esign( 
+    $(".esign-button-encounter").esign(
         encounterConfig,
-        {       
+        {
             afterFormSuccess : function( response ) {
-                // If the response indicates a locked encounter, replace all 
+                // If the response indicates a locked encounter, replace all
                 // form edit buttons with a "disabled" button, and "disable" left
                 // nav visit form links
                 if ( response.locked ) {
@@ -81,7 +81,7 @@ jQuery(document).ready( function($) {
                     // Disable the new-form capabilities in top nav of the encounter
                     $(".encounter-form-category-li").remove();
                 }
-                
+
                 var logId = "esign-signature-log-encounter-"+response.encounterId;
                 $.post( encounterConfig.logViewAction, response, function( html ) {
                     $("#"+logId).replaceWith( html );
@@ -239,7 +239,7 @@ function expandcollapse(atr){
             var mydivid="divid_"+i;var myspanid="spanid_"+i;
                 var ele = document.getElementById(mydivid); var text = document.getElementById(myspanid);
                 if (typeof(ele) != 'undefined' && ele != null)
-                    ele.style.display = "none"; 
+                    ele.style.display = "none";
                 if (typeof(text) != 'undefined' && text != null)
                     text.innerHTML = "<?php xl('Expand','e'); ?>";
         }
@@ -261,7 +261,7 @@ function divtoggle(spanid, divid) {
 }
 </script>
 
-<style type="text/css">    
+<style type="text/css">
     div.tab {
         min-height: 50px;
         padding:8px;
@@ -275,18 +275,18 @@ function divtoggle(spanid, divid) {
         float:left;
         margin-left:6px;
     }
-    
+
     .encounter-summary-container {
-        float:left; 
+        float:left;
         width:100%;
     }
-    
+
     .encounter-summary-column {
-        width: 33.3%; 
-        float:left; 
+        width: 33.3%;
+        float:left;
         display:inline;
         margin-top:10px;
-    }    
+    }
     .flat_button{
     padding: 3px 6px;
     }
@@ -304,10 +304,10 @@ $previous_value = isset($previous['encounter'])?$previous['encounter']."~".date(
 $next_value = isset($next['encounter'])?$next['encounter']."~".date("Y-m-d",strtotime($next['date'])):"";
 ?>
 <div style="float:left;">
-<input type="button" name="previous" data-encounter="<?php echo $previous_value;?>" class="flat_button" value="<&nbsp;Previous" ></input>
+<input type="button" name="previous" data-encounter="<?php echo $previous_value;?>" class="flat_button cp-misc" value="<&nbsp;Previous" ></input>
 </div>
 <div style="float:right;">
-<input type="button" name="next" data-encounter="<?php echo $next_value;?>" class="flat_button" value="Next&nbsp;>" ></input>
+<input type="button" name="next" data-encounter="<?php echo $next_value;?>" class="flat_button cp-misc" value="Next&nbsp;>" ></input>
 </div>
 
 <div id="encounter_forms">
@@ -346,7 +346,7 @@ if (is_numeric($pid)) {
 ?>
 </div>
 <div style='margin-top:8px;'>
-<?php 
+<?php
 // ESign for entire encounter
 $esign = $esignApi->createEncounterESign( $encounter );
 if ( $esign->isButtonViewable() ) {
@@ -354,7 +354,7 @@ if ( $esign->isButtonViewable() ) {
 }
 ?>
 <?php if (acl_check('admin', 'super')) { ?>
-    <a href='toggledivs(this.id,this.id);' class='css_button' onclick='return deleteme()'><span><?php echo xl('Delete') ?></span></a>
+    <a href='toggledivs(this.id,this.id);' class='css_button cp-negative' onclick='return deleteme()'><span><?php echo xl('Delete') ?></span></a>
 <?php } ?>
 &nbsp;&nbsp;&nbsp;<a href="#" onClick='expandcollapse("expand");' style="font-size:80%;"><?php echo xlt('Expand All'); ?></a>
 &nbsp;&nbsp;&nbsp;<a  style="font-size:80%;" href="#" onClick='expandcollapse("collapse");'><?php echo xlt('Collapse All'); ?></a>
@@ -362,8 +362,8 @@ if ( $esign->isButtonViewable() ) {
 </div>
 
 <div class='encounter-summary-column'>
-<?php if ( $esign->isLogViewable() ) { 
-    $esign->renderLog(); 
+<?php if ( $esign->isLogViewable() ) {
+    $esign->renderLog();
 } ?>
 </div>
 
@@ -458,7 +458,7 @@ if ( $esign->isButtonViewable() ) {
 </div>
 
 <!-- Get the documents tagged to this encounter and display the links and notes as the tooltip -->
-<?php 
+<?php
     $docs_list = getDocumentsByEncounter($pid,$_SESSION['encounter']);
     if(count($docs_list) > 0 ) {
 ?>
@@ -478,7 +478,7 @@ if ( $esign->isButtonViewable() ) {
             $notes = explode("|",$noteData['docNotes']);
             $dates = explode("|", $noteData['docDates']);
             for ( $i = 0 ; $i < count($notes) ; $i++ )
-                $note .= oeFormatShortDate(date('Y-m-d', strtotime($dates[$i]))) . " : " . $notes[$i] . "\n";   
+                $note .= oeFormatShortDate(date('Y-m-d', strtotime($dates[$i]))) . " : " . $notes[$i] . "\n";
         }
 ?>
     <br>
@@ -516,19 +516,19 @@ if ( $esign->isButtonViewable() ) {
         echo "<td>";
         // a link to edit the form
         echo "<div class='form_header_controls'>";
-        
+
         // If the form is locked, it is no longer editable
         if ( $esign->isLocked() ) {
             echo "<a href=# class='css_button_small form-edit-button-locked' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."'><span>".xlt('Locked')."</span></a>";
         } else {
-            echo "<a class='css_button_small form-edit-button' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."' target='".
+            echo "<a class='css_button_small form-edit-button cp-positive' id='form-edit-button-".attr($formdir)."-".attr($iter['id'])."' target='".
                     "_parent" .
                     "' href='$rootdir/patient_file/encounter/view_form.php?" .
                     "formname=" . attr($formdir) . "&id=" . attr($iter['form_id']) .
                     "' onclick='top.restoreSession()'>";
             echo "<span>" . xlt('Edit') . "</span></a>";
         }
-        
+
         if ( $esign->isButtonViewable() ) {
             echo $esign->buttonHtml();
         }
@@ -544,7 +544,7 @@ if ( $esign->isButtonViewable() ) {
                     "&pid=".$pid.
                     "' class='css_button_small' title='" . xl('Delete this form') . "' onclick='top.restoreSession()'><span>" . xl('Delete') . "</span></a>";
             } else {
-                ?><a href='javascript:;' class='css_button_small' style='color:gray'><span><?php xl('Delete','e'); ?></span></a><?php
+                ?><a href='javascript:;' class='css_button_small cp-negative' style='color:gray'><span><?php xl('Delete','e'); ?></span></a><?php
             }
         }
 
@@ -576,7 +576,7 @@ if ( $esign->isButtonViewable() ) {
           include_once($GLOBALS['incdir'] . "/forms/$formdir/report.php");
           call_user_func($formdir . "_report", $pid, $encounter, 2, $iter['form_id']);
         }
-        
+
         if ( $esign->isLogViewable() ) {
             $esign->renderLog();
         }

@@ -2505,7 +2505,6 @@ function display_layout_tabs($formtype, $result1, $result2='') {
 
 function display_layout_tabs_data($formtype, $result1, $result2='') {
   global $item_count, $cell_count, $last_group, $CPR,$condition_str;
-
   $fres = sqlStatement("SELECT distinct group_name FROM layout_options " .
     "WHERE form_id = ? AND uor > 0 " .
     "ORDER BY group_name, seq", array($formtype));
@@ -2665,8 +2664,8 @@ function display_layout_tabs_data_editable($formtype, $result1, $result2='') {
         "ORDER BY seq", array($formtype,$this_group) );
     ?>
 
-        <div class="tab <?php echo $first ? 'current' : '' ?>" id="tab_<?php echo $group_name_esc?>" >
-            <table border='0' cellpadding='0'>
+        <div class="tab <?php echo $first ? 'current' : '' ?>" id="tab_<?php echo $group_name_esc?>" style="height:auto;width:auto;">
+            <table border='0' cellpadding='0' style="border-spacing: 10px">
 
             <?php
                 while ($group_fields = sqlFetchArray($group_fields_query)) {
@@ -3028,10 +3027,10 @@ function expand_collapse_widget($title, $label, $buttonLabel, $buttonLink, $butt
     // show button, since authorized
     // first prepare class string
     if ($buttonClass) {
-      $class_string = "css_button_small ".htmlspecialchars( $buttonClass, ENT_NOQUOTES);
+      $class_string = "css_button_small cp-positive".htmlspecialchars( $buttonClass, ENT_NOQUOTES);
     }
     else {
-      $class_string = "css_button_small";
+      $class_string = "css_button_small cp-positive";
     }
     // next, create the link
     if ($linkMethod == "javascript") {

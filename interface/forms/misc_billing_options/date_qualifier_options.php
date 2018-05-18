@@ -24,10 +24,12 @@
  * @link    http://librehealth.io
  */
 
-$box_14_qualifier_options=array(array(xl("Onset of Current Symptoms or Illness"),"431"),
+$box_14_qualifier_options=array(array(xl(" ")," "),
+                                            array(xl("Onset of Current Symptoms or Illness"),"431"),
                                             array(xl("Last Menstrual Period"),"484"));
 
-$box_15_qualifier_options=array(array(xl("Initial Treatment"),"454"),
+$box_15_qualifier_options=array(array(xl(" ")," "),
+                                           array(xl("Initial Treatment"),"454"),
                                            array(xl("Latest Visit or Consultation"),"304"),
                                            array(xl("Acute Manifestation of a Chronic Condition"),"453"),
                                            array(xl("Accident"),"439"), 

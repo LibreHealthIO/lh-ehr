@@ -29,7 +29,7 @@ $fake_register_globals = false;
 
 require_once("../globals.php");
 require_once("$srcdir/acl.inc");
-
+require_once("$srcdir/headers.inc.php");
 // This array is an important reference for the supported labs and their NPI
 // numbers as known to this program.  The clinic must define at least one
 // procedure provider entry for a lab that has a supported NPI number.
@@ -121,12 +121,12 @@ if ($form_step == 0) {
   echo " <tr>\n";
   echo "  <td nowrap>" . xlt('File to Upload') . "</td>\n";
   echo "<td><input type='hidden' name='MAX_FILE_SIZE' value='4000000' />";
-  echo "<input type='file' name='userfile' /></td>\n";
+  echo "<input type='file' name='userfile' class='cp-positive'/></td>\n";
   echo " </tr>\n";
 
   echo " <tr>\n";
   echo "  <td nowrap>&nbsp;</td>\n";
-  echo "  <td><input type='submit' value='" . xla('Submit') . "' /></td>\n";
+  echo "  <td><input type='submit' value='" . xla('Submit') . "' class='cp-submit'/></td>\n";
   echo " </tr>\n";
 }
 

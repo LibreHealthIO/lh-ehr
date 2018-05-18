@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * Edit Globals
  *
  * This program allows the editing of the system Globals
@@ -10,7 +10,7 @@
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
- * of the License, or (at your option) any later version. 
+ * of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -43,7 +43,7 @@ if ($_GET['mode'] != "user") {
 }
 
 function checkCreateCDB(){
-  $globalsres = sqlStatement("SELECT gl_name, gl_index, gl_value FROM globals WHERE gl_name IN 
+  $globalsres = sqlStatement("SELECT gl_name, gl_index, gl_value FROM globals WHERE gl_name IN
   ('couchdb_host','couchdb_user','couchdb_pass','couchdb_port','couchdb_dbase','document_storage_method')");
     $options = array();
     while($globalsrow = sqlFetchArray($globalsres)){
@@ -53,7 +53,7 @@ function checkCreateCDB(){
   if($GLOBALS['document_storage_method'] != 0){
     // /documents/temp/ folder is required for CouchDB
     if(!is_dir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/')){
-      $directory_created = mkdir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/',0777,true);      
+      $directory_created = mkdir($GLOBALS['OE_SITE_DIR'] . '/documents/temp/',0777,true);
       if(!$directory_created){
     echo htmlspecialchars( xl("Failed to create temporary folder. CouchDB will not work."),ENT_NOQUOTES);
       }
@@ -126,9 +126,38 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
       foreach ($grparr as $fldid => $fldarr) {
         if (in_array($fldid, $USER_SPECIFIC_GLOBALS)) {
           list($fldname, $fldtype, $flddef, $flddesc, $fldlist) = $fldarr;
+          //check and validate input from client side with globals.
+          if(is_array($grparr[$fldid][1])) {
+          $search = $grparr[$fldid][1];
+          $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
+          }
+          elseif ($grparr[$fldid][1] == bool) {
+          $_POST["form_$i"] == 0;
+          $boolean = true;
+          }
+          elseif ($fldid == "css_header") {
+            //styles array created since the globals does not have styles array.
+            $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
+            if (in_array($_POST["form_$i"], $styles_array)) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+          elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
+            if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
+            $boolean = true;
+            }
+            else {
+              $boolean = "false";
+            }
+          }
+          if ($boolean) {
           $label = "global:".$fldid;
           $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
           setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
+          }
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);
           }
@@ -138,7 +167,7 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
     }
   }
   echo "<script type='text/javascript'>";
-  if (!$action['css_header']||!$action['menu_styling_tabs']) {
+  if (!$action['css_header']) {
     echo "top.location.reload(true);";
   }
   echo "self.location.href='edit_globals.php?mode=user&unique=yes';";
@@ -168,7 +197,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
    * Compare form values with old database values.
    * Only save if values differ. Improves speed.
    */
-  
+
   // Get all the globals from DB
   $old_globals = sqlGetAssoc( 'SELECT gl_name, gl_index, gl_value FROM `globals` ORDER BY gl_name, gl_index',false,true );
 
@@ -185,9 +214,9 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
       if (!is_array($fldtype) && substr($fldtype, 0, 2) == 'm_') {
         if (isset($_POST["form_$i"])) {
           $fldindex = 0;
-          
+
           sqlStatement("DELETE FROM globals WHERE gl_name = ?", array( $fldid ) );
-          
+
           foreach ($_POST["form_$i"] as $fldvalue) {
             $fldvalue = trim($fldvalue);
             sqlStatement('INSERT INTO `globals` ( gl_name, gl_index, gl_value ) VALUES ( ?,?,?)', array( $fldid, $fldindex, $fldvalue )  );
@@ -206,10 +235,10 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
         if($fldtype=='pwd') $fldvalue = $fldvalue ? SHA1($fldvalue) : $fldvalueold;
 
         // We rely on the fact that set of keys in globals.inc === set of keys in `globals`  table!
-        
-        if( 
+
+        if(
              !isset( $old_globals[$fldid]) // if the key not found in database - update database
-              ||              
+              ||
              ( isset($old_globals[$fldid]) && $old_globals[ $fldid ]['gl_value'] !== $fldvalue ) // if the value in database is different
         ) {
             // Need to force enable_auditlog_encryption off if the php mcrypt module
@@ -225,9 +254,68 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
                 sqlStatement("UPDATE libreehr_module_vars SET pn_value = ? WHERE pn_name = 'pcFirstDayOfWeek'", array($fldvalue));
                 break;
             }
+          //check and validate input from client side with globals.
+          if(is_array($grparr[$fldid][1])) {
+              $search = $grparr[$fldid][1];
+             $boolean = array_key_exists(trim(strip_escape_custom($_POST["form_$i"])),$search);
+
+          }
+          elseif ($grparr[$fldid][1] == "text") {
+            //for text fields
+              $_POST["form_$i"] = trim(strip_escape_custom($_POST["form_$i"]));
+              $boolean = true;
+          }
+          elseif ($grparr[$fldid][1] == bool) {
+          $_POST["form_$i"] == 0;
+          $boolean = true;
+          }
+          elseif ($fldid == "css_header") {
+            //styles array created since the globals does not have styles array.
+            $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
+            if (in_array($_POST["form_$i"], $styles_array)) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+
+          elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
+            if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
+            $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+          elseif ($fldid == "language_default" OR $fldid="language_menu_other") {
+            $total_languages = sqlStatement('SELECT COUNT(*) FROM `lang_languages`');
+            if($_POST['form_$i'] <= $total_languages) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+          elseif ($fldid == "schedule_end" OR $fldid == "schedule_start") {
+            //we rely on face that time wont exceed 24 hrs
+            //also should not allow negative time.
+            if ($_POST['form_$i'] < 24 && $_POST['form_$i'] >= 0) {
+              $boolean = true;
+            }
+            else {
+              $boolean = false;
+            }
+          }
+
+          //boolean will determine whether the data is valid, else dont update.
+          if ($boolean) {
             // Replace old values
             sqlStatement( 'DELETE FROM `globals` WHERE gl_name = ?', array( $fldid ) );
+
             sqlStatement( 'INSERT INTO `globals` ( gl_name, gl_index, gl_value ) VALUES ( ?, ?, ? )', array( $fldid, 0, $fldvalue )  );
+          }
+
         } else {
           //error_log("No need to update $fldid");
         }
@@ -277,6 +365,16 @@ input     { font-size:10pt; }
 
 <body class="body_top">
 
+<!--Settings Saved Notification for Globals-->
+<div id="set_alert" style="width: 130px; background-color: #2ECC40; color: #fff; font-weight: bold; font-size: 17px; text-align: center; margin-bottom: 5px; display: none;">Settings Saved</div>
+<?php if ($_GET['unique'] == "yes") { ?>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("div#set_alert").css("display", "block").fadeOut(3000);
+  });
+</script>
+<?php } ?>
+
 <?php if ($_GET['mode'] == "user") { ?>
   <form method='post' name='theform' id='theform' action='edit_globals.php?mode=user' onsubmit='return top.restoreSession()'>
 <?php } else { ?>
@@ -292,7 +390,7 @@ input     { font-size:10pt; }
 </div>
 <?php // mdsupport - Optional server based searching mechanism for large number of fields on this screen. ?>
 <div style="float: right;">
-  <input type='submit' style="float: right;" name='form_search' value='<?php echo xla('Search'); ?>' />
+  <input type='submit' style="float: right;" name='form_search' class='cp-submit' value='<?php echo xla('Search'); ?>' />
 </div>
 <div style='float: right;'>
     <input name='srch_desc' type="text" class="form-rounded form-control" size='20'
@@ -310,7 +408,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
   }
 }
 ?>
-</ul> 
+</ul>
 
 <div class="tabContainer well" style="height: 75%; overflow: auto;">
 <?php
@@ -458,7 +556,7 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       }else{
         $top_choice = $flddef;
       }
-      echo "    <option value=''>" . text($top_choice) . "\n";      
+      echo "    <option value=''>" . text($top_choice) . "\n";
       while ($row = sqlFetchArray($res)) {
         $title = $row['title'];
         echo "   <option value='" . attr($title) . "'";
@@ -648,6 +746,12 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       }
       echo "  </select>\n";
     }
+    elseif ($fldtype == 'color') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
+      echo "  <input type='color' class='form-control input-sm $fldid' name='form_$i' id='form_$i' value='" . attr($fldvalue) . "' />\n";
+    }
     if ($_GET['mode'] == "user") {
       echo " </td>\n";
       echo "<td align='center' style='color:red;'>" . attr($globalTitle) . "</td>\n";
@@ -661,8 +765,8 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     }
     ++$i;
    }
-  }  
-  echo " </table>\n";  
+  }
+  echo " </table>\n";
   echo " </div>\n";
  }
 }
@@ -670,20 +774,49 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
 </div>
 
 <p>
- <input type='submit'  name='form_save' value='<?php echo xla('Save'); ?>' />
+ <input type='submit'  name='form_save' value='<?php echo xla('Save'); ?>' class="cp-submit" />
 </p>
 </center>
 
 </form>
 
 </body>
-<script type="text/javascript" src="../super/js/edit_globals.js"></script>
+<!--<script type="text/javascript" src="../super/js/edit_globals.js"></script>-->
 
 <script language="JavaScript">
 
 $(document).ready(function(){
   tabbify();
   enable_modals();
+
+//jquery for live theme selection, so once color picker picked up color css attributes will change.
+
+var primary_attributes = ' .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar, .dropdown-menu>li>a, .dropdown-toggle, #menu, .dropdown, .nav>li>a, .glyphicon, #userdata .dropdown-menu>li ';
+var secondary_attributes = "td, tr, .table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, input[type='submit'], ul.tabNav a, .navbar-collapse, input[type='submit'], input[type='button'],input[type='submit'], button, a[role='button']";
+
+$('.primary_color').on("change", function () {
+var primary_color = $('.primary_color').val();
+$(primary_attributes).css('background-color', primary_color);
+$(primary_attributes, parent.document).css('background-color', primary_color);
+});
+
+$('.primary_font_color').on("change", function () {
+var primary_font_color = $('.primary_font_color').val();
+$(primary_attributes).css('color', primary_font_color);
+$(primary_attributes, parent.document).css('color', primary_font_color);
+});
+
+$('.secondary_color').on("change", function () {
+var secondary_color = $('.secondary_color').val();
+$(secondary_attributes).css('background-color', secondary_color);
+$(secondary_attributes, parent.document).css('background-color', secondary_color);
+});
+
+$('.secondary_font_color').on("change", function () {
+var secondary_font_color = $('.secondary_font_color').val();
+$(secondary_attributes).css('color', secondary_font_color);
+$(secondary_attributes, parent.document).css('color', secondary_font_color);
+});
 
   <?php // mdsupport - Highlight search results ?>
   $('.srch td').wrapInner("<mark></mark>");

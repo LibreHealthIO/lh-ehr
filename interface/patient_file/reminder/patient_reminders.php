@@ -20,6 +20,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/reminders.php");
 require_once("$srcdir/clinical_rules.php");
 require_once "$srcdir/report_database.inc";
+require_once("$srcdir/headers.inc.php");
 ?>
 
 <html>
@@ -205,10 +206,10 @@ else {
             <td>
               <div style='margin-left:15px'>
                 <?php if ($mode == "admin") { ?>
-                 <a id='process_button' href='#' class='css_button' onclick='return ReminderBatch("process")'>
+                 <a id='process_button' href='#' class='css_button cp-misc' onclick='return ReminderBatch("process")'>
                    <span><?php echo htmlspecialchars( xl('Process Reminders'), ENT_NOQUOTES); ?></span>
                  </a>
-                 <a id='process_send_button' href='#' class='css_button' onclick='return ReminderBatch("process_send")'>
+                 <a id='process_send_button' href='#' class='css_button cp-misc' onclick='return ReminderBatch("process_send")'>
                    <span><?php echo htmlspecialchars( xl('Process and Send Reminders'), ENT_NOQUOTES); ?></span>
                  </a>
                  <span id='status_span'></span>

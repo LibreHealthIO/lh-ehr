@@ -68,104 +68,159 @@
   <head>
     <?php html_header_show();
       //  Include Bootstrap, Fancybox, date-time-picker
-      call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox"));
-      ?>
-    <style>
-      body, td, input, select, textarea {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 10pt;
-      }
-      body {
-      padding: 5pt 5pt 5pt 5pt;
-      }
-      div.section {
-      /*
-      border: solid;
-      border-width: 1px;
-      border-color: #0000ff;
-      */
-      margin: 0 0 0 10pt;
-      padding: 5pt;
-      }
-    </style>
-    <script type="text/javascript" src="../../library/js/common.js"></script>
-    <?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
-    <SCRIPT LANGUAGE="JavaScript"><!--
-      //Visolve - sync the radio buttons - Start
-      if((top.window.parent) && (parent.window)){
-              var wname = top.window.parent.left_nav;
-              fname = (parent.window.name)?parent.window.name:window.name;
-              wname.syncRadios();
-              wname.setRadio(fname, "new");
-      }//Visolve - sync the radio buttons - End
-      
-      var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
-      
-      // This may be changed to true by the AJAX search script.
-      var force_submit = false;
-      
-      //code used from http://tech.irt.org/articles/js037/
-      function replace(string,text,by) {
-       // Replaces text with by in string
-       var strLength = string.length, txtLength = text.length;
-       if ((strLength == 0) || (txtLength == 0)) return string;
-      
-       var i = string.indexOf(text);
-       if ((!i) && (text != string.substring(0,txtLength))) return string;
-       if (i == -1) return string;
-      
-       var newstr = string.substring(0,i) + by;
-      
-       if (i+txtLength < strLength)
-        newstr += replace(string.substring(i+txtLength,strLength),text,by);
-      
-       return newstr;
-      }
-      
-      <?php for ($i=1;$i<=3;$i++) { ?>
-      function auto_populate_employer_address<?php echo $i ?>(){
-       var f = document.demographics_form;
-       if (f.form_i<?php echo $i?>subscriber_relationship.options[f.form_i<?php echo $i?>subscriber_relationship.selectedIndex].value == "self") {
-        f.i<?php echo $i?>subscriber_fname.value=f.form_fname.value;
-        f.i<?php echo $i?>subscriber_mname.value=f.form_mname.value;
-        f.i<?php echo $i?>subscriber_lname.value=f.form_lname.value;
-        f.i<?php echo $i?>subscriber_street.value=f.form_street.value;
-        f.i<?php echo $i?>subscriber_city.value=f.form_city.value;
-        f.form_i<?php echo $i?>subscriber_state.value=f.form_state.value;
-        f.i<?php echo $i?>subscriber_postal_code.value=f.form_postal_code.value;
-        if (f.form_country_code)
-          f.form_i<?php echo $i?>subscriber_country.value=f.form_country_code.value;
-        f.i<?php echo $i?>subscriber_phone.value=f.form_phone_home.value;
-        f.i<?php echo $i?>subscriber_DOB.value=f.form_DOB.value;
-        f.i<?php echo $i?>subscriber_ss.value=f.form_ss.value;
-        f.form_i<?php echo $i?>subscriber_sex.value = f.form_sex.value;
-        f.i<?php echo $i?>subscriber_employer.value=f.form_em_name.value;
-        f.i<?php echo $i?>subscriber_employer_street.value=f.form_em_street.value;
-        f.i<?php echo $i?>subscriber_employer_city.value=f.form_em_city.value;
-        f.form_i<?php echo $i?>subscriber_employer_state.value=f.form_em_state.value;
-        f.i<?php echo $i?>subscriber_employer_postal_code.value=f.form_em_postal_code.value;
-        if (f.form_em_country)
-          f.form_i<?php echo $i?>subscriber_employer_country.value=f.form_em_country.value;
-       }
-      }
-      
-      <?php } ?>
-      
-      function upperFirst(string,text) {
-       return replace(string,text,text.charAt(0).toUpperCase() + text.substring(1,text.length));
-      }
-      
-      // The ins_search.php window calls this to set the selected insurance.
-      function set_insurance(ins_id, ins_name) {
-       var thesel = document.forms[0]['i' + insurance_index + 'provider'];
-       var theopts = thesel.options; // the array of Option objects
-       var i = 0;
-       for (; i < theopts.length; ++i) {
-        if (theopts[i].value == ins_id) {
-         theopts[i].selected = true;
-         return;
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox-addpatient"));
+?>
+
+<style>
+body, td, input, select, textarea {
+ font-family: Arial, Helvetica, sans-serif;
+ font-size: 10pt;
+}
+
+body {
+ padding: 5pt 5pt 5pt 5pt;
+}
+
+div.section {
+ /*
+ border: solid;
+ border-width: 1px;
+ border-color: #0000ff;
+ */
+ margin: 0 0 0 10pt;
+ padding: 5pt;
+}
+
+</style>
+
+<script type="text/javascript" src="../../library/js/common.js"></script>
+
+<?php include_once("{$GLOBALS['srcdir']}/options.js.php"); ?>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+//Visolve - sync the radio buttons - Start
+if((top.window.parent) && (parent.window)){
+        var wname = top.window.parent.left_nav;
+        fname = (parent.window.name)?parent.window.name:window.name;
+        wname.syncRadios();
+        wname.setRadio(fname, "new");
+}//Visolve - sync the radio buttons - End
+
+var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
+
+// This may be changed to true by the AJAX search script.
+var force_submit = false;
+
+//code used from http://tech.irt.org/articles/js037/
+function replace(string,text,by) {
+ // Replaces text with by in string
+ var strLength = string.length, txtLength = text.length;
+ if ((strLength == 0) || (txtLength == 0)) return string;
+
+ var i = string.indexOf(text);
+ if ((!i) && (text != string.substring(0,txtLength))) return string;
+ if (i == -1) return string;
+
+ var newstr = string.substring(0,i) + by;
+
+ if (i+txtLength < strLength)
+  newstr += replace(string.substring(i+txtLength,strLength),text,by);
+
+ return newstr;
+}
+
+<?php for ($i=1;$i<=3;$i++) { ?>
+function auto_populate_employer_address<?php echo $i ?>(){
+ var f = document.demographics_form;
+ if (f.form_i<?php echo $i?>subscriber_relationship.options[f.form_i<?php echo $i?>subscriber_relationship.selectedIndex].value == "self") {
+  f.i<?php echo $i?>subscriber_fname.value=f.form_fname.value;
+  f.i<?php echo $i?>subscriber_mname.value=f.form_mname.value;
+  f.i<?php echo $i?>subscriber_lname.value=f.form_lname.value;
+  f.i<?php echo $i?>subscriber_street.value=f.form_street.value;
+  f.i<?php echo $i?>subscriber_city.value=f.form_city.value;
+  f.form_i<?php echo $i?>subscriber_state.value=f.form_state.value;
+  f.i<?php echo $i?>subscriber_postal_code.value=f.form_postal_code.value;
+  if (f.form_country_code)
+    f.form_i<?php echo $i?>subscriber_country.value=f.form_country_code.value;
+  f.i<?php echo $i?>subscriber_phone.value=f.form_phone_home.value;
+  f.i<?php echo $i?>subscriber_DOB.value=f.form_DOB.value;
+  f.i<?php echo $i?>subscriber_ss.value=f.form_ss.value;
+  f.form_i<?php echo $i?>subscriber_sex.value = f.form_sex.value;
+  f.i<?php echo $i?>subscriber_employer.value=f.form_em_name.value;
+  f.i<?php echo $i?>subscriber_employer_street.value=f.form_em_street.value;
+  f.i<?php echo $i?>subscriber_employer_city.value=f.form_em_city.value;
+  f.form_i<?php echo $i?>subscriber_employer_state.value=f.form_em_state.value;
+  f.i<?php echo $i?>subscriber_employer_postal_code.value=f.form_em_postal_code.value;
+  if (f.form_em_country)
+    f.form_i<?php echo $i?>subscriber_employer_country.value=f.form_em_country.value;
+ }
+}
+
+<?php } ?>
+
+function upperFirst(string,text) {
+ return replace(string,text,text.charAt(0).toUpperCase() + text.substring(1,text.length));
+}
+
+// The ins_search.php window calls this to set the selected insurance.
+function set_insurance(ins_id, ins_name) {
+ var thesel = document.forms[0]['i' + insurance_index + 'provider'];
+ var theopts = thesel.options; // the array of Option objects
+ var i = 0;
+ for (; i < theopts.length; ++i) {
+  if (theopts[i].value == ins_id) {
+   theopts[i].selected = true;
+   return;
+  }
+ }
+ // no matching option was found so create one, append it to the
+ // end of the list, and select it.
+ theopts[i] = new Option(ins_name, ins_id, false, true);
+}
+
+// Indicates which insurance slot is being updated.
+var insurance_index = 0;
+
+// The OnClick handler for searching/adding the insurance company.
+function ins_search(ins) {
+ insurance_index = ins;
+ return false;
+}
+
+function checkNum () {
+ var re= new RegExp();
+ re = /^\d*\.?\d*$/;
+ str=document.forms[0].monthly_income.value;
+ if(re.exec(str))
+ {
+ }else{
+  alert("Please enter a dollar amount using only numbers and a decimal point.");
+ }
+}
+
+// This capitalizes the first letter of each word in the passed input
+// element.  It also strips out extraneous spaces.
+function capitalizeMe(elem) {
+ var a = elem.value.split(' ');
+ var s = '';
+ for(var i = 0; i < a.length; ++i) {
+  if (a[i].length > 0) {
+   if (s.length > 0) s += ' ';
+   s += a[i].charAt(0).toUpperCase() + a[i].substring(1);
+  }
+ }
+ elem.value = s;
+}
+
+/*  This function allows only digits to be entered in a text-field,numeric field,etc. */
+function allowOnlyDigits(elem_name){
+    document.querySelector('input[name='+elem_name+']').addEventListener("keypress", function (evt) {
+    if(evt.which == 8){return} // to allow BackSpace
+    if (evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
         }
-       }
+       });
        // no matching option was found so create one, append it to the
        // end of the list, and select it.
        theopts[i] = new Option(ins_name, ins_id, false, true);
@@ -420,8 +475,18 @@
     </script>
   </head>
   <body class="body_top">
-    <form action='new_comprehensive_save.php' name='demographics_form' method='post' onkeyup="checkInputFormat(f)" onsubmit='return validate(this)'>
+    <form action='new_comprehensive_save.php' name='demographics_form' method='post' onkeyup="checkInputFormat(f)" onsubmit='return validate(this)' enctype="multipart/form-data">
       <span class='title'><?php xl('Search or Add Patient','e'); ?></span>
+      <table cellspacing="4" cellpadding="5" align="right">
+      <tr>
+      <td colspan="1"><img id="prof_img" style="display: none; border-radius: 40px;">
+      <a id="show_upload_button" style="display: none;"><?php echo xlt('Remove Profile Picture'); ?></a>
+      </td>
+      <td><input type="file" name="profile_picture" id="files" onchange="readURL(this);" class="hidden" />
+      <label for="files" class="btn cp-positive" id="file_input_button"><?php echo xlt('Add Profile Picture'); ?></label></b>
+      </td>
+      </tr>
+      </table>
       <table class="table">
         <tr>
           <td align='left'>
@@ -543,7 +608,6 @@
                 ++$item_count;
                 generate_form_field($frow, $currvalue);
               }
-              
               end_group();
               ?>
             <?php
@@ -837,11 +901,11 @@
             <?php if (!$SHORT_FORM) echo "  <center>\n"; ?>
             <br />
             <?php if ($WITH_SEARCH) { ?>
-            <input type="button" id="search" value=<?php xl('Search','e','\'','\''); ?>
+            <input type="button" id="search" class='cp-submit' value=<?php xl('Search','e','\'','\''); ?>
               style='background-color:<?php echo $searchcolor; ?>' />
             &nbsp;&nbsp;
             <?php } ?>
-            <input type="button" name='create' id="create" value=<?php xl('Create New Patient','e','\'','\''); ?> />
+            <input type="button" name='create' id="create" class='cp-positive' value=<?php xl('Create New Patient','e','\'','\''); ?> />
             </center>
           </td>
           <td align='right' width='1%' nowrap>
@@ -958,6 +1022,30 @@
     });
     $("select").change(function() {
         checkSkipConditions();
+    });
+    $("#form_email").attr('type','email');
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#prof_img')
+                    .attr('src', e.target.result)
+                    .width(64)
+                    .height(64);
+                $('#prof_img').css("display", "block"); 
+                $('#file_input_button').css("display", "none"); 
+                $('#show_upload_button').css("display", "block");  
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $('#show_upload_button').click(function () {
+      $('#prof_img').css("display", "none"); 
+      $('#file_input_button').css("display", "block"); 
+      $('#show_upload_button').css("display", "none"); 
     });
   </script>
 </html>

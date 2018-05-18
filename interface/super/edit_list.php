@@ -2,6 +2,7 @@
 /**
  * Administration Lists Module.
  *
+ * Copyright (C) 2016-2018 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2007-2015 Rod Roark <rod@sunsetsystems.com>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -16,9 +17,10 @@
  * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
  * @package LibreHealth EHR
+ * @author  Terry Hill <teryhill@librehealth.io>
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Brady Miller <brady@sparmy.com>
- * @author  Teny <teny@zhservices.com> 
+ * @author  Teny <teny@zhservices.com>
  * @link    http://librehealth.io
  */
 
@@ -30,7 +32,7 @@ require_once("$srcdir/lists.inc");
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/options.inc.php");
 
-$list_id = empty($_REQUEST['list_id']) ? 'language' : $_REQUEST['list_id'];
+$list_id = empty($_REQUEST['list_id']) ? ' ' : $_REQUEST['list_id'];
 
 // Check authorization.
 $thisauth = acl_check('admin', 'super');
@@ -122,7 +124,7 @@ if ($_POST['formaction']=='save' && $list_id) {
         $it_abbr     = formTrim($iter['abbreviation']);
         $it_style    = formTrim($iter['style']);
         $it_fshow    = formTrim($iter['force_show']);
-        
+
         if ( (strlen($it_category) > 0) && (strlen($it_type) > 0) ) {
           sqlInsert("INSERT INTO issue_types ( " .
             "`active`,`category`,`ordering`, `type`, `plural`, `singular`, `abbreviation`, `style`, `force_show` " .
@@ -139,7 +141,7 @@ if ($_POST['formaction']=='save' && $list_id) {
             ")");
         }
       }
-    }    
+    }
     else {
         // all other lists
         //
@@ -190,7 +192,7 @@ if ($_POST['formaction']=='save' && $list_id) {
               }
               else
               {
-                $notes = formTrim($iter['notes']); 
+                $notes = formTrim($iter['notes']);
               }
               // Insert the list item
               sqlInsert("INSERT INTO list_options ( " .
@@ -396,12 +398,24 @@ function writeOptionLine($option_id, $title, $seq, $default, $value, $mapping=''
         htmlspecialchars($apptstat_timealert, ENT_QUOTES) . "' size='2' maxlength='2' class='optin' />";
     echo "</td>\n";
   } else {
+    if($list_id != 'order_type') {
     echo "  <td align='center' class='optcell'>";
     echo "<input type='text' name='opt[$opt_line_no][notes]' value='" .
         htmlspecialchars($notes, ENT_QUOTES) . "' size='25' maxlength='255' class='optin' />";
     echo "</td>\n";
   }
+  }
   if($list_id == 'apptstat') {
+    echo "  <td align='center' class='optcell'>";
+    echo "<input type='checkbox' name='opt[$opt_line_no][toggle_setting_1]' value='1' " .
+      "onclick='defClicked($opt_line_no)' class='optin'$checked_tog1 />";
+    echo "</td>\n";
+    echo "  <td align='center' class='optcell'>";
+    echo "<input type='checkbox' name='opt[$opt_line_no][toggle_setting_2]' value='1' " .
+      "onclick='defClicked($opt_line_no)' class='optin'$checked_tog2 />";
+    echo "</td>\n";
+  }
+  if($list_id == 'order_type') {
     echo "  <td align='center' class='optcell'>";
     echo "<input type='checkbox' name='opt[$opt_line_no][toggle_setting_1]' value='1' " .
       "onclick='defClicked($opt_line_no)' class='optin'$checked_tog1 />";
@@ -568,7 +582,7 @@ function writeCTLine($ct_array) {
 /**
  * Special case of Issue Types
  */
-function writeITLine($it_array) {        
+function writeITLine($it_array) {
   global $opt_line_no,$ISSUE_TYPE_CATEGORIES,$ISSUE_TYPE_STYLES;
   ++$opt_line_no;
   $bgcolor = "#" . (($opt_line_no & 1) ? "ddddff" : "ffdddd");
@@ -604,9 +618,10 @@ function writeITLine($it_array) {
 <?php html_header_show();?>
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 
+<?php call_required_libraries(['jquery-min-3-3-1', 'select2']); ?>
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
+
 <title><?php  xl('List Editor','e'); ?></title>
 
 <style>
@@ -806,7 +821,7 @@ function mysubmit() {
 <input type="hidden" name="formaction" id="formaction">
 
 <p><b><?php xl('Edit list','e'); ?>:</b>&nbsp;
-<select name='list_id' id="list_id">
+<select name='list_id' id="list_id" placeholder="Select a list..">
 <?php
 
 // List order depends on language translation options.
@@ -829,22 +844,24 @@ else {
     "WHERE lo.list_id = 'lists' " .
     "ORDER BY IF(LENGTH(ld.definition),ld.definition,lo.title), lo.seq");
 }
-
+echo "<option value='' disabled selected></option>";
 while ($row = sqlFetchArray($res)) {
   $key = $row['option_id'];
   echo "<option value='$key'";
-  if ($key == $list_id) echo " selected";
+  if ($key == $list_id && $list_id != ' ') echo " selected";
   echo ">" . $row['title'] . "</option>\n";
 }
 
 ?>
 </select>
+<?php if($list_id != ' ') { ?>
 <input type="button" id="<?php echo $list_id; ?>" class="deletelist" value=<?php xl('Delete List','e','\'','\''); ?>>
-<input type="button" id="newlist" class="newlist" value=<?php xl('New List','e','\'','\''); ?>>
+<?php } ?>
+<input type="button" id="newlist" class="newlist cp-positive" value=<?php xl('New List','e','\'','\''); ?>>
 </p>
 
 <center>
-
+<?php if ($list_id != ' ') { ?>
 <table cellpadding='2' cellspacing='0'>
  <tr class='head'>
 <?php if ($list_id == 'feesheet') { ?>
@@ -874,14 +891,23 @@ while ($row = sqlFetchArray($res)) {
   <td><b><?php xl('Medical Problem','e'); ?></b></td>
   <td><b><?php xl('Drug'        ,'e'); ?></b></td>
   <td><b><?php xl('External'    ,'e'); ?></b></td>
-<?php } else if ($list_id == 'apptstat') { ?> 
+<?php } else if ($list_id == 'order_type') { ?>
+  <td><b><?php echo xlt('ID'             ); ?></b></td>
+  <td><b><?php echo xlt('Title'          ); ?></b></td>
+  <td><b><?php echo xlt('Order'          ); ?></b></td>
+  <td><b><?php echo xlt('Default'        ); ?></b></td>
+  <td><b><?php echo xlt('Active'         ); ?></b></td>
+  <td><b><?php echo xlt('Electronic'     );?>&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+  <td><b><?php echo xlt('Paper'          ); ?></b></td>
+  <td><b><?php echo xlt('Code(s)'        );?></b></td>
+<?php } else if ($list_id == 'apptstat') { ?>
   <td><b><?php  xl('ID'       ,'e'); ?></b></td>
-  <td><b><?php xl('Title'     ,'e'); ?></b></td>   
+  <td><b><?php xl('Title'     ,'e'); ?></b></td>
   <td><b><?php xl('Order'     ,'e'); ?></b></td>
   <td><b><?php xl('Default'   ,'e'); ?></b></td>
   <td><b><?php xl('Active','e'); ?></b></td>
-  <td><b><?php xl('Color'     ,'e'); ?></b></td> 
-  <td><b><?php xl('Alert Time','e'); ?></b></td> 
+  <td><b><?php xl('Color'     ,'e'); ?></b></td>
+  <td><b><?php xl('Alert Time','e'); ?></b></td>
   <td><b><?php xl('Check In'  ,'e');?>&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
   <td><b><?php xl('Check Out' ,'e'); ?></b></td>
   <td><b><?php xl('Code(s)'   ,'e');?></b></td>
@@ -909,11 +935,11 @@ while ($row = sqlFetchArray($res)) {
   <td><b><?php echo xlt('Force Show'); ?></b></td>
 <?php } else { ?>
   <td title=<?php xl('Click to edit','e','\'','\''); ?>><b><?php  xl('ID','e'); ?></b></td>
-  <td><b><?php xl('Title'  ,'e'); ?></b></td>   
-  <?php //show translation column if not english and the translation lists flag is set 
+  <td><b><?php xl('Title'  ,'e'); ?></b></td>
+  <?php //show translation column if not english and the translation lists flag is set
   if ($GLOBALS['translate_lists'] && $_SESSION['language_choice'] > 1) {
-    echo "<td><b>".xl('Translation')."</b><span class='help' title='".xl('The translated Title that will appear in current language')."'> (?)</span></td>";    
-  } ?>  
+    echo "<td><b>".xl('Translation')."</b><span class='help' title='".xl('The translated Title that will appear in current language')."'> (?)</span></td>";
+  } ?>
   <td><b><?php xl('Order'  ,'e'); ?></b></td>
   <td><b><?php xl('Default','e'); ?></b></td>
   <td><b><?php xl('Active','e'); ?></b></td>
@@ -932,7 +958,7 @@ while ($row = sqlFetchArray($res)) {
 <?php } if ($GLOBALS['ippf_specific']) { ?>
   <td><b><?php xl('Global ID','e'); ?></b></td>
 <?php } ?>
-  <td><b><?php 
+  <td><b><?php
           if ($list_id == 'language') {
             xl('ISO 639-2 Code','e');
           } else if ($list_id == 'personal_relationship' || $list_id == 'religious_affiliation' || $list_id == 'ethnicity' || $list_id == 'race' || $list_id == 'drug_route'){
@@ -949,18 +975,18 @@ while ($row = sqlFetchArray($res)) {
                         xl('INCITS Code','e'); //International Committee for Information Technology Standards
       } else {
             xl('Notes','e');
-          } 
+          }
   ?></b></td>
 
   <td><b><?php xl('Code(s)','e'); ?></b></td>
-  <?php 
+  <?php
     if (preg_match('/_issue_list$/',$list_id)) { ?>
   <td><b><?php echo xlt('Subtype'); ?></b></td>
 <?php }
  } // end not fee sheet ?>
  </tr>
 
-<?php 
+<?php
 // Get the selected list's elements.
 if ($list_id) {
   if ($list_id == 'feesheet') {
@@ -985,14 +1011,14 @@ if ($list_id) {
   }
   else if ($list_id == 'issue_types') {
     $res = sqlStatement("SELECT * FROM issue_types " .
-      "ORDER BY category, ordering ASC");  
+      "ORDER BY category, ordering ASC");
     while ($row = sqlFetchArray($res)) {
       writeITLine($row);
     }
     for ($i = 0; $i < 3; ++$i) {
       writeITLine(array());
     }
-  }  
+  }
   else {
     $res = sqlStatement("SELECT * FROM list_options WHERE " .
       "list_id = '$list_id' ORDER BY seq,title");
@@ -1023,19 +1049,22 @@ if ($list_id) {
 </center>
 
 </form>
-
+<?php } ?>
 <!-- template DIV that appears when user chooses to make a new list -->
 <div id="newlistdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <?php xl('List Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="newlistname" id="newlistname">
-<br>
-<input type="button" class="savenewlist" value=<?php xl('Save New List','e','\'','\''); ?>>
-<input type="button" class="cancelnewlist" value=<?php xl('Cancel','e','\'','\''); ?>>
+<br />
+<input type="button" class="savenewlist cp-submit" value=<?php xl('Save New List','e','\'','\''); ?>>
+<input type="button" class="cancelnewlist cp-negative" value=<?php xl('Cancel','e','\'','\''); ?>>
 </div>
 </body>
 <script language="javascript">
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
+
+    // type-ahead selector
+    $('#list_id').select2();
     $("#form_save").click(function() { SaveChanges(); });
     $("#list_id").change(function() { $('#theform').submit(); });
 
@@ -1074,7 +1103,7 @@ $(document).ready(function(){
             }
         }
         $("#newlistname").val(validname);
-    
+
         // submit the form to add a new field to a specific group
         $("#formaction").val("addlist");
         $("#theform").submit();
@@ -1089,7 +1118,7 @@ $(document).ready(function(){
             $("#theform").submit();
         }
     };
-    
+
     // just hide the new list DIV
     var CancelNewList = function(btnObj) {
         // hide the list details DIV

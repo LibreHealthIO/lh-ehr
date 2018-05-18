@@ -18,6 +18,7 @@ require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/htmlspecialchars.inc.php');
 /* for formData() */
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
+require_once("$srcdir/headers.inc.php");
 
 if (!acl_check('admin', 'super')) die(htmlspecialchars(xl('Not authorized')));
 
@@ -204,7 +205,7 @@ function msfFileChanged() {
 </table>
 
 <p>
-<input type='submit' name='bn_save' value='<?php echo htmlspecialchars(xl('Save')) ?>' />
+<input type='submit' class='cp-submit' name='bn_save' value='<?php echo htmlspecialchars(xl('Save')) ?>' />
 </p>
 
 </center>

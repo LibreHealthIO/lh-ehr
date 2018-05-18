@@ -13,14 +13,23 @@
  * @author Jerry Padgett <sjpadgett@gmail.com>
  * @link http://librehealth.io
  *
- * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
  require_once("verify_session.php");
  require_once("$srcdir/patient.inc");
  require_once ("lib/portal_mail.inc");
 
- if(!isset($_SESSION['portal_init'])) $_SESSION['portal_init'] = true;
+if ($_SESSION['register'] === true) {
+    session_destroy();
+    header('Location: '.$landingpage.'&w');
+    exit();
+}
+
+if (!isset($_SESSION['portal_init'])) {
+    $_SESSION['portal_init'] = true;
+}
+
  $whereto = 'profilepanel';
  if( isset($_SESSION['whereto'])){
      $whereto = $_SESSION['whereto'];
@@ -28,16 +37,20 @@
  $user = isset($_SESSION['sessionUser']) ? $_SESSION['sessionUser'] : 'portal user';
  $result = getPatientData($pid);
 
- $msgs = getPortalPatientNotes($pid);
+ $msgs = getPortalPatientNotes($_SESSION['portal_username']);
  $msgcnt = count($msgs);
  $newcnt = 0;
  foreach ( $msgs as $i ) {
-     if($i['message_status']=='New') $newcnt += 1;
+    if ($i['message_status']=='New') {
+        $newcnt += 1;
  }
+ }
+
+
+ require_once '_header.php';
 
  echo "<script>var cpid='" . attr($pid) . "';var cuser='" . attr($user) . "';var webRoot='" . $GLOBALS['web_root'] . "';var ptName='" . attr($_SESSION['ptName']) . "';</script>";
 
- require_once '_header.php';
 ?>
 
 <script type="text/javascript">
@@ -54,8 +67,9 @@ $(document).ready(function(){
     });
     $("#appointmentslist").load("./get_appointments.php", { 'embeddedScreen' : true  }, function() {
         $("#reports").load("./report/portal_patient_report.php?pid='<?php echo attr($pid) ?>'", { 'embeddedScreen' : true  }, function() {
-        /*$("#payment").load("./portal_payment.php", { 'embeddedScreen' : true  }, function() {
-            });*/
+            <?php if ($GLOBALS['portal_two_payments']) { ?>
+                $("#payment").load("./portal_payment.php", { 'embeddedScreen' : true  }, function() { });
+            <?php } ?>
         });
     });
     $("#medicationlist").load("./get_medications.php", { 'embeddedScreen' : true  }, function() {
@@ -70,13 +84,7 @@ $(document).ready(function(){
         });
      });
 
- /* */
-
-     $('#openSignModal').on('show.bs.modal', function(e) {
-        $('.sigPad').signaturePad({
-            drawOnly: true
-         });
-     });
+    $('.sigPad').signaturePad({ drawOnly: true });
      $(".generateDoc_download").click( function() {
         $("#doc_form").submit();
     });
@@ -92,14 +100,13 @@ $(document).ready(function(){
                    subtitle: '<?php echo xla('Changes take effect after provider review.'); ?>',
                    title: title,
                    useBin: false,
-                    url: './patient/patientdata?pid='+cpid+'&user='+cuser
+                    url: webRoot+'/patient_portal/patient/patientdata?pid='+cpid+'&user='+cuser
                 };
             return eModal.ajax(params)
                 .then(function () { });
      }
      function saveProfile(){
          page.updateModel();
-         //eModal.alert("Send Complete-Waiting for provider review.","Success");
      }
      /* $(document.body).on('hidden.bs.modal', function (){
              window.location.href = './home.php';
@@ -144,6 +151,12 @@ $(document).ready(function(){
             $(".right-side").toggleClass("strech");
         }
     });
+    $(function(){
+        $('#popwait').hide();
+        $('#callccda').click(function(){
+            $('#popwait').show();
+        })
+});
 });
 
 
@@ -152,6 +165,7 @@ $(document).ready(function(){
     <aside class="right-side">
         <!-- Main content -->
         <section class="container-fluid content panel-group" id="panelgroup">
+        <div id="popwait" class="alert alert-warning" style="font-size:18px"><strong><?php echo xlt('Working!'); ?></strong> <?php echo xlt('Please wait...'); ?></div>
 
             <div class="row collapse" id="lists">
                 <div class="col-sm-6">
@@ -202,6 +216,7 @@ $(document).ready(function(){
                     </div><!-- /.panel -->
                 </div><!-- /.col -->
             </div><!-- /.row -->
+            <?php if ($GLOBALS['portal_two_payments']) { ?>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="panel panel-primary collapse" id="paymentpanel">
@@ -212,6 +227,7 @@ $(document).ready(function(){
                     </div>
                 </div><!-- /.col -->
             </div>
+            <?php } ?>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="panel panel-primary collapse" style="padding-top:0;padding-bottom:0;" id="messagespanel">
@@ -245,9 +261,6 @@ $(document).ready(function(){
                                 </form>
                             </div>
                         <?php } ?>
-                            <!-- <div class="input-group" style='padding-top:10px'>
-                                <span class="input-group-addon" data-toggle="modal" data-backdrop="true" data-target="#openSignModal">Patient Signature</span>
-                            </div> -->
                         </div><!-- /.panel-body -->
                         <div class="panel-footer"></div>
                     </div>
@@ -281,7 +294,7 @@ $(document).ready(function(){
 
         </section>
         <!-- /.content -->
-        <div class="footer-main">LibreEHR <?php echo xlt(' Patient Portal'); ?></div>
+        <div class="footer-main">LibreEHR <?php echo xlt(' Patient Portal'); ?> <?php echo "v".text($libreehr_portal_version); ?></div>
     </aside><!-- /.right-side -->
     </div><!-- ./wrapper -->
 <div id="openSignModal" class="modal fade" role="dialog">
@@ -324,7 +337,7 @@ $(document).ready(function(){
             </div>
         </div>
         <!-- <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo xlt('Close'); ?></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><?php //echo xlt('Close'); ?></button>
         </div> -->
     </div>
 </div><!-- Modal -->

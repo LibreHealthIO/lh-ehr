@@ -29,6 +29,7 @@ $fake_register_globals=false;
 //
 
 require_once("../globals.php");
+require_once("$srcdir/headers.inc.php");
 ?>
 
 <html>
@@ -89,17 +90,17 @@ else $logtop = 0;
 
 	<table class='text'>
              <div style='margin-left:15px'>
-               <a id='refresh_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
+               <a id='refresh_button' href='#' class='css_button cp-submit' onclick='top.restoreSession(); $("#theform").submit()'>
                <span>
                <?php echo xlt('Refresh'); ?>
                </span>
                </a>
-               <a id='prev_button' href='#' class='css_button' onclick='top.restoreSession(); $("#lognext").val(-100); $("#theform").submit()'>
+               <a id='prev_button' href='#' class='css_button cp-misc' onclick='top.restoreSession(); $("#lognext").val(-100); $("#theform").submit()'>
                <span>
                <?php echo xlt('Older'); ?>
                </span>
                </a>
-               <a id='next_button' href='#' class='css_button' onclick='top.restoreSession(); $("#lognext").val(100); $("#theform").submit()'>
+               <a id='next_button' href='#' class='css_button cp-misc' onclick='top.restoreSession(); $("#lognext").val(100); $("#theform").submit()'>
                <span>
                <?php echo xlt('Newer'); ?>
                </span>
@@ -206,4 +207,3 @@ else
 
 </body>
 </html>
-

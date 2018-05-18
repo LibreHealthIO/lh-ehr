@@ -45,6 +45,7 @@ $fake_register_globals=false;
 
 require_once("../../interface/globals.php");
 require_once("$srcdir/acl.inc");
+require_once("$srcdir/headers.inc.php");
 
 // Ensure script doesn't time out and has enough memory
 set_time_limit(0);
@@ -57,7 +58,7 @@ if (!acl_check('admin', 'super')) {
 }
 
 $db = isset($_GET['db']) ? $_GET['db'] : '0';
-$mainPATH = $GLOBALS['fileroot']."/contrib/".strtolower($db);
+$mainPATH = $GLOBALS['fileroot']."/modules/medical_code_sets/".strtolower($db);
 $file_checksum = "";
 
 //
@@ -383,7 +384,7 @@ if ($supported_file === 1) {
     }
     if (strlen($action) > 0) {
     ?>
-      <input id="<?php echo attr($db); ?>_install_button" version="<?php echo attr($file_revision); ?>" file_revision_date="<?php echo attr($file_revision_date); ?>" file_checksum="<?php echo attr($file_checksum); ?>" type="button" value="<?php echo attr($action); ?>"/>
+      <input id="<?php echo attr($db); ?>_install_button" class='cp-misc' version="<?php echo attr($file_revision); ?>" file_revision_date="<?php echo attr($file_revision_date); ?>" file_checksum="<?php echo attr($file_checksum); ?>" type="button" value="<?php echo attr($action); ?>"/>
       </div> 
     <?php
     }

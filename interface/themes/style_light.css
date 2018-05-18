@@ -146,8 +146,8 @@ a:hover {
 }
 
 .sorting_1:hover{
-    cursor: url('theme_assets/cursors/refresh_icon.png'), pointer;
-    color:#ff5555;
+    cursor: pointer;
+    color: #ff5555;
 }
 
 .tab-button {
@@ -155,7 +155,7 @@ a:hover {
 }
 
 /*=============================================================
- * Here we have taken variables from globals.php and turned them into CSS classes 
+ * Here we have taken variables from globals.php and turned them into CSS classes
  * these should be used in place of the GLOBAL variables -- JRM March 2008
  *=============================================================*/
 .body_top {
@@ -658,7 +658,7 @@ a:hover {
 }
 
 tr.odd, td.even {
-  background-color: #ffffff !important;
+  background-color: #ffffff;
 }
 
 /*
@@ -686,8 +686,6 @@ tr.odd, td.even {
 }
 
 .css_button, input[type="button"],input[type="submit"], button, a[role="button"] {
-  background: #2672ec;
-  color: #ffffff !important;
   display: block;
   float: left;
   font-weight: 300;
@@ -695,6 +693,7 @@ tr.odd, td.even {
   padding-right: 10px;
   /* sliding doors padding */
   text-decoration: none;
+  color: #ffffff !important;
   padding: 5px 12px 5px;
   border: none;
 }
@@ -1160,6 +1159,3 @@ div.notab-right {
 .report_search_bar {
   background-color: #EADDB4;
 }
-
-
-  

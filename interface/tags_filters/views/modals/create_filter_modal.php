@@ -102,8 +102,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="save-new-rule" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-default cp-negative" data-dismiss="modal">Close</button>
+                <button type="button" id="save-new-rule" class="btn btn-primary cp-submit">Save</button>
             </div>
 
         </div>

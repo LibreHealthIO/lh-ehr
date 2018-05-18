@@ -41,6 +41,7 @@ foreach($fetchedEvents as $event) {
   $e['color'] = $event['pc_catcolor'];
   
   if($event["pc_pid"] > 0) {
+    $e['picture_url'] = getPatientPictureUrl($event["pc_pid"]);
     $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
     if(!empty($event["pc_hometext"])) {
       $e['description'] = $e['description'] . ": " . $event["pc_hometext"];

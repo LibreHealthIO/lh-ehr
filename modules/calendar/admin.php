@@ -56,8 +56,12 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         <div class="form-group col-xs-12">
           <label for="category"><?php echo xlt('Select Category');?></label>
           <select class="form-control" id="category" name="category" required>
-            <option value="__NEW__"><?php echo xlt('New Category');?></option>
+           <option value="__NEW__" select="selected"><?php echo xlt('New Category');?></option>
             <?php 
+            if (empty($_SESSION['category'])) {
+                error_log("nul?: ".$_SESSION['category'], 0);
+                $_SESSION['category'] = "__NEW__";
+            }
             foreach($categories as $category) {
               $catid = $category['pc_catid'];
               $catname = $category['pc_catname'];
@@ -155,7 +159,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         <div class="row">
           <div class="form-group col-xs-9"> 
             <div class=col-md-12>
-              <button type="submit" class="btn btn-primary" name="updateCat" value="1"><?php echo xlt('Update');?></button>
+              <button type="submit" class="btn btn-primary cp-positive" name="updateCat" value="1"><?php echo xlt('Update');?></button>
             </div>
           </div>
           
@@ -163,7 +167,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
           <?php if(!empty($selectedCat)) { ?>
           <div class="form-group col-xs-3">
             <div class=col-md-12>
-              <button type="submit" class="btn btn-danger" name="deleteCat" value="1" 
+              <button type="submit" class="btn btn-danger cp-negative" name="deleteCat" value="1" 
               onclick="return confirm('<?php echo xlt('Are you sure you want to do that?');?>');"><?php echo xlt('Delete');?></button>
             </div>
           </div>

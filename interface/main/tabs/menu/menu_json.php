@@ -10,11 +10,11 @@ require_once("menu_updates.php");
 require_once("menu_db.php");
 
 $menu_parsed=load_menu("default");
+
 if(count($menu_parsed)==0)
 {
     $menu_parsed=json_decode($menu_json);
 }
-
 menu_update_entries($menu_parsed);
 $menu_restrictions=array();
 menu_apply_restrictions($menu_parsed,$menu_restrictions);
@@ -25,9 +25,8 @@ menu_apply_restrictions($menu_parsed,$menu_restrictions);
     {
         var self=this;
         self.label=ko.observable(object.label);
-
         self.header=false;
-        if('url' in object )
+        if('url' in object && object.url !== null )
         {
             self.url=ko.observable(object.url);
             self.header=false;

@@ -2,351 +2,33 @@
 /*
  * Inventory Activity report
  *
- * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io> 
+ * Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2015 Rod Roark <rod@sunsetsystems.com>
  *
- * LICENSE: This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 3 
- * of the License, or (at your option) any later version. 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;. 
- * 
+ * LICENSE: This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
+ *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * @package LibreHealth EHR 
+ * @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
- * @link http://librehealth.io 
+ * @link http://librehealth.io
  */
 
-// Report columns:
-// Product Name (blank where repeated)
-// Warehouse Name (blank where repeated) or Total for Product
-// Starting Inventory (detail lines: date)
-// Ending Inventory   (detail lines: invoice ID)
-// Sales
-// Distributions
-// Purchases
-// Transfers
-
-//SANITIZE ALL ESCAPES
-$sanitize_all_escapes=true;
-//
-
-//STOP FAKE REGISTER GLOBALS
-$fake_register_globals=false;
-//
-
-require_once("../globals.php");
-require_once("$srcdir/patient.inc");
-require_once("$srcdir/acl.inc");
-require_once("$srcdir/formatting.inc.php");
-$DateFormat = DateFormatRead();
-$DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
-
-// Specify if product or warehouse is the first column.
-$product_first = (!empty($_POST['form_by']) && $_POST['form_by'] == 'w') ? 0 : 1;
-
-$last_warehouse_id = '~';
-$last_product_id = 0;
-
-function esc4Export($str) {
-  return str_replace('"', '\\"', $str);
-}
-
-// Get ending inventory for the report's end date.
-// Optionally restricts by product ID and/or warehouse ID.
-function getEndInventory($product_id = 0, $warehouse_id = '~') {
-  global $form_from_date, $form_to_date, $form_product;
-
-  $whidcond = '';
-  if ($warehouse_id !== '~') {
-    $whidcond = $warehouse_id === '' ?
-      "AND ( di.warehouse_id IS NULL OR di.warehouse_id = '' )" :
-      "AND di.warehouse_id = '$warehouse_id'";
-  }
-
-  $prodcond = '';
-  if ($form_product) $product_id = $form_product;
-  if ($product_id) {
-    $prodcond = "AND di.drug_id = '$product_id'";
-  }
-
-  // Get sum of current inventory quantities + destructions done after the
-  // report end date (which is effectively a type of transaction).
-  $eirow = sqlQuery("SELECT sum(di.on_hand) AS on_hand " .
-    "FROM drug_inventory AS di WHERE " .
-    "( di.destroy_date IS NULL OR di.destroy_date > '$form_to_date' ) " .
-    "$prodcond $whidcond");
-
-  // Get sum of sales/adjustments/purchases after the report end date.
-  $sarow = sqlQuery("SELECT sum(ds.quantity) AS quantity " .
-    "FROM drug_sales AS ds, drug_inventory AS di WHERE " .
-    "ds.sale_date > '$form_to_date' AND " .
-    "di.inventory_id = ds.inventory_id " .
-    "$prodcond $whidcond");
-
-  // Get sum of transfers out after the report end date.
-  $xfrow = sqlQuery("SELECT sum(ds.quantity) AS quantity " .
-    "FROM drug_sales AS ds, drug_inventory AS di WHERE " .
-    "ds.sale_date > '$form_to_date' AND " .
-    "di.inventory_id = ds.xfer_inventory_id " .
-    "$prodcond $whidcond");
-
-  return $eirow['on_hand'] + $sarow['quantity'] - $xfrow['quantity'];
-}
-
-function thisLineItem($product_id, $warehouse_id, $patient_id, $encounter_id,
-  $rowprod, $rowwh, $transdate, $qtys, $irnumber='')
-{
-  global $warehouse, $product, $secqtys, $priqtys, $grandqtys;
-  global $whleft, $prodleft; // left 2 columns, blank where repeated
-  global $last_warehouse_id, $last_product_id, $product_first;
-  global $form_action;
-
-  $invnumber = empty($irnumber) ? ($patient_id ? "$patient_id.$encounter_id" : "") : $irnumber;
-
-  // Product name for this detail line item.
-  if (empty($rowprod)) $rowprod = 'Unnamed Product';
-
-  // Warehouse name for this line item.
-  if (empty($rowwh)) $rowwh = 'None';
-
-  // If new warehouse or product...
-  if ($warehouse_id != $last_warehouse_id || $product_id != $last_product_id) {
-
-    // If there was anything to total...
-    if (($product_first && $last_warehouse_id != '~') || (!$product_first && $last_product_id)) {
-
-      $secei = getEndInventory($last_product_id, $last_warehouse_id);
-
-      // Print second-column totals.
-      if ($form_action == 'export') {
-        // Export:
-        if (! $_POST['form_details']) {
-          if ($product_first) {
-            echo '"'  . esc4Export($product)   . '"';
-            echo ',"' . esc4Export($warehouse) . '"';
-          } else {
-            echo '"'  . esc4Export($warehouse) . '"';
-            echo ',"' . esc4Export($product)   . '"';
-          }
-          echo ',"' . ($secei - $secqtys[0] - $secqtys[1] - $secqtys[2] - $secqtys[3] - $secqtys[4]) . '"'; // start inventory
-          echo ',"' . $secqtys[0] . '"'; // sales
-          echo ',"' . $secqtys[1] . '"'; // distributions
-          echo ',"' . $secqtys[2] . '"'; // purchases
-          echo ',"' . $secqtys[3] . '"'; // transfers
-          echo ',"' . $secqtys[4] . '"'; // adjustments
-          echo ',"' . $secei      . '"'; // end inventory
-          echo "\n";
-        }
-      }
-      else {
-        // Not export:
-?>
- <tr bgcolor="#ddddff">
-<?php if ($product_first) { ?>
-  <td class="detail">
-   <?php echo htmlspecialchars($prodleft); $prodleft = " "; ?>
-  </td>
-  <td class="detail" colspan='3'>
-   <?php if ($_POST['form_details']) echo htmlspecialchars(xl('Total for')) . ' '; echo htmlspecialchars($warehouse); ?>
-  </td>
-<?php } else { ?>
-  <td class="detail">
-   <?php echo htmlspecialchars($whleft); $whleft = " "; ?>
-  </td>
-  <td class="detail" colspan='3'>
-   <?php if ($_POST['form_details']) echo htmlspecialchars(xl('Total for')) . ' '; echo htmlspecialchars($product); ?>
-  </td>
-<?php } ?>
-  <td class="dehead" align="right">
-   <?php echo $secei - $secqtys[0] - $secqtys[1] - $secqtys[2] - $secqtys[3] - $secqtys[4]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $secqtys[0]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $secqtys[1]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $secqtys[2]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $secqtys[3]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $secqtys[4]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $secei; ?>
-  </td>
- </tr>
-<?php
-      } // End not csv export
-    }
-    $secqtys = array(0, 0, 0, 0, 0);
-    if ($product_first ) {
-      $whleft = $warehouse = $rowwh;
-      $last_warehouse_id = $warehouse_id;
-    } else {
-      $prodleft = $product = $rowprod;
-      $last_product_id = $product_id;
-    }
-  }
-
-  // If first column is changing, time for its totals.
-  if (($product_first && $product_id != $last_product_id) ||
-      (!$product_first && $warehouse_id != $last_warehouse_id))
-  {
-    if (($product_first && $last_product_id) ||
-        (!$product_first && $last_warehouse_id != '~'))
-    {
-      $priei = $product_first ? getEndInventory($last_product_id) :
-        getEndInventory(0, $last_warehouse_id);
-      // Print first column total.
-      if ($form_action != 'export') {
-?>
-
- <tr bgcolor="#ffdddd">
-  <td class="detail">
-   &nbsp;
-  </td>
-  <td class="detail" colspan="3">
-   <?php echo htmlspecialchars(xl('Total for')) . ' '; echo htmlspecialchars($product_first ? $product : $warehouse); ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $priei - $priqtys[0] - $priqtys[1] - $priqtys[2] - $priqtys[3] - $priqtys[4]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $priqtys[0]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $priqtys[1]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $priqtys[2]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $priqtys[3]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $priqtys[4]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $priei; ?>
-  </td>
- </tr>
-<?php
-      } // End not csv export
-    }
-    $priqtys = array(0, 0, 0, 0, 0);
-    if ($product_first) {
-      $prodleft = $product = $rowprod;
-      $last_product_id = $product_id;
-    } else {
-      $whleft = $warehouse = $rowwh;
-      $last_warehouse_id = $warehouse_id;
-    }
-  }
-
-  // Detail line.
-  if ($_POST['form_details'] && $product_id && ($qtys[0] + $qtys[1] + $qtys[2] + $qtys[3] + $qtys[4])) {
-    if ($form_action == 'export') {
-      if ($product_first) {
-        echo '"'  . esc4Export($product )  . '"';
-        echo ',"' . esc4Export($warehouse) . '"';
-      } else {
-        echo '"'  . esc4Export($warehouse) . '"';
-        echo ',"' . esc4Export($product)   . '"';
-      }
-      echo ',"' . oeFormatShortDate($transdate) . '"';
-      echo ',"' . esc4Export($invnumber) . '"';
-      echo ',"' . $qtys[0]             . '"'; // sales
-      echo ',"' . $qtys[1]             . '"'; // distributions
-      echo ',"' . $qtys[2]             . '"'; // purchases
-      echo ',"' . $qtys[3]             . '"'; // transfers
-      echo ',"' . $qtys[4]             . '"'; // adjustments
-      echo "\n";
-    }
-    else {
-?>
- <tr>
-<?php if ($product_first) { ?>
-  <td class="detail">
-   <?php echo htmlspecialchars($prodleft); $prodleft = " "; ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($whleft); $whleft = " "; ?>
-  </td>
-<?php } else { ?>
-  <td class="detail">
-   <?php echo htmlspecialchars($whleft); $whleft = " "; ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($prodleft); $prodleft = " "; ?>
-  </td>
-<?php } ?>
-  <td class="dehead">
-   <?php echo oeFormatShortDate($transdate); ?>
-  </td>
-  <td class="detail">
-   <?php echo htmlspecialchars($invnumber); ?>
-  </td>
-  <td class="detail">
-   &nbsp;
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $qtys[0]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $qtys[1]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $qtys[2]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $qtys[3]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $qtys[4]; ?>
-  </td>
-  <td class="detail">
-   &nbsp;
-  </td>
- </tr>
-<?php
-    } // End not csv export
-  } // end details
-  for ($i = 0; $i < 5; ++$i) {
-    $secqtys[$i]   += $qtys[$i];
-    $priqtys[$i]   += $qtys[$i];
-    $grandqtys[$i] += $qtys[$i];
-  }
-} // end function
-
-if (! acl_check('acct', 'rep')) die(htmlspecialchars(xl("Unauthorized access.")));
-
-// this is "" or "submit" or "export".
-$form_action = $_POST['form_action'];
-
-$form_from_date = fixDate($_POST['form_from_date'], date('Y-m-d'));
-$form_to_date   = fixDate($_POST['form_to_date']  , date('Y-m-d'));
-$form_product  = $_POST['form_product'];
+require_once "reports_controllers/InventoryActivityController.php";
 
 if ($form_action == 'export') {
-  header("Pragma: public");
-  header("Expires: 0");
-  header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-  header("Content-Type: application/force-download");
-  header("Content-Disposition: attachment; filename=inventory_activity.csv");
-  header("Content-Description: File Transfer");
+  csvexport('inventory_activity'); // CSV headers. (TRK)
   // CSV headers:
   if ($product_first) {
     echo '"' . esc4export(xl('Product'  )) . '",';
@@ -446,40 +128,16 @@ else {
        <option value='w'<?php if (!$product_first) echo ' selected'; ?>><?php echo htmlspecialchars(xl('Warehouse')); ?></option>
       </select>
      </td>
-     <td class='label'>
-      <?php echo htmlspecialchars(xl('From')); ?>:
-     </td>
-     <td nowrap>
-      <input type='text' name='form_from_date' id="form_from_date" size='10'
-       value='<?php echo htmlspecialchars(oeFormatShortDate($form_from_date), ENT_QUOTES) ?>'/>
-     </td>
-     <td class='label'>
-      <?php echo htmlspecialchars(xl('To')); ?>:
-     </td>
-     <td nowrap>
-      <input type='text' name='form_to_date' id="form_to_date" size='10'
-       value='<?php echo htmlspecialchars(oeFormatShortDate($form_to_date), ENT_QUOTES) ?>'/>
-     </td>
+     <?php // Show From and To dates fields. (TRK)
+      showFromAndToDates(); ?>
     </tr>
     <tr>
      <td class='label'>
       <?php echo htmlspecialchars(xl('For'), ENT_NOQUOTES); ?>:
      </td>
      <td nowrap>
-<?php
-// Build a drop-down list of products.
-//
-$query = "SELECT drug_id, name FROM drugs ORDER BY name, drug_id";
-$pres = sqlStatement($query);
-echo "      <select name='form_product'>\n";
-echo "       <option value=''>-- " . htmlspecialchars(xl('All Products')) . " --\n";
-while ($prow = sqlFetchArray($pres)) {
-  $drug_id = $prow['drug_id'];
-  echo "       <option value='$drug_id'";
-  if ($drug_id == $form_product) echo " selected";
-  echo ">" . htmlspecialchars($prow['name']) . "\n";
-}
-echo "      </select>\n";
+<?php // Build a drop-down list of products. (TRK)
+  dropDownProducts();
 ?>
      </td>
      <td class='label'>
@@ -495,14 +153,14 @@ echo "      </select>\n";
    <table style='border-left:1px solid; width:100%; height:100%'>
     <tr>
      <td valign='middle'>
-      <a href='#' class='css_button' onclick='mysubmit("submit")' style='margin-left:1em'>
+      <a href='#' class='css_button cp-submit' onclick='mysubmit("submit")' style='margin-left:1em'>
        <span><?php echo htmlspecialchars(xl('Submit')); ?></span>
       </a>
 <?php if ($form_action) { ?>
-      <a href='#' class='css_button' id='printbutton' style='margin-left:1em'>
+      <a href='#' class='css_button cp-output' id='printbutton' style='margin-left:1em'>
        <span><?php echo htmlspecialchars(xl('Print')); ?></span>
       </a>
-      <a href='#' class='css_button' onclick='mysubmit("export")' style='margin-left:1em'>
+      <a href='#' class='css_button cp-ouput' onclick='mysubmit("export")' style='margin-left:1em'>
        <span><?php echo htmlspecialchars(xl('CSV Export')); ?></span>
       </a>
 <?php } ?>
@@ -565,121 +223,7 @@ echo "      </select>\n";
 } // end not export
 
 if ($form_action) { // if submit or export
-  $from_date = $form_from_date;
-  $to_date   = $form_to_date;
-
-  $product   = "";
-  $prodleft  = "";
-  $warehouse = "";
-  $whleft    = "";
-  $grandqtys = array(0, 0, 0, 0, 0);
-  $priqtys   = array(0, 0, 0, 0, 0);
-  $secqtys   = array(0, 0, 0, 0, 0);
-  $last_inventory_id = 0;
-
-  $query = "SELECT s.sale_id, s.sale_date, s.quantity, s.fee, s.pid, s.encounter, " .
-    "s.xfer_inventory_id, s.distributor_id, d.name, lo.title, " .
-    "di.drug_id, di.warehouse_id, di.inventory_id, di.destroy_date, di.on_hand, " .
-    "fe.invoice_refno " .
-    "FROM drug_inventory AS di " .
-    "JOIN drugs AS d ON d.drug_id = di.drug_id " .
-    "LEFT JOIN drug_sales AS s ON " .
-    "s.sale_date >= '$from_date' AND s.sale_date <= '$to_date' AND " .
-    "s.drug_id = di.drug_id AND " .
-    "( s.inventory_id = di.inventory_id OR s.xfer_inventory_id = di.inventory_id ) " .
-    "LEFT JOIN list_options AS lo ON lo.list_id = 'warehouse' AND " .
-    "lo.option_id = di.warehouse_id " .
-    "LEFT JOIN form_encounter AS fe ON fe.pid = s.pid AND fe.encounter = s.encounter " .
-    "WHERE ( di.destroy_date IS NULL OR di.destroy_date >= '$form_from_date' )";
-
-  // If a product was specified.
-  if ($form_product) {
-    $query .= " AND di.drug_id = '$form_product'";
-  }
-
-  if ($product_first) {
-    $query .= " ORDER BY d.name, d.drug_id, lo.title, di.warehouse_id, " .
-      "di.inventory_id, s.sale_date, s.sale_id";
-  } else {
-    $query .= " ORDER BY lo.title, di.warehouse_id, d.name, d.drug_id, " .
-      "di.inventory_id, s.sale_date, s.sale_id";
-  }
-
-  $res = sqlStatement($query);
-  while ($row = sqlFetchArray($res)) {
-
-    // If new lot and it was destroyed during the reporting period,
-    // generate a pseudo-adjustment for that.
-    if ($row['inventory_id'] != $last_inventory_id) {
-      $last_inventory_id = $row['inventory_id'];
-      if (!empty($row['destroy_date']) && $row['on_hand'] != 0
-        && $row['destroy_date'] <= $form_to_date)
-      {
-        thisLineItem($row['drug_id'], $row['warehouse_id'], 0,
-          0, $row['name'], $row['title'], $row['destroy_date'],
-          array(0, 0, 0, 0, 0 - $row['on_hand']),
-          xl('Destroyed'));
-      }
-    }
-
-    $qtys = array(0, 0, 0, 0, 0);
-    if ($row['sale_id']) {
-      if ($row['xfer_inventory_id']) {
-        // A transfer sale item will appear twice, once with each lot.
-        if ($row['inventory_id'] == $row['xfer_inventory_id'])
-          $qtys[3] = $row['quantity'];
-        else
-          $qtys[3] = 0 - $row['quantity'];
-      }
-      else if ($row['pid'])
-        $qtys[0] = 0 - $row['quantity'];
-      else if ($row['distributor_id'])
-        $qtys[1] = 0 - $row['quantity'];
-      else if ($row['fee'] != 0)
-        $qtys[2] = 0 - $row['quantity'];
-      else // no pid, distributor, source lot or fee: must be an adjustment
-        $qtys[4] = 0 - $row['quantity'];
-    }
-    thisLineItem($row['drug_id'], $row['warehouse_id'], $row['pid'] + 0,
-      $row['encounter'] + 0, $row['name'], $row['title'], $row['sale_date'],
-      $qtys, $row['invoice_refno']);
-  }
-
-  // Generate totals for last product and warehouse.
-  thisLineItem(0, '~', 0, 0, '', '', '0000-00-00', array(0, 0, 0, 0, 0));
-
-  // Grand totals line.
-  if ($form_action != 'export') { // if submit
-    $grei = getEndInventory();
-?>
- <tr bgcolor="#dddddd">
-  <td class="detail" colspan="4">
-   <?php echo htmlspecialchars(xl('Grand Total')); ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $grei - $grandqtys[0] - $grandqtys[1] - $grandqtys[2] - $grandqtys[3] - $grandqtys[4]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $grandqtys[0]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $grandqtys[1]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $grandqtys[2]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $grandqtys[3]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $grandqtys[4]; ?>
-  </td>
-  <td class="dehead" align="right">
-   <?php echo $grei; ?>
-  </td>
- </tr>
-<?php
-  } // End if submit
+  prepareAndShowResults(); // Prepare and show results. (TRK)
 } // end if submit or export
 
 if ($form_action != 'export') {
@@ -707,7 +251,7 @@ if ($form_action != 'export') {
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $.datetimepicker.setLocale('<?= $DateLocale;?>');
+        $.datetimepicker.setLocale('<?= $DateLocale; ?>');
     });
 </script>
 

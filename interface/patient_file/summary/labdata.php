@@ -49,6 +49,7 @@ $sanitize_all_escapes  = true;
 $fake_register_globals = false;
 require_once("../../globals.php");
 require_once("../../../library/options.inc.php");
+require_once("$srcdir/headers.inc.php");
 include_once($GLOBALS["srcdir"] . "/api.inc");
 
 // Set the path to this script
@@ -198,10 +199,10 @@ if(!$printable){
 
     echo "<a href='../summary/demographics.php' ";
     echo " class='css_button' onclick='top.restoreSession()'>";
-    echo "<span>" . xlt('Back to Patient') . "</span></a>";
+    echo "<span class='cp-misc'>" . xlt('Back to Patient') . "</span></a>";
 
     echo "</td>";
-    echo "<td><input type='submit' name='submit' value='" . xla('Submit') . "' /></td>";
+    echo "<td><input type='submit' name='submit' value='" . xla('Submit') . "' class='cp-submit'/></td>";
     echo "</tr></table>";
     echo "</form>";
 

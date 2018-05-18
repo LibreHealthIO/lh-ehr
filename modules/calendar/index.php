@@ -232,7 +232,13 @@ require('includes/session.php');
             }
         },
         eventMouseover: function(calEvent, element, view) {
-          var tooltip = '<div class="tooltipevent">' + calEvent.description + '</div>';
+          if (calEvent.picture_url) {
+            var picture = '<td><img src="../../profile_pictures/'+ calEvent.picture_url +'" height="64px" width="64px"></td>';
+          }
+          else {
+            picture = " ";
+          }
+          var tooltip = '<div class="tooltipevent"><table><tr>' + picture+'<td style="color:red;">' + calEvent.description + '</td></tr></table></div>';
           var $tooltip = $(tooltip).appendTo('body');
 
          $(this).mouseover(function(e) {

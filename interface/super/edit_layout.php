@@ -26,6 +26,7 @@ else{
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/log.inc");
 require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 $layouts = array(
   'DEM' => xl('Demographics'),
@@ -947,7 +948,7 @@ foreach ($layouts as $key => $value) {
 
 <?php if ($layout_id) { ?>
 <div style='margin: 0 0 8pt 0;'>
-<input type='button' class='addgroup' id='addgroup' value=<?php xl('Add Group','e','\'','\''); ?>/>
+<input type='button' class='addgroup cp-positive' id='addgroup' value=<?php xl('Add Group','e','\'','\''); ?>/>
 </div>
 <?php } ?>
 
@@ -969,15 +970,15 @@ while ($row = sqlFetchArray($res)) {
       echo "&nbsp; ";   
     }
     echo "&nbsp; ";
-    echo " <input type='button' class='addfield' id='addto~".$row['group_name']."' value='" . xl('Add Field') . "'/>";
+    echo " <input type='button' class='addfield cp-positive' id='addto~".$row['group_name']."' value='" . xl('Add Field') . "'/>";
     echo "&nbsp; &nbsp; ";
-    echo " <input type='button' class='renamegroup' id='".$row['group_name']."' value='" . xl('Rename Group') . "'/>";
+    echo " <input type='button' class='renamegroup cp-positive' id='".$row['group_name']."' value='" . xl('Rename Group') . "'/>";
     echo "&nbsp; &nbsp; ";
-    echo " <input type='button' class='deletegroup' id='".$row['group_name']."' value='" . xl('Delete Group') . "'/>";
+    echo " <input type='button' class='deletegroup cp-negative' id='".$row['group_name']."' value='" . xl('Delete Group') . "'/>";
     echo "&nbsp; &nbsp; ";
-    echo " <input type='button' class='movegroup' id='".$row['group_name']."~up' value='" . xl('Move Up') . "'/>";
+    echo " <input type='button' class='movegroup cp-misc' id='".$row['group_name']."~up' value='" . xl('Move Up') . "'/>";
     echo "&nbsp; &nbsp; ";
-    echo " <input type='button' class='movegroup' id='".$row['group_name']."~down' value='" . xl('Move Down') . "'/>";
+    echo " <input type='button' class='movegroup cp-misc' id='".$row['group_name']."~down' value='" . xl('Move Down') . "'/>";
     echo "</div>";
     $firstgroup = false;
 ?>
@@ -1029,10 +1030,10 @@ while ($row = sqlFetchArray($res)) {
 <?php if ($layout_id) { ?>
 &nbsp;&nbsp;
 
-<input type='button' name='deletefields' id='deletefields' value='<?php xl('Delete selected','e'); ?>' style="font-size:90%" disabled="disabled" />
-<input type='button' name='movefields' id='movefields' value='<?php xl('Move selected to...','e'); ?>' style="font-size:90%" disabled="disabled" />
+<input type='button' name='deletefields' id='deletefields' class='cp-negative' value='<?php xl('Delete selected','e'); ?>' style="font-size:90%" disabled="disabled" />
+<input type='button' name='movefields' id='movefields' class='cp-misc' value='<?php xl('Move selected to...','e'); ?>' style="font-size:90%" disabled="disabled" />
 <p>
-  <input type='button' name='save' id='save' value='<?php xl('Save Changes','e'); ?>' />
+  <input type='button' name='save' id='save' class='cp-submit' value='<?php xl('Save Changes','e'); ?>' />
 </p>
 <?php } ?>
 

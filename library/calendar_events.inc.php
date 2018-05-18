@@ -94,6 +94,16 @@ function eventMatchesDay($row, $date) {
             $adate['mday'] += 2;
           else
             $adate['mday'] += 1;
+        } else if ($repeattype == 5) { // monday
+          $adate['mday'] += 7;
+        } else if ($repeattype == 6) { // tuesday
+          $adate['mday'] += 7;
+        } else if ($repeattype == 7) { // wednesday
+          $adate['mday'] += 7;
+        } else if ($repeattype == 8) { // thursday
+          $adate['mday'] += 7;
+        } else if ($repeattype == 9) { // friday
+          $adate['mday'] += 7;
         } else {
           die("Invalid repeat type '$repeattype'");
         }

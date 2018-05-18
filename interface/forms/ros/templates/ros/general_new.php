@@ -1,3 +1,8 @@
+<?php
+  include_once("../../globals.php");
+  include_once("$srcdir/api.inc");
+  formHeader("Review of Systems");
+?>
 <html>
   <head>
     <?php call_required_libraries(['jquery-min-1-9-1', 'bootstrap']); ?>
@@ -1524,8 +1529,8 @@
       </div>
       <div>
         <!-- Save/Cancel buttons -->
-        <input type="button" id="save" value="<?php echo xlt('Save'); ?>"> &nbsp;
-        <input type="button" id="dontsave" class="deleter" value="<?php echo xlt('Cancel'); ?>"> &nbsp;
+        <input type="button" id="save" class='cp-submit' value="<?php echo xlt('Save'); ?>"> &nbsp;
+        <input type="button" id="dontsave" class="deleter cp-negative" value="<?php echo xlt('Cancel'); ?>"> &nbsp;
       </div>
   </body>
 </html>

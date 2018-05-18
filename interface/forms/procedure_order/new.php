@@ -72,7 +72,7 @@ function getListOptions($list_id , $fieldnames=array('option_id', 'title', 'seq'
     $query = sqlStatement("SELECT ".implode(',',$fieldnames)." FROM list_options where list_id=? order by seq", array($list_id));
     while($ll = sqlFetchArray($query)) {
         foreach($fieldnames as $val)
-          $output[$ll['option_id']][$val] = $ll[$val];                  
+          $output[$ll['option_id']][$val] = $ll[$val];
     }
     return $output;
 }
@@ -370,7 +370,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
      onsubmit="return validate(this)">
       <p class='title' style='margin-top:8px;margin-bottom:8px;text-align:center'>
         <?php
-          echo xl('Procedure Order for') . ' ';
+          echo xl('Order for') . ' ';
           echo $enrow['fname'] . ' ' . $enrow['mname'] . ' ' . $enrow['lname'];
           echo ' ' . xl('on') . ' ' . oeFormatShortDate(substr($enrow['date'], 0, 10));
         ?>
@@ -378,6 +378,17 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
 
       <center>
         <p>
+         <?php $procedure_order_type = getListOptions('order_type' , array('option_id', 'title', 'toggle_setting_1', 'toggle_setting_2')); ?>
+          <select
+            class="form-control"
+            style="width: auto;"
+            name="procedure_type_names"
+            id="procedure_type_names">
+            <?php foreach($procedure_order_type as $ordered_types){?>
+            <option value="<?php echo attr($ordered_types['option_id']); ?>" ><?php echo text(xl_list_label($ordered_types['title'])) ; ?></option>
+            <?php } ?>
+          </select></br>
+        </p>
           <table class="table table-hover table-bordered" width='95%' id='proctable'>
             <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Ordering Provider','e'); ?>:</b></td>
@@ -410,17 +421,17 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               <td width='1%' valign='top' nowrap><b><?php xl('Order Date','e'); ?>:</b></td>
               <td valign='top'>
                 <?php
-                  echo "<input 
-                  type='text' 
-                  class='form-control' 
+                  echo "<input
+                  type='text'
+                  class='form-control'
                   style='width: auto'
-                  size='16' 
-                  name='form_date_ordered' 
+                  size='16'
+                  name='form_date_ordered'
                   id='form_date_ordered'" .
                   " value='" . substr($row['date_ordered'], 0, 16) . "'" .
                   " title='" . xl('Date and time that the sample was ordered') . "'" .
                   " />";
-                ?>  
+                ?>
               </td>
             </tr>
 
@@ -428,12 +439,12 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               <td width='1%' valign='top' nowrap><b><?php xl('Internal Time Collected','e'); ?>:</b></td>
               <td valign='top'>
                 <?php
-                  echo "<input 
-                  type='text' 
+                  echo "<input
+                  type='text'
                   class='form-control'
                   style='width: auto'
-                  size='16' 
-                  name='form_date_collected' 
+                  size='16'
+                  name='form_date_collected'
                   id='form_date_collected'" .
                   " value='" . substr($row['date_collected'], 0, 16) . "'" .
                   " title='" . xl('Date and time that the sample was collected') . "'" .
@@ -463,7 +474,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             </tr>
 
             <tr>
-              <td width='1%' valign='top' nowrap><b><?php xl('Clinical History','e'); ?>:</b></td>
+              <td width='1%' valign='top' nowrap><b><?php xl('Clinical Reason','e'); ?>:</b></td>
               <td valign='top'>
                <input
                 type='text'
@@ -477,19 +488,17 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             </tr>
 
             <!-- Will enable this later, nothing uses it yet. -->
-            <tr style='display:none'>
-              <td width='1%' valign='top' nowrap><b><?php xl('Patient Instructions','e'); ?>:</b></td>
+            <tr>
+              <td width='1%' valign='top' nowrap><b><?php xl('Test Description','e'); ?>:</b></td>
               <td valign='top'>
-                <textarea
-                  rows='3'
-                  cols='40'
+                <input
+                  type='text'
+                  maxlength='255'
                   name='form_patient_instructions'
                   style='width:100%'
-                  wrap='virtual'
-                  class='inputtext' 
-                >
-                  <?php echo $row['patient_instructions'] ?>
-                </textarea>
+                  class='inputtext form-control'
+                  value='<?php echo $row['patient_instructions'] ?>'
+                />
               </td>
             </tr>
 
@@ -539,7 +548,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             <tr>
             <!--<td width='1%' valign='top'><b>
             <?php echo xl('Procedure') . ' ' . ($i + 1); ?>:</b></td>-->
-            <?php if(empty($formid) || empty($oprow['procedure_order_title'])) {?> 
+            <?php if(empty($formid) || empty($oprow['procedure_order_title'])) {?>
               <td width='1%' valign='top'>
                 <input
                   type='hidden'
@@ -550,7 +559,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               <?php } else {?>
               <td width='1%' valign='top'>
                 <input
-                  type='hidden' 
+                  type='hidden'
                   name='form_proc_order_title[<?php echo $i; ?>]'
                   value='<?php echo attr($oprow['procedure_order_title']) ?>'
                 />
@@ -573,7 +582,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
               </td>
             </tr>
             <tr>
-              <td valign='top'> 
+              <td valign='top'>
                 <input
                   type='hidden'
                   name='form_proc_type[<?php echo $i; ?>]'
@@ -610,26 +619,26 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             ?>
           </table>
         <p>
-          <?php $procedure_order_type = getListOptions('order_type' , array('option_id', 'title')); ?>
-          <select 
-            class="form-control"
-            style="width: auto;"
-            name="procedure_type_names"
-            id="procedure_type_names">
-            <?php foreach($procedure_order_type as $ordered_types){?>
-            <option value="<?php echo attr($ordered_types['option_id']); ?>" ><?php echo text(xl_list_label($ordered_types['title'])) ; ?></option>
-            <?php } ?>    
-          </select> 
           <div style="display: inline-block;">
             <input
               type='button'
+              class='cp-positive'
               value='<?php echo xla('Add Procedure'); ?>'
               onclick="addProcLine()"
             />
             &nbsp;
             <input
+              type='button'
+              class='cp-output'
+              id="print_button"
+              value='<?php echo xla('Print'); ?>'
+              onclick="Print()"
+            />
+            &nbsp;
+            <input
               type='submit'
               name='bn_save'
+              class='cp-submit'
               value='<?php echo xla('Save'); ?>'
               onclick='transmitting = false;'
             />
@@ -637,20 +646,28 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             <input
               type='submit'
               name='bn_xmit'
+              class='cp-submit'
               value='<?php echo xla('Save and Transmit'); ?>'
               onclick='transmitting = true;'
             />
             &nbsp;
             <input
-              class="deleter"
+              class="deleter cp-negative"
               type='button'
               value='<?php echo xla('Cancel'); ?>'
               onclick="top.restoreSession();location='<?php echo $GLOBALS['form_exit_url']; ?>'"
             />
           </div>
         </p>
-
       </center>
+      <?php
+          $query = sqlStatement('SELECT * FROM list_options WHERE list_id="order_type"');
+          $i = 0 ;
+          while($array = sqlFetchArray($query)){
+            $paper[$array['option_id']] = $array['toggle_setting_2'];
+            $i++;
+          }
+      ?>
 
       <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
       <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
@@ -665,6 +682,14 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
                   format: "<?= $DateFormat; ?>"
               });
               $.datetimepicker.setLocale('<?= $DateLocale;?>');
+
+              var paper = <?php echo json_encode($paper);?>;
+              $('#procedure_type_names').on('change', function(){
+                var item = this.value;
+                
+                if(paper[item] == 1) $('#print_button').show();
+                else  $('#print_button').hide();
+              })
           });
       </script>
 

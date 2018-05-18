@@ -38,6 +38,13 @@
         "children" : [ ],
         "requirement" : 0
     }, { 
+        "label" : "Recycle bin",
+        "menu_id" : "rbin",
+        "target" : "rbin0",
+        "url" : "/interface/patient_file/recover.php",
+        "children" : [ ],
+        "requirement" : 0
+    }, { 
         "label" : "Summary",
         "menu_id" : "dem1",
         "target" : "pat",
@@ -148,6 +155,13 @@
         "menu_id" : "npa0",
         "target" : "pat",
         "url" : "/interface/billing/new_payment.php",
+        "children" : [ ],
+        "requirement" : 0
+    }, { 
+        "label" : "Verify Patient Billing Data",
+        "menu_id" : "npa0",
+        "target" : "pat",
+        "url" : "/interface/reports/pre_billing_issues.php",
         "children" : [ ],
         "requirement" : 0
     }, { 
@@ -298,6 +312,16 @@
         "url" : "/interface/main/tabs/edit_menu.php",
         "children" : [ ],
         "requirement" : 0,
+        "global_req" : "!role_based_menu_status",
+        "acl_req" : [ "admin", "super" ]
+    }, { 
+        "label" : "Manage Roles",
+        "menu_id" : "adm0",
+        "target" : "adm",
+        "url" : "/interface/main/tabs/edit_roles.php",
+        "children" : [ ],
+        "requirement" : 0,
+        "global_req" : "role_based_menu_status",
         "acl_req" : [ "admin", "super" ]
     }, { 
         "label" : "Facilities",
@@ -514,7 +538,7 @@
     "children" : [ { 
         "label" : "Clients",
         "children" : [ { 
-            "label" : "List",
+            "label" : "Patient List",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/patient_list.php",
@@ -528,7 +552,7 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Rx",
+            "label" : "Prescriptions and Dispensations",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/prescriptions_report.php",
@@ -590,7 +614,7 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Appt-Enc",
+            "label" : "Appointments and Encounters",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/appt_encounter_report.php",
@@ -625,7 +649,7 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Chart Activity",
+            "label" : "Chart Location Activity",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/chart_location_activity.php",
@@ -633,7 +657,7 @@
             "requirement" : 0,
             "global_req" : "!disable_chart_tracker"
         }, { 
-            "label" : "Charts Out",
+            "label" : "Charts Checked Out",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/charts_checked_out.php",
@@ -641,7 +665,7 @@
             "requirement" : 0,
             "global_req" : "!disable_chart_tracker"
         }, { 
-            "label" : "Services",
+            "label" : "Services by Category",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/services_by_category.php",
@@ -659,28 +683,28 @@
     }, { 
         "label" : "Financial",
         "children" : [ { 
-            "label" : "Sales",
+            "label" : "Sales by Item",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/sales_by_item.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Cash Rec",
+            "label" : "Cash Receipts by Provider",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/billing/sl_receipts_report.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Front Rec",
+            "label" : "Front Office Receipts",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/front_receipts_report.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Pmt Method",
+            "label" : "Receipts Summary",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/receipts_by_method_report.php",
@@ -694,10 +718,17 @@
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Pat Ledger",
+            "label" : "Patient Ledger by Date",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/pat_ledger.php?form=0",
+            "children" : [ ],
+            "requirement" : 0
+        }, { 
+            "label" : "Adjustments",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/interface/reports/adjustments.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
@@ -736,13 +767,13 @@
     }, { 
         "label" : "Procedures",
         "children" : [ { 
-            "label" : "Pending Res",
+            "label" : "Pending Orders",
             "url" : "/interface/orders/pending_orders.php",
             "target" : "rep",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Statistics",
+            "label" : "Procedure Statistics",
             "url" : "/interface/orders/procedure_stats.php",
             "target" : "rep",
             "children" : [ ],
@@ -752,21 +783,21 @@
     }, { 
         "label" : "Insurance",
         "children" : [ { 
-            "label" : "Distribution",
+            "label" : "Patient Insurance Distribution",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/insurance_allocation_report.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Indigents",
+            "label" : "Indigent Patients",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/billing/indigent_patients_report.php",
             "children" : [ ],
             "requirement" : 0
         }, { 
-            "label" : "Unique SP",
+            "label" : "Unique Seen Patients",
             "menu_id" : "rep0",
             "target" : "rep",
             "url" : "/interface/reports/unique_seen_patients_report.php",
@@ -866,13 +897,6 @@
         "requirement" : 0,
         "global_req" : "!disable_chart_tracker"
     }, { 
-        "label" : "Ofc Notes",
-        "menu_id" : "ono0",
-        "target" : "msc",
-        "url" : "/interface/main/onotes/office_comments.php",
-        "children" : [ ],
-        "requirement" : 0
-    }, { 
         "label" : "BatchCom",
         "menu_id" : "adm0",
         "target" : "msc",
@@ -899,6 +923,17 @@
         "target" : "msc",
         "url" : "/controller.php?document&list&patient_id=00",
         "children" : [ ],
+        "requirement" : 0
+    }, { 
+        "label" : "Utilities",
+        "children" : [ { 
+            "label" : "Validate Attached Documents",
+            "menu_id" : "adm0",
+            "target" : "msc",
+            "url" : "/interface/usergroup/docs_validation.php",
+            "children" : [ ],
+            "requirement" : 0
+        } ],
         "requirement" : 0
     }, { 
         "label" : "Document Templates",
@@ -937,13 +972,6 @@
         "label" : "Appts",
         "menu_id" : "Popup:Appts",
         "url" : "/interface/reports/appointments_report.php?patient=",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, { 
-        "label" : "Refer",
-        "menu_id" : "Popup:Refer",
-        "url" : "/interface/../custom/refer.php",
         "target" : "pop",
         "children" : [ ],
         "requirement" : 1
@@ -1021,22 +1049,23 @@
         "requirement" : 0,
         "global_req" : "enable_pqrs"
     }, { 
-        "label" : "Delete Old Reports",
+        "label" : "Upload Claim Files",
         "menu_id" : "rep0",
         "target" : "rep",
-        "url" : "/modules/MIPS/truncate_reports.php",
+        "url" : "/modules/filemanager/index.php",
         "children" : [ ],
         "requirement" : 0,
-        "global_req" : "enable_pqrs"
+        "acl_req" : [ "admin", "super" ]
     }, { 
-        "label" : "Report Database Import",
+ 
+        "label" : "Instance Counts",
         "menu_id" : "rep0",
         "target" : "rep",
-        "url" : "/modules/MIPS/import_data.php",
+        "url" : "/modules/MIPS/instanceCount.php",
         "children" : [ ],
         "requirement" : 0,
         "acl_req" : [ "admin", "super" ],
-        "global_req" : "pqrs_demosystem"
+        "global_req" : "enable_pqrs" 
     }, { 
         "label" : "Remove_Provider_Assignments",
         "menu_id" : "rep0",
@@ -1054,13 +1083,23 @@
         "children" : [ ],
         "requirement" : 0
     }, { 
-        "label" : "Upload Claim Files",
+        "label" : "Database Import",
         "menu_id" : "rep0",
         "target" : "rep",
-        "url" : "/modules/filemanager/index.php",
+        "url" : "/modules/MIPS/import_data.php",
         "children" : [ ],
         "requirement" : 0,
-        "acl_req" : [ "admin", "super" ]
+        "acl_req" : [ "admin", "super" ],
+        "global_req" : "enable_pqrs"
+    },{
+        "label" : "Database Inserts",
+        "menu_id" : "rep0",
+        "target" : "rep",
+        "url" : "/modules/MIPS/update_data.php",
+        "children" : [ ],
+        "requirement" : 0,
+        "acl_req" : [ "admin", "super" ],
+        "global_req" : "enable_pqrs"
     }, { 
         "label" : "Change Demo Database",
         "menu_id" : "rep0",
@@ -1071,6 +1110,15 @@
         "acl_req" : [ "admin", "super" ],
         "global_req" : "pqrs_demosystem"
     }, { 
+        "label" : "MIPS Module Installer",
+        "menu_id" : "rep0",
+        "target" : "rep",
+        "url" : "/modules/MIPS/mips_installer.php",
+        "children" : [ ],
+        "requirement" : 0,
+        "acl_req" : [ "admin", "super" ],
+        "global_req" : "enable_pqrs"
+    },{ 
         "label" : "XML Editor",
         "menu_id" : "rep0",
         "target" : "rep",

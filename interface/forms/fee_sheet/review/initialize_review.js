@@ -1,6 +1,6 @@
 /**
  * Basic javascript setup for the fee sheet review features
- * 
+ *
  * Copyright (C) 2013 Kevin Yeh <kevin.y@integralemr.com> and OEMR <www.oemr.org>
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ var display_table_selector="table[cellspacing='5']";
 function add_review_button()
 {
 
-    var review=$("<input type='button'/>");
+    var review=$("<input type='button' class='cp-misc' />");
     review.attr("value",review_tag);
     review.attr("data-bind","click: review_event")
     var td=$("<td class='review_td'></td>");

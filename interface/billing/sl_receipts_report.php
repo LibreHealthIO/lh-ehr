@@ -20,13 +20,14 @@
  * @author  Terry Hill <teryhill@librehealth.io>
  * @link    http://librehealth.io
  */
- 
+
 $sanitize_all_escapes=true;
 $fake_register_globals=false;
 
 require_once('../globals.php');
 require_once($GLOBALS['srcdir'].'/patient.inc');
 require_once($GLOBALS['srcdir'].'/acl.inc');
+require_once("$srcdir/headers.inc.php");
 require_once($GLOBALS['srcdir'].'/formatting.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
@@ -221,7 +222,7 @@ function sel_diagnosis() {
             </td>
             <td>
                <input type='text' name='form_proc_codefull' size='11' value='<?php echo attr($form_proc_codefull); ?>' onclick='sel_procedure()'
-                title='<?php echo xla('Optional procedure/service code'); ?>' 
+                title='<?php echo xla('Optional procedure/service code'); ?>'
                 <?php if ($GLOBALS['simplified_demographics']) echo "style='display:none'"; ?>>
             </td>
 
@@ -239,27 +240,27 @@ function sel_diagnosis() {
                <input type='checkbox' name='form_procedures' value='1'<?php if ($form_procedures) echo " checked"; ?>><?php echo xlt('Procedures')?>
             </td>
         </tr>
-        
+
     </table>
 
     </div>
 
   </td>
-  
+
   <td align='left' valign='middle' height="100%">
-  
+
     <table style='border-left:1px solid; width:100%; height:100%' >
         <tr>
             <td>
                 <div style='margin-left:15px'>
-                    <a href='#' class='css_button' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
+                    <a href='#' class='css_button cp-submit' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
                     <span>
                         <?php echo xlt('Submit'); ?>
                     </span>
                     </a>
 
                     <?php if ($_POST['form_refresh']) { ?>
-                    <a href='#' class='css_button' id='printbutton'>
+                    <a href='#' class='css_button cp-output' id='printbutton'>
                         <span>
                             <?php echo xlt('Print'); ?>
                         </span>

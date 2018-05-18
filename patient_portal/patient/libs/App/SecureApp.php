@@ -41,7 +41,7 @@ class SecureApp implements IAuthenticatable
     {
         if (!self::$USERS)
         {
-            self::$USERS = Array(
+            self::$USERS = array(
                 "demo"=>password_hash("pass",PASSWORD_BCRYPT),
                 "admin"=>password_hash("pass",PASSWORD_BCRYPT)
             );
@@ -66,9 +66,13 @@ class SecureApp implements IAuthenticatable
      */
     public function IsAuthorized($permission)
     {
-        if ($this->Username == 'admin') return true;
+        if ($this->Username == 'admin') {
+            return true;
+        }
 
-        if ($this->Username == 'demo' && $permission == self::$PERMISSION_USER) return true;
+        if ($this->Username == 'demo' && $permission == self::$PERMISSION_USER) {
+            return true;
+        }
 
         return false;
     }

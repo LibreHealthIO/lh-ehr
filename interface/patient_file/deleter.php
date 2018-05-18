@@ -6,7 +6,7 @@
  *
  *  Copyright (C) 2005-2013 Rod Roark <rod@sunsetsystems.com>
  *  Copyright (C) 2015 Roberto Vasquez <robertogagliotta@gmail.com>
- *
+ *  Copyright (C) 2018 Naveen Muthusamy <kmnaveen101@gmail.com>
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -21,6 +21,7 @@
  * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author Roberto Vasquez <robertogagliotta@gmail.com>
+ * @author Naveen Muthusamy <kmnaveen101@gmail.com>
  * @link    http://librehealth.io
  */
 
@@ -42,12 +43,23 @@ require_once($GLOBALS['srcdir'].'/sl_eob.inc.php');
  $transaction = $_REQUEST['transaction'];
 
  $info_msg = "";
-
+ 
  // Delete rows, with logging, for the specified table using the
  // specified WHERE clause.
  //
  function row_delete($table, $where) {
   $tres = sqlStatement("SELECT * FROM $table WHERE $where");
+
+  //insert in to backup tables when something is referenced by pid (this backup is done only for tables referenced by pid ie patient_id)
+  if (substr($where,0,3) == "pid" OR substr($where,0,3) == "pat" OR substr($where, 0,3) == "pc_") {
+  //the first query executed when the first delete happens in the system
+  sqlStatement("CREATE TABLE IF NOT EXISTS recycle_$table
+  LIKE $table");
+    if (sync_tables ($table, "recycle_".$table)) {
+      sqlStatement("INSERT INTO recycle_$table SELECT * FROM $table WHERE $where;");
+    }
+  }
+
   $count = 0;
   while ($trow = sqlFetchArray($tres)) {
    $logstring = "";
@@ -77,7 +89,6 @@ require_once($GLOBALS['srcdir'].'/sl_eob.inc.php');
    sqlStatement($query);
   }
  }
-
 // We use this to put dashes, colons, etc. back into a timestamp.
 //
 function decorateString($fmt, $str) {
@@ -137,17 +148,58 @@ function form_delete($formdir, $formid) {
     row_delete("form_$formdir", "id = '$formid'");
   }
 }
+//Backup table row to corresponding recycle tables
+function row_backup($table, $where) {
+  sqlStatement("CREATE TABLE IF NOT EXISTS recycle_$table
+  LIKE $table");
+   if (sync_tables ($table, "recycle_".$table)) {
+      sqlStatement("INSERT INTO recycle_$table SELECT * FROM $table WHERE $where;");
+    }
+}
+
+// Backup a form's data from its form-specific table.
+//
+function form_backup($formdir, $formid) {
+  $formdir = ($formdir == 'patient_encounter') ? 'encounter' : $formdir;
+  if (substr($formdir,0,3) == 'LBF') {
+    row_backup("lbf_data", "form_id = '$formid'");
+  }
+  else if ($formdir == 'procedure_order') {
+    $tres = sqlStatement("SELECT procedure_report_id FROM procedure_report " .
+      "WHERE procedure_order_id = ?", array($formid));
+    while ($trow = sqlFetchArray($tres)) {
+      $reportid = 0 + $trow['procedure_report_id'];
+      row_backup("procedure_result", "procedure_report_id = '$reportid'");
+    }
+    row_backup("procedure_report", "procedure_order_id = '$formid'");
+    row_backup("procedure_order_code", "procedure_order_id = '$formid'");
+    row_backup("procedure_order", "procedure_order_id = '$formid'");
+  }
+  else if ($formdir == 'physical_exam') {
+    row_backup("form_$formdir", "forms_id = '$formid'");
+  }
+  else {
+    row_backup("form_$formdir", "id = '$formid'");
+  }
+}
+
+
+
 
 // Delete a specified document including its associated relations and file.
 //
 function delete_document($document) {
   $trow = sqlQuery("SELECT url FROM documents WHERE id = ?", array($document));
   $url = $trow['url'];
+  row_backup("categories_to_documents", "document_id = '" . add_escape_custom($document) . "'");
   row_delete("categories_to_documents", "document_id = '" . add_escape_custom($document) . "'");
+  row_backup("documents", "id = '" . add_escape_custom($document) . "'");
   row_delete("documents", "id = '" . add_escape_custom($document) . "'");
+  row_backup("gprelations", "type1 = 1 AND id1 = '" . add_escape_custom($document) . "'");
   row_delete("gprelations", "type1 = 1 AND id1 = '" . add_escape_custom($document) . "'");
   if (substr($url, 0, 7) == 'file://') {
-    @unlink(substr($url, 7));
+    //no files deletion takes place.
+    //@unlink(substr($url, 7));
   }
 }
 ?>
@@ -196,6 +248,7 @@ function popup_close() {
    row_delete("payments"       , "pid = '$patient'");
    row_delete("ar_activity"    , "pid = '$patient'");
    row_delete("libreehr_postcalendar_events", "pc_pid = '$patient'");
+   // only  immunizations are not backed up by now.
    row_delete("immunizations"  , "patient_id = '$patient'");
    row_delete("issue_encounter", "pid = '$patient'");
    row_delete("lists"          , "pid = '$patient'");
@@ -206,6 +259,8 @@ function popup_close() {
 
    $res = sqlStatement("SELECT * FROM forms WHERE pid = ?", array($patient));
    while ($row = sqlFetchArray($res)) {
+    form_backup($row['formdir'], $row['form_id']);
+    //back up them to recycle tables before deleting
     form_delete($row['formdir'], $row['form_id']);
    }
    row_delete("forms", "pid = '$patient'");

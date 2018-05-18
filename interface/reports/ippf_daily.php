@@ -4,6 +4,7 @@
 include_once("../globals.php");
 include_once("../../library/patient.inc");
 include_once("../../library/acl.inc");
+require_once("../../library/report_functions.php");
 
 // Might want something different here.
 //
@@ -122,21 +123,9 @@ else { // not export
    <?php xl('Facility','e'); ?>:
   </td>
   <td valign='top' class='detail'>
-<?php
- // Build a drop-down list of facilities.
- //
- $query = "SELECT id, name FROM facility ORDER BY name";
- $fres = sqlStatement($query);
- echo "   <select name='form_facility'>\n";
- echo "    <option value=''>-- All Facilities --\n";
- while ($frow = sqlFetchArray($fres)) {
-  $facid = $frow['id'];
-  echo "    <option value='$facid'";
-  if ($facid == $_POST['form_facility']) echo " selected";
-  echo ">" . $frow['name'] . "\n";
- }
- echo "   </select>\n";
-?>
+    <?php // Build a drop-down list of facilities.
+      dropDownFacilities();
+    ?>
   </td>
   <td colspan='2' class='detail' nowrap>
    <?php xl('Date','e'); ?>

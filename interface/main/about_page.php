@@ -47,10 +47,10 @@ require_once("../globals.php");
       <span class="text"><?php  echo xlt('Support Phone Number'); ?>: <?php echo $GLOBALS['support_phone_number'] ?></span><br><br>
     <?php } ?>
    </div>
-    <a href="<?php echo "https://forums.librehealth.io/c/7-support".attr($v_major).".".attr($v_minor).".".attr($v_patch)."_Users_Guide"; ?>" target="_blank" class="css_button"><span><?php echo xlt('User Manual'); ?></span></a><br><br>
+    <a href="<?php echo "https://wiki.librehealth.io"; ?>" target="_blank" class="css_button cp-misc"><span><?php echo xlt('User Manual'); ?></span></a><br><br>
     <?php if (!empty($GLOBALS['online_support_link'])) { ?>
-             <a href='<?php echo $GLOBALS["online_support_link"]; ?>' target="_blank" class="css_button"><span><?php echo xlt('Online Support'); ?></span></a><br><br>
+             <a href='<?php echo $GLOBALS["online_support_link"]; ?>' target="_blank" class="css_button cp-misc"><span><?php echo xlt('Online Support'); ?></span></a><br><br>
     <?php } ?>
-   <a href="../../acknowledge_license_cert.html" target="_blank" class="css_button"><span><?php echo xlt('Acknowledgments, Licensing and Certification'); ?></span></a>
+   <a href="../../acknowledge_license_cert.html" target="_blank" class="css_button cp-misc"><span><?php echo xlt('Acknowledgments, Licensing and Certification'); ?></span></a>
   </body>
 </html>

@@ -125,6 +125,19 @@ This is now deprecated use the newer x12 partner code instead
 </tr>
 
 <tr>
+    <?php if ($this->insurancecompany->get_allow_print_statement() == 0) { ?>
+    <td><?php echo xlt("Do Not Print Statements");?> </td>
+    <td>
+        <input type="checkbox" class="control-label col-sm-2" size="1" name='allow_print_statement' class="checkbox" value="1" onKeyDown="PreventIt(event)" />
+    </td>
+    <?php } else { ?> 
+    <td><?php echo xlt("Print Statements");?> </td>
+    <td>
+        <input type="checkbox" class="control-label col-sm-2" size="1" name='allow_print_statement' class="checkbox" value="0" onKeyDown="PreventIt(event)" />
+    </td>
+    <?php }?>
+</tr>
+     <tr>
    <?php if ($this->insurancecompany->get_ins_inactive() == 0) { ?>
      <td><?php echo xlt("Deactivate");?></td>
       <td>
@@ -136,11 +149,12 @@ This is now deprecated use the newer x12 partner code instead
       <input type="checkbox" class="control-label col-sm-2" size="1" name='ins_inactive' class="checkbox" value="0" onKeyDown="PreventIt(event)" />
       </td>
    <?php }?>
+     </tr>
 <tr>
 <tr height="25"><td colspan=2>&nbsp;</td></tr>
 <tr>
-    <td colspan="2"><a href="javascript:submit_insurancecompany();" class="css_button"><span><?php echo xlt("Save");?></span></a>
-        <a href="controller.php?practice_settings&insurance_company&action=list" class="css_button" onclick="top.restoreSession()">
+    <td colspan="2"><a href="javascript:submit_insurancecompany();" class="css_button cp-submit"><span><?php echo xlt("Save");?></span></a>
+        <a href="controller.php?practice_settings&insurance_company&action=list" class="css_button cp-negative" onclick="top.restoreSession()">
             <span><?php echo xlt("Cancel");?></span></a></td>
 </tr>
 </table>

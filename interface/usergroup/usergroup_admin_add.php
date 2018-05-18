@@ -40,6 +40,8 @@ require_once("$srcdir/sql.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/erx_javascript.inc.php");
+require_once("$srcdir/headers.inc.php");
+require_once("$srcdir/role.php");
 
 $alertmsg = '';
 
@@ -49,11 +51,8 @@ $alertmsg = '';
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
+
+<?php call_required_libraries(array("jquery-min-3-1-1", "fancybox", "common")); ?>
 
 <script src="checkpwd_validation.js" type="text/javascript"></script>
 
@@ -70,6 +69,23 @@ function trimAll(sString)
     }
     return sString;
 } 
+
+function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#prof_img')
+                    .attr('src', e.target.result)
+                    .width(64)
+                    .height(64);
+                $('#prof_img').css("display", "block"); 
+                $('#file_input_button').text("Edit Profile Picture");
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+}
 
 function submitform() {
     if (document.forms[0].rumple.value.length>0 && document.forms[0].stiltskin.value.length>0 && document.getElementById('fname').value.length >0 && document.getElementById('lname').value.length >0) {
@@ -124,6 +140,7 @@ function submitform() {
                 alertMsg += checkLength(f[i].name,f[i].value,30);
                 alertMsg += checkAlphaNumeric(f[i].name,f[i].value);
              }
+             
           }
        }
        if(alertMsg)
@@ -181,23 +198,29 @@ function authorized_clicked() {
 <body class="body_top">
 <table><tr><td>
 <span class="title"><?php echo xlt('Add User'); ?></span>&nbsp;</td>
+
 <td>
-<a class="css_button" name='form_save' id='form_save' href='#' onclick="return submitform()">
+<a class="css_button cp-submit" name='form_save' id='form_save' href='#' onclick="return submitform()">
     <span><?php echo xlt('Save');?></span></a>
-<a class="css_button large_button" id='cancel' href='#'>
+<a class="css_button large_button cp-negative" id='cancel' href='#'>
     <span class='css_button_span large_button_span'><?php echo xlt('Cancel');?></span>
 </a>
 </td></tr></table>
 <br><br>
-
-<table border=0>
-
-<tr><td valign=top>
-<form name='new_user' method='post'  target="_parent" action="usergroup_admin.php"
+<form name='new_user' method='post'  target="_parent" action="usergroup_admin.php" enctype="multipart/form-data" 
  onsubmit='return top.restoreSession()'>
+<table border=0>
+<tr>
+<td><img id="prof_img" style="display: none; border-radius: 40px; border: 8px solid #888;"></td>
+<td style="padding-left: 350px;">
+<input type="file" name="profile_picture" id="files"  class="hidden" style="display: none;" onchange="readURL(this);" />
+<label for="files" class="css_button cp-positive" id="file_input_button"><?php echo xlt('Add Profile Picture'); ?>
+</label>
+</td>
+</tr>
+<tr><td valign=top>
 <input type='hidden' name='mode' value='new_user'>
 <input type='hidden' name='secure_pwd' value="<?php echo $GLOBALS['secure_password']; ?>">
-
 <span class="bold">&nbsp;</span>
 </td><td>
 <table border=0 cellpadding=0 cellspacing=0 style="width:600px;">
@@ -206,6 +229,7 @@ function authorized_clicked() {
 <td style="width:150px;"><span class="text"><?php echo xlt('Pass Phrase'); ?>: </span></td><td style="width:250px;"><input type="entry" style="width:120px;" name=stiltskin><span class="mandatory">&nbsp;*</span></td>
 </tr>
 <tr>
+
     <td style="width:150px;"></td><td  style="width:220px;"></span></td>
     <TD style="width:200px;"><span class=text><?php echo xlt('Your Pass Phrase'); ?>: </span></TD>
     <TD class='text' style="width:280px;"><input type='password' name=adminPass style="width:120px;"  value="" autocomplete='off'><font class="mandatory">*</font></TD>
@@ -351,12 +375,45 @@ echo generate_select_list('irnpool', 'irnpool', '',
    }
   ?>
   </select></td>
+  
   <td><span class="text"><?php echo xlt('Additional Info'); ?>: </span></td>
   <td><textarea name=info style="width:120px;" cols=27 rows=4 wrap=auto></textarea></td>
+  </tr>
+  <tr>
+  <td><span class="text"><?php echo xlt('Menu role'); ?>:</span></td>
+  <td>
+  <select style="width:120px;" name="menu_role" id="menu_role">
+      <?php
+         $role = new Role();
+         $role_list = $role->getRoleList();
+         foreach($role_list as $role_title) {
+           ?>  <option value="<?php echo $role_title; ?>"><?php echo xlt($role_title); ?></option>
+          <?php
+         }
+      ?>
+      </select>
+  </td>
+  <td><span class="text"> <?php echo xlt('Full screen page'); ?>:</span></td>
+  <td>
+      <select style="width:120px;" name="fullscreen_page" id="fullscreen_page">
+                <option value="Calendar|/interface/main/main_info.php">Calendar</option>
+                <option value="Flow Board|/interface/patient_tracker/patient_tracker.php">Flow Board</option>
+      </select>
 
+  
+  </td>
+  </tr>
+  <tr>
+  <td>
+      <span class="text"> <?php echo xlt('Full screen page enabled'); ?>: </span>
+  </td>
+  <td>
+      <input type="checkbox" name="fullscreen_enable"/>
+  </td>
   <?php do_action( 'usergroup_admin_add' ); ?>
 
   </tr>
+
   <tr height="25"><td colspan="4">&nbsp;</td></tr>
 <?php
  }
@@ -365,6 +422,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
 </table>
 
 <br>
+
 <input type="hidden" name="newauthPass">
 </form>
 </td>
@@ -471,7 +529,33 @@ $(document).ready(function(){
     $("#cancel").click(function() {
           parent.$.fn.fancybox.close();
      });
+  /*
+     $("#role_name").on('change', function(e) {
+       
+        $.ajax({
+          "url": '../../library/ajax/get_fullscreen_pages.php',
+          "method": "POST",
+          "data" : {
+             "role_name": $("#role_name").val()
+          },
+          success: function(data) {
+            obj = JSON.parse(data);
+            $("#fullscreen_page").empty();
+            obj.forEach(function(item) {
+              option = document.createElement('option');
+              option.text = item.label;
+              option.value = item.id;
+              $("#fullscreen_page").append(option);
+              
+            });
 
+          },
+          error: function(err) {
+            console.log(err);
+          }
+          });
+
+       }); */ 
 });
 </script>
 <table>

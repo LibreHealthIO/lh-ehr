@@ -6,7 +6,7 @@
  * Copyright (C) 2005 Rod Roark <rod@sunsetsystems.com>
  * Copyright (C) 2015 Roberto Vasquez <robertogagliotta@gmail.com>
  * Copyright (C) 2015 Brady Miller <brady@sparmy.com>
- * 
+ *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -32,6 +32,7 @@
  include_once("$srcdir/patient.inc");
  include_once("$srcdir/acl.inc");
  include_once("$srcdir/lists.inc");
+ require_once("$srcdir/headers.inc.php");
 
  $patdata = getPatientData($pid, "fname,lname,squad");
 
@@ -72,7 +73,7 @@
     ") VALUES ( " .
     " ?, ?, ?" .
     ")";
-   sqlQuery($query, array($form_pid, $list_id, $encounter)); 
+   sqlQuery($query, array($form_pid, $list_id, $encounter));
   }
 
   echo "<html><body>"
@@ -100,7 +101,6 @@
 <?php html_header_show();?>
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <link rel=stylesheet href="<?php echo $css_header; ?>" type="text/css">
-<title><?php echo xlt('Issues and Encounters'); ?></title>
 
 <style>
 tr.head   { font-size:10pt; background-color:#cccccc; text-align:center; }
@@ -279,6 +279,7 @@ function doclick(pfx, id) {
 
 </script>
 
+  <span class="title" style="display: none;">Issues</span>
 </head>
 <body leftmargin='0' topmargin='0' marginwidth='0' marginheight='0'
  bgcolor='#ffffff' onunload='imclosing()'>
@@ -358,10 +359,10 @@ function doclick(pfx, id) {
 
  <tr>
   <td colspan='2' align='center'>
-   <input type='submit' name='form_save' value='<?php echo xla('Save'); ?>' disabled /> &nbsp;
-   <input type='button' value='<?php echo xla('Add Issue'); ?>' onclick='newIssue()' />
-   <input type='button' value='<?php echo xla('Add Encounter'); ?>' onclick='newEncounter()' />
-   <input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
+   <input type='submit' name='form_save' class="cp-submit" value='<?php echo xla('Save'); ?>' disabled /> &nbsp;
+   <input type='button' class="cp-positive" value='<?php echo xla('Add Issue'); ?>' onclick='newIssue()' />
+   <input type='button' class="cp-positive" value='<?php echo xla('Add Encounter'); ?>' onclick='newEncounter()' />
+   <input type='button' class="cp-negative" value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
   </td>
  </tr>
 

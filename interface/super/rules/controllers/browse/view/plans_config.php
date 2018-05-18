@@ -23,6 +23,9 @@
  * @author Roberto Vaquez <robertogagliotta@gmail.com>
  * @link http://librehealth.io
 */
+
+ require_once("../../../../../globals");
+ require_once("$srcdir/headers.inc.php");
 ?>
 
 <link type="text/css" rel="stylesheet" href="<?php echo $GLOBALS['webroot'] . '/library/css/jquery-ui-1.8.21.custom.css'?>" />
@@ -393,7 +396,7 @@ $.extend($.ui.multiselect.locale, {
         <div id="cdr_hide_show-div" style="display: none;">
             <div id="plan_status_div" class="plan-status_div">
                                 <label id='plan-status-label'><?php echo out( xl( 'Status' )) . ':'; ?></label>
-                <button id='cdr-status' disable><?php echo out( xl( 'Activate' )); ?></button>
+                <button id='cdr-status' class='cp-misc' disable><?php echo out( xl( 'Activate' )); ?></button>
             </div>
             <br/>
             
@@ -401,8 +404,8 @@ $.extend($.ui.multiselect.locale, {
                 <div id="cdr_rules" class="cdr-rules-class"></div>      
             
                 <div id="cdr_buttons_div" class="cdr-buttons-class">
-                    <button id='cdr-button-cancel'><?php echo out( xl( 'Cancel' )); ?></button>
-                    <button id='cdr-button-submit'><?php echo out( xl( 'Submit' )); ?></button>
+                    <button id='cdr-button-cancel cp-negative'><?php echo out( xl( 'Cancel' )); ?></button>
+                    <button id='cdr-button-submit cp-submit'><?php echo out( xl( 'Submit' )); ?></button>
                 </div>
             </div>
         </div>
