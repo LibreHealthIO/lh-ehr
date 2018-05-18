@@ -1,33 +1,56 @@
 <!-- called using template handler-->
 <h3><i class='fa fa-gear'></i> General Settings</h3>
 <div>
-<table>
+<table class="table table-hover">
+<form method="POST">
 <tr>
 <td>
-<h4>
- Automatically check for updates?
-</h4>
+Notification Preferences
 </td>
 <td style="padding-left: 80px;">
+<select name="updater_notification_preference" class="updater_general_settings_children">
+	<option value="1">Notify me when security update is available</option>
+	<option value="2">Notify about all updates</option>
+</select>
+</td>
+  </tr>
+<tr>
+<td>
+Check for updates once
+</td>
+<td style="padding-left: 80px;">
+<select name="updater_frequency"  class="updater_general_settings_children">
+	<option value="1">1 day</option>
+	<option value="2">2 days</option>
+	<option value="5">5 days</option>
+</select>
+</td>
+  </tr>
+<tr>
+<td>
+Enable Developer Mode
+</td>
+<td style="padding-left: 80px;" class="updater_general_settings_children">
 <label class="switch">
-  <input type="checkbox">
+  <input type="checkbox" name="updater_dm">
   <span class="slider"></span>
 </label>
 </td>
   </tr>
 
+
 <tr>
 <td>
-<h4>
-Enable Developer Mode
-</h4>
+Disable Updater
 </td>
 <td style="padding-left: 80px;">
 <label class="switch">
-  <input type="checkbox">
+  <input type="checkbox" name="updater_status" class="updater_general_settings_parent">
   <span class="slider"></span>
 </label>
 </td>
   </tr>
+<tr><td><input type="submit"  class="cp-submit" value="save"></td></tr>
+</form>
 </table>
 </div>

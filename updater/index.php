@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Administration of users who have access to the updater
  *
@@ -22,6 +22,13 @@ require '../library/headers.inc.php';
 require '../library/user.inc';
 require 'template_handler.php';
 call_required_libraries(array("jquery-min-3-1-1","bootstrap", "font-awesome", "iziModalToast", "jquery-ui"));
+if (isset($_POST)) {
+	if (!empty($_POST)) {
+		foreach ($_POST as $key => $value) {
+			echo "$key => $value";
+		}
+	}
+}
 
 //every section is displayed as accordion for ui friendly approach
 echo "<div id='accordion-1'>";
@@ -94,11 +101,17 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
 			if ($mode == "add") {
 				//add a user id to the table
 				sqlQ("INSERT INTO `updater_users`(`authUserId`, `date`) VALUES ($authUserId, NOW())");
+				$toast_type = "success";
+				$toast_title = "User Added";
+				$toast_message = "The user is added to updater administration"; 
 			}
 			elseif ($mode == "remove") {
 				sqlQ("DELETE FROM `updater_users` WHERE authUserId='$authUserId'");
+				$toast_type = "error";
+				$toast_title = "User Removed";
+				$toast_message = "The user was removed from updater administration"; 
 			}
-			header("location: index.php");
+			header("location: index.php?accordion_index=1&toast_type=$toast_type&toast_title=$toast_title&toast_message=$toast_message");
 		}
 	}
 }
@@ -113,6 +126,26 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
        	heightStyle: "content"
        });
     });
+<?php
+	//if accordion index specified
+	if (isset($_GET['accordion_index']) && isset($_GET['toast_type']) && isset($_GET['toast_message']) && isset($_GET['toast_title'])) {
+		if (!empty($_GET['accordion_index']) && !empty($_GET['toast_title']) && !empty($_GET['toast_type']) && !empty($_GET['toast_message'])) {
+			$index = $_GET['accordion_index'];
+			$title = $_GET['toast_title'];
+			$type = $_GET['toast_type'];
+			$message = $_GET['toast_message'];
+			echo "$('#accordion-1').accordion({active: $index});";
+			echo "parent.showUpdaterNotifications('$type', '$title', '$message');";
+		}
+	}
+
+?>
+$('.updater_general_settings_parent').click(function () {
+	if ($('.updater_general_settings_parent').is(":checked")) {
+		$('.updater_general_settings_children').prop('disabled', true);
+		$('.updater_general_settings_children').css('opacity', '0.2');
+	}
+});
 </script>
 
 <style type="text/css">
@@ -174,4 +207,5 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
 </style>

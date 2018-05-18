@@ -289,4 +289,31 @@ $("#updater-iframe").iziModal({
 $('#updater-icon').click(function () {
     $('#updater-iframe').iziModal('open');
 });
+
+function showUpdaterNotifications(type, title, message) {
+    if (type == "warning") {
+        iziToast.warning({
+            title: title,
+            message: message,
+        });
+    }
+    if (type == "success") {
+        iziToast.success({
+            title: title,
+            message: message,
+        });
+    }
+    if (type == "info") {
+        iziToast.info({
+            title: title,
+            message: message,
+        });
+    }
+    if (type == "error") {
+        iziToast.error({
+            title: title,
+            message: message,
+        });
+    }
+}
 </script>
