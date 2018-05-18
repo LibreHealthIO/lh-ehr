@@ -2664,8 +2664,8 @@ function display_layout_tabs_data_editable($formtype, $result1, $result2='') {
         "ORDER BY seq", array($formtype,$this_group) );
     ?>
 
-        <div class="tab <?php echo $first ? 'current' : '' ?>" id="tab_<?php echo $group_name_esc?>" >
-            <table border='0' cellpadding='0'>
+        <div class="tab <?php echo $first ? 'current' : '' ?>" id="tab_<?php echo $group_name_esc?>" style="height:auto;width:auto;">
+            <table border='0' cellpadding='0' style="border-spacing: 10px">
 
             <?php
                 while ($group_fields = sqlFetchArray($group_fields_query)) {
