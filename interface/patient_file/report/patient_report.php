@@ -50,9 +50,8 @@
   <head>
     <?php
       html_header_show();
-      call_required_libraries(array('jquery-min-3-1-1', 'datepicker'));
+      call_required_libraries(array('jquery-min-3-1-1', 'datepicker','jquery-ui'));
     ?>
-    <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
     <script language='JavaScript'>
       function checkAll(check) {
@@ -71,14 +70,23 @@
         }
         return;
       }
-
     </script>
+
   </head>
   <body class="body_top">
+    <script>
+      $(function() {
+        $("#patient_reports").accordion({
+          heightStyle: "content"
+        });
+      });
+    </script>
     <div id="patient_reports">
       <!-- large outer DIV -->
       <?php if ( $GLOBALS['activate_ccr_ccd_report'] ) { // show CCR/CCD reporting options ?>
+      <h3><?php xl('Continuity of Care Record & Document', 'e'); ?></h3>
       <div id="ccr_report">
+
         <form name='ccr_form' id='ccr_form' method='post' action='../../../ccr/createCCR.php'>
           <span class='title'><?php xl('Continuity of Care Record (CCR)','e'); ?></span>&nbsp;&nbsp;
           <br/>
@@ -150,7 +158,7 @@
             </table>
           </div>
           <?php } ?>
-          <hr/>
+          <br><br><br>
           <span class='title'><?php xl('Continuity of Care Document (CCD)','e'); ?></span>&nbsp;&nbsp;
           <br/>
           <span class='text'>(<?php xl('Pop ups need to be enabled to see these reports','e'); ?>)</span>
@@ -180,10 +188,11 @@
           </div>
           <?php } ?>
         </form>
-        <hr/>
-        <hr/>
+        
       </div>
       <?php } // end CCR/CCD reporting options ?>
+      <h3><?php xl('Patient Report', 'e'); ?></h3>
+      <div>
       <form name='report_form' id="report_form" method='post' action='custom_report.php'>
         <span class='title'><?php xl('Patient Report','e'); ?></span>&nbsp;&nbsp;
         <!--
@@ -193,6 +202,8 @@
         <a class="link_submit" href="#" onclick="return checkAll(true)"><?php xl('Check All','e'); ?></a>
         |
         <a class="link_submit" href="#" onclick="return checkAll(false)"><?php xl('Clear All','e'); ?></a>
+            
+          <!-- Checkboxes -->
         <p>
         <table class="includes">
           <tr>
@@ -223,13 +234,16 @@
             </td>
           </tr>
         </table>
+          
         <br>
         <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
         <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />&nbsp;
         <input type='hidden' name='pdf' value='0'>
-        <br>
+
+            <br><br>
         <!-- old ccr button position -->
-        <hr/>
+          </p>
+          
         <table class="issues_encounters_forms">
           <tr>
             <!-- Issues -->
@@ -386,10 +400,13 @@
             </td>
           </tr>
         </table>
+          <br>
         <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
         <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />&nbsp;
+          <br><br><br>
+
         <!-- Procedure Orders -->
-        <hr/>
+          
         <table border="0" cellpadding="0" cellspacing="0" >
           <tr>
             <td class='bold'><?php echo xlt('Procedures'); ?>&nbsp;&nbsp;</td>
@@ -427,9 +444,11 @@
             }
             ?>
         </table>
+          <br>
         <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
         <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />
-        <hr/>
+          <br><br><br>
+
         <span class="bold"><?php xl('Documents','e'); ?></span>:<br>
         <ul>
           <?php
@@ -455,6 +474,7 @@
       </form>
       <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
       <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />&nbsp;
+    </div>
     </div>
     <!-- close patient_reports DIV -->
   </body>
