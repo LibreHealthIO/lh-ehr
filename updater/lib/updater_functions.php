@@ -1,6 +1,7 @@
 <?php
 
 $updater_general_setting_checkboxes = array("updater_dm"=>0, "updater_status"=>0);
+$updater_general_setting_input_fields = array("updater_notification_preference", "updater_frequency", "updater_dm", "updater_status");
 /**
 * @param $settingName, @param $settingValue
 * @return bool 

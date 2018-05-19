@@ -81,6 +81,8 @@ echo "<div id='accordion-1'>";
 $sql = "SELECT * FROM updater_settings";
 $query = sqlQ($sql);
 $loader->set_template_file("general_settings");
+$rows = sqlNumRows($query);
+if ($rows > 0) {
 while ($r = sqlFetchArray($query)) {
 	$setting_name = $r['name'];
 	$setting_value = getUpdaterSetting($setting_name);
@@ -99,6 +101,12 @@ while ($r = sqlFetchArray($query)) {
 	}
 	$loader->assign($setting_name, $setting_value);
 
+}
+}
+else {
+	foreach ($updater_general_setting_input_fields as $key => $value) {
+		$loader->assign($value, "not set");
+	}
 }
 
 $loader->output();
@@ -215,12 +223,22 @@ $('.updater_general_settings_parent').change(function () {
 		$('.updater_general_settings_children').prop('disabled', true);
 		$('.updater_general_settings_children').css('opacity', '0.2');
 	}
+	else {
+		$('.updater_general_settings_children').prop('disabled', false);
+		$('.updater_general_settings_children').css('opacity', '1');
+
+	}
 });
 
 $(document).ready(function () {
 		if ($('.updater_general_settings_parent').is(":checked")) {
 		$('.updater_general_settings_children').prop('disabled', true);
 		$('.updater_general_settings_children').css('opacity', '0.2');
+	}
+	else {
+		$('.updater_general_settings_children').prop('disabled', false);
+		$('.updater_general_settings_children').css('opacity', '1');
+
 	}
 });
 </script>
