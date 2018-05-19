@@ -17,7 +17,7 @@ class loader {
 
     public function output() {
     	$template_file_data = file_get_contents($this->template_file_directory);
-    	$this->output = $this->header_data.$template_file_data.$this->footer_data;
+    	$this->output = $template_file_data;
         if (count($this->data) != 0) 
         {
     	    foreach ($this->data as $key => $value) 

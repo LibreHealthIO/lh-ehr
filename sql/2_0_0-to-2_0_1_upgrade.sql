@@ -119,9 +119,15 @@ DROP TABLE IF EXISTS `menu_trees`;
 DROP TABLE IF EXISTS `menu_entries`;
 
 #IfNotTable updater_users
-DROP TABLE IF EXISTS `updater_users`;
 CREATE TABLE `updater_users` (
   `authUserId` int(11) NOT NULL,
   `date` datetime NOT NULL
+) ENGINE=InnoDB;
+#EndIf
+
+#IfNotTable updater_settings
+CREATE TABLE `updater_settings` (
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL
 ) ENGINE=InnoDB;
 #EndIf

@@ -7653,3 +7653,13 @@ CREATE TABLE `updater_users` (
   `authUserId` int(11) NOT NULL,
   `date` datetime NOT NULL
 ) ENGINE=InnoDB;
+
+
+--
+-- Table structure for table `updater_settings`
+--
+DROP TABLE IF EXISTS `updater_settings`;
+CREATE TABLE `updater_settings` (
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB;

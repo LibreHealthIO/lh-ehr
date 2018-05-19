@@ -21,12 +21,56 @@ require '../interface/globals.php';
 require '../library/headers.inc.php';
 require '../library/user.inc';
 require 'template_handler.php';
+require 'lib/updater_functions.php';
 call_required_libraries(array("jquery-min-3-1-1","bootstrap", "font-awesome", "iziModalToast", "jquery-ui"));
-if (isset($_POST)) {
-	if (!empty($_POST)) {
-		foreach ($_POST as $key => $value) {
-			echo "$key => $value";
+
+?>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<?php
+//POST HANDLER FOR THE GENERAL SETTINGS SAVE
+if (isset($_POST['from_updater_general_settings'])) {
+	if (!empty($_POST['from_updater_general_settings'])) {
+		$from_updater_general_settings = $_POST['from_updater_general_settings'];
+		if ($from_updater_general_settings) {
+				$boolean_array = array();
+
+				// TO HANDLE CHECKBOXES IN THE UPDATER GENERAL SETTINGS
+				foreach ($updater_general_setting_checkboxes as $key => $value) {
+						$settingName = $key;
+						$settingValue = $value;
+						$bool = setUpdaterSetting($settingName, $settingValue);
+						array_push($boolean_array, $bool);
+
+				}
+				//TO HANDLE ALL OTHER INPUT BOXES IN THE UPDATER FIELD
+				foreach ($_POST as $key => $value) {
+					if ($key == "from_updater_general_settings") {
+						//it is used only in loops to identify post request, so dont save in db
+					}
+					else {
+						$settingName = $key;
+						$settingValue = $value;
+						if ($settingValue == "on") {
+							$settingValue = 1;
+						}
+						$bool = setUpdaterSetting($settingName, $settingValue);
+						array_push($boolean_array, $bool);
+					}
+				}
+				if (in_array("0", $boolean_array)) {
+					$toast_type = "error";
+					$toast_title = xlt("ERROR");
+					$toast_message = xlt("There is an error in saving settings");
+				}
+				else {
+					$toast_type = "success";
+					$toast_title = "SUCCESS";
+					$toast_message = "Settings have been successfully saved";
+
+				}
+				header("location: index.php?accordion_index=&toast_type=$toast_type&toast_title=$toast_title&toast_message=$toast_message");
 		}
+
 	}
 }
 
@@ -34,8 +78,29 @@ if (isset($_POST)) {
 echo "<div id='accordion-1'>";
 
 //load general settings template in accordion
+$sql = "SELECT * FROM updater_settings";
+$query = sqlQ($sql);
 $loader->set_template_file("general_settings");
-$loader->assign("SOME_VALUE", "ss");
+while ($r = sqlFetchArray($query)) {
+	$setting_name = $r['name'];
+	$setting_value = getUpdaterSetting($setting_name);
+	if ($setting_value == "empty_setting") {
+		$setting_value = xlt("Not Set");
+	}
+	if ($setting_value == "0") {
+		$settingValue = "off";
+		$setting_checkbox_name = $setting_name."_checked";
+		$loader->assign($setting_checkbox_name, " ");
+	}
+	if ($setting_value == "1") {
+		$setting_value = "on";
+		$setting_checkbox_name = $setting_name."_checked";
+		$loader->assign($setting_checkbox_name, "checked");
+	}
+	$loader->assign($setting_name, $setting_value);
+
+}
+
 $loader->output();
 
 //load updater administration in accordion
@@ -86,7 +151,7 @@ if($_SESSION['authUser'] == "admin" && !(isset($_GET['id']) && isset($_GET['mode
 	
 }
 else {
-	//dont show addition form
+	//dont show addition form for other users
 }
 
 //Modes and Actions
@@ -127,85 +192,35 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
        });
     });
 <?php
-	//if accordion index specified
+	//MODULE TO SHOW WHICH ACCORDION TO BE OPENED AFTER A FORM SAVE AND ALSO SHOW TOAST
 	if (isset($_GET['accordion_index']) && isset($_GET['toast_type']) && isset($_GET['toast_message']) && isset($_GET['toast_title'])) {
-		if (!empty($_GET['accordion_index']) && !empty($_GET['toast_title']) && !empty($_GET['toast_type']) && !empty($_GET['toast_message'])) {
+		if (!empty($_GET['toast_title']) && !empty($_GET['toast_type']) && !empty($_GET['toast_message'])) {
 			$index = $_GET['accordion_index'];
 			$title = $_GET['toast_title'];
 			$type = $_GET['toast_type'];
 			$message = $_GET['toast_message'];
+			if (empty($_GET['accordion_index'])) {
+
+			}
+			else {
 			echo "$('#accordion-1').accordion({active: $index});";
+			}
 			echo "parent.showUpdaterNotifications('$type', '$title', '$message');";
 		}
 	}
 
 ?>
-$('.updater_general_settings_parent').click(function () {
+$('.updater_general_settings_parent').change(function () {
 	if ($('.updater_general_settings_parent').is(":checked")) {
 		$('.updater_general_settings_children').prop('disabled', true);
 		$('.updater_general_settings_children').css('opacity', '0.2');
 	}
 });
+
+$(document).ready(function () {
+		if ($('.updater_general_settings_parent').is(":checked")) {
+		$('.updater_general_settings_children').prop('disabled', true);
+		$('.updater_general_settings_children').css('opacity', '0.2');
+	}
+});
 </script>
-
-<style type="text/css">
-	/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 24px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {display:none;}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #F69600;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #F69600;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(16px);
-  -ms-transform: translateX(16px);
-  transform: translateX(16px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 17px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-</style>
