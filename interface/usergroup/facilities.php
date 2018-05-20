@@ -134,35 +134,37 @@ $(document).ready(function(){
     //iziModal for editing existing facilities
     $(".editFacilities").on("click", function (event) {
       event.preventDefault();
-      iziTitle = "<?php echo xlt('Edit Facility'); ?>";
-      iziSubTitle = "<?php echo xlt('Edit details about the facility'); ?>";
-      var temp = $(this).attr('href');
-      initIziLink(temp, 700, 350);
-      console.log(temp);
+      var dyn_link = parseInt($(this).attr("data-text"));
+      initIziLink(dyn_link);
     });
 
-    function  initIziLink(link , width , height) {
+    function initIziLink(link) {
+      console.log(link);
       $("#editFacilities-iframe").iziModal({
-        title: iziTitle,
-        subtitle: iziSubTitle,
+        title: 'Edit Facility',
+        subtitle: 'Edit details about the facility',
         headerColor: '#88A0B9',
         closeOnEscape: true,
-        fullscreen:true,
+        fullscreen: true,
         overlayClose: false,
         closeButton: true,
         theme: 'light',
         iframe: true,
-        width: width,
+        width: 700,
         focusInput: true,
         padding: 5,
-        iframeHeight: height,
-        iframeURL: link,
-        //onClosed: function () {
-          //parent.$('.fa-refresh').click();
-        //}
+        iframeHeight: 350,
+        iframeURL: "facility_admin.php?fid=" + link,
+        onClosed: function () {
+          setTimeout(function () {
+            parent.$(".fa-refresh").click();
+          }, 1000);
+        }
       });
 
-      call_izi();
+      setTimeout(function () {
+        call_izi();
+      }, 500);
     }
 
     function call_izi() {
@@ -216,11 +218,9 @@ $(document).ready(function(){
           if ($iter3{state}!="")$varstate=$iter3{state}.",";
     ?>
     <tr height="22">
-       <td><b>
-          <!-- to initialize the iziModal -->
-          <div id="editFacilities-iframe"></div>
-          <a href="facility_admin.php?fid=<?php echo $iter3{id};?>" class="editFacilities"><span><?php echo htmlspecialchars($iter3{name});?></span></a>
-        </b>&nbsp;</td>
+       <!-- to initialize the iziModal -->
+       <div id="editFacilities-iframe"></div>
+       <td><b><a href="#" data-text="<?php echo $iter3{id};?>" class="editFacilities"><span><?php echo htmlspecialchars($iter3{name});?></span></a></b>&nbsp;</td>
        <td><?php echo htmlspecialchars($varstreet.$varcity.$varstate.$iter3{country_code}." ".$iter3{postal_code}); ?>&nbsp;</td>
        <td><?php echo htmlspecialchars($iter3{phone});?>&nbsp;</td>
     </tr>
