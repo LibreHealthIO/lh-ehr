@@ -649,6 +649,12 @@ if ($_POST['form_action'] == "save") {
 
     }
 
+    //when selected status is "Deleted" and save is clicked in add_edit_event
+    //delete the event from the database and remove it from calendar
+    if ($_POST['form_apptstatus'] == 'Deleted') {
+        sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_eid = ?", array($_GET['eid']) );
+    }
+
     // done with EVENT insert/update statements
 
         DOBandEncounter();
@@ -742,13 +748,13 @@ if ($_POST['form_action'] == "save") {
             }
         }
 
-        #pass status Deleted to tracker when deleting appointment by clicking delete
+        #pass status Deleted to patient_tracker_element when deleting appointment by clicking delete
         if (!empty($_GET['eid'])) {
             $tmph = $_POST['form_hour'] + 0;
             $tmpm = $_POST['form_minute'] + 0;
             if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
             $appttime = "$tmph:$tmpm:00";
-            $event_date = $POST['form_date'];
+            $event_date = $_POST['form_date'];
 
             manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],'Deleted',$_POST['form_room']);
         }
