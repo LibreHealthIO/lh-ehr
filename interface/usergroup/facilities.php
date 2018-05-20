@@ -139,7 +139,6 @@ $(document).ready(function(){
     });
 
     function initIziLink(link) {
-      console.log(link);
       $("#editFacilities-iframe").iziModal({
         title: 'Edit Facility',
         subtitle: 'Edit details about the facility',
@@ -158,13 +157,13 @@ $(document).ready(function(){
         onClosed: function () {
           setTimeout(function () {
             parent.$(".fa-refresh").click();
-          }, 1000);
+          }, 300);
         }
       });
 
       setTimeout(function () {
         call_izi();
-      }, 500);
+      }, 100);
     }
 
     function call_izi() {
@@ -176,6 +175,9 @@ $(document).ready(function(){
 </head>
 
 <body class="body_top">
+  <!-- to initialize the iziModal -->
+  <div id="addFacilities-iframe"></div>
+  <div id="editFacilities-iframe"></div>
 
 <div>
     <div>
@@ -185,8 +187,6 @@ $(document).ready(function(){
                 <b><?php echo xlt('Facilities'); ?></b>&nbsp;
             </td>
             <td>
-                 <!-- to initialize the iziModal -->
-                 <div id="addFacilities-iframe"></div>
                  <a href="#" class="css_button cp-positive addFacilities"><span><?php echo xlt('Add');?></span></a>
             </td>
         </tr>
@@ -218,8 +218,6 @@ $(document).ready(function(){
           if ($iter3{state}!="")$varstate=$iter3{state}.",";
     ?>
     <tr height="22">
-       <!-- to initialize the iziModal -->
-       <div id="editFacilities-iframe"></div>
        <td><b><a href="#" data-text="<?php echo $iter3{id};?>" class="editFacilities"><span><?php echo htmlspecialchars($iter3{name});?></span></a></b>&nbsp;</td>
        <td><?php echo htmlspecialchars($varstreet.$varcity.$varstate.$iter3{country_code}." ".$iter3{postal_code}); ?>&nbsp;</td>
        <td><?php echo htmlspecialchars($iter3{phone});?>&nbsp;</td>

@@ -67,7 +67,7 @@ if (isset($_POST["fid"])) {
     }
 
     $(document).ready( function() {
-      ("#cancel").click(function() {
+      $("#cancel").click(function() {
         parent.$('#editFacilities-iframe').iziModal('close');
       });
     });
