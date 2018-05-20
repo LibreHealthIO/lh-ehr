@@ -58,7 +58,7 @@ parent.$.fn.fancybox.close();
             alertMsg += checkLength(f[i].name,f[i].value,10);
             alertMsg += checkFederalEin(f[i].name,f[i].value);
           }
-        }   
+        }
       }
       if (alertMsg) {
         alert(alertMsg);
@@ -75,14 +75,14 @@ parent.$.fn.fancybox.close();
           }
           else if (document.forms[0].ncolor.value == '') {
             document.forms[0].ncolor.style.backgroundColor="red";
-            document.forms[0].ncolor.focus(); 
+            document.forms[0].ncolor.focus();
           }
       }
     }
 
     $(document).ready( function() {
-      $("#cancel").click(function() {
-        parent.$.fn.fancybox.close();
+      ("#cancel").click(function() {
+        parent.$('#editFacilities-iframe').iziModal('close');
       });
     });
 
@@ -213,7 +213,7 @@ parent.$.fn.fancybox.close();
               value="<?php echo htmlspecialchars($facility{"state"}, ENT_QUOTES) ?>"
             />
           </td>
-          <?php 
+          <?php
             $ssn='';
             $ein='';
             if($facility['tax_id_type']=='SY'){
@@ -222,7 +222,7 @@ parent.$.fn.fancybox.close();
             else{
             $ein='selected';
             }
-          ?>     
+          ?>
           <td>
             <span class=text><?php xl('Tax ID','e'); ?>: </span>
           </td>
@@ -255,7 +255,7 @@ parent.$.fn.fancybox.close();
             <span class=text><?php ($GLOBALS['simplified_demographics'] ? xl('Facility Code','e') : xl('Facility NPI','e')); ?>:</span>
           </td>
           <td>
-            <input 
+            <input
               type=entry
               size=20
               name=facility_npi
