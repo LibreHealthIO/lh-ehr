@@ -31,12 +31,14 @@ require_once ("includes/header.inc.php");
             <p class="clearfix"></p>
             <div class="control-btn">
                 <a href="#" class="button next-btn">NEXT</a>
+                <p class="clearfix"></p>
+                <p class="clearfix"></p>
             </div>
-            <p class="clearfix"></p>
-            <p class="clearfix"></p>
-            <p class="clearfix"></p>
-            <p class="clearfix"></p>
 
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
 
             <?php
             require_once ("includes/footer.inc.php");

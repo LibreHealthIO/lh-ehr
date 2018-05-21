@@ -44,7 +44,7 @@
         </div>
     </nav>
 
-    <h1 class="white">Welcome to LibrehealthEHR</h1>
+    <h1 class="white" style="font-family: GreatVibes;font-weight: bolder;">Welcome to Librehealth-ehr</h1>
     <div class="divider">
         <div class="divider-child"></div>
     </div>
