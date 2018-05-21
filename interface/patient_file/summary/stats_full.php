@@ -28,7 +28,6 @@
 
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
-//
 
 //STOP FAKE REGISTER GLOBALS
 $fake_register_globals=false;
@@ -78,7 +77,6 @@ $language = $tmp['language'];
             top.restoreSession();
             location.reload();
         });
-
 // callback from add_edit_issue.php:
         function refreshIssue(issue, title) {
             top.restoreSession();
@@ -89,7 +87,7 @@ $language = $tmp['language'];
 		    <?php if (acl_check('patients', 'med', '', 'write')): ?>
             if (category == 0) category = '';
             iziTitle = "<?php echo xlt('Add New Issue'); ?>";
-            iziSubTitle = "<?php echo xlt('Add all sorts of issues about Patient'); ?>";
+            iziSubTitle = "<?php echo xlt('Add Relevant Patient Issues'); ?>";
             initIziLink('add_edit_issue.php?issue=' + encodeURIComponent(id) + '&thistype=' + encodeURIComponent(category), 850, 400);
 		    <?php else: ?>
             alert("<?php echo addslashes(xl('You are not authorized to add/edit issues')); ?>");
@@ -130,16 +128,8 @@ $language = $tmp['language'];
 // Process click on number of encounters.
         function doeclick(id) {
             iziTitle = "<?php echo xlt('Add Ecounter/Issue'); ?>";
-            iziSubTitle = "<?php echo xlt('Add all sorts of Encounter/Issues about Patient'); ?>";
+            iziSubTitle = "<?php echo xlt('Add Relevant Encounter/Issues about Patient'); ?>";
             initIziLink('../problem_encounter.php?issue=' + id, 1250, 460);
-        }
-
-// Process click on diagnosis for patient education popup.
-        function educlick(codetype, codevalue) {
-            dlgopen('../education.php?type=' + encodeURIComponent(codetype) +
-                '&code=' + encodeURIComponent(codevalue) +
-                '&language=<?php echo urlencode($language); ?>',
-                '_blank', 1024, 750, true); // Force a new window instead of iframe to address cross site scripting potential
         }
 
 // Add Encounter button is clicked.
@@ -196,7 +186,7 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
   else
   echo "<a href='#' class='css_button_small' onclick='dopclick(0,\"" . htmlspecialchars($focustype,ENT_QUOTES)  . "\")'><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
   echo "  <span class='title'>" . htmlspecialchars($disptype,ENT_NOQUOTES) . "</span>\n";
-  // echo " <table style='margin-bottom:1em;text-align:center'>";
+
   echo " <table style='margin-bottom:1em;'>";
   ?>
   <tr class='head'>
@@ -315,7 +305,6 @@ echo "</table>";
 </body>
 
 <script language="javascript">
-// jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
     $(".statrow").mouseover(function() { $(this).toggleClass("highlight"); });

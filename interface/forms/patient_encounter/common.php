@@ -72,50 +72,7 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 
 
     $(document).ready(function () {
-        //variables to store titles and subtitles
-        var iziTitle = "";
-        var iziSubTitle = "";
-
-        // New Issue button is clicked.
-        $(".newIssue").click(function () {
-            iziTitle = "<?php echo xlt('Add New Issue'); ?>";
-            iziSubTitle = "<?php echo xlt('Add all sorts of issues about Patient'); ?>";
-            initIziLink('../../patient_file/summary/add_edit_issue.php' , 650 , 400);
-        });
-
-        function  initIziLink(link , width , height) {
-            $("#izi-iframe").iziModal({
-                title: iziTitle,
-                subtitle: iziSubTitle,
-                headerColor: '#88A0B9',
-                closeOnEscape: true,
-                fullscreen:true,
-                overlayClose: false,
-                closeButton: true,
-                theme: 'light',  // light
-                iframe: true,
-                width:width,
-                focusInput: true,
-                padding:2,
-                iframeHeight: height,
-                iframeURL:link,
-                onClosed: function () {
-                    parent.$('.fa-refresh').click();
-                }
-            });
-            setTimeout(function () {
-                call_izi();
-            },500);
-
-        }
-
-        function call_izi() {
-            $("#izi-iframe").iziModal('open');
-        }
-    
-    });
-
- 
+    <?php require_once("$srcdir/modal_functions.php");?>
  // callback from add_edit_issue.php:
  function refreshIssue(issue, title) {
   var s = document.forms[0]['issues[]'];
@@ -131,7 +88,7 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
       iziToast.warning({
           title: 'Warning -',
           message: alertMsg,
-          position: 'bottomRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
+          position: 'bottomRight',
           icon: 'fa fa-exclamation-triangle'
       });
       return;
@@ -141,9 +98,6 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
   f.submit();
  }
 
-$(document).ready(function(){
-  enable_big_modals();
-});
 function bill_loc(){
 var pid=<?php echo attr($pid);?>;
 var dte=document.getElementById('form_date').value;
@@ -444,10 +398,4 @@ if (!$viewmode) { ?>
 }
 ?>
 </script>
-<?php 
-  /*
-   Making fancybox compatible with jquery 3.1.1 as $.browser is removed in jquery 1.9
-  */
-  resolveFancyboxCompatibility();
-?>
 </html>

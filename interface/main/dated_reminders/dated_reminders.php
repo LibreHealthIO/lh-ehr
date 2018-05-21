@@ -98,7 +98,6 @@
         var link = '';
        $(".sendReminder").click(function () {
          var val = parseInt($(this).attr("data-text"));
-         alert(val);
          if(val = 0){
              link = "<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_add.php";
              initIziLink(link);
@@ -154,8 +153,6 @@
        function call_izi() {
            $("#sendReminder-iframe").iziModal('open');
        }
-
-
 
        // run updater after 30 seconds
      var updater = setTimeout("updateme(0)", 1);
