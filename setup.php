@@ -14,8 +14,6 @@ ini_set("session.bug_compat_warn","off");
 
 $state = $_POST["state"];
 
-// Make this true for IPPF.  // TODO - REMOVE THIS
-$ippf_specific = false;
 
 // If this script was invoked with no site ID, then ask for one.
 if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
@@ -38,8 +36,9 @@ if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
     "If it is a hostname then it is taken from the hostname in the URL. " .
     "Otherwise you must append \"?site=<i>siteid</i>\" to the URL used for " .
     "logging in.</p>\n";
-  echo "<p>It is OK for one of the sites to have \"default\" as its ID. This " .
-    "is the ID that will be used if it cannot otherwise be determined.</p>\n";
+  echo "<p>It is permitted to leave \"default\" as your site ID. This " .
+    "is the ID that will be used if it cannot otherwise be determined, but".
+    "it is better for system upgrades to NOT use the default site ID.</p>\n";
   echo "<form method='post'><input type='hidden' name='state' value='0'>" .
     "Site ID: <input type='text' name='site' value='default'>&nbsp;" .
     "<input type='submit' value='Continue'><br></form><br>\n";
@@ -47,8 +46,8 @@ if (!$COMMAND_LINE && empty($_REQUEST['site'])) {
   exit();
 }
 
-// Support "?site=siteid" in the URL, otherwise assume "default".
-$site_id = 'default';
+// Support "?site=siteid" in the URL, otherwise assume "clinic", to protect the default directory.
+$site_id = 'clinic';
 if (!$COMMAND_LINE && !empty($_REQUEST['site'])) {
   $site_id = trim($_REQUEST['site']);
 }
@@ -72,22 +71,23 @@ $billingLogDirectory = "$OE_SITE_DIR/logs";
 $lettersDirectory = "$OE_SITE_DIR/letter_templates";
 $gaclWritableDirectory = dirname(__FILE__)."/gacl/admin/templates_c";
 
-$zendModuleConfigFile = dirname(__FILE__)."/interface/modules/zend_modules/config/application.config.php";
+//$Libre_Get_Modules = dirname(__FILE__)."/modules/modules.config.php";  //TODO stub
 
 //These are files and dir checked before install for
 // correct permissions.
 if (is_dir($OE_SITE_DIR)) {
-  $writableFileList = array($installer->conffile,$zendModuleConfigFile);
+  //$Libre_Get_Modules could be added to the 'writable' array. Remove if unneeded when module registry methods are finalized
+  $writableFileList = array($installer->conffile);  
   $writableDirList = array($docsDirectory, $billingDirectory, $billingDirectory2, $lettersDirectory, $gaclWritableDirectory);
 }
 else {
   $writableFileList = array();
-  $writableDirList = array($OE_SITES_BASE, $gaclWritableDirectory, $requiredDirectory1, $requiredDirectory2);
+  $writableDirList = array($OE_SITES_BASE, $gaclWritableDirectory);
 }
 
 // Include the sqlconf file if it exists yet.
 $config = 0;
-if (file_exists($OE_SITE_DIR)) {
+if (file_exists($OE_SITE_DIR)) {  //this looks at sqlconf file, NOT a DIR.  Rename.
   include_once($installer->conffile);
 }
 else if ($state > 3) {
@@ -99,7 +99,7 @@ else if ($state > 3) {
 <HTML>
 <HEAD>
 <TITLE>LibreHealth EHR Setup Tool</TITLE>
-<LINK REL=STYLESHEET HREF="interface/themes/style_sky_blue.css">
+<LINK REL=STYLESHEET HREF="interface/themes/style_setup.css">
 
 <style>
 .noclone { }
@@ -177,7 +177,7 @@ else {
 
   case 1:
     echo "<b>Step $state</b><br><br>\n";
-    echo "Now I need to know whether you want me to create the database on my own or if you have already created the database for me to use.  For me to create the database, you will need to supply the MySQL root password.\n
+    echo "Now I need to know whether you want me to create the database on my own or if you have already created a database for me to use.  For me to create the database, you will need to supply the MySQL root password.\n
 <span class='title'> <br />NOTE: clicking on \"Continue\" may delete or cause damage to data on your system. Before you continue please backup your data.</span>
 <br><br>\n
 <FORM METHOD='POST'>\n
