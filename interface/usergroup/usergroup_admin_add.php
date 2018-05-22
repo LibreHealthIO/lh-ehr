@@ -52,7 +52,7 @@ $alertmsg = '';
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 
-<?php call_required_libraries(array("jquery-min-3-1-1", "fancybox", "common")); ?>
+<?php call_required_libraries(array("jquery-min-3-1-1", "font-awesome", "common", "iziModalToast")); ?>
 
 <script src="checkpwd_validation.js" type="text/javascript"></script>
 
@@ -140,7 +140,13 @@ function submitform() {
        if (document.forms[0].rumple.value.length<=0)
        {
           document.forms[0].rumple.style.backgroundColor="red";
-          alert("<?php xl('Required field missing: Please enter the User Name','e');?>");
+          alertMsg = '<?php xl('Required field missing: Please enter the '.'<b>'.'User Name'.'</b>.','e');?>';
+           iziToast.warning({
+               title: 'Warning -',
+               message: alertMsg,
+               position: 'bottomRight',
+               icon: 'fa fa-exclamation-triangle'
+           });
           document.forms[0].rumple.focus();
           return false;
        }
@@ -153,14 +159,26 @@ function submitform() {
        }
        if(trimAll(document.getElementById('fname').value) == ""){
           document.getElementById('fname').style.backgroundColor="red";
-          alert("<?php echo xl('Required field missing: Please enter the First name');?>");
+           alertMsg = '<?php xl('Required field missing: Please enter the '.'<b>'.'First name'.'</b>.','e');?>';
+           iziToast.warning({
+               title: 'Warning -',
+               message: alertMsg,
+               position: 'bottomRight',
+               icon: 'fa fa-exclamation-triangle'
+           });
           document.getElementById('fname').focus();
           return false;
        }
        if(trimAll(document.getElementById('lname').value) == ""){
           document.getElementById('lname').style.backgroundColor="red";
-          alert("<?php echo xl('Required field missing: Please enter the Last name');?>");
-          document.getElementById('lname').focus();
+           alertMsg = '<?php xl('Required field missing: Please enter the '.'<b>'.'Last name'.'</b>.','e');?>';
+           iziToast.warning({
+               title: 'Warning -',
+               message: alertMsg,
+               position: 'bottomRight',
+               icon: 'fa fa-exclamation-triangle'
+           });
+           document.getElementById('lname').focus();
           return false;
        }
     }
@@ -502,8 +520,8 @@ if (empty($GLOBALS['disable_non_default_groups'])) {
 ?>
 $(document).ready(function(){
     $("#cancel").click(function() {
-          parent.$.fn.fancybox.close();
-     });
+        parent.$('#addUser-iframe').iziModal('close');
+    });
   /*
      $("#role_name").on('change', function(e) {
        

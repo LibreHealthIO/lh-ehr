@@ -30,7 +30,6 @@
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
 
-
 //STOP FAKE REGISTER GLOBALS
 $fake_register_globals=false;
 
@@ -87,16 +86,13 @@ function submitform() {
     }
     if(flag == 0){
         document.forms[0].submit();
-        parent.$.fn.fancybox.close(); 
+        parent.$('#facilityUser-iframe').iziModal('close');
     }
-    
-    
-    
 }
 
 $(document).ready(function(){
     $("#cancel").click(function() {
-          parent.$.fn.fancybox.close();
+        parent.$('#facilityUser-iframe').iziModal('close');
      });
 
 });
