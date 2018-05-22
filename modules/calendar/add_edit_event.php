@@ -1337,7 +1337,13 @@ $classpati='';
       /***************************************************************
       $qsql = sqlStatement("SELECT * FROM facility WHERE service_location != 0");
       ***************************************************************/
-      $facils = getUserFacilities($_SESSION['authId']);
+      $facils = getUserFacilities($userid);
+      //userid is id of clicked user(provider) in calendar
+      //ufid is an array of id of schedule facilities of selected user
+      $ufid = array();
+      foreach ($facils as $uf) {
+        $ufid[] = $uf['id'];
+      }
       $qsql = sqlStatement("SELECT id, name FROM facility WHERE service_location != 0");
       /**************************************************************/
       while ($facrow = sqlFetchArray($qsql)) {
@@ -1345,12 +1351,22 @@ $classpati='';
         $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
         echo "<option value={$facrow['id']} $selected>{$facrow['name']}</option>";
         *************************************************************/
-        if ($_SESSION['authorizedUser'] || in_array($facrow, $facils)) {
+        if ($GLOBALS['restrict_user_facility']) {
+          //if restricting users(providers) to schedule facilities
+          //then list only schedule facilities of that user or default facility
+          //in Facility in calendar's event panel
+          //e2f denotes id of default facility
+          if (in_array($facrow['id'], $ufid) || $facrow['id'] == $e2f || $facrow['id'] == 3) {
+            //id 3 is for "Your Clinic Name Here"
+            $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
+            echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
+          }
+        } else {
+          //if not restricting then list all facilities
+          //where service_location is not 0 including default facility
+          //in Facility in calendar's event panel
           $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
           echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
-        } else {
-        $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
-         echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
         }
         /************************************************************/
       }
@@ -1758,7 +1774,7 @@ $(function() {
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
-    $("#form_save").click(function() { 
+    $("#form_save").click(function() {
         var reason = $("input[name='form_reason_for_cancellation']:checked").val();
         if (reason) {
             $('#form_reason_to_cancel').val(reason);
@@ -1905,7 +1921,7 @@ $('#reasons_modal').iziModal({
            });
 
 $("#form_apptstatus").change(function() {
-    
+
     var selected_text = $("#form_apptstatus option:selected").text();
     if (selected_text == "x Canceled") {
         $("#reasons_modal").iziModal('open');
@@ -1913,7 +1929,7 @@ $("#form_apptstatus").change(function() {
 })
 
 $('#close_reason_modal').click(function () {
-   $("#reasons_modal").iziModal('close'); 
+   $("#reasons_modal").iziModal('close');
 });
 
 $('#reason_others').click(function () {

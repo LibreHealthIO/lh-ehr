@@ -4,7 +4,7 @@
  *
  *  This program is used to edit the users
  *
- * Copyright (C) 2016-2017 
+ * Copyright (C) 2016-2017
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,17 +22,17 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreEHR
- *  
+ *
  * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
  */
- 
+
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
 
- 
+
 require_once("../globals.php");
 require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
@@ -312,7 +312,7 @@ function submitform() {
     <?php } ?>
     if(flag == 0){
                     document.forms[0].submit();
-                    parent.$.fn.fancybox.close(); 
+                    parent.$.fn.fancybox.close();
     }
 }
 //Getting the list of selected item in ACL
@@ -361,8 +361,8 @@ function authorized_clicked() {
 <input type=hidden name="get_admin_id" value="<?php echo $GLOBALS['Emergency_Login_email']; ?>" >
 <input type=hidden name="admin_id" value="<?php echo $GLOBALS['Emergency_Login_email_id']; ?>" >
 <input type=hidden name="check_acl" value="">
-<?php 
-//Calculating the grace time 
+<?php
+//Calculating the grace time
 $current_date = date("Y-m-d");
 $password_exp=$iter["pwd_expiration_date"];
 if($password_exp != "0000-00-00")
@@ -446,6 +446,7 @@ foreach($result as $iter2) {
 <?php
   $userFacilities = getUserFacilities($_GET['id']);
   $ufid = array();
+  //ufid is an array of id of schedule facilities of selected user
   foreach($userFacilities as $uf)
     $ufid[] = $uf['id'];
   $fres = sqlStatement("select * from facility where service_location != 0 order by name");
@@ -455,6 +456,7 @@ foreach($result as $iter2) {
    <option <?php echo in_array($frow['id'], $ufid) || $frow['id'] == $iter['facility_id'] ? "selected" : null ?>
       value="<?php echo $frow['id'] ?>"><?php echo htmlspecialchars($frow['name']) ?></option>
 <?php
+  //$iter['facility_id'] is id of default facility of selected user
   endwhile;
 }
 ?>
@@ -581,7 +583,7 @@ echo generate_select_list('irnpool', 'irnpool', $iter['irnpool'],
                 <option value="Flow Board|/interface/patient_tracker/patient_tracker.php">Flow Board</option>
       </select>
 
-  
+
   </td>
   </tr>
   <tr>
