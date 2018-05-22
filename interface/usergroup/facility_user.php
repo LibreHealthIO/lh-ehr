@@ -68,40 +68,56 @@ if ( isset($_POST["mode"]) && $_POST["mode"] == "facility_user_id" && isset($_PO
 ?>
 <html>
 <head>
-<?php     call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
-
-      resolveFancyboxCompatibility();
-?>
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome" , "iziModalToast")); ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
-
 <script type="text/javascript">
 
 $(document).ready(function(){
+    $(".facitityUser").click(function () {
+        var iter1 = $(this).attr("data-text1");
+        var iter2 = $(this).attr("data-text2");
+        var title = $(this).children('span').text();
+        initIziLink(iter1 , iter2, title);
+    });
 
-    // fancy box
-    enable_modals();
-    
-    // special size for
-    $(".iframe_small").fancybox( {
-        'overlayOpacity' : 0.0,
-        'showCloseButton' : true,
-        'frameHeight' : 300,
-        'frameWidth' : 500
-    });
-    
-    $(function(){
-        // add drag and drop functionality to fancybox
-        $("#fancy_outer").easydrag();
-    });
+        function initIziLink(iter1, iter2, title) {
+                $("#facilityUser-iframe").iziModal({
+                    title: 'User - <b style="color: white">'+title+'</b>',
+                    subtitle: '',
+                    headerColor: '#88A0B9',
+                    closeOnEscape: true,
+                    fullscreen:true,
+                    overlayClose: false,
+                    closeButton: true,
+                    theme: 'light',  // light
+                    iframe: true,
+                    width:500,
+                    focusInput: true,
+                    padding:5,
+                    iframeHeight: 250,
+                    iframeURL:'facility_user_admin.php?user_id='+iter1 + '&fac_id='+iter2,
+                    onClosed:function () {
+                        location.reload();
+                    }
+                });
+
+                setTimeout(function () {
+                    call_izi();
+                },200);
+            }
+
+            function call_izi() {
+                $("#facilityUser-iframe").iziModal('open');
+            }
+
 });
 
 </script>
 
 </head>
 <body class="body_top">
-
+<div id="facilityUser-iframe"></div>
 <?php
 // Collect all users
 $u_res = sqlStatement("select * from `users` WHERE `username` != '' AND `active` = 1 order by `username`");
@@ -154,7 +170,7 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
                         foreach ($f_arr as $facility) {
                     ?>
                 <tr height="20"  class="text" style="border-bottom: 1px dashed;">
-                   <td class="text"><b><a href="facility_user_admin.php?user_id=<?php echo attr($user['id']);?>&fac_id=<?php echo attr($facility['id']);?>" class="iframe_small" onclick="top.restoreSession()"><span><?php echo text($user['username']);?></span></a></b>&nbsp;</td>
+                   <td class="text"><b><a data-text1="<?php echo attr($user['id']);?>" data-text2="<?php echo attr($facility['id']);?>" href="#" class="facitityUser" onclick="top.restoreSession()"><span><?php echo text($user['username']);?></span></a></b>&nbsp;</td>
                    <td><span class="text"><?php echo text($user['fname'] . " " . $user['lname']);?></span>&nbsp;</td>
                    <td><span class="text"><?php echo text($facility['name']);?>&nbsp;</td>
                                    <?php

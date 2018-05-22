@@ -22,7 +22,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreEHR
- *  
+ *
  * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
@@ -32,7 +32,7 @@
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
 
- 
+
 require_once("../globals.php");
 require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
@@ -41,6 +41,7 @@ require_once("$srcdir/calendar.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/erx_javascript.inc.php");
 require_once("$srcdir/role.php");
+require_once("$srcdir/headers.inc.php");
 
 if (!$_GET["id"] || !acl_check('admin', 'users'))
   exit();
@@ -170,10 +171,10 @@ if ($_GET["mode"] == "update") {
   */    echo '
 <script type="text/javascript">
 <!--
-parent.$.fn.fancybox.close();
+ parent.$("#editUser-iframe").iziModal("close");
+
 //-->
 </script>
-
     ';
 }
 
@@ -187,7 +188,7 @@ if (isset($_POST["mode"])) {
     echo '
 <script type="text/javascript">
 <!--
-parent.$.fn.fancybox.close();
+ parent.$("#editUser-iframe").iziModal("close");
 //-->
 </script>
 
@@ -202,6 +203,7 @@ parent.$.fn.fancybox.close();
 
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
 <script type="text/javascript" src="../../library/dialog.js"></script>
+    <?php call_required_libraries(array("jquery-min-3-1-1","font-awesome", "iziModalToast")); ?>
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 
@@ -228,14 +230,25 @@ function submitform() {
         return sString;
     }
     if(trimAll(document.getElementById('fname').value) == ""){
-        alert("<?php xl('Required field missing: Please enter the First name','e');?>");
+        alertMsg = '<?php xl('Required field missing: Please enter the '.'<b>'.'First name'.'</b>.','e');?>';
+        iziToast.warning({
+            title: 'Warning -',
+            message: alertMsg,
+            position: 'bottomRight',
+            icon: 'fa fa-exclamation-triangle'
+        });
         document.getElementById('fname').style.backgroundColor="red";
         document.getElementById('fname').focus();
         return false;
     }
     if(trimAll(document.getElementById('lname').value) == ""){
-        alert("<?php xl('Required field missing: Please enter the Last name','e');?>");
-        document.getElementById('lname').style.backgroundColor="red";
+        alertMsg = '<?php xl('Required field missing: Please enter the '.'<b>'.'Last name'.'</b>.','e');?>';
+        iziToast.warning({
+            title: 'Warning -',
+            message: alertMsg,
+            position: 'bottomRight',
+            icon: 'fa fa-exclamation-triangle'
+        });        document.getElementById('lname').style.backgroundColor="red";
         document.getElementById('lname').focus();
         return false;
     }
@@ -312,7 +325,7 @@ function submitform() {
     <?php } ?>
     if(flag == 0){
                     document.forms[0].submit();
-                    parent.$.fn.fancybox.close(); 
+                    parent.$.fn.fancybox.close();
     }
 }
 //Getting the list of selected item in ACL
@@ -617,7 +630,7 @@ Display red alert if entered password matched one of last three passwords/Displa
 <script language="JavaScript">
 $(document).ready(function(){
     $("#cancel").click(function() {
-          parent.$.fn.fancybox.close();
+          parent.$("#editUser-iframe").iziModal('close');
      });
 
 });

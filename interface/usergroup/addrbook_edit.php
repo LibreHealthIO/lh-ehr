@@ -63,8 +63,8 @@
 <title><?php echo $userid ? xlt('Edit') : xlt('Add New') ?> <?php echo xlt('Person'); ?></title>
 <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="../../library/js/input_validate.js"></script>
+    <?php  call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","iziModalToast")); ?>
+    <script type="text/javascript" src="../../library/js/input_validate.js"></script>
 
 <style>
 td { font-size:10pt; }
@@ -122,6 +122,10 @@ td { font-size:10pt; }
    document.getElementById("nameRow").style.display = "";
    document.getElementById("specialtyRow").style.display = "";
   }
+ }
+
+ function close_izi(){
+     parent.$("#addressBk-iframe").iziModal('close');
  }
 </script>
 
@@ -267,9 +271,10 @@ td { font-size:10pt; }
 
  if ($_POST['form_save'] || $_POST['form_delete']) {
   // Close this window and redisplay the updated list.
-  echo "<script language='JavaScript'>\n";
+call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","iziModalToast"));
+echo "<script language='JavaScript'>\n";
   if ($info_msg) echo " alert('".addslashes($info_msg)."');\n";
-  echo " window.close();\n";
+  echo " parent.$('#addressBk-iframe').iziModal('close');\n";
   echo " if (opener.refreshme) opener.refreshme();\n";
   echo "</script></body></html>\n";
   exit();
@@ -534,7 +539,7 @@ td { font-size:10pt; }
 <?php } ?>
 
 &nbsp;
-<input type='button' class='cp-negative' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
+<input type='button' class='cp-negative' value='<?php echo xla('Cancel'); ?>' onclick='close_izi()' />
 </p>
 
 </center>
