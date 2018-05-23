@@ -27,7 +27,7 @@
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
 
-require_once("../interface/globals.php");
+require_once("../../interface/globals.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/headers.inc.php");
