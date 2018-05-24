@@ -2048,7 +2048,7 @@ function SubmitForm() {
 
 $('#reasons_modal').iziModal({
                title: "<?php echo xlt('Reason for Cancellation'); ?>",
-               subtitle: "<?php echo xlt('Choose the reason for Cancellation.if the reason is not listed then please use other'); ?>",
+               subtitle: "<?php echo xlt('Choose the reason for Cancellation. If none are applicable, chose Other'); ?>",
                headerColor: '#eee',
                closeOnEscape: true,
                fullscreen:true,
