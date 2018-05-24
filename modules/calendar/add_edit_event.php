@@ -1487,12 +1487,7 @@ $classpati='';
       </td>
       </select>
     <?php if($_GET['prov']==true){ ?>
-    <td nowrap id='tdallday4'><?php //echo xlt('durationtrtr'); ?>
-  </td>
-  <td nowrap id='tdallday5'>
-   <input type='hidden' size='4' name='form_duration' value='<?php //echo attr($thisduration) ?>' title='<?php //echo xla('Event duration in minutes'); ?>' />
-    <?php //echo xlt('minutes'); ?>
-  </td>
+   <input type='hidden' size='4' name='form_duration' value='' title='' />
      <?php } ?>
     </tr>
     <tr>
