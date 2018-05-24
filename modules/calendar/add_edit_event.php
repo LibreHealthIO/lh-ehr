@@ -68,6 +68,10 @@ if ($date) {
 if (isset($_GET['starttimem'])) {
   $starttimem = substr('00' . $_GET['starttimem'], -2);
 }
+ $endtimem = '00';
+if (isset($_GET['endtimem'])) {
+  $endtimem = substr('00' . $_GET['endtimem'], -2);
+}
  //
  if (isset($_GET['starttimeh'])) {
   $starttimeh = $_GET['starttimeh'];
@@ -79,7 +83,18 @@ if (isset($_GET['starttimem'])) {
  } else {
   $starttimeh = date("G");
  }
+  if (isset($_GET['endtimeh'])) {
+  $endtimeh = $_GET['endtimeh'];
+  if (isset($_GET['endampm'])) {
+        if ($_GET['endampm'] == '2' && $endtimeh < 12) {
+    $endtimeh += 12;
+  }
+    }
+ } else {
+  $endtimeh = date("G");
+ }
  $startampm = '';
+ $endampm = '';
 
  $info_msg = "";
 
@@ -284,6 +299,16 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         $tmpm -= 60;
         ++$tmph;
     }
+
+
+    if($_POST['form_hour_end'] > '00') {
+       $tmph = $_POST['form_hour_end'] + 0;
+       $tmpm = $_POST['form_minute_end'] + 0;
+       if ($_POST['form_ampm_end'] == '2' && $tmph < 12){
+           $tmph += 12;
+       }
+       $endtime = "$tmph:$tmpm:00";
+    }else{
     $endtime = "$tmph:$tmpm:00";
 
     // Set up working variables related to repeated events.
@@ -866,6 +891,8 @@ if ($_POST['form_action'] == "save") {
   $patientid = $row['pc_pid'];
   $starttimeh = substr($row['pc_startTime'], 0, 2) + 0;
   $starttimem = substr($row['pc_startTime'], 3, 2);
+  $endtimeh = substr($row['pc_endTime'], 0, 2) + 0;
+  $endtimem = substr($row['pc_endTime'], 3, 2);
   $repeats = $row['pc_recurrtype'];
   $multiple_value = $row['pc_multiple'];
 
@@ -941,12 +968,21 @@ if ($_POST['form_action'] == "save") {
 
  // Fix up the time format for AM/PM.
  $startampm = '1';
+ $endampm = '1';
  if ($starttimeh >= 12) { // p.m. starts at noon and not 12:01
   $startampm = '2';
       if ( $GLOBALS['time_display_format'] == 1) {
   if ($starttimeh > 12) $starttimeh -= 12;
     } else {
        if ($starttimeh > 24) $starttimeh -= 12;
+    }
+ }
+  if ($endtimeh >= 12) { // p.m. starts at noon and not 12:01
+  $endampm = '2';
+      if ( $GLOBALS['time_display_format'] == 1) {
+  if ($endtimeh > 12) $endtimeh -= 12;
+    } else {
+       if ($endtimeh > 24) $endtimeh -= 12;
     }
  }
 
@@ -1303,8 +1339,11 @@ $classpati='';
     $eid=$_REQUEST["eid"];
     $startm=$_REQUEST["startampm"];
     $starth=$_REQUEST["starttimeh"];
+    $endm=$_REQUEST["endampm"];
+    $endh=$_REQUEST["endtimeh"];
     $uid=$_REQUEST["userid"];
     $starttm=$_REQUEST["starttimem"];
+    $endtm=$_REQUEST["endtimem"];
     $dt=$_REQUEST["date"];
     $cid=$_REQUEST["catid"];
 ?>
@@ -1383,12 +1422,31 @@ $classpati='';
   <td nowrap>&nbsp;
 
   </td>
+     <?php if($_GET['prov']==true){ ?>
+    <td width='1%' nowrap id='tdallday2'>
+   <?php echo xlt('End Time'); ?>
+  </td>
+  <td width='1%' nowrap id='tdallday3'>
+   <span>
+    <input type='text' size='2' name='form_hour_end' value='<?php echo attr($endtimeh) ?>'
+     title='<?php echo xla('Event end time'); ?>' /> :
+    <input type='text' size='2' name='form_minute_end' value='<?php echo attr($endtimem) ?>'
+     title='<?php echo xla('Event end time'); ?>' />&nbsp;
+   </span>
+   <select name='form_ampm_end' title='<?php echo xla("Note: 12:00 noon is PM, not AM"); ?>'>
+    <option value='1'><?php echo xlt('AM'); ?></option>
+    <option value='2'<?php if ($endampm == '2') echo " selected" ?>><?php echo xlt('PM'); ?></option>
+   </select>
+  </td>
+     <?php } else { ?>
   <td nowrap id='tdallday4'><?php echo xlt('duration'); ?>
   </td>
   <td nowrap id='tdallday5'>
    <input type='text' size='4' name='form_duration' value='<?php echo attr($thisduration) ?>' title='<?php echo xla('Event duration in minutes'); ?>' />
     <?php echo xlt('minutes'); ?>
   </td>
+     <?php }?>
+
  </tr>
 
     <tr>
@@ -1428,6 +1486,14 @@ $classpati='';
       //END (CHEMED) IF ?>
       </td>
       </select>
+    <?php if($_GET['prov']==true){ ?>
+    <td nowrap id='tdallday4'><?php //echo xlt('durationtrtr'); ?>
+  </td>
+  <td nowrap id='tdallday5'>
+   <input type='hidden' size='4' name='form_duration' value='<?php //echo attr($thisduration) ?>' title='<?php //echo xla('Event duration in minutes'); ?>' />
+    <?php //echo xlt('minutes'); ?>
+  </td>
+     <?php } ?>
     </tr>
     <tr>
         <td nowrap>
