@@ -750,7 +750,7 @@ if ($_POST['form_action'] == "save") {
         }
 
         #pass status Deleted to patient_tracker_element when deleting appointment by clicking delete
-        if (!empty($_GET['eid'])) {
+        if (!empty($_GET['eid']) && $_POST['form_pid'] != 0) {
             $tmph = $_POST['form_hour'] + 0;
             $tmpm = $_POST['form_minute'] + 0;
             if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
@@ -1775,7 +1775,7 @@ $(function() {
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
-    $("#form_save").click(function() { 
+    $("#form_save").click(function() {
         var reason = $("input[name='form_reason_for_cancellation']:checked").val();
         if (reason) {
             $('#form_reason_to_cancel').val(reason);
@@ -1922,7 +1922,7 @@ $('#reasons_modal').iziModal({
            });
 
 $("#form_apptstatus").change(function() {
-    
+
     var selected_text = $("#form_apptstatus option:selected").text();
     if (selected_text == "x Canceled") {
         $("#reasons_modal").iziModal('open');
@@ -1930,7 +1930,7 @@ $("#form_apptstatus").change(function() {
 })
 
 $('#close_reason_modal').click(function () {
-   $("#reasons_modal").iziModal('close'); 
+   $("#reasons_modal").iziModal('close');
 });
 
 $('#reason_others').click(function () {
