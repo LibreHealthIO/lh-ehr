@@ -297,7 +297,7 @@ $GLOBALS_METADATA = array(
        '10',
       xl('Number of patients to display per page in the patient list.')
     ),
-    
+
 
     'gbl_vitals_options' => array(
       xl('Vitals Form Options'),
@@ -655,6 +655,7 @@ $GLOBALS_METADATA = array(
         '1' => xl('Print End of Day Report 1'),
         '2' => xl('Print End of Day Report 2'),
         '3' => xl('Print End of Day Report 3'),
+        '4' => xl('Print End of Day Report 4'),
       ),                                // data type
        '1',                             // default = Print End of Day Report 1
       xl('This will allow the use of the custom End of Day report and indicate which report to use.')
@@ -3202,7 +3203,7 @@ $GLOBALS_METADATA = array(
     ),
 
     'pqrs_entityType' => array(
-      xl('Reporting Entity Type'),	// for XML generation
+      xl('Reporting Entity Type'),  // for XML generation
             array(
         'individual' => 'Per Provider NPI',
         'group' => 'For whole Tax ID'
