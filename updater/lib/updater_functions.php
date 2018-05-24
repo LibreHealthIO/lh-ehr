@@ -48,4 +48,37 @@ function getUpdaterSetting($settingName){
 
 }
 
+
+function internet_bool()
+{
+    $connected = @fsockopen("www.github.com", 80); 
+                                        
+    if ($connected){
+        $is_conn = true; 
+        fclose($connected);
+    }else{
+        $is_conn = false; 
+    }
+    return $is_conn;
+
+}
+
+function curl_bool() {
+    if  (in_array  ('curl', get_loaded_extensions())) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function file_permissions_bool($directory){
+	if (is_writable($directory)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+}
 ?>

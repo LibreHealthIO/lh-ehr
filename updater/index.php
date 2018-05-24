@@ -73,7 +73,12 @@ if (isset($_POST['from_updater_general_settings'])) {
 
 	}
 }
-
+echo "<div id='tabs-1'>";
+echo '<ul>
+            <li><a href = "#updater-mode" id="updater-mode-handler">Updater</a></li>
+            <li><a href = "#accordion-1">Settings</a></li>
+            <li><a href = "#developer-mode">Developer Mode</a></li>
+         </ul>';
 //every section is displayed as accordion for ui friendly approach
 echo "<div id='accordion-1'>";
 
@@ -90,7 +95,7 @@ while ($r = sqlFetchArray($query)) {
 		$setting_value = xlt("Not Set");
 	}
 	if ($setting_value == "0") {
-		$settingValue = "off";
+		$setting_value = "off";
 		$setting_checkbox_name = $setting_name."_checked";
 		$loader->assign($setting_checkbox_name, " ");
 	}
@@ -161,7 +166,8 @@ if($_SESSION['authUser'] == "admin" && !(isset($_GET['id']) && isset($_GET['mode
 else {
 	//dont show addition form for other users
 }
-
+echo "<iframe  src='updater.php' id='updater-mode' frameBorder='0' style='height: 100%; width:100%;'>
+</iframe>";
 //Modes and Actions
 //add => adds a user to manage updater
 //remove => removes a user by authUserId
@@ -193,6 +199,9 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
 ?>
 
 <script>
+   $(function() {
+       $( "#tabs-1" ).tabs();
+    });
    $(function() {
        $( "#accordion-1" ).accordion({
        	collapsible: true,

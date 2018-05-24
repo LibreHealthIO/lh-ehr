@@ -57,4 +57,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-
+.ui-widget-header {
+background: #F69600;
+border: 1px solid #b9cd6d;
+color: #FFFFFF;
+font-weight: bold;
+}

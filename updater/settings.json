@@ -1,0 +1,5 @@
+{
+//This holds all the settings for updater to operate Unless instructed dont alter this file
+//HOST - refers to site which the repository is placed
+"host":"github"
+}
