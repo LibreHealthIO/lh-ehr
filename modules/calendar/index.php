@@ -261,8 +261,9 @@ require('includes/session.php');
               },
         eventRender: function(event, element, view) {
           //converting event title text to hyperlink
-          if (event['pc_pid'].length > 0) {
+          if (event['pc_pid'] > 0) {
             //only when event is a patient event
+            //event['pc_pid'] is number string for patient events, empty "" for provider events
             var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
             var titleLink = "<a href='#'>" + event['title'] + "</a>";
             //find all event title div elements
@@ -271,7 +272,7 @@ require('includes/session.php');
             patientEventTitle.empty().append(titleLink);
             patientEventTitle.on("click", function(e) {
               //to stop eventClick handler from executing
-              //upon clicking title link
+              //upon clicking text link
               e.stopImmediatePropagation();
               //open demographics in a new tab
               top.restoreSession();
