@@ -27,35 +27,28 @@
 	// Warning message created here and echoed on its place. The single ' is shown as ` don't know why. This must be fixed.
 	$reportDeleteWarning = xlt("This will irreversibly delete all existing reports!");
 ?>
+
 <html>
-	<span class='title' visibility: hidden><?php echo htmlspecialchars( xl('Delete all QA Reports'), ENT_NOQUOTES); ?></span>
-	<b style="color: red"><?php echo $reportDeleteWarning; ?></b>
-	<BR>
-	<?php if (acl_check('admin', 'practice' )) { ?>
+<span class='title' visibility: hidden><?php echo htmlspecialchars( xl('Delete all QA Reports'), ENT_NOQUOTES); ?></span>
+<b>This will delete all old reports!</b>
+<BR>
+<?php if (acl_check('admin', 'practice' )) { ?>
 
-	<?php
-		// Confirmation message
-		$confirmationMessage = xlt("Do you really want to delete all old reports? This action is irreversible!");
+<input type="submit" name="formSubmit" value="Submit" />
+<form action="truncate_reports.php" method="post">	
+<?php
+if($_POST['formSubmit'] == "Submit") 
+{
+sqlStatement("TRUNCATE TABLE `report_results`;");
+sqlStatement("TRUNCATE TABLE `report_itemized`;");
+echo "Table 'reports_results' and 'report_itemized' truncated.   Old reports deleted.";
+}
+//This whole feature needs to be moved to a integrated admin form, and naturally use css buttons and translations.
+else {echo "You do not have access to this feature.";}
+?>
 
-		// onSubmit form property created here and echoed on its place
-		$formOnSubmit = "onsubmit=\"return confirm('".$confirmationMessage."');\"";
-	?>
 
-	<form action="truncate_reports.php" method="post" <?php echo $formOnSubmit; ?>>
-		<br>
-		<input type="submit" name="formSubmit" value="Submit" class="cp-submit" />
-		<?php
-			if($_POST['formSubmit'] == "Submit") {
-				sqlStatement("TRUNCATE TABLE `report_results`;");
-				sqlStatement("TRUNCATE TABLE `report_itemized`;");
-				$successfulMessage = xlt("Old reports deleted successfully.");
-				$accessDeniedMessage = xlt("You do not have access to this feature.");
-
-				echo "<script>alert('".$successfulMessage."');</script>";
-
-				// I JUST REALIZED THAT IF I REMOVE ONE OF THE TWO BRACKETS BELOW (}}) THE CODE DOESNT WORK!
-				// It must be some kind of PHP error or cache, i don't really know.
-			}} else {
+			} else {
 				echo "<script>alert('".$accessDeniedMessage."');</script>";
 			}
 

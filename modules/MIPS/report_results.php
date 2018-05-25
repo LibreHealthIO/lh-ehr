@@ -38,8 +38,9 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
 //
 
-require_once 'mips_headers.inc.php';
-require_once '../../library/headers.inc.php';
+require_once ('mips_headers.inc.php');
+require_once ('clinical_rules.php');
+
 /** Current format of date  */
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -135,12 +136,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
         <tr>
             <td>
                 <div style='margin-left:15px'>
-                    <a id='search_button' href='#' class='css_button cp-submit' onclick='top.restoreSession(); $("#theform").submit()'>
+                    <a id='search_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
                     <span>
                         <?php echo htmlspecialchars( xl('Search'), ENT_NOQUOTES); ?>
                     </span>
                     </a>
-                                        <a id='refresh_button' href='#' class='css_button cp-misc' onclick='top.restoreSession(); $("#theform").submit()'>
+                                        <a id='refresh_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
                                         <span>
                                                 <?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
                                         </span>
@@ -191,7 +192,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   // Figure out the title and link
   if ($row['type'] == "pqrs_individual_2016") {
     if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2016 PQRS Individual Measures');
+    $type_title = xl('2018 MIPS Measures');
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
   else if ($row['type'] == "pqrs_groups_2016") {
@@ -201,7 +202,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
   }
   else if ($row['type'] == "pqrs_individual_2017" ) {
     if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2017 MIPS Measures');
+    $type_title = xl('2018 MIPS Measures');
 
     $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
   }
@@ -243,12 +244,12 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 ?>
  <tr>
       <td>
-         <a id='delete_button' href='#' class='css_button_small cp-negative'
+         <a id='delete_button' href='#' class='css_button_small'
            onclick='deleteReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
          <span>Delete</span></a>
       </td>
       <td>
-         <a id='rename_button' href='#' class='css_button_small cp-positive'
+         <a id='rename_button' href='#' class='css_button_small'
            onclick='renameReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
          <span>Rename</span></a>
       </td>
@@ -296,7 +297,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 function manageReport(report_id,action,newname){
         $.ajax({
                 type: 'POST',
-                url: '<?php echo $GLOBALS['webroot']; ?>/library/classes/rulesets/PQRS/PQRSReportManager.php',
+                url: '<?php echo $GLOBALS['webroot']; ?>/MIPS/rulesets/PQRS/PQRSReportManager.php',
                 dataType: 'text',
                 data: {
                         action: action,

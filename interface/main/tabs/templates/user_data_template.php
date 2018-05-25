@@ -17,15 +17,26 @@
         <p class="clearfix"></p>
         <p class="clearfix"></p>
         <ul class="list-unstyled" id="userData">
-            <a> <span data-bind="click: logout"><b><?php echo xlt("Logout");?></b></span></a>
+
             <li class="dropdown" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <span data-bind="text:fname"></span>&nbsp;<span data-bind="text:lname"></span>
-                </a>
-                <ul class="dropdown-menu">
+                <?php $userQuery = sqlQuery("select picture_url from users where username='".$_SESSION{"authUser"}."'"); ?> 
+                <h4>
+                <?php
+                  if ($userQuery['picture_url']) {
+                    $picture_url = $userQuery['picture_url'];
+                    echo "<img src='../../../profile_pictures/$picture_url' height='64px' width='64px' style='border-radius: 40px;'></a>";
+                  }
+                  else {
+                    echo '<span data-bind="text:fname"></span>&nbsp;<span data-bind="text:lname"></span></h4>
+                        </a>';
+                  }
+                  ?>
+
+                <ul class="dropdown-menu" style="cursor: pointer;">
                     <li data-bind="click: userPrefs"><?php echo xlt("User Preferences");?></li>
                     <li data-bind="click: changePassword"><?php echo xlt("Change Pass Phrase");?></li>
-                    <!--<li data-bind="click: logout"><?php //echo xlt("Logout");?></li>-->
+                    <li data-bind="click: logout"><?php echo xlt("Logout");?></li>
                 </ul>
             </li>
         </ul>
