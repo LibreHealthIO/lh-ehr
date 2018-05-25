@@ -264,7 +264,8 @@ require('includes/session.php');
           if (event['pc_pid'] > 0) {
             //only when event is a patient event
             //event['pc_pid'] is number string for patient events, empty "" for provider events
-            var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
+            //var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
+            let link = '<?php echo $GLOBALS['webroot'] . "/interface/patient_file/summary/demographics.php?set_pid="; ?>' + event['pc_pid'];
             var titleLink = "<a href='#'>" + event['title'] + "</a>";
             //find all event title div elements
             var patientEventTitle = element.find('.fc-title');
