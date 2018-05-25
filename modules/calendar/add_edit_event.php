@@ -48,8 +48,9 @@ $library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  //Check access control
- if (!acl_check('patients','appt','',array('write','wsome') ))
+if (!acl_check('patients', 'appt', '', array('write' , 'wsome'))) {
    die(xl('Access not allowed'));
+}
 
 /* Things that might be passed by our opener. */
  $eid           = $_GET['eid'];         // only for existing events
@@ -1487,6 +1488,8 @@ $classpati='';
       </td>
       </select>
     <?php if($_GET['prov']==true){ ?>
+    <td nowrap id='tdallday4'><td>
+    <td nowrap id='tdallday5'><td>
    <input type='hidden' size='4' name='form_duration' value='' title='' />
      <?php } ?>
     </tr>
