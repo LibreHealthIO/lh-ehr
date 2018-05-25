@@ -151,6 +151,13 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'cms_top_margin_default',
                                'cms_left_margin_default');
 
+
+
+// List of LIMS softwares available
+$lims_list =  array_map(function($directory) {
+  return substr($directory, 19); // remove the "../../modules/lims" from the string
+},array_filter(glob('../../modules/lims/*'), 'is_dir'));
+
 $GLOBALS_METADATA = array(
 
   // Appearance Tab
@@ -3235,7 +3242,45 @@ $GLOBALS_METADATA = array(
     ),
   ),
 
+    'LIMS' => array( 
+
+      'lims_enabled' => array(
+        xl('LIMS Enabled/Disabled'),
+        'bool',
+        '0',
+        xl('Enable the laboratory information management system')
+      ),
+      'lims_application' => array(
+        xl('LIMS Software to use'),
+        [ 'SENAITE LIMS' => 'senaite' ], // temporary, figuring out how to create an associative array while auto-detecting directories
+        xl('Choose the LIMS software to use')
+      ),
+      'lims_url' => array(
+        xl('LIMS API Address'),
+        'text',
+        'http://localhost:8080',
+        xl('Address where the LIMS backend API is available')
+      ),
+      'lims_username' => array(
+        xl('LIMS Authentication Username'),
+        'text',
+        '',
+        xl('Username provided by the LIMS for login/API purposes')
+      ),
+      'lims_password' => array(
+        xl('LIMS Authentication Password'),
+        'text',
+        '',
+        xl('Password provided by the LIMS for login/API purposes')
+      ),
+
+
+
+
+  ),
+
 );
+
 
 if ( function_exists( 'do_action' ) ) {
     do_action( 'globals_init', $args = [
