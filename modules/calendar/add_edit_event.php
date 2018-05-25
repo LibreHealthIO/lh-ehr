@@ -1868,7 +1868,11 @@ echo "<input type='radio' value='Other' name='form_reason_for_cancellation' id='
 <?php } ?>
 
 &nbsp;
+ <?php
+ if($_GET['prov']==true){
+ ?>
 <input type='button' class="cp-negative" name='form_delete' id='form_delete' value='<?php echo xla('Delete');?>'<?php if (!$eid) echo " disabled" ?> />
+<?php } ?>
 &nbsp;
 <input type='button' class="cp-negative" id='cancel' value='<?php echo xla('Cancel');?>' />
 &nbsp;
