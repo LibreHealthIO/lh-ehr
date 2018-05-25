@@ -10,7 +10,7 @@
     $notification = $unreadMessages;
 ?>
 
-<link rel="stylesheet" type="text/css" href=".../../css/userData.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/userdata.css"/>
 <script type="text/html" id="user-data-template">
     <!-- ko with: user -->
     <nav class="nav navbar-nav navbar-right" style="margin-right: 10px !important;">
