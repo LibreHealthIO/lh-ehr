@@ -1,3 +1,39 @@
+<div class="loader"></div>
+<Style>
+input[type="submit"]:disabled {
+	opacity: 0.5;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #f69e00;
+  border-bottom: 16px solid #f69e00;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+    width:100px;
+    height: 100px;
+    position: fixed;
+    top: 30%;
+    left: 45%;
+
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(300deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+body {
+	text-transform: capitalize;
+}
+</Style>
 <?php 
 /**
  * Contains all updater functions
@@ -30,10 +66,8 @@ $settings_array = json_decode($settings_json, true);
 $updater_host = $settings_array['host'];
 
 //LOADING API FUNCTIONS ACCORDING TO THE HOST VALUE
-if ($updater_host == "github") {
 	require 'lib/api.github.php';
-	//EXTEND CASES ONCE WE FINISH UPDATER FOR GITHUB API
-}
+
 
 if (getUpdaterSetting("updater_requirements") == "empty_setting") {
 	//show screen one
@@ -76,48 +110,30 @@ if (getUpdaterSetting("updater_requirements") == "empty_setting") {
 elseif (getUpdaterSetting("updater_token") == "empty_setting") {
 	//show screen two
 	$loader->set_template_file("updater_screen_two");
-	$loader->assign("a","a");
+	$loader->assign("HOST",$updater_host);
 	$loader->output();
 }
 
+else {
+	$updater_token  = getUpdaterSetting("updater_token");
+	$owner_arr = getOwnerInfo($updater_token);
+	if (isset($owner_arr['message']) OR count($owner_arr) == 0){
+		//it means the token is expired, so ask for re-entry
+		$loader->set_template_file("updater_screen_three");
+		$loader->assign("HOST",$updater_host);
+		$loader->output();
+	}
+	elseif (isset($owner_arr['login'])) {
+		$avatar_url = $owner_arr['avatar_url'];
+		$user_name = $owner_arr['login'];
+		//token is valid, so show the user profile
+		$loader->set_template_file("updater_screen_four");
+		$loader->assign("AVATAR_URL", $avatar_url);
+		$loader->assign("USER_NAME", $user_name);
+		$loader->output();
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 //HANDLE ALL THE POST REQUESTS MADE VIA THE $_POST
 if (isset($_POST)) {
 	
@@ -144,7 +160,22 @@ if (isset($_POST)) {
 	if (isset($_POST['updater_token'])) {
 		if (!empty($_POST['updater_token'])) {
 			$updater_token = $_POST['updater_token'];
+			$owner_arr = getOwnerInfo($updater_token);
+			if (isset($owner_arr['message']) OR count($owner_arr) == 0){
+				//it means the token is not valid
+				$toast_type = "danger";
+				$toast_title = "Token Not Valid";
+				$toast_message = "The Token you entered seems to be invalid"; 
 
+			}
+			elseif (isset($owner_arr['login'])) {
+				$toast_type = "success";
+				$toast_title = "Token Added";
+				$toast_message = "The Token is valid and added to the updater"; 
+				setUpdaterSetting("updater_token", $updater_token);
+			}
+
+			header("location: updater.php?toast_type=$toast_type&toast_title=$toast_title&toast_message=$toast_message");
 		}
 	}
 
@@ -152,9 +183,21 @@ if (isset($_POST)) {
 }
 ?>
 
-<Style>
+<?php
+//MODULE TO SHOW WHICH ACCORDION TO BE OPENED AFTER A FORM SAVE AND ALSO SHOW TOAST
+	if (isset($_GET['toast_type']) && isset($_GET['toast_message']) && isset($_GET['toast_title'])) {
+		if (!empty($_GET['toast_title']) && !empty($_GET['toast_type']) && !empty($_GET['toast_message'])) {
+			$title = $_GET['toast_title'];
+			$type = $_GET['toast_type'];
+			$message = $_GET['toast_message'];
+			echo "<div class='col-xs-12'><br/></div><div class='alert alert-$type col-xs-12 text-left'><h4>$title</h4><p>$message</p></div>";
+		}
+	}
+?>	
 
-input[type="submit"]:disabled {
-	opacity: 0.5;
-}
-</Style>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+     $('.loader').fadeOut();
+});
+</script>
