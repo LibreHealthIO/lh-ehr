@@ -571,6 +571,7 @@ if ($_POST['form_action'] == "save") {
                         "pc_apptstatus = '" . add_escape_custom($_POST['form_apptstatus']) . "', "  .
                         "pc_prefcatid = '" . add_escape_custom($_POST['form_prefcat']) . "' ,"  .
                         "pc_facility = '" . add_escape_custom((int)$_POST['facility']) ."' ,"  . // FF stuff
+                        "cancel_reason = '" . add_escape_custom($_POST['form_reason_to_cancel']) ."' ,"  .
                         "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  .
                         "WHERE pc_aid = '" . add_escape_custom($provider) . "' AND pc_multiple = '" . add_escape_custom($row['pc_multiple'])  . "'");
                 } // foreach
@@ -669,6 +670,7 @@ if ($_POST['form_action'] == "save") {
                     "pc_apptstatus = '" . add_escape_custom($_POST['form_apptstatus']) . "', "  .
                     "pc_prefcatid = '" . add_escape_custom($_POST['form_prefcat']) . "' ,"  .
                     "pc_facility = '" . add_escape_custom((int)$_POST['facility']) ."' ,"  . // FF stuff
+                    "cancel_reason = '" . add_escape_custom($_POST['form_reason_to_cancel']) ."' ,"  .
                     "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  .
                     "WHERE pc_eid = '" . add_escape_custom($eid) . "'");
 
@@ -856,7 +858,7 @@ if ($_POST['form_action'] == "save") {
  $repeattype = '0';
  $repeatfreq = '0';
  $patientid = '';
-
+ $cancelreason = '';
  // fix for new calendar
  if (isset($_SESSION['pid']) && $_SESSION['pid'] > 0) $patientid = $_SESSION['pid'];
 
@@ -881,7 +883,7 @@ if ($_POST['form_action'] == "save") {
     "LEFT OUTER JOIN users AS u ON u.id = e.pc_informant " .
     "WHERE pc_eid = ?", array($eid) );
   $informant = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'];
-
+  $cancelreason = $row['cancel_reason'];
   // instead of using the event's starting date, keep what has been provided
   // via the GET array, see the top of this file
   if (empty($_GET['date'])) {
@@ -1763,6 +1765,11 @@ if  ($GLOBALS['select_multi_providers']) {
 
 <?php
 generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'SKIP'), $row['pc_apptstatus']);
+if(($_GET['prov']!=true) ){
+    if(strlen($cancelreason)> '4'){
+     echo xlt(' Reason: ') . $cancelreason;
+    }
+}
 ?>
    <!--
     The following list will be invisible unless this is an In Office
