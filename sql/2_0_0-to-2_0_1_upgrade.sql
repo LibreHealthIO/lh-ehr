@@ -138,3 +138,12 @@ ALTER TABLE `patient_tracker_element` ADD `reason` VARCHAR(255) NOT NULL AFTER `
 #IfMissingColumn users picture_url
 ALTER TABLE `users` ADD `picture_url` VARCHAR(2000) NOT NULL AFTER `suffix`;
 #EndIf
+
+#IfNotRow2D list_options list_id apptstat option_id Deleted
+INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
+ ('apptstat', 'Deleted', 'Deleted', 85, 0, 0, '', '0F0F0F|0', '', 0, 0, 1, '');
+#Endif
+
+#IfMissingColumn libreehr_postcalendar_events cancel_reason
+  ALTER TABLE `libreehr_postcalendar_events` ADD `cancel_reason` text NOT NULL ;
+#EndIf
