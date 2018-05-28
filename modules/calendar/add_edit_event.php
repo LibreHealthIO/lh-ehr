@@ -249,21 +249,6 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
         $duration = abs($_POST['form_duration']); // fixes #395
     }
-    //check for selected appointment time
-    if ($GLOBALS['check_appt_time'] == 1) {
-      //before starttime gets the values from form_hour & form_minute after clicking save,
-      //check if they (tmph & tmpm) are within clinic hours
-      $user_ampm = $_POST['form_ampm'];
-        $user_selected_time = $tmph + ($tmpm/60);
-      //checked for AM/PM because globals: schedule start and end times are in 24 hour format
-      if ($user_selected_time < $GLOBALS['schedule_start'] || $user_selected_time > $GLOBALS['schedule_end']) {
-        $alert_user_mssg = '<script type="text/javascript">alert("Please select time between clinic hours.");</script>';
-        $close_events_window = '<script type="text/javascript">window.close();</script>';
-        echo $alert_user_mssg;
-        echo $close_events_window;
-        exit();
-      }
-    }
 
     $tmph = sprintf( "%02d", $tmph );
     $tmpm = sprintf( "%02d", $tmpm );
@@ -1821,18 +1806,44 @@ function are_days_checked(){
 
 // Check for errors when the form is submitted.
 function validate(valu) {
-     var f = document.getElementById('theform');
+    var f = document.getElementById('theform');
     if ((f.form_repeat.checked || f.days_every_week.checked) &&
         (! f.form_enddate.value || f.form_enddate.value < f.form_date.value)) {
         alert('<?php echo addslashes(xl("An end date later than the start date is required for repeated events!")); ?>');
         return false;
     }
+
     //Make sure if days_every_week is checked that at least one weekday is checked.
     if(f.days_every_week.checked && !are_days_checked()){
         alert('<?php echo xls("Must choose at least one day!"); ?>');
         return false;
     }
 
+    //check if user selected appt. time is within clinic hours
+    var checkApptTime = '<?php echo($GLOBALS['check_appt_time']) ?>';
+    if (f.form_allday.value < 1 && checkApptTime == 1) {
+        //only when Time radio button is selected (value is "0", otherwise "1")
+        //and global is checked (= "1")
+        var userAMPM = f.form_ampm.value; //"1" for AM, "2" for PM
+        var userHour = parseInt(f.form_hour.value);
+        var userMinute = parseInt(f.form_minute.value);
+        if (userAMPM == "1") {
+            //AM, 00:00 midnight to 11:59 noon
+            var userTime = userHour + (userMinute/60);
+        } else {
+            //PM, 12:00 noon to 23:59 midnight
+            var userTime = 12 + userHour + (userMinute/60);
+        }
+
+        //checked for AM/PM because globals: schedule start and end times are in 24 hour format
+        //while user (selected) time is in 12 hour format
+        var clinicStartTime = parseInt('<?php echo($GLOBALS['schedule_start']) ?>');
+        var clinicEndTime = parseInt('<?php echo($GLOBALS['schedule_end']) ?>');
+        if (userTime < clinicStartTime || userTime > clinicEndTime) {
+            alert('<?php echo addslashes(xl("Please select time between clinic hours.")); ?>');
+            return false;
+        }
+    }
 
     <?php
     if($_GET['prov']!=true){
