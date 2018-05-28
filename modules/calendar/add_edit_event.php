@@ -1849,21 +1849,28 @@ function validate(valu) {
     //and alert user to make sure to delete patient appt.
     var status_selected = $("#form_apptstatus option:selected").text();
     if (status_selected == "Deleted") {
-        if (confirm("<?php echo addslashes(xl('Deleting this event cannot be undone. It cannot be recovered once it is gone. Are you sure you wish to delete this event?')); ?>")) {
-            //if selected "OK" on alert
-            $('#form_action').val(valu);
-            <?php if ($repeats): ?>
-                // existing repeating events need additional prompt
-                if ($("#recurr_affect").val() == "") {
-                    DisableForm();
-                    // show the current/future/all DIV for the user to choose one
-                    $("#recurr_popup").css("visibility", "visible");
-                    return false;
-                }
-            <?php endif; ?>
-            return SubmitForm();
+        //check if user is creating an appt. with status "Deleted"
+        var eventId = '<?php echo $_GET['eid']; ?>'; //numeric for existing events
+        if (eventId > 0) {
+            if (confirm("<?php echo addslashes(xl('Deleting this event cannot be undone. It cannot be recovered once it is gone. Are you sure you wish to delete this event?')); ?>")) {
+                //if selected "OK" on alert
+                $('#form_action').val(valu);
+                <?php if ($repeats): ?>
+                    // existing repeating events need additional prompt
+                    if ($("#recurr_affect").val() == "") {
+                        DisableForm();
+                        // show the current/future/all DIV for the user to choose one
+                        $("#recurr_popup").css("visibility", "visible");
+                        return false;
+                    }
+                <?php endif; ?>
+                return SubmitForm();
+            }
+            //if selected "Cancel" on alert
+            return false;
         }
-        //if selected "Cancel" on alert
+        //alert user if creating appt. with status "Delete";
+        alert('<?php echo addslashes(xl("Cannot create an Appointment with status Deleted")); ?>');
         return false;
     } else {
         //if selected appt. status isn't "Deleted", no need to alert
