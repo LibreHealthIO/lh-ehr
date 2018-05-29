@@ -185,7 +185,7 @@ function showHint(str) {
           <div id="authused">
           <?php if ($archived == '1') { $used = $obj{"used"}; } ?>
           <span class="text"><?php echo xlt('Number Used'); ?>: </span>
-          <input class="form-control" style="display: inline-block; width: 65px" type=entry size="5" name="used" value="<?php echo $used;?>" title="Read Only" readonly>
+          <input class="form-control" style="display: inline-block; width: 65px" type=entry size="5" name="used" value="<?php echo $used;?>">
 
            <br><br>
           </div>

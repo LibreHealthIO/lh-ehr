@@ -23,7 +23,6 @@
  */
 require_once("../../globals.php");
 require_once("$srcdir/api.inc");
-require_once("$srcdir/formsoptions.inc.php");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
@@ -33,18 +32,9 @@ if (! $encounter) { // comes from globals.php
 }
 
 $id = formData('id','G') + 0;
-$test_used = '16';
-$table = 'form_enhanced_prior_auth';
+
+
 $pid = $_POST["pid"];
-$casenum = $_POST["case_num"];
-
-$auth_number_update = $_POST["prior_auth_number"];
-$numberauth = FindCaseUsed($table, $pid , $casenum);
-$number_auth = $numberauth['count'];
-
-if ($_POST["used"] >= $_POST["auth_for"]) {
-    $_POST["archived"] = '1';
-}
 if (strtotime($_POST["auth_to"]) <= strtotime(date("Y-m-d"))) {
     $_POST["archived"] = '1';
     error_log("auth todate: ".$_POST["auth_to"], 0);
@@ -66,9 +56,9 @@ $archived = $_POST["archived"];
       auth_for          = '" . formData("auth_for") . "',
       auth_from         = '" . prepareDateBeforeSave(formData("auth_from")) . "',
       auth_to           = '" . prepareDateBeforeSave(formData("auth_to")) . "',
-      units             = '" . formData("units") . "',  
+      units             = '" . formData("units") . "',
       auth_length       = '" . formData("auth_length")  . "',
-      dollar            = '" . formData("dollar") . "',     
+      dollar            = '" . formData("dollar") . "',
       auth_contact      = '" . formData("auth_contact") . "',
       auth_phone        = '" . formData("auth_phone") . "',
       code1             = '" . formData("code1") . "',
@@ -78,10 +68,10 @@ $archived = $_POST["archived"];
       code5             = '" . formData("code5") . "',
       code6             = '" . formData("code6") . "',
       code7             = '" . formData("code7") . "',
-      used              = '" . $number_auth . "',
+      used              = '" . formData("used") . "',
       archived          = '" . formData("archived") . "',
       override          = '" . formData("override") . "'";
-  
+
   $newid = sqlInsert("INSERT INTO form_enhanced_prior_auth SET $sets");
   addForm($encounter, "Enhanced Prior Authorization Form", $newid, "enhanced_prior_auth", $pid, $userauthorized);
 }
@@ -98,9 +88,9 @@ else {
       auth_for          = '" . formData("auth_for") . "',
       auth_from         = '" . prepareDateBeforeSave(formData("auth_from")) . "',
       auth_to           = '" . prepareDateBeforeSave(formData("auth_to")) . "',
-      units             = '" . formData("units") . "',  
+      units             = '" . formData("units") . "',
       auth_length       = '" . formData("auth_length")  . "',
-      dollar            = '" . formData("dollar") . "',     
+      dollar            = '" . formData("dollar") . "',
       auth_contact      = '" . formData("auth_contact") . "',
       auth_phone        = '" . formData("auth_phone") . "',
       code1             = '" . formData("code1") . "',
@@ -110,7 +100,7 @@ else {
       code5             = '" . formData("code5") . "',
       code6             = '" . formData("code6") . "',
       code7             = '" . formData("code7") . "',
-      used              = '" . $number_auth . "',
+      used              = '" . formData("used") . "',
       archived          = '" . formData("archived") . "',
       override          = '" . formData("override") . "'";
 
