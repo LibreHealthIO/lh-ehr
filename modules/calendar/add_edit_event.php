@@ -44,6 +44,7 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+$library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  //Check access control
@@ -161,12 +162,12 @@ function DOBandEncounter()
                     // parameter is actually erroneous(is eid of the recurrent appt and not the new separated appt), so need to use the
                     // temporary-eid-for-manage-tracker global instead.
                     $temp_eid = (isset($GLOBALS['temporary-eid-for-manage-tracker'])) ? $GLOBALS['temporary-eid-for-manage-tracker'] : $_GET['eid'];
-            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room'],$encounter);
+            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"], $_POST['form_apptstatus'],$_POST['form_room'],$_POST['form_reason_to_cancel'], $encounter);
                  }
      } else {
              # Capture the appt status and room number for patient tracker.
              if (!empty($_GET['eid'])) {
-                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room']);
+                manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"], $_POST['form_apptstatus'],$_POST['form_room'], '', $_POST['form_reason_to_cancel']);
              }
      }
     }
@@ -247,21 +248,6 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         $tmpm = $_POST['form_minute'] + 0;
         if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
         $duration = abs($_POST['form_duration']); // fixes #395
-    }
-    //check for selected appointment time
-    if ($GLOBALS['check_appt_time'] == 1) {
-      //before starttime gets the values from form_hour & form_minute after clicking save,
-      //check if they (tmph & tmpm) are within clinic hours
-      $user_ampm = $_POST['form_ampm'];
-        $user_selected_time = $tmph + ($tmpm/60);
-      //checked for AM/PM because globals: schedule start and end times are in 24 hour format
-      if ($user_selected_time < $GLOBALS['schedule_start'] || $user_selected_time > $GLOBALS['schedule_end']) {
-        $alert_user_mssg = '<script type="text/javascript">alert("Please select time between clinic hours.");</script>';
-        $close_events_window = '<script type="text/javascript">window.close();</script>';
-        echo $alert_user_mssg;
-        echo $close_events_window;
-        exit();
-      }
     }
 
     $tmph = sprintf( "%02d", $tmph );
@@ -649,6 +635,12 @@ if ($_POST['form_action'] == "save") {
 
     }
 
+    //when selected status is "Deleted" and save is clicked in add_edit_event
+    //delete the event from the database and remove it from calendar
+    if ($_POST['form_apptstatus'] == 'Deleted') {
+        sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_eid = ?", array($_GET['eid']) );
+    }
+
     // done with EVENT insert/update statements
 
         DOBandEncounter();
@@ -740,6 +732,17 @@ if ($_POST['form_action'] == "save") {
                 // fully delete the event from the database
                 sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_eid = ?", array($eid) );
             }
+        }
+
+        #pass status Deleted to patient_tracker_element when deleting appointment by clicking delete
+        if (!empty($_GET['eid']) && $_POST['form_pid'] != 0) {
+            $tmph = $_POST['form_hour'] + 0;
+            $tmpm = $_POST['form_minute'] + 0;
+            if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
+            $appttime = "$tmph:$tmpm:00";
+            $event_date = $_POST['form_date'];
+
+            manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],'Deleted',$_POST['form_room']);
         }
  }
 
@@ -1679,12 +1682,30 @@ if ($repeatexdate != "") {
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_dob' id='form_dob' />
+   <input type='hidden' size='10' name='form_reason_to_cancel' id='form_reason_to_cancel' />
   </td>
  </tr>
 
 </table></td></tr>
 <tr class='text'><td colspan='10'>
 <p>
+<div id="reasons_modal">
+<?php
+$sql = "SELECT * FROM `list_options` WHERE list_id='cancellation_reasons'";
+$query = sqlStatement($sql);
+while ($r = sqlFetchArray($query)) {
+    echo "<input type='radio' value='". $r['title']."' name='form_reason_for_cancellation'>".$r['title']."<br/>";
+}
+echo "<input type='radio' value='other' name='form_reason_for_cancellation' id='reason_others'>other";
+?>
+<br/><br/>
+<div id="reason_textarea" style="display: none;">
+    <b style="margin-left: 1em;"><?php echo xlt('Please Add your reason'); ?></b><br/><br/>
+    <textarea id="others_textarea" rows="3" cols="50" style="margin-left: 1em;"></textarea>
+</div>
+<br/><br/>
+<input type="button" class="cp-submit" value="Submit" style="margin-left: 20em;" id="close_reason_modal">
+</div>
 <input type='button' name='form_save' class="cp-submit"  id='form_save' value='<?php echo xla('Save');?>' />
 &nbsp;
 
@@ -1702,7 +1723,7 @@ if ($repeatexdate != "") {
 <?php if ($informant) echo "<p class='text'>" . xlt('Last update by') . " " .
   text($informant) . " " . xlt('on') . " " . text(oeFormatDateTime($row['pc_time'])) . "</p>\n"; ?>
 </center>
-</form>
+
 
 <div id="recurr_popup" style="visibility: hidden; position: absolute; top: 50px; left: 50px; width: 400px; border: 3px outset yellow; background-color: yellow; padding: 5px;">
 <?php echo xlt('Apply the changes to the Current event only, to this and all Future occurrences, or to All occurrences?') ?>
@@ -1714,6 +1735,7 @@ if ($repeatexdate != "") {
 </div>
 
 </body>
+</form>
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 
 <script language='JavaScript'>
@@ -1733,12 +1755,28 @@ $(function() {
     $.datetimepicker.setLocale('<?= $DateLocale;?>');
 });
 </script>
-
+<?php call_required_libraries($library_array); ?>
 <script language="javascript">
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
-    $("#form_save").click(function() { validate("save"); });
+    $("#form_save").click(function() {
+        var reason = $("input[name='form_reason_for_cancellation']:checked").val();
+        if (reason) {
+            $('#form_reason_to_cancel').val(reason);
+            validate("save");
+        }
+        else {
+            var selected_text = $("#form_apptstatus option:selected").text();
+            if (selected_text == "x Canceled") {
+                $("#reasons_modal").iziModal('open');
+            }
+            else {
+                validate("save");
+            }
+        }
+         });
+
     $("#form_duplicate").click(function() { validate("duplicate"); });
     $("#find_available").click(function() { find_available(''); });
     $("#form_delete").click(function() { deleteEvent(); });
@@ -1768,18 +1806,44 @@ function are_days_checked(){
 
 // Check for errors when the form is submitted.
 function validate(valu) {
-     var f = document.getElementById('theform');
+    var f = document.getElementById('theform');
     if ((f.form_repeat.checked || f.days_every_week.checked) &&
         (! f.form_enddate.value || f.form_enddate.value < f.form_date.value)) {
         alert('<?php echo addslashes(xl("An end date later than the start date is required for repeated events!")); ?>');
         return false;
     }
+
     //Make sure if days_every_week is checked that at least one weekday is checked.
     if(f.days_every_week.checked && !are_days_checked()){
         alert('<?php echo xls("Must choose at least one day!"); ?>');
         return false;
     }
 
+    //check if user selected appt. time is within clinic hours
+    var checkApptTime = '<?php echo($GLOBALS['check_appt_time']) ?>';
+    if (f.form_allday.value < 1 && checkApptTime == 1) {
+        //only when Time radio button is selected (value is "0", otherwise "1")
+        //and global is checked (= "1")
+        var userAMPM = f.form_ampm.value; //"1" for AM, "2" for PM
+        var userHour = parseInt(f.form_hour.value);
+        var userMinute = parseInt(f.form_minute.value);
+        if (userAMPM == "1") {
+            //AM, 00:00 midnight to 11:59 noon
+            var userTime = userHour + (userMinute/60);
+        } else {
+            //PM, 12:00 noon to 23:59 midnight
+            var userTime = 12 + userHour + (userMinute/60);
+        }
+
+        //checked for AM/PM because globals: schedule start and end times are in 24 hour format
+        //while user (selected) time is in 12 hour format
+        var clinicStartTime = parseInt('<?php echo($GLOBALS['schedule_start']) ?>');
+        var clinicEndTime = parseInt('<?php echo($GLOBALS['schedule_end']) ?>');
+        if (userTime < clinicStartTime || userTime > clinicEndTime) {
+            alert('<?php echo addslashes(xl("Please select time between clinic hours.")); ?>');
+            return false;
+        }
+    }
 
     <?php
     if($_GET['prov']!=true){
@@ -1791,19 +1855,48 @@ function validate(valu) {
     <?php
     }
     ?>
-    $('#form_action').val(valu);
-
-    <?php if ($repeats): ?>
-    // existing repeating events need additional prompt
-    if ($("#recurr_affect").val() == "") {
-        DisableForm();
-        // show the current/future/all DIV for the user to choose one
-        $("#recurr_popup").css("visibility", "visible");
+    //checked for errors till here
+    //now check if selected appt. status is "Deleted" before SubmitForm()
+    //and alert user to make sure to delete patient appt.
+    var status_selected = $("#form_apptstatus option:selected").text();
+    if (status_selected == "Deleted") {
+        //check if user is creating an appt. with status "Deleted"
+        var eventId = '<?php echo $_GET['eid']; ?>'; //numeric for existing events
+        if (eventId > 0) {
+            if (confirm("<?php echo addslashes(xl('Deleting this event cannot be undone. It cannot be recovered once it is gone. Are you sure you wish to delete this event?')); ?>")) {
+                //if selected "OK" on alert
+                $('#form_action').val(valu);
+                <?php if ($repeats): ?>
+                    // existing repeating events need additional prompt
+                    if ($("#recurr_affect").val() == "") {
+                        DisableForm();
+                        // show the current/future/all DIV for the user to choose one
+                        $("#recurr_popup").css("visibility", "visible");
+                        return false;
+                    }
+                <?php endif; ?>
+                return SubmitForm();
+            }
+            //if selected "Cancel" on alert
+            return false;
+        }
+        //alert user if creating appt. with status "Delete";
+        alert('<?php echo addslashes(xl("Cannot create an Appointment with status Deleted")); ?>');
         return false;
+    } else {
+        //if selected appt. status isn't "Deleted", no need to alert
+        $('#form_action').val(valu);
+        <?php if ($repeats): ?>
+            // existing repeating events need additional prompt
+            if ($("#recurr_affect").val() == "") {
+                DisableForm();
+                // show the current/future/all DIV for the user to choose one
+                $("#recurr_popup").css("visibility", "visible");
+                return false;
+            }
+        <?php endif; ?>
+        return SubmitForm();
     }
-    <?php endif; ?>
-
-    return SubmitForm();
 }
 
 // disable all the form elements outside the recurr_popup
@@ -1857,6 +1950,37 @@ function SubmitForm() {
   return true;
 }
 
+$('#reasons_modal').iziModal({
+               title: "<?php echo xlt('Reason for Cancellation'); ?>",
+               subtitle: "<?php echo xlt('Choose the reason for Cancellation. If the reason is not listed then please use the other'); ?>",
+               headerColor: '#eee',
+               closeOnEscape: true,
+               fullscreen:true,
+               overlayClose: false,
+               closeButton: true,
+               theme: 'light',  // light
+           });
+
+$("#form_apptstatus").change(function() {
+
+    var selected_text = $("#form_apptstatus option:selected").text();
+    if (selected_text == "x Canceled") {
+        $("#reasons_modal").iziModal('open');
+    }
+})
+
+$('#close_reason_modal').click(function () {
+   $("#reasons_modal").iziModal('close');
+});
+
+$('#reason_others').click(function () {
+    $('#reason_textarea').css("display", "block");
+});
+$('#others_textarea').keyup(function () {
+    var value = $('#others_textarea').val();
+    $('#reason_others').val(value);
+});
 </script>
+
 
 </html>

@@ -32,16 +32,21 @@ $sanitize_all_escapes = true;
 $ignoreAuth = true;
 include_once("../globals.php");
 include_once("$srcdir/sql.inc");
+
+include_once("$srcdir/headers.inc.php");
+
 ?>
 <html>
 <head>
-    <?php html_header_show(); ?>
+    <?php
+        html_header_show();
+        call_required_libraries(array('jquery-min-3-1-1'));
+    ?>
     <link rel=stylesheet href="<?php echo $css_header; ?>" type="text/css">
     <link rel=stylesheet href="../themes/login.css" type="text/css">
     <link rel="shortcut icon" href="<?php echo $web_root; ?>/favicon.ico" type="image/x-icon">
     <title>Login | <?php echo $GLOBALS['libreehr_name']; ?></title>
 
-    <script language='JavaScript' src="../../library/js/jquery-1.4.3.min.js"></script>
     <script language='JavaScript'>
         function transmit_form() {
             document.forms[0].submit();
@@ -214,7 +219,7 @@ include_once("$srcdir/sql.inc");
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <input class="button large" type="submit" onClick="transmit_form()"
+                                    <input class="cp-submit large" type="submit" onClick="transmit_form()"
                                            value="<?php echo xla('Login'); ?>">
                                 </td>
                             </tr>

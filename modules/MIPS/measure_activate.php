@@ -119,7 +119,7 @@ h1, h2, h3 {
 	display: none;
 }
 .quickselect {
-	background-color: #f0f0f0;
+	
 	border: 1px solid #333333;
 	border-radius: 4px;
 	color: #333333;
@@ -309,10 +309,11 @@ if(count($updateStatus['off']) || count($updateStatus['on'])) {
 }
 
 ?>
+			<p><input type="submit" value="Update" /></p>
 			<div id="measures">
 				<ul>
 
-					<li>MIPS Specialty Sets for 2017
+					<li>MIPS Specialty Sets for 2018
 						<ul>
 							<button type="button" class="quickselect" onclick="quickSelect('MIPS-1 Allergy/Immunology')">MIPS-1 Allergy/Immunology</button>
 							<button type="button" class="quickselect" onclick="quickSelect('MIPS-2 Anesthesiology')">MIPS-2 Anesthesiology</button>
@@ -426,7 +427,7 @@ foreach($rules as $rule) {
 					</li>
 				</ul>
 			</div>
-			<p><input type="submit" value="Update" class="cp-submit"/></p>
+			<p><input type="submit" value="Update" /></p>
 		</form>
 	</body>
 </html>

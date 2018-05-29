@@ -76,12 +76,12 @@ if (isset($_POST['bn_process_hcfa']) || isset($_POST['bn_process_hcfa_form']) ) 
 }
 
 if (isset($_POST['bn_process_ub04'])) {
-  $pdf =& new Cezpdf('LETTER');
+  $pdf = new Cezpdf('LETTER');
   $pdf->ezSetMargins(trim($_POST['ubtop_margin'])+0,0,trim($_POST['ubleft_margin'])+0,0);
   $pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Courier.afm");
 }
 
-function append_claim(&$segs) {
+function append_claim($segs) {
   global $bat_content, $bat_sendid, $bat_recvid, $bat_sender, $bat_stcount;
   global $bat_gscount, $bat_yymmdd, $bat_yyyymmdd, $bat_hhmm, $bat_icn;
 
@@ -203,7 +203,7 @@ function process_form($ar) {
       }
 
       $tmp = 1;
-      if (isset($ar['HiddenMarkAsCleared']) && $ar['HiddenMarkAsCleared']=='yes') 
+      if (isset($ar['HiddenMarkAsCleared']) && $ar['HiddenMarkAsCleared']=='yes')
        {
         $tmp = updateClaim(true, $patient_id, $encounter, $payer_id, $payer_type, 2);// $sql .= " billed = 1, ";
        }
@@ -288,7 +288,7 @@ function process_form($ar) {
         else if (isset($ar['bn_process_hcfa_form'])) {
             $log = '';
             $lines = gen_hcfa_1500($patient_id, $encounter, $log);
-            $hcfa_image = $GLOBALS['fileroot'] ."/sites/default/images/cms1500.png";            
+            $hcfa_image = $GLOBALS['fileroot'] ."/sites/default/images/cms1500.png";
             fwrite($hlog, $log);
             $alines = explode("\014", $lines); // form feeds may separate pages
             foreach ($alines as $tmplines) {
@@ -368,7 +368,7 @@ function process_form($ar) {
     header("Content-Description: File Transfer");
     //header("Content-Length: " . strlen($bat_content));
     echo $pdf->ezOutput();
-    
+
     exit;
   }
 
