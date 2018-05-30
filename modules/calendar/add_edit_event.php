@@ -193,6 +193,23 @@ function DOBandEncounter()
 
 
  }
+
+ function refreshCalendar() {
+    echo "<script type='text/javascript'>";
+      echo "var docRoot = top.$('#mainBox');
+            //Calendar frame opened during initial loading of EHR
+            var calFrame1 = docRoot.find('iframe[name=" . "lst" . "]');
+            var calSrc1 = calFrame1.attr('src');
+            if (calSrc1 !== undefined) {
+                calFrame1.attr('src', calSrc1);
+            } else {
+                //Calendar frame opened via main menu
+                var calFrame2 = docRoot.find('iframe[name=" . "cal" . "]');
+                var calSrc2 = calFrame2.attr('src');
+                calFrame2.attr('src', calSrc2);
+            }";
+    echo "</script>";
+ }
 //================================================================================================================
 
 // EVENTS TO FACILITIES (lemonsoftware)
@@ -342,6 +359,7 @@ if ($_POST['form_action'] == "duplicate") {
 
     InsertEventFull();
     DOBandEncounter();
+    refreshCalendar(); //after "Create Duplicate" process is complete
 
  }
 
@@ -645,6 +663,8 @@ if ($_POST['form_action'] == "save") {
 
         DOBandEncounter();
 
+    refreshCalendar(); //after "Save" process is complete
+
  }
 
 // =======================================
@@ -744,6 +764,8 @@ if ($_POST['form_action'] == "save") {
 
             manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],'Deleted',$_POST['form_room']);
         }
+
+        refreshCalendar(); //after "Delete" process is complete
  }
 
  if ($_POST['form_action'] != "") {
