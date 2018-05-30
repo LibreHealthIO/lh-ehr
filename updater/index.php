@@ -75,7 +75,7 @@ if (isset($_POST['from_updater_general_settings'])) {
 }
 echo "<div id='tabs-1'>";
 echo '<ul>
-            <li><a href = "#updater-mode" id="updater-mode-handler">Updater</a></li>
+            <li><a href = "updater.php">Updater</a></li>
             <li><a href = "#accordion-1">Settings</a></li>
             <li><a href = "#developer-mode">Developer Mode</a></li>
          </ul>';
@@ -166,8 +166,7 @@ if($_SESSION['authUser'] == "admin" && !(isset($_GET['id']) && isset($_GET['mode
 else {
 	//dont show addition form for other users
 }
-echo "<iframe  src='updater.php' id='updater-mode' frameBorder='0' style='height: 100%; width:100%;'>
-</iframe>";
+
 //Modes and Actions
 //add => adds a user to manage updater
 //remove => removes a user by authUserId
@@ -199,9 +198,15 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
 ?>
 
 <script>
-   $(function() {
-       $( "#tabs-1" ).tabs();
-    });
+
+   $("#tabs-1").tabs({
+  // loading spinner
+  beforeLoad: function(event, ui) {
+    ui.panel.html('<div id="loading"><img src="updater_loading.gif" width="64" height="64" style="vertical-align:middle;" > Initialising updater</div>');
+  },
+  heightStyle: "fill",
+  active: 0
+});
    $(function() {
        $( "#accordion-1" ).accordion({
        	collapsible: true,
@@ -251,3 +256,13 @@ $(document).ready(function () {
 	}
 });
 </script>
+<style type="text/css">
+	  #loading {
+   width: 100%;
+   height: 100%;
+   position: fixed;
+   z-index: 999;
+   text-align:center;
+   letter-spacing: 3px;
+}
+</style>

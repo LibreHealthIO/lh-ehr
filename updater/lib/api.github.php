@@ -7,15 +7,47 @@
 *@param $repo_name - repository name
 *@return $array holding list of all merged pull requests
 */
-function getAllMergedPullRequests($access_token, $owner, $repo_name){
+function getAllMergedPullRequests($access_token, $owner, $repo_name, $pull_request_number){
 	$curl = curl_init();
-	$url = "https://api.github.com/repos/".$owner.$repo_name."/pulls?state=merged&access_token=$access_token";
+	$pr_number = array();
+	$i = 1;
+	$classifier = getSinglePullRequestClassifier($access_token, $owner, $repo_name, $pull_request_number);
+	while (1) {
+		$url = "https://api.github.com/repos/".$owner."/".$repo_name."/pulls?per_page=100&page=$i&state=all&access_token=$access_token";
+		$options = array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1);
+		curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
+		curl_setopt_array($curl, $options);
+		$json = curl_exec($curl);
+		$array = json_decode($json, true);
+		foreach ($array as $key) {
+		$number = $key['number'];
+		$merged_at = $key['merged_at'];
+		$bool = strtotime($merged_at);
+			if ($merged_at != null && $bool > $classifier) {
+				if ($number != $pull_request_number) {
+					$pr_number[$bool] = $number;
+				}
+			}
+			elseif($bool == $classifier) {
+				break 2;
+			}
+		}
+		$i = $i + 1;
+	}
+	ksort($pr_number);
+	return $pr_number;
+}
+
+function getSinglePullRequestClassifier($access_token, $owner, $repo_name, $pull_request_number) {
+	$curl = curl_init();
+	$url = "https://api.github.com/repos/".$owner."/".$repo_name."/pulls/".$pull_request_number."?access_token=$access_token";
 	$options = array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1);
 	curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
 	curl_setopt_array($curl, $options);
 	$json = curl_exec($curl);
 	$array = json_decode($json, true);
-	return $array;
+	return strtotime($array['merged_at']);
+
 }
 
 /**
@@ -27,7 +59,7 @@ function getAllMergedPullRequests($access_token, $owner, $repo_name){
 */
 function getSinglePullRequestFileChanges($access_token, $owner, $repo_name, $pull_request_number) {
 	$curl = curl_init();
-	$url = "https://api.github.com/repos/".$owner.$repo_name."/pulls/".$pull_request_number."/files?access_token=$access_token";
+	$url = "https://api.github.com/repos/".$owner."/".$repo_name."/pulls/".$pull_request_number."/files?access_token=$access_token";
 	$options = array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1);
 	curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
 	curl_setopt_array($curl, $options);
@@ -48,6 +80,10 @@ function getOwnerInfo($access_token) {
 	$json = curl_exec($curl);
 	return $array = json_decode($json, true);
 }
+
+
+
+
 
 
 ?>

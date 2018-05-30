@@ -1,35 +1,10 @@
-<div class="loader"></div>
-<Style>
+<body>
+   <Style>
 input[type="submit"]:disabled {
 	opacity: 0.5;
 }
 
-.loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #f69e00;
-  border-bottom: 16px solid #f69e00;
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-    width:100px;
-    height: 100px;
-    position: fixed;
-    top: 30%;
-    left: 45%;
 
-}
-
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(300deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 body {
 	text-transform: capitalize;
 }
@@ -59,12 +34,20 @@ require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
 call_required_libraries(array("jquery-min-3-1-1","bootstrap", "font-awesome", "iziModalToast", "jquery-ui"));
+?>
 
+
+
+
+
+
+<?php
 // LOAD API FUNCTIONS DEPENDS ON WEBSITE IT IS HOSTED
 $settings_json = file_get_contents("settings.json");
 $settings_array = json_decode($settings_json, true);
 $updater_host = $settings_array['host'];
-
+$repository_owner = $settings_array['owner'];
+$repository_name = $settings_array['repository_name'];
 //LOADING API FUNCTIONS ACCORDING TO THE HOST VALUE
 	require 'lib/api.github.php';
 
@@ -117,7 +100,7 @@ elseif (getUpdaterSetting("updater_token") == "empty_setting") {
 else {
 	$updater_token  = getUpdaterSetting("updater_token");
 	$owner_arr = getOwnerInfo($updater_token);
-	if (isset($owner_arr['message']) OR count($owner_arr) == 0){
+	if (isset($owner_arr['message'])){
 		//it means the token is expired, so ask for re-entry
 		$loader->set_template_file("updater_screen_three");
 		$loader->assign("HOST",$updater_host);
@@ -126,10 +109,54 @@ else {
 	elseif (isset($owner_arr['login'])) {
 		$avatar_url = $owner_arr['avatar_url'];
 		$user_name = $owner_arr['login'];
+		$pull_request_number = "1128";
+		$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+		$updates_behind = count($merged_requests_array);
 		//token is valid, so show the user profile
 		$loader->set_template_file("updater_screen_four");
 		$loader->assign("AVATAR_URL", $avatar_url);
 		$loader->assign("USER_NAME", $user_name);
+		$files_need_to_be_downloaded = array();
+		foreach ($merged_requests_array as $key => $value) {
+			$pr_number = $value;
+			$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
+			foreach ($arr as $ke) {
+				$sha = $ke['sha'];
+				$time = time();
+				$extension = pathinfo($ke['filename'], PATHINFO_EXTENSION);	
+				array_push($files_need_to_be_downloaded, $sha);	
+			}
+		}
+		$count_files = count($files_need_to_be_downloaded);
+		$loader->assign("UPDATER_START", "$updates_behind updates Available, $count_files files needs to be downloaded");
+		$loader->output();
+	}
+	elseif (!curl_bool() OR !internet_bool() OR !file_permissions_bool()) {
+		//check permission and show validation screen
+		if (internet_bool()) {
+			$internet_bool = "<i class='fa fa-check' style='color: green;'></i>";
+		}
+		else {
+			$internet_bool = "<i class='fa fa-warning' style='color: red;'></i>";
+		}
+
+		if (curl_bool()) {
+			$curl_bool = "<i class='fa fa-check' style='color: green;'></i>";
+		}
+		else {
+			$curl_bool = "<i class='fa fa-warning' style='color: red;'></i>";
+		}
+
+		if (file_permissions_bool($webserver_root)) {
+			$file_permissions_bool = "<i class='fa fa-check' style='color: green;'></i>";
+		}
+		else {
+			$file_permissions_bool = "<i class='fa fa-warning' style='color: red;'></i>";
+		}
+		$loader->set_template_file("validations_screen");
+		$loader->assign("CURL_BOOL",$curl_bool);
+		$loader->assign("INTERNET_BOOL",$internet_bool);
+		$loader->assign("FILE_PERMISSIONS_BOOL",$file_permissions_bool);
 		$loader->output();
 	}
 
@@ -195,9 +222,8 @@ if (isset($_POST)) {
 	}
 ?>	
 
-
 <script type="text/javascript">
-	$(document).ready(function(){
-     $('.loader').fadeOut();
-});
+    $(window).on("load",function(){
+        jQuery('#loading').hide();
+    });
 </script>
