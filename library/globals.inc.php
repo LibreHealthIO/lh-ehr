@@ -297,7 +297,7 @@ $GLOBALS_METADATA = array(
        '10',
       xl('Number of patients to display per page in the patient list.')
     ),
-    
+
 
     'gbl_vitals_options' => array(
       xl('Vitals Form Options'),
@@ -1063,6 +1063,14 @@ $GLOBALS_METADATA = array(
       'bool',
       '1',                              // default
       xl('Allow Automatic Caculation of Write Offs in Posting')
+
+  ),
+
+   'primary_insurance_required' => array(
+      xl('Require the Entry of the Primary Insurance in the New Patient Screen'),
+      'bool',
+      '0',                              // default
+      xl('Require the Entry of the Primary Insurance in the New Patient Screen')
 
   ),
 
@@ -3202,7 +3210,7 @@ $GLOBALS_METADATA = array(
     ),
 
     'pqrs_entityType' => array(
-      xl('Reporting Entity Type'),	// for XML generation
+      xl('Reporting Entity Type'),  // for XML generation
             array(
         'individual' => 'Per Provider NPI',
         'group' => 'For whole Tax ID'
