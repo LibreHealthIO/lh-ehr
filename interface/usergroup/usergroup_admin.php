@@ -33,6 +33,44 @@ $bg_msg = '';
 $set_active_msg=0;
 $show_message=0;
 
+function refreshCalendar() {
+    echo "<script type='text/javascript'>";
+      echo "var docRoot = top.$('#mainBox');
+            //get references to all possible frames for calendar
+            var leftFrame = docRoot.find('iframe[name=" . "lst" . "]'); //initial loading of EHR
+            var rightFrame = docRoot.find('iframe[name=" . "pat" . "]'); //initial loading of EHR
+            var calFrame = docRoot.find('iframe[name=" . "cal" . "]'); //via main menu
+
+            var calFrameStr = 'interface/main/main_info.php'; //url of Calendar Screen used for identification
+
+            //get source string of frames
+            var leftFrameSrc = leftFrame.attr('src');
+            var rightFrameSrc = rightFrame.attr('src');
+            var calFrameSrc = calFrame.attr('src');
+
+            //when Calendar is opened via main menu
+            if (calFrameSrc !== undefined) {
+                calFrame.attr('src', calFrameSrc); //refresh frame
+            } else {
+                //when Calendar is opened in one of two initially loaded frames
+
+                //if opened in left frame
+                if (leftFrameSrc !== undefined) {
+                    if (leftFrameSrc.indexOf(calFrameStr) !== -1) {
+                        leftFrame.attr('src', leftFrameSrc); //refresh frame
+                    }
+                }
+
+                //if opened in right frame
+                if (rightFrameSrc !== undefined) {
+                    if (rightFrameSrc.indexOf(calFrameStr) !== -1) {
+                        rightFrame.attr('src', rightFrameSrc); //refresh frame
+                    }
+                }
+            }";
+    echo "</script>";
+}
+
 
 /* Sending a mail to the admin when the breakglass user is activated only if $GLOBALS['Emergency_Login_email'] is set to 1 */
 $bg_count=count($access_group);
@@ -121,7 +159,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
           sqlStatement("update users set menu_role='Sample Role' where id=?", array($_POST["id"]));
         }
       }
-      
+
       if ($_POST["facility_id"]) {
               $tqvar = formData('facility_id','P');
               sqlStatement("update users set facility_id = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -230,6 +268,8 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
 
         do_action( 'usergroup_admin_save', $_POST );
 
+        refreshCalendar(); //after "Edit User" process is complete
+
     }
 }
 
@@ -268,7 +308,7 @@ if (isset($_FILES)) {
   $uid =  trim(formData('rumple')).time();
     //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
   if (realpath("../../profile_pictures/")) {
-      
+
   }
   else {
     mkdir("../../profile_pictures/", 0755);
@@ -299,12 +339,12 @@ if (isset($_FILES)) {
         }
         else {
           $bool = 1;
-        }    
+        }
     }
     else {
       $bool = 0;
     }
-        
+
   }
   else {
         $bool = 0;
@@ -397,6 +437,8 @@ if (isset($_FILES)) {
            }
     }
       }
+
+      refreshCalendar(); //after "Add User" process is complete
   }
   else if ($_POST["mode"] == "new_group") {
     $res = sqlStatement("select distinct name, user from groups");
@@ -425,7 +467,7 @@ if (isset($_GET["mode"])) {
   //
   if ($_GET["mode"] == "delete") {
     $res = sqlStatement("select distinct username, id from users where id = ?", array($_GET["id"]));
-      
+
     for ($iter = 0; $row = sqlFetchArray($res); $iter++)
       $result[$iter] = $row;
 

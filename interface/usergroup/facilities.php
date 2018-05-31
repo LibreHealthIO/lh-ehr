@@ -31,7 +31,7 @@
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
 
- 
+
 require_once("../globals.php");
 require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
@@ -39,6 +39,44 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/headers.inc.php");
 
 $alertmsg = '';
+
+function refreshCalendar() {
+    echo "<script type='text/javascript'>";
+      echo "var docRoot = top.$('#mainBox');
+            //get references to all possible frames for calendar
+            var leftFrame = docRoot.find('iframe[name=" . "lst" . "]'); //initial loading of EHR
+            var rightFrame = docRoot.find('iframe[name=" . "pat" . "]'); //initial loading of EHR
+            var calFrame = docRoot.find('iframe[name=" . "cal" . "]'); //via main menu
+
+            var calFrameStr = 'interface/main/main_info.php'; //url of Calendar Screen used for identification
+
+            //get source string of frames
+            var leftFrameSrc = leftFrame.attr('src');
+            var rightFrameSrc = rightFrame.attr('src');
+            var calFrameSrc = calFrame.attr('src');
+
+            //when Calendar is opened via main menu
+            if (calFrameSrc !== undefined) {
+                calFrame.attr('src', calFrameSrc); //refresh frame
+            } else {
+                //when Calendar is opened in one of two initially loaded frames
+
+                //if opened in left frame
+                if (leftFrameSrc !== undefined) {
+                    if (leftFrameSrc.indexOf(calFrameStr) !== -1) {
+                        leftFrame.attr('src', leftFrameSrc); //refresh frame
+                    }
+                }
+
+                //if opened in right frame
+                if (rightFrameSrc !== undefined) {
+                    if (rightFrameSrc.indexOf(calFrameStr) !== -1) {
+                        rightFrame.attr('src', rightFrameSrc); //refresh frame
+                    }
+                }
+            }";
+    echo "</script>";
+}
 
 /*      Inserting New facility                  */
 if (isset($_POST["mode"]) && $_POST["mode"] == "facility" && $_POST["newmode"] != "admin_facility") {
@@ -65,6 +103,8 @@ if (isset($_POST["mode"]) && $_POST["mode"] == "facility" && $_POST["newmode"] !
   "tax_id_type = '"  . trim(formData('tax_id_type' )) . "', " .
   "primary_business_entity = '"  . trim(formData('primary_business_entity' )) . "', ".
   "facility_npi = '" . trim(formData('facility_npi')) . "'");
+
+  refreshCalendar(); //after "Add Facility" process is complete
 }
 
 /*      Editing existing facility                   */
@@ -92,14 +132,16 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
         facility_npi='" . trim(formData('facility_npi')) . "',
         attn='" . trim(formData('attn')) . "' ,
         primary_business_entity='" . trim(formData('primary_business_entity')) . "' ,
-        tax_id_type='" . trim(formData('tax_id_type')) . "' 
+        tax_id_type='" . trim(formData('tax_id_type')) . "'
     where id='" . trim(formData('fid')) . "'" );
+
+    refreshCalendar(); //after "Edit Facility" process is complete
 }
 
 ?>
 <html>
 <head>
-<?php 
+<?php
   call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
     resolveFancyboxCompatibility();
 ?>
@@ -117,7 +159,7 @@ $(document).ready(function(){
         'overlayOpacity' : 0.0,
         'showCloseButton' : true,
         'frameHeight' : 460,
-        'frameWidth' : 650        
+        'frameWidth' : 650
     });
 
     // special size for
