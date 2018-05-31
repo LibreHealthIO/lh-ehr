@@ -34,24 +34,31 @@ require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
 call_required_libraries(array("jquery-min-3-1-1","bootstrap", "font-awesome", "iziModalToast", "jquery-ui"));
-?>
 
-
-
-
-
-
-<?php
 // LOAD API FUNCTIONS DEPENDS ON WEBSITE IT IS HOSTED
 $settings_json = file_get_contents("settings.json");
 $settings_array = json_decode($settings_json, true);
 $updater_host = $settings_array['host'];
 $repository_owner = $settings_array['owner'];
 $repository_name = $settings_array['repository_name'];
+
+if ($updater_host == "github") {
+	//if host=github then load rhwm
+	if (getUpdaterSetting("github_current") != "empty_setting") {
+		$pull_request_number = getUpdaterSetting("github_current");
+	}
+	else {
+		//load settings from json file, this pr number refers to the pr number at which the updater gets merged
+		//replace # since it is not fit for api
+		$pull_request_number = $settings_array['github_current'];
+		$pull_request_number = str_replace("#", "", $pull_request_number);
+	}
 //LOADING API FUNCTIONS ACCORDING TO THE HOST VALUE
-	require 'lib/api.github.php';
 
+}
 
+	require "lib/api.$updater_host.php";
+	
 if (getUpdaterSetting("updater_requirements") == "empty_setting") {
 	//show screen one
 	if (internet_bool()) {
@@ -99,17 +106,18 @@ elseif (getUpdaterSetting("updater_token") == "empty_setting") {
 
 else {
 	$updater_token  = getUpdaterSetting("updater_token");
-	$owner_arr = getOwnerInfo($updater_token);
-	if (isset($owner_arr['message'])){
+
+	if (isTokenValid($updater_token) != true){
 		//it means the token is expired, so ask for re-entry
 		$loader->set_template_file("updater_screen_three");
 		$loader->assign("HOST",$updater_host);
 		$loader->output();
 	}
-	elseif (isset($owner_arr['login'])) {
+	elseif (isTokenValid($updater_token)) {
+		$owner_arr = getOwnerInfo($updater_token);
 		$avatar_url = $owner_arr['avatar_url'];
 		$user_name = $owner_arr['login'];
-		$pull_request_number = "1128";
+		//all parameters to this function are determined before
 		$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
 		$updates_behind = count($merged_requests_array);
 		//token is valid, so show the user profile
@@ -128,7 +136,8 @@ else {
 			}
 		}
 		$count_files = count($files_need_to_be_downloaded);
-		$loader->assign("UPDATER_START", "$updates_behind updates Available, $count_files files needs to be downloaded");
+		$loader->assign("UPDATER_START", "$updates_behind updates Available,<br/><br/> $count_files files needs to be downloaded");
+		$loader->assign("COUNT_FILES", $count_files);
 		$loader->output();
 	}
 	elseif (!curl_bool() OR !internet_bool() OR !file_permissions_bool()) {
@@ -187,15 +196,14 @@ if (isset($_POST)) {
 	if (isset($_POST['updater_token'])) {
 		if (!empty($_POST['updater_token'])) {
 			$updater_token = $_POST['updater_token'];
-			$owner_arr = getOwnerInfo($updater_token);
-			if (isset($owner_arr['message']) OR count($owner_arr) == 0){
+			if (isTokenValid($updater_token) != true){
 				//it means the token is not valid
 				$toast_type = "danger";
 				$toast_title = "Token Not Valid";
 				$toast_message = "The Token you entered seems to be invalid"; 
 
 			}
-			elseif (isset($owner_arr['login'])) {
+			elseif (isTokenValid($updater_token)) {
 				$toast_type = "success";
 				$toast_title = "Token Added";
 				$toast_message = "The Token is valid and added to the updater"; 
@@ -226,4 +234,40 @@ if (isset($_POST)) {
     $(window).on("load",function(){
         jQuery('#loading').hide();
     });
+    $.ajaxSetup({
+    async: true
+	});
+    $('#start_updater_user_mode').click(function () {
+    		var count = $('#count_files').val();
+    		var downloadFilesComplete = false;
+    		$('#before_start').hide();
+    		$('#after_start').show();
+    		//first start the updater
+		    var start_updater = "ok";
+		    	function doWork() {
+		    		
+		    		$.getJSON("ajax_user_mode.php?count_files=1", function(responseTxt){
+		    			if (responseTxt.files == "empty_setting") {
+		    				responseTxt.files = 0;
+		    			}
+			    		var progress_percent = 100 / responseTxt.files;
+						$('#files_progress').html(responseTxt.files);
+						console.log(responseTxt);
+						$('.progress-bar').css("width", progress_percent + "%");
+							if (!downloadFilesComplete) {
+								console.log(responseTxt.files);
+					  			setTimeout(doWork, 1000);
+					  		}
+					    });
+				}
+
+			$.ajax("ajax_user_mode.php?start_updater=1", function(result){
+		        alert("done");
+		        downloadFilesComplete = true;
+		    });
+		    doWork();
+
+			
+    });
+
 </script>

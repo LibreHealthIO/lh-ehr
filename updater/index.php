@@ -75,10 +75,11 @@ if (isset($_POST['from_updater_general_settings'])) {
 }
 echo "<div id='tabs-1'>";
 echo '<ul>
-            <li><a href = "updater.php">Updater</a></li>
+            <li><a href = "#updater-handler">Updater</a></li>
             <li><a href = "#accordion-1">Settings</a></li>
             <li><a href = "#developer-mode">Developer Mode</a></li>
          </ul>';
+echo '<div id="iframe-holder"><iframe src="updater.php" frameBorder="0" style="height: 100%; width:100%;" id="updater-handler" allowfullscreen></iframe></div>';
 //every section is displayed as accordion for ui friendly approach
 echo "<div id='accordion-1'>";
 
@@ -201,9 +202,6 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
 
    $("#tabs-1").tabs({
   // loading spinner
-  beforeLoad: function(event, ui) {
-    ui.panel.html('<div id="loading"><img src="updater_loading.gif" width="64" height="64" style="vertical-align:middle;" > Initialising updater</div>');
-  },
   heightStyle: "fill",
   active: 0
 });
@@ -255,6 +253,7 @@ $(document).ready(function () {
 
 	}
 });
+
 </script>
 <style type="text/css">
 	  #loading {
@@ -264,5 +263,10 @@ $(document).ready(function () {
    z-index: 999;
    text-align:center;
    letter-spacing: 3px;
+   top: 50%;
+}
+#iframe-holder {
+  background:url(updater_loading.gif) center center no-repeat;
+
 }
 </style>

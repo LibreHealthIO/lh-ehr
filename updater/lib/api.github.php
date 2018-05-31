@@ -83,6 +83,24 @@ function getOwnerInfo($access_token) {
 
 
 
+/**
+*@param $access_token - user_access_token of github
+*@return bool - check token is valid or not, called after checking for internet_bool
+*/
+function isTokenValid($access_token) {
+	$curl = curl_init();
+	$url = "https://api.github.com/user?access_token=$access_token";
+	curl_setopt_array($curl, array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1));
+	curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
+	$json = curl_exec($curl);
+	$array = json_decode($json, true);
+	if (isset($array['login'])) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 
 
 

@@ -2,10 +2,27 @@
 <img src="../sites/default/images/LibreEHR_shield.png" height="200px" width="128px">
 </div>
 <div class="col-xs-9 col-xs-offset-1 text-center">
-<img src="{AVATAR_URL}" height="64px" width="64px" class="img img-circle">
-<h4>{USER_NAME}</h4>
-<br/><br/>
-<div class="col-xs-12">
-{UPDATER_START}
-</div>
+	<div id='before_start'>
+		<img src="{AVATAR_URL}" height="64px" width="64px" class="img img-circle">
+		<h4>{USER_NAME}</h4>
+		<br/><br/>
+		<div class="col-xs-12">
+		{UPDATER_START}
+		<br/><br/>
+		<input id="count_files" value='{COUNT_FILES}' type="hidden">
+		<a id='start_updater_user_mode' class="btn cp-submit">START UPDATING!</a>
+		</div>
+	</div>
+	<div id="after_start" style="display: none;">
+	UPDATER HAS BEEN STARTED
+	<br/><br/>
+	<b id="files_progress">0</b>/{COUNT_FILES} files has been downloaded
+	<br/><br/>
+			<div class="progress">
+		  <div class="progress-bar" role="progressbar" aria-valuenow="70"
+		  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+		    0%
+		  </div>
+		</div>
+	</div>
 </div>
