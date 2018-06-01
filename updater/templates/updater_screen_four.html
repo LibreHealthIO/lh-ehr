@@ -14,15 +14,21 @@
 		</div>
 	</div>
 	<div id="after_start" style="display: none;">
-	UPDATER HAS BEEN STARTED
-	<br/><br/>
-	<b id="files_progress">0</b>/{COUNT_FILES} files has been downloaded
-	<br/><br/>
-			<div class="progress">
-		  <div class="progress-bar" role="progressbar" aria-valuenow="70"
-		  aria-valuemin="0" aria-valuemax="100" style="width:0%">
-		    0%
-		  </div>
-		</div>
+		<table class="table table-striped">
+			<th></th>
+			<th>Status</th>
+			<tr>
+				<td>Downloading Files</td>
+				<td><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+			<tr>	
+				<td>File Backup</td>
+				<td></td>
+			</tr>
+			<tr>	
+				<td>DB Backup</td>
+				<td></td>
+			</tr>
+		</table>
 	</div>
 </div>

@@ -65,16 +65,20 @@ $files_need_to_be_downloaded = array();
 if (isset($_GET)) {
 	if (isset($_GET['start_updater'])) {
 		if (!empty($_GET['start_updater'])) {
+			$updater_token = getUpdaterSetting("updater_token");
 			$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
 			foreach ($merged_requests_array as $key => $value) {
 				$pr_number = $value;
 				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
 				foreach ($arr as $ke) {
+					$original_name = $ke['filename'];
+					$url = $ke['raw_url'];
 					$sha = $ke['sha'];
 					$time = time();
-					$extension = pathinfo($ke['filename'], PATHINFO_EXTENSION);	
-					array_push($files_need_to_be_downloaded, $sha);
-					setUpdaterSetting("files_downloaded", count($files_need_to_be_downloaded));
+					$extension = pathinfo($ke['filename'], PATHINFO_EXTENSION);
+					$filename = $sha."_".$time.".".$extension;	
+					downloadFile($url, "downloads", $filename);
+					copy("../".$original_name, "backup/$filename");
 				}
 			}
 		}

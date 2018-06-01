@@ -9,7 +9,10 @@ body {
 	text-transform: capitalize;
 }
 </Style>
-<?php 
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
 /**
  * Contains all updater functions
  *
@@ -244,30 +247,6 @@ if (isset($_POST)) {
     		$('#after_start').show();
     		//first start the updater
 		    var start_updater = "ok";
-		    	function doWork() {
-		    		
-		    		$.getJSON("ajax_user_mode.php?count_files=1", function(responseTxt){
-		    			if (responseTxt.files == "empty_setting") {
-		    				responseTxt.files = 0;
-		    			}
-			    		var progress_percent = 100 / responseTxt.files;
-						$('#files_progress').html(responseTxt.files);
-						console.log(responseTxt);
-						$('.progress-bar').css("width", progress_percent + "%");
-							if (!downloadFilesComplete) {
-								console.log(responseTxt.files);
-					  			setTimeout(doWork, 1000);
-					  		}
-					    });
-				}
-
-			$.ajax("ajax_user_mode.php?start_updater=1", function(result){
-		        alert("done");
-		        downloadFilesComplete = true;
-		    });
-		    doWork();
-
-			
     });
 
 </script>

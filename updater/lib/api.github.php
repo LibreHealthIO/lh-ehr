@@ -102,7 +102,25 @@ function isTokenValid($access_token) {
 	}
 }
 
+/**
+*@param $url - raw url of the file to be downloaded
+*@param $directory - directory at which the downloaded files must be saved
+*@param $filename - usually a name combined of its sha, and time stamp, can be adjusted according to API, but filename must be registered to the db and non repeating
+*@return bool - whether the action has been performed or not
+*/
+function downloadFile($url, $directory, $filename) {
 
+	
+	$url = str_replace("/raw", "", $url);
+	echo $url = str_replace("github.com", "raw.githubusercontent.com", $url);
+	$curl = curl_init();
+	curl_setopt_array($curl, array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1));
+	curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
+	$json = curl_exec($curl);
+	$fp = fopen($directory."/".$filename, "w");
+	fwrite($fp, $json);
+	fclose($fp);
+}
 
 ?>
 
