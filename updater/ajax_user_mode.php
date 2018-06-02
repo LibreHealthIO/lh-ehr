@@ -67,18 +67,37 @@ if (isset($_GET)) {
 		if (!empty($_GET['start_updater'])) {
 			$updater_token = getUpdaterSetting("updater_token");
 			$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+			//get only single merge request after that PR
+			$merged_requests_key = array_keys($merged_requests_array);
+			$merged_request_value = array_values($merged_requests_array);
+			$merged_requests_array = array($merged_requests_key[0]=>$merged_request_value[0]);
 			foreach ($merged_requests_array as $key => $value) {
 				$pr_number = $value;
 				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
+				//clear the tables to feed the fresh data to backup and download entry tables
+				deleteDownloadFileDbEntry();
+				deleteBackupFileDbEntry();
+
 				foreach ($arr as $ke) {
 					$original_name = $ke['filename'];
 					$url = $ke['raw_url'];
 					$sha = $ke['sha'];
 					$time = time();
 					$extension = pathinfo($ke['filename'], PATHINFO_EXTENSION);
-					$filename = $sha."_".$time.".".$extension;	
-					downloadFile($url, "downloads", $filename);
-					copy("../".$original_name, "backup/$filename");
+					$filename = $sha."_".$time.".".$extension;
+					$status = $ke['status'];
+					if (isset($ke['previous_filename'])) {
+						$old_name = $ke['previous_filename'];
+					}
+					else {
+						//it means the file is not renamed
+						$old_name = "empty";
+					}
+					downloadFile($url, "downloads", $filename, $status);
+					//Make Downloaded File DB entry
+					downloadFileDbEntry($filename, $status, $original_name, $old_name);
+					backupFile("backup", $filename, $original_name, $status, $old_name);
+					backupFileDbEntry($filename, $status, $original_name, $old_name);
 				}
 			}
 		}
