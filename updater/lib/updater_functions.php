@@ -207,4 +207,16 @@ function restoreBackupFile($filename, $original_name, $status, $old_name) {
 	}
 }
 
+function clearFilesFolder($foldername){
+//used to clear backup and download directory before starting the updater
+//Get a list of all of the file names in the folder.
+$files = glob($foldername . '/*');
+
+	foreach ($files as $file) {
+		if (is_file($file)) {
+			unlink($file);
+		}
+	}
+}
+
 ?>

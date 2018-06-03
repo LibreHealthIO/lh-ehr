@@ -65,12 +65,15 @@ $files_need_to_be_downloaded = array();
 if (isset($_GET)) {
 	if (isset($_GET['start_updater'])) {
 		if (!empty($_GET['start_updater'])) {
+			clearFilesFolder($foldername = "backup");
+			clearFilesFolder($foldername = "downloads");
 			$updater_token = getUpdaterSetting("updater_token");
 			$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
 			//get only single merge request after that PR
 			$merged_requests_key = array_keys($merged_requests_array);
 			$merged_request_value = array_values($merged_requests_array);
 			$merged_requests_array = array($merged_requests_key[0]=>$merged_request_value[0]);
+			$next_pr_value = $merged_request_value[1];
 			foreach ($merged_requests_array as $key => $value) {
 				$pr_number = $value;
 				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
@@ -107,6 +110,8 @@ if (isset($_GET)) {
 					replaceFile($filename, $original_name, $status, $old_name);
 				}
 			}
+			//prepare the updater for showing next PR
+			setUpdaterSetting("github_current", $next_pr_value);
 		}
 	}
 	
