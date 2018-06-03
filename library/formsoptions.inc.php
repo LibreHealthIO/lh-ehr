@@ -17,7 +17,7 @@
  * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
- 
+
 function checkFormIsActive ($form_name, $encounter)
 {
    # This check if an active file exists and uses it as opposed to creating a new instance of the form.
@@ -33,6 +33,5 @@ function checkFormIsActive ($form_name, $encounter)
 
 return $formid;
 }
-
 
 ?>
