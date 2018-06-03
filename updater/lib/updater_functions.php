@@ -140,4 +140,41 @@ function backupFileDbEntry($filename, $status, $original_name, $old_name) {
 	$bindArray = array($filename, $status, $original_name, $old_name);
 	sqlStatement("INSERT INTO `updater_user_mode_backup_entry`(`filename`, `status`, `original_name`, `old_name`) VALUES (?,?,?,?)", $bindArray);
 }
+
+function isExistInBackupTable($filename) {
+	$query = sqlQ("SELECT * FROM `updater_user_mode_download_entry` WHERE filename='$filename' AND status='added'");
+	$rows = sqlNumRows($query);
+	if ($rows == 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
+function replaceFile($filename, $original_name, $status, $old_name) {
+	$filename = "downloads/".$filename;
+	$old_name = "../".$old_name;
+	$original_name = "../".$original_name;
+
+	if ($status == "renamed") {
+		// since it is renamed there is no file exists at the original file name location, so unlink it with the old name
+		unlink($old_name);
+		copy($filename, $original_name);
+	}
+	if ($status == "added") {
+		//since Added there is no need to unlink the old file,it does not exist
+		copy($filename, $original_name);
+	}
+	if ($status == "modified") {
+		unlink($original_name);
+		copy($filename, $original_name);
+	}
+	if ($status == "removed") {
+		unlink($original_name);
+	}
+
+}
+
 ?>

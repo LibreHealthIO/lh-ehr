@@ -77,7 +77,6 @@ if (isset($_GET)) {
 				//clear the tables to feed the fresh data to backup and download entry tables
 				deleteDownloadFileDbEntry();
 				deleteBackupFileDbEntry();
-
 				foreach ($arr as $ke) {
 					$original_name = $ke['filename'];
 					$url = $ke['raw_url'];
@@ -96,8 +95,16 @@ if (isset($_GET)) {
 					downloadFile($url, "downloads", $filename, $status);
 					//Make Downloaded File DB entry
 					downloadFileDbEntry($filename, $status, $original_name, $old_name);
-					backupFile("backup", $filename, $original_name, $status, $old_name);
+					if (isExistInBackupTable($filename)) {
+						backupFile("backup", $filename, $original_name, $status, $old_name);
+					}
+					else {
+					  echo $filename;
+					  echo "<br/><br/>";
+					}
+
 					backupFileDbEntry($filename, $status, $original_name, $old_name);
+					replaceFile($filename, $original_name, $status, $old_name);
 				}
 			}
 		}

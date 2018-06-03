@@ -123,6 +123,11 @@ else {
 		//all parameters to this function are determined before
 		$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
 		$updates_behind = count($merged_requests_array);
+		$cpr_number = array_values($merged_requests_array);
+		$cpr_number = $cpr_number[0];
+		$current_pull_request_info = getSinglePullRequestInfo($updater_token, $repository_owner, $repository_name,  $cpr_number);
+		$cpr_title = $current_pull_request_info['title'];
+		$cpr_body = $current_pull_request_info['body'];
 		//token is valid, so show the user profile
 		$loader->set_template_file("updater_screen_four");
 		$loader->assign("AVATAR_URL", $avatar_url);
@@ -139,7 +144,7 @@ else {
 			}
 		}
 		$count_files = count($files_need_to_be_downloaded);
-		$loader->assign("UPDATER_START", "$updates_behind updates Available,<br/><br/> $count_files files needs to be downloaded");
+		$loader->assign("UPDATER_START", "<b>$cpr_title</b><br/><h6>$cpr_body</h6>");
 		$loader->assign("COUNT_FILES", $count_files);
 		$loader->output();
 	}
