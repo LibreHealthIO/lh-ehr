@@ -162,19 +162,49 @@ function replaceFile($filename, $original_name, $status, $old_name) {
 		// since it is renamed there is no file exists at the original file name location, so unlink it with the old name
 		unlink($old_name);
 		copy($filename, $original_name);
+		echo $status;
 	}
 	if ($status == "added") {
 		//since Added there is no need to unlink the old file,it does not exist
 		copy($filename, $original_name);
+		echo $status;
 	}
 	if ($status == "modified") {
 		unlink($original_name);
 		copy($filename, $original_name);
+		echo $status;
 	}
 	if ($status == "removed") {
 		unlink($original_name);
+		echo $status;
 	}
 
+}
+
+
+function restoreBackupFile($filename, $original_name, $status, $old_name) {
+	$filename = "backup/".$filename;
+	$old_name = "../".$old_name;
+	$original_name = "../".$original_name;
+	if ($status == "renamed") {
+		// since it is renamed there is no file exists at the original file name location, so unlink it with the old name
+		unlink($original_name);
+		copy($filename, $old_name);
+		echo $status;
+	}
+	if ($status == "added") {
+		//since Added there is no need to unlink the old file,it does not exist
+		unlink($original_name);
+	}
+	if ($status == "modified") {
+		unlink($original_name);
+		copy($filename, $original_name);
+		echo $status;
+	}
+	if ($status == "removed") {
+		copy($filename, $original_name);
+		echo $status;
+	}
 }
 
 ?>
