@@ -711,7 +711,7 @@ if ($_POST['form_action'] == "save") {
 
       if ($_POST['form_category'] == '2' && (!$eid)) { //adding category 3 based on category 2
         $endtime = $cat3time;
-        $starttime = $cat3time;;
+        $starttime = $cat3time;
         $_POST['form_category'] = '3';
         $_POST['form_title'] = 'Out Of Office';
         InsertEventFull();
