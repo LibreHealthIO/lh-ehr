@@ -267,10 +267,13 @@ require('includes/session.php');
             //var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
             let link = '<?php echo $GLOBALS['webroot'] . "/interface/patient_file/summary/demographics.php?set_pid="; ?>' + event['pc_pid'];
             var titleLink = "<a href='#'>" + event['title'] + "</a>";
+            let titleInfo = "<span style='color: #000;'>" + event['e_info'] + "</span>";
             //find all event title div elements
             var patientEventTitle = element.find('.fc-title');
             //remove title text inside them and insert hyperlink
             patientEventTitle.empty().append(titleLink);
+            //add event description text just after hyperlink
+            patientEventTitle.after(titleInfo);
             patientEventTitle.on("click", function(e) {
               //to stop eventClick handler from executing
               //upon clicking text link
