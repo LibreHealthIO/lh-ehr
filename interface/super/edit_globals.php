@@ -599,6 +599,19 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       echo "  </select>\n";
     }
 
+    else if ($fldtype == 'lims') {
+      // List of LIMS softwares available
+      echo " <select name='form_$i' id='form_$i'>\n";
+
+      $lims_list =  array_map(function($directory) {
+        return substr($directory, 19); // remove the "../../modules/lims" from the string
+      },array_filter(glob('../../modules/lims/*'), 'is_dir'));
+      foreach($lims_list as $lims) {
+        echo "<option value='.$lims.'>".$lims."</option>";
+      }
+      echo "</select>";
+    }
+
     else if ($fldtype == 'list') {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
