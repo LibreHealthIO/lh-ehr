@@ -226,6 +226,7 @@
         <br>
         <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
         <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />&nbsp;
+        <input type="button" value='Test Download' class='pdf_proto'>
         <input type='hidden' name='pdf' value='0'>
         <br>
         <!-- old ccr button position -->
@@ -470,6 +471,11 @@
         // check/uncheck all Forms of an encounter
         $(".encounter").click(function() { SelectForms($(this)); });
 
+        $('.pdf_proto').click(function() {
+          $('#report_form').attr('action', '../../../modules/pdf_generator/selector.php');
+          $('#report_form').submit();
+        });
+        
         $(".generateCCR").click(
             function() {
                     if(document.getElementById('show_date').checked == true){

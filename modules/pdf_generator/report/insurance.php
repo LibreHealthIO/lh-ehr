@@ -1,0 +1,73 @@
+<?php
+/* the purpose of this code is to
+   get data about patient insurance in a formatted manner
+   and store in a variable $content_insu*/
+
+$pdf->SetFont('dejavusans', '', 10);
+            
+function pdfInsuranceData($pid, $insurance_data_array_custom, $insurance_data_array){
+    global $content_insu;
+    $content_insu = "<h1>Insurance Data</h1>";
+    if ($GLOBALS['insurance_address_demographics_report'] =='1') {    
+        $content_insu .= "<h3>Primary Insurance Data:</h3>";
+        $content_insu .= "<table>";
+        insuranceData1($insurance_data_array_custom, getRecInsuranceData ($pid,"primary"), $content_insu);
+        $content_insu .= "</table>";
+        $content_insu .= "<h3>Secondary Insurance Data:</h3>";
+        $content_insu .= "<table>";
+        insuranceData1($insurance_data_array_custom, getRecInsuranceData ($pid,"secondary"), $content_insu);
+        $content_insu .= "</table>";
+        $content_insu .= "<h3>Tertiary Insurance Data:</h3>";
+        $content_insu .= "<table>";
+        insuranceData1($insurance_data_array_custom, getRecInsuranceData ($pid,"tertiary"), $content_insu);
+        $content_insu .= "</table>";
+    }
+    else{
+        $content_insu .= "<h3>Primary Insurance Data:</h3>";
+        $content_insu .= "<table>";
+        insuranceData1($insurance_data_array, getRecInsuranceData ($pid,"primary"), $content_insu);
+        $content_insu .= "</table>";
+        $content_insu .= "<h3>Secondary Insurance Data:</h3>";
+        $content_insu .= "<table>";
+        insuranceData1($insurance_data_array, getRecInsuranceData ($pid,"secondary"), $content_insu);
+        $content_insu .= "</table>";
+        $content_insu .= "<h3>Tertiary Insurance Data:</h3>";
+        $content_insu .= "<table>";
+        insuranceData1($insurance_data_array, getRecInsuranceData ($pid,"tertiary"), $content_insu);
+        $content_insu .= "</table>";
+    }
+}
+
+function insuranceData1($data_array, $recres, $content_insu) {
+    global $content_insu;
+    $content_insu .= "<table>";
+    $i = 1;
+    foreach ($data_array as $akey => $aval) {
+        if (sizeof($recres{$akey})>0 && ($recres{$akey}[1]{"value"}!="0000-00-00 00:00:00")) {
+            if($i%2 != 0)   $content_insu .= "<tr><td><b>" . $aval . "</b>";
+            else    $content_insu .= "<td><b>" . $aval . "</b>";
+            insuranceData2($recres, $akey, "Y-m-d", $content_insu, $i);
+            $i++;
+        }
+    }
+    if($data_array%2 != 0)  $content_insu .= "</tr>";
+}
+            
+function insuranceData2 ($retar, $key, $date_format, $content_insu, $i) {
+    global $content_insu;
+    if (@array_key_exists($key,$retar)) {
+        $length = sizeof($retar{$key});
+        if ($retar{$key}[$length]{"value"} != "0000-00-00 00:00:00") {
+        $tmp = $retar{$key}[$length]{"value"};
+        if (strstr($key, 'DOB')) $tmp = oeFormatShortDate($tmp);
+            if($i%2 != 0)   $content_insu .= $tmp . "</td>";
+            else    $content_insu .= " : " . $tmp . "</td></tr>";
+        }
+    }
+}
+
+pdfInsuranceData($pid, $insurance_data_array_custom, $insurance_data_array);
+
+$pdf->WriteHTML($content_insu, true, false, false, false, '');
+
+?>
