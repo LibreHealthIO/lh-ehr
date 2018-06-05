@@ -44,6 +44,7 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+
 $library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -389,6 +390,7 @@ if ($_POST['form_action'] == "duplicate") {
 
     InsertEventFull();
     DOBandEncounter();
+    refreshCalendar(); //after "Create Duplicate" process is complete
 
  }
 
@@ -719,6 +721,8 @@ if ($_POST['form_action'] == "save") {
 
         DOBandEncounter();
 
+    refreshCalendar(); //after "Save" process is complete
+
  }
 
 // =======================================
@@ -825,6 +829,8 @@ if ($_POST['form_action'] == "save") {
 
             manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],'Deleted',$_POST['form_room']);
         }
+
+        refreshCalendar(); //after "Delete" process is complete
  }
 
  if ($_POST['form_action'] != "") {
