@@ -27,7 +27,7 @@ require_once("$srcdir/auth.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once($GLOBALS['srcdir'] . "/classes/postmaster.php");
 require_once("$srcdir/headers.inc.php");
-require_once("$srcdir/calendarRefresh.php");
+require_once("$srcdir/calendar.inc");
 
 $alertmsg = '';
 $bg_msg = '';

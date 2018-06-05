@@ -44,7 +44,7 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
-require_once($GLOBALS['srcdir']."/calendarRefresh.php");
+
 $library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);

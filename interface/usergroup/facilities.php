@@ -37,7 +37,7 @@ require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/headers.inc.php");
-require_once("$srcdir/calendarRefresh.php");
+require_once("$srcdir/calendar.inc");
 
 $alertmsg = '';
 
