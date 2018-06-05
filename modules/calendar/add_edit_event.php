@@ -1320,7 +1320,7 @@ echo '
             // refresh and redirect the parent window
             if (!opener.closed && opener.refreshme) opener.refreshme();
             top.restoreSession();
-            opener.document.location="../../new/new.php";
+            opener.document.location="../../interface/new/new.php";
             // Close the window
             window.close();
 </script>';
