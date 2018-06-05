@@ -33,5 +33,21 @@ function checkFormIsActive ($form_name, $encounter)
 
 return $formid;
 }
+function is_Form_Enabled($directory_name)
+{
+   $sql = "SELECT state, sql_run, directory " .
+      " FROM registry WHERE " .
+      "directory = ? ";
+    $form_enabled = sqlquery($sql, array($directory_name));
+    if(($form_enabled['state'] == '1') && ($form_enabled['sql_run'] == '1'))
+    {
+            return true;
+    }
+    else
+    {
+            return false;
+    }
+    $result->free();
+}
 
 ?>
