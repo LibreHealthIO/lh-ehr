@@ -52,6 +52,10 @@ body {
     color: darkblue;
 }
 
+.red{
+    color: red;
+}
+
 /*==================================
         NAVBARS STYLING
  ================================*/
@@ -98,6 +102,9 @@ body {
 
 }
 
+h4{
+    font-weight: bolder;
+}
 
 ul > li {
     padding: 5px;

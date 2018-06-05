@@ -55,4 +55,4 @@
     <p class="clearfix"></p>
     <p class="clearfix"></p>
     <div class="container">
-        <div class="card">
+
