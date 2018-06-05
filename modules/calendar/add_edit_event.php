@@ -48,8 +48,9 @@ $library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  //Check access control
- if (!acl_check('patients','appt','',array('write','wsome') ))
+if (!acl_check('patients', 'appt', '', array('write' , 'wsome'))) {
    die(xl('Access not allowed'));
+}
 
 /* Things that might be passed by our opener. */
  $eid           = $_GET['eid'];         // only for existing events
@@ -57,25 +58,44 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  $userid        = $_GET['userid'];
  $default_catid = $_GET['catid'] ? $_GET['catid'] : '5';
  //
- if ($date)
+if ($date) {
   $date = substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6);
- else
+} else {
   $date = date("Y-m-d");
+}
+
  //
  $starttimem = '00';
- if (isset($_GET['starttimem']))
+if (isset($_GET['starttimem'])) {
   $starttimem = substr('00' . $_GET['starttimem'], -2);
+}
+ $endtimem = '00';
+if (isset($_GET['endtimem'])) {
+  $endtimem = substr('00' . $_GET['endtimem'], -2);
+}
  //
  if (isset($_GET['starttimeh'])) {
   $starttimeh = $_GET['starttimeh'];
   if (isset($_GET['startampm'])) {
-   if ($_GET['startampm'] == '2' && $starttimeh < 12)
+        if ($_GET['startampm'] == '2' && $starttimeh < 12) {
     $starttimeh += 12;
   }
+    }
  } else {
   $starttimeh = date("G");
  }
+  if (isset($_GET['endtimeh'])) {
+  $endtimeh = $_GET['endtimeh'];
+  if (isset($_GET['endampm'])) {
+        if ($_GET['endampm'] == '2' && $endtimeh < 12) {
+    $endtimeh += 12;
+  }
+    }
+ } else {
+  $endtimeh = date("G");
+ }
  $startampm = '';
+ $endampm = '';
 
  $info_msg = "";
 
@@ -137,7 +157,10 @@ function DOBandEncounter()
      $patient_dob = trim($_POST['form_dob']);
      $tmph = $_POST['form_hour'] + 0;
      $tmpm = $_POST['form_minute'] + 0;
-     if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
+        if ($_POST['form_ampm'] == '2' && $tmph < 12) {
+            $tmph += 12;
+        }
+
      $appttime = "$tmph:$tmpm:00";
 
      if ($patient_dob && $_POST['form_pid']) {
@@ -178,7 +201,8 @@ function DOBandEncounter()
  /*This function is used for setting the date of the first event when using the "day_every_week" repetition mechanism.
  When the 'start date' is not one of the days chosen for the repetition, the start date needs to be changed to the first
  occurrence of one of these set days. */
- function setEventDate($start_date, $recurrence){
+    function setEventDate($start_date, $recurrence)
+    {
      $timestamp = strtotime($start_date);
      $day = date('w', $timestamp);
      //If the 'start date' is one of the set days
@@ -204,7 +228,6 @@ if ( $eid ) {
                             FROM libreehr_postcalendar_events
                               LEFT JOIN facility ON (libreehr_postcalendar_events.pc_facility = facility.id)
                               WHERE pc_eid = ?", array($eid) );
-    // if ( !$facility['pc_facility'] ) {
     if ( is_array($facility) && !$facility['pc_facility'] ) {
         $qmin = sqlQuery("SELECT facility_id as minId, facility FROM users WHERE id = ?", array($facility['pc_aid']) );
         $min  = $qmin['minId'];
@@ -246,23 +269,10 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
     } else {
         $tmph = $_POST['form_hour'] + 0;
         $tmpm = $_POST['form_minute'] + 0;
-        if ($_POST['form_ampm'] == '2' && $tmph < 12) $tmph += 12;
+        if ($_POST['form_ampm'] == '2' && $tmph < 12){
+             $tmph += 12;
+        }
         $duration = abs($_POST['form_duration']); // fixes #395
-    }
-    //check for selected appointment time
-    if ($GLOBALS['check_appt_time'] == 1) {
-      //before starttime gets the values from form_hour & form_minute after clicking save,
-      //check if they (tmph & tmpm) are within clinic hours
-      $user_ampm = $_POST['form_ampm'];
-        $user_selected_time = $tmph + ($tmpm/60);
-      //checked for AM/PM because globals: schedule start and end times are in 24 hour format
-      if ($user_selected_time < $GLOBALS['schedule_start'] || $user_selected_time > $GLOBALS['schedule_end']) {
-        $alert_user_mssg = '<script type="text/javascript">alert("Please select time between clinic hours.");</script>';
-        $close_events_window = '<script type="text/javascript">window.close();</script>';
-        echo $alert_user_mssg;
-        echo $close_events_window;
-        exit();
-      }
     }
 
     $tmph = sprintf( "%02d", $tmph );
@@ -274,6 +284,16 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
         $tmpm -= 60;
         ++$tmph;
     }
+
+
+    if($_POST['form_hour_end'] > '00') {
+       $tmph = $_POST['form_hour_end'] + 0;
+       $tmpm = $_POST['form_minute_end'] + 0;
+       if ($_POST['form_ampm_end'] == '2' && $tmph < 12){
+           $tmph += 12;
+       }
+       $endtime = "$tmph:$tmpm:00";
+    }else{
     $endtime = "$tmph:$tmpm:00";
 
     // Set up working variables related to repeated events.
@@ -342,6 +362,18 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
                         "exdate" => $_POST['form_repeat_exdate']
                     );
 
+            //
+        if ($my_recurrtype == 2) { // Added by epsdky 2016 (details in commit)
+            if ($_POST['old_repeats'] == 2) {
+                if ($_POST['rt2_flag2']) {
+                    $recurrspec['rt2_pf_flag'] = "1";
+                }
+            } else {
+                $recurrspec['rt2_pf_flag'] = "1";
+            }
+        } // End of addition by epsdky
+            //
+
     // no recurr specs, this is used for adding a new non-recurring event
     $noRecurrspec = array("event_repeat_freq" => "",
                         "event_repeat_freq_type" => "",
@@ -363,6 +395,12 @@ if ($_POST['form_action'] == "duplicate") {
 // If we are saving, then save and close the window.
 //
 if ($_POST['form_action'] == "save") {
+    if (($_POST['form_category'] == '2') || ($_POST['form_category'] == '3')) {
+      // save the end time information to create the start and end time for the out of office record
+      $cat3time = $endtime;
+      // in the provider records for in and out of office start and end time are the same
+      $endtime = $starttime;
+    }
     /* =======================================================
      *                    UPDATE EVENTS
      * =====================================================*/
@@ -378,7 +416,9 @@ if ($_POST['form_action'] == "save") {
 
             // obtain current list of providers regarding the multiple key
             $up = sqlStatement("SELECT pc_aid FROM libreehr_postcalendar_events WHERE pc_multiple=?", array($row['pc_multiple']) );
-            while ($current = sqlFetchArray($up)) { $providers_current[] = $current['pc_aid']; }
+            while ($current = sqlFetchArray($up)) {
+                $providers_current[] = $current['pc_aid'];
+            }
 
             // get the new list of providers from the submitted form
             $providers_new = $_POST['form_provider'];
@@ -394,8 +434,11 @@ if ($_POST['form_action'] == "save") {
                         " WHERE pc_aid = ? AND pc_multiple=?", array($provider,$row['pc_multiple']) );
                     $oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
                     $selected_date = date("Ymd", strtotime($_POST['selected_date']));
-                    if ($oldRecurrspec['exdate'] != "") { $oldRecurrspec['exdate'] .= ",".$selected_date; }
-                    else { $oldRecurrspec['exdate'] .= $selected_date; }
+                    if ($oldRecurrspec['exdate'] != "") {
+                        $oldRecurrspec['exdate'] .= ",".$selected_date;
+                    } else {
+                        $oldRecurrspec['exdate'] .= $selected_date;
+                    }
 
                     // mod original event recur specs to exclude this date
                     sqlStatement("UPDATE libreehr_postcalendar_events SET " .
@@ -483,8 +526,10 @@ if ($_POST['form_action'] == "save") {
                 // this is important when editing an existing recurring event
                 // oct-08 JRM
                 if ($_POST['form_date'] == $_POST['selected_date']) {
-                    // user has NOT changed the start date of the event
-                    if($my_recurrtype != 3) $event_date = fixDate($_POST['event_start_date']);
+                        // user has NOT changed the start date of the event (and not recurrtype 3)
+                        if ($my_recurrtype != 3) {
+                            $event_date = fixDate($_POST['event_start_date']);
+                }
                 }
 
                 // this difference means that some providers were added
@@ -528,6 +573,7 @@ if ($_POST['form_action'] == "save") {
                         "pc_apptstatus = '" . add_escape_custom($_POST['form_apptstatus']) . "', "  .
                         "pc_prefcatid = '" . add_escape_custom($_POST['form_prefcat']) . "' ,"  .
                         "pc_facility = '" . add_escape_custom((int)$_POST['facility']) ."' ,"  . // FF stuff
+                        "cancel_reason = '" . add_escape_custom($_POST['form_reason_to_cancel']) ."' ,"  .
                         "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  .
                         "WHERE pc_aid = '" . add_escape_custom($provider) . "' AND pc_multiple = '" . add_escape_custom($row['pc_multiple'])  . "'");
                 } // foreach
@@ -548,8 +594,11 @@ if ($_POST['form_action'] == "save") {
                 $origEvent = sqlQuery("SELECT pc_recurrspec FROM libreehr_postcalendar_events WHERE pc_eid = ?", array($eid) );
                 $oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
                 $selected_date = date("Ymd", strtotime($_POST['selected_date']));
-                if ($oldRecurrspec['exdate'] != "") { $oldRecurrspec['exdate'] .= ",".$selected_date; }
-                else { $oldRecurrspec['exdate'] .= $selected_date; }
+                    if ($oldRecurrspec['exdate'] != "") {
+                        $oldRecurrspec['exdate'] .= ",".$selected_date;
+                    } else {
+                        $oldRecurrspec['exdate'] .= $selected_date;
+                    }
 
                 // mod original event recur specs to exclude this date
                 sqlStatement("UPDATE libreehr_postcalendar_events SET " .
@@ -570,8 +619,7 @@ if ($_POST['form_action'] == "save") {
                 $args['endtime'] = $endtime;
                 $args['locationspec'] = $locationspec;
                 InsertEvent($args);
-            }
-            else if ($_POST['recurr_affect'] == 'future') {
+                } else if ($_POST['recurr_affect'] == 'future') {
                 // mod original event to stop recurring on this date-1
                 $selected_date = date("Ymd", (strtotime($_POST['selected_date'])-24*60*60));
                 sqlStatement("UPDATE libreehr_postcalendar_events SET " .
@@ -594,8 +642,10 @@ if ($_POST['form_action'] == "save") {
     // this is important when editing an existing recurring event
     // oct-08 JRM
     if ($_POST['form_date'] == $_POST['selected_date']) {
-        // user has NOT changed the start date of the event
-        if($my_recurrtype != 3) $event_date = fixDate($_POST['event_start_date']);
+         // user has NOT changed the start date of the event (and not recurrtype 3)
+          if ($my_recurrtype != 3) {
+              $event_date = fixDate($_POST['event_start_date']);
+          }
     }
 
                 do_action( 'before_update_event',  $data = [ 'pc_eid' => $eid, ] );
@@ -622,6 +672,7 @@ if ($_POST['form_action'] == "save") {
                     "pc_apptstatus = '" . add_escape_custom($_POST['form_apptstatus']) . "', "  .
                     "pc_prefcatid = '" . add_escape_custom($_POST['form_prefcat']) . "' ,"  .
                     "pc_facility = '" . add_escape_custom((int)$_POST['facility']) ."' ,"  . // FF stuff
+                    "cancel_reason = '" . add_escape_custom($_POST['form_reason_to_cancel']) ."' ,"  .
                     "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  .
                     "WHERE pc_eid = '" . add_escape_custom($eid) . "'");
 
@@ -658,6 +709,14 @@ if ($_POST['form_action'] == "save") {
 
     // done with EVENT insert/update statements
 
+      if ($_POST['form_category'] == '2' && (!$eid)) { //adding category 3 based on category 2
+        $endtime = $cat3time;
+        $starttime = $cat3time;
+        $_POST['form_category'] = '3';
+        $_POST['form_title'] = 'Out Of Office';
+        InsertEventFull();
+      }
+
         DOBandEncounter();
 
  }
@@ -680,8 +739,11 @@ if ($_POST['form_action'] == "save") {
             while ($current = sqlFetchArray($up)) { $providers_current[] = $current['pc_aid']; }
 
             // establish a WHERE clause
-            if ( $row['pc_multiple'] ) { $whereClause = "pc_multiple = '{$row['pc_multiple']}'"; }
-            else { $whereClause = "pc_eid = '$eid'"; }
+            if ( $row['pc_multiple'] ) {
+                 $whereClause = "pc_multiple = '{$row['pc_multiple']}'";
+            } else {
+                 $whereClause = "pc_eid = '$eid'";
+            }
 
             if ($_POST['recurr_affect'] == 'current') {
                 // update all existing event records to exlude the current date
@@ -692,8 +754,11 @@ if ($_POST['form_action'] == "save") {
                         " WHERE pc_aid = ? AND pc_multiple=?", array($provider,$row['pc_multiple']) );
                     $oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
                     $selected_date = date("Ymd", strtotime($_POST['selected_date']));
-                    if ($oldRecurrspec['exdate'] != "") { $oldRecurrspec['exdate'] .= ",".$selected_date; }
-                    else { $oldRecurrspec['exdate'] .= $selected_date; }
+                    if ($oldRecurrspec['exdate'] != "") {
+                        $oldRecurrspec['exdate'] .= ",".$selected_date;
+                    } else {
+                        $oldRecurrspec['exdate'] .= $selected_date;
+                    }
 
                     // mod original event recur specs to exclude this date
                     sqlStatement("UPDATE libreehr_postcalendar_events SET " .
@@ -728,8 +793,11 @@ if ($_POST['form_action'] == "save") {
                 $origEvent = sqlQuery("SELECT pc_recurrspec FROM libreehr_postcalendar_events WHERE pc_eid = ?", array($eid) );
                 $oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
                 $selected_date = date("Ymd", strtotime($_POST['selected_date']));
-                if ($oldRecurrspec['exdate'] != "") { $oldRecurrspec['exdate'] .= ",".$selected_date; }
-                else { $oldRecurrspec['exdate'] .= $selected_date; }
+                if ($oldRecurrspec['exdate'] != "") {
+                    $oldRecurrspec['exdate'] .= ",".$selected_date;
+                } else {
+                    $oldRecurrspec['exdate'] .= $selected_date;
+                }
                 sqlStatement("UPDATE libreehr_postcalendar_events SET " .
                     " pc_recurrspec = ? ".
                     " WHERE pc_eid = ?", array(serialize($oldRecurrspec),$eid) );
@@ -741,9 +809,7 @@ if ($_POST['form_action'] == "save") {
                 sqlStatement("UPDATE libreehr_postcalendar_events SET " .
                     " pc_enddate = ? ".
                     " WHERE pc_eid = ?", array($selected_date,$eid) );
-            }
-
-            else {
+            } else {
                 // fully delete the event from the database
                 sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_eid = ?", array($eid) );
             }
@@ -802,12 +868,14 @@ if ($_POST['form_action'] == "save") {
  $repeattype = '0';
  $repeatfreq = '0';
  $patientid = '';
-
+ $cancelreason = '';
  // fix for new calendar
  if (isset($_SESSION['pid']) && $_SESSION['pid'] > 0) $patientid = $_SESSION['pid'];
 
  // used in find_patient.php
- if ($_REQUEST['patientid']) $patientid = $_REQUEST['patientid'];
+ if ($_REQUEST['patientid']) {
+     $patientid = $_REQUEST['patientid'];
+ }
 
  $patientname = xl('Click to select');
  $patienttitle = "";
@@ -818,22 +886,25 @@ if ($_POST['form_action'] == "save") {
 
  // If we are editing an existing event, then get its data.
  if ($eid) {
-  // $row = sqlQuery("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = $eid");
 
   $row = sqlQuery("SELECT e.*, u.fname, u.mname, u.lname " .
     "FROM libreehr_postcalendar_events AS e " .
     "LEFT OUTER JOIN users AS u ON u.id = e.pc_informant " .
     "WHERE pc_eid = ?", array($eid) );
   $informant = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'];
-
+  $cancelreason = $row['cancel_reason'];
   // instead of using the event's starting date, keep what has been provided
   // via the GET array, see the top of this file
-  if (empty($_GET['date'])) $date = $row['pc_eventDate'];
+  if (empty($_GET['date'])) {
+      $date = $row['pc_eventDate'];
+  }
   $eventstartdate = $row['pc_eventDate']; // for repeating event stuff - JRM Oct-08
   $userid = $row['pc_aid'];
   $patientid = $row['pc_pid'];
   $starttimeh = substr($row['pc_startTime'], 0, 2) + 0;
   $starttimem = substr($row['pc_startTime'], 3, 2);
+  $endtimeh = substr($row['pc_endTime'], 0, 2) + 0;
+  $endtimem = substr($row['pc_endTime'], 3, 2);
   $repeats = $row['pc_recurrtype'];
   $multiple_value = $row['pc_multiple'];
 
@@ -909,12 +980,21 @@ if ($_POST['form_action'] == "save") {
 
  // Fix up the time format for AM/PM.
  $startampm = '1';
+ $endampm = '1';
  if ($starttimeh >= 12) { // p.m. starts at noon and not 12:01
   $startampm = '2';
       if ( $GLOBALS['time_display_format'] == 1) {
   if ($starttimeh > 12) $starttimeh -= 12;
     } else {
        if ($starttimeh > 24) $starttimeh -= 12;
+    }
+ }
+  if ($endtimeh >= 12) { // p.m. starts at noon and not 12:01
+  $endampm = '2';
+      if ( $GLOBALS['time_display_format'] == 1) {
+  if ($endtimeh > 12) $endtimeh -= 12;
+    } else {
+       if ($endtimeh > 24) $endtimeh -= 12;
     }
  }
 
@@ -960,24 +1040,31 @@ td { font-size:0.8em; }
  }
  while ($crow = sqlFetchArray($cres)) {
   $duration = round($crow['pc_duration'] / 60);
-  if ($crow['pc_end_all_day']) $duration = 1440;
+    if ($crow['pc_end_all_day']) {
+        $duration = 1440;
+    }
 
   // This section is to build the list of preferred categories:
   if ($duration) {
    $prefcat_options .= "    <option value='" . attr($crow['pc_catid']) . "'";
    if ($eid) {
-    if ($crow['pc_catid'] == $row['pc_prefcatid']) $prefcat_options .= " selected";
+       if ($crow['pc_catid'] == $row['pc_prefcatid']) {
+           $prefcat_options .= " selected";
+       }
    }
    $prefcat_options .= ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
   }
 
-  if ($crow['pc_cattype'] != $cattype) continue;
+  if ($crow['pc_cattype'] != $cattype) {
+      continue;
+  }
 
   echo " durations[" . attr($crow['pc_catid']) . "] = " . attr($duration) . "\n";
-  // echo " rectypes[" . $crow['pc_catid'] . "] = " . $crow['pc_recurrtype'] . "\n";
   $catoptions .= "    <option value='" . attr($crow['pc_catid']) . "'";
   if ($eid) {
-   if ($crow['pc_catid'] == $row['pc_catid']) $catoptions .= " selected";
+      if ($crow['pc_catid'] == $row['pc_catid']) {
+          $catoptions .= " selected";
+      }
   } else {
    if ($crow['pc_catid'] == $default_catid) {
     $catoptions .= " selected";
@@ -1140,12 +1227,22 @@ td { font-size:0.8em; }
   '<?php echo xls("4th"); ?>'
  );
 
+var weekDays = new Array(
+  '<?php echo xls("Sunday"); ?>',
+  '<?php echo xls("Monday"); ?>',
+  '<?php echo xls("Tuesday"); ?>',
+  '<?php echo xls("Wednesday"); ?>',
+  '<?php echo xls("Thursday"); ?>',
+  '<?php echo xls("Friday"); ?>',
+  '<?php echo xls("Saturday"); ?>'
+ );
+
  // Monitor start date changes to adjust repeat type options.
  function dateChanged() {
   var f = document.forms[0];
   if (!f.form_date.value) return;
   var d = new Date(f.form_date.value);
-  var downame = Calendar._DN[d.getUTCDay()];
+  var downame = weekDays[d.getUTCDay()];
   var nthtext = '';
   var occur = Math.floor((d.getUTCDate() - 1) / 7);
   if (occur < 4) { // 5th is not allowed
@@ -1237,6 +1334,10 @@ $classpati='';
 <!-- used for recurring events -->
 <input type="hidden" name="selected_date" id="selected_date" value="<?php echo attr($date); ?>">
 <input type="hidden" name="event_start_date" id="event_start_date" value="<?php echo attr($eventstartdate); ?>">
+<!-- Following added by epsdky 2016 (details in commit) -->
+<input   type="hidden" name="old_repeats" id="old_repeats" value="<?php echo attr($repeats); ?>">
+<input   type="hidden" name="rt2_flag2" id="rt2_flag2" value="<?php echo attr(isset($rspecs['rt2_pf_flag']) ? $rspecs['rt2_pf_flag'] : '0'); ?>">
+<!-- End of addition by epsdky -->
 <center>
 <table border='0' >
 <?php
@@ -1253,8 +1354,11 @@ $classpati='';
     $eid=$_REQUEST["eid"];
     $startm=$_REQUEST["startampm"];
     $starth=$_REQUEST["starttimeh"];
+    $endm=$_REQUEST["endampm"];
+    $endh=$_REQUEST["endtimeh"];
     $uid=$_REQUEST["userid"];
     $starttm=$_REQUEST["starttimem"];
+    $endtm=$_REQUEST["endtimem"];
     $dt=$_REQUEST["date"];
     $cid=$_REQUEST["catid"];
 ?>
@@ -1333,12 +1437,31 @@ $classpati='';
   <td nowrap>&nbsp;
 
   </td>
+     <?php if($_GET['prov']==true){ ?>
+    <td width='1%' nowrap id='tdallday2'>
+   <?php echo xlt('End Time'); ?>
+  </td>
+  <td width='1%' nowrap id='tdallday3'>
+   <span>
+    <input type='text' size='2' name='form_hour_end' value='<?php echo attr($endtimeh) ?>'
+     title='<?php echo xla('Event end time'); ?>' /> :
+    <input type='text' size='2' name='form_minute_end' value='<?php echo attr($endtimem) ?>'
+     title='<?php echo xla('Event end time'); ?>' />&nbsp;
+   </span>
+   <select name='form_ampm_end' title='<?php echo xla("Note: 12:00 noon is PM, not AM"); ?>'>
+    <option value='1'><?php echo xlt('AM'); ?></option>
+    <option value='2'<?php if ($endampm == '2') echo " selected" ?>><?php echo xlt('PM'); ?></option>
+   </select>
+  </td>
+     <?php } else { ?>
   <td nowrap id='tdallday4'><?php echo xlt('duration'); ?>
   </td>
   <td nowrap id='tdallday5'>
    <input type='text' size='4' name='form_duration' value='<?php echo attr($thisduration) ?>' title='<?php echo xla('Event duration in minutes'); ?>' />
     <?php echo xlt('minutes'); ?>
   </td>
+     <?php }?>
+
  </tr>
 
     <tr>
@@ -1374,10 +1497,14 @@ $classpati='';
       // EOS E2F
       // ===========================
       ?>
-      <?php
-      //END (CHEMED) IF ?>
+                            </select>
+
       </td>
-      </select>
+    <?php if($_GET['prov']==true){ ?>
+    <td nowrap id='tdallday4'><td>
+    <td nowrap id='tdallday5'><td>
+   <input type='hidden' size='4' name='form_duration' value='' title='' />
+     <?php } ?>
     </tr>
     <tr>
         <td nowrap>
@@ -1447,11 +1574,16 @@ if  ($GLOBALS['select_multi_providers']) {
         echo "    <option value='" . attr($urow['id']) . "'";
 
         if ($userid) {
-            if ( in_array($urow['id'], $providers_array) || ($urow['id'] == $userid) ) echo " selected";
+            if (in_array($urow['id'], $providers_array) || ($urow['id'] == $userid)) {
+                echo " selected";
+            }
         }
 
         echo ">" . text($urow['lname']);
-        if ($urow['fname']) echo ", " . text($urow['fname']);
+        if ($urow['fname']) {
+            echo ", " . text($urow['fname']);
+        }
+
         echo "</option>\n";
     }
 
@@ -1508,14 +1640,22 @@ if  ($GLOBALS['select_multi_providers']) {
         $defaultProvider = $firstProvider['id'];
       }
       // if we clicked on a provider's schedule to add the event, use THAT.
-      if ($userid) $defaultProvider = $userid;
+        if ($userid) {
+            $defaultProvider = $userid;
+        }
     }
     echo "<select name='form_provider' style='width:100%' />";
     while ($urow = sqlFetchArray($ures)) {
       echo "    <option value='" . attr($urow['id']) . "'";
-      if ($urow['id'] == $defaultProvider) echo " selected";
+        if ($urow['id'] == $defaultProvider) {
+            echo " selected";
+        }
+
       echo ">" . text($urow['lname']);
-      if ($urow['fname']) echo ", " . text($urow['fname']);
+        if ($urow['fname']) {
+            echo ", " . text($urow['fname']);
+        }
+
       echo "</option>\n";
     }
     echo "</select>";
@@ -1529,21 +1669,21 @@ if  ($GLOBALS['select_multi_providers']) {
    &nbsp;&nbsp;
       <?php
       //Check if repeat is using the new 'days every week' mechanism.
-      function isDaysEveryWeek($repeat){
+        function isDaysEveryWeek($repeat)
+        {
           if($repeat == 3){
               return true;
-          }
-          else{
+            } else {
               return false;
           }
       }
 
       //Check if using the regular repeat mechanism.
-      function isRegularRepeat($repeat){
+        function isRegularRepeat($repeat)
+        {
           if($repeat == 1 || $repeat == 2){
               return true;
-          }
-          else{
+            } else {
               return false;
           }
       }
@@ -1569,7 +1709,10 @@ if  ($GLOBALS['select_multi_providers']) {
   as $key => $value)
  {
   echo "    <option value='" . attr($key) . "'";
-  if ($key == $repeatfreq && isRegularRepeat($repeats)) echo " selected";
+    if ($key == $repeatfreq && isRegularRepeat($repeats)) {
+        echo " selected";
+    }
+
   echo ">" . text($value) . "</option>\n";
  }
 ?>
@@ -1583,7 +1726,10 @@ if  ($GLOBALS['select_multi_providers']) {
    5 => '?', 6 => '?') as $key => $value)
  {
   echo "    <option value='" . attr($key) . "'";
-  if ($key == $repeattype && isRegularRepeat($repeats)) echo " selected";
+    if ($key == $repeattype && isRegularRepeat($repeats)) {
+        echo " selected";
+    }
+
   echo ">" . text($value) . "</option>\n";
  }
 ?>
@@ -1601,8 +1747,17 @@ if  ($GLOBALS['select_multi_providers']) {
 <tr id="days_every_week_row">
     <td></td>
     <td></td>
-    <td><input  type='checkbox' name='days_every_week' onclick='set_days_every_week()' <?php if (isDaysEveryWeek($repeats)) echo " checked" ?>/></td>
-    <td id="days_label"><?php echo xlt('Days Of Week') . ": "; ?></td>
+    <td>
+    <input type='checkbox' id='days_every_week' name='days_every_week' onclick='set_days_every_week()'
+    <?php
+       if (isDaysEveryWeek($repeats)) {
+           echo " checked";
+       }
+    ?>/>
+    </td>
+    <td id="days_label">
+        <?php echo xlt('Days Of Week') . ": "; ?>
+    </td>
     <td id="days">
         <?php
         foreach (array(1 => xl('Su{{Sunday}}') , 2 => xl('M{{Monday}}'), 3 => xl('Tu{{Tuesday}}'), 4 => xl('W{{Wednesday}}'),
@@ -1610,7 +1765,10 @@ if  ($GLOBALS['select_multi_providers']) {
         {
             echo " <div><input type='checkbox' name='day_". attr($key) ."'";
             //Checks appropriate days according to days in recurrence string.
-            if (in_array($key, explode(',',$repeatfreq)) && isDaysEveryWeek($repeats)) echo " checked";
+            if (in_array($key, explode(',', $repeatfreq)) && isDaysEveryWeek($repeats)) {
+                echo " checked";
+            }
+
             echo " /><label>" . text($value) . "</label></div>\n";
         }
         ?>
@@ -1627,6 +1785,11 @@ if  ($GLOBALS['select_multi_providers']) {
 
 <?php
 generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'apptstat','empty_title'=>'SKIP'), $row['pc_apptstatus']);
+if(($_GET['prov']!=true) ){
+    if(strlen($cancelreason)> '4'){
+     echo xlt(' Reason: ') . $cancelreason;
+    }
+}
 ?>
    <!--
     The following list will be invisible unless this is an In Office
@@ -1648,13 +1811,16 @@ generate_form_field(array('data_type'=>1,'field_id'=>'apptstatus','list_id'=>'ap
 <?php
 if ($repeatexdate != "") {
     $tmptitle = "The following dates are excluded from the repeating series";
-    if ($multiple_value) { $tmptitle .= " for one or more providers:\n"; }
-    else { $tmptitle .= "\n"; }
+    if ($multiple_value) {
+        $tmptitle .= " for one or more providers:\n";
+    } else {
+        $tmptitle .= "\n";
+    }
     $exdates = explode(",", $repeatexdate);
     foreach ($exdates as $exdate) {
         $tmptitle .= date("d M Y", strtotime($exdate))."\n";
     }
-    echo "<a href='#' title='" . attr($tmptitle) . "' alt='" . attr($tmptitle) . "'><img src='../../pic/warning.gif' title='" . attr($tmptitle) . "' alt='*!*' style='border:none;'/></a>";
+    echo "<a href='#' title='" . attr($tmptitle) . "' alt='" . attr($tmptitle) . "'><img src='../../interface/pic/warning.gif' title='" . attr($tmptitle) . "' alt='*!*' style='border:none;'/></a>";
 }
 ?>
   </td>
@@ -1711,12 +1877,12 @@ $query = sqlStatement($sql);
 while ($r = sqlFetchArray($query)) {
     echo "<input type='radio' value='". $r['title']."' name='form_reason_for_cancellation'>".$r['title']."<br/>";
 }
-echo "<input type='radio' value='other' name='form_reason_for_cancellation' id='reason_others'>other";
+echo "<input type='radio' value='Other' name='form_reason_for_cancellation' id='reason_other'>Other";
 ?>
 <br/><br/>
 <div id="reason_textarea" style="display: none;">
     <b style="margin-left: 1em;"><?php echo xlt('Please Add your reason'); ?></b><br/><br/>
-    <textarea id="others_textarea" rows="3" cols="50" style="margin-left: 1em;"></textarea>
+    <textarea id="other_textarea" rows="3" cols="50" style="margin-left: 1em;"></textarea>
 </div>
 <br/><br/>
 <input type="button" class="cp-submit" value="Submit" style="margin-left: 20em;" id="close_reason_modal">
@@ -1729,7 +1895,11 @@ echo "<input type='radio' value='other' name='form_reason_for_cancellation' id='
 <?php } ?>
 
 &nbsp;
+ <?php
+ if($_GET['prov']==true){
+ ?>
 <input type='button' class="cp-negative" name='form_delete' id='form_delete' value='<?php echo xla('Delete');?>'<?php if (!$eid) echo " disabled" ?> />
+<?php } ?>
 &nbsp;
 <input type='button' class="cp-negative" id='cancel' value='<?php echo xla('Cancel');?>' />
 &nbsp;
@@ -1761,6 +1931,7 @@ echo "<input type='radio' value='other' name='form_reason_for_cancellation' id='
 <?php } ?>
  set_allday();
  set_repeat();
+set_days_every_week();
 
 $(function() {
     $("#form_date, #form_enddate, #form_dob").datetimepicker({
@@ -1821,18 +1992,44 @@ function are_days_checked(){
 
 // Check for errors when the form is submitted.
 function validate(valu) {
-     var f = document.getElementById('theform');
+    var f = document.getElementById('theform');
     if ((f.form_repeat.checked || f.days_every_week.checked) &&
         (! f.form_enddate.value || f.form_enddate.value < f.form_date.value)) {
         alert('<?php echo addslashes(xl("An end date later than the start date is required for repeated events!")); ?>');
         return false;
     }
+
     //Make sure if days_every_week is checked that at least one weekday is checked.
     if(f.days_every_week.checked && !are_days_checked()){
         alert('<?php echo xls("Must choose at least one day!"); ?>');
         return false;
     }
 
+    //check if user selected appt. time is within clinic hours
+    var checkApptTime = '<?php echo($GLOBALS['check_appt_time']) ?>';
+    if (f.form_allday.value < 1 && checkApptTime == 1) {
+        //only when Time radio button is selected (value is "0", otherwise "1")
+        //and global is checked (= "1")
+        var userAMPM = f.form_ampm.value; //"1" for AM, "2" for PM
+        var userHour = parseInt(f.form_hour.value);
+        var userMinute = parseInt(f.form_minute.value);
+        if (userAMPM == "1") {
+            //AM, 00:00 midnight to 11:59 noon
+            var userTime = userHour + (userMinute/60);
+        } else {
+            //PM, 12:00 noon to 23:59 midnight
+            var userTime = 12 + userHour + (userMinute/60);
+        }
+
+        //checked for AM/PM because globals: schedule start and end times are in 24 hour format
+        //while user (selected) time is in 12 hour format
+        var clinicStartTime = parseInt('<?php echo($GLOBALS['schedule_start']) ?>');
+        var clinicEndTime = parseInt('<?php echo($GLOBALS['schedule_end']) ?>');
+        if (userTime < clinicStartTime || userTime > clinicEndTime) {
+            alert('<?php echo addslashes(xl("Please select time between clinic hours.")); ?>');
+            return false;
+        }
+    }
 
     <?php
     if($_GET['prov']!=true){
@@ -1844,19 +2041,48 @@ function validate(valu) {
     <?php
     }
     ?>
-    $('#form_action').val(valu);
-
-    <?php if ($repeats): ?>
-    // existing repeating events need additional prompt
-    if ($("#recurr_affect").val() == "") {
-        DisableForm();
-        // show the current/future/all DIV for the user to choose one
-        $("#recurr_popup").css("visibility", "visible");
+    //checked for errors till here
+    //now check if selected appt. status is "Deleted" before SubmitForm()
+    //and alert user to make sure to delete patient appt.
+    var status_selected = $("#form_apptstatus option:selected").text();
+    if (status_selected == "Deleted") {
+        //check if user is creating an appt. with status "Deleted"
+        var eventId = '<?php echo $_GET['eid']; ?>'; //numeric for existing events
+        if (eventId > 0) {
+            if (confirm("<?php echo addslashes(xl('Deleting this event cannot be undone. It cannot be recovered once it is gone. Are you sure you wish to delete this event?')); ?>")) {
+                //if selected "OK" on alert
+                $('#form_action').val(valu);
+                <?php if ($repeats): ?>
+                    // existing repeating events need additional prompt
+                    if ($("#recurr_affect").val() == "") {
+                        DisableForm();
+                        // show the current/future/all DIV for the user to choose one
+                        $("#recurr_popup").css("visibility", "visible");
+                        return false;
+                    }
+                <?php endif; ?>
+                return SubmitForm();
+            }
+            //if selected "Cancel" on alert
+            return false;
+        }
+        //alert user if creating appt. with status "Delete";
+        alert('<?php echo addslashes(xl("Cannot create an Appointment with status Deleted")); ?>');
         return false;
+    } else {
+        //if selected appt. status isn't "Deleted", no need to alert
+        $('#form_action').val(valu);
+        <?php if ($repeats): ?>
+            // existing repeating events need additional prompt
+            if ($("#recurr_affect").val() == "") {
+                DisableForm();
+                // show the current/future/all DIV for the user to choose one
+                $("#recurr_popup").css("visibility", "visible");
+                return false;
+            }
+        <?php endif; ?>
+        return SubmitForm();
     }
-    <?php endif; ?>
-
-    return SubmitForm();
 }
 
 // disable all the form elements outside the recurr_popup
@@ -1912,7 +2138,7 @@ function SubmitForm() {
 
 $('#reasons_modal').iziModal({
                title: "<?php echo xlt('Reason for Cancellation'); ?>",
-               subtitle: "<?php echo xlt('Choose the reason for Cancellation. If the reason is not listed then please use the other'); ?>",
+               subtitle: "<?php echo xlt('Choose the reason for Cancellation. If none are applicable, choose Other'); ?>",
                headerColor: '#eee',
                closeOnEscape: true,
                fullscreen:true,
@@ -1933,12 +2159,12 @@ $('#close_reason_modal').click(function () {
    $("#reasons_modal").iziModal('close');
 });
 
-$('#reason_others').click(function () {
+$('#reason_other').click(function () {
     $('#reason_textarea').css("display", "block");
 });
-$('#others_textarea').keyup(function () {
-    var value = $('#others_textarea').val();
-    $('#reason_others').val(value);
+$('#other_textarea').keyup(function () {
+    var value = $('#other_textarea').val();
+    $('#reason_other').val(value);
 });
 </script>
 

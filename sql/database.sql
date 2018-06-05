@@ -4110,11 +4110,11 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('ub_admit_type','9','Information Not Available',60,0);
 
 -- Appointment Cancellation Reasons
-INSERT INTO list_options ( list_id, option_id, title,activity ) VALUES (‘lists’,’cancellation_reasons’,’Cancellation Reasons’, 1);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’1’,’No reason given’,5,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’2’,’Work’,10,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’3’,’Sick’,20,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (‘cancellation_reasons’,’4’,’Weather’,25,0);
+INSERT INTO list_options ( list_id, option_id, title,activity ) VALUES ('lists','cancellation_reasons','Cancellation Reasons', 1);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','1','No reason given',5,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','2','Work',10,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','3','Sick',20,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','4','Weather',25,0);
 --
 -- Table structure for table `lists`
 --
@@ -4619,6 +4619,7 @@ CREATE TABLE `libreehr_postcalendar_events` (
   `pc_sendalertemail` VARCHAR( 3 ) NOT NULL DEFAULT 'NO',
   `pc_billing_location` SMALLINT (6) NOT NULL DEFAULT '0',
   `pc_room` varchar(20) NOT NULL DEFAULT '',
+  `cancel_reason` text,
   PRIMARY KEY  (`pc_eid`),
   KEY `basic_event` (`pc_catid`,`pc_aid`,`pc_eventDate`,`pc_endDate`,`pc_eventstatus`,`pc_sharing`,`pc_topic`),
   KEY `pc_eventDate` (`pc_eventDate`)

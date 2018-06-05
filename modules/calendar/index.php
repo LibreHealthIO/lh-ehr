@@ -23,13 +23,13 @@ require('includes/session.php');
 
 ?>
 <html>
-<head>  
+<head>
   <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
   <link href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
   <link href='css/index.css' rel='stylesheet' />
-  
+
   <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
@@ -42,7 +42,7 @@ require('includes/session.php');
 <body>
   <div id="sidebar">
     <button id="datepicker"><?php echo xlt('Date Picker'); ?></button>
-    
+
     <form name='theform' id='theform' method='post' onsubmit='return top.restoreSession()'>
     <?php
       // CHEMED
@@ -52,9 +52,9 @@ require('includes/session.php');
       } else {
          $provinfo = getProviderInfo();
       }
-      
+
        $default_lang_id = sqlQuery('SELECT lang_code FROM lang_languages WHERE lang_id = ?',array($_SESSION['language_choice']));
-      
+
       // lemonsoftware
       if ($_SESSION['authorizeduser'] == 1) {
         $facilities = getFacilities();
@@ -63,7 +63,7 @@ require('includes/session.php');
         if (count($facilities) == 1)
           $_SESSION['pc_facility'] = key($facilities);
       }
-      
+
       if (count($facilities) > 1) {
         echo "   <select name='pc_facility' id='pc_facility' >\n";
         if ( !$_SESSION['pc_facility'] ) $selected = "selected='selected'";
@@ -91,21 +91,21 @@ require('includes/session.php');
           }
         }
       }
-      
-      
+
+
       // remove those providers which aren't in provinfo from session
       $provinfo_users = array();
       foreach($provinfo as $doc) {
         array_push($provinfo_users, $doc['username']);
       }
       $_SESSION['pc_username'] = array_intersect($_SESSION['pc_username'], $provinfo_users);
-      
+
       echo "   <select multiple size='15' name='pc_username[]' id='pc_username'>\n";
       echo "    <option value='__PC_ALL__' title='All Users'>"  .xl ("All Users"). "</option>\n";
       foreach ($provinfo as $doc) {
         $username = $doc['username'];
         echo "    <option value='$username'";
-        foreach ($_SESSION['pc_username'] as $provider) {          
+        foreach ($_SESSION['pc_username'] as $provider) {
           if ($provider == $username) {
             echo " selected";
           }
@@ -115,7 +115,7 @@ require('includes/session.php');
       echo "   </select>\n";
     ?>
   </form>
-    <?php 
+    <?php
     if($_SESSION['pc_facility'] == 0){
       echo '<div id="facilityColor">';
       echo '<table>';
@@ -127,11 +127,11 @@ require('includes/session.php');
     }
     ?>
   </div>
-  
+
   <div id='calendar-container'>
     <div id='calendar'></div>
   </div>
-  
+
   <script>
     $(document).ready(function() {
       var title_week = '<?php echo xlt('week'); ?>';
@@ -166,7 +166,7 @@ require('includes/session.php');
  //           <?php if($GLOBALS['time_display_format'] == 0) { echo "slotLabelFormat: 'H:mm',"; } ?>
  //           titleFormat: 'ddd, MMM D, YYYY',
  //           groupByDateAndResource: true
- //         }, 
+ //         },
           providerAgenda2Day: {
             type: 'agenda',
             duration: { days: 2 },
@@ -255,10 +255,36 @@ require('includes/session.php');
           $('.tooltipevent').remove();
         },
         select: function(start, end, jsEvent, view, resource) {
-          dlgopen('add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id + 
+          dlgopen('add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id +
           '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
            ,'_blank', 775, 375);
               },
+        eventRender: function(event, element, view) {
+          //converting event title text to hyperlink
+          if (event['pc_pid'] > 0) {
+            //only when event is a patient event
+            //event['pc_pid'] is number string for patient events, empty "" for provider events
+            //var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
+            let link = '<?php echo $GLOBALS['webroot'] . "/interface/patient_file/summary/demographics.php?set_pid="; ?>' + event['pc_pid'];
+            var titleLink = "<a href='#'>" + event['title'] + "</a>";
+            let titleInfo = "<span style='color: #000;'>" + event['e_info'] + "</span>";
+            //find all event title div elements
+            var patientEventTitle = element.find('.fc-title');
+            //remove title text inside them and insert hyperlink
+            patientEventTitle.empty().append(titleLink);
+            //add event description text just after hyperlink
+            patientEventTitle.after(titleInfo);
+            patientEventTitle.on("click", function(e) {
+              //to stop eventClick handler from executing
+              //upon clicking text link
+              e.stopImmediatePropagation();
+              //open demographics in a new tab
+              top.restoreSession();
+              top.RTop.location = link;
+              return false;
+            });
+          }
+        },
         eventClick: function(calEvent, jsEvent, view) {
           var pccattype = (calEvent['pc_pid'] && calEvent['pc_pid'] > 0) ? 0 :  1;
           console.log(pccattype);
@@ -269,19 +295,19 @@ require('includes/session.php');
             var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
             Cookies.set('fullCalendarCurrentDate', view.intervalStart.format(), {expires: inFifteenMinutes, path: ''});
             Cookies.set('fullCalendarCurrentView', view.name, {expires: inFifteenMinutes, path: ''});
-            
+
             // update datepicker
             $('#datepicker').datetimepicker({ value: view.intervalStart.format() });
         }
       })
-      
+
       // refetch events every few seconds.
       <?php if($GLOBALS['calendar_refresh_freq'] != 'none') { ?>
          setInterval(function() { $('#calendar').fullCalendar( 'refetchEvents' ) }, <?php if($GLOBALS['calendar_refresh_freq']) echo $GLOBALS['calendar_refresh_freq']; else echo '720000'; ?>);
       <?php } ?>
-      
+
       // datepicker for calendar
-      $('#datepicker').datetimepicker({ 
+      $('#datepicker').datetimepicker({
         timepicker: false,
         // inline: true,
         //weeks:true,
@@ -294,9 +320,9 @@ require('includes/session.php');
         }
       });
       $.datetimepicker.setLocale('<?php echo $default_lang_id['lang_code'];?>');
-      
+
     });
-    
+
     $("#pc_username").change(function() { $('#theform').submit(); });
     $("#pc_facility").change(function() { $('#theform').submit(); });
   </script>
