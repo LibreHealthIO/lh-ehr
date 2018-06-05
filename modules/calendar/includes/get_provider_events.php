@@ -18,6 +18,7 @@
 
 require_once('../../../interface/globals.php');
 require_once('../../../library/appointments.inc.php');
+require_once("$srcdir/patient_tracker.inc.php");
 
 $events = array();
 
@@ -29,6 +30,8 @@ foreach($fetchedEvents as $event) {
   if ($GLOBALS['display_canceled_appointments'] != 1) {
      if ($event['pc_apptstatus'] == "x") { continue; }
   }
+  $status = $event['pc_apptstatus'];
+  $colorevents = (collectApptStatusSettings($status));
   
   $e = array();
   $e = $event;
@@ -38,7 +41,14 @@ foreach($fetchedEvents as $event) {
   $e['start'] = $event['pc_eventDate'] . " " . $event['pc_startTime'];
   $e['end'] = $event['pc_eventDate'] . " " . $event['pc_endTime'];
   $e['allDay'] = ($e['pc_alldayevent'] == 1) ? true : false;
+  if ($GLOBALS['use_appt_status_colors'] == 1) {
+    $e['color'] = $colorevents['color'];
+      if ($event['pc_apptstatus'] == "-") {
+       $e['color'] = $event['pc_catcolor'];
+      }
+  }else{
   $e['color'] = $event['pc_catcolor'];
+  }
   
   if($event["pc_pid"] > 0) {
     $e['picture_url'] = getPatientPictureUrl($event["pc_pid"]);

@@ -601,6 +601,15 @@ function fetchAppointmentCategories( $appt_prov_inc = false )
      return sqlStatement($catSQL);
 }
 
+function getPatientPictureUrl($pid) {
+$sql = "SELECT picture_url FROM patient_data WHERE pid = '$pid'";
+$query = sqlQ($sql);
+$arr = sqlFetchArray($query);
+
+return $arr['picture_url'];
+
+}
+
 function interpretRecurrence($recurr_freq, $recurr_type){
     global $REPEAT_FREQ, $REPEAT_FREQ_TYPE, $REPEAT_ON_NUM, $REPEAT_ON_DAY;
     $interpreted = "";
@@ -614,13 +623,24 @@ function interpretRecurrence($recurr_freq, $recurr_type){
         $interpreted .= " " . $REPEAT_ON_NUM[$recurr_freq['event_repeat_on_num']];
         $interpreted .= " " . $REPEAT_ON_DAY[$recurr_freq['event_repeat_on_day']];
     }
+    elseif ($recurr_type == 3){
+        $interpreted = $REPEAT_FREQ[1];
+        $comma = "";
+        $day_arr = explode(",", $recurr_freq['event_repeat_freq']);
+        foreach ($day_arr as $day){
+            $interpreted .= $comma . " " . $REPEAT_ON_DAY[$day - 1];
+            $comma = ",";
+        }
+
+    }
 
     return $interpreted;
 }
 
 function fetchRecurrences($pid){
-    $query = "SELECT `pc_title`, `pc_endDate`, `pc_recurrtype`, `pc_recurrspec` FROM openemr_postcalendar_events
-WHERE `pc_pid` = ?  AND `pc_recurrtype` > 0;";
+    $query = "SELECT pe.pc_title, pe.pc_endDate, pe.pc_recurrtype, pe.pc_recurrspec, pc.pc_catname FROM libreehr_postcalendar_events AS pe "
+                    . "JOIN libreehr_postcalendar_categories AS pc ON pe.pc_catid=pc.pc_catid "
+                    . "WHERE pe.pc_pid = ?  AND pe.pc_recurrtype > 0;";
     $sqlBindArray = array();
     array_push($sqlBindArray, $pid);
     $res = sqlStatement($query, $sqlBindArray);
@@ -649,12 +669,5 @@ function recurrence_is_current($end_date){
         return true; //recurrence is current
     }
     return false;
-}
-
-function getPatientPictureUrl($pid) {
-$sql = "SELECT picture_url FROM patient_data WHERE pid = '$pid'";
-$query = sqlQ($sql);
-$arr = sqlFetchArray($query);
-return $arr['picture_url'];
 }
 ?>

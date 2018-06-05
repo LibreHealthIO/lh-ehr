@@ -1341,7 +1341,11 @@ if ($GLOBALS['referring_physician_in_feesheet']) {
 
 if ($GLOBALS['contract_physician_in_feesheet']) {
   echo "&nbsp;&nbsp;" . xlt($GLOBALS['contract_physician_in_feesheet_name']) . "\n";
+  if (trim($GLOBALS['contract_physician_in_feesheet_name']) == 'Users') {
+      genUserSelect('ContractID', '-- '.xl("N/A").' --', $encounter_contract, $isBilled, true);
+  }else{
   genProviderSelect('ContractID', '-- '.xl("N/A").' --', $encounter_contract, $isBilled, true);
+}
 }
 
 if ($GLOBALS['allow_appointments_in_feesheet']) {
