@@ -40,6 +40,7 @@ $fake_register_globals=false;
 
 require_once ('mips_headers.inc.php');
 require_once ('clinical_rules.php');
+
 /** Current format of date  */
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
