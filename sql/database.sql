@@ -7663,3 +7663,26 @@ CREATE TABLE `updater_settings` (
   `name` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL
 ) ENGINE=InnoDB;
+
+
+--
+-- Table structure for table `updater_user_mode_download_entry`
+--
+
+CREATE TABLE `updater_user_mode_download_entry` (
+  `filename` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `old_name` varchar(255) NOT NULL
+) ENGINE=InnoDB
+
+--
+-- Table structure for table `updater_user_mode_backup_entry`
+--
+
+CREATE TABLE `updater_user_mode_backup_entry` (
+  `filename` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `old_name` varchar(255) NOT NULL
+) ENGINE=InnoDB
