@@ -297,7 +297,7 @@ $GLOBALS_METADATA = array(
        '10',
       xl('Number of patients to display per page in the patient list.')
     ),
-    
+
 
     'gbl_vitals_options' => array(
       xl('Vitals Form Options'),
@@ -655,6 +655,7 @@ $GLOBALS_METADATA = array(
         '1' => xl('Print End of Day Report 1'),
         '2' => xl('Print End of Day Report 2'),
         '3' => xl('Print End of Day Report 3'),
+        '4' => xl('Print End of Day Report 4'),
       ),                                // data type
        '1',                             // default = Print End of Day Report 1
       xl('This will allow the use of the custom End of Day report and indicate which report to use.')
@@ -1509,6 +1510,13 @@ $GLOBALS_METADATA = array(
       xl('Do not register appointments with time outside clinic hours.')
     ),
 
+    'use_appt_status_colors' => array(
+      xl('Use Appointment Status Colors in the Calendar'),
+       'bool',                          // data type
+       '1',                             // default
+      xl('Use the Appointment Status Colors in the Calendar Instead of the Appointment Category Colors.')
+    ),    
+
     'calendar_refresh_freq' => array(
       xl('Calendar Refresh Frequency'),
       array(
@@ -1551,7 +1559,7 @@ $GLOBALS_METADATA = array(
       array(
        'providerAgenda' => xl('1 Day'),
        'providerAgenda2Day' => xl('2 Day'),
-       'timelineWeek' => xl('Week'),
+       'providerAgendaWeek' => xl('Week'),
        'timelineMonth' => xl('Month'),
       ),
        'providerAgenda',                           // default
@@ -3202,7 +3210,7 @@ $GLOBALS_METADATA = array(
     ),
 
     'pqrs_entityType' => array(
-      xl('Reporting Entity Type'),	// for XML generation
+      xl('Reporting Entity Type'),  // for XML generation
             array(
         'individual' => 'Per Provider NPI',
         'group' => 'For whole Tax ID'
