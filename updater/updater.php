@@ -255,16 +255,33 @@ if (isset($_POST)) {
 		    var bool = prompt("If you update the previous backups will be deleted.Type confirm in the below box to start the updater");
 		    if (bool == "confirm") {
 		    	    $.ajax({url: "ajax_user_mode.php?start_updater=1", success: function(result){
-				        $("#progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
+				        $(".progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
 				    }});
 		    }
     });
+
+
     $('#start_backup').click(function() {
     	var bool = prompt("If you return to backup the previous update will be cancelled, are you sure,type confirm to restore backup");
+    	    	$('#before_start').hide();
+    			$('#after_start').hide();
+    			$('#backup_screen').show();
 		    if (bool == "confirm") {
 				 $.ajax({url: "ajax_user_mode.php?start_recovery=1", success: function(result){
-				        
+				        $(".bk_progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
 				    }});
 		    }
+    });
+
+    $('#up_return').click(function () {
+    	$('#before_start').show();
+    	$('#after_start').hide();
+    	$('#backup_screen').hide();
+    });
+
+    $('#bk_return').click(function () {
+    	$('#before_start').show();
+    	$('#after_start').hide();
+    	$('#backup_screen').hide();
     });
 </script>

@@ -21,16 +21,39 @@
 			<th>Status</th>
 			<tr>
 				<td>Downloading Files</td>
-				<td id="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+				<td class="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
 				<td>File Backup</td>
-				<td id="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+				<td class="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
 				<td>DB Backup</td>
-				<td id="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+				<td class="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 		</table>
+		<div class="text-center">
+			<button class="css_button cp-submit" id="up_return">Return To Updater</button>
+		</div>
+	</div>
+
+		<div id="backup_screen" style="display: none;">
+		<table class="table table-striped">
+			<th></th>
+			<th>Status</th>
+			<tr>
+				<td>Restoring Files</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+			<tr>	
+				<td>Removing Backup Files</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+			<tr>	
+				<td>Restoring DB</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+		</table>
+		<div class="text-center"><button class="css_button cp-submit" id="bk_return">Return To Updater</button></div>
 	</div>
 </div>
