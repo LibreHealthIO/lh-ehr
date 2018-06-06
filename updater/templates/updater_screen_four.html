@@ -10,7 +10,9 @@
 		{UPDATER_START}
 		<br/><br/>
 		<input id="count_files" value='{COUNT_FILES}' type="hidden">
+		<p><b>If you update you cant go to the previous backup you have made, however you can come to this state when you want</b></p>
 		<a id='start_updater_user_mode' class="btn cp-submit">START UPDATING!</a>
+		<a id="start_backup" class="btn cp-submit">Restore to original state</a>
 		</div>
 	</div>
 	<div id="after_start" style="display: none;">
@@ -19,15 +21,15 @@
 			<th>Status</th>
 			<tr>
 				<td>Downloading Files</td>
-				<td><img src='updater_loading.gif' height="32px" width="32px"></td>
+				<td id="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
 				<td>File Backup</td>
-				<td></td>
+				<td id="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
 				<td>DB Backup</td>
-				<td></td>
+				<td id="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 		</table>
 	</div>

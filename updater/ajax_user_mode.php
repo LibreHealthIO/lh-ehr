@@ -69,6 +69,8 @@ if (isset($_GET)) {
 			clearFilesFolder($foldername = "downloads");
 			$updater_token = getUpdaterSetting("updater_token");
 			$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+			//since updating started save it for backup
+			setUpdaterSetting("github_backup", $pull_request_number);
 			//get only single merge request after that PR
 			$merged_requests_key = array_keys($merged_requests_array);
 			$merged_request_value = array_values($merged_requests_array);
@@ -136,6 +138,8 @@ if (isset($_GET['start_recovery'])) {
 			$old_name = $r['old_name'];
 			restoreBackupFile($filename, $original_name, $status, $old_name);
 		}
+		$pr_backup_number = getUpdaterSetting("github_backup");
+		setUpdaterSetting("github_current", $pr_backup_number);
 	}
 }
 ?>
