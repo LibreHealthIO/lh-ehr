@@ -389,7 +389,7 @@ function allowOnlyDigits(elem_name){
         <?php if($GLOBALS['primary_insurance_required']){ ?>
           if($('#i1provider option:selected').val() == '') {
              var ins_error = '1';
-             msg += "<?php echo htmlspecialchars(xl('Primary Insurance Provider Needed.'),ENT_QUOTES); ?> \n";
+             msg += "<?php echo htmlspecialchars(xl('Primary Insurance Provider Entry Required.'),ENT_QUOTES); ?> \n";
           }
         <?php } ?>
         msg += "\n<?php echo htmlspecialchars(xl('Please fill them in before continuing.'),ENT_QUOTES); ?>";
