@@ -7674,7 +7674,7 @@ CREATE TABLE `updater_user_mode_download_entry` (
   `status` varchar(255) NOT NULL,
   `original_name` varchar(255) NOT NULL,
   `old_name` varchar(255) NOT NULL
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table `updater_user_mode_backup_entry`
@@ -7685,4 +7685,4 @@ CREATE TABLE `updater_user_mode_backup_entry` (
   `status` varchar(255) NOT NULL,
   `original_name` varchar(255) NOT NULL,
   `old_name` varchar(255) NOT NULL
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
