@@ -117,10 +117,10 @@ require('includes/session.php');
   </form>
     <?php
     if($_SESSION['pc_facility'] == 0){
-      echo '<div id="facilityColor">';
+      echo '<div id="facilityColor" style="overflow: auto; max-height: 166px; width: 96%; border: 1px solid black;">';
       echo '<table>';
       foreach ($facilities as $f){
-        echo "   <tr><td><div style=background-color:".$f['color'].";font-weight:bold>".htmlspecialchars($f['name'],ENT_QUOTES)."</div></td></tr>";
+        echo "<tr><td><p style='background-color:".$f['color'].";font-weight:bold; padding: 2px 1px; margin-top: -2px;'>".htmlspecialchars($f['name'],ENT_QUOTES)."</p></td></tr>";
       }
       echo '</table>';
       echo '</div>';
@@ -267,10 +267,13 @@ require('includes/session.php');
             //var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
             let link = '<?php echo $GLOBALS['webroot'] . "/interface/patient_file/summary/demographics.php?set_pid="; ?>' + event['pc_pid'];
             var titleLink = "<a href='#'>" + event['title'] + "</a>";
+            let titleInfo = "<span style='color: #000;'>" + event['e_info'] + "</span>";
             //find all event title div elements
             var patientEventTitle = element.find('.fc-title');
             //remove title text inside them and insert hyperlink
             patientEventTitle.empty().append(titleLink);
+            //add event description text just after hyperlink
+            patientEventTitle.after(titleInfo);
             patientEventTitle.on("click", function(e) {
               //to stop eventClick handler from executing
               //upon clicking text link

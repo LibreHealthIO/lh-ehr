@@ -37,6 +37,7 @@ require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/acl.inc");
 
 // Ensure authorized
@@ -145,12 +146,12 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
        <table>
       <tr >
         <td><b><?php echo xlt('Facility Specific User Information'); ?></b></td>
-        <td><a href="usergroup_admin.php" class="css_button" onclick="top.restoreSession()"><span><?php echo xlt('Back to Users'); ?></span></a>
+        <td><a href="usergroup_admin.php" class="css_button cp-misc" onclick="top.restoreSession()"><span><?php echo xlt('Back to Users'); ?></span></a>
         </td>
      </tr>
     </table>
     </div>
-    
+
     <div style="width:400px;">
         <div>
 
@@ -179,7 +180,7 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
                                                             "WHERE `uid` = ? AND `facility_id` = ? AND `field_id` = ?", array($user['id'],$facility['id'],$layout_entry['field_id']) );
                                      echo "<td><span class='text'>" . generate_display_field($layout_entry,$entry_data['field_value']) . "&nbsp;</td>";
                                    }
-                                   ?>  
+                                   ?>
                 </tr>
                 <?php
                 }}

@@ -27,6 +27,7 @@ require_once("$srcdir/auth.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once($GLOBALS['srcdir'] . "/classes/postmaster.php");
 require_once("$srcdir/headers.inc.php");
+require_once("$srcdir/calendar.inc");
 
 $alertmsg = '';
 $bg_msg = '';
@@ -121,7 +122,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
           sqlStatement("update users set menu_role='Sample Role' where id=?", array($_POST["id"]));
         }
       }
-      
+
       if ($_POST["facility_id"]) {
               $tqvar = formData('facility_id','P');
               sqlStatement("update users set facility_id = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -230,6 +231,8 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
 
         do_action( 'usergroup_admin_save', $_POST );
 
+        refreshCalendar(); //after "Edit User" process is complete
+
     }
 }
 
@@ -268,7 +271,7 @@ if (isset($_FILES)) {
   $uid =  trim(formData('rumple')).time();
     //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
   if (realpath("../../profile_pictures/")) {
-      
+
   }
   else {
     mkdir("../../profile_pictures/", 0755);
@@ -299,12 +302,12 @@ if (isset($_FILES)) {
         }
         else {
           $bool = 1;
-        }    
+        }
     }
     else {
       $bool = 0;
     }
-        
+
   }
   else {
         $bool = 0;
@@ -397,6 +400,8 @@ if (isset($_FILES)) {
            }
     }
       }
+
+      refreshCalendar(); //after "Add User" process is complete
   }
   else if ($_POST["mode"] == "new_group") {
     $res = sqlStatement("select distinct name, user from groups");
@@ -425,7 +430,7 @@ if (isset($_GET["mode"])) {
   //
   if ($_GET["mode"] == "delete") {
     $res = sqlStatement("select distinct username, id from users where id = ?", array($_GET["id"]));
-      
+
     for ($iter = 0; $row = sqlFetchArray($res); $iter++)
       $result[$iter] = $row;
 

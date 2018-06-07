@@ -26,6 +26,7 @@
  */
 
 require_once "reports_controllers/CdrLogController.php";
+require_once '../../library/headers.inc.php';
 
 ?>
 
@@ -100,7 +101,7 @@ require_once "reports_controllers/CdrLogController.php";
             <tr>
               <td>
                 <div style='margin-left:15px'>
-                  <a id='search_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
+                  <a id='search_button' href='#' class='css_button cp-submit' onclick='top.restoreSession(); $("#theform").submit()'>
                     <span>
                       <?php echo xlt('Search'); ?>
                     </span>
