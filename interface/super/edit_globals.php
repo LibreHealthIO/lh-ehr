@@ -146,7 +146,7 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
             }
           }
           elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
-            if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
+            if (strlen($_POST["form_$i"]) == 7 && substr($_POST["form_$i"], 0,1) == "#") {
             $boolean = true;
             }
             else {
@@ -265,7 +265,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
               $_POST["form_$i"] = trim(strip_escape_custom($_POST["form_$i"]));
               $boolean = true;
           }
-          elseif ($grparr[$fldid][1] == bool) {
+          elseif ($grparr[$fldid][1] == "bool") {
           $_POST["form_$i"] == 0;
           $boolean = true;
           }
@@ -281,26 +281,26 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
           }
 
           elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
-            if (strlen($_POST['form_$i']) == 7 && substr($_POST['form_$i'], 0,1) == "#") {
+            if (strlen($_POST["form_$i"]) == 7 && substr($_POST["form_$i"], 0,1) == "#") {
             $boolean = true;
             }
             else {
               $boolean = false;
             }
           }
-          elseif ($fldid == "language_default" OR $fldid="language_menu_other") {
+          elseif ($fldid == "language_default" || $fldid == "language_menu_other") {
             $total_languages = sqlStatement('SELECT COUNT(*) FROM `lang_languages`');
-            if($_POST['form_$i'] <= $total_languages) {
+            if($_POST["form_$i"] <= $total_languages) {
               $boolean = true;
             }
             else {
               $boolean = false;
             }
           }
-          elseif ($fldid == "schedule_end" OR $fldid == "schedule_start") {
+          elseif ($fldid == "schedule_end" || $fldid == "schedule_start") {
             //we rely on face that time wont exceed 24 hrs
             //also should not allow negative time.
-            if ($_POST['form_$i'] < 24 && $_POST['form_$i'] >= 0) {
+            if ($_POST["form_$i"] < 24 && $_POST["form_$i"] >= 0) {
               $boolean = true;
             }
             else {
