@@ -7668,7 +7668,7 @@ CREATE TABLE `updater_settings` (
 --
 -- Table structure for table `updater_user_mode_download_entry`
 --
-
+DROP TABLE IF EXISTS `updater_user_mode_download_entry`;
 CREATE TABLE `updater_user_mode_download_entry` (
   `filename` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
@@ -7679,7 +7679,7 @@ CREATE TABLE `updater_user_mode_download_entry` (
 --
 -- Table structure for table `updater_user_mode_backup_entry`
 --
-
+DROP TABLE IF EXISTS `updater_user_mode_backup_entry`;
 CREATE TABLE `updater_user_mode_backup_entry` (
   `filename` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
