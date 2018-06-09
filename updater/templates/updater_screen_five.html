@@ -1,0 +1,34 @@
+<div class="text-center col-xs-2"><br/>
+<img src="../sites/default/images/LibreEHR_shield.png" height="200px" width="128px">
+</div>
+<div class="col-xs-9 col-xs-offset-1 text-center">
+	<div id='before_start'>
+		<img src="{AVATAR_URL}" height="64px" width="64px" class="img img-circle">
+		<h4>{USER_NAME}</h4>
+		<br/><br/>
+		<p><b>No updates available</b></p>
+		<a id="start_backup" class="btn cp-submit">Restore to original state</a>
+		</div>
+	</div>
+
+
+		<div id="backup_screen" style="display: none;">
+		<table class="table table-striped">
+			<th></th>
+			<th>Status</th>
+			<tr>
+				<td>Restoring Files</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+			<tr>	
+				<td>Removing Backup Files</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+			<tr>	
+				<td>Restoring DB</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+		</table>
+		<div class="text-center"><button class="css_button cp-submit" id="bk_return">Return To Updater</button></div>
+	</div>
+</div>

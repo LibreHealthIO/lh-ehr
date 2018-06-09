@@ -123,30 +123,39 @@ else {
 		//all parameters to this function are determined before
 		$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
 		$updates_behind = count($merged_requests_array);
-		$cpr_number = array_values($merged_requests_array);
-		$cpr_number = $cpr_number[0];
-		$current_pull_request_info = getSinglePullRequestInfo($updater_token, $repository_owner, $repository_name,  $cpr_number);
-		$cpr_title = $current_pull_request_info['title'];
-		$cpr_body = $current_pull_request_info['body'];
-		//token is valid, so show the user profile
-		$loader->set_template_file("updater_screen_four");
-		$loader->assign("AVATAR_URL", $avatar_url);
-		$loader->assign("USER_NAME", $user_name);
-		$files_need_to_be_downloaded = array();
-		foreach ($merged_requests_array as $key => $value) {
-			$pr_number = $value;
-			$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
-			foreach ($arr as $ke) {
-				$sha = $ke['sha'];
-				$time = time();
-				$extension = pathinfo($ke['filename'], PATHINFO_EXTENSION);	
-				array_push($files_need_to_be_downloaded, $sha);	
+		if ($updates_behind > 0) {
+			$cpr_number = array_values($merged_requests_array);
+			$cpr_number = $cpr_number[0];
+			$current_pull_request_info = getSinglePullRequestInfo($updater_token, $repository_owner, $repository_name,  $cpr_number);
+			$cpr_title = $current_pull_request_info['title'];
+			$cpr_body = $current_pull_request_info['body'];
+			//token is valid, so show the user profile
+			$loader->set_template_file("updater_screen_four");
+			$loader->assign("AVATAR_URL", $avatar_url);
+			$loader->assign("USER_NAME", $user_name);
+			$files_need_to_be_downloaded = array();
+			foreach ($merged_requests_array as $key => $value) {
+				$pr_number = $value;
+				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
+				foreach ($arr as $ke) {
+					$sha = $ke['sha'];
+					$time = time();
+					$extension = pathinfo($ke['filename'], PATHINFO_EXTENSION);	
+					array_push($files_need_to_be_downloaded, $sha);	
+				}
 			}
+			$count_files = count($files_need_to_be_downloaded);
+			$loader->assign("UPDATER_START", "<b>$cpr_title</b><br/><h6>$cpr_body</h6>");
+			$loader->assign("COUNT_FILES", $count_files);
+			$loader->output();
 		}
-		$count_files = count($files_need_to_be_downloaded);
-		$loader->assign("UPDATER_START", "<b>$cpr_title</b><br/><h6>$cpr_body</h6>");
-		$loader->assign("COUNT_FILES", $count_files);
-		$loader->output();
+		else {
+			//the repo is already up to date, show only the backup button
+			$loader->set_template_file("updater_screen_five");
+			$loader->assign("AVATAR_URL", $avatar_url);
+			$loader->assign("USER_NAME", $user_name);
+			$loader->output();
+		}
 	}
 	elseif (!curl_bool() OR !internet_bool() OR !file_permissions_bool()) {
 		//check permission and show validation screen
