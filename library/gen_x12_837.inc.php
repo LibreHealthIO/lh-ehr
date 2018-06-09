@@ -567,7 +567,7 @@ $CMS_5010 = true;
     if (strcmp($claim->facilityPOS(), '21') == 0 && $claim->hospitalizedToDateValid()) {
         ++$edicount;
         $out .= "DTP" .     // Date of Discharge
-        "*" . "96" .
+        "*" . "096" .
         "*" . "D8" .
         "*" . $claim->hospitalizedTo() .
         "~\n";
