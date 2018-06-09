@@ -5,7 +5,13 @@ if ($GLOBALS['full_new_patient_form']) {
   require("new_comprehensive.php");
   exit;
 }
-require_once("$srcdir/formatting.inc.php");
+?>
+
+<?php
+
+//Unused code
+
+/*require_once("$srcdir/formatting.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -141,7 +147,7 @@ while ($orow = sqlFetchArray($ores)) {
 
  <tr>
   <td>
-   <span class='bold'><?php xl('Sex','e'); ?>: </span>
+   <span class='bold'><?php xl('Sex','ru'); ?>: </span>
   </td>
   <td>
    <select name='sex'>
@@ -240,3 +246,5 @@ if ($form_pubpid) {
 
 </body>
 </html>
+*/
+?>
