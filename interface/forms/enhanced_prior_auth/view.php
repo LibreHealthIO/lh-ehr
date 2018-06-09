@@ -18,5 +18,5 @@
  * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
  *
  */
-require("new.php");
+require("new_comprehensive.php");
 ?>
