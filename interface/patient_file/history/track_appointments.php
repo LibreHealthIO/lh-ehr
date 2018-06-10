@@ -174,6 +174,7 @@ tr.appt-hover{
             </tr>
         </thead>
         <tbody>
+            <!-- Sample Data-->
             <tr class="appt-odd" data-text="1">
                 <td><?php echo xlt('4/6/18'); ?></td>
                 <td><?php echo xlt('10:30'); ?></td>

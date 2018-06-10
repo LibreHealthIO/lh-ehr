@@ -672,6 +672,14 @@
             "requirement" : 0,
             "global_req" : "!disable_chart_tracker"
         }, {
+            "label" : "Chart Tracker",
+            "menu_id" : "cht0",
+            "target" : "msc",
+            "url" : "/interface/reports/chart_tracker.php",
+            "children" : [ ],
+            "requirement" : 0,
+            "global_req" : "!disable_chart_tracker"
+        }, {
             "label" : "Services by Category",
             "menu_id" : "rep0",
             "target" : "rep",
@@ -895,14 +903,6 @@
         "url" : "/interface/orders/types.php",
         "children" : [ ],
         "requirement" : 0
-    }, {
-        "label" : "Chart Tracker",
-        "menu_id" : "cht0",
-        "target" : "msc",
-        "url" : "/custom/chart_tracker.php",
-        "children" : [ ],
-        "requirement" : 0,
-        "global_req" : "!disable_chart_tracker"
     }, {
         "label" : "BatchCom",
         "menu_id" : "adm0",
