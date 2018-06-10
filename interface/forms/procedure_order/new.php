@@ -376,30 +376,32 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
         ?>
       </p>
 
-      <center>
-        <p>
-         <?php $procedure_order_type = getListOptions('order_type' , array('option_id', 'title', 'toggle_setting_1', 'toggle_setting_2')); ?>
-          <select
-            class="form-control"
-            style="width: auto;"
-            name="procedure_type_names"
-            id="procedure_type_names">
-            <?php foreach($procedure_order_type as $ordered_types){?>
-            <option value="<?php echo attr($ordered_types['option_id']); ?>" ><?php echo text(xl_list_label($ordered_types['title'])) ; ?></option>
-            <?php } ?>
-          </select></br>
-        </p>
-          <table class="table table-hover table-bordered" width='95%' id='proctable'>
+      <div class="container">
+        <center>
+          <p>
+          <?php $procedure_order_type = getListOptions('order_type' , array('option_id', 'title', 'toggle_setting_1', 'toggle_setting_2')); ?>
+            <select
+              class="form-control"
+              style="width: auto;"
+              name="procedure_type_names"
+              id="procedure_type_names">
+              <?php foreach($procedure_order_type as $ordered_types){?>
+              <option value="<?php echo attr($ordered_types['option_id']); ?>" ><?php echo text(xl_list_label($ordered_types['title'])) ; ?></option>
+              <?php } ?>
+            </select></br>
+          </p>
+        </center>
+        <table class="table table-hover table-bordered">
+          <tbody>
             <tr>
-              <td width='1%' valign='top' nowrap><b><?php xl('Ordering Provider','e'); ?>:</b></td>
-              <td valign='top'>
+              <td><b><?php xl('Ordering Provider','e'); ?>:</b></td>
+              <td>
                 <?php
                   generate_form_field(array('data_type'=>10,'field_id'=>'provider_id'),
                     $row['provider_id']);
                 ?>
               </td>
             </tr>
-
             <tr>
               <td width='1%' valign='top' nowrap><b><?php xl('Sending To','e'); ?>:</b></td>
               <td valign='top'>
@@ -617,19 +619,21 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
                 ++$i;
               }
             ?>
-          </table>
-        <p>
-          <div style="display: inline-block;">
+            
+          </tbody>
+        </table>
+        <center>
+        <div style="display: inline-block;">
             <input
               type='button'
-              class='cp-positive'
+              class='btn btn-success'
               value='<?php echo xla('Add Procedure'); ?>'
               onclick="addProcLine()"
             />
             &nbsp;
             <input
               type='button'
-              class='cp-output'
+              class='btn btn-info'
               id="print_button"
               value='<?php echo xla('Print'); ?>'
               onclick="Print()"
@@ -638,7 +642,7 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             <input
               type='submit'
               name='bn_save'
-              class='cp-submit'
+              class='btn btn-primary'
               value='<?php echo xla('Save'); ?>'
               onclick='transmitting = false;'
             />
@@ -646,20 +650,24 @@ $enrow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date FROM " .
             <input
               type='submit'
               name='bn_xmit'
-              class='cp-submit'
+              class='btn btn-primary'
               value='<?php echo xla('Save and Transmit'); ?>'
               onclick='transmitting = true;'
             />
             &nbsp;
             <input
-              class="deleter cp-negative"
+              class="btn btn-danger"
               type='button'
               value='<?php echo xla('Cancel'); ?>'
               onclick="top.restoreSession();location='<?php echo $GLOBALS['form_exit_url']; ?>'"
             />
+              
           </div>
-        </p>
-      </center>
+        </center>
+       
+          
+        </div>
+      
       <?php
           $query = sqlStatement('SELECT * FROM list_options WHERE list_id="order_type"');
           $i = 0 ;
