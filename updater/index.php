@@ -73,13 +73,7 @@ if (isset($_POST['from_updater_general_settings'])) {
 
 	}
 }
-echo "<div id='tabs-1'>";
-echo '<ul>
-            <li><a href = "#updater-handler">Updater</a></li>
-            <li><a href = "#accordion-1">Settings</a></li>
-            <li><a href = "#developer-mode">Developer Mode</a></li>
-         </ul>';
-echo '<div id="iframe-holder"><iframe src="updater.php" frameBorder="0" style="height: 100%; width:100%;" id="updater-handler" allowfullscreen></iframe></div>';
+
 //every section is displayed as accordion for ui friendly approach
 echo "<div id='accordion-1'>";
 

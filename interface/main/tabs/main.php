@@ -246,15 +246,18 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php
     if($_SESSION['authUser'] == "admin") {
         //only admin can use the updater
-        echo  "<div id='updater-icon'>
+        echo  "<div id='developer-mode' title='Developer Mode' style='display: none;'><i class='fa fa-desktop'></i></div>
+        <div id='updater-options' style='display: none;' title='updater settings'><i class='fa fa-gear'></i></div><div id='updater-icon'>
                 <i class='fa fa-refresh'></i>
                 </div>
-                <div id='updater-iframe'></div>";
+                <div id='updater-iframe'></div>
+                <div id='updater-settings-iframe'></div>
+                <div id='developer-mode-iframe'></div>";
     }
 ?>
 <?php do_action( 'after_main_box' ); ?>
 <style type="text/css">
-    #updater-icon {
+    #updater-icon, #updater-options, #developer-mode {
     position: fixed; /* Fixed/sticky position */
     bottom: 20px; /* Place the button at the bottom of the page */
     right: 30px; /* Place the button 30px from the right */
@@ -268,10 +271,24 @@ var webroot_url="<?php echo $web_root; ?>";
     border-radius: 40px; /* Rounded corners */
     font-size: 18px; /* Increase font size */
     }
+    #updater-options, #developer-mode {
+        border: 2px solid #000;
+        background-color: #F69600;
+        padding: 5px; 
+        border-radius: 40%;
+            bottom: 90px; /* Place the button at the bottom of the page */
+        right: 30px; /* Place the button 30px from the right */
+    }
+
+    #developer-mode {
+        right: 70px;
+        font-size: 15px;
+        bottom: 70px;
+    }
 </style>
 <script>
-$("#updater-iframe").iziModal({
-           title: '<i class="fa fa-refresh"></i> <?php echo xlt("Updater"); ?>',
+$("#updater-settings-iframe").iziModal({
+           title: '<i class="fa fa-refresh"></i> <?php echo xlt("Settings for Updater"); ?>',
            subtitle: '<?php echo xlt("Configuration settings for updater"); ?>',
            headerColor: '#F69600',
            closeOnEscape: true,
@@ -286,10 +303,40 @@ $("#updater-iframe").iziModal({
            iframeHeight: 400,
            iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/index.php"
 });
-$('#updater-icon').click(function () {
-    $('#updater-iframe').iziModal('open');
+
+$("#developer-mode-iframe").iziModal({
+           title: '<i class="fa fa-desktop"></i> <?php echo xlt("Developer Options"); ?>',
+           subtitle: '<?php echo xlt("Developer Mode in the Updater"); ?>',
+           headerColor: '#F69600',
+           closeOnEscape: true,
+           fullscreen:true,
+           overlayClose: false,
+           closeButton: true,
+           theme: 'dark',  // light
+           iframe: true,
+           width:900,
+           focusInput: true,
+           padding:5,
+           iframeHeight: 400,
+           iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/developer_mode.php"
+});
+$('#developer-mode').click(function () {
+    $("#developer-mode-iframe").iziModal('open');
+});
+$('#updater-options').click(function () {
+    $('#updater-settings-iframe').iziModal('open');
 });
 
+$('#updater-icon').hover(function () {
+    $(this).css("border", "2px solid #000");
+    $('#developer-mode').fadeIn(100);
+    $('#updater-options').fadeIn(100);
+});
+$('body').hover(function () {
+    $('#developer-mode').css("display", "none");
+    $('#updater-options').css("display", "none");
+    $(this).css("border", "0px solid #000");
+});
 function showUpdaterNotifications(type, title, message) {
     if (type == "warning") {
         iziToast.warning({

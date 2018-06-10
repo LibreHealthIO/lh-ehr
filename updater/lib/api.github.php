@@ -8,16 +8,17 @@
 *@return $array holding list of all merged pull requests
 */
 function getAllMergedPullRequests($access_token, $owner, $repo_name, $pull_request_number){
-	$curl = curl_init();
 	$pr_number = array();
 	$i = 1;
 	$classifier = getSinglePullRequestClassifier($access_token, $owner, $repo_name, $pull_request_number);
 	while (1) {
+		$curl = curl_init();
 		$url = "https://api.github.com/repos/".$owner."/".$repo_name."/pulls?per_page=100&page=$i&state=all&access_token=$access_token";
 		$options = array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1);
 		curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
 		curl_setopt_array($curl, $options);
 		$json = curl_exec($curl);
+		curl_close($curl);
 		$array = json_decode($json, true);
 		foreach ($array as $key) {
 		$number = $key['number'];
@@ -36,6 +37,26 @@ function getAllMergedPullRequests($access_token, $owner, $repo_name, $pull_reque
 	}
 	ksort($pr_number);
 	return $pr_number;
+}
+
+
+/**
+*@param $access_token - user_access_token of github
+*@param $owner - owner of thr github repo
+*@param $repo_name - repository name
+*@return $array holding list of all open pull requests
+*/
+function getAllOpenPullRequests($access_token, $owner, $repo_name){
+
+		$curl = curl_init();
+		$url = "https://api.github.com/repos/".$owner."/".$repo_name."/pulls?per_page=100&state=open&access_token=$access_token";
+		$options = array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1);
+		curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
+		curl_setopt_array($curl, $options);
+		$json = curl_exec($curl);
+		curl_close($curl);
+		$array = json_decode($json, true);
+		return $array;
 }
 
 function getSinglePullRequestClassifier($access_token, $owner, $repo_name, $pull_request_number) {
