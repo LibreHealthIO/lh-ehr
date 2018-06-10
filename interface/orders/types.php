@@ -64,52 +64,15 @@ window.close(); // comment out for debugging
 
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap", "iziModalToast")); ?>
 <style type="text/css">
-body {
- font-family:sans-serif;
- font-size:9pt;
- font-weight:normal;
- padding: 5px 3px 5px 3px;
-}
-#con0 table {
- margin:0;
- padding:0;
- width:100%;
-}
-#con0 td {
- padding:0pt;
- font-family:sans-serif;
- font-size:9pt;
-}
-.plusminus {
- font-family:monospace;
- font-size:10pt;
-}
-.haskids {
- color:#0000dd;
- cursor:pointer;
- cursor:hand;
-}
-tr.head {
-font-size:10pt;
-background-color:#cccccc;
-font-weight:bold;
-}
-tr.evenrow {
- background-color:#ddddff;
-}
-tr.oddrow {
- background-color:#ffffff;
-}
-
-.col1 {width:35%}
-.col2 {width:8%}
-.col3 {width:12%}
-.col4 {width:35%}
-.col5 {width:10%}
+  .noborder td, .noborder th {
+    border: none !important;
+  }
+  .provider-table-after {
+    margin-bottom: 0px;
+  }
 </style>
-
-<script src="../../library/js/jquery-1.2.2.min.js" type="text/javascript"></script>
 <?php if ($popup) { ?>
 <script type="text/javascript" src="../../library/topdialog.js"></script>
 <?php } ?>
@@ -237,43 +200,45 @@ function recolor() {
 
 </head>
 
-<body class="body_nav">
-<center>
+<body >
 
-<h3 style='margin-top:0'><?php xl('Types of Orders and Results','e') ?></h3>
+  <div class="container">
 
-<form method='post' name='theform' action='types.php?popup=<?php echo $popup ?>&order=<?php
-echo $order;
-if (isset($_GET['formid' ])) echo '&formid='  . $_GET['formid'];
-if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
-?>'>
+    <h2 class="text-center" ><?php xl('Types of Orders and Results','e') ?></h2>
 
-<table width='100%' cellspacing='0' cellpadding='0' border='0'>
- <tr class='head'>
-  <th class='col1' align='left'>&nbsp;&nbsp;<?php xl('Name','e') ?></th>
-  <th class='col2' align='left'><?php xl('Order','e') ?></th>
-  <th class='col3' align='left'><?php xl('Code','e') ?></th>
-  <th class='col4' align='left'><?php xl('Description','e') ?></th>
-  <th class='col5' align='left'>&nbsp;</th>
- </tr>
-</table>
+    <form method='post' name='theform' action='types.php?popup=<?php echo $popup ?>&order=<?php
+    echo $order;
+    if (isset($_GET['formid' ])) echo '&formid='  . $_GET['formid'];
+    if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
+    ?>'>
 
-<div id="con0">
-</div>
+    <table class="table provider-table-after">
+      <thead>
+        <tr>
+          <th class="text-center"><?php xl('Name','e') ?></th>
+          <th class="text-center"><?php xl('Order','e') ?></th>
+          <th class="text-center"><?php xl('Code','e') ?></th>
+          <th class="text-center"><?php xl('Description','e') ?></th>
+          <th class="text-center"></th>
+        </tr>
+      </thead>
+    </tr>
+    </table>
+    <div id="con0"></div>
+  
+    <p>
+    <?php if ($popup) { ?>
+    <input type='submit' name='form_save' value='<?php xl('Save','e'); ?>' class="btn btn-primary"/>
+    &nbsp;
+    <input type='button' value=<?php xl('Cancel','e'); ?> onclick='window.close()' class="btn btn-danger"/>
+    &nbsp;
+    <?php } ?>
+    <input type='button' value='<?php xl('Add Top Level','e'); ?>' onclick='anode(0)' class="btn btn-primary"/>
+    </p>
 
-<p>
-<?php if ($popup) { ?>
-<input type='submit' name='form_save' value='<?php xl('Save','e'); ?>' class="cp-submit"/>
-&nbsp;
-<input type='button' value=<?php xl('Cancel','e'); ?> onclick='window.close()' class="cp-negative"/>
-&nbsp;
-<?php } ?>
-<input type='button' value='<?php xl('Add Top Level','e'); ?>' onclick='anode(0)' class="cp-positive"/>
-</p>
+    </form>
 
-</form>
-
-</center>
+  </div>
 
 </body>
 </html>

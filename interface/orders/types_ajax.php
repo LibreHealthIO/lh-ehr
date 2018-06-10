@@ -13,7 +13,7 @@ $id = formData('id','G') + 0;
 $order = formData('order','G') + 0;
 $labid = formData('labid','G') + 0;
 
-echo "$('#con$id').html('<table width=\"100%\" cellspacing=\"0\">";
+echo "$('#con$id').html('<table class=\"table noborder\">";
 
 // Determine indentation level for this container.
 for ($level = 0, $parentid = $id; $parentid; ++$level) {
