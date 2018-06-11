@@ -72,6 +72,13 @@ window.close(); // comment out for debugging
   .provider-table-after {
     margin-bottom: 0px;
   }
+  tr.evenrow {
+  background-color:#eae9e9;
+  }
+  tr.oddrow {
+  background-color:#ffffff;
+  }
+  
 </style>
 <?php if ($popup) { ?>
 <script type="text/javascript" src="../../library/topdialog.js"></script>
@@ -212,14 +219,14 @@ function recolor() {
     if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
     ?>'>
 
-    <table class="table provider-table-after">
+    <table class="table provider-table-after" style="width:100%">
       <thead>
         <tr>
-          <th class="text-center"><?php xl('Name','e') ?></th>
-          <th class="text-center"><?php xl('Order','e') ?></th>
-          <th class="text-center"><?php xl('Code','e') ?></th>
-          <th class="text-center"><?php xl('Description','e') ?></th>
-          <th class="text-center"></th>
+          <th class="text-center" style="width:20%"><?php xl('Name','e') ?></th>
+          <th class="text-center" style="width:20%"><?php xl('Order','e') ?></th>
+          <th class="text-center" style="width:20%"><?php xl('Code','e') ?></th>
+          <th class="text-center" style="width:20%"><?php xl('Description','e') ?></th>
+          <th class="text-center" style="width:20%">Action</th>
         </tr>
       </thead>
     </tr>
@@ -228,12 +235,12 @@ function recolor() {
   
     <p>
     <?php if ($popup) { ?>
-    <input type='submit' name='form_save' value='<?php xl('Save','e'); ?>' class="btn btn-primary"/>
+    <button type='submit' name='form_save' class="btn btn-primary"><?php xl('Save','e'); ?></button>
     &nbsp;
-    <input type='button' value=<?php xl('Cancel','e'); ?> onclick='window.close()' class="btn btn-danger"/>
+    <button type='button' onclick='window.close()' class="btn btn-danger"> <?php xl('Cancel','e'); ?></button>
     &nbsp;
     <?php } ?>
-    <input type='button' value='<?php xl('Add Top Level','e'); ?>' onclick='anode(0)' class="btn btn-primary"/>
+    <button type='button' onclick='anode(0)' class="btn btn-success"><?php xl('Add Top Level','e'); ?></button>
     </p>
 
     </form>
