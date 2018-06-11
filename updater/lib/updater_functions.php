@@ -161,11 +161,13 @@ function replaceFile($filename, $original_name, $status, $old_name) {
 	if ($status == "renamed") {
 		// since it is renamed there is no file exists at the original file name location, so unlink it with the old name
 		unlink($old_name);
+		checkDir($original_name);
 		copy($filename, $original_name);
 		echo $status;
 	}
 	if ($status == "added") {
 		//since Added there is no need to unlink the old file,it does not exist
+		checkDir($original_name);
 		copy($filename, $original_name);
 		echo $status;
 	}
@@ -219,4 +221,43 @@ $files = glob($foldername . '/*');
 	}
 }
 
+/*
+* check if the directory exists or else create it on the file addition
+*/
+function checkDir($location) {
+
+	$arr  = explode("/", $location);
+
+	$dir_struct = "";
+
+	foreach ($arr as $key=>$value) {
+		if (isset($value)) {
+			if (!empty($value)) {
+				if (!empty($dir_struct)) {
+					$dir_struct = $dir_struct.$value."/";
+				}
+				else {
+					$dir_struct = $dir_struct.$value."/";
+				}
+				$extension = pathinfo($dir_struct, PATHINFO_EXTENSION);
+				//if it has file extension then dont create directory
+				if (empty($extension)) {
+
+					if (is_dir($dir_struct)) {
+						//leave it, make no changes
+					}
+					else {
+						mkdir($dir_struct);		
+					}
+					
+
+				}
+				else {
+
+				}	
+				
+			}
+		}
+	}
+}
 ?>
