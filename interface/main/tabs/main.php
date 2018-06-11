@@ -321,7 +321,7 @@ $("#developer-mode-iframe").iziModal({
            onOpening: function () {
                 var imageURL = "../../../updater/updater_loading.gif";
                 $('.iziModal-content').css("background-image", "url("+imageURL+")");
-           }
+           },
            iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/developer_mode.php"
 });
 $("#updater-iframe").iziModal({
