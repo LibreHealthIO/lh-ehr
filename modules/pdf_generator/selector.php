@@ -112,6 +112,11 @@ if($_POST['include_immunizations'] == 'immunizations'){
   $pdf->Ln(5);                                                              //the patient immunization data
   include('report/immunizations.php');                                      //in the PDF
 }
+//no check is done here because it is done in the procedures.php file
+include('report/procedures.php');                                           //this section
+$pdf->Ln(5);                                                                //is for inclusion of
+$pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());        //the procedure orders data
+$pdf->Ln(5);                                                                //in the PDF
 
 
 $pdf->Ln(15);
