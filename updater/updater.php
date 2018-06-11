@@ -290,4 +290,5 @@ if (isset($_POST)) {
     	$('#after_start').hide();
     	$('#backup_screen').hide();
     });
+    parent.$('.iziModal-content').css("background-image", "none");
 </script>

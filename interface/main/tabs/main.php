@@ -318,7 +318,31 @@ $("#developer-mode-iframe").iziModal({
            focusInput: true,
            padding:5,
            iframeHeight: 400,
+           onOpening: function () {
+                var imageURL = "../../../updater/updater_loading.gif";
+                $('.iziModal-content').css("background-image", "url("+imageURL+")");
+           }
            iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/developer_mode.php"
+});
+$("#updater-iframe").iziModal({
+           title: '<i class="fa fa-desktop"></i> <?php echo xlt("Developer Options"); ?>',
+           subtitle: '<?php echo xlt("Developer Mode in the Updater"); ?>',
+           headerColor: '#F69600',
+           closeOnEscape: true,
+           fullscreen:true,
+           overlayClose: false,
+           closeButton: true,
+           theme: 'dark',  // light
+           iframe: true,
+           width:900,
+           focusInput: true,
+           padding:5,
+           iframeHeight: 400,
+           iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/updater.php",
+           onOpening: function () {
+                var imageURL = "../../../updater/updater_loading.gif";
+                $('.iziModal-content').css("background-image", "url("+imageURL+")");
+           }
 });
 $('#developer-mode').click(function () {
     $("#developer-mode-iframe").iziModal('open');
@@ -331,6 +355,9 @@ $('#updater-icon').hover(function () {
     $(this).css("border", "2px solid #000");
     $('#developer-mode').fadeIn(100);
     $('#updater-options').fadeIn(100);
+});
+$('#updater-icon').click(function () {
+    $('#updater-iframe').iziModal('open');
 });
 $('body').hover(function () {
     $('#developer-mode').css("display", "none");

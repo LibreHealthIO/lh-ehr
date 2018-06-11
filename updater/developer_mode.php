@@ -71,3 +71,6 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 
 
 ?>
+<script type="text/javascript">
+	    parent.$('.iziModal-content').css("background-image", "none");
+</script>
