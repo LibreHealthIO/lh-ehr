@@ -260,6 +260,10 @@ body {
 		    if (bool == "confirm") {
 		    	    $.ajax({url: "ajax_user_mode.php?start_updater=1", success: function(result){
 				        $(".progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
+				        var type = 'success';
+				    	var title = 'Updated Successfully';
+				    	var message = 'Update has been complete';
+				    	parent.showUpdaterNotifications(type, title, message);
 				    }});
 		    }
     });
@@ -273,20 +277,22 @@ body {
 		    if (bool == "confirm") {
 				 $.ajax({url: "ajax_user_mode.php?start_recovery=1", success: function(result){
 				        $(".bk_progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
-				    }});
+				    	var type = 'success';
+				    	var title = 'Restored Successfully';
+				    	var message = 'Updater has restored the initial state Successfully';
+				    	parent.showUpdaterNotifications(type, title, message);
+				    }
+
+				});
 		    }
     });
 
     $('#up_return').click(function () {
-    	$('#before_start').show();
-    	$('#after_start').hide();
-    	$('#backup_screen').hide();
+    	parent.$('#updater-iframe').iziModal('close');
     });
 
     $('#bk_return').click(function () {
-    	$('#before_start').show();
-    	$('#after_start').hide();
-    	$('#backup_screen').hide();
+		parent.$('#updater-iframe').iziModal('close');
     });
     parent.$('.iziModal-content').css("background-image", "none");
 </script>
