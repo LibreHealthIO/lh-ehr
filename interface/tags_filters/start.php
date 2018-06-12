@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-//if ( $GLOBALS['tags_filters_enabled'] ) {
+if ( $GLOBALS['tags_filters_enabled'] ) {
 
 
 function tf_filter_patient_select( $username )
@@ -85,7 +85,8 @@ function update_tags_filters()
     $plugin->migrate();
 }
 add_action( 'update_plugin', 'update_tags_filters' );
-
+}
+if ( $GLOBALS['facility_acl']==1 ) {
 ///////////////////////////////////////////////////////////////////////////////
 ////test add of facility acl stuff.
 function get_facilities_to_show( $username )
@@ -176,3 +177,4 @@ add_action( 'demographics_check_auth', 'tf_no_access_to_patient' );
 
 
 //////////////////////////////////////////////////////////////////////
+}
