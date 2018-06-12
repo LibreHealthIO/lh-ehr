@@ -34,7 +34,7 @@
         "label" : "Add New/Search",
         "menu_id" : "new0",
         "target" : "pat",
-        "url" : "/interface/new/new_comprehensive.php",
+        "url" : "/interface/new/new.php",
         "children" : [ ],
         "requirement" : 0
     }, { 

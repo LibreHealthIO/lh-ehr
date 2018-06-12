@@ -162,7 +162,7 @@ $GLOBALS_METADATA = array(
       array(
         '/interface/main/main_info.php' => xl('Calendar Screen'),
         '/interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
-        '/interface/new/new_comprehensive.php' => xl('Patient Add/Search'),
+        '/interface/new/new.php' => xl('Patient Add/Search'),
         '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
         '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
       ),
@@ -176,7 +176,7 @@ $GLOBALS_METADATA = array(
       array(
         '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
         '/interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
-        '/interface/new/new_comprehensive.php' => xl('Patient Add/Search'),
+        '/interface/new/new.php' => xl('Patient Add/Search'),
         '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
         '/interface/main/main_info.php' => xl('Calendar Screen'),
       ),
