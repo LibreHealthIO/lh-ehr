@@ -246,7 +246,7 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php
     if($_SESSION['authUser'] == "admin") {
         //only admin can use the updater
-        echo  "<div id='developer-mode' title='Developer Mode' style='display: none;'><i class='fa fa-desktop'></i></div>
+        echo  "<div id='developer-mode' title='Developer Mode' style='display: none;'><i class='fa fa-code'></i></div>
         <div id='updater-options' style='display: none;' title='updater settings'><i class='fa fa-gear'></i></div><div id='updater-icon'>
                 <i class='fa fa-refresh'></i>
                 </div>
@@ -305,7 +305,7 @@ $("#updater-settings-iframe").iziModal({
 });
 
 $("#developer-mode-iframe").iziModal({
-           title: '<i class="fa fa-desktop"></i> <?php echo xlt("Developer Options"); ?>',
+           title: '<i class="fa fa-code"></i> <?php echo xlt("Developer Options"); ?>',
            subtitle: '<?php echo xlt("Developer Mode in the Updater"); ?>',
            headerColor: '#F69600',
            closeOnEscape: true,
@@ -325,8 +325,8 @@ $("#developer-mode-iframe").iziModal({
            iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/developer_mode.php"
 });
 $("#updater-iframe").iziModal({
-           title: '<i class="fa fa-desktop"></i> <?php echo xlt("Developer Options"); ?>',
-           subtitle: '<?php echo xlt("Developer Mode in the Updater"); ?>',
+           title: '<i class="fa fa-refresh"></i> <?php echo xlt("Updater"); ?>',
+           subtitle: '<?php echo xlt("Updater for entire application"); ?>',
            headerColor: '#F69600',
            closeOnEscape: true,
            fullscreen:true,

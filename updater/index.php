@@ -123,7 +123,7 @@ if($_SESSION['authUser'] == "admin" && !(isset($_GET['id']) && isset($_GET['mode
 	echo "<th>Added On</th>";
 	while($array = sqlFetchArray($query)) {
 		$authUserId = $array['id'];
-		$sql = sqlQ("SELECT * FROM `updater_users` WHERE authUserId='$authUserId'");
+		$sql = sqlStatement("SELECT * FROM `updater_users` WHERE authUserId=?", $bindarray = array("$authUserId"));
 		$r = sqlFetchArray($sql);
 		$rows = sqlNumRows($sql);
 		if ($rows == 1) {
@@ -179,7 +179,7 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
 				$toast_message = "The user is added to updater administration"; 
 			}
 			elseif ($mode == "remove") {
-				sqlQ("DELETE FROM `updater_users` WHERE authUserId='$authUserId'");
+				sqlStatement("DELETE FROM `updater_users` WHERE authUserId=?", $bindarray=array($authUserId));
 				$toast_type = "error";
 				$toast_title = "User Removed";
 				$toast_message = "The user was removed from updater administration"; 

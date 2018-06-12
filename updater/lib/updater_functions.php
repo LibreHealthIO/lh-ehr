@@ -7,8 +7,8 @@ $updater_general_setting_input_fields = array("updater_notification_preference",
 * @return bool 
 **/
 function setUpdaterSetting($settingName, $settingValue) {
-$sql = "SELECT name FROM updater_settings WHERE name='$settingName'";
-$query = sqlQ($sql);
+$sql = "SELECT name FROM updater_settings WHERE name=?";
+$query = sqlStatement($sql, $bindArray=array($settingName));
 $rows = sqlNumRows($query);
 if ($rows == 0) {
 //INSERT THE UPDATER SETTING
@@ -23,7 +23,7 @@ $bindArray = array($settingName, $settingValue);
 }
 else {
 //UPDATE THE UPDATER SETTING
-	if (sqlStatement("UPDATE `updater_settings` SET `value`='$settingValue' WHERE name='$settingName'")) {
+	if (sqlStatement("UPDATE `updater_settings` SET `value`=? WHERE name=?", $bindArray=array($settingValue,$settingName))) {
 		return 1;
 	}
 	else {
@@ -35,8 +35,8 @@ else {
 
 
 function getUpdaterSetting($settingName){
-	$sql = "SELECT * FROM updater_settings WHERE name='$settingName'";
-	$query = sqlQ($sql);
+	$sql = "SELECT * FROM updater_settings WHERE name=?";
+	$query = sqlStatement($sql, $bindArray=array($settingName));
 	$rows = sqlNumRows($query);
 	if ($rows == 0) {
 		return "empty_setting";
