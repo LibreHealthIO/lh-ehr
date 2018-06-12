@@ -1,14 +1,3 @@
-<body>
-   <Style>
-input[type="submit"]:disabled {
-	opacity: 0.5;
-}
-
-
-body {
-	text-transform: capitalize;
-}
-</Style>
 <?php
 /**
  * Contains all updater functions
@@ -243,7 +232,16 @@ if (isset($_POST)) {
 		}
 	}
 ?>	
+   <Style>
+input[type="submit"]:disabled {
+	opacity: 0.5;
+}
 
+
+body {
+	text-transform: capitalize;
+}
+</Style>
 <script type="text/javascript">
     $(window).on("load",function(){
         jQuery('#loading').hide();

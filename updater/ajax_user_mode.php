@@ -1,6 +1,6 @@
 <?php 
 /**
- * Contains all updater functions
+ * Contains all ajax mode functions
  *
  *
  * Copyright (C) 2018 Naveen Muthusamy <kmnaveen101@gmail.com>
