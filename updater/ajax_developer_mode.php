@@ -1,6 +1,6 @@
 <?php 
 /**
- * Contains all ajax mode functions
+ * Contains all ajax developer mode functions
  *
  *
  * Copyright (C) 2018 Naveen Muthusamy <kmnaveen101@gmail.com>
@@ -21,22 +21,25 @@ require '../interface/globals.php';
 require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
-
 /*MODULES NEED TO BE WRITTEN HERE
-1. DOWNLOAD FILES
-2. BACKUP AND REPLACE FILES
-3. CREATE RESUME POINT
+1. SYNC WITH MASTER REPO
+2.APPLY THE PR
+3.BACKUP THE PR CHANGES
+4.RESTORE TO MASTER AND SYNC WHEN ANOTHER PR IS APPLIED
 */
-
-/** VALIDATIONS NEEDED TO BE MADE HERE
-* 1. VALIDATE DEVELOPER MODE IS ON
-* 2. VALIDATE TOKEN IS IN GOOD CONDITION
-* 3. VALIDATE OTHER NECESSARY CONDITIONS
-*/
+$authUserId = $_SESSION['authUserID'];
+$sql = sqlStatement("SELECT * FROM `updater_users` WHERE authUserId=?", $bindArray=array($authUserId));
+$rows = sqlNumRows($sql);
+if ($_SESSION['authUser'] == "admin" || $rows == 1) {
+	$auth_boolean = true;
+}
+else {
+	$auth_boolean = false;
+}
 if (getUpdaterSetting("updater_requirements") == "empty_setting") { 
 	die("unable to start updater - requirements not fulfilled");
 }
-if (!curl_bool() OR !internet_bool() && !file_permissions_bool($webserver_root)) {
+if (!curl_bool() || !internet_bool() || !file_permissions_bool($webserver_root) || !$auth_boolean) {
 	die("unable to start updater - requirements not fulfilled");
 }
 $settings_json = file_get_contents("settings.json");
@@ -46,7 +49,7 @@ $repository_owner = $settings_array['owner'];
 $repository_name = $settings_array['repository_name'];
 
 if ($updater_host == "github") {
-	//if host=github then load rhwm
+	//if host=github then load 
 	if (getUpdaterSetting("github_current") != "empty_setting") {
 		$pull_request_number = getUpdaterSetting("github_current");
 	}
@@ -60,22 +63,23 @@ if ($updater_host == "github") {
 
 }
 require "lib/api.$updater_host.php";
-$files_need_to_be_downloaded = array();
-if (isset($_GET)) {
-	if (isset($_GET['start_updater'])) {
-		if (!empty($_GET['start_updater'])) {
-			clearFilesFolder($foldername = "backup");
-			clearFilesFolder($foldername = "downloads");
-			$updater_token = getUpdaterSetting("updater_token");
-			$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
-			//since updating started save it for backup
-			setUpdaterSetting("github_backup", $pull_request_number);
-			//get only single merge request after that PR
-			$merged_requests_key = array_keys($merged_requests_array);
-			$merged_request_value = array_values($merged_requests_array);
-			$merged_requests_array = array($merged_requests_key[0]=>$merged_request_value[0]);
-			$next_pr_value = $merged_request_value[1];
-			foreach ($merged_requests_array as $key => $value) {
+
+//TOKEN CHECK
+if (isTokenValid(getUpdaterSetting("updater_token"))) {
+	// do nothing, keep the script running
+}
+else {
+	die("The token is not valid");
+}
+
+if (isset($_GET['developer_mode_start'])) {
+	if (!empty($_GET['developer_mode_start'])) {
+		clearFilesFolder($foldername = "backup");
+		clearFilesFolder($foldername = "downloads");
+		$updater_token = getUpdaterSetting("updater_token");
+		//sync master with local repo
+		$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+		foreach ($merged_requests_array as $key => $value) {
 				$pr_number = $value;
 				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
 				//clear the tables to feed the fresh data to backup and download entry tables
@@ -99,46 +103,10 @@ if (isset($_GET)) {
 					downloadFile($url, "downloads", $filename, $status);
 					//Make Downloaded File DB entry
 					downloadFileDbEntry($filename, $status, $original_name, $old_name);
-					if (isExistInBackupTable($filename)) {
-						backupFile("backup", $filename, $original_name, $status, $old_name);
-					}
-					else {
-					  echo $filename;
-					  echo "<br/><br/>";
-					}
-
-					backupFileDbEntry($filename, $status, $original_name, $old_name);
 					replaceFile($filename, $original_name, $status, $old_name);
 				}
 			}
-			//prepare the updater for showing next PR
-			setUpdaterSetting("github_current", $next_pr_value);
-		}
-	}
-	
-}
+		//sync over	
 
-if (isset($_GET['count_files'])) {
-	if (!empty($_GET['count_files'])) {
-		$files =  getUpdaterSetting("files_downloaded");
-		$arr =  array('files' => $files);
-		echo json_encode($arr);
 	}
 }
-
-
-if (isset($_GET['start_recovery'])) {
-	if (!empty($_GET['start_recovery'])) {
-		$sql = sqlStatement('SELECT * FROM `updater_user_mode_backup_entry`');
-		while ($r = sqlFetchArray($sql)) {
-			$filename = $r['filename'];
-			$original_name = $r['original_name'];
-			$status = $r['status'];
-			$old_name = $r['old_name'];
-			restoreBackupFile($filename, $original_name, $status, $old_name);
-		}
-		$pr_backup_number = getUpdaterSetting("github_backup");
-		setUpdaterSetting("github_current", $pr_backup_number);
-	}
-}
-?>

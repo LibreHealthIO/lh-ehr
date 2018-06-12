@@ -123,7 +123,7 @@ if($_SESSION['authUser'] == "admin" && !(isset($_GET['id']) && isset($_GET['mode
 	echo "<th>Added On</th>";
 	while($array = sqlFetchArray($query)) {
 		$authUserId = $array['id'];
-		$sql = sqlStatement("SELECT * FROM `updater_users` WHERE authUserId=?", $bindarray = array("$authUserId"));
+		$sql = sqlStatement("SELECT * FROM `updater_users` WHERE authUserId=?", $bindarray = array($authUserId));
 		$r = sqlFetchArray($sql);
 		$rows = sqlNumRows($sql);
 		if ($rows == 1) {
@@ -173,7 +173,7 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
 			$authUserId = $_GET['id'];
 			if ($mode == "add") {
 				//add a user id to the table
-				sqlQ("INSERT INTO `updater_users`(`authUserId`, `date`) VALUES ($authUserId, NOW())");
+				sqlStatement("INSERT INTO `updater_users`(`authUserId`, `date`) VALUES (?, NOW()", $bindarray=array($authUserId));
 				$toast_type = "success";
 				$toast_title = "User Added";
 				$toast_message = "The user is added to updater administration"; 
