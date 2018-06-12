@@ -296,6 +296,7 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
        $endtime = "$tmph:$tmpm:00";
     }else{
     $endtime = "$tmph:$tmpm:00";
+    }
 
     // Set up working variables related to repeated events.
     $my_recurrtype = 0;
