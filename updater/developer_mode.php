@@ -49,6 +49,13 @@ if ($updater_host == "github") {
 if (getUpdaterSetting("updater_dm") == "empty_setting" || getUpdaterSetting("updater_dm")== "0") {
 	echo "<p style='color: red;'>Developer Mode is not Enabled</p>";
 }
+elseif (getUpdaterSetting("updater_token") == "empty_setting") {
+	echo "<p style='color: red;'>You didnt add the token to updater yet, first setup the updater and access developer mode</p>";
+
+}
+elseif (!isTokenValid(getUpdaterSetting("updater_token"))) {
+		echo "<p style='color: red;'>The token was expired, run the updater to add the new token</p>";
+}
 elseif (getUpdaterSetting("updater_dm") == "1") {
 	if (getUpdaterSetting("github_developer_current") == "empty_setting"){
 
