@@ -89,9 +89,10 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 		    if (bool == "confirm") {
 				 $.ajax({url: "ajax_developer_mode.php?developer_mode_start=1&pr_number=" + id , success: function(result){
 				        $(".bk_progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
+				        alert("PR has been applied Successfully");
 				    	var type = 'success';
 				    	var title = 'Restored Successfully';
-				    	var message = 'Updater has restored the initial state Successfully';
+				    	var message = 'PR has been applied Successfully';
 				    	parent.showUpdaterNotifications(type, title, message);
 				    }
 
