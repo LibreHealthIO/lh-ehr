@@ -72,8 +72,23 @@ else {
 	die("The token is not valid");
 }
 
-if (isset($_GET['developer_mode_start'])) {
-	if (!empty($_GET['developer_mode_start'])) {
+if (isset($_GET['developer_mode_start']) && isset($_GET['pr_number'])) {
+	if (!empty($_GET['developer_mode_start']) && !empty($_GET['pr_number'])) {
+		
+		if (getUpdaterSetting('github_developer_current') != "empty_setting") {
+			//if there is pr is under testing then restore it to original state
+			$sql = sqlStatement('SELECT * FROM `updater_user_mode_backup_entry`');
+			while ($r = sqlFetchArray($sql)) {
+				$filename = $r['filename'];
+				$original_name = $r['original_name'];
+				$status = $r['status'];
+				$old_name = $r['old_name'];
+				restoreBackupFile($filename, $original_name, $status, $old_name);
+			}
+			$pr_backup_number = $_GET['pr_number'];
+			setUpdaterSetting("github_developer_current", $pr_backup_number);
+		}
+		$test_pr_number = $_GET['pr_number'];
 		clearFilesFolder($foldername = "backup");
 		clearFilesFolder($foldername = "downloads");
 		$updater_token = getUpdaterSetting("updater_token");
@@ -106,7 +121,45 @@ if (isset($_GET['developer_mode_start'])) {
 					replaceFile($filename, $original_name, $status, $old_name);
 				}
 			}
-		//sync over	
+		//sync over
+
+
+		//start testing the pr_number
+		$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $test_pr_number);
+				//clear the tables to feed the fresh data to backup and download entry tables
+				deleteDownloadFileDbEntry();
+				deleteBackupFileDbEntry();
+				foreach ($arr as $ke) {
+					$original_name = $ke['filename'];
+					$url = $ke['raw_url'];
+					$sha = $ke['sha'];
+					$time = time();
+					$extension = pathinfo($ke['filename'], PATHINFO_EXTENSION);
+					$filename = $sha."_".$time.".".$extension;
+					$status = $ke['status'];
+					if (isset($ke['previous_filename'])) {
+						$old_name = $ke['previous_filename'];
+					}
+					else {
+						//it means the file is not renamed
+						$old_name = "empty";
+					}
+					downloadFile($url, "downloads", $filename, $status);
+					//Make Downloaded File DB entry
+					downloadFileDbEntry($filename, $status, $original_name, $old_name);
+					if (isExistInBackupTable($filename)) {
+						backupFile("backup", $filename, $original_name, $status, $old_name);
+					}
+					else {
+					  echo $filename;
+					  echo "<br/><br/>";
+					}
+
+					backupFileDbEntry($filename, $status, $original_name, $old_name);
+					replaceFile($filename, $original_name, $status, $old_name);
+				}
+
+
 
 	}
 }
