@@ -35,6 +35,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/globals.inc.php");
 require_once("$srcdir/user.inc");
 require_once("$srcdir/classes/CouchDB.class.php");
+require_once("$srcdir/calendar.inc");
 
 if ($_GET['mode'] != "user") {
   // Check authorization.
@@ -314,6 +315,8 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
             sqlStatement( 'DELETE FROM `globals` WHERE gl_name = ?', array( $fldid ) );
 
             sqlStatement( 'INSERT INTO `globals` ( gl_name, gl_index, gl_value ) VALUES ( ?, ?, ? )', array( $fldid, 0, $fldvalue )  );
+
+            refreshCalendar(); //if data is updated and is also valid for Calendar-Admin
           }
 
         } else {
