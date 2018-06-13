@@ -55,7 +55,7 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 	}
 	else {
 		$pr = getUpdaterSetting("github_developer_current");
-		echo "<div class='alert alert-info'>#$pr has already applied</div>"
+		echo "<div class='alert alert-info'>#$pr has already applied</div>";
 	}
 	//Means Developer Mode is Enabled for Updater
 	//Show a list of pull requests which are open
