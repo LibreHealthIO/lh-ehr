@@ -117,10 +117,10 @@ require('includes/session.php');
   </form>
     <?php
     if($_SESSION['pc_facility'] == 0){
-      echo '<div id="facilityColor">';
+      echo '<div id="facilityColor" style="overflow: auto; max-height: 166px; width: 96%; border: 1px solid black;">';
       echo '<table>';
       foreach ($facilities as $f){
-        echo "   <tr><td><div style=background-color:".$f['color'].";font-weight:bold>".htmlspecialchars($f['name'],ENT_QUOTES)."</div></td></tr>";
+        echo "<tr><td><p style='background-color:".$f['color'].";font-weight:bold; padding: 2px 1px; margin-top: -2px;'>".htmlspecialchars($f['name'],ENT_QUOTES)."</p></td></tr>";
       }
       echo '</table>';
       echo '</div>';

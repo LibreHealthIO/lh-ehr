@@ -1072,6 +1072,14 @@ $GLOBALS_METADATA = array(
 
   ),
 
+   'primary_insurance_required' => array(
+      xl('Require the Entry of the Primary Insurance in the New Patient Screen'),
+      'bool',
+      '0',                              // default
+      xl('Require the Entry of the Primary Insurance in the New Patient Screen')
+
+  ),
+
   ),
 
   // Statement Tab
