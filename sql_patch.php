@@ -33,7 +33,7 @@ $EMRversion = trim(preg_replace('/\s*\([^)]*\)/', '', $GLOBALS['libreehr_version
 <head>
 <title>LibreHealth EHR <?php echo attr($EMRversion) ?> <?php echo xlt('Database Patch'); ?></title>
 <link rel='STYLESHEET' href='interface/themes/style_setup.css'>
-<link rel="shortcut icon" href="public/images/favicon.ico" />
+<link rel="shortcut icon" href="favicon.ico" />
 </head>
 <body style="color:green;">
 
