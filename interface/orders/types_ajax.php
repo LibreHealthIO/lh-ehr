@@ -13,7 +13,7 @@ $id = formData('id','G') + 0;
 $order = formData('order','G') + 0;
 $labid = formData('labid','G') + 0;
 
-echo "$('#con$id').html('<table class=\"table striped noborder\" width=\"100%\" cellspacing=\"0\">";
+echo "$('#con$id').html('<table class=\"table striped table-condensed noborder\" width=\"100%\" cellspacing=\"0\">";
 
 // Determine indentation level for this container.
 for ($level = 0, $parentid = $id; $parentid; ++$level) {
@@ -67,8 +67,8 @@ while ($row = sqlFetchArray($res)) {
   echo "<td style=\"width:20%\" class=\" text-center col3\">" . htmlspecialchars($row['procedure_code'], ENT_QUOTES) . "</td>";
   echo "<td style=\"width:20%\" class=\" text-center col4\">" . htmlspecialchars($row['description'], ENT_QUOTES) . "</td>";
   echo "<td style=\"width:20%\" class=\" text-center col5\">";
-  echo "<button onclick=\"enode($chid)\" style=\" margin-right: 5px; \" class=\"btn btn-primary haskids \">" . xl('Edit') . "</button> ";
-  echo "<button onclick=\"anode($chid)\"  class=\"btn btn-primary haskids \"> " . xl('Add') . "</button>";
+  echo "<a href=\"types_edit.php?parent=0&typeid=$chid\" style=\" margin-right: 5px; \" class=\"btn trigger btn-primary haskids \">" . xl('Edit') . "</a> ";
+  echo "<a href=\"types_edit.php?typeid=0&parent=$chid\" class=\"btn trigger btn-primary haskids \"> " . xl('Add') . "</button>";
   echo "</td>";
   echo "</tr>";
 }

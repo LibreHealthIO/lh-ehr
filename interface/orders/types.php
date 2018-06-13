@@ -187,13 +187,10 @@ function refreshFamily(id, haskids) {
   recolor();
 }
 
-// edit a node
-function enode(id) {
- dlgopen('types_edit.php?parent=0&typeid=' + id, '_blank', 700, 550);
-}
 
 $(document).on('click', '.trigger', function (event) {
     event.preventDefault();
+    console.log(event.target.href);
     $("#modal-iframe").iziModal({
     iframe: true,
     iframeHeight: 500,

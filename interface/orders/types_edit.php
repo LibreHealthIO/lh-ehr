@@ -152,8 +152,9 @@ $(document).ready(function() {
 <?php
 // If we are saving, then save and close the window.
 //
+$errors = [];
 if ($_POST['form_save']) {
-
+ 
   $sets =
     "name = "           . invalue('form_name')           . ", " .
     "lab_id = "         . invalue('form_lab_id')         . ", " .
@@ -170,16 +171,46 @@ if ($_POST['form_save']) {
     "related_code = "   . invalue('form_related_code')   . ", " .
     "seq = "            . invalue('form_seq');
 
-  if ($typeid) {
-    sqlStatement("UPDATE procedure_type SET $sets WHERE procedure_type_id = '$typeid'");
-    // Get parent ID so we can refresh the tree view.
-    $row = sqlQuery("SELECT parent FROM procedure_type WHERE " .
-      "procedure_type_id = '$typeid'");
-    $parent = $row['parent'];
-  } else {
-    $newid = sqlInsert("INSERT INTO procedure_type SET parent = '$parent', $sets");
-    // $newid is not really used in this script
+  // base validation rule
+  if (($_POST['form_name'] === '') || ($_POST['form_description'] === '') || ($_POST['form_seq'] === '') || ($_POST['form_procedure_type'] === '')) {
+    $errors[] = 'Please fill in all the fields';
   }
+
+  switch($_POST['form_procedure_type']) {
+    case 'ord':
+      if (($_POST['form_lab_id'] === '') || ($_POST['form_procedure_code'] === '') || ($_POST['form_standard_code']) || ($_POST['form_body_site'] )
+           || ($_POST['form_specimen'] === '') || ($_POST['route_admin'] === '') || ($_POST['form_laterality'] === '')) {
+            if(count($errors) <= 0) {
+              $errors[] = 'Please fill in all the fields';
+            }
+      }
+    break;
+
+    case 'res':
+    case 'rec':
+
+      if (($_POST['form_procedure_code'] === '') || ($_POST['form_units'] === '') || ($_POST['form_range'] === '')) {
+        if (count($errors) <= 0) {
+          $errors[] = 'Please fill in all the fields';
+        }
+      }
+
+    break;
+  }
+  
+  if(count($errors) <= 0) {
+    if ($typeid) {
+      sqlStatement("UPDATE procedure_type SET $sets WHERE procedure_type_id = '$typeid'");
+      // Get parent ID so we can refresh the tree view.
+      $row = sqlQuery("SELECT parent FROM procedure_type WHERE " .
+        "procedure_type_id = '$typeid'");
+      $parent = $row['parent'];
+    } else {
+      $newid = sqlInsert("INSERT INTO procedure_type SET parent = '$parent', $sets");
+      // $newid is not really used in this script
+    }
+  }
+  
 }
 
 else  if ($_POST['form_delete']) {
@@ -194,7 +225,7 @@ else  if ($_POST['form_delete']) {
 
 }
 
-if ($_POST['form_save'] || $_POST['form_delete']) {
+if ( ($_POST['form_save'] || $_POST['form_delete']) && count($errors) <= 0) {
   // Find out if this parent still has any children.
   $trow = sqlQuery("SELECT procedure_type_id FROM procedure_type WHERE parent = '$parent' LIMIT 1");
   $haskids = empty($trow['procedure_type_id']) ? 'false' : 'true';
@@ -228,7 +259,7 @@ if ($typeid) {
     <div class="col-sm-10">
       <input type="text" class="form-control" size='40' name='form_name' id='form_name1' maxlength='63'
       value='<?php echo htmlspecialchars($row['name'], ENT_QUOTES); ?>'
-      title='<?php echo xlt('Your name for this category, procedure or result'); ?>'/>
+      title='<?php echo xlt('Your name for this category, procedure or result'); ?>' />
     </div>
   </div>
   <div class="form-group">
@@ -237,7 +268,7 @@ if ($typeid) {
       <input type='text' size='40' class='form-control' name='form_description' id='form_description1' maxlength='255'
       value='<?php echo htmlspecialchars($row['description'], ENT_QUOTES); ?>'
       title='<?php echo xlt('Description of this procedure or result code'); ?>'
-       />
+      />
     </div>
   </div>
   <div class="form-group">
@@ -246,7 +277,7 @@ if ($typeid) {
       <input type='text' size='4' style='width:auto;' name='form_seq' class='form-control' maxlength='11'
       value='<?php echo $row['seq'] + 0; ?>'
       title='<?php echo xla('Relative ordering of this entity'); ?>'
-      class='inputtext' />
+      class='form-control' />
     </div>
   </div>
   <div class="form-group ordonly">
@@ -282,7 +313,7 @@ if ($typeid) {
       <input type='text' size='4' style='width: auto;' id='form_standard_code1' name='form_standard_code'
         value='<?php echo attr($row['standard_code']); ?>'
         title='<?php echo xla('Enter the LOINC code for this procedure'); ?>'
-        class='form-control' />
+        class='form-control'  />
     </div>
   </div>
 
@@ -365,6 +396,18 @@ if ($typeid) {
       style='width:auto' class="form-control" readonly />
     </div>
   </div>
+  <?php if(count($errors) > 0) { ?>
+  <div class="form-group alert alert-danger">
+    <ul>
+    <?php 
+      foreach($errors as $error) {
+        echo '<li style="font-size: 15px;">'.$error.'</li>';
+      }
+    ?>
+    </ul>
+  </div>
+ <?php } ?>
+
 
 <br />
 
