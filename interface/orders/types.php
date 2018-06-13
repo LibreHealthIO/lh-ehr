@@ -78,6 +78,10 @@ window.close(); // comment out for debugging
   tr.oddrow {
   background-color:#ffffff;
   }
+
+  a:visited {
+    color: white !important;
+  }
   
 </style>
 <?php if ($popup) { ?>
@@ -188,10 +192,26 @@ function enode(id) {
  dlgopen('types_edit.php?parent=0&typeid=' + id, '_blank', 700, 550);
 }
 
+$(document).on('click', '.trigger', function (event) {
+    event.preventDefault();
+    $("#modal-iframe").iziModal({
+    iframe: true,
+    iframeHeight: 500,
+    width: 550,
+    height: 500,
+    iframeURL: event.target.href,
+    overlayClose: true,
+    closeButton: true,
+    closeOnEscape: true,
+    
+    });
+    $("#modal-iframe").iziModal('open');
+});
+
 // add a node
-function anode(id) {
- dlgopen('types_edit.php?typeid=0&parent=' + id, '_blank', 700, 550);
-}
+// function anode(id) {
+//  dlgopen('types_edit.php?typeid=0&parent=' + id, '_blank', 700, 550);
+// }
 
 // call this to alternate row colors when anything changes the number of rows
 function recolor() {
@@ -210,7 +230,7 @@ function recolor() {
 <body >
 
   <div class="container">
-
+    <div id="modal-iframe"></div>
     <h2 class="text-center" ><?php xl('Types of Orders and Results','e') ?></h2>
 
     <form method='post' name='theform' action='types.php?popup=<?php echo $popup ?>&order=<?php
@@ -240,7 +260,7 @@ function recolor() {
     <button type='button' onclick='window.close()' class="btn btn-danger"> <?php xl('Cancel','e'); ?></button>
     &nbsp;
     <?php } ?>
-    <button type='button' onclick='anode(0)' class="btn btn-success"><?php xl('Add Top Level','e'); ?></button>
+    <a href="types_edit.php?typeid=0&parent=0"  class="trigger btn btn-primary"><?php xl('Add Top Level','e'); ?></a>
     </p>
 
     </form>
