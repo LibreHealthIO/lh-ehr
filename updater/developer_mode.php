@@ -83,11 +83,11 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 <script type="text/javascript">
 	    parent.$('.iziModal-content').css("background-image", "none");
 	        $('.test').click(function() {
-	        	console.log($(this).attr('id'));
+	        	var id = $(this).attr('id');
     	var bool = prompt("Previous Testing of the pr will be returned to original state.");
     	
 		    if (bool == "confirm") {
-				 $.ajax({url: "ajax_developer_mode.php?developer_mode_start=1&pr_number=" + , success: function(result){
+				 $.ajax({url: "ajax_developer_mode.php?developer_mode_start=1&pr_number=" + id , success: function(result){
 				        $(".bk_progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
 				    	var type = 'success';
 				    	var title = 'Restored Successfully';
@@ -97,6 +97,6 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 
 				});
 		    }
-		    */
+		    
     });
 </script>

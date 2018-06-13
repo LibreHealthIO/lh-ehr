@@ -85,8 +85,6 @@ if (isset($_GET['developer_mode_start']) && isset($_GET['pr_number'])) {
 				$old_name = $r['old_name'];
 				restoreBackupFile($filename, $original_name, $status, $old_name);
 			}
-			$pr_backup_number = $_GET['pr_number'];
-			setUpdaterSetting("github_developer_current", $pr_backup_number);
 		}
 		$test_pr_number = $_GET['pr_number'];
 		clearFilesFolder($foldername = "backup");
@@ -158,7 +156,8 @@ if (isset($_GET['developer_mode_start']) && isset($_GET['pr_number'])) {
 					backupFileDbEntry($filename, $status, $original_name, $old_name);
 					replaceFile($filename, $original_name, $status, $old_name);
 				}
-
+			$pr_backup_number = $_GET['pr_number'];
+			setUpdaterSetting("github_developer_current", $pr_backup_number);
 
 
 	}
