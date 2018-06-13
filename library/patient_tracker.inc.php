@@ -187,6 +187,11 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
     return false;
   }
 
+  if ($GLOBALS['calendar_timezone'] !== '') {
+    $timezone = $GLOBALS['calendar_timezone'];
+    ini_set('date.timezone', $timezone);  // sets timezone for function date() according to globals
+  }
+
   $datetime = date("Y-m-d H:i:s");
   if (is_null($room)) {
       $room = '';

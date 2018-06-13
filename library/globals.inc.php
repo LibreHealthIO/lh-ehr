@@ -129,6 +129,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'print_next_appointment_on_ledger',
                                'calendar_view_type',
                                'calendar_refresh_freq',
+                               'calendar_timezone',
                                'check_appt_time',
                                'event_color',
                                'pat_trkr_timer',
@@ -1523,7 +1524,7 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '1',                             // default
       xl('Use the Appointment Status Colors in the Calendar Instead of the Appointment Category Colors.')
-    ),    
+    ),
 
     'calendar_refresh_freq' => array(
       xl('Calendar Refresh Frequency'),
@@ -1535,6 +1536,19 @@ $GLOBALS_METADATA = array(
       ),
        '360000',                     // default
       xl('How often the calendar automatically refetches events.')
+    ),
+
+    'calendar_timezone' => array(
+      xl('Calendar Time Zone'),
+      array(
+        date_default_timezone_get() => xl('Default - php.ini value'),
+        'Asia/Dubai' => xl('Dubai'),
+        'Asia/Kolkata' => xl('Kolkata'),
+        'Asia/Karachi' => xl('Karachi'),
+        'Asia/Pyongyang' => xl('Pyongyang'),
+      ),
+       date_default_timezone_get(),    // defaults to php.ini "date.timezone" value if set valid otherwise UTC
+      xl('Set calendar time zone.')
     ),
 
     'calendar_provider_view_type' => array(
