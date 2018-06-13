@@ -92,6 +92,8 @@ if (isset($_GET['developer_mode_start']) && isset($_GET['pr_number'])) {
 		$updater_token = getUpdaterSetting("updater_token");
 		//sync master with local repo
 		$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+		$count = count($merged_requests_array);
+		$i = 0;
 		foreach ($merged_requests_array as $key => $value) {
 				$pr_number = $value;
 				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
@@ -117,6 +119,10 @@ if (isset($_GET['developer_mode_start']) && isset($_GET['pr_number'])) {
 					//Make Downloaded File DB entry
 					downloadFileDbEntry($filename, $status, $original_name, $old_name);
 					replaceFile($filename, $original_name, $status, $old_name);
+				}
+				$i = $i + 1;
+				if ($count == $i) {
+					setUpdaterSetting("github_current", $pr_number);
 				}
 			}
 		//sync over
@@ -145,20 +151,13 @@ if (isset($_GET['developer_mode_start']) && isset($_GET['pr_number'])) {
 					downloadFile($url, "downloads", $filename, $status);
 					//Make Downloaded File DB entry
 					downloadFileDbEntry($filename, $status, $original_name, $old_name);
-					if (isExistInBackupTable($filename)) {
+
 						backupFile("backup", $filename, $original_name, $status, $old_name);
-					}
-					else {
-					  echo $filename;
-					  echo "<br/><br/>";
-					}
 
 					backupFileDbEntry($filename, $status, $original_name, $old_name);
 					replaceFile($filename, $original_name, $status, $old_name);
 				}
 			$pr_backup_number = $_GET['pr_number'];
 			setUpdaterSetting("github_developer_current", $pr_backup_number);
-
-
 	}
 }
