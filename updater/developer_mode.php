@@ -67,7 +67,7 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 	//Means Developer Mode is Enabled for Updater
 	//Show a list of pull requests which are open
 	$pr_array = getAllOpenPullRequests($access_token, $repository_owner, $repository_name);
-	echo "<table class='table table-striped'>";
+	echo "<table class='table table-striped' id='pr_interface'>";
 	foreach ($pr_array as $key) {
 		$avatar_url = $key['user']['avatar_url'];
 		$pr_title = $key['title'];
@@ -83,6 +83,9 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 		$loader->output();
 	}
 	echo "</table>";
+	$loader->set_template_file("developer_mode_progress");
+	$loader->assign("AVATAR_URL", $avatar_url);
+	$loader->output();
 }
 
 
@@ -91,12 +94,13 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 	    parent.$('.iziModal-content').css("background-image", "none");
 	        $('.test').click(function() {
 	        	var id = $(this).attr('id');
-    	var bool = prompt("Previous Testing of the pr will be returned to original state.");
+    	var bool = prompt("Previous Testing of the pr will be returned to original state.enter confirm to test the pull request.");
     	
 		    if (bool == "confirm") {
 				 $.ajax({url: "ajax_developer_mode.php?developer_mode_start=1&pr_number=" + id , success: function(result){
-				        $(".bk_progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
-				        alert("PR has been applied Successfully");
+				        $(".dv_progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
+    					$('#pr_interface').hide();
+    					$('#developer_screen').show();
 				    	var type = 'success';
 				    	var title = 'Restored Successfully';
 				    	var message = 'PR has been applied Successfully';
@@ -106,5 +110,9 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 				});
 		    }
 		    
+    });
+
+	$('#dv_return').click(function () {
+    	window.location = "developer_mode.php";
     });
 </script>
