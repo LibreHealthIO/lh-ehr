@@ -97,10 +97,10 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
     	var bool = prompt("Previous Testing of the pr will be returned to original state.enter confirm to test the pull request.");
     	
 		    if (bool == "confirm") {
+		    	$('#pr_interface').hide();
+    			$('#developer_screen').show();
 				 $.ajax({url: "ajax_developer_mode.php?developer_mode_start=1&pr_number=" + id , success: function(result){
 				        $(".dv_progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
-    					$('#pr_interface').hide();
-    					$('#developer_screen').show();
 				    	var type = 'success';
 				    	var title = 'Restored Successfully';
 				    	var message = 'PR has been applied Successfully';
