@@ -38,7 +38,7 @@ class pre_0438_InitialPatientPopulation1 extends PQRSFilter
 	" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 	" AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '21' ".
 	" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-	" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0438_a' AND b1.modifier NOT IN('GQ','GT')); ";
+	" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0438_a' AND b1.modifier NOT IN('GQ','GT','95')); ";
 	
 	$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 	if ($result['count']> 0){ return true;} else {return false;}  

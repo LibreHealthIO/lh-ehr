@@ -7,6 +7,7 @@
  * 
  * @author  Art Eaton <art@suncoastconnection.com>
  * @author  Bryan lee <leebc@suncoastconnection.com>
+ * @author  Lana Woods <lana@suncoastconnection.com>
  * @package LibreHealthEHR 
  * @link    http://suncoastconnection.com
  * @link    http://librehealth.io
@@ -106,12 +107,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0024', 'answer', '2|Post Fracture Care not Communicated for Medical Reasons (5015F:1P)|5015F:1P',2),
 ('PQRS_0024', 'answer', '3|Post Fracture Care not Communicated for Patient Reasons (5015F:2P)|5015F:2P',2),
 ('PQRS_0024', 'answer', '4|Post Fracture Care not Communicated Reason not Otherwise Specified (5015F:8P)|5015F:8P',9),
-
-('PQRS_0032', 'description', 'Stroke and Stroke Rehabilitation: Discharged on Antithrombotic Therapy',''),
-('PQRS_0032', 'question', 'Was Antithrombotic Therapy Prescribed at discharge?',''),
-('PQRS_0032', 'answer', '1|Antithrombotic Therapy Prescribed (G8696)|G8696',1),
-('PQRS_0032', 'answer', '2|Antithrombotic Therapy not Prescribed for Documented Reasons (G8697)|G8697',2),
-('PQRS_0032', 'answer', '3|Antithrombotic Therapy Prescription not Prescribed, Reason not Given (G8698)|G8698',9),
 
 ('PQRS_0039', 'description', 'Screening for Osteoporosis for Women Aged 65-85 Years of Age',''),
 ('PQRS_0039', 'question', 'Is there documentation in their medical record of having received a DXA test of the hip or spine?',''),
@@ -776,14 +771,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0283', 'answer', '1|Neuropsychiatric symptoms assessed and results reviewed (1181F)|1181F',1),
 ('PQRS_0283', 'answer', '2|Neuropsychiatric symptoms not assessed and results not reviewed, reason not otherwise specified (1181F:8P)|1181F:8P',9),
 
-
-('PQRS_0284', 'description', 'Dementia: Management of Neuropsychiatric Symptoms ',''),
-('PQRS_0284', 'question', 'Patients who received or were recommended to receive an intervention for neuropsychiatric symptoms within a 12 month period',''),
-('PQRS_0284', 'answer', '1|Neuropsychiatric intervention ordered (4525F)|4525F',1),
-('PQRS_0284', 'answer', '2|Neuropsychiatric intervention  received (4526F)|4526F',1),
-('PQRS_0284', 'answer', '3|Neuropsychiatric intervention not ordered, reason not otherwise specified (4525F:8P)|4525F:8P',9),
-('PQRS_0284', 'answer', '4|Neuropsychiatric intervention not received, reason not otherwise specified (4525F:8P)|4526F:8P',9),
-
 ('PQRS_0286', 'description', 'Dementia: Counseling Regarding Safety Concerns',''),
 ('PQRS_0286', 'question', 'Patients or their caregiver(s) who were counseled or referred for counseling regarding safety concerns within a 12 month period<br>  *** See Measure Details for Instructions ***',''),
 ('PQRS_0286', 'answer', '1|Safety counseling for dementia provided (6101F)|6101F',1),
@@ -814,12 +801,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0293', 'answer', '1|Rehabilitative therapy options discussed with patient (or caregiver) (4400F)|4400F',1),
 ('PQRS_0293', 'answer', '2|Documentation of medical reason(s) for not discussing rehabilitative therapy options with patient (or caregiver) (4400F:1P)|4400F:1P',2),
 ('PQRS_0293', 'answer', '3|Rehabilitative therapy options not discussed with patient (or caregiver), reason not otherwise specified (4400F:8P)|4400F:8P',9),
-
-('PQRS_0294', 'description', 'Parkinson\'s Disease Disease Medical and Surgical Treatment Options Reviewed',''),
-('PQRS_0294', 'question', 'Patients (or caregiver(s), as appropriate) who had the Parkinson\'s disease treatment options (e.g., non-pharmacological treatment, pharmacological treatment, or surgical treatment) reviewed at least once annually',''),
-('PQRS_0294', 'answer', '1|Medical and surgical treatment options reviewed with patient (or caregiver) (4325F)|4325F',1),
-('PQRS_0294', 'answer', '2|Medical and surgical treatment options not reviewed with patient (or caregiver) for medical reasons (eg, patient is unable to respond and no informant is available) (4325F:1P)|4325F:1P',2),
-('PQRS_0294', 'answer', '3|Medical and surgical treatment options not reviewed with patient (or caregiver), reasons not otherwise specified (4325F:8P)|4325F:8P',9),
 
 ('PQRS_0303', 'description', 'Cataracts: Improvement in Patient\'s Visual Function within 90 Days Following Cataract Surgery',''),
 ('PQRS_0303', 'question', 'Patients 18 years and older who had improvement in visual function achieved within 90 days following cataract surgery, based on completing a pre-operative and post-operative visual function survey',''),
@@ -1402,7 +1383,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0439', 'answer', '2|Documentation of medical reason(s) for a colonoscopy performed on a patient greater than 85 years of age (e.g., last colonoscopy incomplete, last colonoscopy had inadequate prep, iron deficiency anemia, lower gastrointestinal bleeding, Crohn''s Disease (i.e., regional enteritis), familial history of adenomatous polyposis, Lynch Syndrome (i.e., hereditary non-polyposis colorectal cancer), inflammatory bowel disease, ulcerative colitis, abnormal finding of gastrointestinal tract, or changes in bowel habits) (G9660)|G9660',2),
 ('PQRS_0439', 'answer', '3|Patients greater than 85 years of age who received a routine colonoscopy for a reason other than the following: an assessment of signs/symptoms of GI tract illness, and/or the patient is considered high risk, and/or to follow-up on previously diagnoses advance lesions (G9661)|G9661',9),
 
-('PQRS_0440', 'description', 'Basal Cell Carcinoma (BCC)/Squamous Cell Carcinoma: Biopsy Reporting Time – Pathologist to Clinician',''),
+('PQRS_0440', 'description', 'Basal Cell Carcinoma (BCC)/Squamous Cell Carcinoma: Biopsy Reporting Time Â– Pathologist to Clinician',''),
 ('PQRS_0440', 'question', 'Number of final pathology reports diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease) sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 businessdays from the time when the tissue specimen was received by the pathologist',''),
 ('PQRS_0440', 'answer', '1|Pathology report diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease)sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 business days from the time when the tissue specimen was received by the pathologist (G9785)|G9785',1),
 ('PQRS_0440', 'answer', '2|Pathology report diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease) was not sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 business days from the time when the tissue specimen was received by the pathologist (G9786)|G9786',9),
@@ -1410,7 +1391,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0441', 'description', ' Ischemic Vascular Disease (IVD) All or None Outcome Measure (Optimal Control) NOT A RECOMMENDED MEASURE, !INCOMPLETE! ',''),
 ('PQRS_0441', 'question', 'The number of IVDpatients who meet ALL of the following targets: Most recent BP is less than 140/90 mm Hg And Most recent tobacco status is Tobacco Free (NOTE: If there is No Documentation of Tobacco Status thepatient is not compliant for this measure) And Daily Aspirin or Other Antiplatelet Unless Contraindicated And Statin Use.',''),
 ('PQRS_0441', 'answer', '1|Most recent BP is less than or equal to 140/90 mm Hg (G9788)|G9788',1),
-('PQRS_0441', 'answer', '2|Blood pressure recorded during inpatient stays, Emergency Room Visits, Urgent Care Visits, and Patient Self-Reported BP’s (Home and Health Fair BP results) (G9789)|G9789',2),
+('PQRS_0441', 'answer', '2|Blood pressure recorded during inpatient stays, Emergency Room Visits, Urgent Care Visits, and Patient Self-Reported BPÂ’s (Home and Health Fair BP results) (G9789)|G9789',2),
 ('PQRS_0441', 'answer', '3|Most recent BP is greater than 140/90 mm Hg, or blood pressure not documented (G9790)|G9790',9),
 
 ('PQRS_0442', 'description', 'Persistence of Beta-Blocker Treatment After a Heart Attack',''),
@@ -1456,7 +1437,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0449', 'answer', '2|HER2-targeted therapies administered during the initial course of treatment(G9828)|G9828',9),
 
 
-('PQRS_0450', 'description', 'Trastuzumab Received By Patients With AJCC Stage I (T1c) – III And HER2 Positive Breast Cancer Receiving Adjuvant Chemotherapy',''),
+('PQRS_0450', 'description', 'Trastuzumab Received By Patients With AJCC Stage I (T1c) Â– III And HER2 Positive Breast Cancer Receiving Adjuvant Chemotherapy',''),
 ('PQRS_0450', 'question', 'Trastuzumab administered within 12 months of diagnosis.',''),
 ('PQRS_0450', 'answer', '1|Trastuzumab administered within 12 months of diagnosis(G9835)|G9835',1),
 ('PQRS_0450', 'answer', '2|Reason for not administering Trastuzumab documented (e.g. patient declined, patient died, patient transferred, contraindication or other clinical exclusion, neoadjuvant chemotherapy or radiation NOT complete)(G9836)|G9836',2),
@@ -1502,7 +1483,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('pre_0007', 'description', 'Pre-selection of patients for Measure 007',''),
 ('pre_0005', 'description', 'Pre-selection of patients for Measure 005',''),
 ('pre_0024', 'description', 'Pre-selection of patients for Measure 024',''),
-('pre_0032', 'description', 'Pre-selection of patients for Measure 032',''),
 ('pre_0047', 'description', 'Pre-selection of patients for Measure 047',''),
 ('pre_0048', 'description', 'Pre-selection of patients for Measure 048',''),
 ('pre_0050', 'description', 'Pre-selection of patients for Measure 050',''),
@@ -1553,7 +1533,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('pre_0271', 'description', 'Pre-selection of patients for Measure 271',''),
 ('pre_0278', 'description', 'Pre-selection of patients for Measure 278',''),
 ('pre_0279', 'description', 'Pre-selection of patients for Measure 279',''),
-('pre_0284', 'description', 'Pre-selection of patients for Measure 284',''),
 ('pre_0326', 'description', 'Pre-selection of patients for Measure 326',''),
 ('pre_0327', 'description', 'Pre-selection of patients for Measure 327',''),
 ('pre_0329', 'description', 'Pre-selection of patients for Measure 329',''),
@@ -1621,7 +1600,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('pre_0007', 'question', 'Patients who may qualify for Measure 007',''),
 ('pre_0005', 'question', 'Patients who may qualify for Measure 005',''),
 ('pre_0024', 'question', 'Patients who may qualify for Measure 024',''),
-('pre_0032', 'question', 'Patients who may qualify for Measure 032',''),
 ('pre_0047', 'question', 'Patients who may qualify for Measure 047',''),
 ('pre_0048', 'question', 'Patients who may qualify for Measure 048',''),
 ('pre_0050', 'question', 'Patients who may qualify for Measure 050',''),
@@ -1672,7 +1650,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('pre_0271', 'question', 'Patients who may qualify for Measure 271',''),
 ('pre_0278', 'question', 'Patients who may qualify for Measure 278',''),
 ('pre_0279', 'question', 'Patients who may qualify for Measure 279',''),
-('pre_0284', 'question', 'Patients who may qualify for Measure 284',''),
 ('pre_0326', 'question', 'Patients who may qualify for Measure 326',''),
 ('pre_0327', 'question', 'Patients who may qualify for Measure 327',''),
 ('pre_0329', 'question', 'Patients who may qualify for Measure 329',''),
@@ -1744,7 +1721,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('pre_0007', 'answer', '1|Include patients with G8694|G8694',9),
 
 ('pre_0024', 'answer', '1|Exclude patients with G9688|G9688',9),
-('pre_0032', 'answer', '1|Include patients with G9689|G9689',9),
 ('pre_0047', 'answer', '1|Exclude patients with G9692|G9692',9),
 ('pre_0048', 'answer', '1|Exclude patients with G9692|G9692',9),
 ('pre_0050', 'answer', '1|Exclude patients with G9694|G9694',9),
@@ -1862,8 +1838,6 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('pre_0278', 'answer', '1|Include patients with G8846|G8846',9),
 
 ('pre_0279', 'answer', '1|Include patients with G8852|G8852',9),
-
-('pre_0284', 'answer', '1|Include patients with G9947|G9947',9),
 
 ('pre_0326', 'answer', '1|Exclude patients with G9746|G9746',9),
 ('pre_0326', 'answer', '2|Include patients with G8972|G8972',9),

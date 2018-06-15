@@ -39,7 +39,7 @@ $query =
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) <= '17' ".
 " AND b2.code ='N18.6'".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0327_a'".
-" AND b1.modifier NOT IN('GQ','GT')); ";
+" AND b1.modifier NOT IN('GQ','GT','95')); ";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 0){ return true;} else {return false;}  

@@ -3,14 +3,14 @@
  *Reset Primary Provider to "Unassigned"
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
- *
+ * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
- * See the Mozilla Public License for more details.
+ * See the Mozilla Public License for more details. 
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
+ * 
  * @author  Art Eaton <art@suncoastconnection.com>
  * @author  Bryan lee <leebc@suncoastconnection.com>
- * @package LibreHealthEHR
+ * @package LibreHealthEHR 
  * @link    http://suncoastconnection.com
  * @link    http://librehealth.io
  *
@@ -19,16 +19,15 @@
 require_once '../../interface/globals.php';
 include_once("$srcdir/api.inc");
 include_once("$srcdir/acl.inc");
-require_once '../../library/headers.inc.php';
 
 
-?>
+?>	
 <html>
 <?php if (acl_check('admin', 'practice' )) { ?>
 <span class='title'><?php echo htmlspecialchars( xl('Reset Providers'), ENT_NOQUOTES); ?></span>
-<form action="reset_provider_to_unassigned.php" method="post">
+<form action="reset_provider_to_unassigned.php" method="post">	
 <?php
-if($_POST['formSubmit'] == "Submit")
+if($_POST['formSubmit'] == "Submit") 
 {
 sqlStatement("UPDATE `patient_data` SET `patient_data`.`providerID` = '0';");
 echo "providerID set to 0 (\"Unassigned\") for all patients.";

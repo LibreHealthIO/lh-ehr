@@ -37,7 +37,7 @@ $query =
 " AND ((fe.date BETWEEN '".$beginDate."' AND DATE_SUB('".$beginDate."', INTERVAL 9 MONTH))".
 " OR (fe.date BETWEEN DATE_SUB('".$beginDate."', INTERVAL 9 MONTH) AND '".$endDate."'));";
 " AND TIMESTAMPDIFF(MONTH,p.DOB,fe.date) >= '6' ".
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0110_a' AND b1.modifier NOT IN('GQ','GT'));";
+" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0110_a' AND b1.modifier NOT IN('GQ','GT','95'));";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 0){ return true;} else {
@@ -54,7 +54,7 @@ if ($result['count']> 0){ return true;} else {
 " AND ((fe.date BETWEEN '".$beginDate."' AND DATE_SUB('".$beginDate."', INTERVAL 9 MONTH))".
 " OR (fe.date BETWEEN DATE_SUB('".$beginDate."', INTERVAL 9 MONTH) AND '".$endDate."'));";
 " AND TIMESTAMPDIFF(MONTH,p.DOB,fe.date) >= '6' ".
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0111_a' AND b1.modifier NOT IN('GQ','GT'));";
+" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0111_a' AND b1.modifier NOT IN('GQ','GT','95'));";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 1){ return true;} else {return false;}  

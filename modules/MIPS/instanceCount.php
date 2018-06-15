@@ -167,7 +167,7 @@ $query =
 " AND fe.provider_id = '".$provid."'".
 " AND fe.date BETWEEN '".$form_from_date."' AND '".$form_to_date."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0131_a' AND b1.modifier NOT IN('GQ','GT')); ";
+" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0131_a' AND b1.modifier NOT IN('GQ','GT','95')); ";
 
 //$result131 = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 
