@@ -83,6 +83,28 @@ if (stristr(PHP_OS, 'WIN')) {
   $backup_log_dir      = '/tmp';
 }
 
+//------------------------------------
+// for creating $zone_opt_arr at line 1565
+
+// concatenating '!' to avoid Default option from not coming in list
+// when php.ini value is same as an item on zone_list
+$zone_opt_arr = array( '!' . date_default_timezone_get() => xl('Default - php.ini value') );
+
+// iterating to get time zones in form of, for eg:
+// 'Asia/Kolkata' => xl('Kolkata'),
+$zone_list = timezone_identifiers_list();
+foreach ($zone_list as $item) {
+  if (strpos($item, '/') !== false) {
+    $sub_item = substr($item, strpos($item, '/')+1);
+    $zone_opt_arr = array_merge($zone_opt_arr, array( $item => xl($sub_item) ));
+  } else {
+    // only UTC doesn't contain any '/'
+    // and is last item in list
+    $zone_opt_arr = array_merge($zone_opt_arr, array( $item => xl($item) ));
+  }
+}
+//------------------------------------
+
 // REQUIRED FOR TRANSLATION ENGINE.  DO NOT REMOVE
 // Language constant declarations:
 // xl('Appearance')
@@ -1540,14 +1562,8 @@ $GLOBALS_METADATA = array(
 
     'calendar_timezone' => array(
       xl('Calendar Time Zone'),
-      array(
-        date_default_timezone_get() => xl('Default - php.ini value'),
-        'Asia/Dubai' => xl('Dubai'),
-        'Asia/Kolkata' => xl('Kolkata'),
-        'Asia/Karachi' => xl('Karachi'),
-        'Asia/Pyongyang' => xl('Pyongyang'),
-      ),
-       date_default_timezone_get(),    // defaults to php.ini "date.timezone" value if set valid otherwise UTC
+      $zone_opt_arr,  // variable calculated at line 87
+       '!' . date_default_timezone_get(),    // defaults to php.ini "date.timezone" value if set valid otherwise UTC
       xl('Set calendar time zone.')
     ),
 
