@@ -19,6 +19,7 @@
 *
 */
 require_once(dirname(__FILE__) . '/appointments.inc.php');
+require_once("../interface/globals.php");
 
 function get_Tracker_Time_Interval ($tracker_from_time, $tracker_to_time, $allow_sec=false) {
 
@@ -185,16 +186,6 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
   $pc_appt =  sqlQuery("SELECT `pc_recurrtype` FROM `libreehr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
   if ($pc_appt['pc_recurrtype'] != 0) {
     return false;
-  }
-
-  if ($GLOBALS['calendar_timezone'] !== '') {
-    // getting selected option (in globals)
-    $timezone = $GLOBALS['calendar_timezone'];
-    if (strpos($timezone, '!') !== false) {
-      // removing '!' from timezone which is at 0th place
-      $timezone = substr($timezone, strpos($timezone, '!')+1);
-    }
-    ini_set('date.timezone', $timezone);  // sets timezone for function date() according to globals
   }
 
   $datetime = date("Y-m-d H:i:s");
