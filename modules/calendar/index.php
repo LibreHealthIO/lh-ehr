@@ -138,6 +138,7 @@ require('includes/session.php');
       var title_agenda2 = '<?php echo xlt('2 day'); ?>';
       var title_agenda = '<?php echo xlt('1 day'); ?>';
       var title_search = '<?php echo xlt('search'); ?>';
+      var title_add = '<?php echo xlt('add'); ?>';
       var title_print = '<?php echo xlt('print'); ?>';
       var lang_default = '<?php echo $default_lang_id['lang_code']; ?>';
 
@@ -146,7 +147,7 @@ require('includes/session.php');
         locale: lang_default,
         height: 'parent',
         header: {
-        left: 'prev,next,today print,search',
+        left: 'prev,next,today print,search,add',
         center: 'title',
         right: 'providerAgenda,providerAgenda2Day,providerAgendaWeek,timelineMonth'
         },
@@ -228,6 +229,12 @@ require('includes/session.php');
               text: title_search,
               click: function() {
                 window.location.href = 'search.php';
+              }
+            },
+            add: {
+              text: title_add,
+              click: function () {
+                dlgopen('add.php', '_blank', 775, 375);
               }
             }
         },

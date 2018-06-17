@@ -1,0 +1,16 @@
+.btn {
+  color: black!important;
+}
+
+.title {
+  margin-left: 1px;
+}
+
+.holiday-form {
+    display: none;
+}
+
+#date-table {
+    display: none;
+    width: 300px;
+}
