@@ -1,3 +1,3 @@
 <?php
-require("new_comprehensive.php");
+require("new.php");
 ?>
