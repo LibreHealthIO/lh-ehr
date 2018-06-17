@@ -8,37 +8,44 @@
 ?>
 
 <?php
+    session_start();
+require_once("includes/shared.inc.php");
+require_once("includes/settings.inc.php");
+require_once("includes/functions.inc.php");
 require_once("includes/header.inc.php");
-include ('classes/Installer.php');
-include ('classes/Wizard.php');
 
-$installer = new Installer(); // initializing the installer class
-$wizard    = new Wizard(); // initializing the wizard class
+//==========================
+// HANDLING FORM SUBMISSION
+//==========================
 
-// variable to get current step
+
+// variable to get current step and task
     $step = $_POST["step"];
-    global $OE_SITE_DIR; // The Installer sets this
+    $task = $_POST["task"];
 
-    $docsDirectory = "$OE_SITE_DIR/documents";
-    $billingDirectory = "$OE_SITE_DIR/edi";
-    $billingDirectory2 = "$OE_SITE_DIR/era";
 
-    $billingLogDirectory = "$OE_SITE_DIR/logs";
-    $lettersDirectory = "$OE_SITE_DIR/letter_templates";
-    $gaclWritableDirectory = dirname(__FILE__)."/../../gacl/admin/templates_c";
+    if($task == 'start'){
+        session_destroy();
+        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
+        header('location: start_up.php');
+        exit;
+    }
 
-//$Libre_Get_Modules = dirname(__FILE__)."/modules/modules.config.php";  //TODO stub
+        if($task == 'back'){
+            session_destroy();
+            header('location: start_up.php');
+            exit;
+        }
 
-//These are files and dir checked before install for
-// correct permissions.
-        if (is_dir($OE_SITE_DIR)) {
-            //$Libre_Get_Modules could be added to the 'writable' array. Remove if unneeded when module registry methods are finalized
-            $writableFileList = array($installer->conffile);
+
+        if (is_dir($LIBRE_SITE_DIR)) {
+            //$Libre_Get_Modules could be added to the 'writable' array.
+            $writableFileList = array($conffile);
             $writableDirList = array($docsDirectory, $billingDirectory, $billingDirectory2, $lettersDirectory, $gaclWritableDirectory);
         }
         else {
             $writableFileList = array();
-            $writableDirList = array($OE_SITES_BASE, $gaclWritableDirectory);
+            $writableDirList = array($LIBRE_SITES_BASE, $gaclWritableDirectory);
         }
 
 ?>
@@ -49,19 +56,21 @@ $wizard    = new Wizard(); // initializing the wizard class
 
     <?php
 
-    $wizard->drawSetupStep($step);
+    echo "<h4>Write Access Configuration</h4>\n";
+
+    drawSetupStep($step);
     $checkPermissions = true;
-    echo $gaclWritableDirectory;
 
     echo("<p class=\"clearfix\"></p>");
 
     if ($checkPermissions) {
         echo "<div class='text-center alert-info'>We will now ensure correct file and directory permissions before starting installation:</div><br>\n";
-        echo "<FONT COLOR='green'>Ensuring following files are world-writable...</FONT><br>\n";
+
+        echo "<h4 class='green'>Ensuring following files are world-writable...</h4><br>\n";
         $errorWritable = 0;
         foreach ($writableFileList as $tempFile) {
             if (is_writable($tempFile)) {
-                echo "'".realpath($tempFile)."' file is <FONT COLOR='green'><b>ready</b></FONT>.<br>\n";
+                echo "<i class='fa fa-file-o librehealth-color'></i> -&nbsp; '".realpath($tempFile)."' file is <span class='green'><b>ready</b></span>.<br>\n";
             }
             else {
                 echo "<p><span class='red'>UNABLE</span> to open file <span class='red'>'".realpath($tempFile)."'</span> for writing.<br>\n";
@@ -70,59 +79,99 @@ $wizard    = new Wizard(); // initializing the wizard class
             }
         }
         if ($errorWritable) {
-            echo "<p><FONT COLOR='red'>You can't proceed until all above files are ready (world-writable).</FONT><br>\n";
-            echo "In linux, recommend changing file permissions with the 'chmod 666 filename' command.<br>\n";
-            echo "Fix above file permissions and then click the 'Check Again' button to re-check files.<br>\n";
-            echo "<FORM METHOD='POST'><INPUT TYPE='SUBMIT' VALUE='Check Again'></p>" .
-                "<INPUT TYPE='HIDDEN' NAME='site' VALUE='$site_id'></FORM><br>\n";
+            echo "<p><span class='red'>You can't proceed until all above files are ready (world-writable).</span><br>\n";
+            echo "<div class='alert-warning'>In linux, recommend changing file permissions with the 'chmod 666 filename' command.<br>\n";
+            echo "Fix above file permissions and then click the 'Check Again' button to re-check files.<br> <p class='clearfix'></p>
+                     <p class='clearfix'></p></div>\n";
+            echo "<form method='POST' action='step1.php'>
+                     <p class='clearfix'></p>
+                     <p class='clearfix'></p>
+                     <p class='clearfix'></p>
+                     <input type='hidden' value='1' name='step'>
+                     <div class='control-btn'>
+                     <input type='submit' VALUE='Check Again'>
+                     </div>
+                     </form> 
+                     \n";
+            $checkPermissions = false;
 
         }
 
-        echo "<br><FONT COLOR='green'>Ensuring following directories have proper permissions...</FONT><br>\n";
-        $errorWritable = 0;
-        foreach ($writableDirList as $tempDir) {
-            if (is_writable($tempDir)) {
-                echo "'".realpath($tempDir)."' directory is <FONT COLOR='green'><b>ready</b></FONT>.<br>\n";
+        else{
+
+
+            echo "<br><h4 class='green'>Ensuring following directories have proper permissions...</h4><br>\n";
+            $errorWritable = 0;
+            foreach ($writableDirList as $tempDir) {
+                if (is_writable($tempDir)) {
+                    echo "<i class='fa fa-file-o librehealth-color'></i> -&nbsp;'".realpath($tempDir)."' directory is <span class='green'><b>ready</b></span>.<br><br>\n";
+                }
+                else {
+                    echo "<p><span class='red'>UNABLE</span> to open directory <span class='red'> '".realpath($tempDir)."' </span> for writing by web server.<br></p>\n";
+                    $errorWritable = 1;
+                }
             }
-            else {
-                echo "<p><FONT COLOR='red'>UNABLE</FONT> to open directory '".realpath($tempDir)."' for writing by web server.<br>\n";
-                echo "(configure directory permissions; see below for further instructions)</p>\n";
-                $errorWritable = 1;
+            if ($errorWritable) {
+                echo "<p>(configure directory permissions; see below for further instructions)</p>\n";
+                echo "<p><span class='red'>You can't proceed until all directories are ready.</span><br>\n";
+                echo "<div class='alert-warning'>In linux, recommend changing owners of these directories to the web server. For example, in many linux OS's the web server user is 'apache', 'nobody', or 'www-data'. So if 'apache' were the web server user name, could use the command 'chown -R apache:apache directory_name' command.<br>\n";
+                echo "Fix above directory permissions and then click the 'Check Again' button to re-check directories. <p class='clearfix'></p>
+                     <p class='clearfix'></p></div><br>\n";
+                echo "<form method='POST' action='step1.php'>
+                     <p class='clearfix'></p>
+                     <p class='clearfix'></p>
+                     <input type='hidden' value='1' name='step'>
+                     <div class='control-btn'>
+                     <input type='submit' VALUE='Check Again'>
+                     </div>
+                     </form> 
+                     \n";
+                $checkPermissions = false;
             }
-        }
-        if ($errorWritable) {
-            echo "<p><FONT COLOR='red'>You can't proceed until all directories are ready.</FONT><br>\n";
-            echo "In linux, recommend changing owners of these directories to the web server. For example, in many linux OS's the web server user is 'apache', 'nobody', or 'www-data'. So if 'apache' were the web server user name, could use the command 'chown -R apache:apache directory_name' command.<br>\n";
-            echo "Fix above directory permissions and then click the 'Check Again' button to re-check directories.<br>\n";
-            echo "<FORM METHOD='POST'><INPUT TYPE='SUBMIT' VALUE='Check Again'></p>" .
-                "<INPUT TYPE='HIDDEN' NAME='site' VALUE='$site_id'></FORM><br>\n";
+
+
         }
 
-        echo "<br>All required files and directories have been verified. Click to continue installation.<br>\n";
+
+        if($checkPermissions){
+            echo "<div class='text-center'>
+                <div class=\"alert-info\">
+                +                All required files and directories have been verified. Click next to continue installation.
+                +            </div><br>\n
+                 </div>";
+            echo "
+                <p class=\"clearfix\"></p>
+                <p class=\"clearfix\"></p>
+                <p class=\"clearfix\"></p>
+                <p class=\"clearfix\"></p>
+                
+                <form method='post'>
+                <input type='hidden' value='start' name='task'>
+                     <div class=\"control-btn\">
+                       <input class='button next-btn' value='Back' type='submit'>
+                     <div class=\"control-btn\">
+                </form>
+                <form method='post' action='step2.php'>
+                <input type='hidden' value='2' name='step'>
+                <input type='hidden' value='send' name='task'>
+                     <div class=\"control-btn\">
+                       <input class='button next-btn' value='Next' type='submit'>
+                     <div class=\"control-btn\">
+                </form>
+                    <p class=\"clearfix\"></p>
+              
+                <p class=\"clearfix\"></p>
+                <p class=\"clearfix\"></p>
+                <p class=\"clearfix\"></p>
+                <p class=\"clearfix\"></p>
+            
+            ";
+        }
     }
+
 
     ?>
 
-
-
-
-
-    <p class="clearfix"></p>
-    <p class="clearfix"></p>
-    <p class="clearfix"></p>
-    <p class="clearfix"></p>
-    <p class="clearfix"></p>
-    <div class="control-btn">
-        <a href="step1.php" class="button next-btn">Back</a>
-        <a href="step1.php" class="button next-btn">Next</a>
-        <p class="clearfix"></p>
-        <p class="clearfix"></p>
-    </div>
-
-    <p class="clearfix"></p>
-    <p class="clearfix"></p>
-    <p class="clearfix"></p>
-    <p class="clearfix"></p>
 </div>
 
 <?php

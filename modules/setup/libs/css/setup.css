@@ -136,6 +136,19 @@ a.button:hover{
     color:#fff;
 }
 
+
+input[type='button'],
+input[type='submit']{
+    border:1px solid #000000;
+    background:#000000;
+    color:#fff;
+    padding:10px 25px;
+    font-size:14px;
+    margin-top:5px;
+    text-transform: uppercase;
+}
+
+
 a:link {
     text-decoration: none;
 }

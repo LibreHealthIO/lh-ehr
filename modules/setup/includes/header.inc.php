@@ -23,7 +23,7 @@
     <link rel="shortcut icon" href="libs/images/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LibreHealth EHR-Setup</title>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="libs/css/font-awesome/css/font-awesome.css">
     <link type="text/css" rel="stylesheet" href="libs/css/bootstrap/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="libs/css/setup.css">
 
