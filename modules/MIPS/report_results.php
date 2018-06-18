@@ -51,7 +51,6 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 <?php html_header_show();?>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="../../assets/css/jquery-datetimepicker/jquery.datetimepicker.css">
 
 <title><?php echo htmlspecialchars( xl('Report Results/History'), ENT_NOQUOTES); ?></title>
 
@@ -100,51 +99,16 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 <table>
  <tr>
-  <td width='470px'>
-    <div style='float:left'>
-
-    <table class='text'>
-
-                   <tr>
-                      <td class='label'>
-                         <?php echo htmlspecialchars( xl('Begin Date'), ENT_NOQUOTES); ?>:
-                      </td>
-                      <td>
-                         <input type='text' name='form_begin_date' id='form_begin_date' size='20'
-                                value='<?php echo htmlspecialchars( $_POST['form_begin_date'], ENT_QUOTES); ?>'
-                                title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-                      </td>
-                   </tr>
-
-                <tr>
-                        <td class='label'>
-                              <?php echo htmlspecialchars( xl('End Date'), ENT_NOQUOTES); ?>:
-                        </td>
-                        <td>
-                           <input type='text' name='form_end_date' id='form_end_date' size='20'
-                                  value='<?php echo htmlspecialchars( $_POST['form_end_date'], ENT_QUOTES); ?>'
-                                  title='<?php echo htmlspecialchars( xl('yyyy-mm-dd hh:mm:ss'), ENT_QUOTES); ?>'>
-                        </td>
-                </tr>
-    </table>
-    </div>
-
-  </td>
   <td align='left' valign='middle' height="100%">
     <table style='border-left:1px solid; width:100%; height:100%' >
         <tr>
             <td>
                 <div style='margin-left:15px'>
-                    <a id='search_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
-                    <span>
-                        <?php echo htmlspecialchars( xl('Search'), ENT_NOQUOTES); ?>
-                    </span>
-                    </a>
-                                        <a id='refresh_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
-                                        <span>
-                                                <?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
-                                        </span>
-                                        </a>
+                     <a id='refresh_button' href='#' class='css_button' onclick='top.restoreSession(); $("#theform").submit()'>
+                     <span>
+                             <?php echo htmlspecialchars( xl('Refresh'), ENT_NOQUOTES); ?>
+                     </span>
+                     </a>
                 </div>
             </td>
         </tr>
@@ -185,71 +149,31 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  <tbody>  <!-- added for better print-ability -->
 <?php
 
- $res = listingReportDatabase(prepareDateBeforeSave($_POST['form_begin_date']), prepareDateBeforeSave($_POST['form_end_date']));
+ $res = listingReportDatabase(prepareDateBeforeSave(""), prepareDateBeforeSave(""));
  while ($row = sqlFetchArray($res)) {
 
-  // Figure out the title and link
-  if ($row['type'] == "pqrs_individual_2016") {
-    if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2018 MIPS Measures');
-    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "pqrs_groups_2016") {
-    if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2016 PQRS Group Measures');
-    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "pqrs_individual_2017" ) {
-    if (!$GLOBALS['enable_pqrs']) continue;
-    $type_title = xl('2018 MIPS Measures');
-
-    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-
-  else if ($row['type'] == "process_reminders") {
-    if (!$GLOBALS['enable_cdr']) continue;
-    $type_title = xl('Processing Patient Reminders');
-    $link="../batchcom/batch_reminders.php?report_id=" . attr($row["report_id"]);
-  }
-  else if ($row['type'] == "process_send_reminders") {
-    if (!$GLOBALS['enable_cdr']) continue;
-    $type_title = xl('Processing and Sending Patient Reminders');
-    $link="../batchcom/batch_reminders.php?report_id=" . attr($row["report_id"]);
-  }
-  else if ($row['type'] == "passive_alert") {
-    if (!$GLOBALS['enable_cdr']) continue;
-    $type_title = xl('Standard Measures (Passive Alerts)');
-    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "active_alert") {
-    if (!$GLOBALS['enable_cdr']) continue;
-    $type_title = xl('Standard Measures (Active Alerts)');
-    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "patient_reminder") {
-    if (!$GLOBALS['enable_cdr']) continue;
-    $type_title = xl('Standard Measures (Patient Reminders)');
-    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
-  else if ($row['type'] == "") {
-    // Not identified, so give an unknown title
-    $type_title = xl('Unknown') . "-" . $row['type'];
-    $link="";
-  }
+  // Figure out the title
+  if ($row['title'] ) {
+      $type_title = $row['title'];   
+    }
+    else if ($row['pat_prov_rel'] == "encounter"){
+        $type_title = $row['provider'];
+    }
   else {
-    $type_title = xl($row['type']);
-    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";
-  }
+    $type_title = xlt("Group Report");
+    }
+  //Add the link
+    $link="clinical_measures.php?report_id=" . attr($row["report_id"]) . "&back=list";  
 ?>
  <tr>
       <td>
          <a id='delete_button' href='#' class='css_button_small'
-           onclick='deleteReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
+           onclick='deleteReport(<?php echo htmlspecialchars( $row["report_id"] ); ?>); top.restoreSession(); $("#theform").submit()' >
          <span>Delete</span></a>
       </td>
       <td>
          <a id='rename_button' href='#' class='css_button_small'
-           onclick='renameReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>)' >
+           onclick='renameReport(<?php echo htmlspecialchars( $row["report_id"] ) ?>); top.restoreSession(); $("#theform").submit()' >
          <span>Rename</span></a>
       </td>
     <?php if ($row["progress"] == "complete") { ?>
@@ -296,7 +220,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 function manageReport(report_id,action,newname){
         $.ajax({
                 type: 'POST',
-                url: '<?php echo $GLOBALS['webroot']; ?>/MIPS/rulesets/PQRS/PQRSReportManager.php',
+                url: '<?php echo $GLOBALS['webroot']; ?>/modules/MIPS/PQRSReportManager.php',
                 dataType: 'text',
                 data: {
                         action: action,
@@ -319,7 +243,7 @@ function manageReport(report_id,action,newname){
 function deleteReport(report_id){
     var answer = confirm('Are you sure you want to delete this report?');
     if (answer == true) {
-//        console.log('Delete Report -- report_id: ' + report_id );
+        console.log('Delete Report -- report_id: ' + report_id );
     manageReport(report_id,'DELETE','deleted');
     }
 }
@@ -329,7 +253,7 @@ function renameReport(report_id){
     if (newname == "")  {
         confirm('You didn\'t supply a new name.');
     } else {
-//        console.log('Rename Report -- report_id: ' + report_id + ', New Name: ' + newname);
+        console.log('Rename Report -- report_id: ' + report_id + ', New Name: ' + newname);
     manageReport(report_id,'RENAME',newname);
 
     }

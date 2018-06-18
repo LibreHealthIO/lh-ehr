@@ -554,7 +554,7 @@ function test_rules_clinic_batch_method($provider='',$type='',$dateTarget='',$mo
 
       // Integrate batch results into main dataSheet
       foreach ($dataSheet_batch as $key => $row) {
-        if (!$row['is_sub']) {
+//       if (!$row['is_sub']) {
           //skip this stuff for the sub entries (and use previous main entry in percentage calculation)
           $total_patients = $dataSheet[$key]['total_patients'] + $row['total_patients'];
           $dataSheet[$key]['total_patients'] = $total_patients;
@@ -562,7 +562,8 @@ function test_rules_clinic_batch_method($provider='',$type='',$dateTarget='',$mo
           $dataSheet[$key]['excluded'] = $excluded;
           $pass_filter = $dataSheet[$key]['pass_filter'] + $row['pass_filter'];
           $dataSheet[$key]['pass_filter'] = $pass_filter;
-        }
+//        }
+
 
         $pass_target = $dataSheet[$key]['pass_target'] + $row['pass_target'];
         $dataSheet[$key]['pass_target'] = $pass_target;
@@ -1088,7 +1089,7 @@ $query = "SELECT DISTINCT p.pid FROM patient_data p ".
         if(empty($onlyMedicarePatients)){
         	$query = 'SELECT DISTINCT `pid` FROM `form_encounter` WHERE `provider_id` = ? OR `supervisor_id` = ? ORDER BY `pid`';
 	} else {
-// Insurance companies with freeb_type = 2 are MediCare
+// Insurance companies with ins_type_code = 2 are MediCare
 $query = "SELECT DISTINCT fe.pid FROM form_encounter fe ".
 " INNER JOIN insurance_data i on (i.pid=fe.pid) ".
 " INNER JOIN insurance_companies c on (c.id = i.provider) ".
