@@ -37,7 +37,7 @@ $query =
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
-" AND b1.code ='G12.21'".
+" AND b1.code IN ('G12.21','G12.23', 'G12.24', 'G12.25')".
 " AND (b2.code = codelist_a.code AND codelist_a.type = 'pqrs_0386_a' AND b2.modifier NOT IN('GQ','GT','95')); ";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));

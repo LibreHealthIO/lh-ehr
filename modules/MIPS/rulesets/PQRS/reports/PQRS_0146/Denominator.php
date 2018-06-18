@@ -32,7 +32,7 @@ $query =
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " WHERE b1.pid = ? ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND b1.code IN ('77067','G0202') ; ";
+" AND b1.code = '77067' ; ";
 //The CPT1 code and the HCPCS code above are both NON-BILLABLE,
 // so they are checked here as a pre-measure
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id))); 

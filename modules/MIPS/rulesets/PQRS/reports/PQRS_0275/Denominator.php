@@ -26,7 +26,19 @@ class PQRS_0275_Denominator extends PQRSFilter
     
     public function test( PQRSPatient $patient, $beginDate, $endDate )
     {
-		//Same as initial population
-		return true;
+ $query =
+" SELECT COUNT(b1.code) AS count".  
+" FROM billing AS b1".
+" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
+" WHERE b1.pid = ? ".
+" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
+" AND b1.code IN ('G9914','C9249', 'J0717', 'J0718', 'J0135', 'J1602', 'J1745', 'Q5102', 'S9359', 'G8869', '86317', '86704', '86706', '90636', '90723', '90744', '90745', '90746', '90747', '90748') ; ";
+
+
+
+//3517F-8P hard fail
+$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id))); 
+
+if ($result['count']> 0){ return true;} else {return false;}    
     }
 }

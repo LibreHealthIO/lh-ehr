@@ -36,7 +36,7 @@ $query =
 " INNER JOIN pqrs_ccco AS codelist_b ON (b2.code = codelist_b.code)".
 " WHERE b1.pid = ? ".
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
-" AND fe.date BETWEEN '".$beginDate."' AND '2016-12-01' ".
+" AND fe.date BETWEEN '".$beginDate."' AND '2018-12-01' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '6' ".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0391_a') ".
 " AND (b2.code = codelist_b.code AND codelist_b.type = 'pqrs_0391_b') ;";

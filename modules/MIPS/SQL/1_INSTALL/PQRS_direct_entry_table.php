@@ -242,12 +242,12 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0102', 'answer', '3|Documentation of system reason(s) for performing a bone scan (including bone scan ordered by someone other than the reporting physician) (3269F:3P)|3269F:3P',2),
 ('PQRS_0102', 'answer', '4|Bone scan performed prior to initiation of treatment or at any time since diagnosis of prostate cancer (3269F)|3269F',9),
 
-('PQRS_0104', 'description', 'Prostate Cancer: Adjuvant Hormonal Therapy for High Risk or Very High Risk Prostate Cancer',''),
-('PQRS_0104', 'question', 'Patients who were prescribed adjuvant hormonal therapy (GnRH [gonadotropin-releasing hormone] agonist or antagonist)<br>Definition:<br>Prescribed -- Includes patients who are currently receiving medication(s) that follow the treatment plan recommended at an encounter during the reporting period, even if the prescription for that medication was ordered prior to the encounter.  <br>*** Please see Measure Documentation for Definitions and Instructions ***',''),
-('PQRS_0104', 'answer', '1|Adjuvant (ie, in combination with external beam radiotherapy to the prostate for prostate cancer) hormonal therapy (gonadotropin-releasing hormone [GnRH] agonist or antagonist) prescribed/administered (4164F)|4164F',1),
-('PQRS_0104', 'answer', '2|Documentation of medical reason(s) for not prescribing/administering adjuvant hormonal therapy (eg, salvage therapy) (4164F:1P)|4164F:1P',2),
-('PQRS_0104', 'answer', '3|Documentation of patient reason(s) for not prescribing/administering adjuvant hormonal therapy (4164F:2P)|4164F:2P',2),
-('PQRS_0104', 'answer', '4|Patients who were not prescribed/administered adjuvant hormonal therapy, reason not otherwise specified (4164F:8P)|4164F:8P',9),
+('PQRS_0104', 'description', 'Prostate Cancer: Combination Androgen Deprivation Therapy for High Risk or Very High Risk Prostate Cancer',''),
+('PQRS_0104', 'question', 'Patients who were prescribed androgen deprivation therapy in combination with external beam radiotherapy to the prostate ',''),
+('PQRS_0104', 'answer', '1|Androgen deprivation therapy prescribed/administered beam radiotherapy to the prostate(G9894)|G9894',1),
+('PQRS_0104', 'answer', '2|Documentation of medical reason(s) for not prescribing/administering the above (eg, salvage therapy)(G9895) |G9895',2),
+('PQRS_0104', 'answer', '3|Documentation of patient reason(s) for not prescribing/administering the above (G9896)|G9896',2),
+('PQRS_0104', 'answer', '4|Patients who were not prescribed/administered above, reason not otherwise specified (G9897)|G9897',9),
 
 ('PQRS_0109', 'description', 'Osteoarthritis (OA): Function and Pain Assessment -- National Quality Strategy',''),
 ('PQRS_0109', 'question', 'Patient visits with assessment for level of function and pain documented (may include the use of a standardized scale or the completion of an assessment questionnaire, such as an SF-36, AAOS Hip & Knee Questionnaire)<br>NUMERATOR NOTE: For the purposes of this measure, the method for assessing function and pain is left up to the discretion of the individual clinician and based on the needs of the patient. The assessment may be done via a validated instrument (though one is not required) that measures pain and various functional elements including a patient\'s ability to perform activities of daily living (ADLs).',''),
@@ -255,7 +255,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0109', 'answer', '2|Osteoarthritis Symptoms and Functional Status not Assessed, Reason not Otherwise Specified (1006F:8P)|1006F:8P',9),
 
 ('PQRS_0110', 'description', 'Preventive Care and Screening: Influenza Immunization',''),
-('PQRS_0110', 'question', 'Did patients received an influenza immunization OR who reported previous receipt of an influenza immunization<p>Numerator Instructions:<br> The numerator for this measure can be met by reporting either administration of an influenza vaccination or that the patient reported previous receipt of the <b>current season''s</b> influenza immunization. If the performance of the numerator is not met, a clinician can report a valid performance exclusion for having not administered an influenza vaccination. For clinicians reporting a performance exclusion for this measure, there should be a clear rationale and documented reason for not administering an influenza immunization if the patient did not indicate previous receipt, which could include a medical reason (e.g., patient allergy), patient reason (e.g., patient declined), or system reason (e.g., vaccination not available). The system reason should be indicated only for cases of disruption or shortage of influenza vaccination supply.<br>Definition:  Previous Receipt -- Receipt of the <b>current season''s</b> influenza immunization from another provider OR from same provider prior to the visit to which the measure is applied (typically, prior vaccination would include influenza vaccine given since August 1st).',''),
+('PQRS_0110', 'question', 'Did patients receive an influenza immunization OR who reported previous receipt of an influenza immunization<p>Numerator Instructions:<br> The numerator for this measure can be met by reporting either administration of an influenza vaccination or that the patient reported previous receipt of the <b>current season''s</b> influenza immunization. If the performance of the numerator is not met, a clinician can report a valid performance exclusion for having not administered an influenza vaccination. For clinicians reporting a performance exclusion for this measure, there should be a clear rationale and documented reason for not administering an influenza immunization if the patient did not indicate previous receipt, which could include a medical reason (e.g., patient allergy), patient reason (e.g., patient declined), or system reason (e.g., vaccination not available). The system reason should be indicated only for cases of disruption or shortage of influenza vaccination supply.<br>Definition:  Previous Receipt -- Receipt of the <b>current season''s</b> influenza immunization from another provider OR from same provider prior to the visit to which the measure is applied (typically, prior vaccination would include influenza vaccine given since August 1st).',''),
 ('PQRS_0110', 'answer', '1|Influenza Immunization Administered (G8482)|G8482',1),
 ('PQRS_0110', 'answer', '2|Influenza Immunization previously received (G8482)|G8482',1),
 ('PQRS_0110', 'answer', '3|Influenza Immunization not Administered for Documented Reasons (e.g., patient allergy or other medical reasons, patient declined or other patient reasons, vaccine not available or other system reasons) (G8483)|G8483',2),
@@ -268,8 +268,8 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 
 ('PQRS_0112', 'description', 'Breast Cancer Screening ',''),
 ('PQRS_0112', 'question', 'Did patient have one or more mammograms any time on or between October 1, 27 months prior to December 31 of the measurement period, not to precede the patient\'s 50th birthday?',''),
-('PQRS_0112', 'answer', '1|Mammogram Performed--Screening mammography results documented and reviewed (3014F)|3014F',1),
-('PQRS_0112', 'answer', '2|Mammogram not Performed (3014F:8P)|3014F:8P',9),
+('PQRS_0112', 'answer', '1|Mammogram Performed--Screening mammography results documented and reviewed (G9899)|G9899',1),
+('PQRS_0112', 'answer', '2|Mammogram not Performed/Reviewed (G9900)|G9900',9),
 
 ('PQRS_0113', 'description', 'Colorectal Cancer Screening',''),
 ('PQRS_0113', 'question', 'Patients with one or more screenings for colorectal cancer. Appropriate screenings are defined by any one of the following criteria below:<br><li>Fecal occult blood test (FOBT) during the measurement period<li>Flexible sigmoidoscopy during the measurement period or the four years prior to the measurement period<li>Colonoscopy during the measurement period or the nine years prior to the measurement period',''),
@@ -1427,7 +1427,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0447', 'answer', '2|No documentation of a chlamydia screening test with proper follow-up (G9821) |G9821',9),
 
 ('PQRS_0448', 'description', 'Appropriate Workup Prior to Endometrial Ablation',''),
-('PQRS_0448', 'question', 'Women who received endometrial sampling or hysteroscopy with biopsyand results documentedduring the year prior to the index date (exclusive of the index date) of the endometrial ablation.',''),
+('PQRS_0448', 'question', 'Women who received endometrial sampling or hysteroscopy with biopsy and results documented during the year prior to the index date (exclusive of the index date) of the endometrial ablation.',''),
 ('PQRS_0448', 'answer', '1|Endometrial sampling or hysteroscopywith biopsy and results documented(G9823) |G9823',1),
 ('PQRS_0448', 'answer', '2|Endometrial sampling or hysteroscopywith biopsy and results not documented(G9824)|G9824',9),
 
@@ -1478,6 +1478,42 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0457', 'answer', '1|Patient spent less than three days in hospice care (G9860)|G9860',1),
 ('PQRS_0457', 'answer', '2|Patient spent greater than or equal to three days in hospice care (G9861)|G9861',9),
 
+('PQRS_0459', 'description', 'text',''),
+('PQRS_0459', 'question', 'text',''),
+('PQRS_0459', 'answer', '1|text|G0000',1),
+('PQRS_0459', 'answer', '2|text|G0000',9),
+
+('PQRS_0460', 'description', 'text',''),
+('PQRS_0460', 'question', 'text.',''),
+('PQRS_0460', 'answer', '1|text|G0000',1),
+('PQRS_0460', 'answer', '2|text|G0000',9),
+
+('PQRS_0461', 'description', 'text',''),
+('PQRS_0461', 'question', 'text.',''),
+('PQRS_0461', 'answer', '1|text|G0000',1),
+('PQRS_0461', 'answer', '2|text|G0000',9),
+
+('PQRS_0463', 'description', 'text',''),
+('PQRS_0463', 'question', 'text.',''),
+('PQRS_0463', 'answer', '1|text|G0000',1),
+('PQRS_0463', 'answer', '2|text|G0000',2),
+('PQRS_0463', 'answer', '3|text|G0000',9),
+
+('PQRS_0464', 'description', 'text',''),
+('PQRS_0464', 'question', 'text.',''),
+('PQRS_0464', 'answer', '1|text|G0000',1),
+('PQRS_0464', 'answer', '2|text|G0000',2),
+('PQRS_0464', 'answer', '2|text|G0000',9),
+
+('PQRS_0465', 'description', 'text',''),
+('PQRS_0465', 'question', 'text.',''),
+('PQRS_0465', 'answer', '1|text|G0000',1),
+('PQRS_0465', 'answer', '2|text|G0000',9),
+
+('PQRS_0467', 'description', 'text',''),
+('PQRS_0467', 'question', 'text.',''),
+('PQRS_0467', 'answer', '1|text|G0000',1),
+('PQRS_0467', 'answer', '2|text|G0000',9),
 
 ('pre_0001', 'description', 'Pre-selection of patients for Measure 001',''),
 ('pre_0007', 'description', 'Pre-selection of patients for Measure 007',''),
