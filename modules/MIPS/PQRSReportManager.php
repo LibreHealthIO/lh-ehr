@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$myaction=$_POST['action'];
 	$myreport_raw_name = $_POST['report_new_name'];
 	$myreport_new_name = htmlspecialchars($myreport_raw_name);
-error_log("DEBUG PQRSReportManager.php -- POSTed us with report_id=".$myreport_id."  action=".$myaction."  report_new_name = ".$myreport_new_name.".");
+//error_log("DEBUG PQRSReportManager.php -- POSTed us with report_id=".$myreport_id."  action=".$myaction."  report_new_name = ".$myreport_new_name.".");
 	if ( $myaction=='DELETE' && $myreport_id != '' ) {
 		$query="DELETE FROM `report_results` WHERE `report_id` = ".$myreport_id.";";
 			sqlStatement($query);
@@ -26,8 +26,10 @@ error_log("DEBUG PQRSReportManager.php -- POSTed us with report_id=".$myreport_i
 			echo ("Deleted 'report_results' and 'report_itemized' that match id ".$myreport_id);
 	}
 	if ( $myaction=='RENAME' && $myreport_id != '' && $myreport_new_name != '' ) {
-		$query = "INSERT INTO report_results (report_id, field_id, field_value) VALUES(".$myreport_id.", 'title', '".$myreport_new_name."') ON DUPLICATE KEY UPDATE field_value='".$myreport_new_name."';";
-		error_log("DEBUG PQRSReportManager.php -- query = ".$query);
+    	$query = "UPDATE report_results ".
+    	         "SET field_value = '".$myreport_new_name."' ".
+    	         "WHERE report_id = ".$myreport_id." AND field_id = 'title';";
+		//error_log("DEBUG PQRSReportManager.php -- query = ".$query);
 		sqlStatement($query);
 	}
 	if ( $myaction=='DELETEALL') {
