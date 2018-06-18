@@ -121,10 +121,10 @@ $task = $_POST["task"];
     </div>";
 
          if($fail) {
-                echo '<p><strong>Your server does not meet the following requirements in order to install Magento.</strong>';
+                echo '<p><strong>Your server does not meet the following requirements in order to install LibreEHR.</strong>';
                 echo '<br>The following requirements failed, please contact your hosting provider in order to receive assistance with meeting the system requirements for Magento:';
             } else {
-                echo '<p><strong>Congratulations!</strong> Your server meets the requirements for Magento.</p>';
+                echo '<p><strong>Congratulations!</strong> Your server meets the requirements for LibreEHR.</p>';
             }
 
             ?>
