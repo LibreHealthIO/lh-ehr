@@ -11,27 +11,37 @@
 session_start();
 require_once("includes/shared.inc.php");
 require_once("includes/settings.inc.php");
+require_once("classes/UserInfo.php");
 require_once("includes/functions.inc.php");
 require_once("includes/header.inc.php");
 
-// check for required extensions in php
-$extension_check_array = array(
+    // check for required extensions in php
+    $extension_check_array = array(
+        'curl',
+        'imagick',
+        'mbstring',
         'mysql',
         'cli',
         'gd',
         'gettext',
         'xsl',
-        'curl',
         'mcrypt',
         'soap',
         'json',
-        'mbstring',
         'zip',
         'ldap',
         'xml',
-                                );
+    );
 
-
+//object to handle system information
+    $userInfo =  new UserInfo();
+    //get info
+    $sys = $userInfo::get_os();
+    $distro = $userInfo::get_distro();
+    $os = $sys.', '.$distro['DISTRIB_ID'];
+    $about_sys = $distro['uname_version_info'].' -'.$distro['DISTRIB_DESCRIPTION'].' -'.$distro['machine_type'];
+    $server_software = $distro['SERVER_SOFTWARE'];
+//    $distro = $distro['DISTRIB_DESCRIPTION'].' ' .$distro['DISTRIB_RELEASE'].' '. $distro['DISTRIB_CODENAME'];
 
 //==========================
 // HANDLING FORM SUBMISSION
@@ -49,17 +59,35 @@ $task = $_POST["task"];
     <p class="clearfix"></p>
 
     <?php
-
-    echo "<h4>Librehealth EHR Versioning System</h4>\n";
+//    print_r($distro);
+    echo "<h4>System Info & Server Configuration</h4>\n";
     drawSetupStep($step);
     ?>
 
     <h4 style="text-decoration: underline;">System Info</h4>
 
     <?php
-    $process_running = shell_exec('apt-get install php7.0-curl'); //give all php processes running in your server
-    echo($process_running); //gives an array of processes
+       echo "
+           <div class='pull-left'>
+            Operating system:<span class='librehealth-color'> ".$os."</span><br>
+            About system:<span class='librehealth-color'> ".$about_sys."</span><br>
+            Server software:<span class='librehealth-color'> ".$server_software."</span><br>
+           </div>
+       ";
+
     ?>
+
+    <?php
+    echo "
+           <div class='pull-right'>
+           Browser:
+           <img src='libs/images/".$userInfo::get_browser()."'/></div>
+           <div class='pull-right'>".$b."</div>
+       ";
+    ?>
+
+    <p class="clearfix"></p>
+
 
       <?php
     echo "<div class='text-center'>
@@ -84,7 +112,28 @@ $task = $_POST["task"];
             }
             else {
                 $pass .='<td><strong>PHP</strong></td>';
-                $pass .='<td>You have<strong> PHP 5.2.0</strong> (or greater; <strong>Current Version:'.phpversion().')</strong></td>';
+                $pass .='<td>
+                            You have<strong> PHP 5.2.0</strong> (or greater; <strong>Current Version:'.phpversion().')</strong>
+                           <p class="clearfix"></p>
+                           <span data-toggle="collapse" data-target="#php-extensions" class="details pull-left">View Details <span class="fa fa-plus-square-o"></span></span><br>
+                            <div class="pull-left">
+                            <ul class="list-unstyled">
+                           <div id="php-extensions" class="collapse text-left">
+                                <ul class="list-unstyled">
+                                    ';
+                                foreach($extension_check_array as $extension) {
+                                  if(!extension_loaded($extension)) {
+                                          $pass .= '<li class="text-left"><span class="fa fa-mail-forward red"></span> You are missing the <strong><span class="red">'.$extension.'</span></strong> extension <small class="librehealth-color">'; if($extension === 'curl'){$pass.='(required for LIMS integration)';} $pass.='</small></li>';
+                                  }
+                                  else{   $pass .= '<li class="text-left"><span class="fa fa-mail-forward green"></span> You have the <strong><span class="green">'.$extension.'</span></strong> extension</li>';
+                                  }
+                                    };
+                                    $pass.='
+                                </ul>
+                            </div>
+                            </ul>
+                            </div>
+                        </td>';
                 $pass .='<td><span class="fa fa-check green"></span></td>';
             }
 
@@ -108,6 +157,7 @@ $task = $_POST["task"];
 //                $fail .= '<td>Safe Mode is <strong>on</strong></td>';
             }
 
+
               if($fail) {
                   echo '<tr>'.$fail.'</tr></p>';
                   echo 'The following requirements were successfully met:';
@@ -122,12 +172,27 @@ $task = $_POST["task"];
 
          if($fail) {
                 echo '<p><strong>Your server does not meet the following requirements in order to install LibreEHR.</strong>';
-                echo '<br>The following requirements failed, please contact your hosting provider in order to receive assistance with meeting the system requirements for Magento:';
+                echo '<br>The following requirements failed, please contact your hosting provider in order to receive assistance with meeting the system requirements for LibreEHR:';
+                echo '<div class="control-btn">
+                        <button type="submit" class="upgradeBtn">
+                            <i class="fa fa-cogs"></i> Upgrade
+                        </button>
+                        </div>
+                ';
             } else {
                 echo '<p><strong>Congratulations!</strong> Your server meets the requirements for LibreEHR.</p>';
             }
 
             ?>
+
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div class="cancel-btn">
+        <button type="submit" class="cancelBtn">
+            <i class="fa fa-times"></i> Cancel
+        </button>
+    </div>
 
 
 </div>

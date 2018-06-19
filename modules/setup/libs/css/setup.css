@@ -1,11 +1,5 @@
 
 @font-face {
-    font-family: Canviar;
-    src: url(../fonts/Canviar/Caviar_Dreams_Bold.ttf);
-}
-
-
-@font-face {
     font-family:GreatVibes;
     src: url(../fonts/Great-vibes/GreatVibes-Regular.otf);
 }
@@ -116,12 +110,35 @@ div.control-btn{
     right: 10px;
 }
 
-a.prev-btn, a.next-btn {
 
-    text-decoration: none;
+div.cancel-btn{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
 
-a.button{
+
+button.upgradeBtn{
+    border:1px solid #4CAF50;
+    background:#4CAF50;
+    color:#fff;
+    padding:10px 25px;
+    font-size:14px;
+    margin-top:5px;
+    text-transform: uppercase;
+}
+
+button.cancelBtn{
+    border:1px solid red;
+    background:red;
+    color:#fff;
+    padding:10px 25px;
+    font-size:14px;
+    margin-top:5px;
+    text-transform: uppercase;
+}
+
+.controlBtn{
     border:1px solid #000000;
     background:#000000;
     color:#fff;
@@ -130,12 +147,12 @@ a.button{
     margin-top:5px;
     text-transform: uppercase;
 }
-a.button:hover{
+
+.controlBtn:hover{
     border:1px solid #f58021;
     background:#f58021;
     color:#fff;
 }
-
 
 input[type='button'],
 input[type='submit']{
@@ -186,4 +203,17 @@ ul.files-list {
 
 .completed-step {
     background-color:#4CAF50;
+}
+
+/*==================================
+        MISCELANEOUS
+ ================================*/
+
+.details{
+    color: #1C5ECF;
+    cursor: pointer;
+}
+
+.details:hover{
+   color: rgb(245, 144, 49);
 }

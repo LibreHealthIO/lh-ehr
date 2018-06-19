@@ -15,7 +15,7 @@
    <ul class="list-unstyled">
        <li><i class="glyphicon glyphicon-send librehealth-color"></i> &nbsp;Before proceeding, be sure that you have a properly installed and configured MySQL server available, and a PHP configured webserver.</li>
        <li><i class="glyphicon glyphicon-send librehealth-color"></i> &nbsp;Detailed installation instructions can be found in the <a href='https://github.com/LibreHealthIO/LibreEHR/blob/master/INSTALL.md' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual file.</li>
-       <li><i class="glyphicon glyphicon-send librehealth-color"></i> &nbsp;If you are upgrading from a previous version, do <strong>NOT</strong> use this script.  Please read the 'Upgrading' section found in the <a href='https://github.com/LibreHealthIO/LibreEHR/blob/master/INSTALL.md' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual file.</li>
+       <li><i class="glyphicon glyphicon-send librehealth-color"></i> &nbsp;If you are upgrading from a previous version, do <strong>NOT</strong> use this script.  Please read the 'Upgrading' section found in the <a href='https://github.com/LibreHealthIO/lh-ehr/blob/master/INSTALL.md#upgrading' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual file.</li>
    </ul>
 
     <p class="clearfix"></p>

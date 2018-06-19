@@ -132,6 +132,7 @@
                   }
               }
 
+
               if($fail) {
                   echo '<p><strong>Your server does not meet the following requirements in order to install LibreEHR.</strong>';
                   echo '<br>The following requirements failed, please contact your hosting provider in order to receive assistance with meeting the system requirements for Magento:';
