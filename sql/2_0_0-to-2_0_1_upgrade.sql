@@ -157,3 +157,34 @@ CREATE TABLE `updater_user_mode_backup_entry` (
   `old_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB;
 #Endif
+
+#IfMissingColumn form_misc_billing_options onset_date
+ ALTER TABLE `form_misc_billing_options` ADD `onset_date` DATE NOT NULL ;
+#EndIf
+
+--Appointment Cancellation Reasons
+#IfNotRow2D list_options list_id lists option_id cancellation_reasons
+INSERT INTO list_options ( list_id, option_id, title,activity ) VALUES ('lists','cancellation_reasons','Cancellation Reasons', 1);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','1','No reason given',5,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','2','Work',10,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','3','Sick',20,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','4','Weather',25,0);
+#EndIf
+
+#IfMissingColumn patient_tracker_element reason
+ALTER TABLE `patient_tracker_element` ADD `reason` VARCHAR(255) NOT NULL AFTER `user`;
+#EndIf
+
+#IfMissingColumn users picture_url
+ALTER TABLE `users` ADD `picture_url` VARCHAR(2000) NOT NULL AFTER `suffix`;
+#EndIf
+
+#IfNotRow2D list_options list_id apptstat option_id Deleted
+INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
+ ('apptstat', 'Deleted', 'Deleted', 85, 0, 0, '', '0F0F0F|0', '', 0, 0, 1, '');
+#Endif
+
+#IfMissingColumn libreehr_postcalendar_events cancel_reason
+  ALTER TABLE `libreehr_postcalendar_events` ADD `cancel_reason` text NOT NULL ;
+#EndIf
+

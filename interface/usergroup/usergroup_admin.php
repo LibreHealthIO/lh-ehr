@@ -27,6 +27,7 @@ require_once("$srcdir/auth.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once($GLOBALS['srcdir'] . "/classes/postmaster.php");
 require_once("$srcdir/headers.inc.php");
+require_once("$srcdir/calendar.inc");
 
 $alertmsg = '';
 $bg_msg = '';
@@ -121,7 +122,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
           sqlStatement("update users set menu_role='Sample Role' where id=?", array($_POST["id"]));
         }
       }
-      
+
       if ($_POST["facility_id"]) {
               $tqvar = formData('facility_id','P');
               sqlStatement("update users set facility_id = '$tqvar' where id = ? ", array($_POST["id"]));
@@ -230,6 +231,8 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
 
         do_action( 'usergroup_admin_save', $_POST );
 
+        refreshCalendar(); //after "Edit User" process is complete
+
     }
 }
 
@@ -263,6 +266,71 @@ if (isset($_POST["mode"])) {
         $exp_date = date('Y-m-d');
     }
 
+if (isset($_FILES)) {
+  //images will be saved with their name
+  $uid =  trim(formData('rumple')).time();
+    //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
+  if (realpath("../../profile_pictures/")) {
+
+  }
+  else {
+    mkdir("../../profile_pictures/", 0755);
+  }
+  //for profile picture upload
+  //mime check done.
+  //size check done.
+  //extension check done.
+  //if any validation needed be added, please add it below.
+  $bool = 0;
+  $target_file =  basename($_FILES["profile_picture"]["name"]);
+  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  $verify_image = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+  if($verify_image) {
+    $mime = $verify_image["mime"];
+    $mime_types = array('image/png',
+                            'image/jpeg',
+                            'image/gif',
+                            'image/bmp',
+                            'image/vnd.microsoft.icon');
+    //mime check with all image formats.
+    if (in_array($mime, $mime_types)) {
+          $bool = 1;
+        //if mime type matches, then do a size check
+        //size check for 20mb
+        if ($_FILES["profile_picture"]["size"] > 20971520) {
+          $bool = 0;
+        }
+        else {
+          $bool = 1;
+        }
+    }
+    else {
+      $bool = 0;
+    }
+
+  }
+  else {
+        $bool = 0;
+  }
+  $picture_url = "";
+  //begin file uploading
+  $destination_directory = "../../profile_pictures/";
+  if ($bool) {
+    if (file_exists($destination_directory.$uid.".".$imageFileType)) {
+      unlink($destination_directory.$uid.".".$imageFileType);
+    }
+    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$uid.".".$imageFileType)) {
+        $picture_url = $uid.".".$imageFileType;
+    }
+    else {
+      //may be failed due to directory permissions.
+    }
+  }
+  else {
+    //don't upload checks failed.
+  }
+}
+
     $insertUserSQL=
             "insert into users set " .
             "username = '"         . trim(formData('rumple'       )) .
@@ -291,6 +359,7 @@ if (isset($_POST["mode"])) {
             "', default_warehouse = '" . trim(formData('default_warehouse')) .
             "', irnpool = '"       . trim(formData('irnpool'      )) .
             "', calendar = '"      . $calvar                         .
+            "', picture_url = '"      . $picture_url                         .
             "', pwd_expiration_date = '" . trim("$exp_date") .
             "'";
 
@@ -331,6 +400,8 @@ if (isset($_POST["mode"])) {
            }
     }
       }
+
+      refreshCalendar(); //after "Add User" process is complete
   }
   else if ($_POST["mode"] == "new_group") {
     $res = sqlStatement("select distinct name, user from groups");
@@ -359,7 +430,7 @@ if (isset($_GET["mode"])) {
   //
   if ($_GET["mode"] == "delete") {
     $res = sqlStatement("select distinct username, id from users where id = ?", array($_GET["id"]));
-      
+
     for ($iter = 0; $row = sqlFetchArray($res); $iter++)
       $result[$iter] = $row;
 

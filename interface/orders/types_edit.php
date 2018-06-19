@@ -10,6 +10,7 @@ require_once("../globals.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/formdata.inc.php");
+require_once("$srcdir/headers.inc.php");
 
 $typeid = formData('typeid', 'R') + 0;
 $parent = formData('parent', 'R') + 0;
@@ -62,6 +63,7 @@ function recursiveDelete($typeid) {
 <title><?php echo $typeid ? xlt('Edit') : xlt('Add New'); ?> <?php echo xlt('Order/Result Type'); ?></title>
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap")); ?>
 <style>
 td { font-size:10pt; }
 
@@ -126,9 +128,18 @@ function proc_type_changed() {
  if (ptpfx == 'ord') $('.ordonly').show();
  if (ptpfx == 'res'|| ptpfx == 'rec') $('.resonly').show();
 }
+function closeModal() {
+    parent.$('#modal-iframe').iziModal('close');
+    parent.location.reload();
+}
 
 $(document).ready(function() {
  proc_type_changed();
+
+
+  $("#close").click(function() {
+    closeModal();
+  });             
 });
 
 </script>
@@ -136,11 +147,14 @@ $(document).ready(function() {
 </head>
 
 <body class="body_top">
+  <div class="container">
+  
 <?php
 // If we are saving, then save and close the window.
 //
+$errors = [];
 if ($_POST['form_save']) {
-
+ 
   $sets =
     "name = "           . invalue('form_name')           . ", " .
     "lab_id = "         . invalue('form_lab_id')         . ", " .
@@ -157,16 +171,46 @@ if ($_POST['form_save']) {
     "related_code = "   . invalue('form_related_code')   . ", " .
     "seq = "            . invalue('form_seq');
 
-  if ($typeid) {
-    sqlStatement("UPDATE procedure_type SET $sets WHERE procedure_type_id = '$typeid'");
-    // Get parent ID so we can refresh the tree view.
-    $row = sqlQuery("SELECT parent FROM procedure_type WHERE " .
-      "procedure_type_id = '$typeid'");
-    $parent = $row['parent'];
-  } else {
-    $newid = sqlInsert("INSERT INTO procedure_type SET parent = '$parent', $sets");
-    // $newid is not really used in this script
+  // base validation rule
+  if (($_POST['form_name'] === '') || ($_POST['form_description'] === '') || ($_POST['form_seq'] === '') || ($_POST['form_procedure_type'] === '')) {
+    $errors[] = 'Please fill in all the fields';
   }
+
+  switch($_POST['form_procedure_type']) {
+    case 'ord':
+      if (($_POST['form_lab_id'] === '') || ($_POST['form_procedure_code'] === '') || ($_POST['form_standard_code']) || ($_POST['form_body_site'] )
+           || ($_POST['form_specimen'] === '') || ($_POST['route_admin'] === '') || ($_POST['form_laterality'] === '')) {
+            if(count($errors) <= 0) {
+              $errors[] = 'Please fill in all the fields';
+            }
+      }
+    break;
+
+    case 'res':
+    case 'rec':
+
+      if (($_POST['form_procedure_code'] === '') || ($_POST['form_units'] === '') || ($_POST['form_range'] === '')) {
+        if (count($errors) <= 0) {
+          $errors[] = 'Please fill in all the fields';
+        }
+      }
+
+    break;
+  }
+  
+  if(count($errors) <= 0) {
+    if ($typeid) {
+      sqlStatement("UPDATE procedure_type SET $sets WHERE procedure_type_id = '$typeid'");
+      // Get parent ID so we can refresh the tree view.
+      $row = sqlQuery("SELECT parent FROM procedure_type WHERE " .
+        "procedure_type_id = '$typeid'");
+      $parent = $row['parent'];
+    } else {
+      $newid = sqlInsert("INSERT INTO procedure_type SET parent = '$parent', $sets");
+      // $newid is not really used in this script
+    }
+  }
+  
 }
 
 else  if ($_POST['form_delete']) {
@@ -181,15 +225,14 @@ else  if ($_POST['form_delete']) {
 
 }
 
-if ($_POST['form_save'] || $_POST['form_delete']) {
+if ( ($_POST['form_save'] || $_POST['form_delete']) && count($errors) <= 0) {
   // Find out if this parent still has any children.
   $trow = sqlQuery("SELECT procedure_type_id FROM procedure_type WHERE parent = '$parent' LIMIT 1");
   $haskids = empty($trow['procedure_type_id']) ? 'false' : 'true';
   // Close this window and redisplay the updated list.
   echo "<script language='JavaScript'>\n";
   if ($info_msg) echo " alert('$info_msg');\n";
-  echo " window.close();\n";
-  echo " if (opener.refreshFamily) opener.refreshFamily($parent,$haskids);\n";
+  echo " closeModal(); \n";
   echo "</script></body></html>\n";
   exit();
 }
@@ -198,193 +241,190 @@ if ($typeid) {
   $row = sqlQuery("SELECT * FROM procedure_type WHERE procedure_type_id = '$typeid'");
 }
 ?>
-<form method='post' name='theform'
+<form method='post' name='theform' class="form-horizontal"
  action='types_edit.php?typeid=<?php echo $typeid ?>&parent=<?php echo $parent ?>'>
 <!-- no restoreSession() on submit because session data are not relevant -->
 
-<center>
+  <div class="form-group">
+      <label for="form_procedure_type" class="col-sm-2 control-label"><?php echo xlt('Procedure Type'); ?>: </label>
+      <div class="col-sm-10">
+        <?php
+          echo generate_select_list('form_procedure_type', 'proc_type', $row['procedure_type'],
+          xl('The type of this entity'), ' ', '', 'proc_type_changed()');
+        ?>
+      </div>
+  </div>
+  <div class="form-group">
+    <label for="form_name1" class="col-sm-2 control-label" > <?php echo xlt('Name'); ?></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" size='40' name='form_name' id='form_name1' maxlength='63'
+      value='<?php echo htmlspecialchars($row['name'], ENT_QUOTES); ?>'
+      title='<?php echo xlt('Your name for this category, procedure or result'); ?>' />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="form_description1" class="col-sm-2 control-label"><?php echo xlt('Description'); ?></label>
+    <div class="col-sm-10">
+      <input type='text' size='40' class='form-control' name='form_description' id='form_description1' maxlength='255'
+      value='<?php echo htmlspecialchars($row['description'], ENT_QUOTES); ?>'
+      title='<?php echo xlt('Description of this procedure or result code'); ?>'
+      />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="form_seq1" class="col-sm-2 control-label"><?php echo xlt('Sequence'); ?></label>
+    <div class="col-sm-10">
+      <input type='text' size='4' style='width:auto;' name='form_seq' class='form-control' maxlength='11'
+      value='<?php echo $row['seq'] + 0; ?>'
+      title='<?php echo xla('Relative ordering of this entity'); ?>'
+      class='form-control' />
+    </div>
+  </div>
+  <div class="form-group ordonly">
+      <label for="form_lab_id1" class="col-sm-2 control-label"><?php echo xlt('Order From'); ?>:</label>
+      <div class="col-sm-10">
+        <select class='form-control' style="width: auto; display: inline-block"  id='form_lab_id1' name='form_lab_id' title='<?php echo xla('The entity performing this procedure'); ?>'>
+            <?php
+              $ppres = sqlStatement("SELECT ppid, name FROM procedure_providers " .
+                "ORDER BY name, ppid");
+              while ($pprow = sqlFetchArray($ppres)) {
+                echo "<option value='" . attr($pprow['ppid']) . "'";
+                if ($pprow['ppid'] == $row['lab_id']) echo " selected";
+                echo ">" . text($pprow['name']) . "</option>";
+              }
+            ?>
+        </select>
+      </div>
+     
+  </div>
+  <div class="form-group ordonly resonly">
+    <label for="form_procedure_code1" class="col-sm-2 control-label"><?php echo xlt('Identifying Code'); ?>:</label>
+    <div class="col-sm-10">
+      <input type='text' size='4' style='width: auto;' name='form_procedure_code' id='form_procedure_code1' maxlength='31'
+      value='<?php echo htmlspecialchars($row['procedure_code'], ENT_QUOTES); ?>'
+      title='<?php echo xla('The vendor-specific code identifying this procedure or result'); ?>'
+      style='width:100%' class='form-control' />
+    </div>
+  </div>
 
-<table border='0' width='100%'>
+  <div class="ordonly form-group">
+    <label for="form_standard_code1" class="col-sm-2 control-label"><?php echo xlt('Standard Code'); ?></label>
+    <div class="col-sm-10">
+      <input type='text' size='4' style='width: auto;' id='form_standard_code1' name='form_standard_code'
+        value='<?php echo attr($row['standard_code']); ?>'
+        title='<?php echo xla('Enter the LOINC code for this procedure'); ?>'
+        class='form-control'  />
+    </div>
+  </div>
 
- <tr>
-  <td width='1%' nowrap><b><?php echo xlt('Procedure Type'); ?>:</b></td>
-  <td>
-<?php
-echo generate_select_list('form_procedure_type', 'proc_type', $row['procedure_type'],
-  xl('The type of this entity'), ' ', '', 'proc_type_changed()');
-?>
-  </td>
- </tr>
+  <div class="ordonly form-group">
+    <label for="form_body_site" class="col-sm-2 control-label"><?php echo xlt('Body Site'); ?>:</label>
+    <div class="col-sm-10">
+      <?php
+      generate_form_field_with_class(array('data_type' => 1, 'field_id' => 'body_site',
+        'list_id' => 'proc_body_site',
+        'description' => xl('Body site, if applicable')), $row['body_site'], 'form-control');
+      ?>
+    </div>
+    
+  </div>
 
- <tr>
-  <td nowrap><b><?php echo xlt('Name'); ?>:</b></td>
-  <td>
-   <input type='text' size='40' name='form_name' maxlength='63'
-    value='<?php echo htmlspecialchars($row['name'], ENT_QUOTES); ?>'
-    title='<?php echo xlt('Your name for this category, procedure or result'); ?>'
-    style='width:100%' class='inputtext' />
-  </td>
- </tr>
+  <div class="ordonly form-group">
+    <label for="proc_specimen" class="col-sm-2 control-label"><?php echo xlt('Specimen Type'); ?>:</label>
+    <div class="col-sm-10">
+      <?php
+        generate_form_field_with_class(array('data_type' => 1, 'field_id' => 'specimen',
+          'list_id' => 'proc_specimen',
+          'description' => xl('Specimen Type')),
+          $row['specimen'], 'form-control');
+      ?>   
+    </div>
+  </div>
 
- <tr>
-  <td nowrap><b><?php echo xlt('Description'); ?>:</b></td>
-  <td>
-   <input type='text' size='40' name='form_description' maxlength='255'
-    value='<?php echo htmlspecialchars($row['description'], ENT_QUOTES); ?>'
-    title='<?php echo xlt('Description of this procedure or result code'); ?>'
-    style='width:100%' class='inputtext' />
-  </td>
- </tr>
+  <div class="ordonly form-group">
+    <label for="proc_route" class="col-sm-2 control-label"><?php echo xlt('Administer Via'); ?>:</label>
+    <div class="col-sm-10">
+    <?php
+      generate_form_field(array('data_type' => 1, 'field_id' => 'route_admin',
+        'list_id' => 'proc_route',
+        'description' => xl('Route of administration, if applicable')),
+        $row['route_admin'], 'form-control');
+      ?>
+    </div>
+  </div>
 
- <tr>
-  <td nowrap><b><?php echo xlt('Sequence'); ?>:</b></td>
-  <td>
-   <input type='text' size='4' name='form_seq' maxlength='11'
-    value='<?php echo $row['seq'] + 0; ?>'
-    title='<?php echo xla('Relative ordering of this entity'); ?>'
-    class='inputtext' />
-  </td>
- </tr>
+  <div class="ordonly form-group">
+    <label for="proc_lat" class="col-sm-2 control-label"><?php echo xlt('Laterality'); ?>:</label>
+    <div class="col-sm-10">
+      <?php
+        generate_form_field_with_class(array('data_type' => 1, 'field_id' => 'laterality',
+          'list_id' => 'proc_lat',
+          'description' => xl('Laterality of this procedure, if applicable')),
+          $row['laterality'], 'form-control');
+      ?>
+    </div>
+  </div>
 
- <tr class='ordonly'>
-  <td width='1%' nowrap><b><?php echo xlt('Order From'); ?>:</b></td>
-  <td>
-   <select name='form_lab_id' title='<?php echo xla('The entity performing this procedure'); ?>'>
- <?php
-  $ppres = sqlStatement("SELECT ppid, name FROM procedure_providers " .
-    "ORDER BY name, ppid");
-  while ($pprow = sqlFetchArray($ppres)) {
-    echo "<option value='" . attr($pprow['ppid']) . "'";
-    if ($pprow['ppid'] == $row['lab_id']) echo " selected";
-    echo ">" . text($pprow['name']) . "</option>";
-  }
-?>
-   </select>
-  </td>
- </tr>
+  <div class="resonly form-group">
+    <label for="proc_unit" class="col-sm-2 control-label"><?php echo xlt('Default Units'); ?>:</label>
+    <div class="col-sm-10">
+    <?php
+      generate_form_field_with_class(array('data_type' => 1, 'field_id' => 'units',
+        'list_id' => 'proc_unit',
+        'description' => xl('Optional default units for manual entry of results')),
+        $row['units'], 'form-control');
+    ?>
+    </div>
+  </div>
 
- <tr class='ordonly resonly'>
-  <td nowrap><b><?php echo xlt('Identifying Code'); ?>:</b></td>
-  <td>
-   <input type='text' size='40' name='form_procedure_code' maxlength='31'
-    value='<?php echo htmlspecialchars($row['procedure_code'], ENT_QUOTES); ?>'
-    title='<?php echo xla('The vendor-specific code identifying this procedure or result'); ?>'
-    style='width:100%' class='inputtext' />
-  </td>
- </tr>
+  <div class="resonly form-group">
+    <label for="form_range1" class="col-sm-2 control-label"><?php echo xlt('Default Range'); ?>:</label>
+    <div class="col-sm-10">
+      <input type='text' id='form_range1' size='10' name='form_range' maxlength='255' style='width: auto;'
+      value='<?php echo htmlspecialchars($row['range'], ENT_QUOTES); ?>'
+      title='<?php echo xla('Optional default range for manual entry of results'); ?>'
+      style='width:100%' class='form-control' />
+    </div>
+  </div>
 
- <tr class='ordonly'>
-  <td nowrap><b><?php echo xlt('Standard Code'); ?>:</b></td>
-  <td>
-   <!--
-   <input type='text' size='50' name='form_standard_code'
-    value='<?php echo $row['standard_code'] ?>' onclick='sel_related("form_standard_code")'
-    title='<?php echo xla('Click to select an industry-standard code for this procedure'); ?>'
-    style='width:100%' readonly />
-   -->
-   <input type='text' size='50' name='form_standard_code'
-    value='<?php echo attr($row['standard_code']); ?>'
-    title='<?php echo xla('Enter the LOINC code for this procedure'); ?>'
-    style='width:100%' />
-  </td>
- </tr>
+  <div class="resonly form-group">
+    <label for="form_related_code1" class="col-sm-2 control-label"><?php echo xlt('Followup Services'); ?>:</label>
+    <div class="col-sm-10">
+      <input type='text' size='50' name='form_related_code' id='form_related_code1'
+      value='<?php echo $row['related_code'] ?>' onclick='sel_related("form_related_code")'
+      title='<?php echo xla('Click to select services to perform if this result is abnormal'); ?>'
+      style='width:auto' class="form-control" readonly />
+    </div>
+  </div>
+  <?php if(count($errors) > 0) { ?>
+  <div class="form-group alert alert-danger">
+    <ul>
+    <?php 
+      foreach($errors as $error) {
+        echo '<li style="font-size: 15px;">'.$error.'</li>';
+      }
+    ?>
+    </ul>
+  </div>
+ <?php } ?>
 
- <tr class='ordonly'>
-  <td width='1%' nowrap><b><?php echo xlt('Body Site'); ?>:</b></td>
-  <td>
-<?php
-generate_form_field(array('data_type' => 1, 'field_id' => 'body_site',
-  'list_id' => 'proc_body_site',
-  'description' => xl('Body site, if applicable')), $row['body_site']);
-?>
-  </td>
- </tr>
-
- <tr class='ordonly'>
-  <td width='1%' nowrap><b><?php echo xlt('Specimen Type'); ?>:</b></td>
-  <td>
-<?php
-generate_form_field(array('data_type' => 1, 'field_id' => 'specimen',
-  'list_id' => 'proc_specimen',
-  'description' => xl('Specimen Type')),
-  $row['specimen']);
-?>
-  </td>
- </tr>
-
- <tr class='ordonly'>
-  <td width='1%' nowrap><b><?php echo xlt('Administer Via'); ?>:</b></td>
-  <td>
-<?php
-generate_form_field(array('data_type' => 1, 'field_id' => 'route_admin',
-  'list_id' => 'proc_route',
-  'description' => xl('Route of administration, if applicable')),
-  $row['route_admin']);
-?>
-  </td>
- </tr>
-
- <tr class='ordonly'>
-  <td width='1%' nowrap><b><?php echo xlt('Laterality'); ?>:</b></td>
-  <td>
-<?php
-generate_form_field(array('data_type' => 1, 'field_id' => 'laterality',
-  'list_id' => 'proc_lat',
-  'description' => xl('Laterality of this procedure, if applicable')),
-  $row['laterality']);
-?>
-  </td>
- </tr>
-
- <tr class='resonly'>
-  <td width='1%' nowrap><b><?php echo xlt('Default Units'); ?>:</b></td>
-  <td>
-<?php
-generate_form_field(array('data_type' => 1, 'field_id' => 'units',
-  'list_id' => 'proc_unit',
-  'description' => xl('Optional default units for manual entry of results')),
-  $row['units']);
-?>
-  </td>
- </tr>
-
- <tr class='resonly'>
-  <td nowrap><b><?php echo xlt('Default Range'); ?>:</b></td>
-  <td>
-   <input type='text' size='40' name='form_range' maxlength='255'
-    value='<?php echo htmlspecialchars($row['range'], ENT_QUOTES); ?>'
-    title='<?php echo xla('Optional default range for manual entry of results'); ?>'
-    style='width:100%' class='inputtext' />
-  </td>
- </tr>
-
- <tr class='resonly'>
-  <td nowrap><b><?php echo xlt('Followup Services'); ?>:</b></td>
-  <td>
-   <input type='text' size='50' name='form_related_code'
-    value='<?php echo $row['related_code'] ?>' onclick='sel_related("form_related_code")'
-    title='<?php echo xla('Click to select services to perform if this result is abnormal'); ?>'
-    style='width:100%' readonly />
-  </td>
- </tr>
-
-</table>
 
 <br />
 
-<input type='submit' name='form_save' value='<?php echo xla('Save'); ?>' />
+<input type='submit' class='btn btn-success' name='form_save' value='<?php echo xla('Save'); ?>' />
 
 <?php if ($typeid) { ?>
 &nbsp;
-<input type='submit' name='form_delete' value='<?php echo xla('Delete'); ?>' style='color:red' />
+<input type='submit' name='form_delete' class='btn btn-danger' value='<?php echo xla('Delete'); ?>' style='color:red' />
 <?php } ?>
 
 &nbsp;
-<input type='button' value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
+<input type='button'  class='btn btn-danger' value='<?php echo xla('Cancel'); ?>' id="close" />
 </p>
 
 </center>
 </form>
+</div>
 </body>
 </html>
 
