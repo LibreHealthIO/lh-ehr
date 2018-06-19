@@ -1537,6 +1537,13 @@ $GLOBALS_METADATA = array(
       xl('How often the calendar automatically refetches events.')
     ),
 
+    'calendar_timezone' => array(
+      xl('Calendar Time Zone'),
+       'timezone', // data type
+       '',         // defaults
+      xl('Set calendar time zone.')
+    ),
+
     'calendar_provider_view_type' => array(
       xl('Resource Title'),
       array(
