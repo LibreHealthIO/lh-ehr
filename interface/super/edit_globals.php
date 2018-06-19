@@ -598,6 +598,25 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       }
       echo "  </select>\n";
     }
+ 
+    else if ($fldtype == 'timezone') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
+      $zone_list = timezone_identifiers_list();
+      echo "  <select name='form_$i' id='form_$i'>\n";
+      $top_choice = $flddef;
+      echo "    <option value=''>" . text($top_choice) . "\n";
+      foreach ($zone_list as $item) {
+        $title = $item;
+        echo "   <option value='" . ($item) . "'";
+        if ($title == $fldvalue) echo " selected";
+        echo ">";
+        echo xlt($item);
+        echo "</option>\n";
+      }
+      echo "  </select>\n";
+    }
 
     else if ($fldtype == 'list') {
       if ($_GET['mode'] == "user") {
