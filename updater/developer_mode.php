@@ -113,7 +113,7 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 		    
     });
 
-	    $('.test').click(function() {
+	    $('#restore_button').click(function() {
     			var bool = prompt("do you want to restore to a state where this PR is not applied?, type confirm to continue");
     	
 		    if (bool == "confirm") {
