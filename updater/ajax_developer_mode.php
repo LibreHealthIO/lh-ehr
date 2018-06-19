@@ -161,3 +161,37 @@ if (isset($_GET['developer_mode_start']) && isset($_GET['pr_number'])) {
 			setUpdaterSetting("github_developer_current", $pr_backup_number);
 	}
 }
+
+if (isset($_GET['start_restore'])) {
+	if (!empty($_GET['start_restore'])) {
+			//if there is pr is under testing then restore it to original state
+			$sql = sqlStatement('SELECT * FROM `updater_user_mode_backup_entry`');
+			while ($r = sqlFetchArray($sql)) {
+				$filename = $r['filename'];
+				$original_name = $r['original_name'];
+				$status = $r['status'];
+				$old_name = $r['old_name'];
+				restoreBackupFile($filename, $original_name, $status, $old_name);
+			}
+			//change the PR entry
+			//remove the github_developer_current from the table
+			$sql = sqlStatement("DELETE * FROM `updater_settings` WHERE name='github_developer_current'");			
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

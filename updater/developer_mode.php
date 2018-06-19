@@ -62,7 +62,8 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 	}
 	else {
 		$pr = getUpdaterSetting("github_developer_current");
-		echo "<div class='alert alert-info'>#$pr has already applied</div>";
+		echo "<div class='alert alert-info'>#$pr has already applied &nbsp;&nbsp;<button id='restore_button' class='css-button cp-submit'><i class='fa fa-refresh'></i> Restore</button></div>";
+		// show a backup and sync button so the user can go back to state before PR applied
 	}
 	//Means Developer Mode is Enabled for Updater
 	//Show a list of pull requests which are open
@@ -108,6 +109,23 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 				    }
 
 				});
+		    }
+		    
+    });
+
+	    $('.test').click(function() {
+    			var bool = prompt("do you want to restore to a state where this PR is not applied?, type confirm to continue");
+    	
+		    if (bool == "confirm") {
+				 $.ajax({url: "ajax_developer_mode.php?start_restore=1", success: function(result){
+				    	var type = 'success';
+				    	var title = 'Restored Successfully';
+				    	var message = 'Local Repo has been brought to old state before the PR was applied';
+				    	parent.showUpdaterNotifications(type, title, message);
+				    }
+
+				});
+				window.location = "developer_mode.php";
 		    }
 		    
     });
