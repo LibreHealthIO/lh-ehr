@@ -175,7 +175,7 @@ if (isset($_GET['start_restore'])) {
 			}
 			//change the PR entry
 			//remove the github_developer_current from the table
-			$sql = sqlStatement("DELETE * FROM `updater_settings` WHERE name='github_developer_current'");			
+			$sql = sqlStatement("DELETE FROM `updater_settings` WHERE name='github_developer_current'");			
 
 	}
 }

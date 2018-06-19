@@ -62,7 +62,7 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 	}
 	else {
 		$pr = getUpdaterSetting("github_developer_current");
-		echo "<div class='alert alert-info'>#$pr has already applied &nbsp;&nbsp;<button id='restore_button' class='css-button cp-submit'><i class='fa fa-refresh'></i> Restore</button></div>";
+		echo "<div class='alert alert-info'><table class='table table-striped'><tr><td>#$pr has already applied.</td><td><button id='restore_button' class='css-button cp-submit'><i class='fa fa-refresh'></i> Restore</button></td></div>";
 		// show a backup and sync button so the user can go back to state before PR applied
 	}
 	//Means Developer Mode is Enabled for Updater
