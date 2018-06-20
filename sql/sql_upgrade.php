@@ -14,11 +14,11 @@
 // Disable PHP timeout.  This will not work in safe mode.
 ini_set('max_execution_time', '0');
 
-$ignoreAuth = true; // no login required
+//$ignoreAuth = true; // no login required
 
-require_once('interface/globals.php');
-require_once('library/sql.inc');
-require_once('library/sql_upgrade_fx.php');
+require_once('../interface/globals.php');
+require_once('../library/sql.inc');
+require_once('../library/sql_upgrade_fx.php');
 
 
 // Force logging off
@@ -41,8 +41,8 @@ ksort($versions);
 <html>
 <head>
 <title>LibreHealth EHR Database Upgrade</title>
-<link rel='STYLESHEET' href='interface/themes/style_setup.css'>
-<link rel="shortcut icon" href="favicon.ico" />
+<link rel='STYLESHEET' href='../interface/themes/style_setup.css'>
+<link rel="shortcut icon" href="../public/images/favicon.ico" />
 </head>
 <body>
 <center>
@@ -66,7 +66,7 @@ if (!empty($_POST['form_submit'])) {
   flush();
 
   echo "<font color='green'>Updating global configuration defaults...</font><br />\n";
-  require_once("library/globals.inc.php");
+  require_once("../library/globals.inc.php");
   foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     foreach ($grparr as $fldid => $fldarr) {
       list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
