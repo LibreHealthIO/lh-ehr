@@ -19,7 +19,6 @@
 *
 */
 require_once(dirname(__FILE__) . '/appointments.inc.php');
-require_once("../interface/globals.php");
 
 function get_Tracker_Time_Interval ($tracker_from_time, $tracker_to_time, $allow_sec=false) {
 
