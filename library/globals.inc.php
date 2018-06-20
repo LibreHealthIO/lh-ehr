@@ -83,28 +83,6 @@ if (stristr(PHP_OS, 'WIN')) {
   $backup_log_dir      = '/tmp';
 }
 
-//------------------------------------
-// for creating $zone_opt_arr at line 1565
-
-// concatenating '!' to avoid Default option from not coming in list
-// when php.ini value is same as an item on zone_list
-$zone_opt_arr = array( '!' . date_default_timezone_get() => xl('Default - php.ini value') );
-
-// iterating to get time zones in form of, for eg:
-// 'Asia/Kolkata' => xl('Kolkata'),
-$zone_list = timezone_identifiers_list();
-foreach ($zone_list as $item) {
-  if (strpos($item, '/') !== false) {
-    $sub_item = substr($item, strpos($item, '/')+1);
-    $zone_opt_arr = array_merge($zone_opt_arr, array( $item => xl($sub_item) ));
-  } else {
-    // only UTC doesn't contain any '/'
-    // and is last item in list
-    $zone_opt_arr = array_merge($zone_opt_arr, array( $item => xl($item) ));
-  }
-}
-//------------------------------------
-
 // REQUIRED FOR TRANSLATION ENGINE.  DO NOT REMOVE
 // Language constant declarations:
 // xl('Appearance')
@@ -151,7 +129,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'print_next_appointment_on_ledger',
                                'calendar_view_type',
                                'calendar_refresh_freq',
-                               'calendar_timezone',
+                               'ehr_timezone',
                                'check_appt_time',
                                'event_color',
                                'pat_trkr_timer',
@@ -1558,13 +1536,6 @@ $GLOBALS_METADATA = array(
       ),
        '360000',                     // default
       xl('How often the calendar automatically refetches events.')
-    ),
-
-    'calendar_timezone' => array(
-      xl('Calendar Time Zone'),
-      $zone_opt_arr,  // variable calculated at line 87
-       '!' . date_default_timezone_get(),    // defaults to php.ini "date.timezone" value if set valid otherwise UTC
-      xl('Set calendar time zone.')
     ),
 
     'calendar_provider_view_type' => array(
@@ -3091,6 +3062,15 @@ $GLOBALS_METADATA = array(
     // System Tab
     //
     'System' => array(
+
+    'ehr_timezone' => array(
+      xl('EHR Time Zone'),
+       'timezone',          // data type
+       '!' . date_default_timezone_get(),    // defaults to php.ini "date.timezone" value if set valid otherwise UTC
+       // concatenated '!' to avoid Default option from not coming in list
+       // when php.ini value is same as an item on zone_list
+      xl('Set EHR time zone.')
+    ),
 
     'mysql_bin_dir' => array(
       xl('Path to MySQL Binaries'),

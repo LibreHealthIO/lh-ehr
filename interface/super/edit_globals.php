@@ -599,6 +599,39 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       echo "  </select>\n";
     }
 
+    else if ($fldtype == 'timezone') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
+      // timezone_identifiers_list() eturns an array containing all defined time zone identifiers
+      // for eg: Asia/Kolkata | Asia/Singapore
+      $zone_list = timezone_identifiers_list();
+
+      // generating an option list of defined time zones including default time zone from php.ini
+      echo "  <select class='form-control input-sm' name='form_$i' id='form_$i'>\n";
+      $top_choice = $flddef;     // default option
+      echo "    <option value='" . ($top_choice) . "'>" . text("Default - php.ini value") . "</option>\n";
+      foreach ($zone_list as $item) {
+        $title = $item;
+        echo "   <option value='" . ($item) . "'";
+        if ($title == $fldvalue) echo " selected";
+        echo ">";
+        if (strpos($item, '/') !== false) {
+          // if item contains '/', show only what's after '/', for eg:
+          // Asia/Kolkata becomes Kolkata in time zone options list display
+          $item = substr($item, strpos($item, '/')+1);
+        }
+        if (strpos($item, '/') !== false) {
+          // some items contain two '/', for eg:
+          // America/Indiana/Indianapolis
+          $item = substr($item, strpos($item, '/')+1);
+        }
+        echo xlt($item);
+        echo "</option>\n";
+      }
+      echo "  </select>\n";
+    }
+
     else if ($fldtype == 'list') {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
