@@ -1542,6 +1542,7 @@ $GLOBALS_METADATA = array(
       array(
         'full' => xl('Provider Full Name'),
         'last' => xl('Provider Last Name'),
+        'last_first' => xl('Provider Last Name and First Initial'),
         'resource' => xl('Resource Title'),
       ),
        'full',                     // default
