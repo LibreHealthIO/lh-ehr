@@ -24,7 +24,7 @@ $query =
 `measure_number` varchar(50),
 `type` varchar(100),
 `value` varchar(3072),
-`status` INT(1) );";
+`status` INT(3) );";
 sqlStatementNoLog($query);
 
 
@@ -267,14 +267,14 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0111', 'answer', '2|Pneumococcal Vaccination not Administered or Previously Received,Reason not Otherwise Specified (4040F:8P)|4040:8PF',9),
 
 ('PQRS_0112', 'description', 'Breast Cancer Screening ',''),
-('PQRS_0112', 'question', 'Did patient have one or more mammograms any time on or between October 1, 27 months prior to December 31 of the measurement period, not to precede the patient\'s 50th birthday?',''),
+('PQRS_0112', 'question', 'Did patient have one or more mammograms any time on or between October 1, 27 months prior to December 31 of the measurement period?',''),
 ('PQRS_0112', 'answer', '1|Mammogram Performed--Screening mammography results documented and reviewed (G9899)|G9899',1),
 ('PQRS_0112', 'answer', '2|Mammogram not Performed/Reviewed (G9900)|G9900',9),
 
 ('PQRS_0113', 'description', 'Colorectal Cancer Screening',''),
-('PQRS_0113', 'question', 'Patients with one or more screenings for colorectal cancer. Appropriate screenings are defined by any one of the following criteria below:<br><li>Fecal occult blood test (FOBT) during the measurement period<li>Flexible sigmoidoscopy during the measurement period or the four years prior to the measurement period<li>Colonoscopy during the measurement period or the nine years prior to the measurement period',''),
+('PQRS_0113', 'question', 'Did patient have one or more appropriate screenings for colorectal cancer?',''), 
 ('PQRS_0113', 'answer', '1|Colorectal Cancer Screening, results documented and reviewed (3017F)|3017F',1),
-('PQRS_0113', 'answer', '3|Colorectal Cancer Screening not Performed, Reason not Otherwise Specified (3017F:8P)|3017F:8P',9),
+('PQRS_0113', 'answer', '3|Colorectal Cancer Screening not Performed, Reason not specified (3017F:8P)|3017F:8P',9),
 
 ('PQRS_0116', 'description', 'Avoidance of Antibiotic Treatment in Adults With Acute Bronchitis',''),
 ('PQRS_0116', 'question', 'Patients who were not prescribed or dispensed antibiotics on or within 3 days of the initial date of service<br>Numerator Instructions: For performance, the measure will be calculated as the number of patient encounters where antibiotics were neither prescribed nor dispensed on or within 3 days of the episode for acute bronchitis over the total number of encounters in the denominator (patients aged 18 through 64 years with an outpatient or ED visit for acute bronchitis). A higher score indicates appropriate treatment of patients with acute bronchitis (e.g., the proportion for whom antibiotics were not prescribed or dispensed on or three days after the encounter). Antibiotic Medications<p>Please refer to Measure documentation for Antibiotic Table',''),
@@ -325,8 +325,8 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0127', 'answer', '2|Clinician documented that patient was not an eligible candidate for footwear evaluation measure (G8416)|G8416',2),
 ('PQRS_0127', 'answer', '3|Footwear evaluation was not performed (G8415)|G8415',9),
 
-('PQRS_0128', 'description', 'Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up Plan<p>See Measure Description<p>',''),
-('PQRS_0128', 'question', 'Patients with a documented BMI during the encounter or during the previous six months, AND when the BMI is outside of normal parameters, a follow-up plan is documented during the encounter or during the previous six months of the current encounter.',''),
+('PQRS_0128', 'description', 'Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up Plan',''),
+('PQRS_0128', 'question', 'Does patient have a documented BMI during the encounter or during the previous twelve months, AND when the BMI is outside of normal parameters, is a follow-up plan documented during the encounter or during the previous twelve months?',''),
 ('PQRS_0128', 'answer', '1|BMI Documented as Normal, No Follow-Up Plan Required (G8420)|G8420',1),
 ('PQRS_0128', 'answer', '2|BMI Documented as Above Normal Parameters, AND Follow-Up Documented (G8417)|G8417',1),
 ('PQRS_0128', 'answer', '3|BMI Documented as Below Normal Parameters, AND Follow-Up Documented (G8418)|G8418',1),
@@ -619,7 +619,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0226', 'answer', '4|Tobacco Screening OR Tobacco Cessation Intervention not Performed, Reason Not Otherwise Specified (4004F:8P)|4004F:8P',9),
 
 ('PQRS_0236', 'description', 'Controlling High Blood Pressure',''),
-('PQRS_0236', 'question', 'Patients whose blood pressure at the most recent visit is adequately controlled (systolic blood pressure &lt; 140 mmHg and diastolic blood pressure &lt; 90 mmHg) during the measurement period<br>Numerator Instructions: To describe both systolic and diastolic blood pressure values, each must be reported separately. If there are multiple blood pressures on the same date of service, use the lowest systolic and lowest diastolic blood pressure on that date as the representative blood pressure.',''),
+('PQRS_0236', 'question', 'Is the blood pressure at the most recent visit adequately controlled (systolic blood pressure &lt; 140 mmHg and diastolic blood pressure &lt; 90 mmHg)?',''),
 ('PQRS_0236', 'answer', '1|Most recent systolic blood pressure &lt; 140 mmHg AND Most recent diastolic blood pressure &lt; 90 mmHg (G8752 G8754)|G8752 G8754',1),
 ('PQRS_0236', 'answer', '2|Most recent systolic blood pressure &ge; 140 mmHg AND Most recent diastolic blood pressure &lt; 90 mmHg (G8753 G8754)|G8753 G8754',9),
 ('PQRS_0236', 'answer', '3|Most recent systolic blood pressure &lt; 140 mmHg AND Most recent diastolic blood pressure &gt; 90 mmHg (G8752 G8755)|G8752 G8755',9),
@@ -627,9 +627,11 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0236', 'answer', '5|Blood Pressure Measurement not Documented, Reason not Given (G8756)|G8756',9),
 
 ('PQRS_0238', 'description', 'Use of High-Risk Medications in the Elderly',''),
-('PQRS_0238', 'question', 'Percentage of patients who were ordered at least one high-risk medication during the measurement period<br>INVERSE MEASURE<br> <b>*** See Measure Documentation ***</b><br>Multiple definitions, descriptions, calculations, and lists of drugs.',''),
-('PQRS_0238', 'answer', '1|At least two different high-risk medications ordered (G9367)|G9367',1),
-('PQRS_0238', 'answer', '2|At least two different high-risk medications not ordered (G9368)|G9368',9),
+('PQRS_0238', 'question', 'What percentage of patients 65 years of age and older were ordered high-risk medication during the measurement period<br>INVERSE MEASURE<br>?',''),
+('PQRS_0238', 'answer', '1|One order for high-risk medication (G9365)|G9365',1),
+('PQRS_0238', 'answer', '2|High-risk medication not ordered during the measurement period (G9366)|G9366',9),
+('PQRS_0238', 'answer', '3|Two or more orders for the same high-risk medication (G9367)|G9367',1),
+('PQRS_0238', 'answer', '4|Less than two orders for the same high-risk medication (G9368)|G9368',9),
 
 ('PQRS_0243', 'description', 'Rehabilitation Patient Referral from an Outpatient Setting',''),
 ('PQRS_0243', 'question', 'Patients who have had a qualifying event/diagnosis within the previous 12 months, who have been referred to an outpatient cardiac rehabilitation/secondary prevention (CR) program Numerator Instructions: CR programs may include a traditional CR program based on face-to-face interactions and training sessions or other options that include home-based approaches. If alternative CR approaches are used, they should be designed to meet appropriate safety standards.',''),
@@ -657,10 +659,10 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0251', 'answer', '2|Quantitative evaluation of HER2 did not use the system recommended in the ASCO/CAP Guidelines for Human Epidermal Growth Factor Receptor 2 Testing in breast cancer, reason not otherwise specified (3394F:8P)|3394F:8P',9),
 
 ('PQRS_0254', 'description', 'Ultrasound Determination of Pregnancy Location for Pregnant Patients with Abdominal Pain',''),
-('PQRS_0254', 'question', 'Patients who receive a trans-abdominal or trans-vaginal ultrasound with documentation of pregnancy location in medical record<br> Numerator Instructions: This measure is to be reported each time a patient meets the requirements as indicated in the denominator. If the clinician documents that the clinical event surrounding the patient, with or without performance of trans-abdominal or trans-vaginal ultrasound, does not meet the intent of the measure, report quality-data code G8807.',''),
-('PQRS_0254', 'answer', '1|Trans-Abdominal or Trans-Vaginal Ultrasound Performed and Pregnancy Location Documented During ED Visit (G8806)|G8806',1),
-('PQRS_0254', 'answer', '2| Trans-Abdominal or Trans-Vaginal Ultrasound not Performed for Documented Reasons (e.g., patient has visited the ED multiple times within 72 hours, patient has a documented Intrauterine Pregnancy [IUP]) (G8807)|G8807',2),
-('PQRS_0254', 'answer', '3| Trans-Abdominal or Trans-Vaginal Ultrasound not Performed, Reason not Given (e.g., patient has visited the ED multiple times with no documentation of a trans-abdominal or trans-vaginal ultrasound within ED or from referring eligible professional) (G8808)|G8808',9),
+('PQRS_0254', 'question', 'Did pregnant patients presenting at ED with abdominal pain or vaginal bleeding recieve a trans-abdominal or trans-vaginal ultrasound for pregnacy location?',''),
+('PQRS_0254', 'answer', '1|Trans-Abdominal or Trans-Vaginal Ultrasound Performed (G8806)|G8806',1),
+('PQRS_0254', 'answer', '2|Trans-Abdominal or Trans-Vaginal Ultrasound not Performed for Documented Clinical Reasons (G8807)|G8807',2),
+('PQRS_0254', 'answer', '3| Trans-Abdominal or Trans-Vaginal Ultrasound not Performed, Reason not Given (G8808)|G8808',9),
 
 ('PQRS_0255', 'description', 'Rh Immunoglobulin (Rhogam) for Rh-Negative Pregnant Women at Risk of Fetal Blood Exposure',''),
 ('PQRS_0255', 'question', 'Patients who receive an order for Rh-Immunoglobulin (Rhogam) in the ED',''),
@@ -707,15 +709,15 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0263', 'answer', '3|Clinician did not attempt to achieve the diagnosis of breast cancer preoperatively by a minimally invasive biopsy method, reason not given (G8877)|G8877',9),
 
 ('PQRS_0264', 'description', 'Sentinel Lymph Node Biopsy for Invasive Breast Cancer',''),
-('PQRS_0264', 'question', 'Patients who undergo a SLN procedure',''),
+('PQRS_0264', 'question', 'Did patients operated upon for invasive breast cancer that are clinically node negative before or after neoadjuvant systemic therapy undergo a SLN procedure?',''),
 ('PQRS_0264', 'answer', '1|Sentinel lymph node biopsy procedure performed (G8878)|G8878',1),
-('PQRS_0264', 'answer', '2|Documentation of reason(s) sentinel lymph node biopsy not performed (e.g., reasons could include but not limited to -- non-invasive cancer, incidental discovery of breast cancer on prophylactic mastectomy, incidental discovery of breast cancer on reduction mammoplasty, pre-operative biopsy proven lymph node (LN) metastases, inflammatory carcinoma, stage 3 locally advanced cancer, recurrent invasive breast cancer, patient refusal after informed consent) (G8880)|G8880',2),
+('PQRS_0264', 'answer', '2|Documentation of reason(s) sentinel lymph node biopsy not performed (G8880)|G8880',2),
 ('PQRS_0264', 'answer', '3|Sentinel lymph node biopsy procedure not performed, reason not given (G8882)|G8882',9),
 
 ('PQRS_0265', 'description', 'Biopsy Follow-Up',''),
 ('PQRS_0265', 'question', 'Were Patients biopsy results reviewed and communicated to the primary care/referring physician and the patient by the physician performing the biopsy. The physician performing the biopsy must also acknowledge and/or document the communication in a biopsy tracking log and document in the patient\'s medical record.<br>Numerator Instructions: To satisfy this measure, the biopsying physician must:<li>Review the biopsy results with the patient<li>Communicate those results to the primary care/referring physician<li>Track communication in a log<li>Document tracking process in the patient\'s medical record<br>Definition:<br>The components of a tracking log incorporate the followingInitials of physician performing the biopsy<li>Patient name<li>Date of biopsy<li>Type of biopsy<li>Biopsy result<li>Date of biopsy result',''),
 ('PQRS_0265', 'answer', '1|Biopsy results reviewed, communicated, tracked, and documented (G8883)|G8883',1),
-('PQRS_0265', 'answer', '2|Clinician documented reason that patient\'s biopsy results were not reviewed, [e.g., patient asks that biopsy results not be communicated to the primary care/referring physician, patient does not have a primary care/referring physician or is a self-referred patient] (G8884)|G8884',2),
+('PQRS_0265', 'answer', '2|Clinician documented reason that patient\'s biopsy results were not reviewed (G8884)|G8884',2),
 ('PQRS_0265', 'answer', '3|Biopsy results not reviewed, communicated, tracked, or documented (G8885)|G8885',9),
 
 ('PQRS_0268', 'description', 'Epilepsy: Counseling for Women of Childbearing Potential with Epilepsy',''),
@@ -730,11 +732,12 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0271', 'answer', '2|Within the past 2 years, Central Dual-energy X-Ray Absorptiometry (DXA) not ordered and documented, no review of systems and no medication history or pharmacologic therapy (other than minerals/vitamins) for osteoporosis prescribed (G9472)|G9472',9),
 
 ('PQRS_0275', 'description', 'Inflammatory Bowel Disease (IBD): Assessment of Hepatitis B Virus (HBV) Status Before Initiating Anti-TNF (Tumor Necrosis Factor) Therapy',''),
-('PQRS_0275', 'question', 'Patients who had HBV status assessed and results interpreted within one year prior to receiving a first course of antiTNF therapy<br>Numerator Instructions: HBV status must be assessed by one of the following: HBsAG, HBsAG neutralization, HBcAb total, HBcAB IgM, HBsAB.<br>Definition:<br>First Course of anti-TNF therapy -- the first (ever) course of anti-TNF therapy ',''),
-('PQRS_0275', 'answer', '1|Hepatitis B Virus (HBV) status assessed and results interpreted within one year prior to receiving a first course of anti-TNF (tumor necrosis factor) therapy (3517F)|3517F',1),
+('PQRS_0275', 'question', 'Did patients have HBV status assessed and results interpreted prior to receiving their first ever course of antiTNF therapy?',''),
+('PQRS_0275', 'answer', '1|Hepatitis B Virus (HBV) status assessed and results interprreted prior to receiving a first course of anti-TNF therapy (G9912)|G9912',1),
 ('PQRS_0275', 'answer', '2|Patient has documented immunity to hepatitis B and is receiving a first course of anti-TNF therapy (G8869)|G8869',1),
-('PQRS_0275', 'answer', '3|Documented reason for not assessing Hepatitis B Virus (HBV) status (e.g. patient not receiving a first course of anti-TNF therapy, patient declined) within one year prior to first course of anti-TNF therapy (G9504)|G9504',2),
-('PQRS_0275', 'answer', '4|Hepatitis B Virus (HBV) status not assessed and results interpreted within one year prior to receiving a first course of anti-TNF (tumor necrosis factor) therapy, reason not otherwise specified (3517F:8P)|3517F:8P',9),
+('PQRS_0275', 'answer', '3|Documented reason for not assessing Hepatitis B Virus (HBV) status (e.g. patient not receiving a first course of anti-TNF therapy, patient declined) (G9504)|G9504',2),
+('PQRS_0275', 'answer', '4|No documentation that Hepatitis B Virus (HBV) status was assessed and results interpreted prior to receiving a first course of anti-TNF therapy, reason not specified (G9913)|G9913',9),
+('PQRS_0275', 'answer', '5|No record of Hepatitis B Virus results documented (G9915)|G9915',9),
 
 ('PQRS_0276', 'description', ' Sleep Apnea: Assessment of Sleep Symptoms',''),
 ('PQRS_0276', 'question', 'Patient visits with an assessment of sleep symptoms documented, including presence or absence of snoring and daytime sleepiness',''),
@@ -850,12 +853,12 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0325', 'answer', '3|Clinician treating Major Depressive Disorder did not communicate to clinician treating comorbid condition, reason not given (G8960)|G8960',9),
 
 ('PQRS_0326', 'description', 'Atrial Fibrillation and Atrial Flutter: Chronic Anticoagulation Therapy',''),
-('PQRS_0326', 'question', 'Patients who are prescribed warfarin OR another oral anticoagulant drug that is FDA approved for the prevention of thromboembolism<br>Definition:<br>Prescribed -- May include prescription given to the patient for warfarin OR another oral anticoagulant that is FDA approved for the prevention of thromboembolism at one or more visits in the measurement period OR patient already taking warfarin OR another oral anticoagulant that is FDA approved for the prevention of thromboembolism as documented in current medication list.<br> *** Please see Measure Description for additional information ***',''),
-('PQRS_0326', 'answer', '1|Warfarin OR Another Oral Anticoagulant that is FDA Approved Prescribed (G8967)|G8967',1),
+('PQRS_0326', 'question', 'Was the patient prescribed warfarin OR another oral anticoagulant drug that is FDA approved for the prevention of thromboembolism?',''),
+('PQRS_0326', 'answer', '1|Warfarin OR Another Oral Anticoagulant that is FDA Approved is Prescribed (G8967)|G8967',1),
 ('PQRS_0326', 'answer', '2|Warfarin OR Another Oral Anticoagulant that is FDA Approved not Prescribed for Documented Medical Reasons (G8968)|G8968',2),
 ('PQRS_0326', 'answer', '3|Warfarin OR Another Oral Anticoagulant that is FDA Approved not Prescribed for Documented Patient Reasons (G8969)|G8969',2),
-('PQRS_0326', 'answer', '4|No Risk Factors or One Moderate Risk Factor for Thromboembolism, Patient not Eligible (G8970)|G8970',2),
-('PQRS_0326', 'answer', '5|Warfarin OR Another Oral Anticoagulant that is FDA Approved not Prescribed, Reason not Given (G8971)|G8971',9),
+('PQRS_0326', 'answer', '4|Warfarin OR Another Oral Anticoagulant that is FDA Approved not Prescribed for Documented System Reasons (G89927)|G9927',2),
+('PQRS_0326', 'answer', '5|Warfarin OR Another Oral Anticoagulant that is FDA Approved not Prescribed, Reason not Given (G9928)|G9928',9),
 
 ('PQRS_0327', 'description', 'Pediatric Kidney Disease: Adequacy of Volume Management',''),
 ('PQRS_0327', 'question', 'Calendar months during which patients have an assessment of the adequacy of volume management from a nephrologist<br>*** Please see Measure Documentation for Definitions and Instructions ***<br>Definition:<br>Adequacy of Volume Management -- Adequacy of volume management for a patient on dialysis is determined by assessing whether or not the patient achieved a target end dialysis weight after receiving dialysis, by a comparison of the patient-specific target end dialysis weight and the actual post dialysis weight.',''),
@@ -881,8 +884,8 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0330', 'answer', '2|Documentation of patient receiving maintenance hemodialysis for greater than or equal to 90 days with a catheter for documented reasons (G9264)|G9264',2),
 ('PQRS_0330', 'answer', '3|Patient receiving maintenance hemodialysis for greater than or equal to 90 days without a catheter as the mode of vascular access (G9266)|G9266',9),
 
-('PQRS_0331', 'description', 'Adult Sinusitis: Antibiotic Prescribed for Acute Sinusitis (Overuse)',''),
-('PQRS_0331', 'question', 'Was Patient prescribed any antibiotic within 10 days after onset of symptoms?<br>Numerator Instructions:<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The ''Performance Not Met'' numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
+('PQRS_0331', 'description', 'Adult Sinusitis: Antibiotic Prescribed for Acute Viral Sinusitis (Overuse)',''),
+('PQRS_0331', 'question', 'Was Patient prescribed any antibiotic within 10 days after onset of symptoms?<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The ''Performance Not Met'' numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
 ('PQRS_0331', 'answer', '1|Antibiotic regimen prescribed within 10 days after onset of symptoms (G9286)|G9286',1),
 ('PQRS_0331', 'answer', '2|Antibiotic regimen prescribed within 10 days after onset of symptoms for documented medical reason (G9505)|G9505',2),
 ('PQRS_0331', 'answer', '3|Antibiotic regimen not prescribed within 10 days after onset of symptoms (G9287)|G9287',9),
@@ -1383,7 +1386,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0439', 'answer', '2|Documentation of medical reason(s) for a colonoscopy performed on a patient greater than 85 years of age (e.g., last colonoscopy incomplete, last colonoscopy had inadequate prep, iron deficiency anemia, lower gastrointestinal bleeding, Crohn''s Disease (i.e., regional enteritis), familial history of adenomatous polyposis, Lynch Syndrome (i.e., hereditary non-polyposis colorectal cancer), inflammatory bowel disease, ulcerative colitis, abnormal finding of gastrointestinal tract, or changes in bowel habits) (G9660)|G9660',2),
 ('PQRS_0439', 'answer', '3|Patients greater than 85 years of age who received a routine colonoscopy for a reason other than the following: an assessment of signs/symptoms of GI tract illness, and/or the patient is considered high risk, and/or to follow-up on previously diagnoses advance lesions (G9661)|G9661',9),
 
-('PQRS_0440', 'description', 'Basal Cell Carcinoma (BCC)/Squamous Cell Carcinoma: Biopsy Reporting Time  Pathologist to Clinician',''),
+('PQRS_0440', 'description', 'Basal Cell Carcinoma (BCC)/Squamous Cell Carcinoma: Biopsy Reporting Time ? Pathologist to Clinician',''),
 ('PQRS_0440', 'question', 'Number of final pathology reports diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease) sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 businessdays from the time when the tissue specimen was received by the pathologist',''),
 ('PQRS_0440', 'answer', '1|Pathology report diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease)sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 business days from the time when the tissue specimen was received by the pathologist (G9785)|G9785',1),
 ('PQRS_0440', 'answer', '2|Pathology report diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease) was not sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 business days from the time when the tissue specimen was received by the pathologist (G9786)|G9786',9),
@@ -1391,7 +1394,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0441', 'description', ' Ischemic Vascular Disease (IVD) All or None Outcome Measure (Optimal Control) NOT A RECOMMENDED MEASURE, !INCOMPLETE! ',''),
 ('PQRS_0441', 'question', 'The number of IVDpatients who meet ALL of the following targets: Most recent BP is less than 140/90 mm Hg And Most recent tobacco status is Tobacco Free (NOTE: If there is No Documentation of Tobacco Status thepatient is not compliant for this measure) And Daily Aspirin or Other Antiplatelet Unless Contraindicated And Statin Use.',''),
 ('PQRS_0441', 'answer', '1|Most recent BP is less than or equal to 140/90 mm Hg (G9788)|G9788',1),
-('PQRS_0441', 'answer', '2|Blood pressure recorded during inpatient stays, Emergency Room Visits, Urgent Care Visits, and Patient Self-Reported BPs (Home and Health Fair BP results) (G9789)|G9789',2),
+('PQRS_0441', 'answer', '2|Blood pressure recorded during inpatient stays, Emergency Room Visits, Urgent Care Visits, and Patient Self-Reported BP?s (Home and Health Fair BP results) (G9789)|G9789',2),
 ('PQRS_0441', 'answer', '3|Most recent BP is greater than 140/90 mm Hg, or blood pressure not documented (G9790)|G9790',9),
 
 ('PQRS_0442', 'description', 'Persistence of Beta-Blocker Treatment After a Heart Attack',''),
@@ -1437,7 +1440,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0449', 'answer', '2|HER2-targeted therapies administered during the initial course of treatment(G9828)|G9828',9),
 
 
-('PQRS_0450', 'description', 'Trastuzumab Received By Patients With AJCC Stage I (T1c)  III And HER2 Positive Breast Cancer Receiving Adjuvant Chemotherapy',''),
+('PQRS_0450', 'description', 'Trastuzumab Received By Patients With AJCC Stage I (T1c) ? III And HER2 Positive Breast Cancer Receiving Adjuvant Chemotherapy',''),
 ('PQRS_0450', 'question', 'Trastuzumab administered within 12 months of diagnosis.',''),
 ('PQRS_0450', 'answer', '1|Trastuzumab administered within 12 months of diagnosis(G9835)|G9835',1),
 ('PQRS_0450', 'answer', '2|Reason for not administering Trastuzumab documented (e.g. patient declined, patient died, patient transferred, contraindication or other clinical exclusion, neoadjuvant chemotherapy or radiation NOT complete)(G9836)|G9836',2),

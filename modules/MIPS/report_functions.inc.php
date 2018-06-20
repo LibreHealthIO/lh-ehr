@@ -1,46 +1,15 @@
 <?php
 /**
- * Report tracking, storing and viewing functions using the report_results sql table.
+ * Interfaces with the report_results table only.
  *
- * Supports generic tracking, storing and viewing of reports by utilizing a vertical
- * table entitled report_results. This allows flexible placement of tokens for report
- * setting etc. Also supports itemization of results (per patient tracking).
- * <pre>Tokens that are reserved include:
- *   'bookmark'          - Allows bookmarking of a new report id (used to allow tracking
- *                         progress via ajax calls). If exist, value is always set to '1'.
- *   'progress'          - Either set to 'pending' or 'complete'.
- *   'type'              - Set to type of report
- *   'total_items'       - Set to total number of items that will be processed (ie. such as patients)
- *   'progress_items'    - Set to number of items (ie. such as patients)
- *   'data'              - Contains the data of the report
- *   'date_report'       - Set to date of the report (date and time)
- *   'date_report_complete'       - Set to date of the report completion (date and time)
- * </pre>
- *
- * These functions should not ever attempt to write to
- * session variables, because the session_write_close() function
- * is typically called before utilizing these functions.
- *
- * Copyright (C) 2012 Brady Miller <brady@sparmy.com>
- *
- * LICENSE: This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://opensource.org/licenses/gpl-license.php>;.
  *
  * @package LibreEHR
- * @author  Brady Miller <brady@sparmy.com>
+ * @author  Art Eaton
  * @link    http://librehealth.io
  */
 
 /**
- * Return listing of report results.
+ * Returns report_results.
  *
  * @param   timestamp  $start  Start of date range
  * @param   timestamp  $end    End of date range

@@ -32,7 +32,7 @@
  */
 
 
-require_once(dirname(__FILE__) . "/report_database.inc");
+require_once(dirname(__FILE__) . "/report_functions.inc.php");
 
 /**
  * Return listing of CDR reminders in log.

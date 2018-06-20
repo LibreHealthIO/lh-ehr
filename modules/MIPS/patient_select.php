@@ -17,7 +17,6 @@
  * @author  Bryan Lee <leebc11@acm.org>  (PQRS additions)
  * @link    http://suncoastconnection.com
  * @package LibreHealth EHR
- * @author  Brady Miller <brady@sparmy.com>
  * @link    http://librehealth.io
  */
 
@@ -32,7 +31,7 @@ require_once ('../../interface/globals.php');
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
-require_once("report_database.inc");
+require_once("report_functions.inc.php");
 
 $fstart = isset($_REQUEST['fstart']) ? $_REQUEST['fstart'] : 0;
 $popup  = empty($_REQUEST['popup']) ? 0 : 1;
@@ -236,7 +235,7 @@ if ($fend > $count) $fend = $count;
        echo xlt("Performance Met");
      }
      else if ($pass_id == "exclude") {
-       echo xlt("Excluded Patients");
+       echo xlt("Denominator Exceptions");
      }
      else { // $pass_id == "all"
        echo xlt("All Patients");
@@ -276,11 +275,6 @@ if ($fend > $count) $fend = $count;
         $pqrs_result = SqlFetchArray(sqlStatement($query));
 	$measure_question=implode(" ",$pqrs_result);
 	
-//		$query = "SELECT status AS status FROM pqrs_direct_entry_lookup WHERE ".
- //               "measure_number = '$measure_number' AND type = 'answer'";
- //       $pqrs_result = SqlFetchArray(sqlStatement($query));
-//	$myPerformance=$pqrs_result['status'];
-
         $query = "SELECT COUNT(*) AS count FROM pqrs_direct_entry_lookup WHERE".
                 " measure_number = '$measure_number' AND type = 'answer'";
         $pqrs_result = SqlFetchArray(sqlStatement($query));
@@ -401,8 +395,8 @@ if ($result) {
 		$explodedAnswer=explode("|", $thisAnswer['value']);
 		$myOrder=$explodedAnswer[0];
 		$myDesc=$explodedAnswer[1];
-		$myCode=$explodedAnswer[2];
-		$myPerformance= $thisAnswer['status'];
+		$myCode=$thisAnswer['status']."*".$explodedAnswer[2];
+	
 // error_log("***** DEBUG *****  foreach: $myOrder  |  $myDesc  |  $myCode | $myPerformance");
         	echo "<td class='srAnswer'><label><input type=\"radio\" name=\"pidi".htmlspecialchars( $iter['pid'] )." \"  value=\"$myCode\" performance=\"$myPerformance\" >$myDesc</label></td>";
     }
