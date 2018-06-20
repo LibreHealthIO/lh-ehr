@@ -24,7 +24,7 @@ $query =
 `measure_number` varchar(50),
 `type` varchar(100),
 `value` varchar(3072),
-`status` INT(3) );";
+`status` INT(1) );";
 sqlStatementNoLog($query);
 
 
@@ -920,9 +920,10 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0336', 'answer', '2|Post-partum screenings, evaluations and education not performed (G9358)|G9358',9),
 
 ('PQRS_0337', 'description', 'Tuberculosis Prevention for Psoriasis,Psoriatic Arthritis and Rheumatoid Arthritis Patients on a Biological Immune Response Modifier',''),
-('PQRS_0337', 'question', 'Patients who have a documented negative annual TB screening or have documentation of the management of a positive TB screening test with no evidence of active tuberculosis, confirmed through use of radiographic imaging (i.e., chest x-ray, CT)',''),
+('PQRS_0337', 'question', 'Does the patients have a documented negative annual TB screening or have documentation of the management of a positive TB screening test with no evidence of active tuberculosis, confirmed through use of radiographic imaging (i.e., chest x-ray, CT)?',''),
 ('PQRS_0337', 'answer', '1|Documentation of negative or managed positive TB screen with further evidence that TB is not active (G9359)|G9359',1),
-('PQRS_0337', 'answer', '2|No documentation of negative or managed positive TB screen (G9360)|G9360',9),
+('PQRS_0337', 'answer', '2|Documentation of patient reason for not having record of negative or managed positive TB screen (G9932)|G9932',2),
+('PQRS_0337', 'answer', '3|No documentation of negative or managed positive TB screen (G9360)|G9360',9),
 
 ('PQRS_0338', 'description', 'HIV Viral Load Suppression',''),
 ('PQRS_0338', 'question', 'Number of patients with a HIV viral load less than 200 copies/mL at last viral load test',''),
@@ -940,35 +941,35 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0342', 'answer', '2|Documentation of patient with pain not brought to a comfortable level within 48 hours from initial assessment (G9251)|G9251',9),
 
 ('PQRS_0343', 'description', 'Screening Colonoscopy Adenoma Detection Rate',''),
-('PQRS_0343', 'question', 'Number of patients age 50 years or older with at least one conventional adenoma or colorectal cancer detected during screening colonoscopy',''),
-('PQRS_0343', 'answer', '1|Adenoma(s) or other neoplasm detected during screening colonoscopy (3775F)|3775F',1),
-('PQRS_0343', 'answer', '2|Documentation of reason for not detecting adenoma(s) or other neoplasm. (e.g., Neoplasm detected is only diagnosed as traditional serrated adenoma, sessile serrated polyp, or sessile serrated adenoma) (G9496)|G9496',2),
-('PQRS_0343', 'answer', '3|Adenoma(s) or other neoplasm not detected during screening colonoscopy (3776F)|3776F',9),
+('PQRS_0343', 'question', 'Did the patient age 50 years or older have a conventional adenoma or colorectal cancer detected during screening colonoscopy?',''),
+('PQRS_0343', 'answer', '1|Adenoma(s) or colorectal cancer detected during screening colonoscopy (G9933)|G9933',1),
+('PQRS_0343', 'answer', '2|Documentation that neoplasm detected is only diagnosed as traditional serrated adenoma, sessile serrated polyp, or sessile serrated adenoma (G9934)|G9934',2),
+('PQRS_0343', 'answer', '3|Adenoma(s) or colorectal cancer not detected during screening colonoscopy (G9935)|G9935',9),
 
 ('PQRS_0344', 'description', 'Rate of Carotid Artery Stenting (CAS) for Asymptomatic Patients, Without Major Complications (Discharged to Home by Post-Operative Day #2)',''),
 ('PQRS_0344', 'question', 'Patients discharged to home no later than post-operative day 2 following CAS<br> Definition:<br>Home -- For purposes of reporting this measure, home is the point of origin prior to hospital admission prior to procedure. For example, if the patient comes from a skilled facility and returns to the skilled facility, this would meet criteria for discharged to home.',''),
 ('PQRS_0344', 'answer', '1|Documentation of patient discharged to home no later than post-operative day 2 following CAS (G9255)|G9255',1),
 ('PQRS_0344', 'answer', '2|Documentation of patient discharged to home later than post-operative day 2 following CAS (G9254)|G9254',9),
 
-('PQRS_0345', 'description', 'Rate of Postoperative Stroke or Death in Asymptomatic Patients Undergoing Carotid Artery Stenting (CAS)',''),
-('PQRS_0345', 'question', 'Patients who experience stroke or death in the hospital following CAS<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The ''Performance Not Met'' numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
-('PQRS_0345', 'answer', '1|Documentation of patient stroke following CAS (G9257)|G9257',1),
-('PQRS_0345', 'answer', '2|Documentation of patient death following CAS (G9256)|G9256',1),
-('PQRS_0345', 'answer', '3|Documentation of patient survival and absence of stroke following CAS (G9259)|G9259',9),
+('PQRS_0345', 'description', 'Rate of Asymptomatic Patients Undergoing Carotid Artery Stenting (CAS) Who are Stroke Free or Discharged Alive',''),
+('PQRS_0345', 'question', 'Is the patient stroke free or in the hospital or discharged alive following CAS?',''),
+('PQRS_0345', 'answer', '1|Documentation of patient survival and absence of stroke following CAS (G9259)|G9259',1),
+('PQRS_0345', 'answer', '2|Documentation of patient stroke following CAS (G9257)|G9257',9),
+('PQRS_0345', 'answer', '3|Documentation of patient death following CAS (G9256)|G9256',9),
 
-('PQRS_0346', 'description', 'Rate of Postoperative Stroke or Death in Asymptomatic Patients Undergoing Carotid Endarterectomy (CEA)',''),
-('PQRS_0346', 'question', 'Patients who experience stroke or death in the hospital following CEA <br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The ''Performance Not Met'' numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
-('PQRS_0346', 'answer', '1|Documentation of patient stroke following CEA (G9258)|G9258',1),
-('PQRS_0346', 'answer', '2|Documentation of patient death following CEA (G9260)|G9260',1),
-('PQRS_0346', 'answer', '3|Documentation of patient survival and absence of stroke following CEA (G9261)|G9261',9),
+('PQRS_0346', 'description', 'Rate of Asymptomatic Patients Undergoing Carotid Endarterectomy (CEA) Who are Stroke Free or Discharged Alive',''),
+('PQRS_0346', 'question', 'Was the patient stroke free or discharged alive following CEA?',''),
+('PQRS_0346', 'answer', '1|Documentation of patient survival and absence of stroke following CEA (G9261)|G9261',1),
+('PQRS_0346', 'answer', '2|Documentation of patient stroke following CEA (G9258)|G9258',9),
+('PQRS_0346', 'answer', '3|Documentation of patient death  following CEA (G9260)|G9260',9),
 
-('PQRS_0347', 'description', 'Rate of Endovascular Aneurysm Repair (EVAR) of Small or Moderate Non-Ruptured Abdominal Aortic Aneurysms (AAA) Who Die While in Hospital',''),
-('PQRS_0347', 'question', 'Patients who die in the hospital following endovascular AAA repair<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The ''Performance Not Met'' numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
-('PQRS_0347', 'answer', '1|Documentation of patient death in the hospital following endovascular AAA repair (G9262)|G9262',1),
-('PQRS_0347', 'answer', '2|Documentation of patient survival in the hospital following endovascular AAA repair (G9263)|G9263',9),
+('PQRS_0347', 'description', 'Rate of Endovascular Aneurysm Repair (EVAR) of Small or Moderate Non-Ruptured Abdominal Aortic Aneurysms (AAA) Who are Discharged Alive',''),
+('PQRS_0347', 'question', 'Was the patient discharged alive following endovascular AAA repair?',''),
+('PQRS_0347', 'answer', '2|Documentation that patient discharged alive following endovascular AAA repair (G9263)|G9263',1),
+('PQRS_0347', 'answer', '1|Documentation of patient death in the hospital following endovascular AAA repair (G9262)|G9262',9),
 
 ('PQRS_0348', 'description', 'HRS-3 Implantable Cardioverter-Defibrillator (ICD) Complications Rate',''),
-('PQRS_0348', 'question', 'CRITERIA 1:  Number of patients with one or more of the following complications or mortality within <b>30</b> days (depending on the complication) following ICD implantation<br>Definition:<br>Complications measured for 30 days:<br>1. Death<br>2. Pneumothorax or hemothorax plus a chest tube<br>3. Hematoma plus a blood transfusion or evacuation<br>4. Cardiac tamponade or pericardiocentesis<br><center>OR</center><br>Number of patients with one or more of the following complications within 90 days (depending on the complication) following ICD implantation<br>Complications measured for 90 days:<br>1. Mechanical complications requiring a system revision<br>2. Device related infection<br>3. Additional ICD implantation<br>INVERSE MEASURE - A lower calculated performance rate for this measure indicates better clinical care or control. The ''Performance Not Met'' numerator option for this measure is the representation of the better clinical quality or control. Reporting that numerator option will produce a performance rate that trends closer to 0%, as quality increases. For inverse measures a rate of 100% means all of the denominator eligible patients did not receive the appropriate care or were not in proper control, and therefore an inverse measure at 100% does not qualify for reporting purposes, however any reporting rate less than 100% does qualify.',''),
+('PQRS_0348', 'question', 'CRITERIA 1:  Did the patient experience one or more of the following complications or mortality within <b>30</b> days following ICD implantation? Death<br>2. Pneumothorax or hemothorax plus a chest tube<br>3. Hematoma plus a blood transfusion or evacuation<br>4. Cardiac tamponade or pericardiocentesis<br><center>OR</center><br>Number of patients with one or more of the following complications within 90 days (depending on the complication) following ICD implantation<br>Complications measured for 90 days:<br>1. Mechanical complications requiring a system revision<br>2. Device related infection<br>3. Additional ICD implantation.',''),
 ('PQRS_0348', 'answer', '1|Documentation of patient with one or more complications or mortality within 30 days (G9267)|G9267',1),
 ('PQRS_0348', 'answer', '2|Documentation of patient without one or more complications and without mortality within 30 days (G9269)|G9269',9),
 ('PQRS_0348', 'answer', '3|Documentation of patient with one or more complications within 90 days (G9268)|G9268',1),
@@ -1074,9 +1075,8 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0385', 'answer', '2|Patient did not achieve an improvement in visual acuity, from their preoperative level, within 90 days of surgery, reason not given (G9517)|G9517',9),
 
 ('PQRS_0386', 'description', 'Amyotrophic Lateral Sclerosis (ALS) Patient Care Preferences',''),
-('PQRS_0386', 'question', ' Patients who were offered assistance in planning for end of life issues (e.g., advance directives, invasive ventilation, or hospice) at least once annually<br>Definition:<br>Assistance with end of life issues -- assessment of patient concerns, desires and needs relating to end of life issues. Bases on patient\'s disease progression this may include discussions regarding invasive ventilation, advance directives and hospice.',''),
+('PQRS_0386', 'question', ' Were patients offered assistance in planning for end of life issues (e.g., advance directives, invasive ventilation, or hospice) at least once annually?',''),
 ('PQRS_0386', 'answer', '1|Patient offered assistance with end of life issues during the measurement period (G9380)|G9380',1),
-('PQRS_0386', 'answer', '2|Documentation of medical reason(s) for not offering assistance with end of life issues (e.g., patient in hospice and in terminal phase) during the measurement period (G9381)|G9381',2),
 ('PQRS_0386', 'answer', '3|Patient not offered assistance with end of life issues during the measurement period (G9382)|G9382',9),
 
 ('PQRS_0387', 'description', 'Annual Hepatitis C Virus (HCV) Screening for Patients who are Active Injection Drug Users',''),
@@ -1216,10 +1216,10 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0409', 'answer', '3|Patients with 90 day mRS score greater than 2 (G9648)|G9648',9),
 
 ('PQRS_0410', 'description', 'Psoriasis: Clinical Response to Oral Systemic or Biologic Medications',''),
-('PQRS_0410', 'question', 'Patients who have a documented physician global assessment (PGA: 6-point scale), body surface area (BSA), psoriasis area and severity index (PASI) and/or dermatology life quality index (DLQI) that meet any one of the below specified benchmarks<br>Numerator Instructions: To satisfy this measure, a patient must achieve any ONE of the following:<li>PGA (6-point scale) -- 2 (clear to mild skin disease)<li>BSA < 3% (mild disease)<li>PASI < 3 (no or minimal disease)<li>DLQI < 5 (no effect or small effect on patient\'s quality of life)',''),
-('PQRS_0410', 'answer', '1|Psoriasis assessment tool documented meeting any one of the specified benchmarks (e.g., (PGA: 6-point scale), body surface area (BSA), psoriasis area and severity index (PASI) and/or dermatology life quality index) (DLQI)) (G9649)|G9649',1),
-('PQRS_0410', 'answer', '2|Documentation that the patient declined therapy change or has documented contraindications (e.g., experienced adverse effects or lack of efficacy with all other therapy options) in order to achieve better disease control as measured by PGA, BSA, PASI, or DLQI (G9765)|G9765',2),
-('PQRS_0410', 'answer', '3|Psoriasis assessment tool documented not meeting any one of the specified benchmarks (e.g., (PGA: 6-point scale), body surface area (BSA), psoriasis area and severity index (PASI) and/or dermatology life quality index) (DLQI)) or psoriasis assessment tool not documented (G9651)|G9651',9),
+('PQRS_0410', 'question', 'Did patient with psoriasis vulgaris have a documented physician global assessment (PGA: 6-point scale), body surface area (BSA), psoriasis area and severity index (PASI) and/or dermatology life quality index (DLQI) that meet any ONE of the following benchmarks:<li>PGA (6-point scale) -- 2 (clear to mild skin disease)<li>BSA < 3% (mild disease)<li>PASI < 3 (no or minimal disease)<li>DLQI < 5 (no effect or small effect on patient\'s quality of life)',''),
+('PQRS_0410', 'answer', '1|Psoriasis assessment tool documented meeting any one of the specified benchmarks (G9649)|G9649',1),
+('PQRS_0410', 'answer', '2|Documentation that the patient declined therapy change or alternative therapies are unavailable, has documented contraindications or has not been treated with an oral or systemic biologic in at least 6 consecutive months in order to achieve better disease control as measured by PGA, BSA, PASI, or DLQI (G9765)|G9765',2),
+('PQRS_0410', 'answer', '3|Psoriasis assessment tool documented not meeting any one of the specified benchmarks or psoriasis assessment tool not documented (G9651)|G9651',9),
 
 ('PQRS_0411', 'description', 'Depression Remission at Six Months',''),
 ('PQRS_0411', 'question', 'Adults who achieved remission at six months as demonstrated by a six month (+/- 30 days) PHQ-9 score of less than five<br>Definitions:<br>Remission - a PHQ-9 score less than five.<br>Six Months - the point in time from the index date extending out six months (+/- 30 days). The most recent PHQ-9 score within six months +/- 30 days (5 to 7 months after index) that is less than five is deemed as remission at 6 months. Scores obtained prior to or after this period are not counted as numerator compliant (remission).',''),
@@ -1307,7 +1307,7 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0425', 'answer', '2|No photodocumentation of cecal landmarks to establish a complete examination (G9614)|G9614',9),
 
 ('PQRS_0426', 'description', 'Post-Anesthetic Transfer of Care Measure: Procedure Room to a Post Anesthesia Care Unit (PACU)',''),
-('PQRS_0426', 'question', 'Patients transferred directly from the procedure room to post-anesthesia care unit (PACU) for post-procedure care for whom a checklist or protocol which includes the key transfer of care elements is utilized.<br>Definitions:<br>Checklist or Protocol - The key handoff elements that must be included in the transition of care include:<br>1. Identification of patient<br>2. Identification of responsible practitioner (PACU nurse or advanced practitioner)<br>3. Discussion of pertinent medical history<br>4. Discussion of the surgical/procedure course (procedure, reason for surgery, procedure performed)<br>5. Intraoperative anesthetic management and issues/concerns.<br>6. Expectations/Plans for the early post-procedure period.<br>7. Opportunity for questions and acknowledgement of understanding of report from the receiving PACU team<br>Identification of patient; In the instance the identity of the patient is unable to be confirmed, identification provided by the clinical facility would suffice toward meeting performance of the measure ',''),
+('PQRS_0426', 'question', 'Did the patient recieve transfer care from procedure room to PACU or other non ICU location utilizing a checklist or protocol which includes:<br>Identification of patient<br>1. Identification of responsible practitioner (PACU nurse or advanced practitioner)<br>2. Discussion of pertinent medical history<br>3. Discussion of the surgical/procedure course (procedure, reason for surgery, procedure performed)<br>4. Intraoperative anesthetic management and issues/concerns.<br>5. Expectations/Plans for the early post-procedure period.<br>6. Opportunity for questions and acknowledgement of understanding of report from the receiving PACU team',''),
 ('PQRS_0426', 'answer', '1|A transfer of care protocol or handoff tool/checklist that includes the required key handoff elements is used (G9655)|G9655',1),
 ('PQRS_0426', 'answer', '2|A transfer of care protocol or handoff tool/checklist that includes the required key handoff elements is not used (G9658)|G9658',9),
 
@@ -1386,8 +1386,8 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0439', 'answer', '2|Documentation of medical reason(s) for a colonoscopy performed on a patient greater than 85 years of age (e.g., last colonoscopy incomplete, last colonoscopy had inadequate prep, iron deficiency anemia, lower gastrointestinal bleeding, Crohn''s Disease (i.e., regional enteritis), familial history of adenomatous polyposis, Lynch Syndrome (i.e., hereditary non-polyposis colorectal cancer), inflammatory bowel disease, ulcerative colitis, abnormal finding of gastrointestinal tract, or changes in bowel habits) (G9660)|G9660',2),
 ('PQRS_0439', 'answer', '3|Patients greater than 85 years of age who received a routine colonoscopy for a reason other than the following: an assessment of signs/symptoms of GI tract illness, and/or the patient is considered high risk, and/or to follow-up on previously diagnoses advance lesions (G9661)|G9661',9),
 
-('PQRS_0440', 'description', 'Basal Cell Carcinoma (BCC)/Squamous Cell Carcinoma: Biopsy Reporting Time ? Pathologist to Clinician',''),
-('PQRS_0440', 'question', 'Number of final pathology reports diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease) sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 businessdays from the time when the tissue specimen was received by the pathologist',''),
+('PQRS_0440', 'description', 'Basal Cell Carcinoma (BCC)/Squamous Cell Carcinoma: Biopsy Reporting Time from Pathologist to Clinician',''),
+('PQRS_0440', 'question', 'Was the final pathology report diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 business days from the time when the tissue specimen was received by the pathologist?',''),
 ('PQRS_0440', 'answer', '1|Pathology report diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease)sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 business days from the time when the tissue specimen was received by the pathologist (G9785)|G9785',1),
 ('PQRS_0440', 'answer', '2|Pathology report diagnosing cutaneous basal cell carcinoma or squamous cell carcinoma (to include in situ disease) was not sent from the Pathologist/Dermatopathologist to the biopsying clinician for review within 7 business days from the time when the tissue specimen was received by the pathologist (G9786)|G9786',9),
 
@@ -1418,11 +1418,11 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0445', 'answer', '2|Patient did not die within 30 days of the procedure or during the index hospitalization(G9813)|G9813',9),
 
 ('PQRS_0446', 'description', ' Operative Mortality Stratified by the Five STS-EACTS Mortality Categories NOTE:  Answer needed for only ONE reporting criteria in this measure, then re-run the report.',''),
-('PQRS_0446', 'question', 'All deaths occurring during the hospitalization in which the procedure was performed stratified by the five STAT Mortality Levels, a multi-institutional validated complexity stratification tool. <BR> AND <BR> Those deaths occurring after discharge from the hospital, but within 30 days of the procedure, stratified by t he five STAT Mortality Levels, a multi-institutional validated complexity stratification tool .',''),
-('PQRS_0446', 'answer', '1|Death occurring during hospitalization (G9814)|G9814',1),
-('PQRS_0446', 'answer', '2|Death did not occur during hospitalization (G9815)|G9815',9),
-('PQRS_0446', 'answer', '3|Death occurring 30 days post procedure (G9816)|G9816',1),
-('PQRS_0446', 'answer', '4|Death did not occur 30 days post procedure (G9817)|G9817',9),
+('PQRS_0446', 'question', 'Did patient death occur during the index acute care hospitalization in which the procedure was performed stratified by the five STAT Mortality Levels, a multi-institutional validated complexity stratification tool? <BR> AND <BR> Did patient death occur after discharge from the hospital, but within 30 days of the procedure, stratified by the five STAT Mortality Levels, a multi-institutional validated complexity stratification tool?',''),
+('PQRS_0446', 'answer', '1|Death occurring during index acute care hospitalization (G9814)|G9814',1),
+('PQRS_0446', 'answer', '2|Death did not occur during index acute care hospitalization (G9815)|G9815',9),
+('PQRS_0446', 'answer', '3|Death occurring after discharge from hospital but within 30 days post procedure (G9816)|G9816',1),
+('PQRS_0446', 'answer', '4|Death did not occur after discharge from hospital but within 30 days post procedure (G9817)|G9817',9),
 
 ('PQRS_0447', 'description', 'Chlamydia Screening and Follow Up',''),
 ('PQRS_0447', 'question', 'Adolescents who had documentation of a chlamydia screening test with proper follow-up during the measurement period.',''),
@@ -1446,15 +1446,15 @@ $query ="INSERT INTO `pqrs_direct_entry_lookup` (`measure_number`, `type`, `valu
 ('PQRS_0450', 'answer', '2|Reason for not administering Trastuzumab documented (e.g. patient declined, patient died, patient transferred, contraindication or other clinical exclusion, neoadjuvant chemotherapy or radiation NOT complete)(G9836)|G9836',2),
 ('PQRS_0450', 'answer', '3|Trastuzumab not administered within 12 months of diagnosis(G9837)|G9837',9),
 
-('PQRS_0451', 'description', 'KRAS Gene Mutation Testing Performed for Patients with Metastatic Colorectal Cancer who receive Anti-epidermal Growth Factor Receptor (EGFR) Monoclonal Antibody Therapy',''),
-('PQRS_0451', 'question', 'KRAS gene mutation testing performed before initiation of anti-EGFR MoAb .',''),
-('PQRS_0451', 'answer', '1|KRAS gene mutation testing performed before initiation of anti-EGFR MoAb (G9840)|G9840',1),
-('PQRS_0451', 'answer', '2|KRAS gene mutation testing not performed before initiation of anti-EGFR MoAb (G9841)|G9841',9),
+('PQRS_0451', 'description', 'RAS (KRAS and NRAS) Gene Mutation Testing Performed for Patients with Metastatic Colorectal Cancer who receive Anti-epidermal Growth Factor Receptor (EGFR) Monoclonal Antibody Therapy',''),
+('PQRS_0451', 'question', 'Was RAS (KRAS and NRAS) gene mutation testing performed before initiation of anti-EGFR MoAb?',''),
+('PQRS_0451', 'answer', '1|RAS (KRAS and NRAS) gene mutation testing performed before initiation of anti-EGFR MoAb (G9840)|G9840',1),
+('PQRS_0451', 'answer', '2|RAS (KRAS and NRAS)gene mutation testing not performed before initiation of anti-EGFR MoAb (G9841)|G9841',9),
 
-('PQRS_0452', 'description', 'Patients with Metastatic Colorectal Cancer and KRAS Gene Mutation Spared Treatment with Anti-epidermal Growth Factor Receptor (EGFR) Monoclonal Antibodies',''),
-('PQRS_0452', 'question', 'Anti-EGFR monoclonal antibody therapy.',''),
+('PQRS_0452', 'description', 'Patients with Metastatic Colorectal Cancer and RAS (KRAS and NRAS) Gene Mutation Spared Treatment with Anti-epidermal Growth Factor Receptor (EGFR) Monoclonal Antibodies',''),
+('PQRS_0452', 'question', 'Did the patient receive Anti-EGFR monoclonal antibody therapy?',''),
 ('PQRS_0452', 'answer', '1|Patient did not receive anti-EGFR monoclonal antibody therapy (G9844)|G9844',1),
-('PQRS_0452', 'answer', '2|Patient receivedanti-EGFR monoclonal antibody therapy (G9845)|G9845',9),
+('PQRS_0452', 'answer', '2|Patient received anti-EGFR monoclonal antibody therapy (G9845)|G9845',9),
 
 ('PQRS_0453', 'description', 'Proportion Receiving Chemotherapy in the Last 14 Days of Life',''),
 ('PQRS_0453', 'question', 'Patients who received chemotherapy in the last 14 days of life.',''),
