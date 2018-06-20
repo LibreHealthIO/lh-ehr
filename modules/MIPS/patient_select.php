@@ -290,7 +290,7 @@ if ($fend > $count) $fend = $count;
 	echo "<p>";
 	echo "<b>Description:</b>  ".$measure_description."<br>";
 	echo "<p>";
-        echo "<b>Measure Criteria:</b> ".$measure_question."</b><br>";
+    echo "<b>Measure Criteria:</b> ".$measure_question."</b><br>";
 	echo "<p>";
 } ?>
 
@@ -397,7 +397,7 @@ if ($result) {
 		$myDesc=$explodedAnswer[1];
 		$myCode=$thisAnswer['status']."*".$explodedAnswer[2];
 	
-// error_log("***** DEBUG *****  foreach: $myOrder  |  $myDesc  |  $myCode | $myPerformance");
+ //error_log("***** DEBUG *****  foreach: $myOrder  |  $myDesc  |  $myCode | $myPerformance");
         	echo "<td class='srAnswer'><label><input type=\"radio\" name=\"pidi".htmlspecialchars( $iter['pid'] )." \"  value=\"$myCode\" performance=\"$myPerformance\" >$myDesc</label></td>";
     }
 		?>

@@ -269,47 +269,18 @@ function collectItemizedRuleDisplayTitle($report_id, $itemized_test_id, $numerat
         // We have a hit, build on the $dispTitle created above
         if (isset($row['is_main'])) {
           $tempCqmAmcString = "";
-          if (($type_report == "cqm") || ($type_report == "cqm_2011") || ($type_report == "cqm_2014")|| ($type_report == "pqrs_individual_2015")|| ($type_report == "pqrs_groups_2015")|| ($type_report == "pqrs_individual_2016")|| ($type_report == "pqrs_groups_2016")) {
-            if (!empty($row['cqm_pqri_code'])) {
-              $tempCqmAmcString .= " " . xlt('PQRI') . ":" . text($row['cqm_pqri_code']) . " ";
-            }
+          if ($type_report == "pqrs_individual_2016") {
+
                 if (!empty($row['pqrs_code'])) {
               $tempCqmAmcString .= " " . xlt('PQRS') . ":" . text($row['pqrs_code']) . " ";
             }
-            if (!empty($row['cqm_nqf_code'])) {
-              $tempCqmAmcString .= " " . xlt('NQF') . ":" . text($row['cqm_nqf_code']) . " ";
-            }
+
           }
-          if ($type_report == "amc") {
-            if (!empty($row['amc_code'])) {
-              $tempCqmAmcString .= " " . xlt('AMC-2011') . ":" . text($row['amc_code']) . " ";
-            }
-            if (!empty($row['amc_code_2014'])) {
-              $tempCqmAmcString .= " " . xlt('AMC-2014') . ":" . text($row['amc_code_2014']) . " ";
-            }
-          }
-          if ($type_report == "amc_2011") {
-            if (!empty($row['amc_code'])) {
-              $tempCqmAmcString .= " " . xlt('AMC-2011') . ":" . text($row['amc_code']) . " ";
-            }
-          }
-          if ($type_report == "amc_2014_stage1") {
-            if (!empty($row['amc_code_2014'])) {
-              $tempCqmAmcString .= " " . xlt('AMC-2014 Stage I'). ":" . text($row['amc_code_2014']) . " ";
-            }
-          }
-          if ($type_report == "amc_2014_stage2") {
-            if (!empty($row['amc_code_2014'])) {
-              $tempCqmAmcString .= " " . xlt('AMC-2014 Stage II'). ":" . text($row['amc_code_2014']) . " ";
-            }
-          }
-		  
+	  
           if (!empty($tempCqmAmcString)) {
             $dispTitle .=  "(".$tempCqmAmcString.")";
           }
-          if ( !(empty($row['concatenated_label'])) ) {
-            $dispTitle .= ", " . xlt($row['concatenated_label']) . " ";
-          }
+
         } 
         else { // isset($row['is_sub']
           $dispTitle .= " - " .  generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$row['action_category']);

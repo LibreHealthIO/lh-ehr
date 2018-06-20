@@ -17,6 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$myaction=$_POST['action'];
 	$myreport_raw_name = $_POST['report_new_name'];
 	$myreport_new_name = htmlspecialchars($myreport_raw_name);
+	
+	
+//Delete a report
 //error_log("DEBUG PQRSReportManager.php -- POSTed us with report_id=".$myreport_id."  action=".$myaction."  report_new_name = ".$myreport_new_name.".");
 	if ( $myaction=='DELETE' && $myreport_id != '' ) {
 		$query="DELETE FROM `report_results` WHERE `report_id` = ".$myreport_id.";";
@@ -25,13 +28,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			sqlStatement($query);
 			echo ("Deleted 'report_results' and 'report_itemized' that match id ".$myreport_id);
 	}
+	
+//  Rename or name reports
+    //check to see if a title exists.  REPLACE INTO will not work well for this.
 	if ( $myaction=='RENAME' && $myreport_id != '' && $myreport_new_name != '' ) {
-    	$query = "UPDATE report_results ".
-    	         "SET field_value = '".$myreport_new_name."' ".
-    	         "WHERE report_id = ".$myreport_id." AND field_id = 'title';";
-		//error_log("DEBUG PQRSReportManager.php -- query = ".$query);
-		sqlStatement($query);
+    	$check = "SELECT COUNT(report_id) AS count FROM report_results ".
+    	         "WHERE report_id = '".$myreport_id."' AND field_id = 'title';";         
+    	$result = sqlFetchArray(sqlStatementNoLog($check));
+    	   
+        if ($result['count'] > 0){      
+        	//when a title field exists                  
+        	    $update = "UPDATE report_results ".
+        	              "SET field_value = '".$myreport_new_name."' ".
+        	              "WHERE report_id = '".$myreport_id."' AND field_id = 'title';";
+//error_log("DEBUG PQRSReportManager.php -- rename update = ".$update);
+		        sqlStatement($update);
+    	         } else {
+        	//when a title field does not exist
+        	    $update = "INSERT INTO report_results (report_id, field_id, field_value) VALUES ".
+        	              " ('".$myreport_id."', 'title', '".$myreport_new_name."');";
+
+//error_log("DEBUG PQRSReportManager.php -- new title insert = ".$update);
+		sqlStatement($update);         
+        	         }  
 	}
+	
+// deleteall function not used right now.	
 	if ( $myaction=='DELETEALL') {
 		$query="TRUNCATE TABLE `report_results`;";
 		sqlStatement($query);
