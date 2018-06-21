@@ -780,6 +780,11 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     }
     if ($_GET['mode'] == "user") {
       echo " </td>\n";
+      if (strpos($globalTitle, '!') !== false) {
+        // removing '!' from $globalTitle which is at 0th place in string
+        // which happens in case of time zone global when default - php.ini is selected
+        $globalTitle = substr($globalTitle, strpos($globalTitle, '!') + 1);
+      }
       echo "<td align='center' style='color:red;'>" . attr($globalTitle) . "</td>\n";
       echo "<td>&nbsp</td>";
       echo "<td align='center'><input type='checkbox' class='checkbox' value='YES' name='toggle_" . $i . "' id='toggle_" . $i . "' " . attr($settingDefault) . "/></td>\n";

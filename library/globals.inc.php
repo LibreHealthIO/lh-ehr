@@ -111,7 +111,8 @@ $USER_SPECIFIC_TABS = array('Appearance',
                             'Claim',
                             'Demographic',
                             'Calendar',
-                            'Connectors');
+                            'Connectors',
+                            'System');
 $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'default_tab_2',
                                'css_header',
