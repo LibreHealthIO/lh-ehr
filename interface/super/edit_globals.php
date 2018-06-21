@@ -603,8 +603,8 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
       }
-      // timezone_identifiers_list() eturns an array containing all defined time zone identifiers
-      // for eg: Asia/Kolkata | Asia/Singapore
+      // timezone_identifiers_list() returns an array containing all defined time zone identifiers
+      // for eg: Asia/Kolkata or Asia/Singapore
       $zone_list = timezone_identifiers_list();
 
       // generating an option list of defined time zones including default time zone from php.ini
@@ -616,16 +616,6 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
         echo "   <option value='" . ($item) . "'";
         if ($title == $fldvalue) echo " selected";
         echo ">";
-        if (strpos($item, '/') !== false) {
-          // if item contains '/', show only what's after '/', for eg:
-          // Asia/Kolkata becomes Kolkata in time zone options list display
-          $item = substr($item, strpos($item, '/')+1);
-        }
-        if (strpos($item, '/') !== false) {
-          // some items contain two '/', for eg:
-          // America/Indiana/Indianapolis
-          $item = substr($item, strpos($item, '/')+1);
-        }
         echo xlt($item);
         echo "</option>\n";
       }
