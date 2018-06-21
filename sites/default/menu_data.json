@@ -1120,13 +1120,6 @@
         "acl_req" : [ "admin", "super" ],
         "global_req" : "enable_pqrs"
     },{ 
-        "label" : "XML Editor",
-        "menu_id" : "mips12",
-        "target" : "mips",
-        "url" : "/modules/MIPS/xmleditor/index.php",
-        "children" : [ ],
-        "requirement" : 0
-    }, { 
         "label" : "Alerts Log",
         "menu_id" : "rep0",
         "target" : "rep",
