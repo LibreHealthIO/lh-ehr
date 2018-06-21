@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  *  get_provider_events.php Gathering the provider events for the Calendar
  *
@@ -25,14 +25,14 @@ $events = array();
 $fetchedEvents = fetchAllEvents($_POST['start'], $_POST['end']);
 
 foreach($fetchedEvents as $event) {
-  
+
   // skip cancelled appointments
   if ($GLOBALS['display_canceled_appointments'] != 1) {
      if ($event['pc_apptstatus'] == "x") { continue; }
   }
   $status = $event['pc_apptstatus'];
   $colorevents = (collectApptStatusSettings($status));
-  
+
   $e = array();
   $e = $event;
   $e['id'] = $event['pc_eid'];
@@ -49,7 +49,7 @@ foreach($fetchedEvents as $event) {
   }else{
   $e['color'] = $event['pc_catcolor'];
   }
-  
+  $e['e_info'] = " (" . $event['pc_title'] . ")";
   if($event["pc_pid"] > 0) {
     $e['picture_url'] = getPatientPictureUrl($event["pc_pid"]);
     $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
@@ -102,5 +102,5 @@ foreach($events as $eStart) {
 echo json_encode($events);
 exit();
 
-  
+
 ?>

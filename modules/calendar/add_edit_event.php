@@ -44,6 +44,7 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+
 $library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
@@ -228,7 +229,6 @@ if ( $eid ) {
                             FROM libreehr_postcalendar_events
                               LEFT JOIN facility ON (libreehr_postcalendar_events.pc_facility = facility.id)
                               WHERE pc_eid = ?", array($eid) );
-    // if ( !$facility['pc_facility'] ) {
     if ( is_array($facility) && !$facility['pc_facility'] ) {
         $qmin = sqlQuery("SELECT facility_id as minId, facility FROM users WHERE id = ?", array($facility['pc_aid']) );
         $min  = $qmin['minId'];
@@ -296,6 +296,7 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
        $endtime = "$tmph:$tmpm:00";
     }else{
     $endtime = "$tmph:$tmpm:00";
+    }
 
     // Set up working variables related to repeated events.
     $my_recurrtype = 0;
@@ -363,6 +364,18 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
                         "exdate" => $_POST['form_repeat_exdate']
                     );
 
+            //
+        if ($my_recurrtype == 2) { // Added by epsdky 2016 (details in commit)
+            if ($_POST['old_repeats'] == 2) {
+                if ($_POST['rt2_flag2']) {
+                    $recurrspec['rt2_pf_flag'] = "1";
+                }
+            } else {
+                $recurrspec['rt2_pf_flag'] = "1";
+            }
+        } // End of addition by epsdky
+            //
+
     // no recurr specs, this is used for adding a new non-recurring event
     $noRecurrspec = array("event_repeat_freq" => "",
                         "event_repeat_freq_type" => "",
@@ -378,12 +391,19 @@ if ($_POST['form_action'] == "duplicate") {
 
     InsertEventFull();
     DOBandEncounter();
+    refreshCalendar(); //after "Create Duplicate" process is complete
 
  }
 
 // If we are saving, then save and close the window.
 //
 if ($_POST['form_action'] == "save") {
+    if (($_POST['form_category'] == '2') || ($_POST['form_category'] == '3')) {
+      // save the end time information to create the start and end time for the out of office record
+      $cat3time = $endtime;
+      // in the provider records for in and out of office start and end time are the same
+      $endtime = $starttime;
+    }
     /* =======================================================
      *                    UPDATE EVENTS
      * =====================================================*/
@@ -692,7 +712,17 @@ if ($_POST['form_action'] == "save") {
 
     // done with EVENT insert/update statements
 
+      if ($_POST['form_category'] == '2' && (!$eid)) { //adding category 3 based on category 2
+        $endtime = $cat3time;
+        $starttime = $cat3time;
+        $_POST['form_category'] = '3';
+        $_POST['form_title'] = 'Out Of Office';
+        InsertEventFull();
+      }
+
         DOBandEncounter();
+
+    refreshCalendar(); //after "Save" process is complete
 
  }
 
@@ -800,6 +830,8 @@ if ($_POST['form_action'] == "save") {
 
             manage_tracker_status($event_date,$appttime,$_GET['eid'],$_POST['form_pid'],$_SESSION["authUser"],'Deleted',$_POST['form_room']);
         }
+
+        refreshCalendar(); //after "Delete" process is complete
  }
 
  if ($_POST['form_action'] != "") {
@@ -861,7 +893,6 @@ if ($_POST['form_action'] == "save") {
 
  // If we are editing an existing event, then get its data.
  if ($eid) {
-  // $row = sqlQuery("SELECT * FROM libreehr_postcalendar_events WHERE pc_eid = $eid");
 
   $row = sqlQuery("SELECT e.*, u.fname, u.mname, u.lname " .
     "FROM libreehr_postcalendar_events AS e " .
@@ -1036,7 +1067,6 @@ td { font-size:0.8em; }
   }
 
   echo " durations[" . attr($crow['pc_catid']) . "] = " . attr($duration) . "\n";
-  // echo " rectypes[" . $crow['pc_catid'] . "] = " . $crow['pc_recurrtype'] . "\n";
   $catoptions .= "    <option value='" . attr($crow['pc_catid']) . "'";
   if ($eid) {
       if ($crow['pc_catid'] == $row['pc_catid']) {
@@ -1297,7 +1327,7 @@ echo '
             // refresh and redirect the parent window
             if (!opener.closed && opener.refreshme) opener.refreshme();
             top.restoreSession();
-            opener.document.location="../../new/new.php";
+            opener.document.location="../../interface/new/new.php";
             // Close the window
             window.close();
 </script>';
@@ -1311,6 +1341,10 @@ $classpati='';
 <!-- used for recurring events -->
 <input type="hidden" name="selected_date" id="selected_date" value="<?php echo attr($date); ?>">
 <input type="hidden" name="event_start_date" id="event_start_date" value="<?php echo attr($eventstartdate); ?>">
+<!-- Following added by epsdky 2016 (details in commit) -->
+<input   type="hidden" name="old_repeats" id="old_repeats" value="<?php echo attr($repeats); ?>">
+<input   type="hidden" name="rt2_flag2" id="rt2_flag2" value="<?php echo attr(isset($rspecs['rt2_pf_flag']) ? $rspecs['rt2_pf_flag'] : '0'); ?>">
+<!-- End of addition by epsdky -->
 <center>
 <table border='0' >
 <?php
@@ -1450,7 +1484,13 @@ $classpati='';
       /***************************************************************
       $qsql = sqlStatement("SELECT * FROM facility WHERE service_location != 0");
       ***************************************************************/
-      $facils = getUserFacilities($_SESSION['authId']);
+      $facils = getUserFacilities($userid);
+      //userid is id of clicked user(provider) in calendar
+      //ufid is an array of id of schedule facilities of selected user
+      $ufid = array();
+      foreach ($facils as $uf) {
+        $ufid[] = $uf['id'];
+      }
       $qsql = sqlStatement("SELECT id, name FROM facility WHERE service_location != 0");
       /**************************************************************/
       while ($facrow = sqlFetchArray($qsql)) {
@@ -1458,22 +1498,31 @@ $classpati='';
         $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
         echo "<option value={$facrow['id']} $selected>{$facrow['name']}</option>";
         *************************************************************/
-        if ($_SESSION['authorizedUser'] || in_array($facrow, $facils)) {
+        if ($GLOBALS['restrict_user_facility']) {
+          //if restricting users(providers) to schedule facilities
+          //then list only schedule facilities of that user or default facility
+          //in Facility in calendar's event panel
+          //e2f denotes id of default facility
+          if (in_array($facrow['id'], $ufid) || $facrow['id'] == $e2f || $facrow['id'] == 3) {
+            //id 3 is for "Your Clinic Name Here"
+            $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
+            echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
+          }
+        } else {
+          //if not restricting then list all facilities
+          //where service_location is not 0 including default facility
+          //in Facility in calendar's event panel
           $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
           echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
-        } else {
-        $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
-         echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
         }
         /************************************************************/
       }
       // EOS E2F
       // ===========================
       ?>
-      <?php
-      //END (CHEMED) IF ?>
+                            </select>
+
       </td>
-      </select>
     <?php if($_GET['prov']==true){ ?>
     <td nowrap id='tdallday4'><td>
     <td nowrap id='tdallday5'><td>
@@ -1721,8 +1770,17 @@ if  ($GLOBALS['select_multi_providers']) {
 <tr id="days_every_week_row">
     <td></td>
     <td></td>
-    <td><input  type='checkbox' name='days_every_week' onclick='set_days_every_week()' <?php if (isDaysEveryWeek($repeats)) echo " checked" ?>/></td>
-    <td id="days_label"><?php echo xlt('Days Of Week') . ": "; ?></td>
+    <td>
+    <input type='checkbox' id='days_every_week' name='days_every_week' onclick='set_days_every_week()'
+    <?php
+       if (isDaysEveryWeek($repeats)) {
+           echo " checked";
+       }
+    ?>/>
+    </td>
+    <td id="days_label">
+        <?php echo xlt('Days Of Week') . ": "; ?>
+    </td>
     <td id="days">
         <?php
         foreach (array(1 => xl('Su{{Sunday}}') , 2 => xl('M{{Monday}}'), 3 => xl('Tu{{Tuesday}}'), 4 => xl('W{{Wednesday}}'),
@@ -1896,6 +1954,7 @@ echo "<input type='radio' value='Other' name='form_reason_for_cancellation' id='
 <?php } ?>
  set_allday();
  set_repeat();
+set_days_every_week();
 
 $(function() {
     $("#form_date, #form_enddate, #form_dob").datetimepicker({
