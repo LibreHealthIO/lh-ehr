@@ -1,0 +1,219 @@
+
+@font-face {
+    font-family:GreatVibes;
+    src: url(../fonts/Great-vibes/GreatVibes-Regular.otf);
+}
+@font-face {
+    font-family:Circle;
+    src: url(../fonts/Circle/circle.otf);
+}
+
+body {
+    background-color: rgb(245, 144, 49);
+    padding-bottom: 60px;
+    background-image: linear-gradient(to right, #f59031 0%, #f15031 100%);
+    font-family: Circle;
+}
+
+
+
+/*==================================
+    COLORS AND BACKGROUNDS
+ ================================*/
+
+.librehealth-color {
+    color: rgb(245, 144, 49);
+}
+
+.librehealth-background{
+    background-color: rgb(245, 144, 49);
+
+}
+
+.white {
+    color: white;
+}
+
+.black {
+    color: black;
+}
+
+.green {
+    color: #4CAF50;
+}
+
+.blueblack {
+    color: darkblue;
+}
+
+.red{
+    color: red;
+}
+
+/*==================================
+        NAVBARS STYLING
+ ================================*/
+
+.navbar {
+    background-color: rgb(245, 144, 49) !important;
+    border-top: 0 !important;
+    background-image: linear-gradient(to right, #f59031 0%, #f15031 100%);
+    box-shadow: none !important;
+
+
+}
+
+
+.card {
+    background: #fff;
+    background-position: top;
+    border-radius: 0;
+    width: 92%;
+    margin: 0 auto;
+    height: auto;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    padding: 15px 15px 25px 15px;
+    position: relative;
+    font-weight: bolder;
+    font-size: 15.7px;
+
+}
+
+
+.divider {
+    border-bottom: 1px solid white;
+    width: 150px;
+    text-align: left;
+    padding-bottom: 3px;
+    border-radius: 2px;
+}
+
+.divider-child {
+    border-bottom: 1px solid white;
+    width: 80px;
+    text-align: left;
+    border-radius: 5px;
+
+}
+
+h4{
+    font-weight: bolder;
+}
+
+ul > li {
+    padding: 5px;
+}
+
+div.control-btn{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+
+div.cancel-btn{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+
+button.upgradeBtn{
+    border:1px solid #4CAF50;
+    background:#4CAF50;
+    color:#fff;
+    padding:10px 25px;
+    font-size:14px;
+    margin-top:5px;
+    text-transform: uppercase;
+}
+
+button.cancelBtn{
+    border:1px solid red;
+    background:red;
+    color:#fff;
+    padding:10px 25px;
+    font-size:14px;
+    margin-top:5px;
+    text-transform: uppercase;
+}
+
+.controlBtn{
+    border:1px solid #000000;
+    background:#000000;
+    color:#fff;
+    padding:10px 25px;
+    font-size:14px;
+    margin-top:5px;
+    text-transform: uppercase;
+}
+
+.controlBtn:hover{
+    border:1px solid #f58021;
+    background:#f58021;
+    color:#fff;
+}
+
+input[type='button'],
+input[type='submit']{
+    border:1px solid #000000;
+    background:#000000;
+    color:#fff;
+    padding:10px 25px;
+    font-size:14px;
+    margin-top:5px;
+    text-transform: uppercase;
+}
+
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+ul.files-list {
+    list-style-type: circle;
+}
+
+/*==================================
+        STEP STYLING
+ ================================*/
+
+.step {
+    width: 30px;
+    height: 4px;
+    font-weight: bolder;
+    background-color: #e4d8f8;
+    margin: 5px;
+    float: left;
+    border: transparent;
+}
+
+.step-count {
+    font-size: 22px;
+    font-family: Lato;
+}
+
+.active-step {
+    background-color: #f58021;
+}
+
+.completed-step {
+    background-color:#4CAF50;
+}
+
+/*==================================
+        MISCELANEOUS
+ ================================*/
+
+.details{
+    color: #1C5ECF;
+    cursor: pointer;
+}
+
+.details:hover{
+   color: rgb(245, 144, 49);
+}
