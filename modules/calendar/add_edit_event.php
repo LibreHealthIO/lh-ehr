@@ -1327,7 +1327,7 @@ echo '
             // refresh and redirect the parent window
             if (!opener.closed && opener.refreshme) opener.refreshme();
             top.restoreSession();
-            opener.document.location="../../interface/new/new.php";
+            opener.document.location="../../interface/new/new_comprehensive.php";
             // Close the window
             window.close();
 </script>';
