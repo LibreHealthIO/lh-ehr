@@ -111,7 +111,8 @@ $USER_SPECIFIC_TABS = array('Appearance',
                             'Claim',
                             'Demographic',
                             'Calendar',
-                            'Connectors');
+                            'Connectors',
+                            'System');
 $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'default_tab_2',
                                'css_header',
@@ -129,6 +130,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'print_next_appointment_on_ledger',
                                'calendar_view_type',
                                'calendar_refresh_freq',
+                               'ehr_timezone',
                                'check_appt_time',
                                'event_color',
                                'pat_trkr_timer',
@@ -1523,7 +1525,7 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '1',                             // default
       xl('Use the Appointment Status Colors in the Calendar Instead of the Appointment Category Colors.')
-    ),    
+    ),
 
     'calendar_refresh_freq' => array(
       xl('Calendar Refresh Frequency'),
@@ -3062,6 +3064,15 @@ $GLOBALS_METADATA = array(
     // System Tab
     //
     'System' => array(
+
+    'ehr_timezone' => array(
+      xl('EHR Time Zone'),
+       'timezone',          // data type
+       '!' . date_default_timezone_get(),    // defaults to php.ini "date.timezone" value if set valid otherwise UTC
+       // concatenated '!' to avoid Default option from not coming in list
+       // when php.ini value is same as an item on zone_list
+      xl('Set EHR time zone.')
+    ),
 
     'mysql_bin_dir' => array(
       xl('Path to MySQL Binaries'),

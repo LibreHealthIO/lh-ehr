@@ -599,6 +599,29 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
       echo "  </select>\n";
     }
 
+    else if ($fldtype == 'timezone') {
+      if ($_GET['mode'] == "user") {
+        $globalTitle = $globalValue;
+      }
+      // timezone_identifiers_list() returns an array containing all defined time zone identifiers
+      // for eg: Asia/Kolkata or Asia/Singapore
+      $zone_list = timezone_identifiers_list();
+
+      // generating an option list of defined time zones including default time zone from php.ini
+      echo "  <select class='form-control input-sm' name='form_$i' id='form_$i'>\n";
+      $top_choice = $flddef;     // default option
+      echo "    <option value='" . ($top_choice) . "'>" . text("Default - php.ini value") . "</option>\n";
+      foreach ($zone_list as $item) {
+        $title = $item;
+        echo "   <option value='" . ($item) . "'";
+        if ($title == $fldvalue) echo " selected";
+        echo ">";
+        echo xlt($item);
+        echo "</option>\n";
+      }
+      echo "  </select>\n";
+    }
+
     else if ($fldtype == 'list') {
       if ($_GET['mode'] == "user") {
         $globalTitle = $globalValue;
@@ -757,6 +780,11 @@ foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     }
     if ($_GET['mode'] == "user") {
       echo " </td>\n";
+      if (strpos($globalTitle, '!') !== false) {
+        // removing '!' from $globalTitle which is at 0th place in string
+        // which happens in case of time zone global when default - php.ini is selected
+        $globalTitle = substr($globalTitle, strpos($globalTitle, '!') + 1);
+      }
       echo "<td align='center' style='color:red;'>" . attr($globalTitle) . "</td>\n";
       echo "<td>&nbsp</td>";
       echo "<td align='center'><input type='checkbox' class='checkbox' value='YES' name='toggle_" . $i . "' id='toggle_" . $i . "' " . attr($settingDefault) . "/></td>\n";
