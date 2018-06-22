@@ -173,7 +173,7 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
 			$authUserId = $_GET['id'];
 			if ($mode == "add") {
 				//add a user id to the table
-				sqlStatement("INSERT INTO `updater_users`(`authUserId`, `date`) VALUES (?, NOW()", $bindarray=array($authUserId));
+				sqlStatement("INSERT INTO `updater_users`(`authUserId`, `date`) VALUES (?, NOW())", array($authUserId));
 				$toast_type = "success";
 				$toast_title = "User Added";
 				$toast_message = "The user is added to updater administration"; 
