@@ -7,14 +7,6 @@
  */
 ?>
 
-<?php
-/**
- * Created by PhpStorm.
- * User: rachmann <muarachmann@gmail.com>
- * Date: 5/20/18
- * Time: 2:56 PM
- */
-?>
 
 <!DOCTYPE html>
 <html lang="en">
