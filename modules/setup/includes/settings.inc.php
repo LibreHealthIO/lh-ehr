@@ -30,6 +30,10 @@
     // Record name of sql access file
     $LIBRE_SITES_BASE = dirname(__FILE__) .'/../../../sites';
     $LIBRE_SITE_DIR = $LIBRE_SITES_BASE. '/' . $site;
+    
+    $ASSETCSSPATH = dirname(__FILE__) .'/../../../assets/css';
+    $ASSETJSPATH = dirname(__FILE__) .'/../../../assets/js';
+    
 
     //configuration file
     $conffile  =  $LIBRE_SITE_DIR . '/sqlconf.php';
