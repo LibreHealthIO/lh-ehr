@@ -51,6 +51,13 @@ require_once("includes/header.inc.php");
 // variable to get current step and task
 $step = $_POST["step"];
 $task = $_POST["task"];
+    if($task == 'annul'){
+        session_destroy();
+        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
+        header('location: index.php');
+        exit;
+    }
+
 
 ?>
 
@@ -134,7 +141,7 @@ $task = $_POST["task"];
                             </ul>
                             </div>
                         </td>';
-                $pass .='<td><span class="fa fa-check green"></span></td>';
+                $pass .='<td><span class="fa fa-check green"></span></td></tr><tr>';
             }
 
             //checking for mysql version
@@ -180,20 +187,46 @@ $task = $_POST["task"];
                         </div>
                 ';
             } else {
-                echo '<p><strong>Congratulations!</strong> Your server meets the requirements for LibreEHR.</p>';
-            }
+                echo "<p class='clearfix'></p>";
+                echo "<p class='clearfix'></p>";
+                echo '<div class="alert-success text-center"><p><strong>Congratulations!</strong> Your server meets the requirements for LibreEHR.</p></div>';
+             echo "<p class='clearfix'></p>";
+             echo "<p class='clearfix'></p>";
+             echo "<p class='clearfix'></p>";
+                 echo '<form action="step1.php" method="post">
+                            <div class="control-btn2">
+                            <input type="hidden" value="1" name="step">
+                            <button type="submit" class="controlBtn">
+                            <i class="fa fa-arrow-circle-left"></i> Back
+                            </button>
+                            </div>
+                            </form>
+                    ';
+    
+             echo ' <form action="step3.php" method="post">
+                    <div class="control-btn">
+                     <input type="hidden" value="3" name="step">
+                            <button type="submit" class="controlBtn">
+                                Continue <i class="fa fa-arrow-circle-right"></i>
+                            </button>
+                            </div>
+                            </form>
+                    ';
+         }
 
             ?>
 
     <p class="clearfix"></p>
     <p class="clearfix"></p>
     <p class="clearfix"></p>
+    <form method="post">
+        <input type="hidden" value="annul" name="task">
     <div class="cancel-btn">
         <button type="submit" class="cancelBtn">
-            <i class="fa fa-times"></i> Cancel
+            <i class="fa fa-times-circle-o"></i> Cancel
         </button>
     </div>
-
+    </form>
 
 </div>
 

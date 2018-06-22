@@ -14,25 +14,6 @@ require_once("includes/settings.inc.php");
 require_once("includes/functions.inc.php");
 require_once("includes/header.inc.php");
 
-// check for required extensions in php
-$extension_check_array = array(
-    'mysql',
-    'cli',
-    'gd',
-    'gettext',
-    'xsl',
-    'curl',
-    'mcrypt',
-    'soap',
-    'json',
-    'mbstring',
-    'zip',
-    'ldap',
-    'xml',
-);
-
-
-
 //==========================
 // HANDLING FORM SUBMISSION
 //==========================
@@ -41,6 +22,13 @@ $extension_check_array = array(
 // variable to get current step and task
 $step = $_POST["step"];
 $task = $_POST["task"];
+    
+    if($task == 'annul'){
+        session_destroy();
+        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
+        header('location: index.php');
+        exit;
+    }
 
 ?>
 
@@ -50,95 +38,59 @@ $task = $_POST["task"];
 
     <?php
 
-    echo "<h4>Librehealth EHR Versioning System</h4>\n";
+    echo "<h4>Database Selection</h4>\n";
     drawSetupStep($step);
     ?>
-
-    <h4 style="text-decoration: underline;">System Info</h4>
-
+    <p class="clearfix"></p>
+    <div class="alert-info">
+        <p>
+            Now I need to know whether you want me to create the database on my own or if you have already created a database for me to use.  For me to create the database, you will need to supply the MySQL root password.<br>
+            <span class='fa fa-info-circle'></span> NOTE: clicking on "Continue" may delete or cause damage to data on your system. Before you continue please backup your data.</span>
+        </p>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <h4 style="text-decoration: underline;">Select Option</h4>
+    
     <?php
-    $process_running = shell_exec('apt-get install php7.0-curl'); //give all php processes running in your server
-    echo($process_running); //gives an array of processes
+        echo '<form action="step2.php" method="post">
+                            <div class="control-btn2">
+                            <input type="hidden" value="2" name="step">
+                            <button type="submit" class="controlBtn">
+                            <i class="fa fa-arrow-circle-left"></i> Back
+                            </button>
+                            </div>
+                            </form>
+                    ';
+        echo "
+        <form METHOD='POST' action='step4.php'>\n
+            <input type='hidden' name='step' value='4'>\n
+            <input type='hidden' name='site' value='$site_id'>\n
+            <label for='inst1'><input type='radio' id='inst1' name='inst' value='1' checked> Have setup wizard create the database</label><br>\n
+            <label for='inst2'><input type='radio' id='inst2' name='inst' value='2'> I have already created the database</label><br>\n
+            <br>\n
+                <p class=\"clearfix\"></p>
+                <p class=\"clearfix\"></p>
 
-
-    $result = liveExecuteCommand('./test.sh');
-
-    if($result['exit_status'] === 0){
-        // do something if command execution succeeds
-        echo $result;
-    } else {
-        // do something on failure
-        echo "failed";
-    }
+            <div class='control-btn'>
+             <button type='submit' class='controlBtn'>
+             Continue  <i class='fa fa-arrow-circle-right'></i>
+             </button>
+             </div>
+             </form>
+        ";
     ?>
-
-    <?php
-    echo "<div class='text-center'>
-        <table class='table table-bordered table-hover'>
-            <thead>
-            <tr>
-                <th class='text-center'>Software Package</th>
-                <th class='text-center'>Current version</th>
-                <th class='text-center'>Status &nbsp;<sub><small>(libreehr)</small></sub></th>
-            </tr>
-            </thead>
-            <tbody>";
-
-    $fail = '';
-    $pass = '';
-
-    //checking for php version
-    if(version_compare(phpversion(), '5.2.0', '<')) {
-        $fail .= '<td><strong>PHP</strong></td>';
-        $fail .= '<td>You need<strong> PHP 5.2.0</strong> (or greater;<strong>Current Version:'.phpversion().')</strong></td>';
-        $fail .= '<td><span class="fa fa-times red"></span></td>';
-    }
-    else {
-        $pass .='<td><strong>PHP</strong></td>';
-        $pass .='<td>You have<strong> PHP 5.2.0</strong> (or greater; <strong>Current Version:'.phpversion().')</strong></td>';
-        $pass .='<td><span class="fa fa-check green"></span></td>';
-    }
-
-    //checking for mysql version
-    if(!ini_get('safe_mode')) {
-//                $pass .='<td>Safe Mode is <strong>off</strong></td>';
-        preg_match('/[0-9]\.[0-9]+\.[0-9]+/', shell_exec('mysql -V'), $version);
-
-        if(version_compare($version[0], '4.1.20', '<')) {
-            $fail .= '<td><strong>MySQL</strong></td>';
-            $fail .= '<td>You need<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:.'.$version[1].')</strong></td>';
-            $fail .= '<td><span class="fa fa-times red"></span></td>';
-        }
-        else {
-            $pass .='<td><strong>MySQL</strong></td>';
-            $pass .='<td>You have<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:'.$version[1].')</strong></td>';
-            $pass .='<td><span class="fa fa-check green"></span></td>';
-        }
-    }
-    else {
-//                $fail .= '<td>Safe Mode is <strong>on</strong></td>';
-    }
-
-    if($fail) {
-        echo '<tr>'.$fail.'</tr></p>';
-        echo 'The following requirements were successfully met:';
-        echo '<tr>'.$pass.'</tr>';
-    } else {
-        echo '<tr>'.$pass.'</tr>';
-    }
-
-    echo " </tbody>
-        </table>
-    </div>";
-
-    if($fail) {
-        echo '<p><strong>Your server does not meet the following requirements in order to install LibreEHR.</strong>';
-        echo '<br>The following requirements failed, please contact your hosting provider in order to receive assistance with meeting the system requirements for Magento:';
-    } else {
-        echo '<p><strong>Congratulations!</strong> Your server meets the requirements for LibreEHR.</p>';
-    }
-
-    ?>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <form method="post">
+        <input type="hidden" value="annul" name="task">
+        <div class="cancel-btn">
+            <button type="submit" class="cancelBtn">
+                <i class="fa fa-times-circle-o"></i> Cancel
+            </button>
+        </div>
+    </form>
 
 
 </div>

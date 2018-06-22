@@ -7,11 +7,37 @@
  */
 ?>
 
-<?php require_once("includes/header.inc.php"); ?>
+<?php
+    require_once("includes/shared.inc.php");
+    require_once("includes/settings.inc.php");
+    require_once("includes/functions.inc.php");
+    require_once("includes/header.inc.php");
+    
+    $task = $_POST["task"];
+    
+    
+    
+    if($task == 'annul'){
+        session_destroy();
+        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
+        header('location: index.php');
+        exit;
+    }
+
+?>
+
+
+
+
+
+
 <div class="card">
 <p class="clearfix"></p>
 <p class="clearfix"></p>
 
+    <h4>Installation Instructions</h4>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
    <ul class="list-unstyled">
        <li><i class="glyphicon glyphicon-send librehealth-color"></i> &nbsp;Before proceeding, be sure that you have a properly installed and configured MySQL server available, and a PHP configured webserver.</li>
        <li><i class="glyphicon glyphicon-send librehealth-color"></i> &nbsp;Detailed installation instructions can be found in the <a href='https://github.com/LibreHealthIO/LibreEHR/blob/master/INSTALL.md' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual file.</li>
@@ -31,19 +57,28 @@
 <p class="clearfix"></p>
 <p class="clearfix"></p>
 <p class="clearfix"></p>
-<div class="control-btn">
+
     <form action="step1.php" method="POST">
         <input type="hidden" value="1" name="step">
-    <button type="submit" class="button next-btn">Begin Installation</button>
+        <div class="control-btn">
+    <button type="submit" class="controlBtn">Start</button>
+        </div>
     </form>
     <p class="clearfix"></p>
     <p class="clearfix"></p>
-</div>
 
-<p class="clearfix"></p>
-<p class="clearfix"></p>
-<p class="clearfix"></p>
-<p class="clearfix"></p>
+
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <form method="post">
+        <input type="hidden" value="annul" name="task">
+        <div class="cancel-btn">
+            <button type="submit" class="cancelBtn">
+                <i class="fa fa-times-circle-o"></i> Cancel
+            </button>
+        </div>
+    </form>
 </div>
 
 <?php require_once("includes/footer.inc.php"); ?>
