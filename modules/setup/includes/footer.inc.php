@@ -19,6 +19,7 @@
 </body>
 <script type="text/javascript" src="libs/js/jquery.js"></script>
 <script type="text/javascript" src="libs/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="libs/js/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="libs/js/setup.js"></script>
 </html>
 

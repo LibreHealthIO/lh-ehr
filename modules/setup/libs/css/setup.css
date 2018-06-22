@@ -110,6 +110,12 @@ div.control-btn{
     right: 10px;
 }
 
+div.control-btn2{
+    position: absolute;
+    bottom: 10px;
+    right: 170px;
+}
+
 
 div.cancel-btn{
     position: absolute;
@@ -194,7 +200,7 @@ ul.files-list {
 
 .step-count {
     font-size: 22px;
-    font-family: Lato;
+    font-family: Circle;
 }
 
 .active-step {
@@ -216,4 +222,10 @@ ul.files-list {
 
 .details:hover{
    color: rgb(245, 144, 49);
+}
+
+.form-control{
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }

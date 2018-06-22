@@ -30,6 +30,13 @@ require_once("includes/header.inc.php");
         header('location: start_up.php');
         exit;
     }
+    
+    if($task == 'annul'){
+        session_destroy();
+        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
+        header('location: index.php');
+        exit;
+    }
 
         if($task == 'back'){
             session_destroy();
@@ -147,16 +154,21 @@ require_once("includes/header.inc.php");
                 
                 <form method='post'>
                 <input type='hidden' value='start' name='task'>
-                     <div class=\"control-btn\">
-                       <input class='button next-btn' value='Back' type='submit'>
-                     <div class=\"control-btn\">
-                </form>
+                       <div class='control-btn2'>
+                           <button type='submit' class='controlBtn'>
+                           <i class='fa fa-arrow-circle-o-left'></i> Back
+                           </button>
+                     </div>
+                </form>";
+            echo "
                 <form method='post' action='step2.php'>
                 <input type='hidden' value='2' name='step'>
                 <input type='hidden' value='send' name='task'>
-                     <div class=\"control-btn\">
-                       <input class='button next-btn' value='Next' type='submit'>
-                     <div class=\"control-btn\">
+                     <div class='control-btn'>
+                           <button type='submit' class='controlBtn'>
+                          Next  <i class='fa fa-arrow-circle-o-right'></i>
+                           </button>
+                     </div>
                 </form>
                     <p class=\"clearfix\"></p>
               
@@ -171,6 +183,18 @@ require_once("includes/header.inc.php");
 
 
     ?>
+
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <form method="post">
+        <input type="hidden" value="annul" name="task">
+        <div class="cancel-btn">
+            <button type="submit" class="cancelBtn">
+                <i class="fa fa-times-circle-o"></i> Cancel
+            </button>
+        </div>
+    </form>
 
 </div>
 

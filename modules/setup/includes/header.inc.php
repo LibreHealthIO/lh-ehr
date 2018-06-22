@@ -25,6 +25,7 @@
     <title>LibreHealth EHR-Setup</title>
     <link type="text/css" rel="stylesheet" href="libs/css/font-awesome/css/font-awesome.css">
     <link type="text/css" rel="stylesheet" href="libs/css/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="libs/css/bootstrap/css/bootstrap-select.min.css">
     <link type="text/css" rel="stylesheet" href="libs/css/setup.css">
 
 </head>
