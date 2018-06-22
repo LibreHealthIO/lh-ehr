@@ -24,7 +24,32 @@ $events = array();
 
 $fetchedEvents = fetchAllEvents($_POST['start'], $_POST['end']);
 
+// facility ACL check
+if ( $GLOBALS['facility_acl'] == 1 ) {
+  $patient_filter = do_action('filter_patient_select_pnuserapi', $_SESSION['authUser']); // returns allowed facility ids in a SQL string
+  $patients_allowed_to_user = array();  // array containing patient ids which logged in user is allowed to see
+
+  // making of $patients_allowed_to_user
+  if ($patient_filter) {
+    $sql = "SELECT pd.pid
+            FROM patient_data pd
+            WHERE" . $patient_filter; // " pd.facility IN ( user_schedule_facility_id_string ) "
+    $result = sqlStatement($sql);
+    while ($row = sqlFetchArray($result)) {
+      $patients_allowed_to_user[] = $row['pid'];
+    }
+  }
+}
+
 foreach($fetchedEvents as $event) {
+  // event - patient check
+  if ( $GLOBALS['facility_acl'] == 1 ) {
+    // check if event's patient id is in array
+    if (in_array($event['pc_pid'], $patients_allowed_to_user) === false) {
+      // if not, continue to next event without merging this event with $events
+      continue;
+    }
+  }
 
   // skip cancelled appointments
   if ($GLOBALS['display_canceled_appointments'] != 1) {
