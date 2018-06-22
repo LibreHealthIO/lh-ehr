@@ -44,6 +44,7 @@ $settings_array = json_decode($settings_json, true);
 $updater_host = $settings_array['host'];
 $repository_owner = $settings_array['owner'];
 $repository_name = $settings_array['repository_name'];
+$issue_number = $settings_array['feedback_issue_number'];
 
 if ($updater_host == "github") {
 	//if host=github then load rhwm
@@ -141,4 +142,19 @@ if (isset($_GET['start_recovery'])) {
 		setUpdaterSetting("github_current", $pr_backup_number);
 	}
 }
+
+
+if (isset($_GET['send_review']) && isset($_GET['pr_number']) && isset($_GET['comment'])) {
+	if (!empty($_GET['send_review']) && !empty($_GET['pr_number']) && !empty($_GET['comment'])) {
+		$pr_number = $_GET['pr_number'];
+		$comment = $_GET['comment'];
+		//mention the pull request number in comment
+		$comment = "Regarding pull request #".$pr_number." \n".$comment;
+		$updater_token = getUpdaterSetting("updater_token");
+		sendReview($updater_token, $repository_owner, $repository_name, $comment, $issue_number);
+	}
+}
+
+
+
 ?>

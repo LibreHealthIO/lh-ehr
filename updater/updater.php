@@ -133,13 +133,16 @@ else {
 			$count_files = count($files_need_to_be_downloaded);
 			$loader->assign("UPDATER_START", "<b>$cpr_title</b><br/><h6>$cpr_body</h6>");
 			$loader->assign("COUNT_FILES", $count_files);
+			$loader->assign("PR_NUMBER", $pull_request_number);
 			$loader->output();
+
 		}
 		else {
 			//the repo is already up to date, show only the backup button
 			$loader->set_template_file("updater_screen_five");
 			$loader->assign("AVATAR_URL", $avatar_url);
 			$loader->assign("USER_NAME", $user_name);
+			$loader->assign("PR_NUMBER", $pull_request_number);
 			$loader->output();
 		}
 	}
@@ -287,6 +290,26 @@ body {
 		    }
     });
 
+    $('#submit_review').click(function() {
+    	var bool = prompt("confirm submit the review?, type confirm to send");
+    	    	$('#before_start').hide();
+    			$('#after_start').hide();
+    			$('#backup_screen').hide();
+		    if (bool == "confirm") {
+		    	var pr_number = "<?php echo $pull_request_number; ?>";
+		    	var comment = $('#comment').val();
+				 $.ajax({url: "ajax_user_mode.php?send_review=1&pr_number="+ pr_number + "&comment=" + comment, success: function(result){
+				    	var type = 'success';
+				    	var title = 'Review Sent Successfully';
+				    	var message = 'Review was sent Successfully';
+				    	parent.showUpdaterNotifications(type, title, message);
+				    	window.location = "updater.php";
+				    }
+
+				});
+		    }
+    });
+
     $('#up_return').click(function () {
     	parent.$('#updater-iframe').iziModal('close');
     });
@@ -294,5 +317,14 @@ body {
     $('#bk_return').click(function () {
 		parent.$('#updater-iframe').iziModal('close');
     });
+
+    $('#start_review').click(function () {
+    	    	$('#before_start').hide();
+    			$('#after_start').hide();
+    			$('#backup_screen').hide();
+    			$('#review_screen').css("display", "block");
+    	
+    });
+
     parent.$('.iziModal-content').css("background-image", "none");
 </script>

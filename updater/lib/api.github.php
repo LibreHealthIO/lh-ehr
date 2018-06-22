@@ -180,5 +180,21 @@ function downloadFile($url, $directory, $filename, $status) {
 	}
 }
 
+/*
+* sends the review on the pull request which has been applied
+*/
+
+function sendReview($access_token, $owner, $repo_name, $comment, $issue_number) {
+	$curl = curl_init();
+	$url = "https://api.github.com/repos/".$owner."/".$repo_name."/issues/".$issue_number."/comments?access_token=$access_token";
+	$array =  array('body' => $comment);
+	$payload = json_encode($array);
+	$options = array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1, CURLOPT_POSTFIELDS=>$payload);
+	curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
+	curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+	curl_setopt_array($curl, $options);
+	$json = curl_exec($curl);
+}
+
 ?>
 

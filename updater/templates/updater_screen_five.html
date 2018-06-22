@@ -8,10 +8,20 @@
 		<br/><br/>
 		<p><b>No updates available</b></p>
 		<a id="start_backup" class="btn cp-submit">Restore to original state</a>
+		<a id="start_review" class="btn cp-submit">Write Feedback For #{PR_NUMBER}?</a>
 		</div>
 	</div>
 
-
+	<div id='review_screen' style="display: none;">
+		<b>Write how you felt about Last Update, feel free to share any suggestions</b><br/>
+		<div class="text-center">
+		<textarea id="comment" cols="60" rows="7">
+		</textarea>
+		<br/>
+		<br/>
+		<input type="button" id="submit_review" value="send review" class="btn cp-submit">
+		</div>
+	</div>
 		<div id="backup_screen" style="display: none;">
 		<table class="table table-striped">
 			<th></th>
