@@ -64,52 +64,26 @@ window.close(); // comment out for debugging
 
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap", "iziModalToast")); ?>
 <style type="text/css">
-body {
- font-family:sans-serif;
- font-size:9pt;
- font-weight:normal;
- padding: 5px 3px 5px 3px;
-}
-#con0 table {
- margin:0;
- padding:0;
- width:100%;
-}
-#con0 td {
- padding:0pt;
- font-family:sans-serif;
- font-size:9pt;
-}
-.plusminus {
- font-family:monospace;
- font-size:10pt;
-}
-.haskids {
- color:#0000dd;
- cursor:pointer;
- cursor:hand;
-}
-tr.head {
-font-size:10pt;
-background-color:#cccccc;
-font-weight:bold;
-}
-tr.evenrow {
- background-color:#ddddff;
-}
-tr.oddrow {
- background-color:#ffffff;
-}
+  .noborder td, .noborder th {
+    border: none !important;
+  }
+  .provider-table-after {
+    margin-bottom: 0px;
+  }
+  tr.evenrow {
+  background-color:#eae9e9;
+  }
+  tr.oddrow {
+  background-color:#ffffff;
+  }
 
-.col1 {width:35%}
-.col2 {width:8%}
-.col3 {width:12%}
-.col4 {width:35%}
-.col5 {width:10%}
+  a:visited {
+    color: white !important;
+  }
+  
 </style>
-
-<script src="../../library/js/jquery-1.2.2.min.js" type="text/javascript"></script>
 <?php if ($popup) { ?>
 <script type="text/javascript" src="../../library/topdialog.js"></script>
 <?php } ?>
@@ -213,15 +187,28 @@ function refreshFamily(id, haskids) {
   recolor();
 }
 
-// edit a node
-function enode(id) {
- dlgopen('types_edit.php?parent=0&typeid=' + id, '_blank', 700, 550);
-}
+
+$(document).on('click', '.trigger', function (event) {
+    event.preventDefault();
+    console.log(event.target.href);
+    $("#modal-iframe").iziModal({
+    iframe: true,
+    iframeHeight: 500,
+    width: 550,
+    height: 500,
+    iframeURL: event.target.href,
+    overlayClose: true,
+    closeButton: true,
+    closeOnEscape: true,
+    
+    });
+    $("#modal-iframe").iziModal('open');
+});
 
 // add a node
-function anode(id) {
- dlgopen('types_edit.php?typeid=0&parent=' + id, '_blank', 700, 550);
-}
+// function anode(id) {
+//  dlgopen('types_edit.php?typeid=0&parent=' + id, '_blank', 700, 550);
+// }
 
 // call this to alternate row colors when anything changes the number of rows
 function recolor() {
@@ -237,43 +224,45 @@ function recolor() {
 
 </head>
 
-<body class="body_nav">
-<center>
+<body >
 
-<h3 style='margin-top:0'><?php xl('Types of Orders and Results','e') ?></h3>
+  <div class="container">
+    <div id="modal-iframe"></div>
+    <h2 class="text-center" ><?php xl('Types of Orders and Results','e') ?></h2>
 
-<form method='post' name='theform' action='types.php?popup=<?php echo $popup ?>&order=<?php
-echo $order;
-if (isset($_GET['formid' ])) echo '&formid='  . $_GET['formid'];
-if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
-?>'>
+    <form method='post' name='theform' action='types.php?popup=<?php echo $popup ?>&order=<?php
+    echo $order;
+    if (isset($_GET['formid' ])) echo '&formid='  . $_GET['formid'];
+    if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
+    ?>'>
 
-<table width='100%' cellspacing='0' cellpadding='0' border='0'>
- <tr class='head'>
-  <th class='col1' align='left'>&nbsp;&nbsp;<?php xl('Name','e') ?></th>
-  <th class='col2' align='left'><?php xl('Order','e') ?></th>
-  <th class='col3' align='left'><?php xl('Code','e') ?></th>
-  <th class='col4' align='left'><?php xl('Description','e') ?></th>
-  <th class='col5' align='left'>&nbsp;</th>
- </tr>
-</table>
+    <table class="table provider-table-after" style="width:100%">
+      <thead>
+        <tr>
+          <th class="text-center" style="width:20%"><?php xl('Name','e') ?></th>
+          <th class="text-center" style="width:20%"><?php xl('Order','e') ?></th>
+          <th class="text-center" style="width:20%"><?php xl('Code','e') ?></th>
+          <th class="text-center" style="width:20%"><?php xl('Description','e') ?></th>
+          <th class="text-center" style="width:20%">Action</th>
+        </tr>
+      </thead>
+    </tr>
+    </table>
+    <div id="con0"></div>
+  
+    <p>
+    <?php if ($popup) { ?>
+    <button type='submit' name='form_save' class="btn btn-primary"><?php xl('Save','e'); ?></button>
+    &nbsp;
+    <button type='button' onclick='window.close()' class="btn btn-danger"> <?php xl('Cancel','e'); ?></button>
+    &nbsp;
+    <?php } ?>
+    <a href="types_edit.php?typeid=0&parent=0"  class="trigger btn btn-primary"><?php xl('Add Top Level','e'); ?></a>
+    </p>
 
-<div id="con0">
-</div>
+    </form>
 
-<p>
-<?php if ($popup) { ?>
-<input type='submit' name='form_save' value='<?php xl('Save','e'); ?>' class="cp-submit"/>
-&nbsp;
-<input type='button' value=<?php xl('Cancel','e'); ?> onclick='window.close()' class="cp-negative"/>
-&nbsp;
-<?php } ?>
-<input type='button' value='<?php xl('Add Top Level','e'); ?>' onclick='anode(0)' class="cp-positive"/>
-</p>
-
-</form>
-
-</center>
+  </div>
 
 </body>
 </html>
