@@ -139,6 +139,16 @@ ALTER TABLE `patient_tracker_element` ADD `reason` VARCHAR(255) NOT NULL AFTER `
 ALTER TABLE `users` ADD `picture_url` VARCHAR(2000) NOT NULL AFTER `suffix`;
 #EndIf
 
+
+#IfMissingColumn patient_data facility
+ALTER TABLE patient_data ADD COLUMN facility INT(11) NOT NULL default '1' AFTER `DOB`;
+#EndIf
+
+#IfNotRow layout_options field_id facility
+INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`, `source`, `conditions`) VALUES
+('DEM', 'facility', '1Face Sheet', 'Facility', 32, 35, 1, 0, 0, '', 1, 1, '', '', '', 0, '', 'F', '');
+#EndIf
+
 #IfNotRow2D list_options list_id apptstat option_id Deleted
 INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`, `option_value`, `mapping`, `notes`, `codes`, `toggle_setting_1`, `toggle_setting_2`, `activity`, `subtype`) VALUES
  ('apptstat', 'Deleted', 'Deleted', 85, 0, 0, '', '0F0F0F|0', '', 0, 0, 1, '');
@@ -147,3 +157,4 @@ INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`
 #IfMissingColumn libreehr_postcalendar_events cancel_reason
   ALTER TABLE `libreehr_postcalendar_events` ADD `cancel_reason` text NOT NULL ;
 #EndIf
+

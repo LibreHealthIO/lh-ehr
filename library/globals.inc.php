@@ -591,7 +591,18 @@ $GLOBALS_METADATA = array(
        '0',                             // default
       xl('Restrict non-authorized users to the Schedule Facilities set in User admin.')
     ),
-
+        'tags_filters_enabled' => array(
+      xl('Enable Tags/Filters Feature'),
+       'bool',                          // data type
+       '0',                             // default
+      xl('Enables configurable tags and filters for demographics and various purposes.')
+    ),
+        'facility_acl' => array(
+      xl('Restrict User access by Facility'),
+       'bool',                          // data type
+       '0',                             // default
+      xl('Restrict User access to patients by assigned patient facility.')
+    ),
     'set_facility_cookie' => array(
       xl('Remember Selected Facility'),
        'bool',                          // data type
