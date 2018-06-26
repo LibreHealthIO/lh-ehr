@@ -1503,8 +1503,7 @@ $classpati='';
           //then list only schedule facilities of that user or default facility
           //in Facility in calendar's event panel
           //e2f denotes id of default facility
-          if (in_array($facrow['id'], $ufid) || $facrow['id'] == $e2f || $facrow['id'] == 3) {
-            //id 3 is for "Your Clinic Name Here"
+          if (in_array($facrow['id'], $ufid) || $facrow['id'] == $e2f) {
             $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
             echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
           }
