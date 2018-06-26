@@ -229,3 +229,79 @@ ul.files-list {
     -moz-border-radius: 0;
     border-radius: 0;
 }
+
+#slideImages{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.owl-prev {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    margin-left: -20px;
+    background: black !important;
+    color: white !important;
+    display: block !important;
+    border:1px solid black;
+    border-radius: 100% !important;
+}
+
+.owl-next {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    bottom: -10px;
+    left: 45px;
+    background: black !important;
+    color: white !important;
+    display: block !important;
+    border:1px solid black;
+    border-radius: 100% !important;
+
+}
+.owl-next:hover , .owl-prev:hover {
+    background: #fd5d00 !important;
+    color: white !important;
+}
+.owl-prev i, .owl-next i {transform : scale(1,6); color: #ccc;}
+
+.owl-theme .owl-dots .owl-dot span{
+    width:10px;
+    height:10px;
+    margin:5px 7px;
+    background: #000 !important;
+    display:block;
+    -webkit-backface-visibility:visible;
+    -webkit-transition:opacity 200ms ease;
+    -moz-transition:opacity 200ms ease;
+    -ms-transition:opacity 200ms ease;
+    -o-transition:opacity 200ms ease;
+    transition:opacity 200ms ease;
+    -webkit-border-radius:30px;
+    -moz-border-radius:30px;
+    border-radius:30px;
+}
+
+.owl-theme .owl-dots .active span{
+    background: #fd5d00 !important;
+}
+
+.owl-overlay{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    left: 0;
+    text-align: left;
+    padding: 10px;
+    z-index: 1000;
+}
+
+a.owl-link, a.owl-link:hover, a.owl-link:focus, a.owl-link:active, a.owl-link:visited{
+    color: white;
+    text-decoration: underline;
+}

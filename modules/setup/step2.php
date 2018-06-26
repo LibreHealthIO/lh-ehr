@@ -144,6 +144,7 @@ $task = $_POST["task"];
                 $pass .='<td><span class="fa fa-check green"></span></td></tr><tr>';
             }
 
+
             //checking for mysql version
             if(!ini_get('safe_mode')) {
 //                $pass .='<td>Safe Mode is <strong>off</strong></td>';
@@ -151,12 +152,12 @@ $task = $_POST["task"];
 
                 if(version_compare($version[0], '4.1.20', '<')) {
                     $fail .= '<td><strong>MySQL</strong></td>';
-                    $fail .= '<td>You need<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:.'.$version[1].')</strong></td>';
+                    $fail .= '<td>You need<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:.'.$version[0].')</strong></td>';
                     $fail .= '<td><span class="fa fa-times red"></span></td>';
                 }
                 else {
                     $pass .='<td><strong>MySQL</strong></td>';
-                    $pass .='<td>You have<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:'.$version[1].')</strong></td>';
+                    $pass .='<td>You have<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:'.$version[0].')</strong></td>';
                     $pass .='<td><span class="fa fa-check green"></span></td>';
                 }
             }
@@ -180,11 +181,24 @@ $task = $_POST["task"];
          if($fail) {
                 echo '<p><strong>Your server does not meet the following requirements in order to install LibreEHR.</strong>';
                 echo '<br>The following requirements failed, please contact your hosting provider in order to receive assistance with meeting the system requirements for LibreEHR:';
-                echo '<div class="control-btn">
+             echo "<p class='clearfix'></p>";
+             echo "<p class='clearfix'></p>";
+             echo '<form action="step1.php" method="post">
+                            <div class="control-btn2">
+                            <input type="hidden" value="1" name="step">
+                            <button type="submit" class="controlBtn">
+                            <i class="fa fa-arrow-circle-left"></i> Back
+                            </button>
+                            </div>
+                            </form>
+                    ';
+                echo '    <form action="upgrade.php" method="post">
+                        <div class="control-btn">
                         <button type="submit" class="upgradeBtn">
                             <i class="fa fa-cogs"></i> Upgrade
                         </button>
                         </div>
+                        </form>
                 ';
             } else {
                 echo "<p class='clearfix'></p>";
