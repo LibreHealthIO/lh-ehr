@@ -37,6 +37,7 @@ require_once("../../library/acl.inc");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/headers.inc.php");
+require_once("$srcdir/calendar.inc");
 
 $alertmsg = '';
 
@@ -65,6 +66,8 @@ if (isset($_POST["mode"]) && $_POST["mode"] == "facility" && $_POST["newmode"] !
   "tax_id_type = '"  . trim(formData('tax_id_type' )) . "', " .
   "primary_business_entity = '"  . trim(formData('primary_business_entity' )) . "', ".
   "facility_npi = '" . trim(formData('facility_npi')) . "'");
+
+  refreshCalendar(); //after "Add Facility" process is complete
 }
 
 /*      Editing existing facility                   */
@@ -94,6 +97,8 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
         primary_business_entity='" . trim(formData('primary_business_entity')) . "' ,
         tax_id_type='" . trim(formData('tax_id_type')) . "'
     where id='" . trim(formData('fid')) . "'" );
+
+    refreshCalendar(); //after "Edit Facility" process is complete
 }
 
 ?>

@@ -13,7 +13,7 @@ $id = formData('id','G') + 0;
 $order = formData('order','G') + 0;
 $labid = formData('labid','G') + 0;
 
-echo "$('#con$id').html('<table width=\"100%\" cellspacing=\"0\">";
+echo "$('#con$id').html('<table class=\"table striped table-condensed noborder\" width=\"100%\" cellspacing=\"0\">";
 
 // Determine indentation level for this container.
 for ($level = 0, $parentid = $id; $parentid; ++$level) {
@@ -40,15 +40,15 @@ while ($row = sqlFetchArray($res)) {
   }
 
   echo "<tr>";
-  echo "<td id=\"td$chid\"";
+  echo "<td style=\"width:20%\" id=\"td$chid\"";
   echo " onclick=\"toggle($chid)\"";
   echo " class=\"$classes\">";
-  echo "<span style=\"margin:0 4 0 " . ($level * 9) . "pt\" class=\"plusminus\">";
+  echo "<a style=\"margin:0 4 0 " . ($level * 9) . "pt\" class=\" btn btn-secondary plusminus\">";
   echo $iscontainer ? "+" : '|';
-  echo "</span>";
+  echo "</a>";
   echo htmlspecialchars($row['name'], ENT_QUOTES) . "</td>";
   //
-  echo "<td class=\"col2\">";
+  echo "<td style=\"width:20%\" class=\"  text-center col2\">";
   if (substr($row['procedure_type'], 0, 3) == 'ord') {
     if ($order && ($labid == 0 || $row['lab_id'] == $labid)) {
       echo "<input type=\"radio\" name=\"form_order\" value=\"$chid\"";
@@ -64,11 +64,11 @@ while ($row = sqlFetchArray($res)) {
   }
   echo "</td>";
   //
-  echo "<td class=\"col3\">" . htmlspecialchars($row['procedure_code'], ENT_QUOTES) . "</td>";
-  echo "<td class=\"col4\">" . htmlspecialchars($row['description'], ENT_QUOTES) . "</td>";
-  echo "<td class=\"col5\">";
-  echo "<span onclick=\"enode($chid)\" class=\"haskids\">[" . xl('Edit') . "]</span>";
-  echo "<span onclick=\"anode($chid)\" class=\"haskids\"> [" . xl('Add') . "]</span>";
+  echo "<td style=\"width:20%\" class=\" text-center col3\">" . htmlspecialchars($row['procedure_code'], ENT_QUOTES) . "</td>";
+  echo "<td style=\"width:20%\" class=\" text-center col4\">" . htmlspecialchars($row['description'], ENT_QUOTES) . "</td>";
+  echo "<td style=\"width:20%\" class=\" text-center col5\">";
+  echo "<a href=\"types_edit.php?parent=0&typeid=$chid\" style=\" margin-right: 5px; \" class=\"btn trigger btn-primary haskids \">" . xl('Edit') . "</a> ";
+  echo "<a href=\"types_edit.php?typeid=0&parent=$chid\" class=\"btn trigger btn-primary haskids \"> " . xl('Add') . "</button>";
   echo "</td>";
   echo "</tr>";
 }

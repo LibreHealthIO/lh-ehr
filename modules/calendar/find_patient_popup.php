@@ -68,11 +68,11 @@ form {
     font-weight: bold;
     padding: 3px;
 }
-#searchResultsHeader { 
+#searchResultsHeader {
     width: 100%;
     background-color: lightgrey;
 }
-#searchResultsHeader table { 
+#searchResultsHeader table {
     width: 96%;  /* not 100% because the 'searchResults' table has a scrollbar */
     border-collapse: collapse;
 }
@@ -120,7 +120,7 @@ form {
 .noResults { background-color: #ccc; }
 .tooManyResults { background-color: #fc0; }
 .howManyResults { background-color: #9f6; }
-#searchspinner { 
+#searchspinner {
     display: inline;
     visibility: hidden;
 }
@@ -133,6 +133,19 @@ form {
 </style>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.2.2.min.js"></script>
+<!-- ViSolve: Verify the noresult parameter -->
+<?php
+if(isset($_GET["res"])){
+echo '
+<script language="Javascript">
+            // Pass the variable to parent hidden type and submit
+            opener.document.theform.resname.value = "noresult";
+            opener.document.theform.submit();
+            // Close the window
+            window.self.close();
+</script>';
+}
+?>
 <!-- ViSolve: Verify the noresult parameter -->
 
 <script language="JavaScript">
@@ -178,6 +191,9 @@ form {
 <div id="searchstatus"><?php echo htmlspecialchars( xl('Enter your search criteria above'), ENT_NOQUOTES); ?></div>
 <?php elseif (count($result) == 0): ?>
 <div id="searchstatus" class="noResults"><?php echo htmlspecialchars( xl('No records found. Please expand your search criteria.'), ENT_NOQUOTES); ?>
+<br>
+<!--VicarePlus :: If pflag is set the new patient create link will not be displayed --!>
+<a class="noresult" href='find_patient_popup.php?res=noresult' <?php if(isset($_GET['pflag'])) { ?> style="display:none;" <?php } ?>  ><?php echo htmlspecialchars( xl('Click Here to add a new patient.'), ENT_NOQUOTES); ?></a>
 </div>
 <?php elseif (count($result)>=100): ?>
 <div id="searchstatus" class="tooManyResults"><?php echo htmlspecialchars( xl('More than 100 records found. Please narrow your search criteria.'), ENT_NOQUOTES); ?></div>
@@ -196,11 +212,11 @@ form {
   <th class="srDOB"><?php echo htmlspecialchars( xl('DOB'), ENT_NOQUOTES); ?></th>
   <th class="srID"><?php echo htmlspecialchars( xl('ID'), ENT_NOQUOTES); ?></th>
  </tr>
-</table> 
+</table>
 </div>
 
 <div id="searchResults">
-<table> 
+<table>
 <?php
 foreach ($result as $iter) {
     $iterpid   = $iter['pid'];
@@ -241,13 +257,13 @@ $(document).ready(function(){
     $(".oneresult").mouseover(function() { $(this).toggleClass("highlight"); });
     $(".oneresult").mouseout(function() { $(this).toggleClass("highlight"); });
     $(".oneresult").click(function() { SelectPatient(this); });
-    //ViSolve 
+    //ViSolve
     $(".noresult").click(function () { SubmitForm(this);});
 
     //$(".event").dblclick(function() { EditEvent(this); });
-    $('#searchparm').keyup(function (e) { 
+    $('#searchparm').keyup(function (e) {
 
-      setTimeout(function(){ 
+      setTimeout(function(){
       if(e.keyCode == 8 || e.keyCode == 46 || e.keyCode == 37 || e.keyCode == 39) {
         //no response for del,backspace, arrow keys
       }

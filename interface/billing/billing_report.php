@@ -249,6 +249,9 @@ function SubmitTheScreenPrint()
 <?php if ($GLOBALS['use_custom_daysheet'] == 3) { ?>
   document.the_form.action='print_daysheet_report_num3.php';
 <?php } ?>
+<?php if ($GLOBALS['use_custom_daysheet'] == 4) { ?>
+  document.the_form.action='print_daysheet_report_num4.php';
+<?php } ?>
   document.the_form.submit();
   return true;
  }

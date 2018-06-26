@@ -234,7 +234,7 @@ $today = date("Y-m-d");
 
   // Print or download statements if requested.
   //
-if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && $_POST['form_cb']) {
+  if (($_POST['form_print'] || $_POST['form_download'] || $_POST['form_pdf'] || $_POST['form_portalnotify']) && isset($_POST['form_cb'])) {
     //some global variables to keep count of statements ignored
     //and corresponding patient names, in final print due to:
     //1) having amount value less than minimum amount to print
