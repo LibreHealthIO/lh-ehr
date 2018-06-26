@@ -22,6 +22,7 @@
  *
  * @package LibreHealth EHR
  * @author Rod Roark <rod@sunsetsystems.com>
+ * @author Mua Laurent <muarachmann@gmail.com>
  * @link http://librehealth.io
  */
 
@@ -38,6 +39,7 @@ require_once($GLOBALS['srcdir'].'/lists.inc');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['fileroot'].'/custom/code_types.inc.php');
 require_once($GLOBALS['srcdir'].'/options.inc.php');
+require_once($GLOBALS['srcdir'].'/headers.inc.php');
 
  // Check authorization.
  if (acl_check('patients','med')) {
@@ -64,52 +66,95 @@ $language = $tmp['language'];
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 
 <span class="title" style="display: none;">Issues</span>
-
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery.js"></script>
+	<?php call_required_libraries(array("jquery-min-3-1-1" , "font-awesome" , "iziModalToast")); ?>
 
 <script language="JavaScript">
+        //variables to store titles and subtitles
+        var iziTitle = "";
+        var iziSubTitle = "";
+        
+        $(".fa-refresh").click(function () {
+            top.restoreSession();
+            location.reload();
+        });
 
 // callback from add_edit_issue.php:
-function refreshIssue(issue, title) {
-    top.restoreSession();
-    location.reload();
-}
+        function refreshIssue(issue, title) {
+            top.restoreSession();
+            location.reload();
+        }
 
-function dopclick(id,category) {
-    <?php if (acl_check('patients','med','','write')): ?>
-    if (category == 0) category = '';
-    dlgopen('add_edit_issue.php?issue=' + encodeURIComponent(id) + '&thistype=' + encodeURIComponent(category), '_blank', 550, 400);
-    <?php else: ?>
-    alert("<?php echo addslashes( xl('You are not authorized to add/edit issues') ); ?>");
-    <?php endif; ?>
-}
+        function dopclick(id, category) {
+		    <?php if (acl_check('patients', 'med', '', 'write')): ?>
+            if (category == 0) category = '';
+            iziTitle = "<?php echo xlt('Add New Issue'); ?>";
+            iziSubTitle = "<?php echo xlt('Add all sorts of issues about Patient'); ?>";
+            initIziLink('add_edit_issue.php?issue=' + encodeURIComponent(id) + '&thistype=' + encodeURIComponent(category), 850, 400);
+		    <?php else: ?>
+            alert("<?php echo addslashes(xl('You are not authorized to add/edit issues')); ?>");
+		    <?php endif; ?>
+        }
+
+    // function to open izi-modal
+        function  initIziLink(link , width , height) {
+            $("#izi-iframe").iziModal({
+                title: iziTitle,
+                subtitle: iziSubTitle,
+                headerColor: '#88A0B9',
+                closeOnEscape: true,
+                fullscreen:true,
+                overlayClose: false,
+                closeButton: true,
+                theme: 'light',  // light
+                iframe: true,
+                width:width,
+                focusInput: true,
+                padding:2,
+                iframeHeight: height,
+                iframeURL:link,
+                onClosed: function () {
+                    location.reload();
+                }
+            });
+            setTimeout(function () {
+                call_izi();
+            },500);
+
+        }
+
+        function call_izi() {
+            $("#izi-iframe").iziModal('open');
+        }
 
 // Process click on number of encounters.
-function doeclick(id) {
-    dlgopen('../problem_encounter.php?issue=' + id, '_blank', 550, 400);
-}
+        function doeclick(id) {
+            iziTitle = "<?php echo xlt('Add Ecounter/Issue'); ?>";
+            iziSubTitle = "<?php echo xlt('Add all sorts of Encounter/Issues about Patient'); ?>";
+            initIziLink('../problem_encounter.php?issue=' + id, 1250, 460);
+        }
 
 // Process click on diagnosis for patient education popup.
-function educlick(codetype, codevalue) {
-  dlgopen('../education.php?type=' + encodeURIComponent(codetype) +
-    '&code=' + encodeURIComponent(codevalue) +
-    '&language=<?php echo urlencode($language); ?>',
-    '_blank', 1024, 750,true); // Force a new window instead of iframe to address cross site scripting potential
-}
+        function educlick(codetype, codevalue) {
+            dlgopen('../education.php?type=' + encodeURIComponent(codetype) +
+                '&code=' + encodeURIComponent(codevalue) +
+                '&language=<?php echo urlencode($language); ?>',
+                '_blank', 1024, 750, true); // Force a new window instead of iframe to address cross site scripting potential
+        }
 
 // Add Encounter button is clicked.
-function newEncounter() {
- var f = document.forms[0];
- top.restoreSession();
- location.href='../../forms/patient_encounter/new.php?autoloaded=1&calenc=';
-}
-
+        function newEncounter() {
+            var f = document.forms[0];
+            top.restoreSession();
+            location.href = '../../forms/patient_encounter/new.php?autoloaded=1&calenc=';
+        }
+    
 </script>
 
 </head>
 
 <body class="body_top">
+<div id="izi-iframe"></div><!-- to initialize the izimodal -->
 
 <br>
 <div style="text-align:center" class="buttons">
@@ -149,7 +194,7 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
   if(($focustype=='allergy' || $focustype=='medication') && $GLOBALS['erx_enable'])
   echo "<a href='../../eRx.php?page=medentry' class='css_button_small' onclick='top.restoreSession()' ><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
   else
-  echo "<a href='javascript:;' class='css_button_small' onclick='dopclick(0,\"" . htmlspecialchars($focustype,ENT_QUOTES)  . "\")'><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
+  echo "<a href='#' class='css_button_small' onclick='dopclick(0,\"" . htmlspecialchars($focustype,ENT_QUOTES)  . "\")'><span>" . htmlspecialchars( xl('Add'), ENT_NOQUOTES) . "</span></a>\n";
   echo "  <span class='title'>" . htmlspecialchars($disptype,ENT_NOQUOTES) . "</span>\n";
   // echo " <table style='margin-bottom:1em;text-align:center'>";
   echo " <table style='margin-bottom:1em;'>";
