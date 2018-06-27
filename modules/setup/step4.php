@@ -23,7 +23,8 @@
     $step = $_POST["step"];
     $task = $_POST["task"];
     $inst = $_POST["inst"];
-    
+    $site = $_POST["site"];
+
     if($task == 'annul'){
         session_destroy();
         write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
@@ -146,6 +147,7 @@
         ?>
         <div class="text-center"><hr style="width: 90%"/></div>
         <h4 class="librehealth-color">LIBREEHR USER</h4>
+        <input type="text" value="<?php echo $site?>">
         <div class="form-group">
             <div class="row">
                 <div class="col-md-2"><label>Initial User:</label></div>

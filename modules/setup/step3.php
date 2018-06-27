@@ -42,6 +42,50 @@ $task = $_POST["task"];
     drawSetupStep($step);
     ?>
     <p class="clearfix"></p>
+    <h4 class="librehealth-color">Optional Site ID Selection</h4>
+    <p>
+        Most LibreHealth EHR installations support only one site. If that is
+        true for you then ignore the rest of this text and just select option for Database.
+        Otherwise please enter a unique Site ID below.
+    </p>
+    <p>A Site ID is a short identifier with no spaces or special
+        characters other than periods( . ) or dashes( _ , - ). It is case-sensitive and we
+        suggest sticking to lower case letters for ease of use.
+        If each site will have its own host/domain name, then use that name as the Site ID (e.g. www.example.com).
+    </p>
+    <p>The site ID is used to identify which site you will log in to.
+        If it is a hostname then it is taken from the hostname in the URL.
+        Otherwise you must append <span class="text-info">?site=siteid</span> to the URL used for
+        logging in.
+    </p>
+
+    <div class="alert-info">
+        <p> <span class="fa fa-info-circle"></span>
+            It is permitted to leave <span class="text-info">default</span> as your site ID. This is the ID that will be used if it cannot otherwise be determined, but
+            it is better for system upgrades to NOT use the default site ID.
+        </p>
+    </div>
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+
+    <div class="input-group siteID">
+        <input id="siteID" type="text" class="form-control input-lg"  value="default" placeholder="enter siteID">
+        <span class="input-group-addon controlBtn">Siteid</span>
+    </div>
+
+
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <div class="alert-danger">
+
+    </div>
+    <div id="errorSiteId" class="alert alert-danger alert-dismissable fade in hidden">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Site ID  contains invalid characters</strong>
+    </div>
+
+    <p class="clearfix"></p>
+    <p class="clearfix"></p>
     <div class="alert-info">
         <p>
             Now I need to know whether you want me to create the database on my own or if you have already created a database for me to use.  For me to create the database, you will need to supply the MySQL root password.<br>
@@ -50,7 +94,7 @@ $task = $_POST["task"];
     </div>
     <p class="clearfix"></p>
     <p class="clearfix"></p>
-    <h4 style="text-decoration: underline;">Select Option</h4>
+    <h4 class="librehealth-color">Select Option</h4>
     
     <?php
         echo '<form action="step2.php" method="post">
@@ -65,7 +109,7 @@ $task = $_POST["task"];
         echo "
         <form METHOD='POST' action='step4.php'>\n
             <input type='hidden' name='step' value='4'>\n
-            <input type='hidden' name='site' value='$site_id'>\n
+            <input type='hidden' name='site' id='site' value='default'>\n
             <label for='inst1'><input type='radio' id='inst1' name='inst' value='1' checked> Have setup wizard create the database</label><br>\n
             <label for='inst2'><input type='radio' id='inst2' name='inst' value='2'> I have already created the database</label><br>\n
             <br>\n
@@ -73,7 +117,7 @@ $task = $_POST["task"];
                 <p class=\"clearfix\"></p>
 
             <div class='control-btn'>
-             <button type='submit' class='controlBtn'>
+             <button type='submit' class='controlBtn' id='submitStep3'>
              Continue  <i class='fa fa-arrow-circle-right'></i>
              </button>
              </div>

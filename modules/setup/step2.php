@@ -228,6 +228,19 @@ $task = $_POST["task"];
                     ';
          }
 
+      echo "<h2>Exact Version PHP & MySQL: </h2>";
+      printf("PHP version: %s\n", PHP_VERSION);
+
+      ##### Without DB Access
+      ob_start();
+      phpinfo(INFO_MODULES);
+      $info = ob_get_contents();
+      ob_end_clean();
+      $info = stristr($info, 'Client API version');
+      preg_match('/[1-9].[0-9].[1-9][0-9]/', $info, $match);
+      $gd = $match[0];
+      echo '</br>MySQL:  '.$gd.' <br />';
+
             ?>
 
     <p class="clearfix"></p>

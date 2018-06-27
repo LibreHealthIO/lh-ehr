@@ -230,6 +230,12 @@ ul.files-list {
     border-radius: 0;
 }
 
+
+.siteID{
+    width: 40%;
+    margin: 0 auto;
+}
+
 #slideImages{
     width: 80%;
     margin: 0 auto;
