@@ -4,9 +4,9 @@ require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/calendar.inc");
 
 $dateFormat = DateFormatRead();
-$providers = getProviderInfo();
 call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 ?>
 <html>
@@ -23,8 +23,8 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 
     <!--Vacation & Holiday tab options-->
     <div class="row title">
-      <h3><button type="button" class="btn btn-default btn-sm col-sm-offset-1 col-sm-4" id="vacation-btn">Add Vacation</button></h3>
-      <h3><button type="button" class="btn btn-default btn-sm col-sm-offset-1 col-sm-4" id="holiday-btn">Add Holiday</button></h3>
+      <h3><button type="button" class="btn btn-default btn-sm col-sm-offset-1 col-sm-4" id="vacation-btn">Provider Vacation</button></h3>
+      <h3><button type="button" class="btn btn-default btn-sm col-sm-offset-1 col-sm-4" id="holiday-btn">Clinic Holiday</button></h3>
     </div>
 
 
@@ -47,6 +47,7 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
           <select class="form-control" id="provider_id" name="provider_id">
             <option value="0">Choose Provider</option>
             <?php
+            $providers = getProviderInfo();
             foreach($providers as $provider) {
               $id = $provider['id'];
               $selected = ($_POST['provider_id'] == $id) ? "selected" : "";
@@ -74,16 +75,43 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-sm-2" for="provider_id">Provider</label>
+        <label class="control-label col-sm-2" for="clinic_id">Clinic</label>
         <div class="col-sm-10">
-          <select class="form-control" id="provider_id" name="provider_id">
-            <option value="0">Choose Provider</option>
+          <select class="form-control" id="clinic_id" name="clinic_id">
+            <option value="0">Choose Clinic/Facility</option>
             <?php
-            foreach($providers as $provider) {
-              $id = $provider['id'];
-              $selected = ($_POST['provider_id'] == $id) ? "selected" : "";
-              echo "<option value='$id' $selected>" . htmlspecialchars($provider['lname'],ENT_QUOTES) . ", " . htmlspecialchars($provider['fname'],ENT_QUOTES) . "</option>\n";
-            }
+              $pref_facility = sqlFetchArray(sqlStatement( "SELECT u.facility_id
+                                                            FROM users u
+                                                            LEFT JOIN facility f on (u.facility_id = f.id)
+                                                            WHERE u.id = ?", array($_SESSION['authId']) ));
+              //e2f denotes id of default facility of logged in user
+              $e2f = $pref_facility['facility_id'];
+
+              $facils = getUserFacilities($_SESSION['authId']);
+              //$_SESSION['authId'] is id of logged in user
+              //ufid is an array of id of schedule facilities of that user
+              $ufid = array();
+              foreach ($facils as $uf) {
+                $ufid[] = $uf['id'];
+              }
+              $qsql = sqlStatement("SELECT id, name FROM facility WHERE service_location != 0");
+              while ($facrow = sqlFetchArray($qsql)) {
+                if ($GLOBALS['restrict_user_facility']) {
+                  //if restricting user to scheduling events at only their allowed facilities
+                  //then list only schedule facilities of that user or default facility
+                  //in Clinic drop down in Calendar's Add Vacation/Holiday panel
+                  if (in_array($facrow['id'], $ufid) || $facrow['id'] == $e2f) {
+                    $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
+                    echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
+                  }
+                } else {
+                  //if not restricting then list all facilities
+                  //where service_location is not 0 including default facility
+                  //in Clinic drop down in Calendar's Add Vacation/Holiday panel
+                  $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
+                  echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
+                }
+              }
             ?>
           </select>
         </div>
