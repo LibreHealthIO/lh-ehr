@@ -24,6 +24,14 @@ require 'template_handler.php';
 require 'lib/updater_functions.php';
 call_required_libraries(array("jquery-min-3-1-1","bootstrap", "font-awesome", "iziModalToast", "jquery-ui"));
 
+$userAuthorized = $_SESSION['userauthorized'];
+$authUserId = $_SESSION['authUserID'];
+if (checkAdmin($userAuthorized, $authUserId)) {
+	//allow to access this page
+}
+else {
+	die("You are not allowed to handle updater administration");
+}
 // LOAD API FUNCTIONS DEPENDS ON WEBSITE IT IS HOSTED
 $settings_json = file_get_contents("settings.json");
 $settings_array = json_decode($settings_json, true);

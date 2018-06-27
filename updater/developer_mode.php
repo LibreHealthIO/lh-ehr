@@ -30,6 +30,14 @@ $updater_host = $settings_array['host'];
 $repository_owner = $settings_array['owner'];
 $repository_name = $settings_array['repository_name'];
 $access_token = getUpdaterSetting("updater_token");
+$userAuthorized = $_SESSION['userauthorized'];
+$authUserId = $_SESSION['authUserID'];
+if (checkAdmin($userAuthorized, $authUserId)) {
+	//allow to access this page
+}
+else {
+	die("You are not allowed to handle updater administration");
+}
 if ($updater_host == "github") {
 	//if host=github then load
 	if (getUpdaterSetting("github_current") != "empty_setting") {

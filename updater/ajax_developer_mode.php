@@ -21,6 +21,8 @@ require '../interface/globals.php';
 require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
+//run the updater, even if the browser get closed.
+ignore_user_abort(true);
 /*MODULES NEED TO BE WRITTEN HERE
 1. SYNC WITH MASTER REPO
 2.APPLY THE PR
@@ -30,11 +32,14 @@ require 'lib/updater_functions.php';
 $authUserId = $_SESSION['authUserID'];
 $sql = sqlStatement("SELECT * FROM `updater_users` WHERE authUserId=?", $bindArray=array($authUserId));
 $rows = sqlNumRows($sql);
-if ($_SESSION['authUser'] == "admin" || $rows == 1) {
+$userAuthorized = $_SESSION['userauthorized'];
+$authUserId = $_SESSION['authUserID'];
+if (checkAdmin($userAuthorized, $authUserId)) {
+	//allow to access this page
 	$auth_boolean = true;
 }
 else {
-	$auth_boolean = false;
+	die("You are not allowed to handle updater administration");
 }
 if (getUpdaterSetting("updater_requirements") == "empty_setting") { 
 	die("unable to start updater - requirements not fulfilled");

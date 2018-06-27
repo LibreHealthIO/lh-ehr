@@ -15,7 +15,7 @@ require_once $GLOBALS['srcdir'].'/ESign/Api.php';
 /* for getPnotesByUser(). */
 require_once($GLOBALS['srcdir'] . '/pnotes.inc');
 $esignApi = new Api();
-
+require '../../../updater/lib/updater_functions.php';
 ?>
 <!DOCTYPE html>
 <title><?php echo $GLOBALS['libreehr_name'];?></title>
@@ -244,7 +244,10 @@ var webroot_url="<?php echo $web_root; ?>";
   
 </script>
 <?php
-    if($_SESSION['authUser'] == "admin") {
+
+   $userAuthorized = $_SESSION['userauthorized'];
+    $authUserId = $_SESSION['authUserID'];
+    if(checkAdmin($userAuthorized, $authUserId)) {
         //only admin can use the updater
         echo  "<div id='developer-mode' title='Developer Mode' style='display: none;'><i class='fa fa-code'></i></div>
         <div id='updater-options' style='display: none;' title='updater settings'><i class='fa fa-gear'></i></div><div id='updater-icon'>

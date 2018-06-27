@@ -65,6 +65,26 @@ function getUpdaterSetting($settingName){
 
 }
 
+function checkIfUpdaterAdministrator($authUserId) {
+	$sql = "SELECT * FROM updater_users WHERE authUserId=?";
+	$query = sqlStatement($sql, $bindArray=array($authUserId));
+	$rows = sqlNumRows($query);
+	if ($rows == 0) {
+		return false;
+	}
+	else {
+		return true; 
+	}
+
+}
+
+function checkAdmin($userAuthorized, $authUserId) {
+	$bool = false;
+	if ($userAuthorized == 1 || checkIfUpdaterAdministrator($authUserId)) {
+		$bool = true;
+	}
+	return $bool;
+}
 
 function internet_bool()
 {
@@ -159,7 +179,7 @@ function backupFileDbEntry($filename, $status, $original_name, $old_name) {
 }
 
 function isExistInBackupTable($filename) {
-	$query = sqlQ("SELECT * FROM `updater_user_mode_download_entry` WHERE filename='$filename' AND status='added'");
+	$query = sqlQ("SELECT * FROM `updater_user_mode_download_entry` WHERE filename='?' AND status='added'", array($filename));
 	$rows = sqlNumRows($query);
 	if ($rows == 0) {
 		return true;

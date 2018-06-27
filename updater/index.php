@@ -23,7 +23,14 @@ require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
 call_required_libraries(array("jquery-min-3-1-1","bootstrap", "font-awesome", "iziModalToast", "jquery-ui"));
-
+$userAuthorized = $_SESSION['userauthorized'];
+$authUserId = $_SESSION['authUserID'];
+if (checkAdmin($userAuthorized, $authUserId)) {
+	//allow to access this page
+}
+else {
+	die("You are not allowed to handle updater administration");
+}
 ?>
 <link rel="stylesheet" type="text/css" href="css/index.css">
 <?php
@@ -112,7 +119,7 @@ else {
 $loader->output();
 
 //load updater administration in accordion
-if($_SESSION['authUser'] == "admin" && !(isset($_GET['id']) && isset($_GET['mode']))) {
+if($userAuthorized == 1) {
 	echo "<h3><i class='fa fa-users'></i> ".xlt("Updater Administration")."</h3><div>";
 	//only admin can add, edit, delete users who can update the application
 	$query = sqlQ("SELECT * FROM `users` WHERE authorized != '1'");
@@ -159,6 +166,7 @@ if($_SESSION['authUser'] == "admin" && !(isset($_GET['id']) && isset($_GET['mode
 	
 }
 else {
+	echo '</div>';
 	//dont show addition form for other users
 }
 
@@ -167,8 +175,6 @@ else {
 //remove => removes a user by authUserId
 if (isset($_GET['mode']) && isset($_GET['id'])) {
 	if (!empty($_GET['mode']) && !empty($_GET['id'])) {
-		if($_SESSION['authUser'] == "admin") {
-			// only perform actions if he is a admin
 			$mode = $_GET['mode'];
 			$authUserId = $_GET['id'];
 			if ($mode == "add") {
@@ -186,7 +192,6 @@ if (isset($_GET['mode']) && isset($_GET['id'])) {
 			}
 			header("location: index.php?accordion_index=1&toast_type=$toast_type&toast_title=$toast_title&toast_message=$toast_message");
 		}
-	}
 }
 
 

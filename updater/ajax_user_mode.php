@@ -17,11 +17,20 @@
  * @author Naveen Muthusamy <kmnaveen101@gmail.com>
  * @link    http://librehealth.io
  */
+//run the updater, even if the browser get closed.
+ignore_user_abort(true);
 require '../interface/globals.php';
 require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
-
+$userAuthorized = $_SESSION['userauthorized'];
+$authUserId = $_SESSION['authUserID'];
+if (checkAdmin($userAuthorized, $authUserId)) {
+	//allow to access this page
+}
+else {
+	die("You are not allowed to handle updater administration");
+}
 /*MODULES NEED TO BE WRITTEN HERE
 1. DOWNLOAD FILES
 2. BACKUP AND REPLACE FILES
