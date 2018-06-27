@@ -24,8 +24,8 @@
 
 // The location/name of a temporary file to hold printable statements.
 // May want to alter these names to allow multi-site installs out-of-the-box
-$STMT_TEMP_FILE = $GLOBALS['temporary_files_dir'] . "/openemr_statements.txt";
-$STMT_TEMP_FILE_PDF = $GLOBALS['temporary_files_dir'] . "/openemr_statements.pdf";
+$STMT_TEMP_FILE = $GLOBALS['temporary_files_dir'] . "/Libreehr_statements.txt";
+$STMT_TEMP_FILE_PDF = $GLOBALS['temporary_files_dir'] . "/libreehr_statements.pdf";
 $STMT_PRINT_CMD = $GLOBALS['print_command'];
 /** There are two options to print a batch of PDF statements:
  *  1.  The original statement, a text based statement, using CezPDF
@@ -34,7 +34,7 @@ $STMT_PRINT_CMD = $GLOBALS['print_command'];
  *  2.  Branded Statement, whose core is build from 1., the original statement, using HTML2PDF.
  *
  *      To customize 2., add your practice location/images/practice_logo.gif
- *      In the base/default install this is located at '/openemr/sites/default/images/practice_logo.gif',
+ *      In the base/default install this is located at '/libreehr/sites/default/images/practice_logo.gif',
  *      Adjust directory paths per your installation.
  *      Further customize 2. manually in functions report_2() and create_HTML_statement(), below.
  *
