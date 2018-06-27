@@ -37,10 +37,12 @@ $(document).ready(function(){
     });
 
 
+
 // prevent form submission and submit via ajax
 
     $("#databaseForm").submit(function (e) {
         e.preventDefault();
+        $(".ajaxLoader").removeClass("hidden");
         //values for mysql server
         var server  = $("[name='server']").val();
         var port    = $("[name='port']").val();
@@ -58,7 +60,13 @@ $(document).ready(function(){
       //values for siteID, cloning of database etc
         var site = $("[name='site']").val();
         var source_site_id = $("[name='source_site_id']").val();
-        var clone_database = $("[name='clone_database']").val();
+
+       var clone_database = $("#checkbox").prop("checked");
+        if(clone_database) {
+            clone_database = true;
+        } else {
+            clone_database = null;
+        }
 
 
       // values of libreehr user
@@ -91,15 +99,29 @@ $(document).ready(function(){
             igroup : igroup
         };
 
+
         $.ajax({
             url : "database.php",
             type : "post",
             data : dataArray,
             success : function (response) {
-                alert(response);
-            }
+                // getting success messages or error messages
+                response = $.parseJSON(response);
+                if(response.status === 400) {
+                    $(".ajaxLoader").addClass("hidden");
+                    $("#ajaxAlert").removeClass("hidden alert-success").addClass("alert-danger");
+                    $("#ajaxResponse").html(response.message);
+                    console.log("error");
+                } else {
+                    $(".ajaxLoader").addClass("hidden");
+                    $("#ajaxAlert").removeClass("hidden alert-danger").addClass("alert-success");
+                    $("#ajaxResponse").html(response.message);
+                    console.log("success");
+                }
+
+            } //end of success callback function
         });
-        
+
     })
 
 

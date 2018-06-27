@@ -248,9 +248,9 @@
     <p class="clearfix"></p>
     <p class="clearfix"></p>
 
-    <div id="ajaxAlert" class="alert alert-danger alert-dismissable fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <p id="ajaxResponse">hello </p>
+    <div id="ajaxAlert" class="alert alert-dismissable fade in hidden">
+        <a href="#" id="ajaxDivClose" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p id="ajaxResponse"></p>
     </div>
 
     
