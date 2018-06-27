@@ -38,7 +38,7 @@ $task = $_POST["task"];
 
     <?php
 
-    echo "<h4>Database Selection</h4>\n";
+    echo "<h4>Site ID & Database Selection</h4>\n";
     drawSetupStep($step);
     ?>
     <p class="clearfix"></p>
