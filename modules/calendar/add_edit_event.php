@@ -939,8 +939,8 @@ if ($_POST['form_action'] == "save") {
 
     //-------------------------------------
     //(CHEMED)
-    //Set default facility for a new event based on the given 'userid'
-    if ($userid) {
+    //Set default facility for a new event based on logged in user, not provider (event slot)
+    if ($_SESSION['authId']) {
         /*************************************************************
         $pref_facility = sqlFetchArray(sqlStatement("SELECT facility_id, facility FROM users WHERE id = $userid"));
         *************************************************************/
@@ -960,7 +960,7 @@ if ($_POST['form_action'] == "save") {
             FROM users u
             LEFT JOIN facility f on (u.facility_id = f.id)
             WHERE u.id = ?
-            ", array($userid) ));
+            ", array($_SESSION['authId']) ));
         }
         /************************************************************/
         $e2f = $pref_facility['facility_id'];
