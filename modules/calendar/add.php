@@ -8,6 +8,26 @@ require_once("$srcdir/calendar.inc");
 
 $dateFormat = DateFormatRead();
 call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
+
+// create event slots according to:
+
+// 1. Provider Vacation dates
+if ($_POST['form_action'] == "vacation_submit") {
+
+}
+
+// 2. Clinic Holiday dates
+if ($_POST['form_action'] == "holiday_submit") {
+
+}
+
+// after slots creation is done, close "Add Vacation/Holiday" window
+if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holiday_submit") {
+  $close_window = '<script type="text/javascript">window.close();</script>';
+  echo $close_window;
+  exit();
+}
+
 ?>
 <html>
 <head>
@@ -30,15 +50,15 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 
     <!--Vacation & Holiday tabs-->
     <!--Add Vacation tab-->
-    <form class="form-horizontal vacation-form"  action="" method="POST" style="margin-top: 20px;">
+    <form class="form-horizontal vacation-form" id="provider_form" action="add.php" method="POST" style="margin-top: 20px;">
       <div class="form-group">
         <label class="control-label col-sm-2" for="startDate">Start date</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Date" required>
+          <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Date">
         </div>
         <label class="control-label col-sm-2" for="endDate">End date</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="endDate" name="endDate" placeholder="Date" required>
+          <input type="text" class="form-control" id="endDate" name="endDate" placeholder="Date">
         </div>
       </div>
       <div class="form-group">
@@ -59,7 +79,8 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-default" name="submit" value="1">Submit</button>
+          <input type="hidden" name="form_action" value="vacation_submit">
+          <button type="submit" class="btn btn-default" id="vacation_submit">Submit</button>
         </div>
       </div>
     </form>
@@ -67,11 +88,11 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 
 
     <!--Add Holiday tab-->
-    <form class="form-horizontal holiday-form"  action="" method="POST" style="margin-top: 20px;">
+    <form class="form-horizontal holiday-form" id="clinic_form" action="add.php" method="POST" style="margin-top: 20px;">
       <div class="form-group">
         <label class="control-label col-sm-2" for="addDate">Add date</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="addDate" name="addDate" placeholder="Date" required>
+          <input type="text" class="form-control" id="addDate" name="addDate" placeholder="Date">
         </div>
       </div>
       <div class="form-group">
@@ -121,7 +142,8 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
           <button type="button" class="btn btn-default" id="add">Add</button>
         </div>
         <div class="col-sm-2">
-          <button type="submit" class="btn btn-default" name="submit" value="1">Submit</button>
+          <input type="hidden" name="form_action" value="holiday_submit">
+          <button type="submit" class="btn btn-default" id="holiday_submit">Submit</button>
         </div>
       </div>
     </form>
@@ -136,6 +158,13 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
       $(document).ready(function () {
         // Adding selected date to date-table
         $("#add").on("click", function () {
+          //checking if date field is empty before adding
+          var f = document.getElementById("clinic_form");
+          if (!f.addDate.value) {
+            alert('<?php echo addslashes( xl("Please select a date before adding.") ); ?>');
+            return false;
+          }
+
           var dateForm = $("input#addDate").val();
           var row = '<tr class="date-row">' +
                         '<td>' + dateForm + '</td>'
@@ -167,7 +196,9 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
     </script>
   </div>
 
+
   <script>
+    // Date Picking
     $('#addDate').datetimepicker({
       timepicker: false,
       format: '<?php echo $dateFormat; ?>',
@@ -179,7 +210,7 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
       formatDate: '<?php echo $dateFormat; ?>',
       onShow: function( ct ){
         this.setOptions({
-          maxDate: $('#endDate').val() ? $('#endDate').val() : false
+          maxDate: $('#endDate').val() ? $('#endDate').val() : false  // limit ending date choices if end date available
        })
       }
     });
@@ -189,9 +220,55 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
       formatDate: '<?php echo $dateFormat; ?>',
       onShow: function( ct ){
         this.setOptions({
-          minDate: $('#startDate').val() ? $('#startDate').val() : false
+          minDate: $('#startDate').val() ? $('#startDate').val() : false  // limit starting date choices if start date available
        })
       }
+    });
+
+    // Submitting Provider Vacation dates
+    $("#vacation_submit").click(function () {
+      // check for errors/empty inputs in Provider Vacation form
+      var f = document.getElementById("provider_form");
+      // in starting date and ending date
+      if (!f.startDate.value || !f.endDate.value) {
+        alert('<?php echo addslashes( xl("A start date and an end date are both required for the range of vacation.") ); ?>');
+        return false;
+      }
+      // if provider is not chosen
+      var selected_option = $("#provider_id option:selected").val();
+      if (selected_option === "0") {
+        alert('<?php echo addslashes( xl("A provider is required.") ); ?>');
+        return false;
+      }
+      // if there is an appt. on any of requested dates
+
+      // validation done - submit form
+      top.restoreSession();
+      f.submit();
+      return true;
+    });
+
+    // Submitting Clinic Holiday dates
+    $("#holiday_submit").click(function () {
+      // check for errors/empty inputs in Clinic Holiday form
+      var f = document.getElementById("clinic_form");
+      // in add date
+      if (!f.addDate.value) {
+        alert('<?php echo addslashes( xl("A selected date(s) is required for a clinic holiday.") ); ?>');
+        return false;
+      }
+      // if clinic is not chosen
+      var selected_option = $("#clinic_id option:selected").val();
+      if (selected_option === "0") {
+        alert('<?php echo addslashes( xl("A clinic is required.") ); ?>');
+        return false;
+      }
+      // if there is an appt. on any of requested dates
+
+      // validation done - submit form
+      top.restoreSession();
+      f.submit();
+      return true;
     });
   </script>
 </body>
