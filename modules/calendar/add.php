@@ -5,6 +5,7 @@ require_once("$srcdir/htmlspecialchars.inc.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/calendar.inc");
+require_once("$srcdir/encounter_events.inc.php");
 
 $dateFormat = DateFormatRead();
 call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
@@ -13,7 +14,60 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 
 // 1. Provider Vacation dates
 if ($_POST['form_action'] == "vacation_submit") {
+  $event_date = $_POST['startDate'];  // Vacation starts at this date
+  $event_end_date = $_POST['endDate'];  // Vacation ends at this date
+  $starttime = "{$GLOBALS['schedule_start']}:00:00";
+  $endtime = "{$GLOBALS['schedule_end']}:00:00";
+  $provider = $_POST['provider_id'];
 
+  // Event location specifications
+  $locationspecs = array( "event_location" => "",
+                          "event_street1" => "",
+                          "event_street2" => "",
+                          "event_city" => "",
+                          "event_state" => "",
+                          "event_postal" => "" );
+  $locationspec = serialize($locationspecs);
+
+  // Recurring event specifications
+  $recurrspec = array( "event_repeat_freq" => "1", // every
+                       "event_repeat_freq_type" => "0",  // day
+                       "event_repeat_on_num" => "1",
+                       "event_repeat_on_day" => "0",
+                       "event_repeat_on_freq" => "0",
+                       "exdate" => "" );
+  $args = array();
+    // specify values needed for the INSERT into table - libreehr_postcalendar_events - columns
+    $args['form_category'] = "4";  // Vacation
+    $args['new_multiple_value'] = "";
+    $args['form_provider'] = $provider;  // selected provider
+    $args['form_title'] = "Vacation";
+    $args['form_comments'] = "";
+    $args['event_date'] = $event_date;
+    $args['form_enddate'] = $event_end_date;
+    $args['duration'] = 0;  // no duration in provider events
+    $args['form_repeat'] = "1";  // Repeats box checked
+    $args['recurrspec'] = $recurrspec;
+    $args['starttime'] = $starttime;
+    $args['endtime'] = $endtime;
+    $args['form_allday'] = 0;
+    $args['form_apptstatus'] = "-";  // None
+    $args['form_prefcat'] = "0";  // None
+    $args['locationspec'] = $locationspec;
+
+    $def_facility = sqlFetchArray(sqlStatement( "SELECT u.facility_id
+                                                 FROM users u
+                                                 LEFT JOIN facility f on (u.facility_id = f.id)
+                                                 WHERE u.id = ?", array($_SESSION['authId']) ));
+    // default_user_facility denotes id of default facility of logged in user
+    $default_user_facility = $def_facility['facility_id'];
+    // Taking facility & billing facility as default facility of logged in user
+    $args['facility'] = $default_user_facility;
+    $args['billing_facility'] = $default_user_facility;
+
+  // Insert events - Vacation event starts at some date and repeats till end date,
+  // covering Calendar slots over entire clinic hours under selected provider.
+  InsertEvent($args);
 }
 
 // 2. Clinic Holiday dates
@@ -139,6 +193,20 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-2">
+          <input type="radio" id="radio-choice-1" name="holiday-types" value="Full day" class="holiday-radio">
+          <label for="radio-choice-1">Full day</label>
+        </div>
+        <div class="col-sm-2">
+          <input type="radio" id="radio-choice-2" name="holiday-types" value="First half" class="holiday-radio">
+          <label for="radio-choice-2">First Half</label>
+        </div>
+        <div class="col-sm-2">
+          <input type="radio" id="radio-choice-3" name="holiday-types" value="Second half" class="holiday-radio">
+          <label for="radio-choice-3">Second Half</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-2">
           <button type="button" class="btn btn-default" id="add">Add</button>
         </div>
         <div class="col-sm-2">
@@ -151,23 +219,33 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
     <table class="table table-hover col-sm-offset-1" id="date-table">
       <tr style="background-color: #ddd;">
         <th><?php echo xlt('Selected date(s)')?></th>
+        <th><?php echo xlt('Full day/Half day')?></th>
       </tr>
     </table>
 
     <script type="text/javascript">
       $(document).ready(function () {
-        // Adding selected date to date-table
+        // Adding selected date and day type to date-table
         $("#add").on("click", function () {
-          //checking if date field is empty before adding
+          // checking if date field is empty before adding
           var f = document.getElementById("clinic_form");
           if (!f.addDate.value) {
             alert('<?php echo addslashes( xl("Please select a date before adding.") ); ?>');
             return false;
           }
+          // checking if any holiday radio button - full day/half day - is checked before adding
+          if($(".holiday-radio").is(":checked")) {
+            var dayType = $("input[name='holiday-types']:checked").val(); // either Full day or First half or Second half
+          } else {
+            alert('<?php echo addslashes( xl("Please specify if holiday is full day or half day.") ); ?>');
+            return false;
+          }
 
-          var dateForm = $("input#addDate").val();
+          // adding rows
+          var formDate = $("input[name='addDate']").val();
           var row = '<tr class="date-row">' +
-                        '<td>' + dateForm + '</td>'
+                        '<td>' + formDate + '</td>' +
+                        '<td>' + dayType + '</td>' +
                     '</tr>';
           $("#date-table").append(row).fadeIn();
         });
@@ -187,7 +265,8 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
 
         $("#vacation-btn").on("click", function () {
           $("#date-table").fadeOut(100);
-          $(".date-row").remove();
+          $(".date-row").remove();  // clear data-table rows
+          $(".holiday-radio").prop("checked", false);  // uncheck all radio buttons
           $(".holiday-form").fadeOut(100, function (){
             $(".vacation-form").fadeIn(400);
           });
@@ -254,7 +333,7 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
       var f = document.getElementById("clinic_form");
       // in add date
       if (!f.addDate.value) {
-        alert('<?php echo addslashes( xl("A selected date(s) is required for a clinic holiday.") ); ?>');
+        alert('<?php echo addslashes( xl("A selected date is required for a clinic holiday.") ); ?>');
         return false;
       }
       // if clinic is not chosen
