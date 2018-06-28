@@ -72,12 +72,81 @@ if ($_POST['form_action'] == "vacation_submit") {
 
 // 2. Clinic Holiday dates
 if ($_POST['form_action'] == "holiday_submit") {
+  function createHolidayEvent($key, $value, $prov_id) {
+    // $key is event date as a YYYY-MM-DD string
+    // $value is day type string
+    // $prov_id is id string of a provider
 
+    $event_date = $key;  // event date
+    $event_end_date = "0000-00-00";  // Since, single event
+    // if $value == "Full day"
+    $starttime = "{$GLOBALS['schedule_start']}:00:00";
+    $endtime = "{$GLOBALS['schedule_end']}:00:00";
+    if ($value == "First half") {
+      $starttime = "{$GLOBALS['schedule_start']}:00:00";
+      $endtime = "13:00:00";
+    } elseif ($value == "Second half") {
+      $starttime = "13:00:00";
+      $endtime = "{$GLOBALS['schedule_end']}:00:00";
+    }
+    $provider = $prov_id;
+
+    // Event location specifications
+    $locationspecs = array( "event_location" => "",
+                            "event_street1" => "",
+                            "event_street2" => "",
+                            "event_city" => "",
+                            "event_state" => "",
+                            "event_postal" => "" );
+    $locationspec = serialize($locationspecs);
+
+    // Recurring event specifications
+    $recurrspec = array( "event_repeat_freq" => "0",
+                         "event_repeat_freq_type" => "0",
+                         "event_repeat_on_num" => "1",
+                         "event_repeat_on_day" => "0",
+                         "event_repeat_on_freq" => "0",
+                         "exdate" => "" );
+
+    $args = array();
+      // specify values needed for the INSERT into table - libreehr_postcalendar_events - columns
+      $args['form_category'] = "6";  // Holiday
+      $args['new_multiple_value'] = "";
+      $args['form_provider'] = $provider;  // selected provider
+      $args['form_title'] = "Holidays";
+      $args['form_comments'] = "";
+      $args['event_date'] = $event_date;
+      $args['form_enddate'] = $event_end_date;
+      $args['duration'] = 0;  // no duration in provider events
+      $args['form_repeat'] = "0";  // Repeats box not checked
+      $args['recurrspec'] = $recurrspec;
+      $args['starttime'] = $starttime;
+      $args['endtime'] = $endtime;
+      $args['form_allday'] = 0;
+      $args['form_apptstatus'] = "-";  // None
+      $args['form_prefcat'] = "0";  // None
+      $args['locationspec'] = $locationspec;
+      $args['facility'] = $_POST['clinic_id'];
+      $args['billing_facility'] = $_POST['clinic_id'];
+
+  // Insert events - A holiday event is made for each selected date,
+  // covering Calendar slots according to selected day type for that date under all providers.
+  InsertEvent($args);
+  }
+
+  $dateAndType = json_decode($_POST['jsonData'], true);  // convert JSON string to an associative array
+  foreach ($dateAndType as $key => $value) {
+    $providers = getProviderInfo();
+    foreach($providers as $provider) {
+      $prov_id = $provider['id'];
+      createHolidayEvent($key, $value, $prov_id); // echo "<script>console.log('{$key} {$value} {$prov_id}')</script>";
+    }
+  }
 }
 
 // after slots creation is done, close "Add Vacation/Holiday" window
 if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holiday_submit") {
-  $close_window = '<script type="text/javascript">window.close();</script>';
+  $close_window = '<html><body><script type="text/javascript">window.close();</script></body></html>';
   echo $close_window;
   exit();
 }
@@ -212,6 +281,8 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
         <div class="col-sm-2">
           <input type="hidden" name="form_action" value="holiday_submit">
           <button type="submit" class="btn btn-default" id="holiday_submit">Submit</button>
+          <!-- For passing datesAndTypes array to server via JSON -->
+          <input type="hidden" name="jsonData" id="jsonValue" value="">
         </div>
       </div>
     </form>
@@ -224,8 +295,11 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
     </table>
 
     <script type="text/javascript">
+      var datesAndTypes = {}; // declared in global scope when loading script for first time
       $(document).ready(function () {
-        // Adding selected date and day type to date-table
+        // Adding selected date and day type to:
+          // 1. an object - datesAndTypes
+        // 2. a table - date-table
         $("#add").on("click", function () {
           // checking if date field is empty before adding
           var f = document.getElementById("clinic_form");
@@ -248,6 +322,7 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
                         '<td>' + dayType + '</td>' +
                     '</tr>';
           $("#date-table").append(row).fadeIn();
+          datesAndTypes[formDate] = dayType;  // adding data to object in format - "date" : "day type"
         });
       });
     </script>
@@ -267,6 +342,7 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
           $("#date-table").fadeOut(100);
           $(".date-row").remove();  // clear data-table rows
           $(".holiday-radio").prop("checked", false);  // uncheck all radio buttons
+          datesAndTypes = {};  // clear data in object when changing tab to Provider Vacation
           $(".holiday-form").fadeOut(100, function (){
             $(".vacation-form").fadeIn(400);
           });
@@ -276,7 +352,8 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
   </div>
 
 
-  <script>
+  <script type="text/javascript">
+  $(document).ready(function () {
     // Date Picking
     $('#addDate').datetimepicker({
       timepicker: false,
@@ -344,11 +421,16 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
       }
       // if there is an appt. on any of requested dates
 
+      // convert datesAndTypes array to a JSON string
+      var jsonString = JSON.stringify(datesAndTypes);
+      $("input[name='jsonData']").val(jsonString); // pass JSON string to an input element
+
       // validation done - submit form
       top.restoreSession();
       f.submit();
       return true;
     });
+  });
   </script>
 </body>
 </html>
