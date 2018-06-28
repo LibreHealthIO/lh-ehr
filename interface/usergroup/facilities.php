@@ -105,8 +105,7 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 <html>
 <head>
 <?php
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
-    resolveFancyboxCompatibility();
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","jquery-ui","iziModalToast"));
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 
@@ -114,31 +113,76 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 
 $(document).ready(function(){
 
-    // fancy box
-    enable_modals();
-
-    // special size for
-    $(".addfac_modal").fancybox( {
-        'overlayOpacity' : 0.0,
-        'showCloseButton' : true,
-        'frameHeight' : 460,
-        'frameWidth' : 650
+    //iziModal for adding new facilities
+    $(".addFacilities").on("click", function (event) {
+      event.preventDefault();
+      $("#addFacilities-iframe").iziModal('open');
     });
 
-    // special size for
-    $(".medium_modal").fancybox( {
-        'overlayOpacity' : 0.0,
-        'showCloseButton' : true,
-        'frameHeight' : 460,
-        'frameWidth' : 650
+    $("#addFacilities-iframe").iziModal({
+      title: 'Add Facility',
+      subtitle: 'Enter details about the new facility',
+      headerColor: '#88A0B9',
+      closeOnEscape: true,
+      fullscreen: true,
+      overlayClose: false,
+      closeButton: true,
+      theme: 'light',
+      iframe: true,
+      width: 700,
+      focusInput: true,
+      padding: 5,
+      iframeHeight: 350,
+      iframeURL: "facilities_add.php"
     });
 
+    //iziModal for editing existing facilities
+    $(".editFacilities").on("click", function (event) {
+      event.preventDefault();
+      var dyn_link = parseInt($(this).attr("data-text"));
+      initIziLink(dyn_link);
+    });
+
+    function initIziLink(link) {
+      $("#editFacilities-iframe").iziModal({
+        title: 'Edit Facility',
+        subtitle: 'Edit details about the facility',
+        headerColor: '#88A0B9',
+        closeOnEscape: true,
+        fullscreen: true,
+        overlayClose: false,
+        closeButton: true,
+        theme: 'light',
+        iframe: true,
+        width: 700,
+        focusInput: true,
+        padding: 5,
+        iframeHeight: 350,
+        iframeURL: "facility_admin.php?fid=" + link,
+        onClosed: function () {
+          setTimeout(function () {
+            parent.$(".fa-refresh").click();
+          }, 300);
+        }
+      });
+
+      setTimeout(function () {
+        call_izi();
+      }, 100);
+    }
+
+    function call_izi() {
+      $("#editFacilities-iframe").iziModal('open');
+    }
 });
 
 </script>
 </head>
 
 <body class="body_top">
+  <!-- to initialize the iziModal -->
+  <div id="addFacilities-iframe"></div>
+  <div id="editFacilities-iframe"></div>
 
 <div>
     <div>
@@ -148,7 +192,7 @@ $(document).ready(function(){
                 <b><?php echo xlt('Facilities'); ?></b>&nbsp;
             </td>
             <td>
-                 <a href="facilities_add.php" class="iframe addfac_modal css_button cp-positive"><span><?php echo xlt('Add');?></span></a>
+                 <a href="#" class="css_button cp-positive addFacilities"><span><?php echo xlt('Add');?></span></a>
             </td>
         </tr>
     </table>
@@ -179,7 +223,7 @@ $(document).ready(function(){
           if ($iter3{state}!="")$varstate=$iter3{state}.",";
     ?>
     <tr height="22">
-       <td><b><a href="facility_admin.php?fid=<?php echo $iter3{id};?>" class="iframe medium_modal"><span><?php echo htmlspecialchars($iter3{name});?></span></a></b>&nbsp;</td>
+       <td><b><a href="#" data-text="<?php echo $iter3{id};?>" class="editFacilities"><span><?php echo htmlspecialchars($iter3{name});?></span></a></b>&nbsp;</td>
        <td><?php echo htmlspecialchars($varstreet.$varcity.$varstate.$iter3{country_code}." ".$iter3{postal_code}); ?>&nbsp;</td>
        <td><?php echo htmlspecialchars($iter3{phone});?>&nbsp;</td>
     </tr>
