@@ -10,8 +10,10 @@
 <?php
     include_once("includes/shared.inc.php");
     include_once("includes/settings.inc.php");
+    require_once (dirname(__FILE__) . '/../../library/authentication/password_hashing.php');
     include_once("classes/Database.php");
     include_once("includes/functions.inc.php");
+
 ?>
 
 <?php
@@ -30,7 +32,6 @@
             $iuname         =  $_POST["iuname"];           $igroup         = $_POST["igroup"];
 
             $installer = new Database($_POST);
-            $total_process = 20; //tract the total number of processes(100% if complete).
 
           // store the session variables in a temporal storage temp/session_id.text or php
           // deletes this file if it is 2 days older or so cause no longer needed
@@ -294,74 +295,76 @@
             if (empty($installer->clone_database)) {
 
                 sleep(1);
-                $messageArray["message"]  = "Setting version indicators...";
-                $messageArray["status"]   = 200;
+                $messageArray["message"] = "Setting version indicators...";
+                $messageArray["status"] = 200;
                 $messageArray["percentage"] = 69;
-                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                 sleep(1);
-                if ( ! $installer->add_version_info() ) {
+                if (!$installer->add_version_info()) {
                     sleep(1);
-                    $messageArray["message"]  = $installer->error_message;
-                    $messageArray["status"]   = 400;
+                    $messageArray["message"] = $installer->error_message;
+                    $messageArray["status"] = 400;
                     $messageArray["percentage"] = 69;
-                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
-                }
-                else {
+                } else {
                     sleep(1);
-                    $messageArray["message"]  = "Successfully added version info to database";
-                    $messageArray["status"]   = 200;
+                    $messageArray["message"] = "Successfully added version info to database";
+                    $messageArray["status"] = 200;
                     $messageArray["percentage"] = 71;
-                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
                 }
 
                 sleep(1);
-                $messageArray["message"]  = "Writing global configuration defaults...";
-                $messageArray["status"]   = 200;
+                $messageArray["message"] = "Writing global configuration defaults...";
+                $messageArray["status"] = 200;
                 $messageArray["percentage"] = 75;
-                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                 sleep(1);
-                if ( ! $installer->insert_globals() ) {
+                if (!$installer->insert_globals()) {
                     sleep(1);
-                    $messageArray["message"]  = $installer->error_message;
-                    $messageArray["status"]   = 400;
+                    $messageArray["message"] = $installer->error_message;
+                    $messageArray["status"] = 400;
                     $messageArray["percentage"] = 76;
-                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
-                }
-                else {
+                } else {
                     sleep(1);
-                    $messageArray["message"]  = "Successfully written global configuration defaults";
-                    $messageArray["status"]   = 200;
+                    $messageArray["message"] = "Successfully written global configuration defaults";
+                    $messageArray["status"] = 200;
                     $messageArray["percentage"] = 78;
-                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
                 }
 
                 sleep(1);
-                $messageArray["message"]  = "Adding Initial User...";
-                $messageArray["status"]   = 200;
+                $messageArray["message"] = "Adding Initial User...";
+                $messageArray["status"] = 200;
                 $messageArray["percentage"] = 79;
-                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                 sleep(1);
-                if ( ! $installer->add_initial_user() ) {
+
+                if (!$installer->add_initial_user()) {
                     sleep(1);
-                    $messageArray["message"]  = $installer->error_message;
-                    $messageArray["status"]   = 400;
-                    $messageArray["percentage"] = 80;
-                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    $messageArray["message"] = $installer->error_message;
+                    $messageArray["status"] = 400;
+                    $messageArray["percentage"] = 79;
+                    file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
-                }else{
+                } else {
                     sleep(1);
-                    $messageArray["message"]  = "Successfully added initial user <span style='color: black;text-decoration: underline;'> ". $installer->iuser." </span> <span class='fa fa-clock-o'></span> <i class='fa fa-spinner fa-spin pull-right' style='font-size:24px'></i>";
-                    $messageArray["status"]   = 200;
-                    $messageArray["percentage"] = 82;
-                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    $messageArray["message"] = $installer->success_message;
+                    $messageArray["status"] = 200;
+                    $messageArray["percentage"] = 91;
+                    file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
+
                 }
 
             }
+
+
 
             if (!empty($installer->clone_database) ) {
                 // Database was cloned, skip ACL setup.
@@ -384,7 +387,6 @@
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                 sleep(1);
             }
-
 
 
 ?>

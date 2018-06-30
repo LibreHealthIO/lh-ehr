@@ -232,7 +232,7 @@
             <p class="clearfix"></p>
             <div class="row">
                 <div class="col-md-2"><label>Initial Group:</label></div>
-                <div class="col-md-4"><input style="width: 100%;" name='igroup' value='Default' type="text" class="form-control"></div>
+                <div class="col-md-4"><input style="width: 100%;" name='igroup' value='Default' type="text" class="form-control" required></div>
                 <div class="col-md-6"><p class="help-block">(This is the group that will be created for your users.  This should be the name of your practice.)</p></div>
             </div>
             <p class="clearfix"></p>

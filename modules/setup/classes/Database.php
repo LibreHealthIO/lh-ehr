@@ -240,31 +240,40 @@ class Database
     }
 
     public function add_initial_user() {
+
         if ($this->execute_sql("INSERT INTO groups (id, name, user) VALUES (1,'$this->igroup','$this->iuser')") == FALSE) {
-            $this->error_message = "ERROR. Unable to add initial user group\n" .
-                "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
-            return FALSE;
-        }
-        $password_hash = "NoLongerUsed";  // This is the value to insert into the password column in the "users" table. password details are now being stored in users_secure instead.
-        $salt=oemr_password_salt();     // Uses the functions defined in library/authentication/password_hashing.php
-        $hash=oemr_password_hash($this->iuserpass,$salt);
-        if ($this->execute_sql("INSERT INTO users (id, username, password, authorized, lname, fname, facility_id, calendar, cal_ui) VALUES (1,'$this->iuser','$password_hash',1,'$this->iuname','$this->iufname',3,1,3)") == FALSE) {
-            $this->error_message = "ERROR. Unable to add initial user\n" .
-                "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
-            return FALSE;
-
+            $this->error_message = "ERROR. Unable to add initial user group "." ".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")";
+            return false;
         }
 
-        // Create the new style login credentials with blowfish and salt
-        if ($this->execute_sql("INSERT INTO users_secure (id, username, password, salt) VALUES (1,'$this->iuser','$hash','$salt')") == FALSE) {
-            $this->error_message = "ERROR. Unable to add initial user login credentials\n" .
-                "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
-            return FALSE;
-        }
-        // Add the official libreehr users (services)
-        if ($this->load_file($this->additional_users,"Additional Official Users") == FALSE) return FALSE;
+        else{
+            $password_hash = "NoLongerUsed";  // This is the value to insert into the password column in the "users" table. password details are now being stored in users_secure instead.
+            $salt=oemr_password_salt();     // Uses the functions defined in library/authentication/password_hashing.php
+            $hash=oemr_password_hash($this->iuserpass,$salt);
+            if ($this->execute_sql("INSERT INTO users (id, username, password, authorized, lname, fname, facility_id, calendar, cal_ui) VALUES (1,'$this->iuser','$password_hash',1,'$this->iuname','$this->iufname',3,1,3)") == FALSE) {
+                $this->error_message = "ERROR. Unable to add initial user"." ".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")";
+                return false;
 
-        return TRUE;
+            }else{
+
+                // Create the new style login credentials with blowfish and salt
+                if ($this->execute_sql("INSERT INTO users_secure (id, username, password, salt) VALUES (1,'$this->iuser','$hash','$salt')") == FALSE) {
+                    $this->error_message = "ERROR. Unable to add initial user login credentials\n" .
+                        "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
+                    return false;
+                }else{
+                    // Add the official libreehr users (services)
+                    if ($this->load_file($this->additional_users,"Additional Official Users") == FALSE) return FALSE;
+                    $this->success_message = "successfully added initial user";
+                    return true;
+
+                }
+
+            }
+        }
+
+
+
     }
 
     /**
