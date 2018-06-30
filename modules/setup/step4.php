@@ -81,7 +81,7 @@
             <p class="clearfix"></p>
             <div class="row">
                 <div class="col-md-2"><label>Login Name:</label></div>
-                <div class="col-md-4"><input type="text" value="libreehr" name="login" class="form-control" required></div>
+                <div class="col-md-4"><input type="text" value="libreehr" name="login" class="form-control" ></div>
                 <div class="col-md-6"><p class="help-block">(This is the name of the LibreHealth EHR login name in MySQL - 'libreehr' is the recommended)</p></div>
             </div>
             <p class="clearfix"></p>
@@ -208,13 +208,13 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-2"><label>Initial User:</label></div>
-                <div class="col-md-4"><input style="width: 100%;" value="admin" name="iuser" type="text" class="form-control" required></div>
+                <div class="col-md-4"><input style="width: 100%;" value="admin" name="iuser" type="text" class="form-control"></div>
                 <div class="col-md-6"><p class="help-block">(This is the login name of user that will be created for you. Limit this to one word.)</p></div>
             </div>
             <p class="clearfix"></p>
             <div class="row">
                 <div class="col-md-2"><label>Initial User Password:</label></div>
-                <div class="col-md-4"><input style="width: 100%;" value="" name="iuserpass" type="password" class="form-control" required></div>
+                <div class="col-md-4"><input style="width: 100%;" value="" name="iuserpass" type="password" class="form-control"></div>
                 <div class="col-md-6"><p class="help-block">(This is the account for the initial user account above.)</p></div>
             </div>
             <p class="clearfix"></p>
@@ -240,7 +240,7 @@
         </div>
     
         <div class='control-btn'>
-            <button type='submit' class='controlBtn'>
+            <button id="submitStep4" type='submit' class='controlBtn'>
                 Continue  <i class='fa fa-arrow-circle-right'></i>
             </button>
         </div>
@@ -248,9 +248,14 @@
     <p class="clearfix"></p>
     <p class="clearfix"></p>
 
-    <div id="ajaxAlert" class="alert alert-dismissable fade in hidden">
-        <a href="#" id="ajaxDivClose" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <div id="ajaxAlert" class="alert fade in hidden">
+        <a href="#" id="ajaxDivClose" class="close">&times;</a>
         <p id="ajaxResponse"></p>
+    </div>
+    <div class="progress">
+        <div id="libreehrProgress" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+             aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:0.2%">
+        </div>
     </div>
 
     
@@ -258,7 +263,7 @@
         echo '<form action="step3.php" method="post">
                             <div class="control-btn2">
                             <input type="hidden" value="3" name="step">
-                            <button type="submit" class="controlBtn">
+                            <button id="backStep4" type="submit" class="controlBtn">
                             <i class="fa fa-arrow-circle-left"></i> Back
                             </button>
                             </div>

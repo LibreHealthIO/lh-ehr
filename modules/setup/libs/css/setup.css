@@ -160,6 +160,12 @@ button.cancelBtn{
     color:#fff;
 }
 
+.btnDisabled, .btnDisabled:hover{
+    border:1px solid #E2E2E2;
+    background: #E2E2E2;
+    color: slategray;
+}
+
 input[type='button'],
 input[type='submit']{
     border:1px solid #000000;

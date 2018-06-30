@@ -35,11 +35,6 @@
 <div class="container-fluid">
     <nav class="navbar navbar-default navbar-fixed-bottom">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand header-nav" href="#" style="margin-top:-10px;">
                 <img src="libs/images/LibreHealth.png" alt="librehealth-logo" title="librehealthehr-logo" width="140">
             </a>

@@ -97,7 +97,8 @@ $task = $_POST["task"];
 
 
       <?php
-    echo "<div class='text-center'>
+
+      echo "<div class='text-center'>
         <table class='table table-bordered table-hover'>
             <thead>
             <tr>
@@ -144,20 +145,19 @@ $task = $_POST["task"];
                 $pass .='<td><span class="fa fa-check green"></span></td></tr><tr>';
             }
 
-
             //checking for mysql version
             if(!ini_get('safe_mode')) {
 //                $pass .='<td>Safe Mode is <strong>off</strong></td>';
-                preg_match('/[0-9]\.[0-9]+\.[0-9]+/', shell_exec('mysql -V'), $version);
+                $version = find_SQL_Version();
 
-                if(version_compare($version[0], '4.1.20', '<')) {
+                if(version_compare($version, '4.1.20', '<')) {
                     $fail .= '<td><strong>MySQL</strong></td>';
-                    $fail .= '<td>You need<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:.'.$version[0].')</strong></td>';
+                    $fail .= '<td>You need<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:.'.$version.')</strong></td>';
                     $fail .= '<td><span class="fa fa-times red"></span></td>';
                 }
                 else {
                     $pass .='<td><strong>MySQL</strong></td>';
-                    $pass .='<td>You have<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:'.$version[0].')</strong></td>';
+                    $pass .='<td>You have<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:'.$version.')</strong></td>';
                     $pass .='<td><span class="fa fa-check green"></span></td>';
                 }
             }
@@ -227,19 +227,6 @@ $task = $_POST["task"];
                             </form>
                     ';
          }
-
-      echo "<h2>Exact Version PHP & MySQL: </h2>";
-      printf("PHP version: %s\n", PHP_VERSION);
-
-      ##### Without DB Access
-      ob_start();
-      phpinfo(INFO_MODULES);
-      $info = ob_get_contents();
-      ob_end_clean();
-      $info = stristr($info, 'Client API version');
-      preg_match('/[1-9].[0-9].[1-9][0-9]/', $info, $match);
-      $gd = $match[0];
-      echo '</br>MySQL:  '.$gd.' <br />';
 
             ?>
 

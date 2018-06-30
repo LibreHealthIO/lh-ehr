@@ -52,7 +52,7 @@ class Database
         // Entities to hold error and debug messages
         $this->error_message   = '';
         $this->debug_message   = '';
-        $this->success_message = 'wow';
+        $this->success_message = '';
         // Entity to hold sql connection
         $this->dbh = false;
     }
@@ -60,10 +60,11 @@ class Database
     public function login_is_valid()
     {
         if ( ($this->login == '') || (! isset( $this->login )) ) {
-              $this->error_message = "login is invalid false: ' $this->login '";
+              $this->error_message .= " Please pick a proper login name. Login name cant be empty";
             return false;
         }else{
-              $this->success_message = "got login wow parameters";
+            //could be used to send any success message to the user
+              $this->success_message = "Login name ok";
             return true;
         }
 
@@ -71,20 +72,33 @@ class Database
 
     public function iuser_is_valid()
     {
-        if ( strpos($this->iuser, " ") ) {
-            $this->error_message = "Initial user is invalid: '$this->iuser'";
-            return FALSE;
+        if ( ($this->iuser == '') || (! isset( $this->iuser )) ) {
+            $this->error_message = "Initial user is invalid cannot be empty";
+            return false;
         }
-        return TRUE;
+        else{
+            if ( strpos($this->iuser, " ") ) {
+                $this->error_message = "Initial user is invalid: <span style='color: black;text-decoration: underline;'>".$this->iuser."</span> .Initial User field can only contain one word and no spaces.";
+                return false;
+            }else{
+                //could be used to send any success message to the user
+                $this->success_message = "checking user valid success";
+                return true;
+            }
+        }
+
     }
 
     public function password_is_valid()
     {
         if ( $this->pass == "" || !isset($this->pass) ) {
-            $this->error_message = "The password for the new database account is invalid: '$this->pass'";
-            return FALSE;
+            $this->error_message = "The password for the new database account is invalid. Password cannot be empty.";
+            return false;
+        }else{
+            //could be used to send any success message to the user
+            $this->success_message = "Password ok";
+            return true;
         }
-        return TRUE;
     }
 
     public function user_password_is_valid()
@@ -101,13 +115,15 @@ class Database
         $this->dbh = $this->connect_to_database( $this->server, $this->root, $this->rootpass, $this->port );
         if ( $this->dbh ) {
             if (! $this->set_sql_strict()) {
-                $this->error_message = 'unable to set strict sql setting';
+                $this->error_message = "Unable to set strict sql setting";
                 return false;
+            }else{
+                $this->success_message = "Successfully connected to database as root";
+                return true;
             }
 
-            return true;
         } else {
-            $this->error_message = 'unable to connect to database as root';
+            $this->error_message = "Unable to connect to database as <span style='color: black;text-decoration: underline;'>". $this->root. "</span>. Pease check your login credentials";
             return false;
         }
     }
@@ -569,7 +585,7 @@ $config = 1; /////////////
         global $OE_SITES_BASE;
         $source_site_id = $this->source_site_id;
 
-        include("$OE_SITES_BASE/$source_site_id/sqlconf.php");
+        include("$OE_SITES_BASE/$source_site_id/sqlconf2.php");
 
         if (empty($config)) die("Source site $source_site_id has not been set up!");
 

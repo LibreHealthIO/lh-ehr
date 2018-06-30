@@ -15,8 +15,11 @@
 ?>
 
 <?php
+        // start session for the database process
+            session_start();
+
         // get all post variables coming from ajax method
-            $server         =  $_POST["server"];           $port           = $_POST["por"];
+            $server         =  $_POST["server"];           $port           = $_POST["port"];
             $dbname         =  $_POST["dbname"];           $login          = $_POST["login"];
             $pass           =  $_POST["pass"];             $root           = $_POST["root"];
             $rootpass       =  $_POST["rootpass"];         $loginhost      = $_POST["loginhost"];
@@ -27,28 +30,360 @@
             $iuname         =  $_POST["iuname"];           $igroup         = $_POST["igroup"];
 
             $installer = new Database($_POST);
+            $total_process = 20; //tract the total number of processes(100% if complete).
+
+          // store the session variables in a temporal storage temp/session_id.text or php
+          // deletes this file if it is 2 days older or so cause no longer needed
+            $files = glob("tmp/*");
+            $now   = time();
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    if ($now - filemtime($file) >= 60 * 60 * 24 * 2) { // 2 days and older
+                        unlink($file);
+                    }
+                }
+            }
+
+            // array for sstoring the progress, message and status for each process taking place
+            $messageArray = array();
 
         // Server side form Validation
         // (applicable if not cloning from another database)
 
         if(empty($installer->clone_database)){
             if ( ! $installer->login_is_valid() ) {
-//                echo "ERROR. Please pick a proper 'Login Name'.<br>";
-//                echo "Click Back in browser to re-enter.<br>";
-                $arr = array(
-                    "message" => $installer->error_message,
-                    "status"  => 400
-                );
-                echo json_encode($arr);
+                $messageArray["message"]  = $installer->error_message;
+                $messageArray["status"]   = 400;
+                $messageArray["percentage"] = 2;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
             }else{
-                $arr = array(
-                    "message" => $installer->success_message,
-                    "status"  => 200
-                );
-                echo json_encode($arr);
+                $messageArray["message"]  = $installer->success_message;
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 2;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+
+            if ( ! $installer->iuser_is_valid() ) {
+                sleep(1);
+                $messageArray["message"]  = $installer->error_message;
+                $messageArray["status"]   = 400;
+                $messageArray["percentage"] = 4;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }else{
+                sleep(1);
+                $messageArray["message"]  = $installer->success_message;
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 4;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+
+            if ( ! $installer->password_is_valid() ) {
+                sleep(1);
+                $messageArray["message"]  = $installer->error_message;
+                $messageArray["status"]   = 400;
+                $messageArray["percentage"] = 6;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+            else{
+                sleep(1);
+                $messageArray["message"]  = $installer->success_message;
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 6;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+        }
+            sleep(1);
+            $messageArray["message"]  = "Configuring LibreHealth EHR...";
+            $messageArray["status"]   = 200;
+            $messageArray["percentage"] = 7;
+            file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+            sleep(1);
+
+
+        // Skip below if database shell has already been created.
+        if ($inst != 2) {
+            sleep(1);
+            $messageArray["message"]  = "Connecting to MySQL Server...";
+            $messageArray["status"]   = 200;
+            $messageArray["percentage"] = 7;
+            file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+            sleep(1);
+            if ( ! $installer->root_database_connection() ) {
+                sleep(1);
+                $messageArray["message"]  = $installer->error_message;
+                $messageArray["status"]   = 400;
+                $messageArray["percentage"] = 8;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+            else {
+                sleep(1);
+                $messageArray["message"]  = $installer->success_message;
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 8;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
             }
         }
 
+            // Only pertinent if mirroring another installation directory e.g (default site)
+            if ( ! empty($installer->source_site_id)) {
+                sleep(1);
+                $messageArray["message"]  = "Creating site directory...";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 8;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+
+                if ( ! $installer->create_site_directory() ) {
+                    sleep(1);
+                    $messageArray["message"]  = $installer->error_message;
+                    $messageArray["status"]   = 400;
+                    $messageArray["percentage"] = 8;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+                else {
+                    sleep(1);
+                    $messageArray["message"]  = "successfully created site directory";
+                    $messageArray["status"]   = 200;
+                    $messageArray["percentage"] = 9;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+            }
+
+
+            // Skip below if database shell has already been created.(if you choosed the option you have already database)
+            if ($inst != 2) {
+                sleep(1);
+                $messageArray["message"]  = "Creating database...";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 10;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+
+                if ( ! $installer->create_database() ) {
+                    sleep(1);
+                    $messageArray["message"]  = $installer->error_message. ". Could not create database <span style='color: black;text-decoration: underline;'>". $installer->dbname." </span>";
+                    $messageArray["status"]   = 400;
+                    $messageArray["percentage"] = 11;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+
+                } else {
+                    sleep(1);
+                    $messageArray["message"]  = "Successfully created database ". $installer->dbname;
+                    $messageArray["status"]   = 200;
+                    $messageArray["percentage"] = 20;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+                sleep(1);
+                $messageArray["message"]  = "Creating user with permissions for database...";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 22;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+
+                if ( ! $installer->grant_privileges() ) {
+                    sleep(1);
+                    $messageArray["message"]  = $installer->error_message. " Error when granting privileges to the specified user. <span style='color: black;text-decoration: underline;'>". $installer->login." </span>";
+                    $messageArray["status"]   = 400;
+                    $messageArray["percentage"] = 23;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                } else {
+                    sleep(1);
+                    $messageArray["message"]  = "Granted privileges to user <span style='color: black;text-decoration: underline;'> ".$installer->login. "</span > on database <span style='color: black;text-decoration: underline;'>". $installer->dbname." </span>";
+                    $messageArray["status"]   = 200;
+                    $messageArray["percentage"] = 24;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+
+                sleep(1);
+                $messageArray["message"]  = "Reconnecting as new user...";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 25;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+                //disconnects the user
+                $installer->disconnect();
+            } else {
+
+                sleep(1);
+                $messageArray["message"]  = "Connecting to MySQL Server...";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 25;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+
+
+            // connecting user to mysql connection
+            if ( ! $installer->user_database_connection() ) {
+                sleep(1);
+                $messageArray["message"]  = $installer->error_message. " Error when connecting user <span style='color: black;text-decoration: underline;'>". $installer->login." </span> to database". $installer->$dbname;
+                $messageArray["status"]   = 400;
+                $messageArray["percentage"] = 23;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+            else {
+                sleep(1);
+                $messageArray["message"]  = "Successfully connected to mysql server";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 26;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+
+
+            // Load the database files ready for execution
+            $messageArray["message"]  = "Creating Main tables... Creating Language Translation (utf8) tables... Creating CVX Immunization Codes tables... This may take a while <span class='fa fa-clock-o'></span> <i class='fa fa-spinner fa-spin pull-right' style='font-size:24px'></i>";
+            $messageArray["status"]   = 200;
+            $messageArray["percentage"] = 46;
+            file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+
+            $dump_results = $installer->load_dumpfiles();
+            if ( ! $dump_results ) {
+                $messageArray["message"]  = $installer->error_message;
+                $messageArray["status"]   = 400;
+                $messageArray["percentage"] = 27;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+            } else {
+                $messageArray["message"]  = $dump_results;
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 58;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+            }
+
+
+            sleep(1);
+            $messageArray["message"]  = "Writing SQL configuration...";
+            $messageArray["status"]   = 200;
+            $messageArray["percentage"] = 60;
+            file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+            sleep(1);
+            if ( ! $installer->write_configuration_file() ) {
+                sleep(1);
+                $messageArray["message"]  = $installer->error_message;
+                $messageArray["status"]   = 400;
+                $messageArray["percentage"] = 58;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+            else {
+                sleep(1);
+                $messageArray["message"]  = "Successfully written configuration ". $installer->conffile;
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 67;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+
+
+            // Only pertinent if not cloning another installation database
+            if (empty($installer->clone_database)) {
+
+                sleep(1);
+                $messageArray["message"]  = "Setting version indicators...";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 69;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+                if ( ! $installer->add_version_info() ) {
+                    sleep(1);
+                    $messageArray["message"]  = $installer->error_message;
+                    $messageArray["status"]   = 400;
+                    $messageArray["percentage"] = 69;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+                else {
+                    sleep(1);
+                    $messageArray["message"]  = "Successfully added version info to database";
+                    $messageArray["status"]   = 200;
+                    $messageArray["percentage"] = 71;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+
+                sleep(1);
+                $messageArray["message"]  = "Writing global configuration defaults...";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 75;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+                if ( ! $installer->insert_globals() ) {
+                    sleep(1);
+                    $messageArray["message"]  = $installer->error_message;
+                    $messageArray["status"]   = 400;
+                    $messageArray["percentage"] = 76;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+                else {
+                    sleep(1);
+                    $messageArray["message"]  = "Successfully written global configuration defaults";
+                    $messageArray["status"]   = 200;
+                    $messageArray["percentage"] = 78;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+
+                sleep(1);
+                $messageArray["message"]  = "Adding Initial User...";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 79;
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+                if ( ! $installer->add_initial_user() ) {
+                    sleep(1);
+                    $messageArray["message"]  = $installer->error_message;
+                    $messageArray["status"]   = 400;
+                    $messageArray["percentage"] = 80;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }else{
+                    sleep(1);
+                    $messageArray["message"]  = "Successfully added initial user <span style='color: black;text-decoration: underline;'> ". $installer->iuser." </span> <span class='fa fa-clock-o'></span> <i class='fa fa-spinner fa-spin pull-right' style='font-size:24px'></i>";
+                    $messageArray["status"]   = 200;
+                    $messageArray["percentage"] = 82;
+                    file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                    sleep(1);
+                }
+
+            }
+
+            if (!empty($installer->clone_database) ) {
+                // Database was cloned, skip ACL setup.
+                sleep(1);
+                $messageArray["message"]  = "Click 'continue' for further instructions.";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 100;
+                //tract the next action to do
+                $messageArray["next_state"] = "test";
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
+            else {
+                sleep(1);
+                $messageArray["message"]  = "Next step will install and configure access controls. <span style='color: black;text-decoration: underline;'>(php-GACL).</span>";
+                $messageArray["status"]   = 200;
+                $messageArray["percentage"] = 100;
+                //tract the next action to do
+                $messageArray["next_state"] = "php";
+                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                sleep(1);
+            }
 
 
 
