@@ -16,6 +16,18 @@ if (isset($_GET['set_pid'])) {
     $pid = $_GET['set_pid'];
 }
 
+$_SESSION['selected_pat_id'] = $pid;
+
+$popup = empty($_REQUEST['popup']) ? 0 : 1;
+
+// $header is HTML for table's column names row
+$header = "<th>" . text(xl_list_label('Date')) . "</th>
+           <th>" . text(xl_list_label('Time')) . "</th>
+           <th>" . text(xl_list_label('Provider')) . "</th>
+           <th>" . text(xl_list_label('Status')) . "</th>
+           <th>" . text(xl_list_label('Category')) . "</th>";
+// $coljson is a string used to map column fields on client-side to database fields
+$coljson = '{"sName": "pc_eventDate"}, {"sName": "pc_startTime"}, {"sName": "pc_aid"}, {"sName": "pc_apptstatus"}, {"sName": "pc_title"}';
 ?>
 <html>
 <head>
@@ -27,11 +39,18 @@ if (isset($_GET['set_pid'])) {
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        //iziModal displaying a log of changes in date/time/status of selected appointment
-        $("#appt-table> tbody> tr").on("click", function (event) {
+        //iziModal code for displaying a log of changes in date/time/status of selected appointment
+        // using $(static-parent).on(event, dynamic-child, function) since data row <tr> elements are dynamically created
+        $("#appt-table").on("click", "tr.data-row", function (event) {
             event.preventDefault();
             var apptPid = parseInt('<?php echo("{$pid}"); ?>');
-            var apptEid = parseInt($(this).attr("data-text"));
+            var eidString = $(this).attr("id") // id = "eid_number" for a row element <tr>
+            eidString = eidString.substring(4);
+            // when row displays "No matching records found" (no valid id)
+            if (eidString.length === 0) {
+                return false;
+            }
+            var apptEid = parseInt(eidString);
             var patName = "" + "<?php echo getPatientName($pid); ?>";
 
             initIziLink(apptPid, apptEid, patName);
@@ -40,7 +59,7 @@ if (isset($_GET['set_pid'])) {
         function initIziLink(apptPid, apptEid, patName) {
             $("#appointmentLog-iframe").iziModal({
                 title: 'Track Log of:',
-                subtitle: 'Appointment, Patient: ' + "<strong>" + patName + "</strong>",
+                subtitle: 'Appointment ID: ' + '<strong>' + apptEid + '</strong>' + ', Patient: ' + '<strong>' + patName + '</strong>',
                 headerColor: '#88A0B9',
                 closeOnEscape: true,
                 fullscreen: true,
@@ -51,7 +70,7 @@ if (isset($_GET['set_pid'])) {
                 width: 500,
                 focusInput: true,
                 padding: 5,
-                iframeHeight: 400,
+                iframeHeight: 350,
                 iframeURL: "../summary/appointment_log.php?appt_pid=" + apptPid + "&appt_eid=" + apptEid,
                 onClosed: function () {
                             setTimeout(function () {
@@ -86,11 +105,11 @@ tr.appt-head> td:last-child{
     border: none;
 }
 
-tr.appt-odd{
+tr.odd{
     background-color: #dddddd;
 }
 
-tr.appt-even{
+tr.even{
     background-color: #ffffff;
 }
 
@@ -166,33 +185,65 @@ tr.appt-hover{
     <table class="table" id="appt-table">
         <thead>
             <tr class="appt-head">
-                <th><?php echo xlt('Appt. Date'); ?></th>
-                <th><?php echo xlt('Appt. Time'); ?></th>
-                <th><?php echo xlt('Provider'); ?></th>
-                <th><?php echo xlt('Status'); ?></th>
-                <th><?php echo xlt('Category'); ?></th>
+                <?php echo $header; ?>
             </tr>
         </thead>
         <tbody>
-            <!-- Sample Data-->
-            <tr class="appt-odd" data-text="1">
-                <td><?php echo xlt('4/6/18'); ?></td>
-                <td><?php echo xlt('10:30'); ?></td>
-                <td><?php echo xlt('John Doe'); ?></td>
-                <td><?php echo xlt('No Show'); ?></td>
-                <td><?php echo xlt('Office Visit'); ?></td>
-            </tr>
-            <tr class="appt-even" data-text="2">
-                <td><?php echo xlt('1/1/18'); ?></td>
-                <td><?php echo xlt('09:30'); ?></td>
-                <td><?php echo xlt('James Doe'); ?></td>
-                <td><?php echo xlt('No Show'); ?></td>
-                <td><?php echo xlt('Office Visit'); ?></td>
+            <tr>
+                <td class="dataTables_empty">...</td>
             </tr>
         </tbody>
     </table>
     <br>
     <hr>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // initializing the DataTable
+            var oTable = $("#appt-table").dataTable({
+                "bProcessing": true,
+                "bServerSide": true,  // for server side processing in DataTables
+                // See: http://legacy.datatables.net/usage/server-side
+                "sAjaxSource": "track_appointments_ajax.php",  // data source
+                // See: http://datatables.net/usage/columns and
+                "aoColumns": [ <?php echo $coljson; ?> ],  // can be accessed by $_GET['sColumns'] in data source file
+                //values for table length
+                "aLengthMenu": [ 4, 8, 12, 16 ],
+                //value for default table length
+                "iDisplayLength": <?php echo empty($GLOBALS['gbl_appt_list_page_size']) ? '4' : $GLOBALS['gbl_appt_list_page_size']; ?>,
+                // strings for specifying various DataTables' texts
+                "oLanguage": {
+                    "sSearch": "<?php echo xla('Search all columns'); ?>:",
+                    "sLengthMenu"  : "<?php echo xla('Show ') . xla('entries:') . '<br>' . ' _MENU_ '; ?>",
+                    "sZeroRecords" : "<?php echo xla('No matching records found'); ?>",
+                    "sInfo"        : "<?php echo xla('Showing') . ' _START_ ' . xla('to{{range}}') . ' _END_ ' . xla('of') . ' _TOTAL_ ' . xla('entries'); ?>",
+                    "sInfoEmpty"   : "<?php echo xla('Nothing to show'); ?>",
+                    "sInfoFiltered": "(<?php echo xla('filtered from') . ' _MAX_ ' . xla('total entries'); ?>)",
+                    "oPaginate": {
+                        "sFirst"   : "<?php echo xla('First'); ?>",
+                        "sPrevious": "<?php echo xla('Previous'); ?>",
+                        "sNext"    : "<?php echo xla('Next'); ?>",
+                        "sLast"    : "<?php echo xla('Last'); ?>"
+                    }
+                }
+            });
+
+            // this will add bootstrap classes to search all columns and entries inputs
+            var search = $("#appt-table_filter :input");
+            var entries = $("#appt-table_length :input");
+            search.addClass("form-control form-rounded");
+            entries.addClass("form-control form-rounded");
+            // fontAwesome icons for paginate buttons
+            $('.dataTables_paginate').prepend('<i class="fa fa-arrow-circle-left fa-lg" aria-hidden="true"></i>');
+            $('.dataTables_paginate').append('<i class="fa fa-arrow-circle-right fa-lg" aria-hidden="true"></i>');
+            // for row background color change when hovering
+            $("#appt-table").on("mouseover", "tr.data-row", function() {
+                $(this).addClass("appt-hover");
+            });
+            $("#appt-table").on("mouseout", "tr.data-row", function() {
+                $(this).removeClass("appt-hover");
+            });
+        });
+    </script>
 </body>
 </html>
 

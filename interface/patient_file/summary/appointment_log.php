@@ -4,6 +4,16 @@ require_once("../../globals.php");
 require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
 
+// incoming patient id (pid) and event id (eid) of selected appointment
+$appt_pid = $_GET['appt_pid'];
+$appt_eid = $_GET['appt_eid'];
+
+$log_query = "SELECT id, apptdate, DATE_FORMAT(appttime,'%H:%i') as appttime, `status`, original_user as `user`, DATE_FORMAT(`date`,'%Y-%m-%d') as userdate
+              FROM patient_tracker
+              JOIN patient_tracker_element ON id = pt_tracker_id AND id IN (SELECT id
+                                                                            FROM patient_tracker
+                                                                            WHERE pid = $appt_pid AND eid = $appt_eid)";
+$result = sqlStatement($log_query);
 ?>
 <html>
 <head>
@@ -28,12 +38,20 @@ require_once("$srcdir/htmlspecialchars.inc.php");
 }
 
 .log-row{
-    border: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .log-font{
     font-size: 1.2em;
     text-align: center;
+}
+
+.red-text{
+    color: #FF4136;
+}
+
+.green-text{
+    color: #2ECC40;
 }
 </style>
 </head>
@@ -43,11 +61,28 @@ require_once("$srcdir/htmlspecialchars.inc.php");
     </a>
     <hr>
     <div class="log-container log-font">
-        <!-- Sample Data-->
-        <div class="log-row">appt. created by user 1 on 2/3/18 for 2/3/18 at 12:30</div>
-        <div class="log-row">appt. moved by user 2 on 2/3/18 for 4/3/18 at 14:30</div>
-        <div class="log-row">appt. moved by by user 3 on 4/3/18 for 20/3/18 at 13:45</div>
-        <div class="log-row">appt. moved by user 4 on 20/3/18 for 4/4/18 at 12:15</div>
+        <?php
+          $first_row = true;
+          while ($row = sqlFetchArray($result)) {
+            $appt_date = $row['apptdate'];
+            $appt_time = $row['appttime'];
+            $user = $row['user'];
+            $user_date = $row['userdate'];
+            $appt_status = $row['status'];
+
+            // echo log rows
+            echo "<div class='log-row'>";
+            $action = "moved";
+            $connector = "to";
+            if ($first_row) {
+                $action = "created";
+                $connector = "for";
+                $first_row = false;
+            }
+            echo "<strong>{$action}</strong> by <span class='red-text'>{$user}</span> on <span class='green-text'>{$user_date}</span> {$connector} {$appt_date} at {$appt_time} as {$appt_status}";
+            echo "</div>";
+          }
+        ?>
     </div>
 </body>
 </html>
