@@ -1613,6 +1613,18 @@ $GLOBALS_METADATA = array(
       xl('This determines how appointments display on the calendar.')
     ),
 
+    'appt_tooltip_style' => array(
+      xl('Appointment Tooltip Display Style'),
+      array(
+                '1' => xl('Last name'),
+                '2' => xl('Last name, first name'),
+                '3' => xl('Last name, first name (title)'),
+                '4' => xl('Last name, first name (title: description)'),
+      ),
+       '2',                             // default
+      xl('This determines how an appointment tooltip displays on the calendar.')
+    ),
+
 
     'number_of_appts_to_show' => array(
       xl('Appointments - Patient Summary - Number to Display'),

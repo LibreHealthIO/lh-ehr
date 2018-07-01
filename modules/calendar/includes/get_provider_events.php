@@ -51,12 +51,9 @@ foreach($fetchedEvents as $event) {
   }
   $e['e_info'] = " (" . $event['pc_title'] . ")";
   if($event["pc_pid"] > 0) {
+    // when event is a patient event (appointment)
     $e['picture_url'] = getPatientPictureUrl($event["pc_pid"]);
-    $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
-    if(!empty($event["pc_hometext"])) {
-      $e['description'] = $e['description'] . ": " . $event["pc_hometext"];
-    }
-    $e['description'] = $e['description'] . ")";
+    // this global decides display style of an appointment's slot text
     switch($GLOBALS['calendar_appt_style']) {
       case 1:
         $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'];
@@ -68,13 +65,46 @@ foreach($fetchedEvents as $event) {
         $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'] . ")";
         break;
       case 4:
-        $e['title'] = $e['description'];  // Case 4 is exactly the same as the event tooltip
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
+        if(!empty($event["pc_hometext"])) {
+          // if there's a valid comment, include it in event's title
+          $e['title'] = $e['title'] . ": " . $event["pc_hometext"];
+        }
+        $e['title'] = $e['title'] . ")";
         break;
       default:
         $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
     }
+    // this global decides display style of an appointment's tooltip
+    switch($GLOBALS['appt_tooltip_style']) {
+      case 1:
+        $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'];
+        break;
+      case 2:
+        $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
+        break;
+      case 3:
+        $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'] . ")";
+        break;
+      case 4:
+        $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
+        if(!empty($event["pc_hometext"])) {
+          // if there's a valid comment, include it in event's tooltip
+          $e['description'] = $e['description'] . ": " . $event["pc_hometext"];
+        }
+        $e['description'] = $e['description'] . ")";
+        break;
+      default:
+        $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
+    }
   } else {
-    $e['description'] = $event['pc_title'];
+    // when event is a provider event and
+    // if there's a valid comment, include it in event's tooltip
+    if(!empty($event["pc_hometext"])) {
+      $e['description'] = $event['pc_title'] . ": " . $event["pc_hometext"];
+    } else {
+      $e['description'] = $event['pc_title'];
+    }
   }
   // Merge the event array into the return array
   array_push($events, $e);
