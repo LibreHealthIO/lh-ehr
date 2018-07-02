@@ -20,8 +20,7 @@
         <form method="POST" act="">
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>" aria-describedby="usernameHelp" placeholder="Enter username" readonly/>
-            <small> Set this value in your global configuration  </small>
+            <input type="text" class="form-control" id="username" name="username" aria-describedby="usernameHelp" placeholder="Enter username" />
           </div>
           <div class="form-group">
             <label for="password">Password</label>

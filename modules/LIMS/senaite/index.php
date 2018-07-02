@@ -7,20 +7,31 @@ spl_autoload_register('Autoloader::loadClasses');
 // start a session different from the one in EHR
 session_start();
 
-
 // libraries used
 include_once('../libraries/dependencies/functions.php');
 include_once("../libraries/Guzzle/index.php");
 include_once("../../../library/sql.inc");
 
 $config = new Config;
-$authenticationHeaders = $config->getAuthenticationHeaders();
 $limsURL = $config->getLimsURL();
+
+
+
+$parser = new \GuzzleHttp\Cookie\SetCookie;
+$jar = new \GuzzleHttp\Cookie\SessionCookieJar('session_id', true);
+
+// retrieve login cookie from session and put it in a jar to be used by 
+// all the API requests
+if (isset($_SESSION['login_cookie']) && ($_SESSION['login_cookie'] != null)) {
+  $cookie = $parser->fromString($_SESSION['login_cookie']);
+  $jar->setCookie($cookie);
+  unset($_SESSION['login_cookie']);
+}
 
 // easy CURL library
 $client = new \GuzzleHttp\Client([
-  'auth' => [ $authenticationHeaders[0], $authenticationHeaders[1]],
-  'base_uri' => $limsURL
+  'base_uri' => $limsURL,
+  'cookies' => $jar
 ]);
 
 //  action routing

@@ -7,8 +7,8 @@ $analysesResultPending = [];
 $analysesToVerify = [];
 $analysesVerified = [];
 
-$analysesData = $client->get('analysis')->getBody()->getContents();
-$analysesData = json_decode($analysesData);
+$analysesData = $client->request('GET', 'analysis', ['cookies' => $jar]);
+$analysesData = json_decode($analysesData->getBody()->getContents());
 $analysesItemCount = $analysesData->count;
 
 foreach ($analysesData->items as $item) {
