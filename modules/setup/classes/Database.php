@@ -31,8 +31,7 @@ class Database
         // Record name of sql access file
         $GLOBALS['OE_SITES_BASE'] = dirname(__FILE__) . '/../../../sites';
         $GLOBALS['OE_SITE_DIR'] = $GLOBALS['OE_SITES_BASE'] . '/' . $this->site;
-//        $this->conffile  =  $GLOBALS['OE_SITE_DIR'] . '/sqlconf.php';
-        $this->conffile  =  $GLOBALS['OE_SITE_DIR'] . '/sqlconf2.php';
+        $this->conffile  =  $GLOBALS['OE_SITE_DIR'] . '/sqlconf.php';
 
         // Record names of sql table files
         $this->main_sql = dirname(__FILE__) . '/../../../sql/database.sql';
@@ -200,6 +199,8 @@ class Database
         if ($fd == FALSE) {
             $this->error_message = "ERROR.  Could not open dumpfile '$filename'.\n";
             return FALSE;
+        }else{
+            $this->success_message = "Succeeded in creating dumpfile";
         }
         $query = "";
         $line = "";
@@ -373,16 +374,16 @@ $config = 1; /////////////
         $install_results_1 = $this->get_require_contents($this->gaclSetupScript1);
         if (! $install_results_1 ) {
             $this->error_message = "install_gacl failed: unable to require gacl script 1";
-            return FALSE;
+            return false;
         }
 
         $install_results_2 = $this->get_require_contents($this->gaclSetupScript2);
         if (! $install_results_2 ) {
             $this->error_message = "install_gacl failed: unable to require gacl script 2";
-            return FALSE;
+            return false;
         }
         $this->debug_message .= $install_results_1 . $install_results_2;
-        return TRUE;
+        return true;
     }
 
     public function quick_install() {
@@ -594,7 +595,7 @@ $config = 1; /////////////
         global $OE_SITES_BASE;
         $source_site_id = $this->source_site_id;
 
-        include("$OE_SITES_BASE/$source_site_id/sqlconf2.php");
+        include("$OE_SITES_BASE/$source_site_id/sqlconf.php");
 
         if (empty($config)) die("Source site $source_site_id has not been set up!");
 

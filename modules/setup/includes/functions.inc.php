@@ -140,6 +140,34 @@
         }
 
 
+        function install_gacl($script){
+        $install_results = get_require_contents($script);
+        if (! $install_results ) {
+            return false;
+        }
+        else{
+            return $install_results;
+        }
+
+            }
 
 
+     // http://www.php.net/manual/en/function.include.php
+    function get_require_contents($filename) {
+        if (is_file($filename)) {
+            ob_start();
+            require $filename;
+            $contents = ob_get_contents();
+            ob_end_clean();
+            return $contents;
+        }
+        return false;
+    }
+
+
+    function write_bashScript($sys){
+
+            @touch('/var/www/html/LibreEHR/test.sh');
+
+    }
 ?>

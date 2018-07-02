@@ -1,1 +1,1 @@
-{"message":"Adding Initial User...","status":200,"percentage":79}
+{"message":"Click 'continue' for further instructions.","status":200,"percentage":100,"next_state":"test"}

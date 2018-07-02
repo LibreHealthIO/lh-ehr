@@ -89,7 +89,6 @@ $task = $_POST["task"];
            <div class='pull-right'>
            Browser:
            <img src='libs/images/".$userInfo::get_browser()."'/></div>
-           <div class='pull-right'>".$b."</div>
        ";
     ?>
 
@@ -131,9 +130,14 @@ $task = $_POST["task"];
                                     ';
                                 foreach($extension_check_array as $extension) {
                                   if(!extension_loaded($extension)) {
-                                          $pass .= '<li class="text-left"><span class="fa fa-mail-forward red"></span> You are missing the <strong><span class="red">'.$extension.'</span></strong> extension <small class="librehealth-color">'; if($extension === 'curl'){$pass.='(required for LIMS integration)';} $pass.='</small></li>';
+                                          $pass .= '<li class="text-left"><span class="fa fa-mail-forward red"></span> You are missing the <strong><span class="red">'.$extension.'</span></strong> extension <small class="librehealth-color">'; if($extension){$pass.='(required for LIMS integration)';} $pass.='</small></li>';
                                   }
-                                  else{   $pass .= '<li class="text-left"><span class="fa fa-mail-forward green"></span> You have the <strong><span class="green">'.$extension.'</span></strong> extension</li>';
+                                  else{   $pass .= '<li class="text-left"><span class="fa fa-mail-forward green"></span> You have the <strong><span class="green">'.$extension.'</span></strong> extension ';
+                                  if($extension == 'mbstring'){$pass.='<small class="librehealth-color">(required for LIMS)';} $pass.='</small>';
+                                  if($extension == 'mysql'){$pass.='<small class="librehealth-color">(required for LIMS, Updater integration)';} $pass.='</small>';
+                                  if($extension == 'xml'){$pass.='<small class="librehealth-color">(required for LIMS, Updater integration)';} $pass.='</small>';
+                                  if($extension == 'gd'){$pass.='<small class="librehealth-color">(required for LIMS, Updater integration)';} $pass.='</small>
+                                                   </li>';
                                   }
                                     };
                                     $pass.='
@@ -194,6 +198,7 @@ $task = $_POST["task"];
                     ';
                 echo '    <form action="upgrade.php" method="post">
                         <div class="control-btn">
+                        <input type="hidden" name="os_type" value='."$sys".'>
                         <button type="submit" class="upgradeBtn">
                             <i class="fa fa-cogs"></i> Upgrade
                         </button>

@@ -318,6 +318,12 @@ a.owl-link, a.owl-link:hover, a.owl-link:focus, a.owl-link:active, a.owl-link:vi
     text-decoration: underline;
 }
 
+ .well-terminal {
+    background: black !important;
+    color: white;
+     border-radius: 6px !important;
+}
+
 .ajaxLoader {
     position: absolute;
     width: 100%;

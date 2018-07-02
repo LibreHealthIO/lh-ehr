@@ -45,5 +45,10 @@
     $gaclWritableDirectory = dirname(__FILE__)."/../../../gacl/admin/templates_c";
 
 
+    // Record name of php-gacl installation files
+    $gaclSetupScript1 = dirname(__FILE__) . "/../../../gacl/setup.php";
+    $gaclSetupScript2 = dirname(__FILE__) . "/../../../acl_setup.php";
+
+
 
 ?>

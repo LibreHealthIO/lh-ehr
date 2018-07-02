@@ -253,18 +253,32 @@
             $messageArray["percentage"] = 46;
             file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
 
-            $dump_results = $installer->load_dumpfiles();
-            if ( ! $dump_results ) {
-                $messageArray["message"]  = $installer->error_message;
-                $messageArray["status"]   = 400;
-                $messageArray["percentage"] = 27;
-                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
-            } else {
-                $messageArray["message"]  = $dump_results;
-                $messageArray["status"]   = 200;
-                $messageArray["percentage"] = 58;
-                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
-            }
+//            $dump_results = $installer->load_dumpfiles();
+//            if ( ! $dump_results ) {
+//                $messageArray["message"]  = $installer->error_message;
+//                $messageArray["status"]   = 400;
+//                $messageArray["percentage"] = 27;
+//                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+//            } else {
+//                $messageArray["message"]  = $dump_results;
+//                $messageArray["status"]   = 200;
+//                $messageArray["percentage"] = 58;
+//                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+//            }
+
+                // Load the database files
+
+                if (! $installer->load_dumpfiles()) {
+                                $messageArray["message"]  = $installer->error_message;
+                                $messageArray["status"]   = 400;
+                                $messageArray["percentage"] = 27;
+                                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                            } else {
+                                $messageArray["message"]  = "created dump files ok";
+                                $messageArray["status"]   = 200;
+                                $messageArray["percentage"] = 58;
+                                file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                           }
 
 
             sleep(1);
