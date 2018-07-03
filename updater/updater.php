@@ -91,13 +91,16 @@ if (getUpdaterSetting("updater_requirements") == "empty_setting") {
 	$loader->assign("INTERNET_BOOL",$internet_bool);
 	$loader->assign("FILE_PERMISSIONS_BOOL",$file_permissions_bool);
 	$loader->assign("REQUIREMENTS_BOOL", $requirements_bool);
+	$loader->assign("STEP_ONE", xlt("Step 1 of 3"));
 	$loader->output();
 }
 
 elseif (getUpdaterSetting("updater_token") == "empty_setting") {
 	//show screen two
 	$loader->set_template_file("updater_screen_two");
-	$loader->assign("HOST",$updater_host);
+	$loader->assign("STEP_TWO", xlt("Step 2 of 3"));
+	$updater_host_string = "Enter Your $updater_host access token";
+	$loader->assign("HOST",xlt($updater_host_string));
 	$loader->output();
 }
 
@@ -107,7 +110,8 @@ else {
 	if (isTokenValid($updater_token) != true){
 		//it means the token is expired, so ask for re-entry
 		$loader->set_template_file("updater_screen_three");
-		$loader->assign("HOST",$updater_host);
+		$updater_token_string = "Your $updater_host User Access Token Was Expired, Re-enter it now";
+		$loader->assign("HOST",xlt($updater_host_string));
 		$loader->output();
 	}
 	elseif (isTokenValid($updater_token)) {
@@ -127,6 +131,18 @@ else {
 			$loader->set_template_file("updater_screen_four");
 			$loader->assign("AVATAR_URL", $avatar_url);
 			$loader->assign("USER_NAME", $user_name);
+			$loader->assign("BACKUP_INSTRUCTION", xlt("If you update you cant go to the previous backup you have made, however you can come to this state when you want"));
+			$loader->assign("START", xlt("START UPDATING"));
+			$loader->assign("START_BACKUP", xlt("Restore to original state"));
+			$loader->assign("WRITE_REVIEW", xlt("Write how you felt about Last Update, feel free to share any suggestions"));
+			$loader->assign("STATUS", xlt("status"));
+			$loader->assign("UPDATER_STEP_ONE", xlt("Downloading Files"));
+			$loader->assign("UPDATER_STEP_TWO", xlt("File Backup"));
+			$loader->assign("UPDATER_STEP_THREE", xlt("DB Backup"));
+			$loader->assign("BACKUP_STEP_ONE", xlt("Restoring Files"));
+			$loader->assign("BACKUP_STEP_TWO", xlt("Removing Backup Files"));
+			$loader->assign("BACKUP_STEP_THREE", xlt("Restoring DB"));
+			$loader->assign("EXIT_UPDATER", xlt("Return To Updater"));
 			$files_need_to_be_downloaded = array();
 			foreach ($merged_requests_array as $key => $value) {
 				$pr_number = $value;
@@ -139,18 +155,28 @@ else {
 				}
 			}
 			$count_files = count($files_need_to_be_downloaded);
+			$loader->assign("STATUS", xlt("status"));
 			$loader->assign("UPDATER_START", "<b>$cpr_title</b><br/><h6>$cpr_body</h6>");
 			$loader->assign("COUNT_FILES", $count_files);
-			$loader->assign("PR_NUMBER", $pull_request_number);
+			$loader->assign("PR_NUMBER", xlt("Write Feedback For #".$pull_request_number));
 			$loader->output();
 
 		}
 		else {
 			//the repo is already up to date, show only the backup button
 			$loader->set_template_file("updater_screen_five");
+			$loader->assign("START_BACKUP", xlt("Restore to original state"));
+			$loader->assign("WRITE_REVIEW", xlt("Write how you felt about Last Update, feel free to share any suggestions"));
+			$loader->assign("BACKUP_STEP_ONE", xlt("Restoring Files"));
+			$loader->assign("BACKUP_STEP_TWO", xlt("Removing Backup Files"));
+			$loader->assign("BACKUP_STEP_THREE", xlt("Restoring DB"));
+			$loader->assign("EXIT_UPDATER", xlt("Return To Updater"));
 			$loader->assign("AVATAR_URL", $avatar_url);
 			$loader->assign("USER_NAME", $user_name);
 			$loader->assign("PR_NUMBER", $pull_request_number);
+			$loader->assign("WRITE_REVIEW_PR", xlt("Any suggestion about #$pull_request_number"));
+			$loader->assign("STATUS", xlt("status"));
+			$loader>assign("NO_UPDATES", xlt("No updates available"));
 			$loader->output();
 		}
 	}
@@ -177,6 +203,12 @@ else {
 			$file_permissions_bool = "<i class='fa fa-warning' style='color: red;'></i>";
 		}
 		$loader->set_template_file("validations_screen");
+		$loader->assign("UPDATER", xlt("Updater"));
+		$loader->assign("UNABLE", xlt("UNABLE TO START UPDATER"));
+		$loader->assign("REQUIREMENTS", xlt("REQUIREMENTS NOT FULFILLED TO START THE UPDATER"));
+		$loader->assign("CURL_BOOL_STRING",xlt("CURL EXTENSION"));
+		$loader->assign("INTERNET_BOOL_STRING", xlt("INTERNET CONNECTION"));
+		$loader->assign("FILE_PERMISSIONS_BOOL_STRING", xlt("FILE PERMISSIONS"));
 		$loader->assign("CURL_BOOL",$curl_bool);
 		$loader->assign("INTERNET_BOOL",$internet_bool);
 		$loader->assign("FILE_PERMISSIONS_BOOL",$file_permissions_bool);
@@ -213,14 +245,14 @@ if (isset($_POST)) {
 			if (isTokenValid($updater_token) != true){
 				//it means the token is not valid
 				$toast_type = "danger";
-				$toast_title = "Token Not Valid";
-				$toast_message = "The Token you entered seems to be invalid"; 
+				$toast_title = xlt("Token Not Valid");
+				$toast_message = xlt("The Token you entered seems to be invalid"); 
 
 			}
 			elseif (isTokenValid($updater_token)) {
 				$toast_type = "success";
-				$toast_title = "Token Added";
-				$toast_message = "The Token is valid and added to the updater"; 
+				$toast_title = xlt("Token Added");
+				$toast_message = xlt("The Token is valid and added to the updater"); 
 				setUpdaterSetting("updater_token", $updater_token);
 			}
 

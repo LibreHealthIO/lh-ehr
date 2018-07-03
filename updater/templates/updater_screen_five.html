@@ -6,14 +6,14 @@
 		<img src="{AVATAR_URL}" height="64px" width="64px" class="img img-circle">
 		<h4>{USER_NAME}</h4>
 		<br/><br/>
-		<p><b>No updates available</b></p>
-		<a id="start_backup" class="btn cp-submit">Restore to original state</a>
-		<a id="start_review" class="btn cp-submit">Write Feedback For #{PR_NUMBER}?</a>
+		<p><b>{NO_UPDATES}</b></p>
+		<a id="start_backup" class="btn cp-submit">{START_BACKUP}</a>
+		<a id="start_review" class="btn cp-submit">{WRITE_REVIEW_PR}</a>
 		</div>
 	</div>
 
 	<div id='review_screen' style="display: none;">
-		<b>Write how you felt about Last Update, feel free to share any suggestions</b><br/>
+		<b>{WRITE_REVIEW}</b><br/>
 		<div class="text-center">
 		<textarea id="comment" cols="60" rows="7">
 		</textarea>
@@ -25,20 +25,20 @@
 		<div id="backup_screen" style="display: none;">
 		<table class="table table-striped">
 			<th></th>
-			<th>Status</th>
+			<th>{STATUS}</th>
 			<tr>
-				<td>Restoring Files</td>
+				<td>{BACKUP_STEP_ONE}</td>
 				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
-				<td>Removing Backup Files</td>
+				<td>{BACKUP_STEP_TWO}</td>
 				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
-				<td>Restoring DB</td>
+				<td>{BACKUP_STEP_THREE}</td>
 				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 		</table>
-		<div class="text-center"><button class="css_button cp-submit" id="bk_return">Exit Updater</button></div>
+		<div class="text-center"><button class="css_button cp-submit" id="bk_return">{EXIT_UPDATER}</button></div>
 	</div>
 </div>

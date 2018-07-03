@@ -10,14 +10,14 @@
 		{UPDATER_START}
 		<br/><br/>
 		<input id="count_files" value='{COUNT_FILES}' type="hidden">
-		<p><b>If you update you cant go to the previous backup you have made, however you can come to this state when you want</b></p>
-		<a id='start_updater_user_mode' class="btn cp-submit">START UPDATING!</a>
-		<a id="start_backup" class="btn cp-submit">Restore to original state</a>
-		<a id="start_review" class="btn cp-submit">Write Feedback For #{PR_NUMBER}?</a>
+		<p><b>{BACKUP_INSTRUCTION}</b></p>
+		<a id='start_updater_user_mode' class="btn cp-submit">{START}!</a>
+		<a id="start_backup" class="btn cp-submit">{START_BACKUP}</a>
+		<a id="start_review" class="btn cp-submit">{PR_NUMBER}?</a>
 		</div>
 	</div>
 	<div id='review_screen' style="display: none;">
-		<b>Write how you felt about Last Update, feel free to share any suggestions</b><br/>
+		<b>{WRITE_REVIEW}</b><br/>
 		<div class="text-center">
 		<textarea id="comment" cols="60" rows="7">
 		</textarea>
@@ -29,42 +29,42 @@
 	<div id="after_start" style="display: none;">
 		<table class="table table-striped">
 			<th></th>
-			<th>Status</th>
+			<th>{STATUS}</th>
 			<tr>
-				<td>Downloading Files</td>
+				<td>{UPDATER_STEP_ONE}</td>
 				<td class="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
-				<td>File Backup</td>
+				<td>{UPDATER_STEP_TWO}</td>
 				<td class="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
-				<td>DB Backup</td>
+				<td>{UPDATER_STEP_THREE}</td>
 				<td class="progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 		</table>
 		<div class="text-center">
-			<button class="css_button cp-submit" id="up_return">Return To Updater</button>
+			<button class="css_button cp-submit" id="up_return">{EXIT_UPDATER}</button>
 		</div>
 	</div>
 
 		<div id="backup_screen" style="display: none;">
 		<table class="table table-striped">
 			<th></th>
-			<th>Status</th>
+			<th>{STATUS}</th>
 			<tr>
-				<td>Restoring Files</td>
+				<td>{BACKUP_STEP_ONE}</td>
 				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
-				<td>Removing Backup Files</td>
+				<td>{BACKUP_STEP_TWO}</td>
 				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 			<tr>	
-				<td>Restoring DB</td>
+				<td>{BACKUP_STEP_THREE}</td>
 				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
 			</tr>
 		</table>
-		<div class="text-center"><button class="css_button cp-submit" id="bk_return">Exit Updater</button></div>
+		<div class="text-center"><button class="css_button cp-submit" id="bk_return">{EXIT_UPDATER}</button></div>
 	</div>
 </div>
