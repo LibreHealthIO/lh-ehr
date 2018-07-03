@@ -159,7 +159,8 @@ require('includes/session.php');
             buttonText: title_week,
             allDaySlot: false,
             displayEventTime: false,
-            groupByResource: true
+            groupByResource: true,
+            editable: true  // determines if the events can be dragged and resized
           },
  //         day: {
             // options apply to basicDay and agendaDay views
@@ -173,7 +174,8 @@ require('includes/session.php');
             buttonText: title_agenda2,
             allDaySlot: false,
             displayEventTime: false,
-            groupByResource: true
+            groupByResource: true,
+            editable: true  // determines if the events can be dragged and resized
           },
           providerAgenda: {
             type: 'agenda',
@@ -181,7 +183,8 @@ require('includes/session.php');
             buttonText: title_agenda,
             allDaySlot: false,
             displayEventTime: false,
-            groupByDateAndResource: true
+            groupByDateAndResource: true,
+            editable: true  // determines if the events can be dragged and resized
           }
         },
         resourceAreaWidth: "25%",
@@ -283,6 +286,90 @@ require('includes/session.php');
               top.RTop.location = link;
               return false;
             });
+          }
+        },
+        eventDrop: function(event, delta, revertFunc, jsEvent, ui, view) {
+          // this function gets called when dragging stops and the event has moved to
+          // a different date, time and/or provider
+          if (confirm("<?php echo addslashes(xl('Are you sure about these changes in event?')); ?>")) {
+            //if selected "OK" on alert
+            var eventId = event["pc_eid"];  // event's unique id
+            var newDate = event.start.format("YYYY-MM-DD");  // event's new date
+            var newStartTime = event.start.format("HH:mm:ss");  // event's new start time
+            var newEndTime = event.end.format("HH:mm:ss");  // event's new end time
+            var newProviderId = event.resourceId;  // event's new provider id
+            var jsonData = { "id": eventId,
+                             "date": newDate,
+                             "startTime": newStartTime,
+                             "endTime": newEndTime,
+                             "providerId": newProviderId,
+                             "action": "drag" };
+            // send edited values to a php script to update DB
+            $.ajax({
+              type: "POST",
+              url: "drag_copy_event.php",
+              data: jsonData,
+              success: function(response) {
+                if (response === "query executed") {
+                  $('#calendar').fullCalendar('refetchEvents');  // refetch all events to reflect their specifications acc. to DB on Calendar
+                }
+              },
+              dataType: "text",
+              error: function(xhr, status, error) {
+                var errorString = "Request failed. ";
+                if (status) {
+                  errorString += status;
+                }
+                if (error) {
+                  errorString += ": ";
+                  errorString += error;
+                }
+                alert(errorString);
+              }
+            });
+          } else {
+            //if selected "Cancel" on alert
+            revertFunc();  // reverts the event’s start/end date to the values before the drag
+          }
+        },
+        eventResize: function( event, delta, revertFunc, jsEvent, ui, view ) {
+          // this function gets called when event resizing stops
+          // and the event has changed in duration
+          if (confirm("<?php echo addslashes(xl('Are you sure about these changes in resize event?')); ?>")) {
+            //if selected "OK" on alert
+            var eventId = event["pc_eid"];  // event's unique id
+            var newStartTime = event.start.format("HH:mm:ss");  // event's new start time
+            var newEndTime = event.end.format("HH:mm:ss");  // event's new end time
+            var jsonData = { "id": eventId,
+                             "startTime": newStartTime,
+                             "endTime": newEndTime,
+                             "action": "resize" };
+            // send edited values to a php script to update DB
+            $.ajax({
+              type: "POST",
+              url: "drag_copy_event.php",
+              data: jsonData,
+              success: function(response) {
+                if (response === "query executed") {
+                  $('#calendar').fullCalendar('refetchEvents');  // refetch all events to reflect their specifications acc. to DB on Calendar
+                }
+              },
+              dataType: "text",
+              error: function(xhr, status, error) {
+                var errorString = "Request failed. ";
+                if (status) {
+                  errorString += status;
+                }
+                if (error) {
+                  errorString += ": ";
+                  errorString += error;
+                }
+                alert(errorString);
+              }
+            });
+          } else {
+            //if selected "Cancel" on alert
+            revertFunc();  // reverts the event’s start/end date to the values before resizing
           }
         },
         eventClick: function(calEvent, jsEvent, view) {
