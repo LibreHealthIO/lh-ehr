@@ -299,7 +299,8 @@ body {
     		$('#after_start').show();
     		//first start the updater
 		    var start_updater = "ok";
-		    var bool = prompt("If you update the previous backups will be deleted.Type confirm in the below box to start the updater");
+		    
+		    var bool = prompt("<?php echo xlt('If you update the previous backups will be deleted.Type confirm in the below box to start the updater'); ?>");
 		    if (bool == "confirm") {
 		    	    $.ajax({url: "ajax_user_mode.php?start_updater=1", success: function(result){
 				        $(".progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
@@ -313,7 +314,8 @@ body {
 
 
     $('#start_backup').click(function() {
-    	var bool = prompt("If you return to backup the previous update will be cancelled, are you sure,type confirm to restore backup");
+    	var prompt_string = "<?php echo xlt('If you return to backup the previous update will be cancelled, are you sure,type confirm to restore backup'); ?>";
+    	var bool = prompt(prompt_string);
     	    	$('#before_start').hide();
     			$('#after_start').hide();
     			$('#backup_screen').show();
@@ -321,8 +323,8 @@ body {
 				 $.ajax({url: "ajax_user_mode.php?start_recovery=1", success: function(result){
 				        $(".bk_progress_loader").html("<i class='fa fa-check' style='color:green; font-size:32px;'></i>");
 				    	var type = 'success';
-				    	var title = 'Restored Successfully';
-				    	var message = 'Updater has restored the initial state Successfully';
+				    	var title = "<?php xlt('Restored Successfully'); ?>";
+				    	var message = "<?php xlt('Updater has restored the initial state Successfully'); ?>";
 				    	parent.showUpdaterNotifications(type, title, message);
 				    }
 
@@ -331,7 +333,7 @@ body {
     });
 
     $('#submit_review').click(function() {
-    	var bool = prompt("confirm submit the review?, type confirm to send");
+    	var bool = prompt("<?php xlt('confirm submit the review?, type confirm to send');?>");
     	    	$('#before_start').hide();
     			$('#after_start').hide();
     			$('#backup_screen').hide();
@@ -340,8 +342,8 @@ body {
 		    	var comment = $('#comment').val();
 				 $.ajax({url: "ajax_user_mode.php?send_review=1&pr_number="+ pr_number + "&comment=" + comment, success: function(result){
 				    	var type = 'success';
-				    	var title = 'Review Sent Successfully';
-				    	var message = 'Review was sent Successfully';
+				    	var title = "<?php xlt('Review Sent Successfully') ?>";
+				    	var message = "<?php xlt('Review was sent Successfully'); ?>";
 				    	parent.showUpdaterNotifications(type, title, message);
 				    	window.location = "updater.php";
 				    }
