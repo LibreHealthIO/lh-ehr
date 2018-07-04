@@ -7,7 +7,7 @@ $analysesResultPending = [];
 $analysesToVerify = [];
 $analysesVerified = [];
 
-$analysesData = $client->request('GET', 'analysis', ['cookies' => $jar]);
+$analysesData = $client->request('GET', 'analysis');
 $analysesData = json_decode($analysesData->getBody()->getContents());
 $analysesItemCount = $analysesData->count;
 
@@ -82,7 +82,24 @@ $sampleReceptionPending =[];
 $sampleReceived = [];
 $sampleRejected = [];
 
+$sampleData = $client->get('sample')->getBody()->getContents();
+$sampleData = json_decode($sampleData);
+$sampleDataItemCount = $sampleData->count;
+
+foreach ($sampleData->items as $item) {
+
+  if ($item->review_state === 'sample_due') {
+    $sampleReceptionPending[] = $item;
+  }
+  if ($item->review_state === 'sample_received') {
+    $sampleReceived[] = $item;
+  }
+  if ($item->review_state === 'rejected') {
+    $sampleRejected[] = $item;
+  }
+  
+}
 
 
-require_once('./templates/pages/index.php');
+require_once('./templates/pages/dashboard.php');
 

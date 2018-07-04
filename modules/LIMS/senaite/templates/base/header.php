@@ -21,19 +21,18 @@
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <div class="dropdown">
-              <a href="#" class="nav-link dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Navigation</a>
+            <div class="dropdown dropleft">
+              <a href="#" class="nav-link dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['lims_user']; ?></a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a href="index.php" class="dropdown-item">Dashboard</a>
+                <a href="index.php" class="dropdown-item"><i class="fas fa-tachometer-alt fa-sm"></i> Dashboard</a>
+                <a href="index.php?action=account" class="dropdown-item"><i class="fas fa-cogs fa-sm"></i> Manage Account</a>
+                <a href="index.php?action=site&sact=setup" class="dropdown-item"><i class="fas fa-sitemap fa-sm"></i> Site Setup</a>
+                <a href="logout.php" class="dropdown-item"><i class="fas fa-user-times fa-sm"></i> Logout</a>
+                
               </div>
             </div>
           </li>
-          <li class="nav-item">
-            <a href="index.php?action=user" class="nav-link"><i class="fas fa-cogs fa-sm"></i> Manage Account</a>
-          </li>
-          <li class="nav-item">
-            <a href="index.php?action=logout" class="nav-link"> <i class="fas fa-user-times fa-sm"></i> Logout</a>
-          </li>
+
         </ul>
       </div>
     </nav>

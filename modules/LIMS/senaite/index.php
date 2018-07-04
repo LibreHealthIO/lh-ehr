@@ -38,7 +38,7 @@ $client = new \GuzzleHttp\Client([
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
 if (!file_exists('pages/'.$action.'.php')) {
-  $action = 'index';
+  $action = 'dashboard';
 }
 
 if (!isset($_SESSION['lims_login']) || !isset($_SESSION['lims_user'])) {

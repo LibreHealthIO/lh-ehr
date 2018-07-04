@@ -118,21 +118,21 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      Reception pending
+                      Reception pending ( <?php echo count($sampleReceptionPending); ?> of <?php echo $sampleDataItemCount; ?> )
                       <div class="progress">
-                        <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar progress-bar bg-info" role="progressbar" style="width: <?php echo ((count($sampleReceptionPending)) / $sampleDataItemCount) * 100; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
                     </div>
                     <div class="col">
-                      Samples received
+                      Samples received ( <?php echo count($sampleReceived); ?> of <?php echo $sampleDataItemCount; ?> )
                       <div class="progress">
-                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar progress-bar bg-success" role="progressbar" style="width: <?php echo ((count($sampleReceived)) / $sampleDataItemCount) * 100; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
                     </div>
                     <div class="col">
-                      Samples rejected
+                      Samples rejected ( <?php echo count($sampleRejected); ?> of <?php echo $sampleDataItemCount; ?> )
                       <div class="progress">
-                        <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar progress-bar bg-danger" role="progressbar" style="width: <?php echo ((count($sampleRejected)) / $sampleDataItemCount) * 100; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
                     </div>
                   </div>
