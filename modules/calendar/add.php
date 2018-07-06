@@ -20,7 +20,7 @@ if ($_POST['form_action'] == "vacation_submit") {
   $end_date = $_POST['endDate'];
   $fetchedEvents = fetchAllEvents($start_date, $end_date); // returns an array of events b/w start and end dates
   if (!empty($fetchedEvents)) {
-    // don't make requested event slots
+    // don't make requested event slots,
     // alert user and close "Add Vacation/Holiday" dialog box
     $alert_close_box = '<script type="text/javascript">
                           alert("There are already some events b/w requested start and end dates. Please try again.");
@@ -91,16 +91,16 @@ if ($_POST['form_action'] == "vacation_submit") {
 
 // 2. Clinic Holiday dates
 if ($_POST['form_action'] == "holiday_submit") {
-  // check if there is an appt. (either recurring or non-recurring) on any of selected holiday dates
+  // check if there is an appt. (either recurring or non-recurring) on at least one of selected holiday dates
   $dateAndType = json_decode($_POST['jsonData'], true);  // convert JSON string to an associative array
   foreach ($dateAndType as $date => $type) {
     // check each selected date
     $fetchedEvents = fetchAllEvents($date, $date); // returns an array of events on $date or including $date (in case of recurring appts.)
     if (!empty($fetchedEvents)) {
-      // don't make requested event slots if there's at least 1 conflicting date
+      // don't make requested event slots,
       // alert user and close "Add Vacation/Holiday" dialog box
       $alert_close_box = '<script type="text/javascript">
-                            alert("There are already some events b/w requested start and end dates. Please try again.");
+                            alert("There are already some events on at least one of the selected dates. Please try again.");
                             var addDialogBox = top.$(".dialogIframe"); // select dialog box element
                             var windowCloseBtn = addDialogBox.find(".closeDlgIframe"); // find close button element
                             windowCloseBtn.trigger("click"); // simulate "click" event on button
