@@ -1033,7 +1033,8 @@ td { font-size:0.8em; }
  // var rectypes  = new Array();
 <?php
  // Read the event categories, generate their options list, and get
- // the default event duration from them if this is a new event.
+ // the default event duration & default recurring parameters corresponding to selected category
+ // from them if this is a new event.
  $cattype=0;
  if($_GET['prov']==true){
   $cattype=1;
@@ -1046,6 +1047,7 @@ td { font-size:0.8em; }
   $thisduration = $row['pc_alldayevent'] ? 1440 : round($row['pc_duration'] / 60);
  }
  while ($crow = sqlFetchArray($cres)) {
+  // loop through all rows of table libreehr_postcalendar_categories
   $duration = round($crow['pc_duration'] / 60);
     if ($crow['pc_end_all_day']) {
         $duration = 1440;
@@ -1074,8 +1076,16 @@ td { font-size:0.8em; }
       }
   } else {
    if ($crow['pc_catid'] == $default_catid) {
+    // when category row from table libreehr_postcalendar_categories matches selected category
     $catoptions .= " selected";
-    $thisduration = $duration;
+    $thisduration = $duration; // set default duration corresponding to selected category
+    // set default recurring parameters corresponding to selected category
+    $repeats = $crow['pc_recurrtype'];
+    $rspecs = unserialize($crow['pc_recurrspec']); // extract recurring data
+    $repeattype = $rspecs['event_repeat_freq_type'];
+    $repeatfreq = $rspecs['event_repeat_freq'];
+    $repeatexdate = $rspecs['exdate'];
+    $repeatenddate = $crow['pc_enddate'];
    }
   }
   $catoptions .= ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
@@ -1760,13 +1770,11 @@ if  ($GLOBALS['select_multi_providers']) {
 
   </td>
  </tr>
-
     <style>
         #days_every_week_row input[type="checkbox"]{float:right;}
         #days_every_week_row div{display: inline-block; text-align: center; width: 12%;}
         #days_every_week_row div input{width: 100%;}
     </style>
-
 <tr id="days_every_week_row">
     <td></td>
     <td></td>
@@ -1798,7 +1806,6 @@ if  ($GLOBALS['select_multi_providers']) {
     </td>
 
 </tr>
-
  <tr>
   <td nowrap>
    <span id='title_apptstatus'><b><?php echo xlt('Status'); ?>:</b></span>
@@ -1823,14 +1830,20 @@ if(($_GET['prov']!=true) ){
    </select>
 
   </td>
-  <td nowrap>&nbsp;
-
-  </td>
+  <?php
+    if ($eid) {
+        // if existing event
+        $until_enddate = $row['pc_endDate'];
+    } else {
+        // if new event
+        $until_enddate = $repeatenddate; // show default end date corresponding to selected category
+    }
+  ?>
+  <td nowrap>&nbsp;</td>
   <td nowrap id='tdrepeat2'><?php echo xlt('until'); ?>
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_enddate' id='form_enddate'
-          value='<?php echo oeFormatShortDate(attr($row['pc_endDate'])) ?>'/>
+   <input type='text' size='10' name='form_enddate' id='form_enddate' value='<?php echo oeFormatShortDate(attr($until_enddate)) ?>'/>
 <?php
 if ($repeatexdate != "") {
     $tmptitle = "The following dates are excluded from the repeating series";

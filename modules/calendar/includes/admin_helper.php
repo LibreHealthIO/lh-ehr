@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 function getCategories() {
   $query = "SELECT * FROM libreehr_postcalendar_categories ORDER BY pc_catname;";
@@ -6,24 +6,25 @@ function getCategories() {
   return $res;
 }
 
-function createUpdateCategory($catid, $catname, $catcol, $catdes, $cattype, $durmins, $allday, $new=TRUE) {
+function createUpdateCategory($catid, $catname, $catcol, $catdes, $cattype, $durmins, $recurrtype, $recurrspec, $enddate, $allday, $new=TRUE) {
   if($allday == 1) {
     $duration = 0;
   } else {
     $duration = $durmins*60;
   }
-  
+
   if($new) {
-    $query = "INSERT INTO libreehr_postcalendar_categories(pc_catname, 
+    $query = "INSERT INTO libreehr_postcalendar_categories(pc_catname,
       pc_catcolor, pc_catdesc, pc_cattype, pc_duration, pc_end_all_day)
-      VALUES(?, ?, ?, ?, ?, ?);";
-      $res = sqlStatement($query, array($catname, $catcol, $catdes, $cattype, $duration, $allday));
+      VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      $res = sqlStatement($query, array($catname, $catcol, $catdes, $cattype, $duration, $recurrtype, $recurrspec, $enddate, $allday));
   } else {
-    $query = "UPDATE libreehr_postcalendar_categories SET 
+    $query = "UPDATE libreehr_postcalendar_categories SET
       pc_catname = ?, pc_catcolor = ?, pc_catdesc = ?,
-      pc_cattype = ?, pc_duration = ?, pc_end_all_day = ? 
+      pc_cattype = ?, pc_duration = ?, pc_recurrtype = ?,
+      pc_recurrspec = ?, pc_enddate = ?, pc_end_all_day = ?
       WHERE pc_catid = ?;";
-    $res = sqlStatement($query, array($catname, $catcol, $catdes, $cattype, $duration, $allday, $catid));
+    $res = sqlStatement($query, array($catname, $catcol, $catdes, $cattype, $duration, $recurrtype, $recurrspec, $enddate, $allday, $catid));
   }
   return $res;
 }
