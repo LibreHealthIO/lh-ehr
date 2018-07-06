@@ -6,6 +6,7 @@ require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/calendar.inc");
 require_once("$srcdir/encounter_events.inc.php");
+require_once("$srcdir/appointments.inc.php");
 
 $dateFormat = DateFormatRead();
 call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
@@ -14,6 +15,23 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 
 // 1. Provider Vacation dates
 if ($_POST['form_action'] == "vacation_submit") {
+  // check if there is an appt. (either recurring or non-recurring) b/w (or on) start & end dates of vacation
+  $start_date = $_POST['startDate'];
+  $end_date = $_POST['endDate'];
+  $fetchedEvents = fetchAllEvents($start_date, $end_date); // returns an array of events b/w start and end dates
+  if (!empty($fetchedEvents)) {
+    // don't make requested event slots
+    // alert user and close "Add Vacation/Holiday" dialog box
+    $alert_close_box = '<script type="text/javascript">
+                          alert("There are already some events b/w requested start and end dates. Please try again.");
+                          var addDialogBox = top.$(".dialogIframe"); // select dialog box element
+                          var windowCloseBtn = addDialogBox.find(".closeDlgIframe"); // find close button element
+                          windowCloseBtn.trigger("click"); // simulate "click" event on button
+                        </script>';
+    echo $alert_close_box;
+    exit();
+  }
+
   $event_date = $_POST['startDate'];  // Vacation starts at this date
   $event_end_date = $_POST['endDate'];  // Vacation ends at this date
   $starttime = "{$GLOBALS['schedule_start']}:00:00";
@@ -68,10 +86,30 @@ if ($_POST['form_action'] == "vacation_submit") {
   // Insert events - Vacation event starts at some date and repeats till end date,
   // covering Calendar slots over entire clinic hours under selected provider.
   InsertEvent($args);
+  refreshCalendar(); // after "Add vacation" process is complete
 }
 
 // 2. Clinic Holiday dates
 if ($_POST['form_action'] == "holiday_submit") {
+  // check if there is an appt. (either recurring or non-recurring) on any of selected holiday dates
+  $dateAndType = json_decode($_POST['jsonData'], true);  // convert JSON string to an associative array
+  foreach ($dateAndType as $date => $type) {
+    // check each selected date
+    $fetchedEvents = fetchAllEvents($date, $date); // returns an array of events on $date or including $date (in case of recurring appts.)
+    if (!empty($fetchedEvents)) {
+      // don't make requested event slots if there's at least 1 conflicting date
+      // alert user and close "Add Vacation/Holiday" dialog box
+      $alert_close_box = '<script type="text/javascript">
+                            alert("There are already some events b/w requested start and end dates. Please try again.");
+                            var addDialogBox = top.$(".dialogIframe"); // select dialog box element
+                            var windowCloseBtn = addDialogBox.find(".closeDlgIframe"); // find close button element
+                            windowCloseBtn.trigger("click"); // simulate "click" event on button
+                          </script>';
+      echo $alert_close_box;
+      exit();
+    }
+  }
+
   function createHolidayEvent($key, $value, $prov_id) {
     // $key is event date as a YYYY-MM-DD string
     // $value is day type string
@@ -134,20 +172,26 @@ if ($_POST['form_action'] == "holiday_submit") {
   InsertEvent($args);
   }
 
-  $dateAndType = json_decode($_POST['jsonData'], true);  // convert JSON string to an associative array
+  // no conflicting dates, make requested events
   foreach ($dateAndType as $key => $value) {
     $providers = getProviderInfo();
     foreach($providers as $provider) {
       $prov_id = $provider['id'];
-      createHolidayEvent($key, $value, $prov_id); // echo "<script>console.log('{$key} {$value} {$prov_id}')</script>";
+      createHolidayEvent($key, $value, $prov_id);
     }
   }
+
+  refreshCalendar(); // after "Add holiday" process is complete
 }
 
-// after slots creation is done, close "Add Vacation/Holiday" window
+// after slots creation is done, close "Add Vacation/Holiday" dialog box
 if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holiday_submit") {
-  $close_window = '<html><body><script type="text/javascript">window.close();</script></body></html>';
-  echo $close_window;
+  $close_box = '<script type="text/javascript">
+                  var addDialogBox = top.$(".dialogIframe"); // select dialog box element
+                  var windowCloseBtn = addDialogBox.find(".closeDlgIframe"); // find close button element
+                  windowCloseBtn.trigger("click"); // simulate "click" event on button
+                </script>';
+  echo $close_box;
   exit();
 }
 
@@ -281,7 +325,7 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
         <div class="col-sm-2">
           <input type="hidden" name="form_action" value="holiday_submit">
           <button type="submit" class="btn btn-default" id="holiday_submit">Submit</button>
-          <!-- For passing datesAndTypes array to server via JSON -->
+          <!-- For passing datesAndTypes object to server via JSON -->
           <input type="hidden" name="jsonData" id="jsonValue" value="">
         </div>
       </div>
@@ -396,7 +440,6 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
         alert('<?php echo addslashes( xl("A provider is required.") ); ?>');
         return false;
       }
-      // if there is an appt. on any of requested dates
 
       // validation done - submit form
       top.restoreSession();
@@ -419,9 +462,7 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
         alert('<?php echo addslashes( xl("A clinic is required.") ); ?>');
         return false;
       }
-      // if there is an appt. on any of requested dates
-
-      // convert datesAndTypes array to a JSON string
+      // convert datesAndTypes object to a JSON string
       var jsonString = JSON.stringify(datesAndTypes);
       $("input[name='jsonData']").val(jsonString); // pass JSON string to an input element
 
