@@ -16,6 +16,15 @@ $(document).ready(function(){
         return false;
     };
 
+// show user note to copy his/password down
+    $('.password_note')
+        .attr('data-toggle', 'tooltip')
+        .attr('data-placement', 'right')
+        .tooltip({
+            trigger: 'manual'
+        })
+        .tooltip('show');
+
     $("#siteID").bind('input', function() {
         if(check($(this).val()) === false){
             $("#errorSiteId").addClass("hidden");
@@ -45,6 +54,7 @@ $(document).ready(function(){
             $(this).addClass("hidden");
         });
     });
+
 
 
 // prevent form submission and submit via ajax
@@ -148,12 +158,11 @@ $(document).ready(function(){
                     $(".ajaxLoader").addClass("hidden");
                 }
 
-                // // If the process is had errors, we should stop the checking process.
-
-
                 // // If the process is completed, we should stop the checking process.
                  if (data.percentage === 100 ) {
-                    window.clearInterval(timer);
+                     var html = "<input type='hidden' value='"+data.next_state+"' name='stepholder'>";
+                     $("#nextStep").html(html);
+                     window.clearInterval(timer);
                      timer = window.setInterval(completed, 1000);
                  }
             }
@@ -167,8 +176,8 @@ $(document).ready(function(){
         $("#ajaxResponse").html("Completed");
         $("#submitStep4").removeAttr("disabled").css("cursor","pointer");
         $("#backStep4").removeAttr("disabled").removeClass("btnDisabled").css("cursor","pointer");
-
         window.clearInterval(timer);
+        $("#databaseForm").off('submit').submit();
     }
 
     // function to clear the timer if process has completed to a hundred percent
@@ -180,6 +189,7 @@ $(document).ready(function(){
 
         window.clearInterval(timer);
     }
+
 
 
 

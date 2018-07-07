@@ -11,26 +11,53 @@
 session_start();
 require_once("includes/shared.inc.php");
 require_once("includes/settings.inc.php");
+require_once("classes/Database.php");
 require_once("includes/functions.inc.php");
 require_once("includes/header.inc.php");
 
-//==========================
-// HANDLING FORM SUBMISSION
-//==========================
+    //==========================
+    // HANDLING FORM SUBMISSION
+    //==========================
 
 
-// variable to get current step and task
-$step = $_POST["step"];
-$task = $_POST["task"];
+    // variable to get current step and task
+    $_SESSION["step"] = $_POST["step"];
+    $step = $_POST["step"];
+    $task = $_POST["task"];
+    $stephold = $_POST["stepholder"];
 
-if($task == 'annul'){
-    session_destroy();
-    write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
-    header('location: index.php');
-    exit;
-}
 
-?>
+if(isset($_SESSION["step"]) && $step = 5){
+        //ok we can allow user to run the script
+        //checking if it is from script 6 or 4
+        if(!isset($_POST['installer_var'])){
+            // from page 4
+            $installer = new Database($_POST);
+            $installerVar = serialize($_POST);
+        }else{
+            //from page 6
+            $passed_array = unserialize($_POST["installer_var"]);
+            $installer = new Database($passed_array);
+            // parse the whole post array unto the next view
+            $installerVar = serialize($passed_array);
+
+
+        }
+    }else{
+        header('location: start_up.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
+
+    if($task == 'annul'){
+        session_destroy();
+        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
+        header('location: index.php');
+        exit;
+    }
+
+    ?>
 
 <div class="card">
     <p class="clearfix"></p>
@@ -42,36 +69,57 @@ if($task == 'annul'){
     drawSetupStep($step);
     ?>
     <p class="clearfix"></p>
-    <h4 class="librehealth-color"></h4>
-
 
 <?php
-        echo "<h4 class='librehealth-color'>Configuration</h4>";
-        $output = install_gacl($gaclSetupScript1);
-        if(!$output){
-            echo("install_gacl failed: unable to require gacl script ".$gaclSetupScript1."");
-        }else{
-            echo ($output);
-        }
 
-        $output = install_gacl($gaclSetupScript2);
-        if(!$output){
-            echo("install_gacl failed: unable to require gacl script ".$gaclSetupScript2."");
-        }else{
-            echo ($output);
+        switch ($stephold){
+
+            case($stephold == "php_gacl"):{
+                if ( ! $installer->install_gacl() ) {
+                    echo $installer->error_message;
+                }
+                else {
+                    // display the status information for gacl setup
+                    echo $installer->debug_message;
+                    echo "Gave the <span class='green'>'$installer->iuser'</span> user (password is <span class='green'>'$installer->iuserpass'</span>) administrator access<span data-html='true' data-toggle='tooltip' data-placement='right' title='It is recommended to <span class=\"fa fa-edit\"></span> write these down somewhere safe and easy to retrieve.' class='password_note'>.</span><br><br>";
+
+                    echo "<p class='clearfix'></p>";
+                    echo "<div class='alert alert-success'>
+                    Done installing and configuring access controls (php-GACL).<br>
+                    Next step will configure PHP.
+                    <br>
+                  ";
+                    echo "<p class='clearfix'></p>";
+                    echo "<p class='clearfix'></p>";
+                    echo '<form action="step4.php" method="post">
+                            <div class="control-btn2">
+                            <input type="hidden" value="4" name="step">
+                            <button type="submit" class="controlBtn">
+                            <i class="fa fa-arrow-circle-left"></i> Back
+                            </button>
+                            </div>
+                            </form>
+                    ';
+
+                    echo " <form action='step6.php' method='post'>
+                    <div class='control-btn'>
+                     <input type='hidden' value='6' name='step'>
+                     <input type='hidden' name='installer_var'  value='$installerVar'>
+                            <button type='submit' class='controlBtn'>
+                                Continue <i class='fa fa-arrow-circle-right'></i>
+                            </button>
+                            </div>
+                            </form>
+                    ";
+                }
+                break;
+            }
+
+            case($stephold == "user_config"):{
+
+            }
+
         }
-//    if ( ! $installer->install_gacl() ) {
-//    echo $installer->error_message;
-//    }
-//    else {
-//    // display the status information for gacl setup
-//    echo $installer->debug_message;
-//    }
-//
-//    echo "Gave the '$installer->iuser' user (password is '$installer->iuserpass') administrator access.<br><br>";
-//
-//    echo "Done installing and configuring access controls (php-GACL).<br>";
-//    echo "Next step will configure PHP.";
 
 ?>
 

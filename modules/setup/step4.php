@@ -13,15 +13,26 @@
     require_once("includes/settings.inc.php");
     require_once("includes/functions.inc.php");
     require_once("includes/header.inc.php");
-    
+
     //==========================
     // HANDLING FORM SUBMISSION
     //==========================
-    
-    
+
+
     // variable to get current step and task
+    $_SESSION["step"] = $_POST["step"];
     $step = $_POST["step"];
     $task = $_POST["task"];
+
+    if(isset($_SESSION["step"]) && $step = 4){
+        //ok we can allow user to run the script
+    }else{
+        header('location: start_up.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
+
     $inst = $_POST["inst"];
 
     // Support "?site=siteid" in the URL, otherwise assume "clinic", to protect the default directory.
@@ -58,7 +69,7 @@
     </div>
     <p class="clearfix"></p>
     <p class="clearfix"></p>
-    <form id="databaseForm" method="post">
+    <form id="databaseForm" method="post" action="step5.php">
         <h4 class="librehealth-color">MySQL SERVER</h4>
         <div class="form-group">
             <div class="row">
@@ -238,8 +249,13 @@
             <p class="clearfix"></p>
         </div>
         </div>
+        <!-- holder for the next steps either user config or php-galc config parameters-->
+        <!-- sync with the setup.js file lines(153-162)-->
+        <div id="nextStep">
+        </div>
     
         <div class='control-btn'>
+            <input type="hidden" value="5" name="step">
             <button id="submitStep4" type='submit' class='controlBtn'>
                 Continue  <i class='fa fa-arrow-circle-right'></i>
             </button>

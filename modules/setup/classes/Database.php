@@ -42,8 +42,8 @@ class Database
         $this->menu_def = dirname(__FILE__) . "/../../../sql/menu_definitions.sql";  //REVIEW
 
         // Record name of php-gacl installation files
-        $this->gaclSetupScript1 = dirname(__FILE__) . "/../../gacl/setup.php";
-        $this->gaclSetupScript2 = dirname(__FILE__) . "/../../acl_setup.php";
+        $this->gaclSetupScript1 = dirname(__FILE__) . "/../../../gacl/setup.php";
+        $this->gaclSetupScript2 = dirname(__FILE__) . "/../../../acl_setup.php";
 
         // Prepare the dumpfile list
         $this->initialize_dumpfile_list();
@@ -155,6 +155,7 @@ class Database
             $sql .= " character set utf8 collate $this->collate";
             $this->set_collation();
         }
+        error_log("sql:".$sql, 0);
         return $this->execute_sql($sql);
     }
 
@@ -196,11 +197,10 @@ class Database
         $sql_results = ''; // information string which is returned
         $sql_results .= "Creating $title tables...\n";
         $fd = fopen($filename, 'r');
+        error_log("filename:".$fd, 0);
         if ($fd == FALSE) {
             $this->error_message = "ERROR.  Could not open dumpfile '$filename'.\n";
             return FALSE;
-        }else{
-            $this->success_message = "Succeeded in creating dumpfile";
         }
         $query = "";
         $line = "";

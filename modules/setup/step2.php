@@ -15,6 +15,42 @@ require_once("classes/UserInfo.php");
 require_once("includes/functions.inc.php");
 require_once("includes/header.inc.php");
 
+
+    //==========================
+    // HANDLING FORM SUBMISSION
+    //==========================
+
+
+    // variable to get current step and task
+    $_SESSION["step"] = $_POST["step"];
+    $step = $_POST["step"];
+    $task = $_POST["task"];
+
+    if(isset($_GET["t"]) && $_GET["t"] = 2){
+        //ok we can allow user to run the script
+        $_SESSION["step"] = $_GET["t"]; // to get value coming from the terminal launch
+        $step = $_GET["t"];
+    }
+
+    if(isset($_SESSION["step"]) && $step = 2){
+        //ok we can allow user to run the script
+    }
+    else{
+        header('location: start_up.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
+
+
+    if($task == 'annul'){
+        session_destroy();
+        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
+        header('location: index.php');
+        exit;
+    }
+
+
     // check for required extensions in php
     $extension_check_array = array(
         'curl',
@@ -43,20 +79,6 @@ require_once("includes/header.inc.php");
     $server_software = $distro['SERVER_SOFTWARE'];
 //    $distro = $distro['DISTRIB_DESCRIPTION'].' ' .$distro['DISTRIB_RELEASE'].' '. $distro['DISTRIB_CODENAME'];
 
-//==========================
-// HANDLING FORM SUBMISSION
-//==========================
-
-
-// variable to get current step and task
-$step = $_POST["step"];
-$task = $_POST["task"];
-    if($task == 'annul'){
-        session_destroy();
-        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
-        header('location: index.php');
-        exit;
-    }
 
 
 ?>

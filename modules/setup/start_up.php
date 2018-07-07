@@ -8,14 +8,15 @@
 ?>
 
 <?php
+
+    session_start();
+    // *** set new token for the setup process
+    $_SESSION['token'] = md5(uniqid(rand(), true));
     require_once("includes/shared.inc.php");
     require_once("includes/settings.inc.php");
     require_once("includes/functions.inc.php");
     require_once("includes/header.inc.php");
-    
     $task = $_POST["task"];
-    
-    
     
     if($task == 'annul'){
         session_destroy();
@@ -35,7 +36,7 @@
 <p class="clearfix"></p>
 <p class="clearfix"></p>
 
-    <h4>Installation Instructions</h4>
+    <h3 class="librehealth-color">Installation Instructions</h3>
     <p class="clearfix"></p>
     <p class="clearfix"></p>
    <ul class="list-unstyled">
@@ -45,14 +46,35 @@
    </ul>
 
     <p class="clearfix"></p>
-    <p class="clearfix"></p>
     <div class="alert-info">
         NOTE: It is worth reading the installation.MD file before clicking on the start button so as to
         get a smooth installation.
     </div>
-
-
     <p class="clearfix"></p>
+    <p class="clearfix"></p>
+    <h4 class="librehealth-color text-center">HINTS</h4>
+
+    <div class="alert alert-success alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        This block represents an action was <strong>successfully</strong> done!
+    </div>
+
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        This block represents an action was <strong>unsuccessful</strong> or simply <strong>failed!</strong>
+    </div>
+
+    <div class="alert alert-warning alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        This block represents the fact that the user may proceed with the action but generally recommended
+        to fulfil previous conditions
+    </div>
+
+    <div class="alert alert-info alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        This block represents an information pertaining to the user and user is required to <strong>go through</strong> it.
+    </div>
+
 <p class="clearfix"></p>
 <p class="clearfix"></p>
 <p class="clearfix"></p>

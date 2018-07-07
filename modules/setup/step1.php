@@ -20,8 +20,18 @@ require_once("includes/header.inc.php");
 
 
 // variable to get current step and task
+    $_SESSION["step"] = $_POST["step"];
     $step = $_POST["step"];
     $task = $_POST["task"];
+
+    if(isset($_SESSION["step"]) && $step = 1){
+        //ok we can allow user to run the script
+    }else{
+        header('location: start_up.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
 
 
     if($task == 'start'){

@@ -13,3 +13,7 @@ LibreEHR/sites/default/era
 LibreEHR/sites/default/edi
 LibreEHR/sites/default/letter_templates
 
+insert into globals values ("izi_fade_out_time", 0 ,'4');
+insert into globals values ("izi_theme", 0 ,'#fcfcf3');
+
+

@@ -12,7 +12,7 @@
     // function to draw the setup step navigation
     function drawSetupStep($step = 1, $draw = true){
 
-            $steps = array(1,2,3,4,5,6);
+            $steps = array(1,2,3,4,5,6,7);
 
             $output  = "<div class='step-div'>\n";
                 foreach($steps as $key){
@@ -22,7 +22,7 @@
             }
             else if($step == $key){
             $css_class = ' class="step active-step"';
-            $step_num  = "<div class=\"pull-right step-count\"><span class=\"librehealth-color\">$key</span>&nbsp;/&nbsp;6</div>\n";
+            $step_num  = "<div class=\"pull-right step-count\"><span class=\"librehealth-color\">$key</span>&nbsp;/&nbsp;7</div>\n";
             $output .= "\t\t<div".$css_class."></div>\n";
             }
             else{
@@ -170,4 +170,24 @@
             @touch('/var/www/html/LibreEHR/test.sh');
 
     }
+
+
+    /**
+     *	Remove bad chars from input
+     *	  	@param $str_words - input
+     **/
+
+    function prepare_input($str_words)
+    {
+        $str_words = htmlentities(strip_tags($str_words));
+        $bad_string = array('select', 'drop', '--', 'insert', 'xp_', '%20union%20', '/*', '*/union/*', '+union+', 'load_file', 'outfile', 'document.cookie', 'onmouse', '<script', '<iframe', '<applet', '<meta', '<style', '<form', '<img', '<body', '<link', '_GLOBALS', '_REQUEST', '_GET', '_POST', 'include_path', 'prefix', 'http://', 'https://', 'ftp://', 'smb://', 'onmouseover=', 'onmouseout=');
+
+        for($i = 0; $i < count($bad_string); $i++){
+            $str_words = str_replace($bad_string[$i], '', $str_words);
+        }
+
+        return $str_words;
+    }
+
+
 ?>

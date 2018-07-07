@@ -14,14 +14,26 @@ require_once("includes/settings.inc.php");
 require_once("includes/functions.inc.php");
 require_once("includes/header.inc.php");
 
-//==========================
-// HANDLING FORM SUBMISSION
-//==========================
+
+    //==========================
+    // HANDLING FORM SUBMISSION
+    //==========================
 
 
-// variable to get current step and task
-$step = $_POST["step"];
-$task = $_POST["task"];
+    // variable to get current step and task
+    $_SESSION["step"] = $_POST["step"];
+    $step = $_POST["step"];
+    $task = $_POST["task"];
+
+    if(isset($_SESSION["step"]) && $step = 3){
+        //ok we can allow user to run the script
+    }else{
+        header('location: start_up.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
+
     
     if($task == 'annul'){
         session_destroy();
