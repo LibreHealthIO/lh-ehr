@@ -49,7 +49,6 @@ var ddmenuitem  = 0;
 var oldddmenuitem = 0;
 var flag = 0;
 
-// open hidden layer
 function mopen(id)
 {
     // cancel close timer
