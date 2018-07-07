@@ -1,37 +1,49 @@
 <?php
-/* the purpose of this code is to
-   get data about patient insurance in a formatted manner
-   and store in a variable $content_insu*/
+/**
+ * The purpose of this code is to get the patient insurance data
+ * in a formatted manner and store it in a single variable $content_insu.
+ * The content of this variable will be printed in the PDF if required.
+ *
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Abhinav(abhinavsingh22@hotmail.com)
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
-$pdf->SetFont('dejavusans', '', 10);
-            
 function pdfInsuranceData($pid, $insurance_data_array_custom, $insurance_data_array){
     global $content_insu;
-    $content_insu = "<h1>Insurance Data</h1>";
-    if ($GLOBALS['insurance_address_demographics_report'] =='1') {    
-        $content_insu .= "<h3>Primary Insurance Data:</h3>";
+    $content_insu = "<h1>" . xlt("Insurance Data") . ":</h1>";
+    if ($GLOBALS['insurance_address_demographics_report'] =='1') {
+        $content_insu .= "<h3>" . xlt("Primary Insurance Data") . ":</h3>";
         $content_insu .= "<table>";
         insuranceData1($insurance_data_array_custom, getRecInsuranceData ($pid,"primary"), $content_insu);
         $content_insu .= "</table>";
-        $content_insu .= "<h3>Secondary Insurance Data:</h3>";
+        $content_insu .= "<h3>" . xlt("Secondary Insurance Data") . ":</h3>";
         $content_insu .= "<table>";
         insuranceData1($insurance_data_array_custom, getRecInsuranceData ($pid,"secondary"), $content_insu);
         $content_insu .= "</table>";
-        $content_insu .= "<h3>Tertiary Insurance Data:</h3>";
+        $content_insu .= "<h3>" . xlt("Tertiary Insurance Data") . ":</h3>";
         $content_insu .= "<table>";
         insuranceData1($insurance_data_array_custom, getRecInsuranceData ($pid,"tertiary"), $content_insu);
         $content_insu .= "</table>";
     }
     else{
-        $content_insu .= "<h3>Primary Insurance Data:</h3>";
+        $content_insu .= "<h3>" . xlt("Primary Insurance Data") . ":</h3>";
         $content_insu .= "<table>";
         insuranceData1($insurance_data_array, getRecInsuranceData ($pid,"primary"), $content_insu);
         $content_insu .= "</table>";
-        $content_insu .= "<h3>Secondary Insurance Data:</h3>";
+        $content_insu .= "<h3>" . xlt("Secondary Insurance Data") . ":</h3>";
         $content_insu .= "<table>";
         insuranceData1($insurance_data_array, getRecInsuranceData ($pid,"secondary"), $content_insu);
         $content_insu .= "</table>";
-        $content_insu .= "<h3>Tertiary Insurance Data:</h3>";
+        $content_insu .= "<h3>" . xlt("Tertiary Insurance Data") . ":</h3>";
         $content_insu .= "<table>";
         insuranceData1($insurance_data_array, getRecInsuranceData ($pid,"tertiary"), $content_insu);
         $content_insu .= "</table>";
@@ -52,7 +64,7 @@ function insuranceData1($data_array, $recres, $content_insu) {
     }
     if($data_array%2 != 0)  $content_insu .= "</tr>";
 }
-            
+
 function insuranceData2 ($retar, $key, $date_format, $content_insu, $i) {
     global $content_insu;
     if (@array_key_exists($key,$retar)) {

@@ -1,17 +1,29 @@
 <?php
-/*the purpose of this code is to get the 
-  patient transactions data in a formatted manner 
-  and store it in a single variable $content_trans*/
-
-$pdf->SetFont('dejavusans', '', 10);
+/**
+ * The purpose of this code is to get the patient transactions data
+ * in a formatted manner and store it in a single variable $content_demo.
+ * The content of this variable will be printed in the PDF if required.
+ *
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Abhinav(abhinavsingh22@hotmail.com)
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 function getPatientTransactions($pid) {
     global $content_trans;
-    $content_trans .= '<span style="font-size:25px;font-family: Arial, sans-serif;">Patient Transactions:</span>';
+    $content_trans .= '<span style="font-size:25px;font-family: Arial, sans-serif;">' . xlt("Patient Transactions") . ':</span>';
     $res = sqlStatement("SELECT * FROM transactions WHERE pid = ? ORDER BY date", array($pid));
     while($row = sqlFetchArray($res)) {
       $content_trans .= "<br>";
-      $content_trans .= "<u>" . text(oeFormatSDFT(strtotime($row['date'])) . " (" . 
+      $content_trans .= "<u>" . text(oeFormatSDFT(strtotime($row['date'])) . " (" .
                         generate_display_field(array('data_type'=>'1','list_id'=>'transactions'), $row['title']) . ")") . "</u><br>";
       data_to_pdf_transactions($row['id'], $row['title'], $content_trans);
     }
@@ -38,7 +50,7 @@ function data_to_pdf_transactions($id, $formname, $content_trans) {
           $data[$j] .= $frow['title'] . " - ";
           $data[$j] .= $extract_name['fname'] . " " .  $extract_name['mname'] . " " . $extract_name['lname'];
         }
-        else  
+        else
         {
             $data[$j] .= $frow['title'] . " - " . $currvalue;
         }

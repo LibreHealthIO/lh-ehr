@@ -1,6 +1,20 @@
 <?php
-//this is the file which will select the portion required to be transferred to the PDF
-//and will feed the common part to the PDF
+/**
+ * This is the file that will select the portion required to be transferred to the PDF
+ * and will feed the common part to the PDF
+ *
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Abhinav(abhinavsingh22@hotmail.com)
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 require_once("../../interface/globals.php");
 require_once("TCPDF/tcpdf.php");
@@ -8,7 +22,7 @@ require_once("$srcdir/report.inc");
 require_once("$srcdir/patient.inc");
 
 $titleres = getPatientData($pid, "fname,lname,providerID,DATE_FORMAT(DOB,'%m/%d/%Y') as DOB_TS");   //this section
-  if ($_SESSION['pc_facility']) {                                                                   //will fetch 
+  if ($_SESSION['pc_facility']) {                                                                   //will fetch
     $sql = "SELECT * FROM facility WHERE id=" . $_SESSION['pc_facility'];                           //the common
   } else {                                                                                          //data for
     $sql = "SELECT * FROM facility ORDER BY billing_location DESC LIMIT 1";                         //all the
@@ -29,7 +43,7 @@ class EHRPDF extends TCPDF {
 		// Set font
 		$this->SetFont('helvetica', '', 10);
 		// Title
-    $this->Cell(0, 15, "PATIENT : " . $titleres['lname'] . ", " . 
+    $this->Cell(0, 15, xlt("PATIENT") . " : " . $titleres['lname'] . ", " .
                 $titleres['fname'] . " - " . $titleres['DOB_TS'], 0, false, 'R', 0, '', 0, false, 'M', 'M');
 	}
 
@@ -40,8 +54,8 @@ class EHRPDF extends TCPDF {
 		$this->SetY(-15);
 		// Set font
 		$this->SetFont('helvetica', '', 10);
-		
-    $this->Cell(0, 10, "Generated on " . oeFormatShortDate() . " - " . 
+
+    $this->Cell(0, 10, xlt("Generated on") . " " . oeFormatShortDate() . " - " .
                         $facility['name'] . ' ' . $facility['phone'], 0, false, 'R', 0, '', 0, false, 'T', 'M');
 	}
 }
@@ -72,55 +86,60 @@ if($_POST['include_demographics'] == 'demographics'){
 }
 if($_POST['include_history'] == 'history'){
     $pdf->Ln(5);                                                            //this section
-    $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());    //is for inclusion of 
+    $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());    //is for inclusion of
     $pdf->Ln(5);                                                            //the patient history data
     include('report/history.php');                                          //in the PDF
 }
 if($_POST['include_insurance'] == 'insurance'){
     $pdf->Ln(5);                                                            //this section
-    $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());    //is for inclusion of 
+    $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());    //is for inclusion of
     $pdf->Ln(5);                                                            //the patient insurance data
     include('report/insurance.php');                                        //in the PDF
 }
 if($_POST['include_billing'] == 'billing'){
   $pdf->Ln(5);                                                              //this section
-  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of 
+  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of
   $pdf->Ln(5);                                                              //the patient billing data
   include('report/billing.php');                                            //in the PDF
 }
 if($_POST['include_transactions'] == 'transactions'){
   $pdf->Ln(5);                                                              //this section
-  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of 
+  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of
   $pdf->Ln(5);                                                              //the patient transactions data
   include('report/transactions.php');                                       //in the PDF
 }
 if($_POST['include_notes'] == 'notes'){
   $pdf->Ln(5);                                                              //this section
-  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of 
+  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of
   $pdf->Ln(5);                                                              //the patient notes data
   include('report/patient_notes.php');                                      //in the PDF
 }
 if($_POST['include_batchcom'] == 'batchcom'){
   $pdf->Ln(5);                                                              //this section
-  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of 
+  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of
   $pdf->Ln(5);                                                              //the patient communication data
   include('report/communications.php');                                      //in the PDF
 }
 if($_POST['include_immunizations'] == 'immunizations'){
   $pdf->Ln(5);                                                              //this section
-  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of 
+  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());      //is for inclusion of
   $pdf->Ln(5);                                                              //the patient immunization data
   include('report/immunizations.php');                                      //in the PDF
 }
 //no check is done here because it is done in the procedures.php file
-include('report/procedures.php');                                           //this section
-$pdf->Ln(5);                                                                //is for inclusion of
-$pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());        //the procedure orders data
-$pdf->Ln(5);                                                                //in the PDF
+include('report/procedures.php');
+//no check is done here because it is done in the issues.php file
+include('report/issues.php');
+//no check is done here because it is done in the clinical_instructions.php file
+include("report/clinical_instructions.php");
+
+$pdf->Ln(5);
+$pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());
+$pdf->Ln(5);
 
 
 $pdf->Ln(15);
-$pdf->Cell(40, 10, "Signature: ________________________________________");
+$pdf->Cell(40, 10, xlt("Signature") . ": ________________________________________");
 $pdf->Output();
 
 ?>

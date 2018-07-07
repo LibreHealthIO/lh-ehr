@@ -1,12 +1,21 @@
 <?php
-//this part of code will get the data for procedure orders
-//and pass that data to the PDF according to the options selected by the user
-
-$pdf->Ln(5);
-$pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());
-$pdf->Ln(5);
-
-$pdf->SetFont('dejavusans', '', 10);
+/**
+ * The purpose of this code is to get the patient procedure orders data
+ * in a formatted manner and store it in a single variable $content_pro.
+ * The content of this variable will be printed in the PDF if required.
+ *
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Abhinav(abhinavsingh22@hotmail.com)
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 
 $auth_med = acl_check('patients'  , 'med');
 
@@ -30,7 +39,7 @@ if ($auth_med) {
 
 function procedure_order_data($orderid){
     global $content_pro;
-    $content_pro .= "<h1>Procedure Order</h1>";
+    $content_pro .= '<span style="font-size:25px;font-family: Arial, sans-serif;">' . xlt("Procedure Order") . ':<br></span>';
 
     $orow = sqlQuery("SELECT " .
     "po.procedure_order_id, po.date_ordered, po.control_id, " .
@@ -47,35 +56,35 @@ function procedure_order_data($orderid){
     "WHERE po.procedure_order_id = ?",
     $orderid);
 
-    $content_pro .= "(" . oeFormatShortDate(substr($orow['date'], 0, 10)) . ")<br><table border=\"1\" style=\"background-color: silver\"><tr><td>Patient ID</td>".
+    $content_pro .= "(" . oeFormatShortDate(substr($orow['date'], 0, 10)) . ")<br><table border=\"1\" style=\"background-color: silver\"><tr><td>" . xlt("Patient ID") . "</td>".
                     "<td>" . $orow['pid'] . "</td>".
-                    "<td>Order ID</td>".
+                    "<td>" . xlt("Order ID") . "</td>".
                     "<td>" . $orow['procedure_order_id'] ;
-    
+
     if ($orow['control_id']) {
-        $content_pro .= " Lab: " . $orow['control_id'];
+        $content_pro .= xlt(" Lab: ") . $orow['control_id'];
     }
     $content_pro .= "</td></tr>";
 
-    $content_pro .= "<tr><td>Patient Name</td>".
+    $content_pro .= "<tr><td>" . xlt("Patient Name") . "</td>".
                     "<td>" . $orow['lname'] . ', ' . $orow['fname'] . ' ' . $orow['mname'] . "</td>".
-                    "<td>Ordered By</td>".
+                    "<td>" . xlt("Ordered By") . "</td>".
                     "<td>" . $orow['ulname'] . ', ' . $orow['ufname'] . ' ' . $orow['umname'] . "</td></tr>";
 
-    $content_pro .= "<tr><td>Order Date</td>".
+    $content_pro .= "<tr><td>" . xlt("Order Date") . "</td>".
                     "<td>" . $orow['date_ordered'] . "</td>".
-                    "<td>Print Date</td>".
+                    "<td>" . xlt("Print Date") . "</td>".
                     "<td>" . oeFormatShortDate(date('Y-m-d')) ."</td></tr>";
-    
-    $content_pro .= "<tr><td>Order Status</td>".
+
+    $content_pro .= "<tr><td>" . xlt("Order Status") . "</td>".
                     "<td>" . $orow['order_status'] . "</td>".
-                    "<td>Encounter Date</td>".
+                    "<td>" . xlt("Encounter Date") . "</td>".
                     "<td>" . oeFormatShortDate(substr($orow['date'], 0, 10)) . "</td></tr>";
 
-    $content_pro .= "<tr><td>Lab</td>".
+    $content_pro .= "<tr><td>" . xlt("Lab") . "</td>".
                     "<td>" . $orow['labname'] . "</td>";
-    if($orow['specimen_type'])  $content_pro .= "<td>Specimen Type</td>";
-                    
+    if($orow['specimen_type'])  $content_pro .= "<td>" . xlt("Specimen Type") . "</td>";
+
     $content_pro .= "<td>" . $orow['specimen_type'] . "</td></tr></table><br><br>";
 
     $content_pro .= <<<_END
@@ -203,5 +212,8 @@ $query = "SELECT " .
 
 if($i != 1)
 {
+  $pdf->Ln(5);
+  $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());
+  $pdf->Ln(5);
   $pdf->WriteHTML($content_pro, true, false, false, false, '');
 }

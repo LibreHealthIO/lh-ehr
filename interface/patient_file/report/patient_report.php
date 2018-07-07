@@ -389,6 +389,7 @@
         </table>
         <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
         <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />&nbsp;
+        <input type="button" value='Test Download' class='pdf_proto'>
         <!-- Procedure Orders -->
         <hr/>
         <table border="0" cellpadding="0" cellspacing="0" >
