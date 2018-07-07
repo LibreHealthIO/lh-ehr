@@ -63,6 +63,7 @@ $result = sqlStatement($log_query);
     <div class="log-container log-font">
         <?php
           $first_row = true;
+          $previous_id = "";
           while ($row = sqlFetchArray($result)) {
             $appt_date = $row['apptdate'];
             $appt_time = $row['appttime'];
@@ -78,9 +79,14 @@ $result = sqlStatement($log_query);
                 $action = "created";
                 $connector = "for";
                 $first_row = false;
+                $previous_id = $row['id'];
+            } elseif ($row['id'] == $previous_id) {
+                // status is changed
+                $action = "changed";
             }
             echo "<strong>{$action}</strong> by <span class='red-text'>{$user}</span> on <span class='green-text'>{$user_date}</span> {$connector} {$appt_date} at {$appt_time} as {$appt_status}";
             echo "</div>";
+            $previous_id = $row['id'];
           }
         ?>
     </div>

@@ -197,6 +197,7 @@ tr.appt-hover{
     <br>
     <hr>
     <script type="text/javascript">
+
         $(document).ready(function() {
             // initializing the DataTable
             var oTable = $("#appt-table").dataTable({
@@ -206,11 +207,12 @@ tr.appt-hover{
                 "sAjaxSource": "track_appointments_ajax.php",  // data source
                 // See: http://datatables.net/usage/columns and
                 "aoColumns": [ <?php echo $coljson; ?> ],  // can be accessed by $_GET['sColumns'] in data source file
-                //values for table length
-                "aLengthMenu": [ 4, 8, 12, 16 ],
-                //value for default table length
-                "iDisplayLength": <?php echo empty($GLOBALS['gbl_appt_list_page_size']) ? '4' : $GLOBALS['gbl_appt_list_page_size']; ?>,
+                // values for table length
+                "aLengthMenu": [ 10, 25, 50, 100 ],
+                // value for default table length
+                "iDisplayLength": <?php echo empty($GLOBALS['gbl_appt_list_page_size']) ? '10' : $GLOBALS['gbl_appt_list_page_size']; ?>,
                 // strings for specifying various DataTables' texts
+                // See: http://legacy.datatables.net/usage/i18n
                 "oLanguage": {
                     "sSearch": "<?php echo xla('Search all columns'); ?>:",
                     "sLengthMenu"  : "<?php echo xla('Show ') . xla('entries:') . '<br>' . ' _MENU_ '; ?>",

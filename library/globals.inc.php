@@ -120,6 +120,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'secondary_color',
                                'secondary_font_color',
                                'gbl_pt_list_page_size',
+                               'gbl_appt_list_page_size',
                                'default_encounter_view',
                                'units_of_measurement',
                                'us_weight_format',
@@ -285,7 +286,6 @@ $GLOBALS_METADATA = array(
     ),
 
 
-
     'gbl_pt_list_page_size' => array(
       xl('Patient List Page Size'),
       array(
@@ -297,7 +297,20 @@ $GLOBALS_METADATA = array(
        '10',
       xl('Number of patients to display per page in the patient list.')
     ),
-    
+
+
+    'gbl_appt_list_page_size' => array(
+      xl('Appointment List Page Size'),
+      array(
+        '10'  =>  '10',
+        '25'  =>  '25',
+        '50'  =>  '50',
+        '100' => '100',
+      ),
+       '10',
+      xl('Number of appointments to display per page in track appointments list.')
+    ),
+
 
     'gbl_vitals_options' => array(
       xl('Vitals Form Options'),
