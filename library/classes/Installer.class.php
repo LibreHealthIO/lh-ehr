@@ -28,9 +28,6 @@ class Installer
     $this->no_root_db_access        = $cgi_variables['no_root_db_access']; // no root access to database. user/privileges pre-configured
     $this->development_translations = $cgi_variables['development_translations'];
 
-    // Make this true for IPPF.
-    $this->ippf_specific = false;
-
     // Record name of sql access file
     $GLOBALS['OE_SITES_BASE'] = dirname(__FILE__) . '/../../sites';
     $GLOBALS['OE_SITE_DIR'] = $GLOBALS['OE_SITES_BASE'] . '/' . $this->site;
@@ -39,12 +36,10 @@ class Installer
     // Record names of sql table files
     $this->main_sql = dirname(__FILE__) . '/../../sql/database.sql';
     $this->translation_sql = dirname(__FILE__) . '/../../modules/language_translations/currentLanguage_utf8.sql';
-    $this->devel_translation_sql = "http://opensourceemr.com/cvs/languageTranslations_utf8.sql";
-    $this->ippf_sql = dirname(__FILE__) . "/../../sql/ippf_layout.sql";
-    $this->icd9 = dirname(__FILE__) . "/../../sql/icd9.sql";
+    $this->devel_translation_sql = "https://github.com/LibreHealthIO/lh-ehr-contribs/currentLanguage_utf8.sql";  //does not exist
     $this->cvx = dirname(__FILE__) . "/../../sql/cvx_codes.sql";
     $this->additional_users = dirname(__FILE__) . "/../../sql/official_additional_users.sql";
-    $this->menu_def = dirname(__FILE__) . "/../../sql/menu_definitions.sql";
+    $this->menu_def = dirname(__FILE__) . "/../../sql/menu_definitions.sql";  //REVIEW
 
     // Record name of php-gacl installation files
     $this->gaclSetupScript1 = dirname(__FILE__) . "/../../gacl/setup.php";
@@ -290,8 +285,6 @@ class Installer
     fwrite($fd,"\$login\t= '$this->login';\n") or $it_died++;
     fwrite($fd,"\$pass\t= '$this->pass';\n") or $it_died++;
     fwrite($fd,"\$dbase\t= '$this->dbname';\n\n") or $it_died++;
-    fwrite($fd,"//Added ability to disable\n") or $it_died++;
-    fwrite($fd,"//utf8 encoding - bm 05-2009\n") or $it_died++;
     fwrite($fd,"global \$disable_utf8_flag;\n") or $it_died++;
     fwrite($fd,"\$disable_utf8_flag = false;\n") or $it_died++;
 
@@ -303,10 +296,10 @@ $sqlconf["port"] = $port;
 $sqlconf["login"] = $login;
 $sqlconf["pass"] = $pass;
 $sqlconf["dbase"] = $dbase;
-//////////////////////////
-//////////////////////////
-//////////////////////////
-//////DO NOT TOUCH THIS///
+/////////WARNING!/////////
+//Setting $config to = 0//
+// will break this site //
+//and cause SETUP to run//
 $config = 1; /////////////
 //////////////////////////
 //////////////////////////
@@ -507,13 +500,7 @@ $config = 1; /////////////
         // Use the local translation set
         $dumpfiles[ $this->translation_sql ] = "Language Translation (utf8)";
       }
-      if ($this->ippf_specific) {
-        $dumpfiles[ $this->ippf_sql ] = "IPPF Layout";
-      }
-      // Load ICD-9 codes if present.
-      if (file_exists( $this->icd9 )) {
-        $dumpfiles[ $this->icd9 ] = "ICD-9";
-      }
+
       // Load CVX codes if present
       if (file_exists( $this->cvx )) {
         $dumpfiles[ $this->cvx ] = "CVX Immunization Codes";

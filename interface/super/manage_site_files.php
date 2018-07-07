@@ -59,44 +59,61 @@ if (!empty($_POST['bn_save'])) {
     $form_filename = '';
   }
 
+  $number_of_files = count($_FILES['form_image']['name']);
+  for ($i=0; $i <$number_of_files ; $i++) { 
   // Handle image uploads.
-  if (is_uploaded_file($_FILES['form_image']['tmp_name']) && $_FILES['form_image']['size']) {
-    $form_dest_filename = $_POST['form_dest_filename'];
-    if ($form_dest_filename == '') {
-      $form_dest_filename = $_FILES['form_image']['name'];
+    if (is_uploaded_file($_FILES['form_image']['tmp_name'][$i]) && $_FILES['form_image']['size'][$i]) {
+      $finfo = finfo_open(FILEINFO_MIME_TYPE);
+      $mime = finfo_file($finfo, $_FILES['form_image']['tmp_name'][$i]);
+      finfo_close($finfo);
+      if ($mime == "image/png" OR $mime == "image/bmp" OR $mime == "image/jpeg" OR $mime == "image/gif") {
+        $form_dest_filename = $_POST['form_dest_filename'];
+        if ($form_dest_filename == '') {
+          $form_dest_filename = $_FILES['form_image']['name'][$i];
+        }
+        $form_dest_filename = basename($form_dest_filename);
+        if ($form_dest_filename == '') {
+          die(htmlspecialchars(xl('Cannot find a destination filename')));
+        }
+        $imagepath = "$imagedir/$form_dest_filename";
+        // If the site's image directory does not yet exist, create it.
+        if (!is_dir($imagedir)) {
+          mkdir($imagedir);
+        }
+        if (is_file($imagepath)) unlink($imagepath);
+        $tmp_name = $_FILES['form_image']['tmp_name'][$i];
+        if (!move_uploaded_file($_FILES['form_image']['tmp_name'][$i], $imagepath)) {
+          die(htmlspecialchars(xl('Unable to create') . " '$imagepath'"));
+        }
+      }
+      else {
+         die(htmlspecialchars(xl('the file you have uploaded is not an image')));
+      }
     }
-    $form_dest_filename = basename($form_dest_filename);
-    if ($form_dest_filename == '') {
-      die(htmlspecialchars(xl('Cannot find a destination filename')));
-    }
-    $imagepath = "$imagedir/$form_dest_filename";
-    // If the site's image directory does not yet exist, create it.
-    if (!is_dir($imagedir)) {
-      mkdir($imagedir);
-    }
-    if (is_file($imagepath)) unlink($imagepath);
-    $tmp_name = $_FILES['form_image']['tmp_name'];
-    if (!move_uploaded_file($_FILES['form_image']['tmp_name'], $imagepath)) {
-      die(htmlspecialchars(xl('Unable to create') . " '$imagepath'"));
-    }
-  }
+}
 
-  // Handle PDF uploads for patient education.
-  if (is_uploaded_file($_FILES['form_education']['tmp_name']) && $_FILES['form_education']['size']) {
-    $form_dest_filename = $_FILES['form_education']['name'];
-    $form_dest_filename = strtolower(basename($form_dest_filename));
-    if (substr($form_dest_filename, -4) != '.pdf') {
-      die(xlt('Filename must end with ".pdf"'));
-    }
-    $educationpath = "$educationdir/$form_dest_filename";
-    // If the site's education directory does not yet exist, create it.
-    if (!is_dir($educationdir)) {
-      mkdir($educationdir);
-    }
-    if (is_file($educationpath)) unlink($educationpath);
-    $tmp_name = $_FILES['form_education']['tmp_name'];
-    if (!move_uploaded_file($tmp_name, $educationpath)) {
-      die(text(xl('Unable to create') . " '$educationpath'"));
+  $number_of_files = count($_FILES['form_education']['name']);
+  for ($i=0; $i <$number_of_files ; $i++) { 
+    // Handle PDF uploads for patient education.
+    if (is_uploaded_file($_FILES['form_education']['tmp_name'][$i]) && $_FILES['form_education']['size'][$i]) {
+      $finfo = finfo_open(FILEINFO_MIME_TYPE);
+      $mime = finfo_file($finfo, $_FILES['form_image']['tmp_name'][$i]);
+      finfo_close($finfo);
+        $form_dest_filename = $_FILES['form_education']['name'][$i];
+        $form_dest_filename = strtolower(basename($form_dest_filename));
+        if (substr($form_dest_filename, -4) != '.pdf' && $mime == "application/pdf") {
+          die(xlt('The choosen file must be a pdf file'));
+        }
+        $educationpath = "$educationdir/$form_dest_filename";
+        // If the site's education directory does not yet exist, create it.
+        if (!is_dir($educationdir)) {
+          mkdir($educationdir);
+        }
+        if (is_file($educationpath)) unlink($educationpath);
+        $tmp_name = $_FILES['form_education']['tmp_name'][$i];
+        if (!move_uploaded_file($tmp_name, $educationpath)) {
+          die(text(xl('Unable to create') . " '$educationpath'"));
+        } 
     }
   }
 
@@ -166,7 +183,7 @@ function msfFileChanged() {
   <td valign='top' class='detail' nowrap>
    <?php echo htmlspecialchars(xl('Source File')); ?>:
    <input type="hidden" name="MAX_FILE_SIZE" value="12000000" />
-   <input type="file" name="form_image" size="40" />&nbsp;
+   <input type="file" name="form_image[]"  accept="image/*" multiple="multiple" />&nbsp;
    <?php echo htmlspecialchars(xl('Destination Filename')) ?>:
    <select name='form_dest_filename'>
     <option value=''>(<?php echo htmlspecialchars(xl('Use source filename')) ?>)</option>
@@ -197,7 +214,7 @@ function msfFileChanged() {
  <tr>
   <td valign='top' class='detail' nowrap>
    <?php echo xlt('Source File'); ?>:
-   <input type="file" name="form_education" size="40" />&nbsp;
+   <input type="file" name="form_education[]" accept="application/pdf" multiple="multiple" />&nbsp;
    <?php echo xlt('File name must end in .pdf.'); ?>
   </td>
  </tr>
@@ -213,4 +230,3 @@ function msfFileChanged() {
 </form>
 </body>
 </html>
-

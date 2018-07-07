@@ -363,7 +363,7 @@ if ($encounter){
 } elseif(!$encounter AND $pid){ 
 ?> onclick="top.restoreSession();location='<?php echo $web_root ?>/interface/patient_file/summary/demographics.php'"<?php 
 } elseif(!$encounter AND !$pid){ 
-?> onclick="top.restoreSession();location='<?php echo $web_root ?>/interface/new/new.php'"<?php 
+?> onclick="top.restoreSession();location='<?php echo $web_root ?>/interface/new/new_comprehensive.php'"<?php 
 }
 echo " />\n";
 echo "</p>\n";

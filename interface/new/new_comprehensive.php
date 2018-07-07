@@ -5,28 +5,28 @@
   // modify it under the terms of the GNU General Public License
   // as published by the Free Software Foundation; either version 2
   // of the License, or (at your option) any later version.
-  
+
   require_once("../globals.php");
   require_once("$srcdir/acl.inc");
   require_once("$srcdir/options.inc.php");
   require_once("$srcdir/patient.inc");
   require_once("$srcdir/erx_javascript.inc.php");
   require_once("$srcdir/headers.inc.php");
-  
+
   // Check authorization.
   if (!acl_check('patients','demo','',array('write','addonly') ))
     die("Adding demographics is not authorized.");
-  
+
   $CPR = 4; // cells per row
   $DateFormat = DateFormatRead();
   $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
-  
+
   $searchcolor = empty($GLOBALS['layout_search_color']) ?
     '#ffff55' : $GLOBALS['layout_search_color'];
-  
+
   $WITH_SEARCH = ($GLOBALS['full_new_patient_form'] == '1' || $GLOBALS['full_new_patient_form'] == '2');
   $SHORT_FORM  = ($GLOBALS['full_new_patient_form'] == '2' || $GLOBALS['full_new_patient_form'] == '3');
-  
+
   function getLayoutRes() {
     global $SHORT_FORM;
     return sqlStatement("SELECT * FROM layout_options " .
@@ -34,7 +34,7 @@
       ($SHORT_FORM ? "AND ( uor > 1 OR edit_options LIKE '%N%' ) " : "") .
       "ORDER BY group_name, seq");
   }
-  
+
   // Determine layout field search treatment from its data type:
   // 1 = text field
   // 2 = select list
@@ -56,12 +56,12 @@
       case  4: // date
       case  5: //email
       case  6: //integer
-      case  7: //url  
+      case  7: //url
         return 1;
     }
     return 0;
   }
-  
+
   $fres = getLayoutRes();
   ?>
 <html>
@@ -225,16 +225,16 @@ function allowOnlyDigits(elem_name){
        // end of the list, and select it.
        theopts[i] = new Option(ins_name, ins_id, false, true);
       }
-      
+
       // Indicates which insurance slot is being updated.
       var insurance_index = 0;
-      
+
       // The OnClick handler for searching/adding the insurance company.
       function ins_search(ins) {
        insurance_index = ins;
        return false;
       }
-      
+
       function checkNum () {
        var re= new RegExp();
        re = /^\d*\.?\d*$/;
@@ -245,7 +245,7 @@ function allowOnlyDigits(elem_name){
         alert("Please enter a dollar amount using only numbers and a decimal point.");
        }
       }
-      
+
       // This capitalizes the first letter of each word in the passed input
       // element.  It also strips out extraneous spaces.
       function capitalizeMe(elem) {
@@ -259,7 +259,7 @@ function allowOnlyDigits(elem_name){
        }
        elem.value = s;
       }
-      
+
       /*  This function allows only digits to be entered in a text-field,numeric field,etc. */
       function allowOnlyDigits(elem_name){
           document.querySelector('input[name='+elem_name+']').addEventListener("keypress", function (evt) {
@@ -270,7 +270,7 @@ function allowOnlyDigits(elem_name){
               }
           });
       }
-      
+
       // Onkeyup handler for policy number.  Allows only A-Z and 0-9.
       function policykeyup(e) {
        var v = e.value.toUpperCase();
@@ -280,7 +280,7 @@ function allowOnlyDigits(elem_name){
         if ((c >= '0' && c <= '9') ||
            (c >= 'A' && c <= 'Z') ||
            (c == '*') ||
-           (c == '-') ||     
+           (c == '-') ||
            (c == '_') ||
            (c == '(') ||
            (c == ')') ||
@@ -292,7 +292,7 @@ function allowOnlyDigits(elem_name){
        e.value = filteredString;
        return;
       }
-      
+
       function divclick(cb, divid) {
        var divstyle = document.getElementById(divid).style;
        if (cb.checked) {
@@ -302,7 +302,7 @@ function allowOnlyDigits(elem_name){
        }
        return true;
       }
-      
+
       // Compute the length of a string without leading and trailing spaces.
       function trimlen(s) {
        var i = 0;
@@ -312,25 +312,25 @@ function allowOnlyDigits(elem_name){
        if (i > j) return 0;
        return j + 1 - i;
       }
-      
+
       /*Function to check if entered data in the form is of correct format(eg. email,URL..) or not. */
-      function checkInputFormat(f){        
+      function checkInputFormat(f){
           for(i=0;i<f.length;i++){
-                           
+
               if(f[i].type=='email')
               {
-                  var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;            
+                  var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                   if(f[i].value && reg.test(f[i].value)==false)
                   {
-                      f[i].style.border =  "thick solid red";                
+                      f[i].style.border =  "thick solid red";
                       return false;
                   }
                   else
-                  {     
-                     f[i].style.border =  "";            
+                  {
+                     f[i].style.border =  "";
                   }
-              }     
-              
+              }
+
               //By default, this hasn't been used anywhere. Can be used for future purpose.
               //URL's can have following types: http://www.google.com.. or www.google.com or google.com.
               if(f[i].type=='url')
@@ -338,17 +338,17 @@ function allowOnlyDigits(elem_name){
                   var reg = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
                   if(f[i].value && reg.test(f[i].value)==false)
                   {
-                      f[i].style.border =  "thick solid red";                
+                      f[i].style.border =  "thick solid red";
                       return false;
                   }
                   else
-                  {               
+                  {
                      f[i].style.border =  "";
                   }
-              }       
+              }
           }
       }
-      
+
       function validate(f) {
         var errMsgs = new Array();
         var isInputFormatValid = checkInputFormat(f);
@@ -381,13 +381,20 @@ function allowOnlyDigits(elem_name){
         }
         <?php } ?>
         var msg = "";
+        var ins_error = '0';
         msg += "<?php echo htmlspecialchars(xl('The following fields are required'),ENT_QUOTES); ?>:\n\n";
         for ( var i = 0; i < errMsgs.length; i++ ) {
                msg += errMsgs[i] + "\n";
         }
+        <?php if($GLOBALS['primary_insurance_required']){ ?>
+          if($('#i1provider option:selected').val() == '') {
+             var ins_error = '1';
+             msg += "<?php echo htmlspecialchars(xl('Primary Insurance Provider Entry Required.'),ENT_QUOTES); ?> \n";
+          }
+        <?php } ?>
         msg += "\n<?php echo htmlspecialchars(xl('Please fill them in before continuing.'),ENT_QUOTES); ?>";
-       
-        if ( errMsgs.length > 0 ) {
+
+        if ( errMsgs.length > 0 || ins_error == '1' ) {
                alert(msg);
                return false;
         }
@@ -399,7 +406,7 @@ function allowOnlyDigits(elem_name){
         }
        return true;
       }
-      
+
       function toggleSearch(elem) {
        var f = document.forms[0];
       <?php if ($WITH_SEARCH) { ?>
@@ -415,10 +422,10 @@ function allowOnlyDigits(elem_name){
        }
        return true;
       }
-      
+
       // If a <select> list is dropped down, this is its name.
       var open_sel_name = '';
-      
+
       function selClick(elem) {
        if (open_sel_name == elem.name) {
         open_sel_name = '';
@@ -429,22 +436,22 @@ function allowOnlyDigits(elem_name){
        }
        return true;
       }
-      
+
       function selBlur(elem) {
        if (open_sel_name == elem.name) {
         open_sel_name = '';
        }
        return true;
       }
-      
+
       // This invokes the patient search dialog.
       function searchme() {
        var f = document.forms[0];
        var url = '../main/finder/patient_select.php?popup=1';
-      
+
       <?php
         $lres = getLayoutRes();
-        
+
         while ($lrow = sqlFetchArray($lres)) {
           $field_id  = $lrow['field_id'];
           if (strpos($field_id, 'em_') === 0) continue;
@@ -466,12 +473,12 @@ function allowOnlyDigits(elem_name){
           }
         }
         ?>
-      
+
        dlgopen(url, '_blank', 700, 500);
       }
-      
+
       //-->
-      
+
     </script>
   </head>
   <body class="body_top">
@@ -499,7 +506,7 @@ function allowOnlyDigits(elem_name){
                   $item_count = 0;
                 }
               }
-              
+
               function end_row() {
                 global $cell_count, $CPR;
                 end_cell();
@@ -509,7 +516,7 @@ function allowOnlyDigits(elem_name){
                   $cell_count = 0;
                 }
               }
-              
+
               function end_group() {
                 global $last_group, $SHORT_FORM;
                 if (strlen($last_group) > 0) {
@@ -518,16 +525,16 @@ function allowOnlyDigits(elem_name){
                   if (!$SHORT_FORM) echo "</div>\n";
                 }
               }
-              
+
               $last_group    = '';
               $cell_count    = 0;
               $item_count    = 0;
               $display_style = 'block';
               /* this is the div width which must be a fixed and absolute VALUE
                  in order to avoid breaklining problems when opening more tabs */
-              $div_width     = '1200px'; 
+              $div_width     = '1200px';
               $group_seq     = 0; // this gives the DIV blocks unique IDs
-              
+
               while ($frow = sqlFetchArray($fres)) {
                 $this_group = $frow['group_name'];
                 $titlecols  = $frow['titlecols'];
@@ -537,7 +544,7 @@ function allowOnlyDigits(elem_name){
                 $list_id    = $frow['list_id'];
                 $currvalue  = '';
                 $condition_str = get_conditions_str($condition_str,$group_fields);
-              
+
                 if (strpos($field_id, 'em_') === 0) {
                   $tmp = substr($field_id, 3);
                   if (isset($result2[$tmp])) $currvalue = $result2[$tmp];
@@ -545,7 +552,7 @@ function allowOnlyDigits(elem_name){
                 else {
                   if (isset($result[$field_id])) $currvalue = $result[$field_id];
                 }
-              
+
                 // Handle a data category (group) change.
                 if (strcmp($this_group, $last_group) != 0) {
                   if (!$SHORT_FORM) {
@@ -556,10 +563,10 @@ function allowOnlyDigits(elem_name){
                     echo "<span class='bold'><input type='checkbox' name='form_cb_$group_seq' id='form_cb_$group_seq' value='1' " .
                       "onclick='return divclick(this,\"div_$group_seq\");'";
                     if ($display_style == 'block') echo " checked";
-                      
-                    // Modified 6-09 by BM - Translate if applicable  
+
+                    // Modified 6-09 by BM - Translate if applicable
                     echo " /><b>" . xl_layout_label($group_name) . "</b></span>\n";
-                      
+
                     echo "<div id='div_$group_seq' class='section' style='display:$display_style;'>\n";
                     echo " <table class='table' >\n";
                     $display_style = 'none';
@@ -569,13 +576,13 @@ function allowOnlyDigits(elem_name){
                   }
                   $last_group = $this_group;
                 }
-              
+
                 // Handle starting of a new row.
                 if (($titlecols > 0 && $cell_count >= $CPR) || $cell_count == 0) {
                   end_row();
                   echo "  <tr>";
                 }
-              
+
                 if ($item_count == 0 && $titlecols == 0) $titlecols = 1;
                 $field_id_label='label_'.$frow['field_id'];
                 // Handle starting of a new label cell.
@@ -588,14 +595,14 @@ function allowOnlyDigits(elem_name){
                   $cell_count += $titlecols;
                 }
                 ++$item_count;
-              
+
                 echo "<b>";
-                  
+
                 // Modified 6-09 by BM - Translate if applicable
                 if ($frow['title']) echo (xl_layout_label($frow['title']).":"); else echo "&nbsp;";
-                  
+
                 echo "</b>";
-              
+
                 // Handle starting of a new data cell.
                 if ($datacols > 0) {
                   end_cell();
@@ -604,7 +611,7 @@ function allowOnlyDigits(elem_name){
                   echo ">";
                   $cell_count += $datacols;
                 }
-              
+
                 ++$item_count;
                 generate_form_field($frow, $currvalue);
               }
@@ -620,13 +627,13 @@ function allowOnlyDigits(elem_name){
                 $insurance_info[2] = getInsuranceData($pid,"secondary");
                 $insurance_info[3] = getInsuranceData($pid,"tertiary");
                 $subscriber_placeholder = "'" . xl("Student/leave blank if unemployed") . "'";
-              
+
                 echo "<br /><span class='bold'><input type='checkbox' name='form_cb_ins' value='1' " .
                   "onclick='return divclick(this,\"div_ins\");'";
                 if ($display_style == 'block') echo " checked";
                 echo " /><b>" . xl('Insurance') . "</b></span>\n";
                 echo "<div id='div_ins' class='section' style='display:$display_style; width:$div_width;'>\n";
-              
+
                 for($i=1;$i<=3;$i++) {
                  $result3 = $insurance_info[$i];
               ?>
@@ -634,7 +641,7 @@ function allowOnlyDigits(elem_name){
               <tr>
                 <td colspan='2'>
                   <span class='required'><?php echo $insurance_headings[$i -1].":"?></span>
-                  <select name="i<?php echo $i?>provider">
+                  <select name="i<?php echo $i?>provider" id="i<?php echo $i?>provider">
                     <option value=""><?php xl('Unassigned','e'); ?></option>
                     <?php
                       foreach ($insurancei as $iid => $iname) {
@@ -816,7 +823,7 @@ function allowOnlyDigits(elem_name){
                         <?php
                           // Modified 6/2009 by BM to use list_options and function
                           generate_form_field(array('data_type'=>1,'field_id'=>('i'.$i.'subscriber_sex'),'list_id'=>'sex'), $result3['subscriber_sex']);
-                          ?>   
+                          ?>
                       </td>
                     </tr>
                     <tr>
@@ -887,7 +894,7 @@ function allowOnlyDigits(elem_name){
                         <input type=text size="6" name=i<?php echo $i?>copay value="<?php echo $result3{"copay"}?>">
                       </td>
                     </tr>
-                
+
                   </table>
                 </td>
               </tr>
@@ -924,14 +931,14 @@ function allowOnlyDigits(elem_name){
     if (f.form_phone_home   ) phonekeyup(f.form_phone_home   ,mypcc);
     if (f.form_phone_biz    ) phonekeyup(f.form_phone_biz    ,mypcc);
     if (f.form_phone_cell   ) phonekeyup(f.form_phone_cell   ,mypcc);
-    
+
     <?php echo $date_init; ?>
-    
+
     // -=- jQuery makes life easier -=-
-    
+
     // var matches = 0; // number of patients that match the demographic information being entered
     // var override = false; // flag that overrides the duplication warning
-    
+
     $(document).ready(function() {
     enable_modals();
      $(".medium_modal").fancybox( {
@@ -944,14 +951,14 @@ function allowOnlyDigits(elem_name){
         <?php for ($i=1;$i<=3;$i++) { ?>
         $("#form_i<?php echo $i?>subscriber_relationship").change(function() { auto_populate_employer_address<?php echo $i?>(); });
         <?php } ?>
-        
+
         $('#search').click(function() { searchme(); });
         $('#create').click(function() { submitme(); });
-    
+
         var submitme = function() {
           top.restoreSession();
           var f = document.forms[0];
-    
+
           if (validate(f)) {
             if (force_submit) {
               // In this case dups were shown already and Save should just save.
@@ -986,10 +993,10 @@ function allowOnlyDigits(elem_name){
               }
             }
             dlgopen(url, '_blank', 700, 500);
-    
+
           } // end if validate
         } // end function
-    
+
     // Set onclick/onfocus handlers for toggling background color.
     <?php
       $lres = getLayoutRes();
@@ -1007,9 +1014,9 @@ function allowOnlyDigits(elem_name){
         }
       }
       ?>
-    
+
     }); // end document.ready
-    
+
   </script>
   <script language='JavaScript'>
     // Array of skip conditions for the checkSkipConditions() function.
@@ -1034,18 +1041,18 @@ function allowOnlyDigits(elem_name){
                     .attr('src', e.target.result)
                     .width(64)
                     .height(64);
-                $('#prof_img').css("display", "block"); 
-                $('#file_input_button').css("display", "none"); 
-                $('#show_upload_button').css("display", "block");  
+                $('#prof_img').css("display", "block");
+                $('#file_input_button').css("display", "none");
+                $('#show_upload_button').css("display", "block");
             };
 
             reader.readAsDataURL(input.files[0]);
         }
     }
     $('#show_upload_button').click(function () {
-      $('#prof_img').css("display", "none"); 
-      $('#file_input_button').css("display", "block"); 
-      $('#show_upload_button').css("display", "none"); 
+      $('#prof_img').css("display", "none");
+      $('#file_input_button').css("display", "block");
+      $('#show_upload_button').css("display", "none");
     });
   </script>
 </html>

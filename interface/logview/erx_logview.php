@@ -32,6 +32,7 @@ require_once($srcdir.'/log.inc');
 require_once($srcdir.'/formdata.inc.php');
 require_once($srcdir.'/formatting.inc.php');
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+require_once($srcdir.'/headers.inc.php');
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -76,10 +77,11 @@ if($filename) {
 ?>
 <html>
     <head>
-        <?php html_header_show(); ?>
+        <?php
+            html_header_show();
+            call_required_libraries(array('jquery-min-1-7-2', 'datepicker'));
+        ?>
         <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
-        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
-        <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/jquery-1.7.2.min.js"></script>
     </head>
     <body class="body_top">
         <form method="post">
@@ -126,8 +128,6 @@ if($filename) {
 
 ?>
     </body>
-    <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-    <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
     <script>
         $(function() {
             $("#start_date").datetimepicker({

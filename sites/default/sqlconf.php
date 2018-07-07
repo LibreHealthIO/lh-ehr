@@ -1,6 +1,6 @@
 <?php
 //  LibreEHR
-//  MySQL Config
+//  MySQL default Config
 //  Referenced from /library/sqlconf.php.
 
 global $disable_utf8_flag;
@@ -20,12 +20,7 @@ $sqlconf["login"] = $login;
 $sqlconf["pass"] = $pass;
 $sqlconf["dbase"] = $dbase;
 
-//////////////////////////
-//////////////////////////
-//////////////////////////
-//////DO NOT TOUCH THIS///
-$config = 0; /////////////
-//////////////////////////
-//////////////////////////
-//////////////////////////
+//$config for default site files should never be changed.
+$config = 0; 
+
 ?>

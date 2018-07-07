@@ -3068,6 +3068,7 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) V
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','^'       ,'^ Pending from Portal'    ,70,0,'ADBBFF|0');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','='       ,'= Rescheduled'    ,75,0,'BFBFBF|0');
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','&'       ,'& Rescheduled < 24h'    ,80,0,'BFBFBF|0');
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default, notes ) VALUES ('apptstat','Deleted' ,'Deleted'    ,85,0,'0F0F0F|0');
 
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists'    ,'warehouse','Warehouses',21,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('warehouse','onsite'   ,'On Site'   , 5,0);
@@ -4107,6 +4108,12 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('ub_admit_type','5','Trauma',50,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('ub_admit_type','9','Information Not Available',60,0);
 
+-- Appointment Cancellation Reasons
+INSERT INTO list_options ( list_id, option_id, title,activity ) VALUES ('lists','cancellation_reasons','Cancellation Reasons', 1);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','1','No reason given',5,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','2','Work',10,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','3','Sick',20,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','4','Weather',25,0);
 --
 -- Table structure for table `lists`
 --
@@ -4611,6 +4618,7 @@ CREATE TABLE `libreehr_postcalendar_events` (
   `pc_sendalertemail` VARCHAR( 3 ) NOT NULL DEFAULT 'NO',
   `pc_billing_location` SMALLINT (6) NOT NULL DEFAULT '0',
   `pc_room` varchar(20) NOT NULL DEFAULT '',
+  `cancel_reason` text,
   PRIMARY KEY  (`pc_eid`),
   KEY `basic_event` (`pc_catid`,`pc_aid`,`pc_eventDate`,`pc_endDate`,`pc_eventstatus`,`pc_sharing`,`pc_topic`),
   KEY `pc_eventDate` (`pc_eventDate`)
@@ -4826,6 +4834,7 @@ CREATE TABLE IF NOT EXISTS `patient_tracker_element` (
   `status`             varchar(31)  NOT NULL default '',
   `seq`                varchar(4)   NOT NULL default '' COMMENT 'This is a numerical sequence for this pt_tracker_id events',
   `user`               varchar(255) NOT NULL default '' COMMENT 'This is the user that created this element',
+  `reason`             varchar(255)  NOT NULL default '',
   KEY  (`pt_tracker_id`,`seq`)
 ) ENGINE=InnoDB;
 
@@ -5891,6 +5900,7 @@ CREATE TABLE `users` (
   `cpoe` tinyint(1) NULL DEFAULT NULL,
   `physician_type` VARCHAR(50) DEFAULT NULL,
   `suffix` varchar(255) DEFAULT NULL,
+  `picture_url` varchar(2000) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
