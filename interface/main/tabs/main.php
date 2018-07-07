@@ -246,8 +246,16 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php
 
    $userAuthorized = $_SESSION['userauthorized'];
-    $authUserId = $_SESSION['authUserID'];
-    if(checkAdmin($userAuthorized, $authUserId)) {
+   $authUserId = $_SESSION['authUserID'];
+   $sql = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = ?", array("updater_icon_visibility") );
+    $updater_icon_visibility = $sql['gl_value']; 
+    if ($updater_icon_visibility == 1) {
+        $show_icon = true;
+    }
+    else {
+        $show_icon = false;
+    }
+    if(checkAdmin($userAuthorized, $authUserId) && $show_icon) {
         //only admin can use the updater
         echo  "<div id='developer-mode' title='Developer Mode' style='display: none;'><i class='fa fa-code'></i></div>
         <div id='updater-options' style='display: none;' title='updater settings'><i class='fa fa-gear'></i></div><div id='updater-icon'>
