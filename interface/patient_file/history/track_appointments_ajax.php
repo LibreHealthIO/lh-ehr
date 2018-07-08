@@ -56,8 +56,29 @@ if (isset($_GET['iSortCol_0'])) {  // iSortCol_(int) refers to the column being 
 // 3. filtering (on all columns)
 $where = "";
 $flag = false;
+// range filtering values for appointment dates
+$from_date = $_GET['fromDate'];
+$to_date = $_GET['toDate'];
+error_log($from_date);
+error_log($to_date);
 if (isset($_SESSION['selected_pat_id']) && $_SESSION['selected_pat_id'] !== "") {
-  $where .= " WHERE pc_pid = '" . $_SESSION['selected_pat_id'] . "'";
+  if (isset($from_date) && $from_date !== "") {
+    if (isset($to_date) && $to_date !== "") {
+      // if both from & to dates are set
+      $where .= " WHERE pc_pid = '" . $_SESSION['selected_pat_id'] . "' AND ((events.pc_endDate >= '$from_date' AND events.pc_eventDate <= '$to_date' AND events.pc_recurrtype > '0') OR (events.pc_eventDate >= '$from_date' AND events.pc_eventDate <= '$to_date'))";
+    } else {
+      // if only from date is set
+      $where .= " WHERE pc_pid = '" . $_SESSION['selected_pat_id'] . "' AND ((events.pc_endDate >= '$from_date' AND events.pc_recurrtype > '0') OR (events.pc_eventDate >= '$from_date'))";
+    }
+  } else {
+    if (isset($to_date) && $to_date !== "") {
+      // if only to date is set
+      $where .= " WHERE pc_pid = '" . $_SESSION['selected_pat_id'] . "' AND ((events.pc_eventDate <= '$to_date' AND events.pc_recurrtype > '0') OR (events.pc_eventDate <= '$to_date'))";
+    } else {
+      // if neither of from & to dates are set
+      $where .= " WHERE pc_pid = '" . $_SESSION['selected_pat_id'] . "'";
+    }
+  }
   $flag= true;
 }
 if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {  // sSearch gets string out of Global search field

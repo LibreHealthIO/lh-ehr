@@ -10,12 +10,17 @@ require_once("../../globals.php");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
+require_once("$srcdir/formatting.inc.php");
+
+// date format for datepicker
+$dateFormat = DateFormatRead();
 
 //if coming here from select patient tab
 if (isset($_GET['set_pid'])) {
     $pid = $_GET['set_pid'];
 }
 
+// to access pid at server-side processing (dataTable)
 $_SESSION['selected_pat_id'] = $pid;
 
 $popup = empty($_REQUEST['popup']) ? 0 : 1;
@@ -33,7 +38,7 @@ $coljson = '{"sName": "pc_eventDate"}, {"sName": "pc_startTime"}, {"sName": "pc_
 <head>
 <?php
   html_header_show();
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","jquery-ui","iziModalToast"));
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","jquery-ui","iziModalToast","datepicker"));
 ?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/js/jquery.dataTables.min.js"></script>
@@ -156,6 +161,16 @@ tr.appt-hover{
 .dataTables_paginate> a:hover{
     color: #ff5555 !important;
 }
+
+.start-label{
+    font-size: 14px;
+    margin-left: 20px;
+}
+
+.end-label{
+    font-size: 14px;
+    margin-left: 20px;
+}
 </style>
 </head>
 <body class="body_top">
@@ -182,6 +197,24 @@ tr.appt-hover{
         </span>
     </div>
     <hr>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <label for="startDate" class="start-label">
+                        From date:
+                        <input type="text" id="startDate" name="startDate" class="form-control form-rounded">
+                    </label>
+                </td>
+                <td>
+                    <label for="endDate" class="end-label">
+                        To date:
+                        <input type="text" id="endDate" name="endDate" class="form-control form-rounded">
+                    </label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table" id="appt-table">
         <thead>
             <tr class="appt-head">
@@ -197,15 +230,19 @@ tr.appt-hover{
     <br>
     <hr>
     <script type="text/javascript">
-
         $(document).ready(function() {
             // initializing the DataTable
             var oTable = $("#appt-table").dataTable({
                 "bProcessing": true,
                 "bServerSide": true,  // for server side processing in DataTables
                 // See: http://legacy.datatables.net/usage/server-side
-                "sAjaxSource": "track_appointments_ajax.php",  // data source
-                // See: http://datatables.net/usage/columns and
+                "sAjaxSource": "track_appointments_ajax.php",  // server-side processing
+                // See: https://datatables.net/beta/1.9/examples/server_side/custom_vars.html
+                "fnServerParams": function ( aoData ) {  // sending dates to server for date-range filtering
+                    aoData.push({ "name": "fromDate", "value": $('#startDate').val() });  // start date of range
+                    aoData.push({ "name": "toDate", "value": $('#endDate').val() });  // end date of range
+                 },
+                // See: http://datatables.net/usage/columns
                 "aoColumns": [ <?php echo $coljson; ?> ],  // can be accessed by $_GET['sColumns'] in data source file
                 // values for table length
                 "aLengthMenu": [ 10, 25, 50, 100 ],
@@ -243,6 +280,34 @@ tr.appt-hover{
             });
             $("#appt-table").on("mouseout", "tr.data-row", function() {
                 $(this).removeClass("appt-hover");
+            });
+            // Date Picking
+            $('#startDate').datetimepicker({
+                timepicker: false,
+                format: '<?php echo $dateFormat; ?>',
+                formatDate: '<?php echo $dateFormat; ?>',
+                onShow: function( ct ){
+                    this.setOptions({
+                        maxDate: $('#endDate').val() ? $('#endDate').val() : false  // limit ending date choices if end date available
+                    })
+                }
+            });
+            $('#endDate').datetimepicker({
+                timepicker: false,
+                format: '<?php echo $dateFormat; ?>',
+                formatDate: '<?php echo $dateFormat; ?>',
+                onShow: function( ct ){
+                    this.setOptions({
+                        minDate: $('#startDate').val() ? $('#startDate').val() : false  // limit starting date choices if start date available
+                    })
+                }
+            });
+            // re-draw table when picking start date or end date
+            $('#startDate').change(function() {
+                oTable.fnDraw();
+            });
+            $('#endDate').change(function() {
+                oTable.fnDraw();
             });
         });
     </script>

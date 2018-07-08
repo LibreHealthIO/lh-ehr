@@ -8,11 +8,12 @@ require_once("$srcdir/htmlspecialchars.inc.php");
 $appt_pid = $_GET['appt_pid'];
 $appt_eid = $_GET['appt_eid'];
 
-$log_query = "SELECT id, apptdate, DATE_FORMAT(appttime,'%H:%i') as appttime, `status`, original_user as `user`, DATE_FORMAT(`date`,'%Y-%m-%d') as userdate
+$log_query = "SELECT id, apptdate, DATE_FORMAT(appttime,'%H:%i') as appttime, title, original_user as `user`, DATE_FORMAT(`date`,'%Y-%m-%d') as userdate
               FROM patient_tracker
               JOIN patient_tracker_element ON id = pt_tracker_id AND id IN (SELECT id
                                                                             FROM patient_tracker
-                                                                            WHERE pid = $appt_pid AND eid = $appt_eid)";
+                                                                            WHERE pid = $appt_pid AND eid = $appt_eid)
+              JOIN list_options ON option_id = status";
 $result = sqlStatement($log_query);
 ?>
 <html>
@@ -39,6 +40,7 @@ $result = sqlStatement($log_query);
 
 .log-row{
     border-bottom: 1px solid black;
+    padding: 6px 8px;
 }
 
 .log-font{
@@ -69,7 +71,7 @@ $result = sqlStatement($log_query);
             $appt_time = $row['appttime'];
             $user = $row['user'];
             $user_date = $row['userdate'];
-            $appt_status = $row['status'];
+            $appt_status = $row['title'];
 
             // echo log rows
             echo "<div class='log-row'>";
@@ -84,7 +86,7 @@ $result = sqlStatement($log_query);
                 // status is changed
                 $action = "changed";
             }
-            echo "<strong>{$action}</strong> by <span class='red-text'>{$user}</span> on <span class='green-text'>{$user_date}</span> {$connector} {$appt_date} at {$appt_time} as {$appt_status}";
+            echo "<strong>{$action}</strong> by <span class='red-text'>{$user}</span> on <span class='green-text'>{$user_date}</span> {$connector} {$appt_date} at {$appt_time} as ({$appt_status})";
             echo "</div>";
             $previous_id = $row['id'];
           }
