@@ -141,6 +141,21 @@ require('includes/session.php');
       var title_print = '<?php echo xlt('print'); ?>';
       var lang_default = '<?php echo $default_lang_id['lang_code']; ?>';
 
+      function scrollCalTime(calView) {
+        var date = new Date();  // current date and time related info.
+        var currHour = date.getHours();  // (0-23) according to local time
+        var currMinutes = date.getMinutes();  // (0-59) according to local time
+        if (currHour < 10) {
+          currHour = "0" + currHour;  // to avoid times like "9:20:00"
+        }
+        if (currMinutes < 10) {
+          currMinutes = "0" + currMinutes;  // to avoid times like "13:9:00"
+        }
+        var currCalTime = currHour + ":" + currMinutes + ":00";  // format "hh:mm:00"
+        // scrollTime determines how much forward scroll pane is initially scrolled
+        calView.options.scrollTime = currCalTime;  // set scrollTime to current time
+      }
+
       $('#calendar').fullCalendar({
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         locale: lang_default,
@@ -159,6 +174,7 @@ require('includes/session.php');
             buttonText: title_week,
             allDaySlot: false,
             displayEventTime: false,
+            nowIndicator: true,
             groupByResource: true
           },
  //         day: {
@@ -173,6 +189,7 @@ require('includes/session.php');
             buttonText: title_agenda2,
             allDaySlot: false,
             displayEventTime: false,
+            nowIndicator: true,
             groupByResource: true
           },
           providerAgenda: {
@@ -181,6 +198,7 @@ require('includes/session.php');
             buttonText: title_agenda,
             allDaySlot: false,
             displayEventTime: false,
+            nowIndicator: true,
             groupByDateAndResource: true
           }
         },
@@ -298,6 +316,15 @@ require('includes/session.php');
 
             // update datepicker
             $('#datepicker').datetimepicker({ value: view.intervalStart.format() });
+
+            scrollCalTime(view);  // when view changes or any date navigation method (prev, next, today) is called
+        },
+        loading: function(isLoading, view) {
+            // triggered when event or resource fetching starts/stops.
+            if(isLoading) {
+                // fetching starts
+                scrollCalTime(view);  // when Calendar is loaded or refreshed
+            }
         }
       })
 
