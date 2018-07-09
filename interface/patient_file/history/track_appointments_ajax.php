@@ -59,8 +59,6 @@ $flag = false;
 // range filtering values for appointment dates
 $from_date = $_GET['fromDate'];
 $to_date = $_GET['toDate'];
-error_log($from_date);
-error_log($to_date);
 if (isset($_SESSION['selected_pat_id']) && $_SESSION['selected_pat_id'] !== "") {
   if (isset($from_date) && $from_date !== "") {
     if (isset($to_date) && $to_date !== "") {

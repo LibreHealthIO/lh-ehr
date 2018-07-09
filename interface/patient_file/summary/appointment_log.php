@@ -13,7 +13,8 @@ $log_query = "SELECT id, apptdate, DATE_FORMAT(appttime,'%H:%i') as appttime, ti
               JOIN patient_tracker_element ON id = pt_tracker_id AND id IN (SELECT id
                                                                             FROM patient_tracker
                                                                             WHERE pid = $appt_pid AND eid = $appt_eid)
-              JOIN list_options ON option_id = status";
+              JOIN list_options ON option_id = status
+              ORDER BY id ASC, patient_tracker_element.seq ASC";
 $result = sqlStatement($log_query);
 ?>
 <html>
