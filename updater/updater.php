@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 /**
  * Contains all updater functions
  *
@@ -176,7 +178,7 @@ else {
 			$loader->assign("PR_NUMBER", $pull_request_number);
 			$loader->assign("WRITE_REVIEW_PR", xlt("Any suggestion about #$pull_request_number"));
 			$loader->assign("STATUS", xlt("status"));
-			$loader>assign("NO_UPDATES", xlt("No updates available"));
+			$loader->assign("NO_UPDATES", xlt("No updates available"));
 			$loader->output();
 		}
 	}

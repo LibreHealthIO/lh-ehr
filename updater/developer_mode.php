@@ -79,8 +79,8 @@ elseif (getUpdaterSetting("updater_dm") == "1") {
 	echo "<table class='table table-striped' id='pr_interface'>";
 	foreach ($pr_array as $key) {
 		$avatar_url = $key['user']['avatar_url'];
-		$pr_title = $key['title'];
 		$pr_number = $key['number'];
+		$pr_title = $key['title']."(#".$pr_number.")";
 		$pr_body = substr($key['body'], 0,80);
 		$user_name = $key['user']['login'];
 		$loader->set_template_file("developer_mode_pr");
