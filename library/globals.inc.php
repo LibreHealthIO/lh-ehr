@@ -153,6 +153,9 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'cms_top_margin_default',
                                'cms_left_margin_default');
 
+
+
+
 $GLOBALS_METADATA = array(
 
   // Appearance Tab
@@ -3247,7 +3250,28 @@ $GLOBALS_METADATA = array(
     ),
   ),
 
+  'LIMS' => array( 
+    'lims_enabled' => array(
+      xl('LIMS Enabled/Disabled'),
+      'bool',
+      '0',
+      xl('Enable the laboratory information management system')
+    ),
+    'lims_application' => array(
+      xl('LIMS Software to use'),
+      [ 'SENAITE LIMS' => 'senaite' ], // temporary, figuring out how to create an associative array while auto-detecting directories
+      xl('Choose the LIMS software to use')
+    ),
+    'lims_url' => array(
+      xl('LIMS API Address'),
+      'text',
+      'http://localhost:8080',
+      xl('Address where the LIMS backend API is available')
+    ),
+  ),
+
 );
+
 
 if ( function_exists( 'do_action' ) ) {
     do_action( 'globals_init', $args = [
