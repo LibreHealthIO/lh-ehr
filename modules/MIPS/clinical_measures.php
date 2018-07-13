@@ -2,15 +2,15 @@
 /**
  * Display Measures Engine Report Form
  * Copyright (C) 2015 - 2017      Suncoast Connection
- *
+ * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
- * See the Mozilla Public License for more details.
+ * See the Mozilla Public License for more details. 
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
+ * 
  * @author  Art Eaton <art@suncoastconnection.com>
  * @author  Bryan lee <leebc 11 at acm dot org>
  * @author  Sam Likins <sam.likins@wsi-services.com>
- * @package LibreHealthEHR
+ * @package LibreHealthEHR 
  * @link    http://suncoastconnection.com
  * @link    http://librehealth.io
  *
@@ -24,6 +24,7 @@ $fake_register_globals = false;
 
 require_once ('mips_headers.inc.php');
 require_once ('clinical_rules.php');
+
 
 function existsDefault(&$array, $key, $default = '') {
   if(array_key_exists($key, $array)) {
@@ -71,10 +72,10 @@ if(!empty($report_id)) {
   $organize_method = $report_view['organize_mode'];
   $provider  = $report_view['provider'];
   $pat_prov_rel = $report_view['pat_prov_rel'];
-
+  
 
   $dataSheet = json_decode($report_view['data'], true);
-
+ 
   $page_subtitle = ' - '.xlt('Date of Report').': '.text($date_report);
   $dis_text = ' disabled="disabled" ';
 
@@ -86,7 +87,7 @@ if(!empty($report_id)) {
 
   //  Setting report type
   $type_report = 'pqrs_individual_2016';
-
+  
 
   // Collect form parameters (set defaults if empty)
 
@@ -347,7 +348,7 @@ function Form_Validate() {
 
                   <tr>
                     <td class='label'>
-                      <?php echo htmlspecialchars(xl('Provider'), ENT_NOQUOTES); ?>:
+                      <?php echo htmlspecialchars(xl('Individual Provider Selection'), ENT_NOQUOTES); ?>:
                     </td>
                     <td>
                       <select <?php echo $dis_text; ?> id='form_provider' name='form_provider'>
@@ -367,12 +368,12 @@ function Form_Validate() {
                   </tr>
                   <tr>
                     <td class='label'>
-                      <?php echo htmlspecialchars(xl('Provider Relationship'), ENT_NOQUOTES); ?>:
+                      <?php echo htmlspecialchars(xl('Individual NPI or Whole Group?'), ENT_NOQUOTES); ?>:
                     </td>
                     <td>
-                      <select <?php echo $dis_text; ?> id='form_pat_prov_rel' name='form_pat_prov_rel' title='<?php echo xlt('PRIMARY selects patients that have the selected provider set in Demographics. ENCOUNTER selects all patients that the provider has seen.'); ?>'>
-                        <option value='primary'<?php if($pat_prov_rel == 'primary') {echo ' selected';} ?>><?php echo xlt('Primary'); ?></option>
-                        <option value='encounter'<?php if($pat_prov_rel == 'encounter') {echo ' selected';} ?>><?php echo xlt('Encounter'); ?></option>
+                      <select <?php echo $dis_text; ?> id='form_pat_prov_rel' name='form_pat_prov_rel' title='<?php echo xlt('Group selects patients that have the selected provider set in Demographics. Individual selects all patients that the above selected provider has seen.'); ?>'>
+                        <option value='primary'<?php if($pat_prov_rel == 'primary') {echo ' selected';} ?>><?php echo xlt('Group (TIN)'); ?></option>
+                        <option value='encounter'<?php if($pat_prov_rel == 'encounter') {echo ' selected';} ?>><?php echo xlt('Individual (NPI)'); ?></option>
                       </select>
                     </td>
                   </tr>
@@ -446,10 +447,10 @@ function Form_Validate() {
       $firstProviderFlag = true;
       $firstPlanFlag = true;
       $existProvider = false;
-
+$bgcolor = 0;
       foreach($dataSheet as $row) {
 ?>
-            <tr bgcolor='<?php echo $bgcolor ?>'>
+            <tr bgcolor="<?php if ($bgcolor % 2 == 0){echo 'AliceBlue';}else{echo 'BurlyWood';} ?>">
 <?php
         if(isset($row['is_main']) || isset($row['is_sub'])) {
 ?>
@@ -478,7 +479,7 @@ function Form_Validate() {
                 ?>
                 <a href='<?php echo $measureURL;?>' target="_blank"><?php echo $tempMeasuresString;?></a>
                 <?php
-
+             
             }
 
             if(!(empty($row['concatenated_label']))) {  ///this condition can be removed...not sure which way yet.
@@ -531,6 +532,7 @@ function Form_Validate() {
             }
 
 
+ 
           if(isset($row['itemized_test_id']) && $row['pass_target'] > 0) {
             $query = http_build_query(array(
               'from_page' => 'pqrs_report',
@@ -553,7 +555,7 @@ function Form_Validate() {
           if(isset($row['is_main'])) {
               $failed_items = $row['pass_filter'] - $row['pass_target'] - $row['excluded'];
 
-          }
+          } 
 
           if(isset($row['itemized_test_id']) && ($failed_items > 0) ) {
             $query = http_build_query(array(
@@ -591,7 +593,7 @@ function Form_Validate() {
               $contents .= ' '.htmlspecialchars(xl('NPI').':'.$row['npi'], ENT_NOQUOTES).' ';
             }
             if(!empty($row['federaltaxid'])) {
-              $contents .= ' '.htmlspecialchars(xl('TID').':'.$row['federaltaxid'], ENT_NOQUOTES).' ';
+              $contents .= ' '.htmlspecialchars(xl('TIN').':'.$row['federaltaxid'], ENT_NOQUOTES).' ';
             }
             $contents .= ')';
           }
@@ -616,7 +618,10 @@ function Form_Validate() {
         }
 ?>
             </tr>
-<?php   } ?>
+<?php 
+ $bgcolor +=1; 
+
+  } ?>
           </tbody>
         </table>
       </div>  <!-- end of search results -->

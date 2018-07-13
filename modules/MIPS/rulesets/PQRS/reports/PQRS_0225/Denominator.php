@@ -33,7 +33,7 @@ $query =
 " WHERE b1.pid = ? ".
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND b1.code IN ('77067','G0202'); ";
+" AND b1.code = '77067'; ";
 //probably don't need premeasure
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 0){ return true;} else {return false;}  

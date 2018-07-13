@@ -16,7 +16,7 @@
  */
 
 
-require_once("../../globals.php");
+require_once("../../interface/globals.php");
 include_once("../../library/sql.inc");
 
 
@@ -68,7 +68,7 @@ function AddCPT2CodeEncounter($pid,$date,$passedCodes)
 	//$myfacility=$_SESSION["pc_facility"];
 	//$myfacility=$facility;
 	$myfacility=1;	// This doesn't matter for PQRS Numerators
-//	*	Find Provider ID
+//	*	Find Provider ID  This needs to pick up from the encounter!!!
 	$myprovider_id = findProvider( $pid );
 
 
@@ -144,24 +144,19 @@ function findProvider($pid) {
 	return $providerid;
 }	// End function find_provider()
 
-function update_itemized_report($report_id, $itemized_test_id, $performance, $pid) {
-    return sqlStatementCdrEngine(
-        "UPDATE `report_itemized` SET `pass` = ? WHERE `report_id` = ? AND `itemized_test_id` = ? AND `pid` = ?",
-        array(
-            $performance,
-            $report_id,
-            $itemized_test_id,
-            $pid
-        )
-    );
+function update_itemized_report( $myperformance,$myreport_id, $myitemized_test_id, $mypid) {
+$query = "UPDATE report_itemized SET pass = '".$myperformance."' WHERE report_id = '".$myreport_id."' AND itemized_test_id = '".$myitemized_test_id."' AND pid = '".$mypid."' AND numerator_label = 'Numerator';";
+//error_log("report_itemized query is: ".$query);
+ sqlStatement($query);
 }
 
 //  Begin Main
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$mypid = $_POST['pid'];
 	$mydate = $_POST['date'];
-	$mycode = $_POST['CPT2codevalue'];
-	$myperformance = $_POST['performance'];
+	$mycodeRaw = $_POST['CPT2codevalue'];
+	$mycode = substr($mycodeRaw,2);
+	$myperformance = substr($mycodeRaw,0,1);
 	$myreport_id = $_POST['report_id'];
 	$myitemized_test_id = $_POST['itemized_test_id'];
 //error_log("DEBUG Main -- POSTed us with pid=".$mypid."  date=".$mydate."  code=".$mycode." performance=".$myperformance." report_id=".$myreport_id." itemized_test_id=".$myitemized_test_id);  //."  encounter=".$encounter."  user/provider=".$userID);
@@ -169,7 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ( $mypid !='' and $mydate!='' and $mycode!='') {
 
 		$result=AddCPT2CodeEncounter($mypid,$mydate,$mycode);
-        $result2=update_itemized_report($myreport_id, $myitemized_test_id, $myperformance, $mypid);
+        $result2 = update_itemized_report($myperformance, $myreport_id, $myitemized_test_id, $mypid);
+//error_log("DEBUG Main -- Post result values: performance=".$myperformance." report_id=".$myreport_id." itemized_test_id=".$myitemized_test_id." pid= ".$mypid );  //."  encounter=".$encounter."  user/provider=".$userID);
 
         		echo 'SUCCESS';
 

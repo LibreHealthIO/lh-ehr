@@ -37,7 +37,7 @@ $query =
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0138_a') ".
-" AND (b2.code = codelist_b.code AND codelist_b.type = 'pqrs_0138_c' AND b2.modifier NOT IN('GQ','GT')); ";
+" AND (b2.code = codelist_b.code AND codelist_b.type = 'pqrs_0138_c' AND b2.modifier NOT IN('GQ','GT','95')); ";
 //code list c vs. b is correct
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 2){ return true;} else {return false;} 

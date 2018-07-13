@@ -29,7 +29,7 @@ $query =
 " WHERE b1.pid = ? ".
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0435_a' AND b1.modifier NOT IN('GQ','GT'))".
+" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0435_a' AND b1.modifier NOT IN('GQ','GT','95'))".
 " AND (b2.code = codelist_b.code AND codelist_b.type = 'pqrs_0435_b'); ";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
