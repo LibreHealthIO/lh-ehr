@@ -6,6 +6,7 @@
 * LINUX distributions
 * OS X (Instructions will be added soon)
 
+
 ## Microsoft Windows
 
 To install SENAITE on Windows, you will need the following resources:
@@ -104,3 +105,46 @@ Everything should work as intended from this point onwards, you can access the L
 ## Linux Distributions
 
 To install Plone and SENAITE in Linux distributions, you can follow the steps in the Windows tutorial after the installation of the VM.
+
+
+## Pre-configured ISO
+
+You will find a pre-configured ISO [here](). You just need to take this and install it using VirtualBox (or natively onto your system if you wish) and it has Senaite and Plone already installed onto it. 
+
+### Instructions
+
+Proceed using the instructions in the Microsoft Windows section above till the OS has finished installation. 
+There is one user able to access the system with-
+
+Username: senaite
+
+Password: senaitelims
+
+You can change the password or create a new user after you've logged into the OS using the above authentication details. The user that you create in the OS installation setup will not function.
+
+Once you've logged into the system, you need to set some permissions for the current user to be able to access the LIMS.
+
+You can run the following very simple command to set those permissions:
+
+```
+sudo chown -R $USER /usr/local/Plone
+```
+It might take a while.
+
+
+Once the permissions are set, to start the LIMS, run the following command:
+
+```
+/usr/local/Plone/zinstance/bin/plonectl start
+
+```
+
+This will start Senaite in the background.
+
+If you want to start Senaite in the foreground ( to see which requests are being made to the API/ check its status), run the following command:
+
+```
+/usr/local/Plone/zinstance/bin/plonectl fg
+```
+
+When starting the application for the first time, it might take some time for it to fully boot up.

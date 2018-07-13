@@ -77,6 +77,7 @@ switch($sub) {
     $instrumentLocations = json_decode($client->get('instrumentlocation')->getBody()->getContents())->items;
     $manufacturers = json_decode($client->get('manufacturer')->getBody()->getContents())->items;
     $suppliers = json_decode($client->get('supplier')->getBody()->getContents())->items;
+    $methods = json_decode($client->get('method')->getBody()->getContents())->items;
     $errors = [];
     if (isset($_POST['submit'])) {
         
@@ -86,6 +87,9 @@ switch($sub) {
             'manufacturer',
             'supplier',
         ];
+        if (!(isset($_POST['methods']))) {
+          $_POST['methods'] = [];
+        }
 
         foreach($required as $requiredField) {
           if ($_POST[$requiredField] === null || $_POST[$requiredField] === '') {
@@ -97,20 +101,25 @@ switch($sub) {
           To-do:
          * Creating schema-specific data to send relational data (instrument types, locations) along with the instrument data
          */
+
+        
+        var_dump($_POST);
         if (count($errors) === 0) {
-          $response = $client->request('POST', 'instrument', [
-            'multipart' => [
-            [
-              'name' => 'title',
-              'contents' => $_POST['title']
-            ],
-            [
-              'name' => 'InstrumentTypeName',
-              'contents' => 'Sample Instrument Type',
-            ],
+          $response = $client->POST('instrument', [
+            'json' => [
+              'title' => $_POST['title'],
+              'InstrumentType' => $_POST['instrumenttype'],
+              'Manufacturer' => $_POST['manufacturer'],
+              'Supplier' => $_POST['supplier'],
+              'InstrumentLocation' => valueOrNull($_POST['location']),
+              'Model' => valueOrNull($_POST['modelno']),
+              'SerialNo' => valueOrNull($_POST['serialno']),
+              'Methods' => valueOrNulL($_POST['methods']),
+              'DataInterface' => valueOrNull($_POST['exportinterface']),
+              'InlabCalibrationProcedure' => valueOrNull($_POST['calibproc']),
+              'PreventiveMaintenanceProcedure' => valueOrNull($_POST['preventproc'])
             ]
           ]);
-          //var_dump($response->getBody()->getContents());
         }
 
 

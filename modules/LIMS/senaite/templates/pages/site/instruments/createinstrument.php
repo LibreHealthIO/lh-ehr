@@ -45,7 +45,7 @@
                   <label for="instrumenttype">Instrument Type <span class="badge badge-danger">Required</span></label>
                   <select name="instrumenttype" class="custom-select" id="instrumenttype">
                     <?php foreach($instrumentTypes as $instrumentType) { ?>
-                      <option value="<?php echo $instrumentType->title; ?>"> <?php echo $instrumentType->title; ?> </option>
+                      <option value="<?php echo $instrumentType->uid; ?>"> <?php echo $instrumentType->title; ?> </option>
                     <?php } ?>
                   </select>
                 </div>
@@ -54,7 +54,7 @@
                   <label for="manufacturer">Manufacturer <span class="badge badge-danger">Required</span></label>
                   <select name="manufacturer" class="custom-select" id="manufacturer">
                     <?php foreach($manufacturers as $manufacturer) { ?>
-                      <option value="<?php echo $manufacturer->title; ?>"> <?php echo $manufacturer->title; ?> </option>
+                      <option value="<?php echo $manufacturer->uid; ?>"> <?php echo $manufacturer->title; ?> </option>
                     <?php } ?>
                   </select>
                 </div>
@@ -63,7 +63,7 @@
                   <label for="supplier">Suppliers <span class="badge badge-danger">Required</span></label>
                   <select name="supplier" class="custom-select" id="supplier">
                     <?php foreach($suppliers as $supplier) { ?>
-                      <option value="<?php echo $supplier->title; ?>"> <?php echo $supplier->title; ?> </option>
+                      <option value="<?php echo $supplier->uid; ?>"> <?php echo $supplier->title; ?> </option>
                     <?php } ?>
                   </select>
                 </div>
@@ -79,11 +79,30 @@
                   data-placement="top" title="The serial number that uniquely identifies the instrument"></i></label>
                   <input type="text" class="form-control" name="serialno" id="serialno">
                 </div>
+                
+                <h3> Methods </h3>
+                <?php foreach ($methods as $method) { ?>
+                <div class="form-check">
+                  <input class="form-check-input" name="methods[]" type="checkbox" value="<?php echo $method->uid; ?>" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">
+                    <?php echo $method->title; ?>
+                  </label>                 
+                </div>
+                <br>
+                <?php } ?>
 
                 <div class="form-group">
-                  <label for="description">Website</label>
-                  <input type="text" class="form-control" id="website" name="website">
+                  <label for="exportinterface">Data interface <i class="fas fa-question-circle" data-toggle="tooltip"
+                  data-placement="top" title="Select an Export interface for this instrument."></i></label>
+                  <select name="exportinterface" class="custom-select" id="exportinterface">
+                    <option value="">None</option>
+                    <option value="foss.fiastar.fiastar" selected="selected">FOSS - FIAStar</option>
+                    <option value="lachat.quickchem">LaChat QuickChem FIA</option>
+                    <option value="varian.vistapro.icp">Varian Vista-PRO ICP</option>
+                  </select>
                 </div>
+
+
               </div>
 
               <div class="tab-pane fade" id="procedure" role="tabpanel" aria-labelledby="procedure-tab">
@@ -109,7 +128,7 @@
                   data-placement="top" title="The room and location where the instrument is installed"></i></label>
                   <select name="location" id="location" class="form-control">
                     <?php foreach($instrumentLocations as $instrumentLocation) { ?>
-                        <option value="<?php echo $instrumentLocation->title; ?>"> <?php echo $instrumentLocation->title; ?> </option>
+                        <option value="<?php echo $instrumentLocation->uid; ?>"> <?php echo $instrumentLocation->title; ?> </option>
                     <?php } ?>
                   </select>
                 </div>

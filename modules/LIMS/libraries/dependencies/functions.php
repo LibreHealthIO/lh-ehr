@@ -22,4 +22,24 @@ function text($text) {
 	return htmlspecialchars($text, ENT_NOQUOTES);
 }
 
+/**
+ * valueOrNull
+ * Checks whether a particular value exists and returns it.
+ * If the value doesn't exist, returns null.
+ *
+ * @param string $value
+ * @return string 
+ */
+function valueOrNull($value) {
+	if (is_array($value)) {
+		if (count($value) > 0) {
+			return $value;
+		}
+	} else {
+		if (isset($value) && strlen($value) > 0) {
+			return $value;
+		}
+	}
+	return null;
+}
 ?>

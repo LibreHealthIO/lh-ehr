@@ -87,11 +87,32 @@
               <div class="col-3">
                 <a href="index.php?action=laboratory&sact=info"><img src="./assets/img/info.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Lab Information </a>
               </div>
-            
             </div>
           </div>
-
         </div>
+        <br />
+
+        <div class="card">
+          <div class="card-header">Samples</div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-3">
+                <a href="index.php?action=laboratory&sact=contacts"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Types </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=laboratory&sact=departments"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Points </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=laboratory&sact=products"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Matrices </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=laboratory&sact=info"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="..."> Sample Conditions </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
     
     </div>

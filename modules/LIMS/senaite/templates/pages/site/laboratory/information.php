@@ -30,7 +30,7 @@
                   data-placement="top" title="Supervisor of the lab"></i> </label>
           <select name="supervisor" class="custom-select">
             <?php foreach ($labContacts as $contact) { ?>
-              
+            <?php } ?>
           </select>
         </div>
 
