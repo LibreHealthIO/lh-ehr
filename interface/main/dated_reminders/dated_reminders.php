@@ -97,7 +97,7 @@
       });
         var link = '';
        $(".sendReminder").click(function () {
-         var val = $(this).attr("data-text");
+         var val = parseInt($(this).attr("data-text"));
          if(val = 0){
              link = "<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_add.php";
              initIziLink(link);
@@ -154,21 +154,10 @@
            $("#sendReminder-iframe").iziModal('open');
        }
 
-
-
        // run updater after 30 seconds
      var updater = setTimeout("updateme(0)", 1);
    });
-     
-     function openAddScreen(id){
-       if(id == 0){
-         top.restoreSession();
-         dlgopen('<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_add.php', '_drAdd', 700, 500);
-       }else{
-         top.restoreSession();
-         dlgopen('<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_add.php?mID='+id, '_drAdd', 700, 500);
-       }
-     }
+   
      
      function updateme(id){ 
        refreshInterval = <?php echo $updateDelay ?>;
@@ -217,7 +206,7 @@
                 <h3>'.xlt("Show Reminders").'</h3>
                 <div>
                   <div class="drHide">
-                  <div id="viewLog-iframe"></div>
+                  <div id="viewLog-iframe"></div><!-- to initialize the izimodal -->
                   <div id="sendReminder-iframe"></div><!-- to initialize the izimodal -->
                     <p><a title="'.xla('View Past and Future Reminders').'" onclick="openLogScreen();" class="css_button_small cp-misc" href="#"><span>'.xlt('View Log').'</span></a>
                     <a data-text="0" class="css_button_small cp-misc sendReminder" href="#"><span>'.xlt('Send A Dated Reminder').'</span></a></p>

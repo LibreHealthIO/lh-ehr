@@ -32,19 +32,5 @@ include_once("../../globals.php");
 
 </table>
 
-
-
-<div class="text">asdfasdttf this is stuff</div>
-
-<span class="text">asdfasdttf this is stuff</span>
-
-
-<br><br>
-
-
-
-
-<br><br>
-
 </body>
 </html>

@@ -61,7 +61,7 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 <head>
 <?php 
   html_header_show();
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox"));
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","font-awesome", "iziModalToast"));
 ?>
 <title><?php echo xlt('Patient Encounter'); ?></title>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/common.js"></script>
@@ -70,12 +70,9 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 <?php include_once("{$GLOBALS['srcdir']}/ajax/facility_ajax_jav.inc.php"); ?>
 <script language="JavaScript">
 
- // Process click on issue title.
- function newissue() {
-  dlgopen('../../patient_file/summary/add_edit_issue.php', '_blank', 800, 600);
-  return false;
- }
 
+    $(document).ready(function () {
+    <?php require_once("$srcdir/modal_functions.php");?>
  // callback from add_edit_issue.php:
  function refreshIssue(issue, title) {
   var s = document.forms[0]['issues[]'];
@@ -87,17 +84,20 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
 
   var category = document.forms[0].pc_catid.value;
   if ( category == '_blank' ) {
-   alert("<?php echo xls('You must select a visit category'); ?>");
-   return;
+   alertMsg = "<?php echo xls('You must select a visit category'); ?>";
+      iziToast.warning({
+          title: 'Warning -',
+          message: alertMsg,
+          position: 'bottomRight',
+          icon: 'fa fa-exclamation-triangle'
+      });
+      return;
   }
 
   top.restoreSession();
   f.submit();
  }
 
-$(document).ready(function(){
-  enable_big_modals();
-});
 function bill_loc(){
 var pid=<?php echo attr($pid);?>;
 var dte=document.getElementById('form_date').value;
@@ -167,10 +167,11 @@ function cancelClicked() {
  <div class="row">
   <div class="col-xs-12 col-sm-4 col-lg-4 ">
     <?php echo xlt('Consultation Brief Description'); ?>:
-    <textarea class="form-control input-sm" style="resize:none" name='reason' cols='40' rows='12' wrap='virtual'>
+    <textarea class="form-control input-sm" style="resize:none;"  name='reason' cols='40' rows='12' wrap='virtual'>
       <?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?>
     </textarea>
-    <hr>  
+    <hr>
+    
   </div>
   <div class="col-xs-12 col-sm-4 col-lg-4 ">
    <table>
@@ -306,8 +307,9 @@ function cancelClicked() {
     <div>
    <?php echo xlt('Issues (Injuries/Medical/Allergy)'); ?>
     </div>
+      <div id="izi-iframe"></div><!-- div to initialize izi modal -->
     <div>
-      <a href="../../patient_file/summary/add_edit_issue.php" class="css_button_small link_submit iframe cp-positive"
+      <a href="#" class="css_button_small link_submit newIssue cp-positive"
        onclick="top.restoreSession()"><span><?php echo xlt('Add'); ?></span></a>
     </div>
     <div>
@@ -363,7 +365,7 @@ function cancelClicked() {
 </script>
 
 <script language="javascript">
-<?php
+    <?php
 if (!$viewmode) { ?>
  function duplicateVisit(enc, datestr) {
     if (!confirm('<?php echo xl("A visit already exists for this patient today. Click Cancel to open it, or OK to proceed with creating a new one.") ?>')) {
@@ -396,10 +398,4 @@ if (!$viewmode) { ?>
 }
 ?>
 </script>
-<?php 
-  /*
-   Making fancybox compatible with jquery 3.1.1 as $.browser is removed in jquery 1.9
-  */
-  resolveFancyboxCompatibility();
-?>
 </html>

@@ -22,6 +22,7 @@
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Roberto Vasquez <robertogagliotta@gmail.com>
  * @author  Brady Miller <brady@sparmy.com>
+ * @author  Mua Laurent <muarachmann@gmail.com>
  * @link    http://librehealth.io
  */
 
@@ -106,12 +107,15 @@
 tr.head   { font-size:10pt; background-color:#cccccc; text-align:center; }
 tr.detail { font-size:10pt; background-color:#eeeeee; }
 </style>
-
+	<?php call_required_libraries(array("jquery-min-3-1-1","font-awesome" , "iziModalToast")); ?>
 <script type="text/javascript" src="../../library/topdialog.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 
+
 <script language="JavaScript">
 
+    $(document).ready(function () {
+    <?php  require_once("$srcdir/modal_functions.php"); ?>
 // These are the possible colors for table rows.
 var trcolors = new Object();
 // Colors for:            Foreground Background
@@ -133,27 +137,6 @@ function refreshIssue(issue, title) {
  location.reload();
 }
 
-// New Issue button is clicked.
-function newIssue() {
- var f = document.forms[0];
- var tmp = (keyid && f.form_key[1].checked) ? ('?enclink=' + keyid) : '';
- dlgopen('summary/add_edit_issue.php' + tmp, '_blank', 600, 475);
-}
-
-// New Encounter button is clicked.
-function newEncounter() {
- var f = document.forms[0];
- if (!f.form_save.disabled) {
-  if (!confirm('<?php echo xls('This will abandon your unsaved changes. Are you sure?'); ?>'))
-   return;
- }
- top.restoreSession();
- var tmp = (keyid && f.form_key[0].checked) ? ('&issue=' + keyid) : '';
-
- dlgopen('../../interface/forms/patient_encounter/new.php?mode=new' + tmp, '_top', 1200, 450);
-
-
-}
 
 // Determine if a given problem/encounter pair is currently linked.
 // If yes, return the "resolved" character (Y or N), else an empty string.
@@ -272,7 +255,15 @@ function doclick(pfx, id) {
     if (pfx == 'p') addPair(id, keyid); else addPair(keyid, id);
    }
   } else {
-   alert('<?php echo xls('You must first select an item in the section whose radio button is checked.') ;?>');
+   alertMsg = '<?php echo xls('You must first select an item in the section whose radio button is checked.') ;?>';
+      iziToast.warning({
+          title: 'Warning -',
+          message: alertMsg,
+          position: 'bottomRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
+          icon: 'fa fa-exclamation-triangle'
+
+      });
+
   }
  }
 }
@@ -357,11 +348,13 @@ function doclick(pfx, id) {
   </td>
  </tr>
 
- <tr>
+    <div id="izi-iframe"></div><!-- to initialize the izimodal -->
+
+    <tr>
   <td colspan='2' align='center'>
    <input type='submit' name='form_save' class="cp-submit" value='<?php echo xla('Save'); ?>' disabled /> &nbsp;
-   <input type='button' class="cp-positive" value='<?php echo xla('Add Issue'); ?>' onclick='newIssue()' />
-   <input type='button' class="cp-positive" value='<?php echo xla('Add Encounter'); ?>' onclick='newEncounter()' />
+   <input type='button' class="cp-positive newIssue" value='<?php echo xla('Add Issue'); ?>' />
+   <input type='button' class="cp-positive newEncounter" value='<?php echo xla('Add Encounter'); ?>' />
    <input type='button' class="cp-negative" value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
   </td>
  </tr>

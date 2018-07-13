@@ -378,10 +378,6 @@ UPDATE categories_seq SET id = (select MAX(id) from categories);
   ALTER TABLE insurance_companies ADD COLUMN allow_print_statement tinyint(1) NOT NULL DEFAULT '0' COMMENT ' 1 = Yes Print Statements';
 #EndIf
 
-#IfNotRow background_services name ccdaservice
-INSERT INTO `background_services` (`name`, `title`, `execute_interval`, `function`, `require_once`, `sort_order`) VALUES ('ccdaservice', 'C-CDA Node Service', 1, 'runCheck', '/ccdaservice/ssmanager.php', 95);
-ALTER TABLE `background_services` CHANGE `running` `running` TINYINT(1) NOT NULL DEFAULT '-1' COMMENT 'True indicates managed service is busy. Skip this interval.';
-#EndIf
 
 #IfNotColumnType onsite_mail owner varchar(128)
 ALTER TABLE `onsite_mail` CHANGE `owner` `owner` varchar(128) DEFAULT NULL;

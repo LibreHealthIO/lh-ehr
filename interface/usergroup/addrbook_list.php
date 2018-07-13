@@ -84,9 +84,7 @@ $res = sqlStatement($query,$sqlBindArray);
 <html>
 
 <head>
-<?php  call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
-      resolveFancyboxCompatibility();
-?>
+<?php  call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","iziModalToast")); ?>
 
 <title><?php echo xlt('Address Book'); ?></title>
 
@@ -95,7 +93,7 @@ $res = sqlStatement($query,$sqlBindArray);
 </head>
 
 <body class="body_top">
-
+<div id="addressBk-iframe"></div>
 <div id="addressbook_list">
 <form method='post' action='addrbook_list.php' onsubmit='return top.restoreSession()'>
 
@@ -218,14 +216,52 @@ function refreshme() {
 
 // Process click to pop up the add window.
 function doedclick_add(type) {
- top.restoreSession(); 
- dlgopen('addrbook_edit.php?type=' + type, '_blank', 700, 550);
+    $("#addressBk-iframe").iziModal({
+        title: 'Add Address',
+        subtitle: '',
+        headerColor: '#88A0B9',
+        closeOnEscape: true,
+        fullscreen:true,
+        overlayClose: false,
+        closeButton: true,
+        theme: 'light',  // light
+        iframe: true,
+        width:900,
+        focusInput: true,
+        padding:5,
+        iframeHeight: 400,
+        iframeURL: "addrbook_edit.php?type=" + type,
+        onClosed: function () {
+            location.reload();
+        }
+    });
+    $("#addressBk-iframe").iziModal('open');
+
+
 }
 
 // Process click to pop up the edit window.
 function doedclick_edit(userid) {
- top.restoreSession();
- dlgopen('addrbook_edit.php?userid=' + userid, '_blank', 700, 550);
+    $("#addressBk-iframe").iziModal({
+        title: 'Add Address',
+        subtitle: '',
+        headerColor: '#88A0B9',
+        closeOnEscape: true,
+        fullscreen:true,
+        overlayClose: false,
+        closeButton: true,
+        theme: 'light',  // light
+        iframe: true,
+        width:900,
+        focusInput: true,
+        padding:5,
+        iframeHeight: 400,
+        iframeURL: 'addrbook_edit.php?userid=' + userid,
+        onClosed: function () {
+            location.reload();
+        }
+    });
+    $("#addressBk-iframe").iziModal('open');
 }
 
 

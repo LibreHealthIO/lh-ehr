@@ -185,20 +185,31 @@
   }
   else
   {
-  	echo "<html>\n<body>\n<script language='JavaScript'>\n";
-  	//if ($alertmsg)
-	echo " alert('$alertmsg');\n";
-  	/*echo " if (!opener.closed && opener.refreshme) opener.refreshme();\n";
-  	echo " window.close();\n";*/
-  	echo "</script>\n</body>\n</html>\n";
-  	//exit();
+	  echo "<html>\n<body>\n";
+	  include_once("../interface/globals.php");
+	  include_once("$srcdir/headers.inc.php");
+	  call_required_libraries(array("jquery-min-3-1-1","font-awesome", "iziModalToast"));
+	  echo "<script language='JavaScript'>\n";
+	  echo " var alertMsg = '<?php xl($alertmsg);?>'\n";
+	  echo "
+	 iziToast.warning({
+               title: 'Warning -',
+               message: '$alertmsg',
+               position: 'bottomRight',
+               icon: 'fa fa-exclamation-triangle'
+           });
+	";
+	  echo "</script>\n</body>\n</html>\n";
+
   }
  }
 ?>
 <html>
 <head>
 <?php html_header_show();?>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+    <?php call_required_libraries(array("jquery-min-3-1-1","font-awesome", "iziModalToast"));?>
+
+    <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <title><?php xl('Import Patient Demographics','e'); ?></title>
 </head>
 <body class="body_top" onload="javascript:document.forms[0].form_import_data.focus()">
