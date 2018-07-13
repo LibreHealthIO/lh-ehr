@@ -2,7 +2,6 @@
 /**
  * Manage & Run Reports
  *
- * Copyright (C) 2011      Ken Chapple <ken@mi-squared.com>
  * Copyright (C) 2016      Suncoast Connection
  * @link    http://SuncoastConnection.com
  * @author  Bryan lee <leebc11 at acm dot org>

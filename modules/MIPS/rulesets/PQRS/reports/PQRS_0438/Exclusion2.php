@@ -34,7 +34,7 @@ $query =
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND b1.code ='G9781' ; ";
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id))); 
-
+//can add codes to support denom exceptions
 if ($result['count']> 0){ return true;} else {return false;} 
     }
 }

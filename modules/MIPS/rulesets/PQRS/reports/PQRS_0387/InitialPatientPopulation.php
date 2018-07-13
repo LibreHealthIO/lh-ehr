@@ -37,7 +37,7 @@ $query =
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND (b1.code IN( '99381', '99382', '99383', '99384', '99385',".
 " '99386', '99387', '99391', '99392', '99393', '99394', '99395',".
-" '99396', '99397', 'G0438', 'G0439')  AND b1.modifier NOT IN('GQ','GT')); ";
+" '99396', '99397', 'G0438', 'G0439')  AND b1.modifier NOT IN('GQ','GT','95')); ";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 0){ return true;} else {
@@ -50,7 +50,7 @@ $query =
 " WHERE b1.pid = ? ".
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0387_a' AND b1.modifier NOT IN('GQ','GT')); ";
+" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0387_a' AND b1.modifier NOT IN('GQ','GT','95')); ";
 
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
