@@ -275,6 +275,14 @@ $GLOBALS_METADATA = array(
       xl('EDI History (under Fees) for storing and interpreting EDI claim response files')
     ),
 
+    //SHOW UPDATER ICON
+      'updater_icon_visibility' => array(
+      xl('Show updater floating action button'),
+       'bool',                          // data type
+       '1',                             // default = true
+      xl('The Updater Floating Action Button at the bottom of the screen')
+    ),
+
     'online_support_link' => array(
       xl('Online Forum Support Link'),
        'text',                          // data type

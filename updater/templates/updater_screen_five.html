@@ -1,0 +1,44 @@
+<div class="text-center col-xs-2"><br/>
+<img src="../sites/default/images/LibreEHR_shield.png" height="200px" width="128px">
+</div>
+<div class="col-xs-9 col-xs-offset-1 text-center">
+	<div id='before_start'>
+		<img src="{AVATAR_URL}" height="64px" width="64px" class="img img-circle">
+		<h4>{USER_NAME}</h4>
+		<br/><br/>
+		<p><b>{NO_UPDATES}</b></p>
+		<a id="start_backup" class="btn cp-submit">{START_BACKUP}</a>
+		<a id="start_review" class="btn cp-submit">{WRITE_REVIEW_PR}</a>
+		</div>
+	</div>
+
+	<div id='review_screen' style="display: none;">
+		<b>{WRITE_REVIEW}</b><br/>
+		<div class="text-center">
+		<textarea id="comment" cols="60" rows="7">
+		</textarea>
+		<br/>
+		<br/>
+		<input type="button" id="submit_review" value="send review" class="btn cp-submit">
+		</div>
+	</div>
+		<div id="backup_screen" style="display: none;">
+		<table class="table table-striped">
+			<th></th>
+			<th>{STATUS}</th>
+			<tr>
+				<td>{BACKUP_STEP_ONE}</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+			<tr>	
+				<td>{BACKUP_STEP_TWO}</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+			<tr>	
+				<td>{BACKUP_STEP_THREE}</td>
+				<td class="bk_progress_loader"><img src='updater_loading.gif' height="32px" width="32px"></td>
+			</tr>
+		</table>
+		<div class="text-center"><button class="css_button cp-submit" id="bk_return">{EXIT_UPDATER}</button></div>
+	</div>
+</div>
