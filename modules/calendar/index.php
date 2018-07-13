@@ -38,6 +38,22 @@ require('includes/session.php');
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
   <script src="../../library/dialog.js"></script>
+
+  <style type="text/css">
+  /* style to provide horizontal scroll in Calendar's agenda views
+     by making table overflow its container */
+    .fc-view-container {
+        width: auto;
+    }
+
+    .fc-agenda-view {
+        overflow-x: scroll;
+    }
+
+    .fc-agenda-view > table {
+        width: 1200px;
+    }
+  </style>
 </head>
 <body>
   <div id="sidebar">
@@ -154,6 +170,21 @@ require('includes/session.php');
         var currCalTime = currHour + ":" + currMinutes + ":00";  // format "hh:mm:00"
         // scrollTime determines how much forward scroll pane is initially scrolled
         calView.options.scrollTime = currCalTime;  // set scrollTime to current time
+      }
+
+      function providerScroll() {
+        // Calendar tab's frame width - inner content + margin + space b/w frames
+        var calendarFrameWidth = $("#sidebar").width() + $("#calendar-container").width() + 16 + 7;
+        // setting height of the view area of the calendar so that horizontal scrollbar is visible
+        if (calendarFrameWidth > 580) {
+          $('#calendar').fullCalendar('option', 'contentHeight', 400);
+        } else if (calendarFrameWidth > 430) {
+          $('#calendar').fullCalendar('option', 'contentHeight', 370);
+        } else if (calendarFrameWidth > 390) {
+          $('#calendar').fullCalendar('option', 'contentHeight', 340);
+        } else {
+          $('#calendar').fullCalendar('option', 'contentHeight', 280);
+        }
       }
 
       $('#calendar').fullCalendar({
@@ -324,7 +355,14 @@ require('includes/session.php');
             if(isLoading) {
                 // fetching starts
                 scrollCalTime(view);  // when Calendar is loaded or refreshed
+            } else {
+                // fetching stops
+                providerScroll()  // make sure horizontal scroll bar is visible when Calendar info. is changed
             }
+        },
+        windowResize: function(view) {
+            // triggered when Calendar’s dimensions (frame width) changes due to opening/closing of other frames
+            providerScroll()  // make sure horizontal scroll bar is visible when frame width changes
         }
       })
 
