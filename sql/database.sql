@@ -7654,3 +7654,45 @@ CREATE TABLE `form_clinical_instructions` (
   `activity` TINYINT DEFAULT 1 NULL,
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB;
+
+--
+-- Table structure for table `updater_users`
+--
+DROP TABLE IF EXISTS `updater_users`;
+CREATE TABLE `updater_users` (
+  `authUserId` int(11) NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB;
+
+
+--
+-- Table structure for table `updater_settings`
+--
+DROP TABLE IF EXISTS `updater_settings`;
+CREATE TABLE `updater_settings` (
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB;
+
+
+--
+-- Table structure for table `updater_user_mode_download_entry`
+--
+DROP TABLE IF EXISTS `updater_user_mode_download_entry`;
+CREATE TABLE `updater_user_mode_download_entry` (
+  `filename` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `old_name` varchar(255) NOT NULL
+) ENGINE=InnoDB;
+
+--
+-- Table structure for table `updater_user_mode_backup_entry`
+--
+DROP TABLE IF EXISTS `updater_user_mode_backup_entry`;
+CREATE TABLE `updater_user_mode_backup_entry` (
+  `filename` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `old_name` varchar(255) NOT NULL
+) ENGINE=InnoDB;
