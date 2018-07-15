@@ -18,7 +18,7 @@ if ($_POST['form_action'] == "vacation_submit") {
   // check if there is an appt. (either recurring or non-recurring) b/w (or on) start & end dates of vacation
   $start_date = $_POST['startDate'];
   $end_date = $_POST['endDate'];
-  $fetchedEvents = fetchAllEvents($start_date, $end_date); // returns an array of events b/w start and end dates
+  $fetchedEvents = fetchAllEvents($start_date, $end_date, $_POST['provider_id']); // returns an array of events b/w start and end dates for selected provider
   if (!empty($fetchedEvents)) {
     // don't make requested event slots,
     // alert user and close "Add Vacation/Holiday" dialog box
@@ -97,16 +97,23 @@ if ($_POST['form_action'] == "holiday_submit") {
     // check each selected date
     $fetchedEvents = fetchAllEvents($date, $date); // returns an array of events on $date or including $date (in case of recurring appts.)
     if (!empty($fetchedEvents)) {
-      // don't make requested event slots,
-      // alert user and close "Add Vacation/Holiday" dialog box
-      $alert_close_box = '<script type="text/javascript">
-                            alert("There are already some events on at least one of the selected dates. Please try again.");
-                            var addDialogBox = top.$(".dialogIframe"); // select dialog box element
-                            var windowCloseBtn = addDialogBox.find(".closeDlgIframe"); // find close button element
-                            windowCloseBtn.trigger("click"); // simulate "click" event on button
-                          </script>';
-      echo $alert_close_box;
-      exit();
+      foreach ($fetchedEvents as $event) {
+        // check if event is a patient event
+        if (event['pc_pid'] > 0) {
+          // don't make requested event slots,
+          // alert user and close "Add Vacation/Holiday" dialog box
+          $alert_close_box = '<script type="text/javascript">
+                                alert("There are already some patient events on at least one of the selected dates. Please try again.");
+                                var addDialogBox = top.$(".dialogIframe"); // select dialog box element
+                                var windowCloseBtn = addDialogBox.find(".closeDlgIframe"); // find close button element
+                                windowCloseBtn.trigger("click"); // simulate "click" event on button
+                              </script>';
+          echo $alert_close_box;
+          exit();
+        } else {
+          // event is provider event, move onto next event
+        }
+      }
     }
   }
 
