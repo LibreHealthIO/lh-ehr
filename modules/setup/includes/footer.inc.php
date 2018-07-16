@@ -24,7 +24,7 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-
+            $('[data-toggle="tooltip"]').tooltip();
             $(".owl-carousel").owlCarousel({
                 items : 1,
                 nav : true,

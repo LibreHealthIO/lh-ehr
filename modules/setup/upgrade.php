@@ -90,7 +90,7 @@ if($task == 'annul'){
                         
                         <p class="clearfix"></p>
                         <p class="text-center text-info">
-                        Once done, you can click the return to setup button bellow inorder to resume your installation.
+                        Once done, you can click the return to setup button below inorder to resume your installation.
                         <br>
                         </p>
                     ';

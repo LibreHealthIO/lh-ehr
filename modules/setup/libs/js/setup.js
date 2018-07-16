@@ -190,6 +190,39 @@ $(document).ready(function(){
         window.clearInterval(timer);
     }
 
+    //Displaying facility and user profile image once selected
+    function readURL(input, imgId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#'+imgId).attr('src', e.target.result).parent().removeClass("hidden").fadeIn(500);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#iufacilitypic").change(function(){
+        readURL(this, "facility-img");
+    });
+
+    $("#iuprofilepic").change(function(){
+        readURL(this, "profile-img");
+    });
+
+    //removing the images if user doesnt wants them any longer
+
+    $("#closeProfilePic").click(function () {
+        $("#iuprofilepic").val(null).clone(true);
+        $(this).parent().fadeOut(1000).addClass("hidden");
+    });
+
+    $("#closeFacilityPic").click(function () {
+        $("#iufacilitypic").val(null).clone(true);
+        $(this).parent().fadeOut(1000).addClass("hidden");
+
+    });
+
+
 
 
 
