@@ -49,7 +49,7 @@ foreach($fetchedEvents as $event) {
   }else{
   $e['color'] = $event['pc_catcolor'];
   }
-  $e['e_info'] = " (" . $event['pc_title'] . ")";
+
   if($event["pc_pid"] > 0) {
     // when event is a patient event (appointment)
     $e['picture_url'] = getPatientPictureUrl($event["pc_pid"]);
@@ -62,15 +62,17 @@ foreach($fetchedEvents as $event) {
         $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
         break;
       case 3:
-        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'] . ")";
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
+        $e['e_info'] = " (" . $event['pc_title'] . ")";
         break;
       case 4:
-        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
+        $e['e_info'] = $e['e_info'] . " (" . $event['pc_title'];
         if(!empty($event["pc_hometext"])) {
           // if there's a valid comment, include it in event's title
-          $e['title'] = $e['title'] . ": " . $event["pc_hometext"];
+          $e['e_info'] = $e['e_info'] . ": " . $event["pc_hometext"];
         }
-        $e['title'] = $e['title'] . ")";
+        $e['e_info'] = $e['e_info'] . ")";
         break;
       default:
         $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
