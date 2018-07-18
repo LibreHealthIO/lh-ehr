@@ -25,12 +25,14 @@ require('includes/session.php');
 <html>
 <head>
   <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
+  <link href='full_calendar/lib/cupertino/jquery-ui.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
   <link href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
   <link href='css/index.css' rel='stylesheet' />
 
   <script src='full_calendar/lib/jquery.min.js'></script>
+  <script src='full_calendar/lib/jquery-ui.min.js'></script>
   <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
@@ -141,6 +143,30 @@ require('includes/session.php');
       var title_print = '<?php echo xlt('print'); ?>';
       var lang_default = '<?php echo $default_lang_id['lang_code']; ?>';
 
+      $(window).focus();  // to bind key events
+      var ctrlKeyPressed = false;  // tracks whether control key is pressed
+
+      function setEventsCopyable(copyable) {
+        ctrlKeyPressed = !ctrlKeyPressed;  // set true when copyable and false when not copyable
+        // prevent original event incorrect configuration when dragging clone event
+        $("#calendar").fullCalendar("option", "eventStartEditable", !copyable);
+        $(".fc-event").draggable("option", "disabled", !copyable);  // set option false when copyable and true when not copyable
+      }
+
+      // if control key is pressed, set events copyable
+      $(document).keydown(function(event) {
+        if (event.ctrlKey && !ctrlKeyPressed) {
+          setEventsCopyable(true);
+        }
+      });
+
+      // if control key is released, set events not copyable
+      $(document).keyup(function(event) {
+        if (ctrlKeyPressed) {
+          setEventsCopyable(false);
+        }
+      });
+
       $('#calendar').fullCalendar({
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         locale: lang_default,
@@ -160,7 +186,8 @@ require('includes/session.php');
             allDaySlot: false,
             displayEventTime: false,
             groupByResource: true,
-            editable: true  // determines if the events can be dragged and resized
+            editable: true,  // determines if the events can be dragged and resized
+            droppable: true  // determines if external jQuery UI draggables can be dropped onto calendar
           },
  //         day: {
             // options apply to basicDay and agendaDay views
@@ -175,7 +202,8 @@ require('includes/session.php');
             allDaySlot: false,
             displayEventTime: false,
             groupByResource: true,
-            editable: true  // determines if the events can be dragged and resized
+            editable: true,  // determines if the events can be dragged and resized
+            droppable: true  // determines if external jQuery UI draggables can be dropped onto calendar
           },
           providerAgenda: {
             type: 'agenda',
@@ -184,7 +212,8 @@ require('includes/session.php');
             allDaySlot: false,
             displayEventTime: false,
             groupByDateAndResource: true,
-            editable: true  // determines if the events can be dragged and resized
+            editable: true,  // determines if the events can be dragged and resized
+            droppable: true  // determines if external jQuery UI draggables can be dropped onto calendar
           }
         },
         resourceAreaWidth: "25%",
@@ -267,7 +296,6 @@ require('includes/session.php');
           if (event['pc_pid'] > 0) {
             //only when event is a patient event
             //event['pc_pid'] is number string for patient events, empty "" for provider events
-            //var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
             let link = '<?php echo $GLOBALS['webroot'] . "/interface/patient_file/summary/demographics.php?set_pid="; ?>' + event['pc_pid'];
             var titleLink = "<a href='#'>" + event['title'] + "</a>";
             let titleInfo = "<span style='color: #000;'>" + event['e_info'] + "</span>";
@@ -288,21 +316,107 @@ require('includes/session.php');
             });
           }
         },
+        eventAfterAllRender: function(event, element, view) {
+          // this function gets called after all events have finished rendering
+          // bind jQuery's draggable UI to all events displayed in view with dragging initially being disabled
+          $(".fc-event").each(function() {
+            var $event = $(this);
+            $event.draggable({
+              disabled: true,  // changed by setEventsCopyable() according to ctrlKeyPressed variable
+              helper: "clone",  // dragged event is a clone of original event
+              revert: true,  // whether clone event should revert to its start position when dragging stops
+              revertDuration: 0,  // duration of the revert animation
+              zIndex: 1000,
+              appendTo: "body",  // element to which the clone should be appended to while dragging
+              start: function(event, ui) {  // triggered when dragging starts
+                ui.helper.css({  // style for clone event element
+                  "width": "20%",
+                  "height": "20px",
+                  "padding": "10px"
+                });
+              },
+              stop: function(event, ui) {  // triggered when dragging stops
+                if (ctrlKeyPressed) {
+                  // set events copyable again if control key is still being pressed
+                  setEventsCopyable(true);
+                }
+              }
+            });
+          });
+        },
+        drop: function( date, jsEvent, ui, resourceId ) {
+          // this function gets called when an external jQuery UI draggable has been dropped onto the calendar
+          var droppedEvent = $(this);  // holds the DOM element that has been dropped (clone event)
+          var eventData = droppedEvent.data("fcSeg").footprint.eventDef.miscProps;  // original event's data
+          var newDate = date.format("YYYY-MM-DD");  // clone event's date at drop point
+          var newStartTime = date.format("HH:mm:ss");  // clone event's start time at drop point
+          var duration = parseInt(eventData.pc_duration);  // clone event's duration (same as original)
+          // clone event's end time at drop point
+          var newEndTime = moment(newStartTime, "HH:mm:ss").add(duration, 'seconds').format("HH:mm:ss");
+          var newProviderId = resourceId;  // clone event's provider id at drop point
+          var jsonData = { "date": newDate,
+                           "startTime": newStartTime,
+                           "endTime": newEndTime,
+                           "providerId": newProviderId,
+                           "multipleProvider": eventData.pc_multiple,
+                           "patientId": eventData.pc_pid,
+                           "categoryId": eventData.pc_catid,
+                           "title": eventData.pc_title,
+                           "comment": eventData.pc_hometext,
+                           "endDate": eventData.pc_endDate,
+                           "duration": eventData.pc_duration,
+                           "recurrspec": eventData.pc_recurrspec,
+                           "eventAllDay": eventData.pc_alldayevent,
+                           "apptStatus": eventData.pc_apptstatus,
+                           "prefCategory": eventData.pc_prefcatid,
+                           "locationspec": eventData.pc_location,
+                           "facility": eventData.pc_facility,
+                           "billingFacility": eventData.pc_billing_location,
+                           "room": eventData.pc_room,
+                           "action": "paste" };
+          // send new and cloned values to a php script to insert new event in DB, i.e., paste event to drop point
+          $.ajax({
+            type: "POST",
+            url: "drag_copy_event.php",
+            data: jsonData,
+            success: function(response) {
+              if (response === "query executed") {
+                $('#calendar').fullCalendar('refetchEvents');  // refetch all events to reflect their specifications acc. to DB on Calendar
+              }
+            },
+            dataType: "text",
+            error: function(xhr, status, error) {
+              var errorString = "Request failed. ";
+              if (status) {
+                errorString += status;
+              }
+              if (error) {
+                errorString += ": ";
+                errorString += error;
+              }
+              alert(errorString);
+            }
+          });
+        },
         eventDrop: function(event, delta, revertFunc, jsEvent, ui, view) {
           // this function gets called when dragging stops and the event has moved to
-          // a different date, time and/or provider
-          if (confirm("<?php echo addslashes(xl('Are you sure about these changes in event?')); ?>")) {
+          // a different date, time slot and/or provider
+          if (confirm("<?php echo addslashes(xl('Are you sure about this change in event location?')); ?>")) {
             //if selected "OK" on alert
             var eventId = event["pc_eid"];  // event's unique id
             var newDate = event.start.format("YYYY-MM-DD");  // event's new date
             var newStartTime = event.start.format("HH:mm:ss");  // event's new start time
             var newEndTime = event.end.format("HH:mm:ss");  // event's new end time
             var newProviderId = event.resourceId;  // event's new provider id
+            var eventPatientId = event.pid;  // event's patient id
+            var eventStatus = event.pc_apptstatus; // event's (appt.) status
             var jsonData = { "id": eventId,
                              "date": newDate,
                              "startTime": newStartTime,
                              "endTime": newEndTime,
                              "providerId": newProviderId,
+                             "patientId": eventPatientId,
+                             "apptStatus": eventStatus,
                              "action": "drag" };
             // send edited values to a php script to update DB
             $.ajax({
@@ -335,14 +449,18 @@ require('includes/session.php');
         eventResize: function( event, delta, revertFunc, jsEvent, ui, view ) {
           // this function gets called when event resizing stops
           // and the event has changed in duration
-          if (confirm("<?php echo addslashes(xl('Are you sure about these changes in resize event?')); ?>")) {
+          if (confirm("<?php echo addslashes(xl('Are you sure about this change in event duration?')); ?>")) {
             //if selected "OK" on alert
             var eventId = event["pc_eid"];  // event's unique id
-            var newStartTime = event.start.format("HH:mm:ss");  // event's new start time
-            var newEndTime = event.end.format("HH:mm:ss");  // event's new end time
+            var startTime = event.start.format("HH:mm:ss");  // event's start time string
+            var newEndTime = event.end.format("HH:mm:ss");  // event's new end time stirng
+            var endTimeMoment = moment(newEndTime, "HH:mm:ss");  // moment object
+            var startTimeMoment = moment(startTime, "HH:mm:ss");  // moment object
+            var duration = moment.duration(endTimeMoment.diff(startTimeMoment)).asSeconds();  // event's new duration length
+
             var jsonData = { "id": eventId,
-                             "startTime": newStartTime,
                              "endTime": newEndTime,
+                             "duration": duration,
                              "action": "resize" };
             // send edited values to a php script to update DB
             $.ajax({
