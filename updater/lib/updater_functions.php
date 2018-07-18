@@ -281,7 +281,7 @@ function checkDir($location) {
 				}
 				$extension = pathinfo($dir_struct, PATHINFO_EXTENSION);
 				//if it has file extension then dont create directory
-				if (empty($extension)) {
+				if (!is_file($dir_struct)) {
 
 					if (is_dir($dir_struct)) {
 						//leave it, make no changes
