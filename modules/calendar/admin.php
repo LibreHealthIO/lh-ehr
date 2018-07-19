@@ -2,10 +2,11 @@
 require_once("../../interface/globals.php");
 require_once("$srcdir/headers.inc.php");
 require_once("includes/admin_helper.php");
-require_once($GLOBALS['srcdir']."/formatting.inc.php");
+require_once("$srcdir/formatting.inc.php");
 
+$dateFormat = DateFormatRead();  // date format for datepicker
 // get bootstrap
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap"));
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 
 // set up working variables related to repeated events
 $my_recurrtype = 0;
@@ -94,7 +95,6 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
 <head>
   <title><?php echo xlt('Calendar Administration');?></title>
   <link href="css/admin.css" rel="stylesheet" />
-  <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-3-1-1/index.js"></script>
 </head>
 <body>
   <div class="container-fluid">
@@ -236,7 +236,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
                 }
 
                 // if no existing category is selected, then:
-                if (!empty($selectedCat)) {
+                if (empty($selectedCat)) {
                   $repeats = 0; // don't check "Repeats" and "Days of Week" boxes
                   $repeattype = '0'; // stores "day/workday/week" option in regular repeat
                   $repeatfreq = '0'; // stores "Every" option in regular repeat or "Days" checkboxes in 'days every week' repeat
@@ -387,6 +387,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
   </div>
 
   <script type="text/javascript">
+  $(document).ready(function () {
     // selector for category submits the form
     $("#category").change(function() { $('#cat-select-form').submit(); });
 
@@ -408,13 +409,37 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         }
     });
 
-    // if no category is selected, disable all repeat parameters fields
-    // initially, upon loading of form
+    // end date picker for "until" input
+    $('#form_enddate').datetimepicker({
+      timepicker: false,
+      format: '<?php echo $dateFormat; ?>',
+      formatDate: '<?php echo $dateFormat; ?>',
+    });
+  });
+
+  // upon loading of Calendar Admin or after each change of category:
   <?php if (empty($selectedCat)) { ?>
+    // if no category (New Category) is selected:
+    // $repeats = 0 and disable all repeat parameters fields
     set_repeat();
     set_days_every_week();
-  <?php } ?>
-
+  <?php } else {
+            // when a category is selected
+            if (isRegularRepeat($repeats)) { ?>
+              // $repeats = 1 or 2
+              // disable only "Days of week" parameters fields
+              set_repeat();
+      <?php } elseif (isDaysEveryWeek($repeats)) { ?>
+                // $repeats = 3
+                // disable only "Repeats" parameters fields
+                set_days_every_week();
+      <?php } else { ?>
+                // $repeats = 0
+                // disable all repeat parameters fields
+                set_repeat();
+                set_days_every_week();
+      <?php }
+        } ?>
     // modify some visual attributes when:
     // 1. "Repeats" checkbox is clicked
     $("#form_repeat").on("click", function () {
