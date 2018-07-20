@@ -28,6 +28,11 @@ if (acl_check('patients', 'med')){
       $family_his_siblings = $history_data['history_siblings'];
       $family_his_spouse = $history_data['history_spouse'];
       $family_his_offspring = $history_data['history_offspring'];
+      $family_dc_father = $history_data['dc_father'];
+      $family_dc_mother = $history_data['dc_mother'];
+      $family_dc_siblings = $history_data['dc_siblings'];
+      $family_dc_spouse = $history_data['dc_spouse'];
+      $family_dc_offspring = $history_data['dc_offspring'];
       $relatives_his_cancer = $history_data['relatives_cancer'];
       $relatives_his_tb = $history_data['relatives_tuberculosis'];
       $relatives_his_diabetes = $history_data['relatives_diabetes'];
@@ -55,7 +60,9 @@ if (acl_check('patients', 'med')){
     }
     $content_his .= history_data_general($risk_factors, $exams);
     $content_his .= history_data_family($family_his_father, $family_his_mother, $family_his_siblings,
-                                        $family_his_spouse, $family_his_offspring);
+                                        $family_his_spouse, $family_his_offspring, $family_dc_father,
+                                        $family_dc_mother, $family_dc_siblings, $family_dc_spouse,
+                                        $family_dc_offspring);
     $content_his .= history_data_relatives($relatives_his_cancer, $relatives_his_tb, $relatives_his_diabetes,
                                            $relatives_his_high_bp, $relatives_his_heart_problems, $relatives_his_stroke,
                                            $relatives_his_epilepsy, $relatives_his_mental_illness, $relatives_his_suicide);
@@ -102,42 +109,48 @@ function history_data_general($risk_factors, $exams){
   return  $content_his_general;
 
 }
-function history_data_family($family_his_father, $family_his_mother, $family_his_siblings,$family_his_spouse, $family_his_offspring){
+function history_data_family($family_his_father, $family_his_mother, $family_his_siblings,
+                            $family_his_spouse, $family_his_offspring, $family_dc_father,
+                            $family_dc_mother, $family_dc_siblings, $family_dc_spouse,
+                            $family_dc_offspring){  
   $i = 0;
   $content_his_family_temp = array();
   if($family_his_father){
     $content_his_family_temp[$i] .= "<td><b>" . xlt("Father") . " : </b></td><td>" . $family_his_father . "</td>";
+    if($family_dc_father) $content_his_family_temp[$i] .= "<td><b>Diagnosis Code : </b>" . $family_dc_father . "</td>";
     $i++;
   }
   if($family_his_mother){
     $content_his_family_temp[$i] .= "<td><b>" . xlt("Mother") . " : </b></td><td>" . $family_his_mother . "</td>";
+    if($family_dc_mother) $content_his_family_temp[$i] .= "<td><b>Diagnosis Code : </b>" . $family_dc_mother . "</td>";
     $i++;
   }
   if($family_his_siblings){
     $content_his_family_temp[$i] .= "<td><b>" . xlt("Siblings") . " : </b></td><td>" . $family_his_siblings . "</td>";
+    if($family_dc_siblings) $content_his_family_temp[$i] .= "<td><b>Diagnosis Code : </b>" . $family_dc_siblings . "</td>";
     $i++;
   }
   if($family_his_spouse){
     $content_his_family_temp[$i] .= "<td><b>" . xlt("Spouse") . " : </b></td><td>" . $family_his_spouse . "</td>";
+    if($family_dc_spouse) $content_his_family_temp[$i] .= "<td><b>Diagnosis Code : </b>" . $family_dc_spouse . "</td>";
     $i++;
   }
   if($family_his_offspring){
     $content_his_family_temp[$i] .= "<td><b>" . xlt("Offspring") . " : </b></td><td>" . $family_his_offspring . "</td>";
+    if($family_dc_offspring) $content_his_family_temp[$i] .= "<td><b>Diagnosis Code : </b>" . $family_dc_offspring . "</td>";
     $i++;
   }
 
   if(count($content_his_family_temp) > 0){
     $content_his_family .= '<br><br><span style="color:green;font-size:12px;">' . xlt("Family History") . '</span><br style="line-height: 2;">';
     $content_his_family .= "<table>";
-    if(count($content_his_family_temp)%2 != 0)  $content_his_family_temp[count($content_his_family_temp)] = '<td></td>';
 
-    $i = 0; $j = 1;
-    while($content_his_family_temp[$j] != NULL){
+    $i = 0;
+    while($content_his_family_temp[$i] != NULL){
       $content_his_family .= '&nbsp;&nbsp;&nbsp;&nbsp;<tr style="line-height: 1.5">'
-                             . $content_his_family_temp[$i] . $content_his_family_temp[$j] . "</tr>\n";
+                             . $content_his_family_temp[$i] . "</tr>\n";
 
-      $i = $i + 2;
-      $j = $j + 2;
+      $i++;
     }
     $content_his_family .= "</table>\n";
   }

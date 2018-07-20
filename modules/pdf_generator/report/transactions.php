@@ -1,7 +1,7 @@
 <?php
 /**
  * The purpose of this code is to get the patient transactions data
- * in a formatted manner and store it in a single variable $content_demo.
+ * in a formatted manner and store it in a single variable $content_trans.
  * The content of this variable will be printed in the PDF if required.
  *
  *

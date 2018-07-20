@@ -19,7 +19,7 @@
 
 function pdfInsuranceData($pid, $insurance_data_array_custom, $insurance_data_array){
     global $content_insu;
-    $content_insu = "<h1>" . xlt("Insurance Data") . ":</h1>";
+    $content_insu = '<span style="font-size:25px;font-family: Arial, sans-serif;">' . xlt("Insurance Data") . ':</span>';
     if ($GLOBALS['insurance_address_demographics_report'] =='1') {
         $content_insu .= "<h3>" . xlt("Primary Insurance Data") . ":</h3>";
         $content_insu .= "<table>";

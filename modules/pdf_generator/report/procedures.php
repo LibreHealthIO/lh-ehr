@@ -26,13 +26,15 @@ if ($auth_med) {
     {                                                     //ways to select
       procedure_order_data(substr($name, 16));            //procedures orders
       $i++;                                               //in the form,
-    }                                                     //these if and else if
-    else if($name == "procedures")                        //statements will
-    {                                                     //check both of them
-      procedure_order_data($procedures[$j]);              //and work
-      $i++;                                               //accordingly
-      $j++;                                               //to output
-    }                                                     //PDFs
+    }  
+  }
+  if(count($_POST['procedures']) > 0){
+    $procedures = $_POST['procedures'];
+    $i = 0;
+    while($procedures[$i] != NULL){
+      procedure_order_data($procedures[$i]);
+      $i++;
+    }
   }
 }
 
@@ -212,8 +214,8 @@ $query = "SELECT " .
 
 if($i != 1)
 {
-  $pdf->Ln(5);
+  $pdf->Ln(2);
   $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());
-  $pdf->Ln(5);
+  $pdf->Ln(2);
   $pdf->WriteHTML($content_pro, true, false, false, false, '');
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * The purpose of this code is to get the patient insurance data
- * in a formatted manner and store it in a single variable $clinical_insp.
+ * in a formatted manner and store it in a single variable $content_instructions.
  * The content of this variable will be printed in the PDF if required.
  *
  *
@@ -24,25 +24,25 @@ foreach($_POST as $instr_name => $instr_value){
     }
 }
 function pdfClinicalInstructinsData($pid, $encounter, $user){
-    global $instructions_content;
+    global $content_instructions;
 
     $instructions_query = sqlStatement("SELECT * FROM form_clinical_instructions WHERE pid='$pid' AND encounter='$encounter' AND user='$user'");
     while($instructions_data = sqlFetchArray($instructions_query))
     {
-        $instructions_content .= '<span style="font-size:25px;font-family: Arial, sans-serif;">' . xlt("Clinical Instructions") . ':</span>';
+        $content_instructions .= '<span style="font-size:25px;font-family: Arial, sans-serif;">' . xlt("Clinical Instructions") . ':</span>';
         $instructions_date = explode(' ', $instructions_data['date']);
-        $instructions_content .= '<br style="line-height:15px;">(' . $instructions_date[0] . ')<br style="line-height:15px;">';
-        $instructions_content .= '<table border="0.5">';
-        $instructions_content .= '<tr><td align="center" style="height:15px;">' . xlt("Instructions") . '</td></tr>';
-        $instructions_content .= '<tr><td align="center" style="height:15px;">' . $instructions_data['instruction'] . '</td></tr>';
-        $instructions_content .= "</table><br><br>";
+        $content_instructions .= '<br style="line-height:15px;">(' . $instructions_date[0] . ')<br style="line-height:15px;">';
+        $content_instructions .= '<table border="0.5">';
+        $content_instructions .= '<tr><td align="center" style="height:15px;">' . xlt("Instructions") . '</td></tr>';
+        $content_instructions .= '<tr><td align="center" style="height:15px;">' . $instructions_data['instruction'] . '</td></tr>';
+        $content_instructions .= "</table><br><br>";
     }
 }
-if($instructions_content)
+if($content_instructions)
 {
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     $pdf->WriteHTML($instructions_content, true, false, false, false, '');
 }
 

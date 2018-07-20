@@ -1,7 +1,7 @@
 <?php
 /**
  * The purpose of this code is to get the patient issues data
- * in a formatted manner and store it in a single variable $content_notes.
+ * in a formatted manner and store it in a single variable $content_issues.
  * The content of this variable will be printed in the PDF if required.
  *
  *
@@ -31,7 +31,6 @@ function pdfIssuesData($pid, $issue_id, $activity = "%")
     $issues_query = sqlStatement("SELECT * FROM lists WHERE pid='$pid' AND id='$issue_id' AND activity LIKE '$activity'");
     while($issues_data = sqlFetchArray($issues_query))
     {
-        //$content_issues .= "&nbsp;&nbsp;&nbsp;" . $issues_data['title'] . ": " . $issues_data['comments'] . "<br>";
         if($issues_data['type'] == "allergy")
         {
             if(!$issue_allergy) $issue_allergy .= '<br style="line-height:20px;"> <b>' . xlt("Allergies:") . "</b>";
@@ -65,9 +64,9 @@ if($issue_allergy||$issue_medical_problem||$issue_medication||$issue_surgery||$i
 {
     $content_issues = '<span style="font-size:25px;font-family: Arial, sans-serif;">' . xlt("Issues") . ':</span>';
     $content_issues .= $issue_allergy . $issue_medical_problem . $issue_medication . $issue_surgery . $issue_dental;
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     $pdf->WriteHTML($content_issues, true, false, false, false, '');
 }
 
