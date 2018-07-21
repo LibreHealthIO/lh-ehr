@@ -348,7 +348,7 @@ function Form_Validate() {
 
                   <tr>
                     <td class='label'>
-                      <?php echo htmlspecialchars(xl('Provider'), ENT_NOQUOTES); ?>:
+                      <?php echo htmlspecialchars(xl('Individual Provider Selection'), ENT_NOQUOTES); ?>:
                     </td>
                     <td>
                       <select <?php echo $dis_text; ?> id='form_provider' name='form_provider'>
@@ -368,12 +368,12 @@ function Form_Validate() {
                   </tr>
                   <tr>
                     <td class='label'>
-                      <?php echo htmlspecialchars(xl('Provider Relationship'), ENT_NOQUOTES); ?>:
+                      <?php echo htmlspecialchars(xl('Individual NPI or Whole Group?'), ENT_NOQUOTES); ?>:
                     </td>
                     <td>
-                      <select <?php echo $dis_text; ?> id='form_pat_prov_rel' name='form_pat_prov_rel' title='<?php echo xlt('PRIMARY selects patients that have the selected provider set in Demographics. ENCOUNTER selects all patients that the provider has seen.'); ?>'>
-                        <option value='primary'<?php if($pat_prov_rel == 'primary') {echo ' selected';} ?>><?php echo xlt('Primary'); ?></option>
-                        <option value='encounter'<?php if($pat_prov_rel == 'encounter') {echo ' selected';} ?>><?php echo xlt('Encounter'); ?></option>
+                      <select <?php echo $dis_text; ?> id='form_pat_prov_rel' name='form_pat_prov_rel' title='<?php echo xlt('Group selects patients that have the selected provider set in Demographics. Individual selects all patients that the above selected provider has seen.'); ?>'>
+                        <option value='primary'<?php if($pat_prov_rel == 'primary') {echo ' selected';} ?>><?php echo xlt('Group (TIN)'); ?></option>
+                        <option value='encounter'<?php if($pat_prov_rel == 'encounter') {echo ' selected';} ?>><?php echo xlt('Individual (NPI)'); ?></option>
                       </select>
                     </td>
                   </tr>
@@ -447,10 +447,10 @@ function Form_Validate() {
       $firstProviderFlag = true;
       $firstPlanFlag = true;
       $existProvider = false;
-
+$bgcolor = 0;
       foreach($dataSheet as $row) {
 ?>
-            <tr bgcolor='<?php echo $bgcolor ?>'>
+            <tr bgcolor="<?php if ($bgcolor % 2 == 0){echo 'AliceBlue';}else{echo 'BurlyWood';} ?>">
 <?php
         if(isset($row['is_main']) || isset($row['is_sub'])) {
 ?>
@@ -593,7 +593,7 @@ function Form_Validate() {
               $contents .= ' '.htmlspecialchars(xl('NPI').':'.$row['npi'], ENT_NOQUOTES).' ';
             }
             if(!empty($row['federaltaxid'])) {
-              $contents .= ' '.htmlspecialchars(xl('TID').':'.$row['federaltaxid'], ENT_NOQUOTES).' ';
+              $contents .= ' '.htmlspecialchars(xl('TIN').':'.$row['federaltaxid'], ENT_NOQUOTES).' ';
             }
             $contents .= ')';
           }
@@ -618,7 +618,10 @@ function Form_Validate() {
         }
 ?>
             </tr>
-<?php   } ?>
+<?php 
+ $bgcolor +=1; 
+
+  } ?>
           </tbody>
         </table>
       </div>  <!-- end of search results -->

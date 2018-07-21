@@ -111,7 +111,8 @@ $USER_SPECIFIC_TABS = array('Appearance',
                             'Claim',
                             'Demographic',
                             'Calendar',
-                            'Connectors');
+                            'Connectors',
+                            'System');
 $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'default_tab_2',
                                'css_header',
@@ -130,6 +131,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'print_next_appointment_on_ledger',
                                'calendar_view_type',
                                'calendar_refresh_freq',
+                               'ehr_timezone',
                                'check_appt_time',
                                'event_color',
                                'pat_trkr_timer',
@@ -163,7 +165,7 @@ $GLOBALS_METADATA = array(
       array(
         '/interface/main/main_info.php' => xl('Calendar Screen'),
         '/interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
-        '/interface/new/new.php' => xl('Patient Add/Search'),
+        '/interface/new/new_comprehensive.php' => xl('Patient Add/Search'),
         '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
         '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
       ),
@@ -177,7 +179,7 @@ $GLOBALS_METADATA = array(
       array(
         '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
         '/interface/main/finder/dynamic_finder.php' => xl('Dynamic Finder'),
-        '/interface/new/new.php' => xl('Patient Add/Search'),
+        '/interface/new/new_comprehensive.php' => xl('Patient Add/Search'),
         '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
         '/interface/main/main_info.php' => xl('Calendar Screen'),
       ),
@@ -269,6 +271,14 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '1',                             // default = true
       xl('EDI History (under Fees) for storing and interpreting EDI claim response files')
+    ),
+
+    //SHOW UPDATER ICON
+      'updater_icon_visibility' => array(
+      xl('Show updater floating action button'),
+       'bool',                          // data type
+       '1',                             // default = true
+      xl('The Updater Floating Action Button at the bottom of the screen')
     ),
 
     'online_support_link' => array(
@@ -668,6 +678,7 @@ $GLOBALS_METADATA = array(
         '1' => xl('Print End of Day Report 1'),
         '2' => xl('Print End of Day Report 2'),
         '3' => xl('Print End of Day Report 3'),
+        '4' => xl('Print End of Day Report 4'),
       ),                                // data type
        '1',                             // default = Print End of Day Report 1
       xl('This will allow the use of the custom End of Day report and indicate which report to use.')
@@ -1076,6 +1087,14 @@ $GLOBALS_METADATA = array(
       'bool',
       '1',                              // default
       xl('Allow Automatic Caculation of Write Offs in Posting')
+
+  ),
+
+   'primary_insurance_required' => array(
+      xl('Require the Entry of the Primary Insurance in the New Patient Screen'),
+      'bool',
+      '0',                              // default
+      xl('Require the Entry of the Primary Insurance in the New Patient Screen')
 
   ),
 
@@ -1522,6 +1541,13 @@ $GLOBALS_METADATA = array(
       xl('Do not register appointments with time outside clinic hours.')
     ),
 
+    'use_appt_status_colors' => array(
+      xl('Use Appointment Status Colors in the Calendar'),
+       'bool',                          // data type
+       '1',                             // default
+      xl('Use the Appointment Status Colors in the Calendar Instead of the Appointment Category Colors.')
+    ),
+
     'calendar_refresh_freq' => array(
       xl('Calendar Refresh Frequency'),
       array(
@@ -1539,6 +1565,7 @@ $GLOBALS_METADATA = array(
       array(
         'full' => xl('Provider Full Name'),
         'last' => xl('Provider Last Name'),
+        'last_first' => xl('Provider Last Name and First Initial'),
         'resource' => xl('Resource Title'),
       ),
        'full',                     // default
@@ -1564,7 +1591,7 @@ $GLOBALS_METADATA = array(
       array(
        'providerAgenda' => xl('1 Day'),
        'providerAgenda2Day' => xl('2 Day'),
-       'timelineWeek' => xl('Week'),
+       'providerAgendaWeek' => xl('Week'),
        'timelineMonth' => xl('Month'),
       ),
        'providerAgenda',                           // default
@@ -3059,6 +3086,15 @@ $GLOBALS_METADATA = array(
     //
     'System' => array(
 
+    'ehr_timezone' => array(
+      xl('EHR Time Zone'),
+       'timezone',          // data type
+       '!' . date_default_timezone_get(),    // defaults to php.ini "date.timezone" value if set valid otherwise UTC
+       // concatenated '!' to avoid Default option from not coming in list
+       // when php.ini value is same as an item on zone_list
+      xl('Set EHR time zone.')
+    ),
+
     'mysql_bin_dir' => array(
       xl('Path to MySQL Binaries'),
       'text',                           // data type
@@ -3215,7 +3251,7 @@ $GLOBALS_METADATA = array(
     ),
 
     'pqrs_entityType' => array(
-      xl('Reporting Entity Type'),	// for XML generation
+      xl('Reporting Entity Type'),  // for XML generation
             array(
         'individual' => 'Per Provider NPI',
         'group' => 'For whole Tax ID'

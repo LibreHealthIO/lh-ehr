@@ -44,27 +44,12 @@ $alertmsg = '';
 <html>
     <head>
         <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-        <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.1.3.2.js"></script>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-        <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/fancybox/jquery.fancybox-1.2.6.js"></script>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
         <script src="<?php echo $GLOBALS['standard_js_path']; ?>anchorposition/AnchorPosition.js"></script>
         <script src="<?php echo $GLOBALS['standard_js_path']; ?>popupwindow/PopupWindow.js"></script>
-
-        <?php
-            // Old Browser comp trigger on js
-            if (isset($_POST["mode"]) && $_POST["mode"] == "facility") {
-                echo '
-                    <script type="text/javascript">
-                    <!--
-                    parent.$.fn.fancybox.close();
-                    //-->
-                    </script>
-                ';
-            }
-        ?>
 
         <script type="text/javascript">
             // TODO - move this to a common library
@@ -89,7 +74,7 @@ $alertmsg = '';
                             alertMsg += checkLength(f[i].name,f[i].value,10);
                             alertMsg += checkFederalEin(f[i].name,f[i].value);
                         }
-                    }       
+                    }
                 }
                 if (alertMsg) {
                     alert(alertMsg);
@@ -106,7 +91,7 @@ $alertmsg = '';
                     }
                     else if (document.forms[0].ncolor.value == '') {
                         document.forms[0].ncolor.style.backgroundColor="red";
-                        document.forms[0].ncolor.focus();   
+                        document.forms[0].ncolor.focus();
                     }
                 }
             }
@@ -130,33 +115,13 @@ $alertmsg = '';
                     toggle( $(this), "#DEM" );
                 });
 
-                // fancy box
-                enable_modals();
-
                 tabbify();
-
-                // special size for
-                $(".large_modal").fancybox( {
-                    'overlayOpacity' : 0.0,
-                    'showCloseButton' : true,
-                    'frameHeight' : 600,
-                    'frameWidth' : 1000
-                });
-
-                // special size for
-                $(".medium_modal").fancybox( {
-                    'overlayOpacity' : 0.0,
-                    'showCloseButton' : true,
-                    'frameHeight' : 260,
-                    'frameWidth' : 510
-                });
-
             });
 
             $(document).ready(function(){
                 $("#cancel").click(function() {
-                      parent.$.fn.fancybox.close();
-                 });
+                    parent.$('#addFacilities-iframe').iziModal('close');
+                });
             });
 
             function displayAlert() {
@@ -178,9 +143,6 @@ $alertmsg = '';
     <body class="body_top">
         <table>
             <tr>
-                <td>
-                    <span class="title"><?php echo xlt('Add Facility'); ?></span>&nbsp;&nbsp;&nbsp;
-                </td>
                 <td colspan=5 align=center style="padding-left:2px;">
                     <a onclick="submitform();" class="css_button large_button" name='form_save' id='form_save' href='#'>
                         <span class='css_button_span large_button_span'><?php echo xlt('Save');?></span>
@@ -309,7 +271,7 @@ $alertmsg = '';
                         <span class='text'>
                             <?php echo xlt('Accepts Assignment'); ?>
                             <br/>
-                            (<?php echo xlt('only if billing location'); ?>): 
+                            (<?php echo xlt('only if billing location'); ?>):
                         </span>
                     </td>
                     <td>

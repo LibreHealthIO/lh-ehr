@@ -45,7 +45,7 @@ if ($score === 1){
 		" JOIN patient_data AS p ON (b1.pid = p.pid)".
 		" INNER JOIN pqrs_efcc1 AS codelist_c ON (b1.code = codelist_c.code)".		
 		" WHERE b1.pid = ? ".
-		" AND YEAR(fe.date) >= '2014'".
+		" AND YEAR(fe.date) >= '2015'".
 		" AND (b1.code = codelist_c.code AND codelist_c.type = 'pqrs_0007_c') ";  
 		
 		$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
