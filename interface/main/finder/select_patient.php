@@ -1,6 +1,13 @@
 <?php
+// select_patient.php - Interface and processing file for Select Patient tab used in Audit feature for Appointments
 // Copyright (C) 2012 Rod Roark <rod@sunsetsystems.com>
 // Sponsored by David Eschelbacher, MD
+// Copyright (C) 2018 Apoorv Choubey < theapoorvs1@gmail.com >
+//
+// @package LibreHealth EHR
+// @author Rod Roark <rod@sunsetsystems.com>
+// @author Apoorv Choubey < theapoorvs1@gmail.com >
+// @link http://librehealth.io
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License

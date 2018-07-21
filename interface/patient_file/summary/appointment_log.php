@@ -1,8 +1,25 @@
 <?php
+/*
+ *  appointment_log.php - Interface and processing file for Log window used in Audit feature for Appointments
+ *
+ * Copyright (C) 2018 Apoorv Choubey < theapoorvs1@gmail.com >
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Apoorv Choubey < theapoorvs1@gmail.com >
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
+ *
+ */
 
 require_once("../../globals.php");
 require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
+require_once("$srcdir/formatting.inc.php");
 
 // incoming patient id (pid) and event id (eid) of selected appointment
 $appt_pid = $_GET['appt_pid'];
@@ -69,7 +86,8 @@ $result = sqlStatement($log_query);
           $previous_id = "";
           while ($row = sqlFetchArray($result)) {
             $appt_date = $row['apptdate'];
-            $appt_time = $row['appttime'];
+            // oeFormatTime() converts HH:mm:ss to 12 hour or 24 hour format as per Admin > Locale > Time Display Format
+            $appt_time = oeFormatTime($row['appttime']);
             $user = $row['user'];
             $user_date = $row['userdate'];
             $appt_status = $row['title'];

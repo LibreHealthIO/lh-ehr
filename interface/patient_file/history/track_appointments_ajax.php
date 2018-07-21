@@ -1,4 +1,20 @@
 <?php
+/*
+ *  track_appointments_ajax.php - Processing file of Track Appointments tab - data gathering, paging, sorting, filtering.
+ *
+ * Copyright (C) 2018 Apoorv Choubey < theapoorvs1@gmail.com >
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Apoorv Choubey < theapoorvs1@gmail.com >
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
+ *
+ */
 
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
@@ -158,6 +174,9 @@ while ($row = sqlFetchArray($result)) {
     if ($colname == "pc_eventDate") {
       // oeFormatShortDate() converts yyyy-mm-dd to mm/dd/yyyy or dd/mm/yyyy as per Admin > Locale > Date Display Format
       $arow[] = oeFormatShortDate($row[$colname]);
+    } elseif ($colname == "pc_startTime") {
+      // oeFormatTime() converts HH:mm:ss to 12 hour or 24 hour format as per Admin > Locale > Time Display Format
+      $arow[] = oeFormatTime($row[$colname]);
     } elseif ($colname == "pc_aid") {
       $provider_name = "{$row['fname']} {$row['lname']}";
       $arow[] = $provider_name;

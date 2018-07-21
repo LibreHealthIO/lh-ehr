@@ -1,4 +1,20 @@
 <?php
+/*
+ *  track_appointments.php - Interface of Track Appointments tab used in Audit feature for Appointments
+ *
+ * Copyright (C) 2018 Apoorv Choubey < theapoorvs1@gmail.com >
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Apoorv Choubey < theapoorvs1@gmail.com >
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
+ *
+ */
 
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
@@ -15,7 +31,7 @@ require_once("$srcdir/formatting.inc.php");
 // date format for datepicker
 $dateFormat = DateFormatRead();
 
-//if coming here from select patient tab
+// if coming here from select patient tab
 if (isset($_GET['set_pid'])) {
     $pid = $_GET['set_pid'];
 }
@@ -38,10 +54,12 @@ $coljson = '{"sName": "pc_eventDate"}, {"sName": "pc_startTime"}, {"sName": "pc_
 <head>
 <?php
   html_header_show();
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","jquery-ui","iziModalToast","datepicker"));
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","jquery-ui","iziModalToast"));
 ?>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" media="screen" />
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         //iziModal code for displaying a log of changes in date/time/status of selected appointment
@@ -79,7 +97,7 @@ $coljson = '{"sName": "pc_eventDate"}, {"sName": "pc_startTime"}, {"sName": "pc_
                 iframeURL: "../summary/appointment_log.php?appt_pid=" + apptPid + "&appt_eid=" + apptEid,
                 onClosed: function () {
                             setTimeout(function () {
-                                parent.$(".fa-refresh").click();
+                                parent.$(".tab-refresh-icon").click();
                             }, 300);
                           }
             });
