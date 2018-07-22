@@ -60,15 +60,12 @@ require('includes/session.php');
         $facilities = getFacilities();
       } else {
         $facilities = getUserFacilities($_SESSION['authId']); // from users_facility
-        if (count($facilities) == 1)
-          $_SESSION['pc_facility'] = key($facilities);
       }
 
-      if (count($facilities) > 1) {
+      if (count($facilities) > 0) {
         echo "   <select name='pc_facility' id='pc_facility' >\n";
         if ( !$_SESSION['pc_facility'] ) $selected = "selected='selected'";
         echo "    <option value='0' $selected>"  .xl('All Facilities'). "</option>\n";
-
         foreach ($facilities as $fa) {
             $selected = ( $_SESSION['pc_facility'] == $fa['id']) ? "selected" : "" ;
             echo "    <option style=background-color:".htmlspecialchars($fa['color'],ENT_QUOTES)." value='" .htmlspecialchars($fa['id'],ENT_QUOTES). "' $selected>"  .htmlspecialchars($fa['name'],ENT_QUOTES). "</option>\n";
