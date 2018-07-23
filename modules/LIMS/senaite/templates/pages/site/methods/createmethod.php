@@ -52,7 +52,15 @@
 
         
         </form>
-      
+        <?php if (count($errors) > 0) { ?>
+          <div class="alert alert-danger w-50 mx-auto">
+            <ul>
+              <?php foreach($errors as $error) { ?>
+                <li> <?php echo $error; ?> </li>
+              <?php } ?>
+            </ul>
+          </div>
+        <?php } ?>
       
       </div>
     </div>

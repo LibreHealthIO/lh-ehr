@@ -16,7 +16,6 @@ $config = new Config;
 $limsURL = $config->getLimsURL();
 
 
-
 $parser = new \GuzzleHttp\Cookie\SetCookie;
 $jar = new \GuzzleHttp\Cookie\SessionCookieJar('session_id', true);
 

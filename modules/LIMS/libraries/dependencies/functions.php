@@ -42,4 +42,33 @@ function valueOrNull($value) {
 	}
 	return null;
 }
+
+/**
+ * getDataFromUrl
+ * sends a GET request to the given URL and returns the data received
+ * @param GuzzleHttp $handler
+ * @param string $url
+ * @return object
+ */
+function getDataFromUrl($handler, $url) {
+	return json_decode($handler->get($url)->getBody()->getContents())->items;
+}
+
+/**
+ * checkRequiredFields
+ * checks whether the data contains the fields provided
+ *
+ * @param array $fields
+ * @param array $data
+ * @return bool
+ */
+function checkRequiredFields($fields, $data) {
+	foreach ($fields as $field) {
+		if (!isset($data[$field]) || (valueOrNull($data[$field]) === null)) {
+			return false;
+		}
+	}
+
+	return true;
+}
 ?>

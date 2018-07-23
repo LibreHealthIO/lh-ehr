@@ -38,11 +38,20 @@
         </div>
         <br />
         <div class="card">
-          <div class="card-header">Methods</div>
+          <div class="card-header">Methods, Containers, Identifier Types</div>
           <div class="card-body">
             <div class="row">
-              <div class="col-3 mx-auto">
+              <div class="col-3">
                 <a href="index.php?action=method"><img src="./assets/img/method.png" style="height: 50px; width: 50px" class="rounded" alt="..."> Methods </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=method&sact=containertype"><img src="./assets/img/labproduct.png" style="height: 50px; width: 50px" class="rounded" alt="..."> Container Types </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=method&sact=container"><img src="./assets/img/labproduct.png" style="height: 50px; width: 50px" class="rounded" alt="..."> Containers </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=method&sact=identifiertype"><img src="./assets/img/identifier.png" style="height: 50px; width: 50px" class="rounded" alt="..."> Identifier Types </a>
               </div>
             </div>
           </div>
@@ -96,17 +105,11 @@
           <div class="card-header">Samples</div>
           <div class="card-body">
             <div class="row">
-              <div class="col-3">
-                <a href="index.php?action=laboratory&sact=contacts"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Types </a>
+              <div class="col-6">
+                <a href="index.php?action=sample&sact=types"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Types </a>
               </div>
-              <div class="col-3">
-                <a href="index.php?action=laboratory&sact=departments"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Points </a>
-              </div>
-              <div class="col-3">
-                <a href="index.php?action=laboratory&sact=products"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Matrices </a>
-              </div>
-              <div class="col-3">
-                <a href="index.php?action=laboratory&sact=info"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="..."> Sample Conditions </a>
+              <div class="col-6">
+                <a href="index.php?action=sample&sact=points"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Points </a>
               </div>
             </div>
           </div>
