@@ -1,12 +1,21 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: rachmann mua <muarachmann@gmail.com>
- * Date: 5/21/18
- * Time: 2:32 AM
+ * This is the file is the users information and denotes the final steps of the setup procedure. This file is responsible for grabbing
+ * the initial user's information and store in the database. Just a way to get additional information about user and initialize
+ * users first facility (BY DEFAULT)  ;-).
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 ?>
-
 <?php
 session_start();
 require_once("includes/shared.inc.php");
@@ -42,7 +51,7 @@ require_once("includes/header.inc.php");
         <p class="clearfix"></p>
         <h4 class="librehealth-color text-right"><small>(Please provide information about yourself below) </small>PERSONAL INFO</h4>
         <p class="clearfix"></p>
-        <form id="userForm" method="post" action="index3.php">
+        <form id="userForm" method="POST" action="parameters.php">
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-2"><label>First Name <span class="arial librehealth-color"> *</span> :</label></div>
@@ -65,8 +74,8 @@ require_once("includes/header.inc.php");
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
-                    <div class="col-md-2"><label>Phone <span class="arial librehealth-color"> *</span> :</label></div>
-                    <div class="col-md-9"><input type="text" value="" placeholder="Phone number" name="iuphone" class="form-control" required></div>
+                    <div class="col-md-2"><label>Phone :</label></div>
+                    <div class="col-md-9"><input type="text" value="" placeholder="Phone number" name="iuphone" class="form-control"></div>
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
@@ -79,58 +88,34 @@ require_once("includes/header.inc.php");
                 <h4 class="librehealth-color text-right"><small>(Please provide information about your default facility) </small>ABOUT FACILITY</h4>
                 <p class="clearfix"></p>
                 <div class="row">
-                    <div class="col-md-2"><label>Facilty Name <span class="arial librehealth-color"> *</span> : <span class="hint-symbol" data-toggle="tooltip" title="Hooray!">[ ? ]</span></label></div>
-                    <div class="col-md-4"><input type="text" value="" placeholder="Facility name e.g Medline Plus Clinic" name="iufacility" class="form-control" required></div>
-                    <div class="col-md-2"><label>Legal Entity <span class="arial librehealth-color"> *</span> : <span class="hint-symbol" data-toggle="tooltip" title="Hooray!">[ ? ]</span></label></div>
-                    <div class="col-md-3"><input type="text" value="" placeholder="Legal entity name e.g Medline Plus Clinic" name="iufacility" class="form-control" required></div>
+                    <div class="col-md-2"><label>Facilty Name <span class="arial librehealth-color"> *</span> : <span class="hint-symbol" data-toggle="tooltip" title="Name of facility you own. Can be a hospital, clinic or any medical unit.">[ ? ]</span></label></div>
+                    <div class="col-md-4"><input type="text" value="" placeholder="e.g Medline Plus Clinic" name="facility" class="form-control" required></div>
+                    <div class="col-md-2"><label>Legal Entity <span class="arial librehealth-color"> *</span> : <span class="hint-symbol" data-toggle="tooltip" title="Name of facility that is registered under for the government or any legal party">[ ? ]</span></label></div>
+                    <div class="col-md-3"><input type="text" value="" placeholder="e.g Medline Plus Clinic" name="legal" class="form-control"></div>
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
-                    <div class="col-md-2"><label>Provider Type:</label></div>
-                    <div class="col-md-9">
-                        <select class="form-control"  data-style="btn-success" data-live-search="true" name="see_auth" >
-                            <option value=''>Select Type</option>
-                            <option value='attending_physician'>Attending physician</option>
-                            <option value='audiological_physician'>Audiological physician</option>
-                            <option value='chest_physician' selected>Chest physician</option>
-                            <option value='community_health_physician'>Community health physician</option>
-                            <option value='consultant_physician'>Consultant physician</option>
-                            <option value='general_physician'>General physician</option>
-                            <option value='genitourinarymedicinephysician'>Genitourinary medicine physician</option>
-                            <option value='occupational_physician'>Occupational physician</option>
-                            <option value='palliative_care_physician'>Palliative care physician</option>
-                            <option value='physician'>Physician</option>
-                            <option value='public_health_physician'>Public health physician</option>
-                            <option value='rehabilitation_physician'>Rehabilitation physician</option>
-                            <option value='resident_physician'>Resident physician</option>
-                            <option value='specialized_physician'>Specialized physician</option>
-                            <option value='thoracic_physician'>Thoracic physician</option>
-                        </select>
-                    </div>
+                    <div class="col-md-2"><label>Facility Email :</label></div>
+                    <div class="col-md-9"><input type="email" value="" placeholder="Email address" name="facEmail" class="form-control"></div>
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
-                    <div class="col-md-2"><label>Facility Email <span class="arial librehealth-color"> *</span> :</label></div>
-                    <div class="col-md-9"><input type="email" value="" placeholder="Email address" name="iuemail" class="form-control" required></div>
-                </div>
-                <p class="clearfix"></p>
-                <div class="row">
-                    <div class="col-md-2"><label>Facility Phone <span class="arial librehealth-color"> *</span> :</label></div>
-                    <div class="col-md-9"><input type="text" value="" placeholder="Phone number" name="iuphone" class="form-control" required></div>
+                    <div class="col-md-2"><label>Facility Phone :</label></div>
+                    <div class="col-md-9"><input type="text" value="" placeholder="Phone number" name="facPhone" class="form-control"></div>
                 </div>
 
                 <p class="clearfix"></p>
                 <div class="row">
-                    <div class="col-md-2"><label>Address(street) <span class="arial librehealth-color"> *</span> :</label></div>
-                    <div class="col-md-9"><input type="text" value="" placeholder="Address" name="iuphone" class="form-control" required></div>
+                    <div class="col-md-2"><label>Address(street) :</label></div>
+                    <div class="col-md-9"><input type="text" value="" placeholder="Address" name="facAddress" class="form-control" required></div>
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
-                    <div class="col-md-3"><label>Country/State/City/Zip <span class="arial librehealth-color"> *</span> :</label></div>
-                    <div class="col-md-2"><input type="text" value="" placeholder="Country" name="iuphone" class="form-control" required></div>
-                    <div class="col-md-2"><input type="text" value="" placeholder="State" name="iuphone" class="form-control" required></div>
-                    <div class="col-md-2"><input type="text" value="" placeholder="City" name="iuphone" class="form-control" required></div>
-                    <div class="col-md-2"><input type="text" value="" placeholder="Zip" name="iuphone" class="form-control" required></div>
+                    <div class="col-md-3"><label>Country/State/City/Zip:</label></div>
+                    <div class="col-md-2"><input type="text" value="" placeholder="Country" name="country" class="form-control"></div>
+                    <div class="col-md-2"><input type="text" value="" placeholder="State" name="state" class="form-control"></div>
+                    <div class="col-md-2"><input type="text" value="" placeholder="City" name="city" class="form-control"></div>
+                    <div class="col-md-2"><input type="text" value="" placeholder="Zip" name="zip" class="form-control"></div>
                 </div>
 
                 <p class="clearfix"></p>
@@ -138,21 +123,29 @@ require_once("includes/header.inc.php");
                     <div class="col-md-2"><label>Facility Picture(logo):</label></div>
                     <div class="col-md-3"><input type="file" id="iufacilitypic" name="iuprofilepic" class="form-control"></div>
                 </div>
-
-
-
             </div>
+            <?php
+
+            echo "
+                    <div class='control-btn'>
+                      <button type='submit' class='controlBtn'>
+                       Continue <i class='fa fa-arrow-circle-right'></i>
+                </button>
+                    </div>
+                    ";
+
+            ?>
         </form>
 
         <?php
-        echo '<form action="step3.php" method="post">
-                            <div class="control-btn2">
-                            <input type="hidden" value="3" name="step">
-                            <button id="backStep4" type="submit" class="controlBtn">
+        echo '<form action="step7.php" method="post">
+                 <div class="control-btn2">
+                    <input type="hidden" value="7" name="step">
+                        <button id="backStep4" type="submit" class="controlBtn">
                             <i class="fa fa-arrow-circle-left"></i> Back
-                            </button>
-                            </div>
-                            </form>
+                        </button>
+                 </div>
+              </form>
                     ';
         ?>
 

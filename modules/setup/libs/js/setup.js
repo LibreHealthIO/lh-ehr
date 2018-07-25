@@ -1,8 +1,22 @@
+    /**
+     * This file is the javascript file for the setup process, contains client side validations ,event polling and
+     * ajaxing with handling of various actions made by user during the setup process.
+     *
+     * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+     * See the Mozilla Public License for more details.
+     * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+     *
+     * @package Librehealth EHR
+     * @author Mua Laurent <muarachmann@gmail.com>
+     * @link http://librehealth.io
+     *
+     * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+     *
+     */
 $(document).ready(function(){
 
     //to get timer
     var timer;
-
 
     // client validation for special characters in siteID field
     // if false then copies value into hidden input field site id for submission
@@ -223,18 +237,97 @@ $(document).ready(function(){
     });
 
 
+   // =========================================
+   //     BLOCK FOR IZI DEMO TO USER
+   // =========================================
+    function gentarate_random(min, max) {
+        var value = (min - 0.5) + (Math.random() * ((max - min) + 1));
+        return Math.round(value);
+    }
+
+    var izi_type_parameter =  [
+        "success",
+        "error",
+        "warning",
+        "info"
+    ];
+
+    var izi_position_parameter =  [
+        "topLeft",
+        "topRight",
+        "bottomLeft",
+        "bottomRight",
+        "topLeft",
+        "topCenter",
+        "bottomCenter"
+    ];
+
+    $(".izi-demo-toast").click(function () {
+        var izi_type = izi_type_parameter[gentarate_random(1,4)];
+        var izi_pos  = izi_position_parameter[gentarate_random(1,7)];
+        var icon, color, msg;
+        if(izi_type === "error"){
+            color = "red"; icon ="fa fa-times"; msg = "Failure notification";
+        }else if(izi_type === "info"){
+            color = "blue"; icon ="fa fa-info"; msg = "Informative notification"
+        }
+        else if(izi_type === "warning"){
+            color = "orange"; icon ="fa fa-warning"; msg = "Warming notification"
+        }
+        else {
+            color = "green"; icon ="fa fa-check"; msg = "Success notification";
+        }
+        iziToast.show({
+            type: izi_type,
+            position: izi_pos,
+            color:color,
+            icon:icon,
+            message: msg
+        });
+    });
+
+
+    function getColor() {
+        return "#"+$(".jscolor").val();
+    }
 
 
 
+    $(".izi-demo-modal").click(function () {
+       var color = getColor();
+         initIziLink(color);
+    });
+
+    function initIziLink(color) {
+        $("#demo-iframe").iziModal({
+            title: 'Modal demo',
+            subtitle: 'An example of a modal',
+            headerColor: color,
+            closeOnEscape: true,
+            fullscreen:true,
+            overlayClose: false,
+            closeButton: true,
+            theme: 'light',  // light
+            iframe: true,
+            width:700,
+            focusInput: true,
+            iframeHeight: 400,
+            onClosed: function(){
+                location.reload();
+            },
+            iframeURL: "template.html"
+
+        });
+
+        setTimeout(function () {
+            call_izi();
+        },200);
+    }
 
 
-
-
-
-
-
-
-
+    function call_izi() {
+        $("#demo-iframe").iziModal('open');
+    }
 
 
 });

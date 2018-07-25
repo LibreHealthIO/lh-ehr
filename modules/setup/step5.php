@@ -1,12 +1,21 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: rachmann mua
- * Date: 6/30/18
- * Time: 2:13 AM
+ * This is the file denotes the fifth step (STEP 5) of the setup procedure. This file is responsible for Installing and
+ * Configuring Access Controls (php-GACL)... necessary for running the LibreEHR software smoothly.
+ *
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 ?>
-
 <?php
 session_start();
 require_once("includes/shared.inc.php");

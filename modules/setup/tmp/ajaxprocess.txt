@@ -1,1 +1,1 @@
-{"message":"Next step will install and configure access controls. <span style='color: black;text-decoration: underline;'>(php-GACL).<\/span>","status":200,"percentage":100,"next_state":"php_gacl"}
+{"message":"Reconnecting as new user...","status":200,"percentage":25}

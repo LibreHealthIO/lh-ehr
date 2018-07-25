@@ -1,9 +1,21 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: rachmann mua <muarachmann@gmail.com>
- * Date: 5/21/18
- * Time: 2:32 AM
+ * This is the file denotes the second step (STEP 2) of the setup procedure. This scripts checks if your environment
+ * is suitable for running LibreEHR.It checks for the server configuration, mysql and php versions, also checks for loaded extensions etc
+ *
+ * NB: This script prevents setup from following its normal course until the environment is suitable for installing the software.
+ * This is done with the help of an upgrade button
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 ?>
 

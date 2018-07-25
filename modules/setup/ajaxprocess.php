@@ -1,12 +1,20 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: rachmann mua <muarachmann@gmail.com>
- * Date: 6/29/18
- * Time: 5:03 AM
+ * This file is responsible for grabbing the current status of the setup process in step 4 of the installation.
+ * It reads from the tmp/ajaxprocess.txt file and returns the state of the setup process.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 ?>
-
 
 <?php
 // Tract down all processes of the ajax call one after another and reads them here

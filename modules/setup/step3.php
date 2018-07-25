@@ -1,12 +1,20 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: rachmann mua <muarachmann@gmail.com>
- * Date: 5/21/18
- * Time: 2:32 AM
+ * This is the file denotes the third step (STEP 3) of the setup procedure. This file is responsible for grabbing user
+ * decision about the database and optional site id selection. THis is neccessary for the installation of the software.
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 ?>
-
 <?php
 session_start();
 require_once("includes/shared.inc.php");

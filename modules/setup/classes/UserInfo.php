@@ -1,9 +1,18 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: root
- * Date: 6/18/18
- * Time: 1:59 PM
+ * This file is responsible for returning information about the users systems such as browser type, operating system, linux disto
+ *
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 
     class UserInfo

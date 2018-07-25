@@ -1,12 +1,23 @@
 <?php
-    /**
-     * Created by PhpStorm.
-     * User: rachmann mua <muarachmann@gmail.com>
-     * Date: 5/21/18
-     * Time: 2:32 AM
-     */
+/**
+ * This is the file denotes the fourth step (STEP 4) of the setup procedure. This file is denoted as the core of the
+ * setup installation. Server parameters are gotten , database creation , database cloning, mysql dumping, creation of subdirectories,
+ * addition of initial user, and password protection.
+ *
+ * NB: works hand in hand with the database.php script to perform its actions
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
+ */
 ?>
-
 <?php
     session_start();
     require_once("includes/shared.inc.php");

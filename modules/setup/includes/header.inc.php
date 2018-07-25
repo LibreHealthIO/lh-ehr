@@ -1,18 +1,18 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: rachmann <muarachmann@gmail.com>
- * Date: 5/20/18
- * Time: 9:39 PM
- */
-?>
-
-<?php
-/**
- * Created by PhpStorm.
- * User: rachmann <muarachmann@gmail.com>
- * Date: 5/20/18
- * Time: 2:56 PM
+ * This file is responsible for inserting a standard header to all setup script files. Serves as template for the header.
+ * NB: all css scripts should be included at this level see footer.inc.php for including js files
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 ?>
 
@@ -26,6 +26,9 @@
     <link type="text/css" rel="stylesheet" href="libs/css/font-awesome/css/font-awesome.css">
     <link type="text/css" rel="stylesheet" href="libs/css/bootstrap/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="libs/css/bootstrap/css/bootstrap-select.min.css">
+    <link type="text/css" rel="stylesheet" href="libs/css/magnific-popup.css">
+    <link type="text/css" rel="stylesheet" href="libs/css/iziModalToast/iziModal.css">
+    <link type="text/css" rel="stylesheet" href="libs/css/iziModalToast/iziToast.css">
     <link type="text/css" rel="stylesheet" href="libs/css/owl-carousel/owl.carousel.css">
     <link type="text/css" rel="stylesheet" href="libs/css/owl-carousel/owl.theme.default.css">
     <link type="text/css" rel="stylesheet" href="libs/css/setup.css">

@@ -1,9 +1,19 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: rachmann mua
- * Date: 6/30/18
- * Time: 2:13 AM
+ * This is the file denotes the sixth step (STEP 6) of the setup procedure.
+ * This file is responsible for the configuration of php in the system.
+ *
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package Librehealth EHR
+ * @author Mua Laurent <muarachmann@gmail.com>
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+ *
  */
 ?>
 
@@ -111,7 +121,10 @@ if($task == 'annul'){
                  <div class='control-btn2'>
                  <input type='hidden' value='5' name='step'>
                  <input type='hidden' value='php_gacl' name='stepholder'>
-                 <input type='hidden' name='installer_var'  value='$passed_array'>
+                <input type='hidden' name='iuser' value='$installer->iuser'>\n
+                <input type='hidden' name='iuserpass' value='$installer->iuserpass'>
+                <input type='hidden' name='loginhost' value='$installer->loginhost'>
+                <input type='hidden' name='dbname' value='$installer->dbname'>\n
                  <button type='submit' class='controlBtn'>
                  <i class='fa fa-arrow-circle-left'></i> Back
                  </button>
@@ -123,7 +136,11 @@ if($task == 'annul'){
                     echo " <form action='step6.php' method='post'>
                     <div class='control-btn'>
                      <input type='hidden' value='6' name='step'>
-                     <input type='hidden' name='installer_var'  value='$passed_array'>
+                        <input type='hidden' name='site' value='$site_id'>\n
+                        <input type='hidden' name='iuser' value='$installer->iuser'>\n
+                        <input type='hidden' name='dbname' value='$installer->dbname'>\n
+                        <input type='hidden' name='loginhost' value='$installer->loginhost'>\n
+                        <input type='hidden' name='iuserpass' value='$installer->iuserpass'>
                             <button type='submit' class='controlBtn'>
                                 Continue <i class='fa fa-arrow-circle-right'></i>
                             </button>

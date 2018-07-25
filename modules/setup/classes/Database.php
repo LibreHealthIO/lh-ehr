@@ -1,6 +1,10 @@
 <?php
-/* Copyright © 2010 by Andrew Moore */
-/* Licensing information appears at the end of this file. */
+/*
+ *Copyright © 2010 by Andrew Moore
+ *
+ * @author Mua Laurent <muarachmann@gmail.com>
+ *Licensing information appears at the end of this file.
+ */
 
 class Database
 {
