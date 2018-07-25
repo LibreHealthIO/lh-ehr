@@ -205,8 +205,10 @@ function replaceFile($filename, $original_name, $status, $old_name) {
 	if ($status == "added") {
 		//since Added there is no need to unlink the old file,it does not exist
 		checkDir($original_name);
-		copy($filename, $original_name);
-		echo $status;
+		echo $original_name;
+		echo "<br/><br/>";
+		//copy($filename, $original_name);
+		
 	}
 	if ($status == "modified") {
 		unlink($original_name);
@@ -266,27 +268,31 @@ $files = glob($foldername . '/*');
 */
 function checkDir($location) {
 
-	$arr  = explode("/", $location);
+	$dirname_array = pathinfo($location);
+
+	$dirname = $dirname_array['dirname'];
+
+	$arr  = explode("/", $dirname);
 
 	$dir_struct = "";
 
 	foreach ($arr as $key=>$value) {
 		if (isset($value)) {
 			if (!empty($value)) {
-				if (!empty($dir_struct)) {
+				if (!empty($dir_struct) ) {
 					$dir_struct = $dir_struct.$value."/";
 				}
 				else {
 					$dir_struct = $dir_struct.$value."/";
 				}
-				$extension = pathinfo($dir_struct, PATHINFO_EXTENSION);
-				//if it has file extension then dont create directory
+
 				if (!is_file($dir_struct)) {
 
 					if (is_dir($dir_struct)) {
 						//leave it, make no changes
 					}
 					else {
+
 						mkdir($dir_struct);		
 					}
 					
