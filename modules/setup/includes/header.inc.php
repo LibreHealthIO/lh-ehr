@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="libs/images/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LibreHealth EHR-Setup</title>
+    <title>LibreHealth EHR Setup Tool</title>
     <link type="text/css" rel="stylesheet" href="libs/css/font-awesome/css/font-awesome.css">
     <link type="text/css" rel="stylesheet" href="libs/css/bootstrap/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="libs/css/bootstrap/css/bootstrap-select.min.css">
