@@ -27,10 +27,31 @@ require_once("includes/header.inc.php");
 //==========================
 // HANDLING FORM SUBMISSION
 //==========================
+//user info for configuring userinfo.php & parameters.php
+$server = $_POST["server"];     $dbname = $_POST["dbname"];
+$pass = $_POST["pass"];         $login = $_POST["login"];
 
+//user's parameters for login screen
+$site = $_POST["site"];     $iuserpass = $_POST["iuserpass"];
+$iuser = $_POST["iuser"];  $iufname = $_POST["iufname"];   $iuname = $_POST["iuname"];
 
+// variable to get current step and task
+$step = $_POST["step"];
+$task = $_POST["task"];
+    if(isset($step) && $step = 8){
+        //ok we can allow user to run the script
+        if($prevstep == 7){
+
+        }else{
+            //from page userinfo
+        }
+    }else{
+        header('location: index.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
 ?>
-
     <div class="card">
         <div class="pull-right" id="pics-row">
                 <div class="iu-pics hidden">
@@ -46,7 +67,7 @@ require_once("includes/header.inc.php");
                 <p class="clearfix"></p>
         </div>
         <h2><strong>User Information</strong></h2>
-
+        <p class="alert alert-info">Please let us know more about you and your facility by helping us fill the form below NB: E-mail is for security bulletins.</p>
         <i>Fields with (<span class="arial librehealth-color"> *</span>) are mandatory</i>
         <p class="clearfix"></p>
         <h4 class="librehealth-color text-right"><small>(Please provide information about yourself below) </small>PERSONAL INFO</h4>
@@ -55,12 +76,12 @@ require_once("includes/header.inc.php");
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-2"><label>First Name <span class="arial librehealth-color"> *</span> :</label></div>
-                    <div class="col-md-9"><input value="Administrator" name="iufname" placeholder="Enter First Name" type="text" class="form-control" required></div>
+                    <div class="col-md-9"><input value="<?php echo($iufname) ?>" name="iufname" placeholder="Enter First Name" type="text" class="form-control" required></div>
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
                     <div class="col-md-2"><label>Last Name <span class="arial librehealth-color"> *</span> :</label></div>
-                    <div class="col-md-9"><input type="text" value="Administrator"  placeholder="Enter Last Name" name="iulname" class="form-control" required></div>
+                    <div class="col-md-9"><input type="text" value="<?php echo($iuname) ?>"  placeholder="Enter Last Name" name="iulname" class="form-control" required></div>
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
@@ -70,7 +91,7 @@ require_once("includes/header.inc.php");
                 <p class="clearfix"></p>
                 <div class="row">
                     <div class="col-md-2"><label>Email <span class="arial librehealth-color"> *</span> :</label></div>
-                    <div class="col-md-9"><input type="email" value="" placeholder="Email address" name="iuemail" class="form-control" required></div>
+                    <div class="col-md-9"><input type="email" value="" placeholder="Email address" name="iuemail" class="form-control"></div>
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
@@ -107,7 +128,7 @@ require_once("includes/header.inc.php");
                 <p class="clearfix"></p>
                 <div class="row">
                     <div class="col-md-2"><label>Address(street) :</label></div>
-                    <div class="col-md-9"><input type="text" value="" placeholder="Address" name="facAddress" class="form-control" required></div>
+                    <div class="col-md-9"><input type="text" value="" placeholder="Address" name="facAddress" class="form-control"></div>
                 </div>
                 <p class="clearfix"></p>
                 <div class="row">
@@ -126,14 +147,19 @@ require_once("includes/header.inc.php");
             </div>
             <?php
 
-            echo "
+            echo " 
+                   <input type='hidden' value='9' name='step'>
+                   <input type='hidden' value='8' name='prevstep'>
+                   <input type='hidden' value='$server' name='server' class='form-control'> 
+                   <input type='hidden' value='$dbname' name='dbname' class='form-control'> 
+                   <input type='hidden' value='$pass' name='pass' class='form-control'> 
+                   <input type='hidden' value='$login' name='login' class='form-control'> 
                     <div class='control-btn'>
                       <button type='submit' class='controlBtn'>
                        Continue <i class='fa fa-arrow-circle-right'></i>
                 </button>
                     </div>
                     ";
-
             ?>
         </form>
 
@@ -160,8 +186,6 @@ require_once("includes/header.inc.php");
                 </button>
             </div>
         </form>
-
-
     </div>
 
 <?php

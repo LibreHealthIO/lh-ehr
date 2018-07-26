@@ -200,8 +200,9 @@ $(document).ready(function(){
         $("#ajaxResponse").html("Error- setup failed: " + msg);
         $("#submitStep4").removeAttr("disabled").css("cursor","pointer");
         $("#backStep4").removeAttr("disabled").removeClass("btnDisabled").css("cursor","pointer");
-
         window.clearInterval(timer);
+        $("#databaseForm").off('submit').reset();
+
     }
 
     //Displaying facility and user profile image once selected
@@ -328,6 +329,17 @@ $(document).ready(function(){
     function call_izi() {
         $("#demo-iframe").iziModal('open');
     }
+
+    $(".printMe").click(function () {
+        var prtContent = document.getElementById("printStep");
+        var WinPrint = window.open('', '', 'letf=0,top=0,width=1,height=1,toolbar=0,scrollbars=0,status=0');
+        WinPrint.document.write(prtContent.innerHTML);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        WinPrint.close();
+        prtContent.innerHTML = strOldOne;
+    });
 
 
 });

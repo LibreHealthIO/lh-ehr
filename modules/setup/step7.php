@@ -28,39 +28,33 @@ require_once("includes/header.inc.php");
 //==========================
 // HANDLING FORM SUBMISSION
 //==========================
+//user info for configuring userinfo.php & parameters.php
+$server = $_POST["server"];     $dbname = $_POST["dbname"];
+$pass = $_POST["pass"];         $login = $_POST["login"];
 
+//user's parameters for login screen
+$site = $_POST["site"];     $iuserpass = $_POST["iuserpass"];
+$iufname = $_POST["iufname"];   $iuname = $_POST["iuname"];
+$iuser = $_POST["iuser"];
 
 // variable to get current step and task
-$_SESSION["step"] = $_POST["step"];
 $step = $_POST["step"];
 $task = $_POST["task"];
-$stephold = $_POST["stepholder"];
+$prevstep = $_POST["prevstep"];
 
-    $installer = new Database($_POST);
+    if(isset($step) && $step = 7){
+        //ok we can allow user to run the script
+        if($prevstep == 6){
 
-//
-//if(isset($_SESSION["step"]) && $step = 5){
-//    //ok we can allow user to run the script
-//    //checking if it is from script 6 or 4
-//    if(!isset($_POST['installer_var'])){
-//        // from page 4
-//        $installer = new Database($_POST);
-//        $installerVar = serialize($_POST);
-//    }else{
-//        //from page 6
-//        $passed_array = unserialize($_POST["installer_var"]);
-//        $installer = new Database($passed_array);
-//        // parse the whole post array unto the next view
-//        $installerVar = serialize($passed_array);
-//
-//
-//    }
-//}else{
-//    header('location: start_up.php');
-//    session_destroy();
-//    // *** set new token
-//    $_SESSION['token'] = md5(uniqid(rand(), true));
-//}
+            }else{
+                //from page userinfo
+            }
+    }else{
+        header('location: index.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
 
 if($task == 'annul'){
     session_destroy();
@@ -76,7 +70,7 @@ if($task == 'annul'){
     <p class="clearfix"></p>
 
     <?php
-
+    echo "<div id='printStep'>";
     echo "<h4>Configuration of Apache web server...</h4>\n";
     drawSetupStep($step);
     ?>
@@ -86,7 +80,6 @@ if($task == 'annul'){
 <?php
 
         echo "<div>
-                $installer->dbname
                 <p>
                The following directories below contain patient information, and it is important to secure these directories.
                 </p>
@@ -119,22 +112,27 @@ if($task == 'annul'){
         </div>
         </div>
         ";
+    echo "</div>";
 
         echo "<div class='alert alert-info text-center'>
             <span class='fa fa-info-circle'></span> <span class='black'>If you are having difficulty finding your apache configuration file, then refer to the</span> 
             <a href='https://github.com/LibreHealthIO/LibreEHR/blob/master/INSTALL.md' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> 
             <span class='black'>manual for suggestions.</span>
             <br><br><span class='black'>We recommend you print these instructions for future reference.</span>
+            <button class='small btn-default printMe'><span class='fa fa-print'></span> Print</button>
             </div>
             ";
 
                 echo "<p class='clearfix'></p>";
                 echo "<p class='clearfix'></p>";
-                echo "<form action='step5.php' method='post'>
+                echo "<form action='step6.php' method='post'>
                      <div class='control-btn2'>
                      <input type='hidden' value='6' name='step'>
                      <input type='hidden' value='php_gacl' name='stepholder'>
-                     <input type='hidden' name='installer_var'  value='$passed_array'>
+                     <input type='hidden' value='$server' name='server' class='form-control'> 
+                     <input type='hidden' value='$dbname' name='dbname' class='form-control'> 
+                     <input type='hidden' value='$pass' name='pass' class='form-control'> 
+                     <input type='hidden' value='$login' name='login' class='form-control'> 
                      <button type='submit' class='controlBtn'>
                      <i class='fa fa-arrow-circle-left'></i> Back
                      </button>
@@ -144,8 +142,16 @@ if($task == 'annul'){
 
                 echo " <form action='userinfo.php' method='post'>
                             <div class='control-btn'>
-                             <input type='hidden' value='6' name='step'>
-                             <input type='hidden' name='installer_var'  value='$passed_array'>
+                              <input type='hidden' value='8' name='step'>
+                              <input type='hidden' value='$server' name='server' class='form-control'> 
+                              <input type='hidden' value='$dbname' name='dbname' class='form-control'> 
+                              <input type='hidden' value='$pass' name='pass' class='form-control'> 
+                              <input type='hidden' value='$login' name='login' class='form-control'> 
+                              <input type='hidden' name='iufname' value='$iufname'>
+                              <input type='hidden' name='iuname' value='$iuname'>
+                              <input type='hidden' name='site' value='$site'>
+                              <input type='hidden' name='iuser' value='$iuser'>
+                              <input type='hidden' name='iuserpass' value='$iuserpass'>
                             <button type='submit' class='controlBtn'>
                                 Continue <i class='fa fa-arrow-circle-right'></i>
                             </button>

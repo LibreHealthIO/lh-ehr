@@ -38,7 +38,7 @@
     if(isset($_SESSION["step"]) && $step = 4){
         //ok we can allow user to run the script
     }else{
-        header('location: start_up.php');
+        header('location: index.php');
         session_destroy();
         // *** set new token
         $_SESSION['token'] = md5(uniqid(rand(), true));
@@ -261,7 +261,7 @@
         </div>
         </div>
         <!-- holder for the next steps either user config or php-galc config parameters-->
-        <!-- sync with the setup.js file lines(153-162)-->
+        <!-- sync with the setup.js file lines(175-182)-->
         <div id="nextStep">
         </div>
     

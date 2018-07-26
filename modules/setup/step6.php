@@ -27,30 +27,38 @@ require_once("includes/header.inc.php");
 
 //==========================
 // HANDLING FORM SUBMISSION
+// (getting variables passed from step 5)
 //==========================
 
+    //user info for configuring userinfo.php & parameters.php
+    $server = $_POST["server"];     $dbname = $_POST["dbname"];
+    $pass = $_POST["pass"];         $login = $_POST["login"];
 
-// variable to get current step and task
-$passed_array = unserialize($_POST['installer_var']);
-$_SESSION["step"] = $_POST["step"];
+    //user's parameters for login screen
+    $site = $_POST["site"];         $iuserpass = $_POST["iuserpass"];
+    $iufname = $_POST["iufname"];   $iuname = $_POST["iuname"];
+    $iuser = $_POST["iuser"];
+
+
+//get info abt current step
 $step = $_POST["step"];
 $task = $_POST["task"];
 
-if(isset($_SESSION["step"]) && $step = 6){
-    //ok we can allow user to run the script
-}else{
-    header('location: start_up.php');
-    session_destroy();
-    // *** set new token
-    $_SESSION['token'] = md5(uniqid(rand(), true));
-}
+    if(isset($step) && $step = 6){
+        //ok we can allow user to run the script
+    }else{
+        header('location: index.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
 
-if($task == 'annul'){
-    session_destroy();
-    write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
-    header('location: index.php');
-    exit;
-}
+    if($task == 'annul'){
+        session_destroy();
+        write_configuration_file('localhost',3306,'libreehr','libreehr','libreehr',0);
+        header('location: index.php');
+        exit;
+    }
 
 ?>
 
@@ -58,8 +66,9 @@ if($task == 'annul'){
     <p class="clearfix"></p>
     <p class="clearfix"></p>
 
-    <?php
 
+    <?php
+    echo "<div id='printStep'>";
     echo "<h4>Configuration of PHP...</h4>\n";
     drawSetupStep($step);
     ?>
@@ -107,12 +116,13 @@ if($task == 'annul'){
             echo "<li>If you are having difficulty finding your php.ini file, then refer to the <a href='https://github.com/LibreHealthIO/LibreEHR/blob/master/INSTALL.md' target='_blank'><span STYLE='text-decoration: underline;'>'Installation'</span></a> manual for suggestions.</li>\n";
         }
         echo "</ul>";
-            $passed_array = serialize($passed_array);
-            var_dump($passed_array);
-
+        echo "</div>";
     echo "<div class='alert alert-success'>
             We recommend you print these instructions for future reference.<br>
             Next step will configure Apache web server.
+            <div class='pull-right'>
+            <button class='small btn-default printMe'><span class='fa fa-print'></span> Print</button>
+            </div>
             </div>";
 
             echo "<p class='clearfix'></p>";
@@ -121,10 +131,10 @@ if($task == 'annul'){
                  <div class='control-btn2'>
                  <input type='hidden' value='5' name='step'>
                  <input type='hidden' value='php_gacl' name='stepholder'>
-                <input type='hidden' name='iuser' value='$installer->iuser'>\n
-                <input type='hidden' name='iuserpass' value='$installer->iuserpass'>
-                <input type='hidden' name='loginhost' value='$installer->loginhost'>
-                <input type='hidden' name='dbname' value='$installer->dbname'>\n
+                 <input type='hidden' value='$server' name='server' class='form-control'> 
+                 <input type='hidden' value='$dbname' name='dbname' class='form-control'> 
+                 <input type='hidden' value='$pass' name='pass' class='form-control'> 
+                 <input type='hidden' value='$login' name='login' class='form-control'>
                  <button type='submit' class='controlBtn'>
                  <i class='fa fa-arrow-circle-left'></i> Back
                  </button>
@@ -133,14 +143,19 @@ if($task == 'annul'){
                      ";
 
 
-                    echo " <form action='step6.php' method='post'>
+                    echo " <form action='step7.php' method='post'>
                     <div class='control-btn'>
-                     <input type='hidden' value='6' name='step'>
-                        <input type='hidden' name='site' value='$site_id'>\n
-                        <input type='hidden' name='iuser' value='$installer->iuser'>\n
-                        <input type='hidden' name='dbname' value='$installer->dbname'>\n
-                        <input type='hidden' name='loginhost' value='$installer->loginhost'>\n
-                        <input type='hidden' name='iuserpass' value='$installer->iuserpass'>
+                     <input type='hidden' value='7' name='step'>
+                     <input type='hidden' value='6' name='prevstep'>
+                     <input type='hidden' value='$server' name='server' class='form-control'> 
+                     <input type='hidden' value='$dbname' name='dbname' class='form-control'> 
+                     <input type='hidden' value='$pass' name='pass' class='form-control'> 
+                     <input type='hidden' value='$login' name='login' class='form-control'> 
+                     <input type='hidden' name='site' value='$site'>
+                     <input type='hidden' name='iuser' value='$iuser'>
+                     <input type='hidden' name='iufname' value='$iufname'>
+                     <input type='hidden' name='iuname' value='$iuname'>
+                     <input type='hidden' name='iuserpass' value='$iuserpass'>
                             <button type='submit' class='controlBtn'>
                                 Continue <i class='fa fa-arrow-circle-right'></i>
                             </button>

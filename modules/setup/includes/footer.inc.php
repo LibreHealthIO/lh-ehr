@@ -21,7 +21,7 @@
 <p class="clearfix"></p>
 <p class="clearfix"></p>
 <p class="clearfix"></p>
-</div>
+</div> <!-- close for the container div found in header -->
 
 
 </body>

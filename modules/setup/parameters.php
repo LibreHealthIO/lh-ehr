@@ -28,10 +28,10 @@ require_once("includes/header.inc.php");
     //$iuprofilepic           =  $_POST["iuprofilepic"];
 
     //credentials for mysql connection to the db
-    $login  = $_POST["iuser"];
-    $host   = $_POST["loginhost"];
+    $login  = $_POST["login"];
+    $host   = $_POST["server"];
     $db     = $_POST["dbname"];
-    $pass   = $_POST["iupass"];
+    $pass   = $_POST["pass"];
 
     //credentials to be inserted into the db (first facility)
     $facility  = $_POST["facility"];    $legal       =  $_POST["legal"];
@@ -40,10 +40,59 @@ require_once("includes/header.inc.php");
     $country   = $_POST["country"];     $state       = $_POST["country"];
     $zip       = $_POST["zip"];         $city        = $_POST["city"];
 
+// variable to get current step and task
+$step = $_POST["step"];
+$prevstep = $_POST["prevstep"];
+$task = $_POST["task"];
+
+    if(isset($step) && $step = 9){
+        //ok we can allow user to run the script
+
+    }else{
+        header('location: index.php');
+        session_destroy();
+        // *** set new token
+        $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
+
     ?>
     <div class="card">
         <div id="demo-iframe"></div>
         <h2><strong>Parameter Settings</strong></h2>
+        <?php
+            if($prevstep == 8){
+
+                $con = mysqli_connect($host, $login, $pass, $db);
+                // Check connection
+                if (mysqli_connect_errno())
+                {
+                    die( "<div class='alert alert-danger'>
+                            Failed to connect to MySQL : " . mysqli_connect_error()."
+                            <p class='black'>Please click on the back button to restart procedure to ensure proper access</p>
+                        </div>
+                        <p class='clearfix'></p>
+                        <p class='clearfix'></p>
+                        <p class='clearfix'></p>
+                        <form action='step3.php' method='post'>
+                             <div class='cancel-btn'>
+                                <input type='hidden' value='3' name='step'>
+                                    <button id='backStep4' type='submit' class='controlBtn'>
+                                        <i class='fa fa-arrow-circle-left'></i> Back
+                                    </button>
+                             </div>
+                          </form>
+                        "
+
+                        );
+                }
+                $sql = "UPDATE users SET fname = '$iufname', lname= '$iulname', mname= '$iumname', email= '$iuemail', phone= '$iuphone'  WHERE id = 1";
+                mysqli_query($con,$sql);
+
+
+            }else{
+                //from page userinfo
+            }
+        ?>
         <div class="form-group">
             <div class="row">
                 <div class="col-md-2"><label>Notification time :</label></div>

@@ -48,7 +48,7 @@ require_once("includes/header.inc.php");
         //ok we can allow user to run the script
     }
     else{
-        header('location: start_up.php');
+        header('location: index.php');
         session_destroy();
         // *** set new token
         $_SESSION['token'] = md5(uniqid(rand(), true));

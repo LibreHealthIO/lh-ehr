@@ -29,31 +29,24 @@ require_once("includes/header.inc.php");
     //==========================
 
 
-    // variable to get current step and task
-    $_SESSION["step"] = $_POST["step"];
     $step = $_POST["step"];
     $task = $_POST["task"];
     $stephold = $_POST["stepholder"];
 
+    $installer = new Database($_POST);
 
-if(isset($_SESSION["step"]) && $step = 5){
+if(isset($step) && $step = 5){
         //ok we can allow user to run the script
         //checking if it is from script 6 or 4
-        if(!isset($_POST['installer_var'])){
+        if(isset($stephold) && $stephold == 4){
             // from page 4
-            $installer = new Database($_POST);
-            $installerVar = serialize($_POST);
+
         }else{
             //from page 6
-            $passed_array = unserialize($_POST["installer_var"]);
-            $installer = new Database($passed_array);
-            // parse the whole post array unto the next view
-            $installerVar = serialize($passed_array);
-
 
         }
     }else{
-        header('location: start_up.php');
+        header('location: index.php');
         session_destroy();
         // *** set new token
         $_SESSION['token'] = md5(uniqid(rand(), true));
@@ -74,7 +67,7 @@ if(isset($_SESSION["step"]) && $step = 5){
 
     <?php
 
-    echo "<h4>Installing and Configuring Access Controls (php-GACL)...</h4>\n";
+    echo "<h4>Installing and Configuring Access Controls (php-GACL)...</h4> \n";
     drawSetupStep($step);
     ?>
     <p class="clearfix"></p>
@@ -103,6 +96,10 @@ if(isset($_SESSION["step"]) && $step = 5){
                     echo '<form action="step4.php" method="post">
                             <div class="control-btn2">
                             <input type="hidden" value="4" name="step">
+                             <input type=\'hidden\' value=\'$installer->server\' name=\'server\' class=\'form-control\'> 
+                             <input type=\'hidden\' value=\'$installer->dbname\' name=\'dbname\' class=\'form-control\'> 
+                             <input type=\'hidden\' value=\'$installer->pass\' name=\'pass\' class=\'form-control\'> 
+                                <input type=\'hidden\' value=\'$installer->login\' name=\'login\' class=\'form-control\'> 
                             <button type="submit" class="controlBtn">
                             <i class="fa fa-arrow-circle-left"></i> Back
                             </button>
@@ -113,7 +110,15 @@ if(isset($_SESSION["step"]) && $step = 5){
                     echo " <form action='step6.php' method='post'>
                     <div class='control-btn'>
                      <input type='hidden' value='6' name='step'>
-                     <input type='hidden' name='installer_var'  value='$installerVar'>
+                     <input type='hidden' value='$installer->server' name='server' class='form-control'> 
+                     <input type='hidden' value='$installer->dbname' name='dbname' class='form-control'> 
+                     <input type='hidden' value='$installer->pass' name='pass' class='form-control'> 
+                     <input type='hidden' value='$installer->login' name='login' class='form-control'> 
+                     <input type='hidden' name='site' value='$installer->site'>\n
+                     <input type='hidden' name='iuser' value='$installer->iuser'>\n
+                     <input type='hidden' name='iufname' value='$installer->iufname'>\n
+                     <input type='hidden' name='iuname' value='$installer->iuname'>\n
+                     <input type='hidden' name='iuserpass' value='$installer->iuserpass'>\n
                             <button type='submit' class='controlBtn'>
                                 Continue <i class='fa fa-arrow-circle-right'></i>
                             </button>

@@ -31,11 +31,10 @@ if [[ "$EUID" = 0 ]]; then
             exit;
           else
           	#installing the various php packages
-             sudo apt-get install -y -q php7.0-curl php7.0-xml php7.0-mbstring;
-             
+             sudo apt-get install -y -q php7.0-curl php7.0-xml php7.0-mbstring php7.0-mysql php7.0-cli php7.0-gd php7.0-gettext php7.0-xsl php7.0-mcrypt php7.0-soap php7.0-zip  php7.0-json php7.0-ldap  php7.0-xml  imagick;
              	#installing composer
-             #sudo curl -sS https://getcomposer.org/installer | php;
-	     #sudo mv composer.phar /usr/local/bin/composer;
+             sudo curl -sS https://getcomposer.org/installer | php;
+	         sudo mv composer.phar /usr/local/bin/composer;
 	     	
 	     	#restarting the apache2 server to load successfull installed modules and enable mpm_prefork
 	     echo "$(tput setaf 2)restarting apache2 server and configuring modules...$(tput setaf 7)"
@@ -84,9 +83,33 @@ if [[ "$EUID" = 0 ]]; then
                     echo "upgrade stoped. User ended action"
                     exit;
                   else
-                     sudo apt-get install -y -q php7.0-curl php7.0-xml php7.0-mbstring;
-                     zenity --question --width=350 --height=100 --text="Successfully upgraded system for LibreEHR environment" --title="LibrehealthEHR Upgrade" 2> /dev/null
-                     exit 1
+                       #installing the various php packages
+                         sudo apt-get install -y -q php7.0-curl php7.0-xml php7.0-mbstring php7.0-mysql php7.0-cli php7.0-gd php7.0-gettext php7.0-xsl php7.0-mcrypt php7.0-soap php7.0-zip  php7.0-json php7.0-ldap  php7.0-xml  imagick;
+                            #installing composer
+                         sudo curl -sS https://getcomposer.org/installer | php;
+                         sudo mv composer.phar /usr/local/bin/composer;
+
+                        #restarting the apache2 server to load successfull installed modules and enable mpm_prefork
+                     echo "$(tput setaf 2)restarting apache2 server and configuring modules...$(tput setaf 7)"
+                     sudo service apache2 stop; sudo a2enmod mpm_prefork; sudo service apache2 restart;
+                     ans=$?
+                        if [[ $ans -eq $deny ]]; then
+                            echo "$(tput setaf 1)Failed to start apache2 server $(tput setaf 7)"
+                        else
+                            echo "Successfully started apache2 server"
+                        fi
+
+                         zenity  --notification  --window-icon=/var/www/html/$rootSite/modules/setup/libs/images/favicon.ico  --text "Successfully installed packages :)"
+                        #opening browser to step two of the installation
+
+                    if which xdg-open > /dev/null
+                    then
+                      xdg-open http://localhost/$rootSite/modules/setup/step2.php?t=2 & kill $PPID
+
+                    elif which gnome-open > /dev/null
+                    then
+                      gnome-open http://localhost/$rootSite/modules/setup/step2.php?t=2 & kill $PPID
+                    fi
                 fi
 
             else
