@@ -129,11 +129,11 @@ if ($_POST['form_action'] == "holiday_submit") {
       if (!empty($fetchedEvents)) {
         foreach ($fetchedEvents as $event) {
           // check if event is a patient event
-          if (event['pc_pid'] > 0) {
+          if ($event['pc_pid'] > 0 && $event['pc_facility'] == $value[1]) {
             // don't make requested event slots,
             // alert user and close "Add Vacation/Holiday" dialog box
             $alert_close_box = '<script type="text/javascript">
-                                  alert("There are already some patient events on at least one of the selected dates. Please try again.");
+                                  alert("There are already some patient events with same facility on at least one of the selected dates. Please try again.");
                                   var addDialogBox = top.$(".dialogIframe"); // select dialog box element
                                   var windowCloseBtn = addDialogBox.find(".closeDlgIframe"); // find close button element
                                   windowCloseBtn.trigger("click"); // simulate "click" event on button
@@ -205,13 +205,14 @@ if ($_POST['form_action'] == "holiday_submit") {
         $args['facility'] = $value[1];
         $args['billing_facility'] = $value[1];
       // Insert events - A holiday event is made for each selected date,
-      // covering Calendar slots according to selected day type for that date with selected facility under all providers.
+      // covering Calendar slots according to selected day type for that date with selected facility under all passed providers.
       InsertEvent($args);
     }
 
     // reached here, means no conflicting dates, make requested events
     foreach ($dateAndType as $date => $value) {
-      $providers = getProviderInfo();
+      // pass only those providers which are specific to selected facility ($value[1]) for $date
+      $providers = getProviderInfo('%', true, $value[1]);
       foreach($providers as $provider) {
         $prov_id = $provider['id'];
         createHolidayEvent($date, $value, $prov_id);
