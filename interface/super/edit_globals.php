@@ -146,6 +146,10 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
               $boolean = false;
             }
           }
+          elseif ($fldid == "updater_icon_visibility") {
+              //updater icon visibility
+              $boolean = true;
+          }
           elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
             if (strlen($_POST["form_$i"]) == 7 && substr($_POST["form_$i"], 0,1) == "#") {
             $boolean = true;
@@ -155,9 +159,9 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
             }
           }
           if ($boolean) {
-          $label = "global:".$fldid;
-          $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
-          setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
+            $label = "global:".$fldid;
+            $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
+            setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
           }
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);

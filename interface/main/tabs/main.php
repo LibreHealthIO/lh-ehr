@@ -15,7 +15,7 @@ require_once $GLOBALS['srcdir'].'/ESign/Api.php';
 /* for getPnotesByUser(). */
 require_once($GLOBALS['srcdir'] . '/pnotes.inc');
 $esignApi = new Api();
-
+require '../../../updater/lib/updater_functions.php';
 ?>
 <!DOCTYPE html>
 <title><?php echo $GLOBALS['libreehr_name'];?></title>
@@ -58,7 +58,7 @@ var webroot_url="<?php echo $web_root; ?>";
 
 <?php
     /*  Include Bootstrap, Knockout Libraries and Font Awesome library   */
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","knockout", "font-awesome"));
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","knockout", "font-awesome", "iziModalToast"));
 ?>
 
 <script type="text/javascript" src="js/custom_bindings.js"></script>
@@ -243,5 +243,162 @@ var webroot_url="<?php echo $web_root; ?>";
   
   
 </script>
+<?php
 
+   $userAuthorized = $_SESSION['userauthorized'];
+   $authUserId = $_SESSION['authUserID'];
+   $sql = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = ?", array("updater_icon_visibility") );
+    $updater_icon_visibility = $sql['gl_value']; 
+    if ($updater_icon_visibility == 1) {
+        $show_icon = true;
+    }
+    else {
+        $show_icon = false;
+    }
+    if(checkAdmin($userAuthorized, $authUserId) && $show_icon) {
+        //only admin can use the updater
+        echo  "<div id='developer-mode' title='Developer Mode' style='display: none;'><i class='fa fa-code'></i></div>
+        <div id='updater-options' style='display: none;' title='updater settings'><i class='fa fa-gear'></i></div><div id='updater-icon'>
+                <i class='fa fa-refresh'></i>
+                </div>
+                <div id='updater-iframe'></div>
+                <div id='updater-settings-iframe'></div>
+                <div id='developer-mode-iframe'></div>";
+    }
+?>
 <?php do_action( 'after_main_box' ); ?>
+<style type="text/css">
+    #updater-icon, #updater-options, #developer-mode {
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #F69600; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 40px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+    }
+    #updater-options, #developer-mode {
+        border: 2px solid #000;
+        background-color: #F69600;
+        padding: 5px; 
+        border-radius: 40%;
+            bottom: 90px; /* Place the button at the bottom of the page */
+        right: 30px; /* Place the button 30px from the right */
+    }
+
+    #developer-mode {
+        right: 70px;
+        font-size: 15px;
+        bottom: 70px;
+    }
+</style>
+<script>
+$("#updater-settings-iframe").iziModal({
+           title: '<i class="fa fa-refresh"></i> <?php echo xlt("Settings for Updater"); ?>',
+           subtitle: '<?php echo xlt("Configuration settings for updater"); ?>',
+           headerColor: '#F69600',
+           closeOnEscape: true,
+           fullscreen:true,
+           overlayClose: false,
+           closeButton: true,
+           theme: 'dark',  // light
+           iframe: true,
+           width:900,
+           focusInput: true,
+           padding:5,
+           iframeHeight: 400,
+           iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/index.php"
+});
+
+$("#developer-mode-iframe").iziModal({
+           title: '<i class="fa fa-code"></i> <?php echo xlt("Developer Options"); ?>',
+           subtitle: '<?php echo xlt("Developer Mode in the Updater"); ?>',
+           headerColor: '#F69600',
+           closeOnEscape: true,
+           fullscreen:true,
+           overlayClose: false,
+           closeButton: true,
+           theme: 'dark',  // light
+           iframe: true,
+           width:900,
+           focusInput: true,
+           padding:5,
+           iframeHeight: 400,
+           onOpening: function () {
+                var imageURL = "../../../updater/updater_loading.gif";
+                $('.iziModal-content').css("background-image", "url("+imageURL+")");
+           },
+           iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/developer_mode.php"
+});
+$("#updater-iframe").iziModal({
+           title: '<i class="fa fa-refresh"></i> <?php echo xlt("Updater"); ?>',
+           subtitle: '<?php echo xlt("Updater for entire application"); ?>',
+           headerColor: '#F69600',
+           closeOnEscape: true,
+           fullscreen:true,
+           overlayClose: false,
+           closeButton: true,
+           theme: 'dark',  // light
+           iframe: true,
+           width:900,
+           focusInput: true,
+           padding:5,
+           iframeHeight: 400,
+           iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/updater.php",
+           onOpening: function () {
+                var imageURL = "../../../updater/updater_loading.gif";
+                $('.iziModal-content').css("background-image", "url("+imageURL+")");
+           }
+});
+$('#developer-mode').click(function () {
+    $("#developer-mode-iframe").iziModal('open');
+});
+$('#updater-options').click(function () {
+    $('#updater-settings-iframe').iziModal('open');
+});
+
+$('#updater-icon').hover(function () {
+    $(this).css("border", "2px solid #000");
+    $('#developer-mode').fadeIn(100);
+    $('#updater-options').fadeIn(100);
+});
+$('#updater-icon').click(function () {
+    $('#updater-iframe').iziModal('open');
+});
+$('body').hover(function () {
+    $('#developer-mode').css("display", "none");
+    $('#updater-options').css("display", "none");
+    $(this).css("border", "0px solid #000");
+});
+function showUpdaterNotifications(type, title, message) {
+    if (type == "warning") {
+        iziToast.warning({
+            title: title,
+            message: message,
+        });
+    }
+    if (type == "success") {
+        iziToast.success({
+            title: title,
+            message: message,
+        });
+    }
+    if (type == "info") {
+        iziToast.info({
+            title: title,
+            message: message,
+        });
+    }
+    if (type == "error") {
+        iziToast.error({
+            title: title,
+            message: message,
+        });
+    }
+}
+</script>

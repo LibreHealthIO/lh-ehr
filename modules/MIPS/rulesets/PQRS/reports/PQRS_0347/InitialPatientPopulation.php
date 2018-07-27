@@ -29,6 +29,7 @@ class PQRS_0347_InitialPatientPopulation extends PQRSFilter
 $query =
 "SELECT COUNT(b1.code) as count ".  
 " FROM billing AS b1". 
+" JOIN billing AS b2 ON (b1.pid = b2.pid)".
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " INNER JOIN pqrs_ptsf AS codelist_a ON (b1.code = codelist_a.code)".
 " JOIN patient_data AS p ON (p.pid = b1.pid)".
@@ -36,6 +37,7 @@ $query =
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
+" AND b2.code = 'I71.4' ".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0347_a') ";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));

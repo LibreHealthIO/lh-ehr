@@ -3,14 +3,14 @@
  * Display PQRS Measures for (de)activation
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
- *
+ * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
- * See the Mozilla Public License for more details.
+ * See the Mozilla Public License for more details. 
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
+ * 
  * @author  Art Eaton <art@suncoastconnection.com>
  * @author  Bryan lee <leebc@suncoastconnection.com>
- * @package LibreHealthEHR
+ * @package LibreHealthEHR 
  * @link    http://suncoastconnection.com
  * @link    http://librehealth.io
  *
@@ -24,7 +24,6 @@ $sanitize_all_escapes = true;
 $fake_register_globals = false;
 
 require_once '../../interface/globals.php';
-require_once '../../library/headers.inc.php';
 require_once $srcdir.'/api.inc';
 
 $updateStatus = array(
@@ -226,7 +225,7 @@ $(document).ready(function() {
                                 mymeasurelist = [21,23,47,128,130,226,317,354,355,356,357,358,402];
                                 break;
                         case "MIPS-12 Hospitalists":
-                                mymeasurelist = [5,8,32,47,76,128,130,226,317,402,407,431];
+                                mymeasurelist = [5,8,47,76,128,130,226,317,402,407,431];
                                 break;
                         case "MIPS-13 Internal Medicine":
                                 mymeasurelist = [1,5,47,50,109,110,112,113,116,117,128,130,134,154,155,181,204,226,236,317,326,331,332,333,334,387,400,401,402,408,412,414,418,431,438];
@@ -238,7 +237,7 @@ $(document).ready(function() {
                                 mymeasurelist = [47,128,130,134,181,226,282,283,284,286,288,317,325,370,383,391,402,411,431];
                                 break;
                         case "MIPS-16 Neurology":
-                                mymeasurelist = [32,47,128,130,226,268,282,283,284,286,288,290,291,293,294,317,386,402,408,412,414,419,431,435];
+                                mymeasurelist = [47,128,130,226,268,282,283,284,286,288,290,291,293,317,386,402,408,412,414,419,431,435];
                                 break;
                         case "MIPS-17 Obstetrics and Gynecology":
                                 mymeasurelist = [47,48,50,110,112,128,130,226,236,265,317,402,418,422,431,432,433,434,443,447,448];
@@ -320,10 +319,10 @@ if(count($updateStatus['off']) || count($updateStatus['on'])) {
 							<button type="button" class="quickselect" onclick="quickSelect('MIPS-2 Anesthesiology')">MIPS-2 Anesthesiology</button>
 							<button type="button" class="quickselect" onclick="quickSelect('MIPS-3 Cardiology')">MIPS-3 Cardiology</button>
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-4 Dermatology')">MIPS-4 Dermatology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-5 Diagnostic Radiology')">MIPS-5 Diagnostic Radiology</button>
+                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-5 Diagnostic Radiology')">MIPS-5 Diagnostic Radiology</button>               
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-6 Electrophysiology Cardiac Specialist')">MIPS-6 Electrophysiology Cardiac Specialist</button>
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-7 Emergency Medicine')">MIPS-7 Emergency Medicine</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-8 Gastroenterology')">MIPS-8 Gastroenterology</button>
+                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-8 Gastroenterology')">MIPS-8 Gastroenterology</button> 
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-9 General Oncology')">MIPS-9 General Oncology</button>
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-10 General Practice/Family Medicine')">MIPS-10 General Practice/Family Medicine</button>
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-11 General Surgery')">MIPS-11 General Surgery</button>
@@ -338,7 +337,7 @@ if(count($updateStatus['off']) || count($updateStatus['on'])) {
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-20 Otolaryngology')">MIPS-20 Otolaryngology</button>
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-21 Pathology')">MIPS-21 Pathology</button>
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-22 Pediatrics')">MIPS-22 Pediatrics</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-23 Physical Medicine')">MIPS-23 Physical Medicine</button>
+                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-23 Physical Medicine')">MIPS-23 Physical Medicine</button>   
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-24 Plastic Surgery')">MIPS-24 Plastic Surgery</button>
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-25 Preventive Medicine')">MIPS-25 Preventive Medicine</button>
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-26 Radiation Oncology')">MIPS-26 Radiation Oncology</button>
@@ -348,7 +347,7 @@ if(count($updateStatus['off']) || count($updateStatus['on'])) {
                                                         <button type="button" class="quickselect" onclick="quickSelect('MIPS-30 Vascular Surgery')">MIPS-30 Vascular Surgery</button>
 						</ul>
 					</li>
-
+					
 					<li>
 						<input type="checkbox" id="pqrs-toggle">
 						<label for="pqrs-toggle">All Measures</label>
