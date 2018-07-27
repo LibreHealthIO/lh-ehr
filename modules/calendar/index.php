@@ -29,6 +29,7 @@ require('includes/session.php');
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
   <link href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
   <link href='css/index.css' rel='stylesheet' />
+  <link type="text/css" rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>qTip/jquery.qtip.min.css" />
 
   <script src='full_calendar/lib/jquery.min.js'></script>
   <script src='full_calendar/lib/moment.min.js'></script>
@@ -37,7 +38,35 @@ require('includes/session.php');
   <script src='full_calendar/locale-all.js'></script>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
+  <script src="<?php echo $GLOBALS['standard_js_path']; ?>qTip/jquery.qtip.min.js"></script>
   <script src="../../library/dialog.js"></script>
+
+  <style type="text/css">
+    .tooltip-element {
+      display: none;
+      font-size: 16px;
+      max-width: 350px;
+    }
+    .tooltip-element img {
+      height: 64px;
+      width: 64px;
+      float: left;
+      margin: 5px 15px 0 1px;
+      border-radius: 5px;
+    }
+    .event-details {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .event-details h1 {
+      font-size: 24px;
+    }
+    .event-details p {
+      font-size: 18px;
+      margin: 0 0 8px 12px;
+    }
+  </style>
 </head>
 <body>
   <div id="sidebar">
@@ -231,63 +260,94 @@ require('includes/session.php');
               }
             }
         },
-        eventMouseover: function(calEvent, element, view) {
-          if (calEvent.picture_url) {
-            var picture = '<td><img src="../../profile_pictures/'+ calEvent.picture_url +'" height="64px" width="64px"></td>';
-          }
-          else {
-            picture = " ";
-          }
-          var tooltip = '<div class="tooltipevent"><table><tr>' + picture+'<td style="color:red;">' + calEvent.description + '</td></tr></table></div>';
-          var $tooltip = $(tooltip).appendTo('body');
-
-         $(this).mouseover(function(e) {
-             $(this).css('z-index', 10000);
-             $tooltip.fadeIn('500');
-             $tooltip.fadeTo('10', 1.9);
-         }).mousemove(function(e) {
-             $tooltip.css('top', e.pageY + 10);
-             $tooltip.css('left', e.pageX + 20);
-         });
-        },
-        eventMouseout: function(calEvent, element, view) {
-          $(this).css('z-index', 8);
-          $('.tooltipevent').remove();
-        },
         select: function(start, end, jsEvent, view, resource) {
           dlgopen('add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id +
           '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
            ,'_blank', 775, 375);
               },
         eventRender: function(event, element, view) {
-          //converting event title text to hyperlink
+          var tooltipElement = '';
           if (event['pc_pid'] > 0) {
-            //only when event is a patient event
-            //event['pc_pid'] is number string for patient events, empty "" for provider events
-            //var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
+            // when event is a patient event
+            // converting event title text to hyperlink
+            // event['pc_pid'] is number string for patient events, empty "" for provider events
             let link = '<?php echo $GLOBALS['webroot'] . "/interface/patient_file/summary/demographics.php?set_pid="; ?>' + event['pc_pid'];
             var titleLink = "<a href='#'>" + event['title'] + "</a>";
-            let titleInfo = "<span style='color: #000;'>" + event['e_info'] + "</span>";
-            //find all event title div elements
+            // find all event title div elements
             var patientEventTitle = element.find('.fc-title');
-            //remove title text inside them and insert hyperlink
+            // remove title text inside them and insert hyperlink
             patientEventTitle.empty().append(titleLink);
-            //add event description text just after hyperlink
-            patientEventTitle.after(titleInfo);
+            if (event['e_info']) {
+              // value defined/undefined as per calendar_appt_style global (see: get_provider_events.php)
+              // add event category title, event comment, just after hyperlink
+              var titleInfo = "<span style='color: #000;'>" + event['e_info'] + "</span>";
+              patientEventTitle.after(titleInfo);
+            }
             patientEventTitle.on("click", function(e) {
-              //to stop eventClick handler from executing
-              //upon clicking text link
+              // to stop eventClick handler from executing
+              // upon clicking text link
               e.stopImmediatePropagation();
-              //open demographics in a new tab
+              // open demographics in a new tab
               top.restoreSession();
               top.RTop.location = link;
               return false;
             });
+            // appointment (patient event) tooltip's content
+            var imgElement = '';
+            if (event.picture_url) {
+              // when image exists
+              imgElement = '<img src="../../profile_pictures/' + event.picture_url + '">';
+            }
+            var headingElement = '';
+            var categoryTitle = '';
+            var eventDescription = '';
+            // setting these values as per appt_tooltip_style global (see: get_provider_events.php)
+            if (event.tooltip.lname) {
+              headingElement = '<h1>' + event.lname + '</h1>';
+              if (event.tooltip.fname) {
+                headingElement = '<h1>' + event.lname + ', ' + event.fname + '</h1>';
+                if (event.tooltip.category) {
+                  categoryTitle = '<p>' + event.pc_catname + '</p>';
+                  if (event.tooltip.comment) {
+                    eventDescription = '<p>"' + event.pc_hometext + '"</p>';
+                  }
+                }
+              }
+            }
+            tooltipElement  = '<div class="tooltip-element">' +
+                                imgElement +
+                                '<div class="event-details">' +
+                                  headingElement +
+                                  categoryTitle +
+                                  '<p>Status: ' + event.statusTitle + '</p>' +
+                                  eventDescription +
+                                '</div>' +
+                              '</div>';
+            element.append(tooltipElement);
+          } else {
+            // provider event tooltip's content
+            var headingElement = '<h1>' + event.ulname + ', ' + event.ufname + '</h1>';
+            var categoryTitle = '';
+            var eventDescription = '';
+            // setting these values as per logic in get_provider_events.php
+            if (event.tooltip.category) {
+              categoryTitle = '<p>' + event.pc_catname + '</p>';
+              if (event.tooltip.comment) {
+                eventDescription = '<p>"' + event.pc_hometext + '"</p>';
+              }
+            }
+            tooltipElement  = '<div class="tooltip-element">' +
+                                '<div class="event-details">' +
+                                  headingElement +
+                                  categoryTitle +
+                                  eventDescription +
+                                '</div>' +
+                              '</div>';
+            element.append(tooltipElement);
           }
         },
         eventClick: function(calEvent, jsEvent, view) {
           var pccattype = (calEvent['pc_pid'] && calEvent['pc_pid'] > 0) ? 0 :  1;
-          console.log(pccattype);
           dlgopen('add_edit_event.php?date='+ calEvent.start.format('YYYYMMDD') +'&eid=' + calEvent.id +'&prov=' + pccattype, '_blank', 775, 375);
         },
         viewRender: function(view) {
@@ -298,8 +358,28 @@ require('includes/session.php');
 
             // update datepicker
             $('#datepicker').datetimepicker({ value: view.intervalStart.format() });
+        },
+        eventAfterAllRender: function(view) {
+          $('.fc-event').each(function() { // loop over all events
+            $(this).qtip({
+              content: {
+                text: $(this).find('div.tooltip-element'), // use tooltipElement as tooltip's content of this event
+              },
+              style: {
+                classes: 'tooltip-element' // custom styling for tooltip's content
+              },
+              position: {
+                target: 'mouse', // use mouse position as origin for tooltip's initial position
+                adjust: { // adjusting tooltip's position
+                  mouse: true, // follow the mouse when hovering over target
+                  x: 20, // offset in the horizontal plane, +ve value moves tooltip to the right
+                  y: 10  // offset in the vertical plane, +ve value moves tooltip downwards
+                }
+              }
+            });
+          });
         }
-      })
+      });
 
       // refetch events every few seconds.
       <?php if($GLOBALS['calendar_refresh_freq'] != 'none') { ?>
@@ -325,6 +405,8 @@ require('includes/session.php');
 
     $("#pc_username").change(function() { $('#theform').submit(); });
     $("#pc_facility").change(function() { $('#theform').submit(); });
+
+
   </script>
 </body>
 </html>
