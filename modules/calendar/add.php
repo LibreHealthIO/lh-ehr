@@ -115,7 +115,8 @@ if ($_POST['form_action'] == "holiday_submit") {
     foreach ($dateAndType as $date => $value) {
       // for each set of date and facility, delete holiday event under all providers
       // no need to iterate through providers in this case
-      sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_eventDate = ? AND pc_facility = ?", array($date, $value[1]));
+      // pc_catid = 6 for holiday event
+      sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE pc_catid = ? AND pc_eventDate = ? AND pc_facility = ?", array("6", $date, $value[1]));
     }
   } elseif ($_POST['holiday_action'] == "Add Holiday") {
     // user requests to add a set of holidays
@@ -246,8 +247,8 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
 
     <!--Vacation & Holiday tab options-->
     <div class="row title">
-      <h3><button type="button" class="btn btn-default btn-sm col-sm-offset-1 col-sm-4" id="vacation-btn">Provider Vacation</button></h3>
-      <h3><button type="button" class="btn btn-default btn-sm col-sm-offset-1 col-sm-4" id="holiday-btn">Clinic Holiday</button></h3>
+      <h3><button type="button" class="btn btn-default btn-sm col-sm-offset-1 col-sm-4" id="vacation-btn"><?php echo xlt('Provider Vacation'); ?></button></h3>
+      <h3><button type="button" class="btn btn-default btn-sm col-sm-offset-1 col-sm-4" id="holiday-btn"><?php echo xlt('Clinic Holiday'); ?></button></h3>
     </div>
 
 
@@ -255,20 +256,20 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
     <!--Add Vacation tab-->
     <form class="form-horizontal vacation-form" id="provider_form" action="add.php" method="POST" style="margin-top: 20px;">
       <div class="form-group">
-        <label class="control-label col-sm-2" for="startDate">Start date</label>
+        <label class="control-label col-sm-2" for="startDate"><?php echo xlt('Start date'); ?></label>
         <div class="col-sm-4">
           <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Date">
         </div>
-        <label class="control-label col-sm-2" for="endDate">End date</label>
+        <label class="control-label col-sm-2" for="endDate"><?php echo xlt('End date'); ?></label>
         <div class="col-sm-4">
           <input type="text" class="form-control" id="endDate" name="endDate" placeholder="Date">
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-sm-2" for="provider_id">Provider</label>
+        <label class="control-label col-sm-2" for="provider_id"><?php echo xlt('Provider'); ?></label>
         <div class="col-sm-10">
           <select class="form-control" id="provider_id" name="provider_id">
-            <option value="0">Choose Provider</option>
+            <option value="0"><?php echo xlt('Choose Provider'); ?></option>
             <?php
             $providers = getProviderInfo();
             foreach($providers as $provider) {
@@ -283,7 +284,7 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <input type="hidden" name="form_action" value="vacation_submit">
-          <button type="submit" class="btn btn-default" id="vacation_submit">Submit</button>
+          <button type="submit" class="btn btn-default" id="vacation_submit"><?php echo xlt('Submit'); ?></button>
         </div>
       </div>
     </form>
@@ -293,7 +294,7 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
     <!--Add Holiday tab-->
     <form class="form-horizontal holiday-form" id="clinic_form" action="add.php" method="POST" style="margin-top: 20px;">
       <div class="form-group">
-        <label class="control-label col-sm-2" for="addDate">Date</label>
+        <label class="control-label col-sm-2" for="addDate"><?php echo xlt('Date'); ?></label>
         <div class="col-sm-4">
           <input type="text" class="form-control" id="addDate" name="addDate" placeholder="Date">
         </div>
@@ -301,18 +302,18 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-4">
           <input type="radio" id="radio-choice-1" name="holiday-actions" value="Add Holiday" class="holiday-action">
-          <label for="radio-choice-1">Add Holiday(s)</label>
+          <label for="radio-choice-1"><?php echo xlt('Add Holiday(s)'); ?></label>
         </div>
         <div class="col-sm-4">
           <input type="radio" id="radio-choice-2" name="holiday-actions" value="Delete Holiday" class="holiday-action">
-          <label for="radio-choice-2">Delete Holiday(s)</label>
+          <label for="radio-choice-2"><?php echo xlt('Delete Holiday(s)'); ?></label>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-sm-2" for="clinic_id">Clinic</label>
+        <label class="control-label col-sm-2" for="clinic_id"><?php echo xlt('Clinic'); ?></label>
         <div class="col-sm-10">
           <select class="form-control" id="clinic_id" name="clinic_id">
-            <option value="0" data-text="Undefined">Choose Clinic/Facility</option>
+            <option value="0" data-text="Undefined"><?php echo xlt('Choose Clinic/Facility'); ?></option>
             <?php
               $pref_facility = sqlFetchArray(sqlStatement( "SELECT u.facility_id
                                                             FROM users u
@@ -353,26 +354,26 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-2">
           <input type="radio" id="radio-choice-3" name="holiday-types" value="Full day" class="holiday-type">
-          <label for="radio-choice-3">Full day</label>
+          <label for="radio-choice-3"><?php echo xlt('Full day'); ?></label>
         </div>
         <div class="col-sm-2">
           <input type="radio" id="radio-choice-4" name="holiday-types" value="First half" class="holiday-type">
-          <label for="radio-choice-4">First Half</label>
+          <label for="radio-choice-4"><?php echo xlt('First Half'); ?></label>
         </div>
         <div class="col-sm-2">
           <input type="radio" id="radio-choice-5" name="holiday-types" value="Second half" class="holiday-type">
-          <label for="radio-choice-5">Second Half</label>
+          <label for="radio-choice-5"><?php echo xlt('Second Half'); ?></label>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-2">
-          <button type="button" class="btn btn-default" id="add">Add</button>
+          <button type="button" class="btn btn-default" id="add"><?php echo xlt('Add'); ?></button>
         </div>
         <div class="col-sm-2">
           <input type="hidden" name="form_action" value="holiday_submit">
           <!-- To distinguish b/w two types of holiday action while submitting: Add and Delete -->
           <input type="hidden" name="holiday_action" id="actionValue" value="">
-          <button type="submit" class="btn btn-default" id="holiday_submit">Submit</button>
+          <button type="submit" class="btn btn-default" id="holiday_submit"><?php echo xlt('Submit'); ?></button>
           <!-- For passing datesAndTypes object to server via JSON -->
           <input type="hidden" name="jsonData" id="jsonValue" value="">
         </div>
