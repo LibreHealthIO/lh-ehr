@@ -31,6 +31,7 @@
     <link type="text/css" rel="stylesheet" href="libs/css/iziModalToast/iziToast.css">
     <link type="text/css" rel="stylesheet" href="libs/css/owl-carousel/owl.carousel.css">
     <link type="text/css" rel="stylesheet" href="libs/css/owl-carousel/owl.theme.default.css">
+    <link type="text/css" rel="stylesheet" href="libs/css/gh-fork-ribbon.css">
     <link type="text/css" rel="stylesheet" href="libs/css/setup.css">
 
 </head>
