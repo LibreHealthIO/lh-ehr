@@ -51,7 +51,8 @@ require('includes/session.php');
     }
 
     .fc-agenda-view > table {
-        width: 1200px;
+        width: var(--col-width, 1200px);
+        overflow-wrap: break-word;
     }
   </style>
 </head>
@@ -184,6 +185,15 @@ require('includes/session.php');
           $('#calendar').fullCalendar('option', 'contentHeight', 340);
         } else {
           $('#calendar').fullCalendar('option', 'contentHeight', 280);
+        }
+      }
+
+      function resizeAgendaViewTable(providers) {
+        // to change width of agenda view table based on number of providers
+        if (providers > 10) {
+          var toWidth = 120*providers; // taking ratio as 1200px for 10 providers
+          var bodyStyles = document.body.style;
+          bodyStyles.setProperty("--col-width", toWidth);
         }
       }
 
@@ -349,6 +359,9 @@ require('includes/session.php');
             $('#datepicker').datetimepicker({ value: view.intervalStart.format() });
 
             scrollCalTime(view);  // when view changes or any date navigation method (prev, next, today) is called
+            console.log("render");
+            var providers = $(".fc-resource-cell").length // number of provider column in agenda views
+            resizeAgendaViewTable(providers);
         },
         loading: function(isLoading, view) {
             // triggered when event or resource fetching starts/stops.
@@ -356,6 +369,7 @@ require('includes/session.php');
                 // fetching starts
                 scrollCalTime(view);  // when Calendar is loaded or refreshed
             } else {
+                console.log("loaded");
                 // fetching stops
                 providerScroll()  // make sure horizontal scroll bar is visible when Calendar info. is changed
             }
