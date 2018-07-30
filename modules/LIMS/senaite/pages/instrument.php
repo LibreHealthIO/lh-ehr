@@ -132,7 +132,7 @@ switch($sub) {
 
   case 'instruments':
   default:
-
+  $sub = 'instruments';
   $instrumentData = json_decode($client->get('instrument')->getBody()->getContents());
   $instrumentData = $instrumentData->items;
 

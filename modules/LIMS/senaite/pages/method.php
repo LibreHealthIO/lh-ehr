@@ -127,6 +127,36 @@ switch($sub) {
 
   break;
 
+  case 'identifiertype':
+    $identifierTypes = getDataFromUrl($client, 'identifiertype');
+  break;
+
+  case 'createidentifiertype':
+  $errors = [];
+  if (isset($_POST['submit'])) {
+    if (!isset($_POST['title']) || strlen($_POST['title']) === 0) {
+      $errors[] = 'Please fill in all the required fields';
+    }
+    if (count($errors) === 0) {
+      try {
+        $client->post('identifiertype', [
+          'form_params' => [
+            'title' => $_POST['title'],
+            'description' => valueOrNull($_POST['description'])
+          ]
+        ]);
+      } catch (Exception $e) {
+        die($e->getMessage());
+      }
+      header('location: index.php?action=method&sact=identifiertype');
+      
+    }
+  }
+
+  
+
+  break;
+
   case 'method':
   default:
     $methods = json_decode($client->get('method')->getBody()->getContents())->items;

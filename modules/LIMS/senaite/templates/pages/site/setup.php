@@ -69,10 +69,10 @@
                 <a href="index.php?action=analysis&sact=categories"><img src="./assets/img/category.jpeg" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Categories  </a>
               </div>
               <div class="col-3">
-                <a href="index.php?action=client"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Profiles </a>
+                <a href="index.php?action=analysis&sact=profiles"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Profiles </a>
               </div>
               <div class="col-3">
-                <a href="index.php?action=client"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Services </a>
+                <a href="index.php?action=analysis&sact=services"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Services </a>
               </div>
               
             </div>
