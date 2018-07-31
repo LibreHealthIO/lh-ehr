@@ -2576,7 +2576,7 @@ $GLOBALS_METADATA = array(
       xl('Enable NewCrop eRx Service'),
       'bool',
       '0',
-      xl('Enable NewCrop eRx Service.') + ' ' +
+      xl('Enable NewCrop eRx Service.') . ' ' .
       xl('Contact the community for information on subscribing to the NewCrop eRx service.')
   ),
 
