@@ -52,6 +52,13 @@
         "children" : [ ],
         "requirement" : 1
     }, {
+        "label" : "Track Appointments",
+        "menu_id" : "fin0",
+        "target" : "fin",
+        "url" : "/interface/main/finder/select_patient.php",
+        "children" : [ ],
+        "requirement" : 0
+    }, {
         "label" : "Visits",
         "children" : [ {
             "label" : "Create Visit",
@@ -897,7 +904,6 @@
         "children" : [ ],
         "requirement" : 0
     }, {
-
         "label" : "BatchCom",
         "menu_id" : "adm0",
         "target" : "msc",
@@ -1119,7 +1125,14 @@
         "requirement" : 0,
         "acl_req" : [ "admin", "super" ],
         "global_req" : "enable_pqrs"
-    },{ 
+    },{
+        "label" : "XML Editor",
+        "menu_id" : "rep0",
+        "target" : "rep",
+        "url" : "/modules/MIPS/xmleditor/index.php",
+        "children" : [ ],
+        "requirement" : 0
+    }, {
         "label" : "Alerts Log",
         "menu_id" : "rep0",
         "target" : "rep",
