@@ -1,4 +1,20 @@
 <?php
+/*
+ *  drag_copy_event.php - processing file which handles Database changes for event drag-resize-copy feature in Calendar
+ *
+ * Copyright (C) 2018 Apoorv Choubey < theapoorvs1@gmail.com >
+ *
+ * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * See the Mozilla Public License for more details.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @package LibreHealth EHR
+ * @author Apoorv Choubey < theapoorvs1@gmail.com >
+ * @link http://librehealth.io
+ *
+ * Please help the overall project by sending changes you make to the author and to the LibreHealth EHR community.
+ *
+ */
 
 require_once("../../interface/globals.php");
 require_once("$srcdir/htmlspecialchars.inc.php");
