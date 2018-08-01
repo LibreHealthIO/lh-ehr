@@ -17,6 +17,9 @@ $(document).ready(function(){
 
     //to get timer
     var timer;
+    // to get ajax request
+    $.xhrPool = [];
+
 
     // client validation for special characters in siteID field
     // if false then copies value into hidden input field site id for submission
@@ -135,6 +138,9 @@ $(document).ready(function(){
         };
 
         $.ajax({
+            beforeSend: function(jqXHR) {
+                $.xhrPool.push(jqXHR);
+            },
             url : "database.php",
             type : "post",
             data : dataArray
@@ -158,22 +164,24 @@ $(document).ready(function(){
                     $("#libreehrProgress").attr({
                         "style" : "width:"+data.percentage+"%",
                         "aria-valuenow" : ""+data.percentage+""
-                    }).html(data.message).removeClass("progress-bar-success progress-bar-striped active").addClass("progress-bar-danger");
-                    $("#ajaxAlert").removeClass("hidden alert-success").addClass("alert-danger");
-                    $("#ajaxResponse").html(data.message);
-                    $(".ajaxLoader").addClass("hidden");
+                    }).html(data.message)
+                        .removeClass("progress-bar-success progress-bar-striped active")
+                        .addClass("progress-bar-danger")
+                        .parent().attr("title",data.message);
                     window.clearInterval(timer);
                     timer = window.setInterval(errorComplete(data.message), 1000);
                 }
                 else {
-                    $("#libreehrProgress").attr("style","width:"+data.percentage+"%").html(data.message).removeClass("progress-bar-danger").addClass("progress-bar-success progress-bar-striped active");
-                    $("#ajaxAlert").removeClass("hidden alert-danger").addClass("alert-success");
-                    $("#ajaxResponse").html(data.message);
-                    $(".ajaxLoader").addClass("hidden");
+                    $("#libreehrProgress")
+                        .attr("style","width:"+data.percentage+"%").html(data.message)
+                        .removeClass("progress-bar-danger")
+                        .addClass("progress-bar-success progress-bar-striped active")
+                        .parent().attr("title",data.message);
                 }
 
                 // // If the process is completed, we should stop the checking process.
                  if (data.percentage === 100 ) {
+                     $(".ajaxLoader").addClass("hidden");
                      var html = "<input type='hidden' value='"+data.next_state+"' name='stepholder'>";
                      $("#nextStep").html(html);
                      window.clearInterval(timer);
@@ -186,23 +194,38 @@ $(document).ready(function(){
 
     // function to clear the timer if process has completed to a hundred percent
     function completed() {
-        $("#ajaxAlert").removeClass("hidden alert-danger").addClass("alert-success");
-        $("#ajaxResponse").html("Completed");
-        $("#submitStep4").removeAttr("disabled").css("cursor","pointer");
+        $("#submitStep4").removeAttr("disabled").css("cursor","pointer").html("Continue");
         $("#backStep4").removeAttr("disabled").removeClass("btnDisabled").css("cursor","pointer");
         window.clearInterval(timer);
+        iziToast.show({
+            type: "success",
+            position: "bottomRight",
+            color:"green",
+            icon:"fa fa-check",
+            message: "completed"
+        });
         $("#databaseForm").off('submit').submit();
     }
 
     // function to clear the timer if process has completed to a hundred percent
     function errorComplete(msg) {
-        $("#ajaxAlert").removeClass("hidden alert-success").addClass("alert-danger");
-        $("#ajaxResponse").html("Error- setup failed: " + msg);
-        $("#submitStep4").removeAttr("disabled").css("cursor","pointer");
+        iziToast.show({
+            type: "error",
+            position: "bottomRight",
+            color:"red",
+            icon:"fa fa-times",
+            message: msg
+        });
+        $(".ajaxLoader").addClass("hidden");
+        $("#submitStep4").removeAttr("disabled").css("cursor","pointer").html("<span class='fa fa-refresh'></span> Retry Again");
         $("#backStep4").removeAttr("disabled").removeClass("btnDisabled").css("cursor","pointer");
         window.clearInterval(timer);
-        $("#databaseForm").off('submit').reset();
-
+        $.xhrPool.abortAll = function() {
+            _.each(this, function(jqXHR) {
+                jqXHR.abort();
+            });
+        };
+        $("#databaseForm")[0].reset();
     }
 
     //Displaying facility and user profile image once selected

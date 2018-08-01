@@ -52,12 +52,6 @@ $loginpath = '../../interface/login/login.php?site='.$site_id;
     } else {
         if ($site_id != 'default'){
             header("Location: index.php");
-        }else{
-            echo "<p>Direct configuration of Site ID \" ".$site_id." \" is not permitted.</p>".
-                "<p>If you know the name of the EHR site you want to access<br>".
-                "Try adding \"?site=<i>mysitename</i>\" to the URL address.</p>";
-            echo "<p>If you have not yet installed LibreEHR, or wish to install a new site, you may <br>".
-                " <a href='setup.php'>CLICK HERE</a> to do so.</p>";
         }
     }
 

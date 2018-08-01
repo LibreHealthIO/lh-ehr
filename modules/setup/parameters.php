@@ -35,9 +35,9 @@ require_once("includes/header.inc.php");
 
     //credentials to be inserted into the db (first facility)
     $facility  = $_POST["facility"];    $legal       =  $_POST["legal"];
-    $see_auth  = $_POST["see_auth"];    $facAddress  = $_POST["facAddress"];
+    $facprofile_pic  = $_POST["see_auth"];    $facAddress  = $_POST["facAddress"];
     $facPhone  = $_POST["facPhone"];    $facEmail    = $_POST["facEmail"];
-    $country   = $_POST["country"];     $state       = $_POST["country"];
+    $country   = $_POST["country"];     $state       = $_POST["state"];
     $zip       = $_POST["zip"];         $city        = $_POST["city"];
 
 // variable to get current step and task
@@ -85,7 +85,9 @@ $task = $_POST["task"];
 
                         );
                 }
-                $sql = "UPDATE users SET fname = '$iufname', lname= '$iulname', mname= '$iumname', email= '$iuemail', phone= '$iuphone'  WHERE id = 1";
+                $sql = "UPDATE users SET fname= '$iufname', lname= '$iulname', mname= '$iumname', email= '$iuemail', phone= '$iuphone'  WHERE id = 1";
+                mysqli_query($con,$sql);
+                $sql = "UPDATE facility SET name = '$facility', alias= '$legal', phone= '$facPhone', street= '$facAddress', city= '$city', state= '$state', postal_code= '$zip', country_code= '$country', email= '$facEmail' WHERE id = 3";
                 mysqli_query($con,$sql);
 
 
@@ -93,6 +95,8 @@ $task = $_POST["task"];
                 //from page userinfo
             }
         ?>
+        <p class="clearfix"></p>
+        <form id="parameterForm" method="POST" action="parameters.php">
         <div class="form-group">
             <div class="row">
                 <div class="col-md-2"><label>Notification time :</label></div>
@@ -139,6 +143,38 @@ $task = $_POST["task"];
                 <div class="col-md-6"><p class="help-block">This is the time (measured in seconds) taken to display a notification. Click <span class="badge badge-inverse izi-demo-modal">here</span> to try to have a preview</p></div>
             </div>
         </div>
+            <p class="clearfix"></p>
+            <p class="clearfix"></p>
+
+        <?php
+
+        echo " 
+                   <input type='hidden' value='9' name='step'>
+                   <input type='hidden' value='8' name='prevstep'>
+                   <input type='hidden' value='$server' name='server' class='form-control'> 
+                   <input type='hidden' value='$dbname' name='dbname' class='form-control'> 
+                   <input type='hidden' value='$pass' name='pass' class='form-control'> 
+                   <input type='hidden' value='$login' name='login' class='form-control'> 
+                    <div class='control-btn'>
+                      <button type='submit' class='controlBtn'>
+                       Continue <i class='fa fa-arrow-circle-right'></i>
+                </button>
+                    </div>
+                    ";
+        ?>
+        </form>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <p class="clearfix"></p>
+        <form method="post">
+            <input type="hidden" value="annul" name="task">
+            <div class="cancel-btn">
+                <button type="submit" class="cancelBtn">
+                    <i class="fa fa-times-circle-o"></i> Cancel
+                </button>
+            </div>
+        </form>
+
 
 
     </div>

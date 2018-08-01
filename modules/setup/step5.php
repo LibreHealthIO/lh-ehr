@@ -79,6 +79,22 @@ if(isset($step) && $step = 5){
             case($stephold == "php_gacl"):{
                 if ( ! $installer->install_gacl() ) {
                     echo $installer->error_message;
+
+                    echo "<p class='clearfix'></p>";
+                    echo "<p class='clearfix'></p>";
+                    echo '<form action="step4.php" method="post">
+                            <div class="control-btn2">
+                            <input type="hidden" value="4" name="step">
+                             <input type=\'hidden\' value=\'$installer->server\' name=\'server\' class=\'form-control\'> 
+                             <input type=\'hidden\' value=\'$installer->dbname\' name=\'dbname\' class=\'form-control\'> 
+                             <input type=\'hidden\' value=\'$installer->pass\' name=\'pass\' class=\'form-control\'> 
+                                <input type=\'hidden\' value=\'$installer->login\' name=\'login\' class=\'form-control\'> 
+                            <button type="submit" class="controlBtn">
+                            <i class="fa fa-arrow-circle-left"></i> Back
+                            </button>
+                            </div>
+                            </form>
+                    ';
                 }
                 else {
                     // display the status information for gacl setup

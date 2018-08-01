@@ -68,6 +68,7 @@
                 $messageArray["percentage"] = 2;
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                 sleep(1);
+                exit();
             }else{
                 $messageArray["message"]  = $installer->success_message;
                 $messageArray["status"]   = 200;
@@ -83,6 +84,7 @@
                 $messageArray["percentage"] = 4;
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                 sleep(1);
+                exit();
             }else{
                 sleep(1);
                 $messageArray["message"]  = $installer->success_message;
@@ -99,6 +101,7 @@
                 $messageArray["percentage"] = 6;
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                 sleep(1);
+                exit();
             }
             else{
                 sleep(1);
@@ -132,6 +135,7 @@
                 $messageArray["percentage"] = 8;
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                 sleep(1);
+                exit();
             }
             else {
                 sleep(1);
@@ -158,6 +162,7 @@
                     $messageArray["percentage"] = 8;
                     file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                     sleep(1);
+                    exit();
                 }
                 else {
                     sleep(1);
@@ -185,6 +190,7 @@
                     $messageArray["percentage"] = 8;
                     file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                     sleep(1);
+                    exit();
                 }
                 else {
                     sleep(1);
@@ -213,6 +219,7 @@
                     $messageArray["percentage"] = 11;
                     file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                     sleep(1);
+                    exit();
 
                 } else {
                     sleep(1);
@@ -236,6 +243,7 @@
                     $messageArray["percentage"] = 23;
                     file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                     sleep(1);
+                    exit();
                 } else {
                     sleep(1);
                     $messageArray["message"]  = "Granted privileges to user <span style='color: black;text-decoration: underline;'> ".$installer->login. "</span > on database <span style='color: black;text-decoration: underline;'>". $installer->dbname." </span>";
@@ -272,6 +280,7 @@
                 $messageArray["percentage"] = 23;
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                 sleep(1);
+                exit();
             }
             else {
                 sleep(1);
@@ -289,12 +298,12 @@
             $messageArray["percentage"] = 46;
             file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
 
-            $dump_results = $installer->load_dumpfiles();
-            if ( ! $dump_results ) {
+            if ( ! $installer->load_dumpfiles() ) {
                 $messageArray["message"]  = $installer->error_message;
                 $messageArray["status"]   = 400;
                 $messageArray["percentage"] = 27;
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
+                exit();
             } else {
                 $messageArray["message"]  = $dump_results;
                 $messageArray["status"]   = 200;
@@ -317,6 +326,7 @@
                 $messageArray["percentage"] = 58;
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                 sleep(1);
+                exit();
             }
             else {
                 sleep(1);
@@ -344,6 +354,7 @@
                     $messageArray["percentage"] = 69;
                     file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
+                    exit();
                 } else {
                     sleep(1);
                     $messageArray["message"] = "Successfully added version info to database";
@@ -366,6 +377,7 @@
                     $messageArray["percentage"] = 76;
                     file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
+                    exit();
                 } else {
                     sleep(1);
                     $messageArray["message"] = "Successfully written global configuration defaults";
@@ -389,6 +401,7 @@
                     $messageArray["percentage"] = 79;
                     file_put_contents("tmp/ajaxprocess.txt", json_encode($messageArray));
                     sleep(1);
+                    exit();
                 } else {
                     sleep(1);
                     $messageArray["message"] = $installer->success_message;
