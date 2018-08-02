@@ -54,6 +54,7 @@ $updater_host = $settings_array['host'];
 $repository_owner = $settings_array['owner'];
 $repository_name = $settings_array['repository_name'];
 $issue_number = $settings_array['feedback_issue_number'];
+$database_file = $settings_array['db_backup_file'];
 
 if ($updater_host == "github") {
 	//if host=github then load rhwm
@@ -106,19 +107,30 @@ if (isset($_GET)) {
 						//it means the file is not renamed
 						$old_name = "empty";
 					}
-					downloadFile($url, "downloads", $filename, $status);
-					//Make Downloaded File DB entry
-					downloadFileDbEntry($filename, $status, $original_name, $old_name);
-					if (isExistInBackupTable($filename)) {
-						backupFile("backup", $filename, $original_name, $status, $old_name);
+
+					if ($original_name != $database_file) {
+						downloadFile($url, "downloads", $filename, $status);
+						//Make Downloaded File DB entry
+						downloadFileDbEntry($filename, $status, $original_name, $old_name);
+						
+						if (isExistInBackupTable($filename)) {
+							backupFile("backup", $filename, $original_name, $status, $old_name);
+						}
+
+						backupFileDbEntry($filename, $status, $original_name, $old_name);
+						replaceFile($filename, $original_name, $status, $old_name);
 					}
 					else {
-					  echo $filename;
-					  echo "<br/><br/>";
+						downloadFile($url, "downloads", $filename, $status);
+
+						//Initiate db backup
+
+						
+
+						replaceFile($filename, $original_name, $status, $old_name);
 					}
 
-					backupFileDbEntry($filename, $status, $original_name, $old_name);
-					replaceFile($filename, $original_name, $status, $old_name);
+
 				}
 			}
 			//prepare the updater for showing next PR

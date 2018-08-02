@@ -1,4 +1,5 @@
 <?php
+require 'dumper.php';
 /**
  * list of updater functions used by updater
  *
@@ -300,4 +301,18 @@ function checkDir($location) {
 		}
 	}
 }
+
+
+function backupDB($hostname, $username, $password, $dbname, $list_of_tables) {
+	$tables_dumper = Shuttle_Dumper::create(array(
+	    'host' => $hostname,
+	    'username' => $username,
+	    'password' => $password,
+	    'db_name' => $password,
+	    'include_tables' => $list_of_tables,
+	));
+	$tables_dumper->dump('../backup/backup.sql');
+
+}
+
 ?>
