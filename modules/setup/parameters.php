@@ -68,7 +68,7 @@ $task = $_POST["task"];
                 {
                     die( "<div class='alert alert-danger'>
                             Failed to connect to MySQL : " . mysqli_connect_error()."
-                            <p class='black'>Please click on the back button to restart procedure to ensure proper access</p>
+                            <p class='black'>Please click on the back button to restart procedure to ensure proper access and installation</p>
                         </div>
                         <p class='clearfix'></p>
                         <p class='clearfix'></p>
@@ -89,6 +89,55 @@ $task = $_POST["task"];
                 mysqli_query($con,$sql);
                 $sql = "UPDATE facility SET name = '$facility', alias= '$legal', phone= '$facPhone', street= '$facAddress', city= '$city', state= '$state', postal_code= '$zip', country_code= '$country', email= '$facEmail' WHERE id = 3";
                 mysqli_query($con,$sql);
+                if (isset($_FILES["iuprofilepic"]))
+                $imgPath = realpath("../../profile_pictures/");
+
+                $target_file =  basename($_FILES["iuprofilepic"]["name"]);
+                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                $verify_image = getimagesize($_FILES["iuprofilepic"]["tmp_name"]);
+                if($verify_image) {
+                    $mime = $verify_image["mime"];
+                    $mime_types = array('image/png',
+                        'image/jpeg',
+                        'image/gif',
+                        'image/bmp',
+                        'image/vnd.microsoft.icon');
+                    //mime check with all image formats.
+                    if (in_array($mime, $mime_types)) {
+                        $bool = 1;
+                        //if mime type matches, then do a size check
+                        //size check
+                        if ($_FILES["iuprofilepic"]["size"] > 20971520) {
+                            $bool = 0;
+                        }
+                        else {
+                            $bool = 1;
+                        }
+                    }
+                    else {
+                        $bool = 0;
+                    }
+
+                }
+                else {
+                    $bool = 0;
+                }
+
+                $picture_url = "";
+                //begin file uploading
+                $destination_directory = $imgPath."/". $target_file;
+                if ($bool) {
+                    if (move_uploaded_file($_FILES["iuprofilepic"]["tmp_name"], $destination_directory)) {
+                        $sql = "UPDATE users SET picture_url='$target_file'  WHERE id = 1";
+                        mysqli_query($con,$sql);
+                    }
+                    else {
+                        //may be failed due to directory permissions.
+                    }
+                }
+                else {
+                    //don't upload checks failed.
+                }
 
 
             }else{
@@ -96,7 +145,7 @@ $task = $_POST["task"];
             }
         ?>
         <p class="clearfix"></p>
-        <form id="parameterForm" method="POST" action="parameters.php">
+        <form id="parameterForm" method="POST" action="test.php">
         <div class="form-group">
             <div class="row">
                 <div class="col-md-2"><label>Notification time :</label></div>
@@ -149,8 +198,6 @@ $task = $_POST["task"];
         <?php
 
         echo " 
-                   <input type='hidden' value='9' name='step'>
-                   <input type='hidden' value='8' name='prevstep'>
                    <input type='hidden' value='$server' name='server' class='form-control'> 
                    <input type='hidden' value='$dbname' name='dbname' class='form-control'> 
                    <input type='hidden' value='$pass' name='pass' class='form-control'> 
@@ -163,6 +210,22 @@ $task = $_POST["task"];
                     ";
         ?>
         </form>
+
+        <?php
+        echo "<form action='userinfo.php' method='post'>
+                     <div class='control-btn2'>
+                        <input type='hidden' value='9' name='step'>
+                        <input type='hidden' value='$host' name='server' class='form-control'> 
+                        <input type='hidden' value='$db' name='dbname' class='form-control'> 
+                        <input type='hidden' value='$pass'  name='pass' class='form-control'> 
+                        <input type='hidden' value='$login' name='login' class='form-control'> 
+                            <button type='submit' class='controlBtn'>
+                                <i class='fa fa-arrow-circle-left'></i> Back
+                            </button>
+                     </div>
+                  </form>
+                        ";
+        ?>
         <p class="clearfix"></p>
         <p class="clearfix"></p>
         <p class="clearfix"></p>

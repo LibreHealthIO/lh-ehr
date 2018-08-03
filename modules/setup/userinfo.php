@@ -53,26 +53,14 @@ $task = $_POST["task"];
     }
 ?>
     <div class="card">
-        <div class="pull-right" id="pics-row">
-                <div class="iu-pics hidden">
-                    <span id="closeProfilePic" class="fa fa-times-circle-o pics-close"></span>
-                    <img src=""  id="profile-img" class="img-responsive profile-pics" />
-                    <span class="pic-name">Profile pic</span>
-                </div>
-                <div class="iu-pics hidden">
-                    <span id="closeFacilityPic" class="fa fa-times-circle-o pics-close"></span>
-                    <img src=""  id="facility-img" class="img-responsive profile-pics" />
-                    <span class="pic-name">Facility logo</span>
-                </div>
                 <p class="clearfix"></p>
-        </div>
         <h2><strong>User Information</strong></h2>
         <p class="alert alert-info">Please let us know more about you and your facility by helping us fill the form below NB: E-mail is for security bulletins.</p>
         <i>Fields with (<span class="arial librehealth-color"> *</span>) are mandatory</i>
         <p class="clearfix"></p>
         <h4 class="librehealth-color text-right"><small>(Please provide information about yourself below) </small>PERSONAL INFO</h4>
         <p class="clearfix"></p>
-        <form id="userForm" method="POST" action="parameters.php">
+        <form id="userForm" method="POST" action="parameters.php" enctype="multipart/form-data">
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-2"><label>First Name <span class="arial librehealth-color"> *</span> :</label></div>
@@ -102,6 +90,12 @@ $task = $_POST["task"];
                 <div class="row">
                     <div class="col-md-2"><label>Profile Picture:</label></div>
                     <div class="col-md-3"><input type="file" id="iuprofilepic" name="iuprofilepic" class="form-control"></div>
+                    <div class="col-md-3">
+                        <div class="iu-pics hidden">
+                            <span id="closeProfilePic" class="fa fa-times-circle-o pics-close"></span>
+                            <img src=""  id="profile-img" class="img-responsive profile-pics" />
+                        </div>
+                    </div>
                 </div>
                 <p class="clearfix"></p>
                 <p class="clearfix"></p>
@@ -138,12 +132,7 @@ $task = $_POST["task"];
                     <div class="col-md-2"><input type="text" value="" placeholder="City" name="city" class="form-control"></div>
                     <div class="col-md-2"><input type="text" value="" placeholder="Zip" name="zip" class="form-control"></div>
                 </div>
-
                 <p class="clearfix"></p>
-                <div class="row">
-                    <div class="col-md-2"><label>Facility Picture(logo):</label></div>
-                    <div class="col-md-3"><input type="file" id="iufacilitypic" name="iuprofilepic" class="form-control"></div>
-                </div>
             </div>
             <?php
 

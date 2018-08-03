@@ -599,7 +599,7 @@ $config = 1; /////////////
         global $OE_SITES_BASE;
         $source_site_id = $this->source_site_id;
 
-        include("$OE_SITES_BASE/$source_site_id/sqlconf.php");
+        require("$OE_SITES_BASE/$source_site_id/sqlconf.php");
 
         if (empty($config)) die("Source site $source_site_id has not been set up!");
 

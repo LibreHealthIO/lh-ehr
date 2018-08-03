@@ -40,9 +40,6 @@
         // Convert to JSON to read the status.
         $obj = json_decode($text);
         // If the process is finished, delete the file.
-        if($obj->status == 400){
-            exit();
-        }
         if ($obj->percentage == 100) {
             unlink($file);
         }

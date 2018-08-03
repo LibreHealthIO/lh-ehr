@@ -65,16 +65,10 @@ $(document).ready(function(){
         }
     });
 
-    // add a hidden class to the ajaxerror-success box if the close button is clicked
-    $("#ajaxDivClose").click(function () {
-        $("#ajaxAlert").delay(1000).fadeOut(1000, function () {
-            $(this).addClass("hidden");
-        });
-    });
+    // =========================================
+    //  prevent form submission and submit via ajax
+    // =========================================
 
-
-
-// prevent form submission and submit via ajax
 
     $("#databaseForm").submit(function (e) {
         e.preventDefault();
@@ -157,6 +151,9 @@ $(document).ready(function(){
         // Also pass the session id to read the file because the file which storing the progress is placed in a file per session.
         // If the call was success, display the progress bar.
         $.ajax({
+            beforeSend: function(jqXHR) {
+                $.xhrPool.push(jqXHR);
+            },
             url: "ajaxprocess.php",
             success:function(data){
                 console.log(data);
@@ -181,7 +178,6 @@ $(document).ready(function(){
 
                 // // If the process is completed, we should stop the checking process.
                  if (data.percentage === 100 ) {
-                     $(".ajaxLoader").addClass("hidden");
                      var html = "<input type='hidden' value='"+data.next_state+"' name='stepholder'>";
                      $("#nextStep").html(html);
                      window.clearInterval(timer);
@@ -239,12 +235,48 @@ $(document).ready(function(){
             reader.readAsDataURL(input.files[0]);
         }
     }
-    $("#iufacilitypic").change(function(){
-        readURL(this, "facility-img");
-    });
 
     $("#iuprofilepic").change(function(){
-        readURL(this, "profile-img");
+        var file = this.files[0];
+        filename = file.name;
+        size = file.size;
+        type = file.type;
+
+        console.log(size);
+        var ext = filename.split('.').pop().toLowerCase();
+        if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) === -1) {
+            iziToast.show({
+                type: "error",
+                position: "bottomRight",
+                color:"red",
+                icon:"fa fa-times",
+                message: "Invalid file Type"
+            });
+            $("#iuprofilepic").val(null).clone(true);
+            $("#closeProfilePic").parent().fadeOut(1000).addClass("hidden");
+        }
+        if(size > 2000000){
+            iziToast.show({
+                type: "error",
+                position: "bottomRight",
+                color:"red",
+                icon:"fa fa-times",
+                message: "File size too large choose a smaller one please"
+            });
+            $("#iuprofilepic").val(null).clone(true);
+            $("#closeProfilePic").parent().fadeOut(1000).addClass("hidden");
+        }
+        else {
+            iziToast.show({
+                type: "success",
+                position: "bottomRight",
+                color:"green",
+                icon:"fa fa-picture-o",
+                message: "File choosen"
+            });
+            readURL(this, "profile-img");
+        }
+
     });
 
     //removing the images if user doesnt wants them any longer
@@ -252,12 +284,6 @@ $(document).ready(function(){
     $("#closeProfilePic").click(function () {
         $("#iuprofilepic").val(null).clone(true);
         $(this).parent().fadeOut(1000).addClass("hidden");
-    });
-
-    $("#closeFacilityPic").click(function () {
-        $("#iufacilitypic").val(null).clone(true);
-        $(this).parent().fadeOut(1000).addClass("hidden");
-
     });
 
 
@@ -352,6 +378,11 @@ $(document).ready(function(){
     function call_izi() {
         $("#demo-iframe").iziModal('open');
     }
+
+
+    // =========================================
+    //     BLOCK FOR PRINT RESULTS
+    // =========================================
 
     $(".printMe").click(function () {
         var prtContent = document.getElementById("printStep");
