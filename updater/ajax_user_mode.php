@@ -23,6 +23,8 @@ require '../interface/globals.php';
 require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
+require $GLOBALS['OE_SITE_DIR']."/sqlconf.php";
+
 $userAuthorized = $_SESSION['userauthorized'];
 $authUserId = $_SESSION['authUserID'];
 if (checkAdmin($userAuthorized, $authUserId)) {
@@ -121,13 +123,25 @@ if (isset($_GET)) {
 						replaceFile($filename, $original_name, $status, $old_name);
 					}
 					else {
+
 						downloadFile($url, "downloads", $filename, $status);
 
-						//Initiate db backup
-
-						
-
 						replaceFile($filename, $original_name, $status, $old_name);
+						$list_of_tables = getTableNamesFromFile($originalname)
+						
+						
+						$hostname = $sqlconf['host'];
+
+						$username = $sqlconf['login'];
+
+						$password = $sqlconf['pass'];
+
+						$dbname = $sqlconf['dbase'];
+
+						//Initiate db backup
+						backupDB($hostname, $username, $password, $dbname, $list_of_tables);
+
+						//upgrade the database
 					}
 
 
