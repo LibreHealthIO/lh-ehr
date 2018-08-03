@@ -23,7 +23,7 @@ require '../interface/globals.php';
 require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
-require "../sites/".$SESSION['siteid']."/sqlconf.php";
+require "../sites/".$_SESSION['siteid']."/sqlconf.php";
 
 $userAuthorized = $_SESSION['userauthorized'];
 $authUserId = $_SESSION['authUserID'];
