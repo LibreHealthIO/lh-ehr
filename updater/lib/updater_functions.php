@@ -180,7 +180,7 @@ function backupFileDbEntry($filename, $status, $original_name, $old_name) {
 }
 
 function isExistInBackupTable($filename) {
-	$query = sqlQ("SELECT * FROM `updater_user_mode_download_entry` WHERE filename='?' AND status='added'", array($filename));
+	$query = sqlQ("SELECT * FROM `updater_user_mode_download_entry` WHERE filename=? AND status='added'", array($filename));
 	$rows = sqlNumRows($query);
 	if ($rows == 0) {
 		return true;

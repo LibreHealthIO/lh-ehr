@@ -127,19 +127,10 @@ if (isset($_GET)) {
 						downloadFile($url, "downloads", $filename, $status);
 
 						replaceFile($filename, $original_name, $status, $old_name);
-						$list_of_tables = getTableNamesFromFile($originalname)
-						
-						
-						$hostname = $sqlconf['host'];
-
-						$username = $sqlconf['login'];
-
-						$password = $sqlconf['pass'];
-
-						$dbname = $sqlconf['dbase'];
+						$list_of_tables = getTableNamesFromFile($originalname);
 
 						//Initiate db backup
-						backupDB($hostname, $username, $password, $dbname, $list_of_tables);
+						backupDB($host, $login, $pass, $dbase, $list_of_tables);
 
 						//upgrade the database
 					}
