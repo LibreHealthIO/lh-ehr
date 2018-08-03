@@ -23,7 +23,7 @@ require '../interface/globals.php';
 require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
-require $GLOBALS['OE_SITE_DIR']."/sqlconf.php";
+require "../sites/".$SESSION['site_id']."/sqlconf.php";
 
 $userAuthorized = $_SESSION['userauthorized'];
 $authUserId = $_SESSION['authUserID'];
