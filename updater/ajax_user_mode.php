@@ -149,6 +149,7 @@ if (isset($_GET)) {
 
 			//unset the current PR from the list
 			unset($upcoming_prs_json[0]);
+			$upcoming_prs_json = array_values($upcoming_prs_json);
 			$upcoming_prs_json = json_encode($upcoming_prs_json);
 			setUpdaterSetting("upcoming_prs", $upcoming_prs_json);
 
