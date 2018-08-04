@@ -113,7 +113,7 @@ else {
 		//it means the token is expired, so ask for re-entry
 		$loader->set_template_file("updater_screen_three");
 		$updater_token_string = "Your $updater_host User Access Token Was Expired, Re-enter it now";
-		$loader->assign("HOST",xlt($updater_host_string));
+		$loader->assign("HOST",xlt($updater_token_string));
 		$loader->output();
 	}
 	elseif (isTokenValid($updater_token)) {
@@ -122,7 +122,7 @@ else {
 		$user_name = $owner_arr['login'];
 		$upcoming_prs = getUpdaterSetting("upcoming_prs");
 		if (getUpdaterSetting("github_current") != "empty_setting") {
-		$pull_request_number = getUpdaterSetting("github_current");
+			$pull_request_number = getUpdaterSetting("github_current");
 		}
 		else {
 		//load settings from json file, this pr number refers to the pr number at which the updater gets merged
@@ -142,11 +142,11 @@ else {
 			$values = json_encode($values);
 			setUpdaterSetting("upcoming_prs", $values);
 		}
-
-		$pull_request_number = $upcoming_prs[0];
+		$upcoming_prs = getUpdaterSetting("upcoming_prs");
+		$upcoming_prs = json_decode($upcoming_prs, true);
 
 		if (isset($upcoming_prs[0])) {
-			$cpr_number = $upcoming_prs[0];
+			$cpr_number = $upcoming_prs[0];	
 			$current_pull_request_info = getSinglePullRequestInfo($updater_token, $repository_owner, $repository_name,  $cpr_number);
 			$cpr_title = $current_pull_request_info['title'];
 			$cpr_body = $current_pull_request_info['body'];
@@ -167,8 +167,8 @@ else {
 			$loader->assign("BACKUP_STEP_THREE", xlt("Restoring DB"));
 			$loader->assign("EXIT_UPDATER", xlt("Return To Updater"));
 			$files_need_to_be_downloaded = array();
-			foreach ($merged_requests_array as $key => $value) {
-				$pr_number = $value;
+		
+				$pr_number = $cpr_number;
 				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
 				foreach ($arr as $ke) {
 					$sha = $ke['sha'];
@@ -176,10 +176,9 @@ else {
 					$extension = pathinfo($ke['filename'], PATHINFO_EXTENSION);	
 					array_push($files_need_to_be_downloaded, $sha);	
 				}
-			}
 			$count_files = count($files_need_to_be_downloaded);
 			$loader->assign("STATUS", xlt("status"));
-			$loader->assign("UPDATER_START", "<b>$cpr_title</b><br/><h6>$cpr_body</h6>");
+			$loader->assign("UPDATER_START", "<b>$cpr_title(#$cpr_number)</b><br/><h6>$cpr_body</h6>");
 			$loader->assign("COUNT_FILES", $count_files);
 			$loader->assign("PR_NUMBER", xlt("Write Feedback For #".$pull_request_number));
 			$loader->output();
