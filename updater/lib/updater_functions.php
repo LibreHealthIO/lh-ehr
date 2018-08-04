@@ -365,7 +365,7 @@ function backupDB($hostname, $username, $password, $dbname, $list_of_tables, $si
 	    'db_name' => $password,
 	    'include_tables' => $list_of_tables,
 	));
-	$tables_dumper->dump('../backup/backup.sql');
+	$tables_dumper->dump('../backup/'.$sitename.'.sql');
 
 }
 
