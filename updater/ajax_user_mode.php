@@ -107,6 +107,7 @@ if (isset($_GET)) {
 			//TODO: get all the upcoming Prs and take the first one and update it, second one to show in updater screen
 			$upcoming_prs_json = json_decode(getUpdaterSetting("upcoming_prs"));
 			$merged_request_value = $upcoming_prs_json[0];
+
 			foreach ($merged_request_value as $value) {
 				$pr_number = $value;
 				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
@@ -145,6 +146,12 @@ if (isset($_GET)) {
 			}
 			//prepare the updater for showing next PR
 			setUpdaterSetting("github_current", $upcoming_prs_json[0]);
+
+			//unset the current PR from the list
+			unset($upcoming_prs_json[0]);
+			$upcoming_prs_json = json_encode($upcoming_prs_json);
+			setUpdaterSetting("upcoming_prs", $upcoming_prs_json);
+
 		}
 	}
 	
