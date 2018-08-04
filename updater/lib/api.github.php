@@ -28,15 +28,17 @@ function getAllMergedPullRequests($access_token, $owner, $repo_name, $pull_reque
 	$pr_number = array();
 	$i = 1;
 	$classifier = getSinglePullRequestClassifier($access_token, $owner, $repo_name, $pull_request_number);
+	$curl = curl_init();
 	while (1) {
-		$curl = curl_init();
 		$url = "https://api.github.com/repos/".$owner."/".$repo_name."/pulls?per_page=100&page=$i&state=all&access_token=$access_token";
 		$options = array(CURLOPT_URL=>$url, CURLOPT_RETURNTRANSFER=>1);
 		curl_setopt($curl, CURLOPT_USERAGENT, "LibreUpdater");
 		curl_setopt_array($curl, $options);
 		$json = curl_exec($curl);
-		curl_close($curl);
 		$array = json_decode($json, true);
+		if (count($array) == 0) {
+			break;
+		}
 		foreach ($array as $key) {
 		$number = $key['number'];
 		$merged_at = $key['merged_at'];
@@ -47,11 +49,15 @@ function getAllMergedPullRequests($access_token, $owner, $repo_name, $pull_reque
 				}
 			}
 			elseif($bool == $classifier) {
-				break 2;
+				
 			}
 		}
+		$array = null;
+		$key = null;
+		$json = null;
 		$i = $i + 1;
 	}
+	curl_close($curl);
 	ksort($pr_number);
 	return $pr_number;
 }
