@@ -105,8 +105,8 @@ if (isset($_GET)) {
 			setUpdaterSetting("github_backup", $pull_request_number);
 			//get only single merge request after that PR
 			//TODO: get all the upcoming Prs and take the first one and update it, second one to show in updater screen
-			$upcoming_prs_json = json_decode(getUpdaterSetting("upcoming_prs"));
-			$merged_request_value = $upcoming_prs_json[0];
+			$upcoming_prs_json = json_decode(getUpdaterSetting("upcoming_prs"), true);
+			$merged_request_value[0] = $upcoming_prs_json[0];
 
 			foreach ($merged_request_value as $value) {
 				$pr_number = $value;
