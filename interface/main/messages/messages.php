@@ -83,7 +83,7 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "jq
 <br /><br />
 <div class="listbox">
 <?php
-  //creating list for first time upon initial loading
+  //creating list upon initial loading of tab
 
   //select users whose last activity during
   //present date is logging in successfully
@@ -111,7 +111,7 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "jq
 <script type="text/javascript">
   $(document).ready(function() {
     //recreating list of logged in users
-    //after every interval of 5 seconds
+    //whenever user clicks on Refresh button
     //to make sure shown users are active
     $("#ref-list").on("click", function() {
       $.ajax({
@@ -120,6 +120,17 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "jq
           dataType: "html",
           success: function(response) {
             $(".listbox").empty().append(response);
+          },
+          error: function(xhr, status, error) {
+            var errorString = "Request failed. ";
+            if (status) {
+              errorString += status;
+            }
+            if (error) {
+              errorString += ": ";
+              errorString += error;
+            }
+            alert(errorString);
           }
       });
     });
