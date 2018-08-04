@@ -120,12 +120,33 @@ else {
 		$owner_arr = getOwnerInfo($updater_token);
 		$avatar_url = $owner_arr['avatar_url'];
 		$user_name = $owner_arr['login'];
-		//all parameters to this function are determined before
-		$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
-		$updates_behind = count($merged_requests_array);
-		if ($updates_behind > 0) {
-			$cpr_number = array_values($merged_requests_array);
-			$cpr_number = $cpr_number[0];
+		$upcoming_prs = getUpdaterSetting("upcoming_prs");
+		if (getUpdaterSetting("github_current") != "empty_setting") {
+		$pull_request_number = getUpdaterSetting("github_current");
+		}
+		else {
+		//load settings from json file, this pr number refers to the pr number at which the updater gets merged
+		//replace # since it is not fit for api
+		$pull_request_number = $settings_array['github_current'];
+		$pull_request_number = str_replace("#", "", $pull_request_number);
+		}
+		if ($upcoming_prs == "empty_setting") {
+			$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+			$values = array_values($merged_requests_array);
+			$values = json_encode($values);
+			setUpdaterSetting("upcoming_prs", $values);
+		}
+		else if(count(json_decode($upcoming_prs)) == 0) {
+			$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+			$values = array_values($merged_requests_array);
+			$values = json_encode($values);
+			setUpdaterSetting("upcoming_prs", $values);
+		}
+
+		$pull_request_number = $upcoming_prs[0];
+
+		if (isset($upcoming_prs[0])) {
+			$cpr_number = $upcoming_prs[0];
 			$current_pull_request_info = getSinglePullRequestInfo($updater_token, $repository_owner, $repository_name,  $cpr_number);
 			$cpr_title = $current_pull_request_info['title'];
 			$cpr_body = $current_pull_request_info['body'];

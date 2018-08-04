@@ -58,6 +58,7 @@ function getAllMergedPullRequests($access_token, $owner, $repo_name, $pull_reque
 		$i = $i + 1;
 	}
 	curl_close($curl);
+
 	ksort($pr_number);
 	return $pr_number;
 }
