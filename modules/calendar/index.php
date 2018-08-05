@@ -167,7 +167,6 @@ require('includes/session.php');
 
   <script>
     $(document).ready(function() {
-      var isClicked = false;
       var title_week = '<?php echo xlt('week'); ?>';
       var title_agenda2 = '<?php echo xlt('2 day'); ?>';
       var title_agenda = '<?php echo xlt('1 day'); ?>';
@@ -176,7 +175,7 @@ require('includes/session.php');
       var lang_default = '<?php echo $default_lang_id['lang_code']; ?>';
 
       function pasteEvent(eventClone, dropDetails) {
-        // this function gets called when "Paste" is clicked in day's custom menu
+        // this function gets called when "Paste" is clicked in day's context menu
         var eventData = eventClone;  // original (or copied) event's data
         var newDate = dropDetails[0].format("YYYY-MM-DD");  // clone event's date at drop point
         var newStartTime = dropDetails[0].format("HH:mm:ss");  // clone event's start time at drop point
@@ -236,7 +235,7 @@ require('includes/session.php');
       var isCopied = false; // used to ascertain whether an event is already copied and its details already in copiedEvent variable
 
       function showContextMenu(type, posX, posY, details) {
-        // builds custom menu according to cell type - "event" or "day"
+        // builds context menu according to cell type - "event" or "day"
         var menuItems = "";
         if (type == "event") {
           menuItems = "<li id='copy'>Copy</li>";
@@ -245,7 +244,7 @@ require('includes/session.php');
         }
         $("#context-menu>ul").empty().append(menuItems);
         $("#context-menu").removeClass("hidden").addClass("show");
-        // positioning of custom menu at position of mouse
+        // positioning of context menu at position of mouse
         $("#context-menu").css("top", posY);
         $("#context-menu").css("left", posX);
 
@@ -393,7 +392,7 @@ require('includes/session.php');
         },
         select: function(start, end, jsEvent, view, resource) {
           // this function is triggered when a date/time selection is made
-          // show custom menu for day cells
+          // show context menu for day cells
           var dayDetails = [start, end, resource];
           showContextMenu("day", jsEvent.clientX, jsEvent.clientY, dayDetails);
         },
@@ -403,7 +402,7 @@ require('includes/session.php');
           var eventDetails = event;
           element.on("contextmenu", function(e) {
             e.preventDefault(); // don't show default options
-            showContextMenu("event", e.clientX, e.clientY, eventDetails); // show custom menu for event cells
+            showContextMenu("event", e.clientX, e.clientY, eventDetails); // show context menu for event cells
           });
           //converting event title text to hyperlink
           if (event['pc_pid'] > 0) {
@@ -561,6 +560,7 @@ require('includes/session.php');
 
     $("#pc_username").change(function() { $('#theform').submit(); });
     $("#pc_facility").change(function() { $('#theform').submit(); });
+    // hide context menu upon clicking elsewhere
     var docRoot = top.$('#mainBox');
     docRoot.click(function() {
       $("#context-menu").removeClass("show").addClass("hidden");
