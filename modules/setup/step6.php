@@ -34,6 +34,7 @@ require_once("includes/header.inc.php");
     $server = $_POST["server"];     $dbname = $_POST["dbname"];
     $pass = $_POST["pass"];         $login = $_POST["login"];
 
+
     //user's parameters for login screen
     $site = $_POST["site"];         $iuserpass = $_POST["iuserpass"];
     $iufname = $_POST["iufname"];   $iuname = $_POST["iuname"];

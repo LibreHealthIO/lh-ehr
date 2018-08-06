@@ -28,7 +28,7 @@ if [[ "$EUID" = 0 ]]; then
          #comparing the value obtained to see if user accepted or not
         if [[ $response -eq $deny ]]; then
             echo "$(tput setaf 1)Upgrade stoped. User ended action$(tput setaf 7)"
-            exit;
+            exit 1
           else
           	#installing the various php packages
              sudo apt-get install -y -q php7.0-curl php7.0-xml php7.0-mbstring php7.0-mysql php7.0-cli php7.0-gd php7.0-gettext php7.0-xsl php7.0-mcrypt php7.0-soap php7.0-zip  php7.0-json php7.0-ldap  php7.0-xml  imagick;

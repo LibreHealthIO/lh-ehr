@@ -298,7 +298,7 @@ class Database
         return True;
     }
 
-    public function write_configuration_file() {
+    public function write_configuration_file($flag) {
         @touch($this->conffile); // php bug
         $fd = @fopen($this->conffile, 'w');
         if ( ! $fd ) {
@@ -334,7 +334,7 @@ $sqlconf["dbase"] = $dbase;
 //Setting $config to = 0//
 // will break this site //
 //and cause SETUP to run//
-$config = 1; /////////////
+$config = '.$flag.'; /////
 //////////////////////////
 //////////////////////////
 //////////////////////////

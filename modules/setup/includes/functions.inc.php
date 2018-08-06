@@ -50,59 +50,23 @@
 
 
 
-   function write_configuration_file($host, $port, $dbase, $login, $pass, $flag) {
-            @touch('libre-config.php');
-            $fd = @fopen('libre-config.php', 'w');
-            if ( ! $fd ) {
-              $error_message = 'unable to open configuration file for writing: ';
-              return False;
-            }
-            $string = '<?php
-        //  LibreEHR MySQL Config
-                 ';
+   function rewrite_configuration_file() {
+       $LIBRE_SITES_BASE = dirname(__FILE__) .'/../../../sites';
+       $LIBRE_SITE_DIR = $LIBRE_SITES_BASE. '/default';
+       //configuration file
+       $conffile  =  $LIBRE_SITE_DIR .'/sqlconf.php';
+       $string_to_replace='$config = 0;';
+       $replace_with='$config = 1;';
+       replace_string_in_file($conffile, $string_to_replace, $replace_with);
 
-            $it_died = 0;   //fmg: variable keeps running track of any errors
-
-            fwrite($fd,$string) or $it_died++;
-            fwrite($fd,"\$host\t= '$host';\n") or $it_died++;
-            fwrite($fd,"\$port\t= '$port';\n") or $it_died++;
-            fwrite($fd,"\$login\t= '$login';\n") or $it_died++;
-            fwrite($fd,"\$pass\t= '$pass';\n") or $it_died++;
-            fwrite($fd,"\$dbase\t= '$dbase';\n\n") or $it_died++;
-            fwrite($fd,"global \$disable_utf8_flag;\n") or $it_died++;
-            fwrite($fd,"\$disable_utf8_flag = false;\n") or $it_died++;
-
-        $string = '
-        $sqlconf = array();
-        global $sqlconf;
-        $sqlconf["host"]= $host;
-        $sqlconf["port"] = $port;
-        $sqlconf["login"] = $login;
-        $sqlconf["pass"] = $pass;
-        $sqlconf["dbase"] = $dbase;
-        /////////WARNING!/////////
-        //Setting $config to = 0//
-        // will break this site //
-        //and cause SETUP to run//
-        $config = '.$flag.'; /////////////
-        //////////////////////////
-        //////////////////////////
-        //////////////////////////
-        ?>
-        ';
-        ?><?php // done just for coloring
-
-            fwrite($fd,$string) or $it_died++;
-            fclose($fd) or $it_died++;
-
-            //it's rather irresponsible to not report errors when writing this file.
-            if ($it_died != 0) {
-              $error_message = "ERROR. Couldn't write $it_died lines to config file'.\n";
-              return FALSE;
-            }
-
-            return TRUE;
           }
+
+        function replace_string_in_file($filename, $string_to_replace, $replace_with){
+            $content=file_get_contents($filename);
+            $content_chunks=explode($string_to_replace, $content);
+            $content=implode($replace_with, $content_chunks);
+            file_put_contents($filename, $content);
+        }
 
 
             function find_SQL_Version() {
@@ -111,91 +75,9 @@
                 return $version[0];
             }
 
-        /**
-         * Execute the given command by displaying console output live to the user.
-         *  @param  string  cmd          :  command to be executed
-         *  @return array   exit_status  :  exit status of the executed command
-         *                  output       :  console output of the executed command
-         */
-        function liveExecuteCommand($cmd)
-        {
 
-            while (@ ob_end_flush()); // end all output buffers if any
-
-            $proc = popen("$cmd 2>&1 ; echo Exit status : $?", 'r');
-
-            $live_output     = "";
-            $complete_output = "";
-
-            while (!feof($proc))
-            {
-                $live_output     = fread($proc, 4096);
-                $complete_output = $complete_output . $live_output;
-                echo "$live_output";
-                @ flush();
+            function write_bashScript($sys){
+                    @touch('/var/www/html/LibreEHR/test.sh');
             }
-
-            pclose($proc);
-
-            // get exit status
-            preg_match('/[0-9]+$/', $complete_output, $matches);
-
-            // return exit status and intended output
-            return array (
-                'exit_status'  => intval($matches[0]),
-                'output'       => str_replace("Exit status : " . $matches[0], '', $complete_output)
-            );
-        }
-
-
-        function install_gacl($script){
-        $install_results = get_require_contents($script);
-        if (! $install_results ) {
-            return false;
-        }
-        else{
-            return $install_results;
-        }
-
-            }
-
-
-     // http://www.php.net/manual/en/function.include.php
-    function get_require_contents($filename) {
-        if (is_file($filename)) {
-            ob_start();
-            require $filename;
-            $contents = ob_get_contents();
-            ob_end_clean();
-            return $contents;
-        }
-        return false;
-    }
-
-
-    function write_bashScript($sys){
-
-            @touch('/var/www/html/LibreEHR/test.sh');
-
-    }
-
-
-    /**
-     *	Remove bad chars from input
-     *	  	@param $str_words - input
-     **/
-
-    function prepare_input($str_words)
-    {
-        $str_words = htmlentities(strip_tags($str_words));
-        $bad_string = array('select', 'drop', '--', 'insert', 'xp_', '%20union%20', '/*', '*/union/*', '+union+', 'load_file', 'outfile', 'document.cookie', 'onmouse', '<script', '<iframe', '<applet', '<meta', '<style', '<form', '<img', '<body', '<link', '_GLOBALS', '_REQUEST', '_GET', '_POST', 'include_path', 'prefix', 'http://', 'https://', 'ftp://', 'smb://', 'onmouseover=', 'onmouseout=');
-
-        for($i = 0; $i < count($bad_string); $i++){
-            $str_words = str_replace($bad_string[$i], '', $str_words);
-        }
-
-        return $str_words;
-    }
-
 
 ?>

@@ -62,8 +62,9 @@
 
 ?>
 <div class="card">
-    <div class="ajaxLoader hidden"></div>
 
+    <div class="coverForm">
+        <div class="ajaxLoader hidden"></div>
     <p class="clearfix"></p>
     <p class="clearfix"></p>
 
@@ -273,6 +274,7 @@
         </div>
     </form>
     <p class="clearfix"></p>
+    </div>
     <p class="clearfix"></p>
 
     <div class="progress" data-toggle="tooltip" title="">

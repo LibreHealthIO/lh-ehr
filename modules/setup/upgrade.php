@@ -107,7 +107,7 @@ if($task == 'annul'){
 
                 }
 
-                case($os_type == "win"): {
+                case($os_type == "windows"): {
 
                     echo '
                     <!-- Div carousel for windows slide -->

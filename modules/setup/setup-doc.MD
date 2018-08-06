@@ -31,3 +31,8 @@ insert into globals values ("izi_fade_out_time", 0 ,'4');
 insert into globals values ("izi_theme", 0 ,'#fcfcf3');
 
 
+The tap command allows Homebrew to tap into another repository of formulae. 
+Once you've done this you've expanded your options of installable software. It
+adds more repos to the list of formulae that brew tracks, updates, and installs from
+
+

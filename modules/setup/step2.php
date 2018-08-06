@@ -142,14 +142,15 @@ require_once("includes/header.inc.php");
             </thead>
             <tbody>";
 
-            $fail = '';
+            $failphp = '';
+            $failmysql = '';
             $pass = '';
 
             //checking for php version
-            if(version_compare(phpversion(), '5.2.0', '<')) {
-                $fail .= '<td><strong>PHP</strong></td>';
-                $fail .= '<td>You need<strong> PHP 5.2.0</strong> (or greater;<strong>Current Version:'.phpversion().')</strong></td>';
-                $fail .= '<td><span class="fa fa-times red"></span></td>';
+            if(version_compare(phpversion(), '5.2.0', '<') || version_compare(phpversion(), '7.2.0', '>')) {
+                $failphp .= '<td><strong>PHP</strong></td>';
+                $failphp .= '<td>You need<strong> PHP 5.2.0</strong> (or greater;<strong>Current Version:'.phpversion().')</strong></td>';
+                $failphp .= '<td><span class="fa fa-times red"></span></td>';
             }
             else {
                 $pass .='<td><strong>PHP</strong></td>';
@@ -180,7 +181,7 @@ require_once("includes/header.inc.php");
                             </ul>
                             </div>
                         </td>';
-                $pass .='<td><span class="fa fa-check green"></span></td></tr><tr>';
+                $pass .='<td><span class="fa fa-check green"></span></td></tr>';
             }
 
             //checking for mysql version
@@ -189,9 +190,9 @@ require_once("includes/header.inc.php");
                 $version = find_SQL_Version();
 
                 if(version_compare($version, '4.1.20', '<')) {
-                    $fail .= '<td><strong>MySQL</strong></td>';
-                    $fail .= '<td>You need<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:.'.$version.')</strong></td>';
-                    $fail .= '<td><span class="fa fa-times red"></span></td>';
+                    $failmysql .= '<td><strong>MySQL</strong></td>';
+                    $failmysql .= '<td>You need<strong> MySQL 4.1.20</strong> (or greater; <strong>Current Version:.'.$version.')</strong></td>';
+                    $failmysql .= '<td><span class="fa fa-times red"></span></td>';
                 }
                 else {
                     $pass .='<td><strong>MySQL</strong></td>';
@@ -204,9 +205,11 @@ require_once("includes/header.inc.php");
             }
 
 
-              if($fail) {
-                  echo '<tr>'.$fail.'</tr></p>';
-                  echo 'The following requirements were successfully met:';
+              if($failphp) {
+                  echo '<tr>'.$failphp.'</tr>';
+              }
+              if ($failmysql){
+                  echo '<tr>'.$failmysql.'</tr>';
                   echo '<tr>'.$pass.'</tr>';
               } else {
                   echo '<tr>'.$pass.'</tr>';
@@ -216,7 +219,7 @@ require_once("includes/header.inc.php");
         </table>
     </div>";
 
-         if($fail) {
+         if($failphp || $failmysql) {
                 echo '<p><strong>Your server does not meet the following requirements in order to install LibreEHR.</strong>';
                 echo '<br>The following requirements failed, please contact your hosting provider in order to receive assistance with meeting the system requirements for LibreEHR:';
              echo "<p class='clearfix'></p>";

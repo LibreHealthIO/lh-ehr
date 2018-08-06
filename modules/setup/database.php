@@ -162,7 +162,6 @@
                 $messageArray["percentage"] = 8;
                 file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
                 sleep(1);
-                exit();
             }
             else {
                 sleep(1);
@@ -298,7 +297,9 @@
         $messageArray["percentage"] = 46;
         file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
 
-        if ( ! $installer->load_dumpfiles() ) {
+        $dump_results = $installer->load_dumpfiles();
+
+        if ( !$dump_results ) {
             $messageArray["message"]  = $installer->error_message;
             $messageArray["status"]   = 400;
             $messageArray["percentage"] = 27;
@@ -319,7 +320,7 @@
         $messageArray["percentage"] = 60;
         file_put_contents("tmp/ajaxprocess.txt" , json_encode($messageArray));
         sleep(1);
-        if ( ! $installer->write_configuration_file() ) {
+        if ( ! $installer->write_configuration_file(0) ) {
             sleep(1);
             $messageArray["message"]  = $installer->error_message;
             $messageArray["status"]   = 400;
