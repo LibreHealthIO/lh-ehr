@@ -1,7 +1,9 @@
 
+
+  <br>
   <div class="col-12"> 
     <div class="card">
-
+    
       <div class="card-header">
         Site Setup
       </div>
@@ -24,14 +26,17 @@
         </div>
         <br />
         <div class="card">
-          <div class="card-header">Manufacturers & Suppliers</div>
+          <div class="card-header">Manufacturers, Suppliers and Worksheets</div>
           <div class="card-body">
             <div class="row">
-              <div class="col-6">
+              <div class="col-3">
                 <a href="index.php?action=resource&sact=manufacturer"><img src="./assets/img/manufacturer.png" class="setup-icon rounded" alt="..."> Manufacturers </a>
               </div>
-              <div class="col-6">
+              <div class="col-3">
                 <a href="index.php?action=resource&sact=supplier"><img src="./assets/img/supplier.png" style="height: 50px; width: 100px" class="rounded" alt="..."> Suppliers </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=worksheet&sact=templates"><img src="./assets/img/worksheet.png" style="height: 50px; width: 50px" class="rounded" alt="..."> Worksheet Templates </a>
               </div>
             </div>
           </div>
@@ -62,16 +67,19 @@
           <div class="card-header">Analyses Details</div>
           <div class="card-body">
             <div class="row">
-              <div class="col-3">
+              <div class="col-2">
                 <a href="index.php?action=client"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Clients </a>
               </div>
-              <div class="col-3">
+              <div class="col-2">
+                <a href="index.php?action=client&sact=createcontacts"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Client Contacts </a>
+              </div>
+              <div class="col-2">
                 <a href="index.php?action=analysis&sact=categories"><img src="./assets/img/category.jpeg" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Categories  </a>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <a href="index.php?action=analysis&sact=profiles"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Profiles </a>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <a href="index.php?action=analysis&sact=services"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Services </a>
               </div>
               

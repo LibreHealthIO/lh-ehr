@@ -171,6 +171,67 @@ switch($sub) {
     }
   break;
 
+  case 'createrequests':
+
+    $ajax = [ 'clientContacts' ];
+    $clients = getDataFromUrl($client, 'client');
+
+    // unable to send AJAX requests to the senaite API due to CORS( cross-rogin resource sharing) being disabled (can't send authentication
+    // cookie to the API).
+    // workaround - load the contacts for each client here and use javascript to generate the select from already existing data
+
+    $contacts = [];
+    foreach ($clients as $contactClient) {
+      $contactDetails = getDataFromUrl($client, 'search?getParentUID='.$contactClient->uid);
+      if (!empty($contactDetails)) {
+        $contacts[$contactClient->uid][] = $contactDetails;
+      }
+    }
+
+    $samples = getDataFromUrl($client, 'sample');
+    $analysisProfiles = getDataFromUrl($client, 'analysisprofile');
+    $sampleTypes = getDataFromUrl($client, 'sampletype');
+    $storageLocations = getDataFromUrl($client, 'storagelocation');
+    $samplePoints = getDataFromUrl($client, 'samplepoint');
+    $sampleConditions = getDataFromUrl($client, 'samplecondition');
+    $containers = getDataFromUrl($client, 'container');
+    $analysisCategories = getDataFromUrl($client, 'analysiscategory');
+    $analyses = getDataFromUrl($client, 'analysisservice');
+    $errors = [];
+
+    if (isset($_POST['submit'])) {
+      $required = [ 'client' , 'contact' , 'sampleDate', 'sampleType', 'analyses' ];
+
+      if (!(checkRequiredFields($required, $_POST))) {
+        $errors[] = 'Please fill in all the required fields';
+      }
+
+      if (count($errors) === 0) { 
+        try {
+          $client->post('analysisrequest', [
+            'json' => [
+              'Client' => $_POST['client'],
+              'Contact' => $_POST['contact'],
+              'Profiles' => valueOrNull($_POST['analysisProfiles']),
+              'DateSampled' => $_POST['sampleDate'],
+              'SampleType' => $_POST['sampleType'],
+              'SamplePoint' => valueOrNull($_POST['samplePoint']),
+              'SampleCondition' => valueOrNull($_POST['sampleCondition']),
+              'Priority' => valueOrNull($_POST['priority']),
+              'EnvironmentalConditions' => valueOrNull($_POST['environmentalConditions']),
+              'AdHoc' => valueOrNull($_POST['adhoc']),
+              'Analyses' => $_POST['analyses']  
+            ],
+          ]);
+        } catch (Exception $e) {
+          die($e->getMessage());
+        }
+      }
+    }
+
+
+
+  break;
 
 
 

@@ -7,6 +7,23 @@
             <div class="card-body">
               <div class="card">
                 <div class="card-header">
+                  Quick Links
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <a href="index.php?action=analysis&sact=createrequests" class="btn btn-primary">Create analysis requests</a>
+                    </div>
+                    <div class="col">
+                      <a href="#" class="btn btn-primary">Create worksheets</a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <br>
+              <div class="card">
+                <div class="card-header">
                   Analyses
                 </div>
                 <div class="card-body">

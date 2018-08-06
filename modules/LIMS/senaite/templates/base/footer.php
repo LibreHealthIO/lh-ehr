@@ -12,10 +12,13 @@
     integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
     crossorigin="anonymous"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js" type="text/javascript"></script>
     <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
-    </script>
+   
+    $('#datepicker').datetimepicker({ footer: true, modal: true });
+</script>
   </body>
 </html>
