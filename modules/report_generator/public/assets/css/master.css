@@ -1,0 +1,64 @@
+/*
+|--------------------------------------------------------------------------
+| Report generator master CSS file.
+|--------------------------------------------------------------------------
+|
+| This is the main CSS file for the report generator.
+| Basically, most of styling of the module is done here.
+| @author: Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+|
+| Copyright 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+|
+*/
+#second {
+    height: 270px;
+    margin-bottom: 5px;
+}
+
+#card-header {
+    text-align: center;
+}
+
+.draggable{
+    max-width: 24.5%;
+    height: 50px;
+    border: 1px solid lightgrey;
+    margin: auto 1px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+#generate-button {
+    float: right;
+    margin-top: -7px;
+    margin-bottom: -7px;
+}
+#draggable-column {
+    /* overflow: auto; */
+    height: 500px;
+}
+
+/* Wrap and break the draggable components' titles. */
+.wordwrap {
+    padding: 3px;
+    width: 130px;
+    word-break: break-all;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+/* Wrap and break the cells' data in generated report. */
+.table-wordwrap {
+    max-width: 250px !important;
+    word-break: break-all;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+thead {
+    background-color:#ccc !important
+}
+
+#selected-list {
+    padding-right: 10px;
+    margin-left: -25px;
+}
