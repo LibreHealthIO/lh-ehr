@@ -20,20 +20,16 @@
 $auth_med = acl_check('patients'  , 'med');
 
 if ($auth_med) {
-  $i = 1; $j = 0;
   foreach($_POST as $name => $value){
     if(substr($name, 0, 15) == "procedure_order")         //there are two
     {                                                     //ways to select
-      procedure_order_data(substr($name, 16));            //procedures orders
-      $i++;                                               //in the form,
-    }  
+      procedure_order_data(substr($name, 16));            //procedures orders                                               //in the form,
+    }                                                     //in the form
   }
   if(count($_POST['procedures']) > 0){
     $procedures = $_POST['procedures'];
-    $i = 0;
-    while($procedures[$i] != NULL){
-      procedure_order_data($procedures[$i]);
-      $i++;
+    foreach($procedures as $procedure_value){
+      procedure_order_data($procedure_value);
     }
   }
 }
@@ -212,7 +208,7 @@ $query = "SELECT " .
   $content_pro .= "</table><br><br>";
 }
 
-if($i != 1)
+if($content_pro)
 {
   $pdf->Ln(2);
   $pdf->Line(10, $pdf->GetY(), $pdf->GetPageWidth()-10, $pdf->GetY());

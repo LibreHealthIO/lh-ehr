@@ -150,6 +150,12 @@ $pdf->Ln(2);
 
 $pdf->Ln(15);
 $pdf->Cell(40, 10, "Signature: ________________________________________");
-$pdf->Output();
+
+if($GLOBALS['pdf_output'] == 'D'){            //PDF will be downloaded in this case
+  $pdf->Output("report.pdf", 'D');
+}
+elseif($GLOBALS['pdf_output'] == 'I'){        //PDF will be shown in the browser in this case (Inline)
+  $pdf->Output("report.pdf", 'I');
+}
 
 ?>

@@ -39,7 +39,7 @@ function demo_data_face_sheet($pid, $demographics_data){
     $i++;
   }
   if($demographics_data['sex']){
-    $content_demo_face_sheet_temp[$i] .= "<td><b>" . xlt("SEX") . " : </b></td><td>" . $demographics_data['sex'] . "</td>";
+    $content_demo_face_sheet_temp[$i] .= "<td><b>" . xlt("Sex") . " : </b></td><td>" . $demographics_data['sex'] . "</td>";
     $i++;
   }
   if($demographics_data['DOB']){
@@ -356,7 +356,7 @@ function demo_data_social_statistics($demographics_data){
     $content_demo_social_statistics_temp[$i] .= "<td><b>" . xlt("Family Size") . " : </b></td><td>" . $demographics_data['family_size'] . "</td>";
     $i++;
   }
-  if($demographics_data['financial_review'] != '0000-00-00 00:00:00'){
+  if(($demographics_data['financial_review'] != '0000-00-00 00:00:00')&&($demographics_data['financial_review'] != NULL)){
     $content_demo_social_statistics_temp[$i] .= "<td><b>" . xlt("Financial Review Date") . " : </b></td><td>" . $demographics_data['financial_review'] . "</td>";
     $i++;
   }

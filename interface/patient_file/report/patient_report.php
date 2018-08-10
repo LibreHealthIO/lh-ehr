@@ -238,7 +238,6 @@
         <br>
         <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
         <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />&nbsp;
-        <input type="button" value='Test Download' class='pdf_proto'>
         <input type='hidden' name='pdf' value='0'>
 
             <br><br>
@@ -404,7 +403,6 @@
           <br>
         <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
         <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />&nbsp;
-        <input type="button" value='Test Download' class='pdf_proto'>
           <br><br><br>
 
         <!-- Procedure Orders -->
@@ -448,8 +446,7 @@
         </table>
           <br>
         <input type="button" class="genreport" value="<?php xl('Generate Report','e'); ?>" />&nbsp;
-        <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />
-        <input type="button" value='Test Download' class='pdf_proto'>
+        <input type="button" class="genpdfrep" value="<?php xl('Download PDF','e'); ?>" />&nbsp;
           <br><br><br>
 
         <span class="bold"><?php xl('Documents','e'); ?></span>:<br>

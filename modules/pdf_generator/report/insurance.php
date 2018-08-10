@@ -55,7 +55,7 @@ function insuranceData1($data_array, $recres, $content_insu) {
     $content_insu .= "<table>";
     $i = 1;
     foreach ($data_array as $akey => $aval) {
-        if (sizeof($recres{$akey})>0 && ($recres{$akey}[1]{"value"}!="0000-00-00 00:00:00")) {
+        if (sizeof($recres{$akey})>0 && ($recres{$akey}[1]{"value"}!="0000-00-00 00:00:00") && ($recres{$akey}[1]{"value"}!=NULL)) {
             if($i%2 != 0)   $content_insu .= "<tr><td><b>" . $aval . "</b>";
             else    $content_insu .= "<td><b>" . $aval . "</b>";
             insuranceData2($recres, $akey, "Y-m-d", $content_insu, $i);
@@ -69,7 +69,7 @@ function insuranceData2 ($retar, $key, $date_format, $content_insu, $i) {
     global $content_insu;
     if (@array_key_exists($key,$retar)) {
         $length = sizeof($retar{$key});
-        if ($retar{$key}[$length]{"value"} != "0000-00-00 00:00:00") {
+        if (($retar{$key}[$length]{"value"} != "0000-00-00 00:00:00")&&($retar{$key}[$length]{"value"} != NULL)) {
         $tmp = $retar{$key}[$length]{"value"};
         if (strstr($key, 'DOB')) $tmp = oeFormatShortDate($tmp);
             if($i%2 != 0)   $content_insu .= $tmp . "</td>";
