@@ -40,6 +40,7 @@ require('includes/session.php');
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
   <script src="../../library/dialog.js"></script>
+  <script src='fullcalendar-rightclick-1.9/fullcalendar-rightclick.js'></script>
 
   <style type="text/css">
     .show {
@@ -182,7 +183,7 @@ require('includes/session.php');
         var duration = parseInt(eventData.pc_duration);  // clone event's duration (same as original)
         // clone event's end time at drop point
         var newEndTime = moment(newStartTime, "HH:mm:ss").add(duration, 'seconds').format("HH:mm:ss");
-        var newProviderId = dropDetails[2].id;  // clone event's provider id at drop point
+        var newProviderId = dropDetails[1];  // clone event's provider/resource id at drop point
 
         var jsonData = { "date": newDate,
                          "startTime": newStartTime,
@@ -240,7 +241,7 @@ require('includes/session.php');
         if (type == "event") {
           menuItems = "<li id='copy'>Copy</li>";
         } else if (type == "day") {
-          menuItems = "<li id='create'>Create event</li>" + "<li id='paste'>Paste</li>";
+          menuItems = "<li id='paste'>Paste</li>";
         }
         $("#context-menu>ul").empty().append(menuItems);
         $("#context-menu").removeClass("hidden").addClass("show");
@@ -252,14 +253,6 @@ require('includes/session.php');
           // when "Copy" in event's menu is clicked
           isCopied = true;
           copiedEvent = details; // store details of copied events
-        });
-
-        $("#create").click(function() {
-          // when "Create event" in day's menu is clicked
-          // open event panel according to parameters specified by details
-          dlgopen('add_edit_event.php?' + '&starttimeh=' + details[0].get('hours') + '&userid=' + details[2].id +
-          '&starttimem=' + details[0].get('minutes') + '&date=' + details[0].format('YYYYMMDD') // + '&catid=' + 0
-           ,'_blank', 775, 375);
         });
 
         $("#paste").click(function() {
@@ -392,17 +385,26 @@ require('includes/session.php');
         },
         select: function(start, end, jsEvent, view, resource) {
           // this function is triggered when a date/time selection is made
-          // show context menu for day cells
-          var dayDetails = [start, end, resource];
-          showContextMenu("day", jsEvent.clientX, jsEvent.clientY, dayDetails);
+          // open event panel with parameters of selection made
+          dlgopen('add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id +
+          '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
+           ,'_blank', 775, 375);
+        },
+        dayRightclick: function(date, jsEvent, resourceId) {
+            // show custom menu for day cells
+            var dayDetails = [date, resourceId]; // details of day slot on which user right clicked - date & start time, provider id
+            showContextMenu("day", jsEvent.clientX, jsEvent.clientY, dayDetails);
+            // prevent browser context menu
+            return false;
         },
         eventRender: function(event, element, view) {
           // this function is triggered while an event is being rendered
           // handle right click on an event
-          var eventDetails = event;
+          var eventDetails = event; // details of event on which user right clicked
           element.on("contextmenu", function(e) {
             e.preventDefault(); // don't show default options
-            showContextMenu("event", e.clientX, e.clientY, eventDetails); // show context menu for event cells
+            // show custom menu for event cells
+            showContextMenu("event", e.clientX, e.clientY, eventDetails);
           });
           //converting event title text to hyperlink
           if (event['pc_pid'] > 0) {
