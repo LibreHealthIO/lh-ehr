@@ -121,6 +121,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'secondary_color',
                                'secondary_font_color',
                                'gbl_pt_list_page_size',
+                               'gbl_appt_list_page_size',
                                'default_encounter_view',
                                'units_of_measurement',
                                'us_weight_format',
@@ -272,6 +273,14 @@ $GLOBALS_METADATA = array(
       xl('EDI History (under Fees) for storing and interpreting EDI claim response files')
     ),
 
+    //SHOW UPDATER ICON
+      'updater_icon_visibility' => array(
+      xl('Show updater floating action button'),
+       'bool',                          // data type
+       '1',                             // default = true
+      xl('The Updater Floating Action Button at the bottom of the screen')
+    ),
+
     'online_support_link' => array(
       xl('Online Forum Support Link'),
        'text',                          // data type
@@ -287,7 +296,6 @@ $GLOBALS_METADATA = array(
     ),
 
 
-
     'gbl_pt_list_page_size' => array(
       xl('Patient List Page Size'),
       array(
@@ -298,6 +306,19 @@ $GLOBALS_METADATA = array(
       ),
        '10',
       xl('Number of patients to display per page in the patient list.')
+    ),
+
+
+    'gbl_appt_list_page_size' => array(
+      xl('Appointment List Page Size'),
+      array(
+        '10'  =>  '10',
+        '25'  =>  '25',
+        '50'  =>  '50',
+        '100' => '100',
+      ),
+       '10',
+      xl('Number of appointments to display per page in track appointments list.')
     ),
 
 
@@ -2565,7 +2586,7 @@ $GLOBALS_METADATA = array(
       xl('Enable NewCrop eRx Service'),
       'bool',
       '0',
-      xl('Enable NewCrop eRx Service.') + ' ' +
+      xl('Enable NewCrop eRx Service.') . ' ' .
       xl('Contact the community for information on subscribing to the NewCrop eRx service.')
   ),
 

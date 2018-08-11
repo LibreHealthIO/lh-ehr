@@ -29,7 +29,7 @@ class PQRS_0431_InitialPatientPopulation extends PQRSFilter
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0431_b' AND b1.modifier NOT IN('GQ','GT')); ";
+" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0431_b' AND b1.modifier NOT IN('GQ','GT','95')); ";
 //check for one preventive
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 0){ return true;} 
@@ -44,7 +44,7 @@ if ($result['count']> 0){ return true;}
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0431_a' AND b1.modifier NOT IN('GQ','GT')); ";
+" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0431_a' AND b1.modifier NOT IN('GQ','GT','95')); ";
 //check for two
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 1){ return true;} else {return false;} 

@@ -32,8 +32,8 @@ class PQRS_0345_Numerator extends PQRSFilter
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " WHERE b1.pid = ? ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND b1.code IN ('G9256',',G9257') ; ";
-//G9259 hard fail INVERSE MEASURE
+" AND b1.code ='G9259' ; ";
+//G9257,G9256 hard fail
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id))); 
 
 if ($result['count']> 0){ return true;} else {return false;}  

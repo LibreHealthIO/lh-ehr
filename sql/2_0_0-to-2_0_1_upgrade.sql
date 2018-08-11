@@ -118,6 +118,46 @@ DROP TABLE IF EXISTS `menu_trees`;
 
 DROP TABLE IF EXISTS `menu_entries`;
 
+#IfNotTable updater_users
+CREATE TABLE `updater_users` (
+  `authUserId` int(11) NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB;
+#EndIf
+
+#IfNotTable updater_settings
+CREATE TABLE `updater_settings` (
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB;
+#EndIf
+
+#IfNotTable updater_user_mode_download_entry
+--
+-- Table structure for table `updater_user_mode_download_entry`
+--
+
+CREATE TABLE `updater_user_mode_download_entry` (
+  `filename` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `old_name` varchar(255) NOT NULL
+) ENGINE=InnoDB; 
+#Endif
+
+#IfNotTable updater_user_mode_backup_entry
+--
+-- Table structure for table `updater_user_mode_download_entry`
+--
+
+CREATE TABLE `updater_user_mode_backup_entry` (
+  `filename` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `old_name` varchar(255) NOT NULL
+) ENGINE=InnoDB;
+#Endif
+
 #IfMissingColumn form_misc_billing_options onset_date
  ALTER TABLE `form_misc_billing_options` ADD `onset_date` DATE NOT NULL ;
 #EndIf
@@ -147,3 +187,4 @@ INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`
 #IfMissingColumn libreehr_postcalendar_events cancel_reason
   ALTER TABLE `libreehr_postcalendar_events` ADD `cancel_reason` text NOT NULL ;
 #EndIf
+

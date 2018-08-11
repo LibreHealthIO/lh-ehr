@@ -34,7 +34,7 @@ $query =
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " WHERE b1.pid = ? ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
-" AND b1.code IN ('G9768','G9769') ; ";
+" AND b1.code IN ('G9768','G9769','G9938') ; ";
 //Rule-out
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id))); 
 if ($result['count']> 0){ return false;} else {return true;}  

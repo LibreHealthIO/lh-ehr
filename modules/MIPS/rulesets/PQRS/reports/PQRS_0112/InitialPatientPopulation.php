@@ -32,12 +32,14 @@ $query =
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " JOIN patient_data AS p ON (p.pid = b1.pid)".
 " INNER JOIN pqrs_efcc1 AS codelist_a ON (b1.code = codelist_a.code)".
+" INNER JOIN facility AS fac ON (fe.facility = fac.id)".
 " WHERE b1.pid = ? ".
 " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
 " AND p.sex = 'Female' ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '50' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) < '75' ".
+" AND ( fac.pos_code NOT IN ('32', '33', '34', '54', '56') AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '65') ". 
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0112_a'); ";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
