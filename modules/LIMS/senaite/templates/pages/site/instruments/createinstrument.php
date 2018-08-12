@@ -16,7 +16,7 @@
               </li>
 
               <li class="nav-item">
-                <a href="#info" class="nav-link" id="info-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Additional Info</a>
+                <a href="#info" class="nav-link" id="info-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Additional Info <span class="badge badge-danger">Required</span></a>
               </li>
             </ul>
             <br />
@@ -124,9 +124,9 @@
               <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
               
                 <div class="form-group">
-                  <label for="location">Instrument Location <i class="fas fa-question-circle" data-toggle="tooltip"
+                  <label for="location">Instrument Location <span class="badge badge-danger">Required</span> <i class="fas fa-question-circle" data-toggle="tooltip"
                   data-placement="top" title="The room and location where the instrument is installed"></i></label>
-                  <select name="location" id="location" class="form-control">
+                  <select name="location" id="location" class="form-control" value="">
                     <?php foreach($instrumentLocations as $instrumentLocation) { ?>
                         <option value="<?php echo $instrumentLocation->uid; ?>"> <?php echo $instrumentLocation->title; ?> </option>
                     <?php } ?>

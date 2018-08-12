@@ -93,9 +93,6 @@ switch ($sub) {
               'AdmittedStickerTemplates' => [ (['value' => '', 'small_default' => $_POST['defaultSmallSticker'], 'large_default' => $_POST['defaultLargeSticker'], 
                                              'admitted' => [ $admittedStickerTemplates ]
                                               ])],
-            ],
-            'form_params' =>  [
-              'title' => $_POST['title'],
             ]
           ]);
         } catch (Exception $e) {

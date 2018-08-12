@@ -9,16 +9,16 @@ if (isset($_GET['sact']) && ($_GET['sact'] != null )) {
 switch($sub) {
 
   case 'templates':
-    $worksheetTemplates = getDataFromUrl($client, 'worksheettemplate');
+    $worksheetTemplates = getDataFromUrl($client, 'worksheettemplate', true);
 
   break;
 
 
   case 'createtemplate':
   $errors = [];
-  $methods = getDataFromUrl($client, 'method');
-  $instruments = getDataFromUrl($client, 'instrument');
-  $analysisServices = getDataFromUrl($client, 'analysisservice');
+  $methods = getDataFromUrl($client, 'method', true);
+  $instruments = getDataFromUrl($client, 'instrument', true);
+  $analysisServices = getDataFromUrl($client, 'analysisservice', true);
   if (isset($_POST['submit'])) {
     $required = [ 'title', 'analysisTypes' ];
 
@@ -85,16 +85,14 @@ switch($sub) {
               'Instrument' => valueOrNull($_POST['instrument']),
               'Service' => valueOrNull($_POST['analysisServices'])
             ],
-            'form_data' => [
+            'form_params' => [
               'title' => $_POST['title']
             ]
           ]);
+          header('location: index.php?action=worksheet&sact=templates');
         } catch (Exception $e) {
           die($e->getMessage());
         }
-        
-
-
 
       }
 
@@ -104,6 +102,76 @@ switch($sub) {
   break;
 
 
+  case 'worksheets':
+
+    $worksheets = getDataFromUrl($client, 'worksheet', true);
+
+  break;
+
+  case 'createworksheets':
+    $errors = [];
+    $analysts = getDataFromUrl($client, 'users');
+    $worksheetTemplates = getDataFromUrl($client, 'worksheettemplate');
+    $instruments = getDataFromUrl($client, 'instrument');
+    $analyses = getDataFromUrl($client, 'analysis?review_state=sample_received');
+    if (isset($_POST['submit'])) {
+      $required = [ 'analyst' ];
+      if (!checkRequiredFields($required, $_POST)) {
+        $errors[] = 'Please fill in the required fields';
+      }
+
+
+      /**
+       * Seems to not completely update worksheets with analyses - waiting for senaite's response
+       */
+
+      if (count($errors) === 0) {
+        $layout = [];
+
+        $count = 0;
+        foreach($_POST['analyses'] as $analysis) {
+          $analysisInformation = getDataFromUrl($client, 'analysis/'.$analysis)[0];
+          $layout[] = [
+            'position' => ++$count,
+            'type' => 'a',
+            'analysis_uid' => $analysis,
+            'container_uid' => $analysisInformation->parent_uid
+          ];
+        }
+
+        try {
+          $client->post('worksheet', [
+            'json' => [
+              'Analyst' => $_POST['analyst'],
+              'Layout' => $layout,
+              'WorksheetTemplate' => valueOrNull($_POST['template']),
+              'Instrument' => valueOrNull($_POST['instrument']),
+              'parent_path' => "/senaite/worksheets",
+              'Analyses' => $_POST['analyses']
+            ]
+          ]);
+
+          header('location: index.php?action=worksheet&sact=worksheets');
+        } catch (Exception $e) {
+          die($e->getMessage());
+        }
+      }
+    }
+
+  break;
+
+  case 'worksheet':
+    if (isset($_GET['id']) && ($_GET['id'] != null )) {
+      $id = $_GET['id'];
+    } else {
+      header('location: index.php?action=worksheet&sact=worksheets');
+    }
+    $errors = [];
+    $worksheetData = getDataFromUrl($client, 'worksheet/'.$id);
+    $analysis = getDataFromUrl($client, 'analysis', true);
+    
+
+  break;
 
 }
 

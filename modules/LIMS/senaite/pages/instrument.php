@@ -73,11 +73,11 @@ switch($sub) {
 
 
   case 'createinstrument':
-    $instrumentTypes = json_decode($client->get('instrumenttype')->getBody()->getContents())->items;
-    $instrumentLocations = json_decode($client->get('instrumentlocation')->getBody()->getContents())->items;
-    $manufacturers = json_decode($client->get('manufacturer')->getBody()->getContents())->items;
-    $suppliers = json_decode($client->get('supplier')->getBody()->getContents())->items;
-    $methods = json_decode($client->get('method')->getBody()->getContents())->items;
+    $instrumentTypes = getDataFromUrl($client, 'instrumenttype', true);
+    $instrumentLocations = getDataFromUrl($client, 'instrumentlocation', true);
+    $manufacturers = getDataFromUrl($client, 'manufacturer', true); 
+    $suppliers = getDataFromUrl($client, 'supplier', true);
+    $methods = getDataFromUrl($client, 'method', true);
     $errors = [];
     if (isset($_POST['submit'])) {
         
@@ -86,45 +86,47 @@ switch($sub) {
             'instrumenttype',
             'manufacturer',
             'supplier',
+            'location',
         ];
         if (!(isset($_POST['methods']))) {
           $_POST['methods'] = [];
         }
 
-        foreach($required as $requiredField) {
-          if ($_POST[$requiredField] === null || $_POST[$requiredField] === '') {
-            $errors[] = 'Please fill in all the required fields';
-            break;
-          }
+        if (!checkRequiredFields($required, $_POST)) {
+          $errors[] = 'Please fill in the required fields';
         }
-        /*
-          To-do:
-         * Creating schema-specific data to send relational data (instrument types, locations) along with the instrument data
-         */
 
-        
-        var_dump($_POST);
+        if (!isset($_POST['location'])) {
+          $_POST['location'] = null;
+        }
+
         if (count($errors) === 0) {
-          $response = $client->POST('instrument', [
-            'json' => [
-              'title' => $_POST['title'],
-              'InstrumentType' => $_POST['instrumenttype'],
-              'Manufacturer' => $_POST['manufacturer'],
-              'Supplier' => $_POST['supplier'],
-              'InstrumentLocation' => valueOrNull($_POST['location']),
-              'Model' => valueOrNull($_POST['modelno']),
-              'SerialNo' => valueOrNull($_POST['serialno']),
-              'Methods' => valueOrNulL($_POST['methods']),
-              'DataInterface' => valueOrNull($_POST['exportinterface']),
-              'InlabCalibrationProcedure' => valueOrNull($_POST['calibproc']),
-              'PreventiveMaintenanceProcedure' => valueOrNull($_POST['preventproc'])
-            ]
-          ]);
-        }
-
-
-
-
+          try {
+            $response = $client->post('instrument', [
+              'json' => [
+                "title" => $_POST["title"],
+                "AssetNumber" => valueOrNull($_POST["assetNum"]),
+                "description" => valueOrNull($_POST["description"]),
+                "InstrumentType" => $_POST["instrumenttype"],
+                "Manufacturer" => $_POST["manufacturer"],
+                "Supplier" => $_POST["supplier"],
+                "InstrumentLocation" => valueOrNull($_POST["location"]),
+                "Model" => valueOrNull($_POST["modelno"]),
+                "SerialNo" => valueOrNull($_POST["serialno"]),
+                "Methods" => valueOrNulL($_POST["methods"]),
+                "DataInterface" => valueOrNull($_POST["exportinterface"]),
+                "InlabCalibrationProcedure" => valueOrNull($_POST["calibproc"]),
+                "PreventiveMaintenanceProcedure" => valueOrNull($_POST["preventproc"])
+              ],
+              'form_params' => [
+                'title' => $_POST['title'],
+              ]
+            ]);
+            header('location: index.php?action=instrument');
+          } catch (Exception $e) {
+            die($e->getMessage());
+          }
+      }
 
     }
 
@@ -133,8 +135,7 @@ switch($sub) {
   case 'instruments':
   default:
   $sub = 'instruments';
-  $instrumentData = json_decode($client->get('instrument')->getBody()->getContents());
-  $instrumentData = $instrumentData->items;
+  $instrumentData = getDataFromUrl($client, 'instrument', true);
 
 
 

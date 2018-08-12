@@ -3,7 +3,7 @@
 
 <div class="card">
 
-  <div class="card-header">New Manufacturer Type</div>
+  <div class="card-header">New Analysis Service</div>
   <div class="card-body">
   
     <form class="mx-auto form w-50" method="POST" act="">

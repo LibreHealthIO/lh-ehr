@@ -108,7 +108,9 @@ switch($sub) {
             'form_params' => [
                 'title' => $_POST['name']
               ]
+            
           ]);
+          header('location: index.php?action=client');
         } catch(Exception $e) {
           die($e->getMessage());
         }

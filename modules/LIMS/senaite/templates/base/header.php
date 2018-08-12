@@ -27,6 +27,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <a href="index.php" class="dropdown-item"><i class="fas fa-tachometer-alt fa-sm"></i> Dashboard</a>
                 <a href="index.php?action=account" class="dropdown-item"><i class="fas fa-cogs fa-sm"></i> Manage Account</a>
+                <a href="index.php?action=procedure" class="dropdown-item"><i class="fas fa-sitemap fa-sm"></i> Manage Procedure Requests</a>
                 <a href="index.php?action=site&sact=setup" class="dropdown-item"><i class="fas fa-sitemap fa-sm"></i> Site Setup</a>
                 <a href="index.php?action=logout" class="dropdown-item"><i class="fas fa-user-times fa-sm"></i> Logout</a>
                 

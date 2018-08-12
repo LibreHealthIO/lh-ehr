@@ -109,7 +109,7 @@ To install Plone and SENAITE in Linux distributions, you can follow the steps in
 
 ## Pre-configured ISO
 
-You will find a pre-configured ISO [here](). You just need to take this and install it using VirtualBox (or natively onto your system if you wish) and it has Senaite and Plone already installed onto it. 
+You will find a pre-configured ISO [here](https://drive.google.com/file/d/1X8r9Zc5zW4p6-8BHQMDrQVG0ELDh3VEK/view?usp=sharing). You just need to take this and install it using VirtualBox (or natively onto your system if you wish) and it has Senaite and Plone already installed onto it. 
 
 ### Instructions
 
@@ -148,3 +148,33 @@ If you want to start Senaite in the foreground ( to see which requests are being
 ```
 
 When starting the application for the first time, it might take some time for it to fully boot up.
+
+
+After the instance has started, go to http://localhost:8080 in the browser and click "Install Senaite Core". In the next page, let all the defaults stay the same and click Install. Once that is finished, you can access the LIMS through LibreEHR.
+
+
+
+
+## Updating Senaite
+
+To update senaite.core, go to the "src" folder in the main Plone directory. (/usr/local/Plone/zinstance/src). 
+There, input the following command: 
+```
+git clone https://github.com/senaite/senaite.core
+```
+Once that is done, open buildout.cfg in the zinstance folder, find the "Development Eggs" section and write the following line below it:
+``` 
+develop = src/senaite.core
+```
+
+Then, run bin/buildout. 
+ 
+This will set up the latest version of senaite in your application.
+Whenever a new version comes out, all that needs to be done is -
+
+Step 1. Go into the /src/senaite.core directory and run 
+``` git pull ```
+
+Step 2. Run bin/buildout
+
+This will update your installation to the latest version of senaite.

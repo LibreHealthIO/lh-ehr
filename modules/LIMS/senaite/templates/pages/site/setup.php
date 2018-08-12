@@ -82,6 +82,9 @@
               <div class="col-2">
                 <a href="index.php?action=analysis&sact=services"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Services </a>
               </div>
+              <div class="col-2">
+                <a href="index.php?action=analysis&sact=requests"><img src="./assets/img/client.png" style="height: 50px; width: 50px" class="rounded" alt="...">  Analysis Requests </a>
+              </div>
               
             </div>
           </div>

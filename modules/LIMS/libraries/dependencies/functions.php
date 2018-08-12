@@ -44,13 +44,30 @@ function valueOrNull($value) {
 }
 
 /**
+ * valueOrZero
+ * checks whether given value is a non-zero integer. if not, returns 1 to avoid by zero division
+ * @param integer $value
+ * @return void
+ */
+function valueOrZero($value) {
+	if (is_integer($value) && $value !== 0) {
+		return $value;
+	} else {
+		return 1;
+	}
+}
+
+/**
  * getDataFromUrl
  * sends a GET request to the given URL and returns the data received
  * @param GuzzleHttp $handler
  * @param string $url
  * @return object
  */
-function getDataFromUrl($handler, $url) {
+function getDataFromUrl($handler, $url, $remove_dormant = false) {
+	if ($remove_dormant) {
+		$url .= '?inactive_state=active';
+	}
 	return json_decode($handler->get($url)->getBody()->getContents())->items;
 }
 

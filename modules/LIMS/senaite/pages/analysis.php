@@ -193,7 +193,6 @@ switch($sub) {
     $sampleTypes = getDataFromUrl($client, 'sampletype');
     $storageLocations = getDataFromUrl($client, 'storagelocation');
     $samplePoints = getDataFromUrl($client, 'samplepoint');
-    $sampleConditions = getDataFromUrl($client, 'samplecondition');
     $containers = getDataFromUrl($client, 'container');
     $analysisCategories = getDataFromUrl($client, 'analysiscategory');
     $analyses = getDataFromUrl($client, 'analysisservice');
@@ -205,24 +204,33 @@ switch($sub) {
       if (!(checkRequiredFields($required, $_POST))) {
         $errors[] = 'Please fill in all the required fields';
       }
-
+      if (!isset($_POST['analysisProfies'])) {
+        $_POST['analysisProfiles'] = '';
+      }
+      if (!isset($_POST['samplePoint'])) {
+        $_POST['samplePoint'] = '';
+      }
       if (count($errors) === 0) { 
+        $clientInformation = getDataFromUrl($client, 'client/'.$_POST['client'])[0];
+        $sampleTypeInformation = getDataFromUrl($client, 'sampletype/'.$_POST['sampleType'])[0];
+        $contactInformation = getDataFromUrl($client, 'contact/'.$_POST['contact'])[0];
+
         try {
-          $client->post('analysisrequest', [
+          $response = $client->post('analysisrequest', [
             'json' => [
-              'Client' => $_POST['client'],
-              'Contact' => $_POST['contact'],
+              'parent_path' => $clientInformation->path,
+              'Contact' => $contactInformation->path,
               'Profiles' => valueOrNull($_POST['analysisProfiles']),
               'DateSampled' => $_POST['sampleDate'],
-              'SampleType' => $_POST['sampleType'],
+              'SampleType' => "New SampleType",
               'SamplePoint' => valueOrNull($_POST['samplePoint']),
-              'SampleCondition' => valueOrNull($_POST['sampleCondition']),
               'Priority' => valueOrNull($_POST['priority']),
               'EnvironmentalConditions' => valueOrNull($_POST['environmentalConditions']),
               'AdHoc' => valueOrNull($_POST['adhoc']),
-              'Analyses' => $_POST['analyses']  
+              'Analyses' => $_POST['analyses'],
             ],
           ]);
+          header('location: index.php?action=analysis&sact=requests');
         } catch (Exception $e) {
           die($e->getMessage());
         }
@@ -230,6 +238,51 @@ switch($sub) {
     }
 
 
+
+  break;
+
+  case 'requests':
+
+    $analysisRequests = getDataFromUrl($client, 'analysisrequest');
+  break;
+
+
+  case 'request':
+    if (isset($_GET['id']) && ($_GET['id'] != null )) {
+      $id = $_GET['id'];
+    } else {
+      header('location: index.php?action=analysis&sact=requests');
+    }
+
+    $analysisRequestInformation = getDataFromUrl($client, 'analysisrequest/'.$id)[0];
+
+
+    if (isset($_POST['receiveSample'])) {
+
+      // cannot send updates to senaite's API yet
+      /*
+      try {
+        $client->post('update/'.$id [
+          'json' => [
+            'DateReceived' => date('c'),
+            'ReceivedBy' => 'admin',
+          ]
+        ]);
+        $client->post('update/'.$analysisRequestInformation->SampleUID, [
+          'json' => [
+            'review_state' => 'sample_received',
+          ]
+        ]);
+      } catch (Exception $e) {
+        die($e->getMessage());
+      }
+      */
+
+      $updateAnalysisRequests = sqlStatement("UPDATE lims_analysisrequests SET status = ? WHERE analysisrequest_id = ?", [ 'received', $id ]);
+      if ($updateAnalysisRequests) {
+        header('location: index.php?action=analysis&sact=requests');
+      }
+    }
 
   break;
 

@@ -69,16 +69,6 @@
       </div>
 
       <div class="form-group">
-        <label for="sampleCondition">Sample Condition <i class="fas fa-question-circle fa-sm" data-toggle="tooltip"
-                  data-placement="top" title="The current condition of the sample"></i></label>
-        <select name="sampleCondition" id="sampleCondition" class="form-control">
-        <?php foreach ($sampleConditions as $sampleCondition) { ?>
-          <option value="<?php echo $sampleCondition->uid; ?>"> <?php echo $sampleCondition->title; ?> </option>
-        <?php } ?>
-        </select>
-      </div>
-
-      <div class="form-group">
         <label for="priority">Priority</label>
         <select name="priority" id="priority" class="form-control">
 
@@ -142,8 +132,15 @@
 
 
 <script type="text/javascript">
-  
+
   var contactsArray = <?php echo json_encode($contacts); ?>;
+
+  document.addEventListener("DOMContentLoaded", function(event) { 
+
+    var client = document.querySelector('#client');
+    updateContacts(client);
+  });
+  
 
   function updateContacts(client) {
 

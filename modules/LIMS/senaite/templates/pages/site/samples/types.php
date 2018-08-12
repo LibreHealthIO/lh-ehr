@@ -25,6 +25,7 @@
           <tbody>
             <?php foreach($sampleTypes as $sampleType) {
                   $sampleInformation = json_decode($client->get($sampleType->api_url)->getBody()->getContents())->items[0];   
+                  $samplePoints = [];
                   $samplePointsAPI = [];
                   if ($sampleInformation->SamplePoints) {
 
