@@ -60,11 +60,19 @@ class ReportGeneratorController extends Controller
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
             $protocol_host = 'https://' . $_SERVER['HTTP_HOST'];
 
+        $url = $_SERVER['REQUEST_URI']; //returns the current URL
+        $parts = explode('/',$url);
+        //$dir = $_SERVER['SERVER_NAME'];
+        $dir = "";
+        for ($i = 0; $i < count($parts) - 2; $i++) { // removing the last part of the $url i.e report_format/view/1
+           $dir .= $parts[$i] . "/";
+        }
+
         $option_ids = serialize($option_ids);
         return response()->json([
             'option_ids' => $option_ids,
             'success' => 'Received Option IDs',
-            'redirecturl' => $protocol_host.'/reportgenerator/report/'.$option_ids
+            'redirecturl' => $protocol_host . $dir . 'reportgenerator/report/' .$option_ids
         ]);
     }
 
@@ -120,6 +128,18 @@ class ReportGeneratorController extends Controller
      */
      public function view($report_format_id)
      {
+         //dd($_SERVER['DOCUMENT_ROOT']);
+         //dd(app_path().'/globals.php');
+         //dd(dirname(realpath(__FILE__)));
+         $url = $_SERVER['REQUEST_URI']; //returns the current URL
+        $parts = explode('/',$url);
+        //$dir = $_SERVER['SERVER_NAME'];
+        $dir = "";
+        for ($i = 0; $i < count($parts) - 3; $i++) {
+         $dir .= $parts[$i] . "/";
+        }
+        dd($dir);
+
          $draggable_components = ReportFormat::find($report_format_id)->draggable_components()->get();
 
          $option_ids = [];

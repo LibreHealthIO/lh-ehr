@@ -85,7 +85,7 @@ function generate(IDs) {
       //alert("You've successfully sent the unique ids");
       jQuery('.alert').show();
       jQuery('.alert').html(response.option_ids);
-      window.location.href = response.redirecturl; // your action should return an object having [redirecturl] property
+      //window.location.href = response.redirecturl; // your action should return an object having [redirecturl] property
     },
     error: function (httpRequest, textStatus, errorThrown) {  // detailed error messsage
       alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
