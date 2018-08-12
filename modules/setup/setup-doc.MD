@@ -4,9 +4,11 @@
 This README file highlight all the features know to this module in question (setup module) found at this
 location in LibreEHR/modules/setup/ directory of the code base.
 
-
 This module aims at creating a user friendly interface for installing the LibreEHR software on any suitable
-platform for your practice usually (Windows / MacOS / Linux / Unix)
+platform for your practice usually (Windows / MacOS / Linux / Unix).
+This module works han
+
+
 
 
 

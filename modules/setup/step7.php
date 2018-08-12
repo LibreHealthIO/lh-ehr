@@ -43,7 +43,7 @@ $task = $_POST["task"];
 $prevstep = $_POST["prevstep"];
 
     if(isset($step) && $step = 7){
-        rewrite_configuration_file();
+        rewrite_configuration_file(1);
         //ok we can allow user to run the script
         if($prevstep == 6){
 

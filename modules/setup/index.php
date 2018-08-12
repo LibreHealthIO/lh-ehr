@@ -38,6 +38,7 @@ if (!empty($_GET['site']))
 $rootpath = dirname(__FILE__)."/../../";
 $sqlfilepath = dirname(__FILE__)."/../../sites/$site_id/sqlconf.php";
 $loginpath = '../../interface/login/login.php?site='.$site_id;
+$forceinstall = 'force_installation.php';
 
     if (empty($site_id) || preg_match('/[^A-Za-z0-9\\-.]/', $site_id))
         die("Site ID '".htmlspecialchars($site_id,ENT_NOQUOTES)."' contains invalid characters.");
@@ -48,7 +49,8 @@ $loginpath = '../../interface/login/login.php?site='.$site_id;
     }
 
     if ($config == 1) {
-        header("Location: $loginpath");
+        //give oportunity for the user to install the script again
+        header("Location: $forceinstall?site=$site_id");
     } else {
         if ($site_id != 'default'){
             header("Location: index.php");
