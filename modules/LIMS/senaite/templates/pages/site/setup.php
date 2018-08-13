@@ -116,11 +116,17 @@
           <div class="card-header">Samples</div>
           <div class="card-body">
             <div class="row">
-              <div class="col-6">
+              <div class="col-3">
                 <a href="index.php?action=sample&sact=types"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Types </a>
               </div>
-              <div class="col-6">
+              <div class="col-3">
                 <a href="index.php?action=sample&sact=points"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Points </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=sample&sact=matrices"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Matrices </a>
+              </div>
+              <div class="col-3">
+                <a href="index.php?action=sample&sact=conditions"><img src="./assets/img/sample.jpg" style="height: 50px; width: 50px" class="rounded" alt="...">  Sample Conditions </a>
               </div>
             </div>
           </div>

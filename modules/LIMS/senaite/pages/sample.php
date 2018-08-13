@@ -179,17 +179,81 @@ switch ($sub) {
     $sampleConditions = getDataFromUrl($client, 'samplecondition');
   break;
 
+  case 'createconditions':
+  $errors = [];
+  if (isset($_POST['submit'])) {
+    if (!isset($_POST['title']) || valueOrNull($_POST['title']) === null) {
+      $errors[] = 'Please fill in the required fields';
+    }
+
+    if (count($errors) === 0) {
+      try {
+        $client->post('samplecondition', [
+          'json' => [
+            'title' => $_POST['title'],
+            'description' => $_POST['description'],
+          ],
+          'form_params' => [
+            'title' => $_POST['title'],
+          ]
+        ]);
+
+        header('location: index.php?action=sample&sact=conditions');
+      } catch (Exception $e) {
+        die($e->getMessage());
+      }
+    }
+
+
+  }
+
+  break;
+
+
+  case 'matrices':
+
+    $sampleMatrices = getDataFromUrl($client, 'samplematrix');
+
+  break;
+
+
+  case 'creatematrices':
+    $errors = [];
+    if (isset($_POST['submit'])) {
+      if (!isset($_POST['title']) || valueOrNull($_POST['title']) === null) {
+        $errors[] = 'Please fill in the required fields';
+      }
+
+      if (count($errors) === 0) {
+        try {
+          $client->post('samplematrix', [
+            'json' => [
+              'title' => $_POST['title'],
+              'description' => $_POST['description'],
+            ],
+            'form_params' => [
+              'title' => $_POST['title'],
+            ]
+          ]);
+
+          header('location: index.php?action=sample&sact=matrices');
+        } catch (Exception $e) {
+          die($e->getMessage());
+        }
+      }
+
+
+    }
+
+  break;
+
+
+
   case 'types':
   default:
     $sampleTypes = json_decode($client->get('sampletype')->getBody()->getContents())->items;
     $sub = 'types';
    
-
-
-
 }
-
-
-
 
 require_once('./templates/pages/site/samples/'.$sub.'.php');

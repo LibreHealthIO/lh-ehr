@@ -2,7 +2,7 @@
   <div class="col-12">
     
     <div class="card">
-      <div class="card-header">Sample Types</div>
+      <div class="card-header">Sample Points</div>
       <div class="card-body">
 
         <table class="table">
