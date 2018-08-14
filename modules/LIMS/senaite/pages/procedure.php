@@ -16,6 +16,7 @@ switch ($sub) {
     }
 
     $procedure = sqlFetchArray(sqlStatement("SELECT * FROM procedure_order WHERE procedure_order_id = ?", [ $id ]));
+    $procedureInformation = sqlFetchArray(sqlStatement("SELECT * FROM procedure_order WHERE procedure_order_id = ?", [ $id ]));
     if (!$procedure) {
       die('No procedure with the given ID was found');
     } else {
@@ -28,11 +29,18 @@ switch ($sub) {
         
         $assignAR = sqlStatement("INSERT INTO lims_analysisrequests(`procedure_order_id`, `analysisrequest_id`, `status`) VALUES(?, ?, ?)", [$id, $arToAssign, $status]);
         $updateProcedureOrder = sqlStatement("UPDATE procedure_order SET order_status = ? WHERE procedure_order_id = ?", [ 'assigned', $id]);
-        if ($assignAR) {
+        if ($assignAR && $updateProcedureOrder) {
           header('location: index.php?action=procedure');
         }
+      }
 
-        
+      if (isset($_POST['updateAR'])) {
+        $arToAssign = $_POST['analysisrequest'];
+        $updateAR = sqlStatement("UPDATE lims_analysisrequests SET analysisrequest_id = ? WHERE procedure_order_id = ?", [$arToAssign, $id]);
+
+        if ($updateAR) {
+          header('location: index.php?action=procedure');
+        }
       }
       
 

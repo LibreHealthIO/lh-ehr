@@ -254,35 +254,124 @@ switch($sub) {
       header('location: index.php?action=analysis&sact=requests');
     }
 
-    $analysisRequestInformation = getDataFromUrl($client, 'analysisrequest/'.$id)[0];
+
+    $procedureInformation = sqlStatement("SELECT * FROM lims_analysisrequests WHERE analysisrequest_id = ?", [ $id ]);
+    $procedureInformation = sqlFetchArray($procedureInformation);
 
 
+    $analysisRequestInformation = getDataFromUrl($client, 'analysisrequest/'.$id.'?workflow=yes')[0];
+    $sampleInformation = getDataFromUrl($client, 'sample/'.$analysisRequestInformation->SampleUID.'?workflow=yes')[0];
+    $analysts = getDataFromUrl($client, 'users');
+
+    // need to account for retracted analysis results
+    $analysisInformation = getDataFromUrl($client, $analysisRequestInformation->Analyses[0]->api_url.'?workflow=yes')[0]; 
     if (isset($_POST['receiveSample'])) {
 
-      // cannot send updates to senaite's API yet
-      /*
+      
       try {
-        $client->post('update/'.$id [
+        $client->post('update/'.$id, [
           'json' => [
-            'DateReceived' => date('c'),
-            'ReceivedBy' => 'admin',
+            'transition' => 'receive',
           ]
         ]);
-        $client->post('update/'.$analysisRequestInformation->SampleUID, [
-          'json' => [
-            'review_state' => 'sample_received',
-          ]
-        ]);
+
       } catch (Exception $e) {
         die($e->getMessage());
       }
-      */
+      
 
       $updateAnalysisRequests = sqlStatement("UPDATE lims_analysisrequests SET status = ? WHERE analysisrequest_id = ?", [ 'received', $id ]);
       if ($updateAnalysisRequests) {
         header('location: index.php?action=analysis&sact=requests');
       }
     }
+
+    if (isset($_POST['submitResult'])) {
+      try {
+        $client->post('update/'.$analysisInformation->uid, [
+          'form_params' => [
+            'Result' => $_POST['result'],
+            'transition' => 'submit',
+          ]
+        ]);
+
+        // this requires UDL/LDL validation to work
+        // https://github.com/senaite/senaite.jsonapi/issues/28
+
+        $client->post('update/'.$analysisRequestInformation->uid, [
+          'json' => [
+            'transition' => 'submit',
+            'Analyst' => $_POST['analyst'],
+          ]
+        ]);
+      } catch (Exception $e) {
+        die($e->getMessage());
+      }
+    }
+
+
+    // this requires UDL/LDL validation to work
+    // https://github.com/senaite/senaite.jsonapi/issues/28
+
+    if (isset($_POST['verifyResult'])) {
+      try {
+        $client->post('update/'.$id, [
+          'json' => [
+            'transition' => 'verify'
+          ]
+        ]);
+
+      } catch (Exception $e) {
+        die($e->getMessage());
+      }
+    }
+
+
+    if (isset($_POST['publish'])) {
+      try {
+        // submit report
+        // data needed - proc_order_id, date_collected, date_report, source, specimen_num, report_status, review_status, report_notes
+       
+       
+        $procedure_id = sqlFetchArray(sqlStatement(" SELECT * FROM lims_analysisrequests WHERE analysisrequest_id = ?", [$analysisRequestInformation->uid]))['procedure_order_id'];
+        $procedure_order_details = sqlFetchArray(sqlStatement("SELECT * FROM procedure_order WHERE procedure_order_id = ?", [ $procedure_id ]));
+        $procedure_order_code_details = sqlFetchArray(sqlStatement("SELECT * FROM procedure_order_code WHERE procedure_order_id = ?", [ $procedure_id ]));
+        $procedure_type_details = sqlFetchArray(sqlStatement("SELECT * FROM procedure_type WHERE name = ?", [ $procedure_order_code_details['procedure_name']]));
+
+        $date_collected = $analysisRequestInformation->DateReceived;
+        $date_report = date('c');
+        $source = "LIMS"; // not sure what the source should be. faculty performing analysis? user that was logged in while clicking the publish button?
+        $specimen_num = 1;
+        $report_status = 'complete';
+        $review_status = 'reviewed';
+        $report_notes = $analysisRequestInformation->Remarks;
+        $procedure_order_seq = sqlFetchArray(sqlStatement("SELECT procedure_order_seq FROM procedure_order_code WHERE procedure_order_id = ?", [$procedure_id]))['procedure_order_seq'];
+        
+        $createProcedureReport = sqlStatement("INSERT INTO procedure_report (`procedure_order_id`,`procedure_order_seq`,
+                                              `date_collected`,`date_report`,`source`,`specimen_num`,`report_status`, `review_status`, `report_notes`) VALUES(?,?,?,?,?,?,?,?,?)",
+                                              [$procedure_id, $procedure_order_seq, $date_collected, $date_report, $source, $specimen_num, $report_status, $review_status, $report_notes]);
+        if ($createProcedureReport) {
+          $client->post('update/'.$analysisRequestInformation->uid, [
+            'json' => [
+              'transition' => 'publish'
+            ]
+          ]);
+          // need some extra details here
+          /*
+          $procedureReportID = sqlFetchArray(sqlStatement("SELECT procedure_report_id FROM procedure_report WHERE procedure_order_id = ?", [ $procedure_id ]))['procedure_report_id'];
+          
+          $createProcedureResult = sqlStatement("INSERT INTO procedure_result(procedure_report_id, result_data_type, result_code, result_text,date,
+                                                 facility, units, result, range, abnormal, comments, result_status VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                                                 []);
+          */
+        }
+      } catch (Exception $e) {
+        die($e->getMessage());
+      }
+    }
+
+
+
 
   break;
 

@@ -123,6 +123,7 @@ switch($sub) {
 
       /**
        * Seems to not completely update worksheets with analyses - waiting for senaite's response
+       * Related to the LDL/UDL errors again: https://github.com/senaite/senaite.jsonapi/issues/28
        */
 
       if (count($errors) === 0) {
@@ -167,10 +168,12 @@ switch($sub) {
       header('location: index.php?action=worksheet&sact=worksheets');
     }
     $errors = [];
-    $worksheetData = getDataFromUrl($client, 'worksheet/'.$id);
-    $analysis = getDataFromUrl($client, 'analysis', true);
+    $worksheetData = getDataFromUrl($client, 'worksheet/'.$id)[0];
+    $analysts = getDataFromUrl($client, 'users');
+    $worksheetTemplates = getDataFromUrl($client, 'worksheettemplate');
+    $instruments = getDataFromUrl($client, 'instrument');
+    $analyses = getDataFromUrl($client, 'analysis?review_state=sample_received');
     
-
   break;
 
 }

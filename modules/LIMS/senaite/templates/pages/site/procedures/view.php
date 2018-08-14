@@ -25,12 +25,25 @@
 
             <button name="assignAR" type="submit" class="btn btn-primary">Assign Analysis Request</button>
           </form>
-      <?php } else {
-        
-        
+      <?php } else if ($procedureInformation) { ?>
+        <form method="POST" class="w-50 mx-auto">
+            
+            <div class="form-group">
+              <label for="analysisrequest"> Analysis Request </label>
+              <select name="analysisrequest" id="analysisrequest" class="form-control"> 
+                <?php foreach ($analysisRequests as $analysisRequest) { ?>
+                  <option value="<?php echo $analysisRequest->uid;?>"> <?php echo $analysisRequest->title; ?> </option>
+                <?php } ?>
+              </select>
+      
+              
+            </div>
+
+            <button name="updateAR" type="submit" class="btn btn-primary">Update Analysis Request</button>
+          </form>
 
 
-        }
+      <?php   }
        
        ?>
         
