@@ -198,3 +198,4 @@ CREATE TABLE `lims_analysisrequests` (
  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
 #EndIf
+

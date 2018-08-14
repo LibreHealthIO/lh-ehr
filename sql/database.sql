@@ -7697,8 +7697,6 @@ CREATE TABLE `updater_user_mode_backup_entry` (
   `old_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB;
 
-
-
 --
 -- Table structure for table `lims_analysisrequests` 
 -- 
