@@ -196,16 +196,17 @@ function authorized_clicked() {
 </style>
 </head>
 <body class="body_top">
-<table><tr><td>
-<span class="title"><?php echo xlt('Add User'); ?></span>&nbsp;</td>
-
-<td>
-<a class="css_button cp-submit" name='form_save' id='form_save' href='#' onclick="return submitform()">
-    <span><?php echo xlt('Save');?></span></a>
-<a class="css_button large_button cp-negative" id='cancel' href='#'>
-    <span class='css_button_span large_button_span'><?php echo xlt('Cancel');?></span>
-</a>
-</td></tr></table>
+<table>
+    <tr>
+    <td>
+    <a class="css_button cp-submit" name='form_save' id='form_save' href='#' onclick="return submitform()">
+        <span><?php echo xlt('Save');?></span></a>
+    <a class="css_button large_button cp-negative" id='cancel' href='#'>
+        <span class='css_button_span large_button_span'><?php echo xlt('Cancel');?></span>
+    </a>
+    </td>
+    </tr>
+</table>
 <br><br>
 <form name='new_user' method='post'  target="_parent" action="usergroup_admin.php" enctype="multipart/form-data" 
  onsubmit='return top.restoreSession()'>
