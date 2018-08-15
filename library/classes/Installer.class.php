@@ -301,14 +301,22 @@ class Installer
          }
       }
       else {
-          // Create file, generate app key, and write database credentials
+          // Create file.
           $this->create_dot_env_file($dot_env_file);
+
+          // Generate application key.
+          exec('cd '.escapeshellarg($dot_env_file_path)); // move to the report generator directory first!
+          exec('php artisan key:generate'); // Generate application key command. This writes the application key in .env file's APP_KEY constant.
+          exec('cd ../../library/classes'); // Go back to the installer directory.
+
+          // Write database credentials.
       }
 
 
       // 5. If file is successfully created and written to, call the 'php artisan make:database' command.
       exec('cd '.escapeshellarg($dot_env_file_path)); // move to the report generator directory first!
       exec('php artisan make:database'); // run 'php artisan make:database' command here.
+      exec('cd ../../library/classes'); // Go back to the installer directory.
       // The command above;
       //    1. creates report generateor database called 'librereportgenerator'.
       //    2. runs laravel-module's database migration command, (programmatically).
@@ -318,8 +326,8 @@ class Installer
 
   /**
   * Create laravel .env file for specifying various application variables.
-  * @param
-  * @return
+  * @param dot_env_file
+  * @return Boolean
   *
   * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
   */
@@ -338,17 +346,17 @@ class Installer
           $env_file_open = @fopen($dot_env_file, 'w'); // Open .env file for writing
           if ( !$env_file_open ) { // If .env file doesn't open
             $this->error_message = 'Unable to open .'$dot_env_file'. file for writing';
-            return False;
+            return FALSE;
           }
 
           fwrite($env_file_open, $initial_string);
           fclose($env_file_open);
 
-          return True;
+          return TRUE;
       }
       else {
           $this->error_message = 'Failed to create .env file for report generator';
-          return False;
+          return FALSE;
       }
   }
 
@@ -361,7 +369,7 @@ class Installer
   * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
   */
   private function generate_application_key(){
-
+      exec('php artisan key:generate');
   }
 
 
