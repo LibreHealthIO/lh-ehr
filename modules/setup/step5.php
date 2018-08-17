@@ -146,7 +146,49 @@ if(isset($step) && $step = 5){
             }
 
             case($stephold == "user_config"):{
-                echo "wow here";
+                echo "
+                    <p class='clearfix'></p>
+                    <p class='clearfix'></p>
+                    <p class='clearfix'></p>
+                <div class='alert alert-success text-center'>
+                Configuration of Access Controls (php-GACL)... successful. 
+                Click on next to proceed with configuration of PHP.
+                </div>
+                ";
+                echo "<p class='clearfix'></p>";
+                echo "<p class='clearfix'></p>";
+                echo '<form action="step4.php" method="post">
+                            <div class="control-btn2">
+                            <input type="hidden" value="4" name="step">
+                             <input type=\'hidden\' value=\'$installer->server\' name=\'server\' class=\'form-control\'> 
+                             <input type=\'hidden\' value=\'$installer->dbname\' name=\'dbname\' class=\'form-control\'> 
+                             <input type=\'hidden\' value=\'$installer->pass\' name=\'pass\' class=\'form-control\'> 
+                                <input type=\'hidden\' value=\'$installer->login\' name=\'login\' class=\'form-control\'> 
+                            <button type="submit" class="controlBtn">
+                            <i class="fa fa-arrow-circle-left"></i> Back
+                            </button>
+                            </div>
+                            </form>
+                    ';
+
+                echo " <form action='step6.php' method='post'>
+                    <div class='control-btn'>
+                     <input type='hidden' value='6' name='step'>
+                     <input type='hidden' value='$installer->server' name='server' class='form-control'> 
+                     <input type='hidden' value='$installer->dbname' name='dbname' class='form-control'> 
+                     <input type='hidden' value='$installer->pass' name='pass' class='form-control'> 
+                     <input type='hidden' value='$installer->login' name='login' class='form-control'> 
+                     <input type='hidden' name='site' value='$installer->site'>\n
+                     <input type='hidden' name='iuser' value='$installer->iuser'>\n
+                     <input type='hidden' name='iufname' value='$installer->iufname'>\n
+                     <input type='hidden' name='iuname' value='$installer->iuname'>\n
+                     <input type='hidden' name='iuserpass' value='$installer->iuserpass'>\n
+                            <button type='submit' class='controlBtn'>
+                                Continue <i class='fa fa-arrow-circle-right'></i>
+                            </button>
+                            </div>
+                            </form>
+                    ";
 
             }
 
