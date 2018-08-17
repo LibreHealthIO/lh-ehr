@@ -76,7 +76,7 @@ class CreateDatabase extends Command
     {
         /* LibreLaravel database creation logic. */
         if(!$db_name) {
-            $this->info('Database name is not specified in .env file. Please check that both database names are specified.');
+            $this->error('Database name is not specified in .env file. Please check that both database names are specified.');
         } else {
             $pdo_instance = $this->getPDO($db_host, $db_port, $db_username, $db_password);
             $check_db_exists = $pdo_instance->prepare('select count(*) from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME = :dbname');
@@ -109,6 +109,16 @@ class CreateDatabase extends Command
 
          /* librereportgenerator database creation logic. */
          $this->createDB(env('DB_REPORT_GENERATOR_DATABASE'), env('DB_REPORT_GENERATOR_HOST'), env('DB_REPORT_GENERATOR_PORT'), env('DB_REPORT_GENERATOR_USERNAME'), env('DB_REPORT_GENERATOR_PASSWORD'));
+
+         /* Create database tables */
+         $this->call('module:migrate', [
+              'module' => 'ReportGenerator'
+          ]);
+
+         /* Populate the database tables with default system_features and report_formats. */
+         $this->call('module:seed', [
+             'module' => 'ReportGenerator'
+         ]);
     }
 
 }
