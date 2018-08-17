@@ -52,7 +52,7 @@ class SystemFeatureController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [ // Validate the input from new system feature form
-            'feature_name' => 'required|max:255',
+            'feature_name' => 'required|unique:mysql_report_generator.system_features,name|max:255',
             'description' => 'required|max:255'
         ]);
 
@@ -104,7 +104,7 @@ class SystemFeatureController extends Controller
     public function update(Request $request)
     {
         $validate = Validator::make($request->all(), [ // Validate the input from new system feature form
-            'feature_name' => 'required|max:255',
+            'feature_name' => 'required|unique:mysql_report_generator.system_features,name|max:255',
             'description' => 'required|max:255'
         ]);
 

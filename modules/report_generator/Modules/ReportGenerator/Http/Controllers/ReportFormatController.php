@@ -57,7 +57,7 @@ class ReportFormatController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [ // Validate the input from new report format form
-            'title' => 'required|max:255',
+            'title' => 'required|unique:mysql_report_generator.report_formats,title|max:255',
             'description' => 'required|max:255',
             'system_feature_id' => 'required'
         ]);
@@ -122,7 +122,7 @@ class ReportFormatController extends Controller
     public function update(Request $request)
     {
         $validate = Validator::make($request->all(), [ // Validate the input from new report format form
-            'title' => 'required|max:255',
+            'title' => 'required|unique:mysql_report_generator.report_formats,title|max:255',
             'description' => 'required|max:255'
         ]);
 
