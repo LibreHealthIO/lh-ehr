@@ -606,13 +606,6 @@ $GLOBALS_METADATA = array(
       xl('Support export/import of configuration data via the Backup page.')
     ),
 
-    'tags_filters_enabled' => array(
-      xl('Enable Tags/Filters Feature'),
-       'bool',                          // data type
-       '0',                             // default
-      xl('Enables configurable tags and filters for demographics and various purposes.')
-    ),
-
     'restrict_user_facility' => array(
       xl('Restrict Users to Facilities'),
        'bool',                          // data type
