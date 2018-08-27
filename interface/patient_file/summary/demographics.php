@@ -659,7 +659,10 @@
             <!-- start left column div -->
             <div style='float:left; margin-right:20px'>
               <table cellspacing=0 cellpadding=0>
-                <?php do_action( 'demographics_before_first_table_row' ); ?>
+                <?php if ($GLOBALS['tags_filters_enabled'])  {
+                          do_action( 'demographics_before_first_table_row' );
+                      }
+                ?>
                 <?php if (!$GLOBALS['hide_billing_widget'])  { ?>
                 <tr id="billing_widget_row">
                   <td>
@@ -1529,7 +1532,9 @@
              echo htmlspecialchars(xl_appt_category($row['pc_catname']),ENT_NOQUOTES) . "\n";
              if ($row['pc_hometext']) echo " <span style='color:green'> Com</span>";
              echo "<br>" . htmlspecialchars($row['ufname'] . " " . $row['ulname'],ENT_NOQUOTES) . "</a></div>\n";
-             do_action( 'demographics_after_appointment', $row );
+             if ($GLOBALS['tags_filters_enabled'])  {
+                do_action( 'demographics_after_appointment', $row );
+             }
              //////
          }
          if ($resNotNull) { //////
@@ -1540,7 +1545,9 @@
                else echo "<div><hr></div>";
              }
              echo "</div>";
-             do_action( 'demographics_after_get_appointments' );
+             if ($GLOBALS['tags_filters_enabled'])  {
+                 do_action( 'demographics_after_get_appointments' );
+             }
          }
        } // End of Appointments.
 
@@ -1665,7 +1672,10 @@
       checkSkipConditions();
     </script>
   </body>
-  <?php do_action( 'demographics_before_html_end', $args = [ 'pid' => $pid ] ); ?>
+  <?php if ($GLOBALS['tags_filters_enabled'])  {
+         do_action( 'demographics_before_html_end', $args = [ 'pid' => $pid ] );
+        }  
+  ?>
 </html>
 <?php
 //this code is executed when user edit or upload a profile picture
