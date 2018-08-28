@@ -188,3 +188,14 @@ INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`
   ALTER TABLE `libreehr_postcalendar_events` ADD `cancel_reason` text NOT NULL ;
 #EndIf
 
+#IfNotTable lims_analysisrequests
+CREATE TABLE `lims_analysisrequests` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `procedure_order_id` int(11) NOT NULL COMMENT 'references procedure_order.procedure_order_id ',
+ `analysisrequest_id` varchar(80) NOT NULL COMMENT 'refers to analysis request id in the lims',
+ `status` text NOT NULL COMMENT 'received, processing, complete',
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+#EndIf
+
