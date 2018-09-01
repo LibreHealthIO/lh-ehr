@@ -552,6 +552,15 @@
             "children" : [ ],
             "requirement" : 0
         }, {
+
+            "label" : "User Login Report",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/interface/reports/username_report.php",
+            "children" : [ ],
+            "requirement" : 0
+        },{
+
             "label" : "Patient List By Referrer",
             "menu_id" : "rep0",
             "target" : "rep",
