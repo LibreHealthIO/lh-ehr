@@ -11,7 +11,7 @@ $returnurl = 'encounter_top.php';
 		<?php html_header_show();?>
 		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 		<!-- Get Bootstrap and jQuery (required for bootstrap) -->
-		<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
+		<?php call_required_libraries(array('bootstrap', 'jquery-min-1-9-1')); ?>
 	    <script type="text/javascript">
 	      // Resizes the panels to be the height of the largest panel
 	      function resizePanel() {
@@ -196,7 +196,7 @@ $returnurl = 'encounter_top.php';
 			<br>
 			<div>
 				<!-- Save/Cancel buttons -->
-				<input type="button" id="save" class='cp-submit' value="<?php echo xla('Save'); ?>"> &nbsp;
+				<input type="submit" id="save" class='cp-submit' value="<?php echo xla('Save'); ?>"> &nbsp;
 				<input type="button" id="dontsave" class="deleter cp-negative" value="<?php echo xla('Cancel'); ?>"> &nbsp;
 			</div>
 		</form>
@@ -204,3 +204,4 @@ $returnurl = 'encounter_top.php';
 <?php
 formFooter();
 ?>
+
