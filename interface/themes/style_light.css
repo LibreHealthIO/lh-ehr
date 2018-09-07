@@ -693,8 +693,8 @@ tr.odd, td.even {
   padding-right: 10px;
   /* sliding doors padding */
   text-decoration: none;
-  color: #ffffff !important;
-  background-color: #1050b6;
+  color: #101e34 !important;
+  background-color: #5ac3ca;
   padding: 5px 12px 5px;
   border: none;
 }
