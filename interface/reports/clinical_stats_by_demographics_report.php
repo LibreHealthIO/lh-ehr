@@ -26,6 +26,8 @@ require_once("$srcdir/sql.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/vendor/libreehr/Framework/DataTable/DataTable.php");
 require_once "reports_controllers/ClinicalController.php";
+require_once($GLOBALS['srcdir'].'/headers.inc.php');
+$library_array = array('datatables');
 $DateFormat = DateFormatRead();
 //make sure to get the dates
 if ( ! isset($_POST['form_from_date'])) {
@@ -49,37 +51,16 @@ if ( !isset($_POST['form_to_date'])) {
 $to_date = new DateTime($to_date);
 $to_date->modify('+1 day');
 $to_date = $to_date->format('Y-m-d');
-
+$min_age = $_POST['min_age'];
+$max_age = $_POST['max_age'];
 
 
 ?>
 <head>
 <?php html_header_show();?>
 <title><?php xl('Clinical Reports: Demographics vs Diagnosis','e'); ?></title>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<style type="text/css">
-@import "<?php echo $GLOBALS['webroot'] ?>/assets/js/datatables/media/css/demo_page.css";
-@import "<?php echo $GLOBALS['webroot'] ?>/assets/js/datatables/media/css/demo_table.css";
-@import "<?php echo $GLOBALS['webroot'] ?>/assets/js/css/jquery-ui-1-12-1/jquery-ui.css";
-
-<!-- @import "<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.tooltip.css"; -->
-.mytopdiv { float: left; margin-right: 1em; }
-</style>
-
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/datatables/media/js/jquery.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/datatables/media/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui-1.8.21.custom.min.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/tooltip.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
-<script type='text/javascript' src='<?php echo $GLOBALS['webroot'] ?>/library/dialog.js'></script>
-<link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/assets/js/fancybox-1.3.4/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-
-<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['webroot'] ?>/assets/js/DataTables-1.10.16/datatables.css">
-<script type="text/javascript" charset="utf8" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/DataTables-1.10.16/datatables.js"></script>
-<!-- this is a 3rd party script -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/datatables/extras/ColReorder/media/js/ColReorderWithResize.js"></script>
-<link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+    <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+    <?php call_required_libraries($library_array) ?>
 <script>
 $(document).ready(function() {
 
@@ -91,17 +72,6 @@ $(document).ready(function() {
         show_all_diags();
         console.log('end of function');
     }
-
-
-
-
-
-
-
-
-
-
-
 
 });
 
@@ -155,9 +125,14 @@ function show_all_diags(){
             type: "POST",
             url: "../../library/ajax/clinical_stats_and_lab_stats_by_demographics_report_ajax.php",
             data: {
+
                 func:"get_all_diags_data",
-                diag:"<?php  echo $_POST['form_diagnosis']   ?>",
-                proc:"<?php  echo $_POST['form_service_codes']   ?>"
+                diag:"<?php  echo $_POST['form_diagnosis'];   ?>",
+                proc:"<?php  echo $_POST['form_service_codes'];   ?>",
+                ethnicity:"<?php echo $_POST['ethnicity']; ?>",
+                min_age:"<?php echo $_POST['min_age']  ; ?>",
+                max_age:"<?php echo $_POST['max_age']  ; ?>"
+
             }, complete: function(){
                 $('#image').hide();
             }},
@@ -168,7 +143,6 @@ function show_all_diags(){
             { 'data': 'ethnicity'   },
             { 'data': 'diagnosis' },
             { 'data': 'title'      }
-
 
         ],
         "iDisplayLength": 100,
@@ -246,16 +220,45 @@ function show_all_diags(){
 
     </tr>
 
-
     <tr>
-        <td class='label' width='76'>
-            <?php echo htmlspecialchars(xl('Procedure Code'), ENT_NOQUOTES); ?>:</td>
-        <td><input type='text' name='form_service_codes' size='10' maxlength='250'
-                   value='<?php echo htmlspecialchars($form_service_codes, ENT_QUOTES); ?>'
-                   onclick='sel_procedure(this)' title='<?php echo htmlspecialchars(xl('Click to select or change service codes'), ENT_QUOTES); ?>' readonly/>&nbsp;
-        </td>
+
+        <td class='label'><?php echo htmlspecialchars(xl('Age Min'),ENT_NOQUOTES); ?>:</td>
+        <td><input type='text' name='min_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($min_age, ENT_QUOTES); ?>' > </td>
+        <td></td>
+        <td class='label'><?php echo htmlspecialchars(xl('Age Max'),ENT_NOQUOTES); ?>:</td>
+        <td><input type='text' name='max_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($max_age, ENT_QUOTES); ?>' > </td>
 
     </tr>
+    <tr>
+        <td class='label'><?php echo xlt('Ethnicity'); ?>:</td>
+        <td><?php
+
+            // Build a drop-down list of providers.
+            //
+
+            $query = "SELECT DISTINCT(ethnicity) as ethnicity, list_options.title, option_id FROM patient_data " .
+                    " JOIN list_options on option_id = ethnicity and list_id = 'ethnicity'";
+
+            $ures = sqlStatement($query);
+
+            echo "   <select name='ethnicity'>\n";
+            echo "    <option value=''>-- " . xlt('All') . " --\n";
+
+            while ($urow = sqlFetchArray($ures)) {
+                $ethnicity = $urow['ethnicity'];
+                echo "    <option value='" . attr($ethnicity) . "'";
+                if ($ethnicity == $_POST['ethnicity']) echo " selected";
+                echo ">" . text(xl($ethnicity)) . "\n";
+            }
+
+            echo "   </select>\n";
+            ?>
+        </td>
+
+
+    </tr>
+
+
 
     <tr><td>
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * interface/reports/username_report.php - User Activity from Log Table
+ * interface/reports/claims_viewer.php List number of documents.
  *
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
