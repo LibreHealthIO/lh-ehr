@@ -53,7 +53,8 @@ if ( !isset($_POST['form_to_date'])) {
 $to_date = new DateTime($to_date);
 $to_date->modify('+1 day');
 $to_date = $to_date->format('Y-m-d');
-
+$min_age = $_POST['min_age'];
+$max_age = $_POST['max_age'];
 ?>
 <head>
     <?php html_header_show();?>
@@ -125,7 +126,9 @@ $to_date = $to_date->format('Y-m-d');
                     type: "POST",
                     url: "../../library/ajax/clinical_stats_and_lab_stats_by_demographics_report_ajax.php",
                     data: {
-                        func:"get_all_lab_data"
+                        func:"get_all_lab_data",
+                        min_age:"<?php echo $_POST['min_age']  ; ?>",
+                        max_age:"<?php echo $_POST['max_age']  ; ?>"
 
                     }, complete: function(){
                         $('#image').hide();
@@ -220,9 +223,19 @@ $to_date = $to_date->format('Y-m-d');
 
                 <input hidden id = 'show_lab_details_button' value = '<?php echo isset($_POST['show_lab_details']) ? $_POST['show_lab_details'] : null  ?>'>
 
+
             </td></tr>
+        <tr>
+
+            <td class='label'><?php echo htmlspecialchars(xl('Age Min'),ENT_NOQUOTES); ?>:</td>
+            <td><input type='text' name='min_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($min_age, ENT_QUOTES); ?>' > </td>
+            <td></td>
+            <td class='label'><?php echo htmlspecialchars(xl('Age Max'),ENT_NOQUOTES); ?>:</td>
+            <td><input type='text' name='max_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($max_age, ENT_QUOTES); ?>' > </td>
+
+        </tr>
     </table>
-</form>
+</form>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 
 
 
