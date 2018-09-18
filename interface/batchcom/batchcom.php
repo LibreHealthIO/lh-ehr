@@ -192,10 +192,11 @@ if ($_POST['form_action']=='Process') {
 
 </head>
 <body class="body_top">
+<span class="title"><?php xl('Batch Communication Tool','e')?></span>
 <!-- larry's sms/email notification -->
 <span class="title"><?php include_once("batch_navigation.php");?></span>
 <!--- end of larry's insert -->
-<span class="title"><?php xl('Batch Communication Tool','e')?></span>
+
 <br><br>
 
 <!-- for the popup date selector -->
