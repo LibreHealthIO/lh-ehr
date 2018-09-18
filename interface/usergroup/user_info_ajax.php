@@ -28,33 +28,43 @@
  * @link    http://librehealth.io
  */
 
-//SANITIZE ALL ESCAPES
-$sanitize_all_escapes=true;
+    //SANITIZE ALL ESCAPES
+    $sanitize_all_escapes=true;
 
-//STOP FAKE REGISTER GLOBALS
-$fake_register_globals=false;
+    //STOP FAKE REGISTER GLOBALS
+    $fake_register_globals=false;
 
-include_once("../globals.php");
-require_once("$srcdir/authentication/password_change.php");
+    include_once("../globals.php");
+    require_once("$srcdir/authentication/password_change.php");
 
-$curPass=$_REQUEST['curPass'];
-$newPass=$_REQUEST['newPass'];
-$newPass2=$_REQUEST['newPass2'];
+    $curPass=$_REQUEST['curPass'];
+    $newPass=$_REQUEST['newPass'];
+    $newPass2=$_REQUEST['newPass2'];
 
-if($newPass!=$newPass2)
-{
-    echo xlt("Pass Phrases Do not match!");
-    exit;
-}
-$errMsg='';
-$success=update_password($_SESSION['authId'],$_SESSION['authId'],$curPass,$newPass,$errMsg);
-if($success)
-{
-    echo xlt("Pass Phrase change successful");
-}
-else
-{
-    // If update_password fails the error message is returned
-    echo text($errMsg);
-}
+        // array for storing the message and status of the response
+        // 400 for error and 200 for success
+        $messageArray = array();
+
+    if($newPass!=$newPass2)
+    {
+        $messageArray["status"] = 400;
+        $messageArray["message"] = xlt("Pass Phrases Do not match!");
+        echo json_encode($messageArray);
+        exit;
+    }
+    $errMsg='';
+    $success=update_password($_SESSION['authId'],$_SESSION['authId'],$curPass,$newPass,$errMsg);
+    if($success)
+    {
+        $messageArray["status"] = 200;
+        $messageArray["message"] = xlt("Pass Phrase change successful");
+        echo json_encode($messageArray);
+    }
+    else
+    {
+        // If update_password fails the error message is returned
+        $messageArray["status"] = 400;
+        $messageArray["message"] =  text($errMsg);
+        echo json_encode($messageArray);
+    }
 ?>

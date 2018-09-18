@@ -12,32 +12,67 @@
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <script src="checkpwd_validation.js" type="text/javascript"></script>
     <?php
-      call_required_libraries(['bootstrap', 'jquery-min-1-9-1']);
+      call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "iziModalToast"));
       ?>
     <script language='JavaScript'>
       //Validating password and display message if password field is empty - starts
       var webroot='<?php echo $webroot?>';
       function update_password()
       {
-          top.restoreSession();
-          // Not Empty
-          // Strong if required
-          // Matches
-      
-          $.post("user_info_ajax.php",
-              {
-                  curPass:    $("input[name='curPass']").val(),
-                  newPass:    $("input[name='newPass']").val(),
-                  newPass2:   $("input[name='newPass2']").val(),
-              },
-              function(data)
-              {
-                  $("input[type='password']").val("");
-                  $("#display_msg").html(data);
-              }
-      
-          );
-          return false;
+        var curPass  = $("input[name='curPass']").val();
+        var newPass  = $("input[name='newPass']").val();
+        var newPass2 = $("input[name='newPass2']").val();
+
+        //check if the password field is not null
+        if(curPass === '' || curPass === null || newPass === '' || newPass === null || newPass2 === '' || newPass2 === null){
+            iziToast.warning({
+                title: 'Warning',
+                icon: "fa fa-warning",
+                message: 'Password field cannot be empty'
+            });
+        }else {
+
+            if(curPass === newPass){
+                iziToast.warning({
+                    title: 'Warning',
+                    icon: "fa fa-warning",
+                    message: 'Old password cannot be same with new one'
+                });
+            }else {
+                console.log("asdasd");
+                $.post("user_info_ajax.php",
+                    {
+                        curPass:    curPass,
+                        newPass:    newPass,
+                        newPass2:   newPass2
+                    },
+
+                    function(data)
+                    {
+                        //success in changing passphrase
+                        if(data.status === 200){
+                            iziToast.success({
+                                title: 'OK',
+                                icon: "fa fa-lock",
+                                message: data.message
+                            });
+                        }
+                        else {
+                            $("input[type='password']").val("");
+                            iziToast.error({
+                                title: 'Error',
+                                icon: "fa fa-times",
+                                message: data.message
+                            });
+                        }
+
+                    },
+
+                    "json"
+                );
+            }
+        }
+    return false;
       }
       
     </script>
@@ -56,7 +91,6 @@
       $row = sqlFetchArray($res);
             $iter=$row;
       ?>
-    <div id="display_msg"></div>
       <Table>
   <form method="POST" enctype="multipart/form-data">
   <tr>
@@ -115,7 +149,7 @@
         </TR>
       </TABLE>
       <br>&nbsp;&nbsp;&nbsp;
-      <INPUT TYPE="Submit" VALUE=<?php echo xla('Save Changes'); ?> onClick="return update_password()" class="cp-submit">
+      <INPUT TYPE="submit" VALUE="<?php echo xla('Save Changes'); ?>" onClick="return update_password()" class="cp-submit">
     </FORM>
     <br><br>
   </BODY>
