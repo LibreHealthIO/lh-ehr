@@ -19,6 +19,7 @@
       var webroot='<?php echo $webroot?>';
       function update_password()
       {
+      	top.restoreSession();
         var curPass  = $("input[name='curPass']").val();
         var newPass  = $("input[name='newPass']").val();
         var newPass2 = $("input[name='newPass2']").val();
