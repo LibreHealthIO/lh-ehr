@@ -40,7 +40,6 @@
                     message: 'Old Pass Phrase cannot be same with new one'
                 });
             }else {
-                console.log("asdasd");
                 $.post("user_info_ajax.php",
                     {
                         curPass:    curPass,
