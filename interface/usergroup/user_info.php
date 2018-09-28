@@ -29,7 +29,7 @@
             iziToast.warning({
                 title: 'Warning',
                 icon: "fa fa-warning",
-                message: 'Password field cannot be empty'
+                message: 'Pass Phrase field cannot be empty'
             });
         }else {
 
@@ -37,7 +37,7 @@
                 iziToast.warning({
                     title: 'Warning',
                     icon: "fa fa-warning",
-                    message: 'Old password cannot be same with new one'
+                    message: 'Old Pass Phrase cannot be same with new one'
                 });
             }else {
                 console.log("asdasd");
