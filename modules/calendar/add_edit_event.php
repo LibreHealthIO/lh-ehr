@@ -938,9 +938,9 @@ if ($_POST['form_action'] == "save") {
     $eventstartdate = $date; // for repeating event stuff - JRM Oct-08
 
     //-------------------------------------
-    //(CHEMED)
-    //Set default facility for a new event based on the given 'userid'
-    if ($userid) {
+
+        //Set default facility for a new event based on logged in user, not provider (event slot)
+    if ($_SESSION['authId']) {
         /*************************************************************
         $pref_facility = sqlFetchArray(sqlStatement("SELECT facility_id, facility FROM users WHERE id = $userid"));
         *************************************************************/
@@ -1479,14 +1479,9 @@ $classpati='';
 
       // ===========================
       // EVENTS TO FACILITIES
-      //(CHEMED) added service_location WHERE clause
-      // get the facilities
-      /***************************************************************
-      $qsql = sqlStatement("SELECT * FROM facility WHERE service_location != 0");
-      ***************************************************************/
-      $facils = getUserFacilities($userid);
-      //userid is id of clicked user(provider) in calendar
-      //ufid is an array of id of schedule facilities of selected user
+      $facils = getUserFacilities($_SESSION['authId']);
+      //$_SESSION['authId'] is id of logged in user
+      //ufid is an array of id of schedule facilities of that user
       $ufid = array();
       foreach ($facils as $uf) {
         $ufid[] = $uf['id'];
@@ -1499,11 +1494,11 @@ $classpati='';
         echo "<option value={$facrow['id']} $selected>{$facrow['name']}</option>";
         *************************************************************/
         if ($GLOBALS['restrict_user_facility']) {
-          //if restricting users(providers) to schedule facilities
+           //if restricting user to scheduling appointments at only their allowed facilities
           //then list only schedule facilities of that user or default facility
-          //in Facility in calendar's event panel
+          //in Facility drop down in calendar's event panel
           //e2f denotes id of default facility
-          if (in_array($facrow['id'], $ufid) || $facrow['id'] == $e2f || $facrow['id'] == 3) {
+          if (in_array($facrow['id'], $ufid) || $facrow['id'] == $e2f) {
             //id 3 is for "Your Clinic Name Here"
             $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
             echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
