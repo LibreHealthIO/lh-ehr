@@ -25,9 +25,8 @@
 //
 // +------------------------------------------------------------------------------+
 
-
 require_once(dirname(__FILE__) . '/patient_tracker.inc.php');
-
+require_once("$srcdir/patient.inc");
 
 //===============================================================================
 //This section handles the events of payment screen.
