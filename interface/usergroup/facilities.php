@@ -161,7 +161,7 @@ $(document).ready(function(){
         iframeURL: "facility_admin.php?fid=" + link,
         onClosed: function () {
           setTimeout(function () {
-            parent.$(".fa-refresh").click();
+            parent.$(".tab-refresh-icon").click();
           }, 300);
         }
       });
