@@ -552,7 +552,6 @@ ActiveIssueCodeRecycleFn($thispid, $ISSUE_TYPES);
    var today = new Date();
    f.form_end.value = '' + (today.getYear() + 1900) + '-' +
     ("0" + (today.getMonth() + 1)).slice(-2) + '-' + ("0" + today.getDate()).slice(-2);
-   f.form_end.focus();
   }
  }
 
