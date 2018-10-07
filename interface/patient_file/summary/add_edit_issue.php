@@ -545,17 +545,6 @@ ActiveIssueCodeRecycleFn($thispid, $ISSUE_TYPES);
   }
  }
 
- // Called when resolved outcome is chosen and the end date is entered.
- function outcomeClicked(cb) {
-  var f = document.forms[0];
-  if (cb.value == '1'){
-   var today = new Date();
-   f.form_end.value = '' + (today.getYear() + 1900) + '-' +
-    ("0" + (today.getMonth() + 1)).slice(-2) + '-' + ("0" + today.getDate()).slice(-2);
-   f.form_end.focus();
-  }
- }
-
 // This is for callback by the find-code popup.
 // Appends to or erases the current list of diagnoses.
 function set_related(codetype, code, selector, codedesc) {
@@ -813,7 +802,7 @@ function divclick(cb, divid) {
     <td valign='top' nowrap><b><?php echo xlt('Outcome'); ?>:</b></td>
     <td>
       <?php
-        echo generate_select_list('form_outcome', 'outcome', $irow['outcome'], '', '', '', 'outcomeClicked(this);');
+        echo generate_select_list('form_outcome', 'outcome', $irow['outcome'], '', '', '', '');
       ?>
     </td>
    </tr>
