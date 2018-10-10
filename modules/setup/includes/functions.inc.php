@@ -50,13 +50,18 @@
 
 
 
-   function rewrite_configuration_file() {
+   function rewrite_configuration_file($flag) {
        $LIBRE_SITES_BASE = dirname(__FILE__) .'/../../../sites';
        $LIBRE_SITE_DIR = $LIBRE_SITES_BASE. '/default';
        //configuration file
        $conffile  =  $LIBRE_SITE_DIR .'/sqlconf.php';
-       $string_to_replace='$config = 0;';
-       $replace_with='$config = 1;';
+       if($flag == 0){
+           $string_to_replace='$config = 1;';
+           $replace_with='$config = 0;';
+       }else{
+           $string_to_replace='$config = 0;';
+           $replace_with='$config = 1;';
+       }
        replace_string_in_file($conffile, $string_to_replace, $replace_with);
 
           }
@@ -71,7 +76,12 @@
 
             function find_SQL_Version() {
                 $output = shell_exec('mysql -V');
+
+                if($output == null){
+                  $output =  shell_exec('/Applications/MAMP/Library/bin/mysql --version');
+                }
                 preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
+
                 return $version[0];
             }
 

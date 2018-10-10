@@ -145,11 +145,11 @@ $task = $_POST["task"];
             }
         ?>
         <p class="clearfix"></p>
-        <form id="parameterForm" method="POST" action="test.php">
+        <form id="parameterForm" method="POST" action="setup_complete.php">
         <div class="form-group">
             <div class="row">
                 <div class="col-md-2"><label>Notification time :</label></div>
-                <div class="col-md-4"><input value="5" name="iufname" placeholder="Notification time(in seconds)" type="text" class="form-control" required></div>
+                <div class="col-md-4"><input value="5" name="izi_timeout" placeholder="Notification time(in seconds)" type="text" class="form-control" required></div>
                 <div class="col-md-6"><p class="help-block">This is the time (measured in seconds) taken to display a notification. Click <span class="badge badge-inverse izi-demo-toast">here</span> to try to have a preview</p></div>
             </div>
             <p class="clearfix"></p>
@@ -157,21 +157,21 @@ $task = $_POST["task"];
                 <div class="col-md-2"><label>Default Theme:</label></div>
                 <div class="col-md-4">
                     <div class="col-md-4">
-                    <input name="theme" type="radio" class="form-control" checked>
+                    <input name="theme" type="radio" value="theme1" class="form-control" checked>
                         <br>
                         <a class="test-popup-link" href="libs/images/test.png" title="Theme 3">
                             <img src="libs/images/test.png">
                         </a>
                     </div>
                     <div class="col-md-4">
-                    <input name="theme" type="radio" class="form-control">
+                    <input name="theme" type="radio" value="theme2" class="form-control">
                         <br>
                         <a class="test-popup-link" href="libs/images/test.png" title="Theme 3">
                             <img src="libs/images/test.png">
                         </a>
                     </div>
                     <div class="col-md-4">
-                    <input name="theme" type="radio" class="form-control">
+                    <input name="theme" type="radio" value="theme3" class="form-control">
                         <br>
                         <a class="test-popup-link" href="libs/images/test.png" title="Theme 3">
                             <img src="libs/images/test.png">
@@ -187,7 +187,7 @@ $task = $_POST["task"];
             <div class="row">
                 <div class="col-md-2"><label>Modal Theme: </label></div>
                 <div class="col-md-4">
-                    <input type="text" value="88A0B9" id="modalColor" name="iumname" class="form-control jscolor">
+                    <input type="text" value="88A0B9" id="modalColor" name="izi_theme" class="form-control jscolor">
                 </div>
                 <div class="col-md-6"><p class="help-block">This is the time (measured in seconds) taken to display a notification. Click <span class="badge badge-inverse izi-demo-modal">here</span> to try to have a preview</p></div>
             </div>
@@ -195,11 +195,13 @@ $task = $_POST["task"];
             <p class="clearfix"></p>
             <p class="clearfix"></p>
 
-        <?php
+            <?php
 
-        echo " 
-                   <input type='hidden' value='$server' name='server' class='form-control'> 
-                   <input type='hidden' value='$dbname' name='dbname' class='form-control'> 
+            echo " 
+                   <input type='hidden' value='10' name='step'>
+                   <input type='hidden' value='8' name='prevstep'>
+                   <input type='hidden' value='$host' name='server' class='form-control'> 
+                   <input type='hidden' value='$db' name='dbname' class='form-control'> 
                    <input type='hidden' value='$pass' name='pass' class='form-control'> 
                    <input type='hidden' value='$login' name='login' class='form-control'> 
                     <div class='control-btn'>
@@ -208,7 +210,7 @@ $task = $_POST["task"];
                 </button>
                     </div>
                     ";
-        ?>
+            ?>
         </form>
 
         <?php

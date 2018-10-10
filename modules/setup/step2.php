@@ -147,7 +147,7 @@ require_once("includes/header.inc.php");
             $pass = '';
 
             //checking for php version
-            if(version_compare(phpversion(), '5.2.0', '<') || version_compare(phpversion(), '7.2.0', '>')) {
+            if(version_compare(phpversion(), '4.2.0', '<')) {
                 $failphp .= '<td><strong>PHP</strong></td>';
                 $failphp .= '<td>You need<strong> PHP 5.2.0</strong> (or greater;<strong>Current Version:'.phpversion().')</strong></td>';
                 $failphp .= '<td><span class="fa fa-times red"></span></td>';
