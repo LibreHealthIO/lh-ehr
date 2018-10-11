@@ -94,6 +94,8 @@ var oTable;
 
 function show_session_times(){
 
+    $('#image').show();
+
     oTable=$('#show_session_times_table').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -105,6 +107,8 @@ function show_session_times(){
                 func:"show_session_times",
                 to_date:   "<?php echo $to_date; ?>",
                 from_date:" <?php echo $from_date; ?> "
+            }, complete: function(){
+                $('#image').hide();
             }},
         columns:[
             { 'data': 'date'         },
@@ -160,7 +164,7 @@ function show_session_times(){
 
 function show_session_sums()
 {
-
+    $('#image').show();
     oTable=$('#show_session_sums_table').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -172,7 +176,10 @@ function show_session_sums()
                 func:"show_session_sums",
                 to_date:   "<?php echo $to_date; ?>",
                 from_date:" <?php echo $from_date; ?> "
-            }},
+            },
+        complete: function(){
+            $('#image').hide();
+        }},
         columns:[
             { 'data': 'date' },
             { 'data': 'username' },
@@ -227,7 +234,7 @@ function show_session_sums()
 
 function show_session_details()
 {
-
+    $('#image').show();
     oTable=$('#show_session_details_table').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -239,6 +246,9 @@ function show_session_details()
                 func:"show_session_details",
                 to_date:   "<?php echo $to_date; ?>",
                 from_date:" <?php echo $from_date; ?> "
+            },
+            complete: function(){
+                $('#image').hide();
             }},
         columns:[
             { 'data': 'date' },
@@ -310,7 +320,7 @@ function show_session_details()
 
 &nbsp;&nbsp;
 
-<img hidden id="image" src="/images/loading.gif" width="100" height="100">
+<img hidden id="image" src="/images/loading.gif" width="100" height="100" >
 
 
 

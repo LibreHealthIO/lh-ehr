@@ -45,6 +45,14 @@ if ( !$_POST['to_date']) {
     $to_date = fixDate($_POST['to_date']);
 }
 
+function getMaxLogIn($user){
+    $query = "Select date from log where event = 'login' and user = ? order by date desc limit 0,1";
+    $result = sqlQuery($query, array($user));
+
+    return $result['date'];
+
+}
+
 //Enter false if searching for users that aren't active
 function getUsersArray($active = true){
 
@@ -122,6 +130,7 @@ function getSessionTime($user, $date){
     $lastSessionActivityDate= getLastSessionActivityTime($user, $nextLogInDate);
     $lastSessionActivity = $lastSessionActivityDate ? strtotime($lastSessionActivityDate) : 0;
     $nextEvent = getNextEvent($user, $date);
+    $maxLogin = getMaxLogIn($user);
 
     //If there isn't a next event, nothing happens so return 0
     if($nextEvent == null){
@@ -173,8 +182,9 @@ function getSessionTime($user, $date){
 
     }else {
 
-
-        return round(($sessionTimeout) / (60 * 60), 2);
+        if($logInDateTime == strtotime($maxLogin)){
+            return 0;
+        }else return round(($sessionTimeout) / (60 * 60), 2);
     }
 
     return 0;
