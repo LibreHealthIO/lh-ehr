@@ -26,8 +26,8 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/vendor/libreehr/Framework/DataTable/DataTable.php");
 require_once( "reports_controllers/AppointmentsController.php");
 
-$form_from_date = $_POST['form_from_date'] ?  $_POST['form_from_date'] : date($DateFormat);
-$form_to_date = $_POST['form_to_date'] ?  $_POST['form_to_date'] : date($DateFormat);
+$form_from_date = isset($_POST['form_from_date']) ?  $_POST['form_from_date'] : date($DateFormat);
+$form_to_date = isset($_POST['form_to_date']) ?  $_POST['form_to_date'] : date($DateFormat);
 
 //if date is i m/d/y we need to fix it for queries
 $to_date =prepareDateBeforeSave($form_to_date) ;
@@ -310,9 +310,9 @@ function show_session_details()
     <input type='text' name='form_to_date' id='form_to_date' size='10'
            value='<?php echo $form_to_date ?>' >
 
-    <input hidden id = 'show_session_sums_button' value = '<?php echo $_POST['show_session_sums']  ?>'>
-    <input hidden id = 'show_session_times_button' value = '<?php echo $_POST['show_session_times']  ?>'>
-    <input hidden id = 'show_session_details_button' value = '<?php echo $_POST['show_session_details']  ?>'>
+    <input hidden id = 'show_session_sums_button' value = '<?php echo isset($_POST['show_session_sums']) ? $_POST['show_session_sums'] : null ?>'>
+    <input hidden id = 'show_session_times_button' value = '<?php echo isset($_POST['show_session_times']) ? $_POST['show_session_times'] : null  ?>'>
+    <input hidden id = 'show_session_details_button' value = '<?php echo isset($_POST['show_session_details']) ? $_POST['show_session_details']  : null  ?>'>
 
 </form>
 

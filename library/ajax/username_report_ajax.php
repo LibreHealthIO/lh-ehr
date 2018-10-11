@@ -28,7 +28,7 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/patient.inc");
 $DateFormat = DateFormatRead();
 //make sure to get the dates
-if ( ! $_POST['from_date']) {
+if ( ! isset($_POST['from_date'])) {
 
     $from_date = fixDate(date($DateFormat));
 
@@ -36,14 +36,19 @@ if ( ! $_POST['from_date']) {
     $from_date = fixDate($_POST['from_date']);
 }
 
-if ( !$_POST['to_date']) {
+if ( !isset($_POST['to_date'])) {
     // If a specific patient, default to 2 years ago.
     $to_date = fixDate(date($DateFormat));
+
 
 } else{
 
     $to_date = fixDate($_POST['to_date']);
 }
+
+$to_date = new DateTime($to_date);
+$to_date->modify('+1 day');
+$to_date = $to_date->format('Y-m-d');
 
 function getMaxLogIn($user){
     $query = "Select date from log where event = 'login' and user = ? order by date desc limit 0,1";
@@ -244,17 +249,16 @@ if($_POST['func']=="show_session_times")
 {
     $response['data'] = array();
 
+
     $qstring = "Select  date, event, username as user, fname, lname  from log join users on username = user where event like '%login%' and event not like '%attempt%' and users.active = 1";
 
-    $qstring .= " and date > '{$from_date}' ";
+    $qstring .= " and date > ? ";
 
 
 
-    $qstring .= " and date < '{$to_date} 23:59:59' ";
+    $qstring .= " and date < ? ";
 
-
-    $qstring .= ifTestingTrue($testing);
-    $result = sqlStatement($qstring);
+    $result = sqlStatement($qstring, array($from_date, $to_date));
 
     $gua_string = getUsersArray();
     $newLogIn = '';
@@ -277,10 +281,10 @@ if($_POST['func']=="show_session_details") {
     $response['data'] = array();
     $user_array = getUsersArray();
     $index = 0;
-    $qstring = "Select  * from log join users on username = user where event not like '%admin%' and event not like '%attempt%' and users.active = 1";
-    $qstring .= " and date > '{$from_date}' ";
-    $qstring .= " and date < '{$to_date} 23:59:59' ";
-    $result = sqlStatement($qstring);
+    $qstring = "Select  date, user, event, comments from log join users on username = user where event not like '%admin%' and event not like '%attempt%' and users.active = 1";
+    $qstring .= " and date > ? ";
+    $qstring .= " and date < ? ";
+    $result = sqlStatement($qstring, array($from_date, $to_date));
 
     while ($row = sqlFetchArray($result)) {
        array_push($response['data'], $row);
@@ -289,6 +293,8 @@ if($_POST['func']=="show_session_details") {
     echo json_encode($response);
 
 }
+
+
 
 
 
