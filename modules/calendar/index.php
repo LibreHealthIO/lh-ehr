@@ -25,14 +25,12 @@ require('includes/session.php');
 <html>
 <head>
   <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
-  <link href='full_calendar/lib/cupertino/jquery-ui.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
   <link href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
   <link href='css/index.css' rel='stylesheet' />
 
   <script src='full_calendar/lib/jquery.min.js'></script>
-  <script src='full_calendar/lib/jquery-ui.min.js'></script>
   <script src='full_calendar/lib/moment.min.js'></script>
   <script src='full_calendar/fullcalendar.min.js'></script>
   <script src='full_calendar_scheduler/scheduler.min.js'></script>
@@ -40,34 +38,6 @@ require('includes/session.php');
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
   <script src="../../library/dialog.js"></script>
-  <script src='fullcalendar-rightclick-1.9/fullcalendar-rightclick.js'></script>
-
-  <style type="text/css">
-    .show {
-      display: block;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      z-index: 1000;
-      position: absolute;
-    }
-    .hidden {
-      display: none;
-    }
-    .show ul {
-      padding: 0;
-      margin: 0 0 0 25px;
-      list-style: none;
-    }
-    .show ul li {
-      font-size: 17px;
-      padding: 10px 20px;
-    }
-    .show ul li:hover {
-      font-size: 22px;
-      background-color: #ddd;
-      cursor: pointer;
-    }
-  </style>
 </head>
 <body>
   <div id="sidebar">
@@ -162,10 +132,6 @@ require('includes/session.php');
     <div id='calendar'></div>
   </div>
 
-  <div class="hidden" id="context-menu">
-    <ul></ul>
-  </div>
-
   <script>
     $(document).ready(function() {
       var title_week = '<?php echo xlt('week'); ?>';
@@ -175,97 +141,6 @@ require('includes/session.php');
       var title_print = '<?php echo xlt('print'); ?>';
       var lang_default = '<?php echo $default_lang_id['lang_code']; ?>';
 
-      function pasteEvent(eventClone, dropDetails) {
-        // this function gets called when "Paste" is clicked in day's context menu
-        var eventData = eventClone;  // original (or copied) event's data
-        var newDate = dropDetails[0].format("YYYY-MM-DD");  // clone event's date at drop point
-        var newStartTime = dropDetails[0].format("HH:mm:ss");  // clone event's start time at drop point
-        var duration = parseInt(eventData.pc_duration);  // clone event's duration (same as original)
-        // clone event's end time at drop point
-        var newEndTime = moment(newStartTime, "HH:mm:ss").add(duration, 'seconds').format("HH:mm:ss");
-        var newProviderId = dropDetails[1];  // clone event's provider/resource id at drop point
-
-        var jsonData = { "date": newDate,
-                         "startTime": newStartTime,
-                         "endTime": newEndTime,
-                         "providerId": newProviderId,
-                         "multipleProvider": eventData.pc_multiple,
-                         "patientId": eventData.pc_pid,
-                         "categoryId": eventData.pc_catid,
-                         "title": eventData.pc_title,
-                         "comment": eventData.pc_hometext,
-                         "endDate": eventData.pc_endDate,
-                         "duration": eventData.pc_duration,
-                         "recurrspec": eventData.pc_recurrspec,
-                         "eventAllDay": eventData.pc_alldayevent,
-                         "apptStatus": eventData.pc_apptstatus,
-                         "prefCategory": eventData.pc_prefcatid,
-                         "locationspec": eventData.pc_location,
-                         "facility": eventData.pc_facility,
-                         "billingFacility": eventData.pc_billing_location,
-                         "room": eventData.pc_room,
-                         "action": "paste" };
-        // send new and cloned values to a php script to insert new event in DB, i.e., paste event to drop point
-        $.ajax({
-          type: "POST",
-          url: "drag_copy_event.php",
-          data: jsonData,
-          success: function(response) {
-            if (response === "query executed") {
-              $('#calendar').fullCalendar('refetchEvents');  // refetch all events to reflect their specifications acc. to DB on Calendar
-            }
-          },
-          dataType: "text",
-          error: function(xhr, status, error) {
-            var errorString = "Request failed. ";
-            if (status) {
-              errorString += status;
-            }
-            if (error) {
-              errorString += ": ";
-              errorString += error;
-            }
-            alert(errorString);
-          }
-        });
-        copiedEvent = {}; // after paste, clear data in object
-        isCopied = false; // and set this false
-      }
-
-      var copiedEvent = {}; // declared as an empty object when loading script for first time, holds copied event's details
-      var isCopied = false; // used to ascertain whether an event is already copied and its details already in copiedEvent variable
-
-      function showContextMenu(type, posX, posY, details) {
-        // builds context menu according to cell type - "event" or "day"
-        var menuItems = "";
-        if (type == "event") {
-          menuItems = "<li id='copy'>Copy</li>";
-        } else if (type == "day") {
-          menuItems = "<li id='paste'>Paste</li>";
-        }
-        $("#context-menu>ul").empty().append(menuItems);
-        $("#context-menu").removeClass("hidden").addClass("show");
-        // positioning of context menu at position of mouse
-        $("#context-menu").css("top", posY);
-        $("#context-menu").css("left", posX);
-
-        $("#copy").click(function() {
-          // when "Copy" in event's menu is clicked
-          isCopied = true;
-          copiedEvent = details; // store details of copied events
-        });
-
-        $("#paste").click(function() {
-          // when "Paste" in day's menu is clicked
-          if (isCopied) {
-            // paste copied event at drop position specified by details
-            pasteEvent(copiedEvent, details);
-          } else {
-            alert('<?php echo addslashes( xl("Please copy an event before pasting.") ); ?>');
-            return false;
-          }
-        });
-        
       function scrollCalTime(calView) {
         var date = new Date();  // current date and time related info.
         var currHour = date.getHours();  // (0-23) according to local time
@@ -299,7 +174,6 @@ require('includes/session.php');
             buttonText: title_week,
             allDaySlot: false,
             displayEventTime: false,
-            editable: true,  // determines if the events can be dragged and resized
             nowIndicator: true,
             groupByResource: true
           },
@@ -315,7 +189,6 @@ require('includes/session.php');
             buttonText: title_agenda2,
             allDaySlot: false,
             displayEventTime: false,
-            editable: true,  // determines if the events can be dragged and resized
             nowIndicator: true,
             groupByResource: true
           },
@@ -325,7 +198,6 @@ require('includes/session.php');
             buttonText: title_agenda,
             allDaySlot: false,
             displayEventTime: false,
-            editable: true,  // determines if the events can be dragged and resized
             nowIndicator: true,
             groupByDateAndResource: true
           }
@@ -401,32 +273,16 @@ require('includes/session.php');
           $('.tooltipevent').remove();
         },
         select: function(start, end, jsEvent, view, resource) {
-          // this function is triggered when a date/time selection is made
-          // open event panel with parameters of selection made
           dlgopen('add_edit_event.php?' + '&starttimeh=' + start.get('hours') + '&userid=' + resource.id +
           '&starttimem=' + start.get('minutes') + '&date=' + start.format('YYYYMMDD') // + '&catid=' + 0
            ,'_blank', 775, 375);
-        },
-        dayRightclick: function(date, jsEvent, resourceId) {
-            // show custom menu for day cells
-            var dayDetails = [date, resourceId]; // details of day slot on which user right clicked - date & start time, provider id
-            showContextMenu("day", jsEvent.clientX, jsEvent.clientY, dayDetails);
-            // prevent browser context menu
-            return false;
-        },
+              },
         eventRender: function(event, element, view) {
-          // this function is triggered while an event is being rendered
-          // handle right click on an event
-          var eventDetails = event; // details of event on which user right clicked
-          element.on("contextmenu", function(e) {
-            e.preventDefault(); // don't show default options
-            // show custom menu for event cells
-            showContextMenu("event", e.clientX, e.clientY, eventDetails);
-          });
           //converting event title text to hyperlink
           if (event['pc_pid'] > 0) {
             //only when event is a patient event
             //event['pc_pid'] is number string for patient events, empty "" for provider events
+            //var link = "../../interface/patient_file/summary/demographics.php?set_pid=" + event['pc_pid'];
             let link = '<?php echo $GLOBALS['webroot'] . "/interface/patient_file/summary/demographics.php?set_pid="; ?>' + event['pc_pid'];
             var titleLink = "<a href='#'>" + event['title'] + "</a>";
             let titleInfo = "<span style='color: #000;'>" + event['e_info'] + "</span>";
@@ -445,98 +301,6 @@ require('includes/session.php');
               top.RTop.location = link;
               return false;
             });
-          }
-        },
-        eventDrop: function(event, delta, revertFunc, jsEvent, ui, view) {
-          // this function gets called when dragging stops and the event has moved to
-          // a different date, time slot and/or provider
-          if (confirm("<?php echo addslashes(xl('Are you sure about this change in event location?')); ?>")) {
-            //if selected "OK" on alert
-            var eventId = event["pc_eid"];  // event's unique id
-            var newDate = event.start.format("YYYY-MM-DD");  // event's new date
-            var newStartTime = event.start.format("HH:mm:ss");  // event's new start time
-            var newEndTime = event.end.format("HH:mm:ss");  // event's new end time
-            var newProviderId = event.resourceId;  // event's new provider id
-            var eventPatientId = event.pid;  // event's patient id
-            var eventStatus = event.pc_apptstatus; // event's (appt.) status
-            var jsonData = { "id": eventId,
-                             "date": newDate,
-                             "startTime": newStartTime,
-                             "endTime": newEndTime,
-                             "providerId": newProviderId,
-                             "patientId": eventPatientId,
-                             "apptStatus": eventStatus,
-                             "action": "drag" };
-            // send edited values to a php script to update DB
-            $.ajax({
-              type: "POST",
-              url: "drag_copy_event.php",
-              data: jsonData,
-              success: function(response) {
-                if (response === "query executed") {
-                  $('#calendar').fullCalendar('refetchEvents');  // refetch all events to reflect their specifications acc. to DB on Calendar
-                }
-              },
-              dataType: "text",
-              error: function(xhr, status, error) {
-                var errorString = "Request failed. ";
-                if (status) {
-                  errorString += status;
-                }
-                if (error) {
-                  errorString += ": ";
-                  errorString += error;
-                }
-                alert(errorString);
-              }
-            });
-          } else {
-            //if selected "Cancel" on alert
-            revertFunc();  // reverts the event’s start/end date to the values before the drag
-          }
-        },
-        eventResize: function( event, delta, revertFunc, jsEvent, ui, view ) {
-          // this function gets called when event resizing stops
-          // and the event has changed in duration
-          if (confirm("<?php echo addslashes(xl('Are you sure about this change in event duration?')); ?>")) {
-            //if selected "OK" on alert
-            var eventId = event["pc_eid"];  // event's unique id
-            var startTime = event.start.format("HH:mm:ss");  // event's start time string
-            var newEndTime = event.end.format("HH:mm:ss");  // event's new end time stirng
-            var endTimeMoment = moment(newEndTime, "HH:mm:ss");  // moment object
-            var startTimeMoment = moment(startTime, "HH:mm:ss");  // moment object
-            var duration = moment.duration(endTimeMoment.diff(startTimeMoment)).asSeconds();  // event's new duration length
-
-            var jsonData = { "id": eventId,
-                             "endTime": newEndTime,
-                             "duration": duration,
-                             "action": "resize" };
-            // send edited values to a php script to update DB
-            $.ajax({
-              type: "POST",
-              url: "drag_copy_event.php",
-              data: jsonData,
-              success: function(response) {
-                if (response === "query executed") {
-                  $('#calendar').fullCalendar('refetchEvents');  // refetch all events to reflect their specifications acc. to DB on Calendar
-                }
-              },
-              dataType: "text",
-              error: function(xhr, status, error) {
-                var errorString = "Request failed. ";
-                if (status) {
-                  errorString += status;
-                }
-                if (error) {
-                  errorString += ": ";
-                  errorString += error;
-                }
-                alert(errorString);
-              }
-            });
-          } else {
-            //if selected "Cancel" on alert
-            revertFunc();  // reverts the event’s start/end date to the values before resizing
           }
         },
         eventClick: function(calEvent, jsEvent, view) {
@@ -588,14 +352,6 @@ require('includes/session.php');
 
     $("#pc_username").change(function() { $('#theform').submit(); });
     $("#pc_facility").change(function() { $('#theform').submit(); });
-    // hide context menu upon clicking elsewhere
-    var docRoot = top.$('#mainBox');
-    docRoot.click(function() {
-      $("#context-menu").removeClass("show").addClass("hidden");
-    });
-    $(document).click(function() {
-      $("#context-menu").removeClass("show").addClass("hidden");
-    });
   </script>
 </body>
 </html>
