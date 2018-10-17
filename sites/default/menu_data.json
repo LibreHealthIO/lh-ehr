@@ -471,6 +471,14 @@
             "children" : [ ],
             "requirement" : 0,
             "acl_req" : [ "admin", "users" ]
+        },{
+
+            "label" : "User Login Report",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/interface/reports/username_report.php",
+            "children" : [ ],
+            "requirement" : 0
         }, {
             "label" : "Database",
             "menu_id" : "adm0",
@@ -552,6 +560,7 @@
             "children" : [ ],
             "requirement" : 0
         }, {
+
             "label" : "Patient List By Referrer",
             "menu_id" : "rep0",
             "target" : "rep",
