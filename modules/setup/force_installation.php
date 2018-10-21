@@ -14,6 +14,7 @@ require_once("includes/header.inc.php");
 $site_id = $_GET["site"];
 
 $rootpath = dirname(__FILE__)."/../../";
+$sitespath = dirname(__FILE__)."/../../sites";
 $sqlfilepath = dirname(__FILE__)."/../../sites/$site_id/sqlconf.php";
 $loginpath = '../../interface/login/login.php?site='.$site_id;
 
@@ -26,6 +27,8 @@ if($task == 'reinstall'){
     exit;
 }
 
+$config_files_array = array();
+
 ?>
 
     <div class="card">
@@ -33,6 +36,28 @@ if($task == 'reinstall'){
         <p>We detected an installation of LibreEHR in the following directory
         <span class="blueblack">LibreEHR/sites/<?php echo($site_id)?></span>.
         </p>
+
+
+        <?php $iterator =  getSitesDirectories($sitespath);
+            foreach($iterator as $file) {
+                $filepath = getConfigFiles($file);
+                array_push($config_files_array, $filepath);
+                }
+
+        foreach($config_files_array as $key => $value)
+        {
+            if($value === ""){
+                // we dont echo
+                // echo "<p class='red'>". $key."has the value ". $value. "</p>";
+            }
+            else{
+                findString($value);
+                //echo "<p class='blueblack'>". $key."has the value ". $value. "</p>";
+
+            }
+        }
+
+         ?>
         <p>
             If you wish to force re-installation, click on the Re-install EHR buton below. Else login
             into your EHR site.

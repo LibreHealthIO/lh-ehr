@@ -90,4 +90,54 @@
                     @touch('/var/www/html/LibreEHR/test.sh');
             }
 
+
+        /**
+         * Get all of the directories within a given directory.
+         *
+         * @param  string  $directory
+         * @return array
+         */
+        function getSitesDirectories($directory)
+        {
+            $glob = glob($directory . '/*');
+            if($glob === false)
+            {
+                return array();
+            }
+            return array_filter($glob, function($dir) {
+                return is_dir($dir);
+            });
+        }
+
+        function getConfigFiles($directory){
+            foreach( glob($directory."/*.php") as $filename ) {
+                $basename = basename($filename);
+                if ($basename == "sqlconf.php") {
+                    return $filename;
+                }
+            }
+        }
+
+        function findString($filename) {
+            // What to look for
+            $search1 = '$config = 0';
+            $search2 = '$config = 1';
+            // Read from file
+            $lines = file($filename);
+            foreach($lines as $line)
+            {
+                // Check if the line contains the string we're looking for, and print if it does
+                if(strpos($line, $search1) !== false){
+                    $val = substr($line,9,2);
+                    echo $val;
+                }else{
+                    if(strpos($line, $search2) !== false){
+                        $val = substr($line,9,2);
+                        echo $val;
+                    }
+                }
+            }
+        }
+
+
 ?>
