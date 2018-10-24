@@ -129,11 +129,11 @@
                 // Check if the line contains the string we're looking for, and print if it does
                 if(strpos($line, $search1) !== false){
                     $val = substr($line,9,2);
-                    echo $val;
+                    return $val;
                 }else{
                     if(strpos($line, $search2) !== false){
                         $val = substr($line,9,2);
-                        echo $val;
+                        return $val;
                     }
                 }
             }

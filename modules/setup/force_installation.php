@@ -27,37 +27,72 @@ if($task == 'reinstall'){
     exit;
 }
 
+$confirmed_configfiles_array = array();
+$installed_libreehr_sites = array();
+$not_installed_libreehr_sites = array();
 $config_files_array = array();
 
 ?>
 
     <div class="card">
         <h4 class="green">LibreHealth Successfully Installed</h4>
-        <p>We detected an installation of LibreEHR in the following directory
-        <span class="blueblack">LibreEHR/sites/<?php echo($site_id)?></span>.
-        </p>
-
 
         <?php $iterator =  getSitesDirectories($sitespath);
             foreach($iterator as $file) {
                 $filepath = getConfigFiles($file);
                 array_push($config_files_array, $filepath);
+                if(basename(dirname($filepath)) == ""){
+
+                }else{
+                   // echo "<p>" . basename(dirname($filepath)). "</p>";
+                    array_push($confirmed_configfiles_array, $filepath);
                 }
 
-        foreach($config_files_array as $key => $value)
+                }
+
+        foreach($confirmed_configfiles_array as $key => $value)
         {
             if($value === ""){
-                // we dont echo
-                // echo "<p class='red'>". $key."has the value ". $value. "</p>";
+                 //echo "<p class='red'>". $key."has the value ". $value. "</p>";
             }
             else{
-                findString($value);
-                //echo "<p class='blueblack'>". $key."has the value ". $value. "</p>";
+                $configVariable = findString($value);
+                if($configVariable == 1){
+                    array_push($installed_libreehr_sites, $value);
+                }else{
+                    array_push($not_installed_libreehr_sites, $value);
+                }
 
+                // echo "<p class='librehealth-color'>". $key."has the value ". $value. "</p>";
             }
         }
-
          ?>
+        <div class="col-md-8">
+            <h5 class="green">Installed LHEHR sites</h5>
+            <p>We detected an installation of LibreEHR in the following directory
+                <span class="blueblack">LibreEHR/sites/
+                <ul>
+                <?php
+                foreach ($installed_libreehr_sites as $value) {
+                    echo "<li class='librehealth-color'>". basename(dirname($value)) ."</li>";
+                }
+                ?>
+                </ul>
+            </span>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h5 class="red">Non-Installed LHEHR sites</h5>
+            <ul>
+            <?php
+            foreach ($not_installed_libreehr_sites as $value) {
+                echo "<li class='red'>". basename(dirname($value)) ."</li>";
+            }
+            ?>
+            </ul>
+        </div>
+        <p class="clearfix"></p>
+
         <p>
             If you wish to force re-installation, click on the Re-install EHR buton below. Else login
             into your EHR site.
