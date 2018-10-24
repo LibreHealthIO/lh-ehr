@@ -69,12 +69,18 @@ $config_files_array = array();
          ?>
         <div class="col-md-8">
             <h5 class="green">Installed LHEHR sites</h5>
-            <p>We detected an installation of LibreEHR in the following directory
+            <?php
+            if(count($installed_libreehr_sites) > 1){
+                echo "<p>We detected installations of LibreEHR in the following directories";
+            }else{
+                echo "<p>We detected an installation of LibreEHR in the following directory";
+            }
+            ?>
                 <span class="blueblack">LibreEHR/sites/
-                <ul>
+                <ul class="list-unstyled">
                 <?php
                 foreach ($installed_libreehr_sites as $value) {
-                    echo "<li class='librehealth-color'>". basename(dirname($value)) ."</li>";
+                    echo "<li class='librehealth-color'><span class='fa fa-mail-forward green'></span> ". basename(dirname($value)) ."</li>";
                 }
                 ?>
                 </ul>
@@ -83,45 +89,65 @@ $config_files_array = array();
         </div>
         <div class="col-md-4">
             <h5 class="red">Non-Installed LHEHR sites</h5>
-            <ul>
+            <ul class="list-unstyled">
             <?php
             foreach ($not_installed_libreehr_sites as $value) {
-                echo "<li class='red'>". basename(dirname($value)) ."</li>";
+                echo "<li class='red'><span class='fa fa-times red'></span> ". basename(dirname($value)) ."</li>";
             }
             ?>
             </ul>
         </div>
         <p class="clearfix"></p>
-
-        <p>
-            If you wish to force re-installation, click on the Re-install EHR buton below. Else login
-            into your EHR site.
-        </p>
-        <p class="clearfix"></p>
-        <p class="clearfix"></p>
-        <p class="clearfix"></p>
-
-
         <div class="col-md-12">
-            <div class="col-md-6 text-center">
-                <img src="libs/images/logo.png" width="120" height="120" class="img-responsive center-block">
-                <p class="clearfix"></p>
-                <p class="clearfix"></p>
-                <p class="clearfix"></p>
-                <a href="<?php echo($loginpath); ?>" class="controlBtn">
-                    LOGIN EHR
-                </a>
-            </div>
-            <div class="col-md-6 text-center">
-                <img src="libs/images/reinstall.gif" class="img-responsive center-block">
-                <p class="clearfix"></p>
-                <p class="clearfix"></p>
-                <form method="POST">
-                    <input type="hidden" value="reinstall" name="task">
-                    <button type="submit" class="controlBtn">Re-Install EHR</button>
-                </form>
+            <div class="flex-container">
+                <div class="column">
+                    <div class="help-block">
+                        <p>Choose which site to login</p>
+                        <select class="selectpicker form-control loginsite" name="site"  data-style="btn-warning" data-live-search="true">
+                            <?php
+                            foreach ($installed_libreehr_sites as $value) {
+                            echo "<option value=".basename(dirname($value)).">". basename(dirname($value))."</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <p class="clearfix"></p>
+                    <img src="libs/images/logo.png" width="120" height="120" class="img-responsive center-block">
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+                    <div class="text-center">
+                        <a href="<?php echo($loginpath); ?>" id="loginEHR" class="controlBtn">
+                            LOGIN EHR
+                        </a>
+                    </div>
+
+                </div>
+                <div class="column bg-alt">
+                    <div class="help-block">
+                        <p>Select site and click on the Re-install EHR buton below. <span class="fa fa-info-circle" data-toggle="tooltip" title="This will reinstall LHEHR in the selected site only"></span></p>
+                        <select class="selectpicker form-control" name="collate"  data-style="btn-warning" data-live-search="true">
+                            <?php
+                            foreach ($installed_libreehr_sites as $value) {
+                                echo "<option value=".basename(dirname($value)).">". basename(dirname($value))."</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <img src="libs/images/reinstall.gif" class="img-responsive center-block">
+                    <p class="clearfix"></p>
+                    <p class="clearfix"></p>
+
+                    <form method="POST">
+                        <input type="hidden" value="reinstall" name="task">
+                        <div class="text-center">
+                        <button type="submit" class="controlBtn">Re-Install EHR</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+
 
         <p class="clearfix"></p>
         <p class="clearfix"></p>

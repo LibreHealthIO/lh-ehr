@@ -341,12 +341,9 @@ $(document).ready(function(){
         return "#"+$(".jscolor").val();
     }
 
-
-
-    $(".izi-demo-modal").click(function () {
-       var color = getColor();
-         initIziLink(color);
-    });
+    function call_izi() {
+        $("#demo-iframe").iziModal('open');
+    }
 
     function initIziLink(color) {
         $("#demo-iframe").iziModal({
@@ -374,10 +371,12 @@ $(document).ready(function(){
         },200);
     }
 
+    $(".izi-demo-modal").click(function () {
+       var color = getColor();
+         initIziLink(color);
+    });
 
-    function call_izi() {
-        $("#demo-iframe").iziModal('open');
-    }
+
 
 
     // =========================================
@@ -388,11 +387,23 @@ $(document).ready(function(){
         var prtContent = document.getElementById("printStep");
         var WinPrint = window.open('', '', 'letf=0,top=0,width=1,height=1,toolbar=0,scrollbars=0,status=0');
         WinPrint.document.write(prtContent.innerHTML);
+        var oldstr = document.body.innerHTML;
         WinPrint.document.close();
         WinPrint.focus();
         WinPrint.print();
         WinPrint.close();
-        prtContent.innerHTML = strOldOne;
+        prtContent.innerHTML = oldstr;
+    });
+
+    // =========================================
+    //     FORCE INSTALL HANDLE SELECT CHANGE EVENTS
+    // =========================================
+
+
+    $('.loginsite').on('change', function() {
+        var site_id =  $(this).find(":selected").val();
+        var location = '../../interface/login/login.php?site='+ site_id;
+        $("#loginEHR").attr("href", location);
     });
 
 
