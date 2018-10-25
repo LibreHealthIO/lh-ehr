@@ -392,6 +392,69 @@ Launch XAMPP Control Panel and navigate to LibreEHR Setup in your browser: `\Lib
 
  **Once you see the screen above, you have successfully setup LibreEHR! Congratulations!**
 
+## Mac Setup (With MAMP)
+For Mac, you can use MAMP for local development.
+
+#### Setup
+Install MAMP (To prevent changing the PHP version, use version 3.5 and under).
+
+#### Note: PHP must not be version 7.1 or above. Version 7.0 and 5.6 can both be used.
+    
+Fork the LibreHealthEHR [repository](https://github.com/LibreHealthIO/librehealthehr).
+
+Clone the repository to a local directory with:
+`git clone https://github.com/punwai/lh-ehr.git`
+
+After cloning LibreEHR, the php.ini file is located in YOUR_MAMP_LOCATION/conf/YOUR_PHP_VERSION/ directory.
+
+Open this file with your text editor (Notepad++, Atom or anything you have installed).
+
+Note: You can use the search option (Ctrl+F in some editors) in your text editor to find the specific lines that you need to change accordingly.
+
+max_execution_time = 600
+max_input_time = 600
+max_input_vars = 3000
+memory_limit = 512M
+post_max_size = 32M
+upload_max_filesize = 32M
+session.gc_maxlifetime = 14400
+short_open_tag = On
+display_errors = Off
+upload_tmp_dir is set to a correct default value that will work on your system
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
+
+Remember to save your file, so that your settings don't reset!
+
+#### Step 1
+
+Launch MAMP Control Panel and navigate to LibreEHR Setup in your browser: `localhost\librehealthehr\setup.php`
+
+#### Step 2
+ Leave default as the "Site ID:" and press continue.
+
+ ![First Step](./Documentation/1_Installing/images/windows_installation/Step_1.png)
+
+ Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file, or have the correct version of MAMP.
+
+ ![Second Step](./Documentation/1_Installing/images/windows_installation/Step_2.png)
+
+ Then after the second step, continue and leave the option "Have setup create the database" and press continue
+
+ ![Third Step](./Documentation/1_Installing/images/windows_installation/Step_3.png)
+
+ For the fourth step, enter a "Password" and "Initial User Password" you are free to change, the "Initial User" to your own username, but for convenience you can also leave it as admin. Also, you will have to change the Server and MySQL port to the ones that MAMP is currently using. (You can find this in the preferences of the MAMP Control Panel).
+ 
+ Then press continue.
+**Note:** If you do change your password, or even if you don't, write down your username and password. You will need it for future uses.
+
+ ![Fourth Step](./Documentation/1_Installing/images/windows_installation/Step_4.png)
+
+ Then after the fourth step, you can press continue through the others as long as the steps above were followed with clarity, the rest should have no errors, and each remaining page can be continued without change.
+ 
+ ![Last Step](./Documentation/1_Installing/images/windows_installation/Step_10.png)
+
+ If this comes up, you are set!
+
 
 ## FAQ
 

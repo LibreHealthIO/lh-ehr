@@ -45,7 +45,7 @@ upload_tmp_dir is set to a correct default value that will work on your system
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ```
 
-3. Make sure you have disabled strict mode in Mysql.
+3. Make sure you have disabled strict mode in MySQL.
 
 ### How to disable Mysql strict mode?
 
@@ -75,6 +75,43 @@ In Linux it's typically located in /etc/mysql
  - Open LibreEHR directory and run index.php file, which will then redirect to the setup page! Follow the [instructions](/INSTALL.md/#windows-setup) and you are done!
 
 Note: Sometimes , installation may take more time than usual on some systems. In that case, you would need to increase `max_execution_time` in your php.ini file and then restart your server.
+
+## On Mac (With MAMP (FOR LOCAL TESTING ONLY) )
+For those who want an easy configuration for testing, MAMP can be used.
+1. Firstly, download [MAMP](https://mamp.info/en/). Currently, we do not support PHP versions 7.1 and above. Version 3.5.2 comes with PHP version 7.0. For ease, download this version as you would not have to go change the PHP version.
+
+2. Make the following changes in `php.ini` file. You can find the `php.ini` file by looking at this destination:
+*`YOUR_MAMP_LOCATION`*`/conf/`*`php7.0.8`*`/php.ini`
+If you are using a different PHP version, you will have to edit the php.ini file in another directory.
+
+Make the following changes in your php.ini file:
+(Search for the following and make necessary changes)
+```
+max_execution_time = 600
+max_input_time = 600
+max_input_vars = 3000
+memory_limit = 512M
+post_max_size = 32M
+upload_max_filesize = 32M
+session.gc_maxlifetime = 14400
+short_open_tag = On
+display_errors = Off
+upload_tmp_dir is set to a correct default value that will work on your system
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
+```
+
+3. Make sure you have disabled strict mode in MySQL.
+
+To make sure that strict mode is disabled in MySQL, enter http://localhost/phpmyadmin/
+Go to the Variables heading by navigating through More > Variables. Now find *sql mode* and make sure that it is set to "". 
+
+4. Restart MAMP server
+
+5. To start local development, you will have to:
+ - Fork the [LibreEHR repository](https://github.com/LibreHealthIO/LibreEHR).
+ - Clone your fork of LibreEHR repository to your local machine. You will have to go to the directory you would want the project to be in and do, `git clone githttps://github.com/your-github-username/LibreEHR`. As you are using MAMP you will want to clone this repository to `YOUR_MAMP_LOCATION/htdocs`.
+ - Open LibreEHR directory and run index.php file, which will then redirect to the setup page! Follow the [instructions](/INSTALL.md/#mac-setup) and you are done!
+
 
 # License
 
