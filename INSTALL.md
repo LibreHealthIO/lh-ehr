@@ -54,7 +54,7 @@ git clone https://github.com/LibreHealthIO/LibreEHR librehealthehr
 
 To run LibreHealthEHR, MariaDB (prefered) or MySQL, and Apache or another PHP-capable webserver must be configured.
 
-If you don't already have it, download and install [Apache](https://apache.org), [MariaDB](https://mariadb.org) (prefered) or [MySQL](www.mysql.com), and [PHP.](www.php.net)
+If you don't already have it, download and install [Apache](https://apache.org), [MariaDB](https://mariadb.org) (prefered) or [MySQL](https://mysql.com), and [PHP.](https://php.net)
 
 **Note:**
 
