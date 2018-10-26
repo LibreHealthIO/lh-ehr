@@ -477,7 +477,7 @@ Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.p
 
  ![Third Step](./Documentation/1_Installing/images/windows_installation/Step_3.png)
 
- For the fourth step, enter a "Password" and "Initial User Password" you are free to change, the "Initial User" to your own username, but for convenience you can also leave it as admin. Also, you will have to change the Server and MySQL port to the ones that MAMP is currently using. (You can find this in the preferences of the MAMP Control Panel).
+ For the fourth step, enter a "Password" and "Initial User Password" you are free to change, the "Initial User" to your own username, but for convenience you can also leave it as admin. Also, you will have to change the MySQL Port to the one that MAMP is currently using, it should be 3306. (You can find this in the MAMP Control Panel in Preferences).
  
  Then press continue.
 **Note:** If you do change your password, or even if you don't, write down your username and password. You will need it for future uses.
