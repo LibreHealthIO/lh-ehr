@@ -45,7 +45,7 @@ upload_tmp_dir is set to a correct default value that will work on your system
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ```
 
-3. Make sure you have disabled strict mode in Mysql.
+3. Make sure you have disabled strict mode in MySQL.
 
 ### How to disable Mysql strict mode?
 

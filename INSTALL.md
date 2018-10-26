@@ -54,7 +54,7 @@ git clone https://github.com/LibreHealthIO/LibreEHR librehealthehr
 
 To run LibreHealthEHR, MariaDB (prefered) or MySQL, and Apache or another PHP-capable webserver must be configured.
 
-If you don't already have it, download and install [Apache](www.apache.org), [MariaDB](https://mariadb.org) (prefered) or [MySQL](www.mysql.com), and [PHP.](www.php.net)
+If you don't already have it, download and install [Apache](https://apache.org), [MariaDB](https://mariadb.org) (prefered) or [MySQL](https://mysql.com), and [PHP.](https://php.net)
 
 **Note:**
 
@@ -180,7 +180,7 @@ error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ```
 Make sure that settings in MYSQL /etc/mysql/my.cnf file include:
 ```
-key_buffer_size set to 2% of your system's RAM (Less thatn 2% recommended) 
+key_buffer_size set to 2% of your system's RAM (Less thatn 2% recommended)
 innodb_buffer_pool_size set to 70% of available RAM.
 ```
 Make sure you have disabled strict mode in Mysql .
@@ -391,6 +391,104 @@ Launch XAMPP Control Panel and navigate to LibreEHR Setup in your browser: `\Lib
  ![Tenth Step](./Documentation/1_Installing/images/windows_installation/Step_10.png)
 
  **Once you see the screen above, you have successfully setup LibreEHR! Congratulations!**
+
+## On Mac With MAMP (For Local Testing)
+Apache can be used on Mac to install LibreHealth. However, if you have installation problems, you can use MAMP.
+
+#### Setup
+Install MAMP version 3.5.6 or under (Newer versions come with PHP 7.1 which is not compatible with LibreHealthEHR. If youdo install a newer version, make sure to use PHP versions under 7.1). You can find older versions.
+
+#### Note: PHP must not be version 7.1 or above. Version 7.0 and 5.6 can both be used.
+
+Firstly, download [MAMP](https://mamp.info/en/) version 3.5.6. Currently, we do not support PHP versions 7.1. MAMP 3.5.6 comes with PHP 7.0 so you can use it without much configuration. Older Versions (including version 3.5.6) can be found [here](https://mamp.info/en/downloads/older-versions/)
+
+After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app .
+
+ ![MAMPControl](./Documentation/1_Installing/images/MAMP/MAMP_Control.png)
+
+ Now navigate to Preferences > Ports and change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
+
+ ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/Settings.png)
+
+ Finally, you should make sure that you have got the right PHP version.
+
+ ![MAMPPHP](./Documentation/1_Installing/images/MAMP_installation/PHP.png)
+
+ Version 5.6.10 is recommended but any version which is not 7.1 and newer is fine.
+
+2. To make sure the LibreHealthEHR functions properly, you will need to make some changes to your php.ini file. Different versions of php have different php.ini files.
+For PHP 7.0.8
+`/Applications/MAMP/conf/php7.0.8/php.ini`
+For PHP 5.6.10
+`/Applications/MAMP/conf/php5.6.10/php.ini`
+
+*NOTE: If you installed MAMP somewhere else, you will have to replace /Applications/MAMP with your location of MAMP*
+
+Make the following changes in your php.ini file to ensure that LibreHealthEHR functions properly:
+
+(Search for the following and make necessary changes)
+```
+max_execution_time = 600
+max_input_time = 600
+max_input_vars = 3000
+memory_limit = 512M
+post_max_size = 32M
+upload_max_filesize = 32M
+session.gc_maxlifetime = 14400
+short_open_tag = On
+display_errors = Off
+upload_tmp_dir is set to a correct default value that will work on your system
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
+```
+
+3. Make sure you have disabled strict mode in MySQL.
+
+To make sure that strict mode is disabled in MySQL. Start your MAMP server and go to http://localhost/phpmyadmin/
+
+*NOTE: If you are not using port 80, you have go to http://localhost:YOUR_PORT/phpmyadmin/ instead.*
+
+ ![Strict](./Documentation/1_Installing/images/MAMP_installation/Variable.png)
+
+Go to the Variables heading by navigating through More > Variables. Now find *sql mode* and make sure that it is set to "".
+
+4. Start MAMP server
+
+Fork the LibreHealthEHR [repository](https://github.com/LibreHealthIO/librehealthehr).
+
+Clone the forked repository to a local directory with:
+`git clone https://github.com/your-username/lh-ehr.git` As you are using MAMP, you have to clone the repository to htdocs (The files in htdocs will be served in the MAMP server)
+`YOUR_MAMP_LOCATION/htdocs`
+
+#### Step 1
+Launch MAMP Control Panel and start your server.
+
+Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.php` (Make sure that you are on the right port, this can be found in the preference of your MAMP)
+
+#### Step 2
+ Leave default as the "Site ID:" and press continue.
+
+ ![First Step](./Documentation/1_Installing/images/windows_installation/Step_1.png)
+
+ Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file, or have the correct version PHP installed on your MAMP. (PHP 7.1 and above is not supported)
+
+ ![Second Step](./Documentation/1_Installing/images/windows_installation/Step_2.png)
+
+ Then after the second step, continue and leave the option "Have setup create the database" and press continue
+
+ ![Third Step](./Documentation/1_Installing/images/windows_installation/Step_3.png)
+
+ For the fourth step, enter a "Password" and "Initial User Password" you are free to change, the "Initial User" to your own username, but for convenience you can also leave it as admin. Also, you will have to change the Server and MySQL port to the ones that MAMP is currently using. (You can find this in the preferences of the MAMP Control Panel).
+
+ Then press continue.
+**Note:** If you do change your password, or even if you don't, write down your username and password. You will need it for future uses.
+
+ ![Fourth Step](./Documentation/1_Installing/images/windows_installation/Step_4.png)
+
+ Then after the fourth step, you can press continue through the others as long as the steps above were followed with clarity, the rest should have no errors, and each remaining page can be continued without change.
+
+ ![Last Step](./Documentation/1_Installing/images/windows_installation/Step_10.png)
+
+ If this comes up, you are set!
 
 
 ## FAQ
