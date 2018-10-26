@@ -17,6 +17,8 @@ Last Updated: March 28, 2017
 
 **[Windows Setup](#windows-setup)**
 
+**[Mac Setup (MAMP)](#on-mac-with-mamp)**
+
 ##  Overview of Directories
 
 NOTE: Most recent documentation can be found on the online documentation at [LibreHealth](http://librehealth.io/).
@@ -392,7 +394,7 @@ Launch XAMPP Control Panel and navigate to LibreEHR Setup in your browser: `\Lib
 
  **Once you see the screen above, you have successfully setup LibreEHR! Congratulations!**
 
-## On Mac With MAMP (For Local Testing)
+## On Mac With MAMP
 Apache can be used on Mac to install LibreHealth. However, if you have installation problems, you can use MAMP.
 
 #### Setup
