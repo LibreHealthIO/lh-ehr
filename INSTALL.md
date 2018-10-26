@@ -436,8 +436,7 @@ Clone the forked repository to a local directory with:
 `YOUR_MAMP_LOCATION/htdocs`
 
 #### Step 1
-
-Launch MAMP Control Panel and navigate to LibreEHR Setup in your browser: `localhost\librehealthehr\setup.php`
+Launch MAMP Control Panel and navigate to LibreEHR Setup in your browser: `localhost/librehealthehr/etup.php`
 
 #### Step 2
  Leave default as the "Site ID:" and press continue.
