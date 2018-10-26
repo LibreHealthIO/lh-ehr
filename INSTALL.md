@@ -425,6 +425,7 @@ For PHP 5.6.10
 *NOTE: If you installed MAMP somewhere else, you will have to replace /Applications/MAMP with your location of MAMP*
 
 Make the following changes in your php.ini file to ensure that LibreHealthEHR functions properly:
+
 (Search for the following and make necessary changes)
 ```
 max_execution_time = 600
