@@ -397,22 +397,20 @@ Launch XAMPP Control Panel and navigate to LibreEHR Setup in your browser: `\Lib
 ## Mac Setup With MAMP
 Apache can be used on Mac to install LibreHealth. However, if you have installation problems, you can use MAMP.
 
-#### Setup
-Install MAMP version 3.5.6 or under (Newer versions come with PHP 7.1 which is not compatible with LibreHealthEHR. If youdo install a newer version, make sure to use PHP versions under 7.1). You can find older versions.
+#### Setting up MAMP
+1. Install [MAMP](https://mamp.info/en/) version 3.5.6. Currently, we do not support PHP versions 7.1. MAMP 3.5.6 comes with PHP 7.0 so you can use it without much configuration. Older Versions (including version 3.5.6) can be found [here](https://mamp.info/en/downloads/older-versions/)
 
 #### Note: PHP must not be version 7.1 or above. Version 7.0 and 5.6 can both be used.
 
-Firstly, download [MAMP](https://mamp.info/en/) version 3.5.6. Currently, we do not support PHP versions 7.1. MAMP 3.5.6 comes with PHP 7.0 so you can use it without much configuration. Older Versions (including version 3.5.6) can be found [here](https://mamp.info/en/downloads/older-versions/)
-
-After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app . 
+After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app.
 
  ![MAMPControl](./Documentation/1_Installing/images/MAMP_installation/MAMP_Control.png)
  
- Now navigate to Preferences > Ports and change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
+Navigate to Preferences > Ports and change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
  
  ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/Settings.png)
  
- Finally, you should make sure that you have got the right PHP version.
+You should make sure that you have got the right PHP version.
  
  ![MAMPPHP](./Documentation/1_Installing/images/MAMP_installation/PHP.png)
  
@@ -461,13 +459,13 @@ Clone the forked repository to a local directory with:
 `git clone https://github.com/your-username/lh-ehr.git` As you are using MAMP, you have to clone the repository to htdocs (The files in htdocs will be served in the MAMP server)
 `YOUR_MAMP_LOCATION/htdocs` 
 
-#### Step 1
-Launch MAMP Control Panel and start your server.
+Now that you have finished setting up MAMP, you start setting up LibreHealth!
 
+#### Setting Up 
+Launch MAMP Control Panel and start your server.
 Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.php` (Make sure that you are on the right port, this can be found in the preference of your MAMP)
 
-#### Step 2
- Leave default as the "Site ID:" and press continue.
+Leave default as the "Site ID:" and press continue.
 
  ![First Step](./Documentation/1_Installing/images/windows_installation/Step_1.png)
 
