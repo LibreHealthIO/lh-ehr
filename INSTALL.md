@@ -404,7 +404,7 @@ Firstly, download [MAMP](https://mamp.info/en/) version 3.5.6. Currently, we do 
 
 After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app . 
 
- ![MAMPControl](./Documentation/1_Installing/images/MAMP/MAMP_Control.png)
+ ![MAMPControl](./Documentation/1_Installing/images/MAMP_installation/MAMP_Control.png)
  
  Now navigate to Preferences > Ports and change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
  
