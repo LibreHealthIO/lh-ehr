@@ -396,11 +396,11 @@ Launch XAMPP Control Panel and navigate to LibreEHR Setup in your browser: `\Lib
 Apache can be used on Mac to install LibreHealth. However, if you have installation problems, you can use MAMP.
 
 #### Setup
-Install MAMP (To prevent changing the PHP version, use version 3.5 and under).
+Install MAMP version 3.5.6 or under (Newer versions come with PHP 7.1 which is not compatible with LibreHealthEHR. If youdo install a newer version, make sure to use PHP versions under 7.1).
 
 #### Note: PHP must not be version 7.1 or above. Version 7.0 and 5.6 can both be used.
 
-Firstly, download [MAMP](https://mamp.info/en/). Currently, we do not support PHP versions 7.1 and above. Version 3.5.2 comes with PHP version 7.0. For ease, download this version as you would not have to go change the PHP version.
+Firstly, download [MAMP](https://mamp.info/en/) version 3.5.6. Currently, we do not support PHP versions 7.1. MAMP 3.5.6 comes with PHP 7.0 so you can use it without much configuration.
 
 2. Make the following changes in `php.ini` file. You can find the `php.ini` file by looking at this destination:
 `YOUR_MAMP_LOCATION/conf/php7.0.8/php.ini`
@@ -436,14 +436,14 @@ Clone the forked repository to a local directory with:
 `YOUR_MAMP_LOCATION/htdocs`
 
 #### Step 1
-Launch MAMP Control Panel and navigate to LibreEHR Setup in your browser: `localhost/librehealthehr/etup.php`
+Launch MAMP Control Panel and start your server. A MAMP page should pop up when the server starts. Go to the LibreEHR Setup page in your browser: `localhost:your_port/librehealthehr/setup.php` (Make sure that you are on the right port, this can be found in the preference of your MAMP)
 
 #### Step 2
  Leave default as the "Site ID:" and press continue.
 
  ![First Step](./Documentation/1_Installing/images/windows_installation/Step_1.png)
 
- Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file, or have the correct version of MAMP.
+ Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file, or have the correct version PHP installed on your MAMP. (PHP 7.1 and above is not supported)
 
  ![Second Step](./Documentation/1_Installing/images/windows_installation/Step_2.png)
 
