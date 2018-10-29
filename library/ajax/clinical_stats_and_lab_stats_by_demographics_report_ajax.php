@@ -1,6 +1,6 @@
 <?php
 /**
- * library/ajax/clinical_stats_and_lab_stats_by_demographics.php: handles ajax calls from demographic lab/procedure reports
+ * library/ajax/clinical_stats_and_lab_stats_by_demographics_ajax.php: handles ajax calls from demographic lab/procedure reports
  * file adapted to present user activity log
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,22 +57,45 @@ function ifTestingTrue($testing){
 if($_POST['func']=="get_all_diags_data")
 {
     $response['data'] = array();
+    $queryArray = array();
+    $query = " SELECT type, l.title, diagnosis, l.activity, l.pid, dob, status, sex, list_options.title as ethnicity, monthly_income " .
+            " FROM `lists` l join patient_data pd on pd.pid = l.pid " .
+            " join list_options on option_id = ethnicity and list_id = 'ethnicity' where type = 'medical_problem'  ";
 
-    $query = "SELECT patient_data.pid, issue_encounter.encounter, form_encounter.date, type, lists.title, lists.diagnosis, activity, dob, city, state, status, sex, race, ethnicity ";
-    $query .= "FROM `issue_encounter` ";
-    $query .= "join lists on list_id = lists.id ";
-    $query .= "join patient_data on lists.pid = patient_data.pid ";
-    $query .= "join form_encounter on issue_encounter.encounter = form_encounter.encounter";
+     if(! empty($_POST['diag'])){
+       array_push($queryArray, $_POST['diag'] );
+       $query .= ' AND diagnosis = ?';
+     }
 
 
-    ini_set('memory_limit', '1000M');
-    $result = sqlStatement($query);
+    if(! empty($_POST['ethnicity'])){
+        array_push($queryArray, $_POST['ethnicity'] );
+        $query .= ' AND ethnicity = ?';
+    }
+
+    if(! empty($_POST['min_age'])){
+        $min = $_POST['min_age'];
+        $date = strtotime("-$min year");
+        $date = date('Y-m-d', $date);
+        array_push($queryArray, $date);
+        $query .= ' AND dob <= ?';
+    }
+
+    if(! empty($_POST['max_age'])){
+        $max = $_POST['max_age'];
+        $date = strtotime("-$max year");
+        $date = date('Y-m-d', $date);
+        array_push($queryArray, $date );
+        $query .= ' AND dob >= ?';
+    }
+
+    $query .= " AND ? "; //handles the case where nothing is being queried
+    array_push($queryArray, 1 );
+    $result = sqlStatement($query, $queryArray);
 
     while ($row = sqlFetchArray($result)) {
         $row['sex'] = ($row['sex'] == 'Male') ? 'M' : 'F';
         array_push($response['data'], $row);
-
-
 
     }
 
@@ -87,18 +110,35 @@ if($_POST['func']=="get_all_diags_data")
 if($_POST['func']=="get_all_lab_data")
 {
     $response['data'] = array();
-
-    $query  = "select pd.pid as pid, pd.sex as gender, pd.dob, pd.ethnicity, pres.result_text, pres.result, pres.abnormal from procedure_result pres ";
+    $queryArray = array();
+    
+    $query  = "select pd.pid as pid, pd.sex as gender, pd.dob, list_options.title as ethnicity, pres.result_text, pres.result, pres.abnormal from procedure_result pres ";
     $query .= "join procedure_report prep on pres.procedure_report_id = prep.procedure_report_id " ;
     $query .= "join procedure_order prord on prep.procedure_order_id = prord.procedure_order_id " ;
     $query .= "join patient_data pd on pd.pid = prord.patient_id ";
+    $query .= "join list_options on option_id = pd.ethnicity and list_id = 'ethnicity' ";
     $query .= "where  pres.result_text != '' and pres.abnormal != '' ";
 
+    if(! empty($_POST['min_age'])){
+        $min = $_POST['min_age'];
+        $date = strtotime("-$min year");
+        $date = date('Y-m-d', $date);
+        array_push($queryArray, $date);
+        $query .= ' AND dob <= ?';
+    }
+
+    if(! empty($_POST['max_age'])){
+        $max = $_POST['max_age'];
+        $date = strtotime("-$max year");
+        $date = date('Y-m-d', $date);
+        array_push($queryArray, $date );
+        $query .= ' AND dob >= ?';
+    }
 
 
 
     ini_set('memory_limit', '1000M');
-    $result = sqlStatement($query);
+    $result = sqlStatement($query, $queryArray);
 
     while ($row = sqlFetchArray($result)) {
         $row['gender'] = ($row['gender'] == 'Male') ? 'M' : 'F';
