@@ -1,15 +1,16 @@
 <?php
 //  LibreEHR
-//  MySQL Config
+//  MySQL default Config
+//  Referenced from /library/sqlconf.php.
+
+global $disable_utf8_flag;
+$disable_utf8_flag = false;
 
 $host	= 'localhost';
 $port	= '3306';
 $login	= 'libreehr';
-$pass	= 'pass';
+$pass	= 'libreehr';
 $dbase	= 'libreehr';
-
-global $disable_utf8_flag;
-$disable_utf8_flag = false;
 
 $sqlconf = array();
 global $sqlconf;
@@ -18,12 +19,8 @@ $sqlconf["port"] = $port;
 $sqlconf["login"] = $login;
 $sqlconf["pass"] = $pass;
 $sqlconf["dbase"] = $dbase;
-/////////WARNING!/////////
-//Setting $config to = 0//
-// will break this site //
-//and cause SETUP to run//
-$config = 1; /////////////
-//////////////////////////
-//////////////////////////
-//////////////////////////
+
+//$config for default site files should never be changed.
+$config = 0; 
+
 ?>
