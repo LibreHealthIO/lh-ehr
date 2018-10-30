@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - ../sql/nhanes:/docker-entrypoint-initdb.d/
+       - db_data:/var/lib/mysql
+     restart: always
+     env_file: .env.mysql
+
+   lh_ehr:
+     depends_on:
+       - db
+     # image: librehealth_ehr:${PHP_DOCKER_VERSION-php7.1}-apache
+     build:
+        context: .
+        args:
+          - PHP_DOCKER_TAG=7.1-apache
+     ports:
+       - "8000:80"
+     restart: always
+     env_file: .env.ehr
+     volumes:
+       - sites:/var/www/html/sites
+volumes:
+    db_data:
+    sites:
