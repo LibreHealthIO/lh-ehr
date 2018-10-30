@@ -96,7 +96,7 @@ function generate_qoe_html($ptid=0, $orderid=0, $dbseq=0, $formseq=0) {
       $s .= "<input type='text' size='10' name='$qfieldid' id='$qfieldid'";
       if (!empty($answers)) $s .= " value='" . attr($answers[0]) . "'";
       $s .= " onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />";
-      $s .= "<img src='$rootdir/pic/show_calendar.gif' align='absbottom' width='24' height='22'" .
+      $s .= "<img src='../../images/calendar.png' align='absbottom' width='24' height='22'" .
         " id='img_$qfieldid' border='0' alt='[?]' style='cursor:pointer'" .
         " title='" . htmlspecialchars( xl('Click here to choose a date'), ENT_QUOTES) . "' />";
       $qoe_init_javascript .= " Calendar.setup({inputField:'$qfieldid', ifFormat:'%Y-%m-%d', button:'img_$qfieldid'});";

@@ -84,7 +84,7 @@ if ($mode == "simple") {
 <div>
   <span class='title'><?php echo htmlspecialchars( xl('Patient Reminders'), ENT_NOQUOTES); ?></span>
 </div>
-<?php if ($mode == "simple") { ?> 
+<?php if ($mode == "simple") { ?>
   <div style='float:left;margin-right:10px'>
     <?php echo htmlspecialchars( xl('for'), ENT_NOQUOTES);?>&nbsp;
     <span class="title">
@@ -107,21 +107,21 @@ $sort = array("category, item", "lname, fname", "due_status", "date_created", "h
 if($sortby == "") {
   $sortby = $sort[0];
 }
-if($sortorder == "") { 
+if($sortorder == "") {
   $sortorder = "asc";
 }
 for($i = 0; $i < count($sort); $i++) {
   $sortlink[$i] = "<a href=\"patient_reminders.php?patient_id=" . attr($patient_id) ."&mode=" . attr($mode) . "&sortby=" . attr($sort[$i]) . "&sortorder=asc\" onclick=\"top.restoreSession()\">" .
-    "<img src=\"../../../images/sortdown.gif\" border=0 alt=\"".htmlspecialchars(xl('Sort Up'), ENT_QUOTES)."\"></a>";
+    "<img src=\"../../../images/sortdown.png\" border=0 alt=\"".htmlspecialchars(xl('Sort Up'), ENT_QUOTES)."\"></a>";
 }
 for($i = 0; $i < count($sort); $i++) {
   if($sortby == $sort[$i]) {
     switch($sortorder) {
       case "asc"      : $sortlink[$i] = "<a href=\"patient_reminders.php?patient_id=" . attr($patient_id) . "&mode=" . attr($mode) . "&sortby=" . attr($sortby) . "&sortorder=desc\" onclick=\"top.restoreSession()\">" .
-                          "<img src=\"../../../images/sortup.gif\" border=0 alt=\"".htmlspecialchars(xl('Sort Up'), ENT_QUOTES)."\"></a>";
+                          "<img src=\"../../../images/sortup.png\" border=0 alt=\"".htmlspecialchars(xl('Sort Up'), ENT_QUOTES)."\"></a>";
                         break;
       case "desc"     : $sortlink[$i] = "<a href=\"patient_reminders.php?patient_id=" . attr($patient_id) . "&mode=" . attr($mode) . "&sortby=" . attr($sortby) . "&sortorder=asc\" onclick=\"top.restoreSession()\">" .
-                          "<img src=\"../../../images/sortdown.gif\" border=0 alt=\"".htmlspecialchars(xl('Sort Down'), ENT_QUOTES)."\"></a>";
+                          "<img src=\"../../../images/sortdown.png\" border=0 alt=\"".htmlspecialchars(xl('Sort Down'), ENT_QUOTES)."\"></a>";
                         break;
     } break;
   }
@@ -159,7 +159,7 @@ if($end < $start) {
 if($prev >= 0) {
   $prevlink = "<a href=\"patient_reminders.php?patient_id=$patient_id&mode=$mode&sortby=$sortby&sortorder=$sortorder&begin=$prev\" onclick=\"top.restoreSession()\"><<</a>";
 }
-else { 
+else {
   $prevlink = "<<";
 }
 

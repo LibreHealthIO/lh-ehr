@@ -1054,9 +1054,9 @@ class C_Document extends Controller {
         }
         $node = &$this->_last_node;
         $current_node = &$node;
-        $expandedIcon = 'folder-expanded.gif';
+        $expandedIcon = 'folder-expanded.png';
         foreach ($array as $id => $ar) {
-            $icon = 'folder.gif';
+            $icon = 'folder.png';
             if (is_array($ar) || !empty($id)) {
                 if ($node == null) {
                     //echo "r:" . $this->tree->get_node_name($id) . "<br>";

@@ -40,8 +40,8 @@ class C_DocumentCategory extends Controller {
     function list_action() {
         //$this->tree->rebuild_tree(1,1);
 
-        $icon = 'folder.gif';
-        $expandedIcon = 'folder-expanded.gif';
+        $icon = 'folder.png';
+        $expandedIcon = 'folder-expanded.png';
         $menu = new HTML_TreeMenu();
         $this->_last_node = null;
         $rnode = $this->_array_recurse($this->tree->tree);
@@ -128,8 +128,8 @@ class C_DocumentCategory extends Controller {
             $array = array();
         }
         $node = &$this->_last_node;
-        $icon = 'folder.gif';
-        $expandedIcon = 'folder-expanded.gif';
+        $icon = 'folder.png';
+        $expandedIcon = 'folder-expanded.png';
         foreach ($array as $id => $ar) {
             if (is_array($ar) || !empty($id)) {
                 if ($node == null) {

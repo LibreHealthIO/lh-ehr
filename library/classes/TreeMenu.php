@@ -238,11 +238,11 @@ class HTML_TreeMenu
     * like so:
     *
     * <treemenu>
-    *     <node text="First node" icon="folder.gif" expandedIcon="folder-expanded.gif" />
-    *     <node text="Second node" icon="folder.gif" expandedIcon="folder-expanded.gif">
-    *         <node text="Sub node" icon="folder.gif" expandedIcon="folder-expanded.gif" />
+    *     <node text="First node" icon="folder.png" expandedIcon="folder-expanded.png" />
+    *     <node text="Second node" icon="folder.png" expandedIcon="folder-expanded.png">
+    *         <node text="Sub node" icon="folder.png" expandedIcon="folder-expanded.png" />
     *     </node>
-    *     <node text="Third node" icon="folder.gif" expandedIcon="folder-expanded.gif">
+    *     <node text="Third node" icon="folder.png" expandedIcon="folder-expanded.png">
     * </treemenu>
     *
     * Any of the options you can supply to the HTML_TreeNode constructor can be supplied as

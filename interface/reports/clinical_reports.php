@@ -46,14 +46,14 @@ require_once "reports_controllers/ClinicalController.php";
                 if (img!=null) {
                    var bExpand = img.src.indexOf(sPlus) >= 0;
                         if (!bExpand)
-                        img.src = "../pic/blue-up-arrow.gif";
+                        img.src = "../../images/sortup.png";
                         else
-                        img.src = "../pic/blue-down-arrow.gif";
+                        img.src = "../../images/sortdown.png";
                 }
             }
        function Toggle_trGrpHeader2(t_id,i_id) {
                 var img=i_id;
-                changeimage(img, 'blue-down-arrow.gif', 'blue-up-arrow.gif');
+                changeimage(img, 'sortdown.png', 'sortup.png');
                 var id1=t_id;
                 toggle(id1);
              }
@@ -369,7 +369,7 @@ if(sqlNumRows($result)){
             <td>&nbsp;</td>
             <td align="center">
                     <span onclick="javascript:Toggle_trGrpHeader2(<?php echo $row_id; ?>,<?php echo $img_id; ?>);"><img
-                            src="../pic/blue-down-arrow.gif" id="<?php echo $img_id;
+                            src="../../images/sortdown.png" id="<?php echo $img_id;
                         $img_id++; ?>"
                             title="<?php echo htmlspecialchars(xl('Click here to view patient details'), ENT_QUOTES); ?>"/></span>
                 </td>

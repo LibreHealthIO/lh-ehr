@@ -119,7 +119,7 @@ require_once "reports_controllers/PreBillingIssuesController.php";
             <td>
                <input type='text' name='form_from_date' id="form_from_date" size='10' value='<?php  echo $form_from_date; ?>'
                 title='Date of appointments mm/dd/yyyy' >
-               <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+               <img src='../../images/calendar.png' align='absbottom' width='24' height='22'
                 id='img_from_date' border='0' alt='[?]' style='cursor:pointer'
                 title='<?php xl('Click here to choose a date','e'); ?>'>
             </td>
@@ -129,7 +129,7 @@ require_once "reports_controllers/PreBillingIssuesController.php";
             <td>
                <input type='text' name='form_to_date' id="form_to_date" size='10' value='<?php  echo $form_to_date; ?>'
                 title='Optional end date mm/dd/yyyy' >
-               <img src='../pic/show_calendar.gif' align='absbottom' width='24' height='22'
+               <img src='../../images/calendar.png' align='absbottom' width='24' height='22'
                 id='img_to_date' border='0' alt='[?]' style='cursor:pointer'
                 title='<?php xl('Click here to choose a date','e'); ?>'>
             </td>
