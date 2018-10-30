@@ -1,5 +1,7 @@
 # LibreHealth EHR
 
+[![pipeline status](https://gitlab.com/librehealth/ehr/lh-ehr/badges/master/pipeline.svg)](https://gitlab.com/librehealth/ehr/lh-ehr/commits/master)
+
 LibreHealth EHR is a free and open-source electronic health records and medical practice management application.
 
 The mission of LibreHealth is to help provide high quality medical care to all people, regardless of race, socioeconomic status, or geographic location, by providing medical practices and clinics across the globe access to free of charge medical software. That same software is designed to save clinics both time and money, which gives practitioners more time to spend with individual patients, thereby supplying patients with higher quality care.
@@ -11,6 +13,12 @@ We are collaborating closely with the [LibreHealth Project](http://LibreHealth.i
 # Contributing code
 
 Code contributions are very welcome! We encourage newcomers to browse the [issue tracker](https://github.com/LibreHealthIO/LibreEHR/issues) for open issues and/or if you have found a bug in LibreEHR, please [create a new issue](https://github.com/LibreHealthIO/LibreEHR/issues/new) for same. You may open a [pull request](https://github.com/LibreHealthIO/LibreEHR/pulls) to contribute your code to an issue, from your fork of the [LibreEHR repository](https://github.com/LibreHealthIO/LibreEHR).
+
+# Docker Support
+
+There is now a docker image, soon to be published to the registries, but you can test it now for development purposes.
+
+See [the Docker README](./docker/README.md) for more information.
 
 # Installation
 

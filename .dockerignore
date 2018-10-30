@@ -1,0 +1,5 @@
+sql/nhanes
+docker/*
+docker-compose-*
+!docker/docker-entrypoint.sh
+*.md

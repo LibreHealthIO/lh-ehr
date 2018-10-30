@@ -77,9 +77,16 @@ Follow link [Click here to start using LibreHealth EHR](http://localhost:8000/?s
 
 ### 5. Use
 
+### If you did not have the initial dataset loaded
+
 Login with credentials provided above:
 * Initial User: `<your admin user>`
 * Initial User Password: `<your admin password>`
+
+###  With the initial database with sample data
+
+* Initial User: `admin`
+* Initial User Password: `password`
 
 ## Cleanup
 
