@@ -1,4 +1,4 @@
-# `docker` support for LibreHealth
+# `docker` support for LibreHealth EHR
 
 To start a simple `lh-ehr` instance, follow the steps:
 
@@ -10,18 +10,16 @@ To start a simple `lh-ehr` instance, follow the steps:
 
 ### 2. Build the `librehealth` docker image
 
-Build using your desired `php` version, by picking from the following: `php7.0-apache`, **`php7.1-apache`** (default), `php7.2-apache` (more: [hub.docker:_/php](https://hub.docker.com/_/php/)). Currently only *-apache* (a.k.a [Apache HTTP Server](https://httpd.apache.org/)) is supported.
+Build using your desired `php` version, by picking from the following: `php7.0-apache`, **`php7.1-apache`** (default), `php7.2-apache` (more: [hub.docker:_/php](https://hub.docker.com/_/php/)). Currently only *-apache* (a.k.a [Apache HTTP Server](https://httpd.apache.org/)** is supported.
 
-    $ export PHP_DOCKER_VERSION=php7.1
-    $ cd lh-ehr/docker
-    $ docker build --no-cache -t librehealth_ehr:${PHP_DOCKER_VERSION}-apache .
-    $ docker-compose up -p librehealth -d
+    $ cp .env.mysql.example .env.mysql ; cp .env.ehr.example .env.ehr
+    $ docker-compose -p librehealth up -d
 
-### 3. Start LibreHealth EHR composition
+**The initial container creation may take awhile. It is loading a database with sample data. If you do not wish to use this, comment out the `../sql/nhanes:/docker-entrypoint-initdb.d/`  Line in the docker-compose file.**
 
-    $ docker-compose up -p librehealth -d
+Go to [http://localhost:8000](https://localhost:8000) and you're ready to go -- otherwise go to [http://localhost:8000/setup.php](http://localhost:8000/setup.php).
 
-Go to [http://localhost:8000/setup.php](http://localhost:8000/setup.php). At this point the default image will guide you throught the installation steps.
+At this point the setup wizard will guide you through the installation steps.
 
 ### 4. Installation
 
@@ -89,7 +87,8 @@ Login with credentials provided above:
 
 ## Backup (make use of volumes)
 
-The volume that needs to be backed up: `librehealth_db_data`
+The volumes that needs to be backed up: `librehealth_db_data` and `librehealth_sites`
 
     $ docker volume ls | grep librehealth
     local               librehealth_db_data
+    local               librehealth_sites

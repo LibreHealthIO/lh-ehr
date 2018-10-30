@@ -1,4 +1,4 @@
-ARG PHP_DOCKER_TAG=7.0-apache
+ARG PHP_DOCKER_TAG=7.1-apache
 FROM php:${PHP_DOCKER_TAG}
 
 # install the PHP extensions we need
