@@ -10,11 +10,7 @@ services:
      env_file: ./docker/.env.mysql
 
    lh-ehr:
-     # image: librehealth_ehr:${PHP_DOCKER_VERSION-php7.1}-apache
-     build:
-        context: .
-        args:
-          - PHP_DOCKER_TAG=7.1-apache
+     image: registry.gitlab.com/librehealth/ehr/lh-ehr:latest
      volumes:
        - sites:/var/www/html/sites
        - ./docker/default_site/:/var/www/html/sites/default/
