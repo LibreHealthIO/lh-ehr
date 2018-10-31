@@ -21,3 +21,5 @@ $sqlconf["dbase"] = $dbase;
 
 //$config for default site files should never be changed.
 $config = 0; 
+
+?>
