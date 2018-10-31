@@ -16,7 +16,11 @@ Code contributions are very welcome! We encourage newcomers to browse the [issue
 
 # Docker Support
 
-There is now a docker image, soon to be published to the registries, but you can test it now for development purposes.
+Docker images are now pushed to [GitLab's container registry](https://gitlab.com/librehealth/ehr/lh-ehr/container_registry) built using [GitLab CI](https://gitlab.com/librehealth/ehr/lh-ehr/pipelines).
+
+Currently the image uses PHP 7.2 and Apache. We plan to support more than one version of PHP, which will be published at a later date.
+
+For the database in the docker-compose files, we use MariaDB
 
 See [the Docker README](./docker/README.md) for more information.
 

@@ -1,4 +1,4 @@
-ARG PHP_DOCKER_TAG=7.1-apache
+ARG PHP_DOCKER_TAG=7.2-apache
 FROM php:${PHP_DOCKER_TAG}
 LABEL maintainer="LibreHealth Infrastructure Team <infrastructure@librehealth.io>"
 

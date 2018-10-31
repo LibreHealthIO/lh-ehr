@@ -8,12 +8,22 @@ To start a simple `lh-ehr` instance, follow the steps:
 
     $ git clone https://github.com/LibreHealthIO/lh-ehr.git
 
-### 2. Build the `librehealth` docker image
+### 2. Start LibreHealth EHR
+We currently have an image pushed for PHP 7.2 and Apache. We do not support nginx currently, or any other web server.
 
-Build using your desired `php` version, by picking from the following: `php7.0-apache`, **`php7.1-apache`** (default), `php7.2-apache` (more: [hub.docker:_/php](https://hub.docker.com/_/php/)). Currently only *-apache* (a.k.a [Apache HTTP Server](https://httpd.apache.org/)** is supported.
+#### Development
+```bash
+$ cp .env.mysql.example .env.mysql ; cp .env.ehr.example .env.ehr # then edit accordingly
+$ docker-compose -p librehealth up -d
+```
 
-    $ cp .env.mysql.example .env.mysql ; cp .env.ehr.example .env.ehr
-    $ docker-compose -p librehealth up -d
+#### Production
+
+```bash
+$ cp .env.mysql.example .env.mysql ; cp .env.ehr.example .env.ehr # then edit accordingly
+$ docker-compose -f docker-compose.prod.yml up -d
+```
+You might need to tweak all files for this case. For example if you are deploying this for your practice, you will not want to load demo data, so commenting that line out.
 
 **The initial container creation may take awhile. It is loading a database with sample data. If you do not wish to use this, comment out the `../sql/nhanes:/docker-entrypoint-initdb.d/`  Line in the docker-compose file.**
 
@@ -90,7 +100,7 @@ Login with credentials provided above:
 
 ## Cleanup
 
-    $ docker-compose down -p librehealth -v
+    $ docker-compose -p librehealth down -v
 
 ## Backup (make use of volumes)
 
