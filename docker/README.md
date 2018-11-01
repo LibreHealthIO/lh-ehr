@@ -14,14 +14,14 @@ We currently have an image pushed for PHP 7.2 and Apache. We do not support ngin
 #### Development
 ```bash
 $ cp .env.mysql.example .env.mysql ; cp .env.ehr.example .env.ehr # then edit accordingly
-$ docker-compose -p librehealth up -d
+$ docker-compose -p librehealth_ehr up -d
 ```
 
 #### Production
 
 ```bash
 $ cp .env.mysql.example .env.mysql ; cp .env.ehr.example .env.ehr # then edit accordingly
-$ docker-compose -f docker-compose.prod.yml up -d
+$ docker-compose -p librehealth_ehr -f docker-compose.prod.yml up -d
 ```
 You might need to tweak all files for this case. For example if you are deploying this for your practice, you will not want to load demo data, so commenting that line out.
 
@@ -100,12 +100,12 @@ Login with credentials provided above:
 
 ## Cleanup
 
-    $ docker-compose -p librehealth down -v
+    $ docker-compose -p librehealth_ehr down -v
 
 ## Backup (make use of volumes)
 
-The volumes that needs to be backed up: `librehealth_db_data` and `librehealth_sites`
+The volumes that needs to be backed up: `librehealth_ehr_db_data` and `librehealth_ehr_sites`
 
     $ docker volume ls | grep librehealth
-    local               librehealth_db_data
-    local               librehealth_sites
+    local               librehealth_ehr_db_data
+    local               librehealth_ehr_sites
