@@ -17,6 +17,8 @@ Last Updated: March 28, 2017
 
 **[Windows Setup](#windows-setup)**
 
+**[Mac Setup With MAMP](#mac-setup-with-mamp)**
+
 ##  Overview of Directories
 
 NOTE: Most recent documentation can be found on the online documentation at [LibreHealth](http://librehealth.io/).
@@ -392,36 +394,34 @@ Launch XAMPP Control Panel and navigate to LibreEHR Setup in your browser: `\Lib
 
  **Once you see the screen above, you have successfully setup LibreEHR! Congratulations!**
 
-## On Mac With MAMP (For Local Testing)
-Apache can be used on Mac to install LibreHealth. However, if you have installation problems, you can use MAMP.
+## Mac Setup With MAMP
+Apache can be used on Mac to install LibreHealth. However, if you wish to use MAMP, it is also an option.
 
 #### Setup
-Install MAMP version 3.5.6 or under (Newer versions come with PHP 7.1 which is not compatible with LibreHealthEHR. If youdo install a newer version, make sure to use PHP versions under 7.1). You can find older versions.
 
-#### Note: PHP must not be version 7.1 or above. Version 7.0 and 5.6 can both be used.
+1. Download [MAMP](https://mamp.info/en/downloads/) version 5.1.
 
-Firstly, download [MAMP](https://mamp.info/en/) version 3.5.6. Currently, we do not support PHP versions 7.1. MAMP 3.5.6 comes with PHP 7.0 so you can use it without much configuration. Older Versions (including version 3.5.6) can be found [here](https://mamp.info/en/downloads/older-versions/)
-
-After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app .
+2. After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app .
 
  ![MAMPControl](./Documentation/1_Installing/images/MAMP/MAMP_Control.png)
 
- Now navigate to Preferences > Ports and change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
+3. Now navigate to Preferences > Ports and change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
+
+To launch preferences, navigate on the Mac menu bar to MAMP>Preferences
+
+ ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/MACBAR.png)
 
  ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/Settings.png)
-
- Finally, you should make sure that you have got the right PHP version.
+  
+Finally, you should make sure that you have got the right PHP version. (7.2.x Recommended but 7.1.x works fine)
 
  ![MAMPPHP](./Documentation/1_Installing/images/MAMP_installation/PHP.png)
 
- Version 5.6.10 is recommended but any version which is not 7.1 and newer is fine.
-
-2. To make sure the LibreHealthEHR functions properly, you will need to make some changes to your php.ini file. Different versions of php have different php.ini files.
-For PHP 7.0.8
-`/Applications/MAMP/conf/php7.0.8/php.ini`
-For PHP 5.6.10
-`/Applications/MAMP/conf/php5.6.10/php.ini`
-
+4. To make sure the LibreHealthEHR functions properly, you will need to make some changes to your php.ini file. Different versions of php have different php.ini files.
+For PHP 7.2.6
+`/Applications/MAMP/conf/php7.2.6/php.ini`
+For PHP 7.1.20
+`/Applications/MAMP/conf/php7.1.20/php.ini`
 *NOTE: If you installed MAMP somewhere else, you will have to replace /Applications/MAMP with your location of MAMP*
 
 Make the following changes in your php.ini file to ensure that LibreHealthEHR functions properly:
@@ -441,30 +441,27 @@ upload_tmp_dir is set to a correct default value that will work on your system
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ```
 
-3. Make sure you have disabled strict mode in MySQL.
+5. Make sure you have disabled strict mode in MySQL.
 
 To make sure that strict mode is disabled in MySQL. Start your MAMP server and go to http://localhost/phpmyadmin/
-
+Go to the Variables heading by navigating through More > Variables. Now find *sql mode* and make sure that it is set to "". To edit the variable, click the edit button next to the name of the variable.
 *NOTE: If you are not using port 80, you have go to http://localhost:YOUR_PORT/phpmyadmin/ instead.*
 
  ![Strict](./Documentation/1_Installing/images/MAMP_installation/Variable.png)
 
-Go to the Variables heading by navigating through More > Variables. Now find *sql mode* and make sure that it is set to "".
+6. Start MAMP server
 
-4. Start MAMP server
-
-Fork the LibreHealthEHR [repository](https://github.com/LibreHealthIO/librehealthehr).
+7. Fork the LibreHealthEHR [repository](https://github.com/LibreHealthIO/librehealthehr).
 
 Clone the forked repository to a local directory with:
-`git clone https://github.com/your-username/lh-ehr.git` As you are using MAMP, you have to clone the repository to htdocs (The files in htdocs will be served in the MAMP server)
+`git clone https://github.com/your-username/lh-ehr.git` As you are using MAMP, you have to clone the repository to *htdocs* (The files in htdocs will be served in the MAMP server). *htdocs* can be found in.
 `YOUR_MAMP_LOCATION/htdocs`
 
-#### Step 1
+#### Installation
 Launch MAMP Control Panel and start your server.
 
 Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.php` (Make sure that you are on the right port, this can be found in the preference of your MAMP)
 
-#### Step 2
  Leave default as the "Site ID:" and press continue.
 
  ![First Step](./Documentation/1_Installing/images/windows_installation/Step_1.png)
@@ -477,7 +474,7 @@ Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.p
 
  ![Third Step](./Documentation/1_Installing/images/windows_installation/Step_3.png)
 
- For the fourth step, enter a "Password" and "Initial User Password" you are free to change, the "Initial User" to your own username, but for convenience you can also leave it as admin. Also, you will have to change the Server and MySQL port to the ones that MAMP is currently using. (You can find this in the preferences of the MAMP Control Panel).
+ For the fourth step, enter a "Password" and "Initial User Password" you are free to change, the "Initial User" to your own username, but for convenience you can also leave it as admin. Also, you will have to change the MySQL port to the one that MAMP is currently using. (You can find this in the preferences of the MAMP Control Panel).
 
  Then press continue.
 **Note:** If you do change your password, or even if you don't, write down your username and password. You will need it for future uses.
