@@ -399,26 +399,28 @@ Apache can be used on Mac to install LibreHealth. However, if you wish to use MA
 
 #### Setup
 
-1. Download [MAMP](https://mamp.info/en/downloads/) version 5.1.
+#### Step 1
+Download [MAMP](https://mamp.info/en/downloads/) version 5.1.
 
-
-2. After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app.
+#### Step 2
+After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app.
 
  ![MAMPControl](./Documentation/1_Installing/images/MAMP_installation/MAMP_Control1.png)
 
-
-3. Now navigate through go to the Mac menubar and navigate through MAMP > Preferences > Ports to change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
+#### Step 3
+Now navigate through go to the Mac menubar and navigate through MAMP > Preferences > Ports to change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
 
  ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/MACBAR.png)
 
  ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/Settings1.png)
   
-Finally, you should make sure that you have got the right PHP version. (7.2.x Recommended but 7.1.x works fine)
+#### Step 4
+you should make sure that you have got the right PHP version. (7.2.x Recommended but 7.1.x works fine)
 
  ![MAMPPHP](./Documentation/1_Installing/images/MAMP_installation/PHP1.png)
 
-
-4. To make sure the LibreHealthEHR functions properly, you will need to make some changes to your php.ini file. Different versions of php have different php.ini files.
+#### Step 5
+To make sure the LibreHealthEHR functions properly, you will need to make some changes to your php.ini file. Different versions of php have different php.ini files.
 
 For PHP 7.2.6
 `/Applications/MAMP/conf/php7.2.6/php.ini`
@@ -443,8 +445,8 @@ upload_tmp_dir is set to a correct default value that will work on your system
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ```
 
-
-5. Make sure you have disabled strict mode in MySQL.
+#### Step 6
+ Make sure you have disabled strict mode in MySQL.
 
 To make sure that strict mode is disabled in MySQL. Start your MAMP server and go to http://localhost/phpmyadmin/
 Go to the Variables heading by navigating through More > Variables. Now find *sql mode* and make sure that it is set to "". To edit the variable, click the edit button next to the name of the variable.
@@ -452,11 +454,11 @@ Go to the Variables heading by navigating through More > Variables. Now find *sq
 
  ![Strict](./Documentation/1_Installing/images/MAMP_installation/Variable.png)
 
+#### Step 7
+Start MAMP server
 
-6. Start MAMP server
-
-
-7. Fork the LibreHealthEHR [repository](https://github.com/LibreHealthIO/librehealthehr).
+#### Step 8
+Fork the LibreHealthEHR [repository](https://github.com/LibreHealthIO/librehealthehr).
 
 Clone the forked repository to a local directory with:
 `git clone https://github.com/your-username/lh-ehr.git` As you are using MAMP, you have to clone the repository to *htdocs* (The files in `htdocs` will be served in the MAMP server). `htdocs` can be found in.
