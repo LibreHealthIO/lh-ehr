@@ -401,23 +401,25 @@ Apache can be used on Mac to install LibreHealth. However, if you wish to use MA
 
 1. Download [MAMP](https://mamp.info/en/downloads/) version 5.1.
 
-2. After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app .
 
- ![MAMPControl](./Documentation/1_Installing/images/MAMP/MAMP_Control.png)
+2. After Installation, the directory MAMP can be found in Applications. Go to Applications > MAMP and launch MAMP.app.
 
-3. Now navigate to Preferences > Ports and change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
+ ![MAMPControl](./Documentation/1_Installing/images/MAMP_installation/MAMP_Control1.png)
 
-To launch preferences, navigate on the Mac menu bar to MAMP>Preferences
+
+3. Now navigate through go to the Mac menubar and navigate through MAMP > Preferences > Ports to change your Apache Port to 80 and MySQL port to 3306. This can be done by pressing 'Set Web and MySQL ports to 80 & 3306'.
 
  ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/MACBAR.png)
 
- ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/Settings.png)
+ ![MAMPSettings](./Documentation/1_Installing/images/MAMP_installation/Settings1.png)
   
 Finally, you should make sure that you have got the right PHP version. (7.2.x Recommended but 7.1.x works fine)
 
- ![MAMPPHP](./Documentation/1_Installing/images/MAMP_installation/PHP.png)
+ ![MAMPPHP](./Documentation/1_Installing/images/MAMP_installation/PHP1.png)
+
 
 4. To make sure the LibreHealthEHR functions properly, you will need to make some changes to your php.ini file. Different versions of php have different php.ini files.
+
 For PHP 7.2.6
 `/Applications/MAMP/conf/php7.2.6/php.ini`
 For PHP 7.1.20
@@ -441,6 +443,7 @@ upload_tmp_dir is set to a correct default value that will work on your system
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ```
 
+
 5. Make sure you have disabled strict mode in MySQL.
 
 To make sure that strict mode is disabled in MySQL. Start your MAMP server and go to http://localhost/phpmyadmin/
@@ -449,24 +452,26 @@ Go to the Variables heading by navigating through More > Variables. Now find *sq
 
  ![Strict](./Documentation/1_Installing/images/MAMP_installation/Variable.png)
 
+
 6. Start MAMP server
+
 
 7. Fork the LibreHealthEHR [repository](https://github.com/LibreHealthIO/librehealthehr).
 
 Clone the forked repository to a local directory with:
-`git clone https://github.com/your-username/lh-ehr.git` As you are using MAMP, you have to clone the repository to *htdocs* (The files in htdocs will be served in the MAMP server). *htdocs* can be found in.
+`git clone https://github.com/your-username/lh-ehr.git` As you are using MAMP, you have to clone the repository to *htdocs* (The files in `htdocs` will be served in the MAMP server). `htdocs` can be found in.
 `YOUR_MAMP_LOCATION/htdocs`
 
 #### Installation
 Launch MAMP Control Panel and start your server.
 
-Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.php` (Make sure that you are on the right port, this can be found in the preference of your MAMP)
+Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.php` (If there is an Site can't be reached error, sure that you are on the right port, this can be found in the preference of your MAMP. Also ensure that your MAMP server has successfully started, this can be seen on the control panel)
 
  Leave default as the "Site ID:" and press continue.
 
  ![First Step](./Documentation/1_Installing/images/windows_installation/Step_1.png)
 
- Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file, or have the correct version PHP installed on your MAMP. (PHP 7.1 and above is not supported)
+ Make sure that there are no undefined index errors, if so make sure that you changed the php.ini file to fit the description in step 4.
 
  ![Second Step](./Documentation/1_Installing/images/windows_installation/Step_2.png)
 
@@ -485,7 +490,7 @@ Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.p
 
  ![Last Step](./Documentation/1_Installing/images/windows_installation/Step_10.png)
 
- If this comes up, you are set!
+ If this comes up, congratulations! You have successfully installed LibreHealth EHR.
 
 
 ## FAQ
