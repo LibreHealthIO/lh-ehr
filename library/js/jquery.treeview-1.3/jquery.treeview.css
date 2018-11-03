@@ -43,5 +43,5 @@
 
 .filetree li { padding: 3px 0 1px 16px; }
 .filetree span.folder, .filetree span.file { padding-left: 16px; display: block; height: 15px; }
-.filetree span.folder { background: url(images/folder.gif) 0 0 no-repeat; }
-.filetree span.file { background: url(images/file.gif) 0 0 no-repeat; }
+.filetree span.folder { background: url(assets/images/folder.gif) 0 0 no-repeat; }
+.filetree span.file { background: url(assets/images/file.gif) 0 0 no-repeat; }

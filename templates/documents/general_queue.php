@@ -49,7 +49,7 @@ function submit_documents()
 
         <td><a href="javascript:" onclick="top.restoreSession();
             var URL='controller.php?patient_finder&find&form_id=queue<?php echo "['files[`$file.document_id`][patient_id]']";?>&form_name=patient_name'; 
-            window.open(URL, 'queue', 'toolbar=0,scrollbars=1,location=0,statusbar=1,menubar=0,resizable=1,width=450,height=400,left = 425,top = 250');"><img src="images/stock_search-16.png" border="0"></a>&nbsp;&nbsp;&nbsp;</td>
+            window.open(URL, 'queue', 'toolbar=0,scrollbars=1,location=0,statusbar=1,menubar=0,resizable=1,width=450,height=400,left = 425,top = 250');"><img src="assets/images/stock_search.png" border="0"></a>&nbsp;&nbsp;&nbsp;</td>
         <td>
             <select name="files[<?php echo $file.document_id;?>][category_id]"><?php echo $this->tree_html_listbox;?></select>
         </td>
@@ -84,7 +84,7 @@ function submit_documents()
             <input type="hidden" name="patient_name" value=""></td>
 
         <td><a href="javascript:{literal}{}{/literal}" onclick="top.restoreSession();
-    var URL='controller.php?patient_finder&find&form_id=queue{"['files[`$file.document_id`][patient_id]']"|escape:"url"}&form_name=patient_name'; window.open(URL, 'queue', 'toolbar=0,scrollbars=1,location=0,statusbar=1,menubar=0,resizable=1,width=450,height=400,left = 425,top = 250');"><img src="images/stock_search-16.png" border="0"></a>&nbsp;&nbsp;&nbsp;</td>
+    var URL='controller.php?patient_finder&find&form_id=queue{"['files[`$file.document_id`][patient_id]']"|escape:"url"}&form_name=patient_name'; window.open(URL, 'queue', 'toolbar=0,scrollbars=1,location=0,statusbar=1,menubar=0,resizable=1,width=450,height=400,left = 425,top = 250');"><img src="assets/images/stock_search.png" border="0"></a>&nbsp;&nbsp;&nbsp;</td>
         <td><select name="files[{$file.document_id}][category_id]">{$tree_html_listbox}</select></td>
 
     </tr>

@@ -975,10 +975,10 @@ background:#fff;
                                         ng-class="{'pull-left':!message.me, 'pull-right':message.me}">{{message.date }}</span>
                                 </div>
                                 <img class="direct-chat-img" ng-show="!message.me"
-                                    src="<?php echo $GLOBALS['images_path']; ?>/Unknown-person.gif"
+                                    src="<?php echo $GLOBALS['images_path']; ?>/unknown-person.gif"
                                     alt="">
                                 <img class="direct-chat-img" ng-show="message.me")
-                                    src="<?php echo $GLOBALS['images_path']; ?>/favicon-32x32.png"
+                                    src="<?php echo $GLOBALS['images_path']; ?>lhcross.png"
                                     alt="">
                                 <div class="direct-chat-text right">
                                     <div style="padding-left: 0px; padding-right: 0px;" title="<?php echo xlt('Click to make chat this current  recipient only...'); ?>" ng-click="makeCurrent(message)" ng-bind-html=renderMessageBody(message.message)></div>

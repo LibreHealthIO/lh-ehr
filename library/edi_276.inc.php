@@ -487,7 +487,7 @@ function show_clstr($res,$X12info,$segTer,$compEleSep){
                 <td class ='detail' style='width:6%;'>".  attr( $row['subscriber_sex']) ."</td>
                 <td class ='detail' style='width:9%;'>".  attr( $row['subscriber_ss']) ."</td>
                 <td class ='detail' style='width:2%;'>
-                    <img src='../../images/deleteBtn.png' title=' .xlt('Delete Row') . ' style='cursor:pointer;cursor:hand;' onclick='deletetherow(\"" . $i."_". attr($row['policy_number']) . "\")'>
+                    <img src='../../assets/images/deletebtn.png' title=' .xlt('Delete Row') . ' style='cursor:pointer;cursor:hand;' onclick='deletetherow(\"" . $i."_". attr($row['policy_number']) . "\")'>
                 </td>
             </tr>
         ";

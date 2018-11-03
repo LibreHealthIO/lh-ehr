@@ -228,7 +228,7 @@ $to_date = $to_date->format('Y-m-d');
 
 &nbsp;&nbsp;
 
-<img hidden id="image" src="/images/loading.gif" width="100" height="100">
+<img hidden id="image" src="/assets/images/loading.gif" width="100" height="100">
 
 
 

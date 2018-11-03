@@ -199,7 +199,7 @@
             <a href="javascript:"
             onclick="top.restoreSession();
             var URL='controller.php?patient_finder&find&form_id={"document_move['new_patient_id']"|escape:"url"}&form_name={"document_move['new_patient_name']"|escape:"url"}'; window.open(URL, 'document_move', 'toolbar=0,scrollbars=1,location=0,statusbar=1,menubar=0,resizable=1,width=450,height=400,left=425,top=250');">
-            <img src="images/stock_search-16.png" border="0" /></a>
+            <img src="assets/images/stock_search.png" border="0" /></a>
             <input type="hidden" name="new_patient_name" value="" />
           </div>
         </form>

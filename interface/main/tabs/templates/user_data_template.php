@@ -48,7 +48,7 @@
             if($notification > 0){
                 echo "
             <span class=\"nt-num\">$notification</span>
-            <img class=\"img-responsive my-img\" src= $web_root/images/msgs.png width=\"20\">";
+            <img class=\"img-responsive my-img\" src= $web_root/assets/images/msgs.png width=\"20\">";
             }
         ?>
     </div>

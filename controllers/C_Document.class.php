@@ -1088,7 +1088,7 @@ class C_Document extends Controller {
 
             // If there are documents in this document category, then add their
             // attributes to the current node.
-            $icon = "file3.png";
+            $icon = "file1.png";
             if (is_array($categories[$id])) {
                 foreach ($categories[$id] as $doc) {
                     if ($this->tree->get_node_name($id) == "CCR") {
