@@ -1703,17 +1703,23 @@ if (isset($_FILES["profile_picture"])) {
                             'image/gif',
                             'image/bmp',
                             'image/vnd.microsoft.icon');
+    $extensions = array("jpg", "png", "jpeg");
     //mime check with all image formats.
     if (in_array($mime, $mime_types)) {
           $bool = 1;
+        if (in_array($imageFileType, $extensions)) {
         //if mime type matches, then do a size check
         //size check
-        if ($_FILES["profile_picture"]["size"] > 20971520) {
-          $bool = 0;
-        }
-        else {
-          $bool = 1;
-        }
+          if ($_FILES["profile_picture"]["size"] > 20971520) {
+            $bool = 0;
+          }
+          else {
+            $bool = 1;
+          }
+      }
+      else {
+        $bool = 0;
+      }
     }
     else {
       $bool = 0;
