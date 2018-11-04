@@ -305,7 +305,9 @@ function show_session_details()
 
 &nbsp;&nbsp;
 
-<img hidden id="image" src="/assets/images/loading.gif" width="100" height="100" >
+
+<img hidden id="image" src="../../assets/images/loading.gif" width="100" height="100" >
+
 
 
 
