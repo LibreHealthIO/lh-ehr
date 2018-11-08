@@ -49,7 +49,7 @@ li {
 <ul>
 <?php
 $res = sqlStatement("SELECT distinct(group_name) FROM layout_options WHERE " .
-                    "form_id = '".$_GET['layout_id']."' ORDER BY group_name");
+                    "form_id = ? ORDER BY group_name", array($_GET['layout_id']));
 while ($row = sqlFetchArray($res)) {
     $gname = preg_replace("/^\d+/", "", $row['group_name']);
     $xlgname = "";
