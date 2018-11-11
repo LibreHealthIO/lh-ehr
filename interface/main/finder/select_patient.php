@@ -67,6 +67,7 @@ while ($row = sqlFetchArray($res)) {
 @import "<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/css/demo_table.css";
 .mytopdiv { float: left; margin-right: 1em; }
 </style>
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'] ?>datatables/media/js/jquery.dataTables.min.js"></script>
@@ -157,7 +158,7 @@ $(document).ready(function() {
 </script>
 
 </head>
-<body class="body_top" style="min-height:20px; padding: 19px; margin-bottom: 20px; background-color: #f5f5f5;">
+<body class="body_top" style="min-height:20px; padding: 19px; margin-bottom: 20px;">
 
 <div id="dynamic" style="padding-bottom: 30px">
 

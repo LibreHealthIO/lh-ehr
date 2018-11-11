@@ -485,8 +485,9 @@ function allowOnlyDigits(elem_name){
       }
 
       //-->
-
     </script>
+      <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+
   </head>
   <body class="body_top">
     <form action='new_comprehensive_save.php' name='demographics_form' method='post' onkeyup="checkInputFormat(f)" onsubmit='return validate(this)' enctype="multipart/form-data">

@@ -104,7 +104,9 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 ?>
 <html>
 <head>
-<?php
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+
+    <?php
   call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","jquery-ui","iziModalToast"));
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>

@@ -20,6 +20,11 @@ include_once("$srcdir/api.inc");
 include_once("$srcdir/acl.inc");
 ?>	
 <html>
+<head>
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+</head>
+<body class="body_top">
+
 <?php if (acl_check('admin', 'practice' )) { ?>
 <span class='title' visibility: hidden>Import Database</span>
 <h1>Import Processed x12 837 file data</h1>
@@ -135,5 +140,7 @@ echo "Database updated!";
 else {echo "You do not have access to this feature.";}
 ?>
 </form>
+
+</body>
 </html>
 

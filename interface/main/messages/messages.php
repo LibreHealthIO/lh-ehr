@@ -49,6 +49,7 @@ call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "jq
 ?>
 <html>
 <head>
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 
     <?php html_header_show();?>
 </head>
