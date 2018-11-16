@@ -196,7 +196,7 @@ CREATE TABLE `lims_analysisrequests` (
  `status` text NOT NULL COMMENT 'received, processing, complete',
  PRIMARY KEY (`id`),
  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 #EndIf
 
 #IfNotRow4D supported_external_dataloads load_type ICD10 load_source CMS load_release_date 2018-10-01 load_filename 2019-ICD-10-CM-Code-Descriptions.zip
