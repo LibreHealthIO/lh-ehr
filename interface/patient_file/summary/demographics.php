@@ -520,16 +520,16 @@
         "</span></td>";
       if ($arr['picture_url']) {
           echo '<td style="padding-left:1em;"><input type="file" name="profile_picture" id="files" onchange="this.form.submit()" class="hidden" style="display:none;"/>
-          <label for="files" class="btn css_button cp-positive" id="file_input_button"><i class="fa fa-pencil"></i> ';
+          <label for="files" class="iframe css_button cp-positive" id="file_input_button"><span><i class="fa fa-pencil"></i> ';
           echo xlt('Edit Profile Picture');
-          echo '</label></b></form>
+          echo '</span></label>
                 </td>';
       }
       else {
            echo '<td style="padding-left:1em;"><input type="file" name="profile_picture" id="files" onchange="this.form.submit()" class="hidden" style="display:none;"/>
-          <label for="files" class="btn css_button cp-positive" id="file_input_button"><i class="fa fa-plus"></i> ';
+          <label for="files" class="iframe css_button cp-positive" id="file_input_button"><span><i class="fa fa-plus"></i> ';
           echo xlt('Add Profile Picture');
-          echo '</label></b></form>
+          echo '</span></label>
                 </td>';
       }
 
