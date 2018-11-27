@@ -258,9 +258,9 @@ var webroot_url="<?php echo $web_root; ?>";
     if(checkAdmin($userAuthorized, $authUserId) && $show_icon) {
         //only admin can use the updater
         echo  "<div id='developer-mode' title='Developer Mode' style='display: none;'><i class='fa fa-code'></i></div>
-        <div id='updater-options' style='display: none;' title='updater settings'><i class='fa fa-gear'></i></div><div id='updater-icon'>
+        <div id='updater-options' style='display: none;' title='updater settings'><i class='fa fa-gear'></i></div><div id='updater-icon-wrapper'><div id='updater-icon'>
                 <i class='fa fa-refresh'></i>
-                </div>
+                </div></div>
                 <div id='updater-iframe'></div>
                 <div id='updater-settings-iframe'></div>
                 <div id='developer-mode-iframe'></div>";
@@ -269,10 +269,6 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php do_action( 'after_main_box' ); ?>
 <style type="text/css">
     #updater-icon, #updater-options, #developer-mode {
-    position: fixed; /* Fixed/sticky position */
-    bottom: 20px; /* Place the button at the bottom of the page */
-    right: 30px; /* Place the button 30px from the right */
-    z-index: 99; /* Make sure it does not overlap */
     border: none; /* Remove borders */
     outline: none; /* Remove outline */
     background-color: #F69600; /* Set a background color */
@@ -282,13 +278,25 @@ var webroot_url="<?php echo $web_root; ?>";
     border-radius: 40px; /* Rounded corners */
     font-size: 18px; /* Increase font size */
     }
-    #updater-options, #developer-mode {
+    #updater-icon-wrapper{
+        position: fixed;
+        padding-bottom: 20px; /* Place the button at the bottom of the page */
+        padding-right: 30px; /* Place the button 30px from the right */
+        z-index: 98; /* Make sure it does not overlap */
+        padding-top: 50px;
+        padding-left: 50px;
+        right: 0;
+        bottom: 0;
+    }
+    #updater-options, #developer-mode { 
+        position: fixed; /* Fixed/sticky position */
         border: 2px solid #000;
         background-color: #F69600;
         padding: 5px; 
         border-radius: 40%;
-            bottom: 90px; /* Place the button at the bottom of the page */
+        bottom: 90px; /* Place the button at the bottom of the page */
         right: 30px; /* Place the button 30px from the right */
+        z-index: 99;
     }
 
     #developer-mode {
@@ -361,12 +369,35 @@ $('#developer-mode').click(function () {
 $('#updater-options').click(function () {
     $('#updater-settings-iframe').iziModal('open');
 });
-
+var timer;
+var secondtimer;
 $('#updater-icon').hover(function () {
     $(this).css("border", "2px solid #000");
     $('#developer-mode').fadeIn(100);
     $('#updater-options').fadeIn(100);
+}, function(){
+    timer = setTimeout(function(){
+        $('#developer-mode').fadeOut(100);
+        $('#updater-options').fadeOut(100);
+        $('#updater-icon').css("border", "none");
+    }, 3000);
 });
+$('#updater-icon-wrapper').hover(function(){}, function(){
+    secondTimer = setTimeout(function(){
+        $('#developer-mode').fadeOut(100);
+        $('#updater-options').fadeOut(100);
+        $('#updater-icon').css("border", "none");
+    }, 100);
+})
+$('#developer-mode').hover(function () {
+    clearTimeout(timer);
+    clearTimeout(secondTimer);
+});
+$('#updater-options').hover(function () {
+    clearTimeout(timer);
+    clearTimeout(secondTimer);
+});
+
 $('#updater-icon').click(function () {
     $('#updater-iframe').iziModal('open');
 });
@@ -374,6 +405,8 @@ $('body').hover(function () {
     $('#developer-mode').css("display", "none");
     $('#updater-options').css("display", "none");
     $(this).css("border", "0px solid #000");
+}, function(){
+
 });
 function showUpdaterNotifications(type, title, message) {
     if (type == "warning") {
@@ -402,3 +435,4 @@ function showUpdaterNotifications(type, title, message) {
     }
 }
 </script>
+
