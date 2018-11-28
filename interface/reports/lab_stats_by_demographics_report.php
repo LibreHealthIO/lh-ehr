@@ -236,13 +236,13 @@ $to_date = $to_date->format('Y-m-d');
     <thead>
 
     <tr>
-        <th><input  id = 'column0_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column1_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column2_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column3_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column4_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column5_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column6_search_show_lab_details_table' size="4"></th>
+        <th><input  id = 'column0_search_show_lab_details_table'></th>
+        <th><input  id = 'column1_search_show_lab_details_table'></th>
+        <th><input  id = 'column2_search_show_lab_details_table'></th>
+        <th><input  id = 'column3_search_show_lab_details_table'></th>
+        <th><input  id = 'column4_search_show_lab_details_table'></th>
+        <th><input  id = 'column5_search_show_lab_details_table'></th>
+        <th><input  id = 'column6_search_show_lab_details_table'></th>
 
 
     </tr>
