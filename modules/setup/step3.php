@@ -79,7 +79,7 @@ require_once("includes/header.inc.php");
         logging in.
     </p>
 
-    <div class="alert-info">
+    <div class="alert-info" style="padding: 10px;">
         <p> <span class="fa fa-info-circle"></span>
             It is permitted to leave <span class="text-info">default</span> as your site ID. This is the ID that will be used if it cannot otherwise be determined, but
             it is better for system upgrades to NOT use the default site ID.
@@ -106,7 +106,7 @@ require_once("includes/header.inc.php");
 
     <p class="clearfix"></p>
     <p class="clearfix"></p>
-    <div class="alert-info">
+    <div class="alert-info" style="padding: 10px;">
         <p>
             Now I need to know whether you want me to create the database on my own or if you have already created a database for me to use.  For me to create the database, you will need to supply the MySQL root password.<br>
             <span class='fa fa-info-circle'></span> NOTE: clicking on "Continue" may delete or cause damage to data on your system. Before you continue please backup your data.</span>

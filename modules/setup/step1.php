@@ -106,8 +106,8 @@ require_once("includes/header.inc.php");
         }
         if ($errorWritable) {
             echo "<p><span class='red'>You can't proceed until all above files are ready (world-writable).</span><br>\n";
-            echo "<div class='alert-warning'>In linux, recommend changing file permissions with the 'chmod 666 filename' command.<br>\n";
-            echo "Fix above file permissions and then click the 'Check Again' button to re-check files.<br> <p class='clearfix'></p>
+            echo "<div class='alert-warning'><div class='col-lg-12'><p class='clearfix'></p>In linux, recommend changing file permissions with the 'chmod 666 filename' command.<br>\n";
+            echo "Fix above file permissions and then click the 'Check Again' button to re-check files.</div><br> <p class='clearfix'></p>
                      <p class='clearfix'></p></div>\n";
             echo "<form method='POST' action='step1.php'>
                      <p class='clearfix'></p>
