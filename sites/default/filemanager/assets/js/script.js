@@ -22,7 +22,7 @@ $(function(){
 
 			goto(window.location.hash);
 
-			// We are triggering the event. This will execute 
+			// We are triggering the event. This will execute
 			// this function on page load, so that we show the correct folder:
 
 		}).trigger('hashchange');
@@ -357,10 +357,10 @@ $(function(){
 					var name = u.split('/');
 
 					if (i !== breadcrumbsUrls.length - 1) {
-						url += '<a href="'+u+'"><span class="folderName">' + name[name.length-1] + '</span></a> <span class="arrow">→</span> ';
+						url += '<a href="'+u+'"><span class="folderName">Folder: ' + name[name.length-1] + '</span></a> <span class="arrow">→</span> ';
 					}
 					else {
-						url += '<span class="folderName">' + name[name.length-1] + '</span>';
+						url += '<span class="folderName">Folder: ' + name[name.length-1] + '</span>';
 					}
 
 				});
