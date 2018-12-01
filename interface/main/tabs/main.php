@@ -405,8 +405,6 @@ $('body').hover(function () {
     $('#developer-mode').css("display", "none");
     $('#updater-options').css("display", "none");
     $(this).css("border", "0px solid #000");
-}, function(){
-
 });
 function showUpdaterNotifications(type, title, message) {
     if (type == "warning") {
