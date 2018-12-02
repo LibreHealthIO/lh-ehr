@@ -19,8 +19,9 @@
  */
 
 ?>
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" type="text/css" href=<?php echo $web_root; ?>/interface/themes/style.php?pc=<?php echo str_replace("#", "",$GLOBALS['primary_color']);?>&pfontcolor=<?php echo str_replace("#", "", $GLOBALS['primary_font_color']);?>&sc=<?php echo str_replace("#", "", $GLOBALS['secondary_color']);?>&sfontcolor=<?php echo str_replace("#", "",$GLOBALS['secondary_font_color']);?>>
+<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+
 <?php
 
     function include_js_library($path)
