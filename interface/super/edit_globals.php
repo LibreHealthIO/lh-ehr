@@ -255,8 +255,9 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
             // special treatment for some vars
             switch ($fldid) {
               case 'first_day_week':
+                // removed TLH 12/2018
                 // update PostCalendar config as well
-                sqlStatement("UPDATE libreehr_module_vars SET pn_value = ? WHERE pn_name = 'pcFirstDayOfWeek'", array($fldvalue));
+                // sqlStatement("UPDATE libreehr_module_vars SET pn_value = ? WHERE pn_name = 'pcFirstDayOfWeek'", array($fldvalue));
                 break;
             }
           //check and validate input from client side with globals.
