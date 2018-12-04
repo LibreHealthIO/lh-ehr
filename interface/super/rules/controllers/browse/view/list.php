@@ -5,9 +5,6 @@
  // modify it under the terms of the GNU General Public License
  // as published by the Free Software Foundation; either version 2
  // of the License, or (at your option) any later version.
-
-require_once(dirname(__FILE__)."/../../../../../../library/acl.inc"); 
-global $phpgacl_location;
 require_once("$phpgacl_location/gacl_api.class.php");
 require_once(dirname(__FILE__)."/../../../../../globals.php");
 ?>
