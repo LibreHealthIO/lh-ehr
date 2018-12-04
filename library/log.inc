@@ -194,11 +194,8 @@ function sql_checksum_of_modified_row($statement)
      else if ($table == "lang_languages"){
             $id = "lang_id";
      }
-     else if ($table == "libreehr_postcalendar_categories" || $table == "libreehr_postcalendar_topics"){
+     else if ($table == "libreehr_postcalendar_categories"){
             $id = "pc_catid";
-     }
-     else if ($table == "libreehr_postcalendar_limits"){
-            $id = "pc_limitid";
      }
          else if($table == "gacl_aco_map" || $table == "gacl_aro_groups_map" || $table == "gacl_aro_map" || $table == "gacl_axo_groups_map" || $table == "gacl_axo_map"){
            $id="acl_id";
