@@ -4501,33 +4501,6 @@ INSERT INTO `libreehr_module_vars` VALUES (216, 'PostCalendar', 'pcTime24Hours',
 
 
 --
--- Table structure for table `libreehr_modules`
---
-
-DROP TABLE IF EXISTS `libreehr_modules`;
-CREATE TABLE `libreehr_modules` (
-  `pn_id` int(11) unsigned NOT NULL auto_increment,
-  `pn_name` varchar(64) default NULL,
-  `pn_type` int(6) NOT NULL default '0',
-  `pn_displayname` varchar(64) default NULL,
-  `pn_description` varchar(255) default NULL,
-  `pn_regid` int(11) unsigned NOT NULL default '0',
-  `pn_directory` varchar(64) default NULL,
-  `pn_version` varchar(10) default NULL,
-  `pn_admin_capable` tinyint(1) NOT NULL default '0',
-  `pn_user_capable` tinyint(1) NOT NULL default '0',
-  `pn_state` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`pn_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 ;
-
---
--- Dumping data for table `libreehr_modules`
---
-
-INSERT INTO `libreehr_modules` VALUES (46, 'PostCalendar', 2, 'PostCalendar', 'PostNuke Calendar Module', 0, 'PostCalendar', '4.0.0', 1, 1, 3);
-
-
---
 -- Table structure for table `libreehr_postcalendar_categories`
 --
 
@@ -4623,36 +4596,6 @@ CREATE TABLE `libreehr_postcalendar_events` (
   KEY `basic_event` (`pc_catid`,`pc_aid`,`pc_eventDate`,`pc_endDate`,`pc_eventstatus`,`pc_sharing`,`pc_topic`),
   KEY `pc_eventDate` (`pc_eventDate`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 ;
-
-
---
--- Table structure for table `libreehr_postcalendar_limits`
---
-
-DROP TABLE IF EXISTS `libreehr_postcalendar_limits`;
-CREATE TABLE `libreehr_postcalendar_limits` (
-  `pc_limitid` int(11) NOT NULL auto_increment,
-  `pc_catid` int(11) NOT NULL default '0',
-  `pc_starttime` time NOT NULL default '00:00:00',
-  `pc_endtime` time NOT NULL default '00:00:00',
-  `pc_limit` int(11) NOT NULL default '1',
-  PRIMARY KEY  (`pc_limitid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 ;
-
-
---
--- Table structure for table `libreehr_postcalendar_topics`
---
-
-DROP TABLE IF EXISTS `libreehr_postcalendar_topics`;
-CREATE TABLE `libreehr_postcalendar_topics` (
-  `pc_catid` int(11) unsigned NOT NULL auto_increment,
-  `pc_catname` varchar(100) default NULL,
-  `pc_catcolor` varchar(50) default NULL,
-  `pc_catdesc` text,
-  PRIMARY KEY  (`pc_catid`),
-  KEY `basic_cat` (`pc_catname`,`pc_catcolor`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
 --
@@ -5816,9 +5759,9 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 ('ICD10', 'CMS', '2017-10-01', '2018-ICD-10-Code-Descriptions.zip', '6f9c77440132e30f565222ca9bb6599c');
 INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES
 ('ICD10', 'CMS', '2017-10-01', '2018-ICD-10-PCS-General-Equivalence-Mappings.zip', 'bb73c80e272da28712887d7979b1cebf');
-INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES 
+INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES
 ('ICD10', 'CMS', '2018-10-01', '2019-ICD-10-CM-Code-Descriptions.zip', 'b23e0128eb2dce0cb007c31638a8dc00');
-INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES 
+INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES
 ('ICD10', 'CMS', '2018-10-01', '2019-ICD-10-PCS-Order-File.zip', 'eb545fe61ada9efad0ad97a669f8671f');
 
 --
@@ -7702,8 +7645,8 @@ CREATE TABLE `updater_user_mode_backup_entry` (
 ) ENGINE=InnoDB;
 
 --
--- Table structure for table `lims_analysisrequests` 
--- 
+-- Table structure for table `lims_analysisrequests`
+--
 
 CREATE TABLE IF NOT EXISTS `lims_analysisrequests` (
  `id` int(11) NOT NULL AUTO_INCREMENT,

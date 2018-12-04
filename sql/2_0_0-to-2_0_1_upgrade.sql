@@ -114,9 +114,13 @@ ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default Us
 ALTER TABLE `users` DROP `fullscreen_role`;
 #EndIf
 
+#IfTable menu_trees
 DROP TABLE IF EXISTS `menu_trees`;
+#EndIf
 
+#IfTable menu_entries
 DROP TABLE IF EXISTS `menu_entries`;
+#EndIf
 
 #IfNotTable updater_users
 CREATE TABLE `updater_users` (
@@ -206,3 +210,19 @@ INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_re
 #IfNotRow4D supported_external_dataloads load_type ICD10 load_source CMS load_release_date 2018-10-01 load_filename 2019-ICD-10-PCS-Order-File.zip 
 INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES ('ICD10', 'CMS', '2018-10-01', '2019-ICD-10-PCS-Order-File.zip', 'eb545fe61ada9efad0ad97a669f8671f');
 #Endif
+
+#IfTable libreehr_modules
+DROP TABLE IF EXISTS `libreehr_modules`;
+#EndIf
+
+#IfTable libreehr_module_vars
+DROP TABLE IF EXISTS `libreehr_module_vars`;
+#EndIf
+
+#IfTable libreehr_postcalendar_topics
+DROP TABLE IF EXISTS `libreehr_postcalendar_topics`;
+#EndIf
+
+#IfTable libreehr_postcalendar_limits
+DROP TABLE IF EXISTS `libreehr_postcalendar_limits`;
+#EndIf
