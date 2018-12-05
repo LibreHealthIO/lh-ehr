@@ -35,10 +35,10 @@ require_once("$srcdir/headers.inc.php");
 <table>
  <tr>
   <td class="small" colspan='4'>
-   <a href="?m=definition" class='cp-positive' onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Edit Definitions'),ENT_NOQUOTES); ?></a> | 
-   <a href="?m=language" class='cp-positive' onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Add Language'),ENT_NOQUOTES); ?></a> | 
-   <a href="?m=constant" class='cp-positive' onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Add Constant'),ENT_NOQUOTES); ?></a> |
-   <a href="?m=manage" class='cp-misc' onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Manage Translations'),ENT_NOQUOTES); ?></a>
+   <a href="?m=definition" onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Edit Definitions'),ENT_NOQUOTES); ?></a> |
+   <a href="?m=language" onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Add Language'),ENT_NOQUOTES); ?></a> |
+   <a href="?m=constant" onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Add Constant'),ENT_NOQUOTES); ?></a> |
+   <a href="?m=manage" onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Manage Translations'),ENT_NOQUOTES); ?></a>
   </td>
  </tr>
 </table>
@@ -61,6 +61,6 @@ switch ($_GET['m']):
 endswitch;
 ?>
 
-<BR><A HREF="lang.info.html" class='cp-misc' TARGET="_blank"><?php echo htmlspecialchars(xl('Info'),ENT_NOQUOTES); ?></A>
+<BR><A HREF="lang.info.html" TARGET="_blank"><?php echo htmlspecialchars(xl('Info'),ENT_NOQUOTES); ?></A>
 </body>
 </html>
