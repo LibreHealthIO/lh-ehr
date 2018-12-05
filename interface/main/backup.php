@@ -163,7 +163,7 @@ if ($form_step == 0) {
    echo "  <td>" . xl('Create Eventlog Backup') . "</td>\n";
    echo " </tr>\n";
    echo " <tr>\n";
-   echo "  <td></td><td class='text'><b>" . xl('Note')."</b>&nbsp;" . xl('Please refer to').'&nbsp;README-Log-Backup.txt&nbsp;'.xl('file in the Documentation directory to learn how to automate the process of creating log backups') . "</td>\n";
+   echo "  <td></td><td class='text'><strong>" . xl('Note').":</strong>&nbsp;" . xl('Please refer to').'&nbsp;README-Log-Backup.txt&nbsp;'.xl('file in the Documentation directory to learn how to automate the process of creating log backups') . "</td>\n";
    echo " </tr>\n";
   echo "</table>\n";
 }
