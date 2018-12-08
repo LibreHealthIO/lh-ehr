@@ -73,6 +73,7 @@ if ( isset($_POST["mode"]) && $_POST["mode"] == "facility_user_id" && isset($_PO
 
       resolveFancyboxCompatibility();
 ?>
+<link rel="stylesheet" href="./assets/css/facility.css" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
@@ -130,7 +131,7 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
        <table>
       <tr >
         <td><b><?php echo xlt('Facility Specific User Information'); ?></b></td>
-        <td><a href="usergroup_admin.php" class="css_button cp-misc" onclick="top.restoreSession()"><span><?php echo xlt('Back to Users'); ?></span></a>
+        <td><a id="btnback" href="usergroup_admin.php" class="css_button cp-misc" onclick="top.restoreSession()"><span><?php echo xlt('Back to Users'); ?></span></a>
         </td>
      </tr>
     </table>

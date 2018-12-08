@@ -1,0 +1,31 @@
+#userinfotable {
+	width: 70%; min-width: 150px; max-width: 250px
+}
+
+.large_button{
+    margin-bottom: 5px;
+    float: right;
+}
+
+#userinfotable > tbody> tr> td {
+    padding-bottom: 10px;
+}
+
+#btnback{
+    margin-left: 30px;
+}
+
+.modaltitle {
+    margin: 10px 0px;
+}
+
+form {
+    margin-left: 0;
+}
+
+#modalbuttonrow {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    margin: 0;
+}
