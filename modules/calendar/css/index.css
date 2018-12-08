@@ -81,6 +81,10 @@ body {
   color: #000;
 }
 
+.fc-resource-cell {
+  word-wrap: break-word;
+}
+
 .tooltipevent {
   padding:5px;
   border-radius: 0.25em;
