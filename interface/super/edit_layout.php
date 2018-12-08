@@ -728,10 +728,25 @@ function writeFieldLine($linedata) {
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
+<?php
+call_required_libraries(array("bootstrap"));
+?>
 
 <title><?php  xl('Layout Editor','e'); ?></title>
 
 <style>
+  .row{
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .templatedivs{
+    margin-top: 3px;
+    background: #eef;
+    border: 1px black solid;
+  }
+  .headerlightblue{
+    background-color: #eef
+  }
 tr.head   { font-size:10pt; background-color:#cccccc; }
 tr.detail { font-size:10pt; }
 td        { font-size:10pt; }
@@ -947,7 +962,7 @@ foreach ($layouts as $key => $value) {
 </select></p>
 
 <?php if ($layout_id) { ?>
-<div style='margin: 0 0 8pt 0;'>
+<div class="row" style='margin: 0 0 8pt 0;'>
 <input type='button' class='addgroup cp-positive' id='addgroup' value=<?php xl('Add Group','e','\'','\''); ?>/>
 </div>
 <?php } ?>
@@ -959,16 +974,19 @@ while ($row = sqlFetchArray($res)) {
   if ($row['group_name'] != $prevgroup) {
     if ($firstgroup == false) { echo "</tbody></table></div>\n"; }
     echo "<div id='".$row['group_name']."' class='group'>";
-    echo "<div class='text bold layouts_title' style='background-color: #eef'>";
+    echo "<div class='row text bold layouts_title headerlightblue'>";
     // echo preg_replace("/^\d+/", "", $row['group_name']);
+    echo "<div class='row'>";
     echo substr($row['group_name'], 1);
     echo "&nbsp; ";
+    echo "</div>" ;
     // if not english and set to translate layout labels, then show the translation of group name
     if ($GLOBALS['translate_layout'] && $_SESSION['language_choice'] > 1) {
       // echo "<span class='translation'>>>&nbsp; " . xl(preg_replace("/^\d+/", "", $row['group_name'])) . "</span>";
       echo "<span class='translation'>>>&nbsp; " . xl(substr($row['group_name'], 1)) . "</span>";
       echo "&nbsp; ";   
     }
+    echo "<div class='row'>";
     echo "&nbsp; ";
     echo " <input type='button' class='addfield cp-positive' id='addto~".$row['group_name']."' value='" . xl('Add Field') . "'/>";
     echo "&nbsp; &nbsp; ";
@@ -979,7 +997,7 @@ while ($row = sqlFetchArray($res)) {
     echo " <input type='button' class='movegroup cp-misc' id='".$row['group_name']."~up' value='" . xl('Move Up') . "'/>";
     echo "&nbsp; &nbsp; ";
     echo " <input type='button' class='movegroup cp-misc' id='".$row['group_name']."~down' value='" . xl('Move Down') . "'/>";
-    echo "</div>";
+    echo "</div></div>";
     $firstgroup = false;
 ?>
 
@@ -1040,7 +1058,7 @@ while ($row = sqlFetchArray($res)) {
 </form>
 
 <!-- template DIV that appears when user chooses to rename an existing group -->
-<div id="renamegroupdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
+<div id="renamegroupdetail" class="row templatedivs" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <input type="hidden" name="renameoldgroupname" id="renameoldgroupname" value="">
 <?php xl('Group Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="renamegroupname" id="renamegroupname">
 <br>
@@ -1049,7 +1067,7 @@ while ($row = sqlFetchArray($res)) {
 </div>
 
 <!-- template DIV that appears when user chooses to add a new group -->
-<div id="groupdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
+<div id="groupdetail" class="row" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <span class='bold'>
 <?php xl('Group Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="newgroupname" id="newgroupname">
 <br>
@@ -1126,7 +1144,7 @@ foreach ($datatypes as $key=>$value) {
 </div>
 
 <!-- template DIV that appears when user chooses to add a new field to a group -->
-<div id="fielddetail" class="fielddetail" style="display: none; visibility: hidden">
+<div id="fielddetail" class="row templatedivs fielddetail" style="display: none; visibility: hidden">
 <input type="hidden" name="newfieldgroupid" id="newfieldgroupid" value="">
 <table style="border-collapse: collapse;">
  <thead>
@@ -1392,7 +1410,7 @@ $(document).ready(function(){
     var RenameGroup = function(btnObj) {
         $('#renamegroupdetail').css('visibility', 'visible');
         $('#renamegroupdetail').css('display', 'block');
-        $(btnObj).parent().append($("#renamegroupdetail"));
+        $(btnObj).parent().parent().append($("#renamegroupdetail"));
         $('#renameoldgroupname').val($(btnObj).attr("id"));
         $('#renamegroupname').val($(btnObj).attr("id").replace(/^\d+/, ""));
     }
@@ -1437,7 +1455,7 @@ $(document).ready(function(){
         // show the field details DIV
         $('#fielddetail').css('visibility', 'visible');
         $('#fielddetail').css('display', 'block');
-        $(btnObj).parent().append($("#fielddetail"));
+        $(btnObj).parent().parent().append($("#fielddetail"));
         // Assign a sensible default sequence number.
         $('#newseq').val(getNextSeq(groupid));
     };
