@@ -195,7 +195,7 @@ include_once("$srcdir/headers.inc.php");
                                     <tr>
                                         <td><span class="text"><?php echo xlt('Language'); ?></span></td>
                                         <td>
-                                            <select class="entryfield" name=languageChoice size="1" style = "height : 28px">
+                                            <select class="entryfield" name=languageChoice size="1" style = "height : 34px">
                                                 <?php
                                                 echo "<option selected='selected' value='" . attr($defaultLangID) . "'>" . xlt('Default') . " - " . xlt($defaultLangName) . "</option>\n";
                                                 foreach ($result3 as $iter) {
