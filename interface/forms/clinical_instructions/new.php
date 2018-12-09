@@ -51,20 +51,19 @@ $check_res = $formid ? formFetch("form_clinical_instructions", $formid) : array(
         <?php call_required_libraries(['bootstrap']); ?>
     </head>
     <body class="body_top">
-        <h2><?php echo xlt('Clinical Instructions Form'); ?></h2>
-        <h3><?php echo xlt('Instructions').':'; ?></h3>
+        <center>
+            <div class='title'><h2><?php echo xlt('Clinical Instructions Form'); ?></h2></div>
+            <h3><?php echo xlt('Instructions').':'; ?></h3>
 
-        <!-- Begin form -->
-        <?php echo "<form method='post' name='my_form' " . "action='$rootdir/forms/clinical_instructions/save.php?id=" . attr($formid) . "'>\n"; ?>
-            <div class="container" style="width: 500px; float: left;">
-                <textarea class="form-control" name="instruction" id ="instruction" rows=3>
-                    <?php echo text($check_res['instruction']); ?>
-                </textarea>
-                <br/>
-                <input type='submit' value='<?php echo xla('Save'); ?>' class="button-css cp-submit" style="float: right">&nbsp;
-            </div>
-
-        </form>
+            <!-- Begin form -->
+            <?php echo "<form method='post' name='my_form' " . "action='$rootdir/forms/clinical_instructions/save.php?id=" . attr($formid) . "'>\n"; ?>
+                <div class='form-group'>
+                    <textarea class="form-control" name="instruction" id ="instruction" rows=3 style='resize: vertical;'><?php echo text($check_res['instruction']); ?></textarea>
+                    <br/>
+                    <input class='btn btn-primary' type='submit' value='<?php echo xla('Save'); ?>' class="button-css cp-submit" style="float: right">&nbsp;
+                </div>
+            </form>
+        </center>
     <!-- formFooter() closes body and html tags -->
     <?php
     formFooter();
