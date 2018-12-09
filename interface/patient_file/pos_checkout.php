@@ -63,6 +63,7 @@ require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
 require_once("../../custom/code_types.inc.php");
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+require_once("$srcdir/headers.inc.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -187,6 +188,18 @@ function generate_receipt($patient_id, $encounter=0) {
 <head>
 <?php html_header_show(); ?>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+<?php call_required_libraries(['bootstrap', 'jquery-min-3-3-1']); ?>
+<style>
+.btn {
+  color: #ffffff !important;
+}
+.pad-bot {
+  padding-bottom: 10px;
+}
+table.pad td {
+  padding: 5px;
+}
+</style>
 <title><?php echo xlt('Receipt for Payment'); ?></title>
 <script type="text/javascript" src="../../library/js/jquery-1.2.2.min.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
@@ -219,7 +232,7 @@ function generate_receipt($patient_id, $encounter=0) {
 </script>
 </head>
 <body class="body_top">
-<center>
+<div class='text-center'>
 <?php 
   if ( $GLOBALS['receipts_by_provider'] && !empty($providerrow) ) { printProviderHeader($providerrow); }
   else { printFacilityHeader($frow); }
@@ -230,20 +243,20 @@ function generate_receipt($patient_id, $encounter=0) {
 ?>
 <br>&nbsp;
 </b></p>
-</center>
 <p>
 <?php echo text($patdata['fname']) . ' ' . text($patdata['mname']) . ' ' . text($patdata['lname']) ?>
 <br><?php echo text($patdata['street']) ?>
 <br><?php echo text($patdata['city']) . ', ' . text($patdata['state']) . ' ' . text($patdata['postal_code']) ?>
 <br>&nbsp;
 </p>
+</div>
 <center>
-<table cellpadding='5'>
+<table class='pad' cellpadding='5'>
  <tr>
   <td><b><?php echo xlt('Date'); ?></b></td>
   <td><b><?php echo xlt('Description'); ?></b></td>
   <td align='right'><b><?php echo $details ? xlt('Price') : '&nbsp;'; ?></b></td>
-  <td align='right'><b><?php echo $details ? xlt('Qty'  ) : '&nbsp;'; ?></b></td>
+  <td align='right'><b><?php echo $details ? xlt('Qty') : '&nbsp;'; ?></b></td>
   <td align='right'><b><?php echo xlt('Total'); ?></b></td>
  </tr>
 
@@ -330,9 +343,7 @@ function generate_receipt($patient_id, $encounter=0) {
         $payer . ' ' . $inrow['reference']);
     }
 ?>
- <tr>
-  <td colspan='5'>&nbsp;</td>
- </tr>
+
  <tr>
   <td>&nbsp;</td>
   <td><b><?php echo xlt('Balance Due'); ?></b></td>
@@ -344,17 +355,23 @@ function generate_receipt($patient_id, $encounter=0) {
 <div id='hideonprint'>
 <p>
 &nbsp;
-<a href='#' id='printbutton'><?php echo xlt('Print'); ?></a>
+<div class='text-center'>
+<a href='summary/demographics.php' onclick='top.restoreSession()'><button class='btn btn-primary'><?php echo htmlspecialchars( xl('Back To Patient'), ENT_NOQUOTES);?></button></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href='#' id='printbutton'><button class='btn btn-primary'><?php echo xlt('Print'); ?></button></a>
 <?php if (acl_check('acct','disc')) { ?>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href='#' onclick='return deleteme();'><?php echo xlt('Undo Checkout'); ?></a>
+<a href='#' onclick='return deleteme();'><button class='btn btn-primary'><?php echo xlt('Undo Checkout'); ?></button></a>
 <?php } ?>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php if ($details) { ?>
-<a href='pos_checkout.php?details=0&ptid=<?php echo attr($patient_id); ?>&enc=<?php echo attr($encounter); ?>' onclick='top.restoreSession()'><?php echo xlt('Hide Details'); ?></a>
+<a href='pos_checkout.php?details=0&ptid=<?php echo attr($patient_id); ?>&enc=<?php echo attr($encounter); ?>' onclick='top.restoreSession()'><button class='btn btn-primary'><?php echo xlt('Hide Details'); ?></button></a>
 <?php } else { ?>
-<a href='pos_checkout.php?details=1&ptid=<?php echo attr($patient_id); ?>&enc=<?php echo attr($encounter); ?>' onclick='top.restoreSession()'><?php echo xlt('Show Details'); ?></a>
+<a href='pos_checkout.php?details=1&ptid=<?php echo attr($patient_id); ?>&enc=<?php echo attr($encounter); ?>' onclick='top.restoreSession()'><button class='btn btn-primary'><?php echo xlt('Show Details'); ?></button></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 <?php } ?>
+</div>
 </p>
 </div>
 </body>
@@ -414,7 +431,7 @@ function printFacilityHeader($frow){
     "<br>";
 }
 
-// Pring receipt header for Provider
+// Print receipt header for Provider
 function printProviderHeader($pvdrow){
     echo "<p><b>" . text($pvdrow['title']) . " " . text($pvdrow['fname']) . " " . text($pvdrow['mname']) . " " . text($pvdrow['lname']) . " " . 
     "<br>" . text($pvdrow['street']) .
@@ -646,6 +663,7 @@ while ($urow = sqlFetchArray($ures)) {
 <html>
 <head>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+<?php call_required_libraries(['bootstrap', 'jquery-min-3-3-1']); ?>
 <title><?php echo xlt('Patient Checkout'); ?></title>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/textformat.js"></script>
@@ -745,7 +763,7 @@ while ($urow = sqlFetchArray($ures)) {
 <form method='post' action='pos_checkout.php'>
 <input type='hidden' name='form_pid' value='<?php echo attr($patient_id) ?>' />
 
-<center>
+<div class='center-block'>
 
 <p>
 <table cellspacing='5'>
@@ -982,7 +1000,7 @@ else if (!empty($GLOBALS['gbl_mask_invoice_number'])) {
  </tr>
 
 </table>
-</center>
+</div>
 
 </form>
 
