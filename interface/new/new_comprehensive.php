@@ -68,7 +68,7 @@
   <head>
     <?php html_header_show();
       //  Include Bootstrap, Fancybox, date-time-picker
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox-addpatient"));
+  call_required_libraries(array("bootstrap","jquery-min-3-1-1","datepicker","fancybox-addpatient", "font-awesome", "iziModalToast"));
 ?>
 
 <style>
@@ -89,6 +89,40 @@ div.section {
  */
  margin: 0 0 0 10pt;
  padding: 5pt;
+}
+
+input[type="text"]{
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+input[type="entry"]{
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
 </style>
@@ -188,14 +222,14 @@ function ins_search(ins) {
 }
 
 function checkNum () {
- var re= new RegExp();
- re = /^\d*\.?\d*$/;
- str=document.forms[0].monthly_income.value;
- if(re.exec(str))
- {
- }else{
-  alert("Please enter a dollar amount using only numbers and a decimal point.");
- }
+  var re= new RegExp();
+  re = /^\d*\.?\d*$/;
+  str=document.forms[0].monthly_income.value;
+  if(re.exec(str))
+  {
+  }else{
+    alert("Please enter a dollar amount using only numbers and a decimal point.");
+  }
 }
 
 // This capitalizes the first letter of each word in the passed input
@@ -236,14 +270,14 @@ function allowOnlyDigits(elem_name){
       }
 
       function checkNum () {
-       var re= new RegExp();
-       re = /^\d*\.?\d*$/;
-       str=document.forms[0].monthly_income.value;
-       if(re.exec(str))
-       {
-       }else{
-        alert("Please enter a dollar amount using only numbers and a decimal point.");
-       }
+        var re= new RegExp();
+        re = /^\d*\.?\d*$/;
+        str=document.forms[0].monthly_income.value;
+        if(re.exec(str))
+        {
+        }else{
+          alert("Please enter a dollar amount using only numbers and a decimal point.")
+        }
       }
 
       // This capitalizes the first letter of each word in the passed input
@@ -380,61 +414,73 @@ function allowOnlyDigits(elem_name){
           return false;
         }
         <?php } ?>
-        var msg = "";
         var ins_error = '0';
-        msg += "<?php echo htmlspecialchars(xl('The following fields are required'),ENT_QUOTES); ?>:\n\n";
         for ( var i = 0; i < errMsgs.length; i++ ) {
-               msg += errMsgs[i] + "\n";
+          iziToast.error({
+            title: 'Error',
+            message: "<?php echo htmlspecialchars(xl('The following field is required: '),ENT_QUOTES); ?>" + errMsgs[i],
+            position: 'topRight',
+          })
         }
         <?php if($GLOBALS['primary_insurance_required']){ ?>
           if($('#i1provider option:selected').val() == '') {
-             var ins_error = '1';
-             msg += "<?php echo htmlspecialchars(xl('Primary Insurance Provider Entry Required.'),ENT_QUOTES); ?> \n";
+            var ins_error = '1';
+            iziToast.error({
+              title: 'Error',
+              message: "<?php echo htmlspecialchars(xl('Primary Insurance Provider Entry Required.'),ENT_QUOTES); ?>",
+              position: 'topRight',
+            })
           }
         <?php } ?>
-        msg += "\n<?php echo htmlspecialchars(xl('Please fill them in before continuing.'),ENT_QUOTES); ?>";
-
         if ( errMsgs.length > 0 || ins_error == '1' ) {
-               alert(msg);
-               return false;
+          return false;
         }
         else if(isInputFormatValid == false)
         {
-              wrongFormatmsg = "<?php echo htmlspecialchars(xl('Items marked in red have invalid entries.Please enter valid data'),ENT_QUOTES); ?>";
-              alert(wrongFormatmsg);
-              return false;
+          wrongFormatmsg = "<?php echo htmlspecialchars(xl('Items marked in red have invalid entries.Please enter valid data'),ENT_QUOTES); ?>";
+          alert(wrongFormatmsg);
+          return false;
         }
        return true;
       }
 
       function toggleSearch(elem) {
-       var f = document.forms[0];
-      <?php if ($WITH_SEARCH) { ?>
-       // Toggle background color.
-       if (elem.style.backgroundColor == '')
-        elem.style.backgroundColor = '<?php echo $searchcolor; ?>';
-       else
-        elem.style.backgroundColor = '';
-      <?php } ?>
-       if (force_submit) {
-        force_submit = false;
-        f.create.value = '<?php xl('Create New Patient','e'); ?>';
-       }
-       return true;
+        var f = document.forms[0];
+        <?php if ($WITH_SEARCH) { ?>
+        // Toggle background color.
+        if (elem.style.backgroundColor == '')
+          elem.style.backgroundColor = '<?php echo $searchcolor; ?>';
+        else
+          elem.style.backgroundColor = '';
+        <?php } ?>
+        if (force_submit) {
+          force_submit = false;
+          f.create.value = '<?php xl('Create New Patient','e'); ?>';
+        }
+        return true;
+      }
+
+      function toggleBorder(elem) {
+        var f = document.forms[0];
+        // Toggle background color.
+        if (elem.style.borderColor == 'red')
+          elem.style.borderColor = '';
+        else
+        return true;
       }
 
       // If a <select> list is dropped down, this is its name.
       var open_sel_name = '';
 
       function selClick(elem) {
-       if (open_sel_name == elem.name) {
-        open_sel_name = '';
-       }
-       else {
-        open_sel_name = elem.name;
-        toggleSearch(elem);
-       }
-       return true;
+        if (open_sel_name == elem.name) {
+          open_sel_name = '';
+        }
+        else {
+          open_sel_name = elem.name;
+          toggleSearch(elem);
+        }
+        return true;
       }
 
       function selBlur(elem) {
@@ -560,12 +606,12 @@ function allowOnlyDigits(elem_name){
                     $group_seq++;    // ID for DIV tags
                     $group_name = substr($this_group, 1);
                     if (strlen($last_group) > 0) echo "<br />";
-                    echo "<span class='bold'><input type='checkbox' name='form_cb_$group_seq' id='form_cb_$group_seq' value='1' " .
+                    echo "<div class='checkbox'><label><input type='checkbox' class='form-check-input' name='form_cb_$group_seq' id='form_cb_$group_seq' value='1' " .
                       "onclick='return divclick(this,\"div_$group_seq\");'";
                     if ($display_style == 'block') echo " checked";
 
                     // Modified 6-09 by BM - Translate if applicable
-                    echo " /><b>" . xl_layout_label($group_name) . "</b></span>\n";
+                    echo " />".xl_layout_label($group_name)."</label></div>\n";
 
                     echo "<div id='div_$group_seq' class='section' style='display:$display_style;'>\n";
                     echo " <table class='table' >\n";
@@ -589,7 +635,7 @@ function allowOnlyDigits(elem_name){
                 if ($titlecols > 0) {
                   end_cell();
                   echo "<td colspan='$titlecols' id='$field_id_label'";
-                  echo ($frow['uor'] == 2) ? " class='required'" : " class='bold'";
+                  echo "class='bold'";
                   if ($cell_count == 2) echo " style='padding-left:10pt'";
                   echo ">";
                   $cell_count += $titlecols;
@@ -628,10 +674,10 @@ function allowOnlyDigits(elem_name){
                 $insurance_info[3] = getInsuranceData($pid,"tertiary");
                 $subscriber_placeholder = "'" . xl("Student/leave blank if unemployed") . "'";
 
-                echo "<br /><span class='bold'><input type='checkbox' name='form_cb_ins' value='1' " .
+                echo "<br /><div class='checkbox'><label><input type='checkbox' name='form_cb_ins' value='1' " .
                   "onclick='return divclick(this,\"div_ins\");'";
                 if ($display_style == 'block') echo " checked";
-                echo " /><b>" . xl('Insurance') . "</b></span>\n";
+                echo " />" . xl('Insurance') . "</label>\n";
                 echo "<div id='div_ins' class='section' style='display:$display_style; width:$div_width;'>\n";
 
                 for($i=1;$i<=3;$i++) {
@@ -640,7 +686,7 @@ function allowOnlyDigits(elem_name){
             <table class='table' border="0">
               <tr>
                 <td colspan='2'>
-                  <span class='required'><?php echo $insurance_headings[$i -1].":"?></span>
+                  <span class='bold'><b><?php echo $insurance_headings[$i -1].":"?></b></span>
                   <select name="i<?php echo $i?>provider" id="i<?php echo $i?>provider">
                     <option value=""><?php xl('Unassigned','e'); ?></option>
                     <?php
@@ -661,7 +707,7 @@ function allowOnlyDigits(elem_name){
                   <table class='table' border="0">
                     <tr>
                       <td>
-                        <span class='required'><?php xl('Plan Name','e'); ?>: </span>
+                        <span class='bold'><b><?php xl('Plan Name','e'); ?>: </b></span>
                       </td>
                       <td>
                         <input type='entry' size='20' name='i<?php echo $i?>plan_name' value="<?php echo $result3{"plan_name"} ?>"
@@ -670,7 +716,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class='required'><?php xl('Effective Date','e'); ?>: </span>
+                        <span class='bold'><b><?php xl('Effective Date','e'); ?>: </b></span>
                       </td>
                       <td>
                         <input type='entry' size='11' name='i<?php echo $i ?>effective_date' id='i<?php echo $i ?>effective_date' value='<?php echo $result3['date'] ?>'/>
@@ -685,30 +731,30 @@ function allowOnlyDigits(elem_name){
                       </td>
                     </tr>
                     <tr>
-                      <td><span class=required><?php xl('Policy Number','e'); ?>: </span></td>
+                      <td><span class='bold'><b><?php xl('Policy Number','e'); ?>: </b></span></td>
                       <td><input type='entry' size='16' name='i<?php echo $i?>policy_number' value="<?php echo $result3{"policy_number"}?>"
                         onkeyup='policykeyup(this)'></td>
                     </tr>
                     <tr>
-                      <td><span class=required><?php xl('Group Number','e'); ?>: </span></td>
+                      <td><span class='bold'><b><?php xl('Group Number','e'); ?>: </b></span></td>
                       <td><input type=entry size=16 name=i<?php echo $i?>group_number value="<?php echo $result3{"group_number"}?>" onkeyup='policykeyup(this)'></td>
                     </tr>
                     <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
-                      <td class='required'><?php xl('Subscriber Employer (SE)','e'); ?>
+                      <td><span class="bold"><b><?php xl('Subscriber Employer (SE): ','e'); ?></b></span>
                       </td>
                       <td><input type=entry size=25 name=i<?php echo $i?>subscriber_employer
                         value="<?php echo $result3{"subscriber_employer"}?>"
                         onchange="capitalizeMe(this);" placeholder=<?php echo $subscriber_placeholder; ?>></td>
                     </tr>
                     <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
-                      <td><span class=required><?php xl('SE Address','e'); ?>: </span></td>
+                      <td><span class='bold'><?php xl('SE Address','e'); ?>: </span></td>
                       <td><input type=entry size=25 name=i<?php echo $i?>subscriber_employer_street
                         value="<?php echo $result3{"subscriber_employer_street"}?>"
                         onchange="capitalizeMe(this);" /></td>
                     </tr>
                     <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
                       <td>
-                        <span class=required><?php xl('SE City','e'); ?>: </span>
+                        <span class='bold'><?php xl('SE City','e'); ?>: </span>
                       </td>
                       <td>
                         <input type=entry size=15 name=i<?php echo $i?>subscriber_employer_city
@@ -718,7 +764,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
                       <td>
-                        <span class=required><?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('SE State','e') : xl('SE Locality','e') ?>: </span>
+                        <span class='bold'><?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('SE State','e') : xl('SE Locality','e') ?>: </span>
                       </td>
                       <td>
                         <?php
@@ -729,7 +775,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=required><?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('SE Zip Code','e') : xl('SE Postal Code','e') ?>: </span>
+                        <span class='bold'><?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('SE Zip Code','e') : xl('SE Postal Code','e') ?>: </span>
                       </td>
                       <td>
                         <input type=entry size=10 name=i<?php echo $i?>subscriber_employer_postal_code value="<?php echo $result3{"subscriber_employer_postal_code"}?>">
@@ -737,7 +783,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=required><?php xl('SE Country','e'); ?>: </span>
+                        <span class='bold'><?php xl('SE Country','e'); ?>: </span>
                       </td>
                       <td>
                         <?php
@@ -748,7 +794,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class='required'><?php xl('Accept Assignment','e'); ?>: </span>
+                        <span class='bold'><?php xl('Accept Assignment','e'); ?>: </span>
                       </td>
                       <td>
                         <select name=i<?php echo $i?>accept_assignment>
@@ -763,7 +809,7 @@ function allowOnlyDigits(elem_name){
                   <table class='table' border="0">
                     <tr>
                       <td>
-                        <span class=required><?php xl('Relationship','e'); ?>: </span>
+                        <span class='bold'><?php xl('Relationship','e'); ?>: </span>
                       </td>
                       <td>
                         <?php
@@ -775,7 +821,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=required><?php xl('Subscriber','e'); ?>: </span>
+                        <span class='bold'><?php xl('Subscriber','e'); ?>: </span>
                       </td>
                       <td>
                         <input type=entry size=10 name=i<?php echo $i?>subscriber_fname
@@ -791,7 +837,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=bold><?php xl('D.O.B.','e'); ?>: </span>
+                        <span class='bold'><?php xl('D.O.B.','e'); ?>: </span>
                       </td>
                       <td>
                         <input type='entry' size='11' name='i<?php echo $i?>subscriber_DOB' id='i<?php echo $i?>subscriber_DOB' value='<?php echo $result3['subscriber_DOB'] ?>'/>
@@ -809,7 +855,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=bold><?php xl('S.S.','e'); ?>: </span>
+                        <span class='bold'><?php xl('S.S.','e'); ?>: </span>
                       </td>
                       <td>
                         <input type=entry size=11 name=i<?php echo $i?>subscriber_ss value="<?php echo $result3{"subscriber_ss"}?>" />
@@ -817,7 +863,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=bold><?php xl('Sex','e'); ?>: </span>
+                        <span class='bold'><?php xl('Sex','e'); ?>: </span>
                       </td>
                       <td>
                         <?php
@@ -828,7 +874,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=required><?php xl('Subscriber Address','e'); ?>: </span>
+                        <span class='bold'><?php xl('Subscriber Address','e'); ?>: </span>
                       </td>
                       <td>
                         <input type=entry size=25 name=i<?php echo $i?>subscriber_street
@@ -838,7 +884,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=required><?php xl('City','e'); ?>: </span>
+                        <span class='bold'><?php xl('City','e'); ?>: </span>
                       </td>
                       <td>
                         <input type=entry size=15 name=i<?php echo $i?>subscriber_city
@@ -847,7 +893,7 @@ function allowOnlyDigits(elem_name){
                       </td>
                     <tr>
                       <td>
-                        <span class=required><?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('State','e') : xl('Locality','e') ?>: </span>
+                        <span class='bold'><?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('State','e') : xl('Locality','e') ?>: </span>
                       </td>
                       <td>
                         <?php
@@ -858,7 +904,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=required><?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('Zip Code','e') : xl('Postal Code','e') ?>: </span>
+                        <span class='bold'><?php echo ($GLOBALS['phone_country_code'] == '1') ? xl('Zip Code','e') : xl('Postal Code','e') ?>: </span>
                       </td>
                       <td>
                         <input type=entry size=10 name=i<?php echo $i?>subscriber_postal_code value="<?php echo $result3{"subscriber_postal_code"}?>">
@@ -866,7 +912,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class='required'<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
+                        <span class='bold'<?php if ($GLOBALS['omit_employers']) echo " style='display:none'"; ?>>
                         <?php xl('Country','e'); ?>:
                         </span>
                       </td>
@@ -880,7 +926,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=bold><?php xl('Subscriber Phone','e'); ?>:</span>
+                        <span class='bold'><?php xl('Subscriber Phone','e'); ?>:</span>
                       </td>
                       <td>
                         <input type='text' size='20' name='i<?php echo $i?>subscriber_phone' value='<?php echo $result3["subscriber_phone"] ?>' onkeyup='phonekeyup(this,mypcc)' />
@@ -888,7 +934,7 @@ function allowOnlyDigits(elem_name){
                     </tr>
                     <tr>
                       <td>
-                        <span class=bold><?php xl('CoPay','e'); ?>: </span>
+                        <span class='bold'><?php xl('CoPay','e'); ?>: </span>
                       </td>
                       <td>
                         <input type=text size="6" name=i<?php echo $i?>copay value="<?php echo $result3{"copay"}?>">
@@ -908,11 +954,11 @@ function allowOnlyDigits(elem_name){
             <?php if (!$SHORT_FORM) echo "  <center>\n"; ?>
             <br />
             <?php if ($WITH_SEARCH) { ?>
-            <input type="button" id="search" class='cp-submit' value=<?php xl('Search','e','\'','\''); ?>
+            <input type="button" id="search" class='btn btn-primary' value=<?php xl('Search','e','\'','\''); ?>
               style='background-color:<?php echo $searchcolor; ?>' />
             &nbsp;&nbsp;
             <?php } ?>
-            <input type="button" name='create' id="create" class='cp-positive' value=<?php xl('Create New Patient','e','\'','\''); ?> />
+            <input type="button" name='create' id="create" class='btn btn-success' value=<?php xl('Create New Patient','e','\'','\''); ?> />
             </center>
           </td>
           <td align='right' width='1%' nowrap>
@@ -1003,6 +1049,7 @@ function allowOnlyDigits(elem_name){
       while ($lrow = sqlFetchArray($lres)) {
         $field_id  = $lrow['field_id'];
         if (strpos($field_id, 'em_') === 0) continue;
+        echo "    \$('#form_$field_id').click(function() { toggleBorder(this); });\n";
         switch(getSearchClass($lrow['data_type'])) {
           case 1:
             echo "    \$('#form_$field_id').click(function() { toggleSearch(this); });\n";

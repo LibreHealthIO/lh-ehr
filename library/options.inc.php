@@ -47,6 +47,7 @@ require_once("formatting.inc.php");
 require_once("user.inc");
 require_once("patient.inc");
 require_once("lists.inc");
+require_once("$srcdir/headers.inc.php");
 require_once(dirname(dirname(__FILE__)) . "/custom/code_types.inc.php");
 
 $date_init = "";
@@ -278,6 +279,7 @@ function generate_form_field($frow, $currvalue) {
   // Added 5-09 by BM - Translate description if applicable
   $description = (isset($frow['description']) ? htmlspecialchars(xl_layout_label($frow['description']), ENT_QUOTES) : '');
 
+  echo call_required_libraries(array("bootstrap"));
   // Support edit option T which assigns the (possibly very long) description as
   // the default value.
   if (strpos($frow['edit_options'], 'T') !== FALSE) {
@@ -942,8 +944,8 @@ function generate_form_field($frow, $currvalue) {
       ($disabled ? array('disabled' => 'disabled') : null), false, $backup_list);
     // show the add button if user has access to correct list
     $inputValue = htmlspecialchars( xl('Add'), ENT_QUOTES);
-    $outputAddButton = "<input type='button' id='addtolistid_" . $list_id_esc . "' fieldid='form_" .
-      $field_id_esc . "' class='addtolist' value='$inputValue' $disabled />";
+    $outputAddButton = "<input type='button' style='margin-left: 10px;' id='addtolistid_" . $list_id_esc . "' fieldid='form_" .
+      $field_id_esc . "' class='addtolist btn btn-primary' value='$inputValue' $disabled />";
     if (aco_exist('lists', $list_id)) {
      // a specific aco exist for this list, so ensure access
      if (acl_check('lists', $list_id)) echo $outputAddButton;
@@ -2898,7 +2900,7 @@ function generate_layout_validation($form_id) {
         " if (trimlen(f.$fldname.value) == 0) {\n" .
         "       if (f.$fldname.focus) f.$fldname.focus();\n" .
         "       $('#" . $fldname . "').parents('div.tab').each( function(){ var tabHeader = $('#header_' + $(this).attr('id') ); tabHeader.css('color','red'); } ); " .
-        "       $('#" . $fldname . "').attr('style','background:red'); \n" .
+        "       $('#" . $fldname . "').attr('style','border-color:red'); \n" .
         "       errMsgs[errMsgs.length] = '" . addslashes(xl_layout_label($fldtitle)) . "'; \n" .
         " } else { " .
         "       $('#" . $fldname . "').attr('style',''); " .
