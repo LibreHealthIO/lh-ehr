@@ -11,7 +11,7 @@ To start a simple `lh-ehr` instance, follow the steps:
 [Docker CE install Page](https://docs.docker.com/install/overview/)
 
 [Docker Compose install Page](https://docs.docker.com/compose/install/#install-compose)
-   
+
 ### 2. Get the source code (if not already)
 
     $ git clone https://github.com/LibreHealthIO/lh-ehr.git
@@ -24,10 +24,10 @@ The librehealth_ehr container is configured for PHP 7.2 and Apache2.
 
 The env.ehr contains the information for the EHR database itself.
 
-The env.mysql contains the mysql root password and the initial database information for setup 
+The env.mysql contains the mysql root password and the initial database information for setup
 
 #### Development Start Up
-The developer install uses the default 'docker-compose.yml' and will automatically import a demo database which is located in 
+The developer install uses the default 'docker-compose.yml' and will automatically import a demo database which is located in
 ```bash
 $ cp .env.mysql.example .env.mysql ; cp .env.ehr.example .env.ehr # then edit accordingly
 $ cd .. # backup to root level
@@ -54,7 +54,7 @@ Now go to [http://localhost:8000](https://localhost:8000) and proceed to step 5.
 
 If you created a new database then the setup wizard will guide you through the installation steps.
 
-### 4. EHR Installation and setup 
+### 4. EHR Installation and setup
 
 * BELOW DOES NOT MAKE ANY SENSE
 
@@ -123,13 +123,13 @@ Login with credentials provided above:
 * Initial User: `admin`
 * Initial User Password: `password`
 
-## Cleanup (Shutdown?)
+## Cleanup (Shutdown)
 
     $ docker-compose -p librehealth_ehr down -v
 
 ## Backup (make use of volumes)
 
-The volumes that need to be backed up from you hosting server are: 
+The volumes that need to be backed up from you hosting server are:
 * /var/lib/docker/volumes/lh-ehr_db_data
 * /var/lib/docker/volumes/lh-ehr_sites
 

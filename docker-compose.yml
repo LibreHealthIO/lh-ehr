@@ -12,9 +12,8 @@ services:
    lh-ehr:
      image: registry.gitlab.com/librehealth/ehr/lh-ehr:latest
      volumes:
-       - sites:/var/www/html/sites
-       - ./docker/default_site/:/var/www/html/sites/default/
        - .:/var/www/html
+       - ./docker/default_site/:/var/www/html/sites/default/
      ports:
        - "8000:80"
      restart: always
@@ -23,4 +22,3 @@ services:
        - db
 volumes:
     db_data:
-    sites:
