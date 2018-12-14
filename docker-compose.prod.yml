@@ -1,23 +1,46 @@
 version: '3.7'
 
 services:
-   db:
-     image: mariadb:10.3
-     volumes:
-       - db_data:/var/lib/mysql
-     restart: always
-     env_file: ./docker/.env.mysql
+  db:
+    image: mariadb:10.3
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    env_file: ./docker/.env.mysql
 
-   lh-ehr:
-     image: registry.gitlab.com/librehealth/ehr/lh-ehr:latest
-     volumes:
-       - sites:/var/www/html/sites
-     ports:
-       - "8000:80"
-     restart: always
-     env_file: ./docker/.env.ehr
-     depends_on:
-       - db
+  lh-ehr:
+    image: registry.gitlab.com/librehealth/ehr/lh-ehr:latest
+    volumes:
+      - sites:/var/www/html/sites
+    ports:
+      - "8000:80"
+    restart: always
+    env_file: ./docker/.env.ehr
+    depends_on:
+      - db
+  adminer:
+    image: adminer:4
+    restart: always
+    ports:
+      - "8001:8080"
+    depends_on:
+      - db
+  backup:
+    image: registry.gitlab.com/librehealth/lsc/lh-docker-cron-backup:latest
+    depends_on:
+      - db
+      - lh-ehr
+    restart: always
+    volumes:
+      - db_data:/db_data
+      - sites:/sites
+      - ${BACKUP_DIR-./backups}:/backup
+    environment:
+      - DIRS=/db_data:db_data,/sites:sites
+    env_file: ./docker/.env.ehr
+    healthcheck:
+      test: "exit 0"
+
 volumes:
     db_data:
     sites:

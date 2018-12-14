@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# Docker Helper Script
+#
+# LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+# See the Mozilla Public License for more details.
+# If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# @package Librehealth EHR
+# @author Robby O'Connor <rob@librehealth.io>
+# @link http://librehealth.io
+#
+# Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+#
+
+
+
+set -euo pipefail
+IFS=$'\n\t'
+
+docker_compose_path="$(command -v docker-compose)"
+docker_path="$(command -v docker)"
+
+function error() {
+  RESET="\e[0m"
+  BOLD="\e[1;1m"
+  RED="${BOLD}\e[1;31m"
+	printf "${RED}### ${RESET}${BOLD} %s${RESET}\n" "$@" >&2
+}
+
+function message() {
+    RESET="\e[0m"
+    BOLD="\e[1;1m"
+    GREEN="${BOLD}\e[1;32m"
+	  printf "${GREEN}### ${RESET}${BOLD} %s${RESET}\n" "$@" >&2
+}
+
+function install_docker {
+    error "Docker is not installed, you will need to install Docker in order to run LibreHealth EHR in it."
+    error "See https://docs.docker.com/installation/"
+    exit 1
+}
+
+function check_docker {
+    if [[ -z "$docker_path" ]]; then
+        install_docker
+    fi
+}
+function install_docker_compose {
+    error "Docker Compose is required to run LibreHealth EHR. You will need to install it."
+    error "See https://docs.docker.com/compose/install/#install-compose"
+    exit 1
+}
+function check_docker-compose {
+    if [[ -z "$docker_compose_path" ]]; then
+        install_docker-compose
+    fi
+}
+
+function check_if_can_run_docker {
+    if ! "$docker_path" info > /dev/null 2>&1; then
+        error "Cannot connect to the docker daemon - verify it is running and you have access"
+        error "You should add yourself to the\"docker\" user group by doing: "
+        error  "\"sudo usermod -aG docker your-user\" and logging out and then back in."
+        exit 1
+    fi
+}
