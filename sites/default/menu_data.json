@@ -989,20 +989,6 @@
         "children" : [ ],
         "requirement" : 1
     }, {
-        "label" : "Export",
-        "menu_id" : "Popup:Export",
-        "url" : "/interface/../custom/export_xml.php",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, {
-        "label" : "Import",
-        "menu_id" : "Popup:Import",
-        "url" : "/interface/../custom/import_xml.php",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, {
         "label" : "Appts",
         "menu_id" : "Popup:Appts",
         "url" : "/interface/reports/appointments_report.php?patient=",
@@ -1153,13 +1139,6 @@
         "acl_req" : [ "admin", "super" ],
         "global_req" : "enable_pqrs"
     },{
-        "label" : "XML Editor",
-        "menu_id" : "rep0",
-        "target" : "rep",
-        "url" : "/modules/MIPS/xmleditor/index.php",
-        "children" : [ ],
-        "requirement" : 0
-    }, {
         "label" : "Alerts Log",
         "menu_id" : "rep0",
         "target" : "rep",
