@@ -68,7 +68,7 @@
   <head>
     <?php html_header_show();
       //  Include Bootstrap, Fancybox, date-time-picker
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox-addpatient"));
+  call_required_libraries(array("font-awesome","iziModalToast","jquery-min-3-1-1","bootstrap","datepicker","fancybox-addpatient"));
 ?>
 
 <style>
@@ -382,27 +382,34 @@ function allowOnlyDigits(elem_name){
         <?php } ?>
         var msg = "";
         var ins_error = '0';
-        msg += "<?php echo htmlspecialchars(xl('The following fields are required'),ENT_QUOTES); ?>:\n\n";
         for ( var i = 0; i < errMsgs.length; i++ ) {
-               msg += errMsgs[i] + "\n";
+          iziToast.error({
+            title: 'Error',
+            message: 'The following field is required: ' + errMsgs[i],
+            position: 'topRight'
+          });
         }
         <?php if($GLOBALS['primary_insurance_required']){ ?>
           if($('#i1provider option:selected').val() == '') {
-             var ins_error = '1';
-             msg += "<?php echo htmlspecialchars(xl('Primary Insurance Provider Entry Required.'),ENT_QUOTES); ?> \n";
-          }
+            var ins_error = '1';
+            iziToast.error({
+              title: 'Error',
+              message: "<?php echo htmlspecialchars(xl('Primary Insurance Provider Entry Required.'),ENT_QUOTES); ?>";,
+              position: 'topRight'
+            });
+            }
         <?php } ?>
-        msg += "\n<?php echo htmlspecialchars(xl('Please fill them in before continuing.'),ENT_QUOTES); ?>";
-
         if ( errMsgs.length > 0 || ins_error == '1' ) {
-               alert(msg);
-               return false;
+          return false;
         }
         else if(isInputFormatValid == false)
         {
-              wrongFormatmsg = "<?php echo htmlspecialchars(xl('Items marked in red have invalid entries.Please enter valid data'),ENT_QUOTES); ?>";
-              alert(wrongFormatmsg);
-              return false;
+          wrongFormatmsg = "<?php echo htmlspecialchars(xl('Items marked in red have invalid entries.Please enter valid data'),ENT_QUOTES); ?>";
+          iziToast.error({
+              title: 'Error',
+              message: wrongFormatmsg,
+          });
+          return false;
         }
        return true;
       }
