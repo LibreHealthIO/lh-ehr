@@ -4,10 +4,7 @@
  */
 
 include_once('../globals.php');
- $patient_filter = do_action( 'filter_patient_select', $_SESSION['authUser'] );
-    if ( $patient_filter != '') {
-        $accessfiltered = true;
-    }else{$accessfiltered = false;}
+
 ?>
 <html>
 <head>
@@ -21,9 +18,7 @@ include_once('../globals.php');
         display:block;
       }
 </style>
-<?php
-if ($accessfiltered == false){
-    ?>
+
 
 <script type="text/javascript" language="javascript">
 function toencounter(rawdata) {
@@ -57,7 +52,7 @@ function toencounter(rawdata) {
     top.frames[frame].location.href  = '../patient_file/encounter/encounter_top.php?set_encounter=' + enc;
 }
 </script>
-}
+
 </head>
 <body class="body_title">
 <?php

@@ -61,6 +61,7 @@ $issue = empty($_GET['issue']) ? 0 : 0 + $_GET['issue'];
  $auth_relaxed  = acl_check('encounters', 'relaxed');
  $auth_med      = acl_check('patients'  , 'med');
  $auth_demo     = acl_check('patients'  , 'demo');
+ do_action( 'demographics_check_auth', $args = array( 'username' => $_SESSION['authUser'], 'pid' => $pid ) );
 
  $tmp = getPatientData($pid, "squad");
  if ($tmp['squad'] && ! acl_check('squads', $tmp['squad']))
