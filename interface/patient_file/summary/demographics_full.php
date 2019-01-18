@@ -58,6 +58,7 @@
   
    // Check authorization.
    if ($pid) {
+        do_action( 'demographics_check_auth', $args = array( 'username' => $_SESSION['authUser'], 'pid' => $pid ) );
     if (!acl_check('patients', 'demo', '', 'write'))
      die(xl('Updating demographics is not authorized.'));
    } else {
