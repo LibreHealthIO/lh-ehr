@@ -353,7 +353,7 @@ function authorized_clicked() {
 </td></tr>
 </table>
 <br>
-<FORM NAME="user_form" METHOD="POST" ACTION="usergroup_admin.php" target="_parent" onsubmit='return top.restoreSession()'>
+<form name="user_form" method="POST" action="usergroup_admin.php" enctype="multipart/form-data" target="_parent" onsubmit='return top.restoreSession()'>
 
 <input type=hidden name="pwd_expires" value="<?php echo $GLOBALS['password_expiration_days']; ?>" >
 <input type=hidden name="pre_active" value="<?php echo $iter["active"]; ?>" >
@@ -384,22 +384,46 @@ $bg_count=count($acl_name);
 ?>
 <input type=hidden name="user_type" value="<?php echo $bg_name; ?>" >
 
-<TABLE border=0 cellpadding=0 cellspacing=0>
-<TR>
-    <TD style="width:180px;"><span class=text><?php echo xlt('Username'); ?>: </span></TD>
-    <TD style="width:270px;"><input type=entry name=username style="width:150px;" value="<?php echo $iter["username"]; ?>" disabled></td>
-    <TD style="width:200px;"><span class=text><?php echo xlt('Your Pass Phrase'); ?>: </span></TD>
-    <TD class='text' style="width:280px;"><input type='password' name=adminPass style="width:150px;"  value="" autocomplete='off'><font class="mandatory">*</font></TD>
-</TR>
-<TR>
-    <TD style="width:180px;"><span class=text></span></TD>
-    <TD style="width:270px;"></td>
-    <TD style="width:200px;"><span class=text><?php echo xlt('User\'s New Pass Phrase'); ?>: </span></TD>
-    <TD class='text' style="width:280px;">    <input type=entry name=clearPass style="width:150px;"  value=""><font class="mandatory">*</font></td>
-</TR>
+<table border=0 cellpadding=0 cellspacing=0>
+<tr>
+  <?php
+    if($iter["picture_url"]){
+      echo '<td style="width:180px;"><img id="prof_img" src="../../profile_pictures/'.$iter["picture_url"].'"';
+      echo ' style="display: block; border-radius: 40px; width: 64px; height: 64px; border: 8px solid #888;"></td>';
+    }
+    else{
+      echo '<td style="width:180px;"><img id="prof_img" style="display: none; border-radius: 40px; border: 8px solid #888;"></td>';
+    }
+  ?>
+  <td style="width:270px;"></td>
+  <td style="width:200px;"></td>
+  <?php
+    if($iter["picture_url"]){
+      echo '<td class="text" style="width:280px;"><label for="files" class="css_button cp-positive" id="file_input_button">'.xlt("Change Profile Picture").'</label></td>';
+    }
+    else{
+      echo '<td class="text" style="width:280px;"><label for="files" class="css_button cp-positive" id="file_input_button">'.xlt("Add Profile Picture").'</label></td>';
+    }
+  ?>
+<td style="padding-left: 350px;">
+<input type="file" name="profile_picture" id="files"  class="hidden" style="display: none;" onchange="readURL(this);" />
+</td>
+</tr>
+<tr>
+    <td style="width:180px;"><span class=text><?php echo xlt('Username'); ?>: </span></td>
+    <td style="width:270px;"><input type=entry name=username style="width:150px;" value="<?php echo $iter["username"]; ?>" disabled></td>
+    <td style="width:200px;"><span class=text><?php echo xlt('Your Pass Phrase'); ?>: </span></td>
+    <td class='text' style="width:280px;"><input type='password' name=adminPass style="width:150px;"  value="" autocomplete='off'><font class="mandatory">*</font></td>
+</tr>
+<tr>
+    <td style="width:180px;"><span class=text></span></td>
+    <td style="width:270px;"></td>
+    <td style="width:200px;"><span class=text><?php echo xlt('User\'s New Pass Phrase'); ?>: </span></td>
+    <td class='text' style="width:280px;">    <input type=entry name=clearPass style="width:150px;"  value=""><font class="mandatory">*</font></td>
+</tr>
 
 
-<TR height="30" style="valign:middle;">
+<tr height="30" style="valign:middle;">
 <td><span class="text">&nbsp;</span></td><td>&nbsp;</td>
 <td colspan="2"><span class=text><?php echo xlt('Provider'); ?>:
  <input type="checkbox" name="authorized" onclick="authorized_clicked()"<?php
@@ -410,16 +434,16 @@ $bg_count=count($acl_name);
   if (!$iter["authorized"]) echo " disabled"; ?> />
  &nbsp;&nbsp;<span class='text'><?php echo xlt('Active'); ?>:
  <input type="checkbox" name="active"<?php if ($iter["active"]) echo " checked"; ?> />
-</TD>
-</TR>
+</td>
+</tr>
 
-<TR>
-<TD><span class=text><?php echo xlt('First Name'); ?>: </span></TD>
-<TD><input type=entry name=fname id=fname style="width:150px;" value="<?php echo $iter["fname"]; ?>"><span class="mandatory">&nbsp;*</span></td>
-<td><span class=text><?php echo xlt('Middle Name'); ?>: </span></TD><td><input type=entry name=mname style="width:150px;"  value="<?php echo $iter["mname"]; ?>"></td>
-</TR>
+<tr>
+<td><span class=text><?php echo xlt('First Name'); ?>: </span></td>
+<td><input type=entry name=fname id=fname style="width:150px;" value="<?php echo $iter["fname"]; ?>"><span class="mandatory">&nbsp;*</span></td>
+<td><span class=text><?php echo xlt('Middle Name'); ?>: </span></td><td><input type=entry name=mname style="width:150px;"  value="<?php echo $iter["mname"]; ?>"></td>
+</tr>
 
-<TR>
+<tr>
 <td><span class=text><?php echo xlt('Last Name'); ?>: </span></td><td><input type=entry name=lname id=lname style="width:150px;"  value="<?php echo $iter["lname"]; ?>"><span class="mandatory">&nbsp;*</span></td>
 <td><span class=text><?php echo xlt('Default Facility'); ?>: </span></td><td><select name=facility_id style="width:150px;" >
 <?php
@@ -464,10 +488,10 @@ foreach($result as $iter2) {
  </td>
 </tr>
 
-<TR>
-<TD><span class=text><?php echo xlt('Federal Tax ID'); ?>: </span></TD><TD><input type=entry name=taxid style="width:150px;"  value="<?php echo $iter["federaltaxid"]?>"></td>
-<TD><span class=text><?php echo xlt('DEA Number'); ?>: </span></TD><TD><input type=entry name=drugid style="width:150px;"  value="<?php echo $iter["federaldrugid"]?>"></td>
-</TR>
+<tr>
+<td><span class=text><?php echo xlt('Federal Tax ID'); ?>: </span></td><td><input type=entry name=taxid style="width:150px;"  value="<?php echo $iter["federaltaxid"]?>"></td>
+<td><span class=text><?php echo xlt('DEA Number'); ?>: </span></td><td><input type=entry name=drugid style="width:150px;"  value="<?php echo $iter["federaldrugid"]?>"></td>
+</tr>
 
 <tr>
   <td><span class="text"><?php echo xlt('Provider Type'); ?>: </span></td>
@@ -610,19 +634,36 @@ Display red alert if entered password matched one of last three passwords/Displa
 ?>
 </table>
 
-<INPUT TYPE="HIDDEN" NAME="id" VALUE="<?php echo attr($_GET["id"]); ?>">
-<INPUT TYPE="HIDDEN" NAME="mode" VALUE="update">
-<INPUT TYPE="HIDDEN" NAME="privatemode" VALUE="user_admin">
+<input TYPE="HIDDEN" NAME="id" VALUE="<?php echo attr($_GET["id"]); ?>">
+<input TYPE="HIDDEN" NAME="mode" VALUE="update">
+<input TYPE="HIDDEN" NAME="privatemode" VALUE="user_admin">
 
-<INPUT TYPE="HIDDEN" NAME="secure_pwd" VALUE="<?php echo $GLOBALS['secure_password']; ?>">
-</FORM>
+<input TYPE="HIDDEN" NAME="secure_pwd" VALUE="<?php echo $GLOBALS['secure_password']; ?>">
+</form>
 <script language="JavaScript">
-$(document).ready(function(){
+  $(document).ready(function(){
     $("#cancel").click(function() {
-          parent.$.fn.fancybox.close();
-     });
+      parent.$.fn.fancybox.close();
+    });
 
-});
+  });
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+          $('#prof_img')
+              .attr('src', e.target.result)
+              .width(64)
+              .height(64);
+          $('#prof_img').css("display", "block"); 
+          $('#file_input_button').text("Edit Profile Picture");
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
 </script>
 </BODY>
 
