@@ -13,13 +13,13 @@ $returnurl = 'encounter_top.php';
 <html>
 	<head>
 		<?php html_header_show();?>
-		<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
+		<?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1', 'font-awesome']); ?>
 		<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 	</head>
 	<body class="body_top">
-		<span class="title" style="display: none;"><?php echo xlt('Speech Dictation'); ?></span><br><br>
-		<h2><?php echo xlt('Speech Dictation'); ?></h2>
 		<form method=post action="<?php echo $rootdir;?>/forms/dictation/save.php?mode=new" name="my_form">
+			<a href="javascript:history.back()"><h4><i class="fa fa-chevron-left" id="backbutton" aria-hidden="true"></i> Back</h4></a>
+			<h4 class="title"><strong><?php echo xlt('Speech Dictation'); ?></strong></h4>
 			<table class="table table-bordered table-hover table-condensed">
 				<tr>
 					<td align="left"><?php echo xlt('Dictation:'); ?></td>
@@ -36,11 +36,11 @@ $returnurl = 'encounter_top.php';
 			</table>
 			<div>
 				<!-- Save/Cancel buttons -->
-				<a role="button" href="javascript:top.restoreSession(); document.my_form.submit();" class="link_submit cp-submit">
+				<a role="button" href="javascript:top.restoreSession(); document.my_form.submit();" class="btn btn-success">
 					<?php echo xlt('Save'); ?>
 				</a>
-				<a class="deleter cp-negative" role="button" href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" class="link" onclick="top.restoreSession()">
-					<?php echo xlt('Don\'t Save'); ?>
+				<a class="deleter btn btn-danger" role="button" href="<?php echo "$rootdir/patient_file/encounter/$returnurl";?>" onclick="top.restoreSession()">
+					<?php echo xlt('Cancel'); ?>
 				</a>
 			</div>
 		</form>
