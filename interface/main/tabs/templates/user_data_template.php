@@ -13,7 +13,7 @@
 <link rel="stylesheet" type="text/css" href="css/userdata.css"/>
 <script type="text/html" id="user-data-template">
     <!-- ko with: user -->
-    <nav class="nav navbar-nav navbar-right" style="margin-right: 10px !important;">
+    <nav class="nav navbar-nav navbar-right" style="margin-right: 10px !important; margin-top: 10px !important;">
         <p class="clearfix"></p>
         <p class="clearfix"></p>
         <ul class="list-unstyled" id="userData">
