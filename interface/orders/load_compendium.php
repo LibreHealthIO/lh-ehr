@@ -39,6 +39,7 @@ $lab_npi = array(
   '1235186800' => 'Pathgroup Labs LLC',
   '1598760985' => 'Yosemite Pathology Medical Group',
 );
+call_required_libraries(array("bootstrap"));
 
 /**
  * Get lab's ID from the users table given its NPI.  If none return 0.
@@ -75,17 +76,23 @@ $EXPORT_FILE = $GLOBALS['temporary_files_dir'] . "/libreehr_config.sql";
 </head>
 
 <body class="body_top">
-<center>
+
 &nbsp;<br />
 <form method='post' action='load_compendium.php' enctype='multipart/form-data'>
-
-<table>
+	<table>
+        <td>
+            <b><?php echo xlt('Load Lab Configuration'); ?></b>&nbsp;
+        </td>
+    </table>
+<div class="text main_box">
+	
+    <table class="table">
 
 <?php
 if ($form_step == 0) {
   echo " <tr>\n";
-  echo "  <td width='1%' nowrap>" . xlt('Vendor') . "</td>\n";
-  echo "  <td><select name='vendor'>";
+  echo "  <td width='1%' nowrap>" . xlt('Vendor') . ":</td>\n";
+  echo "  <td><select class='form-control' name='vendor'>";
   foreach ($lab_npi as $key => $value) {
     echo "<option value='" . attr($key) . "'";
     if (!getLabID($key)) {
@@ -98,8 +105,8 @@ if ($form_step == 0) {
   echo " </tr>\n";
 
   echo " <tr>\n";
-  echo "  <td nowrap>" . xlt('Action') . "</td>\n";
-  echo "  <td><select name='action'>";
+  echo "  <td nowrap>" . xlt('Action') . ":</td>\n";
+  echo "  <td><select class='form-control' name='action'>";
   echo "<option value='1'>" . xlt('Load Order Definitions'    ) . "</option>";
   echo "<option value='2'>" . xlt('Load Order Entry Questions') . "</option>";
   echo "<option value='3'>" . xlt('Load OE Question Options'  ) . "</option>";
@@ -107,8 +114,8 @@ if ($form_step == 0) {
   echo " </tr>\n";
 
   echo " <tr>\n";
-  echo "  <td nowrap>" . xlt('Container Group Name') . "</td>\n";
-  echo "  <td><select name='group'>";
+  echo "  <td nowrap>" . xlt('Container Group Name') . ":</td>\n";
+  echo "  <td><select class='form-control' name='group'>";
   $gres = sqlStatement("SELECT procedure_type_id, name FROM procedure_type " .
     "WHERE procedure_type = 'grp' ORDER BY name, procedure_type_id");
   while ($grow = sqlFetchArray($gres)) {
@@ -119,14 +126,14 @@ if ($form_step == 0) {
   echo " </tr>\n";
 
   echo " <tr>\n";
-  echo "  <td nowrap>" . xlt('File to Upload') . "</td>\n";
+  echo "  <td nowrap>" . xlt('File to Upload') . ":</td>\n";
   echo "<td><input type='hidden' name='MAX_FILE_SIZE' value='4000000' />";
-  echo "<input type='file' name='userfile' class='cp-positive'/></td>\n";
+  echo "<label class='btn btn-default'><input type='file' name='userfile' class='cp-positive'/></label></td>\n";
   echo " </tr>\n";
 
   echo " <tr>\n";
   echo "  <td nowrap>&nbsp;</td>\n";
-  echo "  <td><input type='submit' value='" . xla('Submit') . "' class='cp-submit'/></td>\n";
+  echo "  <td><input class='btn btn-primary' type='submit' value='" . xla('Submit') . "' class='cp-submit'/></td>\n";
   echo " </tr>\n";
 }
 
@@ -448,21 +455,20 @@ if ($form_step == 2) {
 ++$form_step;
 ?>
 
-  </td>
- </tr>
-</table>
+            </td>
+        </tr>
+    </table>
 
 <input type='hidden' name='form_step' value='<?php echo attr($form_step); ?>' />
 <input type='hidden' name='form_status' value='<?php echo $form_status; ?>' />
 
+</div>
 </form>
 
 <?php
 ob_flush();
 flush();
 ?>
-
-</center>
 
 <?php if ($auto_continue) { ?>
 <script language="JavaScript">
@@ -472,4 +478,3 @@ flush();
 
 </body>
 </html>
-
