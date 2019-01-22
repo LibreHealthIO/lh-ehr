@@ -494,6 +494,9 @@ $(document).ready(function() {
     border: 1px solid #ccc;
     padding: 10px;
 }
+#buttonrow {
+  padding: 15px 0;
+}
 </style>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
@@ -951,7 +954,10 @@ function make_insurance()
   <td class='text' colspan="2" ><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment1" value="copay" checked="checked" onClick="make_visible_row();cursor_pointer();"/><?php echo htmlspecialchars(xl('Co Pay'), ENT_QUOTES); ?><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment2" value="invoice_balance"  onClick="make_visible_row();"/><?php echo htmlspecialchars(xl('Invoice Balance'), ENT_QUOTES); ?><br/><input type="radio" name="radio_type_of_payment" id="radio_type_of_payment4" value="pre_payment" onClick="make_hide_row();"/><?php echo htmlspecialchars(xl('Pre Pay'), ENT_QUOTES); ?></td>
  </tr>
 
- <tr height="15"><td colspan='3'></td></tr>
+ <tr height="15"><td colspan='3' id='buttonrow'>
+  <input type='submit' class="cp-output" name='form_save' value='<?php echo htmlspecialchars( xl('Generate Invoice'), ENT_QUOTES);?>' /> &nbsp;
+  <input type='button' class="cp-negative" value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
+ </td></tr>
 
 </table>
 <table width="200" border="0" cellspacing="0" cellpadding="0" id="table_display_prepayment" style="display:none">
@@ -1173,9 +1179,6 @@ function make_insurance()
 </table>
 
 <p>
-<input type='submit' class="cp-output" name='form_save' value='<?php echo htmlspecialchars( xl('Generate Invoice'), ENT_QUOTES);?>' /> &nbsp;
-<input type='button' class="cp-negative" value='<?php echo xla('Cancel'); ?>' onclick='window.close()' />
-
 <input type="hidden" name="hidden_patient_code" id="hidden_patient_code" value="<?php echo attr($pid);?>"/>
 <input type='hidden' name='ajax_mode' id='ajax_mode' value='' />
 <input type='hidden' name='mode' id='mode' value='' />
