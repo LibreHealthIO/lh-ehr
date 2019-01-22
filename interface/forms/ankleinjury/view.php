@@ -88,8 +88,8 @@ echo "checked";;?>><span class=text></span><br></td>
 <td align="right"><?php xl('Lateral malleolus:','e');?></td>
 <td><input type=radio name="ankle_ottawa_bone_tenderness"  value="Lateral malleolus" <?php if ($obj{"ankle_ottawa_bone_tenderness"} == "Lateral malleolus")
 {echo "checked";};?>><span class=text></span><br></td>
-<td align="right"><?php xl('Base of fifth (5th) Metarsal:','e');?></td>
-<td><input type=radio name="ankle_ottawa_bone_tenderness" value="Base of fifth (5th) Metarsal" <?php if ($obj{"ankle_ottawa_bone_tenderness"} == "Base of fifth (5th) Metarsal")
+<td align="right"><?php xl('Base of fifth (5th) Metatarsal:','e');?></td>
+<td><input type=radio name="ankle_ottawa_bone_tenderness" value="Base of fifth (5th) Metatarsal" <?php if ($obj{"ankle_ottawa_bone_tenderness"} == "Base of fifth (5th) Metatarsal")
 {echo "checked";};?>><span class=text></span><br></td>
 <td align="right"><?php xl('At the Navicular:','e');?></td>
 <td><input type=radio name="ankle_ottawa_bone_tenderness" value="At the Navicular" <?php if ($obj{"ankle_ottawa_bone_tenderness"} == "At the Navicular")
