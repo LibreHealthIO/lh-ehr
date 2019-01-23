@@ -388,7 +388,7 @@ $bg_count=count($acl_name);
 <tr>
   <?php
     if($iter["picture_url"]){
-      echo '<td style="width:180px;"><img id="prof_img" src="../../profile_pictures/'.$iter["picture_url"].'"';
+      echo '<td style="width:180px;"><img id="prof_img" src="../../sites/'.$_SESSION['site_id'].'/profile_pictures/'.$iter["picture_url"].'"';
       echo ' style="display: block; border-radius: 40px; width: 64px; height: 64px; border: 8px solid #888;"></td>';
     }
     else{

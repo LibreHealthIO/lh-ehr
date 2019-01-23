@@ -43,11 +43,11 @@
   }
   $pid = substr(time(), 0,5).$newpid;
     //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
-  if (realpath("../../profile_pictures/")) {
+  if (realpath($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures")) {
       
   }
   else {
-    mkdir("../../profile_pictures/", 0755);
+    mkdir($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures", 0755);
   }
   //for profile picture upload
   //mime check done.
@@ -87,7 +87,7 @@
   }
   $picture_url = "";
   //begin file uploading
-  $destination_directory = "../../profile_pictures/";
+  $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
   if ($bool) {
     if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$imageFileType)) {
         $picture_url = $pid.".".$imageFileType;

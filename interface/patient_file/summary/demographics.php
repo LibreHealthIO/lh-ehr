@@ -187,13 +187,12 @@
   ?>
 <html>
   <head>
+      <!-- Dynamically required libraries -->
+      <?php call_required_libraries(array('jquery-min-3-3-1', 'fancybox', 'common', 'gritter', 'iziModalToast')); ?>
 
     <?php html_header_show(); ?>
 
-    <!-- Dynamically required libraries -->
-    <?php call_required_libraries(array('jquery-min-1-6-4', 'fancybox', 'common', 'gritter')); ?>
-
-    <!-- Styles -->
+      <!-- Styles -->
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
     <style type="text/css">
@@ -436,7 +435,9 @@
       function setMyPatient() {
        // Avoid race conditions with loading of the left_nav or Title frame.
        if (!parent.allFramesLoaded()) {
-        setTimeout("setMyPatient()", 500);
+           setTimeout(function () {
+               setMyPatient();
+           },500);
         return;
        }
       <?php if (isset($_GET['set_pid'])) { ?>
@@ -477,8 +478,8 @@
       <?php } // end setting new encounter id (only if new pid is also set) ?>
       }
 
-      $(window).load(function() {
-       setMyPatient();
+      $(window).on("load",function() {
+          setMyPatient();
       });
     </script>
     <style type="css/text">
@@ -509,7 +510,7 @@
        echo "<table><tr>";
        if ($arr['picture_url']) {
          echo "<td>
-         <img id='prof_img' src='../../../profile_pictures/".$arr['picture_url']."' height='64px' width='64px' style='border-radius: 40px;'></td>";
+         <img id='prof_img' src='../../../sites/".$_SESSION['site_id']."/profile_pictures/".$arr['picture_url']."' height='64px' width='64px' style='border-radius: 40px;'></td>";
        }
        else {
           echo "<td>
@@ -1681,11 +1682,11 @@
 //this code is executed when user edit or upload a profile picture
 if (isset($_FILES["profile_picture"])) {
   //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
-  if (realpath("../../../profile_pictures/")) {
+  if (realpath($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/")) {
 
   }
   else {
-    mkdir("../../../profile_pictures/", 0755);
+    mkdir($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/", 0755);
   }
   //for profile picture upload
   //mime check done.
@@ -1736,7 +1737,7 @@ if (isset($_FILES["profile_picture"])) {
   if ($arr['picture_url']) {
     $url = $arr['picture_url'];
     // a old image exists, so lets delete it
-    if (unlink("../../../profile_pictures/".$url)) {
+    if (unlink($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/".$url)) {
       $bool = true;
     }
     else {
@@ -1746,7 +1747,7 @@ if (isset($_FILES["profile_picture"])) {
   }
   $picture_url = "";
   //begin file uploading
-  $destination_directory = "../../../profile_pictures/";
+  $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
   if ($bool) {
     if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$imageFileType)) {
         $picture_url = $pid.".".$imageFileType;
@@ -1761,25 +1762,29 @@ if (isset($_FILES["profile_picture"])) {
 }
 
 if ($picture_url) {
+    $imageUrl = "../../../sites/".$_SESSION['site_id']."/profile_pictures/".$picture_url;
+    $successMsg = xl("Profile picture has been set successfully");
+    $errorMsg = xl("Error in setting the profile picture");
   //show success message and update the value in db and also refresh the page.
   if (sqlQ("UPDATE patient_data SET picture_url='$picture_url' WHERE pid='$pid'")) {
         echo "<script>
-    if (confirm('profile picture has been set successfully')) {
-      window.location = 'demographics.php?set_pid=$pid';
-    }
-    else {
-       window.location = 'demographics.php?set_pid=$pid';
-    }
+    iziToast.success({
+        title: 'User Profile Updated',
+        icon: 'fa fa-picture-o',
+        message: '$successMsg',
+        onOpening: function () {
+          $('#prof_img').attr('src', '$imageUrl');
+      }
+    });
     </script>";
   }
   else {
-            echo "<script>
-    if (confirm('Error in setting the profile picture')) {
-      window.location = 'demographics.php?set_pid=$pid';
-    }
-    else {
-       window.location = 'demographics.php?set_pid=$pid';
-    }
+      echo "<script>
+            iziToast.error({
+                title: 'Error',
+                icon: 'fa fa-warning',
+                message: '$errorMsg',
+            });
     </script>";
   }
 }

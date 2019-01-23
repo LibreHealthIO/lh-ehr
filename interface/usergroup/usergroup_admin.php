@@ -158,11 +158,11 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         } else {
           $uid = $row['username'].time();
         }
-        if (realpath("../../profile_pictures/")) {
+        if (realpath($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/")) {
 
         }
         else {
-          mkdir("../../profile_pictures/", 0755);
+          mkdir($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/", 0755);
         }
         $bool = 0;
         $target_file =  basename($_FILES["profile_picture"]["name"]);
@@ -197,7 +197,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         }
         $picture_url = "";
         //begin file uploading
-        $destination_directory = "../../profile_pictures/";
+        $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
         if ($bool) {
           if (file_exists($destination_directory.$row['picture_url'])){
             unlink($destination_directory.$row['picture_url']);
@@ -337,11 +337,11 @@ if (isset($_FILES)) {
   //images will be saved with their name
   $uid =  trim(formData('rumple')).time();
     //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
-  if (realpath("../../profile_pictures/")) {
+  if (realpath($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures")) {
 
   }
   else {
-    mkdir("../../profile_pictures/", 0755);
+    mkdir($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures", 0755);
   }
   //for profile picture upload
   //mime check done.
@@ -381,7 +381,7 @@ if (isset($_FILES)) {
   }
   $picture_url = "";
   //begin file uploading
-  $destination_directory = "../../profile_pictures/";
+  $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
   if ($bool) {
     if (file_exists($destination_directory.$uid.".".$imageFileType)) {
       unlink($destination_directory.$uid.".".$imageFileType);
