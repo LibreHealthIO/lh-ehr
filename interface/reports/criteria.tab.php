@@ -366,7 +366,7 @@ for($ThisPageSearchCriteriaIndex=0;$ThisPageSearchCriteriaIndex<sizeof($ThisPage
                         ?>
                         </select>
                         </td>
-                    <td valign="top"><a href="#" onClick="removeOptionSelected()"><img src="<?php echo $web_root ?>/interface/pic/Delete.gif" border="0" /></a></td>
+                    <td valign="top"><a href="#" onClick="removeOptionSelected()"><img src="<?php echo $web_root ?>/images/deleteBtn.png" border="0" /></a></td>
                   </tr>
                 </table>
                 </fieldset>

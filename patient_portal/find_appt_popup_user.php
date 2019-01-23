@@ -5,7 +5,7 @@
  * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2005-2006, 2013 Rod Roark <rod@sunsetsystems.com>
  *
- * This program is used to find un-used appointments in the Patient Portal, 
+ * This program is used to find un-used appointments in the Patient Portal,
  * allowing the patient to select there own appointment.
  * LICENSE: This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ $ignoreAuth = 1;
   if (!($GLOBALS['portal_onsite_appt_modify'])) {
    echo htmlspecialchars( xl('You are not authorized to schedule appointments.'),ENT_NOQUOTES);
    exit;
- } 
+ }
 
  $input_catid = $_REQUEST['catid'];
 
@@ -211,7 +211,7 @@ if ($_REQUEST['startdate'] && preg_match(
                 if ($endtime > $slotetime) {
                     $endtime = $slotetime;
                 }
-    
+
     $repeatix = 0;
     while ($thistime < $endtime) {
 
@@ -378,11 +378,11 @@ form {
     font-weight: bold;
     padding: 3px;
 }
-#searchResultsHeader { 
+#searchResultsHeader {
     width: 100%;
     background-color: lightgrey;
 }
-#searchResultsHeader table { 
+#searchResultsHeader table {
     width: 96%;  /* not 100% because the 'searchResults' table has a scrollbar */
     border-collapse: collapse;
 }
@@ -432,7 +432,7 @@ form {
    <input type='text' name='startdate' id='startdate' size='10' value='<?php echo $sdate ?> ' readonly='readonly'
     title='<?php echo xla('This Date is set by the Clinic and cannot be Changed'); ?>'/>
 
-  <!-- <img src='../interface/pic/show_calendar.gif' align='absbottom' width='24' height='22'
+  <!-- <img src='../images/calendar.png' align='absbottom' width='24' height='22'
     id='img_date' border='0' alt='[?]' style='cursor:pointer'
     title='<?php //xl('Click here to choose a date','e'); ?>'>-->
 
@@ -475,7 +475,7 @@ form {
 
         $utime = ($slotbase + $i) * $slotsecs;
         $thisdate = date("Y-m-d", $utime);
-        if ($thisdate != $lastdate) { 
+        if ($thisdate != $lastdate) {
             // if a new day, start a new row
             if ($lastdate) {
                 echo "</div>";
@@ -489,7 +489,7 @@ form {
             echo "<div id='am'>AM ";
             $ampmFlag = "am";  // reset the AMPM flag
         }
-        
+
         $ampm = date('a', $utime);
     if ($ampmFlag != $ampm) {
         echo "</div><div id='pm'>PM ";

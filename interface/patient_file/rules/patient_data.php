@@ -47,7 +47,7 @@ function validate(f) {
 	var time_split = form_date[1].split( ":" );
 	var d = new Date( date_split[0], date_split[1]-1, date_split[2], time_split[0], time_split[1], time_split[2] );
 	var now = new Date();
-	if ( d > now && 
+	if ( d > now &&
 		f.form_complete.value == "YES" ) {
 		alert("<?php echo htmlspecialchars( xl('You cannot enter a future date with a completed value of YES.'), ENT_QUOTES); ?>");
 	    f.form_date.focus();
@@ -154,7 +154,7 @@ if (isset($entryID)) {
       "value='" . attr( $form_date) . "' " .
       "onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' " .
       "title='" . xla('yyyy-mm-dd hh:mm:ss') . "' />";
-    echo "<img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'" .
+    echo "<img src='../../../images/calendar.png' align='absbottom' width='24' height='22'" .
       "id='img_date' border='0' alt='[?]' style='cursor:pointer'" .
       "title='" . xla('Click here to choose a date') . "' />";
     echo "<script language='JavaScript'>Calendar.setup({inputField:'form_date', ifFormat:'%Y-%m-%d %H:%M:%S', button:'img_date', showsTime:'true'});</script>";

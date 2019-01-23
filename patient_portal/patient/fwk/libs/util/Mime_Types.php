@@ -169,7 +169,7 @@ class Mime_Types {
 	 * Example:
 	 * echo $mime->get_file_type('/path/to/my_file', false);
 	 * or
-	 * echo $mime->get_file_type('/path/to/my_file.gif');
+	 * echo $mime->get_file_type('/path/to/my_file.png');
 	 * 
 	 * @param string $file        	
 	 * @param bool $use_ext
