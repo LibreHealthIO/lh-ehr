@@ -624,7 +624,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
                             <div class="col-md-9">
                                 <blockquote class="bg-warning">
                                 <a href="javascript:;" ng-click="groupToPages()"><?php echo xlt('Conversation'); ?></a>
-                                    <span><?php //echo xlt('Seleted Message id'); ?><!-- :{{selected.id}} --> <?php echo xlt('from'); ?> </span> <strong>{{selected.sender_name}}</strong>
+                                    <span><?php //echo xlt('Selected Message id'); ?><!-- :{{selected.id}} --> <?php echo xlt('from'); ?> </span> <strong>{{selected.sender_name}}</strong>
                                     <?php echo xlt('regarding'); ?> {{selected.title}} <?php echo xlt('on'); ?> &lt;{{selected.date | date:'yyyy-MM-dd hh:mm'}}&gt;
                                 </blockquote>
                             </div>

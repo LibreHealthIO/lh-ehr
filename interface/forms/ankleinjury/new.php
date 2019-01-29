@@ -57,7 +57,7 @@ formHeader("Form: ankleinjury");
 <tr>
 <td><?php xl('Bone Tenderness: Medial Malleolus','e'); ?><input type="radio" name='ankle_ottawa_bone_tenderness' value="Medial malleolus"></input></td>
 <td><?php xl('Lateral Malleolus','e'); ?><input type="radio" name='ankle_ottawa_bone_tenderness' value="Lateral malleolus"></input></td>
-<td><?php xl('Base of fifth (5th) Metarsal','e'); ?><input type="radio" name='ankle_ottawa_bone_tenderness' value="Base of fifth (5th) Metarsal"></input></td>
+<td><?php xl('Base of fifth (5th) Metatarsal','e'); ?><input type="radio" name='ankle_ottawa_bone_tenderness' value="Base of fifth (5th) Metatarsal"></input></td>
 <td><?php xl('At the Navicular','e'); ?><input type="radio" name='ankle_ottawa_bone_tenderness' value="At the Navicular"></input></td>
 </tr>   
 </table>   
