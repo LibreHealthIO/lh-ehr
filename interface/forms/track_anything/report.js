@@ -59,8 +59,8 @@ function ta_report_plot_graph(formid,ofc_name,the_track_name,ofc_date,ofc_value)
         var thetrack = JSON.stringify(the_track_name + " [Track " + formid + "]");
         var thedates = JSON.stringify(ofc_date);
         var thevalues = JSON.stringify(ofc_value);
-        
-        $.ajax({ url: '<?php echo $modules_dir; ?>openflashchart/graph_track_anything.php',
+
+    jQuery.ajax({ url: '../../../modules/openflashchart/graph_track_anything.php',
                      type: 'POST',
                      data: { dates:  thedates, 
                                      values: thevalues, 
@@ -73,15 +73,18 @@ function ta_report_plot_graph(formid,ofc_name,the_track_name,ofc_date,ofc_value)
                                  // ofc will look after a variable named "ofc"
                                  // inside of the flashvars
                                  // However, we need to set both
-                                 // data and flashvars.ofc 
+                                 // data and flashvars.ofc
                                  data=returnData;
                                  flashvars.ofc = returnData;
                                  // call ofc with proper falshchart
-                                        swfobject.embedSWF('<?php echo $modules_dir; ?>openflashchart/open-flash-chart.swf', 
+                                        swfobject.embedSWF('../../../modules/openflashchart/open-flash-chart.swf',
                                         "graph" + formid, "650", "200", "9.0.0","",flashvars);  
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                                 alert(XMLHttpRequest.responseText);
+                            console.log(textStatus);
+                            console.log(XMLHttpRequest);
+                            console.log(errorThrown);
                                 //alert("XMLHttpRequest="+XMLHttpRequest.responseText+"\ntextStatus="+textStatus+"\nerrorThrown="+errorThrown);
                         }
         
