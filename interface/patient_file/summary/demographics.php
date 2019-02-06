@@ -1675,7 +1675,7 @@
   </body>
   <?php if ($GLOBALS['tags_filters_enabled'])  {
          do_action( 'demographics_before_html_end', $args = [ 'pid' => $pid ] );
-        }  
+        }
   ?>
 </html>
 <?php
@@ -1693,65 +1693,47 @@ if (isset($_FILES["profile_picture"])) {
   //size check done.
   //extension check done.
   //if any validation needed be added, please add it below.
-  $bool = 0;
+  $image_verified = false;
+  $user_image_absent = true;
+  $extensions = array("jpg", "png", "jpeg");
   $target_file =  basename($_FILES["profile_picture"]["name"]);
-  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  $verify_image = getimagesize($_FILES["profile_picture"]["tmp_name"]);
-  if($verify_image) {
-    $mime = $verify_image["mime"];
-    $mime_types = array('image/png',
-                            'image/jpeg',
-                            'image/gif',
-                            'image/bmp',
-                            'image/vnd.microsoft.icon');
-    $extensions = array("jpg", "png", "jpeg");
-    //mime check with all image formats.
-    if (in_array($mime, $mime_types)) {
-          $bool = 1;
-        if (in_array($imageFileType, $extensions)) {
-        //if mime type matches, then do a size check
-        //size check
-          if ($_FILES["profile_picture"]["size"] > 20971520) {
-            $bool = 0;
-          }
-          else {
-            $bool = 1;
-          }
-      }
-      else {
-        $bool = 0;
-      }
-    }
-    else {
-      $bool = 0;
+  $image_file_type = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  $image_size = $_FILES["profile_picture"]["size"];
+  $image_properties = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+  if($image_properties) {
+    //if image mime type matches, then check file extension, then  check size
+    if (has_right_mime($image_properties) && has_right_extension($image_file_type, $extensions) &&
+      has_right_size($image_size) ) {
+
+          $image_verified = true;//image verification passed
     }
 
   }
-  else {
-        $bool = 0;
-  }
-  // check if there is a old image for the patient, if yes then delete it
-  $sql = "SELECT picture_url FROM patient_data WHERE pid = $pid";
-  $query = sqlQ($sql);
-  $arr = sqlFetchArray($query);
-  if ($arr['picture_url']) {
-    $url = $arr['picture_url'];
-    // a old image exists, so lets delete it
-    if (unlink($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/".$url)) {
-      $bool = true;
+
+  if($image_verified) {
+    // check if there is a old image for the patient, if yes then delete it
+    $sql = "SELECT picture_url FROM patient_data WHERE pid = $pid";
+    $query = sqlQ($sql);
+    $arr = sqlFetchArray($query);
+    if ($arr['picture_url']) {
+      $url = $arr['picture_url'];
+      // a old image exists, so lets delete it
+      if (unlink($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/".$url)) {
+        $user_image_absent = true;
+      }
+      else {
+        //if the image does not delete due to file permissions then the new image wont go.
+        $user_image_absent = false;
+      }
     }
-    else {
-      //if the image does not delete due to file permissions then the new image wont go.
-      $bool = false;
-    }
   }
+
   $picture_url = "";
   //begin file uploading
-  $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
-  if ($bool) {
-    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$imageFileType)) {
-        $picture_url = $pid.".".$imageFileType;
-    }
+  $destination_directory = "../../../profile_pictures/";
+  if ($image_verified && $user_image_absent) {
+    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$image_file_type)) {
+        $picture_url = $pid.".".$image_file_type;
     else {
       //may be failed due to directory permissions.
     }
@@ -1790,6 +1772,29 @@ if ($picture_url) {
 }
 else {
   //show failure message.
+}
+
+//image mime check with all image formats.
+function has_right_mime($image_properties) {
+  $mime = $image_properties["mime"];
+    $mime_types = array('image/png',
+                            'image/jpeg',
+                            'image/gif',
+                            'image/bmp',
+                            'image/vnd.microsoft.icon');
+
+   return in_array($mime, $mime_types);
+}
+
+//image file extension change
+function has_right_extension($image_file_type, $extensions) {
+
+  return in_array($image_file_type, $extensions);
+}
+
+//image size check
+function has_right_size($size) {
+  return $size < 20971520;
 }
 
 ?>
