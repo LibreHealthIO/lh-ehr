@@ -3,7 +3,7 @@
  * These functions are common functions used in Receipt by method report.
  * They have been pulled out and placed in this file. This is done to prepare
  * the for building a report generator.
- *
+ * UI TRANSLATION ISSUES
  * Copyright (C) 2018 Tigpezeghe Rodrige <tigrodrige@gmail.com>
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.

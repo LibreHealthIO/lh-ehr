@@ -159,7 +159,7 @@ require_once "reports_controllers/CustomReportRangeController.php";
 
 <body class="body_top">
 
-<span class='title'><?php echo xlt('Reports'); ?> - <?php echo xlt('Superbill'); ?></span>
+<span class='title'><?php echo xlt('SuperBill Report'); ?></span>
 
 <div id="superbill_description" class='text'>
     <?php echo xlt('Superbills, sometimes referred to as Encounter Forms or Routing Slips, are an essential part of most medical practices.'); ?>

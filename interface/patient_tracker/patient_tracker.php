@@ -252,12 +252,12 @@ function topatient(newpid, enc) {
         </div>
         <?php echo xlt("Ending Date for Patient Flow Board"); ?>
         <select class="form-control input-sm" name="ptkr_end_date" id="ptkr_end_date">
-            <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>><?php echo xlt("One Year Ahead"); ?></option>
-            <option value="Y2" <?php if($GLOBALS['ptkr_end_date']=='Y2') echo "selected";?>><?php echo xlt("Two Years Ahead"); ?></option>
-            <option value="M6" <?php if($GLOBALS['ptkr_end_date']=='M6') echo "selected";?>><?php echo xlt("Six Months Ahead"); ?></option>
-            <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='M3') echo "selected";?>><?php echo xlt("Three Months Ahead"); ?>Three Months Ahead</option>
-            <option value="M1" <?php if($GLOBALS['ptkr_end_date']=='M1') echo "selected";?>><?php echo xlt("One Month Ahead"); ?></option>
-            <option value="D1" <?php if($GLOBALS['ptkr_end_date']=='D1') echo "selected";?>><?php echo xlt("One Day Ahead"); ?></option>
+            <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>><?php echo xlt("One Year From Now"); ?></option>
+            <option value="Y2" <?php if($GLOBALS['ptkr_end_date']=='Y2') echo "selected";?>><?php echo xlt("Two Years From Now"); ?></option>
+            <option value="M6" <?php if($GLOBALS['ptkr_end_date']=='M6') echo "selected";?>><?php echo xlt("Six Months From Now"); ?></option>
+            <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='M3') echo "selected";?>><?php echo xlt("Three Months From Now"); ?>Three Months From Now</option>
+            <option value="M1" <?php if($GLOBALS['ptkr_end_date']=='M1') echo "selected";?>><?php echo xlt("One Month From Now"); ?></option>
+            <option value="D1" <?php if($GLOBALS['ptkr_end_date']=='D1') echo "selected";?>><?php echo xlt("One Day From Now"); ?></option>
         </select>
         <?php echo xlt("Patient Flow Board Timer Interval"); ?>
         <select class="form-control input-sm" name="pat_trkr_timer" id="pat_trkr_timer">
@@ -396,13 +396,13 @@ function topatient(newpid, enc) {
 <div id="flowboard_header">
   <?php if (count($chk_prov) == 1) {?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>
-      <h3><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></h3>
+      <h3><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text($form_from_date) . ' ' . xlt('Until'). ' ' . text($form_to_date) ?></h3>
     <?php } else { ?>
       <h3><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' : '. xlt('Date') . ' ' . text($form_from_date) ?></h3>
     <?php } ?>
   <?php } else { ?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>
-      <h3><?php echo xlt('Appointments Date Range'). ' : ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></h3>
+      <h3><?php echo xlt('Appointments Date Range'). ' : ' . text($form_from_date) . ' ' . xlt('Until'). ' ' . text($form_to_date) ?></h3>
   <?php } else { ?>
       <h3><?php echo xlt('Appointment Date'). ' : ' . text($form_from_date) ?></h3>
   <?php } ?>

@@ -9,7 +9,7 @@
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
+ * UI TRANSLATION ISSUES
  * @package LibreHealth EHR
  * @author Tigpezeghe Rodrige <tigrodrige@gmail.com>
  * @link http://librehealth.io

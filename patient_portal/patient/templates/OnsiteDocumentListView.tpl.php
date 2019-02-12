@@ -43,7 +43,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LibreHealth EHR <?php echo xlt(' Portal'); ?>  |  <?php echo xlt('Documents'); ?></title>
+<title>LibreHealth EHR &nbsp;<?php echo xlt('Portal'); ?>  |  <?php echo xlt('Documents'); ?></title>
 <meta   content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 <meta name="description" content="Developed By sjpadgett@gmail.com">
 

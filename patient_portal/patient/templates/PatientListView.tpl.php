@@ -2,7 +2,7 @@
 /**
  *
  * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
- *
+ * UI TRANSLATION ISSUES.  Look for "UserList".  This also includes dependency on configurable variables.
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details.
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.

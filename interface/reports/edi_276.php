@@ -79,7 +79,7 @@ require_once "reports_controllers/Edi276Controller.php";
         <script type="text/javascript">
 
             var stringDelete = "<?php echo xlt('Do you want to remove this record?'); ?>?";
-            var stringBatch  = "<?php echo xlt('Please select X12 partner this is required to create the 276 batch'); ?>";
+            var stringBatch  = "<?php echo xlt('Please select X12 partner this is required to create the 276 batch.'); ?>";
 
             // for form refresh
 

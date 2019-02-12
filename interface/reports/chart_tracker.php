@@ -155,14 +155,14 @@ if (!empty($row)) {
   echo " </tr>\n";
 
   echo " <tr>\n";
-  echo "  <td class='bold'>" . xlt('Check In To') . ":</td>\n";
+  echo "  <td class='bold'>" . xlt('Check In From') . ":</td>\n";
   echo " <td class='text'>";
   generate_form_field(array('data_type'=>1,'field_id'=>'newloc','list_id'=>'chartloc','empty_title'=>''), '');
   echo " </td>\n";
   echo " </tr>\n";
 
   echo " <tr>\n";
-  echo "  <td class='bold'>" . xlt('Or Out To') . ":</td>\n";
+  echo "  <td class='bold'>" . xlt('Check Out To') . ":</td>\n";
   echo "  <td class='text'><select name='form_newuser' onchange='userSelect()'>\n";
   echo "   <option value=''></option>";
   $ures = sqlStatement("SELECT id, fname, mname, lname FROM users " .

@@ -99,7 +99,7 @@ require_once "reports_controllers/PreBillingIssuesController.php";
 </head>
 
 <body class="body_top">
-    <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Pre-billing Issues'); ?></span>
+    <span class='title'><?php echo xlt('Pre-billing Issues Report'); ?></span>
 
  <form method='post' action='pre_billing_issues.php' id='theform'>
  <div id="report_parameters">

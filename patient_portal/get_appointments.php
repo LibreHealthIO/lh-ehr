@@ -2,7 +2,9 @@
 /**
  *
  * Patient Portal Appointments
- *
+ * UI TRANSLATION ISSUES example xlt("None") has no specific translatable context.
+ * Reword to provide application context to short phrases.
+ * Example "none" can be translated to many different words.
  * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
  * Copyright (C) 2011 Cassian LUP <cassi.lup@gmail.com>
  *

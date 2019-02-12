@@ -335,9 +335,7 @@ function cancelClicked() {
    </select>
    </div>
 
-   <p><i><?php echo xlt('To link this encounter/consult to an existing issue, click the '
-   . 'desired issue above to highlight it and then click [Save]. '
-   . 'Hold down [Ctrl] button to select multiple issues.'); ?>
+   <p><i><?php echo xlt('To link this encounter/consult to an existing issue, click the desired issue above to highlight it and then click [Save]. Hold down [Ctrl] button to select multiple issues.'); ?>
    </i></p>
 
  </div> 

@@ -372,9 +372,9 @@ function validate(f) {
       "f.formdir = 'patient_encounter' AND f.deleted = 0 AND " .
       "fe.id = f.form_id LIMIT 1", array($pid, $encounter));
     echo "<p class='title' style='margin-top:8px;margin-bottom:8px;text-align:center'>\n";
-    echo text($formtitle) . " " . xlt('for') . ' ';
+    echo text($formtitle) . " " . xlt('for patient named') . ' ';
     echo text($enrow['fname']) . ' ' . text($enrow['mname']) . ' ' . text($enrow['lname']);
-    echo ' ' . xlt('on') . ' ' . text(oeFormatShortDate(substr($enrow['date'], 0, 10)));
+    echo ' ' . xlt('Date') . ': ' . text(oeFormatShortDate(substr($enrow['date'], 0, 10)));
     echo "</p>\n";
   }
 

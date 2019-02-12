@@ -55,7 +55,7 @@ require_once "reports_controllers/ChartLocationActivityController.php";
 
 <body class="body_top">
 
-<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Chart Location Activity'); ?></span>
+<span class='title'><?php echo xlt('Chart Location Activity Report'); ?></span>
 
 <?php // check the patient, and if row exists. (TRK)
   checkPatientId(); ?>

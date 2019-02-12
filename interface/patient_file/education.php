@@ -127,12 +127,12 @@ var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 <h2>
 <?php
-echo xlt('Educational materials for');
-echo ' ' . text($codetype) . ' ';
-echo xlt('code');
+echo xlt('Educational materials for Code Type:');
+echo ' ' . text($codetype) . '.  ';
+echo xlt('Code');
 echo ' "' . text($codevalue) . '"';
 if ($language) {
-  echo ' ' . xlt('with preferred language') . ' ' .
+  echo ' ' . xlt('In the following language:') . ' ' .
     text(getListItemTitle('language', $_REQUEST['language']));
 }
 ?>

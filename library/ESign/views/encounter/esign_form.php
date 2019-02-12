@@ -25,7 +25,7 @@
 	<form id='esign-signature-form' method='post' action='<?php echo attr( $this->form->action ); ?>'>
 		
         <div class="esign-signature-form-element">
-		      <span id='esign-signature-form-prompt'><?php echo xlt( "Your password is your signature" ); ?></span> 
+		      <span id='esign-signature-form-prompt'><?php echo xlt( "Your password is your signature." ); ?></span> 
 		</div>
 
 		<div class="esign-signature-form-element">
@@ -34,7 +34,7 @@
 		</div>
 		
 		<div class="esign-signature-form-element">
-		      <span id='esign-signature-form-prompt'><?php echo xlt( "Checking the lock checkbox will prevent any futher edits on any forms in this encounter." ); ?></span> 
+		      <span id='esign-signature-form-prompt'><?php echo xlt( "Checking the lock checkbox will prevent any further edits to any forms in this encounter." ); ?></span> 
 		</div>
 		
 		<?php if ( $this->form->showLock ) { ?>

@@ -203,16 +203,16 @@ $(document).ready(function() {
 		switch(specialty) {
 
 			case "MIPS-1 Allergy/Immunology":
-				mymeasurelist = [110,111,130,160,226,317,331,332,333,334,374,398,402,444];
+                                mymeasurelist = [110,111,130,226,238,317,338,340,374,402];
 				break;
 			case "MIPS-2 Anesthesiology":
-				mymeasurelist = [44,76,130,317,404,424,426,427,430];
+                                mymeasurelist = [44,76,404,424,426,427,430,463];
                                 break;
                         case "MIPS-3 Cardiology":
-				mymeasurelist = [5,6,7,8,47,118,128,130,204,226,236,317,322,323,324,326,402,431,438];
+                                mymeasurelist = [5,6,7,8,47,118,128,130,204,226,236,238,243,317,322,323,324,326,344,345,374,402,431,438,441,442];
                                 break;
                         case "MIPS-4 Dermatology":
-                                mymeasurelist = [130,137,138,224,226,265,317,337,402,410];
+                                mymeasurelist = [130,137,138,224,226,265,317,337,374,402,410,440];
                                 break;
                         case "MIPS-5 Diagnostic Radiology":
                                 mymeasurelist = [145,146,147,195,225,359,360,361,362,363,364,405,406,436];
@@ -221,76 +221,88 @@ $(document).ready(function() {
                                 mymeasurelist = [348,392,393];
                                 break;
                         case "MIPS-7 Emergency Medicine":
-                                mymeasurelist = [47,66,91,93,116,130,226,254,255,317,402,415,416,431];
+                                mymeasurelist = [66,91,93,116,187,254,255,317,331,332,333,415,416];
                                 break;
                         case "MIPS-8 Gastroenterology":
-                                mymeasurelist = [47,128,130,185,226,271,275,317,320,343,390,401,402,431,439];
+                                mymeasurelist = [47,128,130,185,226,271,275,317,320,343,374,390,401,402,425,431,439];
                                 break;
                         case "MIPS-9 General Oncology":
-                                mymeasurelist = [47,102,130,143,226,250,317,402,431,449,450,451,452,453,454,455,456,457];
+                                mymeasurelist = [47,102,130,143,144,226,250,317,374,402,431,449,450,451,452,453,454,455,456,457];
                                 break;
                         case "MIPS-10 General Practice/Family Medicine":
-                                mymeasurelist = [1,5,7,8,47,50,65,66,93,109,110,112,113,116,117,119,128,130,134,154,155,181,204,226,236,317,326,331,332,333,334,337,338,342,370,387,394,398,400,401,402,408,412,414,418,431,438,442,443,444];
+                                mymeasurelist = [1,5,6,7,8,24,39,47,48,50,65,66,91,93,109,110,111,112,113,116,117,119,126,128,130,134,154,155,181,204,226,238,243,317,326,331,332,333,334,337,338,342,370,374,383,387,394,398,400,401,402,408,412,414,418,431,438,441,442,443,444,447,464];
                                 break;
                         case "MIPS-11 General Surgery":
-                                mymeasurelist = [21,23,47,128,130,226,317,354,355,356,357,358,402];
+                                mymeasurelist = [21,23,46,47,128,130,226,317,355,356,357,358,374,402];
                                 break;
                         case "MIPS-12 Hospitalists":
-                                mymeasurelist = [5,8,47,76,128,130,226,317,402,407,431];
+                                mymeasurelist = [5,8,47,76,130,407];
                                 break;
-                        case "MIPS-13 Internal Medicine":
-                                mymeasurelist = [1,5,47,50,109,110,112,113,116,117,128,130,134,154,155,181,204,226,236,317,326,331,332,333,334,387,400,401,402,408,412,414,418,431,438];
+                        case "MIPS-13 Infectious Disease":
+                                mymeasurelist = [65,66,91,93,110,111,116,128,130,176,205,226,275,331,332,333,334,337,338,340,387,390,394,400,401,407,447,464];
                                 break;
-                        case "MIPS-14 Interventional Radiology":
-                                mymeasurelist = [259,265,344,345];
+                        case "MIPS-14 Internal Medicine":
+                                mymeasurelist = [1,5,6,7,8,24,39,47,48,50,91,93,117,119,126,128,130,134,154,155,181,204,226,238,243,317,326,331,332,333,334,337,338,342,370,374,383,387,398,400,401,402,408,412,414,418,431,438,441,442,443,444,447];
                                 break;
-                        case "MIPS-15 Mental Health/Behavioral Health/Dementia":
-                                mymeasurelist = [47,128,130,134,181,226,282,283,284,286,288,317,325,370,383,391,402,411,431];
+                        case "MIPS-15 Interventional Radiology":
+                                mymeasurelist = [76,145,374,409,413,420,421,437,465];
                                 break;
-                        case "MIPS-16 Neurology":
-                                mymeasurelist = [47,128,130,226,268,282,283,284,286,288,290,291,293,317,386,402,408,412,414,419,431,435];
+                        case "MIPS-16 Mental Health/Behavioral Health/Dementia":
+                                mymeasurelist = [128,130,134,181,226,282,283,286,288,317,325,370,374,383,391,402,411,431];
                                 break;
-                        case "MIPS-17 Obstetrics and Gynecology":
-                                mymeasurelist = [47,48,50,110,112,128,130,226,236,265,317,402,418,422,431,432,433,434,443,447,448];
+                        case "MIPS-17 Nephrology":
+                                mymeasurelist = [1,46,47,110,111,119,122,182,317,318,327,328,330,400,403];
                                 break;
-                        case "MIPS-18 Ophlamology":
-                                mymeasurelist = [12,14,19,47,117,130,140,141,191,192,226,303,304,317,384,385,388,389,402];
+                        case "MIPS-18 Neurology":
+                                mymeasurelist = [47,130,154,155,226,268,282,283,286,288,290,291,293,317,374,386,402,408,412,414,419,431,435];
                                 break;
-                        case "MIPS-19 Orthopedic Surgery":
-                                mymeasurelist = [21,23,47,109,128,130,178,179,180,226,317,350,351,352,353,358,402];
+                        case "MIPS-19 Neurosurgical":
+                                mymeasurelist = [21,23,130,187,226,345,346,409,413,459,460,461];
                                 break;
-                        case "MIPS-20 Otolaryngology":
-                                mymeasurelist = [21,23,47,91,93,128,130,226,317,331,332,333,334,357,358,402,431];
+                        case "MIPS-20 Obstetrics and Gynecology":
+                                mymeasurelist = [47,48,50,110,112,128,130,226,236,265,317,374,402,418,422,428,429,431,432,433,434,443,447,448];
                                 break;
-                        case "MIPS-21 Pathology":
+                        case "MIPS- 21 Ophlamology":
+                                mymeasurelist = [12,14,19,117,130,140,141,191,192,226,303,374,384,385,388,389];
+                                break;
+                        case "MIPS-22 Orthopedic Surgery":
+                                mymeasurelist = [21,23,24,46,47,109,128,130,131,134,154,155,178,179,180,226,317,350,351,352,353,358,374,402,408,412,414,418,459,460,461];
+                                break;
+                        case "MIPS-23 Otolaryngology":
+                                mymeasurelist = [21,23,47,65,91,93,110,111,128,130,154,155,226,265, 276,277,278,279,317,331,332,333,334,357,358,374,398,402,431,464];
+                                break;
+                        case "MIPS-24 Pathology":
                                 mymeasurelist = [99,100,249,250,251,395,396,397];
                                 break;
-                        case "MIPS-22 Pediatrics":
-                                mymeasurelist = [65,66,91,93,110,134,205,391,394,402,444];
+                        case "MIPS-25 Pediatrics":
+                                mymeasurelist = [65,66,91,93,110,134,205,391,394,398,402,444,447,464,467];
                                 break;
-                        case "MIPS-23 Physical Medicine":
-                                mymeasurelist = [47,109,128,130,131,182,226,317,402,408,412,414,431];
+                        case "MIPS-26 Physical Medicine":
+                                mymeasurelist = [47,109,128,130,131,154,155,182,226,317,374,402,408,412,414,431];
                                 break;
-                        case "MIPS-24 Plastic Surgery":
-                                mymeasurelist = [21,23,47,128,130,226,317,357,358,402];
+                        case "MIPS-27 Plastic Surgery":
+                                mymeasurelist = [21,23,130,226,317,355,356,357,358];
                                 break;
-                        case "MIPS-25 Preventive Medicine":
-                                mymeasurelist = [1,24,39,47,48,109,110,111,112,128,130,226,236,317,402,431];
+                        case "MIPS-28 Podiatry":
+                                mymeasurelist = [126,127,128,154,155,226];
                                 break;
-                        case "MIPS-26 Radiation Oncology":
+                        case "MIPS-29 Preventive Medicine":
+                                mymeasurelist = [1,24,39,47,48,109,110,111,112,113,116,119,126,128,130,134,154,155,226,317,374,402,431,438];
+                                break; 
+                        case "MIPS-30 Radiation Oncology":
                                 mymeasurelist = [102,143,144,156];
                                 break;
-                        case "MIPS-27 Rheumatology":
-                                mymeasurelist = [47,128,130,176,177,178,179,180,226,317,337,402];
+                        case "MIPS-31 Rheumatology":
+                                mymeasurelist = [24,39,47,110,111,128,130,131,176,177,178,179,180,226,236,238,317,374,402];
                                 break;
-                        case "MIPS-28 Thoracic Surgery":
-                                mymeasurelist = [21,23,47,130,164,165,166,167,168,226,236,317,358,402];
+                        case "MIPS-32 Thoracic Surgery":
+                                mymeasurelist = [21,23,43,47,130,164,165,166,167,168,226,236,317,358,374,402,441,445];
                                 break;
-                        case "MIPS-29 Urology":
-                                mymeasurelist = [47,48,50,102,104,130,226,265,317,358,402];
+                        case "MIPS-33 Urology":
+                                mymeasurelist = [23,47,48,50,102,104,119,128,130,131,226,265,317,358,374,428,429,431,432,433,434];
                                 break;
-                        case "MIPS-30 Vascular Surgery":
-                                mymeasurelist = [47,128,130,226,236,258,259,260,317,344,345,347,357,402];
+                        case "MIPS-34 Vascular Surgery":
+                                mymeasurelist = [21,23,47,128,130,226,236,257,258,259,260,317,344,345,346,347,357,358,374,402,417,420,423,441];
                                 break;
 
 			default:
@@ -323,36 +335,40 @@ if(count($updateStatus['off']) || count($updateStatus['on'])) {
 			<div id="measures">				
 				<div class="row"><p><span class="align-middle"><input class="btn btn-success btn-sm align-middle" type="submit" value="Update" /></span><span class="align-middle ma-title">MIPS Specialty Sets for 2018</span></p></div>
 				<div class="row">
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-1 Allergy/Immunology')">MIPS-1 Allergy/Immunology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-2 Anesthesiology')">MIPS-2 Anesthesiology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-3 Cardiology')">MIPS-3 Cardiology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-4 Dermatology')">MIPS-4 Dermatology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-5 Diagnostic Radiology')">MIPS-5 Diagnostic Radiology</button>               
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-6 Electrophysiology Cardiac Specialist')">MIPS-6 Electrophysiology Cardiac Specialist</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-7 Emergency Medicine')">MIPS-7 Emergency Medicine</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-8 Gastroenterology')">MIPS-8 Gastroenterology</button> 
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-9 General Oncology')">MIPS-9 General Oncology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-10 General Practice/Family Medicine')">MIPS-10 General Practice/Family Medicine</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-11 General Surgery')">MIPS-11 General Surgery</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-12 Hospitalists')">MIPS-12 Hospitalists</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-13 Internal Medicine')">MIPS-13 Internal Medicine</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-14 Interventional Radiology')">MIPS-14 Interventional Radiology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-15 Mental Health/Behavioral Health/Dementia')">MIPS-15 Mental Health/Behavioral Health/Dementia</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-16 Neurology')">MIPS-16 Neurology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-17 Obstetrics and Gynecology')">MIPS-17 Obstetrics and Gynecology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-18 Ophlamology')">MIPS-18 Ophlamology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-19 Orthopedic Surgery')">MIPS-19 Orthopedic Surgery</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-20 Otolaryngology')">MIPS-20 Otolaryngology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-21 Pathology')">MIPS-21 Pathology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-22 Pediatrics')">MIPS-22 Pediatrics</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-23 Physical Medicine')">MIPS-23 Physical Medicine</button>   
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-24 Plastic Surgery')">MIPS-24 Plastic Surgery</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-25 Preventive Medicine')">MIPS-25 Preventive Medicine</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-26 Radiation Oncology')">MIPS-26 Radiation Oncology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-27 Rheumatology')">MIPS-27 Rheumatology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-28 Thoracic Surgery')">MIPS-28 Thoracic Surgery</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-29 Urology')">MIPS-29 Urology</button>
-					<button type="button" class="quickselect" onclick="quickSelect('MIPS-30 Vascular Surgery')">MIPS-30 Vascular Surgery</button>
+							<button type="button" class="quickselect" onclick="quickSelect('MIPS-1 Allergy/Immunology')">Allergy/Immunology</button>
+							<button type="button" class="quickselect" onclick="quickSelect('MIPS-2 Anesthesiology')">Anesthesiology</button>
+							<button type="button" class="quickselect" onclick="quickSelect('MIPS-3 Cardiology')">Cardiology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-4 Dermatology')">Dermatology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-5 Diagnostic Radiology')">Diagnostic Radiology</button>               
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-6 Electrophysiology Cardiac Specialist')">Electrophysiology Cardiac Specialist</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-7 Emergency Medicine')">Emergency Medicine</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-8 Gastroenterology')">Gastroenterology</button> 
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-9 General Oncology')">General Oncology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-10 General Practice/Family Medicine')">General Practice/Family Medicine</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-11 General Surgery')">General Surgery</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-12 Hospitalists')">Hospitalists</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-13 Infectious Disease')">Infectious Disease</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-14 Internal Medicine')">Internal Medicine</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-15 Interventional Radiology')">Interventional Radiology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-16 Mental Health/Behavioral Health/Dementia')">Mental Health/Behavioral Health/Dementia</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-17 Nephrology')">Nephrology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-18 Neurology')">Neurology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-19 Neurosurgical')">Neurosurgical</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-20 Obstetrics and Gynecology')">Obstetrics and Gynecology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-21 Ophlamology')">Ophlamology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-22 Orthopedic Surgery')">Orthopedic Surgery</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-23 Otolaryngology')">Otolaryngology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-24 Pathology')">Pathology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-25 Pediatrics')">Pediatrics</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-26 Physical Medicine')">Physical Medicine</button>   
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-27 Plastic Surgery')">Plastic Surgery</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-28 Podiatry')">Podiatry</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-29 Preventive Medicine')">Preventive Medicine</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-30 Radiation Oncology')">Radiation Oncology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-31 Rheumatology')">Rheumatology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-32 Thoracic Surgery')">Thoracic Surgery</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-33 Urology')">Urology</button>
+                            <button type="button" class="quickselect" onclick="quickSelect('MIPS-34 Vascular Surgery')">Vascular Surgery</button>
 				</div>
 				<br/>
 				<li>
@@ -419,6 +435,40 @@ foreach($rules as $rule) {
 										<input type="hidden" name="pqrsRulesInitial[<?php echo $id; ?>]" value="<?php echo $active ?>">
 										<input type="checkbox" class="measure" id="<?php echo $id; ?>" name="pqrsRules[<?php echo $id; ?>]" value="1"<?php if($active == 1) { echo ' checked="checked"'; } ?>>
 										<label for="<?php echo $id; ?>"><?php echo "pre-select ".$label; ?></label>
+									</li>
+<?php
+
+}
+
+?>
+
+										</ul>
+									</li>
+							<li>
+								<ul>
+<?php
+
+$rules = sqlStatementNoLog(
+	'SELECT `id`, `active`
+	FROM `clinical_rules`
+	WHERE `id` LIKE "HCC_%"
+		AND `id` NOT LIKE "%_Group_%"
+	ORDER BY `id` ASC;'
+);
+
+foreach($rules as $rule) {
+	$id = $rule['id'];
+	$active = $rule['active'];
+
+	$idParts = explode('_', $id);
+	array_shift($idParts);
+	$label = implode(' ', $idParts);
+
+?>
+									<li class="checkbox-button">
+										<input type="hidden" name="pqrsRulesInitial[<?php echo $id; ?>]" value="<?php echo $active ?>">
+										<input type="checkbox" class="measure" id="<?php echo $id; ?>" name="pqrsRules[<?php echo $id; ?>]" value="1"<?php if($active == 1) { echo ' checked="checked"'; } ?>>
+										<label for="<?php echo $id; ?>"><?php echo "HCC ". $label; ?></label>
 									</li>
 <?php
 

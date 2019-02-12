@@ -71,7 +71,7 @@ if($_REQUEST["ccr_ajax"] == "yes"){
     $from_pathname = implode("/",$from_pathname_array);
     $temp_url = $GLOBALS['OE_SITE_DIR'] . '/documents/' . $from_pathname . '/' . $from_filename;
     if (!file_exists($temp_url)) {
-      echo xlt('The requested document is not present at the expected location on the filesystem or there are not sufficient permissions to access it') . '.' . $temp_url;
+      echo xlt('The requested document is not present at the expected location on the filesystem or there are not sufficient permissions to access it.') . $temp_url;
     }else{
       $content = file_get_contents($temp_url);
     }
@@ -194,7 +194,7 @@ if($_REQUEST["ccr_ajax"] == "yes"){
     $var['field_name_value_array']['documents'][0]['id'] = $doc_id;
     insert_ccr_into_audit_data($var);
     $d->update_imported($doc_id);
-    echo xlt('Successfully Imported the details. Please approve the patient from the Pending Approval Screen').'.';
+    echo xlt('Successfully Imported the details. Please approve the patient from the Pending Approval Screen.');
   }else{
     exit(xlt('Could not read the file'));
   }

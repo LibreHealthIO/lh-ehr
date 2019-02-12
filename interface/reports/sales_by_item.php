@@ -98,7 +98,7 @@ require_once "reports_controllers/SalesByItemController.php";
 
 <body leftmargin='0' topmargin='0' marginwidth='0' marginheight='0' class="body_top">
 
-<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Sales by Item'); ?></span>
+<span class='title'><?php echo xlt('Report: Sales by Item'); ?></span>
 
 <form method='post' action='sales_by_item.php' id='theform'>
 

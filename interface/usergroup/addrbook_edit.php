@@ -1,7 +1,7 @@
 <?php
 /*
  *  addrbook_edit.php for the editing of the address book information
- *
+ * UI TRANSLATION ISSUES
  * Copyright (C) 2016-2018 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2006-2010 Rod Roark <rod@sunsetsystems.com>
  *

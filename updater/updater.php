@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 /**
  * Contains all updater functions
  *
- *
+ * UI TRANSLATION ISSUES:  Mostly English baseline text issues.  For validation, attempt to substitute another language for the english text.
  * Copyright (C) 2018 Naveen Muthusamy <kmnaveen101@gmail.com>
  *
  * This program is distributed in the hope that it will be useful,

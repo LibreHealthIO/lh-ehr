@@ -1,7 +1,9 @@
 <?php
  /*
  * Add Edit Event User for Patient Portal (add_edit_event_user.php)
- *
+ * UI TRANSLATION ISSUES : AM/PM in translations not compatible with 
+ * 24 hour time convention, such as is used in many nations, and in ALL PROFESSIONAL SETTINGS
+ * where timekeeping is a critical factor.
  * (Adapted from the Add Edit Event written by Rod Roark <rod@sunsetsystems.com>)
  *
  * This program is used to enter provider , comments, and search for un-used  
@@ -644,8 +646,8 @@ if (!is_array($_POST['form_provider'])) {
   <input class="form-control inline" type='text' size='2' name='form_minute' value='<?php if(isset($eid)) { echo attr($starttimem); } ?>'
     title='<?php echo xla('Event start time'); ?>' readonly/>&nbsp;
    <select class="form-control" name='form_ampm' title='<?php echo xla('Note: 12:00 noon is PM, not AM'); ?>' >
-    <option value='1'><?php echo xlt('AM'); ?></option>
-    <option value='2'<?php if ($startampm == '2') echo " selected" ?>><?php echo xlt('PM'); ?></option>
+    <option value='1'><?php echo xlt('A.M.'); ?></option>
+    <option value='2'<?php if ($startampm == '2') echo " selected" ?>><?php echo xlt('P.M.'); ?></option>
    </select>
   </td>
  </tr>

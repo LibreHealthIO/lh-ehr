@@ -338,7 +338,7 @@ if ($_POST['form_refresh'] || $_POST['form_orderby']) {
         $_SESSION['pidList'] = $pid_list;
     ?>
     <tr>
-        <td colspan="10" align="left"><?php echo xlt('Total number of appointments'); ?>:&nbsp;<?php echo text($totalAppontments);?></td>
+        <td colspan="10" align="left"><?php echo xlt('Total number of appointments:'); ?>&nbsp;<?php echo text($totalAppontments);?></td>
     </tr>
     </tbody>
 </table>

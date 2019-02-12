@@ -88,7 +88,7 @@ $fake_register_globals=false;
     echo $d->get_url_file();
   }
   else if ($orderid) {
-    echo " " . xlt("linked to procedure order") . " $orderid";
+    echo " " . xlt("linked to procedure order #") . " $orderid";
   }
 ?>
 </span>

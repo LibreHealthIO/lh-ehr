@@ -1,7 +1,7 @@
 <?php
 /**
  * Ajax Handler for Register
- *
+ * UI TRANSLATION ISSUES due to string concatenation.
  * @package LibreHealth EHR
  * @link    http://librehealth.io
  * @author  Jerry Padgett <sjpadgett@gmail.com>

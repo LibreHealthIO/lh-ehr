@@ -191,7 +191,7 @@ $(document).ready(function(){
                         <div class="panel-footer"></div>
                     </div>
                     <div class="panel panel-primary">
-                        <header class="panel-heading"><?php echo xlt(' Amendment List'); ?> </header>
+                        <header class="panel-heading"><?php echo xlt('Amendment List'); ?> </header>
                         <div id="amendmentslist" class="panel-body"></div>
 
                         <div class="panel-footer"></div>

@@ -265,12 +265,9 @@ if ($s) {
   if ($matchreqs || $errors) {
     echo "<p class='bold' style='color:#008800'>";
     if ($matchreqs) {
-      echo xlt('Click where indicated above to match the patient.') . ' ';
-      echo xlt('After that the Match column will show the selected patient ID, or 0 to create.') . ' ';
-      echo xlt('If you do not select a match the patient will be created.') . ' ';
+      echo xlt('Click where indicated above to match the patient.  After that the Match column will show the selected patient ID, or 0 to create. If you do not select a match the patient will be created.') . ' ';
     }
-    echo xlt('Checkboxes above indicate if you want to reject and delete the HL7 file.') . ' ';
-    echo xlt('When done, click Submit (below) to apply your choices.');
+    echo xlt('Checkboxes above indicate if you want to reject and delete the HL7 file.  When done, click Submit (below) to apply your choices.');
     echo "</p>\n";
   }
 }
@@ -315,11 +312,11 @@ $form_provider = empty($_POST['form_provider']) ? '' : intval($_POST['form_provi
 <table width='100%'>
  <tr>
   <td class='text' align='center'>
-   &nbsp;<?php echo xlt('From'); ?>:
+   &nbsp;<?php echo xlt('From Date'); ?>:
    <input type='text' size='12' name='form_from_date' id='form_from_date'
     value='<?php echo attr($form_from_date); ?>'/>
 
-   &nbsp;<?php echo xlt('To'); ?>:
+   &nbsp;<?php echo xlt('To Date'); ?>:
    <input type='text' size='12' name='form_to_date' id='form_to_date'
     value='<?php echo attr($form_to_date); ?>'/>
 
@@ -374,7 +371,7 @@ foreach (array(
   <td><?php echo xlt('Description'); ?></td>
   <td><?php echo xlt('Date'       ); ?></td>
   <td><?php echo xlt('Status'     ); ?></td>
-  <!-- <td><?php echo xlt('Reviewed'   ); ?></td> -->
+  <!-- <td><?php echo xlt('Reviewed'); ?></td> -->
  </tr>
 
 <?php 

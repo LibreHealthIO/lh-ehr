@@ -3,7 +3,7 @@
 // Copyright (C) 2005-2006 Rod Roark <rod@sunsetsystems.com>
 // Copyright (C) 2016       Raymond Magauran <magauran@medfetch.com>
 // Copyright (C) 2015-2018  Terry Hill <teryhill@librehealth.io>
-//
+// UI TRANSLATION ISSUES due to syntax mixing and concatenation.
 // Windows compatibility mods 2009 Bill Cernansky [mi-squared.com]
 //
 // This program is free software; you can redistribute it and/or

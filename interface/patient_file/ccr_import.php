@@ -51,22 +51,22 @@ require_once("$srcdir/headers.inc.php");
           <table class="table table-bordered table-hover" style="width:85%;font-size:14px;">
               <tr>
                   <td>
-                      <?php echo xlt('1. To upload CCR document of already existing patient use Patient Summary Screen->Documents. For CCR document of a new patient use Miscellanous->New Documents screen').'.'; ?>
+                      <?php echo xlt('1. To upload CCR document of already existing patient use Patient Summary Screen->Documents. For CCR document of a new patient use Miscellanous->New Documents screen.'); ?>
                   </td>
               </tr>
               <tr>
                   <td>
-                      <?php echo xlt('2. Upload the xml file under the category CCR').'.'; ?>
+                      <?php echo xlt('2. Upload the xml file under the category CCR'.); ?>
                   </td>
               </tr>
               <tr>
                   <td>
-                      <?php echo xlt('3. After Uploading click the button "Import"').'.'; ?>
+                      <?php echo xlt('3. After Uploading click the button "Import"'.); ?>
                   </td>
               </tr>
               <tr>
                   <td>
-                      <?php echo xlt('4. Approve the patient from Patient/Client->Import->Pending Approval').'.'; ?>
+                      <?php echo xlt('4. Approve the patient from Patient/Client->Import->Pending Approval.'); ?>
                   </td>
               </tr>
           </table>

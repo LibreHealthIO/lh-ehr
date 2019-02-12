@@ -1,7 +1,7 @@
 <?php
 /**
  * Edit Globals
- *
+ * UI TRANSLATION ISSUES : Translation of variables holding user configured values.
  * This program allows the editing of the system Globals
  *
  * @copyright Copyright (C) 2016-2017 Terry Hill <teryhill@librehealth.io>

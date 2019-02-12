@@ -233,7 +233,7 @@ $(document).ready(function(){
  if (count($result2)<=0)
   {?>
   <tr height="25">
-        <td colspan="3"> <?php echo xlt( "Currently there are no facilities." ); ?></td>
+        <td colspan="3"> <?php echo xlt("Currently there are no facilities."); ?></td>
     </tr>
   <?php }
 ?>

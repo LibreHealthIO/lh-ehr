@@ -376,7 +376,7 @@ function  risk_name($risk_code){
   switch($risk_code)
   {
     case 'vv':
-      return xlt("Varicode Veins");
+      return xlt("Varicose Veins");
 
     case 'ht':
       return xlt("Hypertension");

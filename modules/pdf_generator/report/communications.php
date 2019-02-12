@@ -3,7 +3,7 @@
  * The purpose of this code is to get the patient communication data
  * in a formatted manner and store it in a single variable $content_comu.
  * The content of this variable will be printed in the PDF if required.
- *
+ * UI TRANSLATION ISSUES due to concatenation of strings.
  *
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
  * See the Mozilla Public License for more details.

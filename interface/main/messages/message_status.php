@@ -2,6 +2,7 @@
 /**
  * message_status.php - generate contents for pop-up messenger.
  *
+ * This file has UI TRANSLATION ISSUES and must be reformatted.
  * This file is included as an invisible iframe by forms that want to be
  * notified when a new message for the user comes in.
  *
@@ -18,6 +19,7 @@
  * @author  Tony McCormick <tony@mi-squared.com>
  * @author  Terry Hill <teryhill@librehealth.io>
  * @link    http://librehealth.io
+ *
  *
  * This file is included as an invisible iframe by forms that want to be
  * notified when a new message for the user comes in.
@@ -52,14 +54,14 @@ require_once($GLOBALS['srcdir'] . '/dated_reminder_functions.php');
             // generate notice if the user has pending (unread) messages or reminders.
             $total = getPnotesByUser(true, false, $_SESSION['authUser'], true);
             $total += GetAllReminderCount();
-            if ($total > 0) {
+            if ($total > 0) {  //Translation Issue
                 echo '<div id="notice' . $notices . '"><div class="sticky"></div><div class="colour">blue</div><div class="title">' . xlt('Notice') . '</div><div class="text">' . xlt('You have') . ' ' . $total . ' ' . xlt('active notes and reminders' . (($total > 1) ? 's' : '')) . '.</div></div>';
                 $notices++;
             }
         }
         // generate warning if user has overdue reminders.
         $total = GetDueReminderCount(0, strtotime(date('Y/m/d')));
-        if ($total > 0) {
+        if ($total > 0) {//Translation Issue
             echo '<div id="notice' . $notices . '"><div class="sticky">1</div><div class="UUID">OVERDUEWARN1</div><div class="colour">red</div><div class="title">' . xlt('WARNING') . '</div><div class="text">' . xlt('You have') . ' ' . $total . ' ' . xlt('overdue reminder' . (($total > 1) ? 's' : '')) . '.</div></div>';
             $notices++;
         }

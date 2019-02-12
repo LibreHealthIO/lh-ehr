@@ -217,7 +217,7 @@ if (is_dir($mainPATH)) {
         <?php
         } else {
                 ?>
-            <div class="error_msg"><?php echo xlt("UNSUPPORTED database load file"); ?>: <BR><?php echo text(basename($file)) ?><span class="msg" id="<?php echo attr($db); ?>_unsupportedmsg">!</span></div>
+            <div class="error_msg"><?php echo xlt("UNSUPPORTED database load file."); ?>: <BR><?php echo text(basename($file)) ?><span class="msg" id="<?php echo attr($db); ?>_unsupportedmsg">!</span></div>
         <?php
         }
         }

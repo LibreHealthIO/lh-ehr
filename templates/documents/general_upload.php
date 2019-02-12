@@ -3,8 +3,7 @@
 
 <?php if(!($patient_id > 0)) { ?>
 <div class="text" style="color:red;">
-    <?php echo xlt(" IMPORTANT").":".xlt(" This upload tool is only for uploading documents on patients that are not yet entered into the system").".".xlt("
-        To upload files for patients whom already have been entered into the system").",".xlt(" please use the upload tool linked within the Patient Summary screen");?>
+    <?php echo xlt("IMPORTANT:  This upload tool is only for uploading documents on patients that are not yet entered into the system. To upload files for patients whom already have been entered into the system, please use the upload tool linked within the Patient Summary screen.");?>
    
     <br/>
     <br/>
@@ -12,8 +11,7 @@
 <?php } ?>
 
 <div class="text">
-   <?php echo xlt(" NOTE").":".xlt(" Uploading files with duplicate names will cause the files to be automatically renamed ")."(".xlt("for example").",".xlt(" file").".".xlt("jpg will become file").".".xlt("1").".".xlt("jpg").")". 
-    xlt("Filenames are considered unique per patient not per category");?>
+   <?php echo xlt("NOTE: If this patient already has a file with the same name, a number will be added to the new file name.");?>
     <br/>
     <br/>
 </div>

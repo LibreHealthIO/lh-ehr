@@ -1,7 +1,7 @@
 <?php
 /**
  * Add or edit an event in the calendar.
- *
+ * UI TRANSLATION ISSUES :  Concatenated strings that do not allow for alternate language syntax.
  * Can be displayed as a popup window, or as an iframe via
  * fancybox.
  *

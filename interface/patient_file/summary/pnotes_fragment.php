@@ -206,14 +206,14 @@ $fake_register_globals=false;
             <?php echo xlt( "There are no notes on file for this patient.");
                   echo " ";
               echo "<a href='pnotes_full.php' onclick='top.restoreSession()'>";
-              echo xlt("To add notes, please click here");
-              echo "</a>."; ?>
+              echo xlt("To add notes, please click here.");
+              echo "</a>"; ?>
         </span>
     <?php } else {
         ?>
         <br/>
         <span class='text'>
-        <?php echo xlt('Displaying the following number of most recent notes').":"; ?> 
+        <?php echo xlt('Displaying the following number of most recent notes:'); ?> 
         <b><?php echo attr($totalRecords);?></b><br>
         <a href='pnotes_full.php?s=1' onclick='top.restoreSession()'><?php echo xlt('Click here to view them all.'); ?></a>
         </span>

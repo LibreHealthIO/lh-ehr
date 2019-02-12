@@ -35,19 +35,19 @@
                 <input type="text" class="form-control" size="20" name="name" value="<?php echo $this->partner->get_name(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("ID")."&nbsp;".xlt("Number")."&nbsp;".xlt("ETIN");?></td>
+            <td><?php echo xlt("ID Number (ETIN)");?></td>
             <td><input type="text" class="form-control" size="20" name="id_number" value="<?php echo $this->partner->get_id_number(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("User logon Required Indicator ")."(".xlt("ISA01")."~".xlt("use 00 or 03");?></td>
+            <td><?php echo xlt("User logon Required Indicator (ISA01) ~use 00 or 03");?></td>
             <td><input type="text" class="form-control" size="2" name="x12_isa01" value="<?php echo $this->partner->get_x12_isa01(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("User Logon ")."(".xlt("If 03 above").",".xlt(" else leave spaces")." (".xlt("ISA02").")";?></td>
+            <td><?php echo xlt("User Logon (ISA 02) Enter if ISA01 = 03, else leave the spaces provided by default";?></td>
             <td><input type="text" class="form-control" size="20" name="x12_isa02" value="<?php echo $this->partner->get_x12_isa02(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("User password required Indicator ")."(".xlt("ISA03")."~".xlt(" use 00 or 01").")";?></td>
+            <td><?php echo xlt("User password required Indicator (ISA03)~ Use 00 or 01)";?></td>
             <td><input type="text" class="form-control" size="2" name="x12_isa03" value="<?php echo $this->partner->get_x12_isa03(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>

@@ -118,9 +118,9 @@ function sel_patient() {
   <tr>
     <td>
       <?php if($type_form == '0') { ?>
-        <span class='title' id='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Ledger by Date'); ?></span>
+        <span class='title' id='title'><?php echo xlt('REPORT - Patient Ledger by Date'); ?></span>
       <?php }else{ ?>
-        <span class='title' id='title'><?php echo xlt('Patient Ledger'); ?></span>
+        <span class='title' id='title'><?php echo xlt('REPORT - Patient Ledger'); ?></span>
       <?php } ?>
     </td>
     <td>

@@ -97,10 +97,10 @@ class Encounter_Controller extends Abstract_Controller
                 $message = xlt( "Form signed successfully" );
                 $status = self::STATUS_SUCCESS;
             } else {
-                $message = xlt( "An error occured signing the form" );
+                $message = xlt( "An error occurred signing the form." );
             }
         } else {
-            $message = xlt( "The passphrase you entered is invalid" );
+            $message = xlt( "The passphrase you entered is invalid." );
         }
         $response = new Response( $status, $message );
         $response->encounterId = $encounterId;

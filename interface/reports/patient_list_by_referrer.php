@@ -82,7 +82,7 @@ $(document).ready(function() {
 <!-- Required for the popup date selectors 
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>-->
 
-<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient List By Referrer'); ?></span>
+<span class='title'><?php echo xlt('Report: Patient List By Referrer'); ?></span>
 
 <?php reportParametersDaterange(); #TRK ?>
 

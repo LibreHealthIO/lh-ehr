@@ -1041,7 +1041,7 @@ background:#fff;
                         <h4 class="modal-title"><?php echo xlt('Chat history'); ?></h4>
                     </div>
                     <div class="modal-body">
-                        <label class="radio"><?php echo xlt('Are you sure to clear chat history?'); ?></label>
+                        <label class="radio"><?php echo xlt('Are you sure you want to clear chat history?'); ?></label>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><?php echo xlt('Cancel'); ?></button>

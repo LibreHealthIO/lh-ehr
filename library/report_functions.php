@@ -93,7 +93,7 @@ function dropDownPayors() {
  */
 function showFromAndToDates() {
     echo "<td class='label'>";
-    echo xlt('From');
+    echo xlt('Date From');
     echo ":
         </td>
          <td>
@@ -102,7 +102,7 @@ function showFromAndToDates() {
     echo "' />
          </td>
          <td class='label'> ";
-    echo xlt('To');
+    echo xlt('Date To');
     echo ":
          </td>
          <td>
@@ -122,10 +122,10 @@ function showPatientAgeRange() {
         echo xlt('Age');
     echo ":</td>
     <td>";
-        echo xlt('From');
+        echo xlt('Age From');
             echo "<input name='age_from' class='numeric_only' type='text' id='age_from' value='";echo attr($age_from);
             echo "' size='3' maxlength='3'/>";
-        echo xlt('To{{range}}');
+        echo xlt('Age To{{range}}');
             echo "<input name='age_to' class='numeric_only' type='text' id='age_to' value='";echo attr($age_to);
             echo "' size='3' maxlength='3'/>
     </td>";

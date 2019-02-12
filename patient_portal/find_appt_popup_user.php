@@ -4,7 +4,7 @@
  * Copyright (C) 2016-2017 Jerry Padgett <sjpadgett@gmail.com>
  * Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
  * Copyright (C) 2005-2006, 2013 Rod Roark <rod@sunsetsystems.com>
- *
+ * UI TRANSLATION ISSUES in date/day selection criteria.  xlt('for') as an example.
  * This program is used to find un-used appointments in the Patient Portal, 
  * allowing the patient to select there own appointment.
  * LICENSE: This program is free software; you can redistribute it and/or
