@@ -43,18 +43,18 @@
             <td><input type="text" class="form-control" size="2" name="x12_isa01" value="<?php echo $this->partner->get_x12_isa01(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("User Logon (ISA 02) Enter if ISA01 = 03, else leave the spaces provided by default";?></td>
+            <td><?php echo xlt("User Logon (ISA 02) Enter if ISA01 = 03, else leave the spaces provided by default");?></td>
             <td><input type="text" class="form-control" size="20" name="x12_isa02" value="<?php echo $this->partner->get_x12_isa02(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("User password required Indicator (ISA03)~ Use 00 or 01)";?></td>
+            <td><?php echo xlt("User password required Indicator (ISA03)~ Use 00 or 01");?></td>
             <td><input type="text" class="form-control" size="2" name="x12_isa03" value="<?php echo $this->partner->get_x12_isa03(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("User Password ")."(".xlt("ISA04")."~".xlt(" if 01 above").",".xlt(" else leave spaces").")";?></td>
+            <td><?php echo xlt("User Password (ISA04)~ if 01 above, else leave spaces.");?></td>
             <td><input type="text" class="form-control" size="20" name="x12_isa04" value="<?php $this->partner->get_x12_isa04(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
-        <td><?php echo xlt("Sender ID Qualifier ")."(".xlt("ISA05").")";?></td>
+        <td><?php echo xlt("Sender ID Qualifier (ISA05)");?></td>
         <td>
             <!-- {html_options name="x12_isa05" options=$partner->get_idqual_array() selected=$partner->get_x12_isa05()} -->
             <select class="form-control" name="x12_isa05">
@@ -72,11 +72,11 @@
         </td>
         </tr>
         <tr>
-            <td><?php echo xlt("Sender ID ").'('.xlt("ISA06").")";?></td>
+            <td><?php echo xlt("Sender ID (ISA06)");?></td>
             <td><input type="text" class="form-control" size="20" name="x12_sender_id" value="<?php $this->partner->get_x12_sender_id(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("Receiver ID Qualifier ")."(".xlt("ISA07").")";?></td>
+            <td><?php echo xlt("Receiver ID Qualifier (ISA07)");?></td>
             <td>
                 <!--{html_options name="x12_isa07" options=$partner->get_idqual_array() selected=$partner->get_x12_isa07()}</td>-->
                 <select class="form-control" name="x12_isa07">
@@ -93,12 +93,12 @@
                 </select>
         </tr>
         <tr>
-            <td><?php echo xlt("Receiver ID ")."(".xlt("ISA08").")";?></td>
+            <td><?php echo xlt("Receiver ID (ISA08)");?></td>
             <td><input type="text" class="form-control" size="20" name="x12_receiver_id" 
                                                     value="<?php $this->partner->get_x12_receiver_id(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
-            <td><?php echo xlt("Acknowledgment Requested ")."(".xlt("ISA14").")";?></td>
+            <td><?php echo xlt("Acknowledgment Requested (ISA14)");?></td>
             <td>
                 <!--{html_options name="x12_isa14" options=$partner->get_x12_isa14_array() selected=$partner->get_x12_isa14()}</td>-->
                 <select class="form-control" name="x12_isa14">
@@ -115,7 +115,7 @@
                 </select>            
         </tr>
         <tr>
-            <td><?php echo xlt("Usage Indicator ")."(".xlt("ISA15").")";?></td>
+            <td><?php echo xlt("Usage Indicator (ISA15)");?></td>
             <td>
                 <!--{html_options name="x12_isa15" options=$partner->get_x12_isa15_array() selected=$partner->get_x12_isa15()}</td>-->
                 <select class="form-control" name="x12_isa15">
@@ -132,7 +132,7 @@
                 </select>
         </tr>
         <tr>
-            <td><?php echo xlt("Application Sender Code ")."(".xlt("GS02").")";?></td>
+            <td><?php echo xlt("Application Sender Code (GS02)");?></td>
             <td><input type="text" class="form-control" size="20" name="x12_gs02" value="<?php $this->partner->get_x12_gs02(); ?>" onKeyDown="PreventIt(event)" /></td>
         </tr>
         <tr>
