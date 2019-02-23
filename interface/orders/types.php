@@ -78,7 +78,6 @@ window.close(); // comment out for debugging
   tr.oddrow {
   background-color:#ffffff;
   }
-
   a:visited {
     color: white !important;
   }
@@ -205,6 +204,16 @@ $(document).on('click', '.trigger', function (event) {
     $("#modal-iframe").iziModal('open');
 });
 
+// Close Functions for the find-procedure popup
+function closeModal() {
+    parent.$('#modal-iframe').iziModal('close');
+    parent.location.reload();
+}
+
+$("#close").click(function() {
+    closeModal();
+  });
+
 // add a node
 // function anode(id) {
 //  dlgopen('types_edit.php?typeid=0&parent=' + id, '_blank', 700, 550);
@@ -219,7 +228,6 @@ function recolor() {
   this.className = (i++ & 1) ? "evenrow" : "oddrow";
  });
 }
-
 </script>
 
 </head>
@@ -252,14 +260,13 @@ function recolor() {
   
     <p>
     <?php if ($popup) { ?>
-    <button type='submit' name='form_save' class="btn btn-primary"><?php xl('Save','e'); ?></button>
+    <button type='submit' name='form_save' class="btn btn-primary"><?php xl('Refresh','e'); ?></button>
     &nbsp;
-    <button type='button' onclick='window.close()' class="btn btn-danger"> <?php xl('Cancel','e'); ?></button>
+    <button id="close" type='button' onclick='closeModal()' class="btn btn-danger"> <?php xl('Cancel','e'); ?></button>
     &nbsp;
     <?php } ?>
     <a href="types_edit.php?typeid=0&parent=0"  class="trigger btn btn-primary"><?php xl('Add Top Level','e'); ?></a>
-    </p>
-
+    </p>  
     </form>
 
   </div>
