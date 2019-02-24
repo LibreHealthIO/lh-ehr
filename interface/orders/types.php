@@ -192,7 +192,8 @@ $(document).on('click', '.trigger', function (event) {
     console.log(event.target.href);
     $("#modal-iframe").iziModal({
     title: 'Add procedure',
-    subtitle: 'Fill in procedure', headerColor: '#88A0B9',
+    subtitle: 'Fill in procedure',
+    headerColor: '#88A0B9',
     iframe: true,
     iframeHeight: 500,
     width: 550,

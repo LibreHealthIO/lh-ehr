@@ -231,7 +231,8 @@ function sel_proc_type(varname) {
     console.log(event.target.href);
     $("#modal-iframe").iziModal({
     title: 'Find procedure',
-    subtitle: 'Select procedure from the table below', headerColor: '#88A0B9',
+    subtitle: 'Select procedure from the table below',
+    headerColor: '#88A0B9',
     iframe: true,
     iframeHeight: 500,
     width: 700,
