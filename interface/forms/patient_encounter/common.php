@@ -167,9 +167,7 @@ function cancelClicked() {
  <div class="row">
   <div class="col-xs-12 col-sm-4 col-lg-4 ">
     <?php echo xlt('Consultation Brief Description'); ?>:
-    <textarea class="form-control input-sm" style="resize:none" name='reason' cols='40' rows='12' wrap='virtual'>
-      <?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?>
-    </textarea>
+    <textarea class="form-control input-sm" style="resize:none" name='reason' cols='40' rows='12' wrap='virtual'><?php echo $viewmode ? text($result['reason']) : text($GLOBALS['default_chief_complaint']); ?></textarea>
     <hr>  
   </div>
   <div class="col-xs-12 col-sm-4 col-lg-4 ">
