@@ -165,22 +165,6 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
           ?>
         </font></td>
       </tr>
-      <tr height="20">
-        <td align="left" width="5" ></td>
-        <td align="left" width="110" ></td>
-        <td align="left" width="128"></td>
-        <td align="left" width="25"></td>
-        <td align="left" width="5"></td>
-        <td align="left" width="85"></td>
-        <td align="left" width="128"></td>
-        <td align="left" width="25"></td>
-        <td align="left" width="5"></td>
-        <td align="left" width="113"></td>
-        <td align="left" width="125"></td>
-        <td align="left" width="5"></td>
-        <td align="left" width="93"></td>
-        <td align="left" width="152"></td>
-        </tr>
       <tr>
         <td align="left" class='text'></td>
         <td align="left" class='text'><?php echo htmlspecialchars( xl('Date'), ENT_QUOTES).':' ?></td>
@@ -189,26 +173,27 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
                    value="<?php echo htmlspecialchars(oeFormatShortDate($CheckDate));?>"/>
         </td>
         <td>
-       <script>
+        <script>
                $(function() {
                    $("#check_date").datetimepicker({
                        timepicker: false,
                        format: "<?= $DateFormat; ?>"
                    });
                });
-           </script>
+        </script>
         </td>
         <td></td>
         <td align="left" class='text'><?php echo htmlspecialchars( xl('Post To Date'), ENT_QUOTES).':' ?></td>
-        <td align="left" class="text"><input type='text' size='9' name='post_to_date' id='post_to_date' class="class1 text "   value="<?php echo $screen=='new_payment'?htmlspecialchars(oeFormatShortDate(date('Y-m-d'))):htmlspecialchars(oeFormatShortDate($PostToDate));?>"/></td>
-       <script>
+        <td align="left" class="text"><input type='text' size='9' name='post_to_date' id='post_to_date' class="class1 text " value="<?php echo $screen=='new_payment'?htmlspecialchars(oeFormatShortDate(date('Y-m-d'))):htmlspecialchars(oeFormatShortDate($PostToDate));?>"/></td>
+        <td>
+        <script>
                $(function() {
                    $("#post_to_date").datetimepicker({
                        timepicker: false,
                        format: "<?= $DateFormat; ?>"
                    });
                });
-           </script>
+        </script>
         </td>
         <td></td>
         <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment Method'), ENT_QUOTES).':' ?></td>
@@ -237,7 +222,7 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
          }
         ?>
         <input type="text" name="check_number"  style="width:140px;<?php echo $CheckDisplay;?>"  autocomplete="off"  value="<?php echo htmlspecialchars($CheckNumber);?>"  onKeyUp="ConvertToUpperCase(this)"  id="check_number"  class="text "   />
-        <div  id="div_check_number" class="text"  style="border:1px solid black; width:140px;<?php echo $CheckDivDisplay;?>">&nbsp;</div>
+        <div  id="div_check_number" class="text"  style="width:140px;<?php echo $CheckDivDisplay;?>">&nbsp;</div>
        </td>
        </tr>
       <tr height="1">
@@ -270,9 +255,9 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
             "Payment Category","$blankValue","class1 text",'FilterSelection(this)',"$PaymentType","$screen");
             ?>
        </td>
-        <td align="left" ></td>
-        <td align="left" ></td>
-        <td align="left" ></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
         </tr>
       <tr height="1">
         <td colspan="14" align="left" ></td>
@@ -280,19 +265,22 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
       <tr>
         <td align="left" class="text"></td>
         <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment From'), ENT_QUOTES).':' ?></td>
-        <td align="left" colspan="5"><input type="hidden" id="hidden_ajax_close_value" value="<?php echo htmlspecialchars($div_after_save);?>" /><input name='type_code'  id='type_code' class="text "  style="width:369px"   onKeyDown="PreventIt(event)"  value="<?php echo htmlspecialchars($div_after_save);?>"  autocomplete="off"   /><br>
+        <td align="left" colspan="5"><input type="hidden" id="hidden_ajax_close_value" value="<?php echo htmlspecialchars($div_after_save);?>" /><input name='type_code' id='type_code' class="text" style="width:369px; border:1px solid #444444" onKeyDown="PreventIt(event)" value="<?php echo htmlspecialchars($div_after_save);?>" autocomplete="off" />
         <!-- onKeyUp="ajaxFunction(event,'non','edit_payment.php');" -->
          <div id='ajax_div_insurance_section'>
           <div id='ajax_div_insurance_error'>
           </div>
-          <div id="ajax_div_insurance" style="display:none;"></div>
+          <div id="ajax_div_insurance" style="display:none;">
           </div>
-         </div>
-                </td>
-        <td align="left" colspan="5"><div  name="div_insurance_or_patient" id="div_insurance_or_patient" class="text"  style="border:1px solid black; padding-left:5px; width:55px; height:17px;"><?php echo htmlspecialchars($TypeCode);?></div></td>
+        </div>
+        </td>
+        <td align="left" colspan="5"><div name="div_insurance_or_patient" id="div_insurance_or_patient" class="text"  style="margin-left:5px; width:55px; height:17px;"><?php echo htmlspecialchars($TypeCode);?></div></td>
         <td align="left" ></td>
         <td align="left" ></td>
-        </tr>
+      </tr>
+      <tr height="1">
+        <td colspan="14" align="left" ></td>
+      </tr>
       <tr>
         <td align="left" class='text'></td>
         <td align="left" class='text'><?php echo htmlspecialchars( xl('Deposit Date'), ENT_QUOTES).':' ?></td>
@@ -315,8 +303,8 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
         <td align="left" class="text"><?php echo htmlspecialchars( xl('Description'), ENT_QUOTES).':' ?></td>
         <td colspan="6" align="left"><input type="text" name="description"  id="description"   onKeyDown="PreventIt(event)"   value="<?php echo htmlspecialchars($Description);?>"   style="width:396px" class="text "   /></td>
         <td align="left" class="text"><font  style="font-size:11px"><?php echo htmlspecialchars( xl('UNDISTRIBUTED'), ENT_QUOTES).':' ?></font><input name="HidUnappliedAmount" id="HidUnappliedAmount"  value="<?php echo ($UndistributedAmount*1==0)? htmlspecialchars("0.00") : htmlspecialchars(number_format($UndistributedAmount,2,'.',','));?>" type="hidden"/><input name="HidUnpostedAmount" id="HidUnpostedAmount"  value="<?php echo htmlspecialchars($UndistributedAmount); ?>" type="hidden"/><input name="HidCurrentPostedAmount" id="HidCurrentPostedAmount"  value="" type="hidden"/></td>
-        <td align="left" class="text"><div  id="TdUnappliedAmount" class="text"  style="border:1px solid black; width:75px; background-color:#EC7676; padding-left:5px;"><?php echo ($UndistributedAmount*1==0)? htmlspecialchars("0.00") : htmlspecialchars(number_format($UndistributedAmount,2,'.',','));?></div></td>
-        </tr>
+        <td align="left" class="text"><div id="TdUnappliedAmount" class="text" style="border:1px solid black; width:75px; background-color:#EC7676; padding-left:5px;"><?php echo ($UndistributedAmount*1==0)? htmlspecialchars("0.00") : htmlspecialchars(number_format($UndistributedAmount,2,'.',','));?></div></td>
+      </tr>
     <?php
     if($screen=='new_payment')
      {
@@ -325,13 +313,13 @@ if(($screen=='new_payment' && $payment_id*1==0) || ($screen=='edit_payment' && $
         <td colspan="14" align="center" class="text" id="TdContainingButtons">
         <table border="0" cellspacing="0" cellpadding="0" width="280">
           <tr height="5">
-            <td ></td>
+            <td></td>
             <td></td>
             <td></td>
           </tr>
           <tr>
-            <td width="100"><a href="#" onClick="javascript:return SavePayment();" class="css_button"><span><?php echo htmlspecialchars( xl('Save Changes'), ENT_QUOTES);?></span></a></td>
-            <td width="110"><a href="#" onClick="javascript:ResetForm()" class="css_button"><span><?php echo htmlspecialchars( xl('Cancel Changes'), ENT_QUOTES);?></span></a></td>
+            <td width="100"><a href="#" onClick="javascript:return SavePayment();" class="css_button"><span><?php echo htmlspecialchars( xl('Save'), ENT_QUOTES);?></span></a></td>
+            <td width="110"><a href="#" onClick="javascript:ResetForm()" class="css_button"><span><?php echo htmlspecialchars( xl('Cancel'), ENT_QUOTES);?></span></a></td>
             <td width="70"><a href="#" class="css_button" onClick="javascript:OpenEOBEntry();"><span><?php echo htmlspecialchars( xl('Allocate'), ENT_QUOTES);?></span></a></td>
           </tr>
         </table>        </td>
@@ -430,14 +418,14 @@ if($screen=='new_payment' && $payment_id*1>0)
                   <tr>
                     <td align="left" class="text"></td>
                     <td align="left" class="text"><?php echo htmlspecialchars( xl('Payment From'), ENT_QUOTES).':' ?></td>
-                    <td colspan="4" align="left" class="text bottom left top right"><div  name="div_insurance_or_patient" id="div_insurance_or_patient" class="text"  >&nbsp;<?php echo htmlspecialchars($div_after_save);?>&nbsp;</div></td>
+                    <td colspan="4" align="left" class="text bottom left top right"><div name="div_insurance_or_patient" id="div_insurance_or_patient" class="text">&nbsp;<?php echo htmlspecialchars($div_after_save);?>&nbsp;</div></td>
                     <td align="left"></td>
-                    <td align="left" ><div  name="div_insurance_or_patient" id="div_insurance_or_patient" class="text"  style="border:1px solid black; padding-left:5px; width:55px"><?php echo htmlspecialchars($TypeCode);?></div><input type="hidden" name="type_code" value="<?php echo htmlspecialchars($TypeCode);?>"/></td>
-                    <td align="left" ></td>
-                    <td align="left" ></td>
-                    <td align="left" ></td>
-                    <td align="left" ></td>
-                    <td align="left" ></td>
+                    <td align="left" ><div name="div_insurance_or_patient" id="div_insurance_or_patient" class="text" style="margin-left:5px; width:55px"><?php echo htmlspecialchars($TypeCode);?></div><input type="hidden" name="type_code" value="<?php echo htmlspecialchars($TypeCode);?>"/></td>
+                    <td align="left"></td>
+                    <td align="left"></td>
+                    <td align="left"></td>
+                    <td align="left"></td>
+                    <td align="left"></td>
                   </tr>
                   <tr height="1">
                     <td colspan="13" align="left" ></td>
