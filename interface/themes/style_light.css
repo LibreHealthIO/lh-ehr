@@ -759,10 +759,11 @@ ul.tabNav li {
 }
 ul.tabNav li.current a {
   background: #ffffff;
+  font-weight: bold;
   color: #2672ec;
 }
 ul.tabNav a {
-  color: #ffffff;
+  color: #2672ec;
   display: block;
   padding: 8px 17px;
   text-decoration: none;

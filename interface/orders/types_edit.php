@@ -419,7 +419,7 @@ if ($typeid) {
 <?php } ?>
 
 &nbsp;
-<input type='button'  class='btn btn-danger' value='<?php echo xla('Cancel'); ?>' id="close" />
+<input id="close" type='button'  class='btn btn-danger' value='<?php echo xla('Cancel'); ?>' />
 </p>
 
 </center>

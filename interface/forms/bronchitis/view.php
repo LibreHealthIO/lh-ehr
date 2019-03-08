@@ -21,7 +21,7 @@ $obj = formFetch("form_bronchitis", $_GET["id"]);
  onclick="top.restoreSession()">[<?php xl('Don\'t Save Changes','e'); ?>]</a>
 <br></br>
 
-<span class=text><?php xl('Onset of Ilness: ','e'); ?></span><input type=entry name="bronchitis_date_of_illness" value="<?php echo stripslashes($obj{"bronchitis_date_of_illness"});?>" ><br></br>
+<span class=text><?php xl('Onset of Illness: ','e'); ?></span><input type=entry name="bronchitis_date_of_illness" value="<?php echo stripslashes($obj{"bronchitis_date_of_illness"});?>" ><br></br>
 
 <span class=text><?php xl('HPI:','e'); ?> </span><br><textarea cols=67 rows=8 wrap=virtual name="bronchitis_hpi" ><?php echo stripslashes($obj{"bronchitis_hpi"});?></textarea><br></br>
 

@@ -160,9 +160,7 @@ $(document).ready(function(){
         iframeHeight: 350,
         iframeURL: "facility_admin.php?fid=" + link,
         onClosed: function () {
-          setTimeout(function () {
-            parent.$(".tab-refresh-icon").click();
-          }, 300);
+         location.reload();
         }
       });
 

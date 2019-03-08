@@ -19,8 +19,8 @@ $sanitize_all_escapes=true;
 $fake_register_globals=false;
 //
 
-require_once(dirname(__FILE__) . "/../../interface/globals.php");
-require_once($GLOBALS['srcdir'] . "/openflashchart/php-ofc-library/open-flash-chart.php");
+require_once("../../interface/globals.php");
+require_once($modules_dir. "/openflashchart/php-ofc-library/open-flash-chart.php");
 require_once($GLOBALS['srcdir'] . "/formdata.inc.php");
 
 // get $_POSTed data

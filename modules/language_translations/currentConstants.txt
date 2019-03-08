@@ -26,7 +26,7 @@ a.m.
 A/F Level Right:
 AB
 Abbreviation
-Abcess:
+Abscess:
 Abdominal
 Able to Bear Weight four (4) steps:
 Abn
@@ -154,7 +154,7 @@ Add/Edit Patient Transaction
 added
 Adding demographics is not authorized.
 Adding item to track failed
-Addison Syndrom
+Addison Syndrome
 Addison Syndrome
 Additional Attributes
 Additional Diagnosis:
@@ -603,8 +603,8 @@ Bank Draft
 Barcode Label
 Barcode Label Type
 Barcode type for printing barcode labels from popups in left nav screen.
-Base of fifth (5th) Metarsal
-Base of fifth (5th) Metarsal:
+Base of fifth (5th) Metatarsal
+Base of fifth (5th) Metatarsal:
 Bashkir
 Basque
 Batch Claim
@@ -782,9 +782,7 @@ Cannot add/update this entry because a duplicate already exists!
 cannot be archived, ignored
 cannot be converted to JPEG. Perhaps ImageMagick is not installed?
 cannot be deleted, ignored
-cannot be displayed inline because its type is not supported by the browser.
-cannot be displayed inline becuase its type is not supported by the browser
-cannot be displayed inline becuase its type is not supported by the browser.
+cannot be displayed inline because its type is not supported by the browser
 Cannot create
 Cannot create file
 Cannot delete (from SFTP server) file
@@ -799,8 +797,8 @@ Cannot find postscript document reference in
 Cannot find provider from SQL-Ledger employee = 
 Cannot Modify Payments.Undistributed is Negative.
 Cannot open 
-Cannot Post for Insurance.The Paying Entity selected is Patient.
-Cannot Post for Patient.The Paying Entity selected is Insurance.
+Cannot Post for Insurance.  The Paying Entity selected is Patient.
+Cannot Post for Patient.  The Paying Entity selected is Insurance.
 Cannot Post Payments.Undistributed is Negative.
 Cannot read
 Cannot read directory
@@ -1374,7 +1372,6 @@ Current Value
 Currently Active
 Currently Running
 Currently there are no facilities.
-Cushing Syndrom
 Cushing Syndrome
 Custodian
 Custom
@@ -4071,7 +4068,7 @@ none
 None defined
 None have been documented
 None of the above
-None of the Top Distribution Row Can be Completly Blank.
+None of the Top Distribution Row Can be Completely Blank.
 Noninsulin Dependent Diabetes
 Nor
 Normal
@@ -4277,7 +4274,6 @@ Only upload active prescriptions
 Only upload active prescriptions to NewCrop eRx.
 Onset of Current Symptoms or Illness
 Onset of Illness:
-Onset of Ilness: 
 Onset of Swelling:
 Onset/hosp. date:
 Onsite Patient Portal Site Address
