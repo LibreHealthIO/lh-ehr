@@ -74,29 +74,10 @@ if($_POST) {
 <!DOCTYPE HTML>
 <html>
 <head>
-<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox-custom"));
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "iziModalToast"));
       resolveFancyboxCompatibility();
 ?>
     <title><?php echo xlt("Role Management") ?></title>
-
-    <script type="text/javascript">
-
-    $(document).ready(function(){
-
-        // fancy box
-
-
-        // special size for
-        $(".iframe_medium").fancybox( {
-            'overlayOpacity' : 0.0,
-            'showCloseButton' : true,
-            'frameHeight' : 450,
-            'frameWidth' : 660
-        });
-       
-    });
-
-    </script>
     <style>       
         body {
             font: 10.5pt arial;

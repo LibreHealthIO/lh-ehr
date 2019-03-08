@@ -59,7 +59,7 @@ $role_list = $role->getRoleList();
 <!DOCTYPE HTML>
 <html>
 <head>
-<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox-custom"));
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","iziModalToast"));
       resolveFancyboxCompatibility();
 ?>
     <title><?php echo xlt("Role Management") ?></title>
@@ -67,27 +67,74 @@ $role_list = $role->getRoleList();
     <script src="js/jsoneditor/jsoneditor.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
     <script type="text/javascript">
 
     $(document).ready(function(){
 
-        // fancy box
-        enable_modals();
+//initialization of iziModal
+    $(".addRole").click(function () {
+         $("#addRole-iframe").iziModal('open');
+     });
 
 
-        // special size for
-        $(".iframe_medium").fancybox( {
-            'overlayOpacity' : 0.0,
-            'showCloseButton' : true,
-            'frameHeight' : 450,
-            'frameWidth' : 660
-        });
+    $(".editRole").click(function (e) {
+        e.preventDefault();
+       var link = $(this).attr("href");
+       console.log(link);
+       initIziLink(link);
+     });
 
-        $(function(){
-            // add drag and drop functionality to fancybox
-            $("#fancy_outer").easydrag();
-        });
+    function initIziLink(link) {
+         $("#editRole-iframe").iziModal({
+             title: 'Edit Role',
+             subtitle: 'Edit administrative roles',
+             headerColor: '#88A0B9',
+             closeOnEscape: true,
+             fullscreen:true,
+             overlayClose: false,
+             closeButton: true,
+             theme: 'light',  // light
+             iframe: true,
+             width:750,
+             focusInput: true,
+             padding:5,
+             iframeHeight: 400,
+             iframeURL:'../../roles/role_edit.php?title='+link,
+             onClosed:function () {
+                 location.reload();
+            }
+         });
+ 
+         setTimeout(function () {
+             call_izi();
+         },200);
+     }
+
+
+  function call_izi() {
+           $("#editRole-iframe").iziModal('open');
+       }
+
+    $("#addRole-iframe").iziModal({
+        title: 'Add Roles',
+        subtitle: 'Mananage administrative roles',
+        headerColor: '#88A0B9',
+        closeOnEscape: true,
+        fullscreen:true,
+        overlayClose: false,
+        closeButton: true,
+        theme: 'light',  // light
+        iframe: true,
+        width:750,
+        focusInput: true,
+        padding:5,
+        iframeHeight: 400,
+        iframeURL: "../../roles/role_create.php",
+        onClosed:function () {
+            location.reload();
+        }
+      });
+       
     });
 
     </script>
@@ -106,6 +153,9 @@ $role_list = $role->getRoleList();
     </style>
 </head>
 <body>
+      <!-- izi-frames to popup modals-->
+ <div id="addRole-iframe"></div>
+ <div id="editRole-iframe"></div>
 <h1 style="padding-left: 10px;"><?php echo xlt("Manage Roles") ?></h1>
 <div style="padding-left: 10px;">
 
@@ -118,7 +168,7 @@ $role_list = $role->getRoleList();
             <?php foreach($role_list as $role_title) { ?>
             <tr>
                 <td> <span class="text">  <?php echo $role_title; ?> </span> </td>
-                <td> <a href="../../roles/role_edit.php?title=<?php echo $role_title; ?>"  class="iframe_medium" onclick="top.restoreSession()"> Edit  </a> </td>
+                <td> <a href="<?php echo $role_title; ?>"  class="editRole" onclick="top.restoreSession()"> Edit  </a> </td>
                 <td> <a href="../../roles/role_delete.php?title=<?php echo $role_title; ?>"  class="iframe_medium" onclick="top.restoreSession()"> Delete </a> </td>
 
             </tr>
@@ -126,7 +176,7 @@ $role_list = $role->getRoleList();
             } ?>
     </tbody></table>
     </div>
-    <a href="../../roles/role_create.php" class="iframe_medium css_button"><span><?php echo xlt('Add Role'); ?></span></a>
+    <a href="#" class="css_button cp-positive addRole"><span><?php echo xlt('Add Role'); ?></span></a>
     
 
 </div>

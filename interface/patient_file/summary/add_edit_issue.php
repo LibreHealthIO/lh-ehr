@@ -633,7 +633,6 @@ function divclick(cb, divid) {
 >
 
 <table border='0' width='100%'>
-  <h1><?php echo xlt('Add Issue'); ?></h1>
   <tr>
     <td valign='top' width='1%' nowrap><b><?php echo xlt('Type'); ?>:</b></td>
     <td>
