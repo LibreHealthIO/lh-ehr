@@ -227,6 +227,17 @@ function GenXmlMIPS(sNested) {
 
 
 function validateForm() {
+var d = document.forms[0];
+
+  FromDate = d.form_begin_date.value;
+  ToDate = d.form_target_date.value;
+
+  if(FromDate.length > 0 && ToDate.length > 0) {
+    if(FromDate > ToDate) {
+      alert("<?php echo xls('End date must be later than Begin date!'); ?>");
+      return false;
+    }
+  }
   return true;
 }
 
