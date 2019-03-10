@@ -90,13 +90,11 @@ function submit_pharmacy()
             let email =  document.pharmacy.email.value;
             let regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             //console.log(document.pharmacy.email.value);
-
             if(regex.test(email)){
                 top.restoreSession();
                 document.pharmacy.submit();
                 //Z&H Removed redirection
             }
-
             else{
                 <?php
                     $msg = 'Please enter a valid email address';
@@ -109,7 +107,6 @@ function submit_pharmacy()
                     });
             }
         }
-
     }
     else
     {
