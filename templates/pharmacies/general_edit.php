@@ -1,3 +1,4 @@
+<?php call_required_libraries(array("jquery-min-3-3-1","font-awesome", "iziModalToast")); ?>
 <form class="form-horizontal" name="pharmacy" method="post" action="<?php echo $this->form_action;?>">
 <!-- it is important that the hidden form_id field be listed first, when it is called is populates any old information attached with the id, this allows for partial edits
         if it were called last, the settings from the form would be overwritten with the old information-->
@@ -33,7 +34,7 @@
 <tr>
     <td  ><?php echo xlt("Email");?></td>
     <td >
-        <input type="text" class="form-control input-sm" NAME="email" SIZE="35" VALUE="<?php echo $this->pharmacy->email;?>" onKeyDown="PreventIt(event)" />
+        <input type="email" class="form-control input-sm" NAME="email" SIZE="35" VALUE="<?php echo $this->pharmacy->email;?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
@@ -83,10 +84,29 @@
 function submit_pharmacy()
 {
     if(document.pharmacy.name.value.length>0)
-    {
-        top.restoreSession();
-        document.pharmacy.submit();
-        //Z&H Removed redirection
+    {   
+        //check to make sure if email is enter, it is valid
+        if(document.pharmacy.email.value.length > 0){
+            let email =  document.pharmacy.email.value;
+            let regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            //console.log(document.pharmacy.email.value);
+            if(regex.test(email)){
+                top.restoreSession();
+                document.pharmacy.submit();
+                //Z&H Removed redirection
+            }
+            else{
+                <?php
+                    $msg = 'Please enter a valid email address';
+                    echo ("var alertMsg ="."'".htmlspecialchars( xl($msg), ENT_QUOTES)."'".";\n");
+                ?>
+                    iziToast.warning({
+                        position : "bottomRight",
+                        icon : "fa fa-warning",
+                        message : alertMsg
+                    });
+            }
+        }
     }
     else
     {
