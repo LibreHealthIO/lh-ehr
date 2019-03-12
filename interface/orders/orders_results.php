@@ -211,27 +211,17 @@ a, a:visited, a:hover { color:#0000cc; }
 <?php call_required_libraries(array("jquery-min-3-1-1","bootstrap", "iziModalToast")); ?>
 <script language="JavaScript">
 
-
-// This invokes the find-procedure-type popup. Old popup style iframe replaced with iziModal. 
 var ptvarname;
-// function sel_proc_type(varname) {
-//  var f = document.forms[0];
-//  if (typeof varname == 'undefined') varname = 'form_proc_type';
-//  ptvarname = varname;
-//  dlgopen('types.php?popup=1&order=' + f[ptvarname].value, '_blank', 800, 500);
-// }
-
 //This invokes the find-procedure-type popup in iziModal iframe.
 function sel_proc_type(varname) {
  var f = document.forms[0];
  if (typeof varname == 'undefined') varname = 'form_proc_type';
  ptvarname = varname;
- // dlgopen('types.php?popup=1&order=' + f[ptvarname].value, '_blank', 800, 500); // This calls the old style popup
  event.preventDefault();
     console.log(event.target.href);
     $("#modal-iframe").iziModal({
-    title: 'Find procedure',
-    subtitle: 'Select procedure from the table below',
+    title: '<?php echo xlt('Find procedure')?>' ,
+    subtitle: '<?php echo xlt('Select procedure from the table below')?>' ,
     headerColor: '#88A0B9',
     iframe: true,
     iframeHeight: 500,
