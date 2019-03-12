@@ -149,6 +149,7 @@ and open the template in the editor.
     padding-left: 20px;  
     padding-bottom : 0px; 
     font-weight : 600;
+    background-color: #fff; // changes drop-down sub-menu to white
 }   
 .dropdown-menu>li>a:hover{
     text-decoration : underline;
