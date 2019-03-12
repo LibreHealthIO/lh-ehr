@@ -101,6 +101,11 @@ $xt +=$xt;
 $pdf->TextWithRotation($x + $xt, $y + $yt, $text3, $angle);
 $xt +=$xt;
 
-
-$pdf->Output();
+$output = $pdf->Output('','S');
+$output = base64_encode($output);
 ?>
+
+<title>Address Label</title>
+<body style="margin: 0">
+    <embed src="data:application/pdf;base64,<?php echo $output ?>" type='application/pdf' style="position: fixed; width: 100%; height: 100%;">
+</body>
