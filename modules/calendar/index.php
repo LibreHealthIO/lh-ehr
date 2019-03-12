@@ -251,7 +251,7 @@ require('includes/session.php');
         },
         eventMouseover: function(calEvent, element, view) {
           if (calEvent.picture_url) {
-            var picture = '<td><img src="../../profile_pictures/'+ calEvent.picture_url +'" height="64px" width="64px"></td>';
+            var picture = '<td><img src="../../sites/<?php echo ($_SESSION['site_id']) ?>/profile_pictures/'+ calEvent.picture_url +'" height="64px" width="64px"></td>';
           }
           else {
             picture = " ";

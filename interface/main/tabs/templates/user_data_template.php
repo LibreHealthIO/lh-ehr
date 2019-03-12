@@ -25,7 +25,7 @@
                 <?php
                   if ($userQuery['picture_url']) {
                     $picture_url = $userQuery['picture_url'];
-                    echo "<img src='../../../profile_pictures/$picture_url' height='64px' width='64px' style='border-radius: 40px;'></a>";
+                    echo ("<img src='../../../sites/".$_SESSION['site_id']."/profile_pictures/".$picture_url."' height='64px' width='64px' style='border-radius: 40px;'></a>");
                   }
                   else {
                     echo '<span data-bind="text:fname"></span>&nbsp;<span data-bind="text:lname"></span></h4>

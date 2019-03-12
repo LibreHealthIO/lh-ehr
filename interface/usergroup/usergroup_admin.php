@@ -150,7 +150,73 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
               $tqvar = formData('suffix','P');
               sqlStatement("update users set suffix='$tqvar' where id= ? ", array($_POST["id"]));
       }
+      if ($_FILES["profile_picture"]) {
+        $res = sqlStatement("SELECT username, picture_url FROM users where id= ? ", $_POST["id"]);
+        $row = sqlFetchArray($res);
+        if ($_POST["username"]) {
+          $uid = formData('username','P').time();
+        } else {
+          $uid = $row['username'].time();
+        }
+        if (realpath($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/")) {
 
+        }
+        else {
+          mkdir($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/", 0755);
+        }
+        $bool = 0;
+        $target_file =  basename($_FILES["profile_picture"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $verify_image = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+        if($verify_image) {
+          $mime = $verify_image["mime"];
+          $mime_types = array('image/png',
+                                  'image/jpeg',
+                                  'image/gif',
+                                  'image/bmp',
+                                  'image/vnd.microsoft.icon');
+          //mime check with all image formats.
+          if (in_array($mime, $mime_types)) {
+                $bool = 1;
+              //if mime type matches, then do a size check
+              //size check for 20mb
+              if ($_FILES["profile_picture"]["size"] > 20971520) {
+                $bool = 0;
+              }
+              else {
+                $bool = 1;
+              }
+          }
+          else {
+            $bool = 0;
+          }
+    
+        }
+        else {
+              $bool = 0;
+        }
+        $picture_url = "";
+        //begin file uploading
+        $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
+        if ($bool) {
+          if (file_exists($destination_directory.$row['picture_url'])){
+            unlink($destination_directory.$row['picture_url']);
+          }
+          if (file_exists($destination_directory.$uid.".".$imageFileType)) {
+            unlink($destination_directory.$uid.".".$imageFileType);
+          }
+          if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$uid.".".$imageFileType)) {
+              $picture_url = $uid.".".$imageFileType;
+          }
+          else {
+            //may be failed due to directory permissions.
+          }
+        }
+        else {
+          //don't upload checks failed.
+        }
+        sqlStatement("update users set picture_url = '$picture_url' where id = ?", array($_POST["id"]));
+      }
       //(CHEMED) Calendar UI preference
       if ($_POST["cal_ui"]) {
               $tqvar = formData('cal_ui','P');
@@ -270,11 +336,11 @@ if (isset($_FILES)) {
   //images will be saved with their name
   $uid =  trim(formData('rumple')).time();
     //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
-  if (realpath("../../profile_pictures/")) {
+  if (realpath($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures")) {
 
   }
   else {
-    mkdir("../../profile_pictures/", 0755);
+    mkdir($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures", 0755);
   }
   //for profile picture upload
   //mime check done.
@@ -314,7 +380,7 @@ if (isset($_FILES)) {
   }
   $picture_url = "";
   //begin file uploading
-  $destination_directory = "../../profile_pictures/";
+  $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
   if ($bool) {
     if (file_exists($destination_directory.$uid.".".$imageFileType)) {
       unlink($destination_directory.$uid.".".$imageFileType);
