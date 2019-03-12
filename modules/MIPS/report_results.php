@@ -168,7 +168,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
  <tr>
       <td>
          <a id='delete_button' href='#' class='css_button_small'
-           onclick='deleteReport(<?php echo htmlspecialchars( $row["report_id"] ); ?>); top.restoreSession(); $("#theform").submit()' >
+           onclick='deleteReport(<?php echo htmlspecialchars( $row["report_id"] ); ?>, $(this).parent().parent()); top.restoreSession(); $("#theform").submit()' >
          <span>Delete</span></a>
       </td>
       <td>
@@ -217,7 +217,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 </script>
 <!--  Stuff for deleting and renaming reports -->
 <script type='text/javascript'>
-function manageReport(report_id,action,newname){
+function manageReport(report_id,action,newname, table_row = ''){
         $.ajax({
                 type: 'POST',
                 url: '<?php echo $GLOBALS['webroot']; ?>/modules/MIPS/PQRSReportManager.php',
@@ -228,8 +228,12 @@ function manageReport(report_id,action,newname){
                         report_new_name: newname,
                 },
                 success: function(data, status, xHR) {
-                        if(data == 'SUCCESS') {
+                        if(status == 'success') {             
                                 console.log('Update succeeded.');
+                                if(table_row != '')  //does not delete when renaming
+                                  table_row.remove();   
+                                else
+                                  ;
                         } else {
                                 console.log('Update failed: '+ data);
                         }
@@ -240,11 +244,12 @@ function manageReport(report_id,action,newname){
         });
 }
 
-function deleteReport(report_id){
+//table row is the row to be deleted so as to sync backend and frontend delete operations with ajax
+function deleteReport(report_id, table_row){   
     var answer = confirm('Are you sure you want to delete this report?');
     if (answer == true) {
         console.log('Delete Report -- report_id: ' + report_id );
-    manageReport(report_id,'DELETE','deleted');
+    manageReport(report_id,'DELETE','deleted', table_row);
     }
 }
 
