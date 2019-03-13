@@ -430,10 +430,7 @@ function showUpdaterNotifications(type, title, message) {
             title: title,
             message: message,
         });
-    }
-
-
-    
+    }    
 }
 </script>
 
