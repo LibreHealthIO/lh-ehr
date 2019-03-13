@@ -158,13 +158,12 @@ class C_Document extends Controller {
         $sentUploadStatus = array();
         if (count($_FILES['file']['name']) > 0) {
             $upl_inc = 0;
-            
-            $targetFile = basename($_FILES['photo']['name']);
-            $uploadedFileType = pathinfo($targetFile,PATHINFO_EXTENSION);
-
-            // Allow certain file formats
-            if($uploadedFileType != "jpg" AND $uploadedFileType != "png" AND $uploadedFileType != "jpeg" AND $uploadedFileType != "gif" AND $uploadedFileType != "pdf" ){
-                die("Unsupported File Format, Please Try Again");
+            for($i = 0; $i < count($_FILES['file']['name']); $i++){
+                $allowed = array('gif','png','jpg','pdf');
+                $ext = pathinfo($_FILES['file']['name'][$i], PATHINFO_EXTENSION);
+                if(!in_array($ext, $allowed)){
+                    die("Upload File type not allowed, Kindly use another file");
+                }
             }
 
             foreach ($_FILES['file']['name'] as $key => $value) {
@@ -178,7 +177,7 @@ class C_Document extends Controller {
                     $error = "Error number: " . $_FILES['file']['error'][$key] . " occured while uploading file named: " . $fname . "\n";
                     if ($_FILES['file']['size'][$key] == 0) {
                         $error .= "The system does not permit uploading files of with size 0.\n";
-                    }
+                    } 
                 } else {
                     $tmpfile = fopen($_FILES['file']['tmp_name'][$key], "r");
                     $filetext = fread($tmpfile, $_FILES['file']['size'][$key]);

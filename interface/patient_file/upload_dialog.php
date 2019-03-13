@@ -63,10 +63,7 @@ $imagedir   = "$patientdir/demographics";
 
       // Copy the image to its destination.
       // Check for File Type
-      if($imageFileType != "jpg" AND $imageFileType != "png" AND $imageFileType != "jpeg" AND $imageFileType != "gif" AND $imageFileType != "pdf");
-
-      
-        if (! $errmsg) {
+      if (! $errmsg) {
 
           /***************************************************************
           $tmp = exec("/usr/bin/convert -resize 150x150 " .
@@ -81,7 +78,7 @@ $imagedir   = "$patientdir/demographics";
             $errmsg = "Internal error accessing uploaded file!";
           }  
       }
-
+      
     // Write JavaScript for final disposition by the browser.
     //
     echo "<script LANGUAGE=\"JavaScript\">\n";
