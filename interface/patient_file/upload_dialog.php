@@ -78,7 +78,7 @@ $imagedir   = "$patientdir/demographics";
             $errmsg = "Internal error accessing uploaded file!";
           }  
       }
-      
+    }
     // Write JavaScript for final disposition by the browser.
     //
     echo "<script LANGUAGE=\"JavaScript\">\n";

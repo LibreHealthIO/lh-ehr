@@ -431,9 +431,6 @@ function showUpdaterNotifications(type, title, message) {
             message: message,
         });
     }
-
-
-    
 }
 </script>
 
