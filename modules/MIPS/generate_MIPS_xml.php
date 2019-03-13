@@ -1,5 +1,8 @@
 <html>
-<body style="background-color:#fedf98;">
+<head>
+  <link rel="stylesheet" href="../../assets/css/base.css" type="text/css">
+</head>
+<body class="body_top">
   <?php
 /**
  * Clinical Measures Engine Report Form
