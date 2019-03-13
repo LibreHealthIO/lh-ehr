@@ -45,6 +45,9 @@ $imagedir   = "$patientdir/demographics";
     if (!file_exists($imagedir  )) mkdir($imagedir  );
     check_file_dir_name($what);
     $filename = "$imagedir/$what.jpg";
+    $targetFile = basename($filename);
+    $imageFileType = pathinfo($targetFile,PATHINFO_EXTENSION);
+    
 
     if ($_POST["form_delete"]) {
       unlink($filename);
@@ -59,23 +62,25 @@ $imagedir   = "$patientdir/demographics";
       }
 
       // Copy the image to its destination.
-      //
-      if (! $errmsg) {
+      // Check for File Type
+      if($imageFileType != "jpg" AND $imageFileType != "png" AND $imageFileType != "jpeg" AND $imageFileType != "gif" AND $imageFileType != "pdf");
 
-        /***************************************************************
-        $tmp = exec("/usr/bin/convert -resize 150x150 " .
-          ($_POST["form_normalize"] ? "-equalize " : "") .
-          $_FILES['userfile']['tmp_name'] .
-          " $filename 2>&1");
-        if ($tmp)
-          $errmsg = "This is not a valid image, or its format is unsupported.";
-        ***************************************************************/
+      
+        if (! $errmsg) {
 
-        if (!move_uploaded_file($_FILES['userfile']['tmp_name'], $filename)) {
-          $errmsg = "Internal error accessing uploaded file!";
-        }
+          /***************************************************************
+          $tmp = exec("/usr/bin/convert -resize 150x150 " .
+            ($_POST["form_normalize"] ? "-equalize " : "") .
+            $_FILES['userfile']['tmp_name'] .
+            " $filename 2>&1");
+          if ($tmp)
+            $errmsg = "This is not a valid image, or its format is unsupported.";
+            ***************************************************************/
+
+          if (!move_uploaded_file($_FILES['userfile']['tmp_name'], $filename)) {
+            $errmsg = "Internal error accessing uploaded file!";
+          }  
       }
-    }
 
     // Write JavaScript for final disposition by the browser.
     //

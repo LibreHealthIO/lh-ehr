@@ -1,5 +1,5 @@
 <form method=post enctype="multipart/form-data" action="<?php echo $this->form_action;?>" onsubmit="return top.restoreSession()">
-<input type="hidden" name="MAX_FILE_SIZE" value="64000000" />
+<input type="hidden" name="MAX_FILE_SIZE" value="6400" />
 
 <?php if(!($patient_id > 0)) { ?>
 <div class="text" style="color:red;">

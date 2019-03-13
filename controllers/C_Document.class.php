@@ -158,6 +158,15 @@ class C_Document extends Controller {
         $sentUploadStatus = array();
         if (count($_FILES['file']['name']) > 0) {
             $upl_inc = 0;
+            
+            $targetFile = basename($_FILES['photo']['name']);
+            $uploadedFileType = pathinfo($targetFile,PATHINFO_EXTENSION);
+
+            // Allow certain file formats
+            if($uploadedFileType != "jpg" AND $uploadedFileType != "png" AND $uploadedFileType != "jpeg" AND $uploadedFileType != "gif" AND $uploadedFileType != "pdf" ){
+                die("Unsupported File Format, Please Try Again");
+            }
+
             foreach ($_FILES['file']['name'] as $key => $value) {
                 $fname = $value;
                 $err = "";
