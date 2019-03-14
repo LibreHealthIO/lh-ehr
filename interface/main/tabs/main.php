@@ -406,3 +406,4 @@ function showUpdaterNotifications(type, title, message) {
     }
 }
 </script>
+

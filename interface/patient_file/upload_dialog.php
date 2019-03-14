@@ -45,10 +45,7 @@ $imagedir   = "$patientdir/demographics";
     if (!file_exists($imagedir  )) mkdir($imagedir  );
     check_file_dir_name($what);
     $filename = "$imagedir/$what.jpg";
-    $targetFile = basename($filename);
-    $imageFileType = pathinfo($targetFile,PATHINFO_EXTENSION);
-    
-
+  
     if ($_POST["form_delete"]) {
       unlink($filename);
     }
