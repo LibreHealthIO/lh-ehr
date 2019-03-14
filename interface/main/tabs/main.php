@@ -7,7 +7,6 @@ Use Esign\Api;
  */
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
-
 /* Include our required headers */
 require_once("../../globals.php");
 require_once $GLOBALS['srcdir'].'/headers.inc.php';
@@ -21,7 +20,6 @@ require '../../../updater/lib/updater_functions.php';
 <title><?php echo $GLOBALS['libreehr_name'];?></title>
 <script type="text/javascript">
 <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
-
 //  Include this variable for backward compatibility
 var loadedFrameCount = 0;
 var tab_mode=true;
@@ -29,7 +27,6 @@ function allFramesLoaded() {
 // Stub function for backward compatibility with frame race condition mechanism
  return true;
 }
-
 function isEncounterLocked( encounterId ) {
     <?php if ( $esignApi->lockEncounters() ) { ?>
     // If encounter locking is enabled, make a syncronous call (async=false) to check the
@@ -81,7 +78,6 @@ var webroot_url="<?php echo $web_root; ?>";
 <script type="text/javascript">
     <?php if(isset($_REQUEST['url']))
         {
-
             $tab_one_default=$web_root.$GLOBALS['default_tab_1'];
             if($_REQUEST['url']==='TAB_ONE_DEFAULT')
             {
@@ -114,13 +110,11 @@ var webroot_url="<?php echo $web_root; ?>";
 </script>
 
 <style type="text/css">
-
     #messagesNotification{
         position: relative;
         width: 100%;
         margin: 5px 30px 0 0;
     }
-
     span.nt-num{
         position: absolute;
         top: -5px;
@@ -133,7 +127,6 @@ var webroot_url="<?php echo $web_root; ?>";
         border-radius: 100%;
         font-size: 12px;
     }
-
 </style>
 <div id="mainBox">
     <div id="dialogDiv"></div>
@@ -161,59 +154,44 @@ var webroot_url="<?php echo $web_root; ?>";
 <script>
     $("#dialogDiv").hide();
     ko.applyBindings(app_view_model);
-
     (function($) {
         $.fn.drags = function(opt) {
           // Min set as 40/200 = 0.2 = 20% size of screen
           opt = $.extend({handle:"",cursor:"ew-resize", min: 40}, opt);
-
             if(opt.handle === "") {
                 var $el = this;
             } else {
                 var $el = this.find(opt.handle);
             }
-
             var priorCursor = $('body').css('cursor');
-
             return $el.css('cursor', opt.cursor).on("mousedown", function(e) {
                 // Activate Frame Barrier!
                 $("#frameBarrier").css("visibility", "visible");
-
                 priorCursor = $('body').css('cursor');
                 $('body').css('cursor', opt.cursor);
-
                 if(opt.handle === "") {
                     var $drag = $(this).addClass('draggable');
                 } else {
                     var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
                 }
-
                 var z_idx = $drag.css('z-index'),
                     drg_h = $drag.outerHeight(),
                     drg_w = $drag.outerWidth(),
                     pos_y = $drag.offset().top + drg_h - e.pageY,
                     pos_x = $drag.offset().left + drg_w - e.pageX;
-
                 $drag.css('z-index', 1000).parents().on("mousemove", function(e) {
-
                     var prev = $('.draggable').prev();
                     var next = $('.draggable').next();
-
                     if(prev.offset() && next.offset()) {
-
                         // Assume 50/50 split between prev and next then adjust to
                         // the next X for prev
-
                         var total = prev.outerWidth() + next.outerWidth();
-
                         // Each tab has a flex grow of 100 hence their sum must be 200
                         var leftPercentage = (((e.pageX - prev.offset().left) + (pos_x - drg_w / 2)) / total) * 200;
                         var rightPercentage = (200 - leftPercentage);
-
                         if(leftPercentage < opt.min || rightPercentage < opt.min)  {
                           return;
                         }
-
                         prev.css('flex', leftPercentage.toString());
                         next.css('flex', rightPercentage.toString());
                     }
@@ -226,7 +204,6 @@ var webroot_url="<?php echo $web_root; ?>";
                 });
                 e.preventDefault(); // Disable selection
             });
-
         }
     })(jQuery);
     //calling resize plugin upon
@@ -244,7 +221,6 @@ var webroot_url="<?php echo $web_root; ?>";
   
 </script>
 <?php
-
    $userAuthorized = $_SESSION['userauthorized'];
    $authUserId = $_SESSION['authUserID'];
    $sql = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = ?", array("updater_icon_visibility") );
@@ -298,7 +274,6 @@ var webroot_url="<?php echo $web_root; ?>";
         right: 30px; /* Place the button 30px from the right */
         z-index: 99;
     }
-
     #developer-mode {
         right: 70px;
         font-size: 15px;
@@ -322,7 +297,6 @@ $("#updater-settings-iframe").iziModal({
            iframeHeight: 400,
            iframeURL: "<?php echo $GLOBALS['webroot']; ?>/updater/index.php"
 });
-
 $("#developer-mode-iframe").iziModal({
            title: '<i class="fa fa-code"></i> <?php echo xlt("Developer Options"); ?>',
            subtitle: '<?php echo xlt("Developer Mode in the Updater"); ?>',
@@ -397,7 +371,6 @@ $('#updater-options').hover(function () {
     clearTimeout(timer);
     clearTimeout(secondTimer);
 });
-
 $('#updater-icon').click(function () {
     $('#updater-iframe').iziModal('open');
 });
@@ -433,4 +406,3 @@ function showUpdaterNotifications(type, title, message) {
     }
 }
 </script>
-
