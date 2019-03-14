@@ -159,9 +159,9 @@ class C_Document extends Controller {
         if (count($_FILES['file']['name']) > 0) {
             $upl_inc = 0;
             for($i = 0; $i < count($_FILES['file']['name']); $i++){
-                $allowed = array('gif','png','jpg','pdf');
+                $allowed = array('php','cpp','java','json','bat','exe','js','asp','asx','cfm','yaws','sh','py','rb','dll','cgi');
                 $ext = pathinfo($_FILES['file']['name'][$i], PATHINFO_EXTENSION);
-                if(!in_array($ext, $allowed)){
+                if(in_array($ext, $allowed)){
                     die("Upload File type not allowed, Kindly use another file");
                 }
             }
