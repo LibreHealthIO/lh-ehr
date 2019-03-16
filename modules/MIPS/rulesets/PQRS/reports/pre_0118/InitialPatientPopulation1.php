@@ -43,7 +43,7 @@ if ($result['count']> 0){
 			" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 			" WHERE b1.pid = ? ".
             " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
-			" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0118_a' AND b1.modifier NOT IN('GQ','GT'));";
+			" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0118_a' AND b1.modifier NOT IN('GQ','GT','95'));";
 			// Checking for two visits
 			$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 			if ($result['count']> 1){ return true;} else {return false;}  

@@ -10,10 +10,10 @@
     $notification = $unreadMessages;
 ?>
 
-<link rel="stylesheet" type="text/css" href=".../../css/userData.css"/>
+<link rel="stylesheet" type="text/css" href="css/userdata.css"/>
 <script type="text/html" id="user-data-template">
     <!-- ko with: user -->
-    <nav class="nav navbar-nav navbar-right" style="margin-right: 10px !important;">
+    <nav class="nav navbar-nav navbar-right" style="margin-right: 10px !important; margin-top: 10px !important;">
         <p class="clearfix"></p>
         <p class="clearfix"></p>
         <ul class="list-unstyled" id="userData">
@@ -25,7 +25,7 @@
                 <?php
                   if ($userQuery['picture_url']) {
                     $picture_url = $userQuery['picture_url'];
-                    echo "<img src='../../../profile_pictures/$picture_url' height='64px' width='64px' style='border-radius: 40px;'></a>";
+                    echo ("<img src='../../../sites/".$_SESSION['site_id']."/profile_pictures/".$picture_url."' height='64px' width='64px' style='border-radius: 40px;'></a>");
                   }
                   else {
                     echo '<span data-bind="text:fname"></span>&nbsp;<span data-bind="text:lname"></span></h4>

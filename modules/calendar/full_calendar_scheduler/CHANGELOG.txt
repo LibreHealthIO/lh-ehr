@@ -1,4 +1,40 @@
 
+v1.9.4 (2018-03-27)
+-------------------
+
+Require fullcalendar 3.9.x, solving #4089
+
+
+v1.9.3 (2018-03-04)
+-------------------
+
+- error second time changing to timeline view with resource-specific business hours (#414)
+- typescript definition doesn't expose OptionsInput (#421)
+- expose typescript defs for ResourceInput & ResourceSourceInput
+
+
+v1.9.2 (2018-01-23)
+-------------------
+
+Bugfixes:
+- fix event resize highlight not being unrendered (#406)
+- vert resource view fast navigation with refetchResourcesOnNavigate, breaks ([core-4009])
+- long-press touch selecting one event after another, gets confused (#410)
+- firstDay option not considered when slotLabelInterval is days (#408)
+- TypeScript definition file not compatible with noImplicitAny (#405)
+
+[core-4009]: https://github.com/fullcalendar/fullcalendar/issues/4009
+
+
+v1.9.1 (2017-12-18)
+-------------------
+
+- exposed MAX_TIMELINE_SLOTS (#47)
+- TypeScript definition file (scheduler.d.ts) included in npm package (#213)
+- CoffeeScript within codebase converted to TypeScript
+- more robust testing environment
+
+
 v1.9.0 (2017-11-13)
 -------------------
 

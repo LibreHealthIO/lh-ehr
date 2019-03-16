@@ -219,7 +219,7 @@ div.closeDlgIframe {
     background: white;
     cursor: pointer;
     margin-top: -0.32%;
-    z-index: 12;
+    z-index: 0;
 }
 
 .patientEncounterList  table.encounters

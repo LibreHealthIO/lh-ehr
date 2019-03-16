@@ -36,6 +36,11 @@ $query = "SELECT id, lname, mname, fname, suffix FROM users
   WHERE authorized = 1 AND username != '' AND active = 1 
   AND username IN('" . implode("','", $_SESSION['pc_username']) . "')
   ORDER BY lname";
+} elseif ($GLOBALS['calendar_provider_view_type'] =='last_first') {
+$query = "SELECT id, lname, mname, fname , suffix FROM users
+  WHERE authorized = 1 AND username != '' AND active = 1 
+  AND username IN('" . implode("','", $_SESSION['pc_username']) . "')
+  ORDER BY lname,fname";
 }
  
 $res = sqlStatement($query);
@@ -52,6 +57,8 @@ while ($row = sqlFetchArray($res)) {
   $r['title'] = $row['fname'] . " " . $row['lname'];
   } elseif ($GLOBALS['calendar_provider_view_type'] =='last') {
     $r['title'] = $row['title'] . " " .$row['lname']; 
+  } elseif ($GLOBALS['calendar_provider_view_type'] =='last_first') {
+    $r['title'] = $row['lname'] . " " .substr($row['fname'],0,1); 
   }
   
   // Merge the provider array into the return array

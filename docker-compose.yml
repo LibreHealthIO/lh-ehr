@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  db:
+    image: mariadb:10.3
+    volumes:
+      - ./sql/nhanes:/docker-entrypoint-initdb.d/
+      - db_data:/var/lib/mysql
+    restart: always
+    env_file: ./docker/.env.mysql
+  lh-ehr:
+    image: registry.gitlab.com/librehealth/ehr/lh-ehr:latest
+    volumes:
+      - .:/var/www/html
+      - ./docker/default_site/:/var/www/html/sites/default/
+    ports:
+      - "8000:80"
+    restart: always
+    env_file: ./docker/.env.ehr
+    depends_on:
+      - db
+  adminer:
+    image: adminer:4
+    restart: always
+    ports:
+      - "8001:8080"
+    depends_on:
+      - db
+volumes:
+    db_data:

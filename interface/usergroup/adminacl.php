@@ -13,6 +13,7 @@
 //
 include_once("../globals.php");
 include_once("$srcdir/acl.inc");
+include_once("$srcdir/headers.inc.php");
 
 //ensure user has proper access
 if (!acl_check('admin', 'acl')) {
@@ -28,6 +29,7 @@ if (!isset($phpgacl_location)) {
         
 <html>
 <head>
+  <?php call_required_libraries(array("bootstrap"))?>
  <script type="text/JavaScript" src="../../library/js/jquery121.js"></script>
  <script type="text/JavaScript" src="../../library/js/jquery.livequery101.js"></script> 
  <script type="text/JavaScript">
@@ -214,7 +216,7 @@ if (!isset($phpgacl_location)) {
      $(xml).find("user").each(function(){
       username = $(this).find("username").text();
       var link_id  = username.replace(" ", "-");       
-      $("#membership").append("<div id='link_" + link_id + "'><span class='text'>" + username + "</span><a class='link_submit' href='no_javascript' id='" + link_id + "_membership_list' title='<?php xl('Edit','e'); ?> " + link_id + "'>(<?php xl('Edit','e'); ?>)</a></span><a class='link_submit' href='no_javascript' id='" + link_id +  "_membership_hide' style='display: none' title='<?php xl('Hide','e'); ?> " + link_id + "'>(<?php xl('Hide','e'); ?>)</a><span class='alert' style='display: none;'>&nbsp;&nbsp;<?php xl('This user is not a member of any group','e'); ?>!!!</span><span class='loading' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php xl('LOADING','e'); ?>...</span></div><div id='error_" + link_id + "'></div><div id='" + link_id +  "' style='display: none'><table class='lists' border='1' bgcolor='white' cellpadding='3' cellspacing='2'><tr><td align='center'><span class='bold'><?php xl('Active','e'); ?></span></td><td align='center'><span class='bold'><?php xl('Inactive','e'); ?></span></td></tr><tr><td align='center'><select name='active[]' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Remove','e'); ?>' id='" + link_id  + "_membership_remove' value=' >> '></p></td><td align='center'><select name='inactive[]' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Add','e'); ?>' id='" + link_id + "_membership_add' value=' << ' ></p></td></tr></table></div>");
+      $("#membership").append("<div id='link_" + link_id + "'><span class='text'>" + username + "</span><a class='link_submit' href='no_javascript' id='" + link_id + "_membership_list' title='<?php xl('Edit','e'); ?> " + link_id + "'>&nbsp<div class='btn btn-xs btn-warning'><?php xl('Edit','e'); ?></div></a></span><a class='link_submit' href='no_javascript' id='" + link_id +  "_membership_hide' style='display: none' title='<?php xl('Hide','e'); ?> " + link_id + "'>(<?php xl('Hide','e'); ?>)</a><span class='alert' style='display: none;'>&nbsp;&nbsp;<?php xl('This user is not a member of any group','e'); ?>!!!</span><span class='loading' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php xl('LOADING','e'); ?>...</span></div><div id='error_" + link_id + "'></div><div id='" + link_id +  "' style='display: none'><table class='lists' border='1' bgcolor='white' cellpadding='3' cellspacing='2'><tr><td align='center'><span class='bold'><?php xl('Active','e'); ?></span></td><td align='center'><span class='bold'><?php xl('Inactive','e'); ?></span></td></tr><tr><td align='center'><select name='active[]' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Remove','e'); ?>' id='" + link_id  + "_membership_remove' value=' >> '></p></td><td align='center'><select name='inactive[]' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Add','e'); ?>' id='" + link_id + "_membership_add' value=' << ' ></p></td></tr></table></div>");
       if ($(this).find("alert").text() == "no membership") {
        $("#link_" + link_id  + " span.alert").show();              
       } 
@@ -267,7 +269,7 @@ if (!isset($phpgacl_location)) {
       return_value = $(this).find("returnid").text();
       return_title = $(this).find("returntitle").text();
       note = $(this).find("note").text();
-      $("#acl").append("<div id='acl_link_" + titleDash + "_" + return_value + "'><span class='text' title='" + note  + "'>" + title + "-" + return_title  + "</span><a class='link_submit' href='no_javascript' id='" + titleDash  + "_aco_list_" + return_value  + "' title='<?php xl('Edit','e'); ?> " + title + "-" + return_title  + "'>(<?php xl('Edit','e'); ?>)</a></span><a class='link_submit' href='no_javascript' id='" + titleDash + "_acl_hide_" + return_value + "' style='display: none' title='<?php xl('Hide','e'); ?> " + title + "-" + return_title  + "'>(<?php xl('Hide','e'); ?>)</a><span class='loading' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php xl('LOADING','e'); ?>...</span></div><div id='acl_error_" + titleDash + "_" + return_value + "'></div><div id='acl_" + titleDash + "_" + return_value  + "' style='display: none'><table border='1' bgcolor='white' cellpadding='3' cellspacing='2'><tr><td align='center'><span class='bold'><?php xl('Active','e'); ?></span></td><td align='center'><span class='bold'><?php xl('Inactive','e'); ?></span></td></tr><tr><td align='center'><select name='active[]' size='6' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Remove','e'); ?>' id='" + titleDash  +"_aco_remove_" + return_value  + "' value=' >> '></p></td><td align='center'><select name='inactive[]' size='6' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Add','e'); ?>' id='" + titleDash  + "_aco_add_" + return_value  + "' value=' << ' ></p></td></tr></table></div>");    
+      $("#acl").append("<div id='acl_link_" + titleDash + "_" + return_value + "'><span class='text' title='" + note  + "'>" + title + "-" + return_title  + "</span><a class='link_submit' href='no_javascript' id='" + titleDash  + "_aco_list_" + return_value  + "' title='<?php xl('Edit','e'); ?> " + title + "-" + return_title  + "'>&nbsp<div class='btn btn-xs btn-warning'><?php xl('Edit','e'); ?></div></a></span><a class='link_submit' href='no_javascript' id='" + titleDash + "_acl_hide_" + return_value + "' style='display: none' title='<?php xl('Hide','e'); ?> " + title + "-" + return_title  + "'>(<?php xl('Hide','e'); ?>)</a><span class='loading' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php xl('LOADING','e'); ?>...</span></div><div id='acl_error_" + titleDash + "_" + return_value + "'></div><div id='acl_" + titleDash + "_" + return_value  + "' style='display: none'><table border='1' bgcolor='white' cellpadding='3' cellspacing='2'><tr><td align='center'><span class='bold'><?php xl('Active','e'); ?></span></td><td align='center'><span class='bold'><?php xl('Inactive','e'); ?></span></td></tr><tr><td align='center'><select name='active[]' size='6' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Remove','e'); ?>' id='" + titleDash  +"_aco_remove_" + return_value  + "' value=' >> '></p></td><td align='center'><select name='inactive[]' size='6' multiple></select><br /><p align='center'><input class='button_submit' type='button' title='<?php xl('Add','e'); ?>' id='" + titleDash  + "_aco_add_" + return_value  + "' value=' << ' ></p></td></tr></table></div>");    
      });
      //Show the acl list and add link. Remove loading indicator.
      $("#acl").show("slow");
@@ -501,7 +503,13 @@ if (!isset($phpgacl_location)) {
   body {
    padding: 5pt 15pt 5pt 5pt;
    margin: 0pt;
-  }     
+  }
+  #acl div{
+    margin-bottom: 2px;
+  }   
+  .link_submit .btn {
+    margin-bottom: 5px;
+  }
   .loading {
    font-family: sans-serif;
    text-decoration: blink;
@@ -528,7 +536,7 @@ if (!isset($phpgacl_location)) {
 <body class="body_top">
  <span class='title'><?php xl('Access Control List Administration','e'); ?></span>&nbsp;
  <?php if ($phpgacl_location) {
-  echo "<a href='../../gacl/admin/acl_admin.php' onclick='top.restoreSession()'><span class='back'>(" . xl('Advanced') . ")</span></a>";
+  echo "<a href='../../gacl/admin/acl_admin.php'><div class='btn btn-sm btn-primary' onclick='top.restoreSession()'>". xl('Advanced')."</div></a>";
  } ?>
 
 
@@ -543,8 +551,8 @@ if (!isset($phpgacl_location)) {
  </div>
  <div id='acl_edit'>
   <span class=bold><input type='checkbox' id='acl_show'><?php xl('Groups and Access Controls','e'); ?></span>
-  <a class='link_submit' href='no_javascript' id='none_acl_returns' title=<?php xl('Add New Group','e','\'','\''); ?> style='display: none;'>(<?php xl('Add New Group','e'); ?>)</a>
-  <a class='link_submit' href='no_javascript' id='none_acl_list' title=<?php xl('Remove Group','e','\'','\''); ?> style='display: none;'>(<?php xl('Remove Group','e'); ?>)</a>  
+  <a class='link_submit' href='no_javascript' id='none_acl_returns' title=<?php xl('Add New Group','e','\'','\''); ?> style='display: none;'><div class="btn btn-sm btn-success"><?php xl('Add New Group','e'); ?></div></a>
+  <a class='link_submit' href='no_javascript' id='none_acl_list' title=<?php xl('Remove Group','e','\'','\''); ?> style='display: none;'><div class="btn btn-sm btn-danger"><?php xl('Remove Group','e'); ?></div></a>  
   <span class='loading' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php xl('LOADING','e'); ?>...</span>
   <div id='acl_error'>
   </div>

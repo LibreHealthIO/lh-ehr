@@ -36,7 +36,7 @@ $query =
 " WHERE b1.pid = ? ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18'  ".  
-" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0005_a' AND b1.modifier NOT IN('GQ','GT')) ".
+" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0005_a' AND b1.modifier NOT IN('GQ','GT','95')) ".
 " AND b2.code IN('G47.30', 'G47.33');";
 //use code list for measure 0005
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));

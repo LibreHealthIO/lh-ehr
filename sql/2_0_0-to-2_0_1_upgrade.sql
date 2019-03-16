@@ -95,28 +95,72 @@ DELETE FROM `code_types` WHERE `code_types`.`ct_key` = 'ICD9';
 
 
 #IfMissingColumn users menu_role
-ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default User";
+ALTER TABLE `users` ADD COLUMN `menu_role` varchar(100) NOT NULL default "Default User";
 #EndIf
 
 #IfMissingColumn users fullscreen_page
-ALTER TABLE users ADD COLUMN fullscreen_page text NOT NULL;
+ALTER TABLE `users` ADD COLUMN `fullscreen_page` text NOT NULL;
 #EndIf
 
 #IfMissingColumn users fullscreen_enable
-ALTER TABLE users ADD COLUMN fullscreen_enable int(11) NOT NULL default 0;
+ALTER TABLE `users` ADD COLUMN `fullscreen_enable` int(11) NOT NULL default 0;
 #EndIf
 
 #IfMissingColumn users menu_role
-ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default User";
+ALTER TABLE `users` ADD COLUMN `menu_role` varchar(100) NOT NULL default "Default User";
 #EndIf
 
 #IfColumn users fullscreen_role
 ALTER TABLE `users` DROP `fullscreen_role`;
 #EndIf
 
+#IfTable menu_trees
 DROP TABLE IF EXISTS `menu_trees`;
+#EndIf
 
+#IfTable menu_entries
 DROP TABLE IF EXISTS `menu_entries`;
+#EndIf
+
+#IfNotTable updater_users
+CREATE TABLE `updater_users` (
+  `authUserId` int(11) NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB;
+#EndIf
+
+#IfNotTable updater_settings
+CREATE TABLE `updater_settings` (
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB;
+#EndIf
+
+#IfNotTable updater_user_mode_download_entry
+--
+-- Table structure for table `updater_user_mode_download_entry`
+--
+
+CREATE TABLE `updater_user_mode_download_entry` (
+  `filename` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `old_name` varchar(255) NOT NULL
+) ENGINE=InnoDB; 
+#Endif
+
+#IfNotTable updater_user_mode_backup_entry
+--
+-- Table structure for table `updater_user_mode_download_entry`
+--
+
+CREATE TABLE `updater_user_mode_backup_entry` (
+  `filename` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `old_name` varchar(255) NOT NULL
+) ENGINE=InnoDB;
+#Endif
 
 #IfMissingColumn form_misc_billing_options onset_date
  ALTER TABLE `form_misc_billing_options` ADD `onset_date` DATE NOT NULL ;
@@ -124,11 +168,11 @@ DROP TABLE IF EXISTS `menu_entries`;
 
 --Appointment Cancellation Reasons
 #IfNotRow2D list_options list_id lists option_id cancellation_reasons
-INSERT INTO list_options ( list_id, option_id, title,activity ) VALUES ('lists','cancellation_reasons','Cancellation Reasons', 1);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','1','No reason given',5,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','2','Work',10,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','3','Sick',20,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','4','Weather',25,0);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`,`activity` ) VALUES ('lists','cancellation_reasons','Cancellation Reasons', 1);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('cancellation_reasons','1','No reason given',5,0);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('cancellation_reasons','2','Work',10,0);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('cancellation_reasons','3','Sick',20,0);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('cancellation_reasons','4','Weather',25,0);
 #EndIf
 
 #IfMissingColumn patient_tracker_element reason
@@ -146,4 +190,39 @@ INSERT INTO `list_options` (`list_id`, `option_id`, `title`, `seq`, `is_default`
 
 #IfMissingColumn libreehr_postcalendar_events cancel_reason
   ALTER TABLE `libreehr_postcalendar_events` ADD `cancel_reason` text NOT NULL ;
+#EndIf
+
+#IfNotTable lims_analysisrequests
+CREATE TABLE `lims_analysisrequests` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `procedure_order_id` int(11) NOT NULL COMMENT 'references procedure_order.procedure_order_id ',
+ `analysisrequest_id` varchar(80) NOT NULL COMMENT 'refers to analysis request id in the lims',
+ `status` text NOT NULL COMMENT 'received, processing, complete',
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+#EndIf
+
+#IfNotRow4D supported_external_dataloads load_type ICD10 load_source CMS load_release_date 2018-10-01 load_filename 2019-ICD-10-CM-Code-Descriptions.zip
+INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES ('ICD10', 'CMS', '2018-10-01', '2019-ICD-10-CM-Code-Descriptions.zip', 'b23e0128eb2dce0cb007c31638a8dc00');
+#EndIf
+
+#IfNotRow4D supported_external_dataloads load_type ICD10 load_source CMS load_release_date 2018-10-01 load_filename 2019-ICD-10-PCS-Order-File.zip 
+INSERT INTO `supported_external_dataloads` (`load_type`, `load_source`, `load_release_date`, `load_filename`, `load_checksum`) VALUES ('ICD10', 'CMS', '2018-10-01', '2019-ICD-10-PCS-Order-File.zip', 'eb545fe61ada9efad0ad97a669f8671f');
+#Endif
+
+#IfTable libreehr_modules
+DROP TABLE IF EXISTS `libreehr_modules`;
+#EndIf
+
+#IfTable libreehr_module_vars
+DROP TABLE IF EXISTS `libreehr_module_vars`;
+#EndIf
+
+#IfTable libreehr_postcalendar_topics
+DROP TABLE IF EXISTS `libreehr_postcalendar_topics`;
+#EndIf
+
+#IfTable libreehr_postcalendar_limits
+DROP TABLE IF EXISTS `libreehr_postcalendar_limits`;
 #EndIf

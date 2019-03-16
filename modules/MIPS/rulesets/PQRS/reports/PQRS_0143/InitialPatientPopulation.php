@@ -56,7 +56,7 @@ if ($result['count']> 0){ return true;} else {
 		" AND fe.date >= '".$beginDate."' ".
 		" AND fe.date <= '".$endDate."' ".
 		" AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
-		" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0143_c' AND b1.modifier NOT IN('GQ','GT')) ".
+		" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0143_c' AND b1.modifier NOT IN('GQ','GT','95')) ".
 		" AND (b2.code = codelist_b.code AND codelist_b.type = 'pqrs_0143_d'); ";
 		
 		$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));

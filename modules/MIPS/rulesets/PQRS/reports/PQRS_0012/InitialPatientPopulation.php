@@ -39,7 +39,7 @@ class PQRS_0012_InitialPatientPopulation extends PQRSFilter
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0012_a') ".
-" AND (b2.code = codelist_b.code AND codelist_b.type = 'pqrs_0012_b' AND b2.modifier NOT IN('GQ','GT'));";
+" AND (b2.code = codelist_b.code AND codelist_b.type = 'pqrs_0012_b' AND b2.modifier NOT IN('GQ','GT','95'));";
 
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 0){ return true;} else {return false;}  

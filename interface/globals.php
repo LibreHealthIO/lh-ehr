@@ -356,7 +356,7 @@ if (!empty($glrow)) {
         $new_theme = 'rtl_' . $temp_css_theme_name;
 
         // Check file existence
-  
+
         if( file_exists( $include_root.'/themes/'.$new_theme ) ) {
             $GLOBALS['css_header'] = $rootdir.'/themes/'.$new_theme;
         } else {
@@ -540,4 +540,15 @@ if ($fake_register_globals) {
 }
 
 include_once __DIR__ . '/../library/pluginsystem/bootstrap.php';
+
+if ($GLOBALS['ehr_timezone'] !== '') {
+  // getting selected time zone option (from globals)
+  $timezone = $GLOBALS['ehr_timezone'];
+  if (strpos($timezone, '!') !== false) {
+    // removing '!' from timezone which is at 0th place in string
+    // which happens when default option is selected in time zone list in globals
+    $timezone = substr($timezone, strpos($timezone, '!') + 1);
+  }
+  ini_set('date.timezone', $timezone);  // sets timezone for function date() according to globals
+}
 ?>
