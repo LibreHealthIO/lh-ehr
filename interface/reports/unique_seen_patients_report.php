@@ -27,11 +27,10 @@
  * @author Rod Roark <rod@sunsetsystems.com>
  * @link http://librehealth.io
  */
-
 require_once "reports_controllers/UniqueSeenPatientsController.php";
 
- if ($_POST['form_labels']) {
-  csvexport('label'); // Export to csv. (TRK)
+ if ($form_action == 'labels') {
+    csvexport('label'); // Export to csv. (TRK) 
  }
  else {
 ?>
@@ -75,6 +74,13 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
   win.printLogSetup(document.getElementById('printbutton'));
  });
 
+ function mysubmit(action) {
+  var f = document.forms[0];
+  f.form_action.value = action;
+  top.restoreSession();
+  f.submit();
+ }
+
 </script>
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
@@ -113,10 +119,11 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
 <?php reportParametersDaterange(); #TRK ?>
 
 <form name='theform' method='post' action='unique_seen_patients_report.php' id='theform'>
-
 <div id="report_parameters">
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
 <input type='hidden' name='form_labels' id='form_labels' value=''/>
+<!-- form_action is set to "submit" or "labels" at form submit time -->
+<input type='hidden' name='form_action' value='' />
 
 <table>
  <tr>
@@ -133,8 +140,25 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
     </div>
 
   </td>
-  <?php   // Show print, submit and export buttons. (TRk)
-    showSubmitPrintButtons('form_labels'); ?>
+ <td align='left' valign='middle'>
+   <table style='border-left:1px solid; width:100%; height:100%'>
+    <tr>
+     <td valign='middle'>
+      <a href='#' class='css_button cp-submit' onclick='mysubmit("submit")' style='margin-left:1em'>
+       <span><?php echo htmlspecialchars(xl('Submit')); ?></span>
+      </a>
+<?php if ($form_action) { ?>
+      <a href='#' class='css_button cp-output' id='printbutton' style='margin-left:1em'>
+       <span><?php echo htmlspecialchars(xl('Print')); ?></span>
+      </a>
+      <a href='#' class='css_button cp-ouput' onclick='mysubmit("labels")' style='margin-left:1em'>
+       <span><?php echo htmlspecialchars(xl('Labels')); ?></span>
+      </a>
+<?php } ?>
+     </td>
+    </tr>
+   </table>
+  </td>
  </tr>
 </table>
 </div> <!-- end of parameters -->
@@ -156,18 +180,21 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
 <?php
  } // end not generating labels
 
- if ($_POST['form_refresh'] || $_POST['form_labels']) {
+ if ($form_action) {
    prepareAndShowResults(); // Prepare and show results. (TRK)
  } // end refresh or labels
 
- if (!$_POST['form_labels']) {
+ if ($form_action != 'labels') {
+  if ($form_action) {  
 ?>
 </tbody>
 </table>
 </div>
+<?php
+  } // end if ($form_action)
+?>
 </form>
 </body>
-
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
