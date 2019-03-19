@@ -120,8 +120,6 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
 
 <form name='theform' method='post' action='unique_seen_patients_report.php' id='theform'>
 <div id="report_parameters">
-<input type='hidden' name='form_refresh' id='form_refresh' value=''/>
-<input type='hidden' name='form_labels' id='form_labels' value=''/>
 <!-- form_action is set to "submit" or "labels" at form submit time -->
 <input type='hidden' name='form_action' value='' />
 
