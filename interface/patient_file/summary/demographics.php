@@ -153,16 +153,16 @@
                   " <img src = $web_root" .
                   "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
                   " width=100 alt='$doc_catg:$image_file'>  </a> </td> <td valign='center'>".
-                  htmlspecialchars($doc_catg) . '<br />&nbsp;' . htmlspecialchars($image_file) .
+                  htmlspecialchars($doc_catg) .
                   "</td>";
           }
            else {
                   $to_url = "<td> <a href='" . $web_root . "/controller.php?document&retrieve" .
                       "&patient_id=$pid&document_id=$doc_id'" .
-                      " onclick='top.restoreSession()' class='css_button_small'>" .
+                      " onclick='top.restoreSession()'; class='css_button_small'>" .
                       "<span>" .
                       htmlspecialchars( xl("View"), ENT_QUOTES )."</a> &nbsp;" .
-                      htmlspecialchars( "$doc_catg - $image_file", ENT_QUOTES ) .
+                      htmlspecialchars( "$doc_catg", ENT_QUOTES ) .
                       "</span> </td>";
           }
           echo "<table><tr>";
