@@ -49,37 +49,38 @@ function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
     return $newdate;
 }
 
-$type = $_POST["type"];
-$facility = isset($_POST['facility']) ? $_POST['facility'] : '';
-if($_POST['form_from_date'] != "")
-    $from_date = $_POST['form_from_date'];
-else
-    $from_date = fixDate($_POST['form_from_date'], date($DateFormat));
-
-if($_POST['form_to_date'] != "")
-    $to_date = $_POST['form_to_date'];
-else
-    $to_date = fixDate($_POST['form_to_date']  , add_date(date('Y-m-d H:i:s')));
-
-$patient_id = trim($_POST["patient_id"]);
-$age_from = $_POST["age_from"];
-$age_to = $_POST["age_to"];
-$sql_gender = $_POST["gender"];
-$sql_ethnicity = $_POST["ethnicity"];
-$sql_race=$_POST["race"];
-$form_drug_name = trim($_POST["form_drug_name"]);
-$form_diagnosis = trim($_POST["form_diagnosis"]);
-$form_lab_results = trim($_POST["form_lab_results"]);
-$form_service_codes = trim($_POST["form_service_codes"]);
-$form_immunization = trim($_POST["form_immunization"]);
-$communication = trim($_POST["communication"]);
-
 /* This function prepares the result for Clinical report
  * @params: None
  * @return: Array ($result, $row_id, $img_id, $k)
  * @author: Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+ * @author: Ngai Elizabeth. <asobingai@gmail.com>
  * */
 function prepareResults() {
+  $type = $_POST["type"];
+  $facility = isset($_POST['facility']) ? $_POST['facility'] : '';
+  if($_POST['form_from_date'] != "")
+      $from_date = $_POST['form_from_date'];
+  else
+      $from_date = fixDate($_POST['form_from_date'], date($DateFormat));
+
+  if($_POST['form_to_date'] != "")
+      $to_date = $_POST['form_to_date'];
+  else
+      $to_date = fixDate($_POST['form_to_date']  , add_date(date('Y-m-d H:i:s')));
+
+  $patient_id = trim($_POST["patient_id"]);
+  $age_from = $_POST["age_from"];
+  $age_to = $_POST["age_to"];
+  $sql_gender = $_POST["gender"];
+  $sql_ethnicity = $_POST["ethnicity"];
+  $sql_race=$_POST["race"];
+  $form_drug_name = trim($_POST["form_drug_name"]);
+  $form_diagnosis = trim($_POST["form_diagnosis"]);
+  $form_lab_results = trim($_POST["form_lab_results"]);
+  $form_service_codes = trim($_POST["form_service_codes"]);
+  $form_immunization = trim($_POST["form_immunization"]);
+  $communication = trim($_POST["communication"]);
+
   $sqlstmt = "select
                 concat(pd.fname, ' ', pd.lname) AS patient_name,
                 pd.pid AS patient_id,
@@ -193,6 +194,7 @@ function prepareResults() {
 
   //where
     $whr_stmt="where 1=1";
+    $sqlBindArray = array();
     if(strlen($form_diagnosis) > 0 || $_POST['form_diagnosis_allergy'] == true
         || $_POST['form_diagnosis_medprb'] == true) {
         $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date < DATE_ADD(?,INTERVAL 1 DAY) AND DATE(li.date) <= ?";
