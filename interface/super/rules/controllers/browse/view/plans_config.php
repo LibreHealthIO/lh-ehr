@@ -24,8 +24,8 @@
  * @link http://librehealth.io
 */
 
- require_once("../../../../../globals");
- require_once("$srcdir/headers.inc.php");
+require_once(dirname(__FILE__)."/../../../../../globals.php");
+require_once($GLOBALS['srcdir']."/headers.inc.php");
 ?>
 
 <link type="text/css" rel="stylesheet" href="<?php echo $GLOBALS['webroot'] . '/library/css/jquery-ui-1.8.21.custom.css'?>" />

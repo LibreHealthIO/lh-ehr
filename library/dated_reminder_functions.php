@@ -175,7 +175,7 @@ function RemindersArray($days_to_show,$today,$alerts_to_show,$userID = false){
                             </span> '.
                             text($r['message']).' - ['.text($r['fromName']).']
                           </span> -----> 
-                          <a onclick="openAddScreen('.attr($r['messageID']).')" class="dnForwarder" id="'.attr($r['messageID']).'" href="#">[ '.xlt('Forward').' ]</a>
+                          <a class="dnForwarder sendReminder" data-text="'.attr($r['messageID']).'" id="'.attr($r['messageID']).'" href="#">[ '.xlt('Forward').' ]</a>
                         </p>';
           }
       return ($pdHTML == '' ? '<p class="alert"><br />'.xlt('No Reminders').'</p>' : $pdHTML); 

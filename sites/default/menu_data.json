@@ -52,6 +52,13 @@
         "children" : [ ],
         "requirement" : 1
     }, {
+        "label" : "Track Appointments",
+        "menu_id" : "fin0",
+        "target" : "fin",
+        "url" : "/interface/main/finder/select_patient.php",
+        "children" : [ ],
+        "requirement" : 0
+    }, {
         "label" : "Visits",
         "children" : [ {
             "label" : "Create Visit",
@@ -464,6 +471,14 @@
             "children" : [ ],
             "requirement" : 0,
             "acl_req" : [ "admin", "users" ]
+        },{
+
+            "label" : "Users Activity Report",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/interface/reports/username_report.php",
+            "children" : [ ],
+            "requirement" : 0
         }, {
             "label" : "Database",
             "menu_id" : "adm0",
@@ -544,7 +559,26 @@
             "url" : "/interface/reports/patient_list.php",
             "children" : [ ],
             "requirement" : 0
+
         }, {
+            "label" : "Clinical Statistics: Demographics vs. Diagnosis",
+            "menu_id" : "clndd0",
+            "target" : "clndd",
+            "url" : "/interface/reports/clinical_stats_by_demographics_report.php",
+            "children" : [ ],
+            "requirement" : 0
+        },
+            {
+            "label" : "Clinical Statistics: Demographics vs. Lab Results",
+            "menu_id" : "clndd1",
+            "target" : "clndd",
+            "url" : "/interface/reports/lab_stats_by_demographics_report.php",
+            "children" : [ ],
+            "requirement" : 0
+        },
+            {
+
+
             "label" : "Patient List By Referrer",
             "menu_id" : "rep0",
             "target" : "rep",
@@ -897,7 +931,6 @@
         "children" : [ ],
         "requirement" : 0
     }, {
-
         "label" : "BatchCom",
         "menu_id" : "adm0",
         "target" : "msc",
@@ -952,20 +985,6 @@
         "label" : "Issues",
         "menu_id" : "Popup:Issues",
         "url" : "/interface/patient_file/problem_encounter.php",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, {
-        "label" : "Export",
-        "menu_id" : "Popup:Export",
-        "url" : "/interface/../custom/export_xml.php",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, {
-        "label" : "Import",
-        "menu_id" : "Popup:Import",
-        "url" : "/interface/../custom/import_xml.php",
         "target" : "pop",
         "children" : [ ],
         "requirement" : 1
@@ -1119,7 +1138,7 @@
         "requirement" : 0,
         "acl_req" : [ "admin", "super" ],
         "global_req" : "enable_pqrs"
-    },{ 
+    },{
         "label" : "Alerts Log",
         "menu_id" : "rep0",
         "target" : "rep",

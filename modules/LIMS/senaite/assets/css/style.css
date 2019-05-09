@@ -1,0 +1,38 @@
+.navbar {
+  border-bottom: #f59031 3px solid;
+}
+
+body,html {
+  height: 100%;
+}
+
+
+.img-logo {
+  background: #f59031;
+}
+
+
+
+.login-bg {
+  background:rgba(0,0,0, 0.7);
+}
+
+.login-title {
+  font-size: 44px;
+  margin-bottom: 20px;
+}
+
+
+.badge-libre {
+  color:  #fff;
+  background-color: #f59031;
+}
+
+.container {
+  padding-top: 50px
+}
+
+.setup-icon {
+  height: 50px;
+  width: 50px;
+}

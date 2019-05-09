@@ -114,11 +114,22 @@ function sel_patient() {
 
 </head>
 <body class="body_top">
-<?php if($type_form == '0') { ?>
-<span class='title' id='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Ledger by Date'); ?></span>
-<?php }else{ ?>
-<span class='title' id='title'><?php echo xlt('Patient Ledger'); ?></span>
-<?php } ?>
+<table>
+  <tr>
+    <td>
+      <?php if($type_form == '0') { ?>
+        <span class='title' id='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Ledger by Date'); ?></span>
+      <?php }else{ ?>
+        <span class='title' id='title'><?php echo xlt('Patient Ledger'); ?></span>
+      <?php } ?>
+    </td>
+    <td>
+      <a href="../patient_file/summary/demographics.php" class="css_button" onclick="top.restoreSession()">
+        <span><?php echo htmlspecialchars(xl('Back To Patient'),ENT_NOQUOTES);?></span>
+      </a>
+    </td>
+  </tr>
+</table>
 <form method='post' action='pat_ledger.php?form=<?php echo attr($type_form);?>&patient_id=<?php echo attr($form_pid);?>' id='theform'>
 <div id="report_parameters">
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
@@ -202,7 +213,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
 if (! $_REQUEST['form_csvexport']) {
   if ( $_REQUEST['form_refresh'] && $orow <= 0) {
     echo "<span style='color:red;'>";
-    echo xlt('No data to display. Select patient and try search again.');
+    echo xlt('No data to display for this patient.');
     echo "</span>";
     echo '<script>document.getElementById("report_table").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';

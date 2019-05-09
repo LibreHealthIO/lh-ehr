@@ -1,5 +1,7 @@
 # LibreHealth EHR
 
+[![pipeline status](https://gitlab.com/librehealth/ehr/lh-ehr/badges/master/pipeline.svg)](https://gitlab.com/librehealth/ehr/lh-ehr/commits/master)
+
 LibreHealth EHR is a free and open-source electronic health records and medical practice management application.
 
 The mission of LibreHealth is to help provide high quality medical care to all people, regardless of race, socioeconomic status, or geographic location, by providing medical practices and clinics across the globe access to free of charge medical software. That same software is designed to save clinics both time and money, which gives practitioners more time to spend with individual patients, thereby supplying patients with higher quality care.
@@ -11,6 +13,16 @@ We are collaborating closely with the [LibreHealth Project](http://LibreHealth.i
 # Contributing code
 
 Code contributions are very welcome! We encourage newcomers to browse the [issue tracker](https://github.com/LibreHealthIO/LibreEHR/issues) for open issues and/or if you have found a bug in LibreEHR, please [create a new issue](https://github.com/LibreHealthIO/LibreEHR/issues/new) for same. You may open a [pull request](https://github.com/LibreHealthIO/LibreEHR/pulls) to contribute your code to an issue, from your fork of the [LibreEHR repository](https://github.com/LibreHealthIO/LibreEHR).
+
+# Docker Support
+
+Docker images are now pushed to [GitLab's container registry](https://gitlab.com/librehealth/ehr/lh-ehr/container_registry) built using [GitLab CI](https://gitlab.com/librehealth/ehr/lh-ehr/pipelines).
+
+Currently the image uses PHP 7.2 and Apache. We plan to support more than one version of PHP, which will be published at a later date.
+
+For the database in the docker-compose files, we use MariaDB
+
+See [the Docker README](./docker/README.md) for more information.
 
 # Installation
 
@@ -45,7 +57,7 @@ upload_tmp_dir is set to a correct default value that will work on your system
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
 ```
 
-3. Make sure you have disabled strict mode in Mysql.
+3. Make sure you have disabled strict mode in MySQL.
 
 ### How to disable Mysql strict mode?
 

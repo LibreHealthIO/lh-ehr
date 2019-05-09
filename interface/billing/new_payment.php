@@ -316,8 +316,9 @@ document.onclick=HideTheAjaxDivs;
 </style>
 <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
 </head>
-<body class="body_top" onLoad="OnloadAction()"  >
-<form name='new_payment' method='post'  action="new_payment.php"  onsubmit='
+<body class="body_top" onLoad="OnloadAction()">
+<center>
+<form name='new_payment' method='post' action="new_payment.php" onsubmit='
 <?php
  if($payment_id*1==0)
   {
@@ -333,7 +334,7 @@ return false;
   }
   ?>
 ' style="display:inline" >
-<table width="100%" border="0"  cellspacing="0" cellpadding="0">
+<table border="0"  cellspacing="0" cellpadding="0">
   <tr>
     <td colspan="3" align="left"><b><?php echo htmlspecialchars( xl('Payments'), ENT_QUOTES) ?></b></td>
   </tr>
@@ -386,8 +387,8 @@ return false;
                 ?>
                 <table border="0" cellspacing="0" cellpadding="0" width="267" align="center" id="AllocateButtons">
                   <tr height="5">
-                    <td ></td>
-                    <td ></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                   </tr>
                   <tr>
@@ -414,5 +415,6 @@ return false;
 <input type="hidden" name="hidden_type_code" id="hidden_type_code" value="<?php echo htmlspecialchars($hidden_type_code);?>"/>
 <input type='hidden' name='global_amount' id='global_amount' value='' />
 </form>
+</center>
 </body>
 </html>

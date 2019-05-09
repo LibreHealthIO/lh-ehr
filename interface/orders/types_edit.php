@@ -175,10 +175,10 @@ if ($_POST['form_save']) {
   if (($_POST['form_name'] === '') || ($_POST['form_description'] === '') || ($_POST['form_seq'] === '') || ($_POST['form_procedure_type'] === '')) {
     $errors[] = 'Please fill in all the fields';
   }
-
+  var_dump($_POST['form_procedure_type']);
   switch($_POST['form_procedure_type']) {
     case 'ord':
-      if (($_POST['form_lab_id'] === '') || ($_POST['form_procedure_code'] === '') || ($_POST['form_standard_code']) || ($_POST['form_body_site'] )
+      if ( ($_POST['form_lab_id'] === '') || ($_POST['form_procedure_code'] === '') || ($_POST['form_standard_code'] === '') || ($_POST['form_body_site'] === '')
            || ($_POST['form_specimen'] === '') || ($_POST['route_admin'] === '') || ($_POST['form_laterality'] === '')) {
             if(count($errors) <= 0) {
               $errors[] = 'Please fill in all the fields';
@@ -419,7 +419,7 @@ if ($typeid) {
 <?php } ?>
 
 &nbsp;
-<input type='button'  class='btn btn-danger' value='<?php echo xla('Cancel'); ?>' id="close" />
+<input id="close" type='button'  class='btn btn-danger' value='<?php echo xla('Cancel'); ?>' />
 </p>
 
 </center>

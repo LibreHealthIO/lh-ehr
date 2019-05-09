@@ -78,7 +78,7 @@ if (isset($_GET["mode"]) && $_GET["mode"] == "authorize" && $imauthorized) {
 }
 </style>
 </head>
-<body class="body_bottom">
+<body class="body_top">
 
 <!-- 'buttons' to min/max the bottom frame -JRM -->
 <div id="max" title="Restore this information">

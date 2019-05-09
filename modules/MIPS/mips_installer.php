@@ -20,6 +20,10 @@ include_once("$srcdir/api.inc");
 include_once("$srcdir/acl.inc");
 ?>	
 <html>
+    <head>
+        <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+    </head>
+<body class="body_top">
 <?php if (acl_check('admin', 'practice' )) { ?>
 <span class='title' visibility: hidden>Install MIPS Module</span>
 <h1>Install/Update MIPS reporting database tables</h1>
@@ -67,5 +71,6 @@ echo "MIPS module updated!";
 else {echo "You do not have access to this feature.";}
 ?>
 </form>
+</body>
 </html>
 

@@ -234,9 +234,7 @@ if ($fend > $count) $fend = $count;
 
 <html>
 <head>
-<style>
-  
-</style>
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <title><?php echo xlt("Codes"); ?></title>
 <?php 
       html_header_show();

@@ -37,9 +37,9 @@ if ($iDisplayStart >= 0 && $iDisplayLength >= 0) {
 //
 $orderby = '';
 if (isset($_GET['iSortCol_0'])) {
-	for ($i = 0; $i < intval($_GET['iSortingCols']); ++$i) {
+    for ($i = 0; $i < intval($_GET['iSortingCols']); ++$i) {
     $iSortCol = intval($_GET["iSortCol_$i"]);
-		if ($_GET["bSortable_$iSortCol"] == "true" ) {
+        if ($_GET["bSortable_$iSortCol"] == "true" ) {
       $sSortDir = escape_sort_order($_GET["sSortDir_$i"]); // ASC or DESC
       // We are to sort on column # $iSortCol in direction $sSortDir.
       $orderby .= $orderby ? ', ' : 'ORDER BY ';
@@ -50,8 +50,8 @@ if (isset($_GET['iSortCol_0'])) {
       else {
         $orderby .= "`" . escape_sql_column_name($aColumns[$iSortCol],array('patient_data')) . "` $sSortDir";
       }
-		}
-	}
+        }
+    }
 }
 
 // Global filtering.
@@ -61,10 +61,29 @@ $patient_filter = do_action( 'filter_patient_select', $_SESSION['authUser'] );
 if ( $patient_filter ) {
     $where .= " WHERE " . $patient_filter;
 }
+$allowedCols = sqlStatement(
+  'SELECT COLUMN_NAME
+      FROM information_schema.COLUMNS
+      WHERE TABLE_SCHEMA = ?
+      AND TABLE_NAME = ?',
+      [
+          $sqlconf["dbase"],
+          'patient_data'
+      ]
+);
+$filterColArray = array();
+foreach( $allowedCols as $colFields => $colValues){
+  array_push($filterColArray, $colValues["COLUMN_NAME"]);
+}
+
+#$filterColArray = $allowedCols->fields['COLUMN_NAME'];
 
 if (isset($_GET['sSearch']) && $_GET['sSearch'] !== "") {
   $sSearch = add_escape_custom($_GET['sSearch']);
   foreach ($aColumns as $colname) {
+        if (!in_array($colname, $filterColArray)) {
+            continue;
+        };
     $where .= $where ? "OR " : "WHERE ( ";
     if ($colname == 'name') {
       $where .=
@@ -103,7 +122,12 @@ for ($i = 0; $i < count($aColumns); ++$i) {
 //
 $sellist = 'pid';
 foreach ($aColumns as $colname) {
-  if ($colname == 'pid') continue;
+  if ($colname == 'pid') {
+      continue;
+  }
+  if (!in_array($colname, $filterColArray)) {
+      continue;
+  };
   $sellist .= ", ";
   if ($colname == 'name') {
     $sellist .= "lname, fname, mname";

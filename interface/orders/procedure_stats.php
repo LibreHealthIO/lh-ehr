@@ -255,7 +255,8 @@ function process_result_code($row) {
 ?>
 <html>
 <head>
-<?php html_header_show(); ?>
+    <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
+    <?php html_header_show(); ?>
 <title><?php echo $report_title; ?></title>
 <style type="text/css">
  body       { font-family:sans-serif; font-size:10pt; font-weight:normal }
@@ -265,7 +266,7 @@ function process_result_code($row) {
 <script type="text/javascript" src="../../library/textformat.js"></script>
 </head>
 
-<body leftmargin='0' topmargin='0' marginwidth='0' marginheight='0'>
+<body class="body_top">
 
 <center>
 

@@ -46,9 +46,10 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
 <head>
   <title><?php echo xlt('Calendar Administration');?></title>
   <link href="css/admin.css" rel="stylesheet" />
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-min-3-1-1/index.js"></script>
 </head>
-<body>
+<body class="body_top">
   <div class="container-fluid">
     <div class="row block cat-body">
       

@@ -25,8 +25,8 @@ require_once(dirname(__FILE__)."/../../../../../../library/acl.inc");
 global $phpgacl_location;
 require_once("$phpgacl_location/gacl_api.class.php");
 
- require_once("../../../../../globals");
- require_once("$srcdir/headers.inc.php");
+require_once(dirname(__FILE__)."/../../../../../globals.php");
+require_once($GLOBALS['srcdir']."/headers.inc.php");
 ?>
 
 <table class="header">

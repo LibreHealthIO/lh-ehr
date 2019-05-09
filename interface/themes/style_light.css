@@ -693,8 +693,8 @@ tr.odd, td.even {
   padding-right: 10px;
   /* sliding doors padding */
   text-decoration: none;
-  color: #ffffff !important;
-  background-color: #1050b6;
+  color: white !important;
+  background-color: #5ac3ca;
   padding: 5px 12px 5px;
   border: none;
 }
@@ -759,10 +759,11 @@ ul.tabNav li {
 }
 ul.tabNav li.current a {
   background: #ffffff;
+  font-weight: bold;
   color: #2672ec;
 }
 ul.tabNav a {
-  color: #ffffff;
+  color: #2672ec;
   display: block;
   padding: 8px 17px;
   text-decoration: none;

@@ -39,6 +39,7 @@ require_once("../globals.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/acl.inc");
 
 // Ensure authorized
@@ -57,6 +58,7 @@ if (!isset($_GET["user_id"]) || !isset($_GET["fac_id"])) {
 <head>
 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="./assets/css/facility.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="../../library/js/fancybox/jquery.fancybox-1.2.6.css" media="screen" />
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
@@ -66,7 +68,9 @@ if (!isset($_GET["user_id"]) || !isset($_GET["fac_id"])) {
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dynarch_calendar.js"></script>
-<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
+<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); 
+        call_required_libraries(array("bootstrap"));
+        ?>
 <script type="text/javascript" src="../../library/dynarch_calendar_setup.js"></script>
 <script language="JavaScript">
 
@@ -123,27 +127,15 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
 }
 ?>
 
-<table>
-    <tr>
-        <td>
-        <span class="title"><?php echo xlt('Edit Facility Specific User Information'); ?></span>&nbsp;&nbsp;&nbsp;</td><td>
-        <a class="css_button large_button" name='form_save' id='form_save' onclick='submitform()' href='#' >
-            <span class='css_button_span large_button_span'><?php echo xlt('Save');?></span>
-        </a>
-        <a class="css_button large_button" id='cancel' href='#'>
-            <span class='css_button_span large_button_span'><?php echo xlt('Cancel');?></span>
-        </a>
-     </td>
-  </tr>
-</table>
-
+<h3 class="modaltitle"><?php echo xlt('Edit Facility Specific User Information'); ?></h3>
+<br/>
 <form name='medicare' method='post' action="facility_user.php" target="_parent">
     <input type=hidden name=mode value="facility_user_id">
     <input type=hidden name=user_id value="<?php echo attr($_GET["user_id"]);?>">
     <input type=hidden name=fac_id value="<?php echo attr($_GET["fac_id"]);?>">
     <?php $iter = sqlQuery("select * from facility_user_ids where id=?", array($my_id)); ?>
 
-<table border=0 cellpadding=0 cellspacing=0>
+<table id="userinfotable" border=0 cellpadding=0 cellspacing=0>
 <tr>
     <td>
         <span class=text><?php echo xlt('User'); ?>: </span>
@@ -178,7 +170,16 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
 <?php } ?>
 
 </table>
+    <div class="row" id="modalbuttonrow">
+        <a class="btn btn-success" name='form_save' id='form_save' onclick='submitform()' href='#' >
+        <span class=''><?php echo xlt('Save');?></span>
+        </a>
+        <a class="btn btn-danger" id='cancel' href='#'>
+            <span class=''><?php echo xlt('Cancel');?></span>
+        </a>
+    </div>
 </form>
+
 
 <!-- include support for the list-add selectbox feature -->
 <?php include $GLOBALS['fileroot'] . "/library/options_listadd.inc"; ?>
