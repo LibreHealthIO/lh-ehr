@@ -64,7 +64,9 @@ $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
   call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker","fancybox"));
 ?>
 <title><?php echo xlt('Patient Encounter'); ?></title>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/common.js"></script>
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+
+    <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/js/common.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/overlib_mini.js"></script>
 
 <?php include_once("{$GLOBALS['srcdir']}/ajax/facility_ajax_jav.inc.php"); ?>

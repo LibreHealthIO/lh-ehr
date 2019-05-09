@@ -80,16 +80,11 @@ if (!empty($_POST['menuEdits'])) {
 <html>
 <head>
     <title><?php echo xlt("Site Menu Editor") ?></title>
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
     <link href="js/jsoneditor/jsoneditor.css" rel="stylesheet" type="text/css">
     <script src="js/jsoneditor/jsoneditor.js"></script>
 
     <style>       
-        body {
-            font: 10.5pt arial;
-            color: #4d4d4d;
-            line-height: 150%;
-            width: 500px;
-        }
 
         #jsoneditor {
             width: 500px;
@@ -97,7 +92,7 @@ if (!empty($_POST['menuEdits'])) {
         }
     </style>
 </head>
-<body>
+<body class="body_top">
 <h1><?php echo xlt("Site Menu Editor") ?></h1>
 
 <form id="menuData" name="menuData" method="post" action="edit_menu.php">
@@ -105,7 +100,7 @@ if (!empty($_POST['menuEdits'])) {
 </form>
 
 <?php echo xlt("Save Menu Changes for site ID") . ': ' . $_SESSION['site_id'];?> <input type="button" id="saveDocument" class='cp-submit' value="Save" />
-
+<p class="clearfix"></p>
 <div id="jsoneditor"></div>
 
 <script type="text/javascript">

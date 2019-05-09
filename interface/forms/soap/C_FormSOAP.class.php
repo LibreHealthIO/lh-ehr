@@ -6,20 +6,22 @@ require_once("FormSOAP.class.php");
 
 class C_FormSOAP extends Controller {
 
-	var $template_dir;
+	                var $template_dir;
                     var $form_action;
                     var $dont_save_link;
                     var $style;
                     var $data;
+                    var $css_sheet;
                     
 
     function __construct($template_mod = "general") {
     	parent::__construct();
     	$this->template_mod = $template_mod;
-    	$this->template_dir = dirname(__FILE__) . "/templates/";    	
-                    $this->form_action = $GLOBALS['web_root'];
-                    $this->dont_save_link = $GLOBALS['form_exit_url'];
-                    $this->style = $GLOBALS['style'];    }
+    	$this->template_dir = dirname(__FILE__) . "/templates/";
+    	$this->form_action = $GLOBALS['web_root'];
+    	$this->dont_save_link = $GLOBALS['form_exit_url'];
+    	$this->style = $GLOBALS['css_header'];
+    }
 
     function default_action() {
     	$form = new FormSOAP();    	
@@ -31,7 +33,7 @@ class C_FormSOAP extends Controller {
                     return $echoed_content;
 	}
 	
-	function view_action($form_id) {
+	function wview_action($form_id) {
 		if (is_numeric($form_id)) {
     		$form = new FormSOAP($form_id);
     	}
@@ -65,7 +67,7 @@ class C_FormSOAP extends Controller {
 		}
 		return;
 	}
-    
+
 }
 
 

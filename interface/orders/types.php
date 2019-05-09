@@ -235,7 +235,7 @@ function recolor() {
 
 </head>
 
-<body >
+<body class="body_top">
 
   <div class="container">
     <div id="modal-iframe"></div>

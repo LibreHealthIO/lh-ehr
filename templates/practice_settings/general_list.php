@@ -7,7 +7,7 @@
 <script type="text/javascript" src="<?php echo $GLOBALS['rootdir'] . '/../library/js/common.js';?>"></script>
 </head>
 
-<body>
+<body class="body_top">
 
 <div>
     <h5 style="padding:5px"><b><?php echo xlt("Practice Settings");?></b></h5>

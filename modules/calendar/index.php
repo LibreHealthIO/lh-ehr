@@ -24,7 +24,8 @@ require('includes/session.php');
 ?>
 <html>
 <head>
-  <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
+    <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
   <link href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
@@ -39,7 +40,7 @@ require('includes/session.php');
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
   <script src="../../library/dialog.js"></script>
 </head>
-<body>
+<body class="body_top">
   <div id="sidebar">
     <button id="datepicker"><?php echo xlt('Date Picker'); ?></button>
 
