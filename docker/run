@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+#
+# Docker Helper Script
+#
+# LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+# See the Mozilla Public License for more details.
+# If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# @package Librehealth EHR
+# @author Robby O'Connor <rob@librehealth.io>
+# @link http://librehealth.io
+#
+# Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+#
+
+set -euo pipefail
+IFS=$'\n\t'
+
+
+function dc {
+    docker-compose -p librehealth_ehr -f docker-compose.prod.yml "$@"
+}
+
+function usage  {
+  echo "Usage: $0 COMMAND"
+  echo "Commands:"
+  echo "    setup                       Check that everything is in order and prompt for and save database credentials"
+  echo "    start                       Start the containers"
+  echo "    stop                        Stop the containers"
+  echo "    restart                     Restart the containers"
+  echo "    rebuild                     Stop and remove the containers and then recreate them"
+  echo "    destroy                     This is destructive and will remove the container, images, and all volumes"
+  echo "    logs                        View the Docker logs for running containers"
+  echo "    ps                          Show running containers"
+  echo "    enter                       Enter into a running container and run a command"
+  echo "    backup                      Run on-demand backup operation of database and EHR files"
+  echo "    restore <timestamp>         restore from a backup given a timestamp in the format \"YYYY-MM-DD_hh-mm-ss\" passed as an argument (ex: docker/run restore 2018-12-15_00-00-01)"
+  echo "    update                      pull new updated images and restart the containers with the updated images"
+  exit 1
+}
+
+if [[ "$#" -lt 1 ]]; then
+    usage
+fi
+
+case "$1" in
+    setup)
+        source ./docker/preflight
+        source ./docker/setup
+        ;;
+    start)
+        shift 1
+        dc "up" "-d" "$@"
+        exit 0
+        ;;
+    stop)
+        shift 1
+        dc "stop" "$@"
+        exit 0
+        ;;
+    restart)
+        shift 1
+        dc "stop" "$@"
+        dc "start" "$@"
+        exit 0
+        ;;
+    rebuild)
+        shift 1
+        dc "down" "$@"
+        dc "up" "-d" "$@"
+        exit 0
+        ;;
+    destroy)
+        shift 1
+        dc "down" "--volumes" "--remove-orphans" "$@"
+        exit 0
+        ;;
+    logs)
+        shift 1
+        dc "logs" "$@"
+        exit 0
+        ;;
+    ps)
+        dc "ps"
+        exit 0
+        ;;
+    enter)
+        shift 1
+        dc exec "$@"
+        exit 0
+        ;;
+    backup)
+        dc "run" "--rm" "backup" "bash" "backup.sh" "backup"
+        exit 0
+        ;;
+    restore)
+        dc "run" "--rm" "backup" "bash" "backup.sh" "restore" "$2"
+        exit 0
+        ;;
+    update)
+        dc "pull"
+        dc "up" "-d"
+        exit 0
+        ;;
+    *)
+        usage
+        ;;
+esac
