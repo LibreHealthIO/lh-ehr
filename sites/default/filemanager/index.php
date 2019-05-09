@@ -30,7 +30,7 @@ require_once($GLOBALS['srcdir'].'/acl.inc');
 
 <script src="assets/js/dropzone.js"></script>
 
- <h1> Drop your file in the box, or click in the box to browse for your files.</h1>
+ <h1> Drag and drop your file below or click below to browse for files.</h1>
 </head>
  
 <body>
@@ -41,7 +41,7 @@ require_once($GLOBALS['srcdir'].'/acl.inc');
  	<div class="filemanager">
 
 		<div class="search">
-			<input type="search" placeholder="Find a file.." />
+			<input type="search" placeholder="Find a file/folder.." />
 		</div>
 
 		<div class="breadcrumbs"></div>
@@ -50,7 +50,7 @@ require_once($GLOBALS['srcdir'].'/acl.inc');
 
 		<div class="nothingfound">
 			<div class="nofiles"></div>
-			<span>No files here.</span>
+			<span>No files found.</span>
 		</div>
 
 	</div>  

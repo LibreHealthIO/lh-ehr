@@ -2,10 +2,9 @@
 
 $dir = "files";
 
-// Run the recursive function 
+// Run the recursive function
 
 $response = scan($dir);
-
 
 // This function scans the files folder recursively, and builds a large array
 
@@ -16,9 +15,9 @@ function scan($dir){
 	// Is there actually such a folder/file?
 
 	if(file_exists($dir)){
-	
+
 		foreach(scandir($dir) as $f) {
-		
+
 			if(!$f || $f[0] == '.') {
 				continue; // Ignore hidden files
 			}
@@ -34,7 +33,7 @@ function scan($dir){
 					"items" => scan($dir . '/' . $f) // Recursively get the contents of the folder
 				);
 			}
-			
+
 			else {
 
 				// It is a file
@@ -47,13 +46,9 @@ function scan($dir){
 				);
 			}
 		}
-	
 	}
-
 	return $files;
 }
-
-
 
 // Output the directory listing as JSON
 
