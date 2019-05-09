@@ -76,9 +76,6 @@ $result = sqlStatement($log_query);
 </style>
 </head>
 <body class="body_top">
-    <a class="css_button large_button" id="close" href="#">
-        <span class="css_button_span large_button_span" style="font-size: 14px;"><?php echo htmlspecialchars(xl('Close'), ENT_NOQUOTES); ?></span>
-    </a>
     <hr>
     <div class="log-container log-font">
         <?php
