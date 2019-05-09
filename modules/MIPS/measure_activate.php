@@ -3,14 +3,14 @@
  * Display PQRS Measures for (de)activation
  *
  * Copyright (C) 2015 - 2017      Suncoast Connection
- *
+ * 
  * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
- * See the Mozilla Public License for more details.
+ * See the Mozilla Public License for more details. 
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
+ * 
  * @author  Art Eaton <art@suncoastconnection.com>
  * @author  Bryan lee <leebc@suncoastconnection.com>
- * @package LibreHealthEHR
+ * @package LibreHealthEHR 
  * @link    http://suncoastconnection.com
  * @link    http://librehealth.io
  *
@@ -24,8 +24,11 @@ $sanitize_all_escapes = true;
 $fake_register_globals = false;
 
 require_once '../../interface/globals.php';
-require_once '../../library/headers.inc.php';
 require_once $srcdir.'/api.inc';
+require_once("$srcdir/headers.inc.php");
+//Include Bootstrap
+call_required_libraries(array("bootstrap"));
+
 
 $updateStatus = array(
 	'off' => array(),
@@ -79,6 +82,7 @@ h1, h2, h3 {
 }
 #measures ul {
 	padding-left: 1em;
+	display: inline;
 }
 #measures li {
 	list-style: none;
@@ -120,7 +124,6 @@ h1, h2, h3 {
 	display: none;
 }
 .quickselect {
-	
 	border: 1px solid #333333;
 	border-radius: 4px;
 	color: #333333;
@@ -129,6 +132,13 @@ h1, h2, h3 {
 	margin: 0.25ex 0.15ex 0.15ex 0ex;
 	padding: 0 0.75ex;
 	font-size: 9pt;
+}
+.ma-title {
+	font-size: 20px; 
+	margin-left: 15px;
+}
+.row{
+	margin: 0;
 }
 		</style>
 		<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
@@ -226,7 +236,7 @@ $(document).ready(function() {
                                 mymeasurelist = [21,23,47,128,130,226,317,354,355,356,357,358,402];
                                 break;
                         case "MIPS-12 Hospitalists":
-                                mymeasurelist = [5,8,32,47,76,128,130,226,317,402,407,431];
+                                mymeasurelist = [5,8,47,76,128,130,226,317,402,407,431];
                                 break;
                         case "MIPS-13 Internal Medicine":
                                 mymeasurelist = [1,5,47,50,109,110,112,113,116,117,128,130,134,154,155,181,204,226,236,317,326,331,332,333,334,387,400,401,402,408,412,414,418,431,438];
@@ -238,7 +248,7 @@ $(document).ready(function() {
                                 mymeasurelist = [47,128,130,134,181,226,282,283,284,286,288,317,325,370,383,391,402,411,431];
                                 break;
                         case "MIPS-16 Neurology":
-                                mymeasurelist = [32,47,128,130,226,268,282,283,284,286,288,290,291,293,294,317,386,402,408,412,414,419,431,435];
+                                mymeasurelist = [47,128,130,226,268,282,283,284,286,288,290,291,293,317,386,402,408,412,414,419,431,435];
                                 break;
                         case "MIPS-17 Obstetrics and Gynecology":
                                 mymeasurelist = [47,48,50,110,112,128,130,226,236,265,317,402,418,422,431,432,433,434,443,447,448];
@@ -298,7 +308,7 @@ $(document).ready(function() {
 	</head>
 	<body class="body_top">
 		<form action="?action=save" method="post">
-			<h1>MIPS Measure Selector</h1>
+			<h2>MIPS Measure Selector</h2>
 <?php
 
 if(count($updateStatus['off']) || count($updateStatus['on'])) {
@@ -310,53 +320,49 @@ if(count($updateStatus['off']) || count($updateStatus['on'])) {
 }
 
 ?>
-			<p><input type="submit" value="Update" /></p>
-			<div id="measures">
-				<ul>
-
-					<li>MIPS Specialty Sets for 2018
-						<ul>
-							<button type="button" class="quickselect" onclick="quickSelect('MIPS-1 Allergy/Immunology')">MIPS-1 Allergy/Immunology</button>
-							<button type="button" class="quickselect" onclick="quickSelect('MIPS-2 Anesthesiology')">MIPS-2 Anesthesiology</button>
-							<button type="button" class="quickselect" onclick="quickSelect('MIPS-3 Cardiology')">MIPS-3 Cardiology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-4 Dermatology')">MIPS-4 Dermatology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-5 Diagnostic Radiology')">MIPS-5 Diagnostic Radiology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-6 Electrophysiology Cardiac Specialist')">MIPS-6 Electrophysiology Cardiac Specialist</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-7 Emergency Medicine')">MIPS-7 Emergency Medicine</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-8 Gastroenterology')">MIPS-8 Gastroenterology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-9 General Oncology')">MIPS-9 General Oncology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-10 General Practice/Family Medicine')">MIPS-10 General Practice/Family Medicine</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-11 General Surgery')">MIPS-11 General Surgery</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-12 Hospitalists')">MIPS-12 Hospitalists</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-13 Internal Medicine')">MIPS-13 Internal Medicine</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-14 Interventional Radiology')">MIPS-14 Interventional Radiology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-15 Mental Health/Behavioral Health/Dementia')">MIPS-15 Mental Health/Behavioral Health/Dementia</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-16 Neurology')">MIPS-16 Neurology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-17 Obstetrics and Gynecology')">MIPS-17 Obstetrics and Gynecology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-18 Ophlamology')">MIPS-18 Ophlamology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-19 Orthopedic Surgery')">MIPS-19 Orthopedic Surgery</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-20 Otolaryngology')">MIPS-20 Otolaryngology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-21 Pathology')">MIPS-21 Pathology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-22 Pediatrics')">MIPS-22 Pediatrics</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-23 Physical Medicine')">MIPS-23 Physical Medicine</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-24 Plastic Surgery')">MIPS-24 Plastic Surgery</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-25 Preventive Medicine')">MIPS-25 Preventive Medicine</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-26 Radiation Oncology')">MIPS-26 Radiation Oncology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-27 Rheumatology')">MIPS-27 Rheumatology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-28 Thoracic Surgery')">MIPS-28 Thoracic Surgery</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-29 Urology')">MIPS-29 Urology</button>
-                                                        <button type="button" class="quickselect" onclick="quickSelect('MIPS-30 Vascular Surgery')">MIPS-30 Vascular Surgery</button>
-						</ul>
-					</li>
-
-					<li>
+			<div id="measures">				
+				<div class="row"><p><span class="align-middle"><input class="btn btn-success btn-sm align-middle" type="submit" value="Update" /></span><span class="align-middle ma-title">MIPS Specialty Sets for 2018</span></p></div>
+				<div class="row">
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-1 Allergy/Immunology')">MIPS-1 Allergy/Immunology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-2 Anesthesiology')">MIPS-2 Anesthesiology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-3 Cardiology')">MIPS-3 Cardiology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-4 Dermatology')">MIPS-4 Dermatology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-5 Diagnostic Radiology')">MIPS-5 Diagnostic Radiology</button>               
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-6 Electrophysiology Cardiac Specialist')">MIPS-6 Electrophysiology Cardiac Specialist</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-7 Emergency Medicine')">MIPS-7 Emergency Medicine</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-8 Gastroenterology')">MIPS-8 Gastroenterology</button> 
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-9 General Oncology')">MIPS-9 General Oncology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-10 General Practice/Family Medicine')">MIPS-10 General Practice/Family Medicine</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-11 General Surgery')">MIPS-11 General Surgery</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-12 Hospitalists')">MIPS-12 Hospitalists</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-13 Internal Medicine')">MIPS-13 Internal Medicine</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-14 Interventional Radiology')">MIPS-14 Interventional Radiology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-15 Mental Health/Behavioral Health/Dementia')">MIPS-15 Mental Health/Behavioral Health/Dementia</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-16 Neurology')">MIPS-16 Neurology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-17 Obstetrics and Gynecology')">MIPS-17 Obstetrics and Gynecology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-18 Ophlamology')">MIPS-18 Ophlamology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-19 Orthopedic Surgery')">MIPS-19 Orthopedic Surgery</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-20 Otolaryngology')">MIPS-20 Otolaryngology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-21 Pathology')">MIPS-21 Pathology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-22 Pediatrics')">MIPS-22 Pediatrics</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-23 Physical Medicine')">MIPS-23 Physical Medicine</button>   
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-24 Plastic Surgery')">MIPS-24 Plastic Surgery</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-25 Preventive Medicine')">MIPS-25 Preventive Medicine</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-26 Radiation Oncology')">MIPS-26 Radiation Oncology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-27 Rheumatology')">MIPS-27 Rheumatology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-28 Thoracic Surgery')">MIPS-28 Thoracic Surgery</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-29 Urology')">MIPS-29 Urology</button>
+					<button type="button" class="quickselect" onclick="quickSelect('MIPS-30 Vascular Surgery')">MIPS-30 Vascular Surgery</button>
+				</div>
+				<br/>
+				<li>
 						<input type="checkbox" id="pqrs-toggle">
 						<label for="pqrs-toggle">All Measures</label>
 						<ul>
 							<li>
 								<input type="checkbox" id="individual-toggle">
 								<label for="individual-toggle">Individual Measure Selection (click twice to de-select all)</label>
-								<ul>
+								<ul>					
 <?php
 
 $rules = sqlStatementNoLog(
@@ -428,7 +434,6 @@ foreach($rules as $rule) {
 					</li>
 				</ul>
 			</div>
-			<p><input type="submit" value="Update" /></p>
 		</form>
 	</body>
 </html>

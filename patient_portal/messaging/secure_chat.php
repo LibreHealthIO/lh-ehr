@@ -1016,7 +1016,7 @@ background:#fff;
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only"><?php echo xlt('Close'); ?></span>
                         </button>
-                        <h4 class="modal-title"><?php echo xlt('Style your messsage and/or add Image/Video'); ?></h4>
+                        <h4 class="modal-title"><?php echo xlt('Style your message and/or add Image/Video'); ?></h4>
                     </div>
                     <div class="modal-body">
                         <summernote config="options"></summernote>

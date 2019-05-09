@@ -54,7 +54,6 @@ function mopen(id)
 {
     // cancel close timer
     //mcancelclosetime();
-    
     flag=10;
 
     // close old layer
@@ -77,17 +76,12 @@ function mopen(id)
 // close showed layer
 function mclose()
 {
-    if(flag==10)
-     {
-      flag=11;
-      return;
-     }
-    if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+     if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
     if(ddmenuitem) ddmenuitem.style.display = 'none';
+
 }
 
-// close layer when click-out
-document.onclick = mclose;
+
 //=================================================
 function findPosX(id)
   {
@@ -166,7 +160,7 @@ isset($GLOBALS['encounter']) &&
       $encounterLocked = true;
   }
 }
-  
+
 if (!empty($reg)) {
   $StringEcho= '<ul id="sddm">';
   if(isset($hide)){
@@ -189,7 +183,7 @@ if (!empty($reg)) {
           $new_category_ = $new_category;
           $new_category_ = str_replace(' ','_',$new_category_);
           if ($old_category != '') {$StringEcho.= "</table></div></li>";}
-          $StringEcho.= "<li class=\"encounter-form-category-li\"><a href='JavaScript:void(0);' onClick=\"mopen('$DivId');\" >$new_category</a><div id='$DivId' ><table border='0' cellspacing='0' cellpadding='0'>";
+          $StringEcho.= "<li class=\"encounter-form-category-li\"><a href='JavaScript:void(0);' onmouseover=\"mopen('$DivId');\" >$new_category</a><div id='$DivId' onmouseleave=mclose(); style='z-index: 1;'><table border='0' cellspacing='0' cellpadding='0'>";
           $old_category = $new_category;
           $DivId++;
         }
@@ -221,11 +215,11 @@ if ( $encounterLocked === false ) {
       if(!$StringEcho){
         $StringEcho= '<ul id="sddm">';
       }
-      $StringEcho.= "<li class=\"encounter-form-category-li\"><a href='JavaScript:void(0);' onClick=\"mopen('lbf');\" >".xl('Layout Based') ."</a><div id='lbf' ><table border='0'  cellspacing='0' cellpadding='0'>";
+      $StringEcho.= "<li class=\"encounter-form-category-li\"><a href='JavaScript:void(0);' onmouseover=\"mopen('lbf');\" >".xl('Layout Based') ."</a><div id='lbf' ><table border='0'  cellspacing='0' cellpadding='0'>";
       while ($lrow = sqlFetchArray($lres)) {
       $option_id = $lrow['option_id']; // should start with LBF
       $title = $lrow['title'];
-      $StringEcho.= "<tr><td style='border-top: 1px solid #000000;padding:0px;'><a href='" . $rootdir .'/patient_file/encounter/load_form.php?formname=' 
+      $StringEcho.= "<tr><td style='border-top: 1px solid #000000;padding:0px;'><a href='" . $rootdir .'/patient_file/encounter/load_form.php?formname='
                     .urlencode($option_id) ."' >" . xl_form_title($title) . "</a></td></tr>";
       }
     }
@@ -234,7 +228,7 @@ if ( $encounterLocked === false ) {
 <!-- DISPLAYING HOOKS STARTS HERE -->
 <?php
     $module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
-                                    obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id 
+                                    obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id
                                     WHERE fld_type=3 AND mod_active=1 AND sql_run=1 AND attached_to='encounter' ORDER BY mod_id");
   $DivId = 'mod_installer';
   if (sqlNumRows($module_query)) {
@@ -249,7 +243,7 @@ if ( $encounterLocked === false ) {
         $modulePath = $GLOBALS['customModDir'];
         $added      = "";
       }
-      else{     
+      else{
         $added      = "index";
         $modulePath = $GLOBALS['zendModDir'];
       }
@@ -258,7 +252,7 @@ if ( $encounterLocked === false ) {
       if($jid==0 || ($modid!=$modulerow['mod_id'])){
         if($modid!='')
         $StringEcho.= '</table></div></li>';
-      $StringEcho.= "<li><a href='JavaScript:void(0);' onClick=\"mopen('$DivId');\" >$new_category</a><div id='$DivId' ><table border='0' cellspacing='0' cellpadding='0'>";
+      $StringEcho.= "<li><a href='JavaScript:void(0);' onmouseover=\"mopen('$DivId');\" >$new_category</a><div id='$DivId' ><table border='0' cellspacing='0' cellpadding='0'>";
       }
       $jid++;
       $modid = $modulerow['mod_id'];

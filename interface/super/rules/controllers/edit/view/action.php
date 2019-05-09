@@ -6,8 +6,8 @@
  // as published by the Free Software Foundation; either version 2
  // of the License, or (at your option) any later version.
 
- require_once("../../../../../globals");
- require_once("$srcdir/headers.inc.php");
+ require_once(dirname(__FILE__)."/../../../../../globals.php");
+ require_once($GLOBALS['srcdir']."/headers.inc.php");
 ?>
 <?php $action = $viewBean->action?>
 <?php $rule = $viewBean->rule?>

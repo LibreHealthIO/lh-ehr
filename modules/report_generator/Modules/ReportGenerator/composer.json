@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/reportgenerator",
+    "description": "This module is a Report Generator tool for LibreHealth EHR system.",
+    "authors": [
+        {
+            "name": "Tigpezeghe Rodrige K.",
+            "email": "tigrodrige@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\ReportGenerator\\Providers\\ReportGeneratorServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ReportGenerator\\": ""
+        }
+    }
+}

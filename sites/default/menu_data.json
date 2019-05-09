@@ -52,6 +52,13 @@
         "children" : [ ],
         "requirement" : 1
     }, {
+        "label" : "Track Appointments",
+        "menu_id" : "fin0",
+        "target" : "fin",
+        "url" : "/interface/main/finder/select_patient.php",
+        "children" : [ ],
+        "requirement" : 0
+    }, {
         "label" : "Visits",
         "children" : [ {
             "label" : "Create Visit",
@@ -464,6 +471,14 @@
             "children" : [ ],
             "requirement" : 0,
             "acl_req" : [ "admin", "users" ]
+        },{
+
+            "label" : "Users Activity Report",
+            "menu_id" : "rep0",
+            "target" : "rep",
+            "url" : "/interface/reports/username_report.php",
+            "children" : [ ],
+            "requirement" : 0
         }, {
             "label" : "Database",
             "menu_id" : "adm0",
@@ -544,7 +559,26 @@
             "url" : "/interface/reports/patient_list.php",
             "children" : [ ],
             "requirement" : 0
+
         }, {
+            "label" : "Clinical Statistics: Demographics vs. Diagnosis",
+            "menu_id" : "clndd0",
+            "target" : "clndd",
+            "url" : "/interface/reports/clinical_stats_by_demographics_report.php",
+            "children" : [ ],
+            "requirement" : 0
+        },
+            {
+            "label" : "Clinical Statistics: Demographics vs. Lab Results",
+            "menu_id" : "clndd1",
+            "target" : "clndd",
+            "url" : "/interface/reports/lab_stats_by_demographics_report.php",
+            "children" : [ ],
+            "requirement" : 0
+        },
+            {
+
+
             "label" : "Patient List By Referrer",
             "menu_id" : "rep0",
             "target" : "rep",
@@ -897,7 +931,6 @@
         "children" : [ ],
         "requirement" : 0
     }, {
-
         "label" : "BatchCom",
         "menu_id" : "adm0",
         "target" : "msc",
@@ -952,20 +985,6 @@
         "label" : "Issues",
         "menu_id" : "Popup:Issues",
         "url" : "/interface/patient_file/problem_encounter.php",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, {
-        "label" : "Export",
-        "menu_id" : "Popup:Export",
-        "url" : "/interface/../custom/export_xml.php",
-        "target" : "pop",
-        "children" : [ ],
-        "requirement" : 1
-    }, {
-        "label" : "Import",
-        "menu_id" : "Popup:Import",
-        "url" : "/interface/../custom/import_xml.php",
         "target" : "pop",
         "children" : [ ],
         "requirement" : 1
@@ -1028,31 +1047,31 @@
     "menu_id" : "mips",
     "children" : [ {
         "label" : "View Reports",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips1",
+        "target" : "mips1",
         "url" : "/modules/MIPS/report_results.php",
         "children" : [ ],
         "requirement" : 0
     }, {
         "label" : "Create MIPS Report",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips2",
+        "target" : "mips2",
         "url" : "/modules/MIPS/clinical_measures.php?type=pqrs",
         "children" : [ ],
         "requirement" : 0,
         "global_req" : "enable_pqrs"
     }, {
         "label" : "Select Measures",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips3",
+        "target" : "mips3",
         "url" : "/modules/MIPS/measure_activate.php",
         "children" : [ ],
         "requirement" : 0,
         "global_req" : "enable_pqrs"
     }, {
         "label" : "Upload Claim Files",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips4",
+        "target" : "mips4",
         "url" : "/modules/filemanager/index.php",
         "children" : [ ],
         "requirement" : 0,
@@ -1060,8 +1079,8 @@
     }, {
 
         "label" : "Instance Counts",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips5",
+        "target" : "mips",
         "url" : "/modules/MIPS/instanceCount.php",
         "children" : [ ],
         "requirement" : 0,
@@ -1069,8 +1088,8 @@
         "global_req" : "enable_pqrs"
     }, {
         "label" : "Remove_Provider_Assignments",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips6",
+        "target" : "mips",
         "url" : "/modules/MIPS/reset_provider_to_unassigned.php",
         "children" : [ ],
         "requirement" : 0,
@@ -1078,15 +1097,15 @@
         "global_req" : "enable_pqrs"
     }, {
         "label" : "Provider Encounter Counts",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips7",
+        "target" : "mips",
         "url" : "/modules/MIPS/provider_encounter_counts.php",
         "children" : [ ],
         "requirement" : 0
     }, {
         "label" : "Database Import",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips8",
+        "target" : "mips",
         "url" : "/modules/MIPS/import_data.php",
         "children" : [ ],
         "requirement" : 0,
@@ -1094,8 +1113,8 @@
         "global_req" : "enable_pqrs"
     },{
         "label" : "Database Inserts",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips9",
+        "target" : "mips",
         "url" : "/modules/MIPS/update_data.php",
         "children" : [ ],
         "requirement" : 0,
@@ -1103,8 +1122,8 @@
         "global_req" : "enable_pqrs"
     }, {
         "label" : "Change Demo Database",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips10",
+        "target" : "mips",
         "url" : "/modules/MIPS/reload_demo_database.php",
         "children" : [ ],
         "requirement" : 0,
@@ -1112,21 +1131,14 @@
         "global_req" : "pqrs_demosystem"
     }, {
         "label" : "MIPS Module Installer",
-        "menu_id" : "rep0",
-        "target" : "rep",
+        "menu_id" : "mips11",
+        "target" : "mips",
         "url" : "/modules/MIPS/mips_installer.php",
         "children" : [ ],
         "requirement" : 0,
         "acl_req" : [ "admin", "super" ],
         "global_req" : "enable_pqrs"
     },{
-        "label" : "XML Editor",
-        "menu_id" : "rep0",
-        "target" : "rep",
-        "url" : "/modules/MIPS/xmleditor/index.php",
-        "children" : [ ],
-        "requirement" : 0
-    }, {
         "label" : "Alerts Log",
         "menu_id" : "rep0",
         "target" : "rep",

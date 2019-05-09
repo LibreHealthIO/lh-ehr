@@ -76,8 +76,8 @@ $obj = formFetch("form_reviewofs", $_GET["id"]);
 <input type=checkbox name="noninsulin_dependent_diabetes"  <?php if ($obj{"noninsulin_dependent_diabetes"} == "on") {echo "checked";};?>><span class=text><?php xl('Non-Insulin Dependent Diabetes','e'); ?></span><br>
 <input type=checkbox name="hypothyroidism"  <?php if ($obj{"hypothyroidism"} == "on") {echo "checked";};?>><span class=text><?php xl('Hypothyroidism','e'); ?></span><br>
 <input type=checkbox name="hyperthyroidism"  <?php if ($obj{"hyperthyroidism"} == "on") {echo "checked";};?>><span class=text><?php xl('Hyperthyroidism','e'); ?></span><br>
-<input type=checkbox name="cushing_syndrom"  <?php if ($obj{"cushing_syndrom"} == "on") {echo "checked";};?>><span class=text><?php xl('Cushing Syndrom','e'); ?></span><br>
-<input type=checkbox name="addison_syndrom"  <?php if ($obj{"addison_syndrom"} == "on") {echo "checked";};?>><span class=text><?php xl('Addison Syndrom','e'); ?></span><br>
+<input type=checkbox name="cushing_syndrom"  <?php if ($obj{"cushing_syndrom"} == "on") {echo "checked";};?>><span class=text><?php xl('Cushing Syndrome','e'); ?></span><br>
+<input type=checkbox name="addison_syndrom"  <?php if ($obj{"addison_syndrom"} == "on") {echo "checked";};?>><span class=text><?php xl('Addison Syndrome','e'); ?></span><br>
 </td>
 <td valign=top>
 <span class=bold><?php xl('Pulmonary','e'); ?></span><br>

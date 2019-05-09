@@ -114,7 +114,9 @@ function checkBackgroundServices(){
 <html>
 
 <head>
-<?php
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+
+    <?php
 
 html_header_show();
 
@@ -146,6 +148,10 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
               $boolean = false;
             }
           }
+          elseif ($fldid == "updater_icon_visibility") {
+              //updater icon visibility
+              $boolean = true;
+          }
           elseif ($fldid == "primary_color" || $fldid == "primary_font_color" || $fldid == "secondary_color" || $fldid == "secondary_font_color" ) {
             if (strlen($_POST["form_$i"]) == 7 && substr($_POST["form_$i"], 0,1) == "#") {
             $boolean = true;
@@ -155,9 +161,9 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
             }
           }
           if ($boolean) {
-          $label = "global:".$fldid;
-          $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
-          setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
+            $label = "global:".$fldid;
+            $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
+            setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
           }
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);
@@ -251,8 +257,9 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
             // special treatment for some vars
             switch ($fldid) {
               case 'first_day_week':
+                // removed TLH 12/2018
                 // update PostCalendar config as well
-                sqlStatement("UPDATE libreehr_module_vars SET pn_value = ? WHERE pn_name = 'pcFirstDayOfWeek'", array($fldvalue));
+                // sqlStatement("UPDATE libreehr_module_vars SET pn_value = ? WHERE pn_name = 'pcFirstDayOfWeek'", array($fldvalue));
                 break;
             }
           //check and validate input from client side with globals.
@@ -351,7 +358,8 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
    include_js_library("jscolor-1-4-5/jscolor.js");
 ?>
 
-<script type="text/javascript" src="../../library/js/common.js"></script>
+
+    <script type="text/javascript" src="../../library/js/common.js"></script>
 <?php if ($_GET['mode'] == "user") { ?>
   <title><?php  echo xlt('User Settings'); ?></title>
 <?php } else { ?>
@@ -364,6 +372,7 @@ tr.detail { font-size:10pt; }
 td        { font-size:10pt; }
 input     { font-size:10pt; }
 </style>
+
 </head>
 
 <body class="body_top">

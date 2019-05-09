@@ -152,9 +152,10 @@ $(document).ready(function() {
 });
 
 </script>
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 
 </head>
-<body class="body_top" style="min-height:20px; padding: 19px; margin-bottom: 20px; background-color: #f5f5f5;">
+<body class="body_top" style="min-height:20px; padding: 19px; margin-bottom: 20px;">
 
 <div id="dynamic" style="padding-bottom: 30px">
 

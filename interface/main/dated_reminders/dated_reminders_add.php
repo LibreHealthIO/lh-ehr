@@ -172,14 +172,13 @@ if(isset($_GET['mID']) and is_numeric($_GET['mID'])){
 <html>
   <head>
     <title><?php echo xlt('Send a Reminder') ?></title>
+    <?php call_required_libraries(array("jquery-min-3-3-1","font-awesome", "iziModalToast"));?>
     <script type="text/javascript" src="<?php echo $webroot ?>/interface/main/tabs/js/include_opener.js"></script>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">                                       
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/topdialog.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>  
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>    
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-calendar.js"></script>
-   <?php call_required_libraries(array("jquery-min-3-3-1","font-awesome", "iziModalToast"));
-   ?>
     <script language="JavaScript">
       $(document).ready(function (){   
         

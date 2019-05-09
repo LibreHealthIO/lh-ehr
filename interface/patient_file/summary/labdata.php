@@ -81,6 +81,7 @@ $main_spell .= "ORDER BY procedure_report.date_collected DESC ";
 // ####################################################
 echo "<html><head>";
 ?> 
+<title><?php echo xlt('Lab Overview'); ?></title>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css"> 
 <link rel="stylesheet" href="<?php echo $web_root; ?>/interface/themes/labdata.css" type="text/css"> 
 <script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery.1.3.2.js"></script>

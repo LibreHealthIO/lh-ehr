@@ -121,6 +121,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'secondary_color',
                                'secondary_font_color',
                                'gbl_pt_list_page_size',
+                               'gbl_appt_list_page_size',
                                'default_encounter_view',
                                'units_of_measurement',
                                'us_weight_format',
@@ -152,6 +153,9 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'ubleft_margin_default',
                                'cms_top_margin_default',
                                'cms_left_margin_default');
+
+
+
 
 $GLOBALS_METADATA = array(
 
@@ -272,6 +276,14 @@ $GLOBALS_METADATA = array(
       xl('EDI History (under Fees) for storing and interpreting EDI claim response files')
     ),
 
+    //SHOW UPDATER ICON
+      'updater_icon_visibility' => array(
+      xl('Show updater floating action button'),
+       'bool',                          // data type
+       '1',                             // default = true
+      xl('The Updater Floating Action Button at the bottom of the screen')
+    ),
+
     'online_support_link' => array(
       xl('Online Forum Support Link'),
        'text',                          // data type
@@ -287,7 +299,6 @@ $GLOBALS_METADATA = array(
     ),
 
 
-
     'gbl_pt_list_page_size' => array(
       xl('Patient List Page Size'),
       array(
@@ -298,6 +309,19 @@ $GLOBALS_METADATA = array(
       ),
        '10',
       xl('Number of patients to display per page in the patient list.')
+    ),
+
+
+    'gbl_appt_list_page_size' => array(
+      xl('Appointment List Page Size'),
+      array(
+        '10'  =>  '10',
+        '25'  =>  '25',
+        '50'  =>  '50',
+        '100' => '100',
+      ),
+       '10',
+      xl('Number of appointments to display per page in track appointments list.')
     ),
 
 
@@ -583,6 +607,13 @@ $GLOBALS_METADATA = array(
        'bool',                          // data type
        '0',                             // default = false
       xl('Support export/import of configuration data via the Backup page.')
+    ),
+
+    'tags_filters_enabled' => array(
+      xl('Enable Tags/Filters Feature'),
+       'bool',                          // data type
+       '0',                             // default
+      xl('Enables configurable tags and filters for demographics and various purposes.')
     ),
 
     'restrict_user_facility' => array(
@@ -2565,7 +2596,7 @@ $GLOBALS_METADATA = array(
       xl('Enable NewCrop eRx Service'),
       'bool',
       '0',
-      xl('Enable NewCrop eRx Service.') + ' ' +
+      xl('Enable NewCrop eRx Service.') . ' ' .
       xl('Contact the community for information on subscribing to the NewCrop eRx service.')
   ),
 
@@ -3247,7 +3278,28 @@ $GLOBALS_METADATA = array(
     ),
   ),
 
+  'LIMS' => array( 
+    'lims_enabled' => array(
+      xl('LIMS Enabled/Disabled'),
+      'bool',
+      '0',
+      xl('Enable the laboratory information management system')
+    ),
+    'lims_application' => array(
+      xl('LIMS Software to use'),
+      [ 'SENAITE LIMS' => 'senaite' ], // temporary, figuring out how to create an associative array while auto-detecting directories
+      xl('Choose the LIMS software to use')
+    ),
+    'lims_url' => array(
+      xl('LIMS API Address'),
+      'text',
+      'http://localhost:8080',
+      xl('Address where the LIMS backend API is available')
+    ),
+  ),
+
 );
+
 
 if ( function_exists( 'do_action' ) ) {
     do_action( 'globals_init', $args = [

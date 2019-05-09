@@ -128,7 +128,7 @@
 
                     <li class="dropdown accounting-menu"><a href="#"
                         class="dropdown-toggle" data-toggle="dropdown"> <i
-                            class="fa fa-book"></i> <span><?php echo xlt('Accountings'); ?></span>
+                            class="fa fa-book"></i> <span><?php echo xlt('Accounting'); ?></span>
                     </a>
                         <ul class="dropdown-menu">
                             <li data-toggle="pill"><a href="#ledgerpanel" data-toggle="collapse"

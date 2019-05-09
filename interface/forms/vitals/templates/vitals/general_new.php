@@ -7,7 +7,7 @@
     <?php 
       html_header_show();       
       // Include Bootstrap and datetimepicker
-      call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
+      call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker", "font-awesome"));
     ?>
     <script type="text/javascript">
       var mypcc = '<?php echo $GLOBALS['phone_country_code']; ?>';
@@ -96,7 +96,8 @@
       
     </style>
   </head>
-  <body >
+  <body>
+    <a href="javascript:history.back()"><h4><i class="fa fa-chevron-left" id="backbutton" aria-hidden="true"></i> Back</h4></a>
     <p>
     <table class="table well">
       <tr>
@@ -663,8 +664,8 @@ echo $result['BMI_status'];
     <?php if($this->patient_age <= 20 || (preg_match('/month/', $this->patient_age))){?>
     <!-- only show growth-chart button for patients < 20 years old -->
     <!-- <input type="button" id="growthchart" value="{xl t="Growth-Chart"}" style='margin-left: 20px;'> -->
-    <input type="button" id="pdfchart" value="Growth-Chart (PDF)" style='margin-left: 20px;'>
-    <input type="button" id="htmlchart" value="Growth-Chart (HTML)" style='margin-left: 20px;'>
+    <input type="button" class="btn btn-primary" id="pdfchart" value="Growth-Chart (PDF)" style='margin-left: 20px;'>
+    <input type="button" class="btn btn-primary" id="htmlchart" value="Growth-Chart (HTML)" style='margin-left: 20px;'>
     <?php }?>
   </td>
 </tr>
@@ -674,8 +675,8 @@ echo $result['BMI_status'];
 </tr>
 <tr>
   <td colspan='3' style='text-align:center'>
-    <input type="submit" name="Submit" class='cp-submit' value="Save Form">
-    <input type="button" class="deleter cp-negative" id="cancel" value="Don't Save">
+    <input type="submit" name="Submit" class='btn btn-success' value="Save Form">
+    <input type="button" class="btn btn-danger" id="cancel" value="Cancel">
   </td>
 </tr>
 </table>

@@ -7,36 +7,6 @@ INSERT INTO `facility` (name,phone,street,city,state,postal_code,country_code,fe
 INSERT INTO `groups` VALUES (1, 'Default', 'admin');
 
 #
-# Dumping data for table `libreehr_module_vars`
-#
-
-INSERT INTO `libreehr_module_vars` VALUES (234, 'PostCalendar', 'pcNotifyEmail', '');
-INSERT INTO `libreehr_module_vars` VALUES (233, 'PostCalendar', 'pcNotifyAdmin', '0');
-INSERT INTO `libreehr_module_vars` VALUES (232, 'PostCalendar', 'pcCacheLifetime', '3600');
-INSERT INTO `libreehr_module_vars` VALUES (231, 'PostCalendar', 'pcUseCache', '0');
-INSERT INTO `libreehr_module_vars` VALUES (230, 'PostCalendar', 'pcDefaultView', 'day');
-INSERT INTO `libreehr_module_vars` VALUES (229, 'PostCalendar', 'pcTimeIncrement', '5');
-INSERT INTO `libreehr_module_vars` VALUES (228, 'PostCalendar', 'pcAllowUserCalendar', '1');
-INSERT INTO `libreehr_module_vars` VALUES (227, 'PostCalendar', 'pcAllowSiteWide', '1');
-INSERT INTO `libreehr_module_vars` VALUES (226, 'PostCalendar', 'pcTemplate', 'default');
-INSERT INTO `libreehr_module_vars` VALUES (225, 'PostCalendar', 'pcEventDateFormat', '%Y-%m-%d');
-INSERT INTO `libreehr_module_vars` VALUES (224, 'PostCalendar', 'pcDisplayTopics', '0');
-INSERT INTO `libreehr_module_vars` VALUES (223, 'PostCalendar', 'pcListHowManyEvents', '15');
-INSERT INTO `libreehr_module_vars` VALUES (222, 'PostCalendar', 'pcAllowDirectSubmit', '1');
-INSERT INTO `libreehr_module_vars` VALUES (221, 'PostCalendar', 'pcUsePopups', '0');
-INSERT INTO `libreehr_module_vars` VALUES (220, 'PostCalendar', 'pcDayHighlightColor', '#EEEEEE');
-INSERT INTO `libreehr_module_vars` VALUES (219, 'PostCalendar', 'pcFirstDayOfWeek', '1');
-INSERT INTO `libreehr_module_vars` VALUES (218, 'PostCalendar', 'pcUseInternationalDates', '0');
-INSERT INTO `libreehr_module_vars` VALUES (217, 'PostCalendar', 'pcEventsOpenInNewWindow', '0');
-INSERT INTO `libreehr_module_vars` VALUES (216, 'PostCalendar', 'pcTime24Hours', '0');
-
-#
-# Dumping data for table `libreehr_modules`
-#
-
-INSERT INTO `libreehr_modules` VALUES (46, 'PostCalendar', 2, 'PostCalendar', 'PostNuke Calendar Module', 0, 'PostCalendar', '4.0.0', 1, 1, 3);
-
-#
 # Dumping data for table `libreehr_postcalendar_categories`
 #
 
@@ -76,9 +46,9 @@ INSERT INTO `users` VALUES (1, 'admin', '9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee68
 # Generation Time: Jun 02, 2004 at 04:38 PM
 # Server version: 4.0.20
 # PHP Version: 4.3.4
-# 
+#
 # Database : `libreehr`
-# 
+#
 
 INSERT INTO `categories_seq` VALUES (0);
 INSERT INTO `config_seq` VALUES (0);
@@ -415,9 +385,9 @@ UPDATE `categories_seq` SET id=id+1;
 # Generation Time: Oct 11, 2004 at 06:22 AM
 # Server version: 4.0.21
 # PHP Version: 4.3.8-12
-# 
+#
 # Database : `demo_libreehr`
-# 
+#
 
 #
 # Dumping data for table `codes`

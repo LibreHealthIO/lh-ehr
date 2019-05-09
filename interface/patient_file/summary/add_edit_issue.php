@@ -552,7 +552,6 @@ ActiveIssueCodeRecycleFn($thispid, $ISSUE_TYPES);
    var today = new Date();
    f.form_end.value = '' + (today.getYear() + 1900) + '-' +
     ("0" + (today.getMonth() + 1)).slice(-2) + '-' + ("0" + today.getDate()).slice(-2);
-   f.form_end.focus();
   }
  }
 
@@ -633,7 +632,6 @@ function divclick(cb, divid) {
 >
 
 <table border='0' width='100%'>
-  <h1><?php echo xlt('Add Issue'); ?></h1>
   <tr>
     <td valign='top' width='1%' nowrap><b><?php echo xlt('Type'); ?>:</b></td>
     <td>

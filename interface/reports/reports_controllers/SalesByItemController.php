@@ -261,14 +261,13 @@ function prepareQuery() {
     "JOIN drugs AS d ON d.drug_id = s.drug_id " .
     "JOIN form_encounter AS fe ON " .
     "fe.pid = s.pid AND fe.encounter = s.encounter AND " .
-    "fe.date >= '$from_date 00:00:00' AND fe.date <= '$to_date 23:59:59' " .
-    //"fe.date >= ? AND fe.date <= ? " .
+    "fe.date >= ? AND fe.date <= ? " .
     "WHERE s.fee != 0";
-    array_push($sqlBindArray,$from_date,$to_date);
+    array_push($sqlBindArray,$from_date . '00:00:00',$to_date . '23:59:59');
   // If a facility was specified.
   if ($form_facility) {
     $query .= " AND fe.facility_id = ?";
-     array_push($sqlBindArray,$form_facility);
+    array_push($sqlBindArray,$form_facility);
   }
   if ($form_provider) {
     $query .= " AND fe.provider_id = ?";
@@ -276,7 +275,10 @@ function prepareQuery() {
   }
   $query .= " ORDER BY d.name, fe.date, fe.id";
   //
-  return $query;
+  $res = sqlStatement($query,$sqlBindArray);
+  //
+  return $res;
+
 }
 
 ?>
