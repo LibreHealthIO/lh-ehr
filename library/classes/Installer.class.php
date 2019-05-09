@@ -286,7 +286,7 @@ class Installer
               * 2. Work on the report generator upon upgrade i.e if anything changes during upgrade.
               * 3. Give the user to change the database name and other during installation of EHR.
               * 4. Put these database credentials in an array before passing it to methods here.
-              /*/ !!!!!!COMMENTED OUT COMMENT
+               !!!!!!COMMENTED OUT COMMENT
               private function setup_env_file($db_credentials) {
                   $dot_env_file_path = dirname(__FILE__) . '/../../modules/report_generator'; // expected .env file path
                   $dot_env_file = $dot_env_file_path.'/.env';
@@ -334,7 +334,7 @@ class Installer
               * @return Boolean
               *
               * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
-              /*/RESTORE COMMENT HERE AFTER FIX
+              //RESTORE COMMENT HERE AFTER FIX
               private function write_to_env_file($dot_env_file, $db_credentials, $update = FALSE){
             
                   if($update){ // Just delete the existing file and recreate it.
@@ -384,7 +384,7 @@ class Installer
               * @return Boolean
               *
               * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
-              /*/RESTORE COMMENT HERE AFTER FIX
+              /RESTORE COMMENT HERE AFTER FIX
               private function create_dot_env_file($dot_env_file){
                   if(@touch($dot_env_file)) {
                       // write initial .env variables, enabling key generation command to Work
@@ -421,7 +421,7 @@ class Installer
               * @return
               *
               * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
-              /*/RESTORE COMMENT HERE AFTER FIX
+              //RESTORE COMMENT HERE AFTER FIX
               private function generate_application_key(){
                   exec('cd '.escapeshellarg($dot_env_file_path)); // move to the report generator directory first!
                   exec('php artisan key:generate'); // Generate application key command. This writes the application key in .env file's APP_KEY constant.
