@@ -65,6 +65,30 @@ if ($updater_host == "github") {
 		//replace # since it is not fit for api
 		$pull_request_number = $settings_array['github_current'];
 		$pull_request_number = str_replace("#", "", $pull_request_number);
+		$refresh_pr_list_bool  = getUpdaterSetting("upcoming_prs");
+		
+		
+		if (getUpdaterSetting("upcoming_prs") == "empty_setting") {
+				$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+				$values = array_values($merged_requests_array);
+				$values = json_encode($values);
+				setUpdaterSetting("upcoming_prs", $values);
+		
+		}
+		elseif (count(json_decode($refresh_pr_list_bool, true)) == 0) {
+				$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
+				$values = array_values($merged_requests_array);
+				$values = json_encode($values);
+				setUpdaterSetting("upcoming_prs", $values);
+		}
+		else 
+		{
+				//let the program feed the data from db
+		}
+
+
+
+
 	}
 //LOADING API FUNCTIONS ACCORDING TO THE HOST VALUE
 
@@ -77,15 +101,14 @@ if (isset($_GET)) {
 			clearFilesFolder($foldername = "backup");
 			clearFilesFolder($foldername = "downloads");
 			$updater_token = getUpdaterSetting("updater_token");
-			$merged_requests_array = getAllMergedPullRequests($updater_token, $repository_owner, $repository_name,  $pull_request_number);
 			//since updating started save it for backup
 			setUpdaterSetting("github_backup", $pull_request_number);
 			//get only single merge request after that PR
-			$merged_requests_key = array_keys($merged_requests_array);
-			$merged_request_value = array_values($merged_requests_array);
-			$merged_requests_array = array($merged_requests_key[0]=>$merged_request_value[0]);
-			$next_pr_value = $merged_request_value[1];
-			foreach ($merged_requests_array as $key => $value) {
+			//TODO: get all the upcoming Prs and take the first one and update it, second one to show in updater screen
+			$upcoming_prs_json = json_decode(getUpdaterSetting("upcoming_prs"), true);
+			$merged_request_value[0] = $upcoming_prs_json[0];
+
+			foreach ($merged_request_value as $value) {
 				$pr_number = $value;
 				$arr = getSinglePullRequestFileChanges($updater_token, $repository_owner, $repository_name,  $pr_number);
 				//clear the tables to feed the fresh data to backup and download entry tables
@@ -122,7 +145,14 @@ if (isset($_GET)) {
 				}
 			}
 			//prepare the updater for showing next PR
-			setUpdaterSetting("github_current", $next_pr_value);
+			setUpdaterSetting("github_current", $upcoming_prs_json[0]);
+
+			//unset the current PR from the list
+			unset($upcoming_prs_json[0]);
+			$upcoming_prs_json = array_values($upcoming_prs_json);
+			$upcoming_prs_json = json_encode($upcoming_prs_json);
+			setUpdaterSetting("upcoming_prs", $upcoming_prs_json);
+
 		}
 	}
 	
