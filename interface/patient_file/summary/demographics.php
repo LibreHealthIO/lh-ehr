@@ -149,11 +149,11 @@
                   $to_url = "<td> <a href = $web_root" .
                   "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
                   "/tmp$extension" .  // Force image type URL for fancybox
-                  " onclick=top.restoreSession(); class='image_modal'>" .
+                  " class ='view_image_modal'>" .
                   " <img src = $web_root" .
                   "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
-                  " width=100 alt='$doc_catg:$image_file'>  </a> </td> <td valign='center'>".
-                  htmlspecialchars($doc_catg) . '<br />&nbsp;' . htmlspecialchars($image_file) .
+                  " width=100 alt='$doc_catg:$image_file'> </a> </td> <td valign='center'>".
+                  htmlspecialchars($doc_catg) .
                   "</td>";
           }
            else {
@@ -162,9 +162,15 @@
                       " onclick='top.restoreSession()' class='css_button_small'>" .
                       "<span>" .
                       htmlspecialchars( xl("View"), ENT_QUOTES )."</a> &nbsp;" .
-                      htmlspecialchars( "$doc_catg - $image_file", ENT_QUOTES ) .
+                      htmlspecialchars( "$doc_catg", ENT_QUOTES ) .
                       "</span> </td>";
           }
+          //initialise izi modal
+          echo "<div id='view_photo_modal' data-izimodal-title='". htmlspecialchars(getPatientName($pid),ENT_NOQUOTES) 
+          ."' data-izimodal-subtitle='PID: $pid' style='display: none; '><img src = $web_root" .
+                  "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
+                  " style='width:80%;margin: 0 10% 0 10%;' alt='$doc_catg:$image_file'></div>";
+          //
           echo "<table><tr>";
           echo $to_url;
           echo "</tr></table>";
@@ -264,6 +270,23 @@
       }
 
       $(document).ready(function(){
+      //for izi modal
+        $(document).on('click', '.view_image_modal', function(event) {
+        event.preventDefault();
+        let image_modal = $('#view_photo_modal').iziModal({
+                fullscreen: true,
+                overlayClose: false,
+                closeButton: true,
+                theme: 'light',
+                width: 500,
+                padding: 5
+                
+        });
+        image_modal.iziModal('open');
+        top.restoreSession();
+      });
+      
+
         var msg_updation='';
           <?php
         if($GLOBALS['erx_enable']){
@@ -393,14 +416,6 @@
           'centerOnScroll' : false
         });
 
-      // modal for image viewer
-        $(".image_modal").fancybox( {
-          'overlayOpacity' : 0.0,
-          'showCloseButton' : true,
-          'centerOnScroll' : false,
-          'autoscale' : true
-        });
-
         $(".iframe1").fancybox( {
         'left':10,
           'overlayOpacity' : 0.0,
@@ -519,7 +534,7 @@
        echo "<form method='POST' enctype='multipart/form-data'><td colspan='1'><span class='title'>" .
         htmlspecialchars(getPatientName($pid),ENT_NOQUOTES) .
         "</span></td>";
-      if ($arr['picture_url']) {
+        if ($arr['picture_url']) {
           echo '<td style="padding-left:1em;"><input type="file" name="profile_picture" id="files" onchange="this.form.submit()" class="hidden" style="display:none;"/>
           <label for="files" class="iframe css_button cp-positive" id="file_input_button"><span><i class="fa fa-pencil"></i> ';
           echo xlt('Edit Profile Picture');
