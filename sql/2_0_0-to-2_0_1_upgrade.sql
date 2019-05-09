@@ -95,19 +95,19 @@ DELETE FROM `code_types` WHERE `code_types`.`ct_key` = 'ICD9';
 
 
 #IfMissingColumn users menu_role
-ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default User";
+ALTER TABLE `users` ADD COLUMN `menu_role` varchar(100) NOT NULL default "Default User";
 #EndIf
 
 #IfMissingColumn users fullscreen_page
-ALTER TABLE users ADD COLUMN fullscreen_page text NOT NULL;
+ALTER TABLE `users` ADD COLUMN `fullscreen_page` text NOT NULL;
 #EndIf
 
 #IfMissingColumn users fullscreen_enable
-ALTER TABLE users ADD COLUMN fullscreen_enable int(11) NOT NULL default 0;
+ALTER TABLE `users` ADD COLUMN `fullscreen_enable` int(11) NOT NULL default 0;
 #EndIf
 
 #IfMissingColumn users menu_role
-ALTER TABLE users ADD COLUMN menu_role varchar(100) NOT NULL default "Default User";
+ALTER TABLE `users` ADD COLUMN `menu_role` varchar(100) NOT NULL default "Default User";
 #EndIf
 
 #IfColumn users fullscreen_role
@@ -176,11 +176,11 @@ INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq
 
 --Appointment Cancellation Reasons
 #IfNotRow2D list_options list_id lists option_id cancellation_reasons
-INSERT INTO list_options ( list_id, option_id, title,activity ) VALUES ('lists','cancellation_reasons','Cancellation Reasons', 1);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','1','No reason given',5,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','2','Work',10,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','3','Sick',20,0);
-INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','4','Weather',25,0);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`,`activity` ) VALUES ('lists','cancellation_reasons','Cancellation Reasons', 1);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('cancellation_reasons','1','No reason given',5,0);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('cancellation_reasons','2','Work',10,0);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('cancellation_reasons','3','Sick',20,0);
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('cancellation_reasons','4','Weather',25,0);
 #EndIf
 
 #IfMissingColumn patient_tracker_element reason

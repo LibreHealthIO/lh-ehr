@@ -111,7 +111,19 @@ if($_POST['func']=="get_all_lab_data")
 {
     $response['data'] = array();
     $queryArray = array();
-    
+    $results_per_page = $_POST['results_per_page'];
+    $pageNumber = $_POST['page_number'];
+
+    $firstLimit = $results_per_page;
+    $secondLimit = 0;
+
+    if ($pageNumber != "all") {
+        while ($pageNumber--) {
+         $secondLimit += $results_per_page;
+        }
+    }
+
+
     $query  = "select pd.pid as pid, pd.sex as gender, pd.dob, list_options.title as ethnicity, pres.result_text, pres.result, pres.abnormal from procedure_result pres ";
     $query .= "join procedure_report prep on pres.procedure_report_id = prep.procedure_report_id " ;
     $query .= "join procedure_order prord on prep.procedure_order_id = prord.procedure_order_id " ;
@@ -134,9 +146,9 @@ if($_POST['func']=="get_all_lab_data")
         array_push($queryArray, $date );
         $query .= ' AND dob >= ?';
     }
-
-
-
+    if ($pageNumber != "all") {
+        $query .= " LIMIT $firstLimit OFFSET $secondLimit";
+    }
     ini_set('memory_limit', '1000M');
     $result = sqlStatement($query, $queryArray);
 

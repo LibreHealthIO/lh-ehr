@@ -1,9 +1,17 @@
+<!-- Form generated from formsWiz -->
+<?php
+?>
+
 <html>
     <head>
-    <?php html_header_show();?>
-    <?php call_required_libraries(['bootstrap', 'jquery-min-1-9-1']); ?>
+    <?php
+    html_header_show();
+    ?>
+    <?php call_required_libraries(array('bootstrap', 'jquery-min-1-9-1')); ?>
+        <link rel='stylesheet' href='<?php echo($this->style);?>' type='text/css'>
 
     <style type="text/css" title="mystyles" media="all">
+
     td {
         font-size:12pt;
         font-family:helvetica;
@@ -34,8 +42,9 @@
 
     </style>
 
+
     </head>
-    <body bgcolor="<?php echo $this->style["BGCOLOR2"];?>">
+    <body class="body_top">
     <p><span class="title" style="display: none"><?php echo  xl('SOAP','e'); ?></span></p>
     <h2><?php echo xlt('SOAP'); ?></h2>
         <form name="soap" method="post" action="<?php echo $this->form_action;?>/interface/forms/soap/save.php"

@@ -187,13 +187,12 @@
   ?>
 <html>
   <head>
+      <!-- Dynamically required libraries -->
+      <?php call_required_libraries(array('jquery-min-3-3-1', 'fancybox', 'common', 'gritter', 'iziModalToast')); ?>
 
     <?php html_header_show(); ?>
 
-    <!-- Dynamically required libraries -->
-    <?php call_required_libraries(array('jquery-min-1-6-4', 'fancybox', 'common', 'gritter')); ?>
-
-    <!-- Styles -->
+      <!-- Styles -->
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <style type="text/css">@import url(../../../library/dynarch_calendar.css);</style>
     <style type="text/css">
@@ -436,7 +435,9 @@
       function setMyPatient() {
        // Avoid race conditions with loading of the left_nav or Title frame.
        if (!parent.allFramesLoaded()) {
-        setTimeout("setMyPatient()", 500);
+           setTimeout(function () {
+               setMyPatient();
+           },500);
         return;
        }
       <?php if (isset($_GET['set_pid'])) { ?>
@@ -477,8 +478,8 @@
       <?php } // end setting new encounter id (only if new pid is also set) ?>
       }
 
-      $(window).load(function() {
-       setMyPatient();
+      $(window).on("load",function() {
+          setMyPatient();
       });
     </script>
     <style type="css/text">
@@ -510,7 +511,7 @@
        echo "<table><tr>";
        if ($arr['picture_url']) {
          echo "<td>
-         <img id='prof_img' src='../../../profile_pictures/".$arr['picture_url']."' height='64px' width='64px' style='border-radius: 40px;'></td>";
+         <img id='prof_img' src='../../../sites/".$_SESSION['site_id']."/profile_pictures/".$arr['picture_url']."' height='64px' width='64px' style='border-radius: 40px;'></td>";
        }
        else {
           echo "<td>
@@ -521,16 +522,16 @@
         "</span></td>";
       if ($arr['picture_url']) {
           echo '<td style="padding-left:1em;"><input type="file" name="profile_picture" id="files" onchange="this.form.submit()" class="hidden" style="display:none;"/>
-          <label for="files" class="btn css_button cp-positive" id="file_input_button"><i class="fa fa-pencil"></i> ';
+          <label for="files" class="iframe css_button cp-positive" id="file_input_button"><span><i class="fa fa-pencil"></i> ';
           echo xlt('Edit Profile Picture');
-          echo '</label></b></form>
+          echo '</span></label>
                 </td>';
       }
       else {
            echo '<td style="padding-left:1em;"><input type="file" name="profile_picture" id="files" onchange="this.form.submit()" class="hidden" style="display:none;"/>
-          <label for="files" class="btn css_button cp-positive" id="file_input_button"><i class="fa fa-plus"></i> ';
+          <label for="files" class="iframe css_button cp-positive" id="file_input_button"><span><i class="fa fa-plus"></i> ';
           echo xlt('Add Profile Picture');
-          echo '</label></b></form>
+          echo '</span></label>
                 </td>';
       }
 
@@ -1682,75 +1683,64 @@
 //this code is executed when user edit or upload a profile picture
 if (isset($_FILES["profile_picture"])) {
   //MAKE THE UPLOAD DIRECTORY IF IT DOESN'T EXIST
-  if (realpath("../../../profile_pictures/")) {
+  if (realpath($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/")) {
 
   }
   else {
-    mkdir("../../../profile_pictures/", 0755);
+    mkdir($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/", 0755);
   }
   //for profile picture upload
   //mime check done.
   //size check done.
   //extension check done.
   //if any validation needed be added, please add it below.
-  $bool = 0;
+  
+  $image_verified = false;
+  $user_image_absent = true;
+  $extensions = array("jpg", "png", "jpeg"); 
   $target_file =  basename($_FILES["profile_picture"]["name"]);
-  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  $verify_image = getimagesize($_FILES["profile_picture"]["tmp_name"]);
-  if($verify_image) {
-    $mime = $verify_image["mime"];
-    $mime_types = array('image/png',
-                            'image/jpeg',
-                            'image/gif',
-                            'image/bmp',
-                            'image/vnd.microsoft.icon');
-    $extensions = array("jpg", "png", "jpeg");
-    //mime check with all image formats.
-    if (in_array($mime, $mime_types)) {
-          $bool = 1;
-        if (in_array($imageFileType, $extensions)) {
-        //if mime type matches, then do a size check
-        //size check
-          if ($_FILES["profile_picture"]["size"] > 20971520) {
-            $bool = 0;
-          }
-          else {
-            $bool = 1;
-          }
+  $image_file_type = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  $image_size = $_FILES["profile_picture"]["size"];
+  $image_properties = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+  if($image_properties) {
+    //if image mime type matches, then check file extension, then  check size
+    if (image_has_right_mime($image_properties) && image_has_right_extension($image_file_type, $extensions) && 
+      image_has_right_size($image_size) ) {
+
+          $image_verified = true;//image verification passed     
+    }
+    
+  }
+
+ // $query = "SELECT distinct(group_name) FROM layout_options WHERE form_id = ? ORDER BY group_name";
+//$res = sqlStatement($query, array($_GET['layout_id']));
+
+//while ($row = sqlFetchArray($res)) {
+  
+  if($image_verified) {
+    // check if there is a old image for the patient, if yes then delete it
+    $sql = "SELECT picture_url FROM patient_data WHERE pid = ?";
+    $query = sqlStatement($sql, array($pid));
+    $arr = sqlFetchArray($query);
+    if ($arr['picture_url']) {
+      $url = $arr['picture_url'];
+      // a old image exists, so lets delete it
+      if (unlink($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/".$url)) {
+        $user_image_absent = true;
       }
       else {
-        $bool = 0;
+        //if the image does not delete due to file permissions then the new image wont go.
+        $user_image_absent = false;
       }
     }
-    else {
-      $bool = 0;
-    }
-
   }
-  else {
-        $bool = 0;
-  }
-  // check if there is a old image for the patient, if yes then delete it
-  $sql = "SELECT picture_url FROM patient_data WHERE pid = $pid";
-  $query = sqlQ($sql);
-  $arr = sqlFetchArray($query);
-  if ($arr['picture_url']) {
-    $url = $arr['picture_url'];
-    // a old image exists, so lets delete it
-    if (unlink("../../../profile_pictures/".$url)) {
-      $bool = true;
-    }
-    else {
-      //if the image does not delete due to file permissions then the new image wont go.
-      $bool = false;
-    }
-  }
+  
   $picture_url = "";
   //begin file uploading
-  $destination_directory = "../../../profile_pictures/";
-  if ($bool) {
-    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$imageFileType)) {
-        $picture_url = $pid.".".$imageFileType;
+  $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
+  if ($image_verified && $user_image_absent) {
+    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$image_file_type)) {
+        $picture_url = $pid.".".$image_file_type;
     }
     else {
       //may be failed due to directory permissions.
@@ -1787,5 +1777,6 @@ if ($picture_url) {
 else {
   //show failure message.
 }
+
 
 ?>

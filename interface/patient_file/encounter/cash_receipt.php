@@ -260,7 +260,7 @@ $encounter . "' and pid='$pid'"))
       echo '<img src="' . $GLOBALS['webroot'] . "/controller.php?document&retrieve&patient_id=&document_id=" . $document_id . '"><br><br>';
      }
      else {
-      echo "<b>NOTE</b>: ".xl('Document')." '" . $fname ."' ".xl('cannot be displayed inline becuase its type is not supported by the browser').".<br><br>";	
+      echo "<b>NOTE</b>: ".xl('Document')." '" . $fname ."' ".xl('cannot be displayed inline because its type is not supported by the browser').".<br><br>";	
      }
     }
    }

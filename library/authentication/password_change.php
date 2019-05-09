@@ -89,7 +89,7 @@ function update_password($activeUser,$targetUser,&$currentPwd,&$newPwd,&$errMsg,
         }
         // If this user is changing his own password, then confirm that they have the current password correct
         $hash_current = oemr_password_hash($currentPwd,$userInfo[COL_SALT]);
-        if(($hash_current!=$userInfo[COL_PWD]))
+        if(($hash_current!=$userInfo[COL_PWD]) && $currentPwd!="")
         {
             $errMsg=xl("Incorrect password!");
             return false;            

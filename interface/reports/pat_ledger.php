@@ -213,7 +213,7 @@ if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) {
 if (! $_REQUEST['form_csvexport']) {
   if ( $_REQUEST['form_refresh'] && $orow <= 0) {
     echo "<span style='color:red;'>";
-    echo xlt('No data to display. Select patient and try search again.');
+    echo xlt('No data to display for this patient.');
     echo "</span>";
     echo '<script>document.getElementById("report_table").style.display="none";</script>';
     echo '<script>document.getElementById("controls").style.display="none";</script>';

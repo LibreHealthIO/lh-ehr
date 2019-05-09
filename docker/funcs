@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+#
+# Docker Helper Script
+#
+# LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+# See the Mozilla Public License for more details.
+# If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# @package Librehealth EHR
+# @author Robby O'Connor <rob@librehealth.io>
+# @link http://librehealth.io
+#
+# Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+#
+
+
+
+set -euo pipefail
+IFS=$'\n\t'
+
+docker_compose_path="$(command -v docker-compose)"
+docker_path="$(command -v docker)"
+
+docker_min_version="18.09.3"
+docker_compose_min_version="1.23.2"
+
+function error() {
+  RESET="\e[0m"
+  BOLD="\e[1;1m"
+  RED="${BOLD}\e[1;31m"
+	printf "${RED}### ${RESET}${BOLD} %s${RESET}\n" "$@" >&2
+}
+
+function message() {
+    RESET="\e[0m"
+    BOLD="\e[1;1m"
+    GREEN="${BOLD}\e[1;32m"
+	  printf "${GREEN}### ${RESET}${BOLD} %s${RESET}\n" "$@" >&2
+}
+#From https://stackoverflow.com/a/44660519/702738
+function compare_version {
+    if [[ "$1" == "$2" ]]; then
+        return 1
+    fi
+    local IFS=.
+    local i a=(${1%%[^0-9.]*}) b=(${2%%[^0-9.]*})
+    local arem=${1#${1%%[^0-9.]*}} brem=${2#${2%%[^0-9.]*}}
+    for ((i=0; i<${#a[@]} || i<${#b[@]}; i++)); do
+        if ((10#${a[i]:-0} < 10#${b[i]:-0})); then
+            return 1
+        elif ((10#${a[i]:-0} > 10#${b[i]:-0})); then
+            return 0
+        fi
+    done
+    if [ "$arem" '<' "$brem" ]; then
+        return 1
+    elif [ "$arem" '>' "$brem" ]; then
+        return 0
+    fi
+    return 1
+}
+
+function install_docker {
+    error "Docker is not installed, you will need to install Docker in order to run LibreHealth EHR in it."
+    error "See https://docs.docker.com/installation/"
+    exit 1
+}
+
+function check_docker {
+    if [[ -z "$docker_path" ]]; then
+        install_docker
+    fi
+}
+
+function check_docker_version {
+    test="$($docker_path -v|awk -e '{ print $3}'| sed 's/,//')"
+    if compare_version "${docker_min_version}" "${test}"; then
+        error "ERROR: Docker version ${test} is too old. Please upgrade to Docker version ${docker_min_version} or newer.";
+        error "See https://docs.docker.com/installation/"
+    fi
+
+}
+function install_docker_compose {
+    error "Docker Compose is required to run LibreHealth EHR. You will need to install it."
+    error "See https://docs.docker.com/compose/install/#install-compose"
+    exit 1
+}
+function check_docker-compose {
+    if [[ -z "$docker_compose_path" ]]; then
+        install_docker-compose
+    fi
+}
+
+function check_docker_compose_version {
+    test="$($docker_compose_path -v|awk -e '{ print $3}'| sed 's/,//')"
+    if compare_version "${docker_compose_min_version}" "${test}"; then
+        error "ERROR: Docker Compose version ${test} is too old. Please upgrade to Docker Compose version ${docker_compose_min_version} or newer.";
+        error "See https://docs.docker.com/compose/install/#install-compose"
+    fi
+
+}
+
+function check_if_can_run_docker {
+    if ! "$docker_path" info > /dev/null 2>&1; then
+        error "Cannot connect to the docker daemon - verify it is running and you have access"
+        error "You should add yourself to the\"docker\" user group by doing: "
+        error  "\"sudo usermod -aG docker your-user\" and logging out and then back in."
+        error "If you are running this in production, please run this script as root."
+        exit 1
+    fi
+}

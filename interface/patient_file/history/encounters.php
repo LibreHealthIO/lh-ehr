@@ -176,7 +176,8 @@ function generatePageElement($start,$pagesize,$billing,$issue,$text)
     // Include Bootstrap
   call_required_libraries(array("jquery-min-3-1-1","bootstrap"));
 ?>
-<!-- Main style sheet comes after the page-specific stylesheet to facilitate overrides. -->
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+    <!-- Main style sheet comes after the page-specific stylesheet to facilitate overrides. -->
 <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/encounters.css" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/ajtooltip.js"></script>
 
@@ -244,7 +245,7 @@ function efmouseover(elem, ptid, encid, formname, formid) {
 
 </head>
 
-<body>
+<body class="body_top">
 <div id="encounters"> <!-- large outer DIV -->
 
 <div class='title' style="padding:10px;">

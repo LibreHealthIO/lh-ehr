@@ -484,12 +484,16 @@ function writeFieldLine($linedata) {
       // Show the width field
       echo "<input type='text' name='fld[$fld_line_no][lengthWidth]' value='" .
         htmlspecialchars($linedata['fld_length'], ENT_QUOTES) .
-        "' size='1' maxlength='10' class='optin' title='" . xla('Width') . "' />";
+        "' size='1' maxlength='10' class='optin ";
+      if ($linedata['data_type'] == 3) {
+        echo "halfinput";
+      }
+      echo "' title='" . xla('Width') . "' />";
       if ($linedata['data_type'] == 3) {
         // Show the height field
         echo "<input type='text' name='fld[$fld_line_no][lengthHeight]' value='" .
           htmlspecialchars($linedata['fld_rows'], ENT_QUOTES) .
-          "' size='1' maxlength='10' class='optin' title='" . xla('Height') . "' />";
+          "' size='1' maxlength='10' class='optin halfinput' title='" . xla('Height') . "' />";
       }
       else {
         // Hide the height field
@@ -727,37 +731,75 @@ function writeFieldLine($linedata) {
 <!-- supporting javascript code -->
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
 
+<?php call_required_libraries(array("bootstrap")); ?>
+
 <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
 
 <title><?php  xl('Layout Editor','e'); ?></title>
 
 <style>
-tr.head   { font-size:10pt; background-color:#cccccc; }
-tr.detail { font-size:10pt; }
-td        { font-size:10pt; }
-input     { font-size:10pt; }
-a, a:visited, a:hover { color:#0000cc; }
-.optcell  { }
-.optin    { background: transparent; }
+.marginlessrow{
+  margin: 0;
+}
+table{
+  width: 100%;
+}
+.popupbox{
+  border: 1px grey solid !important;
+}
+tr.head {
+  font-size:10pt; background-color:#cccccc;
+}
+tr.detail {
+  font-size:10pt;
+}
+td {
+  font-size:10pt;
+}
+td>input{
+  width:100%;
+}
+td>select{
+  width:100%;
+}
+.halfinput{
+  width:auto !important;
+}
+input { 
+  font-size:10pt; 
+}
+a, a:visited, a:hover {
+  color:#0000cc;
+}
+.optcell {
+
+}
+.optin {
+  background: transparent;
+}
 .group {
-    margin: 0pt 0pt 8pt 0pt;
-    padding: 0;
-    width: 100%;
+  margin: 0pt 0pt 8pt 0pt;
+  padding: 0;
+  width: 100%;
 }
 .group table {
-    border-collapse: collapse;
-    width: 100%;
+  border-collapse: collapse;
+  width: 100%;
 }
 .odd td {
-    background-color: #ddddff;
-    padding: 3px 0px 3px 0px;
+  background-color: #ddddff;
+  padding: 3px 0px 3px 0px;
 }
 .even td {
-    background-color: #ffdddd;
-    padding: 3px 0px 3px 0px;
+  background-color: #ffdddd;
+  padding: 3px 0px 3px 0px;
 }
-.help { cursor: help; }
-.layouts_title { font-size: 110%; }
+.help {
+  cursor: help;
+}
+.layouts_title {
+  font-size: 110%;
+}
 .translation {
     color: green;
     font-size:10pt;
@@ -947,8 +989,10 @@ foreach ($layouts as $key => $value) {
 </select></p>
 
 <?php if ($layout_id) { ?>
-<div style='margin: 0 0 8pt 0;'>
-<input type='button' class='addgroup cp-positive' id='addgroup' value=<?php xl('Add Group','e','\'','\''); ?>/>
+<div class="row marginlessrow" style='margin: 0 0 8pt 0;'>
+  <div class="row marginlessrow">
+    <input type='button' class='addgroup cp-positive' id='addgroup' value=<?php xl('Add Group','e','\'','\''); ?>/>
+  </div>
 </div>
 <?php } ?>
 
@@ -959,17 +1003,16 @@ while ($row = sqlFetchArray($res)) {
   if ($row['group_name'] != $prevgroup) {
     if ($firstgroup == false) { echo "</tbody></table></div>\n"; }
     echo "<div id='".$row['group_name']."' class='group'>";
-    echo "<div class='text bold layouts_title' style='background-color: #eef'>";
+    echo "<div class='text bold layouts_title row marginlessrow' style='background-color: #eef'>";
     // echo preg_replace("/^\d+/", "", $row['group_name']);
-    echo substr($row['group_name'], 1);
-    echo "&nbsp; ";
+    echo "<div>".substr($row['group_name'], 1)."</div>";
     // if not english and set to translate layout labels, then show the translation of group name
     if ($GLOBALS['translate_layout'] && $_SESSION['language_choice'] > 1) {
       // echo "<span class='translation'>>>&nbsp; " . xl(preg_replace("/^\d+/", "", $row['group_name'])) . "</span>";
       echo "<span class='translation'>>>&nbsp; " . xl(substr($row['group_name'], 1)) . "</span>";
       echo "&nbsp; ";   
     }
-    echo "&nbsp; ";
+    echo "<div class='row marginlessrow'>";
     echo " <input type='button' class='addfield cp-positive' id='addto~".$row['group_name']."' value='" . xl('Add Field') . "'/>";
     echo "&nbsp; &nbsp; ";
     echo " <input type='button' class='renamegroup cp-positive' id='".$row['group_name']."' value='" . xl('Rename Group') . "'/>";
@@ -979,7 +1022,7 @@ while ($row = sqlFetchArray($res)) {
     echo " <input type='button' class='movegroup cp-misc' id='".$row['group_name']."~up' value='" . xl('Move Up') . "'/>";
     echo "&nbsp; &nbsp; ";
     echo " <input type='button' class='movegroup cp-misc' id='".$row['group_name']."~down' value='" . xl('Move Down') . "'/>";
-    echo "</div>";
+    echo "</div></div>";
     $firstgroup = false;
 ?>
 
@@ -1028,19 +1071,16 @@ while ($row = sqlFetchArray($res)) {
 <?php echo $extra_html; ?>
 
 <?php if ($layout_id) { ?>
-&nbsp;&nbsp;
-
-<input type='button' name='deletefields' id='deletefields' class='cp-negative' value='<?php xl('Delete selected','e'); ?>' style="font-size:90%" disabled="disabled" />
-<input type='button' name='movefields' id='movefields' class='cp-misc' value='<?php xl('Move selected to...','e'); ?>' style="font-size:90%" disabled="disabled" />
-<p>
+  <input type='button' name='deletefields' id='deletefields' class='cp-negative' value='<?php xl('Delete selected','e'); ?>' style="font-size:90%" disabled="disabled" />
+  <input type='button' name='movefields' id='movefields' class='cp-misc' value='<?php xl('Move selected to...','e'); ?>' style="font-size:90%" disabled="disabled" />
   <input type='button' name='save' id='save' class='cp-submit' value='<?php xl('Save Changes','e'); ?>' />
-</p>
 <?php } ?>
 
 </form>
 
+
 <!-- template DIV that appears when user chooses to rename an existing group -->
-<div id="renamegroupdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
+<div id="renamegroupdetail" class="popupbox row marginlessrow" style="padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <input type="hidden" name="renameoldgroupname" id="renameoldgroupname" value="">
 <?php xl('Group Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="renamegroupname" id="renamegroupname">
 <br>
@@ -1049,7 +1089,7 @@ while ($row = sqlFetchArray($res)) {
 </div>
 
 <!-- template DIV that appears when user chooses to add a new group -->
-<div id="groupdetail" style="border: 1px solid black; padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
+<div id="groupdetail" class="row marginlessrow popupbox" style="padding: 3px; display: none; visibility: hidden; background-color: lightgrey;">
 <span class='bold'>
 <?php xl('Group Name','e'); ?>: <input type="textbox" size="20" maxlength="30" name="newgroupname" id="newgroupname">
 <br>
@@ -1105,8 +1145,8 @@ foreach ($datatypes as $key=>$value) {
 ?>
 </select>
 </td>
-<td><input type="textbox" name="gnewlengthWidth" id="gnewlengthWidth" value="" size="1" maxlength="3" title="<?php echo xla('Width'); ?>">
-    <input type="textbox" name="gnewlengthHeight" id="gnewlengthHeight" value="" size="1" maxlength="3" title="<?php echo xla('Height'); ?>"></td>
+<td><input type="textbox" name="gnewlengthWidth" class="halfinput" id="gnewlengthWidth" value="" size="5" maxlength="3" title="<?php echo xla('Width'); ?>">
+    <input type="textbox" name="gnewlengthHeight" class="halfinput" id="gnewlengthHeight" value="" size="5" maxlength="3" title="<?php echo xla('Height'); ?>"></td>
 <td><input type="textbox" name="gnewmaxSize" id="gnewmaxSize" value="" size="1" maxlength="3" title="<?php echo xla('Maximum Size (entering 0 will allow any size)'); ?>"></td>
 <td><input type="textbox" name="gnewlistid" id="gnewlistid" value="" size="8" maxlength="31" class="listid">
 </td>
@@ -1126,7 +1166,7 @@ foreach ($datatypes as $key=>$value) {
 </div>
 
 <!-- template DIV that appears when user chooses to add a new field to a group -->
-<div id="fielddetail" class="fielddetail" style="display: none; visibility: hidden">
+<div id="fielddetail" class="row marginlessrow fielddetail popupbox" style="display: none; visibility: hidden">
 <input type="hidden" name="newfieldgroupid" id="newfieldgroupid" value="">
 <table style="border-collapse: collapse;">
  <thead>
@@ -1180,8 +1220,8 @@ foreach ($datatypes as $key=>$value) {
 ?>
     </select>
    </td>
-   <td><input type="textbox" name="newlengthWidth" id="newlengthWidth" value="" size="1" maxlength="3" title="<?php echo xla('Width'); ?>">
-       <input type="textbox" name="newlengthHeight" id="newlengthHeight" value="" size="1" maxlength="3" title="<?php echo xla('Height'); ?>"></td>
+   <td><input type="textbox" class="halfinput" name="newlengthWidth" id="newlengthWidth" value="" size="3" maxlength="3" title="<?php echo xla('Width'); ?>">
+       <input type="textbox" class="halfinput" name="newlengthHeight" id="newlengthHeight" value="" size="3" maxlength="3" title="<?php echo xla('Height'); ?>"></td>
    <td><input type="textbox" name="newmaxSize" id="newmaxSize" value="" size="1" maxlength="3" title="<?php echo xla('Maximum Size (entering 0 will allow any size)'); ?>"></td>
    <td><input type="textbox" name="newlistid" id="newlistid" value="" size="8" maxlength="31" class="listid">
    </td>
@@ -1192,14 +1232,12 @@ foreach ($datatypes as $key=>$value) {
        <input type="hidden"  name="newdefault" id="newdefault" value="" /> </td>
    <td><input type="textbox" name="newdesc" id="newdesc" value="" size="30" maxlength="63"> </td>
   </tr>
-  <tr>
-   <td colspan="9">
-    <input type="button" class="savenewfield" value=<?php xl('Save New Field','e','\'','\''); ?>>
-    <input type="button" class="cancelnewfield" value=<?php xl('Cancel','e','\'','\''); ?>>
-   </td>
-  </tr>
  </tbody>
 </table>
+<div class="row marginlessrow">
+  <input type="button" class="savenewfield" value=<?php xl('Save New Field','e','\'','\''); ?>>
+  <input type="button" class="cancelnewfield" value=<?php xl('Cancel','e','\'','\''); ?>>
+</div>
 </div>
 
 </body>
@@ -1285,7 +1323,7 @@ $(document).ready(function(){
         // show the field details DIV
         $('#groupdetail').css('visibility', 'visible');
         $('#groupdetail').css('display', 'block');
-        $(btnObj).parent().append($("#groupdetail"));
+        $(btnObj).parent().parent().append($("#groupdetail"));
         $('#groupdetail > #newgroupname').focus();
         // Assign a sensible default sequence number.
         $('#gnewseq').val(10);
@@ -1392,7 +1430,7 @@ $(document).ready(function(){
     var RenameGroup = function(btnObj) {
         $('#renamegroupdetail').css('visibility', 'visible');
         $('#renamegroupdetail').css('display', 'block');
-        $(btnObj).parent().append($("#renamegroupdetail"));
+        $(btnObj).parent().parent().append($("#renamegroupdetail"));
         $('#renameoldgroupname').val($(btnObj).attr("id"));
         $('#renamegroupname').val($(btnObj).attr("id").replace(/^\d+/, ""));
     }
@@ -1437,7 +1475,7 @@ $(document).ready(function(){
         // show the field details DIV
         $('#fielddetail').css('visibility', 'visible');
         $('#fielddetail').css('display', 'block');
-        $(btnObj).parent().append($("#fielddetail"));
+        $(btnObj).parent().parent().append($("#fielddetail"));
         // Assign a sensible default sequence number.
         $('#newseq').val(getNextSeq(groupid));
     };

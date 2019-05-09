@@ -1,2 +1,7 @@
 *.env.*
 .htaccess
+.idea/
+sites/*/sqlconf.php
+sites/*/profile_pictures/*
+
+backups/

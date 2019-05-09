@@ -77,7 +77,7 @@ $gaclWritableDirectory = dirname(__FILE__)."/gacl/admin/templates_c";
 // correct permissions.
 if (is_dir($OE_SITE_DIR)) {
   //$Libre_Get_Modules could be added to the 'writable' array. Remove if unneeded when module registry methods are finalized
-  $writableFileList = array($installer->conffile);  
+  $writableFileList = array($installer->conffile);
   $writableDirList = array($docsDirectory, $billingDirectory, $billingDirectory2, $lettersDirectory, $gaclWritableDirectory);
 }
 else {
@@ -362,6 +362,8 @@ else {
         flush();
       }
     }
+
+    
 
     // Skip below if database shell has already been created.
     if ($inst != 2) {

@@ -1,0 +1,6 @@
+Under constant updates
+
+1. Create your own .env file from the .env.example fill
+2. Edit the database variables as for your report generator database connection.
+3. Create a new database with the database name you specified in DB_REPORT_GENERATOR_DATABASE
+4. Run php artisan module:seed ReportGenerator

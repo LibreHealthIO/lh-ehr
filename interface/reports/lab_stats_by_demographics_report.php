@@ -55,6 +55,31 @@ $to_date->modify('+1 day');
 $to_date = $to_date->format('Y-m-d');
 $min_age = $_POST['min_age'];
 $max_age = $_POST['max_age'];
+
+function itemPerPage(int $interval, int $iterations) {
+    while ($iterations--) {
+        $interval += $interval;
+        echo "<option value=$interval>$interval</option>";
+    }
+}
+
+function totalResultRows() {
+    $query  = "select count(*) from procedure_result pres ";
+    $query .= "join procedure_report prep on pres.procedure_report_id = prep.procedure_report_id " ;
+    $query .= "join procedure_order prord on prep.procedure_order_id = prord.procedure_order_id " ;
+    $query .= "join patient_data pd on pd.pid = prord.patient_id ";
+    $query .= "join list_options on option_id = pd.ethnicity and list_id = 'ethnicity' ";
+    $query .= "where  pres.result_text != '' and pres.abnormal != ''";
+    $queryArray = array();
+    $result = sqlStatement($query, $queryArray);
+    $resultArray = sqlFetchArray($result);
+    return $resultArray['count(*)'];
+}
+
+function availablePages($totalRows, $interval) {
+    echo round($totalRows / $interval);
+}
+
 ?>
 <head>
     <?php html_header_show();?>
@@ -64,7 +89,7 @@ $max_age = $_POST['max_age'];
 
     <script>
         $(document).ready(function() {
-
+            loadOptionsToPageSelector();
             if($('#show_lab_details_selector').val()) {
                 $('.session_table').hide();
                 $('#show_lab_details_table').show();
@@ -114,7 +139,7 @@ $max_age = $_POST['max_age'];
 
 
         function lab_result_details() {
-
+          
             $('#image').show();
 
             oTable=$('#show_lab_details_table').DataTable({
@@ -128,7 +153,9 @@ $max_age = $_POST['max_age'];
                     data: {
                         func:"get_all_lab_data",
                         min_age:"<?php echo $_POST['min_age']  ; ?>",
-                        max_age:"<?php echo $_POST['max_age']  ; ?>"
+                        max_age:"<?php echo $_POST['max_age']  ; ?>",
+                        results_per_page: $('#rpp').val(),
+                        page_number: $('#nof').val()
 
                     }, complete: function(){
                         $('#image').hide();
@@ -146,7 +173,8 @@ $max_age = $_POST['max_age'];
                 "iDisplayLength": 100,
                 "select":true,
                 "searching":true,
-                "retrieve" : true
+                "retrieve" : true,
+                 "destroy":true
             });
 
             $('#column0_search_show_lab_details_table').on( 'keyup', function () {
@@ -215,7 +243,8 @@ $max_age = $_POST['max_age'];
 <form action="./lab_stats_by_demographics_report.php" method="post">
     <label><input value="Refresh Query" type="submit" id="show_lab_details_selector" name="show_lab_details" ><?php ?></label>
 
-    <table>
+
+    <table id="header_table">
 
 
 
@@ -232,10 +261,22 @@ $max_age = $_POST['max_age'];
             <td></td>
             <td class='label'><?php echo htmlspecialchars(xl('Age Max'),ENT_NOQUOTES); ?>:</td>
             <td><input type='text' name='max_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($max_age, ENT_QUOTES); ?>' > </td>
+            <td class='label'><?php echo htmlspecialchars(xl('Results Per Page'),ENT_NOQUOTES); ?>:</td>
+            <td><select name='results_per_page' id="rpp">
+                <?php itemPerPage(250, 6); ?>
+                <option value="all">all</option>
+            </select></td>
+            <td class='label'><?php echo htmlspecialchars(xl('Navigate to Page'),ENT_NOQUOTES); ?>:</td>
+            <td><select name='number_of_pages' id="nof">
+                <?php
+                    $totalRows = totalResultRows(); 
+                    
+                ?>
+            </select></td>
 
         </tr>
     </table>
-</form>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+</form>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
 
 
@@ -249,13 +290,13 @@ $max_age = $_POST['max_age'];
     <thead>
 
     <tr>
-        <th><input  id = 'column0_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column1_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column2_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column3_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column4_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column5_search_show_lab_details_table' size="4"></th>
-        <th><input  id = 'column6_search_show_lab_details_table' size="4"></th>
+        <th><input  id = 'column0_search_show_lab_details_table'></th>
+        <th><input  id = 'column1_search_show_lab_details_table'></th>
+        <th><input  id = 'column2_search_show_lab_details_table'></th>
+        <th><input  id = 'column3_search_show_lab_details_table'></th>
+        <th><input  id = 'column4_search_show_lab_details_table'></th>
+        <th><input  id = 'column5_search_show_lab_details_table'></th>
+        <th><input  id = 'column6_search_show_lab_details_table'></th>
 
 
     </tr>
@@ -278,7 +319,7 @@ $max_age = $_POST['max_age'];
 </body>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
-
+<style type="text/css">#header_table td{ padding-right: 3px; }</style>
 <script>
     $(function() {
         $("#form_from_date").datetimepicker({
@@ -291,4 +332,36 @@ $max_age = $_POST['max_age'];
         });
 
     });
+
+    $('#rpp').change(function () {
+        loadOptionsToPageSelector();
+        oTable.destroy();
+        lab_result_details();
+    });
+    $('#nof').change(function () {
+        oTable.destroy();
+        lab_result_details();
+    });
+    function generatePageOptions(pages) {
+        var html = "";
+        while (pages--) {
+            html += "<option value='" + pages + "'>page " + pages  + "</option>";
+        }
+        return html;
+
+    }
+
+    function loadOptionsToPageSelector() {
+        var rpp = $('#rpp').val();
+        if (rpp == "all") {
+            $('#nof').html("<option value='all'>All pages</option>");
+        }
+        else {
+        //calculate the number of pages for the rows
+        var numberOfRows = "<?php echo $totalRows; ?>";
+        var pages = Math.round(numberOfRows / rpp);
+        var availableOptions = generatePageOptions(pages);
+        $('#nof').html(availableOptions);
+        }
+    }
 </script>

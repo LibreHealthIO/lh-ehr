@@ -24,7 +24,8 @@ require('includes/session.php');
 ?>
 <html>
 <head>
-  <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
+    <link href='full_calendar/fullcalendar.min.css' rel='stylesheet' />
   <link href='full_calendar/fullcalendar.print.css' rel='stylesheet' media='print' />
   <link href='full_calendar_scheduler/scheduler.min.css' rel='stylesheet' />
   <link href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
@@ -38,8 +39,25 @@ require('includes/session.php');
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>js.cookie/js.cookie.js"></script>
   <script src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
   <script src="../../library/dialog.js"></script>
+
+  <style type="text/css">
+  /* style to provide horizontal scroll in Calendar's agenda views
+     by making table overflow its container */
+    .fc-view-container {
+        width: auto;
+    }
+
+    .fc-agenda-view {
+        overflow-x: scroll;
+    }
+
+    .fc-agenda-view > table {
+        width: var(--col-width, 1200px);
+        overflow-wrap: break-word;
+    }
+  </style>
 </head>
-<body>
+<body class="body_top">
   <div id="sidebar">
     <button id="datepicker"><?php echo xlt('Date Picker'); ?></button>
 
@@ -138,6 +156,7 @@ require('includes/session.php');
       var title_agenda2 = '<?php echo xlt('2 day'); ?>';
       var title_agenda = '<?php echo xlt('1 day'); ?>';
       var title_search = '<?php echo xlt('search'); ?>';
+      var title_add = '<?php echo xlt('add'); ?>';
       var title_print = '<?php echo xlt('print'); ?>';
       var lang_default = '<?php echo $default_lang_id['lang_code']; ?>';
 
@@ -156,12 +175,36 @@ require('includes/session.php');
         calView.options.scrollTime = currCalTime;  // set scrollTime to current time
       }
 
+      function providerScroll() {
+        // Calendar tab's frame width - inner content + margin + space b/w frames
+        var calendarFrameWidth = $("#sidebar").width() + $("#calendar-container").width() + 16 + 7;
+        // setting height of the view area of the calendar so that horizontal scrollbar is visible
+        if (calendarFrameWidth > 580) {
+          $('#calendar').fullCalendar('option', 'contentHeight', 400);
+        } else if (calendarFrameWidth > 430) {
+          $('#calendar').fullCalendar('option', 'contentHeight', 370);
+        } else if (calendarFrameWidth > 390) {
+          $('#calendar').fullCalendar('option', 'contentHeight', 340);
+        } else {
+          $('#calendar').fullCalendar('option', 'contentHeight', 280);
+        }
+      }
+
+      function resizeAgendaViewTable(providers) {
+        // to change width of agenda view table based on number of providers
+        if (providers > 10) {
+          var toWidth = 120*providers; // taking ratio as 1200px for 10 providers
+          var bodyStyles = document.body.style;
+          bodyStyles.setProperty("--col-width", toWidth);
+        }
+      }
+
       $('#calendar').fullCalendar({
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         locale: lang_default,
         height: 'parent',
         header: {
-        left: 'prev,next,today print,search',
+        left: 'prev,next,today print,search,add',
         center: 'title',
         right: 'providerAgenda,providerAgenda2Day,providerAgendaWeek,timelineMonth'
         },
@@ -247,11 +290,17 @@ require('includes/session.php');
               click: function() {
                 window.location.href = 'search.php';
               }
+            },
+            add: {
+              text: title_add,
+              click: function () {
+                dlgopen('add.php', '_blank', 775, 375);
+              }
             }
         },
         eventMouseover: function(calEvent, element, view) {
           if (calEvent.picture_url) {
-            var picture = '<td><img src="../../profile_pictures/'+ calEvent.picture_url +'" height="64px" width="64px"></td>';
+            var picture = '<td><img src="../../sites/<?php echo ($_SESSION['site_id']) ?>/profile_pictures/'+ calEvent.picture_url +'" height="64px" width="64px"></td>';
           }
           else {
             picture = " ";
@@ -318,13 +367,22 @@ require('includes/session.php');
             $('#datepicker').datetimepicker({ value: view.intervalStart.format() });
 
             scrollCalTime(view);  // when view changes or any date navigation method (prev, next, today) is called
+            var providers = $(".fc-resource-cell").length // number of provider column in agenda views
+            resizeAgendaViewTable(providers);
         },
         loading: function(isLoading, view) {
             // triggered when event or resource fetching starts/stops.
             if(isLoading) {
                 // fetching starts
                 scrollCalTime(view);  // when Calendar is loaded or refreshed
+            } else {
+                // fetching stops
+                providerScroll()  // make sure horizontal scroll bar is visible when Calendar info. is changed
             }
+        },
+        windowResize: function(view) {
+            // triggered when Calendar’s dimensions (frame width) changes due to opening/closing of other frames
+            providerScroll()  // make sure horizontal scroll bar is visible when frame width changes
         }
       })
 

@@ -208,17 +208,32 @@ a, a:visited, a:hover { color:#0000cc; }
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
-
+<?php call_required_libraries(array("jquery-min-3-1-1","bootstrap", "iziModalToast")); ?>
 <script language="JavaScript">
 
-
-// This invokes the find-procedure-type popup.
 var ptvarname;
+//This invokes the find-procedure-type popup in iziModal iframe.
 function sel_proc_type(varname) {
  var f = document.forms[0];
  if (typeof varname == 'undefined') varname = 'form_proc_type';
  ptvarname = varname;
- dlgopen('types.php?popup=1&order=' + f[ptvarname].value, '_blank', 800, 500);
+ event.preventDefault();
+    console.log(event.target.href);
+    $("#modal-iframe").iziModal({
+    title: '<?php echo xlt('Find procedure')?>' ,
+    subtitle: '<?php echo xlt('Select procedure from the table below')?>' ,
+    headerColor: '#88A0B9',
+    iframe: true,
+    iframeHeight: 500,
+    width: 700,
+    height: 500,
+    iframeURL: 'types.php?popup=1&order='+f[ptvarname].value,
+    overlayClose: true,
+    closeButton: true,
+    closeOnEscape: true,
+    
+    });
+    $("#modal-iframe").iziModal('open');
 }
 
 // This is for callback by the find-procedure-type popup.
@@ -308,6 +323,8 @@ function validate(f) {
 <form method='post' action='orders_results.php?batch=<?php echo $form_batch; ?>&review=<?php echo $form_review; ?>'
  onsubmit='return validate(this)'>
 
+<div class="container">
+<div id="modal-iframe"></div>
 <table>
  <tr>
   <td class='text'>
@@ -350,6 +367,7 @@ if ($form_batch) {
   </td>
  </tr>
 </table>
+</div>
 
 <?php if (!$form_batch || ($form_proc_type > 0 && $form_from_date)) { ?>
 

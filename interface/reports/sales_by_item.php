@@ -19,8 +19,10 @@
  * @package LibreHealth EHR
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @author  Terry Hill <teryhill@librehealth.io>
+ * @author  Ngai Elizabeth <asobingai@gmail.com>
  * @link    http://librehealth.io
  */
+
 
 require_once "reports_controllers/SalesByItemController.php";
 
@@ -208,8 +210,8 @@ require_once "reports_controllers/SalesByItemController.php";
 }
 
   if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
-    $from_date = $form_from_date . ' 00:00:00';
-    $to_date = $form_to_date . ' 23:59:59';
+    $from_date = $_POST['form_from_date'] . ' 00:00:00';
+    $to_date = $_POST['form_to_date'] . ' 23:59:59';
     $category = "";
     $catleft = "";
     $cattotal = 0;
@@ -221,12 +223,11 @@ require_once "reports_controllers/SalesByItemController.php";
     $grandtotal = 0;
     $grandqty = 0;
 
-      $query = prepareQuery(); // Prepare query. (TRK)
-
-      $res = sqlStatement($query,$sqlBindArray);
+      $res = prepareQuery(); // Prepare query. (TRK)
+      //$res = sqlStatement($query,$sqlBindArray);
       while ($row = sqlFetchArray($res)) {
         thisLineItem($row['pid'], $row['encounter'], xl('Products'), $row['name'],
-          substr($row['date'], 0, 10), $row['quantity'], $row['fee'], $row['invoice_refno']);
+        substr($row['date'], 0, 10), $row['quantity'], $row['fee'], $row['invoice_refno']);
       }
 
     if ($_POST['form_csvexport']) {

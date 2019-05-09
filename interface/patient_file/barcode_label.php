@@ -142,5 +142,12 @@ Barcode::rotate(-$len / 2, ($data['height'] / 2) + $fontSize + $marge, $angle, $
 // -------------------------------------------------- //
  
 $pdf->TextWithRotation($x + $xt, $y + $yt, $data['hri'], $angle);
-$pdf->Output();
+
+$output = $pdf->Output('','S');
+$output = base64_encode($output);
 ?>
+
+<title>Barcode Label</title>
+<body style="margin: 0">
+    <embed src="data:application/pdf;base64,<?php echo $output ?>" type='application/pdf' style="position: fixed; width: 100%; height: 100%;">
+</body>

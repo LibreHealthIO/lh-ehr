@@ -53,7 +53,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
     <script type="text/javascript" src="<?php echo $web_root?>/library/textformat.js"></script>
 
 </head>
-<body>
+<body class="body_top">
 
 <!-- Begin tabs section -->
 <div id="tabs" style="visibility:hidden">
