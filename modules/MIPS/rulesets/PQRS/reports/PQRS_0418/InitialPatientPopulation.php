@@ -38,7 +38,11 @@ $query =
 " INNER JOIN pqrs_ptsf AS codelist_b ON (b2.code = codelist_b.code)".
 " INNER JOIN facility AS fac ON (fe.facility = fac.id)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) BETWEEN '50' AND '85'  ".
 " AND  fac.pos_code NOT IN ('32', '33', '34', '54', '56') ".

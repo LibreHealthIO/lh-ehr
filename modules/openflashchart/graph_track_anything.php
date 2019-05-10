@@ -25,7 +25,7 @@ require_once($GLOBALS['srcdir'] . "/formdata.inc.php");
 
 // get $_POSTed data
 //+++++++++++++++++++++++
-$titleGraph   	  = json_decode($_POST['track'],TRUE);
+$titleGraph       = json_decode($_POST['track'],TRUE);
 $the_date_array   = json_decode($_POST['dates'],TRUE);
 $the_value_array  = json_decode($_POST['values'],TRUE);
 $the_item_names   = json_decode($_POST['items'],TRUE);
@@ -34,13 +34,13 @@ $the_checked_cols = json_decode($_POST['thecheckboxes'],TRUE);
 $laenge = count($the_date_array);
 
 // set up colors for lines to plot
-$line_colors[]	= "#a40000";
-$line_colors[]	= "#5c3566";
-$line_colors[]	= "#204a87";
-$line_colors[]	= "#4e9a06";
-$line_colors[]	= "#babdb6";
-$line_colors[]	= "#0000FF";
-$line_colors[]	= "#DB1750";
+$line_colors[]  = "#a40000";
+$line_colors[]  = "#5c3566";
+$line_colors[]  = "#204a87";
+$line_colors[]  = "#4e9a06";
+$line_colors[]  = "#babdb6";
+$line_colors[]  = "#0000FF";
+$line_colors[]  = "#DB1750";
 
 
 
@@ -49,31 +49,31 @@ $line_colors[]	= "#DB1750";
 // and quit if not
 //-------------------------------
 if ($the_checked_cols == NULL) {
-	// nothing to plot
-	echo "No item checked,\n";
-	echo "nothing to plot."; // DEBUG ONLY! COMMENT ME OUT!
-	exit;
-	}
+    // nothing to plot
+    echo "No item checked,\n";
+    echo "nothing to plot."; // DEBUG ONLY! COMMENT ME OUT!
+    exit;
+    }
 // end check if NULL data
 
 
 
 
-// get ideal y-axis-steps	
+// get ideal y-axis-steps
 if(!function_exists('getIdealYSteps')) {
-	function getIdealYSteps($a) {
-		if ($a>1000) {
-			return 400;
-		} else if ($a>500) {
-			return 200;  
-		} else if ($a>100) {
-			return 40;
-		} else if ($a>50) {
-			return 20;
-		} else {
-			return 5;
-		}	
-	} // end function getIdeal...
+    function getIdealYSteps($a) {
+        if ($a>1000) {
+            return 400;
+        } else if ($a>500) {
+            return 200;
+        } else if ($a>100) {
+            return 40;
+        } else if ($a>50) {
+            return 20;
+        } else {
+            return 5;
+        }
+    } // end function getIdeal...
 } // end if function_exist
 
 
@@ -94,38 +94,38 @@ $chart->set_title( new Title( $titleGraph ));
 //#############################################################
 foreach($the_checked_cols as $col) {
 
-	// reset loop-arrays
-	$the_values = array();
-	$the_dates = array();
-	$the_data = array();
+    // reset loop-arrays
+    $the_values = array();
+    $the_dates = array();
+    $the_data = array();
 
-	
-	// skip NULL or not-numeric entries
-	// check if values are numeric
-	// and change date into UNIX-format
-	for ($i = 0; $i < $laenge; $i++){
-		if( is_numeric($the_value_array[$col][$i]) ) {
-			// is numeric
-			$the_values[] = $the_value_array[$col][$i];
-			$the_dates[]  = strtotime($the_date_array[$i]); // convert to UNIX-format
-			$the_data[] = new scatter_value(strtotime($the_date_array[$i]), $the_value_array[$col][$i]);  // save into array for plotting
-		} else {
-			// is NOT numeric, do nothing
-		}
-	}
-	// -----------------------------------------------------------
-	// all graph-data are now in array $the_data
-	// UNIX times (for x-axis-range) are in array $the_dates
-	// -----------------------------------------------------------
 
-	
-	$s_{$col} = new scatter_line( $line_colors[$col] , 2 );
-	$s_{$col}->set_default_dot_style( $def );
+    // skip NULL or not-numeric entries
+    // check if values are numeric
+    // and change date into UNIX-format
+    for ($i = 0; $i < $laenge; $i++){
+        if( is_numeric($the_value_array[$col][$i]) ) {
+            // is numeric
+            $the_values[] = $the_value_array[$col][$i];
+            $the_dates[]  = strtotime($the_date_array[$i]); // convert to UNIX-format
+            $the_data[] = new scatter_value(strtotime($the_date_array[$i]), $the_value_array[$col][$i]);  // save into array for plotting
+        } else {
+            // is NOT numeric, do nothing
+        }
+    }
+    // -----------------------------------------------------------
+    // all graph-data are now in array $the_data
+    // UNIX times (for x-axis-range) are in array $the_dates
+    // -----------------------------------------------------------
 
-	// Prepare and insert data
-	$s_{$col}->set_values( $the_data );
-	$s_{$col}-> set_key( $the_item_names[$col] , 10 );
-	$chart->add_element( $s_{$col} ); 
+
+    $s_{$col} = new scatter_line( $line_colors[$col] , 2 );
+    $s_{$col}->set_default_dot_style( $def );
+
+    // Prepare and insert data
+    $s_{$col}->set_values( $the_data );
+    $s_{$col}-> set_key( $the_item_names[$col] , 10 );
+    $chart->add_element( $s_{$col} );
 } // end foreach data-column-------------------------------------
 //###############################################################
 
@@ -143,8 +143,8 @@ $highest = $the_sort[0];
 // get maximum value (for y-axis)
 $the_sort = $the_value_array;
 foreach($the_checked_cols as $col) {
-	rsort($the_sort[$col]);
-	$maxima[] = $the_sort[$col][0];
+    rsort($the_sort[$col]);
+    $maxima[] = $the_sort[$col][0];
 }
 rsort($maxima);
 $maximum = $maxima[0];
@@ -160,10 +160,10 @@ $step= ($highest - $lowest)/60;
 $step_vis=2;
 
 // do not allow steps to be less than 30 minutes
-	if ($step < 26400) { # 86400
-			$step = 26400;
-			$step_vis=1; 
-	}
+    if ($step < 26400) { # 86400
+            $step = 26400;
+            $step_vis=1;
+    }
 
 $x->set_steps($step);
 $labels = new x_axis_labels();
@@ -180,11 +180,11 @@ $y = new y_axis(); // $maximum is already set above
 $y->set_range( 0 , $maximum + getIdealYSteps( $maximum ) );
 $y->set_steps( getIdealYSteps( $maximum ) );
 
-#	$chart->add_element( $s );   
+#   $chart->add_element( $s );
 $chart->set_x_axis( $x );
 $chart->add_y_axis( $y );
- 
+
 
 // echo a pretty ofc-string anyway
-echo $chart->toPrettyString();  
+echo $chart->toPrettyString();
 ?>

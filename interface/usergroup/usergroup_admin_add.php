@@ -4,7 +4,7 @@
  *
  *  This program is used to add the users
  *
- * Copyright (C) 2016-2017 
+ * Copyright (C) 2016-2017
  *
  *
  * LICENSE: This program is free software; you can redistribute it and/or
@@ -23,13 +23,13 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
  * @package LibreEHR
- * 
+ *
  * @link http://librehealth.io
  *
  * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
  *
  */
- 
+
 
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
@@ -68,7 +68,7 @@ function trimAll(sString)
         sString = sString.substring(0,sString.length-1);
     }
     return sString;
-} 
+}
 
 function readURL(input) {
         if (input.files && input.files[0]) {
@@ -79,7 +79,7 @@ function readURL(input) {
                     .attr('src', e.target.result)
                     .width(64)
                     .height(64);
-                $('#prof_img').css("display", "block"); 
+                $('#prof_img').css("display", "block");
                 $('#file_input_button').text("Edit Profile Picture");
             };
 
@@ -140,7 +140,7 @@ function submitform() {
                 alertMsg += checkLength(f[i].name,f[i].value,30);
                 alertMsg += checkAlphaNumeric(f[i].name,f[i].value);
              }
-             
+
           }
        }
        if(alertMsg)
@@ -151,7 +151,7 @@ function submitform() {
        <?php } // End erx_enable only include block?>
 
         document.forms[0].submit();
-        parent.$.fn.fancybox.close(); 
+        parent.$.fn.fancybox.close();
 
     } else {
        if (document.forms[0].rumple.value.length<=0)
@@ -196,19 +196,20 @@ function authorized_clicked() {
 </style>
 </head>
 <body class="body_top">
-<table>
-    <tr>
-    <td>
-    <a class="css_button cp-submit" name='form_save' id='form_save' href='#' onclick="return submitform()">
-        <span><?php echo xlt('Save');?></span></a>
-    <a class="css_button large_button cp-negative" id='cancel' href='#'>
-        <span class='css_button_span large_button_span'><?php echo xlt('Cancel');?></span>
-    </a>
+<table><tr><td>
+<span class="title"><?php echo xlt('Add User'); ?></span>&nbsp;</td>
+
+<td>
+<a class="css_button cp-submit" name='form_save' id='form_save' href='#' onclick="return submitform()">
+    <span><?php echo xlt('Save');?></span></a>
+<a class="css_button large_button cp-negative" id='cancel' href='#'>
+    <span class='css_button_span large_button_span'><?php echo xlt('Cancel');?></span>
+</a>
     </td>
     </tr>
 </table>
 <br><br>
-<form name='new_user' method='post'  target="_parent" action="usergroup_admin.php" enctype="multipart/form-data" 
+<form name='new_user' method='post'  target="_parent" action="usergroup_admin.php" enctype="multipart/form-data"
  onsubmit='return top.restoreSession()'>
 <table border=0>
 <tr>
@@ -293,7 +294,7 @@ if ($fres) {
 
 <tr>
     <td>
-        <span class="text"><?php echo xlt('Provider Type'); ?>: </span>
+        <span class="text"><?php echo xlt('Clinician Type'); ?>: </span>
     </td>
     <td>
         <?php echo generate_select_list("physician_type", "physician_type", '','',xl('Select Type'),'physician_type_class','','',''); ?>
@@ -325,15 +326,17 @@ if ($fres) {
 </select></td>
 </tr>
 <!-- END (CHEMED) Calendar UI preference -->
+<?php if ($GLOBALS['erx_enable']) { ?>
 
 <tr>
 <td><span class="text"><?php echo xlt('State License Number'); ?>: </span></td>
 <td><input type="entry" name="state_license_number" style="width:120px;"></td>
 <td class='text'><?php echo xlt('NewCrop eRX Role'); ?>:</td>
 <td>
-  <?php echo generate_select_list("erxrole", "newcrop_erx_role", '','','--Select Role--','','','',array('style'=>'width:120px')); ?>  
+  <?php echo generate_select_list("erxrole", "newcrop_erx_role", '','','--Select Role--','','','',array('style'=>'width:120px')); ?>
 </td>
 </tr>
+<?php } ?>
 
 <?php if ($GLOBALS['inhouse_pharmacy']) { ?>
 <tr>
@@ -376,7 +379,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
    }
   ?>
   </select></td>
-  
+
   <td><span class="text"><?php echo xlt('Additional Info'); ?>: </span></td>
   <td><textarea name=info style="width:120px;" cols=27 rows=4 wrap=auto></textarea></td>
   </tr>
@@ -401,7 +404,7 @@ echo generate_select_list('irnpool', 'irnpool', '',
                 <option value="Flow Board|/interface/patient_tracker/patient_tracker.php">Flow Board</option>
       </select>
 
-  
+
   </td>
   </tr>
   <tr>
@@ -532,7 +535,7 @@ $(document).ready(function(){
      });
   /*
      $("#role_name").on('change', function(e) {
-       
+
         $.ajax({
           "url": '../../library/ajax/get_fullscreen_pages.php',
           "method": "POST",
@@ -547,7 +550,7 @@ $(document).ready(function(){
               option.text = item.label;
               option.value = item.id;
               $("#fullscreen_page").append(option);
-              
+
             });
 
           },
@@ -556,7 +559,7 @@ $(document).ready(function(){
           }
           });
 
-       }); */ 
+       }); */
 });
 </script>
 <table>

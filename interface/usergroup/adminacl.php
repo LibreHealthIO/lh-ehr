@@ -503,7 +503,7 @@ if (!isset($phpgacl_location)) {
   body {
    padding: 5pt 15pt 5pt 5pt;
    margin: 0pt;
-  }
+  }     
   #acl div{
     margin-bottom: 2px;
   }   

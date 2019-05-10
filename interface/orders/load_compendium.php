@@ -85,7 +85,7 @@ $EXPORT_FILE = $GLOBALS['temporary_files_dir'] . "/libreehr_config.sql";
         </td>
     </table>
 <div class="text main_box">
-	
+
     <table class="table">
 
 <?php
@@ -455,9 +455,9 @@ if ($form_step == 2) {
 ++$form_step;
 ?>
 
-            </td>
-        </tr>
-    </table>
+  </td>
+ </tr>
+</table>
 
 <input type='hidden' name='form_step' value='<?php echo attr($form_step); ?>' />
 <input type='hidden' name='form_status' value='<?php echo $form_status; ?>' />

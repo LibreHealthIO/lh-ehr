@@ -267,7 +267,7 @@ function prepareQuery() {
   // If a facility was specified.
   if ($form_facility) {
     $query .= " AND fe.facility_id = ?";
-    array_push($sqlBindArray,$form_facility);
+     array_push($sqlBindArray,$form_facility);
   }
   if ($form_provider) {
     $query .= " AND fe.provider_id = ?";

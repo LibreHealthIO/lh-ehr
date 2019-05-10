@@ -25,6 +25,8 @@
 //
 // +------------------------------------------------------------------------------+
 
+require_once(dirname(__FILE__) . '/calendar.inc');
+require_once(dirname(__FILE__) . '/patient.inc');
 
 require_once(dirname(__FILE__) . '/patient_tracker.inc.php');
 
@@ -383,15 +385,22 @@ function &__increment($d,$m,$y,$f,$t)
         // the frequency count so as to ignore the weekend. hmmmm....
         $orig_freq = $f;
         for ($daycount=1; $daycount<=$orig_freq; $daycount++) {
-            $nextWorkDOW = date('D',mktime(0,0,0,$m,($d+$daycount),$y));
-            if ($nextWorkDOW == "Sat") { $f++; }
-            else if ($nextWorkDOW == "Sun") { $f++; }
+            $nextWorkDOW = date('w',mktime(0,0,0,$m,($d+$daycount),$y));
+            if (is_weekend_day($nextWorkDOW)) { $f++; }
         }
-        // and finally make sure we haven't landed on a Sat/Sun
+
+        // and finally make sure we haven't landed on a end week days
         // adjust as necessary
-        $nextWorkDOW = date('D',mktime(0,0,0,$m,($d+$f),$y));
-        if ($nextWorkDOW == "Sat") { $f+=2; }
-        else if ($nextWorkDOW == "Sun") { $f++; }
+        $nextWorkDOW = date('w',mktime(0,0,0,$m,($d+$f),$y));
+        if (count($GLOBALS['weekend_days']) === 2){
+            if ($nextWorkDOW == $GLOBALS['weekend_days'][0]) {
+                $f+=2;
+            }elseif($nextWorkDOW == $GLOBALS['weekend_days'][1]){
+                 $f++;
+            }
+        } elseif(count($GLOBALS['weekend_days']) === 1 && $nextWorkDOW === $GLOBALS['weekend_days'][0]) {
+            $f++;
+        }
 
         return date('Y-m-d',mktime(0,0,0,$m,($d+$f),$y));
 
@@ -401,6 +410,45 @@ function &__increment($d,$m,$y,$f,$t)
         return date('Y-m-d',mktime(0,0,0,($m+$f),$d,$y));
     } elseif($t == REPEAT_EVERY_YEAR) {
         return date('Y-m-d',mktime(0,0,0,$m,$d,($y+$f)));
+    }elseif($t == REPEAT_DAYS_EVERY_WEEK) {
+        $old_appointment_date = date('Y-m-d', mktime(0, 0, 0, $m, $d, $y));
+        $next_appointment_date = getTheNextAppointment($old_appointment_date, $f);
+        return $next_appointment_date;
     }
+}
+
+    function getTheNextAppointment($appointment_date, $freq){
+        $day_arr = explode(",", $freq);
+        $date_arr = array();
+        foreach ($day_arr as $day){
+            $day = getDayName($day);
+            $date = date('Y-m-d', strtotime("next " . $day, strtotime($appointment_date)));
+            array_push($date_arr, $date);
+        }
+        $next_appointment = getEarliestDate($date_arr);
+        return $next_appointment;
+
+
+    }
+
+    function getDayName($day_num){
+        if($day_num == "1"){return "sunday";}
+        if($day_num == "2"){return "monday";}
+        if($day_num == "3"){return "tuesday";}
+        if($day_num == "4"){return "wednesday";}
+        if($day_num == "5"){return "thursday";}
+        if($day_num == "6"){return "friday";}
+        if($day_num == "7"){return "saturday";}
+    }
+
+
+    function getEarliestDate($date_arr){
+        $earliest = ($date_arr[0]);
+        foreach ($date_arr as $date){
+            if(strtotime($date) < strtotime($earliest)){
+                $earliest = $date;
+            }
+    }
+        return $earliest;
 }
 //================================================================================================================

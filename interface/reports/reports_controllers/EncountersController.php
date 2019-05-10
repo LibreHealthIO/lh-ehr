@@ -65,7 +65,7 @@ if ($form_not_esigned) {
 $query = "SELECT " .
   "fe.encounter, fe.date, fe.reason, " .
   "f.formdir, f.form_name, " .
-  "p.fname, p.mname, p.lname, p.pid, p.pubpid, " .
+  "p.fname, p.mname, p.lname, p.pid,p.billing_note, p.pubpid, " .
   "u.lname AS ulname, u.fname AS ufname, u.mname AS umname " .
   "$esign_fields" .
   "FROM ( form_encounter AS fe, forms AS f ) " .
@@ -102,6 +102,7 @@ if ($form_esigned) {
 if ($form_not_esigned) {
 	$query .= "AND es.tid IS NULL ";
 }
+$query .= "ORDER BY fe.provider_id;";
 
 $res = sqlStatement($query);
 
@@ -118,6 +119,7 @@ function showResults() {
         $doc_encounters = 0;
         while ($row = sqlFetchArray($res)) {
             $patient_id = $row['pid'];
+            $raf = $row['billing_note'];
 			$docname = '';
             if (!empty($row['ulname']) || !empty($row['ufname'])) {
                 $docname = $row['ulname'];
@@ -173,6 +175,7 @@ function showResults() {
                   	echo "<td>"; echo text(oeFormatShortDate(substr($row['date'], 0, 10))); echo "&nbsp;</td>";
                   	echo "<td>"; echo text($row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname']); echo "&nbsp;</td>";
                   	echo "<td>"; echo text($row['pid']); echo "&nbsp;</td>";
+                  	echo "<td>"; echo text($row['billing_note']); echo "&nbsp;</td>";
                   	echo "<td>"; echo text($status); echo "&nbsp;</td>";
                   	echo "<td>"; echo text($row['reason']); echo "&nbsp;</td>";
                  	echo "<td>"; echo text($row['encounter']); echo "&nbsp;</td>";

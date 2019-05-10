@@ -23,22 +23,22 @@
 <link rel="stylesheet" type="text/css" href=<?php echo $web_root; ?>/interface/themes/style.php?pc=<?php echo str_replace("#", "",$GLOBALS['primary_color']);?>&pfontcolor=<?php echo str_replace("#", "", $GLOBALS['primary_font_color']);?>&sc=<?php echo str_replace("#", "", $GLOBALS['secondary_color']);?>&sfontcolor=<?php echo str_replace("#", "",$GLOBALS['secondary_font_color']);?>>
 <?php
 
-    function include_js_library($path)
-    {
+function include_js_library($path)
+{
 ?>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$path;?>"></script>
 
 <?php
-    }
+}
 
-    function include_css_library($path)
-    {
+function include_css_library($path)
+{
 ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path'].$path;?>" media="screen" />
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path'].$path;?>" media="screen" />
 
 <?php
-    }
+}
 ?>
 
 <?php
@@ -48,24 +48,37 @@
     Strings equate to the directory name in the /assets/ directory.
 */
 function call_required_libraries($library_array){
-    /* First checking for any library in a directory matching the string "/jquery-min-/".
-     * When one is found, use that value in the URL string, then add "index.js"
-     */
+/* First checking for any library in a directory matching the string "/jquery-min-/".
+ * When one is found, use that value in the URL string, then add "index.js"
+ */
 
-    foreach ($library_array as $v){
-        if (preg_match("/jquery-min-/", $v)) {?>
-            <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$v ; ?>/index.js"></script>
-        <?php
+    foreach($library_array as $v){
+        if (preg_match("/jquery-min-/",$v)) {?>
+    <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path'].$v ; ?>/index.js"></script>
+    <?php
         }
     }
 
-    if (in_array("bootstrap", $library_array)) {   ?>
+    if (in_array("bootstrap",$library_array)){   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/css/bootstrap.min.css" type="text/css">
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-4/dist/js/bootstrap.min.js"></script>
     <?php
     }
 
-    if (in_array("fancybox", $library_array)) {   ?>
+    if (in_array("bootstrap-3-3-7", $library_array)) {   ?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-7/dist/css/bootstrap.min.css" type="text/css">
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-3-3-7/dist/js/bootstrap.min.js"></script>
+    <?php
+    }
+
+
+    if (in_array("bootstrap-4-0", $library_array)) {   ?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-4-0/css/bootstrap.min.css" type="text/css">
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>bootstrap-4-0/js/bootstrap.min.js"></script>
+        <?php
+    }
+
+    if (in_array("fancybox",$library_array)){   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>fancybox/jquery.fancybox-1.2.6.css" media="screen" />
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>fancybox/jquery.fancybox-1.2.6.js"></script>
     <?php
@@ -84,8 +97,12 @@ function call_required_libraries($library_array){
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>knockout/knockout-3.4.0.js"></script>
     <?php
     }
+    if (in_array("blink", $library_array)) {   ?>
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-modern-blink-0-1-3/jquery.modern-blink.js"></script>
+        <?php
+    }
 
-    if (in_array("datepicker", $library_array)) {   ?>
+    if (in_array("datepicker",$library_array)){   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['css_path']; ?>jquery-datetimepicker/jquery.datetimepicker.css" media="screen" />
         <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
     <?php
@@ -93,6 +110,12 @@ function call_required_libraries($library_array){
 
     if (in_array('font-awesome', $library_array)) {   ?>
         <link rel="stylesheet" href="<?php echo $GLOBALS['assets'] ?>/fonts/font-awesome-4-6-3/css/font-awesome.min.css" type="text/css">
+    <?php
+    }
+
+    if (in_array('fontawesome-iconpicker', $library_array)) {   ?>
+        <link rel="stylesheet" href="<?php echo $GLOBALS['css_path'] ?>/fa-iconpicker/fontawesome-iconpicker.css" media="screen">
+        <script type="text/javascript" src="<?php echo $GLOBALS['standard_js_path']; ?>fa-iconpicker/fontawesome-iconpicker.min.js"></script>
     <?php
     }
 
@@ -118,7 +141,7 @@ function call_required_libraries($library_array){
         <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>select2/select2.min.css">
     <?php
     }
-	
+
 	if(in_array("iziModalToast", $library_array)) { ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>iziModalToast/iziModal.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['css_path']; ?>iziModalToast/iziToast.min.css">
@@ -155,7 +178,7 @@ function call_required_libraries($library_array){
 
 
 
-         <?php
+        <?php
     }
 
 }

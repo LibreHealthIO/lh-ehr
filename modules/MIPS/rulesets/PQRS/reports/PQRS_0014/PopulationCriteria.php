@@ -16,7 +16,7 @@
  *
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
- 
+
 class PQRS_0014_PopulationCriteria implements PQRSPopulationCriteriaFactory
 {
     public function getTitle()
@@ -44,3 +44,5 @@ class PQRS_0014_PopulationCriteria implements PQRSPopulationCriteriaFactory
         return new PQRS_0014_Exclusion();
     }
 }
+
+?>

@@ -38,7 +38,11 @@ $query =
 " INNER JOIN pqrs_efcc3 AS codelist_b ON (b2.code = codelist_b.code)".
 " INNER JOIN pqrs_efcc3 AS codelist_c ON (b3.code = codelist_c.code)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fac.pos_code = '23' ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) BETWEEN '14' AND '50' ".

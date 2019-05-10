@@ -51,7 +51,7 @@ $alertmsg = '';
         <script src="<?php echo $GLOBALS['standard_js_path']; ?>anchorposition/AnchorPosition.js"></script>
         <script src="<?php echo $GLOBALS['standard_js_path']; ?>popupwindow/PopupWindow.js"></script>
 
-        <script type="text/javascript">
+                    <script type="text/javascript">
             // TODO - move this to a common library
             function submitform() {
                 <?php if($GLOBALS['erx_enable']){ ?>
@@ -74,7 +74,7 @@ $alertmsg = '';
                             alertMsg += checkLength(f[i].name,f[i].value,10);
                             alertMsg += checkFederalEin(f[i].name,f[i].value);
                         }
-                    }
+                    }       
                 }
                 if (alertMsg) {
                     alert(alertMsg);
@@ -91,7 +91,7 @@ $alertmsg = '';
                     }
                     else if (document.forms[0].ncolor.value == '') {
                         document.forms[0].ncolor.style.backgroundColor="red";
-                        document.forms[0].ncolor.focus();
+                        document.forms[0].ncolor.focus();   
                     }
                 }
             }
@@ -121,7 +121,7 @@ $alertmsg = '';
             $(document).ready(function(){
                 $("#cancel").click(function() {
                     parent.$('#addFacilities-iframe').iziModal('close');
-                });
+                 });
             });
 
             function displayAlert() {
@@ -271,7 +271,7 @@ $alertmsg = '';
                         <span class='text'>
                             <?php echo xlt('Accepts Assignment'); ?>
                             <br/>
-                            (<?php echo xlt('only if billing location'); ?>):
+                            (<?php echo xlt('only if billing location'); ?>): 
                         </span>
                     </td>
                     <td>

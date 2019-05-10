@@ -149,7 +149,7 @@ include_once("$srcdir/headers.inc.php");
                                 </tr>
                             <?php } ?>
 
-                            <?php if (isset($_SESSION['loginfailure']) && ($_SESSION['loginfailure'] == 1)): ?>
+                            <?php if (isset($_SESSION['loginfailure']) && ($_SESSION['loginfailure'] == 1) && !isset($_SESSION['userAttemptsRemaining']) && !isset($_SESSION['isUserAccountLocked'])): ?>
                                 <tr>
                                     <td colspan='2' class='text' style='color:red'>
                                         <?php echo xlt('Invalid username or pass phrase'); ?>
@@ -175,7 +175,7 @@ include_once("$srcdir/headers.inc.php");
                                     </td>
                                 </tr>
                             <?php endif; ?>
-			    <!-- Fixing height and width of input box.-->
+                <!-- Fixing height and width of input box.-->
                             <tr>
                                 <td><span class="text"><?php echo xlt('Username'); ?></span></td>
                                 <td>
@@ -230,6 +230,27 @@ include_once("$srcdir/headers.inc.php");
                                     ?>
                     </div>
             </td>
+            </tr>
+                <?php
+                    if (isset($_SESSION['userAccountName'])) {
+                        if (isset($_SESSION['isUserAccountLocked'])) {
+                            echo "<b style='color:red;'> Account locked, Please contact your system administrator to unlock your account</b>";
+                        }
+                        else if($_SESSION['userAttemptsRemaining']) {
+                            $attempts_remaining = $_SESSION['userAttemptsRemaining'];
+                            echo "<b style='color:red;'>Password attempts remaining : $attempts_remaining </b>";
+                        }
+                    }
+
+                ?>
+            <!--  error message div there is an error in password_attempts -->
+            <tr>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
             </tr>
         </table>
 

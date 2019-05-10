@@ -60,7 +60,11 @@ if ($score === 2){
 		" INNER JOIN pqrs_efcc1 AS codelist_a ON (b1.code = codelist_a.code)".
 		" WHERE b1.pid = ? ".
 		" AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18'  ".
-        " AND fe.provider_id = '".$this->_reportOptions['provider']."'". 
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 		" AND fe.date >= '".$beginDate."' ".
 		" AND fe.date <= '".$endDate."' ".
 		" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0007_a') ".

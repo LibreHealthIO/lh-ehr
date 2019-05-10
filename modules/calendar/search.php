@@ -28,17 +28,17 @@ function keywordFilter($arr) {
 }
 
 // get bootstrap and datetimepicker
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
+  call_required_libraries(array ("jquery-min-3-1-1","bootstrap","datepicker"));
 ?>
 <html>
 <head>
   <link href="css/search.css" rel="stylesheet" />
-  
+
   <script src='full_calendar/lib/moment.min.js'></script>
   <script type="text/javascript" src="../../library/dialog.js"></script>
 </head>
 <body>
-  
+
   <div class="container-fluid" style="margin-left: 20px; margin-right: 20px;">
     <div class="row">
       <h2><button type="button" class="btn btn-default btn-sm" onclick="window.location.href='index.php'">Back to Calendar</button></h2>
@@ -46,7 +46,7 @@ function keywordFilter($arr) {
     <div class="row">
       <h3>Search</h3>
     </div>
-    
+
     <form class="form-horizontal"  action="" method="POST">
       <div class="form-group">
         <label class="control-label col-sm-2" for="keyword">Keyword</label>
@@ -94,19 +94,19 @@ function keywordFilter($arr) {
           </select>
         </div>
       </div>
-      <div class="form-group"> 
+      <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="submit" class="btn btn-default" name="submit" value="1">Submit</button>
         </div>
       </div>
     </form>
-    
+
     <!-- if search performed -->
-    <?php if($_SERVER['REQUEST_METHOD'] == 'POST') { 
+    <?php if($_SERVER['REQUEST_METHOD'] == 'POST') {
       $pid = ($_POST['provider_id'] == "0") ? null : $_POST['provider_id'];
       $fid = ($_POST['facility_id'] == "0") ? null : $_POST['facility_id'];
       $appointments = fetchAppointments(fixDate($_POST['startDate']), fixDate($_POST['endDate']), null, $pid, $fid);
-      
+
       // filter the appointments using the keyword
       $filteredAppointments = array_filter($appointments, "keywordFilter");
     ?>
@@ -137,9 +137,9 @@ function keywordFilter($arr) {
     <!-- end if search performed -->
     <?php } ?>
   </div>
-  
+
   <script>
-    $('#startDate').datetimepicker({ 
+    $('#startDate').datetimepicker({
       timepicker: false,
       format: '<?php echo $dateFormat; ?>',
       formatDate: '<?php echo $dateFormat; ?>',
@@ -149,7 +149,7 @@ function keywordFilter($arr) {
        })
       }
     });
-    $('#endDate').datetimepicker({ 
+    $('#endDate').datetimepicker({
       timepicker: false,
       format: '<?php echo $dateFormat; ?>',
       formatDate: '<?php echo $dateFormat; ?>',
@@ -159,14 +159,14 @@ function keywordFilter($arr) {
        })
       }
     });
-    
+
     function openEvent(eid, date) {
       dlgopen('add_edit_event.php?date='+ moment(date).format('YYYYMMDD') +'&eid=' + eid +'&prov=0', '_blank', 775, 375);
     }
-    
+
     function goPid(pid) {
       top.RTop.location = '../../patient_file/summary/demographics.php' + '?set_pid=' + pid;
-      
+
       // cancel event bubble trying to open add_edit_event
       if (!e) var e = window.event;
       e.cancelBubble = true;

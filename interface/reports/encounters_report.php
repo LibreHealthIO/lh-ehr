@@ -163,7 +163,8 @@ require_once "reports_controllers/EncountersController.php";
             <th><?php echo xlt('Provider'); ?></th>
             <th><?php echo xlt('Date'); ?></th>
             <th><?php echo xlt('Patient'); ?></th>
-            <th><?php echo xlt('ID'); ?></th>
+            <th><?php echo xlt('PID'); ?></th>
+            <th><?php echo xlt('RAF'); ?></th>
             <th><?php echo xlt('Status'); ?></th>
             <th><?php echo xlt('Encounter'); ?></th>
             <th><?php echo xlt('Encounter Number'); ?></th>

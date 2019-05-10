@@ -35,7 +35,11 @@ $query =
 " JOIN patient_data AS p ON (p.pid = b1.pid)".
 " INNER JOIN pqrs_efcc3 AS codelist_a ON (b1.code = codelist_a.code)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date)>='18' ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0406_a'); ";

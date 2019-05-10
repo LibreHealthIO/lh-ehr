@@ -227,7 +227,7 @@ require_once "reports_controllers/SalesByItemController.php";
       //$res = sqlStatement($query,$sqlBindArray);
       while ($row = sqlFetchArray($res)) {
         thisLineItem($row['pid'], $row['encounter'], xl('Products'), $row['name'],
-        substr($row['date'], 0, 10), $row['quantity'], $row['fee'], $row['invoice_refno']);
+          substr($row['date'], 0, 10), $row['quantity'], $row['fee'], $row['invoice_refno']);
       }
 
     if ($_POST['form_csvexport']) {

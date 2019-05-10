@@ -5,20 +5,21 @@
 * Functions for use in the Patient Flow Board and Patient Flow Board Reports.
 *
 *
-* Copyright (C) 2015-2017 Terry Hill <teryhill@librehealth.io>
+* Copyright (C) 2015-2018 Terry Hill <teryhill@librehealth.io>
 *
 * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
 * See the Mozilla Public License for more details.
 * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 *
-* @package LibreEHR
+* @package LibreHealth EHR
 * @author Terry Hill <teryhill@librehealth.io>
-* @link http://www.libreehr.org
+* @link http://librehealth.io
 *
 * Please help the overall project by sending changes you make to the author and to the LibreEHR community.
 *
 */
 require_once(dirname(__FILE__) . '/appointments.inc.php');
+require_once(dirname(__FILE__) . '/formatting.inc.php');
 
 function get_Tracker_Time_Interval ($tracker_from_time, $tracker_to_time, $allow_sec=false) {
 
@@ -194,11 +195,11 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
   #Check to see if there is an entry in the patient_tracker table.
   $tracker = sqlQuery("SELECT id, apptdate, appttime, eid, pid, original_user, encounter, lastseq,".
                        "patient_tracker_element.room AS lastroom,patient_tracker_element.status AS laststatus ".
-					   "from `patient_tracker`".
-					   "LEFT JOIN patient_tracker_element " .
+                       "from `patient_tracker`".
+                       "LEFT JOIN patient_tracker_element " .
                        "ON patient_tracker.id = patient_tracker_element.pt_tracker_id " .
                        "AND patient_tracker.lastseq = patient_tracker_element.seq " .
-					   "WHERE `apptdate` = ? AND `appttime` = ? " .
+                       "WHERE `apptdate` = ? AND `appttime` = ? " .
                        "AND `eid` = ? AND `pid` = ?", array($apptdate,$appttime,$eid,$pid));
 
   if (empty($tracker)) {
@@ -221,7 +222,7 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
     if (($status != $tracker['laststatus']) || ($room != $tracker['lastroom'])) {
       #Status or room has changed, so need to update tracker.
       #Update lastseq in tracker.
-	   sqlStatement("UPDATE `patient_tracker` SET  `lastseq` = ? WHERE `id` = ?",
+       sqlStatement("UPDATE `patient_tracker` SET  `lastseq` = ? WHERE `id` = ?",
                    array(($tracker['lastseq']+1),$tracker_id));
       #Add a tracker item.
       sqlInsert("INSERT INTO `patient_tracker_element` " .
@@ -238,7 +239,7 @@ function manage_tracker_status($apptdate,$appttime,$eid,$pid,$user,$status='',$r
 
   #Ensure the entry in calendar appt entry has been updated.
   $pc_appt =  sqlQuery("SELECT `pc_apptstatus`, `pc_room` FROM `libreehr_postcalendar_events` WHERE `pc_eid` = ?", array($eid));
-  if ($status != $pc_appt['pc_apptstatus']) {
+  if ($status != $pc_appt['pc_apptstatus'] && $_POST['form_action'] != "duplicate" ) {
     sqlStatement("UPDATE `libreehr_postcalendar_events` SET `pc_apptstatus` = ? WHERE `pc_eid` = ?", array($status,$eid));
   }
   if ($room != $pc_appt['pc_room']) {

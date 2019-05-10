@@ -374,12 +374,12 @@ function CheckPayingEntityAndDistributionPostFor()
         InsPatDropDownValue=document.getElementById('payment_ins'+RowCount).options[document.getElementById('payment_ins'+RowCount).selectedIndex].value;
         if(PayingEntity=='patient' && InsPatDropDownValue>0)
          {
-          alert("<?php echo htmlspecialchars( xl('Cannot Post for Insurance.  The Paying Entity selected is Patient.'), ENT_QUOTES) ?>");
+          alert("<?php echo htmlspecialchars( xl('Cannot Post for Insurance.The Paying Entity selected is Patient.'), ENT_QUOTES) ?>");
           return false;
          }
         else if(PayingEntity=='insurance' && InsPatDropDownValue==0)
          {
-          alert("<?php echo htmlspecialchars( xl('Cannot Post for Patient.  The Paying Entity selected is Insurance.'), ENT_QUOTES) ?>");
+          alert("<?php echo htmlspecialchars( xl('Cannot Post for Patient.The Paying Entity selected is Insurance.'), ENT_QUOTES) ?>");
           return false;
          }
        }

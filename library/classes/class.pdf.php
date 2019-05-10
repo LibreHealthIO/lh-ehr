@@ -16,9 +16,9 @@
 * LICENCE
 * This code has been placed in the Public Domain for all to enjoy.
 *
-* @author		Wayne Munro <pdf@ros.co.nz>
-* @version 	009
-* @package	Cpdf
+* @author       Wayne Munro <pdf@ros.co.nz>
+* @version  009
+* @package  Cpdf
 */
 class Cpdf {
 

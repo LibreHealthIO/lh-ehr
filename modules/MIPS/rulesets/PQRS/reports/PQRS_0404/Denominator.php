@@ -36,7 +36,11 @@ $query =
 " INNER JOIN billing AS b3 ON (b3.pid = b2.pid)".
 " INNER JOIN billing AS b4 ON (b4.pid = b2.pid)".
 " WHERE b2.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date)>='18' ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND (b2.code = 'G9642')".

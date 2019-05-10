@@ -114,16 +114,20 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
     }
 
     $query = "SELECT " .
-    "e.pc_facility, e.pc_eventDate, e.pc_endDate, e.pc_startTime, e.pc_endTime, e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, e.pc_recurrfreq, e.pc_catid, e.pc_eid, " .
-    "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, e.pc_aid, e.pc_eid, e.pc_alldayevent, e.pc_pid, " .
-    "p.fname, p.mname, p.lname, p.pid, p.phone_home, p.phone_cell, " .
+    "e.pc_facility, e.pc_eventDate, e.pc_endDate, e.pc_startTime, e.pc_endTime, e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, e.pc_recurrfreq, e.pc_catid, e.pc_eid, e.pc_multiple, e.pc_prefcatid, e.pc_facility, e.pc_billing_location, e.pc_room, " .
+    "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, e.pc_aid, e.pc_eid, e.pc_alldayevent, e.pc_pid, e.case_number, " .
+    "p.fname, p.mname, p.lname, p.pid, p.DOB, p.referrer, p.nickname, p.picture_url, p.phone_home, p.phone_cell, " .
     "u.fname AS ufname, u.mname AS umname, u.lname AS ulname, u.id AS uprovider_id, " .
+    "r.fname AS rfname, r.mname AS rmname, r.lname AS rlname, r.id AS rprovider_id, " .
+    "f.name AS current_facility, " .
     "$tracker_fields" .
-    "c.pc_catname, c.pc_catid, c.pc_catcolor " .
+    "c.pc_catname, c.pc_catid, c.pc_catcolor, c.pc_categories_icon, c.pc_icon_color, c.pc_icon_bg_color " .
     "FROM libreehr_postcalendar_events AS e " .
     "$tracker_joins" .
     "LEFT OUTER JOIN patient_data AS p ON p.pid = e.pc_pid " .
     "LEFT OUTER JOIN users AS u ON u.id = e.pc_aid " .
+    "LEFT OUTER JOIN users AS r ON r.id = p.referrer " .
+    "LEFT OUTER JOIN facility AS f ON f.id = e.pc_facility " .
     "LEFT OUTER JOIN libreehr_postcalendar_categories AS c ON c.pc_catid = e.pc_catid " .
     "WHERE $where " .
     "ORDER BY $order_by";
@@ -169,10 +173,10 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
         $occurance = $event['pc_eventDate'];
 
 
-        while($occurance < $from_date) {
-          $occurance =& __increment($nd,$nm,$ny,$rfreq,$rtype);
-          list($ny,$nm,$nd) = explode('-',$occurance);
-        }
+//        while($occurance < $from_date) {
+//          $occurance = __increment($nd,$nm,$ny,$rfreq,$rtype);
+//          list($ny,$nm,$nd) = explode('-',$occurance);
+//        }
 
         while($occurance <= $stopDate) {
 
@@ -199,7 +203,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
               //////
             }
 
-            $occurance =& __increment($nd,$nm,$ny,$rfreq,$rtype);
+            $occurance = __increment($nd,$nm,$ny,$rfreq,$rtype);
             list($ny,$nm,$nd) = explode('-',$occurance);
 
         }
@@ -584,8 +588,10 @@ function fetchAppointmentCategories( $appt_prov_inc = false )
 {
     if($GLOBALS['gb_how_sort_categories'] == '0') {
         $order = "id";
-    } else {
+    } else if($GLOBALS['gb_how_sort_categories'] == '1') {
         $order = "category";
+    } else {
+       $order = "pc_seq";
     }
 
     if (!$appt_prov_inc) {

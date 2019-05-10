@@ -132,7 +132,7 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
   }
   else {
     if (empty($ignoreAuth)) {
-        header('Location: login/login.php?loginfirst&site='.$tmp);
+        header("Location: {$webroot}/interface/login/login.php?loginfirst&site={$tmp}");
         die();
     }
     $tmp = $_SERVER['HTTP_HOST'];
@@ -149,7 +149,7 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
     }
     else {
       // Main LibreHealth EHR use
-      header('Location: ../login/login.php?site='.$tmp); // Assuming in the interface/main directory
+      header("Location: {$webroot}/interface/login/login.php?site={$tmp}"); // Assuming in the interface/main directory
     }
     exit;
   }
@@ -246,6 +246,7 @@ include_once (dirname(__FILE__) . "/../library/date_functions.php");
 $GLOBALS['weight_loss_clinic'] = false;
 $GLOBALS['ippf_specific'] = false;
 $GLOBALS['cene_specific'] = false;
+$GLOBALS['facility_acl'] = false;
 
 // Defaults for drugs and products.
 $GLOBALS['inhouse_pharmacy'] = false;
@@ -295,6 +296,9 @@ if (!empty($glrow)) {
         $GLOBALS[$gl_name] = $rootdir.'/themes/'. $gl_value;
         $temp_css_theme_name = $gl_value;
     }
+    else if ($gl_name == 'weekend_days') {
+        $GLOBALS[$gl_name] = explode(',', $gl_value);
+    }
     else if ($gl_name == 'specific_application') {
       if ($gl_value == '2') $GLOBALS['ippf_specific'] = true;
       else if ($gl_value == '3') $GLOBALS['weight_loss_clinic'] = true;
@@ -338,9 +342,8 @@ if (!empty($glrow)) {
             // the $css_header_value is set above
             $rtl_override = true;
     }
-    }
 
-    else {
+    } else {
         //$_SESSION['language_direction'] is not set, so will use the default language
         $default_lang_id = sqlQuery('SELECT lang_id FROM lang_languages WHERE lang_description = ?',array($GLOBALS['language_default']));
 
@@ -395,6 +398,7 @@ else {
   $GLOBALS['phone_country_code'] = '1';
   $GLOBALS['disable_non_default_groups'] = true;
   $GLOBALS['ippf_specific'] = false;
+  $GLOBALS['facility_acl'] = false;
   $GLOBALS['default_tab_1'] = "/interface/main/finder/dynamic_finder.php";
   $GLOBALS['default_tab_2'] = "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1";
 }
@@ -408,19 +412,11 @@ $GLOBALS['restore_sessions'] = 1; // 0=no, 1=yes, 2=yes+debug
 
 // Theme definition.  All this stuff should be moved to CSS.
 //
-if ($GLOBALS['concurrent_layout']) {
  $top_bg_line = ' bgcolor="#dddddd" ';
  $GLOBALS['style']['BGCOLOR2'] = "#dddddd";
  $bottom_bg_line = $top_bg_line;
  $title_bg_line = ' bgcolor="#bbbbbb" ';
  $nav_bg_line = ' bgcolor="#94d6e7" ';
-} else {
- $top_bg_line = ' bgcolor="#94d6e7" ';
- $GLOBALS['style']['BGCOLOR2'] = "#94d6e7";
- $bottom_bg_line = ' background="'.$rootdir.'/themes/theme_assets/aquabg.gif" ';
- $title_bg_line = ' bgcolor="#aaffff" ';
- $nav_bg_line = ' bgcolor="#94d6e7" ';
-}
 $login_filler_line = ' bgcolor="#f7f0d5" ';
 $logocode = "<img src='$web_root/sites/" . $_SESSION['site_id'] . "/images/login_logo.png'>";
 $linepic = "$rootdir/pic/repeat_vline9.gif";
@@ -541,14 +537,18 @@ if ($fake_register_globals) {
 
 include_once __DIR__ . '/../library/pluginsystem/bootstrap.php';
 
-if ($GLOBALS['ehr_timezone'] !== '') {
-  // getting selected time zone option (from globals)
-  $timezone = $GLOBALS['ehr_timezone'];
+if ($GLOBALS['calendar_timezone'] !== '') {
+  // getting selected option (in globals)
+  $timezone = $GLOBALS['calendar_timezone'];
   if (strpos($timezone, '!') !== false) {
-    // removing '!' from timezone which is at 0th place in string
-    // which happens when default option is selected in time zone list in globals
-    $timezone = substr($timezone, strpos($timezone, '!') + 1);
+    // removing '!' from timezone which is at 0th place
+    $timezone = substr($timezone, strpos($timezone, '!')+1);
   }
   ini_set('date.timezone', $timezone);  // sets timezone for function date() according to globals
 }
+
+/*include expanded query include functions if Facility based access control is on.
+ This should probably be implemented elsewhere as part of the above include. */
+ if ($GLOBALS['facility_acl'] === true){
+ include_once "$srcdir/fac_acl.inc.php";}
 ?>

@@ -35,7 +35,11 @@ class pre_0118_InitialPatientPopulation2 extends PQRSFilter
 		" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 		" JOIN patient_data AS p ON (p.pid = b1.pid)".
 		" WHERE b1.pid = ? ".
-        " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+                "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 		" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 		" AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
 		" AND (b1.code = codelist_b.code AND codelist_b.type = 'pqrs_0118_b');";
@@ -60,7 +64,11 @@ class pre_0118_InitialPatientPopulation2 extends PQRSFilter
 							" INNER JOIN pqrs_efcc2 AS codelist_a ON (b1.code = codelist_a.code)".
 							" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 							" WHERE b1.pid = ? ".
-                            " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+                                    "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 							" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0118_a' AND b1.modifier NOT IN('GQ','GT','95'));";
 							//Looking for two encounter codes.  This is a common list
 							$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));

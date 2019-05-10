@@ -28,8 +28,10 @@ foreach($fetchedEvents as $event) {
 
   // skip cancelled appointments
   if ($GLOBALS['display_canceled_appointments'] != 1) {
-     if ($event['pc_apptstatus'] == "x") { continue; }
+        if (($event['pc_apptstatus'] == "x") || ($event['pc_apptstatus'] == "%")) {
+            continue;
   }
+    }
   $status = $event['pc_apptstatus'];
   $colorevents = (collectApptStatusSettings($status));
 
@@ -53,6 +55,13 @@ foreach($fetchedEvents as $event) {
   if($event["pc_pid"] > 0) {
     $e['picture_url'] = getPatientPictureUrl($event["pc_pid"]);
     $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
+        // icon
+        if ($event["pc_categories_icon"] !== "") {
+            $icon = "<span style='color:" . $event['pc_icon_color'] . '; background-color:' . $event['pc_icon_bg_color'] . "; padding: 3px; left-margin: 5px;font-size: 10px; line-height: 18px; border-radius: 50%;'><i class='fas " . $event['pc_categories_icon'] . "'></i></span>";;;
+        } else {
+            $icon ='';
+        }
+        $e['icon'] = $icon;
     if(!empty($event["pc_hometext"])) {
       $e['description'] = $e['description'] . ": " . $event["pc_hometext"];
     }

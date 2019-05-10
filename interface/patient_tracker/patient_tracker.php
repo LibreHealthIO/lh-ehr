@@ -1,4 +1,4 @@
-    <?php
+<?php
 /**
  *  Patient Tracker (Patient Flow Board)
  *

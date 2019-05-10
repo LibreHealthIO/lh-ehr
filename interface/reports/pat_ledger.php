@@ -117,11 +117,11 @@ function sel_patient() {
 <table>
   <tr>
     <td>
-      <?php if($type_form == '0') { ?>
-        <span class='title' id='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Ledger by Date'); ?></span>
-      <?php }else{ ?>
-        <span class='title' id='title'><?php echo xlt('Patient Ledger'); ?></span>
-      <?php } ?>
+<?php if($type_form == '0') { ?>
+<span class='title' id='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Ledger by Date'); ?></span>
+<?php }else{ ?>
+<span class='title' id='title'><?php echo xlt('Patient Ledger'); ?></span>
+<?php } ?>
     </td>
     <td>
       <a href="../patient_file/summary/demographics.php" class="css_button" onclick="top.restoreSession()">

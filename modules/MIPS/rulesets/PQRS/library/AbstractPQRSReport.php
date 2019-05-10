@@ -29,7 +29,7 @@ abstract class AbstractPQRSReport implements RsReportIF
     protected $_ruleId;
     protected $_beginMeasurement;
     protected $_endMeasurement;
-    protected $_reportOptions;
+    public $_reportOptions;
 
     public function __construct( array $rowRule, array $patientIdArray, $dateTarget, $options )
     {

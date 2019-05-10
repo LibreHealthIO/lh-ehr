@@ -138,6 +138,7 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'ptkr_visit_reason',
                                'ptkr_show_pid',
                                'ptkr_show_room',
+                               'ptkr_show_facility',
                                'ptkr_date_range',
                                'ptkr_end_date',
                                'ptkr_show_visit_type',
@@ -154,9 +155,6 @@ $USER_SPECIFIC_GLOBALS = array('default_tab_1',
                                'cms_top_margin_default',
                                'cms_left_margin_default');
 
-
-
-
 $GLOBALS_METADATA = array(
 
   // Appearance Tab
@@ -171,6 +169,8 @@ $GLOBALS_METADATA = array(
         '/interface/new/new_comprehensive.php' => xl('Patient Add/Search'),
         '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
         '/interface/main/messages/messages.php?form_active=1' => xl("Messages"),
+        '/modules/MIPS/report_results.php' => xl("SHOW MIPS Reports"),
+        '/modules/MIPS/clinical_measures.php?type=pqrs' => xl("CREATE MIPS Report"),
       ),
        '/interface/main/main_info.php',                 // default = calendar
       xl('First TAB on the left')
@@ -185,6 +185,8 @@ $GLOBALS_METADATA = array(
         '/interface/new/new_comprehensive.php' => xl('Patient Add/Search'),
         '/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1' => xl('Patient Flow Board'),
         '/interface/main/main_info.php' => xl('Calendar Screen'),
+        '/modules/MIPS/report_results.php' => xl("SHOW MIPS Reports"),
+        '/modules/MIPS/clinical_measures.php?type=pqrs' => xl("CREATE MIPS Report"),
       ),
       '/interface/main/messages/messages.php?form_active=1',    // default = Messages
       xl('Second TAB on the left')
@@ -297,6 +299,7 @@ $GLOBALS_METADATA = array(
        '',
       xl('Phone Number for Vendor Support that Appears on the About Page.')
     ),
+
 
 
     'gbl_pt_list_page_size' => array(
@@ -609,20 +612,24 @@ $GLOBALS_METADATA = array(
       xl('Support export/import of configuration data via the Backup page.')
     ),
 
-    'tags_filters_enabled' => array(
-      xl('Enable Tags/Filters Feature'),
-       'bool',                          // data type
-       '0',                             // default
-      xl('Enables configurable tags and filters for demographics and various purposes.')
-    ),
-
     'restrict_user_facility' => array(
       xl('Restrict Users to Facilities'),
        'bool',                          // data type
        '0',                             // default
       xl('Restrict non-authorized users to the Schedule Facilities set in User admin.')
     ),
-
+        'tags_filters_enabled' => array(
+      xl('Enable Tags/Filters Feature'),
+       'bool',                          // data type
+       '0',                             // default
+      xl('Enables configurable tags and filters for demographics and various purposes.')
+    ),
+        'facility_acl' => array(
+      xl('Restrict User access by Facility'),
+       'bool',                          // data type
+       '0',                             // default
+      xl('Restrict User access to patients by assigned patient facility.')
+    ),
     'set_facility_cookie' => array(
       xl('Remember Selected Facility'),
        'bool',                          // data type
@@ -1040,6 +1047,19 @@ $GLOBALS_METADATA = array(
       '',
       xl('To automatically open the specified form. Some sports teams use football_injury_audit here.')
     ),
+    'encounter_feesheet_list_num' => array(
+      xl('Number of Lists to Display in Fee Sheet'),
+       'num',                           // data type
+       '4',                             // default = 4
+      xl('Number of Lists to Display in Fee Sheet for Quick Select')
+    ),
+
+    'coding_done_in_feesheet' => array(
+      xl('Allow User to Specify Coding Done in Fee Sheet'),
+      'bool',                           // data type
+      '0',                              // default = false
+      xl('Allow User to Specify Coding Done in Fee Sheet.')
+    ),
 
   ),
 
@@ -1358,32 +1378,39 @@ $GLOBALS_METADATA = array(
       xl('This specifies whether to include date in Box 31.')
     ),
 
+    'preprinted_cms_1450' => array(
+      xl('Prints the CMS 1450 on the Preprinted form.'),
+       'bool',                          // data type
+       '0',                             // default = false
+      xl('Prints the CMS 1450 on the Preprinted form.')
+    ),
+
     'ubtop_margin_default' => array(
-      xl('Default top print margin for UB-04'),
+      xl('Default top print margin for UB-04/CMS 1450'),
       'num', // data type
       '07', // default
-      xl('This is the default top print margin for UB-04. It will adjust the final printed output up or down.')
+      xl('This is the default top print margin for UB-04/CMS 1450. It will adjust the final printed output up or down.')
     ),
 
     'ubleft_margin_default' => array(
-      xl('Default left print margin for UB-04'),
+      xl('Default left print margin for UB-04/CMS 1450'),
       'num', // data type
       '14', // default
-      xl('his is the default left print margin for UB-04. It will adjust the final printed output left or right.')
+      xl('his is the default left print margin for UB-04/CMS 1450. It will adjust the final printed output left or right.')
     ),
 
     'default_bill_type' => array(
       xl('Default Bill Type Box 4'),
       'text', // data type
       '0111', // default
-      xl('This Default entry must start with a zero followed by three numbers. It will be used in Box 4 of the UB04')
+      xl('This Default entry must start with a zero followed by three numbers. It will be used in Box 4 of the UB04/CMS 1450')
     ),
 
      'admit_default_type' => array(
       xl('Admission Type Box 14'),
       'list', // data type
       '',     // default
-      xl('This entry is for the Admission Type it needs to be a single digit. It will be used in Box 14 of the UB04'),
+      xl('This entry is for the Admission Type it needs to be a single digit. It will be used in Box 14 of the UB04/CMS 1450'),
       'ub_admit_type'
     ),
 
@@ -1391,7 +1418,7 @@ $GLOBALS_METADATA = array(
       xl('Admission Source Box 15'),
       'list', // data type
       '',     // default
-      xl('This entry is for the Admission Source it needs to be 2 digits (example 01, 12 etc). It will be used in Box 15 of the UB04'),
+      xl('This entry is for the Admission Source it needs to be 2 digits (example 01, 12 etc). It will be used in Box 15 of the UB04/CMS 1450'),
       'ub_admit_source'
     ),
 
@@ -1399,35 +1426,63 @@ $GLOBALS_METADATA = array(
       xl('Discharge Status Box 17'),
       'text', // data type
       '', // default
-      xl('This entry is for the Discharge Status it needs to be 2 digits (example 02, 11 etc). It will be used in Box 17 of the UB04')
+      xl('This entry is for the Discharge Status it needs to be 2 digits (example 02, 11 etc). It will be used in Box 17 of the UB04/CMS 1450')
     ),
 
      'attending_id' => array(
       xl('Attending Physician Box 76'),
       'provider', // data type
       '',     // default
-      xl('Attending Physician Box 76 of the UB04')
+      xl('Attending Physician Box 76 of the UB04/CMS 1450')
+    ),
+
+    'attending_qualifier_code' => array(
+      xl('Attending Physician Qualifier Code Box 76'),
+      'text', // data type
+      '',     // default
+      xl('Attending Physician Qualifier Code Box 76 of the UB04')
     ),
 
      'operating_id' => array(
       xl('Operating Physician Box 77'),
       'provider', // data type
       '',     // default
-      xl('Operating Physician Box 77 of the UB04')
+      xl('Operating Physician Box 77 of the UB04/CMS 1450')
+    ),
+
+    'operating_qualifier_code' => array(
+      xl('Operating Physician Qualifier Code Box 77'),
+      'text', // data type
+      '',     // default
+      xl('Operating Physician Qualifier Code Box 77 of the UB04')
     ),
 
     'other1_id' => array(
       xl('Other Physician #1 Box 78'),
       'provider', // data type
       '',     // default
-      xl('Other Physician #1 Box 78 of the UB04')
+      xl('Other Physician #1 Box 78 of the UB04/CMS 1450')
+    ),
+
+    'other1_qualifier_code' => array(
+      xl('Other Physician #1 Qualifier Code Box 78'),
+      'text', // data type
+      '',     // default
+      xl('Other Physician #1 Qualifier Code Box 78 of the UB04')
     ),
 
     'other2_id' => array(
       xl('Other Physician #2 Box 79'),
       'provider', // data type
       '',     // default
-      xl('Other Physician #2 Box 79 of the UB04')
+      xl('Other Physician #2 Box 79 of the UB04/CMS 1450')
+    ),
+
+    'other2_qualifier_code' => array(
+      xl('Other Physician #2 Qualifier Code Box 79'),
+      'text', // data type
+      '',     // default
+      xl('Other Physician #2 Qualifier Code Box 79 of the UB04')
     ),
 
   ),
@@ -1701,6 +1756,13 @@ $GLOBALS_METADATA = array(
       xl('Color for the last set when not all member appointments are displayed.')
     ),
 
+    'appt_recurrences_widget' => array(
+      xl('Recurrent Appointment Display Widget'),
+      'bool',                           // data type
+      '0',                              // default
+      xl('Display the recurrent appointment widget in the patient summary.')
+    ),
+
     'num_past_appointments_to_show' => array(
       xl('Past Appointment Display Widget'),
        'num',                           // data type
@@ -1738,6 +1800,12 @@ $GLOBALS_METADATA = array(
        '1',                             // default
       xl('Automatically create a new encounter when an appointment check in status is selected.')
     ),
+    'default_category' => array(
+      xl('The Default Category in the Appointment Select'),
+       'num',                           // data type
+       '1',                             // default
+      xl('This is used to Assign a Default Catagory for the Appointment Visit.')
+    ),
 
     'disable_pat_trkr' => array(
       xl('Patient Flow Board: Disable'),
@@ -1765,6 +1833,12 @@ $GLOBALS_METADATA = array(
       'bool',                          // data type
       '1',                             // default = true
       xl('When Checked, Exam Room Will Show in Patient Flow Board.')
+    ),
+    'ptkr_show_facility' => array(
+      xl('Patient Flow Board: Show Facility'),
+      'bool',                          // data type
+      '1',                             // default = true
+      xl('When Checked, Facility Will Show in Patient Flow Board.')
     ),
     'ptkr_show_visit_type' => array(
       xl('Patient Flow Board: Show Visit Type'),
@@ -3055,6 +3129,20 @@ $GLOBALS_METADATA = array(
       xl('Period in days where a user may login with an expired password.')
     ),
 
+    'log_password_login_attempts' => array(
+      xl('Enable Invalid Login Attempts Checking'),
+       'bool',                          // data type
+      '0',                              // default
+      xl('Enable Invalid Login Attempts Checking.')
+    ),
+
+    'password_login_attempts' => array(
+      xl('Number of Failed Login Attempts Allowed'),
+      'num',                            // data type
+      '3',                              // default
+      xl('Number of Failed Login Attempts Allowed Before User Account is Locked')
+    ),
+
     'is_client_ssl_enabled' => array(
       xl('Enable Client SSL'),
        'bool',                          // data type
@@ -3153,8 +3241,9 @@ $GLOBALS_METADATA = array(
     'gb_how_sort_categories' => array(
       xl('How to sort the categories'),
       array(
-        '0' => 'Sort by seq',
-        '1' => 'Sort alphabetically'
+        '0' => 'Sort by Category ID',
+        '1' => 'Sort alphabetically',
+        '2' => 'Sort by Sequence Number'
       ),
       '1',
       xl('What kind of sorting will be used for the categories.')
@@ -3278,7 +3367,7 @@ $GLOBALS_METADATA = array(
     ),
   ),
 
-  'LIMS' => array( 
+  'LIMS' => array(
     'lims_enabled' => array(
       xl('LIMS Enabled/Disabled'),
       'bool',
@@ -3299,7 +3388,6 @@ $GLOBALS_METADATA = array(
   ),
 
 );
-
 
 if ( function_exists( 'do_action' ) ) {
     do_action( 'globals_init', $args = [

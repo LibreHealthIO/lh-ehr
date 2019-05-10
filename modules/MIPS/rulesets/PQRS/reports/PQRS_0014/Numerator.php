@@ -26,6 +26,7 @@ class PQRS_0014_Numerator extends PQRSFilter
 
     public function test( PQRSPatient $patient, $beginDate, $endDate )
     {
+
 	    $query =
 "SELECT COUNT(b1.code) as count".  
 " FROM billing AS b1".
@@ -34,7 +35,10 @@ class PQRS_0014_Numerator extends PQRSFilter
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND b1.code = 'G9974';";
 //G9893
+
 $result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));
 if ($result['count']> 0){ return true;} else {return false;}  	
     }
 }
+
+?>

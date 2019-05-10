@@ -57,7 +57,8 @@ if (!acl_check('patients', 'appt', '', array('write' , 'wsome'))) {
  $eid           = $_GET['eid'];         // only for existing events
  $date          = $_GET['date'];        // this and below only for new events
  $userid        = $_GET['userid'];
- $default_catid = $_GET['catid'] ? $_GET['catid'] : '5';
+ $default_catid = $GLOBALS['default_category'] ;
+
  //
 if ($date) {
   $date = substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6);
@@ -1327,7 +1328,7 @@ echo '
             // refresh and redirect the parent window
             if (!opener.closed && opener.refreshme) opener.refreshme();
             top.restoreSession();
-            opener.document.location="../../interface/new/new_comprehensive.php";
+            opener.document.location="../../interface/new/new.php";
             // Close the window
             window.close();
 </script>';
@@ -1484,13 +1485,7 @@ $classpati='';
       /***************************************************************
       $qsql = sqlStatement("SELECT * FROM facility WHERE service_location != 0");
       ***************************************************************/
-      $facils = getUserFacilities($userid);
-      //userid is id of clicked user(provider) in calendar
-      //ufid is an array of id of schedule facilities of selected user
-      $ufid = array();
-      foreach ($facils as $uf) {
-        $ufid[] = $uf['id'];
-      }
+      $facils = getUserFacilities($_SESSION['authId']);
       $qsql = sqlStatement("SELECT id, name FROM facility WHERE service_location != 0");
       /**************************************************************/
       while ($facrow = sqlFetchArray($qsql)) {
@@ -1498,22 +1493,12 @@ $classpati='';
         $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
         echo "<option value={$facrow['id']} $selected>{$facrow['name']}</option>";
         *************************************************************/
-        if ($GLOBALS['restrict_user_facility']) {
-          //if restricting users(providers) to schedule facilities
-          //then list only schedule facilities of that user or default facility
-          //in Facility in calendar's event panel
-          //e2f denotes id of default facility
-          if (in_array($facrow['id'], $ufid) || $facrow['id'] == $e2f || $facrow['id'] == 3) {
-            //id 3 is for "Your Clinic Name Here"
-            $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
-            echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
-          }
-        } else {
-          //if not restricting then list all facilities
-          //where service_location is not 0 including default facility
-          //in Facility in calendar's event panel
+        if ($_SESSION['authorizedUser'] || in_array($facrow, $facils)) {
           $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
           echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
+        } else {
+        $selected = ( $facrow['id'] == $e2f ) ? 'selected="selected"' : '' ;
+         echo "<option value='" . attr($facrow['id']) . "' $selected>" . text($facrow['name']) . "</option>";
         }
         /************************************************************/
       }
@@ -2029,6 +2014,9 @@ function validate(valu) {
     }
 
     //check if user selected appt. time is within clinic hours
+    <?php
+    if ($GLOBALS['time_display_format'] != 0 ) {
+    ?>
     var checkApptTime = '<?php echo($GLOBALS['check_appt_time']) ?>';
     if (f.form_allday.value < 1 && checkApptTime == 1) {
         //only when Time radio button is selected (value is "0", otherwise "1")
@@ -2036,7 +2024,7 @@ function validate(valu) {
         var userAMPM = f.form_ampm.value; //"1" for AM, "2" for PM
         var userHour = parseInt(f.form_hour.value);
         var userMinute = parseInt(f.form_minute.value);
-        if (userAMPM == "1") {
+        if (userAMPM == "1" && userHour <= '12') {
             //AM, 00:00 midnight to 11:59 noon
             var userTime = userHour + (userMinute/60);
         } else {
@@ -2048,11 +2036,15 @@ function validate(valu) {
         //while user (selected) time is in 12 hour format
         var clinicStartTime = parseInt('<?php echo($GLOBALS['schedule_start']) ?>');
         var clinicEndTime = parseInt('<?php echo($GLOBALS['schedule_end']) ?>');
-        if (userTime < clinicStartTime || userTime > clinicEndTime) {
+        if ((userTime < clinicStartTime || userTime > clinicEndTime) && userHour != '12') {
             alert('<?php echo addslashes(xl("Please select time between clinic hours.")); ?>');
             return false;
         }
     }
+
+    <?php
+    }
+    ?>
 
     <?php
     if($_GET['prov']!=true){

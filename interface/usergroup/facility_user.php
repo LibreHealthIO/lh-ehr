@@ -70,8 +70,8 @@ if ( isset($_POST["mode"]) && $_POST["mode"] == "facility_user_id" && isset($_PO
 <html>
 <head>
     <?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome" , "iziModalToast")); ?>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         $(".facitityUser").click(function () {
@@ -171,8 +171,8 @@ for($i=0; $row=sqlFetchArray($l_res); $i++) {
                     ?>
                 <tr height="20"  class="text" style="border-bottom: 1px dashed;">
                     <td class="text"><b><a data-text1="<?php echo attr($user['id']);?>" data-text2="<?php echo attr($facility['id']);?>" href="#" class="facitityUser" onclick="top.restoreSession()"><span><?php echo text($user['username']);?></span></a></b>&nbsp;</td>
-                    <td><span class="text"><?php echo text($user['fname'] . " " . $user['lname']);?></span>&nbsp;</td>
-                    <td><span class="text"><?php echo text($facility['name']);?>&nbsp;</td>
+                   <td><span class="text"><?php echo text($user['fname'] . " " . $user['lname']);?></span>&nbsp;</td>
+                   <td><span class="text"><?php echo text($facility['name']);?>&nbsp;</td>
                                    <?php
                                    foreach ($l_arr as $layout_entry) {
                                      $entry_data = sqlQuery("SELECT `field_value` FROM `facility_user_ids` " .

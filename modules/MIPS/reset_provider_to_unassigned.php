@@ -30,7 +30,7 @@ $form_doctor = "";
 <body class="body_top">
 <?php if (acl_check('admin', 'practice' )) { ?>
 
-    
+
     <span class='title'><?php echo htmlspecialchars( xl('Reset Providers'), ENT_NOQUOTES); ?></span>
     <form action="reset_provider_to_unassigned.php" method="post">	
     <?php

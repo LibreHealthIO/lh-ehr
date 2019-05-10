@@ -150,8 +150,10 @@ $query =
 " FROM billing AS b1". 
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " JOIN patient_data AS p ON (p.pid = b1.pid)".
-" INNER JOIN pqrs_ptsf AS codelist_a ON (b1.code = codelist_a.code)".
-" AND fe.provider_id = '".$provid."'".
+" INNER JOIN pqrs_ptsf AS codelist_a ON (b1.code = codelist_a.code)";
+if ($provid > '1000000001'){ $query .=
+" AND fe.provider_id = '".$provid."'";}
+$query .=
 " AND fe.date BETWEEN '".$form_from_date."' AND '".$form_to_date."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0130_a'); ";
@@ -163,8 +165,10 @@ $query =
 " FROM billing AS b1". 
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " JOIN patient_data AS p ON (p.pid = b1.pid)".
-" INNER JOIN pqrs_ccco AS codelist_a ON (b1.code = codelist_a.code)".
-" AND fe.provider_id = '".$provid."'".
+" INNER JOIN pqrs_ccco AS codelist_a ON (b1.code = codelist_a.code)";
+if ($provid > '1000000001'){ $query .=
+" AND fe.provider_id = '".$provid."'";}
+$query .=
 " AND fe.date BETWEEN '".$form_from_date."' AND '".$form_to_date."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0131_a' AND b1.modifier NOT IN('GQ','GT','95')); ";

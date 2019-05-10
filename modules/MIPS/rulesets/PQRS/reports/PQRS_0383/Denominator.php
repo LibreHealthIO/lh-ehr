@@ -32,7 +32,11 @@ $query =
 " INNER JOIN form_encounter AS fe ON (b3.encounter = fe.encounter)".
 " JOIN pqrs_ptsf AS codelist_c ON (b3.code = codelist_c.code)".
 " WHERE b3.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date >= '".$beginDate."' ".
 " AND fe.date <= '".$endDate."' ".
 " AND (b3.code = codelist_c.code AND codelist_c.type = 'pqrs_0383_c'); ";
@@ -47,7 +51,11 @@ $query =
 " INNER JOIN facility AS fac ON (fe.facility = fac.id)".
 " JOIN pqrs_ptsf AS codelist_d ON (b4.code = codelist_d.code)".
 " WHERE b4.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date >= '".$beginDate."' ".
 " AND fe.date <= '".$endDate."' ".
 " AND  (b4.code = codelist_d.code AND codelist_d.type = 'pqrs_0383_d' AND fac.pos_code IN ('03', '05', '07', '09', '11', '12', '13', '14', '15', '20', '22', '24', '26', '33', '49', '50', '52', '53', '71', '72')); ";
@@ -62,7 +70,11 @@ $query =
 " INNER JOIN facility AS fac ON (fe.facility = fac.id)".
 " JOIN pqrs_ptsf AS codelist_f ON (b6.code = codelist_f.code)".
 " WHERE b6.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date >= '".$beginDate."' ".
 " AND fe.date <= '".$endDate."' ".
 " AND (b6.code = codelist_f.code AND codelist_f.type = 'pqrs_0383_f' AND fac.pos_code IN ('23','31','32','56')); ";
@@ -77,7 +89,11 @@ $query =
 " INNER JOIN facility AS fac ON (fe.facility = fac.id)".
 " JOIN pqrs_ptsf AS codelist_g ON (b7.code = codelist_g.code)".
 " WHERE b7.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date >= '".$beginDate."' ".
 " AND fe.date <= '".$endDate."' ".
 " AND(b7.code = codelist_g.code AND codelist_g.type = 'pqrs_0383_g' AND fac.pos_code  IN ('21','51')) ; ";

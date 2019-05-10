@@ -49,9 +49,12 @@ class InsuranceCompany extends ORDataObject{
     var $id;
     var $name;
     var $phone;
+    var $fax;
     var $attn;
     var $cms_id;
     var $alt_cms_id;
+    var $tier;
+    var $ins_co_initials;
     var $allow_print_statement;
     //this is now deprecated use new x12 partners instead
     var $x12_receiver_id;
@@ -140,8 +143,8 @@ class InsuranceCompany extends ORDataObject{
         $phone  = new PhoneNumber();
         $phone->set_type(TYPE_WORK);
         $this->phone = $phone;
-        $this->address = new Address();
         $this->phone_numbers = array();
+        $this->address = new Address();
         if ($id != "") {
             $this->populate();
         }
@@ -160,6 +163,9 @@ class InsuranceCompany extends ORDataObject{
         if (!empty($id)) {
             $this->populate($id);
         }
+    }
+    function set_fax_id($id) {
+        $this->id = $id;
     }
 
     function set_address($aobj) {
@@ -190,6 +196,18 @@ class InsuranceCompany extends ORDataObject{
     }
     function get_name() {
         return $this->name;
+    }
+   function set_tier($tier) {
+        $this->tier = $tier;
+    }
+    function get_tier() {
+        return $this->tier;
+    }
+   function set_ins_co_initials($ins_co_initials) {
+        $this->ins_co_initials = $ins_co_initials;
+    }
+    function get_ins_co_initials() {
+        return $this->ins_co_initials;
     }
     function set_allow_print_statement($allow_print_statement) {
         $this->allow_print_statement = $allow_print_statement;
@@ -261,6 +279,19 @@ class InsuranceCompany extends ORDataObject{
 
     function set_phone($phone) {
         $this->_set_number($phone, TYPE_WORK);
+    }
+
+    function set_fax($fax) {
+        $this->_set_number($fax, TYPE_FAX);
+    }
+
+    function get_fax() {
+        foreach($this->phone_numbers as $phone) {
+            if ($phone->type == TYPE_FAX) {
+                return $phone->get_phone_display();
+            }
+        }
+        return "";
     }
 
     function set_x12_receiver_id($id) {
@@ -343,7 +374,7 @@ class InsuranceCompany extends ORDataObject{
         . "Attn:" . $this->attn . "\n"
         . "CMS ID:" . $this->cms_id . "\n"
         . "ALT CMS ID:" . $this->alt_cms_id . "\n"
-        //. "Phone: " . $this->phone_numbers[0]->toString($html) . "\n"
+        . "Phone: " . $this->phone_numbers[0]->toString($html) . "\n"
         . "Address: " . $this->address->toString($html) . "\n";
 
         if ($html) {

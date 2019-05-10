@@ -39,6 +39,11 @@ if ( file_exists($GLOBALS['OE_SITE_DIR']."/filemanager/files/Updates/1.sql")) {
 	$query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Updates/1.sql");
 	sqlStatementNoLog($query);
 }
+//else(file_exists($GLOBALS['OE_SITE_DIR']."/filemanager/files/Updates/1b.sql")) {
+//	$query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Updates/1b.sql");
+//	sqlStatementNoLog($query);
+//}
+
 if ( file_exists($GLOBALS['OE_SITE_DIR']."/filemanager/files/Updates/2.sql")) {
 	$query = file_get_contents($GLOBALS['OE_SITE_DIR']."/filemanager/files/Updates/2.sql");
 	sqlStatementNoLog($query);

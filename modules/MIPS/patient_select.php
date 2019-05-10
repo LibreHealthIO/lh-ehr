@@ -304,6 +304,7 @@ if ($fend > $count) $fend = $count;
 <tr>
 <th class="srName"><?php echo htmlspecialchars( xl('Name'), ENT_NOQUOTES);?></th>
 <th class="srGender"><?php echo htmlspecialchars( xl('Sex'), ENT_NOQUOTES);?></th>
+<th class="srPID"><?php echo htmlspecialchars( xl('MRN'), ENT_NOQUOTES);?></th>
 <th class="srDOB"><?php echo htmlspecialchars( xl('DOB'), ENT_NOQUOTES);?></th>
 
 <?php if (empty($GLOBALS['patient_search_results_style'])) { ?>
@@ -385,6 +386,7 @@ if ($result) {
 		<table id='".htmlspecialchars( $iter['pid'], ENT_QUOTES)."'>\n		<tr>\n";
 		echo  "			<td class='oneresult srName' style=background-image:url(" . $medicare_flag . ");background-repeat:no-repeat;text-align:center; >" . htmlspecialchars($iter['lname'] . ", " . $iter['fname']) . "</td>\n";
         	echo  "			<td class='oneresult srGender'>" . text(getListItemTitle("sex",$iter['sex'])) . "</td>\n";
+        	echo  "			<td class='oneresult srPID'>" . text(getListItemTitle("pubpid",$iter['pubpid'])) . "</td>\n";
         if ($iter{"DOB"} != "0000-00-00 00:00:00") {
             	echo "			<td class='oneresult srDOB'>" . htmlspecialchars( $iter['DOB_TS'], ENT_NOQUOTES) . "</td>\n";
         } else {

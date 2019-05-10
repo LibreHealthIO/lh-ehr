@@ -23,7 +23,11 @@ $query =
 " FROM billing AS b1". 
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND MONTH(fe.date) <=9 ".
 " AND b1.code = '37191'; ";

@@ -34,7 +34,11 @@ $query =
 " INNER JOIN billing AS b2 ON (b2.pid = b1.pid)".
 " INNER JOIN pqrs_ccco AS codelist_a ON (b2.code = codelist_a.code)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
 " AND b1.code ='88305'".

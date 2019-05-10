@@ -80,23 +80,23 @@ $language = $tmp['language'];
         top.restoreSession();
         location.reload();
     });
-    // callback from add_edit_issue.php:
-    function refreshIssue(issue, title) {
-        top.restoreSession();
-        location.reload();
-    }
+// callback from add_edit_issue.php:
+function refreshIssue(issue, title) {
+    top.restoreSession();
+    location.reload();
+}
 
     //takes 3 parameters, the id of issue to be edited, the category(allergy, mediacal etc) and type(whether new or edit)
     function dopclick(id, category , type) {
-        <?php if (acl_check('patients', 'med', '', 'write')): ?>
-        if (category == 0) category = '';
+    <?php if (acl_check('patients','med','','write')): ?>
+    if (category == 0) category = '';
         iziTitle = "<?php echo xlt('Add New Issue'); ?>";
         iziSubTitle = "<?php echo xlt('Add Relevant Patient Issues'); ?>";
         initIziLink('add_edit_issue.php?issue=' + encodeURIComponent(id) + '&thistype=' + encodeURIComponent(category), 850, 400,category, type);
-        <?php else: ?>
-        alert("<?php echo addslashes(xl('You are not authorized to add/edit issues')); ?>");
-        <?php endif; ?>
-    }
+    <?php else: ?>
+    alert("<?php echo addslashes( xl('You are not authorized to add/edit issues') ); ?>");
+    <?php endif; ?>
+}
 
     // function to open izi-modal
     function  initIziLink(link , width , height, category, type) {
@@ -129,19 +129,19 @@ $language = $tmp['language'];
         $("#izi-iframe").iziModal('open');
     }
 
-    // Process click on number of encounters.
-    function doeclick(id) {
+// Process click on number of encounters.
+function doeclick(id) {
         iziTitle = "<?php echo xlt('Add Ecounter/Issue'); ?>";
         iziSubTitle = "<?php echo xlt('Add Relevant Encounter/Issues about Patient'); ?>";
         initIziLink('../problem_encounter.php?issue=' + id, 1250, 460 , iziTitle , iziSubTitle);
-    }
+}
 
-    // Add Encounter button is clicked.
-    function newEncounter() {
-        var f = document.forms[0];
-        top.restoreSession();
-        location.href = '../../forms/patient_encounter/new.php?autoloaded=1&calenc=';
-    }
+// Add Encounter button is clicked.
+function newEncounter() {
+ var f = document.forms[0];
+ top.restoreSession();
+ location.href='../../forms/patient_encounter/new.php?autoloaded=1&calenc=';
+}
 
 </script>
 

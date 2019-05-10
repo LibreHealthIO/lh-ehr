@@ -17,12 +17,17 @@
  * Please support this product by sharing your changes with the LibreHealth.io community.
  */
 
-class PQRS_0226 extends AbstractPQRSReport
-{   
-    public function createPopulationCriteria()
-    {
-        return new PQRS_0226_PopulationCriteria();
+class PQRS_0226 extends AbstractPQRSReport{   
+    public function createPopulationCriteria() {
+		$populationCriteria = array();
+
+		$populationCriteria[] = new PQRS_0226_PopulationCriteria1();
+		$populationCriteria[] = new PQRS_0226_PopulationCriteria2(); 
+		$populationCriteria[] = new PQRS_0226_PopulationCriteria3();    
+
+		return $populationCriteria;    
     }
+
 }
 
 ?>

@@ -30,7 +30,7 @@
 require_once "reports_controllers/UniqueSeenPatientsController.php";
 
  if ($form_action == 'labels') {
-    csvexport('label'); // Export to csv. (TRK) 
+  csvexport('label'); // Export to csv. (TRK)
  }
  else {
 ?>

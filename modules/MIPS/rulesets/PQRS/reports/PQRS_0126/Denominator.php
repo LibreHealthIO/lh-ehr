@@ -26,11 +26,17 @@ class PQRS_0126_Denominator extends PQRSFilter
     
     public function test( PQRSPatient $patient, $beginDate, $endDate )
     {
-/*  Rule out needed...manual...fake code or something.  Clinician documented that patient was not an eligible candidate for lower extremity neurological 
-exam measure, for example patient bilateral amputee, patient has condition that would not allow 
-them to accurately respond to a neurological exam (dementia, Alzheimer’s, etc.), patient has 
-previously documented diabetic peripheral neuropathy with loss of protective sensation*/
-		return true;
+$query =
+" SELECT COUNT(b1.code) AS count".  
+" FROM billing AS b1".
+" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
+" WHERE b1.pid = ? ".
+" AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
+" AND  b1.code IN( 'E10.40','E11.40','E13.40','Z89.611','Z89.43','Z89.44','Z89.5','Z89.52','Z89.51','Z89.6','Z89.61','Z89.62','Z89.9', 'F03.90','G30.0','G30.1','G30.8','G30.9'); ";
+
+$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id))); 
+
+if ($result['count']> 0){ return false;} else {return true;}    
     }
 }
 

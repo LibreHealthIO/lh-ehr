@@ -116,7 +116,7 @@ function checkBackgroundServices(){
 <head>
     <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 
-    <?php
+<?php
 
 html_header_show();
 
@@ -161,9 +161,9 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
             }
           }
           if ($boolean) {
-            $label = "global:".$fldid;
-            $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
-            setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
+          $label = "global:".$fldid;
+          $fldvalue = trim(strip_escape_custom($_POST["form_$i"]));
+          setUserSetting($label,$fldvalue,$_SESSION['authId'],FALSE);
           }
           if ( $_POST["toggle_$i"] == "YES" ) {
             removeUserSetting($label);
@@ -323,7 +323,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
 
             sqlStatement( 'INSERT INTO `globals` ( gl_name, gl_index, gl_value ) VALUES ( ?, ?, ? )', array( $fldid, 0, $fldvalue )  );
 
-            refreshCalendar(); //if data is updated and is also valid for Calendar-Admin
+           refreshCalendar(); //if data is updated and is also valid for Calendar-Admin
           }
 
         } else {
@@ -359,7 +359,7 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
 ?>
 
 
-    <script type="text/javascript" src="../../library/js/common.js"></script>
+<script type="text/javascript" src="../../library/js/common.js"></script>
 <?php if ($_GET['mode'] == "user") { ?>
   <title><?php  echo xlt('User Settings'); ?></title>
 <?php } else { ?>

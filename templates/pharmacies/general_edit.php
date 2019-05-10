@@ -84,16 +84,16 @@
 function submit_pharmacy()
 {
     if(document.pharmacy.name.value.length>0)
-    {   
+    {
         //check to make sure if email is enter, it is valid
         if(document.pharmacy.email.value.length > 0){
             let email =  document.pharmacy.email.value;
             let regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             //console.log(document.pharmacy.email.value);
             if(regex.test(email)){
-                top.restoreSession();
-                document.pharmacy.submit();
-                //Z&H Removed redirection
+        top.restoreSession();
+        document.pharmacy.submit();
+        //Z&H Removed redirection
             }
             else{
                 <?php

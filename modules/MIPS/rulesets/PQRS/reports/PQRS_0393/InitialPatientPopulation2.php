@@ -34,7 +34,11 @@ $query =
 " JOIN billing AS b2 ON (b2.pid = b1.pid)".
 " INNER JOIN pqrs_ptsf AS codelist_a ON (b1.code = codelist_a.code)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date >= '".$beginDate."' ".
 " AND fe.date >= DATE_SUB('".$endDate."', INTERVAL 6 MONTH)".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0393_a') ".

@@ -526,7 +526,7 @@ function test_rules_clinic_batch_method($provider='',$type='',$dateTarget='',$mo
 
   if (!empty($options)) {
     $fields = array_merge($fields, $options);
-  }
+    }
 
   $report_id = beginReportDatabase($type,$fields,$report_id);
   setTotalItemsReportDatabase($report_id,$totalNumPatients);

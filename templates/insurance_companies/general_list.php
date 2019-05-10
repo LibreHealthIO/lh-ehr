@@ -1,4 +1,4 @@
-<a href="controller.php?practice_settings&<?php echo $top_action;?>insurance_company&action=edit" 
+<a href="controller.php?practice_settings&<?php echo $top_action;?>insurance_company&action=edit"
    onclick="top.restoreSession()" class="css_button cp-positive" >
 <span><?php echo xlt("Add a company");?> </span></a><br>
 <br>
@@ -7,12 +7,14 @@
         <th><b><?php echo xlt("Name");?> </b></th>
         <th><b><?php echo xlt("City").",".xlt("State");?> </b></th>
         <th><b><?php echo xlt("Default X12 Partner");?> </b></th>
+        <th><b><?php echo xlt("Tier");?></b></th>
+        <th><b><?php echo xlt("Initials");?></b></th>
         <th><b><?php echo xlt("Inactive");?></b></th>
         <th><b><?php echo xlt("Statements");?></b></th>
     </tr>
-    
-    
-    
+
+
+
    <?php if(is_array($this->icompanies)) {?>
     <?php foreach ($this->icompanies as $insurancecompany) { ?>
     <tr>
@@ -22,10 +24,16 @@
         <td>
             <?php echo $insurancecompany->address->city ;?>
                 <?php echo $insurancecompany->address->state;?>
-            
+
         </td>
         <td>
             <?php echo $insurancecompany->get_x12_default_partner_name();?>&nbsp;
+        </td>
+        <td>
+            <?php echo $insurancecompany->tier;?>&nbsp;
+        </td>
+        <td>
+            <?php echo $insurancecompany->ins_co_initials;?>&nbsp;
         </td>
         <td>
             <?php if ($insurancecompany->get_ins_inactive() == 1) { ?>
@@ -38,7 +46,7 @@
             <?php }?>
         </td>
     </tr>
-   <?php }   
+   <?php }
     }
     else {
     ?>

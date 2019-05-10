@@ -24,7 +24,11 @@ $query =
 " JOIN form_encounter AS fe ON (b1.encounter = fe.encounter) ".
 " JOIN patient_data AS p ON (p.pid = b1.pid)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) >= '18' ".
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".  
 " AND b1.code = '35301';"; 

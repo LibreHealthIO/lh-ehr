@@ -34,6 +34,11 @@ require_once("$srcdir/authentication/login_operations.php");
 $incoming_site_id = '';
 
 
+$is_login_attempts_enabled = $GLOBALS['log_password_login_attempts'];
+
+$max_password_attempts = $GLOBALS['password_login_attempts'];
+
+
 
 if (isset($_GET['auth']) && ($_GET['auth'] == "login") && isset($_POST['authUser']) &&
     isset($_POST['clearPass']) && isset($_POST['authProvider']))
@@ -51,13 +56,58 @@ if (isset($_GET['auth']) && ($_GET['auth'] == "login") && isset($_POST['authUser
     
     if(!validate_user_password($_POST['authUser'],$clearPass,$_POST['authProvider']) ||  !verify_user_gacl_group($_POST['authUser']))
     {
+
+
+        // failure occured, but check if the user is admin or not
+
+        if (!checkIfAdmin($_POST['authUser'])) {
+
+            // before recording invalid attempts check if that option is enabled
+
+            if ($is_login_attempts_enabled) {
+
+
+                // if the user is not admin , then update the attempts
+                $getUserSQL="select login_attempts,id from users where BINARY username = ?";
+                $userInfo = privQuery($getUserSQL,array($_POST['authUser']));
+                $userId= $userInfo['id'];
+                $login_attempts = $userInfo['login_attempts'];
+                $_SESSION['userAccountName'] = $_POST['authUser'];
+                if ($login_attempts >= $max_password_attempts) {
+                    lock_user_account($userId);
+                    $_SESSION['isUserAccountLocked'] = true;
+                }
+                else {
+                    //send the login attempts
+                    $login_attempts++;
+
+                    $_SESSION['userAttemptsRemaining'] = ($max_password_attempts - $login_attempts);
+
+                    update_login_attempts($userId, $login_attempts);
+                }
+
+                // if attempts remaining is 0, then unset it and set user locked
+                // because we compare the user login attempt at the time of login
+                // if the login attempt is n-1 where n is the maximum number of
+                // login attempts allowed by the admin then it would fail since we
+                // fetch the previous attempts from db, that would definitely
+                // lead to a condition n-1 < n , so at nth attempt he wont have a
+                // user locked screen, to prevent it, set the below logic
+                if ($_SESSION['userAttemptsRemaining'] == 0) {
+                    unset($_SESSION['userAttemptsRemaining']);
+                    lock_user_account($userId);
+                    $_SESSION['isUserAccountLocked'] = true;
+                }
+            }
+        }
+
         $_SESSION['loginfailure'] = 1;
         authLoginScreen();
     }
 //If password expiration option is enabled call authCheckExpired() to check whether login user password is expired or not
     
     if($GLOBALS['password_expiration_days'] != 0){
-    	if(authCheckExpired($_POST['authUser']))
+        if(authCheckExpired($_POST['authUser']))
         {
             authLoginScreen();
         }
@@ -162,6 +212,29 @@ function authLoginScreen()
   global $incoming_site_id;
   header("Location: {$GLOBALS['login_screen']}?error=1&site=$incoming_site_id");
   exit;
+}
+
+
+// get the login attempts and increment it by 1
+function update_login_attempts($userId, $login_attempts) {
+
+    sqlStatement("UPDATE users SET login_attempts = ? where id = ?",array($login_attempts, $userId));
+}
+
+
+function lock_user_account($userId) {
+     sqlStatement("UPDATE users SET locked = 1, login_attempts = 0 where id = ?",array($userId));
+}
+
+
+function checkIfAdmin($username) {
+    if ($username == "admin") {
+        return true;
+    }
+    else {
+        return false;
+    }
+
 }
 
 // Check if the user's password has expired beyond the grace limit.
@@ -280,11 +353,11 @@ function UpdatePasswordHistory($userid,$pwd)
     }
     if (($pwd != $previous_pwd1) && ($pwd != $previous_pwd2) && ($pwd != $previous_pwd3)) {
         sqlStatement("update users set pwd_history2=?, pwd_history1=?,password=? where id=?",array($previous_pwd2,$previous_pwd1,$pwd,$userid));
-	if($GLOBALS['password_expiration_days'] != 0){
-	$exp_days=$GLOBALS['password_expiration_days'];
+    if($GLOBALS['password_expiration_days'] != 0){
+    $exp_days=$GLOBALS['password_expiration_days'];
         $exp_date = date('Y-m-d', strtotime("+$exp_days days"));
         sqlStatement("update users set pwd_expiration_date=? where id=?",array($exp_date,$userid));
-	}
+    }
         return true;
     } 
     else {

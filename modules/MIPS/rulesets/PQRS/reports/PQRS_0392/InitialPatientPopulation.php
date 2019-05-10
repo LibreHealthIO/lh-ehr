@@ -39,7 +39,11 @@ $query =
 " WHERE b1.pid = ? ".
 //" AND p.sex = 'Female'". //reporting rate 1 and 3
 //" AND p.sex = 'Male'".  //reporting rate 2 and 4
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date >= '".$beginDate."' ".
 " AND fe.date <= DATE_SUB('".$endDate."', INTERVAL 1 MONTH)".
 //" AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date) BETWEEN '18' AND '65' ". //reporting rate 1 and 2

@@ -154,7 +154,7 @@ $(document).ready(function() {
 //
 $errors = [];
 if ($_POST['form_save']) {
- 
+
   $sets =
     "name = "           . invalue('form_name')           . ", " .
     "lab_id = "         . invalue('form_lab_id')         . ", " .
@@ -199,18 +199,18 @@ if ($_POST['form_save']) {
   }
   
   if(count($errors) <= 0) {
-    if ($typeid) {
-      sqlStatement("UPDATE procedure_type SET $sets WHERE procedure_type_id = '$typeid'");
-      // Get parent ID so we can refresh the tree view.
-      $row = sqlQuery("SELECT parent FROM procedure_type WHERE " .
-        "procedure_type_id = '$typeid'");
-      $parent = $row['parent'];
-    } else {
-      $newid = sqlInsert("INSERT INTO procedure_type SET parent = '$parent', $sets");
-      // $newid is not really used in this script
-    }
+  if ($typeid) {
+    sqlStatement("UPDATE procedure_type SET $sets WHERE procedure_type_id = '$typeid'");
+    // Get parent ID so we can refresh the tree view.
+    $row = sqlQuery("SELECT parent FROM procedure_type WHERE " .
+      "procedure_type_id = '$typeid'");
+    $parent = $row['parent'];
+  } else {
+    $newid = sqlInsert("INSERT INTO procedure_type SET parent = '$parent', $sets");
+    // $newid is not really used in this script
   }
-  
+}
+
 }
 
 else  if ($_POST['form_delete']) {
@@ -248,17 +248,17 @@ if ($typeid) {
   <div class="form-group">
       <label for="form_procedure_type" class="col-sm-2 control-label"><?php echo xlt('Procedure Type'); ?>: </label>
       <div class="col-sm-10">
-        <?php
-          echo generate_select_list('form_procedure_type', 'proc_type', $row['procedure_type'],
-          xl('The type of this entity'), ' ', '', 'proc_type_changed()');
-        ?>
+<?php
+echo generate_select_list('form_procedure_type', 'proc_type', $row['procedure_type'],
+  xl('The type of this entity'), ' ', '', 'proc_type_changed()');
+?>
       </div>
   </div>
   <div class="form-group">
     <label for="form_name1" class="col-sm-2 control-label" > <?php echo xlt('Name'); ?></label>
     <div class="col-sm-10">
       <input type="text" class="form-control" size='40' name='form_name' id='form_name1' maxlength='63'
-      value='<?php echo htmlspecialchars($row['name'], ENT_QUOTES); ?>'
+    value='<?php echo htmlspecialchars($row['name'], ENT_QUOTES); ?>'
       title='<?php echo xlt('Your name for this category, procedure or result'); ?>' />
     </div>
   </div>
@@ -266,8 +266,8 @@ if ($typeid) {
     <label for="form_description1" class="col-sm-2 control-label"><?php echo xlt('Description'); ?></label>
     <div class="col-sm-10">
       <input type='text' size='40' class='form-control' name='form_description' id='form_description1' maxlength='255'
-      value='<?php echo htmlspecialchars($row['description'], ENT_QUOTES); ?>'
-      title='<?php echo xlt('Description of this procedure or result code'); ?>'
+    value='<?php echo htmlspecialchars($row['description'], ENT_QUOTES); ?>'
+    title='<?php echo xlt('Description of this procedure or result code'); ?>'
       />
     </div>
   </div>
@@ -275,8 +275,8 @@ if ($typeid) {
     <label for="form_seq1" class="col-sm-2 control-label"><?php echo xlt('Sequence'); ?></label>
     <div class="col-sm-10">
       <input type='text' size='4' style='width:auto;' name='form_seq' class='form-control' maxlength='11'
-      value='<?php echo $row['seq'] + 0; ?>'
-      title='<?php echo xla('Relative ordering of this entity'); ?>'
+    value='<?php echo $row['seq'] + 0; ?>'
+    title='<?php echo xla('Relative ordering of this entity'); ?>'
       class='form-control' />
     </div>
   </div>
@@ -284,25 +284,25 @@ if ($typeid) {
       <label for="form_lab_id1" class="col-sm-2 control-label"><?php echo xlt('Order From'); ?>:</label>
       <div class="col-sm-10">
         <select class='form-control' style="width: auto; display: inline-block"  id='form_lab_id1' name='form_lab_id' title='<?php echo xla('The entity performing this procedure'); ?>'>
-            <?php
-              $ppres = sqlStatement("SELECT ppid, name FROM procedure_providers " .
-                "ORDER BY name, ppid");
-              while ($pprow = sqlFetchArray($ppres)) {
-                echo "<option value='" . attr($pprow['ppid']) . "'";
-                if ($pprow['ppid'] == $row['lab_id']) echo " selected";
-                echo ">" . text($pprow['name']) . "</option>";
-              }
-            ?>
-        </select>
+ <?php
+  $ppres = sqlStatement("SELECT ppid, name FROM procedure_providers " .
+    "ORDER BY name, ppid");
+  while ($pprow = sqlFetchArray($ppres)) {
+    echo "<option value='" . attr($pprow['ppid']) . "'";
+    if ($pprow['ppid'] == $row['lab_id']) echo " selected";
+    echo ">" . text($pprow['name']) . "</option>";
+  }
+?>
+   </select>
       </div>
-     
+
   </div>
   <div class="form-group ordonly resonly">
     <label for="form_procedure_code1" class="col-sm-2 control-label"><?php echo xlt('Identifying Code'); ?>:</label>
     <div class="col-sm-10">
       <input type='text' size='4' style='width: auto;' name='form_procedure_code' id='form_procedure_code1' maxlength='31'
-      value='<?php echo htmlspecialchars($row['procedure_code'], ENT_QUOTES); ?>'
-      title='<?php echo xla('The vendor-specific code identifying this procedure or result'); ?>'
+    value='<?php echo htmlspecialchars($row['procedure_code'], ENT_QUOTES); ?>'
+    title='<?php echo xla('The vendor-specific code identifying this procedure or result'); ?>'
       style='width:100%' class='form-control' />
     </div>
   </div>
@@ -311,8 +311,8 @@ if ($typeid) {
     <label for="form_standard_code1" class="col-sm-2 control-label"><?php echo xlt('Standard Code'); ?></label>
     <div class="col-sm-10">
       <input type='text' size='4' style='width: auto;' id='form_standard_code1' name='form_standard_code'
-        value='<?php echo attr($row['standard_code']); ?>'
-        title='<?php echo xla('Enter the LOINC code for this procedure'); ?>'
+    value='<?php echo attr($row['standard_code']); ?>'
+    title='<?php echo xla('Enter the LOINC code for this procedure'); ?>'
         class='form-control'  />
     </div>
   </div>
@@ -320,11 +320,11 @@ if ($typeid) {
   <div class="ordonly form-group">
     <label for="form_body_site" class="col-sm-2 control-label"><?php echo xlt('Body Site'); ?>:</label>
     <div class="col-sm-10">
-      <?php
+<?php
       generate_form_field_with_class(array('data_type' => 1, 'field_id' => 'body_site',
-        'list_id' => 'proc_body_site',
+  'list_id' => 'proc_body_site',
         'description' => xl('Body site, if applicable')), $row['body_site'], 'form-control');
-      ?>
+?>
     </div>
     
   </div>
@@ -332,48 +332,48 @@ if ($typeid) {
   <div class="ordonly form-group">
     <label for="proc_specimen" class="col-sm-2 control-label"><?php echo xlt('Specimen Type'); ?>:</label>
     <div class="col-sm-10">
-      <?php
+<?php
         generate_form_field_with_class(array('data_type' => 1, 'field_id' => 'specimen',
-          'list_id' => 'proc_specimen',
-          'description' => xl('Specimen Type')),
+  'list_id' => 'proc_specimen',
+  'description' => xl('Specimen Type')),
           $row['specimen'], 'form-control');
-      ?>   
+?>
     </div>
   </div>
 
   <div class="ordonly form-group">
     <label for="proc_route" class="col-sm-2 control-label"><?php echo xlt('Administer Via'); ?>:</label>
     <div class="col-sm-10">
-    <?php
-      generate_form_field(array('data_type' => 1, 'field_id' => 'route_admin',
-        'list_id' => 'proc_route',
-        'description' => xl('Route of administration, if applicable')),
+<?php
+generate_form_field(array('data_type' => 1, 'field_id' => 'route_admin',
+  'list_id' => 'proc_route',
+  'description' => xl('Route of administration, if applicable')),
         $row['route_admin'], 'form-control');
-      ?>
+?>
     </div>
   </div>
 
   <div class="ordonly form-group">
     <label for="proc_lat" class="col-sm-2 control-label"><?php echo xlt('Laterality'); ?>:</label>
     <div class="col-sm-10">
-      <?php
+<?php
         generate_form_field_with_class(array('data_type' => 1, 'field_id' => 'laterality',
-          'list_id' => 'proc_lat',
-          'description' => xl('Laterality of this procedure, if applicable')),
+  'list_id' => 'proc_lat',
+  'description' => xl('Laterality of this procedure, if applicable')),
           $row['laterality'], 'form-control');
-      ?>
+?>
     </div>
   </div>
 
   <div class="resonly form-group">
     <label for="proc_unit" class="col-sm-2 control-label"><?php echo xlt('Default Units'); ?>:</label>
     <div class="col-sm-10">
-    <?php
+<?php
       generate_form_field_with_class(array('data_type' => 1, 'field_id' => 'units',
-        'list_id' => 'proc_unit',
-        'description' => xl('Optional default units for manual entry of results')),
+  'list_id' => 'proc_unit',
+  'description' => xl('Optional default units for manual entry of results')),
         $row['units'], 'form-control');
-    ?>
+?>
     </div>
   </div>
 
@@ -381,8 +381,8 @@ if ($typeid) {
     <label for="form_range1" class="col-sm-2 control-label"><?php echo xlt('Default Range'); ?>:</label>
     <div class="col-sm-10">
       <input type='text' id='form_range1' size='10' name='form_range' maxlength='255' style='width: auto;'
-      value='<?php echo htmlspecialchars($row['range'], ENT_QUOTES); ?>'
-      title='<?php echo xla('Optional default range for manual entry of results'); ?>'
+    value='<?php echo htmlspecialchars($row['range'], ENT_QUOTES); ?>'
+    title='<?php echo xla('Optional default range for manual entry of results'); ?>'
       style='width:100%' class='form-control' />
     </div>
   </div>
@@ -391,8 +391,8 @@ if ($typeid) {
     <label for="form_related_code1" class="col-sm-2 control-label"><?php echo xlt('Followup Services'); ?>:</label>
     <div class="col-sm-10">
       <input type='text' size='50' name='form_related_code' id='form_related_code1'
-      value='<?php echo $row['related_code'] ?>' onclick='sel_related("form_related_code")'
-      title='<?php echo xla('Click to select services to perform if this result is abnormal'); ?>'
+    value='<?php echo $row['related_code'] ?>' onclick='sel_related("form_related_code")'
+    title='<?php echo xla('Click to select services to perform if this result is abnormal'); ?>'
       style='width:auto' class="form-control" readonly />
     </div>
   </div>

@@ -190,7 +190,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
           else {
             $bool = 0;
           }
-    
+
         }
         else {
               $bool = 0;
@@ -217,6 +217,7 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
         }
         sqlStatement("update users set picture_url = '$picture_url' where id = ?", array($_POST["id"]));
       }
+
       //(CHEMED) Calendar UI preference
       if ($_POST["cal_ui"]) {
               $tqvar = formData('cal_ui','P');
@@ -258,9 +259,10 @@ if (isset($_POST["privatemode"]) && $_POST["privatemode"] =="user_admin") {
       $tqvar  = $_POST["authorized"] ? 1 : 0;
       $actvar = $_POST["active"]     ? 1 : 0;
       $calvar = $_POST["calendar"]   ? 1 : 0;
+      $lockvar = $_POST["locked"]   ? 1 : 0;
 
       sqlStatement("UPDATE users SET authorized = $tqvar, active = $actvar, " .
-        "calendar = $calvar, see_auth = ? WHERE " .
+        "calendar = $calvar, locked = $lockvar, see_auth = ? WHERE " .
         "id = ? ", array($_POST['see_auth'], $_POST["id"]));
       //Display message when Emergency Login user was activated
       $bg_count=count($_POST['access_group']);
@@ -311,6 +313,7 @@ if (isset($_POST["mode"])) {
     // $_POST["info"] = addslashes($_POST["info"]);
 
     $calvar = $_POST["calendar"] ? 1 : 0;
+    $lockvar = $_POST["locked"] ? 1 : 0;
     $fullscreen_enable = $_POST["fullscreen_enable"] ? 1 : 0;
     $menuRole = $_POST["menu_role"] ?: "Sample Role";
     $res = sqlStatement("select distinct username from users where username != ''");
@@ -426,6 +429,7 @@ if (isset($_FILES)) {
             "', irnpool = '"       . trim(formData('irnpool'      )) .
             "', calendar = '"      . $calvar                         .
             "', picture_url = '"      . $picture_url                         .
+            "', locked = '"      . $lockvar .
             "', pwd_expiration_date = '" . trim("$exp_date") .
             "'";
 
@@ -537,11 +541,12 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 <head>
     <?php call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome", "iziModalToast")); ?>
 
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-    <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
+<script type="text/javascript">
 
-        $(document).ready(function(){
+$(document).ready(function(){
             $(".addUser").click(function () {
                 $("#addUser-iframe").iziModal('open');
             });
@@ -571,7 +576,7 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
                     onClosed:function () {
                         location.reload();
                     }
-                });
+});
 
                 setTimeout(function () {
                     call_izi();
@@ -604,7 +609,7 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 
         });
 
-    </script>
+</script>
 <script language="JavaScript">
 
 function authorized_clicked() {
@@ -624,15 +629,15 @@ function authorized_clicked() {
 
 <div>
     <div>
-        <table>
-            <tr >
-                <td><b><?php echo xlt('User / Groups'); ?></b>&nbsp;&nbsp;</td>
+       <table>
+      <tr >
+        <td><b><?php echo xlt('User / Groups'); ?></b>&nbsp;&nbsp;</td>
                 <td><a href="#" class="css_button cp-positive addUser"><span><?php echo xlt('Add User'); ?></span></a>
-                </td>
-                <td><a href="facility_user.php" class="css_button cp-misc"><span><?php echo xlt('View Facility Specific User Information'); ?></span></a>
-                </td>
-            </tr>
-        </table>
+        </td>
+        <td><a href="facility_user.php" class="css_button cp-misc"><span><?php echo xlt('View Facility Specific User Information'); ?></span></a>
+        </td>
+      </tr>
+    </table>
     </div>
 
 <form name='userlist' method='post' action='usergroup_admin.php' onsubmit='return top.restoreSession()'><br>
@@ -657,6 +662,12 @@ if ($show_message == 1){
         <th><b><span><?php echo xlt('Additional Info'); ?></span></b></th>
         <th><b><?php echo xlt('Authorized'); ?>?</b></th>
 
+        <th><b><?php
+        if (!empty($GLOBALS['log_password_login_attempts'])) {
+        echo xlt('Locked') . '?';
+        }
+        ?></b></th>
+
         <?php
 $query = "SELECT * FROM users WHERE username != '' ";
 if (!$form_inactive) $query .= "AND active = '1' ";
@@ -670,11 +681,26 @@ foreach ($result4 as $iter) {
   } else {
       $iter{"authorized"} = "";
   }
+    if ($iter{"locked"}) {
+    $iter{"locked"} = xl('LOCKED');
+  } else {
+      $iter{"locked"} = "";
+  }
+  if (!empty($GLOBALS['log_password_login_attempts'])) {
+  print "<tr>
+        <td><b><a href='user_admin.php?id=" . $iter{"id"} .
+    "' class='iframe_medium' onclick='top.restoreSession()'><span>" . $iter{"username"} . "</span></a></b>" ."&nbsp;</td>
+    <td><span class='text'>" . attr($iter{"fname"}) . ' ' . attr($iter{"lname"}) ."</span>&nbsp;</td>
+    <td><span class='text'>" . attr($iter{"info"}) . "</span>&nbsp;</td>
+    <td><span class='text'>" . $iter{"authorized"} . "</span>&nbsp;</td>
+    <td align='left' ><b><span class='text' style='color:red;'>" .$iter{"locked"} . "</span></b>&nbsp;</td>";
+  } else {
   print "<tr>
         <td><b><a data-text=".$iter{"id"}." href='#' class='editUser' onclick='top.restoreSession()'><span>" . $iter{"username"} . "</span></a></b>" ."&nbsp;</td>
-        <td><span class='text'>" . attr($iter{"fname"}) . ' ' . attr($iter{"lname"}) ."</span>&nbsp;</td>
-        <td><span class='text'>" . attr($iter{"info"}) . "</span>&nbsp;</td>
-        <td align='left'><span class='text'>" .$iter{"authorized"} . "</span>&nbsp;</td>";
+    <td><span class='text'>" . attr($iter{"fname"}) . ' ' . attr($iter{"lname"}) ."</span>&nbsp;</td>
+    <td><span class='text'>" . attr($iter{"info"}) . "</span>&nbsp;</td>
+    <td align='left'><span class='text'>" .$iter{"authorized"} . "</span>&nbsp;</td>";
+  }
   print "<td><!--<a href='usergroup_admin.php?mode=delete&id=" . $iter{"id"} .
     "' class='link_submit'>[Delete]</a>--></td>";
   print "</tr>\n";
@@ -702,8 +728,8 @@ if (empty($GLOBALS['disable_non_default_groups'])) {
 ?>
 </div>
 <script language="JavaScript">
-    <?php
-    if ($alertmsg = trim($alertmsg)) {
+<?php
+  if ($alertmsg = trim($alertmsg)) {
         echo "var alertMsg ="."'".$alertmsg.";'\n";;
         echo "
       iziToast.warning({
@@ -713,8 +739,8 @@ if (empty($GLOBALS['disable_non_default_groups'])) {
             icon: 'fa fa-exclamation-triangle'
         });
     ";
-    }
-    ?>
+  }
+?>
 </script>
 
 </body>

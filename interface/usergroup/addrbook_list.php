@@ -86,7 +86,7 @@ $res = sqlStatement($query,$sqlBindArray);
 <head>
     <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 
-    <?php  call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
+<?php  call_required_libraries(array("jquery-min-3-1-1","bootstrap","fancybox"));
       resolveFancyboxCompatibility();
 ?>
 

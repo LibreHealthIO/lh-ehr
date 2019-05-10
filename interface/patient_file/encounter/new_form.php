@@ -76,7 +76,7 @@ function mopen(id)
 // close showed layer
 function mclose()
 {
-     if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+    if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
     if(ddmenuitem) ddmenuitem.style.display = 'none';
 
 }
@@ -160,7 +160,7 @@ isset($GLOBALS['encounter']) &&
       $encounterLocked = true;
   }
 }
-
+  
 if (!empty($reg)) {
   $StringEcho= '<ul id="sddm">';
   if(isset($hide)){
@@ -219,7 +219,7 @@ if ( $encounterLocked === false ) {
       while ($lrow = sqlFetchArray($lres)) {
       $option_id = $lrow['option_id']; // should start with LBF
       $title = $lrow['title'];
-      $StringEcho.= "<tr><td style='border-top: 1px solid #000000;padding:0px;'><a href='" . $rootdir .'/patient_file/encounter/load_form.php?formname='
+      $StringEcho.= "<tr><td style='border-top: 1px solid #000000;padding:0px;'><a href='" . $rootdir .'/patient_file/encounter/load_form.php?formname=' 
                     .urlencode($option_id) ."' >" . xl_form_title($title) . "</a></td></tr>";
       }
     }
@@ -228,7 +228,7 @@ if ( $encounterLocked === false ) {
 <!-- DISPLAYING HOOKS STARTS HERE -->
 <?php
     $module_query = sqlStatement("SELECT msh.*,ms.menu_name,ms.path,m.mod_ui_name,m.type FROM modules_hooks_settings AS msh LEFT OUTER JOIN modules_settings AS ms ON
-                                    obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id
+                                    obj_name=enabled_hooks AND ms.mod_id=msh.mod_id LEFT OUTER JOIN modules AS m ON m.mod_id=ms.mod_id 
                                     WHERE fld_type=3 AND mod_active=1 AND sql_run=1 AND attached_to='encounter' ORDER BY mod_id");
   $DivId = 'mod_installer';
   if (sqlNumRows($module_query)) {
@@ -243,7 +243,7 @@ if ( $encounterLocked === false ) {
         $modulePath = $GLOBALS['customModDir'];
         $added      = "";
       }
-      else{
+      else{     
         $added      = "index";
         $modulePath = $GLOBALS['zendModDir'];
       }

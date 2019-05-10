@@ -36,7 +36,11 @@ class PQRS_0001_InitialPatientPopulation extends PQRSFilter
 	" INNER JOIN pqrs_efcc1 AS codelist_b ON (b1.code = codelist_b.code)".
 	" INNER JOIN pqrs_efcc1 AS codelist_a ON (b2.code = codelist_a.code)".
 	" WHERE b1.pid = ? ".
-    " AND fe.provider_id = '".$this->_reportOptions['provider']."'".  
+            "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=  
 	" AND fe.date >= '".$beginDate."' ".
 	" AND fe.date <= '".$endDate."' ".
 	" AND TIMESTAMPDIFF(YEAR,p.DOB,fe.date)  BETWEEN '18' AND '75' ".  //age must be between 18 and 75 on the date of treatment

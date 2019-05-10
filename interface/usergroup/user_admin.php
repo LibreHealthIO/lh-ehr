@@ -40,6 +40,7 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/calendar.inc");
 require_once("$srcdir/options.inc.php");
 require_once("$srcdir/erx_javascript.inc.php");
+require_once("$srcdir/headers.inc.php");
 require_once("$srcdir/role.php");
 
 if (!$_GET["id"] || !acl_check('admin', 'users'))
@@ -434,6 +435,10 @@ $bg_count=count($acl_name);
   if (!$iter["authorized"]) echo " disabled"; ?> />
  &nbsp;&nbsp;<span class='text'><?php echo xlt('Active'); ?>:
  <input type="checkbox" name="active"<?php if ($iter["active"]) echo " checked"; ?> />
+ <?php if (!empty($GLOBALS['log_password_login_attempts'])) { ?>
+ &nbsp;&nbsp;<span class='text'><?php echo xlt('User Locked'); ?>:
+ <input type="checkbox" name="locked"<?php if ($iter["locked"]) echo " checked"; ?> />
+ <?php } ?>
 </td>
 </tr>
 
@@ -494,7 +499,7 @@ foreach($result as $iter2) {
 </tr>
 
 <tr>
-  <td><span class="text"><?php echo xlt('Provider Type'); ?>: </span></td>
+  <td><span class="text"><?php echo xlt('Clinician Type'); ?>: </span></td>
   <td><?php echo generate_select_list("physician_type", "physician_type", $iter['physician_type'],'',xl('Select Type'),'physician_type_class','','',''); ?></td>
 <td class='text'><?php echo xlt('See Authorizations'); ?>: </td>
 <td><select name="see_auth" style="width:150px;" >
@@ -530,6 +535,7 @@ foreach($result as $iter2) {
 </select></td>
 </tr>
 <!-- END (CHEMED) Calendar UI preference -->
+<?php if ($GLOBALS['erx_enable']) { ?>
 
 <tr>
 <td><span class="text"><?php echo xlt('State License Number'); ?>: </span></td>
@@ -539,6 +545,7 @@ foreach($result as $iter2) {
   <?php echo generate_select_list("erxrole", "newcrop_erx_role", $iter['newcrop_user_role'],'',xl('Select Role'),'','','',array('style'=>'width:150px')); ?>
 </td>
 </tr>
+<?php } ?>
 
 <tr>
 </tr>
@@ -641,12 +648,12 @@ Display red alert if entered password matched one of last three passwords/Displa
 <input TYPE="HIDDEN" NAME="secure_pwd" VALUE="<?php echo $GLOBALS['secure_password']; ?>">
 </form>
 <script language="JavaScript">
-  $(document).ready(function(){
+$(document).ready(function(){
     $("#cancel").click(function() {
-      parent.$.fn.fancybox.close();
-    });
+          parent.$.fn.fancybox.close();
+     });
 
-  });
+});
 
   function readURL(input) {
     if (input.files && input.files[0]) {
@@ -657,7 +664,7 @@ Display red alert if entered password matched one of last three passwords/Displa
               .attr('src', e.target.result)
               .width(64)
               .height(64);
-          $('#prof_img').css("display", "block"); 
+          $('#prof_img').css("display", "block");
           $('#file_input_button').text("Edit Profile Picture");
       };
 

@@ -42,7 +42,11 @@ if ($result['count']> 0){
 			" INNER JOIN pqrs_efcc2 AS codelist_a ON (b1.code = codelist_a.code)".
 			" JOIN form_encounter AS fe ON (b1.encounter = fe.encounter)".
 			" WHERE b1.pid = ? ".
-            " AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+                    "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 			" AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0118_a' AND b1.modifier NOT IN('GQ','GT','95'));";
 			// Checking for two visits
 			$result = sqlFetchArray(sqlStatementNoLog($query, array($patient->id)));

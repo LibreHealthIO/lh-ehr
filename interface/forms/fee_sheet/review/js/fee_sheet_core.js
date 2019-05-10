@@ -146,7 +146,7 @@ function tag_justify_rows(display)
 {
     var justify_selectors=display.find("select[onchange^='setJustify']").parent();
     var justify_rows=justify_selectors.parent("tr")
-    var justify_td=justify_rows.children("td:first-child").addClass("has_justify");
+    var justify_td=justify_rows.children("td:nth-child(2)").addClass("has_justify");
     justify_td.each(function(idx,elem){
         // This code takes the label text and "wraps it around a span for e"
         var jqElem=$(elem);

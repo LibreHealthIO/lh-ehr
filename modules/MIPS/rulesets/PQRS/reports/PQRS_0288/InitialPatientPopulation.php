@@ -34,7 +34,11 @@ $query =
 " INNER JOIN pqrs_ptsf AS codelist_a ON (b1.code = codelist_a.code)".
 " INNER JOIN pqrs_ptsf AS codelist_b ON (b2.code = codelist_b.code)".
 " WHERE b1.pid = ? ".
-" AND fe.provider_id = '".$this->_reportOptions['provider']."'".
+        "";
+        $thisprov = $this->_reportOptions['provider'];
+        if ($thisprov != 1000000001){ $query .=
+        " AND fe.provider_id = '".$this->_reportOptions['provider']."'";}
+        $query .=
 " AND fe.date BETWEEN '".$beginDate."' AND '".$endDate."' ".
 " AND (b1.code = codelist_a.code AND codelist_a.type = 'pqrs_0288_a' AND b1.modifier NOT IN('GQ','GT','95')) ".
 " AND (b2.code = codelist_b.code AND codelist_b.type = 'pqrs_0286_b'); ";

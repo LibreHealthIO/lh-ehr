@@ -71,17 +71,17 @@ window.close(); // comment out for debugging
   }
   .provider-table-after {
     margin-bottom: 0px;
-  }
-  tr.evenrow {
+}
+tr.evenrow {
   background-color:#eae9e9;
-  }
-  tr.oddrow {
-  background-color:#ffffff;
-  }
+}
+tr.oddrow {
+ background-color:#ffffff;
+}
   a:visited {
     color: white !important;
   }
-  
+
 </style>
 <?php if ($popup) { ?>
 <script type="text/javascript" src="../../library/topdialog.js"></script>
@@ -241,11 +241,11 @@ function recolor() {
     <div id="modal-iframe"></div>
     <h2 class="text-center" ><?php xl('Types of Orders and Results','e') ?></h2>
 
-    <form method='post' name='theform' action='types.php?popup=<?php echo $popup ?>&order=<?php
-    echo $order;
-    if (isset($_GET['formid' ])) echo '&formid='  . $_GET['formid'];
-    if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
-    ?>'>
+<form method='post' name='theform' action='types.php?popup=<?php echo $popup ?>&order=<?php
+echo $order;
+if (isset($_GET['formid' ])) echo '&formid='  . $_GET['formid'];
+if (isset($_GET['formseq'])) echo '&formseq=' . $_GET['formseq'];
+?>'>
 
     <table class="table provider-table-after" style="width:100%">
       <thead>
@@ -257,20 +257,20 @@ function recolor() {
           <th class="text-center" style="width:20%">Action</th>
         </tr>
       </thead>
-    </tr>
-    </table>
+ </tr>
+</table>
     <div id="con0"></div>
-  
-    <p>
-    <?php if ($popup) { ?>
+
+<p>
+<?php if ($popup) { ?>
     <button type='submit' name='form_save' class="btn btn-primary"><?php xl('Refresh','e'); ?></button>
-    &nbsp;
+&nbsp;
     <button id="close" type='button' onclick='closeModal()' class="btn btn-danger"> <?php xl('Cancel','e'); ?></button>
-    &nbsp;
-    <?php } ?>
+&nbsp;
+<?php } ?>
     <a href="types_edit.php?typeid=0&parent=0"  class="trigger btn btn-primary"><?php xl('Add Top Level','e'); ?></a>
-    </p>  
-    </form>
+</p>
+</form>
 
   </div>
 

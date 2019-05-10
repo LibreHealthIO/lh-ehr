@@ -42,7 +42,7 @@ function jsWaitForDelay(delay) {
 <tr>
     <td><?php echo xlt("Address")."(".xlt("line1").")";?> </td>
     <td>
-        <input type="text" class="form-control input-sm" size="40" name="address_line1" value="<?php echo $this->insurancecompany->address->line1;?>" 
+        <input type="text" class="form-control input-sm" size="40" name="address_line1" value="<?php echo $this->insurancecompany->address->line1;?>"
                onKeyDown="PreventIt(event)" />
     </td>
 </tr>
@@ -65,7 +65,13 @@ function jsWaitForDelay(delay) {
 <tr>
     <td><?php echo xlt("Phone");?> </td>
     <td>
-        <input type="text" class="form-control input-sm" NAME="phone" SIZE="12" VALUE="<?php echo $this->insurancecompany->get_phone();?>" onKeyDown="PreventIt(event)" />
+        <input type="text" class="form-control input-sm" NAME="phone" SIZE="12" VALUE="<?php echo$this->insurancecompany->get_phone();?>" onKeyDown="PreventIt(event)" />
+    </td>
+</tr>
+<tr>
+    <td><?php echo xlt("Fax");?> </td>
+    <td>
+        <input type="text" class="form-control input-sm" NAME="fax" SIZE="12" VALUE="<?php echo $this->insurancecompany->get_fax();?>" onKeyDown="PreventIt(event)" />
     </td>
 </tr>
 <tr>
@@ -123,6 +129,22 @@ This is now deprecated use the newer x12 partner code instead
         </select>
     </td>
 </tr>
+
+<tr>
+    <td><?php echo xlt("Tier");?> </td>
+    <td>
+        <input type="text" class="form-control input-sm" size="5" maxlength="5" name="tier" value="<?php echo $this->insurancecompany->tier;?>"
+               onKeyDown="PreventIt(event)" />
+    </td>
+</tr>
+<tr>
+    <td><?php echo xlt("Initials for Insurance Company");?> </td>
+    <td>
+        <input type="text" class="form-control input-sm " size="5" maxlength="5" name="ins_co_initials" value="<?php echo $this->insurancecompany->ins_co_initials;?>"
+               onKeyDown="PreventIt(event)" />
+    </td>
+</tr>
+
 <tr>
     <?php if ($this->insurancecompany->get_allow_print_statement() == 0) { ?>
     <td><?php echo xlt("Do Not Print Statements");?> </td>
@@ -137,17 +159,17 @@ This is now deprecated use the newer x12 partner code instead
     <?php }?>
 </tr>
      <tr>
-    <?php if ($this->insurancecompany->get_ins_inactive() == 0) { ?>
+   <?php if ($this->insurancecompany->get_ins_inactive() == 0) { ?>
      <td><?php echo xlt("Deactivate");?></td>
       <td>
       <input type="checkbox" class="control-label col-sm-2" size="1" name='ins_inactive' class="checkbox" value="1" onKeyDown="PreventIt(event)" />
       </td>
-    <?php } else { ?>
-         <td><?php echo xlt("Activate");?></td>
+   <?php } else { ?>
+      <td><?php echo xlt("Activate");?></td>
       <td>
       <input type="checkbox" class="control-label col-sm-2" size="1" name='ins_inactive' class="checkbox" value="0" onKeyDown="PreventIt(event)" />
       </td>
-    <?php }?>
+   <?php }?>
      </tr>
 <tr>
 <tr height="25"><td colspan=2>&nbsp;</td></tr>

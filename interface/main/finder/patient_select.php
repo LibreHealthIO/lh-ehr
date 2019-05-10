@@ -594,6 +594,6 @@ var SelectPatient = function (eObj) {
 }
 
 
-</script>
+		</script>
 </body>
 </html>

@@ -176,7 +176,7 @@ CREATE TABLE `billing` (
   `user` int(11) default NULL,
   `groupname` varchar(255) default NULL,
   `authorized` tinyint(1) default NULL,
-  `encounter` bigint(20) default NULL,
+  `encounter` int(11) default NULL,
   `code_text` longtext,
   `billed` tinyint(1) default NULL,
   `activity` tinyint(1) default NULL,
@@ -195,6 +195,7 @@ CREATE TABLE `billing` (
   `notecodes` varchar(80) NOT NULL default '',
   `exclude_from_insurance_billing` TINYINT(1) NOT NULL DEFAULT '0',
   `external_id` VARCHAR(20) DEFAULT NULL,
+  `pricelevel` varchar(31) default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -959,6 +960,7 @@ CREATE TABLE `facility` (
   `color` VARCHAR(7) NOT NULL DEFAULT '',
   `primary_business_entity` INT(10) NOT NULL DEFAULT '0' COMMENT '0-Not Set as business entity 1-Set as business entity',
   `facility_code` VARCHAR(31) default NULL,
+  `inactive` TINYINT(1)  NOT NULL DEFAULT 0,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 ;
 
@@ -1066,6 +1068,7 @@ CREATE TABLE `form_encounter` (
   `claim_number` varchar(80) DEFAULT NULL,
   `document_image` varchar(80) DEFAULT NULL,
   `seq_number` varchar(80) DEFAULT NULL,
+  `coding_complete` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`),
   KEY `pid_encounter` (`pid`, `encounter`),
   KEY `encounter_date` (`date`)
@@ -2159,6 +2162,8 @@ CREATE TABLE `insurance_companies` (
   `alt_cms_id` varchar(15) NOT NULL DEFAULT '',
   `ins_inactive` tinyint(1) NOT NULL DEFAULT '0',
   `allow_print_statement` tinyint(1) NOT NULL DEFAULT '0' COMMENT ' 1 = Yes Print Statements',
+  `tier` varchar(5) NOT NULL DEFAULT '',
+  `ins_co_initials` varchar(5) NOT NULL DEFAULT '',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB;
 
@@ -2169,41 +2174,50 @@ CREATE TABLE `insurance_companies` (
 
 DROP TABLE IF EXISTS `insurance_data`;
 CREATE TABLE `insurance_data` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `type` enum('primary','secondary','tertiary') default NULL,
-  `provider` varchar(255) default NULL,
-  `plan_name` varchar(255) default NULL,
-  `policy_number` varchar(255) default NULL,
-  `group_number` varchar(255) default NULL,
-  `subscriber_lname` varchar(255) default NULL,
-  `subscriber_mname` varchar(255) default NULL,
-  `subscriber_fname` varchar(255) default NULL,
-  `subscriber_relationship` varchar(255) default NULL,
-  `subscriber_ss` varchar(255) default NULL,
-  `subscriber_DOB` date default NULL,
-  `subscriber_street` varchar(255) default NULL,
-  `subscriber_postal_code` varchar(255) default NULL,
-  `subscriber_city` varchar(255) default NULL,
-  `subscriber_state` varchar(255) default NULL,
-  `subscriber_country` varchar(255) default NULL,
-  `subscriber_phone` varchar(255) default NULL,
-  `subscriber_employer` varchar(255) default NULL,
-  `subscriber_employer_street` varchar(255) default NULL,
-  `subscriber_employer_postal_code` varchar(255) default NULL,
-  `subscriber_employer_state` varchar(255) default NULL,
-  `subscriber_employer_country` varchar(255) default NULL,
-  `subscriber_employer_city` varchar(255) default NULL,
-  `copay` varchar(255) default NULL,
-  `date` date NOT NULL default '0000-00-00',
-  `eDate` date NOT NULL default '0000-00-00',
-  `pid` bigint(20) NOT NULL default '0',
-  `subscriber_sex` varchar(25) default NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `case_number` int(20) DEFAULT NULL COMMENT 'case_id in pt_case table',
+  `case_info_id` int(20) DEFAULT NULL COMMENT 'pci_id in pt_case_info',
+  `type` enum('primary','secondary','tertiary') DEFAULT NULL,
+  `provider` varchar(255) DEFAULT NULL,
+  `plan_name` varchar(255) DEFAULT NULL,
+  `policy_number` varchar(255) DEFAULT NULL,
+  `group_number` varchar(255) DEFAULT NULL,
+  `subscriber_lname` varchar(255) DEFAULT NULL,
+  `subscriber_mname` varchar(255) DEFAULT NULL,
+  `subscriber_fname` varchar(255) DEFAULT NULL,
+  `subscriber_relationship` varchar(255) DEFAULT NULL,
+  `subscriber_ss` varchar(255) DEFAULT NULL,
+  `subscriber_DOB` date DEFAULT NULL,
+  `subscriber_street` varchar(255) DEFAULT NULL,
+  `subscriber_postal_code` varchar(255) DEFAULT NULL,
+  `subscriber_city` varchar(255) DEFAULT NULL,
+  `subscriber_state` varchar(255) DEFAULT NULL,
+  `subscriber_country` varchar(255) DEFAULT NULL,
+  `subscriber_phone` varchar(255) DEFAULT NULL,
+  `subscriber_employer` varchar(255) DEFAULT NULL,
+  `subscriber_employer_street` varchar(255) DEFAULT NULL,
+  `subscriber_employer_postal_code` varchar(255) DEFAULT NULL,
+  `subscriber_employer_state` varchar(255) DEFAULT NULL,
+  `subscriber_employer_country` varchar(255) DEFAULT NULL,
+  `subscriber_employer_city` varchar(255) DEFAULT NULL,
+  `copay` varchar(255) DEFAULT NULL,
+  `date` date NOT NULL DEFAULT '0000-00-00',
+  `eDate` date NOT NULL DEFAULT '0000-00-00',
+  `pid` bigint(20) NOT NULL DEFAULT '0',
+  `subscriber_sex` varchar(25) DEFAULT NULL,
   `accept_assignment` varchar(5) NOT NULL DEFAULT 'TRUE',
-  `policy_type` varchar(25) NOT NULL default '',
-  `inactive` tinyint(1) DEFAULT 0,
+  `policy_type` varchar(25) NOT NULL DEFAULT '',
+  `inactive` tinyint(1) DEFAULT '0',
   `inactive_time` datetime DEFAULT NULL,
+  `family_deductible` varchar(15) NULL DEFAULT 0,
+  `family_deductible_met` varchar(15) NULL DEFAULT 0,
+  `individual_deductible` varchar(15) NULL DEFAULT 0,
+  `individual_deductible_met` varchar(15) NULL DEFAULT 0,
+  `pays_at` varchar(15) NULL DEFAULT 0,
+  `max_out_of_pocket` varchar(15) NULL DEFAULT 0,
+  `out_of_pocket_met` varchar(15) NULL DEFAULT 0,
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `pid_type_date_inactivetime` (pid,type,date,inactive_time)
+  UNIQUE KEY `pid_type_date_inactivetime` (`pid`,`type`,`date`,`inactive_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
@@ -2369,8 +2383,10 @@ INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq
 ('DEM', 'fname', '1Face Sheet', 'NAME',5,2,2,10,63, '',1,1, '', 'CD', 'First Name',0, '', 'F', ''),
 ('DEM', 'mname', '1Face Sheet', '',10,2,1,2,63, '',0,0, '', 'C', 'Middle Name',0, '', 'F', ''),
 ('DEM', 'lname', '1Face Sheet', '',15,2,2,10,63, '',0,0, '', 'CD', 'Last Name',0, '', 'F', ''),
+('DEM', 'nickname', '1Face Sheet', 'Nick Name',16,2,1,10,63, '',1,1, '', 'CD', 'Nick Name',0, '', 'F', ''),
 ('DEM', 'sex', '1Face Sheet', 'Sex',20,1,2,0,0, 'sex',1,1, '', 'N', 'Sex',0, '', 'F', ''),
 ('DEM', 'DOB', '1Face Sheet', 'DOB',25,4,2,0,10, '',1,1, '', 'D', 'Date of Birth',0, '', 'F', ''),
+('DEM', 'facility', '1Face Sheet', 'Facility', 32, 35, 1, 0, 0, '', 1, 1, '', '', '', 0, '', 'F', ''),
 ('DEM', 'status', '1Face Sheet', 'Marital Status',30,1,1,0,0, 'marital',1,3, '', '', 'Marital Status',0, '', 'F', ''),
 ('DEM', 'street', '1Face Sheet', 'Address',35,2,1,25,63, '',1,1, '', 'C', 'Street and Number',0, '', 'F', ''),
 ('DEM', 'city', '1Face Sheet', 'City',40,2,1,15,63, '',1,1, '', 'C', 'City Name',0, '', 'F', ''),
@@ -2394,6 +2410,7 @@ INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq
 ('DEM', 'county', '2Contacts', 'County',50,26,1,0,0, 'county',1,1, '', '', 'County',0, '', 'F', ''),
 ('DEM', 'country_code', '2Contacts', 'Country',55,26,1,0,0, 'country',1,1, '', '', 'Country',0, '', 'F', ''),
 ('DEM', 'referral_source', '2Contacts', 'Referral Source',60,26,1,0,0, 'refsource',1,1, '', '', 'How did they hear about us',0, '', 'F', NULL),
+('DEM', 'referrer', '2Contacts', 'Referrer',65,11,1,0,0, '',1,3, '', '', 'Person who Referred This Patient',0, '', 'F', ''),
 ('DEM', 'allow_patient_portal', '2Privacy', 'Allow Patient Portal',1,1,1,0,0, 'yesno',1,1, '', '', '',0, '', 'F', ''),
 ('DEM', 'email_direct', '2Privacy', 'Trusted Email',3,2,1,30,95, '',1,1, '', '', 'Trusted Direct Email Address',0, '', 'F', ''),
 ('DEM', 'hipaa_notice', '2Privacy', 'Privacy Notice Received',5,1,1,0,0, 'yesno',1,1, '', '', 'Did you receive a copy of the HIPAA Notice?',0, '', 'F', ''),
@@ -2498,19 +2515,20 @@ INSERT INTO `layout_options` (`form_id`,`field_id`,`group_name`,`title`,`seq`,`d
 
 DROP TABLE IF EXISTS `list_options`;
 CREATE TABLE `list_options` (
-  `list_id` varchar(31) NOT NULL default '',
-  `option_id` varchar(31) NOT NULL default '',
+  `list_id` varchar(50) NOT NULL default '',
+  `option_id` varchar(50) NOT NULL default '',
   `title` varchar(255) NOT NULL default '',
   `seq` int(11) NOT NULL default '0',
   `is_default` tinyint(1) NOT NULL default '0',
   `option_value` float NOT NULL default '0',
   `mapping` varchar(31) NOT NULL DEFAULT '',
-  `notes` varchar(255) NOT NULL DEFAULT '',
+  `notes` TEXT,
   `codes` varchar(255) NOT NULL DEFAULT '',
   `toggle_setting_1` tinyint(1) NOT NULL default '0',
   `toggle_setting_2` tinyint(1) NOT NULL default '0',
   `activity` TINYINT DEFAULT 1 NOT NULL,
   `subtype` varchar(31) NOT NULL DEFAULT '',
+  `list_options_icon` VARCHAR(100) NOT NULL ,
   PRIMARY KEY  (`list_id`,`option_id`)
 ) ENGINE=InnoDB;
 
@@ -4114,6 +4132,25 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','2','Work',10,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','3','Sick',20,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('cancellation_reasons','4','Weather',25,0);
+
+-- Transactions Screen Modifiers
+
+INSERT INTO list_options (list_id,option_id,title,seq,is_default,option_value,mapping,notes,codes,toggle_setting_1,toggle_setting_2,activity,subtype) VALUES
+('lists','transactions_modifiers','Transactions Screen Modifiers',0,0,0,'','','',0,0,1,''),
+('transactions_modifiers','GP','GP',10,0,0,'','','',0,0,1,''),
+('transactions_modifiers','59','59',20,0,0,'','','',0,0,1,''),
+('transactions_modifiers','KX','KX',30,0,0,'','','',0,0,1,'');
+
+-- --------------------------------------------------------
+
+-- Insurance Payment Method
+
+INSERT INTO list_options (list_id,option_id,title,seq,is_default,option_value,mapping,notes,codes,toggle_setting_1,toggle_setting_2,activity,subtype) VALUES
+('lists','insurance_payment_method','Insurance Payment Method',0,0,0,'','','',0,0,1,''),
+('insurance_payment_method','check_payment','Check Payment',10,0,0,'','','',0,0,1,''),
+('insurance_payment_method','credit_card','Credit Card',20,0,0,'','','',0,0,1,'');
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `lists`
 --
@@ -4179,6 +4216,7 @@ CREATE TABLE `log` (
   `id` bigint(20) NOT NULL auto_increment,
   `date` datetime default NULL,
   `event` varchar(255) default NULL,
+  `category` varchar(255) default NULL,
   `user` varchar(255) default NULL,
   `groupname` varchar(255) default NULL,
   `comments` longtext,
@@ -4461,6 +4499,8 @@ CREATE TABLE `onsite_signatures` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 --
+--
+
 -- Table structure for table `libreehr_postcalendar_categories`
 --
 
@@ -4603,7 +4643,9 @@ CREATE TABLE `patient_data` (
   `fname` varchar(255) NOT NULL default '',
   `lname` varchar(255) NOT NULL default '',
   `mname` varchar(255) NOT NULL default '',
+  `nickname` text,
   `DOB` date default NULL,
+  `facility` int(11) default NULL,
   `street` varchar(255) NOT NULL default '',
   `postal_code` varchar(255) NOT NULL default '',
   `city` varchar(255) NOT NULL default '',
@@ -4737,7 +4779,7 @@ CREATE TABLE IF NOT EXISTS `patient_tracker_element` (
   `status`             varchar(31)  NOT NULL default '',
   `seq`                varchar(4)   NOT NULL default '' COMMENT 'This is a numerical sequence for this pt_tracker_id events',
   `user`               varchar(255) NOT NULL default '' COMMENT 'This is the user that created this element',
-  `reason`             varchar(255)  NOT NULL default '',
+  `reason`             varchar(255) NOT NULL default '' COMMENT 'This is the reason for cancellation',
   KEY  (`pt_tracker_id`,`seq`)
 ) ENGINE=InnoDB;
 
@@ -6014,6 +6056,7 @@ CREATE TABLE `ar_activity` (
   `pid`            int(11)       NOT NULL,
   `encounter`      int(11)       NOT NULL,
   `sequence_no`    int unsigned  NOT NULL AUTO_INCREMENT,
+  `billing_id`     INT(11) NOT NULL,
   `code_type`    varchar(12)   NOT NULL DEFAULT '',
   `code`           varchar(20)   NOT NULL            COMMENT 'empty means claim level',
   `modifier`       varchar(12)   NOT NULL DEFAULT '',
@@ -6029,6 +6072,8 @@ CREATE TABLE `ar_activity` (
   `follow_up_note` text,
   `account_code` varchar(15) NOT NULL,
   `reason_code` varchar(255) DEFAULT NULL COMMENT 'Use as needed to show the primary payer adjustment reason code',
+  `unapplied`      TINYINT(1) NOT NULL DEFAULT '0',
+  `date_closed`    date COMMENT 'Date closed',
   PRIMARY KEY (sequence_no, pid, encounter),
   KEY session_id (session_id)
 ) ENGINE=InnoDB;
@@ -6149,6 +6194,7 @@ CREATE TABLE `procedure_order` (
   `date_transmitted`       datetime     DEFAULT NULL        COMMENT 'time of order transmission, null if unsent',
   `clinical_hx`            varchar(255) NOT NULL DEFAULT '' COMMENT 'clinical history text that may be relevant to the order',
   `external_id` VARCHAR(20) DEFAULT NULL,
+  `history_order` enum('0','1') DEFAULT '0' COMMENT 'references order is added for history purpose only.',
   PRIMARY KEY (`procedure_order_id`),
   KEY datepid (date_ordered, patient_id),
   KEY `patient_id` (`patient_id`)
@@ -7561,7 +7607,6 @@ CREATE TABLE `form_clinical_instructions` (
   `activity` TINYINT DEFAULT 1 NULL,
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB;
-
 --
 -- Table structure for table `updater_users`
 --
@@ -7615,4 +7660,18 @@ CREATE TABLE IF NOT EXISTS `lims_analysisrequests` (
  `status` text NOT NULL COMMENT 'received, processing, complete',
  PRIMARY KEY (`id`),
  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `cases_to_documents`
+--
+
+DROP TABLE IF EXISTS cases_to_documents;
+ 
+ CREATE TABLE IF NOT EXISTS `cases_to_documents` (
+ `case_id` int(11) NOT NULL DEFAULT '0',
+ `document_id` int(11) NOT NULL DEFAULT '0',
+ PRIMARY KEY (`case_id`,`document_id`),
+ KEY `FK_categories_to_documents_documents` (`document_id`),
+ CONSTRAINT `cases_to_documents_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

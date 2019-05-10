@@ -34,33 +34,37 @@ if($_POST['formSubmit'] == "Submit")
 {
 
 include_once("SQL/1_INSTALL/PQRS_billingcodes.php");
-echo "1 <br>";
+echo "Installed HCPCS codes <br>";
 include_once("SQL/1_INSTALL/PQRS_clinical_rules.php");
-echo "2 <br>";
+echo "Installed Clinical Rules <br>";
 include_once("SQL/1_INSTALL/PQRS_direct_entry_table.php");
-echo "3 <br>";
+echo "Installed Direct Entry Table <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_efcc1.php");
-echo "4 <br>";
+echo "Installed Effective Clinical Care part 1 <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_efcc2.php");
-echo "5 <br>";
+echo "Installed Effective Clinical Care part 2 <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_efcc3.php");
-echo "6 <br>";
+echo "Installed Effective Clinical Care part 3 <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_efcc4.php");
-echo "7 <br>";
+echo "Installed Effective Clinical Care part 4 <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_efcc5.php");
-echo "8 <br>";
+echo "Installed Effective Clinical Care part 5 <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_mips.php");
-echo "9 <br>";
+echo "Installed 2018 MIPS additional codes <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_poph.php");
-echo "10 <br>";
+echo "Installed Population Health <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_ptct.php");
-echo "11 <br>";
+echo "Installed Patient Centered Outcomes <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_ptsf.php");
-echo "12 <br>";
+echo "installed Patient Safety <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_ccco.php");
-echo "13 <br>";
+echo "installed Continuity and Coordination of Care <br>";
 include_once("SQL/1_INSTALL/PQRS_codes_ecr.php");
-echo "14 <br>";
+echo "installed Efficience and Cost Reduction <br>";
+include_once("SQL/1_INSTALL/HCC_tables.php");
+echo "installed Health Condition Category tables <br>";
+include_once("SQL/1_INSTALL/category_rates_table.php");
+echo "installed HCC category rates table <br>";
 
 
 echo "MIPS module updated!";

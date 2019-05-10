@@ -391,25 +391,25 @@ function allowOnlyDigits(elem_name){
         }
         <?php if($GLOBALS['primary_insurance_required']){ ?>
           if($('#i1provider option:selected').val() == '') {
-            var ins_error = '1';
+             var ins_error = '1';
             iziToast.error({
               title: 'Error',
               message: "<?php echo htmlspecialchars(xl('Primary Insurance Provider Entry Required.'),ENT_QUOTES); ?>";,
               position: 'topRight'
             });
-            }
+          }
         <?php } ?>
         if ( errMsgs.length > 0 || ins_error == '1' ) {
-          return false;
+               return false;
         }
         else if(isInputFormatValid == false)
         {
-          wrongFormatmsg = "<?php echo htmlspecialchars(xl('Items marked in red have invalid entries.Please enter valid data'),ENT_QUOTES); ?>";
+              wrongFormatmsg = "<?php echo htmlspecialchars(xl('Items marked in red have invalid entries.Please enter valid data'),ENT_QUOTES); ?>";
           iziToast.error({
               title: 'Error',
               message: wrongFormatmsg,
           });
-          return false;
+              return false;
         }
        return true;
       }

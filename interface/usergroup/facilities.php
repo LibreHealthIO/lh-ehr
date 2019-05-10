@@ -65,12 +65,20 @@ if (isset($_POST["mode"]) && $_POST["mode"] == "facility" && $_POST["newmode"] !
   "attn = '"  . trim(formData('attn' )) . "', " .
   "tax_id_type = '"  . trim(formData('tax_id_type' )) . "', " .
   "primary_business_entity = '"  . trim(formData('primary_business_entity' )) . "', ".
-  "facility_npi = '" . trim(formData('facility_npi')) . "'");
+  "facility_npi = '" . trim(formData('facility_npi')) . "', ".
+  "inactive = '" . trim(formData('inactive')) . "'");
 
   refreshCalendar(); //after "Add Facility" process is complete
 }
 
 /*      Editing existing facility                   */
+if (trim(formData('inactive')) == 1) {
+        $service_location=0;
+        $billing_location=0;
+} else {
+        $service_location=trim(formData('service_location'));
+        $billing_location=trim(formData('billing_location'));
+}
 if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
 {
     sqlStatement("update facility set
@@ -87,29 +95,34 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
         website='" . trim(formData('website')) . "',
         email='" . trim(formData('email')) . "',
         color='" . trim(formData('ncolor')) . "',
-        service_location='" . trim(formData('service_location')) . "',
-        billing_location='" . trim(formData('billing_location')) . "',
+        service_location='" . $service_location . "',
+        billing_location='" . $billing_location . "',
         accepts_assignment='" . trim(formData('accepts_assignment')) . "',
         pos_code='" . trim(formData('pos_code')) . "',
         domain_identifier='" . trim(formData('domain_identifier')) . "',
         facility_npi='" . trim(formData('facility_npi')) . "',
         attn='" . trim(formData('attn')) . "' ,
         primary_business_entity='" . trim(formData('primary_business_entity')) . "' ,
-        tax_id_type='" . trim(formData('tax_id_type')) . "'
+        tax_id_type='" . trim(formData('tax_id_type')) . "' ,
+        inactive='" . trim(formData('inactive')) . "'
+
     where id='" . trim(formData('fid')) . "'" );
 
     refreshCalendar(); //after "Edit Facility" process is complete
 }
+$form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 
 ?>
 <html>
 <head>
     <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 
-    <?php
+<?php
   call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","jquery-ui","iziModalToast"));
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.easydrag.handler.beta2.js"></script>
 
 <script type="text/javascript">
 
@@ -143,6 +156,7 @@ $(document).ready(function(){
       event.preventDefault();
       var dyn_link = parseInt($(this).attr("data-text"));
       initIziLink(dyn_link);
+
     });
 
     function initIziLink(link) {
@@ -164,7 +178,7 @@ $(document).ready(function(){
         onClosed: function () {
          location.reload();
         }
-      });
+});
 
       setTimeout(function () {
         call_izi();
@@ -200,6 +214,10 @@ $(document).ready(function(){
     <br>
     <div>
         <div>
+    <form name='facilitylist' method='post' action='facilities.php' onsubmit='return top.restoreSession()'><br>
+    <input type='checkbox' name='form_inactive' value='1' onclick='submit()' <?php if ($form_inactive) echo 'checked '; ?>/>
+    <span class='text'> <?php echo xlt('Include inactive facilities'); ?> </span>
+    </form>
     <table class="table table-hover">
     <tr>
         <th><?php echo xlt('Name'); ?></th>
@@ -208,7 +226,11 @@ $(document).ready(function(){
     </tr>
      <?php
         $fres = 0;
+        if ($form_inactive) {
         $fres = sqlStatement("select * from facility order by name");
+        } else {
+          $fres = sqlStatement("select * from facility WHERE inactive = '0' order by name");
+        }
         if ($fres) {
           $result2 = array();
           for ($iter3 = 0;$frow = sqlFetchArray($fres);$iter3++)

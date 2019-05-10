@@ -37,8 +37,8 @@ class PQRS_0463_Denominator extends PQRSFilter
     if ($result['count']> 0){ return false;} 
         else { 
         $query =
-        " SELECT COUNT(b1.code) AS count".  
-        " FROM billing AS b1".
+        " SELECT COUNT(b1.code) AS count ".  
+        " FROM billing AS b1 ".
         " INNER JOIN billing AS b2 ON (b1.pid = b2.pid) ".
         " WHERE b1.pid = ? ".
         " AND b1.code ='4554F' ".
@@ -48,7 +48,7 @@ class PQRS_0463_Denominator extends PQRSFilter
         
         if ($result['count']> 0){ return true;} else {return false;}  
 
-    }else {return false;}
+    }
     }
 }
 ?>
