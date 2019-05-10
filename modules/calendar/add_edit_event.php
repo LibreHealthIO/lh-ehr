@@ -55,10 +55,22 @@ if (!acl_check('patients', 'appt', '', array('write' , 'wsome'))) {
 
 /* Things that might be passed by our opener. */
  $eid           = $_GET['eid'];         // only for existing events
- $date          = $_GET['date'];        // this and below only for new events
- $userid        = $_GET['userid'];
- $default_catid = $_GET['catid'] ? $_GET['catid'] : '5';
- //
+ $date          = $_GET['date'];        // this for new events
+ $userid        = $_GET['userid'];      // this for new events
+ if ($_GET['catid']) {
+    // when existing event
+    $default_catid = $_GET['catid'];
+ } else {
+  // when new event
+  if ($_GET['prov']) {
+    // selecting provider tab
+    $default_catid = '2'; // In Office as default category
+  } else {
+    // selecting patient tab
+    $default_catid = '5'; // Office Visit as default category
+  }
+ }
+
 if ($date) {
   $date = substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6);
 } else {
@@ -1033,7 +1045,8 @@ td { font-size:0.8em; }
  // var rectypes  = new Array();
 <?php
  // Read the event categories, generate their options list, and get
- // the default event duration from them if this is a new event.
+ // the default event duration & default recurring parameters corresponding to default category
+ // from them if this is a new event.
  $cattype=0;
  if($_GET['prov']==true){
   $cattype=1;
@@ -1046,6 +1059,7 @@ td { font-size:0.8em; }
   $thisduration = $row['pc_alldayevent'] ? 1440 : round($row['pc_duration'] / 60);
  }
  while ($crow = sqlFetchArray($cres)) {
+  // loop through all rows of table libreehr_postcalendar_categories
   $duration = round($crow['pc_duration'] / 60);
     if ($crow['pc_end_all_day']) {
         $duration = 1440;
@@ -1074,8 +1088,16 @@ td { font-size:0.8em; }
       }
   } else {
    if ($crow['pc_catid'] == $default_catid) {
+    // when category row from table libreehr_postcalendar_categories matches default category
     $catoptions .= " selected";
-    $thisduration = $duration;
+    $thisduration = $duration; // set default duration corresponding to default category
+    // set default recurring parameters corresponding to default category
+    $repeats = $crow['pc_recurrtype'];
+    $rspecs = unserialize($crow['pc_recurrspec']); // extract recurring data
+    $repeattype = $rspecs['event_repeat_freq_type'];
+    $repeatfreq = $rspecs['event_repeat_freq'];
+    $repeatexdate = $rspecs['exdate'];
+    $repeatenddate = $crow['pc_enddate'];
    }
   }
   $catoptions .= ">" . text(xl_appt_category($crow['pc_catname'])) . "</option>\n";
@@ -1122,7 +1144,8 @@ td { font-size:0.8em; }
  }
 
  // Do whatever is needed when a new event category is selected.
- // For now this means changing the event title and duration.
+ // For now this means changing the event title, duration and
+ // changing recurring parameters fields according to selected category
  function set_category() {
   var f = document.forms[0];
   var s = f.form_category;
@@ -1130,6 +1153,52 @@ td { font-size:0.8em; }
    var catid = s.options[s.selectedIndex].value;
    f.form_title.value = s.options[s.selectedIndex].text;
    f.form_duration.value = durations[catid];
+   // send category id to a php script to get corresponding default recurring parameters from DB
+   console.log("changed " + catid);
+   $.ajax({
+    type: "POST",
+    url: "includes/get_event_parameters.php",
+    data: { "catId": catid,
+            "action": "getRecurringParameters" },
+    success: function(response, textStatus, jqXHR) {
+      if (response !== "encode error") {
+        // if response is not false, then it is a JavaScript object
+        var defParameters = response;
+        // set recurring parameter fields accordingly
+        if (defParameters['repeats'] == 1 || defParameters['repeats'] == 2) {
+            f.form_repeat.checked = true;  // check "Repeats" checkbox
+            $("select[name='form_repeat_freq']").val(defParameters['repeatfreq']).change();  // select from ('every'/'2nd'/'3rd'...)
+            $("select[name='form_repeat_type']").val(defParameters['repeattype']).change();  // select from ('day'/'workday'...)
+            f.form_enddate.value = defParameters['repeatenddate'];  // until date value
+            set_repeat();  // disable only "Days of week" parameters fields
+        } else if (defParameters['repeats'] == 3) {
+            f.days_every_week.checked = true;  // check "Days of Week" checkbox
+            var checkedDays = defParameters['repeatfreq'].split(",");  // array of days to select, eg: ["1", "2", "3"]
+            for (var i = 0; i < checkedDays.length; i++) {
+                dayNum = checkedDays[i];
+                dayNum = "day_" + dayNum;
+                $("input[name='" + dayNum + "']").prop('checked', true);  // check day checkbox with name = day_dayNum
+            }
+            f.form_enddate.value = defParameters['repeatenddate'];  // until date value
+            set_days_every_week();  // disable only "Repeats" parameters fields
+        }
+      } else {
+        alert('There was an error while fetching recurring parameters.');
+      }
+    },
+    dataType: "json",
+    error: function(xhr, status, error) {
+            var errorString = "Request failed. ";
+            if (status) {
+              errorString += status;
+            }
+            if (error) {
+              errorString += ": ";
+              errorString += error;
+            }
+            alert(errorString);
+          }
+   });
    set_display();
   }
  }
@@ -1760,13 +1829,11 @@ if  ($GLOBALS['select_multi_providers']) {
 
   </td>
  </tr>
-
     <style>
         #days_every_week_row input[type="checkbox"]{float:right;}
         #days_every_week_row div{display: inline-block; text-align: center; width: 12%;}
         #days_every_week_row div input{width: 100%;}
     </style>
-
 <tr id="days_every_week_row">
     <td></td>
     <td></td>
@@ -1798,7 +1865,6 @@ if  ($GLOBALS['select_multi_providers']) {
     </td>
 
 </tr>
-
  <tr>
   <td nowrap>
    <span id='title_apptstatus'><b><?php echo xlt('Status'); ?>:</b></span>
@@ -1823,14 +1889,20 @@ if(($_GET['prov']!=true) ){
    </select>
 
   </td>
-  <td nowrap>&nbsp;
-
-  </td>
+  <?php
+    if ($eid) {
+        // if existing event
+        $until_enddate = $row['pc_endDate'];
+    } else {
+        // if new event
+        $until_enddate = $repeatenddate; // show default end date corresponding to default category
+    }
+  ?>
+  <td nowrap>&nbsp;</td>
   <td nowrap id='tdrepeat2'><?php echo xlt('until'); ?>
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_enddate' id='form_enddate'
-          value='<?php echo oeFormatShortDate(attr($row['pc_endDate'])) ?>'/>
+   <input type='text' size='10' name='form_enddate' id='form_enddate' value='<?php echo oeFormatShortDate(attr($until_enddate)) ?>'/>
 <?php
 if ($repeatexdate != "") {
     $tmptitle = "The following dates are excluded from the repeating series";

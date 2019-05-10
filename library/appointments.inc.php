@@ -594,7 +594,7 @@ function fetchAppointmentCategories( $appt_prov_inc = false )
        $where = "pc_active = 1 ";
     }
 
-     $catSQL= " SELECT pc_catid as id, pc_catname as category, pc_catid, pc_catname, pc_cattype, pc_recurrtype, pc_duration, pc_end_all_day "
+     $catSQL= " SELECT pc_catid as id, pc_catname as category, pc_catid, pc_catname, pc_cattype, pc_recurrtype, pc_recurrspec, pc_enddate, pc_duration, pc_end_all_day "
             . " FROM libreehr_postcalendar_categories " .
               "WHERE " . $where .
               "ORDER BY " . $order;
