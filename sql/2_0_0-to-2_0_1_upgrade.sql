@@ -374,6 +374,9 @@ SET FOREIGN_KEY_CHECKS = 1;
   SET FOREIGN_KEY_CHECKS = 1;
   ALTER TABLE `pt_case` AUTO_INCREMENT = 20000;
 #EndIf
+#IfMissingColumn patient_data patient_pref_schd
+  ALTER TABLE `patient_data` ADD COLUMN `patient_pref_schd` TEXT NOT NULL COMMENT 'patient preferred schedule';
+#Endif
 #IfMissingColumn patient_data pref_facility_id
   ALTER TABLE `patient_data` ADD COLUMN `pref_facility_id` INT(5) NULL COMMENT 'patient preferred treatment facility id from db.facility' AFTER `patient_pref_schd`;
 #Endif
