@@ -98,7 +98,7 @@ $role_list = $role->getRoleList();
              width:750,
              focusInput: true,
              padding:5,
-             iframeHeight: 400,
+             iframeHeight: 600,
              iframeURL:'../../roles/role_edit.php?title='+link,
              onClosed:function () {
                  location.reload();
@@ -128,7 +128,7 @@ $role_list = $role->getRoleList();
         width:750,
         focusInput: true,
         padding:5,
-        iframeHeight: 400,
+        iframeHeight: 600,
         iframeURL: "../../roles/role_create.php",
         onClosed:function () {
             location.reload();

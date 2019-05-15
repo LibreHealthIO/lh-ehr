@@ -95,7 +95,7 @@ if ( isset($_POST["mode"]) && $_POST["mode"] == "facility_user_id" && isset($_PO
                 width:500,
                 focusInput: true,
                 padding:5,
-                iframeHeight: 250,
+                iframeHeight: 700,
                 iframeURL:'facility_user_admin.php?user_id='+iter1 + '&fac_id='+iter2,
                 onClosed:function () {
                     location.reload();

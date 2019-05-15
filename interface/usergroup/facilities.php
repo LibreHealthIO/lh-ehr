@@ -147,7 +147,7 @@ $(document).ready(function(){
       width: 700,
       focusInput: true,
       padding: 5,
-      iframeHeight: 350,
+      iframeHeight: 700,
       iframeURL: "facilities_add.php"
     });
 
@@ -173,7 +173,7 @@ $(document).ready(function(){
         width: 700,
         focusInput: true,
         padding: 5,
-        iframeHeight: 350,
+        iframeHeight: 700,
         iframeURL: "facility_admin.php?fid=" + link,
         onClosed: function () {
          location.reload();

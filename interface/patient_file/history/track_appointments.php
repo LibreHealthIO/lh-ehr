@@ -93,7 +93,7 @@ $coljson = '{"sName": "pc_eventDate"}, {"sName": "pc_startTime"}, {"sName": "pc_
                 width: 500,
                 focusInput: true,
                 padding: 5,
-                iframeHeight: 350,
+                iframeHeight: 700,
                 iframeURL: "../summary/appointment_log.php?appt_pid=" + apptPid + "&appt_eid=" + apptEid,
                 onClosed: function () {
                             setTimeout(function () {

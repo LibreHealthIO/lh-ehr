@@ -121,7 +121,7 @@
            width:900,
            focusInput: true,
            padding:5,
-           iframeHeight: 400,
+           iframeHeight: 600,
            iframeURL: "<?php echo $GLOBALS['webroot']; ?>/interface/main/dated_reminders/dated_reminders_log.php"
        });
        
@@ -139,7 +139,7 @@
                width:700,
                focusInput: true,
                padding:5,
-               iframeHeight: 400,
+               iframeHeight: 600,
                iframeURL: link
            });
            
