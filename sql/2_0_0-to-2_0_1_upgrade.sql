@@ -182,6 +182,7 @@ CREATE TABLE `updater_user_mode_backup_entry` (
  ALTER TABLE `form_misc_billing_options` ADD `onset_date` DATE NOT NULL ;
 #EndIf
 
+
 #IfMissingColumn libreehr_postcalendar_events case_number
  ALTER TABLE `libreehr_postcalendar_events` ADD `case_number` VARCHAR(50) DEFAULT NULL;
 #EndIf
@@ -193,6 +194,14 @@ CREATE TABLE `updater_user_mode_backup_entry` (
 ALTER TABLE `list_options`
 CHANGE `list_id` `list_id` varchar(50) COLLATE 'utf8_general_ci' NOT NULL DEFAULT '',
 CHANGE `option_id` `option_id` varchar(50) COLLATE 'utf8_general_ci' NOT NULL DEFAULT '';
+
+#IfMissingColumn patient_data facility
+ALTER TABLE patient_data ADD COLUMN facility INT(11) NOT NULL default '1' AFTER `DOB`;
+#EndIf
+#IfNotRow layout_options field_id facility
+INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`, `source`, `conditions`) VALUES
+('DEM', 'facility', '1Face Sheet', 'Facility', 32, 35, 1, 0, 0, '', 1, 1, '', '', '', 0, '', 'F', '');
+#EndIf
 
 --Appointment Cancellation Reasons
 #IfNotRow2D list_options list_id lists option_id cancellation_reasons

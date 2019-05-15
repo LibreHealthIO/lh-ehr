@@ -114,6 +114,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
     }
 
     $query = "SELECT " .
+
     "e.pc_facility, e.pc_eventDate, e.pc_endDate, e.pc_startTime, e.pc_endTime, e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, e.pc_recurrfreq, e.pc_catid, e.pc_eid, e.pc_multiple, e.pc_prefcatid, e.pc_facility, e.pc_billing_location, e.pc_room, " .
     "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, e.pc_aid, e.pc_eid, e.pc_alldayevent, e.pc_pid, e.case_number, " .
     "p.fname, p.mname, p.lname, p.pid, p.DOB, p.referrer, p.nickname, p.picture_url, p.phone_home, p.phone_cell, " .

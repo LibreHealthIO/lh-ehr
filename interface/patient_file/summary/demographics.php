@@ -508,6 +508,7 @@
   <body class="body_top">
     <a href='../reminder/active_reminder_popup.php' id='reminder_popup_link' style='visibility: hidden;' class='iframe' onclick='top.restoreSession()'></a>
     <?php
+    do_action( 'demographics_check_auth', $args = array( 'username' => $_SESSION['authUser'], 'pid' => $pid ) );
       $thisauth = acl_check('patients', 'demo');
       if ($thisauth) {
        if ($result['squad'] && ! acl_check('squads', $result['squad']))

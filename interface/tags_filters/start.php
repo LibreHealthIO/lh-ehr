@@ -86,6 +86,7 @@ function update_tags_filters()
 }
 add_action( 'update_plugin', 'update_tags_filters' );
 }
+
 if ( $GLOBALS['facility_acl']==1 ) {
 ///////////////////////////////////////////////////////////////////////////////
 ////test add of facility acl stuff.

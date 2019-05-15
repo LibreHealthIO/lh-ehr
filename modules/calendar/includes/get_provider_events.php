@@ -22,9 +22,57 @@ require_once("$srcdir/patient_tracker.inc.php");
 
 $events = array();
 
+
 $fetchedEvents = fetchAllEvents($_POST['start'], $_POST['end']);
 
+// facility ACL check
+if ($GLOBALS['facility_acl'] == 1) {
+  $facility_filter = do_action('filter_patient_select_pnuserapi', $_SESSION['authUser']);
+  // do_action returns either
+  // 1. $where = " pd.facility IN ( $facilityString ) "; i.e. schedule/allowed facility ids in a SQL string or
+  // 2. $where = " pd.facility = '-1' "; when logged in user has no corresponding facilities in users_facility table i.e. no allowed facilities
+  $facilities_allowed_to_user = array();  // array to contain facility ids which logged in user is allowed to see
+
+  // making of $facilities_allowed_to_user
+  $in_position = strpos($facility_filter, 'IN');
+  if ($in_position !== false) {
+    // when return case 1
+    $facility_filter = substr($facility_filter, $in_position);
+    $facility_filter = ' facility.id ' . $facility_filter;
+    $sql = "SELECT facility.id AS fid
+            FROM facility
+            WHERE" . $facility_filter; // $facility_filter = " facility.id IN ( user_schedule_facility_id_string ) "
+    error_log($sql);
+    $result = sqlStatement($sql);
+    while ($row = sqlFetchArray($result)) {
+      $facilities_allowed_to_user[] = $row['fid'];
+    }
+    foreach ($facilities_allowed_to_user as $value) {
+      error_log($value);
+    }
+    error_log("break");
+  } else {
+    // when return case 2
+    // $facilities_allowed_to_user is an empty array
+  }
+}
+
 foreach($fetchedEvents as $event) {
+ // event - facility check
+  if ($GLOBALS['facility_acl'] == 1) {
+    // check if event's facility id is in array
+    foreach ($facilities_allowed_to_user as $value) {
+      error_log($value);
+    }
+    error_log( "pc fac" );
+    error_log($event['pc_facility']);
+    if (in_array($event['pc_facility'], $facilities_allowed_to_user) === false) {
+      // if not, continue to next event without merging this event with $events (return array)
+      error_log( "Continued" );
+      continue;
+    }
+  }
+  error_log( "Not continued" );
 
   // skip cancelled appointments
   if ($GLOBALS['display_canceled_appointments'] != 1) {
