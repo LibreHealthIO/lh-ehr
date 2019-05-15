@@ -4525,7 +4525,7 @@ CREATE TABLE `libreehr_postcalendar_categories` (
   `pc_icon_color` varchar(15) NULL,
   `pc_icon_bg_color` varchar(15) NULL,
   PRIMARY KEY  (`pc_catid`),
-  KEY `basic_cat` (`pc_catname`,`pc_catcolor`),
+  KEY `basic_cat` (`pc_catname`,`pc_catcolor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 ;
 
 
