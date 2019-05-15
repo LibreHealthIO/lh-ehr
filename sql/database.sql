@@ -1129,6 +1129,7 @@ CREATE TABLE `form_misc_billing_options` (
   `icn_resubmission_number` varchar(35) default NULL,
   `box_14_date_qual` char(3) default NULL,
   `box_15_date_qual` char(3) default NULL,
+  `onset_date` DATE NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -4597,6 +4598,8 @@ CREATE TABLE `libreehr_postcalendar_events` (
   `pc_billing_location` SMALLINT (6) NOT NULL DEFAULT '0',
   `pc_room` varchar(20) NOT NULL DEFAULT '',
   `cancel_reason` text,
+  `case_number` VARCHAR(50) DEFAULT NULL,
+  `case_body_part` VARCHAR(50) DEFAULT NULL,
   PRIMARY KEY  (`pc_eid`),
   KEY `basic_event` (`pc_catid`,`pc_aid`,`pc_eventDate`,`pc_endDate`,`pc_eventstatus`,`pc_sharing`,`pc_topic`),
   KEY `pc_eventDate` (`pc_eventDate`)
@@ -5858,6 +5861,8 @@ CREATE TABLE `users` (
   `locked` TINYINT(1) NOT NULL DEFAULT '0',
   `login_attempts` INT(2) NOT NULL DEFAULT '0',
   `last_login` timestamp,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP comment 'needed for laravel',
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment 'needed for laravel',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 

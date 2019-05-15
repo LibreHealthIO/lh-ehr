@@ -106,10 +106,6 @@ ALTER TABLE `users` ADD COLUMN `fullscreen_page` text NOT NULL;
 ALTER TABLE `users` ADD COLUMN `fullscreen_enable` int(11) NOT NULL default 0;
 #EndIf
 
-#IfMissingColumn users menu_role
-ALTER TABLE `users` ADD COLUMN `menu_role` varchar(100) NOT NULL default "Default User";
-#EndIf
-
 #IfColumn users fullscreen_role
 ALTER TABLE `users` DROP `fullscreen_role`;
 #EndIf
@@ -120,10 +116,6 @@ DROP TABLE IF EXISTS `menu_trees`;
 
 #IfTable menu_entries
 DROP TABLE IF EXISTS `menu_entries`;
-#EndIf
-
-#IfMissingColumn users picture_url
-ALTER TABLE `users` ADD `picture_url` VARCHAR(2000) NOT NULL AFTER `suffix`;
 #EndIf
 
 #IfMissingColumn patient_data facility
@@ -198,6 +190,7 @@ CHANGE `option_id` `option_id` varchar(50) COLLATE 'utf8_general_ci' NOT NULL DE
 #IfMissingColumn patient_data facility
 ALTER TABLE patient_data ADD COLUMN facility INT(11) NOT NULL default '1' AFTER `DOB`;
 #EndIf
+
 #IfNotRow layout_options field_id facility
 INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`, `source`, `conditions`) VALUES
 ('DEM', 'facility', '1Face Sheet', 'Facility', 32, 35, 1, 0, 0, '', 1, 1, '', '', '', 0, '', 'F', '');
@@ -218,11 +211,6 @@ ALTER TABLE `patient_tracker_element` ADD `reason` VARCHAR(255) NOT NULL AFTER `
 
 #IfMissingColumn users picture_url
 ALTER TABLE `users` ADD `picture_url` VARCHAR(2000) NOT NULL AFTER `suffix`;
-#EndIf
-
-#IfNotRow layout_options field_id facility
-INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`, `source`, `conditions`) VALUES
-('DEM', 'facility', '1Face Sheet', 'Facility', 32, 35, 1, 0, 0, '', 1, 1, '', '', '', 0, '', 'F', '');
 #EndIf
 
 #IfMissingColumn form_enhanced_prior_auth bodypart
