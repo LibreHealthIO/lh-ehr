@@ -38,10 +38,10 @@ class Installer
         // Record names of sql table files
         $this->main_sql = dirname(__FILE__) . '/../../sql/database.sql';
         $this->translation_sql = dirname(__FILE__) . '/../../modules/language_translations/currentLanguage_utf8.sql';
-        $this->devel_translation_sql = "https://github.com/LibreHealthIO/lh-ehr-contribs/currentLanguage_utf8.sql";  //does not exist
+        //$this->devel_translation_sql = "https://github.com/LibreHealthIO/lh-ehr-contribs/currentLanguage_utf8.sql";  //does not exist
         $this->cvx = dirname(__FILE__) . "/../../sql/cvx_codes.sql";
         $this->additional_users = dirname(__FILE__) . "/../../sql/official_additional_users.sql";
-        $this->menu_def = dirname(__FILE__) . "/../../sql/menu_definitions.sql";  //REVIEW
+        //$this->menu_def = dirname(__FILE__) . "/../../sql/menu_definitions.sql";  //REVIEW
 
         // Record name of php-gacl installation files
         $this->gaclSetupScript1 = dirname(__FILE__) . "/../../gacl/setup.php";

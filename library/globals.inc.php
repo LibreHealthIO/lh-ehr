@@ -203,7 +203,7 @@ $GLOBALS_METADATA = array(
     'css_header' => array(
       xl('Theme'),
        'css',
-       'style_light.css',
+       'style_prism.css',
       xl('Pick a CSS theme.')
     ),
     'primary_color'=>array(xl('Primary color'),  'color', '#ffffff'),

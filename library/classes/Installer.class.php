@@ -36,10 +36,10 @@ class Installer
     // Record names of sql table files
     $this->main_sql = dirname(__FILE__) . '/../../sql/database.sql';
     $this->translation_sql = dirname(__FILE__) . '/../../modules/language_translations/currentLanguage_utf8.sql';
-    $this->devel_translation_sql = "https://github.com/LibreHealthIO/lh-ehr-contribs/currentLanguage_utf8.sql";  //does not exist
+    //$this->devel_translation_sql = "https://github.com/LibreHealthIO/lh-ehr-contribs/currentLanguage_utf8.sql";  //does not exist
     $this->cvx = dirname(__FILE__) . "/../../sql/cvx_codes.sql";
     $this->additional_users = dirname(__FILE__) . "/../../sql/official_additional_users.sql";
-    $this->menu_def = dirname(__FILE__) . "/../../sql/menu_definitions.sql";  //REVIEW
+    //$this->menu_def = dirname(__FILE__) . "/../../sql/menu_definitions.sql";  //REVIEW
 
     // Record name of php-gacl installation files
     $this->gaclSetupScript1 = dirname(__FILE__) . "/../../gacl/setup.php";
@@ -669,24 +669,16 @@ $config = 1; /////////////
       $this->dumpfiles = array( $this->get_backup_filename() => 'clone database' );
     } else {
       $dumpfiles = array( $this->main_sql => 'Main' );
-      if (! empty($this->development_translations)) {
-        // Use the online development translation set
-        $dumpfiles[ $this->devel_translation_sql ] = "Online Development Language Translations (utf8)";
-      }
-      else {
+
         // Use the local translation set
         $dumpfiles[ $this->translation_sql ] = "Language Translation (utf8)";
-      }
+      
 
       // Load CVX codes if present
       if (file_exists( $this->cvx )) {
         $dumpfiles[ $this->cvx ] = "CVX Immunization Codes";
       }
-      // Load Menu Definitions if present
-      if (file_exists( $this->menu_def))
-      {
-          $dumpfiles[ $this->menu_def] = "Menu Definitions";
-      }
+
       $this->dumpfiles = $dumpfiles;
     }
     return $this->dumpfiles;
