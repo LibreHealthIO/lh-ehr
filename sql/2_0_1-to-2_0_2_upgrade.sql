@@ -195,3 +195,18 @@ INSERT INTO list_options (list_id,option_id,title,seq,is_default,option_value,ma
 #IfMissingColumn insurance_companies account_type
  ALTER TABLE `insurance_companies` ADD `account_type` VARCHAR(15) DEFAULT NULL;
 #EndIf
+
+#IfNotTable transactions_log
+
+CREATE TABLE IF NOT EXISTS `transactions_log` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `date` datetime NOT NULL,
+ `description` varchar(255) NOT NULL COMMENT 'Ex: Charges added to superbill',
+ `encounter` int(11) NOT NULL,
+ `change_made` varchar(255) NOT NULL COMMENT 'the change from one payment amount to another. ex: $10 to $20',
+ `billing_id` int(11) NOT NULL,
+ `pid` int(11) NOT NULL,
+ `user_id` int(11) NOT NULL COMMENT 'authorized user who effects the change',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+#EndIf

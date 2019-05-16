@@ -5,7 +5,7 @@
 * Program for Generating an End of Day report
 *
 *
-* Copyright (C) 2014-2017 Terry Hill <teryhill@librehealth.io>
+* Copyright (C) 2014-2019 Terry Hill <teryhill@librehealth.io>
 *
 * LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
 * See the Mozilla Public License for more details.

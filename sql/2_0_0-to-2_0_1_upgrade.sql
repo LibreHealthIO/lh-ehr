@@ -106,6 +106,10 @@ ALTER TABLE `users` ADD COLUMN `fullscreen_page` text NOT NULL;
 ALTER TABLE `users` ADD COLUMN `fullscreen_enable` int(11) NOT NULL default 0;
 #EndIf
 
+#IfMissingColumn users menu_role
+ALTER TABLE `users` ADD COLUMN `menu_role` varchar(100) NOT NULL default "Default User";
+#EndIf
+
 #IfColumn users fullscreen_role
 ALTER TABLE `users` DROP `fullscreen_role`;
 #EndIf
@@ -371,9 +375,11 @@ SET FOREIGN_KEY_CHECKS = 1;
   SET FOREIGN_KEY_CHECKS = 1;
   ALTER TABLE `pt_case` AUTO_INCREMENT = 20000;
 #EndIf
+
 #IfMissingColumn patient_data patient_pref_schd
   ALTER TABLE `patient_data` ADD COLUMN `patient_pref_schd` TEXT NOT NULL COMMENT 'patient preferred schedule';
 #Endif
+
 #IfMissingColumn patient_data pref_facility_id
   ALTER TABLE `patient_data` ADD COLUMN `pref_facility_id` INT(5) NULL COMMENT 'patient preferred treatment facility id from db.facility' AFTER `patient_pref_schd`;
 #Endif

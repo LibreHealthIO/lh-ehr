@@ -25,7 +25,8 @@ $COMPARE_FUNCTION_HASH = array(
     'comment' => 'compareAppointmentsByComment',
     'status' => 'compareAppointmentsByStatus',
     'completed' => 'compareAppointmentsByCompletedDrugScreen',
-    'trackerstatus' => 'compareAppointmentsByTrackerStatus'
+    'trackerstatus' => 'compareAppointmentsByTrackerStatus',
+    'dtstatus' => 'compareAppointmentsByDTStatus'
 );
 
 $ORDERHASH = array(
@@ -39,6 +40,7 @@ $ORDERHASH = array(
     'status' => array( 'status', 'date', 'time', 'patient' ),
     'completed' => array( 'completed', 'date', 'time', 'patient' ),
     'trackerstatus' => array( 'trackerstatus', 'date', 'time', 'patient' ),
+    'dtstatus' => array( 'date', 'time', 'status', 'patient' ),
 );
 
 /*Arrays for the interpretation of recurrence patterns.*/
@@ -118,7 +120,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
     "e.pc_facility, e.pc_eventDate, e.pc_endDate, e.pc_startTime, e.pc_endTime, e.pc_duration, e.pc_recurrtype, e.pc_recurrspec, e.pc_recurrfreq, e.pc_catid, e.pc_eid, e.pc_multiple, e.pc_prefcatid, e.pc_facility, e.pc_billing_location, e.pc_room, " .
     "e.pc_title, e.pc_hometext, e.pc_apptstatus, e.pc_location, e.pc_aid, e.pc_eid, e.pc_alldayevent, e.pc_pid, e.case_number, " .
     "p.fname, p.mname, p.lname, p.pid, p.DOB, p.referrer, p.nickname, p.picture_url, p.phone_home, p.phone_cell, " .
-    "u.fname AS ufname, u.mname AS umname, u.lname AS ulname, u.id AS uprovider_id, " .
+    "u.fname AS ufname, u.mname AS umname, u.lname AS ulname, u.id AS uprovider_id, u.username as uusername," .
     "r.fname AS rfname, r.mname AS rmname, r.lname AS rlname, r.id AS rprovider_id, " .
     "f.name AS current_facility, " .
     "$tracker_fields" .
@@ -578,6 +580,13 @@ function compareAppointmentsByTrackerStatus( $appointment1, $appointment2 )
     return compareBasic( $trackerstatus1, $trackerstatus2 );
 }
 
+function compareAppointmentsByDTStatus( $appointment1, $appointment2 )
+{
+    $dtstatus1 = strtotime( $appointment1['pc_eventDate'] );
+    $dtstatus2 = strtotime( $appointment2['pc_eventDate'] );
+    return compareBasic( $dtstatus1, $dtstatus2 );
+}
+
 function compareAppointmentsByCompletedDrugScreen( $appointment1, $appointment2 )
 {
     $completed1 = $appointment1['drug_screen_completed'];
@@ -614,6 +623,33 @@ $query = sqlQ($sql);
 $arr = sqlFetchArray($query);
 
 return $arr['picture_url'];
+
+}
+# Used in Demographics
+
+function getAuthorizationInformation($pid) {
+$sql = "SELECT * FROM form_enhanced_prior_auth WHERE pid = '$pid' ORDER BY id DESC";
+$query = sqlQ($sql);
+$auth_info = sqlFetchArray($query);
+return $auth_info;
+
+}
+
+# Used in Demographics
+function get_temp_auths($pid , $form_name) {
+ $temp_auth_count = sqlquery("SELECT count(*) AS count FROM $form_name " .
+    "WHERE pid = ? AND temp_auth = '1' ", array($pid));
+
+ return $temp_auth_count;
+
+}
+
+#used in get_provider_events
+function getCaseNumberInformation($pid , $casenum, $appt_date) {
+$sql = "SELECT * FROM form_enhanced_prior_auth WHERE pid = '$pid' AND prior_auth_number = '$casenum' AND auth_to >= $appt_date AND archived = '0' ORDER BY id DESC ";
+$query = sqlQ($sql);
+$case_info = sqlFetchArray($query);
+return $case_info;
 
 }
 

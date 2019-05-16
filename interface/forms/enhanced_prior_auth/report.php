@@ -40,6 +40,30 @@ function enhanced_prior_auth_report( $pid, $encounter, $cols, $id) {
                $key = ' Prior Authorization Number ';
                $value = $value . " ";
             }
+            if($key==='addused')
+            {
+            $key = ' Non-Oxford Visits Used ';
+             if ($value == "Yes") {
+                $value = "1";
+             }
+               $value = $value . " ";
+               $tmp_used = $value;
+            }
+            if($key==='used')
+            {
+               $key = ' Plan Used ';
+               $value = $value + $tmp_used . " ";
+            }
+            if($key==='bodypart')
+            {
+               $key = ' Body Part ';
+               $value = $value . " ";
+            }
+            if($key==='re_eval')
+            {
+               $key = ' Re-Evaluation after ';
+               $value = $value . ' Visits';
+            }
             if($key==='auth_for')
             {
                $key = ' Authorized for ';

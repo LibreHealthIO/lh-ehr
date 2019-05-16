@@ -44,6 +44,7 @@ require_once($GLOBALS['srcdir'].'/encounter_events.inc.php');
 require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/patient_tracker.inc.php');
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
+require_once("$srcdir/formsoptions.inc.php");
 
 $library_array = array('iziModalToast');
 $DateFormat = DateFormatRead();
@@ -60,6 +61,10 @@ if (!acl_check('patients', 'appt', '', array('write' , 'wsome'))) {
  $default_catid = $GLOBALS['default_category'] ;
 
  //
+$directory = 'enhanced_prior_auth';
+$form_is_there = is_Form_Enabled($directory);
+
+
 if ($date) {
   $date = substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6);
 } else {
@@ -109,7 +114,8 @@ if (isset($_GET['endtimem'])) {
 
 function InsertEventFull()
  {
-    global $new_multiple_value,$provider,$event_date,$duration,$recurrspec,$starttime,$endtime,$locationspec;
+    global $new_multiple_value,$provider,$event_date,$duration,$recurrspec,
+    $starttime,$endtime,$locationspec, $case_number, $case_body_part, $prior_auth, $prior_auth_2, $bodypart, $bodypart_2;
     // =======================================
     // multi providers case
     // =======================================
@@ -118,9 +124,11 @@ function InsertEventFull()
             // obtain the next available unique key to group multiple providers around some event
             $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM libreehr_postcalendar_events");
             $max = sqlFetchArray($q);
-            if (!$max['max']){$new_multiple_value = $max['max'] + 1;
+        if (!$max['max']) {
+            $new_multiple_value = $max['max'] + 1;
                 }else{
-                    $new_multiple_value = 1;}
+            $new_multiple_value = 1;
+        }
 
             foreach ($_POST['form_provider'] as $provider) {
                 $args = $_POST;
@@ -133,6 +141,12 @@ function InsertEventFull()
                 $args['starttime'] = $starttime;
                 $args['endtime'] = $endtime;
                 $args['locationspec'] = $locationspec;
+                $args['case_number'] = $case_number;
+                $args['case_body_part'] = $case_body_part;
+                $args['prior_auth'] = $prior_auth;
+                $args['bodypart'] = $bodypart;
+                $args['prior_auth_2'] = $prior_auth_2;
+                $args['bodypart_2'] = $bodypart_2;
                 InsertEvent($args);
             }
 
@@ -149,12 +163,18 @@ function InsertEventFull()
             $args['starttime'] = $starttime;
             $args['endtime'] = $endtime;
             $args['locationspec'] = $locationspec;
+            $args['case_number'] = $case_number;
+            $args['case_body_part'] = $case_body_part;
+            $args['prior_auth'] = $prior_auth;
+            $args['bodypart'] = $bodypart;
+            $args['prior_auth_2'] = $prior_auth_2;
+            $args['bodypart_2'] = $bodypart_2;
             InsertEvent($args);
         }
  }
 function DOBandEncounter()
  {
-   global $event_date,$info_msg;
+   global $event_date,$info_msg,$form_is_there;
      // Save new DOB if it's there.
      $patient_dob = trim($_POST['form_dob']);
      $tmph = $_POST['form_hour'] + 0;
@@ -173,9 +193,14 @@ function DOBandEncounter()
     // Manage tracker status.
     // And auto-create a new encounter if appropriate.
     if (!empty($_POST['form_pid'])) {
-     if ($GLOBALS['auto_create_new_encounters'] && $event_date == date('Y-m-d') && (is_checkin($_POST['form_apptstatus']) == '1') && !is_tracker_encounter_exist($event_date,$appttime,$_POST['form_pid'],$_GET['eid']))
-     {
-         $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false);
+        if ($GLOBALS['auto_create_new_encounters'] && $event_date == date('Y-m-d') && (is_checkin($_POST['form_apptstatus']) == '1') && !is_tracker_encounter_exist($event_date, $appttime, $_POST['form_pid'], $_GET['eid'])) {
+         $encounter = todaysEncounterCheck($_POST['form_pid'], $event_date, $_POST['form_comments'], $_POST['facility'], $_POST['billing_facility'], $_POST['form_provider'], $_POST['form_category'], false, $_POST['form_case_number'], $_POST['form_case_body_part'] );
+         if((strlen(trim($_POST['form_prior_auth'])) !=0) && ($form_is_there)) {
+           $new_auth_form = create_new_auth($encounter, $_POST['form_pid'], $event_date, $_POST['form_prior_auth'], $_POST['form_prior_auth_2'], $_POST['form_body_part_2'], $_POST['form_body_part'], $_SESSION["authUser"] );
+         }
+         if((strlen(trim($_POST['form_prior_auth_2'])) !=0) && ($form_is_there)) {
+            $new_auth_form_2 = create_new_auth($encounter, $_POST['form_pid'], $event_date, '', $_POST['form_prior_auth_2'], $_POST['form_body_part_2'], $_POST['form_body_part'], $_SESSION["authUser"] );
+         }
          if($encounter){
                  $info_msg .= xl("New encounter created with id");
                  $info_msg .= " $encounter";
@@ -187,7 +212,7 @@ function DOBandEncounter()
                     // parameter is actually erroneous(is eid of the recurrent appt and not the new separated appt), so need to use the
                     // temporary-eid-for-manage-tracker global instead.
                     $temp_eid = (isset($GLOBALS['temporary-eid-for-manage-tracker'])) ? $GLOBALS['temporary-eid-for-manage-tracker'] : $_GET['eid'];
-            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"], $_POST['form_apptstatus'],$_POST['form_room'],$_POST['form_reason_to_cancel'], $encounter);
+            manage_tracker_status($event_date,$appttime,$temp_eid,$_POST['form_pid'],$_SESSION["authUser"],$_POST['form_apptstatus'],$_POST['form_room'], $encounter, $_POST['form_reason_to_cancel']);
                  }
      } else {
              # Capture the appt status and room number for patient tracker.
@@ -347,17 +372,19 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
     }
 
     // Useless garbage that we must save.
-    $locationspecs = array("event_location" => "",
+    $locationspecs = array(
+                        "event_location" => "",
                             "event_street1" => "",
                             "event_street2" => "",
                             "event_city" => "",
                             "event_state" => "",
-                            "event_postal" => ""
+                        "event_postal"   => "",
                         );
     $locationspec = serialize($locationspecs);
 
     // capture the recurring specifications
-    $recurrspec = array("event_repeat_freq" => "$my_repeat_freq",
+    $recurrspec = array(
+                        "event_repeat_freq"      => "$my_repeat_freq",
                         "event_repeat_freq_type" => "$my_repeat_type",
                         "event_repeat_on_num" => "$my_repeat_on_num",
                         "event_repeat_on_day" => "$my_repeat_on_day",
@@ -386,8 +413,7 @@ if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
                         "exdate" => ""
                     );
 
- }//if ($_POST['form_action'] == "duplicate" || $_POST['form_action'] == "save")
-//=============================================================================================================================
+}
 if ($_POST['form_action'] == "duplicate") {
 
     InsertEventFull();
@@ -399,6 +425,13 @@ if ($_POST['form_action'] == "duplicate") {
 // If we are saving, then save and close the window.
 //
 if ($_POST['form_action'] == "save") {
+    $case_number = $_POST['form_case_number'];
+    $case_body_part = $_POST['form_case_body_part'];
+    $prior_auth = $_POST['form_prior_auth'];
+    $prior_auth_2 = $_POST['form_prior_auth_2'];
+    $bodypart_2 = $_POST['form_body_part_2'];
+    $bodypart = $_POST['form_body_part'];
+
     if (($_POST['form_category'] == '2') || ($_POST['form_category'] == '3')) {
       // save the end time information to create the start and end time for the out of office record
       $cat3time = $endtime;
@@ -434,7 +467,8 @@ if ($_POST['form_action'] == "save") {
                 foreach ($providers_current as $provider) {
                     // update the provider's original event
                     // get the original event's repeat specs
-                    $origEvent = sqlQuery("SELECT pc_recurrspec FROM libreehr_postcalendar_events ".
+                    $origEvent = sqlQuery("SELECT pc_recurrspec " .
+                        "FROM libreehr_postcalendar_events " .
                         " WHERE pc_aid = ? AND pc_multiple=?", array($provider,$row['pc_multiple']) );
                     $oldRecurrspec = unserialize($origEvent['pc_recurrspec']);
                     $selected_date = date("Ymd", strtotime($_POST['selected_date']));
@@ -445,17 +479,19 @@ if ($_POST['form_action'] == "save") {
                     }
 
                     // mod original event recur specs to exclude this date
-                    sqlStatement("UPDATE libreehr_postcalendar_events SET " .
-                        " pc_recurrspec = ? ".
+                    sqlStatement("UPDATE libreehr_postcalendar_events " .
+                        "SET pc_recurrspec = ? " .
                         " WHERE pc_aid = ? AND pc_multiple=?", array(serialize($oldRecurrspec),$provider,$row['pc_multiple']) );
                 }
 
                     // obtain the next available unique key to group multiple providers around some event
                     $q = sqlStatement ("SELECT MAX(pc_multiple) as max FROM libreehr_postcalendar_events");
                     $max = sqlFetchArray($q);
-                    if (!$max['max']){$new_multiple_value = $max['max'] + 1;
+                    if (!$max['max']) {
+                      $new_multiple_value = $max['max'] + 1;
                         } else {
-                    $new_multiple_value = 1;}
+                      $new_multiple_value = 1;
+                    }
 
                 // insert a new event record for each provider selected on the form
                 foreach ($providers_new as $provider) {
@@ -474,6 +510,12 @@ if ($_POST['form_action'] == "save") {
                     $args['starttime'] = $starttime;
                     $args['endtime'] = $endtime;
                     $args['locationspec'] = $locationspec;
+                    $args['case_number'] = $case_number;
+                    $args['case_body_part'] = $case_body_part;
+                    $args['prior_auth'] = $prior_auth;
+                    $args['prior_auth_2'] = $prior_auth_2;
+                    $args['bodypart_2'] = $bodypart_2;
+                    $args['bodypart'] = $bodypart;
                     InsertEvent($args);
                 }
             }
@@ -510,6 +552,12 @@ if ($_POST['form_action'] == "save") {
                     $args['starttime'] = $starttime;
                     $args['endtime'] = $endtime;
                     $args['locationspec'] = $locationspec;
+                    $args['case_number'] = $case_number;
+                    $args['case_body_part'] = $case_body_part;
+                    $args['prior_auth'] = $prior_auth;
+                    $args['prior_auth_2'] = $prior_auth_2;
+                    $args['bodypart_2'] = $bodypart_2;
+                    $args['bodypart'] = $bodypart;
                     InsertEvent($args);
                 }
             } else {
@@ -551,6 +599,12 @@ if ($_POST['form_action'] == "save") {
                         $args['starttime'] = $starttime;
                         $args['endtime'] = $endtime;
                         $args['locationspec'] = $locationspec;
+                        $args['case_number'] = $case_number;
+                        $args['case_body_part'] = $case_body_part;
+                        $args['prior_auth'] = $prior_auth;
+                        $args['prior_auth_2'] = $prior_auth_2;
+                        $args['bodypart_2'] = $bodypart_2;
+                        $args['bodypart'] = $bodypart;
                         InsertEvent($args);
                     }
                 }
@@ -577,6 +631,12 @@ if ($_POST['form_action'] == "save") {
                         "pc_apptstatus = '" . add_escape_custom($_POST['form_apptstatus']) . "', "  .
                         "pc_prefcatid = '" . add_escape_custom($_POST['form_prefcat']) . "' ,"  .
                         "pc_facility = '" . add_escape_custom((int)$_POST['facility']) ."' ,"  . // FF stuff
+                        "case_number = '" . add_escape_custom($_POST['form_case_number']) ."' ,"  .
+                        "case_body_part = '" . add_escape_custom($_POST['form_case_body_part']) ."' ,"  .
+                        "prior_auth = '" . add_escape_custom($_POST['form_prior_auth'])."' ,"  .
+                        "prior_auth_2 = '" . add_escape_custom($_POST['form_prior_auth_2']) ."' ,"  .
+                        "bodypart = '" . add_escape_custom($_POST['form_body_part']) ."' ,"  .
+                        "bodypart_2 = '" . add_escape_custom($_POST['form_body_part_2']) ."' ,"  .
                         "cancel_reason = '" . add_escape_custom($_POST['form_reason_to_cancel']) ."' ,"  .
                         "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  .
                         "WHERE pc_aid = '" . add_escape_custom($provider) . "' AND pc_multiple = '" . add_escape_custom($row['pc_multiple'])  . "'");
@@ -605,8 +665,8 @@ if ($_POST['form_action'] == "save") {
                     }
 
                 // mod original event recur specs to exclude this date
-                sqlStatement("UPDATE libreehr_postcalendar_events SET " .
-                    " pc_recurrspec = ? ".
+                sqlStatement("UPDATE libreehr_postcalendar_events " .
+                    "SET pc_recurrspec = ? ".
                     " WHERE pc_eid = ?", array(serialize($oldRecurrspec),$eid) );
 
                 // insert a new event on this date with POST form data
@@ -622,12 +682,18 @@ if ($_POST['form_action'] == "save") {
                 $args['starttime'] = $starttime;
                 $args['endtime'] = $endtime;
                 $args['locationspec'] = $locationspec;
+                $args['case_number'] = $case_number;
+                $args['case_body_part'] = $case_body_part;
+                $args['prior_auth'] = $prior_auth;
+                $args['prior_auth_2'] = $prior_auth_2;
+                $args['bodypart_2'] = $bodypart_2;
+                $args['bodypart'] = $bodypart;
                 InsertEvent($args);
                 } else if ($_POST['recurr_affect'] == 'future') {
                 // mod original event to stop recurring on this date-1
                 $selected_date = date("Ymd", (strtotime($_POST['selected_date'])-24*60*60));
-                sqlStatement("UPDATE libreehr_postcalendar_events SET " .
-                    " pc_enddate = ? ".
+                sqlStatement("UPDATE libreehr_postcalendar_events " .
+                    "SET pc_enddate = ? " .
                     " WHERE pc_eid = ?", array($selected_date,$eid) );
 
                 // insert a new event starting on this date with POST form data
@@ -639,6 +705,12 @@ if ($_POST['form_action'] == "save") {
                 $args['starttime'] = $starttime;
                 $args['endtime'] = $endtime;
                 $args['locationspec'] = $locationspec;
+                $args['case_number'] = $case_number;
+                $args['case_body_part'] = $case_body_part;
+                $args['prior_auth'] = $prior_auth;
+                $args['prior_auth_2'] = $prior_auth_2;
+                $args['bodypart_2'] = $bodypart_2;
+                $args['bodypart'] = $bodypart;
                 InsertEvent($args);
             } else {
 
@@ -676,6 +748,12 @@ if ($_POST['form_action'] == "save") {
                     "pc_apptstatus = '" . add_escape_custom($_POST['form_apptstatus']) . "', "  .
                     "pc_prefcatid = '" . add_escape_custom($_POST['form_prefcat']) . "' ,"  .
                     "pc_facility = '" . add_escape_custom((int)$_POST['facility']) ."' ,"  . // FF stuff
+                    "case_number = '" . add_escape_custom($_POST['form_case_number']) ."' ,"  .
+                    "case_body_part = '" . add_escape_custom($_POST['form_case_body_part']) ."' ,"  .
+                    "prior_auth = '" . add_escape_custom($_POST['form_prior_auth']) ."' ,"  .
+                    "prior_auth_2 = '" . add_escape_custom($_POST['form_prior_auth_2']) ."' ,"  .
+                    "bodypart = '" . add_escape_custom($_POST['form_body_part']) ."' ,"  .
+                    "bodypart_2 = '" . add_escape_custom($_POST['form_body_part_2']) ."' ,"  .
                     "cancel_reason = '" . add_escape_custom($_POST['form_reason_to_cancel']) ."' ,"  .
                     "pc_billing_location = '" . add_escape_custom((int)$_POST['billing_facility']) ."' "  .
                     "WHERE pc_eid = '" . add_escape_custom($eid) . "'");
@@ -725,12 +803,11 @@ if ($_POST['form_action'] == "save") {
 
     refreshCalendar(); //after "Save" process is complete
 
- }
+} else if ($_POST['form_action'] == "delete") {
 
 // =======================================
 //    DELETE EVENT(s)
 // =======================================
- else if ($_POST['form_action'] == "delete") {
         // =======================================
         //  multi providers event
         // =======================================
@@ -742,7 +819,9 @@ if ($_POST['form_action'] == "save") {
             // obtain current list of providers regarding the multiple key
             $providers_current = array();
             $up = sqlStatement("SELECT pc_aid FROM libreehr_postcalendar_events WHERE pc_multiple=?", array($row['pc_multiple']) );
-            while ($current = sqlFetchArray($up)) { $providers_current[] = $current['pc_aid']; }
+            while ($current = sqlFetchArray($up)) {
+              $providers_current[] = $current['pc_aid'];
+            }
 
             // establish a WHERE clause
             if ( $row['pc_multiple'] ) {
@@ -767,30 +846,28 @@ if ($_POST['form_action'] == "save") {
                     }
 
                     // mod original event recur specs to exclude this date
-                    sqlStatement("UPDATE libreehr_postcalendar_events SET " .
-                        " pc_recurrspec = ? ".
+                sqlStatement("UPDATE libreehr_postcalendar_events " .
+                        "SET pc_recurrspec = ? " .
                         " WHERE ". $whereClause, array(serialize($oldRecurrspec)) );
                 }
-            }
-            else if ($_POST['recurr_affect'] == 'future') {
+        } else if ($_POST['recurr_affect'] == 'future') {
                 // update all existing event records to stop recurring on this date-1
                 $selected_date = date("Ymd", (strtotime($_POST['selected_date'])-24*60*60));
                 foreach ($providers_current as $provider) {
                     // update the provider's original event
-                    sqlStatement("UPDATE libreehr_postcalendar_events SET " .
-                        " pc_enddate = ? ".
+                sqlStatement("UPDATE libreehr_postcalendar_events " .
+                        "SET pc_enddate = ? " .
                         " WHERE ".$whereClause, array($selected_date) );
                 }
             } else {
                 // really delete the event from the database
                 sqlStatement("DELETE FROM libreehr_postcalendar_events WHERE ".$whereClause);
             }
-        }
+      } else {
 
         // =======================================
         //  single provider event
         // =======================================
-        else {
 
             if ($_POST['recurr_affect'] == 'current') {
                 // mod original event recur specs to exclude this date
@@ -804,12 +881,10 @@ if ($_POST['form_action'] == "save") {
                 } else {
                     $oldRecurrspec['exdate'] .= $selected_date;
                 }
-                sqlStatement("UPDATE libreehr_postcalendar_events SET " .
-                    " pc_recurrspec = ? ".
+            sqlStatement("UPDATE libreehr_postcalendar_events " .
+                    "SET pc_recurrspec = ? " .
                     " WHERE pc_eid = ?", array(serialize($oldRecurrspec),$eid) );
-            }
-
-            else if ($_POST['recurr_affect'] == 'future') {
+        } else if ($_POST['recurr_affect'] == 'future') {
                 // mod original event to stop recurring on this date-1
                 $selected_date = date("Ymd", (strtotime($_POST['selected_date'])-24*60*60));
                 sqlStatement("UPDATE libreehr_postcalendar_events SET " .
@@ -838,7 +913,9 @@ if ($_POST['form_action'] == "save") {
  if ($_POST['form_action'] != "") {
   // Close this window and refresh the calendar (or the patient_tracker) display.
   echo "<html>\n<body>\n<script language='JavaScript'>\n";
-  if ($info_msg) echo " alert('" . addslashes($info_msg) . "');\n";
+  if ($info_msg) {
+      echo " alert('" . addslashes($info_msg) . "');\n";
+  }
   echo " if (opener && !opener.closed && opener.refreshme) {\n " .
        "  opener.refreshme();\n " . // This is for standard calendar page refresh
        " } else if(window.opener.pattrk){\n " .
@@ -876,9 +953,18 @@ if ($_POST['form_action'] == "save") {
  $repeattype = '0';
  $repeatfreq = '0';
  $patientid = '';
+ $patientname = '';
+ $case_number = '';
+ $case_body_part = '';
+ $prior_auth = '';
+ $prior_auth_2 = '';
+ $bodypart = '';
+ $bodypart_2 = '';
  $cancelreason = '';
  // fix for new calendar
- if (isset($_SESSION['pid']) && $_SESSION['pid'] > 0) $patientid = $_SESSION['pid'];
+if (isset($_SESSION['pid']) && $_SESSION['pid'] > 0) {
+    $patientid = $_SESSION['pid'];
+}
 
  // used in find_patient.php
  if ($_REQUEST['patientid']) {
@@ -900,6 +986,12 @@ if ($_POST['form_action'] == "save") {
     "LEFT OUTER JOIN users AS u ON u.id = e.pc_informant " .
     "WHERE pc_eid = ?", array($eid) );
   $informant = $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'];
+  $case_number = $row['case_number'];
+  $case_body_part = $row['case_body_part'];
+  $prior_auth = $row['prior_auth'];
+  $prior_auth_2 = $row['prior_auth_2'];
+  $bodypart_2 = $row['bodypart_2'];
+  $bodypart = $row['bodypart'];
   $cancelreason = $row['cancel_reason'];
   // instead of using the event's starting date, keep what has been provided
   // via the GET array, see the top of this file
@@ -933,7 +1025,9 @@ if ($_POST['form_action'] == "save") {
   }
   $pcroom = $row['pc_room'];
   $hometext = $row['pc_hometext'];
-  if (substr($hometext, 0, 6) == ':text:') $hometext = substr($hometext, 6);
+    if (substr($hometext, 0, 6) == ':text:') {
+        $hometext = substr($hometext, 6);
+    }
  } else {
     // a NEW event
     $eventstartdate = $date; // for repeating event stuff - JRM Oct-08
@@ -946,8 +1040,8 @@ if ($_POST['form_action'] == "save") {
         $pref_facility = sqlFetchArray(sqlStatement("SELECT facility_id, facility FROM users WHERE id = $userid"));
         *************************************************************/
         if ($_SESSION['pc_facility']) {
-            $pref_facility = sqlFetchArray(sqlStatement("
-                SELECT f.id as facility_id,
+            $pref_facility = sqlFetchArray(sqlStatement(
+                "SELECT f.id as facility_id,
                 f.name as facility
                 FROM facility f
                 WHERE f.id = ?
@@ -955,13 +1049,15 @@ if ($_POST['form_action'] == "save") {
                 array($_SESSION['pc_facility'])
               ));
         } else {
-          $pref_facility = sqlFetchArray(sqlStatement("
-            SELECT u.facility_id,
+            $pref_facility = sqlFetchArray(sqlStatement(
+            "SELECT u.facility_id,
               f.name as facility
             FROM users u
             LEFT JOIN facility f on (u.facility_id = f.id)
             WHERE u.id = ?
-            ", array($userid) ));
+            ",
+            array($userid)
+            ));
         }
         /************************************************************/
         $e2f = $pref_facility['facility_id'];
@@ -972,16 +1068,28 @@ if ($_POST['form_action'] == "save") {
 
  // If we have a patient ID, get the name and phone numbers to display.
  if ($patientid) {
-  $prow = sqlQuery("SELECT lname, fname, phone_home, phone_biz, DOB " .
-   "FROM patient_data WHERE pid = ?", array($patientid) );
+    $prow = sqlQuery(
+        "SELECT lname, fname, phone_home, phone_biz, DOB
+        FROM patient_data WHERE pid = ?",
+        array($patientid)
+    );
+
   $patientname = $prow['lname'] . ", " . $prow['fname'];
-  if ($prow['phone_home']) $patienttitle .= " H=" . $prow['phone_home'];
-  if ($prow['phone_biz']) $patienttitle  .= " W=" . $prow['phone_biz'];
+
+    if ($prow['phone_home']) {
+        $patienttitle .= " H=" . $prow['phone_home'];
+ }
+    if ($prow['phone_biz']) {
+        $patienttitle  .= " W=" . $prow['phone_biz'];
+ }
  }
 
  // Get the providers list.
- $ures = sqlStatement("SELECT id, username, fname, lname FROM users WHERE " .
-  "authorized != 0 AND active = 1 ORDER BY lname, fname");
+$ures = sqlStatement(
+    "SELECT id, username, fname, lname FROM users
+    WHERE authorized != 0 AND active = 1
+    ORDER BY lname, fname"
+);
 
  // Get event categories.
  $cres=fetchAppointmentCategories( true );
@@ -992,17 +1100,25 @@ if ($_POST['form_action'] == "save") {
  if ($starttimeh >= 12) { // p.m. starts at noon and not 12:01
   $startampm = '2';
       if ( $GLOBALS['time_display_format'] == 1) {
-  if ($starttimeh > 12) $starttimeh -= 12;
+        if ($starttimeh > 12) {
+            $starttimeh -= 12;
+        }
     } else {
-       if ($starttimeh > 24) $starttimeh -= 12;
+        if ($starttimeh > 24) {
+            $starttimeh -= 12;
+        }
     }
  }
   if ($endtimeh >= 12) { // p.m. starts at noon and not 12:01
   $endampm = '2';
       if ( $GLOBALS['time_display_format'] == 1) {
-  if ($endtimeh > 12) $endtimeh -= 12;
+        if ($endtimeh > 12) {
+            $endtimeh -= 12;
+        }
     } else {
-       if ($endtimeh > 24) $endtimeh -= 12;
+        if ($endtimeh > 24) {
+            $endtimeh -= 12;
+    }
     }
  }
 
@@ -1014,9 +1130,6 @@ if ($_POST['form_action'] == "save") {
 <link rel="stylesheet" href='<?php echo $css_header ?>' type='text/css'>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 
-<style>
-td { font-size:0.8em; }
-</style>
 
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 
@@ -1314,6 +1427,12 @@ var weekDays = new Array(
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<style>
+  table {
+    width: 100%;
+  }
+</style>
+
 </head>
 
 <body class="body_top" onunload='imclosing()'>
@@ -1357,7 +1476,9 @@ $classpati='';
     $normal="class='current'";
     }
 ?>
-<tr><th><ul class="tabNav">
+        <tr>
+            <th>
+                <ul class="tabNav">
 <?php
     $eid=$_REQUEST["eid"];
     $startm=$_REQUEST["startampm"];
@@ -1375,12 +1496,14 @@ $classpati='';
          <?php echo xlt('Patient');?></a>
          </li>
          <li <?php echo $provider_class;?>>
-         <a href='add_edit_event.php?prov=true&eid=<?php echo attr($eid);?>&startampm=<?php echo attr($startm);?>&starttimeh=<?php echo attr($starth);?>&userid=<?php echo attr($uid);?>&starttimem=<?php echo attr($starttm);?>&date=<?php echo attr($dt);?>&catid=<?php echo attr($cid);?>'>
+         <a href='add_edit_event.php?prov=true&eid=<?php echo attr($eid);?>&startampm=<?php echo attr($startm);?>&starttimeh=<?php echo attr($starth);?>&endtimeh=<?php echo attr($endh);?>&endtimem=<?php echo attr($endtm);?>&endampm=<?php echo attr($endm);?>&userid=<?php echo attr($uid);?>&starttimem=<?php echo attr($starttm);?>&date=<?php echo attr($dt);?>&catid=<?php echo attr($cid);?>'>
          <?php echo xlt('Provider');?></a>
          </li>
         </ul>
-</th></tr>
-<tr><td colspan='10'>
+            </th>
+        </tr>
+        <tr>
+            <td colspan='10'>
 <table border='0' width='100%' bgcolor='#DDDDDD' >
 
  <tr>
@@ -1407,7 +1530,7 @@ $classpati='';
    <b><?php echo xlt('Date'); ?>:</b>
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_date' id='form_date'
+   <input type='text' size='11' name='form_date' id='form_date'
     value='<?php echo oeFormatShortDate(attr($date));  ?>'/>
 
 
@@ -1428,7 +1551,16 @@ $classpati='';
    </span>
    <select name='form_ampm' title='<?php echo xla("Note: 12:00 noon is PM, not AM"); ?>'>
     <option value='1'><?php echo xlt('AM'); ?></option>
-    <option value='2'<?php if ($startampm == '2') echo " selected" ?>><?php echo xlt('PM'); ?></option>
+    <option value='2'
+        <?php
+        if ($startampm == '2') {
+            echo " selected";
+        }
+        ?>>
+        <?php
+            echo xlt('PM');
+        ?>
+     </option>
    </select>
   </td>
  </tr>
@@ -1458,17 +1590,31 @@ $classpati='';
    </span>
    <select name='form_ampm_end' title='<?php echo xla("Note: 12:00 noon is PM, not AM"); ?>'>
     <option value='1'><?php echo xlt('AM'); ?></option>
-    <option value='2'<?php if ($endampm == '2') echo " selected" ?>><?php echo xlt('PM'); ?></option>
+    <option value='2'
+    <?php
+      if ($endampm == '2') {
+          echo " selected";
+      }
+    ?>>
+     <?php
+       echo xlt('PM');
+     ?>
+    </option>
    </select>
   </td>
-     <?php } else { ?>
-  <td nowrap id='tdallday4'><?php echo xlt('duration'); ?>
+     <?php
+     } else {
+     ?>
+  <td nowrap id='tdallday4'>
+  <?php echo xlt('duration'); ?>
   </td>
   <td nowrap id='tdallday5'>
    <input type='text' size='4' name='form_duration' value='<?php echo attr($thisduration) ?>' title='<?php echo xla('Event duration in minutes'); ?>' />
     <?php echo xlt('minutes'); ?>
   </td>
-     <?php }?>
+     <?php
+     }
+    ?>
 
  </tr>
 
@@ -1531,35 +1677,87 @@ $classpati='';
    <input type='hidden' size='4' name='form_duration' value='' title='' />
      <?php } ?>
     </tr>
-    <tr>
-        <td nowrap>
-        <b><?php echo xlt('Billing Facility'); ?>:</b>
-        </td>
-        <td>
-            <?php
-            billing_facility('billing_facility',$row['pc_billing_location']);
-            ?>
-        </td>
-    </tr>
+
  <?php
  if($_GET['prov']!=true){
  ?>
  <tr id="patient_details">
   <td nowrap>
-   <b><?php echo xlt('Patient'); ?>:</b>
+   <?php echo xlt('Patient'); ?>:
+  </td>
+        <td nowrap>
+   <input type='text' size='10' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' value='<?php echo attr($patientname); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' readonly id="choose_patient" />
+   <input type='hidden' name='form_pid' value='<?php echo attr($patientid) ?>' id="form_pid"/>
+        </td>
+  <td colspan='2' nowrap style='font-size:8pt'>
+   &nbsp;
+<!--   <span class="infobox">
+            <?php
+                                //if ($patienttitle != "") {
+                                //    echo $patienttitle;
+                                //}
+            ?>
+   </span>-->
+        </td>
+  <td nowrap >
+   <?php echo xlt('Case #'); ?>:
+
+
+    <input type="text"
+     id="form_case_number_id"
+     placeholder="select case number"
+     readonly
+     value="<?php
+     if (isset($case_number)) {
+       echo $case_number  ." ". $case_body_part;
+     }
+     ?>">
+   <input type="hidden" name="form_case_number"  value='<?php echo attr($case_number) ?>' id="form_case_number" />
+   <input type="hidden" name="form_case_body_part"  value='<?php echo $case_body_part; ?>' id="form_case_body_part" />
+        </td>
+    </tr>
+ <?php
+      if($_GET['prov']!=true && $form_is_there){
+ ?>
+        <tr>
+  <td nowrap>
+    <?php echo xlt('Authorization #1'); ?>:
   </td>
   <td nowrap>
-   <input type='text' size='10' name='form_patient' style='width:100%;cursor:pointer;cursor:hand' value='<?php echo attr($patientname); ?>' onclick='sel_patient()' title='<?php echo xla('Click to select patient'); ?>' readonly />
-   <input type='hidden' name='form_pid' value='<?php echo attr($patientid) ?>' />
+                            <input type="text"
+                                id="form_auth_id"
+                                placeholder="select authorization number"
+                                readonly
+                                value="<?php
+                                if (isset($prior_auth)) {
+                                    echo $prior_auth ." ". $bodypart;
+                                }
+                                ?>">
+   <input type="hidden" name="form_prior_auth"  value='<?php echo attr($prior_auth) ?>' id="form_prior_auth" />
+   <input type="hidden" name="form_body_part"  value='<?php echo $bodypart; ?>' id="form_body_part" />
   </td>
-  <td colspan='3' nowrap style='font-size:8pt'>
-   &nbsp;
-   <span class="infobox">
-   <?php if ($patienttitle != "") { echo $patienttitle; } ?>
-   </span>
+        </tr>
+   <tr>
+  <td nowrap>
+    <?php echo xlt('Authorization #2'); ?>:
+  </td>
+   <td nowrap>
+
+   <input type="text"
+       id="form_auth_2_id"
+       placeholder="select authorization number"
+       readonly
+       value="<?php
+                                if (isset($prior_auth_2)) {
+                                    echo $prior_auth_2 ." ". $bodypart_2;
+       }
+       ?>">
+   <input type="hidden" name="form_prior_auth_2"  value='<?php echo attr($prior_auth_2) ?>' id="form_prior_auth_2" />
+   <input type="hidden" name="form_body_part_2"  value='<?php echo $bodypart_2; ?>' id="form_body_part_2" />
   </td>
  </tr>
  <?php
+ }
  }
  ?>
  <tr>
@@ -1803,8 +2001,12 @@ if  ($GLOBALS['select_multi_providers']) {
 
  <tr>
   <td nowrap>
-   <span id='title_apptstatus'><b><?php echo xlt('Status'); ?>:</b></span>
-   <span id='title_prefcat' style='display:none'><b><?php echo xlt('Pref Cat'); ?>:</b></span>
+  <span id='title_apptstatus'>
+    <?php echo xlt('Status'); ?>:
+  </span>
+  <span id='title_prefcat' style='display:none'>
+    <?php echo xlt('Pref Cat'); ?>:
+  </span>
   </td>
   <td nowrap>
 
@@ -1825,10 +2027,12 @@ if(($_GET['prov']!=true) ){
    </select>
 
   </td>
-  <td nowrap>&nbsp;
+  <td nowrap>
+    &nbsp;
 
   </td>
-  <td nowrap id='tdrepeat2'><?php echo xlt('until'); ?>
+  <td nowrap id='tdrepeat2'>
+      <?php echo xlt('until'); ?>
   </td>
   <td nowrap>
    <input type='text' size='10' name='form_enddate' id='form_enddate'
@@ -1845,7 +2049,9 @@ if ($repeatexdate != "") {
     foreach ($exdates as $exdate) {
         $tmptitle .= date("d M Y", strtotime($exdate))."\n";
     }
-    echo "<a href='#' title='" . attr($tmptitle) . "' alt='" . attr($tmptitle) . "'><img src='../../interface/pic/warning.gif' title='" . attr($tmptitle) . "' alt='*!*' style='border:none;'/></a>";
+    echo "<a href='#' title='" . attr($tmptitle) . "' alt='" . attr($tmptitle) . "'>
+          <img src='../../interface/pic/warning.gif' title='" . attr($tmptitle) . "' alt='*!*' style='border:none;'/>
+          </a>";
 }
 ?>
   </td>
@@ -1863,13 +2069,15 @@ if ($repeatexdate != "") {
 ?>
   </td>
  </tr>
-<?php } ?>
+<?php
+}
+?>
  <tr>
   <td nowrap>
    <b><?php echo xlt('Comments'); ?>:</b>
   </td>
-  <td colspan='4' nowrap>
-   <input type='text' size='40' name='form_comments' style='width:100%' value='<?php echo attr($hometext); ?>' title='<?php echo xla('Optional information about this event');?>' />
+  <td rowspan='2' colspan='4' nowrap>
+  <textarea rows="6" cols="75" name='form_comments' ><?php echo attr($hometext); ?></textarea>
   </td>
  </tr>
 
@@ -1879,8 +2087,7 @@ if ($repeatexdate != "") {
  // to enter it right here.  We must display or hide this row dynamically
  // in case the patient-select popup is used.
  $patient_dob = trim($prow['DOB']);
- $dobstyle = ($prow && (!$patient_dob || substr($patient_dob, 5) == '00-00')) ?
-  '' : 'none';
+ $dobstyle = ($prow && (!$patient_dob || substr($patient_dob, 5) == '00-00')) ? '' : 'none';
 ?>
  <tr id='dob_row' style='display:<?php echo $dobstyle ?>'>
   <td colspan='4' nowrap>
@@ -1892,7 +2099,9 @@ if ($repeatexdate != "") {
   </td>
  </tr>
 
-</table></td></tr>
+   </table>
+  </td>
+ </tr>
 <tr class='text'><td colspan='10'>
 <p>
 <div id="reasons_modal">
@@ -1904,9 +2113,12 @@ while ($r = sqlFetchArray($query)) {
 }
 echo "<input type='radio' value='Other' name='form_reason_for_cancellation' id='reason_other'>Other";
 ?>
-<br/><br/>
+
 <div id="reason_textarea" style="display: none;">
-    <b style="margin-left: 1em;"><?php echo xlt('Please Add your reason'); ?></b><br/><br/>
+  <b style="margin-left: 1em;">
+      <?php echo xlt('Please Add your reason'); ?>
+  </b>
+<br/><br/>
     <textarea id="other_textarea" rows="3" cols="50" style="margin-left: 1em;"></textarea>
 </div>
 <br/><br/>
@@ -1976,13 +2188,11 @@ $(document).ready(function(){
         if (reason) {
             $('#form_reason_to_cancel').val(reason);
             validate("save");
-        }
-        else {
+            } else {
             var selected_text = $("#form_apptstatus option:selected").text();
             if (selected_text == "x Canceled") {
                 $("#reasons_modal").iziModal('open');
-            }
-            else {
+                } else {
                 validate("save");
             }
         }
@@ -2153,20 +2363,90 @@ function SubmitForm() {
  <?php if (!($GLOBALS['select_multi_providers'])) { // multi providers appt is not supported by check slot avail window, so skip ?>
   if (f.form_action.value != 'delete') {
     // Check slot availability.
-    var mins = parseInt(f.form_hour.value) * 60 + parseInt(f.form_minute.value);
+    /*var mins = parseInt(f.form_hour.value) * 60 + parseInt(f.form_minute.value);
     if (f.form_ampm.value == '2' && mins < 720) mins += 720;
-    find_available('&cktime=' + mins);
+    find_available('&cktime=' + mins);*/
+    top.restoreSession();
+    f.submit();
   } else {
     top.restoreSession();
     f.submit();
   }
- <?php } else { ?>
+   <?php
+   } else {
+   ?>
   top.restoreSession();
   f.submit();
- <?php } ?>
+   <?php
+   }
+   ?>
 
   return true;
 }
+
+$('#form_auth_id').click(function () {
+    var pid = $('#form_pid').val();
+    if (pid) {
+    var appt_date = $('#form_date').val();
+    var mode = 1;
+    $("#select_auth_iframe").iziModal({
+    title: '<?php echo xlt("Authorization Number"); ?>',
+    subtitle: '<?php echo xlt("Choose Your Authorization Number"); ?>',
+    headerColor: '#979099',
+    background: null,
+    theme: '',  // light
+    iframe: true,
+    iframeHeight: 400,
+    iframeURL: "select_prior_auth.php?pid=" + pid + "&appt_date=" + appt_date + '&mode='+ mode,
+    closeButton: true
+    });
+  $('#select_auth_iframe').iziModal('open');
+        } else {
+    alert("choose a patient first");
+}
+});
+$('#form_auth_2_id').click(function () {
+    var pid = $('#form_pid').val();
+    if (pid) {
+    var appt_date = $('#form_date').val();
+    var mode = 2;
+    $("#select_auth_2_iframe").iziModal({
+    title: '<?php echo xlt("Authorization Number"); ?>',
+    subtitle: '<?php echo xlt("Choose Your Authorization Number"); ?>',
+    headerColor: '#979099',
+    background: null,
+    theme: '',  // light
+    iframe: true,
+    iframeHeight: 400,
+    iframeURL: "select_prior_auth.php?pid=" + pid + "&appt_date=" + appt_date + '&mode='+ mode,
+    closeButton: true
+    });
+  $('#select_auth_2_iframe').iziModal('open');
+        } else {
+    alert("choose a patient first");
+}
+});
+$('#form_case_number_id').click(function () {
+    var pid = $('#form_pid').val();
+    if (pid) {
+    var appt_date = $('#form_date').val();
+    //var mode = 1;
+    $("#select_case_number_iframe").iziModal({
+    title: '<?php echo xlt("Case Number"); ?>',
+    subtitle: '<?php echo xlt("Choose Your Case Number"); ?>',
+    headerColor: '#88A0B9',
+    background: null,
+    theme: '',  // light
+    iframe: true,
+    iframeHeight: 400,
+    iframeURL: "select_case_number.php?pid=" + pid + "&appt_date=" + appt_date ,
+    closeButton: true
+    });
+  $('#select_case_number_iframe').iziModal('open');
+        } else {
+    alert("choose a patient first");
+}
+});
 
 $('#reasons_modal').iziModal({
                title: "<?php echo xlt('Reason for Cancellation'); ?>",
@@ -2199,6 +2479,9 @@ $('#other_textarea').keyup(function () {
     $('#reason_other').val(value);
 });
 </script>
+<div id="select_auth_iframe"></div>
+<div id="select_auth_2_iframe"></div>
+<div id="select_case_number_iframe"></div>
 
 
 </html>

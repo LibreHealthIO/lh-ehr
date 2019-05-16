@@ -361,4 +361,141 @@ function getApptStatus($appointments){
     }
     return $astat;
 }
+
+function create_new_auth($encounter, $pid, $event_date, $prior_auth, $prior_auth_2, $bodypart_2, $bodypart, $user ) {
+ $DateFormat = DateFormatRead();
+
+
+  if($prior_auth != '') {
+    #check the EPA and see if the Prior auth number exists
+    $form_name = 'form_enhanced_prior_auth';
+    $epa_exists = sqlquery("SELECT count(*) AS count FROM $form_name " .
+                          "WHERE pid = ? AND prior_auth_number = ? ", array($pid,$prior_auth));
+    if($epa_exists['count'] > 0) { #If it does exist
+        $date = date("Y-m-d") ;
+        $newdate = date("Y-m-d H:i:s");
+        $look_up_date = "%" . $date . "%";
+        #lets go get the existing data.
+        $sql = "SELECT * FROM form_enhanced_prior_auth WHERE pid = ? and prior_auth_number = ? ORDER BY id DESC";
+        $fetch = sqlStatement($sql, array($pid, $prior_auth));
+        $res = sqlFetchArray($fetch);
+        $used = $res['used'] + 1;
+        $descript = $res['ddesc'];
+        #make the new Prior Auth Entry.
+        $epa_sql = "INSERT INTO `form_enhanced_prior_auth` (`date`, `pid`, `user`, `groupname`, `authorized`, `activity`, `prior_auth_number`, `comments`, `ddesc`, `bodypart`, `re_eval`, `ins_plan_num`, `ins_auth_date`, `prescription_num`, `case_number`, `auth_for`, `date_auth_for`, `auth_from`, `auth_to`, `units`, `auth_length`, `dollar`, `auth_contact`, `auth_phone`, `used`, `addused`, `temp_auth`, `primary_auth` )" .
+                   "VALUES ('$newdate', '$pid', '$user', 'AutoCreated', '1', '1', '$prior_auth', 'Autocreated by The System', '$res[ddesc]', '$res[bodypart]', '$res[re_eval]', ".
+                   " '$res[ins_plan_num]', '$res[ins_auth_date]', '$res[prescription_num]', '$res[case_number]', '$res[auth_for]', '$res[date_auth_for]', '$res[auth_from]', ".
+                   " '$res[auth_to]', '$res[units]', '$res[auth_length]', '$res[dollar]', '$res[auth_contact]', '$res[auth_phone]', '$used', '$res[addused]', '0', '1')";
+
+        sqlStatement($epa_sql);
+
+        $sqlchck = "SELECT id FROM form_enhanced_prior_auth WHERE date LIKE ? and pid = ? and prior_auth_number = ? ORDER BY id DESC";
+        $fetchnum = sqlStatement($sqlchck, array($look_up_date, $pid, $prior_auth ));
+        $row = sqlFetchArray($fetchnum);
+        $form_id = $row['id'];
+        $form = "INSERT INTO `forms` (`date`, `encounter`, `form_name`, `form_id`, `pid`, `user`, `groupname`, `authorized`, `deleted`, `formdir`) " .
+                "VALUES (?,?, 'Enhanced Prior Auth',?,?,?, 'AutoCreated', '1', '0', 'enhanced_prior_auth')";
+
+        //Insert Enhanced Prior Auth form info into table to similate filling out form
+        sqlStatement($form,array($newdate, $encounter, $form_id, $pid, $user ));
+    } else {
+        #if no existing EPA
+        #create the EPA with primary selected
+        $date = date("Y-m-d") ;
+        $newdate = date("Y-m-d H:i:s");
+        $look_up_date = "%" . $date . "%";
+        #$seven_days_out = date + 7days;
+        if (substr($GLOBALS['epa_end_date'],0,1) == 'W') {
+           $epa_time = substr($GLOBALS['epa_end_date'],1,1) * 7;
+           $epa_future_time = mktime(0,0,0,date('m') ,date('d')+$epa_time,date('Y'));
+        }
+        elseif (substr($GLOBALS['epa_end_date'],0,1) == 'D') {
+           $epa_time = substr($GLOBALS['epa_end_date'],1,1);
+           $epa_future_time = mktime(0,0,0,date('m') ,date('d')+$epa_time,date('Y'));
+        }
+        $epa_future_time = mktime(0,0,0,date('m') ,date('d')+7,date('Y'));
+        $seven_days_out = date($DateFormat, $epa_future_time);
+        $epa_sql = "INSERT INTO `form_enhanced_prior_auth` (`date`, `pid`, `user`, `groupname`, `authorized`, `activity`, `prior_auth_number`, `ddesc`, `auth_from`, `auth_to`, `bodypart`, `used`, `temp_auth`, `primary_auth` )" .
+                   "VALUES (?,?,?,'AutoCreated','1','1',?,'Temporary Authorization Autocreated by The System',?,?,?,'1','1','1');";
+
+        sqlStatement($epa_sql,array($newdate,$pid,$user,$prior_auth,$event_date,$seven_days_out,$bodypart));
+
+        $sql = "SELECT id FROM form_enhanced_prior_auth WHERE date LIKE ? and pid = ? and prior_auth_number = ?";
+        $fetch = sqlStatement($sql,array($look_up_date,$pid, $prior_auth));
+        $res = sqlFetchArray($fetch);
+        $form_id = $res['id'];
+        $form = "INSERT INTO `forms` (`date`, `encounter`, `form_name`, `form_id`, `pid`, `user`, `groupname`, `authorized`, `deleted`, `formdir`) " .
+                "VALUES (?,?, 'Enhanced Prior Auth',?,?,?, 'AutoCreated', '1', '0', 'enhanced_prior_auth')";
+
+        //Insert Enhanced Prior Auth form info into table to similate filling out form
+        sqlStatement($form,array($newdate, $encounter, $form_id, $pid, $user ));
+
+    } #end primary prior auth does not exist
+  return $form_id;
+  }
+
+  if ($prior_auth_2 != '') {
+      #create the EPA with secondary selected
+      $form_name = 'form_enhanced_prior_auth';
+      $epa_exists = sqlquery("SELECT count(*) AS count FROM $form_name " .
+                             "WHERE pid = ? AND prior_auth_number = ? ", array($pid,$prior_auth_2));
+
+      if($epa_exists['count'] > 0) { #If it does exist
+        $date = date("Y-m-d") ;
+        $newdate = date("Y-m-d H:i:s");
+        $look_up_date = "%" . $date . "%";
+        #lets go get the existing data.
+        $sql = "SELECT * FROM form_enhanced_prior_auth WHERE pid = ? and prior_auth_number = ? ORDER BY id DESC";
+        $fetch = sqlStatement($sql, array($pid,$prior_auth_2));
+        $res = sqlFetchArray($fetch);
+        $used = $res['used'] + 1;
+        #make the new Prior Auth Entry.
+        $epa_sql = "INSERT INTO `form_enhanced_prior_auth` (`date`, `pid`, `user`, `groupname`, `authorized`, `activity`, `prior_auth_number`, `comments`, `ddesc`, `bodypart`," .
+                   "`re_eval`, `ins_plan_num`, `ins_auth_date`,`prescription_num`,`case_number`,`auth_for`,`date_auth_for`, `auth_from`, `auth_to`, `units`, `auth_length`, `dollar`, ".
+                   "`auth_contact`, `auth_phone`, `used`, `addused`, `temp_auth`, `secondary_auth` )" .
+                   "VALUES ('$newdate', '$pid', '$user', 'AutoCreated', '1', '1', '$prior_auth_2', 'Autocreated by The System', '$res[ddesc]', '$res[bodypart]', '$res[re_eval]', ".
+                   "'$res[ins_plan_num]', '$res[ins_auth_date]', '$res[prescription_num]', '$res[case_number]', '$res[auth_for]', '$res[date_auth_for]', '$res[auth_from]', ".
+                   "'$res[auth_to]', '$res[units]', '$res[auth_length]', '$res[dollar]', '$res[auth_contact]', '$res[auth_phone]', '$used', '$res[addused]', '0', '1');";
+
+        sqlStatement($epa_sql);
+
+        $sqlchck = "SELECT id FROM form_enhanced_prior_auth WHERE date LIKE ? and pid = ? and prior_auth_number = ?";
+        $fetchnum = sqlStatement($sqlchck, array($look_up_date,$pid,$prior_auth_2));
+        $row = sqlFetchArray($fetchnum);
+        $form_id = $row['id'];
+        $form = "INSERT INTO `forms` (`date`, `encounter`, `form_name`, `form_id`, `pid`, `user`, `groupname`, `authorized`, `deleted`, `formdir`) " .
+                "VALUES (?, ?, 'Enhanced Prior Auth', ?, ?, ?, 'AutoCreated', '1', '0', 'enhanced_prior_auth')";
+
+        //Insert Enhanced Prior Auth form info into table to similate filling out form
+        sqlStatement($form, array($newdate,$encounter,$form_id,$pid,$user));
+      } else {
+        #if no existing EPA
+        #create the EPA with secondary selected
+        $date = date("Y-m-d") ;
+        $newdate = date("Y-m-d H:i:s");
+        $look_up_date = "%" . $date . "%";
+        #$seven_days_out = date + 7days;
+        $epa_future_time = mktime(0,0,0,date('m') ,date('d')+7,date('Y'));
+        $seven_days_out = date($DateFormat, $epa_future_time);
+        $epa_sql = "INSERT INTO `form_enhanced_prior_auth` (`date`, `pid`, `user`, `groupname`, `authorized`, `activity`, `prior_auth_number`, `ddesc`, `auth_from`, `auth_to`, `bodypart`, `used`,`temp_auth`, `secondary_auth` )" .
+                   "VALUES (?,?,?, 'AutoCreated', '1', '1',?, 'Temporary Authorization Autocreated by The System',?,?,?, '1', '1', '1');";
+
+        sqlStatement($epa_sql, array($newdate,$pid,$user,$prior_auth_2,$event_date,$seven_days_out,$bodypart_2));
+
+        $sql = "SELECT id FROM form_enhanced_prior_auth WHERE date LIKE ? and pid = ? and prior_auth_number = ?";
+        $fetch = sqlStatement($sql, array($look_up_date,$pid,$prior_auth_2));
+        $res = sqlFetchArray($fetch);
+        $form_id = $res['id'];
+        $form = "INSERT INTO `forms` (`date`, `encounter`, `form_name`, `form_id`, `pid`, `user`, `groupname`, `authorized`, `deleted`, `formdir`) " .
+                "VALUES (?, ?, 'Enhanced Prior Auth', ?, ?, ?, 'AutoCreated', '1', '0', 'enhanced_prior_auth')";
+
+        //Insert Enhanced Prior Auth form info into table to similate filling out form
+        sqlStatement($form, array($newdate,$encounter,$form_id,$pid,$user));
+
+      } #end secondary prior auth does not exist
+      return $form_id;
+
+  }
+
+}
 ?>

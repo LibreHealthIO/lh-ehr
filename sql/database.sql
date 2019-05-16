@@ -4143,6 +4143,12 @@ INSERT INTO list_options (list_id,option_id,title,seq,is_default,option_value,ma
 ('lists','insurance_payment_method','Insurance Payment Method',0,0,0,'','','',0,0,1,''),
 ('insurance_payment_method','check_payment','Check Payment',10,0,0,'','','',0,0,1,''),
 ('insurance_payment_method','credit_card','Credit Card',20,0,0,'','','',0,0,1,'');
+
+-- --------------------------------------------------------
+--
+-- Insurance Account type
+--
+
 INSERT INTO list_options (list_id,option_id,title,seq,is_default,option_value,mapping,notes,codes,toggle_setting_1,toggle_setting_2,activity,subtype) VALUES
 ('lists','insurance_account_type','Insurance Account Types',0,0,0,'','','',0,0,1,''),
 ('insurance_account_type','CL','COLLECTIONS',10,0,0,'','','',0,0,1,''),
@@ -4600,10 +4606,14 @@ CREATE TABLE `libreehr_postcalendar_events` (
   `cancel_reason` text,
   `case_number` VARCHAR(50) DEFAULT NULL,
   `case_body_part` VARCHAR(50) DEFAULT NULL,
+  `prior_auth` VARCHAR(50) DEFAULT NULL,
+  `prior_auth_2` VARCHAR(50) DEFAULT NULL,
+  `bodypart` VARCHAR(120) NOT NULL,
+  `bodypart_2` VARCHAR(120) NOT NULL,
   PRIMARY KEY  (`pc_eid`),
   KEY `basic_event` (`pc_catid`,`pc_aid`,`pc_eventDate`,`pc_endDate`,`pc_eventstatus`,`pc_sharing`,`pc_topic`),
   KEY `pc_eventDate` (`pc_eventDate`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB;
 
 
 --
@@ -7689,4 +7699,20 @@ DROP TABLE IF EXISTS cases_to_documents;
  KEY `FK_categories_to_documents_documents` (`document_id`),
  CONSTRAINT `cases_to_documents_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+#IfNotTable transactions_log
+
+CREATE TABLE IF NOT EXISTS `transactions_log` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `date` datetime NOT NULL,
+ `description` varchar(255) NOT NULL COMMENT 'Ex: Charges added to superbill',
+ `encounter` int(11) NOT NULL,
+ `change_made` varchar(255) NOT NULL COMMENT 'the change from one payment amount to another. ex: $10 to $20',
+ `billing_id` int(11) NOT NULL,
+ `pid` int(11) NOT NULL,
+ `user_id` int(11) NOT NULL COMMENT 'authorized user who effects the change',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+#EndIf
 

@@ -23,6 +23,7 @@
  */
 require_once("../../globals.php");
 require_once("$srcdir/api.inc");
+require_once("$srcdir/formsoptions.inc.php");
 require_once("$srcdir/forms.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/formdata.inc.php");
@@ -33,14 +34,20 @@ if (! $encounter) { // comes from globals.php
 
 $id = formData('id','G') + 0;
 
+$tempauth='1';
+if($_POST["temp_auth"] =='1') {
+    if(strtoupper(substr($_POST["prior_auth_number"],0,4)) != 'TEMP') {
+     $tempauth='0';
+    }
+}
+
+$table = 'form_enhanced_prior_auth';
+
 
 $pid = $_POST["pid"];
-if (strtotime($_POST["auth_to"]) <= strtotime(date("Y-m-d"))) {
-    $_POST["archived"] = '1';
-    error_log("auth todate: ".$_POST["auth_to"], 0);
-    error_log("date: ".date("Y-m-d"), 0);
-}
-$archived = $_POST["archived"];
+$casenum = $_POST["prior_auth_number"];
+$numberauth = FindCaseUsed($table, $pid , $casenum);
+$number_auth = $numberauth['count'];
 
   if (empty($id)) {
 
@@ -52,8 +59,14 @@ $archived = $_POST["archived"];
       not_req           = '" . formData("not_req") . "',
       comments          = '" . formData("comments") . "',
       ddesc             = '" . formData("desc") . "',
+      bodypart          = '" . formData("bodypart") . "',
+      re_eval           = '" . formData("re_eval_num") . "',
+      ins_plan_num      = '" . formData("insplan") . "',
+      ins_auth_date     = '" . prepareDateBeforeSave(formData("ins_auth_date")) . "',
+      prescription_num  = '" . formData("script_num") . "',
       case_number       = '" . formData("case_num") . "',
       auth_for          = '" . formData("auth_for") . "',
+      date_auth_for     = '" . prepareDateBeforeSave(formData("date_auth_for")) . "',
       auth_from         = '" . prepareDateBeforeSave(formData("auth_from")) . "',
       auth_to           = '" . prepareDateBeforeSave(formData("auth_to")) . "',
       units             = '" . formData("units") . "',
@@ -68,7 +81,8 @@ $archived = $_POST["archived"];
       code5             = '" . formData("code5") . "',
       code6             = '" . formData("code6") . "',
       code7             = '" . formData("code7") . "',
-      used              = '" . formData("used") . "',
+      used              = '" . $number_auth . "',
+      addused           = '" . formData("addused") . "',
       archived          = '" . formData("archived") . "',
       override          = '" . formData("override") . "'";
 
@@ -84,8 +98,14 @@ else {
       not_req           = '" . formData("not_req") . "',
       comments          = '" . formData("comments") . "',
       ddesc             = '" . formData("desc") . "',
+      bodypart          = '" . formData("bodypart") . "',
+      re_eval           = '" . formData("re_eval_num") . "',
+      ins_plan_num      = '" . formData("insplan") . "',
+      ins_auth_date     = '" . prepareDateBeforeSave(formData("ins_auth_date")) . "',
+      prescription_num  = '" . formData("script_num") . "',
       case_number       = '" . formData("case_num") . "',
       auth_for          = '" . formData("auth_for") . "',
+      date_auth_for     = '" . prepareDateBeforeSave(formData("date_auth_for")) . "',
       auth_from         = '" . prepareDateBeforeSave(formData("auth_from")) . "',
       auth_to           = '" . prepareDateBeforeSave(formData("auth_to")) . "',
       units             = '" . formData("units") . "',
@@ -100,14 +120,18 @@ else {
       code5             = '" . formData("code5") . "',
       code6             = '" . formData("code6") . "',
       code7             = '" . formData("code7") . "',
-      used              = '" . formData("used") . "',
+      used              = '" . $number_auth . "',
+      addused           = '" . formData("addused") . "',
+      temp_auth         = '" . $tempauth . "',
       archived          = '" . formData("archived") . "',
       override          = '" . formData("override") . "'";
 
   sqlStatement("UPDATE form_enhanced_prior_auth SET $sets WHERE id = $id");
-  if ($archived){ // check archived and if it is then archive all instances of that auth.
-    sqlStatement("UPDATE form_enhanced_prior_auth set archived = '1' WHERE prior_auth_number = $auth_number_update");
-  }
+
+  // The two lines below log the changes made to the form in the log_form_enhanced_prior_auth table.
+  $sets = $sets . ",form_enhanced_prior_auth_id = $id, encounter_id = $encounter";
+  sqlInsert("INSERT INTO log_form_enhanced_prior_auth SET $sets");
+
 }
 
 formHeader("Redirecting....");

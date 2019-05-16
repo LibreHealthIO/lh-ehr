@@ -39,11 +39,11 @@ function keywordFilter($arr) {
 </head>
 <body>
 
-  <div class="container-fluid" style="margin-left: 20px; margin-right: 20px;">
-    <div class="row">
+  <div class="container-fluid">
+    <div class="row title">
       <h2><button type="button" class="btn btn-default btn-sm" onclick="window.location.href='index.php'">Back to Calendar</button></h2>
     </div>
-    <div class="row">
+    <div class="row title">
       <h3>Search</h3>
     </div>
 

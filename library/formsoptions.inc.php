@@ -33,6 +33,53 @@ function checkFormIsActive ($form_name, $encounter)
 
 return $formid;
 }
+#copy this and use case num from the calendar in place of encounter.
+#used in EPA save.php
+function FindCaseUsed ($form_name, $pid, $casenum )
+{
+   # Count the prior auths and determine the used number.
+   # Pass the PID, Auth Number, and form name.
+   # Make sure we have the correct auth.
+
+   $query_get_casenum = sqlquery("SELECT f.prior_auth_number, f.auth_to FROM $form_name AS f " .
+                          "WHERE pid = ? AND f.prior_auth_number = ? AND archived = '0' ", array($pid, $casenum));
+    $query_casenum_count = sqlquery("SELECT count(*) AS count FROM $form_name " .
+                          "WHERE pid = ? AND prior_auth_number = ? ", array($pid,$query_get_casenum['prior_auth_number']));
+return $query_casenum_count;
+}
+
+function FindAuthUsed ($form_name, $pid, $encounter )
+{
+   # Count the prior auths and determine the used number.
+   # Pass the PID, Auth Number, and form name.
+   # Make sure we have the correct auth.
+
+   $query_get_authnum = sqlquery("SELECT f.prior_auth_number, f.auth_to FROM $form_name AS f " .
+                          "WHERE pid = ? AND f.case_number >= ? AND archived = '0' ORDER BY f.id DESC", array($pid, date("Y-m-d")));
+
+    $query_auth_count = sqlquery("SELECT count(*) AS count FROM $form_name " .
+                          "WHERE pid = ? AND prior_auth_number = ? ", array($pid,$query_get_authnum['prior_auth_number']));
+
+return $query_auth_count;
+}
+
+function table_exists($table)
+{
+    
+    $sql = "SHOW TABLES LIKE '{$table}'";
+    $query = sqlQ($sql);
+    $result = sqlNumRows($query);
+    if( $result == '1' )
+    {
+            return true;
+    }
+    else
+    {
+            return false;
+    }
+    $result->free();
+}
+
 function is_Form_Enabled($directory_name)
 {
    $sql = "SELECT state, sql_run, directory " .
@@ -48,6 +95,15 @@ function is_Form_Enabled($directory_name)
             return false;
     }
     $result->free();
+}
+
+/* Remove all spaces and commas from the string passed as parameter.
+ * @param: String                           $file_name
+ * @return: String $file_name
+*/
+function removeSpaceComma($file_name) {
+    $unwanted = array(" ", ",");
+    return str_replace($unwanted, "_", $file_name);
 }
 
 ?>

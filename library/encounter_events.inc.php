@@ -138,7 +138,7 @@ function calendar_arrived($form_pid) {
 //===============================================================================
 // Checks for the patient's encounter ID for today, creating it if there is none.
 //
-function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id = '', $billing_fac = '', $provider = '', $cat = '', $return_existing = true){
+function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id = '', $billing_fac = '', $provider = '', $cat = '', $return_existing = true, $casenumber, $casebodypart){
   global $today;
     $encounter = todaysEncounterIf($patient_id);
     if($encounter){
@@ -157,6 +157,8 @@ function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id
     $billing_facility = $billing_fac ? (int)$billing_fac : $tmprow['facility_id'];
     $visit_provider = $provider ? (int)$provider : '(NULL)';
     $visit_cat = $cat ? $cat : '(NULL)';
+    $case_number = $casenumber ? $casenumber : '0' ;
+    $case_bodypart = $casebodypart ? $casebodypart : ' ' ;
   $conn = $GLOBALS['adodb']['db'];
   $encounter = $conn->GenID("sequences");
   addForm($encounter, "Patient Encounter",
@@ -169,8 +171,10 @@ function todaysEncounterCheck($patient_id, $enc_date = '', $reason = '', $fac_id
             "provider_id = ?, " .
       "pid = ?, " .
       "encounter = ?," .
+      "case_number = ?," .
+      "case_body_part = ?," .
             "pc_catid = ?",
-            array($dos,$visit_reason,$facility,$facility_id,$billing_facility,$visit_provider,$patient_id,$encounter,$visit_cat)
+            array($dos,$visit_reason,$facility,$facility_id,$billing_facility,$visit_provider,$patient_id,$encounter,$case_number,$case_bodypart,$visit_cat)
     ),
     "patient_encounter", $patient_id, "1", "NOW()", $username
   );
@@ -320,26 +324,28 @@ function InsertEvent($args,$from = 'general') {
   if ($args['form_repeat'] || $args['days_every_week']) {
     if($args['recurrspec']['event_repeat_freq_type'] == "6"){
         $pc_recurrtype = 3;
-    }
-    else {
+    }else {
       $pc_recurrtype = $args['recurrspec']['event_repeat_on_freq'] ? '2' : '1';
     }
   }
   $form_pid = empty($args['form_pid']) ? '' : $args['form_pid'];
   $form_room = empty($args['form_room']) ? '' : $args['form_room'];
+  $case_number = empty($args['case_number']) ? '' : $args['case_number'];
+  $bodypart = empty($args['bodypart']) ? '' : $args['bodypart'];
+  $bodypart_2 = empty($args['bodypart_2']) ? '' : $args['bodypart_2'];
 
     if($from == 'general'){
     $pc_eid = sqlInsert("INSERT INTO libreehr_postcalendar_events ( " .
             "pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, " .
             "pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
             "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
-            "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,pc_room " .
-            ") VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,?,?)",
+            "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,pc_room,prior_auth,case_number,case_body_part, bodypart,prior_auth_2,bodypart_2 " .
+            ") VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,?,?,?,?,?,?,?,?)",
             array($args['form_category'],(isset($args['new_multiple_value']) ? $args['new_multiple_value'] : ''),$args['form_provider'],$form_pid,
             $args['form_title'],$args['form_comments'],$_SESSION['authUserID'],$args['event_date'],
             fixDate($args['form_enddate']),$args['duration'],$pc_recurrtype,serialize($args['recurrspec']),
             $args['starttime'],$args['endtime'],$args['form_allday'],$args['form_apptstatus'],$args['form_prefcat'],
-            $args['locationspec'],(int)$args['facility'],(int)$args['billing_facility'],$form_room)
+            $args['locationspec'],(int)$args['facility'],(int)$args['billing_facility'],$form_room, $args['prior_auth'], $case_number, $args['form_case_body_part'], $bodypart, $args['prior_auth_2'], $bodypart_2)
         );
 
             //Manage tracker status.

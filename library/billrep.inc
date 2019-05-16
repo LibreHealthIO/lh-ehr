@@ -103,6 +103,7 @@
             "LEFT OUTER JOIN patient_data on patient_data.pid = form_encounter.pid " .
             "LEFT OUTER JOIN claims on claims.patient_id = form_encounter.pid and claims.encounter_id = form_encounter.encounter " .
             "LEFT OUTER JOIN insurance_data on insurance_data.pid = form_encounter.pid and insurance_data.type = 'primary' ".
+            "LEFT OUTER JOIN insurance_companies on insurance_companies.id = insurance_data.provider ".
             "WHERE 1=1 $query_part  " . " $auth " ." $billstring " .
             "ORDER BY form_encounter.encounter, form_encounter.pid, billing.code_type, billing.code ASC";
             //echo $sql;
@@ -135,6 +136,7 @@
             "LEFT OUTER JOIN patient_data on patient_data.pid = form_encounter.pid " .
             "LEFT OUTER JOIN claims on claims.patient_id = form_encounter.pid and claims.encounter_id = form_encounter.encounter " .
             "LEFT OUTER JOIN insurance_data on insurance_data.pid = form_encounter.pid and insurance_data.type = 'primary' ".
+            "LEFT OUTER JOIN insurance_companies on insurance_companies.id = insurance_data.provider ".
             "WHERE 1=1 $query_part  " . " $auth " ." $billstring " .
             "ORDER BY form_encounter.encounter, form_encounter.pid, billing.code_type, billing.code ASC";
             //echo $sql;
@@ -163,12 +165,13 @@
         // See above comment in getBillsBetween().
         //
         $sql = "select distinct $cols " .
-            "from form_encounter, billing, patient_data, claims, insurance_data where " .
+            "from form_encounter, billing, patient_data, claims, insurance_data, insurance_companies where " .
             "billing.encounter = form_encounter.encounter and " .
             "billing.pid = form_encounter.pid and " .
             "patient_data.pid = form_encounter.pid and " .
             "claims.patient_id = form_encounter.pid and claims.encounter_id = form_encounter.encounter and ".
-            "insurance_data.pid = form_encounter.pid and insurance_data.type = 'primary' ".
+            "insurance_data.pid = form_encounter.pid and insurance_data.type = 'primary' and ".
+            "insurance_data.provider = insurance_companies.id ".
             $auth  .
             $billstring . $query_part . " and " .
             "billing.code_type like ? and " .

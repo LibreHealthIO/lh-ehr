@@ -104,7 +104,7 @@ function generateDateQualifierSelect($name,$options,$obj)
           <div id="box-10b">
             <label>
               <span class="text"><?php echo xlt('BOX 10 B. Auto Accident '); ?>: </span>
-              <input type=checkbox name="auto_accident" value="1" <?php if ($obj['auto_accident'] == "1") echo "checked";?>>
+              <input type=checkbox name="auto_accident" id="auto_accident" value="1" <?php if ($obj['auto_accident'] == "1") echo "checked";?>>
             </label>
             <span class="text"><?php echo xlt('State'); ?>: </span>
             <div style="width: 150px; display: inline-block">
@@ -312,9 +312,29 @@ function generateDateQualifierSelect($name,$options,$obj)
 
     <script language="javascript">
     // jQuery stuff to make the page a little easier to use
+    // Check for errors when the form is submitted.
 
     $(document).ready(function(){
-        $("#save").click(function() { top.restoreSession(); document.my_form.submit(); });
+      $('#save').click(function() {
+           if($('#auto_accident').prop('checked') == true) {
+             var selected = $('#accident_state option:selected'). val();
+             if (!selected) {
+                 //dont submit the form auto accident selected and no state provided
+                 //console.error("first");
+                 alert(selected + "Please Enter an Accident State.");
+             } else {
+                 //submit the form State supplied.
+                 //console.error("second");
+                 top.restoreSession();
+                 document.my_form.submit();
+             }
+
+           } else {
+                 //submit the form}
+                 top.restoreSession();
+                 document.my_form.submit();
+           }
+      });
         $("#dontsave").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/encounter_top.php";?>'; });
     });
     </script>

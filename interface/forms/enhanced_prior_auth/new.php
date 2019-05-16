@@ -51,12 +51,11 @@ if (empty($formid)) {
 
 $obj = $formid ? formFetch("form_enhanced_prior_auth", $formid) : array();
 
-if (empty($obj{"archived"})) {
     $archived = 0 ;
-} else {
-    $archived = $obj{"archived"};
-}
+
+$totused = $obj{"used"} + $obj{"addused"} ;
 $used = $obj{"used"};
+$temp_auth = $obj{"temp_auth"};
 
 ?>
 <html>
@@ -109,6 +108,7 @@ function showHint(str) {
      <div id="form-div">
       <div class='container'>
         <style>
+        #scrollspy-me{position: relative;}
           * {
             font-weight:normal;
             color: black;
@@ -118,20 +118,66 @@ function showHint(str) {
           <h2><?php echo xlt('Enhanced Prior Authorization Form'); ?></h2>
           <br/>
 
-    <!--      <div id="noauthreq">
-             <?php $not_req = $obj{"not_req"}; ?>
-              <span class="text"><?php echo xlt('No Authorization Number Required'); ?>: </span>
-              <input type="radio" name="not_req" value="Yes" id="noAuthReq" title="Select when No Authorization Number Required"
-              <?php if($not_req == "Yes") {?> checked ><?php } if($not_req == "Yes") { ?><br><input type="radio" name="not_req" id="clear_req" value=""
-                title="Click here to clear the No Auth need flag" onclick = 'clearThis("claims")'><?php echo xlt('Clear'); }?>
-
-            <br></br>
+          <div id="numofinsplan">
+           <?php $insplan = $obj{"ins_plan_num"}; ?>
+               <span class="text"><?php echo xlt('Plan Allowed Visits'); ?>: </span>
+                      <input class="form-control" style="display: inline-block; width: 65px" type=number size="5" name="insplan" id="claims" value="<?php echo $insplan;?>" title="Set the number of times no auth can be used" >
+            <!--<br></br>-->
+&nbsp;&nbsp;&nbsp;&nbsp;
+           <span class="text"><?php echo xlt('Plan Allowed Visits Date'); ?>:</span>
+           <td>
+           <?php $ins_auth_date = $obj{"ins_auth_date"}; ?>
+              <input
+              class="form-control"
+              style="display: inline-block; width: 10rem"
+              type="text"
+              name="ins_auth_date"
+              id="ins_auth_date"
+              size='10'
+              value='<?php echo oeFormatShortDate(attr($ins_auth_date)) ?>'
+            />
+           </td>
+          <br><br>
           </div>
-    -->
           <div id="numofauth">
            <?php $auth_for = $obj{"auth_for"}; ?>
-               <span class="text"><?php echo xlt('Number of Authorizations'); ?>: </span>
-               <input class="form-control" style="display: inline-block; width: 65px" type=entry size="5" name="auth_for" id="claims" value="<?php echo $auth_for;?>" title="Set the number of times no auth can be used">
+               <span class="text"><?php echo xlt('Number of Authorized Visits'); ?>: </span>
+                   <input class="form-control" style="display: inline-block; width: 65px" type=number size="5" name="auth_for" id="claims" value="<?php echo $auth_for;?>" title="Set the number of times auth can be used" >
+            &nbsp;&nbsp;&nbsp;&nbsp;
+           <span class="text"><?php echo xlt('Authorized Visits Date'); ?>:</span>
+           <td>
+           <?php $date_auth_for = $obj{"date_auth_for"}; ?>
+              <input
+              class="form-control"
+              style="display: inline-block; width: 10rem"
+              type="text"
+              name="date_auth_for"
+              id="date_auth_for"
+              size='10'
+              value='<?php echo oeFormatShortDate(attr($date_auth_for)) ?>'
+            />
+           </td>
+            <br></br>
+          </div>
+
+          <div id="numofscript">
+           <?php $script_num = $obj{"prescription_num"}; ?>
+               <span class="text"><?php echo xlt('Number of Prescription Visits'); ?>: </span>
+                   <input class="form-control" style="display: inline-block; width: 65px" type=number size="5" name="script_num" id="claims" value="<?php echo $script_num;?>" title="Set the number of times prescription auth can be used" >
+            <br></br>
+          </div>
+
+          <div id="authdollar">
+           <?php $dollar = $obj{"dollar"}; ?>
+               <span class="text"><?php echo xlt('Maximun Dollar Amount for Authorization'); ?>: </span>
+                   <input class="form-control" style="display: inline-block; width: 65px" type=entry size="5" name="dollar" id="claims" value="<?php echo $dollar;?>" title="Set the number of times no auth can be used" >
+            <br></br>
+          </div>
+
+         <div id="reeval">
+           <?php $re_eval_num = $obj{"re_eval"}; ?>
+               <span class="text"><?php echo xlt('Re-Evaluation after this number of visits'); ?>: </span>
+                  <input class="form-control" style="display: inline-block; width: 85px" type=number size="15" name="re_eval_num" value="<?php echo $re_eval_num;?>" title="Re-Evaluation after this number of visits" >
             <br></br>
           </div>
 
@@ -144,7 +190,14 @@ function showHint(str) {
 
           <div id="priauthnum">
                 <span class="text"><?php echo xlt('Prior Authorization Number');?>: </span>
-            <input class="form-control" style="display: inline-block; width: 75px" type=entry size=15 name="prior_auth_number" value="<?php echo attr($obj{"prior_auth_number"});?>" >
+                   <input class="form-control" style="display: inline-block; width: 75px" type=entry size=15 id="prior_auth_number" name="prior_auth_number" value="<?php echo attr($obj{"prior_auth_number"});?>" >
+
+            <br><br>
+          </div>
+         <div id="bodypart">
+         <?php $bodypart = $obj{"bodypart"}; ?>
+         <span class="text"><?php echo xlt('Body Part'); ?>: </span>
+         <input class="form-control" style="display: inline-block; width: 275px" type=entry size="55" name="bodypart" value="<?php echo $bodypart;?>">
 
             <br><br>
           </div>
@@ -182,10 +235,30 @@ function showHint(str) {
     </td>
     <br><br>
           </div>
+          <div id="authtotused">
+          <?php //if ($archived == '1') { $used = $obj{"used"}; } ?>
+          <span class="text"><?php echo xlt('Plan Used'); ?>: </span>
+          <input class="form-control" style="display: inline-block; width: 65px" type=entry size="5" name="totused" value="<?php echo $totused;?>" title="Read Only" readonly>
+
+           <br><br>
+          </div>
           <div id="authused">
           <?php if ($archived == '1') { $used = $obj{"used"}; } ?>
-          <span class="text"><?php echo xlt('Number Used'); ?>: </span>
-          <input class="form-control" style="display: inline-block; width: 65px" type=entry size="5" name="used" value="<?php echo $used;?>">
+ <!--         <span class="text"><?php //echo xlt('Number Used'); ?>: </span>-->
+          <input class="hidden" style="display: inline-block; width: 65px" type=entry size="5" name="used" value="<?php echo $used;?>" title="Read Only" readonly>
+          <?php if ($archived == '1') { $temp_auth = $obj{"temp_auth"}; } ?>
+          <input class="hidden" style="display: inline-block; width: 65px" type=entry size="5" name="temp_auth" value="<?php echo $temp_auth;?>" title="Read Only" readonly>
+
+<!--           <br><br>-->
+          </div>
+          <div id="authadditionalused">
+          <?php if ($archived == '1') {
+                   $addused = $obj{"addused"};
+                } else {
+                   $addused = $obj{"addused"};
+                }                ?>
+          <span class="text"><?php echo xlt('Non-Oxford treatement visits'); ?>: </span>
+          <input class="form-control" style="display: inline-block; width: 65px" type=number size="5" name="addused" value="<?php echo $addused;?>">
 
            <br><br>
           </div>
@@ -277,16 +350,33 @@ function showHint(str) {
     </div>
 
     <script language="javascript">
-    // jQuery stuff to make the page a little easier to use
 
     $(document).ready(function(){
-        $("#save").click(function() { top.restoreSession(); document.my_form.submit(); });
+       $('#save').click(function() {
+             if ($('#prior_auth_number').val().length == '0')  {
+                 //dont submit the form no Authorization Number provided
+                 //console.error($('#prior_auth_number').val().length);
+                 alert($('#prior_auth_number').val() + "Please Enter a Prior Authorization Number.");
+           } else {
+                 //submit the form}
+                 top.restoreSession();
+                 document.my_form.submit();
+           }
+       });
         $("#dontsave").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/encounter_top.php";?>'; });
     });
     </script>
   </body>
 <script>
     $(function() {
+        $("#date_auth_for").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
+        $("#ins_auth_date").datetimepicker({
+            timepicker: false,
+            format: "<?= $DateFormat; ?>"
+        });
         $("#auth_from").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"

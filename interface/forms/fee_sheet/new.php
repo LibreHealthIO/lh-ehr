@@ -42,6 +42,7 @@ $sanitize_all_escapes=true;
 class spinnerData {
     public $value = "";
     public $text = "";
+    public $modifier = "";
 }
 
 class spinnerDataList {
@@ -980,6 +981,22 @@ $SPINNER_DATA_LIST = array();
 $SPINNER_DATA_LIST_POINTER = "";
 $CATEGORY_COUNT = 0;
 
+
+function getModifierFromCode($value) {
+
+  $explodedArray = explode("|", $value);
+  $code = $explodedArray[1];
+  $sql  = "SELECT modifier FROM `codes` WHERE code=?";
+  $result = sqlQuery($sql, $code);
+  return $result['modifier'];
+
+}
+
+function changeValueAppendingModifierValue($value, $modifier) {
+  $array = explode("|", $value);
+  return $array[0]."|".$array[1].":".$modifier."|";
+}
+
 while ($row = sqlFetchArray($res)) {
   $fs_category = $row['fs_category'];
   $fs_option   = $row['fs_option'];
@@ -991,6 +1008,12 @@ while ($row = sqlFetchArray($res)) {
 // this needs to be options to display correctly but it needs to be codes
 //to add to the table correctly
   $spinnerObject->value = $fs_codes;
+  $modifier = getModifierFromCode($fs_codes);
+  if ($modifier != null) {
+    $spinnerObject->value  = changeValueAppendingModifierValue($spinnerObject->value, $modifier);
+  }
+
+
   $spinnerObject->text = text(substr($fs_option, 1));
 
   $categoryName = text(substr($fs_category, 1));
@@ -1265,7 +1288,7 @@ echo "   </select>\n";
   <b><?php echo xlt('Provider');?></b></td>
 
   <td class='billcell' align='center'<?php echo $usbillstyle; ?>><b><?php echo xlt('Excl');?></b></td>
-<!--  <td class='billcell' align='center'<?php echo $usbillstyle; ?>><b><?php echo xlt('Auth');?></b></td>-->
+<!--  <td class='billcell' align='center'<?php //echo $usbillstyle; ?>><b><?php //echo xlt('Auth');?></b></td>-->
   <?php if($GLOBALS['bill_to_patient'] ==1) { ?>
     <td class='billcell' align='center'>
   <?php } else { ?>
@@ -1465,6 +1488,7 @@ $encounter_supid  = 0 + $tmp['supervisor_id'];
 $encounter_order  = 0 + $tmp['ordering_physician'];
 $encounter_referr  = 0 + $tmp['referring_physician'];
 $encounter_contract  = 0 + $tmp['contract_physician'];
+$encounter_coding_complete = $tmp['coding_complete'];
 ?>
 </table>
 </p>
