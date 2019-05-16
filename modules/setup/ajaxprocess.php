@@ -29,9 +29,10 @@
     // Don't use session_start here. Otherwise this file will be only executed after the process.php execution is done.
 
    // $file = str_replace(".", "", $_GET['file']);
-    $file = "tmp/ajaxprocess.txt";
-
-
+    $file = "ajaxprocess.txt";
+    if(!file_exists($file)){
+        @touch($file);
+    }
     // Make sure the file is exist.
     if (file_exists($file)) {
         // Get the content and echo it.
@@ -45,6 +46,7 @@
         }
     }
     else {
+        unlink($file);
         echo json_encode(array("percent" => null, "message" => null));
     }
 
