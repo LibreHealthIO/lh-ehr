@@ -123,9 +123,6 @@ Contains programs for viewing the software log files.
 **Main**
 This directory contains directories for the calendar , patient finder, authorizations, office notes, Dated reminders and messages. It also contains the menu programs ,backup programs , and the about page.
 
-**Modules**
-This directory is used for the adding of custom and ZEND modules.
-
 **New**
 This directory contains the New Patient create screen.
 

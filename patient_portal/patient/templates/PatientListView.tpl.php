@@ -576,42 +576,7 @@ body{
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                <div class="form-group inline" id="genericname1InputContainer">
-                    <label class="control-label" for="genericname1"><?php //echo xlt('Genericname1')?></label>
-                    <div class="controls inline-inputs">
-                        <input type="text" class="form-control" id="genericname1" placeholder="<?php //echo xla('Genericname1')?>" value="<%= _.escape(item.get('genericname1') || '') %>">
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="form-group inline" id="genericval1InputContainer">
-                    <label class="control-label" for="genericval1"><?php //echo xlt('Genericval1')?></label>
-                    <div class="controls inline-inputs">
-                        <input type="text" class="form-control" id="genericval1" placeholder="<?php //echo xla('Genericval1')?>" value="<%= _.escape(item.get('genericval1') || '') %>">
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="form-group inline" id="genericname2InputContainer">
-                    <label class="control-label" for="genericname2"><?php //echo xlt('Genericname2')?></label>
-                    <div class="controls inline-inputs">
-                        <input type="text" class="form-control" id="genericname2" placeholder="<?php //echo xla('Genericname2')?>" value="<%= _.escape(item.get('genericname2') || '') %>">
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="form-group inline" id="genericval2InputContainer">
-                    <label class="control-label" for="genericval2"><?php //echo xlt('Genericval2')?></label>
-                    <div class="controls inline-inputs">
-                        <input type="text" class="form-control" id="genericval2" placeholder="<?php //echo xla('Genericval2')?>" value="<%= _.escape(item.get('genericval2') || '') %>">
-                        <span class="help-inline"></span>
-                    </div>
-                </div> -->
-                <!-- <div class="form-group inline" id="squadInputContainer">
-                    <label class="control-label" for="squad"><?php //echo xlt('Squad')?></label>
-                    <div class="controls inline-inputs">
-                        <input type="text" class="form-control" id="squad" placeholder="<?php //echo xla('Squad')?>" value="<%= _.escape(item.get('squad') || '') %>">
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="form-group inline" id="fitnessInputContainer">
+                 <div class="form-group inline" id="fitnessInputContainer">
                     <label class="control-label" for="fitness"><?php //echo xlt('Fitness')?></label>
                     <div class="controls inline-inputs">
                         <input type="text" class="form-control" id="fitness" placeholder="<?php //echo xla('Fitness')?>" value="<%= _.escape(item.get('fitness') || '') %>">

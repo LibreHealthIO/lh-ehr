@@ -83,16 +83,17 @@ function getEncounters($pid,$dateStart='',$dateEnd='',$encounterRuleType='')
 
         $arraySqlBind = array();
         
-        if ($encounterRuleType) {
+      //Commented out.  Part of old QA tool.  Could still be useful as an encounter type filter, but tables this references are gone.
+      //  if ($encounterRuleType) {
                 // Only collect certain type of encounters (list_options item from the rule_enc_types list that is mapped via enc_category_map table)
-                $from = "form_encounter LEFT JOIN enc_category_map ON (form_encounter.pc_catid = enc_category_map.main_cat_id)";
-                $where = "enc_category_map.rule_enc_id = ? and ";
-                array_push($arraySqlBind,$encounterRuleType);
-        }
-        else {
+       //         $from = "form_encounter LEFT JOIN enc_category_map ON (form_encounter.pc_catid = enc_category_map.main_cat_id)";
+        //        $where = "enc_category_map.rule_enc_id = ? and ";
+        //        array_push($arraySqlBind,$encounterRuleType);
+      //  }
+       // else {
                 // Collect all encounters
                 $from = "form_encounter";
-        }
+       // }
 
         if ($dateStart && $dateEnd) {
                 $where .= "form_encounter.pid = ? and form_encounter.date >= ? and form_encounter.date <= ?";

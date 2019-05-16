@@ -140,7 +140,7 @@ if ($_POST['form_save'] && $_GET['mode'] == "user") {
           }
           elseif ($fldid == "css_header") {
             //styles array created since the globals does not have styles array.
-            $styles_array = array("style_prism.css", "style_light.css", "style_purple.css", "style_tan.css", "style_tan_no_icons.css");
+            $styles_array = array("style_prism.css");
             if (in_array($_POST["form_$i"], $styles_array)) {
               $boolean = true;
             }

@@ -99,7 +99,7 @@ Make sure the webserver is running, and point a web-browser to `setup.php` locat
 The setup script will step you through the configuration of the LibreHealthEHR.
 
 The first screen of the setup script will ensure that the webserver user (in linux, often is `apache`, `www-data`, or `nobody`) has write privileges on certain files and directories.
-The files include `librehealthehr/sites/default/sqlconf.php` and `librehealthehr/interface/modules/zend_modules/config/application.config.php`.
+The files include `librehealthehr/sites/default/sqlconf.php`.
 
 In linux, these can be set by `chmod a+w filename` command to grant global write permissions to the file. The directories include:
 ```
@@ -107,14 +107,14 @@ librehealthehr/gacl/admin/templates_c
 librehealthehr/sites/default/edi
 librehealthehr/sites/default/era
 librehealthehr/sites/default/documents
-librehealthehr/interface/main/calendar/modules/PostCalendar/pntemplates/compiled
-librehealthehr/interface/main/calendar/modules/PostCalendar/pntemplates/cache.
 ```
 
 **Note:** In linux, if the webserver user name is `apache`, then the command `chown -R apache:apache directory_name` will grant global write permissions to the directories, and we recommend making these changes permanent. Should the page display errors related to file or directory writing priviledges you may click the 'Check Again' button to try again (after fixing permissions).
 
 
 #### Step 1
+You will need to provide a "Site Name" to replace the default value.  Do not attempt to name your site directory "default".
+#### Step 1.5
 You need to tell setup whether it needs to create the database on its own, or if you have already created the database.  MySQL root priveleges will be required to create a database.
 
 #### Step 2
@@ -146,11 +146,11 @@ The `Initial User's First Name` is the value to be used as their first name.  Th
 
 The `Initial User's Last Name` is the value to be used as their last name.  This information may be changed in the user administration page.
 
-The `Initial Group` is the first group, basically name of the practice, that will be created.  A user may belong to multiple groups, which again, can be altered on the user administration page. It is suggested that no more than one group per office be used.
+The `Initial Group` should be left to the default setting.  It is suggested that you not use this feature, as it will be removed in the future.
 
 
 #### Step 3
-This is where setup will configure LibreHealthEHR.  It will first create the database and connect to it to create the initial tables.  It will then write the mysql database configuration to the `librehealthehr/sites/default/sqlconf.php` file.
+This is where setup will configure LibreHealthEHR.  It will first create the database and connect to it to create the initial tables.  It will then write the mysql database configuration to the `librehealthehr/sites/[your site name]/sqlconf.php` file.
 
 Should anything fail during Step 3, you may have to remove the existing database or tables before you can try again. If no errors occur, you will see a `Continue` button at the bottom.
 

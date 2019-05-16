@@ -76,10 +76,6 @@ class PatientReporter extends Reporter
     public $FinancialReview;
     public $Pubpid;
     public $Pid;
-    public $Genericname1;
-    public $Genericval1;
-    public $Genericname2;
-    public $Genericval2;
     public $HipaaMail;
     public $HipaaVoice;
     public $HipaaNotice;
@@ -89,21 +85,6 @@ class PatientReporter extends Reporter
     public $Squad;
     public $Fitness;
     public $ReferralSource;
-    public $Usertext1;
-    public $Usertext2;
-    public $Usertext3;
-    public $Usertext4;
-    public $Usertext5;
-    public $Usertext6;
-    public $Usertext7;
-    public $Usertext8;
-    public $Userlist1;
-    public $Userlist2;
-    public $Userlist3;
-    public $Userlist4;
-    public $Userlist5;
-    public $Userlist6;
-    public $Userlist7;
     public $Pricelevel;
     public $Regdate;
     public $Contrastart;
@@ -178,10 +159,6 @@ class PatientReporter extends Reporter
             ,`patient_data`.`financial_review` as FinancialReview
             ,`patient_data`.`pubpid` as Pubpid
             ,`patient_data`.`pid` as Pid
-            ,`patient_data`.`genericname1` as Genericname1
-            ,`patient_data`.`genericval1` as Genericval1
-            ,`patient_data`.`genericname2` as Genericname2
-            ,`patient_data`.`genericval2` as Genericval2
             ,`patient_data`.`hipaa_mail` as HipaaMail
             ,`patient_data`.`hipaa_voice` as HipaaVoice
             ,`patient_data`.`hipaa_notice` as HipaaNotice
@@ -191,21 +168,6 @@ class PatientReporter extends Reporter
             ,`patient_data`.`squad` as Squad
             ,`patient_data`.`fitness` as Fitness
             ,`patient_data`.`referral_source` as ReferralSource
-            ,`patient_data`.`usertext1` as Usertext1
-            ,`patient_data`.`usertext2` as Usertext2
-            ,`patient_data`.`usertext3` as Usertext3
-            ,`patient_data`.`usertext4` as Usertext4
-            ,`patient_data`.`usertext5` as Usertext5
-            ,`patient_data`.`usertext6` as Usertext6
-            ,`patient_data`.`usertext7` as Usertext7
-            ,`patient_data`.`usertext8` as Usertext8
-            ,`patient_data`.`userlist1` as Userlist1
-            ,`patient_data`.`userlist2` as Userlist2
-            ,`patient_data`.`userlist3` as Userlist3
-            ,`patient_data`.`userlist4` as Userlist4
-            ,`patient_data`.`userlist5` as Userlist5
-            ,`patient_data`.`userlist6` as Userlist6
-            ,`patient_data`.`userlist7` as Userlist7
             ,`patient_data`.`pricelevel` as Pricelevel
             ,`patient_data`.`regdate` as Regdate
             ,`patient_data`.`contrastart` as Contrastart

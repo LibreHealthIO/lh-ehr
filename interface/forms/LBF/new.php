@@ -25,9 +25,6 @@
  * @author  Rod Roark <rod@sunsetsystems.com>
  * @link    http://librehealth.io
  */
-if ($GLOBALS['mod_nn'] == true){
-		require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_lbf_new.inc");}
-else{
   
 //SANITIZE ALL ESCAPES
 $sanitize_all_escapes=true;
@@ -650,4 +647,3 @@ if (function_exists($formname . '_javascript_onload')) {
 
 </body>
 </html>
-<?php}?>

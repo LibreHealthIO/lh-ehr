@@ -213,10 +213,6 @@ class PatientController extends AppBaseController{
             $patient->FinancialReview = date( 'Y-m-d H:i:s', strtotime( $this->SafeGetVal( $json, 'financialReview', $patient->FinancialReview ) ) );
             $patient->Pubpid = $this->SafeGetVal( $json, 'pubpid', $patient->Pubpid );
             $patient->Pid = $this->SafeGetVal( $json, 'pid', $patient->Pid );
-            $patient->Genericname1 = $this->SafeGetVal( $json, 'genericname1', $patient->Genericname1 );
-            $patient->Genericval1 = $this->SafeGetVal( $json, 'genericval1', $patient->Genericval1 );
-            $patient->Genericname2 = $this->SafeGetVal( $json, 'genericname2', $patient->Genericname2 );
-            $patient->Genericval2 = $this->SafeGetVal( $json, 'genericval2', $patient->Genericval2 );
             $patient->HipaaMail = $this->SafeGetVal( $json, 'hipaaMail', $patient->HipaaMail );
             $patient->HipaaVoice = $this->SafeGetVal( $json, 'hipaaVoice', $patient->HipaaVoice );
             $patient->HipaaNotice = $this->SafeGetVal( $json, 'hipaaNotice', $patient->HipaaNotice );

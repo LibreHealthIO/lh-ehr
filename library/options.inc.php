@@ -37,11 +37,7 @@
 // 0 = Read Only - the input element's "disabled" property is set
 // 1 = Write Once (not editable when not empty) (text fields)
 // 2 = Show descriptions instead of codes for billing code input
-require_once(dirname(dirname(__FILE__)) ."/interface/globals.php");
-if ($GLOBALS['mod_nn'] == true){
-        require_once(dirname(dirname(__FILE__)) . "/modules/nation_notes/nn_library_options.inc");}
-else{
-  
+require_once(dirname(dirname(__FILE__)) ."/interface/globals.php"); 
 require_once("formdata.inc.php");
 require_once("formatting.inc.php");
 require_once("user.inc");
@@ -4169,6 +4165,5 @@ function generate_form_field_with_class($frow, $currvalue, $class) {
       $description, $showEmpty ? $empty_title : '', '', $onchange, '', null, true, $backup_list);
 
   }
-}
 }
 ?>
