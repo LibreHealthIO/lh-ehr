@@ -93,6 +93,16 @@ CREATE TABLE IF NOT EXISTS `form_nursing_assessment`(
 `cardio_cap_refill_LUE`
 `cardio_cap_refill_RLE`
 `cardio_cap_refill_LLE`
+`cardio_color_temp_RUE`
+`cardio_color_temp_LUE`
+`cardio_color_temp_RLE`
+`cardio_color_temp_LLE`
+`cardio_central_pulses`
+`cardio_peripheral pulses`
+`cardio_pulse_RUE`
+`cardio_pulse_LUE`
+`cardio_pulse_RLE`
+`cardio_pulse_LLE`
 ``
 ``
 ``
