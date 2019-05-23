@@ -364,7 +364,7 @@
 
                           echo $result{"reason"}.
                                   " (" . htmlspecialchars(oeFormatShortDate(date("Y-m-d",strtotime($result{"date"})))) .
-                                  ")\n";
+                                  ")\n"; 
                           echo "<div class='encounter_forms'>\n";
                       }
                       else {
@@ -380,12 +380,12 @@
                           if (!$form_name_found_flag) { foreach($registry_form_name as $var) {if (strpos($form_name,$var) == 0) {$form_name = $var;}}}
 
                           if (!is_array($html_strings[$form_name])) {$html_strings[$form_name] = array();}
-                          array_push($html_strings[$form_name], "<input type='checkbox' ".
+                          array_push($html_strings[$form_name], "<table class='text'><tr><td><input type='checkbox' ".
                                                                   " name='" . $result{"formdir"} . "_" . $result{"form_id"} . "'".
                                                                   " id='" . $result{"formdir"} . "_" . $result{"form_id"} . "'".
                                                                   " value='" . $result{"encounter"} . "'" .
                                                                   " class='encounter_form' ".
-                                                                  ">" . xl_form_title($result{"form_name"}) . "<br>\n");
+                                                                  ">" . xl_form_title($result{"form_name"}) . "</td>" . "<td>".$result{"fdate"}."</td>" . "</tr></table>" );
                       }
                   }
                   foreach($registry_form_name as $var) {
