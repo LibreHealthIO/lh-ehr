@@ -19,7 +19,7 @@ $returnurl = 'encounter_top.php';
 	<form class="form-horizontal" method=post action="<?php echo $rootdir;?>/forms/nursing_assessment/save.php?mode=new" name="my_form">
 		<div class="row">
 			<!-- assessment section -->
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php xl('Assessment','e'); ?></h3>
@@ -36,7 +36,7 @@ $returnurl = 'encounter_top.php';
 				</div>
 			</div>
 			<!-- Provider notification section -->
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php xl('Provider Notification','e'); ?></h3>
@@ -72,7 +72,7 @@ $returnurl = 'encounter_top.php';
 			</div>
 
 			<!-- section for vitals -->
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php xl('Vitals','e'); ?></h3>
@@ -85,21 +85,154 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-4" for="">
-								
+							<label class="control-label col-sm-4" for="pulse">
+								Pulse
 							</label>
 
 							<div class="col-sm-6">
-								
+								<input type="number" name="pulse" class="form-control" id="pulse">
 							</div>
 						</div>
-					</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="SpO2">
+								SpO2 (%)
+							</label>
+
+							<div class="col-sm-6">
+								<input type="number" name="SpO2" class="form-control" id="SpO2">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="SpO2">
+								FiO2 (%)
+							</label>
+
+							<div class="col-sm-6">
+								<input type="number" name="SpO2" class="form-control" id="SpO2">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="V_RespiratoryRate">
+								Respiratory Rate
+							</label>
+
+							<div class="col-sm-6">
+								<input type="number" name="V_RespiratoryRate" class="form-control" id="V_RespiratoryRate">
+							</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="V_source">Temp Source</label>
+					    	<div class="col-sm-6">
+					    		<select name="V_source" class="form-control" id="V_source">
+					    		<option>[select]</option>
+							    <option>Axillary</option>
+							    <option>Tympanic</option>
+							    <option>Oral</option>
+							    <option>Swan</option>
+							    <option>Rectal</option>
+							    <option>Esophageal</option>
+							    <option>Temporal</option>
+							    <option>Foley</option>
+							    <option>Other</option>
+							</select>
+					    	</div>
+						</div>
+						<div class="form-group ">
+					      <label class="control-label col-sm-4"> Room air(yes/no)</label>
+					      <div class="col-sm-5"><input type="checkbox" name="remember"></div>
+					      
+					    </div>
+
+					    <div class="form-group">
+					    	<label class="control-label col-sm-4" for="V_deliveryMethod">O2 Delivery Method</label>
+					    	<div class="col-sm-6">
+					    		<select name="V_deliveryMethod" class="form-control" id="V_deliveryMethod">
+					    		<option>[select]</option>
+							    <option>Bagging ETT</option>
+							    <option>Blowby</option>
+							    <option>BPAP Mask</option>
+							    <option>BPAP Nasal</option>
+							    <option>BPAP Prongs</option>
+							    <option>BPAP Vent</option>
+							    <option>CPAP Mask</option>
+							    <option>CPAP Nasal</option>
+							    <option>CPAP Prongs</option>
+							    <option>CPAP Ventilator</option>
+							    <option>Face Tent</option>
+							    <option>HHF</option>
+							    <option>Trach-Vent HME</option>
+							    <option>Hood</option>
+							    <option>Mask, Aerosol</option>
+							    <option>Mask, Low Flow</option>
+							    <option>Mask, partial rebreathing</option>
+							    <option>Mask, simple</option>
+							    <option>Mist, Cool</option>
+							    <option>Mist, Cool- Room Air</option>
+							    <option>Mist, warm</option>
+							    <option>Nasal Cannula</option>
+							    <option>Ocillator</option>
+							    <option>RAM Cannula</option>
+							    <option>Trach Collar</option>
+							    <option>Ventilator</option>
+							    <option>Other(see comment)</option>
+							</select>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="V_flowRate">
+								O2 flow rate(LPM)
+							</label>
+
+							<div class="col-sm-6">
+								<input type="number" name="V_flowRate" class="form-control" id="V_flowRate">
+							</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="V_bp">Blood Pressure</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="V_bp" name="V_bp"></textarea>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="V_bpMean">BP mean</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="V_bpMean" name="V_bpMean"></textarea>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="V_bpLocation">Bp location</label>
+					    	<div class="col-sm-6">
+					    		<select name="V_bpLocation" class="form-control" id="V_bpLocation">
+					    		<option>[select]</option>
+							    <option>RUE</option>
+							    <option>LUE</option>
+							    <option>RLE</option>
+							    <option>LLE</option>
+							    <option>Other (comment)</option>
+							</select>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="V_bpPosition">Bp patient Position</label>
+					    	<div class="col-sm-6">
+					    		<select name="V_bpPosition" class="form-control" id="V_bpPosition">
+					    		<option>[select]</option>
+							    <option>Lying</option>
+							    <option>Standing</option>
+							    <option>Sitting</option>
+							</select>
+					    	</div>
+						</div>
+					</div> <!-- end of panel body vitals-->
 					
 				</div>
 			</div>
-			<div class="col-md-3">
-				
-			</div>
+			
 		</div>
 
 		<div>
