@@ -207,13 +207,13 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="V_bpLocation">Bp location</label>
 					    	<div class="col-sm-6">
 					    		<select name="V_bpLocation" class="form-control" id="V_bpLocation">
-					    		<option>[select]</option>
-							    <option>RUE</option>
-							    <option>LUE</option>
-							    <option>RLE</option>
-							    <option>LLE</option>
-							    <option>Other (comment)</option>
-							</select>
+						    		<option>[select]</option>
+								    <option>RUE</option>
+								    <option>LUE</option>
+								    <option>RLE</option>
+								    <option>LLE</option>
+								    <option>Other (comment)</option>
+								</select>
 					    	</div>
 						</div>
 
@@ -221,19 +221,51 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="V_bpPosition">Bp patient Position</label>
 					    	<div class="col-sm-6">
 					    		<select name="V_bpPosition" class="form-control" id="V_bpPosition">
-					    		<option>[select]</option>
-							    <option>Lying</option>
-							    <option>Standing</option>
-							    <option>Sitting</option>
-							</select>
+						    		<option>[select]</option>
+								    <option>Lying</option>
+								    <option>Standing</option>
+								    <option>Sitting</option>
+								</select>
 					    	</div>
 						</div>
 					</div> <!-- end of panel body vitals-->
 					
 				</div>
-			</div>
+			</div> <!-- end of vitals col -->
 			
-		</div>
+		</div> e<!-- nd of row -->
+
+		<div class="row">
+			<!-- section for  blood glucose management -->
+			<div class="col-md-4">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Blood Glucose Management','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_level">Blood Glucose Level</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_interventions">Related Interventions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="BG_interventions" name="BG_interventions">
+					    			<option>[select]</option>
+								    <option>Juice Given</option>
+								    <option>Carbohydrate Snack</option>
+								    <option>Sitting</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div> <!-- end of row -->
 
 		<div>
 			<!-- Save/Cancel buttons -->
