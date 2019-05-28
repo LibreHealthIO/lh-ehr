@@ -18,33 +18,186 @@ $returnurl = 'encounter_top.php';
 <body>
 	<form class="form-horizontal" method=post action="<?php echo $rootdir;?>/forms/nursing_assessment/save.php?mode=new" name="my_form">
 		<div class="row">
-			<!-- assessment section -->
 			<div class="col-md-4">
+				<!-- Save/Cancel buttons -->
+				<input type="submit" id="save" class='btn btn-success' value="<?php echo xla('Save'); ?>"> &nbsp;
+				<input type="button" id="dontsave" class="deleter btn btn-danger" value="<?php echo xla('Cancel'); ?>"> &nbsp;
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<!-- assessment section -->
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php xl('Assessment','e'); ?></h3>
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
-					    	<label class="control-label col-sm-5" for="ass_comments">Comments/Remarks</label>
-					    	<div class="col-sm-5">
+					    	<label class="control-label col-sm-4" for="ass_comments">Comments/Remarks</label>
+					    	<div class="col-sm-6">
 					    		<textarea class="form-control" id="ass_comments" name="ass_comments"></textarea>
 					    	</div>
 						</div>
 					</div>
 					
 				</div>
+				<!-- section for ADL -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('ADL','e'); ?></h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_location">Patient Location</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_location" class="form-control" id="ADL_location">
+						    		<option>[select]</option>
+								    <option>Bed/Crib</option>
+								    <option>Chair</option>
+								    <option>Room</option>
+								    <option>Wheelchair</option>
+								    <option>Out of Room</option>
+								    <option>Out on Pass</option>
+								    <option>Other</option>
+								</select>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_activity">Patient Activity</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_activity" class="form-control" id="ADL_activity">
+						    		<option>[select]</option>
+								    <option>Awake</option>
+								    <option>Being Held</option>
+								    <option>Dangle</option>
+								    <option>Eating</option>
+								    <option>Playing</option>
+								    <option>Quiet Activity</option>
+								    <option>Sleeping</option>
+								    <option>Watching TV</option>
+								    <option>Wheelchair Ride</option>
+								    <option>Other</option>
+								</select>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_position">Patient Position</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_position" class="form-control" id="ADL_position">
+						    		<option>[select]</option>
+								    <option>Prone</option>
+								    <option>Supine</option>
+								    <option>Left Side</option>
+								    <option>Right Side</option>
+								    <option>Sitting</option>
+								    <option>Standing</option>
+								    <option>Other</option>
+								</select>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_care">Care Elements Performed</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_care" class="form-control" id="ADL_care">
+						    		<option>[select]</option>
+								    <option>Assist with elimination</option>
+								    <option>Cares of Deffered</option>
+								    <option>Device Repositioned</option>
+								    <option>Diaper</option>
+								    <option>Electrode patches changed</option>
+								    <option>Eye care</option>
+								    <option>Hair care</option>
+								    <option>Linen Change</option>
+								</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_bath">Bath/Shower</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_bath" class="form-control" id="ADL_bath">
+						    		<option>[select]</option>
+								    <option>Bath/Shower</option>
+								    <option>Bath refused</option>
+								    <option>Bed bath</option>
+								    <option>2% CHG bath</option>
+								    <option>2% CHG bath contraindicated</option>
+								    <option>Contraindicated</option>
+								    <option>Patient Unstable</option>
+								</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_bed">Bed/Position</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_bed" class="form-control" id="ADL_bed">
+						    		<option>[select]</option>
+								    <option>HOB 10 degrees</option>
+								    <option>HOB 20 degrees</option>
+								    <option>HOB 30 degrees</option>
+								    <option>HOB 45 degrees</option>
+								    <option>HOB 60 degrees</option>
+								    <option>HOB 90 degrees</option>
+								    <option>HOB flat</option>
+								    <option>Reverse</option>
+								</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_assistance">ADL Assistance Level</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_assistance" class="form-control" id="ADL_assistance">
+						    		<option>[select]</option>
+								    <option>Caregiver</option>
+								    <option>Family</option>
+								    <option>Independent</option>
+								    <option>Staff-single</option>
+								    <option>Staff-multiple</option>
+								    <option>Other</option>
+								</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_mobilisation">Mobilisation</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_mobilisation" class="form-control" id="ADL_mobilisation">
+						    		<option>[select]</option>
+								    <option>Ambulate</option>
+								    <option>Repositioned</option>
+								    <option>ROM</option>
+								    <option>Transferred to chair/bed</option>
+								    <option>Other</option>
+								</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ADL_scd">SCD's or Ted Hose</label>
+					    	<div class="col-sm-6">
+					    		<select name="ADL_scd" class="form-control" id="ADL_scd">
+						    		<option>[select]</option>
+								    <option>On</option>
+								    <option>OFF</option>
+								    <option>NA</option>
+								</select>
+					    	</div>
+						</div>
+					</div> <!--  end of panel body -->
+				</div> <!-- end of panel primary -->
 			</div>
-			<!-- Provider notification section -->
+			
 			<div class="col-md-4">
+				<!-- Provider notification section -->
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php xl('Provider Notification','e'); ?></h3>
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
-					    	<label class="control-label col-sm-5" for="PN_reason">Reason for  Communication</label>
-					    	<div class="col-sm-5">
+					    	<label class="control-label col-sm-4" for="PN_reason">Reason for  Communication</label>
+					    	<div class="col-sm-6">
 					    		<textarea name="PN_reason" class="form-control" id="PN_reason"></textarea>
 					    	</div>
 						</div>
@@ -55,8 +208,8 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-5" for="PN_method">Method of Communication</label>
-					    	<div class="col-sm-5">
+					    	<label class="control-label col-sm-4" for="PN_method">Method of Communication</label>
+					    	<div class="col-sm-6">
 					    		<select name="PN_method" class="form-control" id="PN_method">
 					    		<option>[select]</option>
 							    <option>Call</option>
@@ -69,10 +222,81 @@ $returnurl = 'encounter_top.php';
 					</div>
 					
 				</div>
+
+				<!-- section for  blood glucose management -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Blood Glucose Management','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_level">Blood Glucose Level</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_interventions">Related Interventions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="BG_interventions" name="BG_interventions">
+					    			<option>[select]</option>
+								    <option>Juice Given</option>
+								    <option>Carbohydrate Snack</option>
+								    <option> Medication Given</option>
+								    <option>Provider Notified</option>
+								    <option>Critical Care Guideline Activated</option>
+								    <option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div> <!-- end of panel body -->
+					
+				</div> <!-- end of panel primary -->
+				<!-- section for patient interactions -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Patient interactions','e'); ?></h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="P_interactions">Patient Behaviour</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="P_interactions" name="P_interactions">
+					    			<option>Content</option>
+					    			<option>Combative</option>
+					    			<option>Compliant</option>
+					    			<option>Interactive</option>
+					    			<option>Restless</option>
+					    			<option>Irritable</option>
+					    			<option>Noncompliant</option>
+					    			<option>Flat Affect</option>
+					    			<option>Constant Movement</option>
+					    			<option>Non Responsive</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_level">Patient Support</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_level">Patient Response</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    	</div>
+						</div>
+					</div> <!--  end of panel body -->
+				</div> <!-- end of panel primary -->
 			</div>
 
-			<!-- section for vitals -->
+			
 			<div class="col-md-4">
+				<!-- section for vitals -->
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php xl('Vitals','e'); ?></h3>
@@ -233,38 +457,20 @@ $returnurl = 'encounter_top.php';
 				</div>
 			</div> <!-- end of vitals col -->
 			
-		</div> e<!-- nd of row -->
+		</div> <!-- end of row -->
 
 		<div class="row">
-			<!-- section for  blood glucose management -->
 			<div class="col-md-4">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title"><?php xl('Blood Glucose Management','e'); ?></h3>
-					</div>
-					<div class="panel-body">
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_level">Blood Glucose Level</label>
-					    	<div class="col-sm-6">
-					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
-					    	</div>
-						</div>
 
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_interventions">Related Interventions</label>
-					    	<div class="col-sm-6">
-					    		<select class="form-control" id="BG_interventions" name="BG_interventions">
-					    			<option>[select]</option>
-								    <option>Juice Given</option>
-								    <option>Carbohydrate Snack</option>
-								    <option>Sitting</option>
-					    		</select>
-					    	</div>
-						</div>
-					</div>
-					
-				</div>
-			</div>
+			</div> <!-- end of col-4 -->
+
+			<div class="col-md-4">
+
+			</div><!--  end of col-4 -->
+
+			<div class="col-md-4">
+
+			</div><!--  end of col-4 -->
 		</div> <!-- end of row -->
 
 		<div>
