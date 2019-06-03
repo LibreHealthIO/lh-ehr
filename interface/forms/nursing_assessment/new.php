@@ -31,6 +31,160 @@ $returnurl = 'encounter_top.php';
 			</div>
 		</div>
 		<div class="row">
+			<div class="col-sm-6 col-md-3">
+				<!-- section for  blood glucose management -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Blood Glucose Management','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_level">Blood Glucose Level</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    	</div>
+						</div>
+
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_interventions">Related Interventions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="BG_interventions" name="BG_interventions">
+					    			<option>[select]</option>
+								    <option>Juice Given</option>
+								    <option>Carbohydrate Snack</option>
+								    <option> Medication Given</option>
+								    <option>Provider Notified</option>
+								    <option>Critical Care Guideline Activated</option>
+								    <option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div> <!-- end of panel body -->
+					
+				</div> <!-- end of panel primary -->
+			</div> <!-- end of col-4 -->
+
+			<div class="col-sm-6 col-md-3">
+					<!-- section for patient interactions -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Patient interactions','e'); ?></h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="P_interactions">Patient Behaviour</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="P_interactions" name="P_interactions">
+					    			<option>Content</option>
+					    			<option>Combative</option>
+					    			<option>Compliant</option>
+					    			<option>Interactive</option>
+					    			<option>Restless</option>
+					    			<option>Irritable</option>
+					    			<option>Noncompliant</option>
+					    			<option>Flat Affect</option>
+					    			<option>Constant Movement</option>
+					    			<option>Non Responsive</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_level">Patient Support</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_level">Patient Response</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    	</div>
+						</div>
+					</div> <!--  end of panel body -->
+				</div> <!-- end of panel primary -->
+			</div><!--  end of col-4 -->
+
+			<div class="col-sm-6 col-md-3">
+				<!-- assessment section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Assessment','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="ass_comments">Comments/Remarks</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="ass_comments" name="ass_comments"></textarea>
+					    	</div>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div><!--  end of col -->
+
+			<div class="col-sm-6 col-md-3">
+				<!-- Sedation section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Sedation/Respiration','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="repiratory_pattern">Repiratory Pattern</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="repiratory_pattern" id="repiratory_pattern">
+					    			<option>[select]</option>
+					    			<option>Abdominal</option>
+					    			<option>Agonal</option>
+					    			<option>apnea</option>
+					    			<option>BiPAP</option>
+					    			<option>CPAP</option>
+					    			<option>Dyspnea</option>
+					    			<option>Gasping</option>
+					    			<option>Grunting</option>
+					    			<option>Irregular</option>
+					    			<option>Labored</option>
+					    			<option>Nasal flaring</option>
+					    			<option>Oscillator</option>
+					    			<option>Prolonged Expiration</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+				</div>	
+			</div><!--  end of col -->
+			<div class="col-sm-6 col-md-3">
+				<!-- Thermoregulation section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Thermoregulation','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="thermoregulation">Thermoregulation type</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="thermoregulation" id="thermoregulation">
+					    			<option>[select]</option>
+					    			<option>Bair hugger</option>
+					    			<option>blanket</option>
+					    			<option>blanket-cooling machine</option>
+					    			<option>blanket removed</option>
+					    			<option>bundling</option>
+					    			<option>clothes removed</option>
+					    			<option>cool cloths</option>
+					    			<option>Double wall isolette</option>
+					    			<option>double</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+				</div>	
+			</div><!--  end of col -->
+		</div> <!-- end of row -->
+		<div class="row">
 				<div class="col-sm-6 col-md-3">
 				<!-- section for vitals -->
 				<div class="panel panel-primary">
@@ -521,161 +675,6 @@ $returnurl = 'encounter_top.php';
 
 		<div class="row">
 			<div class="col-sm-6 col-md-3">
-				<!-- section for  blood glucose management -->
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title"><?php xl('Blood Glucose Management','e'); ?></h3>
-					</div>
-					<div class="panel-body">
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_level">Blood Glucose Level</label>
-					    	<div class="col-sm-6">
-					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
-					    	</div>
-						</div>
-
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_interventions">Related Interventions</label>
-					    	<div class="col-sm-6">
-					    		<select class="form-control" id="BG_interventions" name="BG_interventions">
-					    			<option>[select]</option>
-								    <option>Juice Given</option>
-								    <option>Carbohydrate Snack</option>
-								    <option> Medication Given</option>
-								    <option>Provider Notified</option>
-								    <option>Critical Care Guideline Activated</option>
-								    <option>Other</option>
-					    		</select>
-					    	</div>
-						</div>
-					</div> <!-- end of panel body -->
-					
-				</div> <!-- end of panel primary -->
-			</div> <!-- end of col-4 -->
-
-			<div class="col-sm-6 col-md-3">
-					<!-- section for patient interactions -->
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title"><?php xl('Patient interactions','e'); ?></h3>
-					</div>
-
-					<div class="panel-body">
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="P_interactions">Patient Behaviour</label>
-					    	<div class="col-sm-6">
-					    		<select class="form-control" id="P_interactions" name="P_interactions">
-					    			<option>Content</option>
-					    			<option>Combative</option>
-					    			<option>Compliant</option>
-					    			<option>Interactive</option>
-					    			<option>Restless</option>
-					    			<option>Irritable</option>
-					    			<option>Noncompliant</option>
-					    			<option>Flat Affect</option>
-					    			<option>Constant Movement</option>
-					    			<option>Non Responsive</option>
-					    			<option>Other</option>
-					    		</select>
-					    	</div>
-						</div>
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_level">Patient Support</label>
-					    	<div class="col-sm-6">
-					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
-					    	</div>
-						</div>
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_level">Patient Response</label>
-					    	<div class="col-sm-6">
-					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
-					    	</div>
-						</div>
-					</div> <!--  end of panel body -->
-				</div> <!-- end of panel primary -->
-			</div><!--  end of col-4 -->
-
-			<div class="col-sm-6 col-md-3">
-				<!-- assessment section -->
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title"><?php xl('Assessment','e'); ?></h3>
-					</div>
-					<div class="panel-body">
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="ass_comments">Comments/Remarks</label>
-					    	<div class="col-sm-6">
-					    		<textarea class="form-control" id="ass_comments" name="ass_comments"></textarea>
-					    	</div>
-						</div>
-					</div>
-					
-				</div>
-				
-			</div><!--  end of col -->
-
-			<div class="col-sm-6 col-md-3">
-				<!-- Sedation section -->
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title"><?php xl('Sedation/Respiration','e'); ?></h3>
-					</div>
-					<div class="panel-body">
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="repiratory_pattern">Repiratory Pattern</label>
-					    	<div class="col-sm-6">
-					    		<select class="form-control" name="repiratory_pattern" id="repiratory_pattern">
-					    			<option>[select]</option>
-					    			<option>Abdominal</option>
-					    			<option>Agonal</option>
-					    			<option>apnea</option>
-					    			<option>BiPAP</option>
-					    			<option>CPAP</option>
-					    			<option>Dyspnea</option>
-					    			<option>Gasping</option>
-					    			<option>Grunting</option>
-					    			<option>Irregular</option>
-					    			<option>Labored</option>
-					    			<option>Nasal flaring</option>
-					    			<option>Oscillator</option>
-					    			<option>Prolonged Expiration</option>
-					    		</select>
-					    	</div>
-						</div>
-					</div>
-				</div>	
-			</div><!--  end of col -->
-			<div class="col-sm-6 col-md-3">
-				<!-- Thermoregulation section -->
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title"><?php xl('Thermoregulation','e'); ?></h3>
-					</div>
-					<div class="panel-body">
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="thermoregulation">Thermoregulation type</label>
-					    	<div class="col-sm-6">
-					    		<select class="form-control" name="thermoregulation" id="thermoregulation">
-					    			<option>[select]</option>
-					    			<option>Bair hugger</option>
-					    			<option>blanket</option>
-					    			<option>blanket-cooling machine</option>
-					    			<option>blanket removed</option>
-					    			<option>bundling</option>
-					    			<option>clothes removed</option>
-					    			<option>cool cloths</option>
-					    			<option>Double wall isolette</option>
-					    			<option>double</option>
-					    		</select>
-					    	</div>
-						</div>
-					</div>
-				</div>	
-			</div><!--  end of col -->
-		</div> <!-- end of row -->
-
-		<div class="row">
-			<div class="col-sm-6 col-md-3">
 				<!-- Neuro motor location section -->
 				<div class="panel panel-primary">
 					<div class="panel-heading">
@@ -807,70 +806,319 @@ $returnurl = 'encounter_top.php';
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="NM_location">Location</label>
+					    	<label class="control-label col-sm-4" for="NE_Orientaion">Orientation</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" name="NM_location" id="NM_location">
+					    		<select class="form-control" name="NE_Orientaion" id="NE_Orientaion">
 					    			<option>[select]</option>
-					    			<option>All extremities</option>
-					    			<option>right side</option>
-					    			<option>left side</option>
-					    			<option>RUE</option>
-					    			<option>LUE</option>
-					    			<option>LLE</option>
-					    			<option>Upper bilateral</option>
-					    			<option>Lower Bilateral</option>
-					    			<option>other</option>
+					    			<option>Alert</option>
+					    			<option>Alert, Awake and Oriented x3</option>
+					    			<option>Alert, Awake, oriented appropriate to age</option>
+					    			<option>Agitated</option>
+					    			<option>Awake</option>
+					    			<option>Awakens easily</option>
+					    			<option>Comatose</option>
 					    		</select>
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="NM_limbMovnt">Limb Movements</label>
+					    	<label class="control-label col-sm-4" for="NE_cry">cry</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" name="NM_limbMovnt" id="NM_limbMovnt">
+					    		<select class="form-control" name="NE_cry" id="NE_cry">
 					    			<option>[select]</option>
-					    			<option>Full spontaneous</option>
-					    			<option>Contracted</option>
-					    			<option>Decerebrate</option>
-					    			<option>Decorticate</option>
-					    			<option>Flaccid</option>
-					    			<option>Limited Spontaneous</option>
-					    			<option>Jittery</option>
-					    			<option>Med paralyzed</option>
-					    			<option>Moves to painful stimuli</option>
-					    		</select>
-					    	</div>
-						</div>
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="NM_strength">Motor Strength</label>
-					    	<div class="col-sm-6">
-					    		<select class="form-control" name="NM_strength" id="NM_strength">
-					    			<option>[select]</option>
-					    			<option>Normal</option>
-					    			<option>Baseline</option>
-					    			<option>Strong</option>
-					    			<option>BiPAP</option>
-					    			<option>Hypertonic</option>
-					    			<option>Hypotonic</option>
-					    			<option>Weak</option>
-					    			<option>Very Weak</option>
-					    			<option>Flaccid</option>
 					    			<option>Absent</option>
+					    			<option>high pitched</option>
+					    			<option>hoarse</option>
+					    			<option>intubated-visibly crying</option>
+					    			<option>stridorous</option>
 					    			<option>Unable to assess</option>
+					    			<option>Strong</option>
+					    			<option>weak</option>
 					    			<option>Other</option>
 					    		</select>
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="NM_sensation">Sensation</label>
+					    	<label class="control-label col-sm-4" for="NE_pr_bilat">Pupil reaction/bilat</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" name="NM_sensation" id="NM_sensation">
+					    		<select class="form-control" name="NE_pr_bilat" id="NE_pr_bilat">
 					    			<option>[select]</option>
-					    			<option>Normal</option>
-					    			<option>full</option>
-					    			<option>Tingling</option>
-					    			<option>Decreased</option>
-					    			<option>Numbness</option>
+					    			<option>Brisk</option>
+					    			<option>Dilated</option>
+					    			<option>Equal</option>
+					    			<option>Hippus</option>
+					    			<option>Sluggish</option>
+					    			<option>No response</option>
 					    			<option>Unable to assess</option>
+					    			<option>1mm-8mm</option>
+					    			<option>PERL</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_pr_left">Pupil reaction/left</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_pr_left" id="NE_pr_left">
+					    			<option>[select]</option>
+					    			<option>Brisk</option>
+					    			<option>Dilated</option>
+					    			<option>Equal</option>
+					    			<option>Hippus</option>
+					    			<option>Sluggish</option>
+					    			<option>No response</option>
+					    			<option>Unable to assess</option>
+					    			<option>1mm-8mm</option>
+					    			<option>PERL</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_pr_right">Pupil reaction/right</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_pr_right" id="NE_pr_right">
+					    			<option>[select]</option>
+					    			<option>Brisk</option>
+					    			<option>Dilated</option>
+					    			<option>Equal</option>
+					    			<option>Hippus</option>
+					    			<option>Sluggish</option>
+					    			<option>No response</option>
+					    			<option>Unable to assess</option>
+					    			<option>1mm-8mm</option>
+					    			<option>PERL</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_oculomotor">Oculomotor</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_oculomotor" id="NE_oculomotor">
+					    			<option>[select]</option>
+					    			<option>Fucus/Tracks/Conjugates</option>
+					    			<option>Disconjugate</option>
+					    			<option>Focus</option>
+					    			<option>L gaze preference</option>
+					    			<option>R gaze preference</option>
+					    			<option>Nystagmus</option>
+					    			<option>L Ptosis</option>
+					    			<option>R ptosis</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_fontanel">fontanel</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_fontanel" id="NE_fontanel">
+					    			<option>[select]</option>
+					    			<option>soft</option>
+					    			<option>Flat</option>
+					    			<option>Sutures approximated</option>
+					    			<option>Sutures overriding</option>
+					    			<option>Sutures split</option>
+					    			<option>Bulging</option>
+					    			<option>Closed</option>
+					    			<option>Depressed</option>
+					    			<option>Full</option>
+					    			<option>Pulsatile</option>
+					    			<option>Tense</option>
+					    			<option>Unable to assess</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_reflexes">reflexes</label>
+					    	<div class="col-sm-6">
+					    		<input type="number" class="form-control" min="0" max="5" name="NE_reflexes" id="NE_reflexes">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4">seizure activity</label>
+					    	<div class="col-sm-6">
+					    		<input type="checkbox" name="NE_yes" id="NE_yes">Yes
+					    		<input type="checkbox" name="NE_no" id="NE_no"> No
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_monitoring">neuro monitoring</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_monitoring" id="NE_monitoring">
+					    			<option>[select]</option>
+					    			<option>Continuous EEG</option>
+					    			<option>Brainz</option>
+					    			<option>CFM</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_collar">c-collar</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_collar" id="NE_collar">
+					    			<option>[select]</option>
+					    			<option>Yes</option>
+					    			<option>Cleaned</option>
+					    			<option>D/C'd</option>
+					    			<option>Pads changed</option>
+					    			<option>Skin checked</option>
+					    			<option>Replaced</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+				</div>	
+			</div><!--  end of col -->
+			<!-- Psychiatric section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Psychiatric issues (Daily Assessment)','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="psy_Orientaion">Orientation</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="psy_Orientaion" id="psy_Orientaion">
+					    			<option>[select]</option>
+					    			<option>Person</option>
+					    			<option>Place</option>
+					    			<option>Time</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="psy_mood">Mood/affect</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="psy_mood" id="psy_mood">
+					    			<option>[select]</option>
+					    			<option>Broad</option>
+					    			<option>Depressed</option>
+					    			<option>Cheerful</option>
+					    			<option>Irritable</option>
+					    			<option>Hostile</option>
+					    			<option>Restricted</option>
+					    			<option>Flat</option>
+					    			<option>Labile</option>
+					    			<option>Bizarre</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="psy_memory">Concentration/Memory</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="psy_memory" id="psy_memory">
+					    			<option>[select]</option>
+					    			<option>WNL</option>
+					    			<option>good</option>
+					    			<option>poor</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="psy_appearance">Appearance</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="psy_appearance" id="psy_appearance">
+					    			<option>[select]</option>
+					    			<option>Disheveled</option>
+					    			<option>Neat/Clean</option>
+					    			<option>Poor personal hygiene</option>
+					    			<option>Appears older than stated</option>
+					    			<option>Appears younger than stated</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="psy_behaviour">Behavior</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="psy_behaviour" id="psy_behaviour">
+					    			<option>[select]</option>
+					    			<option>Normal/alert</option>
+					    			<option>Cooperative</option>
+					    			<option>Uncooperative</option>
+					    			<option>Resistant</option>
+					    			<option>Overactive</option>
+					    			<option>Combative</option>
+					    			<option>Withdrawn</option>
+					    			<option>Dramtized</option>
+					    			<option>Self-destructive</option>
+					    			<option>Agitated</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_oculomotor">Oculomotor</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_oculomotor" id="NE_oculomotor">
+					    			<option>[select]</option>
+					    			<option>Fucus/Tracks/Conjugates</option>
+					    			<option>Disconjugate</option>
+					    			<option>Focus</option>
+					    			<option>L gaze preference</option>
+					    			<option>R gaze preference</option>
+					    			<option>Nystagmus</option>
+					    			<option>L Ptosis</option>
+					    			<option>R ptosis</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_fontanel">fontanel</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_fontanel" id="NE_fontanel">
+					    			<option>[select]</option>
+					    			<option>soft</option>
+					    			<option>Flat</option>
+					    			<option>Sutures approximated</option>
+					    			<option>Sutures overriding</option>
+					    			<option>Sutures split</option>
+					    			<option>Bulging</option>
+					    			<option>Closed</option>
+					    			<option>Depressed</option>
+					    			<option>Full</option>
+					    			<option>Pulsatile</option>
+					    			<option>Tense</option>
+					    			<option>Unable to assess</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_reflexes">reflexes</label>
+					    	<div class="col-sm-6">
+					    		<input type="number" class="form-control" min="0" max="5" name="NE_reflexes" id="NE_reflexes">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4">seizure activity</label>
+					    	<div class="col-sm-6">
+					    		<input type="checkbox" name="NE_yes" id="NE_yes">Yes
+					    		<input type="checkbox" name="NE_no" id="NE_no"> No
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_monitoring">neuro monitoring</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_monitoring" id="NE_monitoring">
+					    			<option>[select]</option>
+					    			<option>Continuous EEG</option>
+					    			<option>Brainz</option>
+					    			<option>CFM</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NE_collar">c-collar</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NE_collar" id="NE_collar">
+					    			<option>[select]</option>
+					    			<option>Yes</option>
+					    			<option>Cleaned</option>
+					    			<option>D/C'd</option>
+					    			<option>Pads changed</option>
+					    			<option>Skin checked</option>
+					    			<option>Replaced</option>
 					    			<option>Other</option>
 					    		</select>
 					    	</div>
