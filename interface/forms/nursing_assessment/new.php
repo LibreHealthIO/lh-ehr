@@ -1284,34 +1284,176 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="psy_riskPrecaution">cap refill LUE</label>
+					    	<label class="control-label col-sm-4" for="cardio_crLUE">cap refill LUE</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" name="psy_riskPrecaution" id="psy_riskPrecaution">
+					    		<select class="form-control" name="cardio_crLUE" id="cardio_crLUE">
 					    			<option>[select]</option>
-					    			<option>Assaultive</option>
-					    			<option>Boundary issues</option>
-					    			<option>Escalated behaviour</option>
-					    			<option>Fire Setting</option>
-					    			<option>run</option>
-					    			<option>self-injurious behaviour</option>
-					    			<option>suicidal</option>
-					    			<option>none</option>
-					    			<option>other</option>
+					    			<option>1-8 seconds</option>
+					    			<option>>8 seconds</option>
+					    			<option>unable to assess</option>
+					    			<option>flash</option>
 					    		</select>
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="NE_collar">Escalated behavior</label>
+					    	<label class="control-label col-sm-4" for="cardio_crRLE">cap refill RLE</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" name="NE_collar" id="NE_collar">
+					    		<select class="form-control" name="cardio_crRLE" id="cardio_crRLE">
 					    			<option>[select]</option>
-					    			<option>Distraction techniques</option>
-					    			<option>limit setting</option>
-					    			<option>notify provider</option>
-					    			<option>parental assist</option>
-					    			<option>re-direction</option>
-					    			<option>verbal de-escalation</option>
-					    			<option>Other</option>
+					    			<option>1-8 seconds</option>
+					    			<option>>8 seconds</option>
+					    			<option>unable to assess</option>
+					    			<option>flash</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_crLLE">cap refill LLE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_crLLE" id="cardio_crLLE">
+					    			<option>[select]</option>
+					    			<option>1-8 seconds</option>
+					    			<option>>8 seconds</option>
+					    			<option>unable to assess</option>
+					    			<option>flash</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_centralColor">Central Color/Temp</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_centralColor" id="cardio_centralColor">
+					    			<option>[select]</option>
+					    			<option>Pink, warm, dry</option>
+					    			<option>Bruising</option>
+					    			<option>Cold</option>
+					    			<option>Cool</option>
+					    			<option>Cyanotic</option>
+					    			<option>Cyanotic lips</option>
+					    			<option>diaphoretic</option>
+					    			<option>dry</option>
+					    			<option>dusky</option>
+					    			<option>hot</option>
+					    			<option>jaundiced</option>
+					    			<option>mottled</option>
+					    			<option>pale</option>
+					    			<option>pink</option>
+					    			<option>plethoric</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_PeripheralColor">Peripheral Color/Temp</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_PeripheralColor" id="cardio_PeripheralColor">
+					    			<option>[select]</option>
+					    			<option>Pink, warm, dry</option>
+					    			<option>Bruising</option>
+					    			<option>Cold</option>
+					    			<option>Cool</option>
+					    			<option>Cyanotic</option>
+					    			<option>Cyanotic lips</option>
+					    			<option>diaphoretic</option>
+					    			<option>dry</option>
+					    			<option>dusky</option>
+					    			<option>hot</option>
+					    			<option>jaundiced</option>
+					    			<option>mottled</option>
+					    			<option>pale</option>
+					    			<option>pink</option>
+					    			<option>plethoric</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_colorRUE"> Color/Temp RUE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_colorRUE" id="cardio_colorRUE">
+					    			<option>[select]</option>
+					    			<option>Pink, warm, dry</option>
+					    			<option>Bruising</option>
+					    			<option>Cold</option>
+					    			<option>Cool</option>
+					    			<option>Cyanotic</option>
+					    			<option>Cyanotic lips</option>
+					    			<option>diaphoretic</option>
+					    			<option>dry</option>
+					    			<option>dusky</option>
+					    			<option>hot</option>
+					    			<option>jaundiced</option>
+					    			<option>mottled</option>
+					    			<option>pale</option>
+					    			<option>pink</option>
+					    			<option>plethoric</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_colorLUE"> Color/Temp LUE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_colorLUE" id="cardio_colorLUE">
+					    			<option>[select]</option>
+					    			<option>Pink, warm, dry</option>
+					    			<option>Bruising</option>
+					    			<option>Cold</option>
+					    			<option>Cool</option>
+					    			<option>Cyanotic</option>
+					    			<option>Cyanotic lips</option>
+					    			<option>diaphoretic</option>
+					    			<option>dry</option>
+					    			<option>dusky</option>
+					    			<option>hot</option>
+					    			<option>jaundiced</option>
+					    			<option>mottled</option>
+					    			<option>pale</option>
+					    			<option>pink</option>
+					    			<option>plethoric</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_colorRLE"> Color/Temp RLE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_colorRLE" id="cardio_colorRLE">
+					    			<option>[select]</option>
+					    			<option>Pink, warm, dry</option>
+					    			<option>Bruising</option>
+					    			<option>Cold</option>
+					    			<option>Cool</option>
+					    			<option>Cyanotic</option>
+					    			<option>Cyanotic lips</option>
+					    			<option>diaphoretic</option>
+					    			<option>dry</option>
+					    			<option>dusky</option>
+					    			<option>hot</option>
+					    			<option>jaundiced</option>
+					    			<option>mottled</option>
+					    			<option>pale</option>
+					    			<option>pink</option>
+					    			<option>plethoric</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_colorLLE"> Color/Temp LLE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_colorLLE" id="cardio_colorLLE">
+					    			<option>[select]</option>
+					    			<option>Pink, warm, dry</option>
+					    			<option>Bruising</option>
+					    			<option>Cold</option>
+					    			<option>Cool</option>
+					    			<option>Cyanotic</option>
+					    			<option>Cyanotic lips</option>
+					    			<option>diaphoretic</option>
+					    			<option>dry</option>
+					    			<option>dusky</option>
+					    			<option>hot</option>
+					    			<option>jaundiced</option>
+					    			<option>mottled</option>
+					    			<option>pale</option>
+					    			<option>pink</option>
+					    			<option>plethoric</option>
 					    		</select>
 					    	</div>
 						</div>
