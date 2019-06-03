@@ -612,7 +612,148 @@ $returnurl = 'encounter_top.php';
 					
 				</div>
 				
-			</div>
+			</div><!--  end of col -->
+
+			<div class="col-sm-6 col-md-3">
+				<!-- Sedation section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Sedation/Respiration','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="repiratory_pattern">Repiratory Pattern</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="repiratory_pattern" id="repiratory_pattern">
+					    			<option>[select]</option>
+					    			<option>Abdominal</option>
+					    			<option>Agonal</option>
+					    			<option>apnea</option>
+					    			<option>BiPAP</option>
+					    			<option>CPAP</option>
+					    			<option>Dyspnea</option>
+					    			<option>Gasping</option>
+					    			<option>Grunting</option>
+					    			<option>Irregular</option>
+					    			<option>Labored</option>
+					    			<option>Nasal flaring</option>
+					    			<option>Oscillator</option>
+					    			<option>Prolonged Expiration</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+				</div>	
+			</div><!--  end of col -->
+			<div class="col-sm-6 col-md-3">
+				<!-- Thermoregulation section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Thermoregulation','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="thermoregulation">Thermoregulation type</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="thermoregulation" id="thermoregulation">
+					    			<option>[select]</option>
+					    			<option>Bair hugger</option>
+					    			<option>blanket</option>
+					    			<option>blanket-cooling machine</option>
+					    			<option>blanket removed</option>
+					    			<option>bundling</option>
+					    			<option>clothes removed</option>
+					    			<option>cool cloths</option>
+					    			<option>Double wall isolette</option>
+					    			<option>double</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+				</div>	
+			</div><!--  end of col -->
+		</div> <!-- end of row -->
+
+		<div class="row">
+			<div class="col-sm-6 col-md-3">
+				<!-- Neuro motor location section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Neuro Motor','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NM_location">Location</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NM_location" id="NM_location">
+					    			<option>[select]</option>
+					    			<option>All extremities</option>
+					    			<option>right side</option>
+					    			<option>left side</option>
+					    			<option>RUE</option>
+					    			<option>LUE</option>
+					    			<option>LLE</option>
+					    			<option>Upper bilateral</option>
+					    			<option>Lower Bilateral</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NM_limbMovnt">Limb Movements</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NM_limbMovnt" id="NM_limbMovnt">
+					    			<option>[select]</option>
+					    			<option>Full spontaneous</option>
+					    			<option>Contracted</option>
+					    			<option>Decerebrate</option>
+					    			<option>Decorticate</option>
+					    			<option>Flaccid</option>
+					    			<option>Limited Spontaneous</option>
+					    			<option>Jittery</option>
+					    			<option>Med paralyzed</option>
+					    			<option>Moves to painful stimuli</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NM_strength">Motor Strength</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NM_strength" id="NM_strength">
+					    			<option>[select]</option>
+					    			<option>Normal</option>
+					    			<option>Baseline</option>
+					    			<option>Strong</option>
+					    			<option>BiPAP</option>
+					    			<option>Hypertonic</option>
+					    			<option>Hypotonic</option>
+					    			<option>Weak</option>
+					    			<option>Very Weak</option>
+					    			<option>Flaccid</option>
+					    			<option>Absent</option>
+					    			<option>Unable to assess</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="NM_sensation">Sensation</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="NM_sensation" id="NM_sensation">
+					    			<option>[select]</option>
+					    			<option>Normal</option>
+					    			<option>full</option>
+					    			<option>Tingling</option>
+					    			<option>Decreased</option>
+					    			<option>Numbness</option>
+					    			<option>Unable to assess</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+				</div>	
+			</div><!--  end of col -->
 		</div> <!-- end of row -->
 
 		<div>
