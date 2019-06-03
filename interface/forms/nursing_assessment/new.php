@@ -1457,6 +1457,132 @@ $returnurl = 'encounter_top.php';
 					    		</select>
 					    	</div>
 						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_centralPulses">Central pulses</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_centralPulses" id="cardio_centralPulses">
+					    			<option>[select]</option>
+					    			<option>1</option>
+					    			<option>2</option>
+					    			<option>3</option>
+					    			<option>Absent by palpitation</option>
+					    			<option>Absent by doppler</option>
+					    			<option>Bounding</option>
+					    			<option>Doppler</option>
+					    			<option>Equal</option>
+					    			<option>Strong</option>
+					    			<option>Unequal</option>
+					    			<option>Weak</option>
+					    			<option>Carotid palpated</option>
+					    			<option>Femoral palpated</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_pheripheralPulses">Pheripheral pulses</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_pheripheralPulses" id="cardio_pheripheralPulses">
+					    			<option>[select]</option>
+					    			<option>1</option>
+					    			<option>2</option>
+					    			<option>3</option>
+					    			<option>Absent by palpitation</option>
+					    			<option>Absent by doppler</option>
+					    			<option>Bounding</option>
+					    			<option>Doppler</option>
+					    			<option>Equal</option>
+					    			<option>Strong</option>
+					    			<option>Unequal</option>
+					    			<option>Weak</option>
+					    			<option>Carotid palpated</option>
+					    			<option>Femoral palpated</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_pulseRUE">Pulse RUE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_pulseRUE" id="cardio_pulseRUE">
+					    			<option>[select]</option>
+					    			<option>1</option>
+					    			<option>2</option>
+					    			<option>3</option>
+					    			<option>Absent by palpitation</option>
+					    			<option>Absent by doppler</option>
+					    			<option>Bounding</option>
+					    			<option>Doppler</option>
+					    			<option>Equal</option>
+					    			<option>Strong</option>
+					    			<option>Unequal</option>
+					    			<option>Weak</option>
+					    			<option>Carotid palpated</option>
+					    			<option>Femoral palpated</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_pulseLUE">Pulse LUE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_pulseLUE" id="cardio_pulseLUE">
+					    			<option>[select]</option>
+					    			<option>1</option>
+					    			<option>2</option>
+					    			<option>3</option>
+					    			<option>Absent by palpitation</option>
+					    			<option>Absent by doppler</option>
+					    			<option>Bounding</option>
+					    			<option>Doppler</option>
+					    			<option>Equal</option>
+					    			<option>Strong</option>
+					    			<option>Unequal</option>
+					    			<option>Weak</option>
+					    			<option>Carotid palpated</option>
+					    			<option>Femoral palpated</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_pulseRUE">Pulse RUE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_pulseRUE" id="cardio_pulseRUE">
+					    			<option>[select]</option>
+					    			<option>1</option>
+					    			<option>2</option>
+					    			<option>3</option>
+					    			<option>Absent by palpitation</option>
+					    			<option>Absent by doppler</option>
+					    			<option>Bounding</option>
+					    			<option>Doppler</option>
+					    			<option>Equal</option>
+					    			<option>Strong</option>
+					    			<option>Unequal</option>
+					    			<option>Weak</option>
+					    			<option>Carotid palpated</option>
+					    			<option>Femoral palpated</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_pulseLLE">Pulse LLE</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_pulseLLE" id="cardio_pulseLLE">
+					    			<option>[select]</option>
+					    			<option>1</option>
+					    			<option>2</option>
+					    			<option>3</option>
+					    			<option>Absent by palpitation</option>
+					    			<option>Absent by doppler</option>
+					    			<option>Bounding</option>
+					    			<option>Doppler</option>
+					    			<option>Equal</option>
+					    			<option>Strong</option>
+					    			<option>Unequal</option>
+					    			<option>Weak</option>
+					    			<option>Carotid palpated</option>
+					    			<option>Femoral palpated</option>
+					    		</select>
+					    	</div>
+						</div>
 					</div>
 				</div>	
 			</div><!--  end of col -->
