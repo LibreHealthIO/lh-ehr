@@ -1586,8 +1586,501 @@ $returnurl = 'encounter_top.php';
 					</div>
 				</div>	
 			</div><!--  end of col -->
+			<div class="col-sm-6 col-md-3">
+				<!-- Respiratory system section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Respiratory system','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_pattern">Respiratory pattern</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_pattern" id="resp_pattern">
+					    			<option>[select]</option>
+					    			<option>Abdominal</option>
+					    			<option>Agonal</option>
+					    			<option>Apena</option>
+					    			<option>BiPAPA</option>
+					    			<option>CPAP</option>
+					    			<option>Dyspnea</option>
+					    			<option>Grunting</option>
+					    			<option>Labored</option>
+					    			<option>Irregular</option>
+					    			<option>Nasal Flaring</option>
+					    			<option>Oscillator</option>
+					    			<option>Prolonged expiration</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_retractions">Retractions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_retractions" id="resp_retractions">
+					    			<option>[select]</option>
+					    			<option>None</option>
+					    			<option>intercostal</option>
+					    			<option>mild</option>
+					    			<option>moderate</option>
+					    			<option>severe</option>
+					    			<option>subcostal</option>
+					    			<option>submandibular</option>
+					    			<option>substernal</option>
+					    			<option>supraclavicular</option>
+					    			<option>suprasternal</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="cardio_rhythm">cough</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="cardio_rhythm" id="cardio_rhythm">
+					    			<option>[select]</option>
+					    			<option>Barky</option>
+					    			<option>Croupy</option>
+					    			<option>Dry</option>
+					    			<option>Gag</option>
+					    			<option>Gag not present</option>
+					    			<option>Harsh</option>
+					    			<option>Hemooptysis</option>
+					    			<option>Loose</option>
+					    			<option>Moist</option>
+					    			<option>Nonproductive</option>
+					    			<option>Occasional</option>
+					    			<option>Paroxysmal</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_appearance">appearance</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_appearance" id="resp_appearance">
+					    			<option>[select]</option>
+					    			<option>Pink</option>
+					    			<option>Pale</option>
+					    			<option>Mottled</option>
+					    			<option>Cyanotic</option>
+					    			<option>Dusky</option>
+					    			<option>Nailed</option>
+					    			<option>Clubbing</option>
+					    			<option>Barrel Chested</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_bsallLobes">Breath sounds all lobes</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_bsallLobes" id="resp_bsallLobes">
+					    			<option>[select]</option>
+					    			<option>Clear equal and good aeration bilaterally</option>
+					    			<option>clear and equal</option>
+					    			<option>Aeration</option>
+					    			<option>absent</option>
+					    			<option>air leak</option>
+					    			<option>clear</option>
+					    			<option>coarse</option>
+					    			<option>crackles</option>
+					    			<option>diminished</option>
+					    			<option>end expiratory</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_bsRUL">Breath sounds RUL</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_bsRUL" id="resp_bsRUL">
+					    			<option>[select]</option>
+					    			<option>Clear equal and good aeration bilaterally</option>
+					    			<option>clear and equal</option>
+					    			<option>Aeration</option>
+					    			<option>absent</option>
+					    			<option>air leak</option>
+					    			<option>clear</option>
+					    			<option>coarse</option>
+					    			<option>crackles</option>
+					    			<option>diminished</option>
+					    			<option>end expiratory</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_bsRML">Breath sounds RML</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_bsRML" id="resp_bsRML">
+					    			<option>[select]</option>
+					    			<option>Clear equal and good aeration bilaterally</option>
+					    			<option>clear and equal</option>
+					    			<option>Aeration</option>
+					    			<option>absent</option>
+					    			<option>air leak</option>
+					    			<option>clear</option>
+					    			<option>coarse</option>
+					    			<option>crackles</option>
+					    			<option>diminished</option>
+					    			<option>end expiratory</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_bsRLL">Breath sounds RLL</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_bsRLL" id="resp_bsRLL">
+					    			<option>[select]</option>
+					    			<option>Clear equal and good aeration bilaterally</option>
+					    			<option>clear and equal</option>
+					    			<option>Aeration</option>
+					    			<option>absent</option>
+					    			<option>air leak</option>
+					    			<option>clear</option>
+					    			<option>coarse</option>
+					    			<option>crackles</option>
+					    			<option>diminished</option>
+					    			<option>end expiratory</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_bsLUL">Breath sounds LUL</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_bsLUL" id="resp_bsLUL">
+					    			<option>[select]</option>
+					    			<option>Clear equal and good aeration bilaterally</option>
+					    			<option>clear and equal</option>
+					    			<option>Aeration</option>
+					    			<option>absent</option>
+					    			<option>air leak</option>
+					    			<option>clear</option>
+					    			<option>coarse</option>
+					    			<option>crackles</option>
+					    			<option>diminished</option>
+					    			<option>end expiratory</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_bsLLL">Breath sounds LLL</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_bsLLL" id="resp_bsLLL">
+					    			<option>[select]</option>
+					    			<option>Clear equal and good aeration bilaterally</option>
+					    			<option>clear and equal</option>
+					    			<option>Aeration</option>
+					    			<option>absent</option>
+					    			<option>air leak</option>
+					    			<option>clear</option>
+					    			<option>coarse</option>
+					    			<option>crackles</option>
+					    			<option>diminished</option>
+					    			<option>end expiratory</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_interventions">Respiratory interventions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_interventions" id="resp_interventions">
+					    			<option>[select]</option>
+					    			<option>BIPAP/CPAP Trial</option>
+					    			<option>Chest PT</option>
+					    			<option>Cough</option>
+					    			<option>Continuous nebulizer</option>
+					    			<option>Cool mist</option>
+					    			<option>Deep breathing</option>
+					    			<option>IS</option>
+					    			<option>Intermittent positive pressure</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_suctiontype">Suctioning type</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_suctiontype" id="resp_suctiontype">
+					    			<option>[select]</option>
+					    			<option>Closed</option>
+					    			<option>open</option>
+					    			<option>nasal aspirate</option>
+					    			<option>deep only</option>
+					    			<option>home</option>
+					    			<option>bulb</option>
+					    			<option>nasal frida</option>
+					    			<option>Deep than other</option>
+					    			<option>bulb then other</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_oralSec">Oral secretions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_oralSec" id="resp_oralSec">
+					    			<option>[select]</option>
+					    			<option>blood tinged</option>
+					    			<option>brown</option>
+					    			<option>clear</option>
+					    			<option>cloudy</option>
+					    			<option>copious</option>
+					    			<option>frank blood</option>
+					    			<option>frothy</option>
+					    			<option>green</option>
+					    			<option>large</option>
+					    			<option>moderate</option>
+					    			<option>none</option>
+					    			<option>old blood</option>
+					    			<option>pink</option>
+					    			<option>plugs</option>
+					    			<option>scant</option>
+					    			<option>small</option>
+					    			<option>tan</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_nasalSec">Nasal secretions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_nasalSec" id="resp_nasalSec">
+					    			<option>[select]</option>
+					    			<option>blood tinged</option>
+					    			<option>brown</option>
+					    			<option>clear</option>
+					    			<option>cloudy</option>
+					    			<option>copious</option>
+					    			<option>frank blood</option>
+					    			<option>frothy</option>
+					    			<option>green</option>
+					    			<option>large</option>
+					    			<option>moderate</option>
+					    			<option>none</option>
+					    			<option>old blood</option>
+					    			<option>pink</option>
+					    			<option>plugs</option>
+					    			<option>scant</option>
+					    			<option>small</option>
+					    			<option>tan</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="resp_airwaySec">Airway secretions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="resp_airwaySec" id="resp_airwaySec">
+					    			<option>[select]</option>
+					    			<option>blood tinged</option>
+					    			<option>brown</option>
+					    			<option>clear</option>
+					    			<option>cloudy</option>
+					    			<option>copious</option>
+					    			<option>frank blood</option>
+					    			<option>frothy</option>
+					    			<option>green</option>
+					    			<option>large</option>
+					    			<option>moderate</option>
+					    			<option>none</option>
+					    			<option>old blood</option>
+					    			<option>pink</option>
+					    			<option>plugs</option>
+					    			<option>scant</option>
+					    			<option>small</option>
+					    			<option>tan</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+				</div>	
 			</div><!--  end of col -->
-		</div>
+
+			<div class="col-sm-6 col-md-3">
+					<!-- section for GI System -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('GI Systems','e'); ?></h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_abdAsssess">Abd assessment</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_abdAsssess" name="GI_abdAsssess">
+					    			<option>[select]</option>
+					    			<option>Round</option>
+					    			<option>soft</option>
+					    			<option>ascites</option>
+					    			<option>concave</option>
+					    			<option>discolored</option>
+					    			<option>distended</option>
+					    			<option>edematous</option>
+					    			<option>firm</option>
+					    			<option>flat</option>
+					    			<option>loops visible</option>
+					    			<option>loops palpable</option>
+					    			<option>non distended</option>
+					    			<option>non tender</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="BG_level">Abd girth (cm)</label>
+					    	<div class="col-sm-6">
+					    		<input type="number" class="form-control" id="GI_girth" name="GI_girth">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_liverPos">Liver position</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_liverPos" name="GI_liverPos">
+					    			<option>Unable to assess</option>
+					    			<option>not palpable</option>
+					    			<option>midline</option>
+					    			<option>right costal margin</option>
+					    			<option>at umbilicus</option>
+					    			<option>firm</option>
+					    			<option>soft</option>
+					    			<option>1cm below</option>
+					    			<option>2cm below</option>
+					    			<option>3cm below</option>
+					    			<option>4cm below</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_symptoms">GI symptoms</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_symptoms" name="GI_symptoms">
+					    			<option>Arching</option>
+					    			<option>bloating</option>
+					    			<option>constipation</option>
+					    			<option>cramping</option>
+					    			<option>diarrhea</option>
+					    			<option>epidural</option>
+					    			<option>flatus</option>
+					    			<option>gagging</option>
+					    			<option>guarding</option>
+					    			<option>hematuria</option>
+					    			<option>incontinent</option>
+					    			<option>malabsorption</option>
+					    			<option>nausea</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_interventions">GI interventions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_interventions" name="GI_interventions">
+					    			<option>[select]]</option>
+					    			<option>24 hour stool collection</option>
+					    			<option>bowel clean out/prep</option>
+					    			<option>bowel prep given</option>
+					    			<option>bowel program</option>
+					    			<option>bowel/digital stimulation</option>
+					    			<option>flatus</option>
+					    			<option>diapered</option>
+					    			<option>enema</option>
+					    			<option>feeds</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_bsAllQuad">Bowel sounds-all quadrants</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_bsAllQuad" name="GI_bsAllQuad">
+					    			<option>[select]]</option>
+					    			<option>active</option>
+					    			<option>Hyperactive</option>
+					    			<option>Hypoactive</option>
+					    			<option>High pitched</option>
+					    			<option>absent</option>
+					    			<option>unable to assess</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_bsRUG">BS RUQ</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_bsRUG" name="GI_bsRUG">
+					    			<option>[select]]</option>
+					    			<option>active</option>
+					    			<option>Hyperactive</option>
+					    			<option>Hypoactive</option>
+					    			<option>High pitched</option>
+					    			<option>absent</option>
+					    			<option>unable to assess</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_bsRLG">BS RLQ</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_bsRLG" name="GI_bsRLG">
+					    			<option>[select]]</option>
+					    			<option>active</option>
+					    			<option>Hyperactive</option>
+					    			<option>Hypoactive</option>
+					    			<option>High pitched</option>
+					    			<option>absent</option>
+					    			<option>unable to assess</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_bsLUG">BS LUQ</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_bsLUG" name="GI_bsLUG">
+					    			<option>[select]]</option>
+					    			<option>active</option>
+					    			<option>Hyperactive</option>
+					    			<option>Hypoactive</option>
+					    			<option>High pitched</option>
+					    			<option>absent</option>
+					    			<option>unable to assess</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_bsLLG">BS LLQ</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_bsLLG" name="GI_bsLLG">
+					    			<option>[select]]</option>
+					    			<option>active</option>
+					    			<option>Hyperactive</option>
+					    			<option>Hypoactive</option>
+					    			<option>High pitched</option>
+					    			<option>absent</option>
+					    			<option>unable to assess</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GI_epigastric">Epigastric</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GI_epigastric" name="GI_epigastric">
+					    			<option>[select]]</option>
+					    			<option>active</option>
+					    			<option>Hyperactive</option>
+					    			<option>Hypoactive</option>
+					    			<option>High pitched</option>
+					    			<option>absent</option>
+					    			<option>unable to assess</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div> <!--  end of panel body -->
+				</div> <!-- end of panel primary -->
+			</div><!--  end of col-4 -->
+
+		</div> <!-- end  of rows -->
 
 		<div>
 			<!-- Save/Cancel buttons -->
