@@ -1973,7 +1973,7 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="GI_interventions">GI interventions</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="GI_interventions" name="GI_interventions">
-					    			<option>[select]]</option>
+					    			<option>[select]</option>
 					    			<option>24 hour stool collection</option>
 					    			<option>bowel clean out/prep</option>
 					    			<option>bowel prep given</option>
@@ -1990,7 +1990,7 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="GI_bsAllQuad">Bowel sounds-all quadrants</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="GI_bsAllQuad" name="GI_bsAllQuad">
-					    			<option>[select]]</option>
+					    			<option>[select]</option>
 					    			<option>active</option>
 					    			<option>Hyperactive</option>
 					    			<option>Hypoactive</option>
@@ -2005,7 +2005,7 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="GI_bsRUG">BS RUQ</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="GI_bsRUG" name="GI_bsRUG">
-					    			<option>[select]]</option>
+					    			<option>[select]</option>
 					    			<option>active</option>
 					    			<option>Hyperactive</option>
 					    			<option>Hypoactive</option>
@@ -2020,7 +2020,7 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="GI_bsRLG">BS RLQ</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="GI_bsRLG" name="GI_bsRLG">
-					    			<option>[select]]</option>
+					    			<option>[select]</option>
 					    			<option>active</option>
 					    			<option>Hyperactive</option>
 					    			<option>Hypoactive</option>
@@ -2035,7 +2035,7 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="GI_bsLUG">BS LUQ</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="GI_bsLUG" name="GI_bsLUG">
-					    			<option>[select]]</option>
+					    			<option>[select]</option>
 					    			<option>active</option>
 					    			<option>Hyperactive</option>
 					    			<option>Hypoactive</option>
@@ -2050,7 +2050,7 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="GI_bsLLG">BS LLQ</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="GI_bsLLG" name="GI_bsLLG">
-					    			<option>[select]]</option>
+					    			<option>[select]</option>
 					    			<option>active</option>
 					    			<option>Hyperactive</option>
 					    			<option>Hypoactive</option>
@@ -2065,7 +2065,7 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="GI_epigastric">Epigastric</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="GI_epigastric" name="GI_epigastric">
-					    			<option>[select]]</option>
+					    			<option>[select]</option>
 					    			<option>active</option>
 					    			<option>Hyperactive</option>
 					    			<option>Hypoactive</option>
@@ -2074,6 +2074,89 @@ $returnurl = 'encounter_top.php';
 					    			<option>unable to assess</option>
 					    			<option>other</option>
 					    		</select>
+					    	</div>
+						</div>
+					</div> <!--  end of panel body -->
+				</div> <!-- end of panel primary -->
+			</div><!--  end of col-4 -->
+			<div class="col-md-4">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('GU system','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GU_symptoms">GU symptoms</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GU_symptoms" name="GU_symptoms">
+					    			<option>[select]</option>
+					    			<option>Burning</option>
+					    			<option>Frequency</option>
+					    			<option>Distended</option>
+					    			<option>Dysuria</option>
+					    			<option>Fullness</option>
+					    			<option>Hematuria</option>
+					    			<option>Incontinent</option>
+					    			<option>Oliguria</option>
+					    			<option>Unable to void</option>
+					    			<option>Urgency</option>
+					    			<option>Spasms</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GU_interventions">GU interventions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GU_interventions" name="GU_interventions">
+					    			<option>[select]</option>
+					    			<option>24 hour urine collection</option>
+					    			<option>bladder crede</option>
+					    			<option>catheter irrigated</option>
+					    			<option>diapered</option>
+					    			<option>indwelling catheter</option>
+					    			<option>Medicated</option>
+					    			<option>none</option>
+					    			<option>self catheter</option>
+					    			<option>specimen</option>
+					    			<option>Urgency</option>
+					    			<option>Spasms</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GU_bladderScan">Bladder scan residual amount (ml)</label>
+					    	<div class="col-sm-6">
+					    		<input type="number" class="form-control" id="GU_bladderScan" name="GU_bladderScan">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="GU_drainage">perineal drainage</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="GU_interventions" name="GU_interventions">
+					    			<option>[select]</option>
+					    			<option>none</option>
+					    			<option>small</option>
+					    			<option>moderate</option>
+					    			<option>large</option>
+					    			<option>blood clots</option>
+					    			<option>blood tinged</option>
+					    			<option>brown</option>
+					    			<option>clear</option>
+					    			<option>cloudy</option>
+					    			<option>curdlike</option>
+					    			<option>foul smelling</option>
+					    			<option>frank blood</option>
+					    			<option>green</option>
+					    			<option>milky white</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="col-sm-6">
+							<label class="control-label col-sm-4" for="GU_genitalia">describe genitalia</label>
+							<div class="col-sm-6">
+					    		<textarea type="number" class="form-control" id="GU_genitalia" name="GU_genitalia"> </textarea>
 					    	</div>
 						</div>
 					</div> <!--  end of panel body -->

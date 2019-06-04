@@ -9,7 +9,7 @@ $disable_utf8_flag = false;
 $host	= 'localhost';
 $port	= '3306';
 $login	= 'libreehr';
-$pass	= 'libreehr';
+$pass	= 'ngai';
 $dbase	= 'libreehr';
 
 $sqlconf = array();
