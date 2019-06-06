@@ -1548,9 +1548,9 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="cardio_pulseRUE">Pulse RUE</label>
+					    	<label class="control-label col-sm-4" for="cardio_pulseRLE">Pulse RLE</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" name="cardio_pulseRUE" id="cardio_pulseRUE">
+					    		<select class="form-control" name="cardio_pulseRLE" id="cardio_pulseRUE">
 					    			<option>[select]</option>
 					    			<option>1</option>
 					    			<option>2</option>
