@@ -159,33 +159,6 @@ $returnurl = 'encounter_top.php';
 					</div>
 				</div>	
 			</div><!--  end of col -->
-			<div class="col-sm-6 col-md-3">
-				<!-- Thermoregulation section -->
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title"><?php xl('Thermoregulation','e'); ?></h3>
-					</div>
-					<div class="panel-body">
-						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="thermoregulation">Thermoregulation type</label>
-					    	<div class="col-sm-6">
-					    		<select class="form-control" name="thermoregulation" id="thermoregulation">
-					    			<option>[select]</option>
-					    			<option>Bair hugger</option>
-					    			<option>blanket</option>
-					    			<option>blanket-cooling machine</option>
-					    			<option>blanket removed</option>
-					    			<option>bundling</option>
-					    			<option>clothes removed</option>
-					    			<option>cool cloths</option>
-					    			<option>Double wall isolette</option>
-					    			<option>double</option>
-					    		</select>
-					    	</div>
-						</div>
-					</div>
-				</div>	
-			</div><!--  end of col -->
 		</div> <!-- end of row -->
 		<div class="row">
 				<div class="col-sm-6 col-md-3">
@@ -2079,7 +2052,7 @@ $returnurl = 'encounter_top.php';
 					</div> <!--  end of panel body -->
 				</div> <!-- end of panel primary -->
 			</div><!--  end of col-4 -->
-			<div class="col-md-4">
+			<div class="col-sm-6 col-md-3">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php xl('GU system','e'); ?></h3>
@@ -2153,10 +2126,10 @@ $returnurl = 'encounter_top.php';
 					    		</select>
 					    	</div>
 						</div>
-						<div class="col-sm-6">
+						<div class="form-group">
 							<label class="control-label col-sm-4" for="GU_genitalia">describe genitalia</label>
 							<div class="col-sm-6">
-					    		<textarea type="number" class="form-control" id="GU_genitalia" name="GU_genitalia"> </textarea>
+					    		<textarea  class="form-control" id="GU_genitalia" name="GU_genitalia"> </textarea>
 					    	</div>
 						</div>
 					</div> <!--  end of panel body -->
@@ -2165,6 +2138,473 @@ $returnurl = 'encounter_top.php';
 
 		</div> <!-- end  of rows -->
 
+		<div class="row">
+			<div class="col-sm-6 col-md-3">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('MSK/ORTHO system','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_dlocation">Deficit Location</label>
+					    	<div class="col-sm-6">
+					    		<input type="text" class="form-control" id="msk_dlocation" name="msk_dlocation">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_gcircum">girth/circum location</label>
+					    	<div class="col-sm-6">
+					    		<input type="text" class="form-control" id="msk_gcircum" name="msk_gcircum">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_glocation">girth/circumference (cm) </label>
+					    	<div class="col-sm-6">
+					    		<input type="number" class="form-control" id="msk_glocation" name="msk_glocation">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_muscle">Muscle tone</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_muscle" name="msk_muscle">
+					    			<option>[select]</option>
+					    			<option>Normal</option>
+					    			<option>hypotonic</option>
+					    			<option>hypertonic</option>
+					    			<option>R greater than L</option>
+					    			<option>L greater than R</option>
+					    			<option>Spastic</option>
+					    			<option>Flaccid</option>
+					    			<option>Weak</option>
+					    			<option>Medically paralyzed</option>
+					    			<option>Other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_motion">motion</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_motion" name="msk_motion">
+					    			<option>[select]</option>
+					    			<option>Full ROM</option>
+					    			<option>Limited</option>
+					    			<option>Stiff</option>
+					    			<option>Contractures</option>
+					    			<option>Immobile</option>
+					    			<option>Posturing</option>
+					    			<option>L foot drag</option>
+					    			<option>R foot drag</option>
+					    			<option>L hemiparesis</option>
+					    			<option>R hemiparesis</option>
+					    			<option>Limp</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_appearance">Appearance</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_appearance" name="msk_appearance">
+					    			<option>[select]</option>
+					    			<option>Normal</option>
+					    			<option>red</option>
+					    			<option>Swollen</option>
+					    			<option>red</option>
+					    			<option>tender</option>
+					    			<option>contractures</option>
+					    			<option>casted</option>
+					    			<option>deformity</option>
+					    			<option>injury/trauma</option>
+					    			<option>laceration</option>
+					    			<option>unable to assess</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_support">Support device</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_support" name="msk_support">
+					    			<option>[select]</option>
+					    			<option>On</option>
+					    			<option>off</option>
+					    			<option>abductor pillow</option>
+					    			<option>ACE wrap</option>
+					    			<option>brace</option>
+					    			<option>sling</option>
+					    			<option>splint</option>
+					    			<option>cast</option>
+					    			<option>spica</option>
+					    			<option>petal cast</option>
+					    			<option>IV pole</option>
+					    			<option>Ice pack</option>
+					    			<option>pillows</option>
+					    			<option>C Collar</option>
+					    			<option>Bucks Traction</option>
+					    			<option>Hare</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_weight">Weight bearing</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_weight" name="msk_weight">
+					    			<option>[select]</option>
+					    			<option>Total</option>
+					    			<option>toe touch</option>
+					    			<option>partial</option>
+					    			<option>none</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="msk_degree">CPM degree</label>
+							<div class="col-sm-6">
+						    	<textarea class="form-control" id="msk_degree" name="msk_degree"> </textarea>
+						    </div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_state">CPM on/off</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_state" name="msk_state">
+					    			<option>[select]</option>
+					    			<option>on</option>
+					    			<option>off</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_traction">Traction (lbs)</label>
+					    	<div class="col-sm-6">
+					    		<input type="number" class="form-control" id="msk_traction" name="msk_traction">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_cap">cap refill</label>
+					    	<div class="col-sm-6">
+					    		<input type="number" class="form-control" id="msk_cap" name="msk_cap">
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_assessment"> Traction assessment</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_assessment" name="msk_assessment">
+					    			<option>[select]</option>
+					    			<option>Weight hanging freely</option>
+					    			<option>Limb in neutral position</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_sensation"> motion sensation</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_sensation" name="msk_sensation">
+					    			<option>[select]</option>
+					    			<option>Full spontaneous</option>
+					    			<option>moves fingers/toes</option>
+					    			<option>responds to light touch</option>
+					    			<option>hypersensitve</option>
+					    			<option>hyperreflexive</option>
+					    			<option>Dorsi flex</option>
+					    			<option>Plantar flex</option>
+					    			<option>no movement</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_sensation">extremity color/temp</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_sensation" name="msk_sensation">
+					    			<option>[select]</option>
+					    			<option>pink</option>
+					    			<option>Pale</option>
+					    			<option>flushed</option>
+					    			<option>mottled</option>
+					    			<option>warm</option>
+					    			<option>cool</option>
+					    			<option>other</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="msk_intervention">CMS check intervention</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="msk_intervention" name="msk_intervention">
+					    			<option>[select]</option>
+					    			<option>MD notified</option>
+					    			<option>Elevated</option>
+					    			<option>Reposition</option>
+					    			<option>Ice applied</option>
+					    			<option>Cast splint</option>
+					    		</select>
+					    	</div>
+						</div>
+
+					</div> <!--  end of panel body -->
+				</div> <!-- end of panel primary -->
+			</div> <!-- end of col -->
+			<div class="col-sm-6 col-md-3">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Skin System','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_assessment">Skin assessment</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="skin_assessment" name="skin_assessment">
+					    			<option>[select]</option>
+					    			<option>Skin folds checked</option>
+					    			<option>Posterior surfaces checked</option>
+					    			<option>mucous membranes intact</option>
+					    			<option>nail beds intact</option>
+					    			<option>appropriate for ethnicity</option>
+					    			<option>pink</option>
+					    			<option>casted</option>
+					    			<option>warm</option>
+					    			<option>dry</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_location">Edema location</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_location" name="skin_location">
+					    		</textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_description">Edema description </label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="skin_description" name="skin_description">
+					    			<option>Cold</option>
+					    			<option>Warm</option>
+					    			<option>Hot</option>
+					    			<option>Acute</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_rlocation">Rash location</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_rlocation" name="skin_rlocation">
+					    		</textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_rdescription">Rash description</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="skin_rdescription" name="skin_rdescription">
+					    			<option>[select]</option>
+					    			<option> Blisters</option>
+					    			<option>Blotchy</option>
+					    			<option>Bright red</option>
+					    			<option>Coarse</option>
+					    			<option>Cracked</option>
+					    			<option>Crusted</option>
+					    			<option>Diffuse</option>
+					    			<option>Dry</option>
+					    			<option>Fine</option>
+					    			<option>Flat</option>
+					    			<option>irritated</option>
+					    			<option>Itchy</option>
+					    			<option>Lacy</option>
+					    			<option>Large bumps</option>
+					    			<option>large patches</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_appearance">Appearance</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="skin_appearance" name="skin_appearance">
+					    			<option>[select]</option>
+					    			<option>adipose tissue</option>
+					    			<option>approximated</option>
+					    			<option>bleeding</option>
+					    			<option>blistered</option>
+					    			<option>crepitus</option>
+					    			<option>dehisced</option>
+					    			<option>dressing clean, dry, intact</option>
+					    			<option>dressing with drainage</option>
+					    			<option>dry</option>
+					    			<option>dusky</option>
+					    			<option>EB</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="skin_lassessement">Laceration assessment</label>
+							<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_lassessement" name="skin_lassessement"> </textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="skin_NBlocation">Nodule/Bump location</label>
+							<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_NBlocation" name="skin_NBlocation"> </textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="skin_wlocation">Wound location</label>
+							<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_wlocation" name="skin_wlocation"> </textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_NBdescription">Nodule/Bump description</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="skin_NBdescription" name="skin_NBdescription">
+					    			<option>[select]</option>
+					    			<option>Pink</option>
+					    			<option>red</option>
+					    			<option>oozing</option>
+					    			<option>hard</option>
+					    			<option>cursted</option>
+					    			<option>warm</option>
+					    			<option>hot</option>
+					    			<option>streaking</option>
+					    			<option>non-streaking</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="skin_TfirstNoticed">Time first noticed</label>
+							<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_TfirstNoticed" name="skin_TfirstNoticed"> </textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="skin_DfirstNoticed">Date first noticed</label>
+							<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_DfirstNoticed" name="skin_DfirstNoticed"> </textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="skin_DfirstNoticed">Date Dressing applied/changed</label>
+							<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_DfirstNoticed" name="skin_DfirstNoticed"> </textarea>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_intervention">skin interventions</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="skin_intervention" name="skin_intervention">
+					    			<option>[select]</option>
+					    			<option>Dresssing applied</option>
+					    			<option>Dressing Changed</option>
+					    			<option>cleaned</option>
+					    			<option>medication applied</option>
+					    			<option>MD notified</option>
+					    			<option>none</option>
+					    			<option>antibiotic started</option>
+					    			<option>compression garment</option>
+					    			<option>consult</option>
+
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="skin_dressing">Dressing</label>
+							<div class="col-sm-6">
+					    		<select class="form-control" id="skin_dressing" name="skin_dressing">
+					    			<option>[select]</option>
+					    			<option>Wet to dry</option>
+					    			<option>Moist</option>
+					    			<option>tegaderm</option>
+					    			<option>mepore</option>
+					    			<option>mepilex border</option>
+					    			<option>mepilex border lite</option>
+					    			<option>mepilex sacral border</option>
+					    			<option>douderm</option>
+					    			<option>sorbaview</option>
+					    			<option>tape</option>
+					    			<option>gauze</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_drainage">Drainage</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="skin_drainage" name="skin_drainage">
+					    			<option>[select]</option>
+					    			<option>Small</option>
+					    			<option>Clear</option>
+					    			<option>copious</option>
+					    			<option>green</option>
+					    			<option>large</option>
+					    			<option>malodorous</option>
+					    			<option>moderate</option>
+					    			<option>none</option>
+					    			<option>no new drainage</option>
+					    			<option>purulent</option>
+					    			<option>sanguineous</option>
+					    			<option>scant</option>
+					    			<option>sero-sanguineous</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_treatment"> Topical Treatment</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" id="skin_treatment" name="skin_treatment">
+					    			<option>[select]</option>
+					    			<option>Aquacel</option>
+					    			<option>Aquacel AG</option>
+					    			<option>Aquaphor</option>
+					    			<option>Aquaphor with Maalox</option>
+					    			<option>Bacitracin</option>
+					    			<option>Betadine</option>
+					    			<option>Cavilon</option>
+					    			<option>Criticaid</option>
+					    			<option>Criticaid AF</option>
+					    			<option>Dakin's solution</option>
+					    			<option>Desitin</option>
+					    		</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="skin_comment">Comments/Remarks</label>
+					    	<div class="col-sm-6">
+					    		<textarea class="form-control" id="skin_comment" name="skin_comment">
+					    		</textarea>
+					    	</div>
+						</div>
+						
+					</div> <!--  end of panel body -->
+				</div> <!-- end of panel primary -->
+			</div> <!-- end of col -->
+			<div class="col-sm-6 col-md-3">
+				<!-- Thermoregulation section -->
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php xl('Thermoregulation','e'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="thermoregulation">Thermoregulation type</label>
+					    	<div class="col-sm-6">
+					    		<select class="form-control" name="thermoregulation" id="thermoregulation">
+					    			<option>[select]</option>
+					    			<option>Bair hugger</option>
+					    			<option>blanket</option>
+					    			<option>blanket-cooling machine</option>
+					    			<option>blanket removed</option>
+					    			<option>bundling</option>
+					    			<option>clothes removed</option>
+					    			<option>cool cloths</option>
+					    			<option>Double wall isolette</option>
+					    			<option>double</option>
+					    		</select>
+					    	</div>
+						</div>
+					</div>
+				</div>	
+			</div><!--  end of col -->
+		</div> <!-- end of rows -->
+
 		<div>
 			<!-- Save/Cancel buttons -->
 			<input type="submit" id="save" class='btn btn-success' value="<?php echo xla('Save'); ?>"> &nbsp;
@@ -2172,4 +2612,4 @@ $returnurl = 'encounter_top.php';
 		</div>
 	</form>
 </body>
-</html>
+</html>-
