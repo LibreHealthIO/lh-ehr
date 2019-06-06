@@ -76,9 +76,9 @@ $returnurl = 'encounter_top.php';
 
 					<div class="panel-body">
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="P_interactions">Patient Behaviour</label>
+					    	<label class="control-label col-sm-4" for="pt_behavior">Patient Behaviour</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" id="P_interactions" name="P_interactions">
+					    		<select class="form-control" id="pt_behavior" name="pt_behavior">
 					    			<option>Content</option>
 					    			<option>Combative</option>
 					    			<option>Compliant</option>
@@ -94,15 +94,15 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_level">Patient Support</label>
+					    	<label class="control-label col-sm-4" for="pt_support">Patient Support</label>
 					    	<div class="col-sm-6">
-					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    		<textarea class="form-control" id="pt_support" name="pt_support"></textarea>
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_level">Patient Response</label>
+					    	<label class="control-label col-sm-4" for="pt_response">Patient Response</label>
 					    	<div class="col-sm-6">
-					    		<textarea class="form-control" id="BG_level" name="BG_level"></textarea>
+					    		<textarea class="form-control" id="pt_response" name="pt_response"></textarea>
 					    	</div>
 						</div>
 					</div> <!--  end of panel body -->
@@ -193,12 +193,12 @@ $returnurl = 'encounter_top.php';
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-4" for="SpO2">
+							<label class="control-label col-sm-4" for="FiO2">
 								FiO2 (%)
 							</label>
 
 							<div class="col-sm-6">
-								<input type="number" name="SpO2" class="form-control" id="SpO2">
+								<input type="number" name="FiO2" class="form-control" id="FiO2">
 							</div>
 						</div>
 						<div class="form-group">
@@ -228,8 +228,8 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group ">
-					      <label class="control-label col-sm-4"> Room air(yes/no)</label>
-					      <div class="col-sm-5"><input type="checkbox" name="remember"></div>
+					      <label class="control-label col-sm-4" for="V_roomAir"> Room air(yes/no)</label>
+					      <div class="col-sm-5"><input type="checkbox" name="V_roomAir" id="V_roomAir" name="remember"></div>
 					      
 					    </div>
 
@@ -604,7 +604,21 @@ $returnurl = 'encounter_top.php';
 						    			<option>Vomitting</option>
 						    			<option>Other</option>
 						    		</select>
-						    	</div>
+						    	</div> 
+							</div>
+							<div class="form-group">
+						    	<label class="control-label col-sm-4" for="pasero_sedation_score">Pasero Sedation Score</label>
+						    	<div class="col-sm-6">
+						    		<select class="form-control" id="pasero_sedation_score" name="pasero_sedation_score">
+						    			<option>[select]</option>
+						    			<option>S</option>
+						    			<option>1</option>
+						    			<option>2</option>
+						    			<option>3</option>
+						    			<option>4</option>
+						    			<option>l</option>
+						    		</select>
+						    	</div> pasero_sedation_score
 							</div>
 					</div> <!--  end of panel body -->
 				</div> <!-- end of panel primary -->
@@ -637,6 +651,22 @@ $returnurl = 'encounter_top.php';
 							    <option>Page</option>
 							    <option>Face to Face</option>
 							    <option>Other</option>
+							</select>
+					    	</div>
+						</div>
+						<div class="form-group">
+					    	<label class="control-label col-sm-4" for="PN_response">Response</label>
+					    	<div class="col-sm-6">
+					    		<select name="PN_response" class="form-control" id="PN_response">
+					    		<option>[select]</option>
+							    <option>En route</option>
+							    <option>At bedside</option>
+							    <option>Escalation Huddle</option>
+							    <option>In Department</option>
+							    <option>No New Orders</option>
+							    <option>See Orders</option>
+							    <option>Waiting for Response</option>
+							    <option>other</option>
 							</select>
 					    	</div>
 						</div>
@@ -910,10 +940,13 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4">seizure activity</label>
+					    	<label class="control-label col-sm-4" for="NE_seizure_activity">seizure activity</label>
 					    	<div class="col-sm-6">
-					    		<input type="checkbox" name="NE_yes" id="NE_yes">Yes
-					    		<input type="checkbox" name="NE_no" id="NE_no"> No
+					    		<select class="form-control" name="NE_seizure_activity" id="NE_seizure_activity">
+					    			<option></option>
+					    			<option>No</option>
+					    			<option>Yes</option>
+					    		</select>
 					    	</div>
 						</div>
 						<div class="form-group">
@@ -1097,9 +1130,9 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="NE_collar">Escalated behavior</label>
+					    	<label class="control-label col-sm-4" for="Psy_escalated_behavior">Escalated behavior</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" name="NE_collar" id="NE_collar">
+					    		<select class="form-control" name="Psy_escalated_behavior" id="Psy_escalated_behavior">
 					    			<option>[select]</option>
 					    			<option>Distraction techniques</option>
 					    			<option>limit setting</option>
@@ -1606,9 +1639,9 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="cardio_rhythm">cough</label>
+					    	<label class="control-label col-sm-4" for="resp_cough">cough</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" name="cardio_rhythm" id="cardio_rhythm">
+					    		<select class="form-control" name="resp_cough" id="resp_cough">
 					    			<option>[select]</option>
 					    			<option>Barky</option>
 					    			<option>Croupy</option>
@@ -1899,7 +1932,7 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="BG_level">Abd girth (cm)</label>
+					    	<label class="control-label col-sm-4" for="GI_girth">Abd girth (cm)</label>
 					    	<div class="col-sm-6">
 					    		<input type="number" class="form-control" id="GI_girth" name="GI_girth">
 					    	</div>
@@ -2107,7 +2140,7 @@ $returnurl = 'encounter_top.php';
 						<div class="form-group">
 					    	<label class="control-label col-sm-4" for="GU_drainage">perineal drainage</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" id="GU_interventions" name="GU_interventions">
+					    		<select class="form-control" id="GU_drainage" name="GU_drainage">
 					    			<option>[select]</option>
 					    			<option>none</option>
 					    			<option>small</option>
@@ -2152,15 +2185,15 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="msk_gcircum">girth/circum location</label>
+					    	<label class="control-label col-sm-4" for="msk_glocation">girth/circum location</label>
 					    	<div class="col-sm-6">
-					    		<input type="text" class="form-control" id="msk_gcircum" name="msk_gcircum">
+					    		<input type="text" class="form-control" id="msk_glocation" name="msk_glocation">
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="msk_glocation">girth/circumference (cm) </label>
+					    	<label class="control-label col-sm-4" for="msk_gcircum ">girth/circumference (cm) </label>
 					    	<div class="col-sm-6">
-					    		<input type="number" class="form-control" id="msk_glocation" name="msk_glocation">
+					    		<input type="number" class="form-control" id="msk_gcircum " name="msk_gcircum ">
 					    	</div>
 						</div>
 						<div class="form-group">
@@ -2314,9 +2347,9 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-					    	<label class="control-label col-sm-4" for="msk_sensation">extremity color/temp</label>
+					    	<label class="control-label col-sm-4" for="msk_extColorT">extremity color/temp</label>
 					    	<div class="col-sm-6">
-					    		<select class="form-control" id="msk_sensation" name="msk_sensation">
+					    		<select class="form-control" id="msk_extColorT" name="msk_extColorT">
 					    			<option>[select]</option>
 					    			<option>pink</option>
 					    			<option>Pale</option>
@@ -2483,9 +2516,9 @@ $returnurl = 'encounter_top.php';
 					    	</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-4" for="skin_DfirstNoticed">Date Dressing applied/changed</label>
+							<label class="control-label col-sm-4" for="skin_DfirstdressingApp">Date Dressing applied/changed</label>
 							<div class="col-sm-6">
-					    		<textarea class="form-control" id="skin_DfirstNoticed" name="skin_DfirstNoticed"> </textarea>
+					    		<textarea class="form-control" id="skin_DfirstdressingApp" name="skin_DfirstdressingApp"> </textarea>
 					    	</div>
 						</div>
 						<div class="form-group">
@@ -2599,6 +2632,7 @@ $returnurl = 'encounter_top.php';
 					    			<option>double</option>
 					    		</select>
 					    	</div>
+
 						</div>
 					</div>
 				</div>	
@@ -2612,4 +2646,4 @@ $returnurl = 'encounter_top.php';
 		</div>
 	</form>
 </body>
-</html>-
+</html>

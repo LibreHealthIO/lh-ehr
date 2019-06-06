@@ -13,7 +13,7 @@ if (!$encounter) { // comes from globals.php
 }
 if ($_GET["mode"] == "new"){
 $newid = formSubmit("form_nursing_assessment", $_POST, $_GET["id"], $userauthorized);
-addForm($encounter, "Speech Dictation", $newid, "dictation", $pid, $userauthorized);
+addForm($encounter, "Nursing Assessment Form", $newid, "form_nursing_assessment", $pid, $userauthorized);
 }elseif ($_GET["mode"] == "update") {
 sqlInsert("update form_dictation set pid = ?,groupname=?,user=?,authorized=?,activity=1, date = NOW(), dictation=?, additional_notes=? where id=?",array($_SESSION["pid"],$_SESSION["authProvider"],$_SESSION["authUser"],$userauthorized,$_POST["dictation"],$_POST["additional_notes"],$_GET["id"]));
 }
