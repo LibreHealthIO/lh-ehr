@@ -19,7 +19,7 @@ $returnurl = 'encounter_top.php';
 				padding-left: 3px;
 				padding-right: 3px;
 			}
-			input:focus {
+			input:focus, select:focus, textarea:focus {
 				border-color:  #3a052e;
 			}
 		</style>
