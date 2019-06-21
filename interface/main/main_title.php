@@ -4,6 +4,7 @@
  */
 
 include_once('../globals.php');
+
 ?>
 <html>
 <head>
@@ -17,6 +18,7 @@ include_once('../globals.php');
         display:block;
       }
 </style>
+
 
 <script type="text/javascript" language="javascript">
 function toencounter(rawdata) {
@@ -50,6 +52,7 @@ function toencounter(rawdata) {
     top.frames[frame].location.href  = '../patient_file/encounter/encounter_top.php?set_encounter=' + enc;
 }
 </script>
+
 </head>
 <body class="body_title">
 <?php

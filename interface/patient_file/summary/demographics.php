@@ -149,11 +149,11 @@
                   $to_url = "<td> <a href = $web_root" .
                   "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
                   "/tmp$extension" .  // Force image type URL for fancybox
-                  " onclick=top.restoreSession(); class='image_modal'>" .
+                  " class ='view_image_modal'>" .
                   " <img src = $web_root" .
                   "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
-                  " width=100 alt='$doc_catg:$image_file'>  </a> </td> <td valign='center'>".
-                  htmlspecialchars($doc_catg) . '<br />&nbsp;' . htmlspecialchars($image_file) .
+                  " width=100 alt='$doc_catg:$image_file'> </a> </td> <td valign='center'>".
+                  htmlspecialchars($doc_catg) .
                   "</td>";
           }
            else {
@@ -162,9 +162,15 @@
                       " onclick='top.restoreSession()' class='css_button_small'>" .
                       "<span>" .
                       htmlspecialchars( xl("View"), ENT_QUOTES )."</a> &nbsp;" .
-                      htmlspecialchars( "$doc_catg - $image_file", ENT_QUOTES ) .
+                      htmlspecialchars( "$doc_catg", ENT_QUOTES ) .
                       "</span> </td>";
           }
+          //initialise izi modal
+          echo "<div id='view_photo_modal' data-izimodal-title='". htmlspecialchars(getPatientName($pid),ENT_NOQUOTES) 
+          ."' data-izimodal-subtitle='PID: $pid' style='display: none; '><img src = $web_root" .
+                  "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
+                  " style='width:80%;margin: 0 10% 0 10%;' alt='$doc_catg:$image_file'></div>";
+          //
           echo "<table><tr>";
           echo $to_url;
           echo "</tr></table>";
@@ -264,6 +270,23 @@
       }
 
       $(document).ready(function(){
+      //for izi modal
+        $(document).on('click', '.view_image_modal', function(event) {
+        event.preventDefault();
+        let image_modal = $('#view_photo_modal').iziModal({
+                fullscreen: true,
+                overlayClose: false,
+                closeButton: true,
+                theme: 'light',
+                width: 500,
+                padding: 5
+                
+        });
+        image_modal.iziModal('open');
+        top.restoreSession();
+      });
+      
+
         var msg_updation='';
           <?php
         if($GLOBALS['erx_enable']){
@@ -393,14 +416,6 @@
           'centerOnScroll' : false
         });
 
-      // modal for image viewer
-        $(".image_modal").fancybox( {
-          'overlayOpacity' : 0.0,
-          'showCloseButton' : true,
-          'centerOnScroll' : false,
-          'autoscale' : true
-        });
-
         $(".iframe1").fancybox( {
         'left':10,
           'overlayOpacity' : 0.0,
@@ -493,6 +508,7 @@
   <body class="body_top">
     <a href='../reminder/active_reminder_popup.php' id='reminder_popup_link' style='visibility: hidden;' class='iframe' onclick='top.restoreSession()'></a>
     <?php
+    do_action( 'demographics_check_auth', $args = array( 'username' => $_SESSION['authUser'], 'pid' => $pid ) );
       $thisauth = acl_check('patients', 'demo');
       if ($thisauth) {
        if ($result['squad'] && ! acl_check('squads', $result['squad']))
@@ -519,7 +535,7 @@
        echo "<form method='POST' enctype='multipart/form-data'><td colspan='1'><span class='title'>" .
         htmlspecialchars(getPatientName($pid),ENT_NOQUOTES) .
         "</span></td>";
-      if ($arr['picture_url']) {
+        if ($arr['picture_url']) {
           echo '<td style="padding-left:1em;"><input type="file" name="profile_picture" id="files" onchange="this.form.submit()" class="hidden" style="display:none;"/>
           <label for="files" class="iframe css_button cp-positive" id="file_input_button"><span><i class="fa fa-pencil"></i> ';
           echo xlt('Edit Profile Picture');
@@ -1693,64 +1709,53 @@ if (isset($_FILES["profile_picture"])) {
   //size check done.
   //extension check done.
   //if any validation needed be added, please add it below.
-  $bool = 0;
+  
+  $image_verified = false;
+  $user_image_absent = true;
+  $extensions = array("jpg", "png", "jpeg"); 
   $target_file =  basename($_FILES["profile_picture"]["name"]);
-  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  $verify_image = getimagesize($_FILES["profile_picture"]["tmp_name"]);
-  if($verify_image) {
-    $mime = $verify_image["mime"];
-    $mime_types = array('image/png',
-                            'image/jpeg',
-                            'image/gif',
-                            'image/bmp',
-                            'image/vnd.microsoft.icon');
-    $extensions = array("jpg", "png", "jpeg");
-    //mime check with all image formats.
-    if (in_array($mime, $mime_types)) {
-          $bool = 1;
-        if (in_array($imageFileType, $extensions)) {
-        //if mime type matches, then do a size check
-        //size check
-          if ($_FILES["profile_picture"]["size"] > 20971520) {
-            $bool = 0;
-          }
-          else {
-            $bool = 1;
-          }
+  $image_file_type = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  $image_size = $_FILES["profile_picture"]["size"];
+  $image_properties = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+  if($image_properties) {
+    //if image mime type matches, then check file extension, then  check size
+    if (image_has_right_mime($image_properties) && image_has_right_extension($image_file_type, $extensions) && 
+      image_has_right_size($image_size) ) {
+
+          $image_verified = true;//image verification passed     
+    }
+    
+  }
+
+ // $query = "SELECT distinct(group_name) FROM layout_options WHERE form_id = ? ORDER BY group_name";
+//$res = sqlStatement($query, array($_GET['layout_id']));
+
+//while ($row = sqlFetchArray($res)) {
+  
+  if($image_verified) {
+    // check if there is a old image for the patient, if yes then delete it
+    $sql = "SELECT picture_url FROM patient_data WHERE pid = ?";
+    $query = sqlStatement($sql, array($pid));
+    $arr = sqlFetchArray($query);
+    if ($arr['picture_url']) {
+      $url = $arr['picture_url'];
+      // a old image exists, so lets delete it
+      if (unlink($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/".$url)) {
+        $user_image_absent = true;
       }
       else {
-        $bool = 0;
+        //if the image does not delete due to file permissions then the new image wont go.
+        $user_image_absent = false;
       }
     }
-    else {
-      $bool = 0;
-    }
-
   }
-  else {
-        $bool = 0;
-  }
-  // check if there is a old image for the patient, if yes then delete it
-  $sql = "SELECT picture_url FROM patient_data WHERE pid = $pid";
-  $query = sqlQ($sql);
-  $arr = sqlFetchArray($query);
-  if ($arr['picture_url']) {
-    $url = $arr['picture_url'];
-    // a old image exists, so lets delete it
-    if (unlink($GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/".$url)) {
-      $bool = true;
-    }
-    else {
-      //if the image does not delete due to file permissions then the new image wont go.
-      $bool = false;
-    }
-  }
+  
   $picture_url = "";
   //begin file uploading
   $destination_directory = $GLOBALS['OE_SITES_BASE']."/".$_SESSION['site_id']."/profile_pictures/";
-  if ($bool) {
-    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$imageFileType)) {
-        $picture_url = $pid.".".$imageFileType;
+  if ($image_verified && $user_image_absent) {
+    if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $destination_directory.$pid.".".$image_file_type)) {
+        $picture_url = $pid.".".$image_file_type;
     }
     else {
       //may be failed due to directory permissions.
@@ -1762,34 +1767,31 @@ if (isset($_FILES["profile_picture"])) {
 }
 
 if ($picture_url) {
-    $imageUrl = "../../../sites/".$_SESSION['site_id']."/profile_pictures/".$picture_url;
-    $successMsg = xl("Profile picture has been set successfully");
-    $errorMsg = xl("Error in setting the profile picture");
   //show success message and update the value in db and also refresh the page.
   if (sqlQ("UPDATE patient_data SET picture_url='$picture_url' WHERE pid='$pid'")) {
         echo "<script>
-    iziToast.success({
-        title: 'User Profile Updated',
-        icon: 'fa fa-picture-o',
-        message: '$successMsg',
-        onOpening: function () {
-          $('#prof_img').attr('src', '$imageUrl');
-      }
-    });
+    if (confirm('profile picture has been set successfully')) {
+      window.location = 'demographics.php?set_pid=$pid';
+    }
+    else {
+       window.location = 'demographics.php?set_pid=$pid';
+    }
     </script>";
   }
   else {
-      echo "<script>
-            iziToast.error({
-                title: 'Error',
-                icon: 'fa fa-warning',
-                message: '$errorMsg',
-            });
+            echo "<script>
+    if (confirm('Error in setting the profile picture')) {
+      window.location = 'demographics.php?set_pid=$pid';
+    }
+    else {
+       window.location = 'demographics.php?set_pid=$pid';
+    }
     </script>";
   }
 }
 else {
   //show failure message.
 }
+
 
 ?>

@@ -96,7 +96,9 @@ else { // not export
 ?>
 <html>
 <head>
-<?php html_header_show();?>
+    <link rel="stylesheet" href='<?php  echo $css_header ?>' type='text/css'>
+
+    <?php html_header_show();?>
 <title><?php xl('Pending Orders','e') ?></title>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
@@ -111,7 +113,8 @@ else { // not export
 
 </head>
 
-<body leftmargin='0' topmargin='0' marginwidth='0' marginheight='0'>
+<body class="body_top">
+
 <center>
 
 <h2><?php xl('Pending Orders','e')?></h2>

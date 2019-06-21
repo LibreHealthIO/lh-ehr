@@ -32,4 +32,28 @@ function convert_safe_file_dir_name($label) {
   return preg_replace('/[^A-Za-z0-9_.-]/','_',$label);
 }
 
+//image mime check with all image formats.
+function image_has_right_mime($image_properties) {
+  $mime = $image_properties["mime"];
+    $mime_types = array('image/png',
+                            'image/jpeg',
+                            'image/gif',
+                            'image/bmp',
+                            'image/vnd.microsoft.icon');
+   
+   return in_array($mime, $mime_types);
+}
+
+//image file extension check
+function image_has_right_extension($image_file_type, $extensions) {
+  
+  return in_array($image_file_type, $extensions);
+}
+
+//image size check
+function image_has_right_size($size) {
+  return $size < 20971520;
+}
+
+
 ?>

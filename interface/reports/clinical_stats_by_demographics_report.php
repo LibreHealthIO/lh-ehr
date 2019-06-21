@@ -278,12 +278,12 @@ function show_all_diags(){
 	<thead>
 
         <tr>
-            <th><input  id = 'column0_search_show_diags_details_table' size="4"></th>
-            <th><input  id = 'column1_search_show_diags_details_table' size="4"></th>
-            <th><input  id = 'column2_search_show_diags_details_table' size="4"></th>
-            <th><input  id = 'column3_search_show_diags_details_table' size="4"></th>
-            <th><input  id = 'column4_search_show_diags_details_table' size="4"></th>
-            <th align="left"><input  id = 'column5_search_show_diags_details_table' size="4"></th>
+            <th><input  id = 'column0_search_show_diags_details_table'></th>
+            <th><input  id = 'column1_search_show_diags_details_table'></th>
+            <th><input  id = 'column2_search_show_diags_details_table'></th>
+            <th><input  id = 'column3_search_show_diags_details_table'></th>
+            <th><input  id = 'column4_search_show_diags_details_table'></th>
+            <th align="left"><input  id = 'column5_search_show_diags_details_table'></th>
         </tr>
 
 		<tr>

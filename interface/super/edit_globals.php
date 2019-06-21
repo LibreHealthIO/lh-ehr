@@ -114,7 +114,9 @@ function checkBackgroundServices(){
 <html>
 
 <head>
-<?php
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
+
+    <?php
 
 html_header_show();
 
@@ -356,7 +358,8 @@ if ($_POST['form_save'] && $_GET['mode'] != "user") {
    include_js_library("jscolor-1-4-5/jscolor.js");
 ?>
 
-<script type="text/javascript" src="../../library/js/common.js"></script>
+
+    <script type="text/javascript" src="../../library/js/common.js"></script>
 <?php if ($_GET['mode'] == "user") { ?>
   <title><?php  echo xlt('User Settings'); ?></title>
 <?php } else { ?>
@@ -369,6 +372,7 @@ tr.detail { font-size:10pt; }
 td        { font-size:10pt; }
 input     { font-size:10pt; }
 </style>
+
 </head>
 
 <body class="body_top">

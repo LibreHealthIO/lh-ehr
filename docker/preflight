@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#
+# Docker Setup Script
+#
+# LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+# See the Mozilla Public License for more details.
+# If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# @package Librehealth EHR
+# @author Robby O'Connor <rob@librehealth.io>
+# @link http://librehealth.io
+#
+# Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+#
+
+set -euo pipefail
+IFS=$'\n\t'
+
+source ./docker/funcs
+
+message "Checking for Docker Engine..."
+check_docker
+message "Checking if you meet the minimum Docker version requirements..."
+check_docker_version
+message "Checking for Docker Compose..."
+check_docker-compose
+message "Checking if you meet the minimum Docker Compose version requirements..."
+check_docker_compose_version
+message "Checking if you are part of the docker group. Please do not run as root..."
+check_if_can_run_docker

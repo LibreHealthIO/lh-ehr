@@ -136,6 +136,7 @@ class Installer
       $sql .= " character set utf8 collate $this->collate";
       $this->set_collation();
     }
+
     return $this->execute_sql($sql);
   }
 
@@ -264,6 +265,172 @@ class Installer
     return True;
   }
 
+              /**UNDO EXTRA COMMENT SECTIONS AFTER THIS HAS BEEN FIXED FOR THE .env FILE ISSUES.
+              * Create .env file for the report generator.
+              * Write database credentials to .env file.
+              * These credentials are used to create
+              * 1. the report generator database.
+              * 2. run database migration, and
+              * 3. populate database(seeding)
+              * @param db_name Database name
+              * @param db_host Database hostname
+              * @param db_port Database port number
+              * @param db_username Database username
+              * @param db_password Database user's password
+              * @return void
+              *
+              * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+              *
+              * @TODO
+              * 1. Add main EHR database credentials to .env file after database upgrade is complete.
+              * 2. Work on the report generator upon upgrade i.e if anything changes during upgrade.
+              * 3. Give the user to change the database name and other during installation of EHR.
+              * 4. Put these database credentials in an array before passing it to methods here.
+               !!!!!!COMMENTED OUT COMMENT
+              private function setup_env_file($db_credentials) {
+                  $dot_env_file_path = dirname(__FILE__) . '/../../modules/report_generator'; // expected .env file path
+                  $dot_env_file = $dot_env_file_path.'/.env';
+            
+                  // 1. Check if file EXISTS, else create file.
+                  if(file_exists($dot_env_file)){
+                     // 2. If file exists, check if the application key and databases' credentials have been specified.
+                     if(exec('grep '.escapeshellarg('DB_REPORT_GENERATOR_CONNECTION ').$dot_env_file)) {
+                         // 3. If they have been specified, then update with recent database credentials in parameters to this function. DON'T CHNGE APP_KEY
+                         $this->write_to_env_file($dot_env_file, $db_credentials, TRUE); // Update database credentials.
+                     }
+                     else{
+                         // 4. Else, generate application key and write the databases' credentials in the .env file.
+                         $this->generate_application_key();  // Generate application key.
+                         $this->write_to_env_file($dot_env_file, $db_credentials); // Write database credentials.
+                     }
+                  }
+                  else {
+                      $this->create_dot_env_file($dot_env_file);  // Create file.
+                      $this->generate_application_key();  // Generate application key.
+                      $this->write_to_env_file($dot_env_file, $db_credentials ); // Write database credentials.
+            
+                  }
+            
+                  // 5. If file is successfully created and written to, call the 'php artisan make:database' command.
+                  exec('cd '.escapeshellarg($dot_env_file_path)); // move to the report generator directory first!
+                  exec('php artisan make:database'); // run 'php artisan make:database' command here.
+                  exec('cd ../../library/classes'); // Go back to the installer directory.
+                  // The command above, 'php artisan make:database';
+                  //    1. creates report generateor database called 'librereportgenerator'.
+                  //    2. runs laravel-module's database migration command, (programmatically).
+                  //    3. runs laravel-module's database seeds, (programmatically).
+            
+              }
+            
+              /**
+              * Create laravel .env file for specifying various application variables.
+              * @param dot_env_file path to .env file. Includes file's name
+              * @param db_name Database name
+              * @param db_host Database hostname
+              * @param db_port Database port number
+              * @param db_username Database username
+              * @param db_password Database user's password
+              * @param update whether to update .env or not
+              * @return Boolean
+              *
+              * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+              //RESTORE COMMENT HERE AFTER FIX
+              private function write_to_env_file($dot_env_file, $db_credentials, $update = FALSE){
+            
+                  if($update){ // Just delete the existing file and recreate it.
+                      unlink($dot_env_file);
+                      $this->create_dot_env_file($dot_env_file);
+                  }
+            
+                  $env_file_open = @fopen($dot_env_file, 'w'); // Open .env file for writing
+                  if ( !$env_file_open ) { // If .env file doesn't open
+                      $this->error_message = 'Unable to open'.$dot_env_file.' file for writing';
+                      return FALSE;
+                  }
+            
+                  $string_connection_1 ='DB_REPORT_GENERATOR_CONNECTION=mysql_report_generator';
+                  $string_connection_2 = 'DB_LIBREEHR_CONNECTION=mysql_libreehr';
+            
+                  $errors = 0;   //fmg: variable keeps running track of any errors
+            
+                  fwrite($env_file_open,$string_connection_1) or $errors++;
+                  fwrite($env_file_open,"DB_REPORT_GENERATOR_HOST=$db_credentials['db_host']\n") or $errors++;
+                  fwrite($env_file_open,"DB_REPORT_GENERATOR_PORT=$db_credentials['db_port']\n") or $errors++;
+                  fwrite($env_file_open,"DB_REPORT_GENERATOR_DATABASE=$db_credentials['db_name']\n") or $errors++;
+                  fwrite($env_file_open,"DB_REPORT_GENERATOR_USERNAME=$db_credentials['db_username']\n") or $errors++;
+                  fwrite($env_file_open,"DB_REPORT_GENERATOR_PASSWORD=$db_credentials['db_password']\n\n") or $errors++;
+            
+                  fwrite($env_file_open,$string_connection_2) or $errors++;
+                  fwrite($env_file_open,"DB_LIBREEHR_HOST=$db_credentials['db_host']\n") or $errors++;
+                  fwrite($env_file_open,"DB_LIBREEHR_PORT=$db_credentials['db_port']\n") or $errors++;
+                  fwrite($env_file_open,"DB_LIBREEHR_DATABASE=$db_credentials['db_name']\n") or $errors++;
+                  fwrite($env_file_open,"DB_LIBREEHR_USERNAME=$db_credentials['db_username']\n") or $errors++;
+                  fwrite($env_file_open,"DB_LIBREEHR_PASSWORD=$db_credentials['db_password']\n\n") or $errors++;
+            
+                  fclose($env_file_open) or $errors++;
+            
+                  // Report errors when writing this file.
+                  if ($errors != 0) {
+                    $this->error_message = "ERROR. Couldn't write $errors lines to config file '$dot_env_file'.\n";
+                    return FALSE;
+                  }
+            
+                  return TRUE;
+              }
+            
+              /**
+              * Create laravel .env file for specifying various application variables.
+              * @param dot_env_file
+              * @return Boolean
+              *
+              * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+              /RESTORE COMMENT HERE AFTER FIX
+              private function create_dot_env_file($dot_env_file){
+                  if(@touch($dot_env_file)) {
+                      // write initial .env variables, enabling key generation command to Work
+                      $initial_string = '
+                          APP_NAME=Report_Generator
+                          APP_ENV=local
+                          APP_KEY=
+                          APP_DEBUG=true
+                          APP_LOG_LEVEL=debug
+                          APP_URL=http://localhost
+                      ';
+            
+                      $env_file_open = @fopen($dot_env_file, 'w'); // Open .env file for writing
+                      if ( !$env_file_open ) { // If .env file doesn't open
+                          $this->error_message = 'Unable to open .'$dot_env_file'. file for writing';
+                          return FALSE;
+                      }
+            
+                      fwrite($env_file_open, $initial_string);
+                      fclose($env_file_open);
+            
+                      return TRUE;
+                  }
+                  else {
+                      $this->error_message = 'Failed to create .env file for report generator';
+                      return FALSE;
+                  }
+              }
+            
+              /**
+              * Generate laravel application key for report generator.
+              * This key will be used for the whole laravel app.
+              * @param
+              * @return
+              *
+              * @author 2018 Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+              //RESTORE COMMENT HERE AFTER FIX
+              private function generate_application_key(){
+                  exec('cd '.escapeshellarg($dot_env_file_path)); // move to the report generator directory first!
+                  exec('php artisan key:generate'); // Generate application key command. This writes the application key in .env file's APP_KEY constant.
+                  exec('cd ../../library/classes'); // Go back to the installer directory.
+              }
+
+REMOVE THIS LINE AFTER FIX*/  
+
+
   public function write_configuration_file() {
     @touch($this->conffile); // php bug
     $fd = @fopen($this->conffile, 'w');
@@ -316,7 +483,17 @@ $config = 1; /////////////
       $this->error_message = "ERROR. Couldn't write $it_died lines to config file '$this->conffile'.\n";
       return FALSE;
     }
+/*  REMOVE THIS COMMENT AFTER REPORT GENERATOR FIX.
+    // These variablesa are used to setup the report generator database.
+    $db_credentials = array();
+    $db_credentials['db_name'] = $this->dbname;
+    $db_credentials['db_host'] = $this->server;
+    $db_credentials['db_port'] = $this->port;
+    $db_credentials['db_username'] = $this->login;
+    $db_credentials['db_password'] = $this->pass;
 
+    $this->setup_env_file($db_credentials); // Setup Laravel's .env file for use in Report generator.
+*/
     return TRUE;
   }
 

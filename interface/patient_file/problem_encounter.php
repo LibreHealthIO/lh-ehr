@@ -281,8 +281,7 @@ function doclick(pfx, id) {
 
   <span class="title" style="display: none;">Issues</span>
 </head>
-<body leftmargin='0' topmargin='0' marginwidth='0' marginheight='0'
- bgcolor='#ffffff' onunload='imclosing()'>
+<body class="body_top" onunload='imclosing()'>
 <form method='post' action='problem_encounter.php' onsubmit='return top.restoreSession()'>
 <?php
  echo "<input type='hidden' name='form_pid' value='" . attr($pid) . "' />\n";

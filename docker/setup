@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+#
+# Docker Setup Script
+#
+# LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
+# See the Mozilla Public License for more details.
+# If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# @package Librehealth EHR
+# @author Robby O'Connor <rob@librehealth.io>
+# @link http://librehealth.io
+#
+# Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+#
+
+set -euo pipefail
+IFS=$'\n\t'
+
+function prompt {
+    local result
+    read -p "$1 [ENTER]: " result
+    eval "$2='$result'"
+}
+
+function configure_env_files {
+    local root_pass
+    local database_name
+    local database_user
+    local database_pass;
+    prompt "Enter MySQL Root Password" root_pass
+    prompt "Enter MySQL Database Name (e.g., \"clinic_name\")" database_name
+    prompt "Enter MYSQL Username (e.g., \"clinic_name\")" database_user
+    prompt "Enter MySQL password for the MySQL user \"$database_user\"" database_pass
+    cat > docker/.env.mysql << EOF
+MYSQL_ROOT_PASSWORD=$root_pass
+MYSQL_DATABASE=$database_name
+MYSQL_USER=$database_user
+MYSQL_PASSWORD=$database_pass
+EOF
+    cat > docker/.env.ehr <<EOF
+LIBREHEALTH_DB_HOST=db
+LIBREHEALTH_DB_PORT=3306
+LIBREHEALTH_DB_NAME=$database_name
+LIBREHEALTH_DB_USER=$database_user
+LIBREHEALTH_DB_PASSWORD=$database_pass
+SCHEDULE=0 0 * * *
+BACKUP_DIR=./backups
+EOF
+}
+
+if [[ -f docker/.env.ehr || -f docker/.ehr.mysql ]]; then
+    echo ".env.ehr and .env.mysql exist, not continuing."
+    exit 1
+else
+    echo "The next stage will prompt you for credentials. These credentials should be unique and secure."
+    configure_env_files
+fi

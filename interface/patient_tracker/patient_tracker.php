@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  *  Patient Tracker (Patient Flow Board)
  *
@@ -143,6 +143,7 @@ foreach ( $appointments as $apt ) {
     //  Include Bootstrap and DateTimePicker
   call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
 ?>
+    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
