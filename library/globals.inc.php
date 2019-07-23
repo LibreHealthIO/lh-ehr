@@ -1736,7 +1736,7 @@ $GLOBALS_METADATA = array(
       xl('Auto-Create New Encounters'),
        'bool',                          // data type
        '1',                             // default
-      xl('Automatically create a new encounter when an appointment check in status is selected.')
+      xl('Automatically create a new encounter when the "@ Arrived" appointment check-in status is selected.')
     ),
 
     'disable_pat_trkr' => array(
