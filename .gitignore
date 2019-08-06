@@ -3,5 +3,7 @@
 .idea/
 sites/*/sqlconf.php
 sites/*/profile_pictures/*
+sites/*
+!sites/default
 
 backups/
