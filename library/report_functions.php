@@ -90,16 +90,22 @@ function dropDownPayors() {
 /*
  * This function shows From and To dates
  * @return: Echo Html
+ * @author: Maggie Negm <maggiehn94@gmail.com>
  */
 function showFromAndToDates() {
+    $from_date = fixDate($_POST['form_from_date'], '');
+	$to_date   = fixDate($_POST['form_to_date'], '');
+	if (empty($to_date) && !empty($from_date)) $to_date = date(substr($from_date, 0, 4) . '-12-31');
+	if (empty($from_date) && !empty($to_date)) $from_date = date(substr($to_date, 0, 4) . '-01-01');
+
     echo "<td class='label'>";
     echo xlt('From');
     echo ":
         </td>
          <td>
             <input type='text' name='form_from_date' id='form_from_date' size='10'
-                value='"; htmlspecialchars(oeFormatShortDate(attr($from_date)));
-    echo "' />
+                value='"; echo $from_date;
+            echo "' />
          </td>
          <td class='label'> ";
     echo xlt('To');
@@ -107,8 +113,8 @@ function showFromAndToDates() {
          </td>
          <td>
             <input type='text' name='form_to_date' id='form_to_date' size='10'
-                value=' "; htmlspecialchars(oeFormatShortDate(attr($to_date)));
-    echo "' />
+                value=' "; echo $to_date;
+            echo "' />
          </td>";
 }
 
