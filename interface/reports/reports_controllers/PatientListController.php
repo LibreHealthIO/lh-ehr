@@ -44,8 +44,8 @@ function prepareAndShowResults() {
 
 	$from_date = fixDate($_POST['form_from_date'], '');
 	$to_date   = fixDate($_POST['form_to_date'], '');
-	if (empty($to_date) && !empty($from_date)) $to_date = date('Y-12-31');
-	if (empty($from_date) && !empty($to_date)) $from_date = date('Y-01-01');
+	if (empty($to_date) && !empty($from_date)) $to_date = date(substr($from_date, 0, 4) . '-12-31');
+	if (empty($from_date) && !empty($to_date)) $from_date = date(substr($to_date, 0, 4) . '-01-01');
 
 	$form_provider = empty($_POST['form_provider']) ? 0 : intval($_POST['form_provider']);
 
