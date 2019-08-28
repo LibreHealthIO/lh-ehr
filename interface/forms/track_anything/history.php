@@ -78,9 +78,9 @@ echo "<html><head>";
 ?> 
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <link rel="stylesheet" href="style.css" type="text/css"> 
-<script type="text/javascript" src="<?php echo $web_root; ?>/library/js/jquery.1.3.2.js"></script>
-<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/json/json2.js"></script>
-<script type="text/javascript" src="<?php echo $modules_dir; ?>openflashchart/js/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/assets/js/jquery-min-3-3-1/index.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/modules/openflashchart/js/json/json2.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['web_root']?>/modules/openflashchart/js/swfobject.js"></script>
 <script type="text/javascript">
 //-------------- checkboxes checked checker --------------------
 // Pass the checkbox name to the function
@@ -115,7 +115,7 @@ var data;
 //------------------------------------------------------
 function plot_graph(checkedBoxes, theitems, thetrack, thedates, thevalues, trackCount){
     top.restoreSession();
-    return $.ajax({ url: '<?php echo $modules_dir; ?>openflashchart/graph_track_anything.php',
+    return $.ajax({ url: '<?php echo $GLOBALS['web_root']?>/modules/openflashchart/graph_track_anything.php',
              type: 'POST',
              data: { dates:  thedates, 
                      values: thevalues, 
@@ -132,7 +132,7 @@ function plot_graph(checkedBoxes, theitems, thetrack, thedates, thevalues, track
                  data=returnData;
                  flashvars.ofc = returnData;
                  // call ofc with proper falshchart
-                    swfobject.embedSWF('<?php echo $modules_dir; ?>openflashchart/open-flash-chart.swf', 
+                    swfobject.embedSWF('<?php echo $GLOBALS['web_root']?>/modules/openflashchart/open-flash-chart.swf',
                     "graph"+trackCount, "650", "200", "9.0.0","",flashvars);  
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
