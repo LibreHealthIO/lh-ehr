@@ -28,18 +28,18 @@ $returnurl = 'encounter_top.php';
 	<body>
 		<?php
 			include_once("$srcdir/api.inc");
-			$res2 = sqlStatement("SELECT MAX(id) as largestId FROM `form_patient_care_plan`");
-    		$getMaxid = sqlFetchArray($res2);
+			$res = sqlStatement("SELECT COUNT(*) as numberOfIssues FROM `form_patient_care_plan` WHERE id=?", array($_GET["id"]));
+    		$numberOfIssues = sqlFetchArray($res);
 			$obj = formFetch("form_patient_care_plan", $_GET["id"]);
-
-			if ($getMaxid['largestId']) {
-				$count = $getMaxid['largestId'] + 1 ;
-				$html = "<input type=\"hidden\" id=\"num\" value=" . $count . " />";
+			if($numberOfIssues["numberOfIssues"]) {
+				$html = "<input type=\"hidden\" id=\"num\" value=" . $numberOfIssues . " />";
 				echo $html;
-		        
-		    } else {
-		        // echo "<input type=\"hidden\" id=\"num\" value=\"1\" />";
-    		}
+			} else {
+				$html = "<input type=\"hidden\" id=\"num\" value=\"1\" />";
+				echo $html;
+			}
+			
+
 		?>
 		<form class="form-horizontal" method=post action="<?php echo $rootdir;?>/forms/patient_care_plan/save.php?mode=update&id=<?php echo attr($_GET["id"]);?>" name="my_form" onsubmit="return top.restoreSession()">
 			<div class="row">
