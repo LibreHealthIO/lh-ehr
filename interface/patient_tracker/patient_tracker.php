@@ -237,7 +237,7 @@ function topatient(newpid, enc) {
         <label><input type="checkbox" name="ptkr_show_pid" value="1" <?php if($GLOBALS['ptkr_show_pid']=='1') echo "checked"; ?>><?php echo xlt("Show Patient ID in Patient Flow Board"); ?></label>
         </div>
         <div class="checkbox">
-        <label><input type="checkbox" name="ptkr_show_room" value="1" <?php if($GLOBALS['ptkr_show_room']=='1') echo "checked"; ?>><?php echo xlt("Show Exam Room Patient Flow Board"); ?></label>
+        <label><input type="checkbox" name="ptkr_show_room" value="1" <?php if($GLOBALS['ptkr_show_room']=='1') echo "checked"; ?>><?php echo xlt("Show Exam Room in Patient Flow Board"); ?></label>
         </div>
         <div class="checkbox">
         <label><input type="checkbox" name="ptkr_show_visit_type" value="1" <?php if($GLOBALS['ptkr_show_visit_type']=='1') echo "checked"; ?>><?php echo xlt("Show Visit Type in Patient Flow Board"); ?></label>
