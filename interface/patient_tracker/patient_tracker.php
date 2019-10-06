@@ -141,11 +141,9 @@ foreach ( $appointments as $apt ) {
 <title><?php echo xlt("Flow Board") ?></title>
 <?php
     //  Include Bootstrap and DateTimePicker
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker", "iziModalToast"));
 ?>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
-<link rel="stylesheet" href="../../assets/css/iziModalToast/iziToast.min.css" type="text/css">
-<script type="text/javascript" src="../../assets/js/iziModalToast/iziToast.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
 <script language="JavaScript">
@@ -217,7 +215,7 @@ function validateForm() {
             if (fromDate > toDate) {
                 iziToast.warning({
                     title: 'Caution:',
-                    message:"<?php echo xls('The To date must be later than the From date.'); ?>",
+                    message:"<?php echo xls('You must enter a To date that is later than the From date.'); ?>",
                 });
                 return false;
             }
