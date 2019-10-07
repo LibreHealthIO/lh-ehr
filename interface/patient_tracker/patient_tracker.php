@@ -253,8 +253,8 @@ function topatient(newpid, enc) {
         </div>
         <?php echo xlt("Ending Date for Patient Flow Board"); ?>
         <select class="form-control input-sm" name="ptkr_end_date" id="ptkr_end_date">
-            <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>><?php echo xlt("One Year Ahead"); ?></option>
             <option value="Y2" <?php if($GLOBALS['ptkr_end_date']=='Y2') echo "selected";?>><?php echo xlt("Two Years Ahead"); ?></option>
+            <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>><?php echo xlt("One Year Ahead"); ?></option>
             <option value="M6" <?php if($GLOBALS['ptkr_end_date']=='M6') echo "selected";?>><?php echo xlt("Six Months Ahead"); ?></option>
             <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='M3') echo "selected";?>><?php echo xlt("Three Months Ahead"); ?></option>
             <option value="M1" <?php if($GLOBALS['ptkr_end_date']=='M1') echo "selected";?>><?php echo xlt("One Month Ahead"); ?></option>
