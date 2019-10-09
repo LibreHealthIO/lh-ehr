@@ -3,6 +3,6 @@
 .idea/
 sites/**
 !sites/default
-sites/default/sqlconfig
+sites/default/sqlconfig.php
 
 backups/
