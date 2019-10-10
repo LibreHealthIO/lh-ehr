@@ -276,7 +276,7 @@ function validateForm() {
         <label><input type="checkbox" name="ptkr_show_encounter" value="1" <?php if($GLOBALS['ptkr_show_encounter']=='1') echo "checked"; ?>><?php echo xlt("Show Patient Encounter Number in Patient Flow Board"); ?></label>
         </div>
         <div class="checkbox">
-        <label><input type="checkbox" name="ptkr_flag_dblbook" value="1" <?php if($GLOBALS['ptkr_flag_dblbook']=='1') echo "checked"; ?>><?php echo xlt("Flag Double Booked Appt in Flow Board"); ?></label>
+        <label><input type="checkbox" name="ptkr_flag_dblbook" value="1" <?php if($GLOBALS['ptkr_flag_dblbook']=='1') echo "checked"; ?>><?php echo xlt("Flag Double Booked Appt in Patient Flow Board"); ?></label>
         </div>
         <div class="checkbox">
         <label><input type="checkbox" name="ptkr_date_range" value="1" <?php if($GLOBALS['ptkr_date_range']=='1') echo "checked"; ?>><?php echo xlt("Allow Date Range in Patient Flow Board"); ?></label>
