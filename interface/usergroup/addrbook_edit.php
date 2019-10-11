@@ -465,7 +465,7 @@ td { font-size:10pt; }
   <td>
    <input type='entry' size='10' name='form_city' maxlength='30'
     value='<?php echo attr($row['city']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
-   <b><?php echo xlt('State')."/".xlt('county'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_state' maxlength='30'
+   <b><?php echo xlt('State')."/".xlt('County'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_state' maxlength='30'
     value='<?php echo attr($row['state']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
    <b><?php echo xlt('Postal code'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_zip' maxlength='20'
     value='<?php echo attr($row['zip']); ?>' class='inputtext' />
@@ -490,17 +490,6 @@ td { font-size:10pt; }
   </td>
  </tr>
 
- <tr>
-  <td nowrap><b><?php echo xlt('City'); ?>:</b></td>
-  <td>
-   <input type='entry' size='10' name='form_city2' maxlength='30'
-    value='<?php echo attr($row['city2']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
-   <b><?php echo xlt('State')."/".xlt('county'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_state2' maxlength='30'
-    value='<?php echo attr($row['state2']); ?>' class='inputtext' />&nbsp;&nbsp;&nbsp;
-   <b><?php echo xlt('Postal code'); ?>:</b>&nbsp;&nbsp;&nbsp; <input type='entry' size='10' name='form_zip2' maxlength='20'
-    value='<?php echo attr($row['zip2']); ?>' class='inputtext' />
-  </td>
- </tr>
 
  <tr>
   <td nowrap><b><?php echo xlt('NPI'); ?>:</b></td>
