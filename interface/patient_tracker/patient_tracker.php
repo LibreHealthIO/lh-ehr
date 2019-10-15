@@ -1,4 +1,4 @@
-    <?php
+<?php
 /**
  *  Patient Tracker (Patient Flow Board)
  *
@@ -141,31 +141,30 @@ foreach ( $appointments as $apt ) {
 <title><?php echo xlt("Flow Board") ?></title>
 <?php
     //  Include Bootstrap and DateTimePicker
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker"));
+  call_required_libraries(array("jquery-min-3-1-1","bootstrap","datepicker", "iziModalToast"));
 ?>
-    <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
-
+<link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <script type="text/javascript" src="../../library/js/common.js"></script>
 <script type="text/javascript" src="../../library/js/blink/jquery.modern-blink.js"></script>
 <script language="JavaScript">
 // Refresh self
 function refreshme() {
-  top.restoreSession();
-  document.pattrk.submit();
+    top.restoreSession();
+    document.pattrk.submit();
 }
 
 // popup for patient tracker status
 function bpopup(tkid) {
- top.restoreSession();
- window.open('../patient_tracker/patient_tracker_status.php?tracker_id=' + tkid ,'_blank', 'width=500,height=250,resizable=1');
- return false;
+    top.restoreSession();
+    window.open('../patient_tracker/patient_tracker_status.php?tracker_id=' + tkid ,'_blank', 'width=500,height=250,resizable=1');
+    return false;
 }
 
 // popup for calendar add edit
 function calendarpopup(eid,date_squash) {
- top.restoreSession();
- window.open('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/add_edit_event.php?eid=' + eid + '&date=' + date_squash,'_blank', 'width=775,height=400,resizable=1');
- return false;
+    top.restoreSession();
+    window.open('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/add_edit_event.php?eid=' + eid + '&date=' + date_squash,'_blank', 'width=775,height=400,resizable=1');
+    return false;
 }
 
 // auto refresh screen pat_trkr_timer is the timer variable AND IF settings aren't opened
@@ -182,9 +181,6 @@ function refreshbegin(first){
     } else {
         var expanded = document.getElementById("pat_settings_toggle").getAttribute('aria-expanded');
     }
-
-
-
 
     // expanded variable is the status of the pat_settings div. if it is opened, this variable will evaluate to true
     // otherwise, false. this can be used to check if options are opened
@@ -208,7 +204,41 @@ function topatient(newpid, enc) {
      }
 }
 
+// validate input submitted into the form in Flow Board
+function validateForm() {
+    var d = document.forms["theform"];
 
+    fromDate = d.form_from_date.value;
+    <?php if($GLOBALS['ptkr_date_range']) { ?>
+        toDate = d.form_to_date.value;
+        if (fromDate.length > 0 && toDate.length > 0) {
+            if (fromDate > toDate) {
+                iziToast.warning({
+                    title: 'Caution:',
+                    message:"<?php echo xls('You must enter a To date that is later than the From date.'); ?>",
+                });
+                return false;
+            }
+            return true;
+        } else {
+            iziToast.warning({
+                title: 'Caution:',
+                message:"<?php echo xls('You must enter a From and To date.'); ?>",
+            });
+            return false;
+        }
+    <?php } else { ?>
+        if (fromDate.length == 0) {
+            iziToast.warning({
+                title: 'Caution:',
+                message:"<?php echo xls('You must enter a date.'); ?>",
+            });
+            return false;
+        } else {
+            return true;
+        }
+    <?php } ?>
+}
 </script>
 
 </head>
@@ -237,7 +267,7 @@ function topatient(newpid, enc) {
         <label><input type="checkbox" name="ptkr_show_pid" value="1" <?php if($GLOBALS['ptkr_show_pid']=='1') echo "checked"; ?>><?php echo xlt("Show Patient ID in Patient Flow Board"); ?></label>
         </div>
         <div class="checkbox">
-        <label><input type="checkbox" name="ptkr_show_room" value="1" <?php if($GLOBALS['ptkr_show_room']=='1') echo "checked"; ?>><?php echo xlt("Show Exam Room Patient Flow Board"); ?></label>
+        <label><input type="checkbox" name="ptkr_show_room" value="1" <?php if($GLOBALS['ptkr_show_room']=='1') echo "checked"; ?>><?php echo xlt("Show Exam Room in Patient Flow Board"); ?></label>
         </div>
         <div class="checkbox">
         <label><input type="checkbox" name="ptkr_show_visit_type" value="1" <?php if($GLOBALS['ptkr_show_visit_type']=='1') echo "checked"; ?>><?php echo xlt("Show Visit Type in Patient Flow Board"); ?></label>
@@ -246,17 +276,17 @@ function topatient(newpid, enc) {
         <label><input type="checkbox" name="ptkr_show_encounter" value="1" <?php if($GLOBALS['ptkr_show_encounter']=='1') echo "checked"; ?>><?php echo xlt("Show Patient Encounter Number in Patient Flow Board"); ?></label>
         </div>
         <div class="checkbox">
-        <label><input type="checkbox" name="ptkr_flag_dblbook" value="1" <?php if($GLOBALS['ptkr_flag_dblbook']=='1') echo "checked"; ?>><?php echo xlt("Flag Double Booked Appt in Flow Board"); ?></label>
+        <label><input type="checkbox" name="ptkr_flag_dblbook" value="1" <?php if($GLOBALS['ptkr_flag_dblbook']=='1') echo "checked"; ?>><?php echo xlt("Flag Double Booked Appt in Patient Flow Board"); ?></label>
         </div>
         <div class="checkbox">
         <label><input type="checkbox" name="ptkr_date_range" value="1" <?php if($GLOBALS['ptkr_date_range']=='1') echo "checked"; ?>><?php echo xlt("Allow Date Range in Patient Flow Board"); ?></label>
         </div>
         <?php echo xlt("Ending Date for Patient Flow Board"); ?>
         <select class="form-control input-sm" name="ptkr_end_date" id="ptkr_end_date">
-            <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>><?php echo xlt("One Year Ahead"); ?></option>
             <option value="Y2" <?php if($GLOBALS['ptkr_end_date']=='Y2') echo "selected";?>><?php echo xlt("Two Years Ahead"); ?></option>
+            <option value="Y1" <?php if($GLOBALS['ptkr_end_date']=='Y1') echo "selected";?>><?php echo xlt("One Year Ahead"); ?></option>
             <option value="M6" <?php if($GLOBALS['ptkr_end_date']=='M6') echo "selected";?>><?php echo xlt("Six Months Ahead"); ?></option>
-            <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='M3') echo "selected";?>><?php echo xlt("Three Months Ahead"); ?>Three Months Ahead</option>
+            <option value="M3" <?php if($GLOBALS['ptkr_end_date']=='M3') echo "selected";?>><?php echo xlt("Three Months Ahead"); ?></option>
             <option value="M1" <?php if($GLOBALS['ptkr_end_date']=='M1') echo "selected";?>><?php echo xlt("One Month Ahead"); ?></option>
             <option value="D1" <?php if($GLOBALS['ptkr_end_date']=='D1') echo "selected";?>><?php echo xlt("One Day Ahead"); ?></option>
         </select>
@@ -303,7 +333,7 @@ function topatient(newpid, enc) {
         echo "</script>";
         }
     ?>
-<form method='post' name='theform' id='theform' action='<?php echo $action_page; ?>' onsubmit='return top.restoreSession()'>
+<form method='post' name='theform' id='theform' action='<?php echo $action_page; ?>' onsubmit='return validateForm()'>
     <div class="table-responsive">
         <table class="table well">
             <tr>
@@ -397,9 +427,9 @@ function topatient(newpid, enc) {
 <div id="flowboard_header">
   <?php if (count($chk_prov) == 1) {?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>
-      <h3><?php echo xlt('Appointments for') . ' : '. text(reset($chk_prov)) . ' ' . ' : '. xlt('Date Range') . ' ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></h3>
+      <h3><?php echo xlt('Appointments for ') . text(reset($chk_prov)) . ': '. xlt('Date Range') . ' ' . text($form_from_date) . ' ' . xlt('to'). ' ' . text($form_to_date) ?></h3>
     <?php } else { ?>
-      <h3><?php echo xlt('Appointments for'). ' : '. text(reset($chk_prov)) . ' : '. xlt('Date') . ' ' . text($form_from_date) ?></h3>
+      <h3><?php echo xlt('Appointments for ') . text(reset($chk_prov)) . ': '. xlt('Date') . ' ' . text($form_from_date) ?></h3>
     <?php } ?>
   <?php } else { ?>
     <?php if($GLOBALS['ptkr_date_range']) { ?>

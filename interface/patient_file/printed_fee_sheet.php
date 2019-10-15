@@ -346,9 +346,7 @@ foreach ($pid_list as $pid) {
 
         $html .= genFacilityTitle(xl('Superbill/Fee Sheet'), -1);
 
-        $html .= " <input type='button' class='cp-output' value='";
-        $html .= xla('Print');
-        $html .="' id='printbutton' /> ";
+
         $html .="
 <table class='bordertbl' cellspacing='0' cellpadding='0' width='100%'>
 <tr>
@@ -550,7 +548,11 @@ foreach ($pid_list as $pid) {
 if ($form_fill != 2) {   //use native browser 'print' for multipage
 $html .= "<div id='hideonprint'>
 <p>
-
+ <input type='button' class='cp-output' value='";
+        $html .= xla('Print');
+        $html .="' id='printbutton' />
+</p>
+<br>
 </div>";
 }
 
