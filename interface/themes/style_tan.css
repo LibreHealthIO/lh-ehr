@@ -115,6 +115,7 @@ a:hover {
 }
 .link_submit a:visited {
   color: #000077;
+
 }
 .link_submit a:hover {
   color: #ff5555;
@@ -666,6 +667,18 @@ tr.odd {
   background: #1050b6;
     box-shadow: 3px 4px 6px #DDD ;
   text-decoration: none;
+}
+.css_button a:visited{
+	color: #0000cc;
+	
+	
+}
+/* set the text color inside button to white when it is visisted or hovered */
+.css_button:visited{
+	color:white;
+}
+.css_button:hover{
+	color:white;
 }
 
 input[type="button"][style="background-color:#ffff55"] {
