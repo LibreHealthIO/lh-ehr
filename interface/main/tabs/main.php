@@ -79,7 +79,16 @@ var webroot_url="<?php echo $web_root; ?>";
 <?php require_once("menu/menu_json.php"); ?>
 <?php $userQuery = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'"); ?>
 <script type="text/javascript">
-    <?php if(isset($_REQUEST['url']))
+    <?php 
+        $default_tabs_info = array(
+            "/interface/main/main_info.php" => "cal",
+            "/interface/main/finder/dynamic_finder.php" => "fin",
+            "/interface/new/new_comprehensive.php" => "pat",
+            "/interface/patient_tracker/patient_tracker.php?skip_timeout_reset=1" => "flb",
+            "/interface/main/messages/messages.php?form_active=1" => "pat"
+        );
+        
+        if(isset($_REQUEST['url']))
         {
 
             $tab_one_default=$web_root.$GLOBALS['default_tab_1'];
@@ -97,6 +106,7 @@ var webroot_url="<?php echo $web_root; ?>";
             tab_defaults=[];
             tab_defaults[0]=<?php echo $tab_one_default; ?>;
             app_view_model.application_data.tabs.tabsList()[0].url(<?php echo $tab_one_contents; ?>);
+            app_view_model.application_data.tabs.tabsList()[0].name(<?php echo json_encode($default_tabs_info[$GLOBALS['default_tab_1']]); ?>);
         <?php
         }
         if(isset($GLOBALS['default_tab_2']))
@@ -104,6 +114,7 @@ var webroot_url="<?php echo $web_root; ?>";
         ?>
             tab_defaults[1]=<?php echo json_encode($web_root.$GLOBALS['default_tab_2']); ?>;
             app_view_model.application_data.tabs.tabsList()[1].url(tab_defaults[1]);
+            app_view_model.application_data.tabs.tabsList()[1].name(<?php echo json_encode($default_tabs_info[$GLOBALS['default_tab_2']]); ?>);
         <?php
         }
     ?>
