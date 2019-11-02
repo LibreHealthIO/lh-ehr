@@ -150,8 +150,8 @@ function prepareAndShowResults() {
 	   ++$totalpts;
   	} // end while
 
-  	//return $totalpts;
-    return $query;
+  	return $totalpts;
+   
 }
 
 ?>
