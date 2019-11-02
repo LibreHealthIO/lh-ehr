@@ -31,10 +31,9 @@
 require_once "reports_controllers/PatientListController.php";
 
 // In the case of CSV export only, a download will be forced.
-if ($_POST['form_csvexport'] && !$_POST['form_refresh']) {
-  csvexport('patient_list'); // CSV headers. (TRK)
+if ($_POST['form_csvexport']) {
+    csvexport('patient_list'); // CSV headers. (TRK)
 } else {
-    $_POST['form_csvexport']=false;
 ?>
 <html>
 <head>

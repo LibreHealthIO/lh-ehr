@@ -149,7 +149,8 @@ function prepareAndShowResults() {
 	   	} // end not export
 	   ++$totalpts;
   	} // end while
-  	return $totalpts;
+    
+  	return $totalpts; 
 }
 
 ?>
