@@ -584,15 +584,15 @@ if(!isset($_REQUEST['mode']))//default case
  title="<?php echo xla('Generate and download X12 encounter claim batch')?>"
  onclick="MarkAsCleared(1)">
 <?php } ?>
-<input type="submit" class="subbtn cp-output" style="width:105px;" name="bn_process_hcfa" value="<?php echo xla('CMS 1500 PDF')?>"
+<input type="submit" class="subbtn cp-output" name="bn_process_hcfa" value="<?php echo xla('CMS 1500 PDF')?>"
  title="<?php echo xla('Generate and download CMS 1500 paper claims')?>"
  onclick="MarkAsCleared(2)">
  <?php if ($GLOBALS['preprinted_cms_1500']) { ?>
-<input type="submit" class="subbtn cp-output" style="width:210px;" name="bn_process_hcfa_form" value="<?php echo xla('CMS 1500 PREPRINTED FORM')?>"
+<input type="submit" class="subbtn cp-output" name="bn_process_hcfa_form" value="<?php echo xla('CMS 1500 PREPRINTED FORM')?>"
  title="<?php echo xla('Generate and download CMS 1500 paper claims on Preprinted form')?>"
  onclick="MarkAsCleared(2)">
  <?php } ?>
-<input type="submit" class="subbtn cp-output" style="width:120px;" name="bn_hcfa_txt_file" value="<?php echo xla('CMS 1500 TEXT')?>"
+<input type="submit" class="subbtn cp-output" name="bn_hcfa_txt_file" value="<?php echo xla('CMS 1500 TEXT')?>"
  title="<?php echo xla('Making batch text files for uploading to Clearing House and will mark as billed')?>"
  onclick="MarkAsCleared(3)">
 <input type="submit" data-open-popup="true" class="subbtn cp-misc" name="bn_mark" value="<?php echo xla('Mark as Cleared')?>" title="<?php echo xla('Post to accounting and mark as billed')?>">
