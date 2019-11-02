@@ -27,16 +27,17 @@
  * @author Rod Roark <rod@sunsetsystems.com>
  * @link http://librehealth.io
  */
-
 require_once "reports_controllers/PatientListController.php";
-
 // In the case of CSV export only, a download will be forced.
-if ($_POST['form_csvexport']) {
+if ($_POST['form_csvexport'] && !$_POST['form_refresh'] ) {
   csvexport('patient_list'); // CSV headers. (TRK)
-} else {
+    
+    
+} else  {
+    
+   $_POST['form_csvexport']=false;
 ?>
-<html>
-<head>
+<html><head>
 <?php html_header_show();?>
 <title><?php xl('Patient List','e'); ?></title>
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
@@ -128,7 +129,7 @@ if ($_POST['form_csvexport']) {
 } // end not form_csvexport
 
 if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
-  if ($_POST['form_csvexport']) {
+  if ($_POST['form_csvexport'] ) {
     // CSV headers:
     echo '"' . xl('Last Visit') . '",';
     echo '"' . xl('First') . '",';
@@ -161,7 +162,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     } // end not export
     $totalpts = prepareAndShowResults(); // Prepare and show results. (TRK)
 
-  if (!$_POST['form_csvexport']) {
+  if (!$_POST['form_csvexport'] ) {
     ?>
     <tr class="report_totals">
         <td colspan="9">

@@ -130,7 +130,7 @@ td { font-size:10pt; }
 <body class="body_top">
 <?php
  // If we are saving, then save and close the window.
- //
+
  if ($_POST['form_save']) {
 
  // Collect the form_abook_type option value
@@ -197,7 +197,11 @@ td { font-size:10pt; }
     sqlStatement($query);
 
   } else {
+      
 
+      
+ // if($form_title=='' || $form_fname=='' || $form_lname=='' || $form_suffix=='')
+  //{   //if empty 
    $userid = sqlInsert("INSERT INTO users ( " .
     "username, password, authorized, info, source, " .
     "title, fname, lname, mname, suffix,  " .
@@ -252,7 +256,11 @@ td { font-size:10pt; }
     invalue('form_notes')         . ", " .
     invalue('form_abook_type')    . " "  .
    ")");
-
+    //  } //end of empty
+       
+     
+       
+       
   }
  }
 
