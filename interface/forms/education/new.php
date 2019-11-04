@@ -91,7 +91,7 @@ $returnurl = 'encounter_top.php';
 							<div class="learner-heading">
 								<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion1" href="#learner_11">
-								Learner 1</a>
+								Learner 1 <span class="caret"></span></a>
 								<mark class="labelLearner"></mark></td>
 							</h4>
 							<a href="#"><span style="color: red; font-size: large;"  onclick="inactivateLearner(1, 1)" class="glyphicon glyphicon-ban-circle" title="inactivate Learner"></span> </a> 
@@ -192,7 +192,7 @@ $returnurl = 'encounter_top.php';
 									<div class="learner-heading">
 										<h4 class="panel-title">
 										<a data-toggle="collapse" data-parent="#accordion${count}" href="#learner_${count}1">
-										Learner 1</a>
+										Learner 1 <span class="caret"></span> </a>
 										<mark class="labelLearner"></mark></td>
 									</h4>
 									<a href="#"><span style="color: red;font-size: large;"  onclick="inactivateLearner(${count}, 1)" class="glyphicon glyphicon-ban-circle" title="inactivate Learner"></span> </a> 
@@ -242,7 +242,7 @@ $returnurl = 'encounter_top.php';
 							<div class="learner-heading">
 								<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion${issue_number}" href="#learner_${issue_number}${learnerNumber}">
-								Learner ${learnerNumber}</a>
+								Learner ${learnerNumber} <span class="caret"></span> </a>
 								<mark class="labelLearner"></mark></td>
 							</h4>
 							<a href="#"><span style="color: red; font-size: large"  onclick="inactivateLearner(${issue_number}, ${learnerNumber})" class="glyphicon glyphicon-ban-circle" title="inactivate Learner"></span> </a> 
