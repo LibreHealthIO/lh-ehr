@@ -670,8 +670,6 @@ tr.odd {
 }
 .css_button a:visited{
 	color: #0000cc;
-	
-	
 }
 /* set the text color inside button to white when it is visisted or hovered */
 .css_button:visited{

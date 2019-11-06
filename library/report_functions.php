@@ -145,7 +145,7 @@ function showSubmitPrintButtons($form_csvexport='') {
                     <div style='margin-left:5px'>
                         <a href='#' class='css_button cp-submit' onclick='$(\"#form_refresh\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
                             <span>";
-                                echo xlt('Submit');
+                         echo xlt('Submit');
                             echo "</span>
                         </a>";
                         if ($_POST['form_refresh']) {

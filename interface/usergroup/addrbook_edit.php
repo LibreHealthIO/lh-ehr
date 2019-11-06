@@ -196,7 +196,7 @@ td { font-size:10pt; }
     "WHERE id = '" . add_escape_custom($userid) . "'";
     sqlStatement($query);
 
-  } else {
+  } else {    
 
    $userid = sqlInsert("INSERT INTO users ( " .
     "username, password, authorized, info, source, " .
@@ -252,7 +252,7 @@ td { font-size:10pt; }
     invalue('form_notes')         . ", " .
     invalue('form_abook_type')    . " "  .
    ")");
-
+        
   }
  }
 
