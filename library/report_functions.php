@@ -104,7 +104,7 @@ function showFromAndToDates() {
         </td>
          <td>
             <input type='text' name='form_from_date' id='form_from_date' size='10'
-                value='"; echo $from_date;
+                value='"; echo(htmlspecialchars(oeFormatShortDate(attr($from_date))));
             echo "' />
          </td>
          <td class='label'> ";
@@ -113,7 +113,7 @@ function showFromAndToDates() {
          </td>
          <td>
             <input type='text' name='form_to_date' id='form_to_date' size='10'
-                value=' "; echo $to_date;
+                value=' "; echo(htmlspecialchars(oeFormatShortDate(attr($to_date))));
             echo "' />
          </td>";
 }
