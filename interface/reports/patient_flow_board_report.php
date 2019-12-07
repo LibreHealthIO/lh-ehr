@@ -94,13 +94,21 @@ if ($form_patient == '' ) $form_pid = '';
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
 
 <script type="text/javascript">
-
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+
+ function validateInput() {
+    return top.restoreSession() && validateFromAndToDates();
+ }
 
  function dosort(orderby) {
     var f = document.forms[0];
@@ -119,9 +127,7 @@ if ($form_patient == '' ) $form_pid = '';
   var f = document.theform;
   f.form_patient.value = lname + ', ' + fname;
   f.form_pid.value = pid;
-
  }
-
 </script>
 
 <style type="text/css">
@@ -163,7 +169,7 @@ if ($form_patient == '' ) $form_pid = '';
 
 <?php reportParametersDaterange(); #TRK ?>
 
-<form method='post' name='theform' id='theform' action='patient_flow_board_report.php' onsubmit='return top.restoreSession()'>
+<form method='post' name='theform' id='theform' action='patient_flow_board_report.php' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 

@@ -80,6 +80,11 @@ require_once "reports_controllers/ApptEncounterController.php";
 <title><?php  xl('Appointments and Encounters','e'); ?></title>
 
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+    call_required_libraries(array("iziModalToast"));
+?>
 
 <script language="JavaScript">
 
@@ -88,6 +93,10 @@ require_once "reports_controllers/ApptEncounterController.php";
   win.printLogSetup(document.getElementById('printbutton'));
  });
 
+ function validateInput() {
+    return validateFromAndToDates();
+ }
+ 
 </script>
 
 </head>
@@ -98,7 +107,7 @@ require_once "reports_controllers/ApptEncounterController.php";
 
 <?php reportParametersDaterange(); #TRK ?>
 
-<form method='post' id='theform' action='appt_encounter_report.php'>
+<form method='post' id='theform' action='appt_encounter_report.php' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 

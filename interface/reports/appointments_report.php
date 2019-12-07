@@ -47,12 +47,21 @@ require_once "reports_controllers/AppointmentsController.php";
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
 
 <script type="text/javascript">
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
- });
+
+ function validateInput() {
+  return top.restoreSession() && validateFromAndToDates();
+ }
+
  function dosort(orderby) {
     var f = document.forms[0];
     f.form_orderby.value = orderby;
@@ -103,7 +112,7 @@ require_once "reports_controllers/AppointmentsController.php";
 
 <?php reportParametersDaterange(); #TRK ?>
 
-<form method='post' name='theform' id='theform' action='appointments_report.php' onsubmit='return top.restoreSession()'>
+<form method='post' name='theform' id='theform' action='appointments_report.php' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 

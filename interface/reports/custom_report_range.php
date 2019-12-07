@@ -135,12 +135,21 @@ require_once "reports_controllers/CustomReportRangeController.php";
 </style>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+    call_required_libraries(array("iziModalToast"));
+?>
 
 <script language="Javascript">
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+
+ function validateInput() {
+    return validateFromAndToDates();
+ }
 
 // CapMinds :: invokes  find-patient popup.
  function sel_patient() {
@@ -152,7 +161,6 @@ require_once "reports_controllers/CustomReportRangeController.php";
   var f = document.theform;
   f.form_patient.value = lname + ', ' + fname;
   f.form_pid.value = pid;
-
  }
 </script>
 </head>
@@ -166,7 +174,7 @@ require_once "reports_controllers/CustomReportRangeController.php";
 </div>
 
 <div id="report_parameters">
-    <form method="post" name="theform" id='theform' action="custom_report_range.php">
+    <form method="post" name="theform" id='theform' action="custom_report_range.php" onsubmit='return validateInput()'>
         <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
         <table>
             <tr>

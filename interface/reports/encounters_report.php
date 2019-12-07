@@ -70,9 +70,13 @@ require_once "reports_controllers/EncountersController.php";
     include_js_library("tablesorter-master/dist/js/jquery.tablesorter.widgets.min.js");
   ?>
   <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/report_helper.js"></script>
+  <script type="text/javascript" src="../../library/report_validation.js"></script>
+
+  <?php
+    call_required_libraries(array("iziModalToast"));
+  ?>
 
   <script LANGUAGE="JavaScript">
-
     $(document).ready(function() {
       oeFixedHeaderSetup(document.getElementById('mymaintable'));
       var win = top.printLogSetup ? top : opener.top;
@@ -87,6 +91,9 @@ require_once "reports_controllers/EncountersController.php";
       document.forms[0].submit();
     }
 
+    function validateInput() {
+      return validateFromAndToDates();
+    }
   </script>
 </head>
 <body class="body_top">
@@ -97,7 +104,7 @@ require_once "reports_controllers/EncountersController.php";
 
   <?php reportParametersDaterange(); #TRK ?>
 
-  <form method='post' name='theform' id='theform' action='encounters_report.php'>
+  <form method='post' name='theform' id='theform' action='encounters_report.php' onsubmit='return validateInput()'>
     <div id="report_parameters">
       <table>
         <tr>
