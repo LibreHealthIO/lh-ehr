@@ -30,21 +30,23 @@ require_once "reports_controllers/PatientListCreationController.php";
         <script type="text/javascript" src="../../library/dialog.js"></script>
         <script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="../../library/js/jquery-ui-1.8.21.custom.min.js"></script>
+        <script type="text/javascript" src="../../library/report_validation.js"></script>
+
+        <?php
+            call_required_libraries(array("iziModalToast"));
+        ?>
+
         <script language="JavaScript">
-        var global_date_format = '%Y-%m-%d';
-        function Form_Validate() {
-            var d = document.forms[0];
-            FromDate = d.form_from_date.value;
-            ToDate = d.form_to_date.value;
-            if ( (FromDate.length > 0) && (ToDate.length > 0) ) {
-                if ( FromDate > ToDate ){
-                    alert("<?php echo xls('To date must be later than From date!'); ?>");
-                    return false;
-                }
+            var global_date_format = '%Y-%m-%d';
+            
+            function validateInput() {
+                var dateCheck = validateFromAndToDates();
+                var ageCheck = validateAgeRange();
+
+                if (dateCheck) $("#processing").show();
+
+                return (dateCheck && ageCheck) ? true : false;
             }
-            $("#processing").show();
-            return true;
-        }
 
         </script>
         <script type="text/javascript" src="../../library/dialog.js"></script>
@@ -53,6 +55,7 @@ require_once "reports_controllers/PatientListCreationController.php";
         <link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['standard_js_path']?>fancybox-1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
         <?php include_js_library("fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js");?>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+
         <style type="text/css">
             /* specifically include & exclude from printing */
             @media print {
@@ -103,6 +106,7 @@ require_once "reports_controllers/PatientListCreationController.php";
                 if(diff < 0) //negative
                 {
                     $('#date_error').css("display", "inline");
+                    validateInput();
                 }
                 else
                 {
@@ -167,7 +171,7 @@ require_once "reports_controllers/PatientListCreationController.php";
             }  ?></span>
             </p>
         </div>
-        <form name='theform' id='theform' method='post' action='patient_list_creation.php' onSubmit="return Form_Validate();">
+        <form name='theform' id='theform' method='post' action='patient_list_creation.php' onsubmit='return validateInput()'>
             <div id="report_parameters">
                 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
                 <table>

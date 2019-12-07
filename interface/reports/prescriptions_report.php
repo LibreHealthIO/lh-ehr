@@ -54,10 +54,13 @@ require_once "reports_controllers/PrescriptionsController.php";
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
 
 <script language="JavaScript">
-
-
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
@@ -69,6 +72,9 @@ require_once "reports_controllers/PrescriptionsController.php";
   return false;
  }
 
+ function validateInput() {
+  return validateFromAndToDates();
+ }
 </script>
 
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
@@ -109,7 +115,7 @@ require_once "reports_controllers/PrescriptionsController.php";
 
 <?php reportParametersDaterange(); #TRK ?>
 
-<form name='theform' id='theform' method='post' action='prescriptions_report.php'>
+<form name='theform' id='theform' method='post' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 

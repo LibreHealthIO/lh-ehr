@@ -25,63 +25,80 @@ require_once "reports_controllers/ClinicalController.php";
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-    <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+    call_required_libraries(array("iziModalToast"));
+?>
+
 <script language="JavaScript">
+    $(document).ready(function() {
+        var win = top.printLogSetup ? top : opener.top;
+        win.printLogSetup(document.getElementById('printbutton'));
+    });
 
- $(document).ready(function() {
-  var win = top.printLogSetup ? top : opener.top;
-  win.printLogSetup(document.getElementById('printbutton'));
- });
+    function validateInput() {
+        var dateCheck = validateFromAndToDates();
+        var ageCheck = validateAgeRange();
 
-       function toggle(id) {
-                var tr = document.getElementById(id);
-            if (tr == null) {
-                return;
-            }
-                var bExpand = tr.style.display == '';
-                tr.style.display = (bExpand ? 'none' : '');
-            }
-            function changeimage(id, sMinus, sPlus) {
-                var img = document.getElementById(id);
-                if (img!=null) {
-                   var bExpand = img.src.indexOf(sPlus) >= 0;
-                        if (!bExpand)
-                        img.src = "../pic/blue-up-arrow.gif";
-                        else
-                        img.src = "../pic/blue-down-arrow.gif";
-                }
-            }
-       function Toggle_trGrpHeader2(t_id,i_id) {
-                var img=i_id;
-                changeimage(img, 'blue-down-arrow.gif', 'blue-up-arrow.gif');
-                var id1=t_id;
-                toggle(id1);
-             }
-// This is for callback by the find-code popup.
-// Appends to or erases the current list of diagnoses.
-function set_related(codetype, code, selector, codedesc) {
- var f = document.forms[0][current_sel_name];
- var s = f.value;
- if (code) {
-  if (s.length > 0) s += ';';
-  s += codetype + ':' + code;
- } else {
-  s = '';
- }
- f.value = s;
-}
+        if (dateCheck) $("#processing").show();
 
-//This invokes the find-code popup.
-function sel_diagnosis(e) {
- current_sel_name = e.name;
- dlgopen('../patient_file/encounter/find_code_popup.php?codetype=<?php echo collect_codetypes("diagnosis","csv"); ?>', '_blank', 500, 400);
-}
+        return (dateCheck && ageCheck) ? true : false;
+    }
 
-//This invokes the find-code popup.
-function sel_procedure(e) {
- current_sel_name = e.name;
- dlgopen('../patient_file/encounter/find_code_popup.php?codetype=<?php echo collect_codetypes("procedure","csv"); ?>', '_blank', 500, 400);
-}
+    function toggle(id) {
+        var tr = document.getElementById(id);
+        if (tr == null) {
+            return;
+        }
+        var bExpand = tr.style.display == '';
+        tr.style.display = (bExpand ? 'none' : '');
+    }
+    
+    function changeimage(id, sMinus, sPlus) {
+        var img = document.getElementById(id);
+        if (img!=null) {
+            var bExpand = img.src.indexOf(sPlus) >= 0;
+            if (!bExpand)
+                img.src = "../pic/blue-up-arrow.gif";
+            else
+                img.src = "../pic/blue-down-arrow.gif";
+        }
+    }
+       
+    function Toggle_trGrpHeader2(t_id,i_id) {
+        var img=i_id;
+        changeimage(img, 'blue-down-arrow.gif', 'blue-up-arrow.gif');
+        var id1=t_id;
+        toggle(id1);
+    }
+
+    // This is for callback by the find-code popup.
+    // Appends to or erases the current list of diagnoses.
+    function set_related(codetype, code, selector, codedesc) {
+        var f = document.forms[0][current_sel_name];
+        var s = f.value;
+        if (code) {
+            if (s.length > 0) s += ';';
+            s += codetype + ':' + code;
+        } else {
+            s = '';
+        }
+        f.value = s;
+    }
+
+    //This invokes the find-code popup.
+    function sel_diagnosis(e) {
+        current_sel_name = e.name;
+        dlgopen('../patient_file/encounter/find_code_popup.php?codetype=<?php echo collect_codetypes("diagnosis","csv"); ?>', '_blank', 500, 400);
+    }
+
+    //This invokes the find-code popup.
+    function sel_procedure(e) {
+        current_sel_name = e.name;
+        dlgopen('../patient_file/encounter/find_code_popup.php?codetype=<?php echo collect_codetypes("procedure","csv"); ?>', '_blank', 500, 400);
+    }
 </script>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <style type="text/css">
@@ -146,6 +163,7 @@ function sel_procedure(e) {
         if(diff < 0) //negative
         {
             $('#date_error').css("display", "inline");
+            validateInput();
         }
             else {
             $("#form_refresh").attr("value","true");
@@ -179,7 +197,7 @@ function sel_procedure(e) {
 Search options include diagnosis, procedure, prescription, medical history, and lab results.
 -->
 <?php reportParametersDaterange(); #TRK ?>
-<form name='theform' id='theform' method='post' action='clinical_reports.php'>
+<form name='theform' id='theform' method='post' onsubmit='return validateInput()'>
     <div id="report_parameters">
         <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
         <table>
