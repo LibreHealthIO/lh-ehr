@@ -45,7 +45,7 @@ require_once "reports_controllers/PatientListCreationController.php";
 
                 if (dateCheck) $("#processing").show();
 
-                return (dateCheck && ageCheck) ? true : false;
+                return (dateCheck && ageCheck);
             }
 
         </script>

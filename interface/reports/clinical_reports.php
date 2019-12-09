@@ -44,7 +44,7 @@ require_once "reports_controllers/ClinicalController.php";
 
         if (dateCheck) $("#processing").show();
 
-        return (dateCheck && ageCheck) ? true : false;
+        return (dateCheck && ageCheck);
     }
 
     function toggle(id) {
