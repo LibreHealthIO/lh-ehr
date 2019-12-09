@@ -45,14 +45,24 @@ $to_date = fixDate($_POST['form_to_date'], date(DateFormatRead(true)));
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
 
 <script language="JavaScript">
 
-<?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
+ <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
+
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+
+ function validateInput() {
+    return validateFromAndToDates();
+ }
 
  // The OnClick handler for receipt display.
  function show_receipt(pid,timestamp) {
@@ -98,7 +108,7 @@ $to_date = fixDate($_POST['form_to_date'], date(DateFormatRead(true)));
 
 <?php reportParametersDaterange(); #TRK ?>
 
-<form name='theform' method='post' action='front_receipts_report.php' id='theform'>
+<form name='theform' method='post' action='front_receipts_report.php' id='theform' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 

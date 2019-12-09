@@ -107,12 +107,22 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot']; ?>/library/dialog.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
+
 <script language="JavaScript">
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+
+ function validateInput() {
+  return validateFromAndToDates();
+ }
 
 // This is for callback by the find-code popup.
 // Erases the current entry
@@ -148,7 +158,7 @@ function sel_diagnosis() {
 
 <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Cash Receipts by Provider'); ?></span>
 
-<form method='post' action='sl_receipts_report.php' id='theform'>
+<form method='post' action='sl_receipts_report.php' id='theform' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 

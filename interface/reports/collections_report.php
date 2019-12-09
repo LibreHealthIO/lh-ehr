@@ -65,6 +65,11 @@ else {
 </style>
 
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
 
 <script language="JavaScript">
 
@@ -72,6 +77,10 @@ else {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+
+function validateInput() {
+  return validateFromAndToDates();
+}
 
 function checkAll(checked) {
  var f = document.forms[0];
@@ -90,7 +99,7 @@ function checkAll(checked) {
 
 <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Collections'); ?></span>
 
-<form method='post' action='collections_report.php' enctype='multipart/form-data' id='theform'>
+<form method='post' action='collections_report.php' enctype='multipart/form-data' id='theform' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 

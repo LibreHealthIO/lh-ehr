@@ -67,6 +67,11 @@ require_once "reports_controllers/ReceiptsByMethodController.php";
 
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
 
 <script language="JavaScript">
 
@@ -74,6 +79,10 @@ require_once "reports_controllers/ReceiptsByMethodController.php";
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+
+ function validateInput() {
+  return validateFromAndToDates();
+ }
 
 // This is for callback by the find-code popup.
 // Erases the current entry
@@ -102,7 +111,7 @@ function sel_procedure() {
 
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Receipts Summary','e'); ?></span>
 
-<form method='post' action='receipts_by_method_report.php' id='theform'>
+<form method='post' action='receipts_by_method_report.php' id='theform' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 
