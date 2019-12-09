@@ -102,13 +102,21 @@ else { // not export
 <title><?php xl('Pending Orders','e') ?></title>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
-<script language="JavaScript">
+<script type="text/javascript" src="../../library/report_validation.js"></script>
 
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
+
+<script language="JavaScript">
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
 
+ function validateInput() {
+  return validateFromAndToDates();
+ }
 </script>
 
 </head>
@@ -119,7 +127,7 @@ else { // not export
 
 <h2><?php xl('Pending Orders','e')?></h2>
 
-<form method='post' action='pending_orders.php'>
+<form method='post' id='theform' action='pending_orders.php' onsubmit='return validateInput()'>
 
 <table border='0' cellpadding='3'>
 

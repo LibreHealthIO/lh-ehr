@@ -264,6 +264,18 @@ function process_result_code($row) {
  .detail    { color:#000000; font-family:sans-serif; font-size:10pt; font-weight:normal }
 </style>
 <script type="text/javascript" src="../../library/textformat.js"></script>
+<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
+
+<script language="JavaScript">
+  function validateInput() {
+    return validateFromAndToDates();
+  }
+</script>
 </head>
 
 <body class="body_top">
@@ -272,7 +284,7 @@ function process_result_code($row) {
 
 <h2><?php echo $report_title; ?></h2>
 
-<form name='theform' method='post' action='procedure_stats.php'>
+<form name='theform' method='post' action='procedure_stats.php' onsubmit='return validateInput()'>
 
 <table border='0' cellspacing='5' cellpadding='1'>
 
@@ -582,7 +594,6 @@ foreach (array(1 => 'Screen', 2 => 'Printer', 3 => 'Export File') as $key => $va
 </script>
 
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
   $(function() {
