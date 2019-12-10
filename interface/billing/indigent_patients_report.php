@@ -44,8 +44,8 @@ function bucks($amount) {
   return "";
 }
 
-$form_start_date = fixDate($_POST['form_start_date'], date("Y-01-01"));
-$form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
+$form_from_date = fixDate($_POST['form_from_date'], date("Y-01-01"));
+$form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
 
 ?>
 <html>
@@ -79,14 +79,21 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
 <title><?php xl('Indigent Patients Report','e')?></title>
 
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
 
 <script language="JavaScript">
-
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
 
+ function validateInput() {
+  return validateFromAndToDates();
+ }
 </script>
 
 </head>
@@ -95,7 +102,7 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
 
 <span class='title'><?php xl('Report','e'); ?> - <?php xl('Indigent Patients','e'); ?></span>
 
-<form method='post' action='indigent_patients_report.php' id='theform'>
+<form method='post' action='indigent_patients_report.php' id='theform' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 
@@ -112,15 +119,15 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
                <?php xl('Visits From','e'); ?>:
             </td>
             <td>
-               <input type='text' name='form_start_date' id="form_start_date" size='10'
-                      value='<?php htmlspecialchars(oeFormatShortDate($form_start_date)) ?>'>
+               <input type='text' name='form_from_date' id="form_from_date" size='10'
+                      value='<?php htmlspecialchars(oeFormatShortDate($form_from_date)) ?>'>
             </td>
             <td class='label'>
                <?php xl('To','e'); ?>:
             </td>
             <td>
-               <input type='text' name='form_end_date' id="form_end_date" size='10'
-                      value='<?php htmlspecialchars(oeFormatShortDate($form_end_date)) ?>'>
+               <input type='text' name='form_to_date' id="form_to_date" size='10'
+                      value='<?php htmlspecialchars(oeFormatShortDate($form_to_date)) ?>'>
             </td>
         </tr>
     </table>
@@ -190,11 +197,11 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
 
     $where = "";
 
-    if ($form_start_date) {
-      $where .= " AND e.date >= '$form_start_date'";
+    if ($form_from_date) {
+      $where .= " AND e.date >= '$form_from_date'";
     }
-    if ($form_end_date) {
-      $where .= " AND e.date <= '$form_end_date'";
+    if ($form_to_date) {
+      $where .= " AND e.date <= '$form_to_date'";
     }
 
     $rez = sqlStatement("SELECT " .
@@ -311,11 +318,11 @@ $form_end_date   = fixDate($_POST['form_end_date'], date("Y-m-d"));
 <script type="text/javascript" src="../../library/js/jquery.datetimepicker.full.min.js"></script>
 <script>
     $(function() {
-        $("#form_start_date").datetimepicker({
+        $("#form_from_date").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });
-        $("#form_end_date").datetimepicker({
+        $("#form_to_date").datetimepicker({
             timepicker: false,
             format: "<?= $DateFormat; ?>"
         });

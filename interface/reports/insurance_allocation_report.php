@@ -54,13 +54,21 @@ else {
 <script type="text/javascript" src="../../library/calendar.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
-<script language="JavaScript">
+<script type="text/javascript" src="../../library/report_validation.js"></script>
 
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
+
+<script language="JavaScript">
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
 
+ function validateInput() {
+  return validateFromAndToDates();
+ }
 </script>
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
@@ -101,7 +109,7 @@ else {
 
 <?php reportParametersDaterange(); #TRK ?>
 
-<form name='theform' method='post' action='insurance_allocation_report.php' id='theform'>
+<form name='theform' method='post' action='insurance_allocation_report.php' id='theform' onsubmit='return validateInput()'>
 <div id="report_parameters">
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
 <input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>
