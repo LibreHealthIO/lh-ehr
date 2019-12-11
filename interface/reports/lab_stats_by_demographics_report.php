@@ -53,8 +53,8 @@ if ( !isset($_POST['form_to_date'])) {
 $to_date = new DateTime($to_date);
 $to_date->modify('+1 day');
 $to_date = $to_date->format('Y-m-d');
-$min_age = $_POST['min_age'];
-$max_age = $_POST['max_age'];
+$age_from = $_POST['age_from'];
+$age_to = $_POST['age_to'];
 
 function itemPerPage(int $interval, int $iterations) {
     while ($iterations--) {
@@ -86,6 +86,11 @@ function availablePages($totalRows, $interval) {
     <title><?php xl('Lab Stats by Demographics','e'); ?></title>
     <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
     <?php call_required_libraries($library_array) ?>
+    <script type="text/javascript" src="../../library/report_validation.js"></script>
+
+    <?php
+        call_required_libraries(array("iziModalToast"));
+    ?>
 
     <script>
         $(document).ready(function() {
@@ -95,12 +100,27 @@ function availablePages($totalRows, $interval) {
                 $('#show_lab_details_table').show();
 
                 lab_result_details();
-
             }
-
-
         });
 
+        $(document).ready(function() {
+            $(".numeric_only").keydown(function(event) {
+                //alert(event.keyCode);
+                // Allow only backspace and delete
+                if ( event.keyCode == 46 || event.keyCode == 8 ) {
+                    // let it happen, don't do anything
+                }
+                else {
+                    if (!((event.keyCode >= 96 && event.keyCode <= 105) || (event.keyCode >= 48 && event.keyCode <= 57))) {
+                        event.preventDefault();
+                    }
+                }
+            });
+        });
+
+        function validateInput() {
+            return validateAgeRange();
+        }
 
         var oTable;
         // This is for callback by the find-code popup.
@@ -152,8 +172,8 @@ function availablePages($totalRows, $interval) {
                     url: "../../library/ajax/clinical_stats_and_lab_stats_by_demographics_report_ajax.php",
                     data: {
                         func:"get_all_lab_data",
-                        min_age:"<?php echo $_POST['min_age']  ; ?>",
-                        max_age:"<?php echo $_POST['max_age']  ; ?>",
+                        age_from:"<?php echo $_POST['age_from']  ; ?>",
+                        age_to:"<?php echo $_POST['age_to']  ; ?>",
                         results_per_page: $('#rpp').val(),
                         page_number: $('#nof').val()
 
@@ -240,7 +260,7 @@ function availablePages($totalRows, $interval) {
 </script>
 </head>
 <body class="body_top formtable">&nbsp;&nbsp;
-<form action="./lab_stats_by_demographics_report.php" method="post">
+<form action="./lab_stats_by_demographics_report.php" method="post" name='theform' id='theform' onsubmit='return validateInput()'>
     <label><input value="Refresh Query" type="submit" id="show_lab_details_selector" name="show_lab_details" ><?php ?></label>
 
 
@@ -257,10 +277,10 @@ function availablePages($totalRows, $interval) {
         <tr>
 
             <td class='label'><?php echo htmlspecialchars(xl('Age Min'),ENT_NOQUOTES); ?>:</td>
-            <td><input type='text' name='min_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($min_age, ENT_QUOTES); ?>' > </td>
+            <td><input type='text' class='numeric_only' name='age_from' size='10' maxlength='250' value='<?php echo htmlspecialchars($age_from, ENT_QUOTES); ?>' > </td>
             <td></td>
             <td class='label'><?php echo htmlspecialchars(xl('Age Max'),ENT_NOQUOTES); ?>:</td>
-            <td><input type='text' name='max_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($max_age, ENT_QUOTES); ?>' > </td>
+            <td><input type='text' class='numeric_only' name='age_to' size='10' maxlength='250' value='<?php echo htmlspecialchars($age_to, ENT_QUOTES); ?>' > </td>
             <td class='label'><?php echo htmlspecialchars(xl('Results Per Page'),ENT_NOQUOTES); ?>:</td>
             <td><select name='results_per_page' id="rpp">
                 <?php itemPerPage(250, 6); ?>

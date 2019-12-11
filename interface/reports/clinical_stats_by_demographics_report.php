@@ -51,30 +51,52 @@ if ( !isset($_POST['form_to_date'])) {
 $to_date = new DateTime($to_date);
 $to_date->modify('+1 day');
 $to_date = $to_date->format('Y-m-d');
-$min_age = $_POST['min_age'];
-$max_age = $_POST['max_age'];
+$age_from = $_POST['age_from'];
+$age_to = $_POST['age_to'];
 
 
 ?>
 <head>
 <?php html_header_show();?>
 <title><?php xl('Clinical Reports: Demographics vs Diagnosis','e'); ?></title>
-    <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-    <?php call_required_libraries($library_array) ?>
+<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<?php call_required_libraries($library_array) ?>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("iziModalToast"));
+?>
+
 <script>
 $(document).ready(function() {
 
     if($('#show_diags_details_selector').val()) {
-        console.log('asdasdasdasd');
         $('.session_table').hide();
         $('#show_diags_details_table').show();
 
         show_all_diags();
-        console.log('end of function');
     }
 
 });
 
+$(document).ready(function() {
+    $(".numeric_only").keydown(function(event) {
+        //alert(event.keyCode);
+        // Allow only backspace and delete
+        if ( event.keyCode == 46 || event.keyCode == 8 ) {
+            // let it happen, don't do anything
+        }
+        else {
+            if (!((event.keyCode >= 96 && event.keyCode <= 105) || (event.keyCode >= 48 && event.keyCode <= 57))) {
+                event.preventDefault();
+            }
+        }
+    });
+});
+
+function validateInput() {
+    return validateAgeRange();
+}
 
 var oTable;
 // This is for callback by the find-code popup.
@@ -129,8 +151,8 @@ function show_all_diags(){
                 func:"get_all_diags_data",
                 diag:"<?php  echo $_POST['form_diagnosis'];   ?>",
                 ethnicity:"<?php echo $_POST['ethnicity']; ?>",
-                min_age:"<?php echo $_POST['min_age']  ; ?>",
-                max_age:"<?php echo $_POST['max_age']  ; ?>"
+                age_from:"<?php echo $_POST['age_from']  ; ?>",
+                age_to:"<?php echo $_POST['age_to']  ; ?>"
 
             }, complete: function(){
                 $('#image').hide();
@@ -200,7 +222,7 @@ function show_all_diags(){
 </script>
 </head>
 <body class="body_top formtable">&nbsp;&nbsp;
-<form action="./clinical_stats_by_demographics_report.php" method="post">
+<form action="./clinical_stats_by_demographics_report.php" method="post" name='theform' id='theform' onsubmit='return validateInput()'>
 <table>
 <tr>
 <td><label><input value="Refresh Query" type="submit" id="show_diags_details_selector" name="show_diags_details" ><?php ?></label></td>
@@ -222,10 +244,10 @@ function show_all_diags(){
     <tr>
 
         <td class='label'><?php echo htmlspecialchars(xl('Age Min'),ENT_NOQUOTES); ?>:</td>
-        <td><input type='text' name='min_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($min_age, ENT_QUOTES); ?>' > </td>
+        <td><input type='text' class='numeric_only' name='age_from' size='10' maxlength='250' id='age_from' value='<?php echo htmlspecialchars($age_from, ENT_QUOTES); ?>' > </td>
         <td></td>
         <td class='label'><?php echo htmlspecialchars(xl('Age Max'),ENT_NOQUOTES); ?>:</td>
-        <td><input type='text' name='max_age' size='10' maxlength='250' value='<?php echo htmlspecialchars($max_age, ENT_QUOTES); ?>' > </td>
+        <td><input type='text' class='numeric_only' name='age_to' size='10' maxlength='250' id='age_to' value='<?php echo htmlspecialchars($age_to, ENT_QUOTES); ?>' > </td>
 
     </tr>
     <tr>
