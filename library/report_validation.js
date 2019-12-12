@@ -1,4 +1,6 @@
 // This file is used to validate input before Report forms are submitted.
+// Author: Maggie Negm (maggiehn94@gmail.com)
+
 
 // Validates the entered date range
 function validateFromAndToDates() {
@@ -15,9 +17,7 @@ function validateFromAndToDates() {
         return false;
       }
     }
-
-    // populate input within form, so it shows after submission
-
+    
     return true;
 }
 

@@ -98,7 +98,7 @@ function showFromAndToDates() {
         </td>
          <td>
             <input type='text' name='form_from_date' id='form_from_date' size='10'
-                value='"; htmlspecialchars(oeFormatShortDate(attr($from_date)));
+                value='"; echo htmlspecialchars(oeFormatShortDate(attr($_POST['form_from_date'])));
     echo "' />
          </td>
          <td class='label'> ";
@@ -107,7 +107,7 @@ function showFromAndToDates() {
          </td>
          <td>
             <input type='text' name='form_to_date' id='form_to_date' size='10'
-                value='"; htmlspecialchars(oeFormatShortDate(attr($to_date)));
+                value='"; echo htmlspecialchars(oeFormatShortDate(attr($_POST['form_to_date'])));
     echo "' />
          </td>";
 }
@@ -123,10 +123,10 @@ function showPatientAgeRange() {
     echo ":</td>
     <td>";
         echo xlt('From');
-            echo "<input name='age_from' class='numeric_only' type='text' id='age_from' value='";echo attr($age_from);
+            echo "<input name='age_from' class='numeric_only' type='text' id='age_from' value='";echo attr($_POST["age_from"]);
             echo "' size='3' maxlength='3'/>";
         echo xlt('To{{range}}');
-            echo "<input name='age_to' class='numeric_only' type='text' id='age_to' value='";echo attr($age_to);
+            echo "<input name='age_to' class='numeric_only' type='text' id='age_to' value='";echo attr($_POST["age_to"]);
             echo "' size='3' maxlength='3'/>
     </td>";
 }

@@ -209,12 +209,12 @@ Search options include diagnosis, procedure, prescription, medical history, and 
                         <td class='label' width="100">
                             <?php echo htmlspecialchars(xl('Facility'), ENT_NOQUOTES); ?>:
                         </td>
-                        <td width="250"> <?php dropdown_facility($facility,'facility',false); ?> </td>
+                        <td width="250"> <?php dropdown_facility($_POST['facility'],'facility',false); ?> </td>
 
                         <td class='label'><?php echo htmlspecialchars(xl('Patient ID'),ENT_NOQUOTES); ?>:</td>
                         <td><input name='patient_id' class="numeric_only" type='text' id="patient_id"
                             title='<?php echo htmlspecialchars(xl('Optional numeric patient ID'), ENT_QUOTES); ?>'
-                            value='<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>' size='10' maxlength='20'/>
+                            value='<?php echo htmlspecialchars($_POST["patient_id"], ENT_QUOTES); ?>' size='10' maxlength='20'/>
                         </td>
                     </tr>
                     <tr>
@@ -234,23 +234,23 @@ Search options include diagnosis, procedure, prescription, medical history, and 
                     </tr>
                     <tr>
                         <td class='label'><?php echo htmlspecialchars(xl('Gender'),ENT_NOQUOTES); ?>:</td>
-                        <td><?php echo generate_select_list('gender', 'sex', $sql_gender, 'Select Gender', 'Unassigned', '', ''); ?></td>
+                        <td><?php echo generate_select_list('gender', 'sex', $_POST["gender"], 'Select Gender', 'Unassigned', '', ''); ?></td>
                         <td class='label'><?php echo htmlspecialchars(xl('Drug'),ENT_NOQUOTES); ?>:</td>
                         <td><input type='text' name='form_drug_name' size='10' maxlength='250'
-                                value='<?php echo htmlspecialchars($form_drug_name, ENT_QUOTES); ?>'
+                                value='<?php echo htmlspecialchars($_POST["form_drug_name"], ENT_QUOTES); ?>'
                                 title='<?php echo htmlspecialchars(xl('Optional drug name, use % as a wildcard'), ENT_QUOTES); ?>'/>
                         </td>
 
                     </tr>
                     <tr>
                         <td class='label'><?php echo htmlspecialchars(xl('Race'),ENT_NOQUOTES); ?>:</td>
-                        <td><?php echo generate_select_list('race', 'race', $sql_race, 'Select Race', 'Unassigned', '', ''); ?></td>
+                        <td><?php echo generate_select_list('race', 'race', $_POST["race"], 'Select Race', 'Unassigned', '', ''); ?></td>
                         <td class='label'><?php echo htmlspecialchars(xl('Ethnicity'),ENT_NOQUOTES); ?>:</td>
-                        <td><?php echo generate_select_list('ethnicity', 'ethnicity', $sql_ethnicity, 'Select Ethnicity', 'Unassigned', '', ''); ?></td>
+                        <td><?php echo generate_select_list('ethnicity', 'ethnicity', $_POST["ethnicity"], 'Select Ethnicity', 'Unassigned', '', ''); ?></td>
                         <td class='label'><?php echo htmlspecialchars(xl('Immunization'), ENT_NOQUOTES); ?>:
                         </td>
                         <td><input type='text' name='form_immunization' size='10' maxlength='250'
-                                value='<?php echo htmlspecialchars($form_immunization, ENT_QUOTES); ?>'
+                                value='<?php echo htmlspecialchars($_POST["form_immunization"], ENT_QUOTES); ?>'
                                 title='<?php echo htmlspecialchars(xl('Optional immunization name or code, use % as a wildcard'), ENT_QUOTES); ?>'/>
                         </td>
                     </tr>
@@ -259,7 +259,7 @@ Search options include diagnosis, procedure, prescription, medical history, and 
                             <?php echo htmlspecialchars(xl('Lab Result'), ENT_NOQUOTES); ?>:
                         </td>
                         <td width='100'><input type='text' name='form_lab_results' size='13' maxlength='250'
-                                            value='<?php echo htmlspecialchars($form_lab_results, ENT_QUOTES); ?>'
+                                            value='<?php echo htmlspecialchars($_POST["form_lab_results"], ENT_QUOTES); ?>'
                                             title='<?php echo htmlspecialchars(xl('Result, use % as a wildcard'), ENT_QUOTES); ?>'/>
                         </td>
                         <td class='label' width='100'>

@@ -57,6 +57,7 @@ require_once "reports_controllers/AppointmentsController.php";
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
+ });
 
  function validateInput() {
   return top.restoreSession() && validateFromAndToDates();

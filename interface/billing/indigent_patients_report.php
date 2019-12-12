@@ -120,14 +120,14 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
             </td>
             <td>
                <input type='text' name='form_from_date' id="form_from_date" size='10'
-                      value='<?php htmlspecialchars(oeFormatShortDate($form_from_date)) ?>'>
+                      value='<?php echo htmlspecialchars(oeFormatShortDate($form_from_date)) ?>'>
             </td>
             <td class='label'>
                <?php xl('To','e'); ?>:
             </td>
             <td>
                <input type='text' name='form_to_date' id="form_to_date" size='10'
-                      value='<?php htmlspecialchars(oeFormatShortDate($form_to_date)) ?>'>
+                      value='<?php echo htmlspecialchars(oeFormatShortDate($form_to_date)) ?>'>
             </td>
         </tr>
     </table>
