@@ -33,45 +33,45 @@ function qescape($str) {
 	return str_replace('"', '\\"', $str);
 }
 
-// $from_date = fixDate($_POST['form_from_date'], date('Y-01-01'));
-// $to_date   = fixDate($_POST['form_to_date'], date('Y-12-31'));
-$from_date = fixDate($_POST['form_from_date'], '');
-$to_date   = fixDate($_POST['form_to_date'], '');
-if (empty($to_date) && !empty($from_date)) $to_date = date('Y-12-31');
-if (empty($from_date) && !empty($to_date)) $from_date = date('Y-01-01');
-
-$form_provider = empty($_POST['form_provider']) ? 0 : intval($_POST['form_provider']);
-
 /* This prepares and displays results for Patient List report
  * @params: None
  * @return: Echo HTML
  * @author: Tigpezeghe Rodrige K. <tigrodrige@gmail.com>
+ * @author: Maggie Negm <maggiehn94@gmail.com>
  * */
 function prepareAndShowResults() {
 	$totalpts = 0;
+
+	$from_date = fixDate($_POST['form_from_date'], '');
+	$to_date   = fixDate($_POST['form_to_date'], '');
+	if (empty($to_date) && !empty($from_date)) $to_date = date(substr($from_date, 0, 4) . '-12-31');
+	if (empty($from_date) && !empty($to_date)) $from_date = date(substr($to_date, 0, 4) . '-01-01');
+
+	$form_provider = empty($_POST['form_provider']) ? 0 : intval($_POST['form_provider']);
+
   	$query = "SELECT " .
 	   "p.fname, p.mname, p.lname, p.street, p.city, p.state, " .
 	   "p.postal_code, p.phone_home, p.phone_biz, p.pid, " .
-	   "count(e.date) AS ecount, max(e.date) AS edate, " .
+	   "count(e.pc_eventDate) AS ecount, max(e.pc_eventDate) AS edate, " .
 	   "i1.date AS idate1, i2.date AS idate2, " .
 	   "c1.name AS cname1, c2.name AS cname2 " .
 	   "FROM patient_data AS p ";
 
   	if (!empty($from_date)) {
-   		$query .= "JOIN form_encounter AS e ON " .
-	   	"e.pid = p.pid AND " .
-	   	"e.date >= '$from_date 00:00:00' AND " .
-	   	"e.date <= '$to_date 23:59:59' ";
+   		$query .= "JOIN libreehr_postcalendar_events AS e ON " .
+	   	"e.pc_pid = p.pid AND " .
+	   	"e.pc_eventDate >= '$from_date 00:00:00' AND " .
+	   	"e.pc_eventDate <= '$to_date 23:59:59' ";
    		if ($form_provider) {
-    		$query .= "AND e.provider_id = '$form_provider' ";
+    		$query .= "AND e.pc_aid = '$form_provider' ";
    		}
   	} else {
    		if ($form_provider) {
-    		$query .= "JOIN form_encounter AS e ON " .
-    			"e.pid = p.pid AND e.provider_id = '$form_provider' ";
+    		$query .= "JOIN libreehr_postcalendar_events AS e ON " .
+    			"e.pc_pid = p.pid AND e.pc_aid = '$form_provider' ";
    		} else {
-    		$query .= "LEFT OUTER JOIN form_encounter AS e ON " .
-    			"e.pid = p.pid ";
+    		$query .= "LEFT OUTER JOIN libreehr_postcalendar_events AS e ON " .
+    			"e.pc_pid = p.pid ";
    		}
   	}
 
