@@ -64,11 +64,10 @@ else {
 
 </style>
 
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../library/report_validation.js"></script>
 
 <?php
-  call_required_libraries(array("iziModalToast"));
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
 ?>
 
 <script language="JavaScript">

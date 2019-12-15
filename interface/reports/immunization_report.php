@@ -36,12 +36,11 @@ require_once "reports_controllers/ImmunizationController.php";
 <style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/report_validation.js"></script>
 
 <?php
-  call_required_libraries(array("iziModalToast"));
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
 ?>
 
 <script language="JavaScript">

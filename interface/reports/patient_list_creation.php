@@ -26,15 +26,14 @@ require_once "reports_controllers/PatientListCreationController.php";
         <title>
             <?php echo xlt('Patient List Creation'); ?>
         </title>
+        <?php
+            call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+            resolveFancyboxCompatibility(); // to catch "Uncaught TypeError: Cannot read property 'msie' of undefined" caused by fancyBox compatibility issues
+        ?>
         <script type="text/javascript" src="../../library/overlib_mini.js"></script>
         <script type="text/javascript" src="../../library/dialog.js"></script>
-        <script type="text/javascript" src="../../library/js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="../../library/js/jquery-ui-1.8.21.custom.min.js"></script>
         <script type="text/javascript" src="../../library/report_validation.js"></script>
-
-        <?php
-            call_required_libraries(array("iziModalToast"));
-        ?>
 
         <script language="JavaScript">
             var global_date_format = '%Y-%m-%d';

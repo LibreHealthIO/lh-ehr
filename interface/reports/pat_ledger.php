@@ -35,12 +35,11 @@ if ($_REQUEST['form_csvexport']) {
 <head>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 <script type="text/javascript" src="../../library/report_validation.js"></script>
 
 <?php
-  call_required_libraries(array("iziModalToast"));
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
 ?>
 
 <script type="text/javascript">
