@@ -4,15 +4,35 @@ require_once("$srcdir/headers.inc.php");
 require_once("includes/admin_helper.php");
 
 // get bootstrap
-  call_required_libraries(array("jquery-min-3-1-1","bootstrap"));
-
+call_required_libraries(array("jquery-min-3-1-1", "bootstrap", "iziModalToast"));
 
 // if update category button is used
 if($_POST['updateCat'] == 1) {
-  // call for creation/updation of category
-  createUpdateCategory($_SESSION['category'], $_POST['catName'], $_POST['catCol'], 
-    $_POST['catDes'], $_POST['catType'], $_POST['catDur'], 
-    $_POST['catAllDay'], $_SESSION['category'] == "__NEW__");
+  // if this is a new category, check if there exists a category already with the same name
+  $nameCheck = false;
+  $categories = getCategories(); // retrieve up-to-date list of categories from admin_helper
+  if ($_SESSION['category'] == "__NEW__") {
+    foreach ($categories as $category) {
+      if ($category['pc_catname'] == $_POST['catName']) {
+        $nameCheck = true;
+        echo ('
+        <script type="text/javascript">
+            iziToast.warning({
+              title: "Caution:",
+              message: "This category name already exists. You must enter a new category name.",
+            });
+        </script>
+        ');
+        break;
+      }
+    }
+  }
+
+  if (!$nameCheck) {
+    createUpdateCategory($_SESSION['category'], $_POST['catName'], $_POST['catCol'], 
+      $_POST['catDes'], $_POST['catType'], $_POST['catDur'], 
+      $_POST['catAllDay'], $_SESSION['category'] == "__NEW__");
+  }
 }
 
 // if delete category button is used
