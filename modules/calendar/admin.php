@@ -129,7 +129,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
           <div class="form-group col-xs-6">
             <label class="control-label col-md-2" for="catDur"><?php echo xlt('Duration (Minutes)');?></label>
             <div class="col-md-10">
-              <input type="number" class="form-control" id="catDur" name="catDur" placeholder="<?php echo xlt('Minutes');?>" required
+              <input type="number" min="1" class="form-control" id="catDur" name="catDur" placeholder="<?php echo xlt('Minutes');?>" required
               <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_duration']/60 . "\"";
               else if($nameCheck) echo " value=\"" . $_POST['catDur'] . "\""; ?>
               <?php if((!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 1) ||
