@@ -7,22 +7,14 @@ require_once("includes/admin_helper.php");
 call_required_libraries(array("jquery-min-3-1-1", "bootstrap", "iziModalToast"));
 
 // if update category button is used
+$nameCheck = false;
 if($_POST['updateCat'] == 1) {
   // if this is a new category, check if there exists a category already with the same name
-  $nameCheck = false;
   $categories = getCategories(); // retrieve up-to-date list of categories from admin_helper
   if ($_SESSION['category'] == "__NEW__") {
     foreach ($categories as $category) {
       if ($category['pc_catname'] == $_POST['catName']) {
         $nameCheck = true;
-        echo ('
-        <script type="text/javascript">
-            iziToast.warning({
-              title: "Caution:",
-              message: "This category name already exists. You must enter a new category name.",
-            });
-        </script>
-        ');
         break;
       }
     }
@@ -117,7 +109,8 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
             <label class="control-label col-md-2" for="catName"><?php echo xlt('Name');?></label>
             <div class="col-md-10">
               <input type="text" class="form-control" id="catName" name="catName" placeholder="<?php echo xlt('Category Name');?>" required 
-              <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_catname'] . "\"";  ?> >
+              <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_catname'] . "\"";
+              else if ($nameCheck) echo " value=\"" . $_POST['catName'] . "\""; ?> >
             </div>
           </div>
           
@@ -126,6 +119,7 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
             <div class="col-md-10">
               <input type="color" class="form-control" id="catCol" name="catCol" placeholder="<?php echo xlt('Select a Color');?>" required
               <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_catcolor'] . "\"";
+              else if($nameCheck) echo " value=\"" . $_POST['catCol'] . "\"";
               else echo "value=\"#e5e5e5\"";  ?> >
             </div>
           </div>
@@ -136,8 +130,10 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
             <label class="control-label col-md-2" for="catDur"><?php echo xlt('Duration (Minutes)');?></label>
             <div class="col-md-10">
               <input type="number" class="form-control" id="catDur" name="catDur" placeholder="<?php echo xlt('Minutes');?>" required
-              <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_duration']/60 . "\"" ?> 
-              <?php if(!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 1) echo " disabled"; ?> >
+              <?php if(!empty($selectedCat)) echo " value=\"" . $selectedCat['pc_duration']/60 . "\"";
+              else if($nameCheck) echo " value=\"" . $_POST['catDur'] . "\""; ?>
+              <?php if((!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 1) ||
+              ($nameCheck && $_POST['catAllDay'] == 1)) echo " disabled"; ?> >
             </div>
           </div>
           
@@ -146,11 +142,13 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
             <div class="col-md-10">
               <div class="radio-inline">
                 <label><input type="radio" id="allDay1" name="catAllDay" value="1" required
-                <?php if(!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 1) echo " checked"; ?>><?php echo xlt('Yes');?></label>
+                <?php if((!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 1) ||
+                ($nameCheck && $_POST['catAllDay'] == 1)) echo " checked"; ?>><?php echo xlt('Yes');?></label>
               </div>
               <div class="radio-inline">
                 <label><input type="radio" id="allDay0" name="catAllDay" value="0" required
-                <?php if(!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 0) echo " checked"; ?>><?php echo xlt('No');?></label>
+                <?php if((!empty($selectedCat) && $selectedCat['pc_end_all_day'] == 0) ||
+                ($nameCheck && $_POST['catAllDay'] == 0)) echo " checked"; ?>><?php echo xlt('No');?></label>
               </div>
             </div>
           </div>
@@ -161,7 +159,8 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
             <label class="control-label col-md-2" for="catDes"><?php echo xlt('Description');?></label>
             <div class="col-md-10">
               <textarea rows="2" class="form-control" id="catDes" name="catDes" placeholder="<?php echo xlt('Category Description');?>" 
-              required><?php if(!empty($selectedCat)) echo $selectedCat['pc_catdesc']; ?></textarea>
+              required><?php if(!empty($selectedCat)) echo $selectedCat['pc_catdesc'];
+              else if($nameCheck) echo $_POST['catDes']; ?></textarea>
             </div>
           </div>
           
@@ -170,8 +169,10 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
             <div class="col-md-10">
               <select class="form-control" id="catType" name="catType" required>
                 <option value="0"><?php echo xlt('Patient');?></option>
-                <option value="1" <?php if(!empty($selectedCat) && $selectedCat['pc_cattype'] == 1) echo "selected" ?>><?php echo xlt('Provider');?></option>
-                <option value="2" <?php if(!empty($selectedCat) && $selectedCat['pc_cattype'] == 2) echo "selected" ?>><?php echo xlt('Clinic');?></option>
+                <option value="1" <?php if((!empty($selectedCat) && $selectedCat['pc_cattype'] == 1) ||
+                ($nameCheck && $_POST['catType'] == 1)) echo "selected" ?>><?php echo xlt('Provider');?></option>
+                <option value="2" <?php if((!empty($selectedCat) && $selectedCat['pc_cattype'] == 2) ||
+                ($nameCheck && $_POST['catType'] == 2)) echo "selected" ?>><?php echo xlt('Clinic');?></option>
               </select>
             </div>
           </div>
@@ -223,6 +224,18 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
         }
     });
     </script>
-    
+
+    <?php
+      if($nameCheck) {
+        echo ('
+          <script type="text/javascript">
+            iziToast.warning({
+              title: "Caution:",
+              message: "This category name already exists. You must enter a new category name.",
+            });
+          </script>
+        ');
+      }
+    ?>
 </body>
 </html>
