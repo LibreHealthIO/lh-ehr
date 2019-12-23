@@ -35,7 +35,6 @@ $returnurl = 'encounter_top.php';
 			}
 			function fillComment(element, option){
 				$(`.${option}`).text(element);
-				$(`#${currentCommentDiv}`).hide();
 			}
 		</script>
 	</head>
@@ -111,14 +110,14 @@ $returnurl = 'encounter_top.php';
 							<div class="form-group">
 						    	<label class="control-label col-sm-4" for="Urin__drain_status">Urine drain status</label>
 						    	<div class="col-sm-6">
-						    		<select class="form-control"  name="Urin__drain_status" onchange="getComment(this,'Comment', $(this).children(':selected').attr('class'),'CommentArea')">
+						    		<select class="form-control"  name="Urin__drain_status" onchange="getComment(this,'Comment', $(this).children(':selected').attr('class'),'CommentArea3')">
 						    			<option></option>
 									    <option <?php if ($obj['Urin__drain_status']=="patent") echo " SELECTED"; ?>>patent</option>
-									    <option class ="CommentArea" <?php if ($obj['Urin__drain_status']!="patent") echo " SELECTED"; ?>><?php echo text($obj{'Urin__drain_status'});?></option>
+									    <option class ="CommentArea3" <?php if ($obj['Urin__drain_status']!="patent") echo " SELECTED"; ?>><?php echo text($obj{'Urin__drain_status'});?></option>
 						    		</select>
 						    		<div id="Comment" style="display: none">
 										<textarea class="form-control" placeholder="write your comment here"></textarea>
-										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea')">OK</span>
+										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea3'); $(this).parent().hide()">OK</span>
 									</div>
 						    	</div>
 							</div>
@@ -131,28 +130,28 @@ $returnurl = 'encounter_top.php';
 							<div class="form-group">
 						    	<label class="control-label col-sm-4" for="Site__appearance">Site appearance</label>
 						    	<div class="col-sm-6">
-						    		<select class="form-control"  name="Site__appearance" onchange="getComment(this,'Comment1', $(this).children(':selected').attr('class'),'CommentArea')">
+						    		<select class="form-control"  name="Site__appearance" onchange="getComment(this,'Comment1', $(this).children(':selected').attr('class'),'CommentArea1')">
 						    			<option></option>
 									    <option <?php if ($obj['Site__appearance']=="clean/ dry/ no complications") echo " SELECTED"; ?>>clean/ dry/ no complications</option>
-									    <option class ="CommentArea" <?php if ($obj['Site__appearance']!="clean/ dry/ no complications") echo " SELECTED"; ?>><?php echo text($obj{'Site__appearance'});?></option>
+									    <option class ="CommentArea1" <?php if ($obj['Site__appearance']!="clean/ dry/ no complications") echo " SELECTED"; ?>><?php echo text($obj{'Site__appearance'});?></option>
 						    		</select>
 						    		<div id="Comment1" style="display: none">
 										<textarea class="form-control" placeholder="write your comment here"></textarea>
-										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea')">OK</span>
+										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea1'); $(this).parent().hide()">OK</span>
 									</div>
 						    	</div>
 							</div>
 							<div class="form-group">
 						    	<label class="control-label col-sm-4" for="Site__intervention">Site intervention</label>
 						    	<div class="col-sm-6">
-						    		<select class="form-control"  name="Site__intervention" onchange="getComment(this,'Comment2', $(this).children(':selected').attr('class'),'CommentArea')">
+						    		<select class="form-control"  name="Site__intervention" onchange="getComment(this,'Comment2', $(this).children(':selected').attr('class'),'CommentArea2')">
 						    			<option></option>
 									    <option <?php if ($obj['Site__intervention']=="None") echo " SELECTED"; ?>>None</option>
-									    <option class ="CommentArea" <?php if ($obj['Site__appearance']!="None") echo " SELECTED"; ?>><?php echo text($obj{'Site__intervention'});?></option>
+									    <option class ="CommentArea2" <?php if ($obj['Site__appearance']!="None") echo " SELECTED"; ?>><?php echo text($obj{'Site__intervention'});?></option>
 						    		</select>
 						    		<div id="Comment2" style="display: none">
 										<textarea class="form-control" placeholder="write your comment here"></textarea>
-										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea')">OK</span>
+										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea2'); $(this).parent().hide()">OK</span>
 									</div>
 						    	</div>
 							</div>
@@ -333,27 +332,27 @@ $returnurl = 'encounter_top.php';
 							<div class="form-group">
 						    	<label class="control-label col-sm-4" for="tube_status">tube status</label>
 						    	<div class="col-sm-6">
-						    		<select class="form-control"  name="tube_status" onchange="getComment(this,'Comment5', $(this).children(':selected').attr('class'),'CommentArea')">
+						    		<select class="form-control"  name="tube_status" onchange="getComment(this,'Comment5', $(this).children(':selected').attr('class'),'CommentArea4')">
 						    			<option></option>
 									    <option <?php if ($obj['tube_status']=="patent") echo " SELECTED"; ?>>patent</option>
-									    <option class ="CommentArea" <?php if ($obj['tube_status']!="patent") echo " SELECTED"; ?>><?php echo text($obj{'tube_status'});?></option>
+									    <option class ="CommentArea4" <?php if ($obj['tube_status']!="patent") echo " SELECTED"; ?>><?php echo text($obj{'tube_status'});?></option>
 						    		</select>
 						    		<div id="Comment5" style="display: none">
 										<textarea class="form-control" placeholder="write your comment here"></textarea>
-										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea')">OK</span>
+										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea4'); $(this).parent().hide()">OK</span>
 									</div>
 						    	</div>
 							</div>
 							<div class="form-group">
 						    	<label class="control-label col-sm-4" for="tube_interventions">tube interventions</label>
 						    	<div class="col-sm-6">
-						    		<select class="form-control" name="tube_interventions" onchange="getComment(this,'Comment4', $(this).children(':selected').attr('class'),'CommentArea')">
+						    		<select class="form-control" name="tube_interventions" onchange="getComment(this,'Comment4', $(this).children(':selected').attr('class'),'CommentArea5')">
 						    			<option <?php if ($obj['tube_interventions']=="None") echo " SELECTED"; ?>>None</option>
-									    <option class ="CommentArea" <?php if ($obj['tube_interventions']!="None") echo " SELECTED"; ?>><?php echo text($obj{'tube_interventions'});?></option>
+									    <option class ="CommentArea5" <?php if ($obj['tube_interventions']!="None") echo " SELECTED"; ?>><?php echo text($obj{'tube_interventions'});?></option>
 						    		</select>
 						    		<div id="Comment4" style="display: none">
 										<textarea class="form-control" placeholder="write your comment here"></textarea>
-										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea')">OK</span>
+										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea5'); $(this).parent().hide()">OK</span>
 									</div>
 						    	</div>
 							</div>
@@ -398,17 +397,17 @@ $returnurl = 'encounter_top.php';
 							<div class="form-group">
 						    	<label class="control-label col-sm-4" for="GI_tube_type">GI tube type</label>
 						    	<div class="col-sm-6">
-						    		<select class="form-control" name="GI_tube_type" onchange="getComment(this,'Comment3', $(this).children(':selected').attr('class'),'CommentArea')">
+						    		<select class="form-control" name="GI_tube_type" onchange="getComment(this,'Comment3', $(this).children(':selected').attr('class'),'CommentArea6')">
 						    			<option></option>
 									    <option <?php if ($obj['GI_tube_type']=="NG") echo " SELECTED"; ?>>NG</option>
 									    <option <?php if ($obj['GI_tube_type']=="GT") echo " SELECTED"; ?>>GT</option>
 									    <option <?php if ($obj['GI_tube_type']=="TP") echo " SELECTED"; ?>>TP</option>
 									    <option <?php if ($obj['GI_tube_type']=="JT") echo " SELECTED"; ?>>JT</option>
-									    <option class ="CommentArea" <?php if ($obj['GI_tube_type']=="NG" || $obj['GI_tube_type']=="GT" || $obj['GI_tube_type']=="TP" || $obj['GI_tube_type']=="JT") echo " SELECTED"; ?>><?php echo text($obj{'GI_tube_type'});?></option>
+									    <option class ="CommentArea6" <?php if ($obj['GI_tube_type']=="NG" || $obj['GI_tube_type']=="GT" || $obj['GI_tube_type']=="TP" || $obj['GI_tube_type']=="JT") echo " SELECTED"; ?>><?php echo text($obj{'GI_tube_type'});?></option>
 						    		</select>
 						    		<div id="Comment3" style="display: none">
 										<textarea class="form-control" placeholder="write your comment here"></textarea>
-										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea')">OK</span>
+										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea6'); $(this).parent().hide()">OK</span>
 									</div>
 						    	</div>
 							</div>
@@ -437,14 +436,14 @@ $returnurl = 'encounter_top.php';
 							<div class="form-group">
 						    	<label class="control-label col-sm-4" for="GI_tube_status">GI tube status</label>
 						    	<div class="col-sm-6">
-						    		<select class="form-control" name="GI_tube_status" onchange="getComment(this,'Comment', $(this).children(':selected').attr('class'),'CommentArea')">
+						    		<select class="form-control" name="GI_tube_status" onchange="getComment(this,'Comment', $(this).children(':selected').attr('class'),'CommentArea7')">
 						    			<option></option>
 									    <option <?php if ($obj['GI_tube_status']=="patent") echo " SELECTED"; ?>>patent</option>
-									    <option class ="CommentArea" <?php if ($obj['GI_tube_status']!="patent") echo " SELECTED"; ?>><?php echo text($obj{'GI_tube_status'});?></option>
+									    <option class ="CommentArea7" <?php if ($obj['GI_tube_status']!="patent") echo " SELECTED"; ?>><?php echo text($obj{'GI_tube_status'});?></option>
 						    		</select>
 						    		<div id="Comment" style="display: none">
 										<textarea class="form-control" placeholder="write your comment here"></textarea>
-										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea')">OK</span>
+										<span style="background-color:#9696ad;padding: 5px; float: right;margin: 2px;" onclick="fillComment($(this).prev().val(), 'CommentArea7'); $(this).parent().hide()">OK</span>
 									</div>
 						    	</div>
 							</div>
@@ -522,4 +521,13 @@ $returnurl = 'encounter_top.php';
 			</div>
 		</form>
 	</body>
+	<script>
+		$(document).ready(function() {
+			$('.form-horizontal').submit(function() {
+				console.log('came to form');
+				$(this).find(':input').filter(function() { return !this.value; }).attr('disabled', 'disabled');
+				return true;
+			});
+		});
+	</script>
 </html>
