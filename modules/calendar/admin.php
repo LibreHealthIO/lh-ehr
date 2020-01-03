@@ -229,9 +229,10 @@ if(isset($_SESSION['category']) && $_SESSION['category']!=NULL) {
       if($nameCheck) {
         echo ('
           <script type="text/javascript">
-            iziToast.warning({
+            iziToast.error({
               title: "Caution:",
               message: "This category name already exists. You must enter a new category name.",
+              position: "topCenter"
             });
           </script>
         ');
