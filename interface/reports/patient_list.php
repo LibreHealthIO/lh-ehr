@@ -43,13 +43,22 @@ if ($_POST['form_csvexport'] && !$_POST['form_refresh']) {
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script> <!-- Including jquery plugin to handle uncaught ReferenceError $  -->
+<script type="text/javascript" src="../../library/report_validation.js"></script>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+
+<!-- Including jquery plugin to handle uncaught ReferenceError $  -->
+<?php
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+?>
 
 <script language="JavaScript">
 	$(document).ready(function() {
  		top.printLogSetup(document.getElementById('printbutton'));
-	});
+  });
+  
+  function validateInput() {
+    return validateFromAndToDates();
+  }
 </script>
 
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
@@ -95,7 +104,7 @@ if ($_POST['form_csvexport'] && !$_POST['form_refresh']) {
 
 
 
-<form name='theform' id='theform' method='post' action='patient_list.php'>
+<form name='theform' id='theform' method='post' onsubmit='return validateInput()'>
   <div id="report_parameters">
     <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
     <input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>

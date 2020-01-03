@@ -80,7 +80,11 @@ require_once "reports_controllers/Edi270Controller.php";
 
         <script type="text/javascript" src="../../library/textformat.js"></script>
         <script type="text/javascript" src="../../library/dialog.js"></script>
-        <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="../../library/report_validation.js"></script>
+
+        <?php
+            call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+        ?>
 
         <script type="text/javascript">
 
@@ -88,9 +92,13 @@ require_once "reports_controllers/Edi270Controller.php";
             var stringBatch  = "<?php echo htmlspecialchars( xl('Please select X12 partner, required to create the 270 batch'), ENT_QUOTES); ?>";
 
             // for form refresh
-
             function refreshme() {
                 document.forms[0].submit();
+            }
+
+            // validate form input before submission
+            function validateInput() {
+                return top.restoreSession() && validateFromAndToDates();
             }
 
             //  To delete the row from the reports section
@@ -126,7 +134,6 @@ require_once "reports_controllers/Edi270Controller.php";
             }
 
             // To Clear the hidden input field
-
             function validate_policy()
             {
                 document.getElementById('removedrows').value = "";
@@ -167,7 +174,7 @@ require_once "reports_controllers/Edi270Controller.php";
 
         <?php reportParametersDaterange(); #TRK ?>
 
-        <form method='post' name='theform' id='theform' action='edi_270.php' onsubmit="return top.restoreSession()">
+        <form method='post' name='theform' id='theform' action='edi_270.php' onsubmit='return validateInput()'>
             <input type="hidden" name="removedrows" id="removedrows" value="">
             <div id="report_parameters">
                 <table>

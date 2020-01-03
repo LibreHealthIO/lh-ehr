@@ -35,11 +35,21 @@ if ($_REQUEST['form_csvexport']) {
 <head>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+?>
+
 <script type="text/javascript">
 var pt_name;
 var pt_id;
+
+function validateInput() {
+  if (validateFromAndToDates()) checkSubmit();
+}
+
 function checkSubmit() {
     var pat = document.forms[0].elements['form_patient'].value;
     if(!pat || pat == 0) {
@@ -181,7 +191,7 @@ function sel_patient() {
         <tr>
             <td>
                 <div style='margin-left:15px'>
-                    <a href='#' class='css_button cp-submit' onclick="checkSubmit();" >
+                    <a href='#' class='css_button cp-submit' onclick='validateInput()'>
                     <span><?php echo xlt('Submit'); ?></span></a>
 
             <?php if ($_REQUEST['form_refresh'] || $_REQUEST['form_csvexport']) { ?>

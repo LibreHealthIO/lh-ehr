@@ -42,7 +42,9 @@ require_once "reports_controllers/ChartLocationActivityController.php";
 
 </style>
 
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+<?php
+  call_required_libraries(array("jquery-min-3-1-1"));
+?>
 
 <script language="JavaScript">
  $(document).ready(function() {

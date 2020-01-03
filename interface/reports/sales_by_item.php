@@ -82,9 +82,13 @@ require_once "reports_controllers/SalesByItemController.php";
 }
 </style>
 
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../../library/js/report_helper.js"></script>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+?>
 
 <title><?php echo xlt('Sales by Item') ?></title>
 
@@ -94,6 +98,10 @@ require_once "reports_controllers/SalesByItemController.php";
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+
+  function validateInput() {
+    return validateFromAndToDates();
+  }
 </script>
 
 </head>
@@ -102,7 +110,7 @@ require_once "reports_controllers/SalesByItemController.php";
 
 <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Sales by Item'); ?></span>
 
-<form method='post' action='sales_by_item.php' id='theform'>
+<form method='post' action='sales_by_item.php' id='theform' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>

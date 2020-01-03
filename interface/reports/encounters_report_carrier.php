@@ -52,14 +52,16 @@ require_once "reports_controllers/EncountersCarrierController.php";
 </style>
 
 <?php
+   call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
    include_css_library("tablesorter-master/dist/css/theme.blue.min.css");
    include_css_library("jquery-datetimepicker/jquery.datetimepicker.css");
-   include_js_library("jquery-min-3-1-1/index.js");
    include_js_library("jquery-datetimepicker/jquery.datetimepicker.full.min.js");
    include_js_library("tablesorter-master/dist/js/jquery.tablesorter.min.js");
    include_js_library("tablesorter-master/dist/js/jquery.tablesorter.widgets.min.js");
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/report_helper.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
 <script LANGUAGE="JavaScript">
  $(document).ready(function() {
   oeFixedHeaderSetup(document.getElementById('mymaintable'));
@@ -77,6 +79,9 @@ require_once "reports_controllers/EncountersCarrierController.php";
   document.forms[0].submit();
  }
 
+ function validateInput() {
+    return validateFromAndToDates();
+ }
 </script>
 
 </head>
@@ -91,7 +96,7 @@ require_once "reports_controllers/EncountersCarrierController.php";
     . " &nbsp; to &nbsp; ". date("d F Y", strtotime(oeFormatDateForPrintReport($_POST['form_to_date']))); ?>
 </div>
 
-<form method='post' name='theform' id='theform' action='encounters_report_carrier.php'>
+<form method='post' name='theform' id='theform' action='encounters_report_carrier.php' onsubmit='return validateInput()'>
 
 <div id="report_parameters">
 <table>

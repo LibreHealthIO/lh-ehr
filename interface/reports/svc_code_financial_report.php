@@ -46,9 +46,14 @@ require_once "reports_controllers/SvcCodeFinancialController.php";
 <head>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dialog.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+?>
+
 <?php html_header_show();?>
 <style type="text/css">
 /* specifically include & exclude from printing */
@@ -84,12 +89,16 @@ require_once "reports_controllers/SvcCodeFinancialController.php";
   win.printLogSetup(document.getElementById('printbutton'));
  });
 
+ function validateInput() {
+  return validateFromAndToDates();
+ }
+
 </script>
 
 </head>
 <body leftmargin='0' topmargin='0' marginwidth='0' marginheight='0' class="body_top">
 <span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Financial Summary by Service Code'); ?></span>
-<form method='post' action='svc_code_financial_report.php' id='theform'>
+<form method='post' action='svc_code_financial_report.php' id='theform' onsubmit='return validateInput()'>
 <div id="report_parameters">
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
 <input type='hidden' name='form_csvexport' id='form_csvexport' value=''/>

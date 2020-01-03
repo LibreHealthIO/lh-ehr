@@ -34,7 +34,11 @@ else {
   <link rel="stylesheet" href="<?php echo $GLOBALS['webroot'] ?>/library/css/jquery.datetimepicker.css">
   <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/overlib_mini.js"></script>
   <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
-  <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="../../library/report_validation.js"></script>
+
+  <?php
+    call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+  ?>
 
   <script language="JavaScript">
 
@@ -42,6 +46,10 @@ else {
     var win = top.printLogSetup ? top : opener.top;
     win.printLogSetup(document.getElementById('printbutton'));
    });
+
+  function validateInput() {
+    return validateFromAndToDates();
+  }
 
   </script>
 
@@ -83,7 +91,7 @@ else {
 
   <?php reportParametersDaterange(); #TRK ?>
 
-  <form name='theform' method='post' action='adjustments.php' id='theform'>
+  <form name='theform' method='post' action='adjustments.php' id='theform' onsubmit='return validateInput()'>
 
   <div id="report_parameters">
   <input type='hidden' name='form_refresh' id='form_refresh' value=''/>

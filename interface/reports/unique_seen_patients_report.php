@@ -66,7 +66,11 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+?>
 
 <script language="JavaScript">
  $(document).ready(function() {
@@ -74,13 +78,16 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
   win.printLogSetup(document.getElementById('printbutton'));
  });
 
+ function validateInput() {
+  if (validateFromAndToDates()) mysubmit("submit");
+ }
+
  function mysubmit(action) {
   var f = document.forms[0];
   f.form_action.value = action;
   top.restoreSession();
   f.submit();
  }
-
 </script>
 
 <link rel=stylesheet href="<?php echo $css_header;?>" type="text/css">
@@ -118,7 +125,7 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
 
 <?php reportParametersDaterange(); #TRK ?>
 
-<form name='theform' method='post' action='unique_seen_patients_report.php' id='theform'>
+<form name='theform' method='post' action='unique_seen_patients_report.php' id='theform' onsubmit='return validateInput()'>
 <div id="report_parameters">
 <!-- form_action is set to "submit" or "labels" at form submit time -->
 <input type='hidden' name='form_action' value='' />
@@ -142,7 +149,7 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
    <table style='border-left:1px solid; width:100%; height:100%'>
     <tr>
      <td valign='middle'>
-      <a href='#' class='css_button cp-submit' onclick='mysubmit("submit")' style='margin-left:1em'>
+      <a href='#' class='css_button cp-submit' onclick='validateInput()' style='margin-left:1em'>
        <span><?php echo htmlspecialchars(xl('Submit')); ?></span>
       </a>
 <?php if ($form_action) { ?>

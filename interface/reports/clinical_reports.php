@@ -25,63 +25,79 @@ require_once "reports_controllers/ClinicalController.php";
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-    <script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+?>
+
 <script language="JavaScript">
+    $(document).ready(function() {
+        var win = top.printLogSetup ? top : opener.top;
+        win.printLogSetup(document.getElementById('printbutton'));
+    });
 
- $(document).ready(function() {
-  var win = top.printLogSetup ? top : opener.top;
-  win.printLogSetup(document.getElementById('printbutton'));
- });
+    function validateInput() {
+        var dateCheck = validateFromAndToDates();
+        var ageCheck = validateAgeRange();
 
-       function toggle(id) {
-                var tr = document.getElementById(id);
-            if (tr == null) {
-                return;
-            }
-                var bExpand = tr.style.display == '';
-                tr.style.display = (bExpand ? 'none' : '');
-            }
-            function changeimage(id, sMinus, sPlus) {
-                var img = document.getElementById(id);
-                if (img!=null) {
-                   var bExpand = img.src.indexOf(sPlus) >= 0;
-                        if (!bExpand)
-                        img.src = "../pic/blue-up-arrow.gif";
-                        else
-                        img.src = "../pic/blue-down-arrow.gif";
-                }
-            }
-       function Toggle_trGrpHeader2(t_id,i_id) {
-                var img=i_id;
-                changeimage(img, 'blue-down-arrow.gif', 'blue-up-arrow.gif');
-                var id1=t_id;
-                toggle(id1);
-             }
-// This is for callback by the find-code popup.
-// Appends to or erases the current list of diagnoses.
-function set_related(codetype, code, selector, codedesc) {
- var f = document.forms[0][current_sel_name];
- var s = f.value;
- if (code) {
-  if (s.length > 0) s += ';';
-  s += codetype + ':' + code;
- } else {
-  s = '';
- }
- f.value = s;
-}
+        if (dateCheck) $("#processing").show();
 
-//This invokes the find-code popup.
-function sel_diagnosis(e) {
- current_sel_name = e.name;
- dlgopen('../patient_file/encounter/find_code_popup.php?codetype=<?php echo collect_codetypes("diagnosis","csv"); ?>', '_blank', 500, 400);
-}
+        return (dateCheck && ageCheck);
+    }
 
-//This invokes the find-code popup.
-function sel_procedure(e) {
- current_sel_name = e.name;
- dlgopen('../patient_file/encounter/find_code_popup.php?codetype=<?php echo collect_codetypes("procedure","csv"); ?>', '_blank', 500, 400);
-}
+    function toggle(id) {
+        var tr = document.getElementById(id);
+        if (tr == null) {
+            return;
+        }
+        var bExpand = tr.style.display == '';
+        tr.style.display = (bExpand ? 'none' : '');
+    }
+    
+    function changeimage(id, sMinus, sPlus) {
+        var img = document.getElementById(id);
+        if (img!=null) {
+            var bExpand = img.src.indexOf(sPlus) >= 0;
+            if (!bExpand)
+                img.src = "../pic/blue-up-arrow.gif";
+            else
+                img.src = "../pic/blue-down-arrow.gif";
+        }
+    }
+       
+    function Toggle_trGrpHeader2(t_id,i_id) {
+        var img=i_id;
+        changeimage(img, 'blue-down-arrow.gif', 'blue-up-arrow.gif');
+        var id1=t_id;
+        toggle(id1);
+    }
+
+    // This is for callback by the find-code popup.
+    // Appends to or erases the current list of diagnoses.
+    function set_related(codetype, code, selector, codedesc) {
+        var f = document.forms[0][current_sel_name];
+        var s = f.value;
+        if (code) {
+            if (s.length > 0) s += ';';
+            s += codetype + ':' + code;
+        } else {
+            s = '';
+        }
+        f.value = s;
+    }
+
+    //This invokes the find-code popup.
+    function sel_diagnosis(e) {
+        current_sel_name = e.name;
+        dlgopen('../patient_file/encounter/find_code_popup.php?codetype=<?php echo collect_codetypes("diagnosis","csv"); ?>', '_blank', 500, 400);
+    }
+
+    //This invokes the find-code popup.
+    function sel_procedure(e) {
+        current_sel_name = e.name;
+        dlgopen('../patient_file/encounter/find_code_popup.php?codetype=<?php echo collect_codetypes("procedure","csv"); ?>', '_blank', 500, 400);
+    }
 </script>
 <link rel='stylesheet' href='<?php echo $css_header ?>' type='text/css'>
 <style type="text/css">
@@ -146,6 +162,7 @@ function sel_procedure(e) {
         if(diff < 0) //negative
         {
             $('#date_error').css("display", "inline");
+            validateInput();
         }
             else {
             $("#form_refresh").attr("value","true");
@@ -179,7 +196,7 @@ function sel_procedure(e) {
 Search options include diagnosis, procedure, prescription, medical history, and lab results.
 -->
 <?php reportParametersDaterange(); #TRK ?>
-<form name='theform' id='theform' method='post' action='clinical_reports.php'>
+<form name='theform' id='theform' method='post' onsubmit='return validateInput()'>
     <div id="report_parameters">
         <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
         <table>
@@ -191,12 +208,12 @@ Search options include diagnosis, procedure, prescription, medical history, and 
                         <td class='label' width="100">
                             <?php echo htmlspecialchars(xl('Facility'), ENT_NOQUOTES); ?>:
                         </td>
-                        <td width="250"> <?php dropdown_facility($facility,'facility',false); ?> </td>
+                        <td width="250"> <?php dropdown_facility($_POST['facility'],'facility',false); ?> </td>
 
                         <td class='label'><?php echo htmlspecialchars(xl('Patient ID'),ENT_NOQUOTES); ?>:</td>
                         <td><input name='patient_id' class="numeric_only" type='text' id="patient_id"
                             title='<?php echo htmlspecialchars(xl('Optional numeric patient ID'), ENT_QUOTES); ?>'
-                            value='<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>' size='10' maxlength='20'/>
+                            value='<?php echo htmlspecialchars($_POST["patient_id"], ENT_QUOTES); ?>' size='10' maxlength='20'/>
                         </td>
                     </tr>
                     <tr>
@@ -216,23 +233,23 @@ Search options include diagnosis, procedure, prescription, medical history, and 
                     </tr>
                     <tr>
                         <td class='label'><?php echo htmlspecialchars(xl('Gender'),ENT_NOQUOTES); ?>:</td>
-                        <td><?php echo generate_select_list('gender', 'sex', $sql_gender, 'Select Gender', 'Unassigned', '', ''); ?></td>
+                        <td><?php echo generate_select_list('gender', 'sex', $_POST["gender"], 'Select Gender', 'Unassigned', '', ''); ?></td>
                         <td class='label'><?php echo htmlspecialchars(xl('Drug'),ENT_NOQUOTES); ?>:</td>
                         <td><input type='text' name='form_drug_name' size='10' maxlength='250'
-                                value='<?php echo htmlspecialchars($form_drug_name, ENT_QUOTES); ?>'
+                                value='<?php echo htmlspecialchars($_POST["form_drug_name"], ENT_QUOTES); ?>'
                                 title='<?php echo htmlspecialchars(xl('Optional drug name, use % as a wildcard'), ENT_QUOTES); ?>'/>
                         </td>
 
                     </tr>
                     <tr>
                         <td class='label'><?php echo htmlspecialchars(xl('Race'),ENT_NOQUOTES); ?>:</td>
-                        <td><?php echo generate_select_list('race', 'race', $sql_race, 'Select Race', 'Unassigned', '', ''); ?></td>
+                        <td><?php echo generate_select_list('race', 'race', $_POST["race"], 'Select Race', 'Unassigned', '', ''); ?></td>
                         <td class='label'><?php echo htmlspecialchars(xl('Ethnicity'),ENT_NOQUOTES); ?>:</td>
-                        <td><?php echo generate_select_list('ethnicity', 'ethnicity', $sql_ethnicity, 'Select Ethnicity', 'Unassigned', '', ''); ?></td>
+                        <td><?php echo generate_select_list('ethnicity', 'ethnicity', $_POST["ethnicity"], 'Select Ethnicity', 'Unassigned', '', ''); ?></td>
                         <td class='label'><?php echo htmlspecialchars(xl('Immunization'), ENT_NOQUOTES); ?>:
                         </td>
                         <td><input type='text' name='form_immunization' size='10' maxlength='250'
-                                value='<?php echo htmlspecialchars($form_immunization, ENT_QUOTES); ?>'
+                                value='<?php echo htmlspecialchars($_POST["form_immunization"], ENT_QUOTES); ?>'
                                 title='<?php echo htmlspecialchars(xl('Optional immunization name or code, use % as a wildcard'), ENT_QUOTES); ?>'/>
                         </td>
                     </tr>
@@ -241,7 +258,7 @@ Search options include diagnosis, procedure, prescription, medical history, and 
                             <?php echo htmlspecialchars(xl('Lab Result'), ENT_NOQUOTES); ?>:
                         </td>
                         <td width='100'><input type='text' name='form_lab_results' size='13' maxlength='250'
-                                            value='<?php echo htmlspecialchars($form_lab_results, ENT_QUOTES); ?>'
+                                            value='<?php echo htmlspecialchars($_POST["form_lab_results"], ENT_QUOTES); ?>'
                                             title='<?php echo htmlspecialchars(xl('Result, use % as a wildcard'), ENT_QUOTES); ?>'/>
                         </td>
                         <td class='label' width='100'>

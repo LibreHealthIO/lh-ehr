@@ -43,7 +43,10 @@ require_once "reports_controllers/ServiceByCategoryController.php";
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
-<script type="text/javascript" src="../../library/js/jquery.1.3.2.js"></script>
+
+<?php
+  call_required_libraries(array("jquery-min-3-1-1"));
+?>
 
 <script language="JavaScript">
  $(document).ready(function() {

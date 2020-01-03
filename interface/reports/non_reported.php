@@ -44,16 +44,24 @@ require_once "reports_controllers/NonReportedController.php";
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
-<script type="text/javascript" src="../../library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../library/report_validation.js"></script>
+
+<?php
+  call_required_libraries(array("jquery-min-3-1-1", "iziModalToast"));
+?>
 
 <script language="JavaScript">
 
-<?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
+ <?php require($GLOBALS['srcdir'] . "/restoreSession.php"); ?>
 
  $(document).ready(function() {
   var win = top.printLogSetup ? top : opener.top;
   win.printLogSetup(document.getElementById('printbutton'));
  });
+
+ function validateInput() {
+    return top.restoreSession() && validateFromAndToDates();
+  }
 
 </script>
 
@@ -94,8 +102,7 @@ require_once "reports_controllers/NonReportedController.php";
 
 <?php reportParametersDaterange(); #TRK ?>
 
-<form name='theform' id='theform' method='post' action='non_reported.php'
-onsubmit='return top.restoreSession()'>
+<form name='theform' id='theform' method='post' action='non_reported.php' onsubmit='return validateInput()'>
 <div id="report_parameters">
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
 <input type='hidden' name='form_get_hl7' id='form_get_hl7' value=''/>
