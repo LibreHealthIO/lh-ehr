@@ -28,7 +28,6 @@ $returnurl = 'encounter_top.php';
 			var currentSelect;
 			var currentCommentDiv;
 			function getComment(select, element, focused, className){ 
-				console.log(focused);
 				 currentCommentDiv = element;
 				if(focused === className){
 					$(`#${element}`).show();
@@ -37,7 +36,6 @@ $returnurl = 'encounter_top.php';
 				}
 			}
 			function fillComment(element, option){
-				console.log(element);
 				$(`.${option}`).text(element);
 				$(`#${currentCommentDiv}`).hide();
 			}
@@ -2701,5 +2699,13 @@ $returnurl = 'encounter_top.php';
 			<input type="button" id="dontsave" class="deleter btn btn-danger" value="<?php echo xla('Cancel'); ?>"> &nbsp;
 		</div>
 	</form>
+	<script>
+		$(document).ready(function() {
+			$('.form-horizontal').submit(function() {
+				$(this).find(':input').filter(function() { return !this.value; }).attr('disabled', 'disabled');
+				return true;
+			});
+		});
+	</script>
 </body>
 </html>
