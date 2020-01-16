@@ -154,10 +154,10 @@ $returnurl = 'encounter_top.php';
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Age" name="Age">
 					    			<option value="0"></option>
-								    <option>4 less than 3 y/o</option>
-								    <option>3 3 to less than 7 y/o</option>
-								    <option>2 7 to less than 13 y/o</option>
-								    <option>1 13 years and older</option>
+								    <option value="4">4 less than 3 y/o</option>
+								    <option value="3">3 3 to less than 7 y/o</option>
+								    <option value="2">2 7 to less than 13 y/o</option>
+								    <option value="1">1 13 years and older</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -167,8 +167,8 @@ $returnurl = 'encounter_top.php';
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Gender" name="Gender">
 					    			<option value="0"></option>
-								    <option>2 male</option>
-								    <option>1 female</option>
+								    <option value="2">2 male</option>
+								    <option value="1">1 female</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -178,11 +178,11 @@ $returnurl = 'encounter_top.php';
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Diagnosis" name="Diagnosis">
 					    			<option value="0"></option>
-								    <option>4 neurological diagnosis</option>
-								    <option>3 alterations in oxygenation - respiratory issue</option>
-								    <option>dehydration</option>
-								    <option>2 psych/behavioral disorders</option>
-								    <option>1 other diagnosis</option>
+								    <option value="4">4 neurological diagnosis</option>
+								    <option value="3">3 alterations in oxygenation - respiratory issue</option>
+								    <option value="0">dehydration</option>
+								    <option value="2">2 psych/behavioral disorders</option>
+								    <option value="1">1 other diagnosis</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -447,7 +447,7 @@ $returnurl = 'encounter_top.php';
 	<script>
 		let humpty_dumpty_total = 0;
 		let humpty_dumpty = {
-			total: 0,
+			Total_score_Risk_level: 0,
 			Age: 0,
 			Gender: 0,
 			Diagnosis: 0, 
@@ -455,10 +455,41 @@ $returnurl = 'encounter_top.php';
 			Environmental_factors: 0,
 			Response_to_surgery__sedation__anesthesia: 0,
 			Medication_usage: 0,
-
-
 		}
-		if ()
+		document.addEventListener('input', function (event) {
+				switch (event.target.id) {
+					case 'Age':
+						humpty_dumpty.Age = event.target.value
+						break;
+					case 'Gender':
+						humpty_dumpty.Gender = event.target.value
+						break;
+					case 'Diagnosis':
+						humpty_dumpty.Diagnosis = event.target.value
+						break;
+					case 'Cognitive_impairments':
+						humpty_dumpty.Cognitive_impairments = event.target.value
+						break;
+					case 'Environmental_factors':
+						humpty_dumpty.Environmental_factors = event.target.value
+						break;
+				}
+				if (humpty_dumpty.hasOwnProperty(event.target.id)) {
+					console.log('has the id');
+					for (const key in humpty_dumpty) {
+						if (humpty_dumpty.hasOwnProperty(key)) {
+							humpty_dumpty.Total_score_Risk_level += humpty_dumpty[key]
+							// const element = humpty_dumpty[key];
+						}
+					}
+					console.log(humpty_dumpty.Total_score_Risk_level);
+					if (humpty_dumpty.Total_score_Risk_level > 0) {
+						console.log('greater 0');
+						document.getElementById('Total_score_Risk_level').value = humpty_dumpty.Total_score_Risk_level;
+					}
+					console.log('came here');
+				}
+			}, false);
 		$(document).ready(function() {
 			$('.form-horizontal').submit(function() {
 				$(this).find(':input').filter(function() { return !this.value; }).attr('disabled', 'disabled');
