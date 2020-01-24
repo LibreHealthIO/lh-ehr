@@ -88,6 +88,16 @@ In Linux it's typically located in /etc/mysql
 
 Note: Sometimes , installation may take more time than usual on some systems. In that case, you would need to increase `max_execution_time` in your php.ini file and then restart your server.
 
+## Contributing Guidelines
+* Create a new branch with a meaningful name `git checkout -b branch_name`.<br />
+* Add the files you changed `git add file_name`.<br />
+* Commit your changes `git commit -m "Message briefly explaining the feature"`.<br />
+* Keep one commit per feature. If you forgot to add changes, you can edit the previous commit `git commit --amend`.<br />
+* Push to your repo `git push --set-upstream origin branch-name`.<br />
+* Go into [the Github repo](https://github.com/LibreHealthIO/lh-ehr.git) and create a pull request explaining your changes.<br />
+* If you are requested to make changes, edit your commit using `git commit --amend`, push again and the pull request will edit automatically.<br />
+* If the PR is related to any front end change, please attach relevant screenshots in the pull request description.<br/>
+
 # License
 
 LibreHealth EHR is primarily licensed under Mozilla Public License Version 2. The code inherited from OpenEMR is licensed under GPL 2 or higher. This project is a part of the [Software Freedom Conservancy](http://sfconservancy.org) family.
