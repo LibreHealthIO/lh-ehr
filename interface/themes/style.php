@@ -21,6 +21,11 @@
 * returns html color code
 * @author Naveen
 */
+
+require_once("../globals.php");
+require_once("$srcdir/report.inc");
+require_once("$srcdir/patient.inc");
+
 function validate_html_color_code($arg) {
 	$color_code = "";
 	if (strlen($arg) == 6) {
@@ -64,6 +69,73 @@ else {
 	$button_font_color = $secondary_font_color;
 }
 
+$css_values = array();
+$res = sqlStatement("SELECT * FROM user_settings WHERE setting_user = ?", $_SESSION['authId']);
+while($row = sqlFetchArray($res)){
+    switch($row['setting_label']){
+        case "pos-bt" :
+            $css_values['pos-bt'] =  $row['setting_value'];
+            break;
+        case "pos-txt" :
+            $css_values['pos-txt'] = $row['setting_value'];
+            break;
+        case "pos-bor" :
+            $css_values['pos-bor'] = $row['setting_value'];
+            break;
+        case "pos-bor-col" :
+            $css_values['pos-bor-col'] = $row['setting_value'];
+            break;
+        case "neg-bt" :
+            $css_values['neg-bt'] = $row['setting_value'];
+            break;
+        case "neg-txt" :
+            $css_values['neg-txt'] = $row['setting_value'];
+            break;
+        case "neg-bor" :
+            $css_values['neg-bor'] = $row['setting_value'];
+            break;
+        case "neg-bor-col" :
+            $css_values['neg-bor-col'] = $row['setting_value'];
+            break;
+        case "sub-bt" :
+            $css_values['sub-bt'] = $row['setting_value'];
+            break;
+        case "sub-txt" :
+            $css_values['sub-txt'] = $row['setting_value'];
+            break;
+        case "sub-bor" :
+            $css_values['sub-bor'] = $row['setting_value'];
+            break;
+        case "sub-bor-col" :
+            $css_values['sub-bor-col'] = $row['setting_value'];
+            break;
+        case "misc-bt" :
+            $css_values['misc-bt'] = $row['setting_value'];
+            break;
+        case "misc-txt" :
+            $css_values['misc-txt'] = $row['setting_value'];
+            break;
+        case "misc-bor" :
+            $css_values['misc-bor'] = $row['setting_value'];
+            break;
+        case "misc-bor-col" :
+            $css_values['misc-bor-col'] = $row['setting_value'];
+            break;
+        case "out-bt" :
+            $css_values['out-bt'] = $row['setting_value'];
+            break;
+        case "out-txt" :
+            $css_values['out-txt'] = $row['setting_value'];
+            break;
+        case "out-bor" :
+            $css_values['out-bor'] = $row['setting_value'];
+            break;
+        case "out-bor-col" :
+            $css_values['out-bor-col'] = $row['setting_value'];
+            break;
+    }
+}
+
 echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar, .dropdown-menu>li>a, .dropdown-toggle, #menu, .dropdown, .nav>li>a, .glyphicon, #userdata .dropdown-menu>li, #userdata{
   background-color:  #$primary_color;
   color: #$primary_font_color;
@@ -76,31 +148,36 @@ echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, 
   color: #$secondary_font_color;
 }
 
-.cp-positive {
-background-color: green;
-color: white;
-}
-
-
-.cp-negative {
-background-color: red;
-color: white;
-}
-
-.cp-submit {
-background-color: blue;
-color: white;
-}
-
-.cp-misc {
-	background-color: #888;
-	color: white;
-}
-
-.cp-output {
-	background-color: purple;
-	color: white;
-}
+.cp-positive{
+	background-color: " . $css_values['pos-bt']. ";" .
+	"color: " . $css_values['pos-txt']. ";" .
+	"border: " . $css_values['pos-bor']. ";" .
+	"border-color: " . $css_values['pos-bor-col']. ";" .
+"}
+.cp-negative{
+	background-color: " . $css_values['neg-bt']. ";" .
+	"color: " . $css_values['neg-txt']. ";" .
+	"border: " . $css_values['neg-bor']. ";" .
+	"border-color: " . $css_values['neg-bor-col']. ";" .
+"}
+.cp-submit{
+	background-color: " . $css_values['sub-bt']. ";" .
+	"color: " . $css_values['sub-txt']. ";" .
+	"border: " . $css_values['sub-bor']. ";" .
+	"border-color: " . $css_values['sub-bor-col']. ";" .
+"}
+.cp-misc{
+	background-color: " . $css_values['misc-bt']. ";" .
+	"color: " . $css_values['misc-txt']. ";" .
+	"border: " . $css_values['misc-bor']. ";" .
+	"border-color: " . $css_values['misc-bor-col']. ";" .
+"}
+.cp-output{
+	background-color: " . $css_values['out-bt']. ";" .
+	"color: " . $css_values['out-txt']. ";" .
+	"border: " . $css_values['out-bor']. ";" .
+	"border-color: " . $css_values['out-bor-col']. ";" .
+"}
 
 ";
 ?>
