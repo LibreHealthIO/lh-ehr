@@ -12,6 +12,20 @@
 				$value == "" || $value == "0" || $value == "0.00" || $value == NULL || $value == " " || $value == "0000-00-00 00:00:00") {
 				continue;
 			}
+			switch ($key) {
+				case "Weight":
+					$value = $value . "(kg)";
+					break;
+				case "Height":
+					$value = $value . "(cm)";
+					break;
+				case "Head_circumference":
+					$value = $value . "(cm)";
+					break;
+				case "abd_girth":
+					$value = $value . "(cm)";
+					break;
+			}
 			$key=ucwords(str_replace("__","/",$key));
 			$key=ucwords(str_replace("_"," ",$key));
 

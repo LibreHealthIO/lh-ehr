@@ -46,11 +46,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Mobility">Mobility</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Mobility" name="Mobility">
-					    			<option></option>
-								    <option>1  completely immobile</option>
-								    <option>2 very limited</option>
-								    <option> 3 slightly limited</option>
-								    <option>4 no limitations</option>
+					    			<option value="0"></option>
+								    <option value="1">1  completely immobile</option>
+								    <option value="2">2 very limited</option>
+								    <option value="3"> 3 slightly limited</option>
+								    <option value="4">4 no limitations</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -58,11 +58,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="pt_Activity">Activity</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="pt_Activity" name="pt_Activity">
-					    			<option></option>
-								    <option>1  confined to bed</option>
-								    <option>2  chairfast</option>
-								    <option>3  walks occassionally</option>
-								    <option>4  walks frequently</option>
+					    			<option value="0"></option>
+								    <option value="1">1  confined to bed</option>
+								    <option value="2">2  chairfast</option>
+								    <option value="3">3  walks occassionally</option>
+								    <option value="4">4  walks frequently</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -70,11 +70,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Sensory_Perception">Sensory Perception</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Sensory_Perception" name="Sensory_Perception">
-					    			<option></option>
-								    <option>1  completely limited</option>
-								    <option>2  very limited</option>
-								    <option>3  slightly limited</option>
-								    <option>4  no impairment</option>
+					    			<option value="0"></option>
+								    <option value="1">1  completely limited</option>
+								    <option value="2">2  very limited</option>
+								    <option value="3">3  slightly limited</option>
+								    <option value="4">4  no impairment</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -82,11 +82,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Moisture">Moisture</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Moisture" name="Moisture">
-					    			<option></option>
-								    <option>1  constantly moist</option>
-								    <option>2  very moist</option>
-								    <option>3  occassionally moist</option>
-								    <option>4  rarely moist</option>
+					    			<option value="0"></option>
+								    <option value="1">1  constantly moist</option>
+								    <option value="2">2  very moist</option>
+								    <option value="3">3  occassionally moist</option>
+								    <option value="4">4  rarely moist</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -94,11 +94,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Friction__Shear">Friction/Shear</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Friction__Shear" name="Friction__Shear">
-					    			<option></option>
-								    <option>1  significant problem</option>
-								    <option>2  problem</option>
-								    <option>3  potential problem</option>
-								    <option>4  no apparent problem</option>
+					    			<option value="0"></option>
+								    <option value="1">1  significant problem</option>
+								    <option value="2">2  problem</option>
+								    <option value="3">3  potential problem</option>
+								    <option value="4">4  no apparent problem</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -106,11 +106,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Nutrition">Nutrition</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Nutrition" name="Nutrition">
-					    			<option></option>
-								    <option>1  very poor</option>
-								    <option>2  inadequate</option>
-								    <option>3  adequate</option>
-								    <option>4  excellent</option>
+					    			<option value="0"></option>
+								    <option value="1">1  very poor</option>
+								    <option value="2">2  inadequate</option>
+								    <option value="3">3  adequate</option>
+								    <option value="4">4  excellent</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -118,11 +118,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Tissue__Perfusion__Oxygenation">Tissue/Perfusion/Oxygenation</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Tissue__Perfusion__Oxygenation" name="Tissue__Perfusion__Oxygenation">
-					    			<option></option>
-								    <option>1  extremely compromised</option>
-								    <option>2  compromisede</option>
-								    <option>3  adequate</option>
-								    <option>4  excellent</option>
+					    			<option value="0"></option>
+								    <option value="1">1  extremely compromised</option>
+								    <option value="2">2  compromised</option>
+								    <option value="3">3  adequate</option>
+								    <option value="4">4  excellent</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -180,7 +180,6 @@ $returnurl = 'encounter_top.php';
 					    			<option value="0"></option>
 								    <option value="4">4 neurological diagnosis</option>
 								    <option value="3">3 alterations in oxygenation - respiratory issue</option>
-								    <option value="0">dehydration</option>
 								    <option value="2">2 psych/behavioral disorders</option>
 								    <option value="1">1 other diagnosis</option>
 					    		</select>
@@ -191,9 +190,9 @@ $returnurl = 'encounter_top.php';
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Cognitive_impairments" name="Cognitive_impairments">
 					    			<option value="0"></option>
-								    <option>3 not aware of own limitations</option>
-								    <option>2 forgets limitations</option>
-								    <option>1 oriented to own ability</option>
+								    <option value="3">3 not aware of own limitations</option>
+								    <option value="2">2 forgets limitations</option>
+								    <option value="1">1 oriented to own ability</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -202,10 +201,10 @@ $returnurl = 'encounter_top.php';
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Environmental_factors" name="Environmental_factors">
 					    			<option value="0"></option>
-								    <option>4 hx of falls</option>
-								    <option>3 patient uses assistive devices</option>
-								    <option>2 patient placed in bed</option>
-								    <option>1 patient in outpatient area</option>
+								    <option value="4">4 hx of falls</option>
+								    <option value="3">3 patient uses assistive devices</option>
+								    <option value="2">2 patient placed in bed</option>
+								    <option value="1">1 patient in outpatient area</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -214,9 +213,9 @@ $returnurl = 'encounter_top.php';
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Response_to_surgery__sedation__anesthesia" name="Response_to_surgery__sedation__anesthesia">
 					    			<option value="0"></option>
-								    <option>3 within 24 hours</option>
-								    <option>2 within 48 hours</option>
-								    <option>1 more than 48 hrs/none</option>
+								    <option value="3">3 within 24 hours</option>
+								    <option value="2">2 within 48 hours</option>
+								    <option value="1">1 more than 48 hrs/none</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -225,9 +224,9 @@ $returnurl = 'encounter_top.php';
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Medication_usage" name="Medication_usage">
 					    			<option value="0"></option>
-								    <option>3 multiple usage of sedative medications</option>
-								    <option>2 use of one sedative medication</option>
-								    <option>1 other medications/none</option>
+								    <option value="3">3 multiple usage of sedative medications</option>
+								    <option value="2">2 use of one sedative medication</option>
+								    <option value="1">1 other medications/none</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -445,7 +444,6 @@ $returnurl = 'encounter_top.php';
 		</div>
 	</form>
 	<script>
-		let humpty_dumpty_total = 0;
 		let humpty_dumpty = {
 			Total_score_Risk_level: 0,
 			Age: 0,
@@ -456,38 +454,79 @@ $returnurl = 'encounter_top.php';
 			Response_to_surgery__sedation__anesthesia: 0,
 			Medication_usage: 0,
 		}
+		let braden_q_scale = {
+			Total_score: 0,
+			Mobility: 0,
+			pt_Activity: 0,
+			Sensory_Perception: 0, 
+			Moisture: 0,
+			Friction__Shear: 0,
+			Nutrition: 0,
+			Tissue__Perfusion__Oxygenation: 0,
+		}
 		document.addEventListener('input', function (event) {
 				switch (event.target.id) {
 					case 'Age':
-						humpty_dumpty.Age = event.target.value
+						humpty_dumpty.Age = Number(event.target.value);
 						break;
 					case 'Gender':
-						humpty_dumpty.Gender = event.target.value
+						humpty_dumpty.Gender = Number(event.target.value);
 						break;
 					case 'Diagnosis':
-						humpty_dumpty.Diagnosis = event.target.value
+						humpty_dumpty.Diagnosis = Number(event.target.value);
 						break;
 					case 'Cognitive_impairments':
-						humpty_dumpty.Cognitive_impairments = event.target.value
+						humpty_dumpty.Cognitive_impairments = Number(event.target.value);
 						break;
 					case 'Environmental_factors':
-						humpty_dumpty.Environmental_factors = event.target.value
+						humpty_dumpty.Environmental_factors = Number(event.target.value);
+						break;
+					case 'Mobility':
+						braden_q_scale.Mobility = Number(event.target.value);
+						break;
+					case 'pt_Activity':
+						braden_q_scale.pt_Activity = Number(event.target.value);
+						break;
+					case 'Sensory_Perception':
+						braden_q_scale.Sensory_Perception = Number(event.target.value);
+						break;
+					case 'Moisture':
+						braden_q_scale.Moisture = Number(event.target.value);
+						break;
+					case 'Friction__Shear':
+						braden_q_scale.Friction__Shear = Number(event.target.value);
+						break;
+					case 'Nutrition':
+						braden_q_scale.Nutrition = Number(event.target.value);
+						break;
+					case 'Tissue__Perfusion__Oxygenation':
+						braden_q_scale.Tissue__Perfusion__Oxygenation = Number(event.target.value);
 						break;
 				}
 				if (humpty_dumpty.hasOwnProperty(event.target.id)) {
-					console.log('has the id');
+					humpty_dumpty.Total_score_Risk_level = 0;
 					for (const key in humpty_dumpty) {
 						if (humpty_dumpty.hasOwnProperty(key)) {
-							humpty_dumpty.Total_score_Risk_level += humpty_dumpty[key]
-							// const element = humpty_dumpty[key];
+							humpty_dumpty.Total_score_Risk_level += Number(humpty_dumpty[key]);
 						}
 					}
-					console.log(humpty_dumpty.Total_score_Risk_level);
 					if (humpty_dumpty.Total_score_Risk_level > 0) {
-						console.log('greater 0');
 						document.getElementById('Total_score_Risk_level').value = humpty_dumpty.Total_score_Risk_level;
+					} else {
+						document.getElementById('Total_score_Risk_level').value = '';
 					}
-					console.log('came here');
+				} else if (braden_q_scale.hasOwnProperty(event.target.id)) {
+					braden_q_scale.Total_score = 0;
+					for (const key in braden_q_scale) {
+						if (braden_q_scale.hasOwnProperty(key)) {
+							braden_q_scale.Total_score += Number(braden_q_scale[key]);
+						}
+					}
+					if (braden_q_scale.Total_score > 0) {
+						document.getElementById('Total_score').value = braden_q_scale.Total_score;
+					} else {
+						document.getElementById('Total_score').value = '';
+					}
 				}
 			}, false);
 		$(document).ready(function() {

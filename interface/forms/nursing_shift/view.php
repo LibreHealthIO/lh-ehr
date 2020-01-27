@@ -50,11 +50,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Mobility">Mobility</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Mobility" name="Mobility">
-					    			<option></option>
-								    <option <?php if ($obj['Mobility']=="1  completely immobile") echo " SELECTED"; ?>>1  completely immobile</option>
-								    <option <?php if ($obj['Mobility']=="2 very limited") echo " SELECTED"; ?>>2 very limited</option>
-								    <option <?php if ($obj['Mobility']=="3 slightly limited") echo " SELECTED"; ?>>3 slightly limited</option>
-								    <option <?php if ($obj['Mobility']=="4 no limitations") echo " SELECTED"; ?>>4 no limitations</option>
+					    			<option value="0"></option>
+								    <option  value="1" <?php if ($obj['Mobility']=="1  completely immobile") echo " SELECTED"; ?>>1  completely immobile</option>
+								    <option  value="2" <?php if ($obj['Mobility']=="2 very limited") echo " SELECTED"; ?>>2 very limited</option>
+								    <option  value="3" <?php if ($obj['Mobility']=="3 slightly limited") echo " SELECTED"; ?>>3 slightly limited</option>
+								    <option  value="4" <?php if ($obj['Mobility']=="4 no limitations") echo " SELECTED"; ?>>4 no limitations</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -62,11 +62,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="pt_Activity">Activity</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="pt_Activity" name="pt_Activity">
-					    			<option></option>
-								    <option <?php if ($obj['pt_Activity']=="1  confined to bed") echo " SELECTED"; ?>>1  confined to bed</option>
-								    <option <?php if ($obj['pt_Activity']=="2  chairfast") echo " SELECTED"; ?>>2  chairfast</option>
-								    <option <?php if ($obj['pt_Activity']=="3  walks occassionally") echo " SELECTED"; ?>>3  walks occassionally</option>
-								    <option <?php if ($obj['pt_Activity']=="4  walks frequently") echo " SELECTED"; ?>>4  walks frequently</option>
+					    			<option  value="0"></option>
+								    <option  value="1" <?php if ($obj['pt_Activity']=="1  confined to bed") echo " SELECTED"; ?>>1  confined to bed</option>
+								    <option  value="2" <?php if ($obj['pt_Activity']=="2  chairfast") echo " SELECTED"; ?>>2  chairfast</option>
+								    <option  value="3" <?php if ($obj['pt_Activity']=="3  walks occassionally") echo " SELECTED"; ?>>3  walks occassionally</option>
+								    <option  value="4" <?php if ($obj['pt_Activity']=="4  walks frequently") echo " SELECTED"; ?>>4  walks frequently</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -74,11 +74,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Sensory_Perception">Sensory Perception</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Sensory_Perception" name="Sensory_Perception">
-					    			<option></option>
-								    <option <?php if ($obj['Sensory_Perception']=="1  completely limited") echo " SELECTED"; ?>>1  completely limited</option>
-								    <option <?php if ($obj['Sensory_Perception']=="2  very limited") echo " SELECTED"; ?>>2  very limited</option>
-								    <option <?php if ($obj['Sensory_Perception']=="3  slightly limited") echo " SELECTED"; ?>>3  slightly limited</option>
-								    <option <?php if ($obj['Sensory_Perception']=="4  no impairment") echo " SELECTED"; ?>>4  no impairment</option>
+					    			<option  value="0"></option>
+								    <option  value="1" <?php if ($obj['Sensory_Perception']=="1  completely limited") echo " SELECTED"; ?>>1  completely limited</option>
+								    <option  value="2" <?php if ($obj['Sensory_Perception']=="2  very limited") echo " SELECTED"; ?>>2  very limited</option>
+								    <option  value="3" <?php if ($obj['Sensory_Perception']=="3  slightly limited") echo " SELECTED"; ?>>3  slightly limited</option>
+								    <option  value="4" <?php if ($obj['Sensory_Perception']=="4  no impairment") echo " SELECTED"; ?>>4  no impairment</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -86,11 +86,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Moisture">Moisture</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Moisture" name="Moisture">
-					    			<option></option>
-								    <option <?php if ($obj['Moisture']=="1  constantly mois") echo " SELECTED"; ?>>1  constantly moist</option>
-								    <option <?php if ($obj['Moisture']=="2  very moist") echo " SELECTED"; ?>>2  very moist</option>
-								    <option <?php if ($obj['Moisture']=="3  occassionally moist") echo " SELECTED"; ?>>3  occassionally moist</option>
-								    <option <?php if ($obj['Moisture']=="4  rarely moist") echo " SELECTED"; ?>>4  rarely moist</option>
+					    			<option  value="0"></option>
+								    <option  value="1" <?php if ($obj['Moisture']=="1  constantly mois") echo " SELECTED"; ?>>1  constantly moist</option>
+								    <option  value="2" <?php if ($obj['Moisture']=="2  very moist") echo " SELECTED"; ?>>2  very moist</option>
+								    <option  value="3" <?php if ($obj['Moisture']=="3  occassionally moist") echo " SELECTED"; ?>>3  occassionally moist</option>
+								    <option  value="4" <?php if ($obj['Moisture']=="4  rarely moist") echo " SELECTED"; ?>>4  rarely moist</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -98,11 +98,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Friction__Shear">Friction/Shear</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Friction__Shear" name="Friction__Shear">
-					    			<option></option>
-								    <option <?php if ($obj['Friction__Shear']=="1  significant problem") echo " SELECTED"; ?>>1  significant problem</option>
-								    <option <?php if ($obj['Friction__Shear']=="2  problem") echo " SELECTED"; ?>>2  problem</option>
-								    <option <?php if ($obj['Friction__Shear']=="3  potential problem") echo " SELECTED"; ?>>3  potential problem</option>
-								    <option <?php if ($obj['Friction__Shear']=="4  no apparent problem") echo " SELECTED"; ?>>4  no apparent problem</option>
+					    			<option  value="0"></option>
+								    <option  value="1" <?php if ($obj['Friction__Shear']=="1  significant problem") echo " SELECTED"; ?>>1  significant problem</option>
+								    <option  value="2" <?php if ($obj['Friction__Shear']=="2  problem") echo " SELECTED"; ?>>2  problem</option>
+								    <option  value="3" <?php if ($obj['Friction__Shear']=="3  potential problem") echo " SELECTED"; ?>>3  potential problem</option>
+								    <option  value="4" <?php if ($obj['Friction__Shear']=="4  no apparent problem") echo " SELECTED"; ?>>4  no apparent problem</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -110,11 +110,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Nutrition">Nutrition</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Nutrition" name="Nutrition">
-					    			<option></option>
-								    <option <?php if ($obj['Nutrition']=="1  very poor") echo " SELECTED"; ?>>1  very poor</option>
-								    <option <?php if ($obj['Nutrition']=="2  inadequate") echo " SELECTED"; ?>>2  inadequate</option>
-								    <option <?php if ($obj['Nutrition']=="3  adequate") echo " SELECTED"; ?>>3  adequate</option>
-								    <option <?php if ($obj['Nutrition']=="4  excellent") echo " SELECTED"; ?>>4  excellent</option>
+					    			<option  value="0"></option>
+								    <option  value="1" <?php if ($obj['Nutrition']=="1  very poor") echo " SELECTED"; ?>>1  very poor</option>
+								    <option  value="2" <?php if ($obj['Nutrition']=="2  inadequate") echo " SELECTED"; ?>>2  inadequate</option>
+								    <option  value="3" <?php if ($obj['Nutrition']=="3  adequate") echo " SELECTED"; ?>>3  adequate</option>
+								    <option  value="4" <?php if ($obj['Nutrition']=="4  excellent") echo " SELECTED"; ?>>4  excellent</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -122,11 +122,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Tissue__Perfusion__Oxygenation">Tissue/Perfusion/Oxygenation</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Tissue__Perfusion__Oxygenation" name="Tissue__Perfusion__Oxygenation">
-					    			<option></option>
-								    <option <?php if ($obj['Tissue__Perfusion__Oxygenation']=="1  extremely compromised") echo " SELECTED"; ?>>1  extremely compromised</option>
-								    <option <?php if ($obj['Tissue__Perfusion__Oxygenation']=="2  compromisede") echo " SELECTED"; ?>>2  compromisede</option>
-								    <option <?php if ($obj['Tissue__Perfusion__Oxygenation']=="3  adequate") echo " SELECTED"; ?>>3  adequate</option>
-								    <option <?php if ($obj['Tissue__Perfusion__Oxygenation']=="4  excellent") echo " SELECTED"; ?>>4  excellent</option>
+					    			<option  value="0"></option>
+								    <option  value="1" <?php if ($obj['Tissue__Perfusion__Oxygenation']=="1  extremely compromised") echo " SELECTED"; ?>>1  extremely compromised</option>
+								    <option  value="2" <?php if ($obj['Tissue__Perfusion__Oxygenation']=="2  compromised") echo " SELECTED"; ?>>2  compromisede</option>
+								    <option  value="2" <?php if ($obj['Tissue__Perfusion__Oxygenation']=="3  adequate") echo " SELECTED"; ?>>3  adequate</option>
+								    <option  value="4" <?php if ($obj['Tissue__Perfusion__Oxygenation']=="4  excellent") echo " SELECTED"; ?>>4  excellent</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -157,11 +157,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Age">Age</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Age" name="Age">
-					    			<option></option>
-								    <option <?php if ($obj['Age']=="4 less than 3 y/o") echo " SELECTED"; ?>>4 less than 3 y/o</option>
-								    <option <?php if ($obj['Age']=="3 3 to less than 7 y/o") echo " SELECTED"; ?>>3 3 to less than 7 y/o</option>
-								    <option <?php if ($obj['Age']=="2 7 to less than 13 y/o") echo " SELECTED"; ?>>2 7 to less than 13 y/o</option>
-								    <option <?php if ($obj['Age']=="1 13 years and older") echo " SELECTED"; ?>>1 13 years and older</option>
+					    			<option value="0"></option>
+								    <option value="4" <?php if ($obj['Age']=="4 less than 3 y/o") echo " SELECTED"; ?>>4 less than 3 y/o</option>
+								    <option value="3" <?php if ($obj['Age']=="3 3 to less than 7 y/o") echo " SELECTED"; ?>>3 3 to less than 7 y/o</option>
+								    <option value="2" <?php if ($obj['Age']=="2 7 to less than 13 y/o") echo " SELECTED"; ?>>2 7 to less than 13 y/o</option>
+								    <option value="1" <?php if ($obj['Age']=="1 13 years and older") echo " SELECTED"; ?>>1 13 years and older</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -170,9 +170,9 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Gender">Gender</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Gender" name="Gender">
-					    			<option></option>
-								    <option <?php if ($obj['Gender']=="2 male") echo " SELECTED"; ?>>2 male</option>
-								    <option <?php if ($obj['Gender']=="1 female") echo " SELECTED"; ?>>1 female</option>
+					    			<option value="0"></option>
+								    <option value="2" <?php if ($obj['Gender']=="2 male") echo " SELECTED"; ?>>2 male</option>
+								    <option value="1" <?php if ($obj['Gender']=="1 female") echo " SELECTED"; ?>>1 female</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -181,12 +181,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Diagnosis">Diagnosis</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Diagnosis" name="Diagnosis">
-					    			<option></option>
-								    <option <?php if ($obj['Diagnosis']=="4 neurological diagnosis") echo " SELECTED"; ?>>4 neurological diagnosis</option>
-								    <option <?php if ($obj['Diagnosis']=="3 alterations in oxygenation - respiratory issue") echo " SELECTED"; ?>>3 alterations in oxygenation - respiratory issue</option>
-								    <option <?php if ($obj['Diagnosis']=="dehydration") echo " SELECTED"; ?>>dehydration</option>
-								    <option <?php if ($obj['Diagnosis']=="2 psych/behavioral disorders") echo " SELECTED"; ?>>2 psych/behavioral disorders</option>
-								    <option <?php if ($obj['Diagnosis']=="1 other diagnosis") echo " SELECTED"; ?>>1 other diagnosis</option>
+					    			<option value="0"></option>
+								    <option value="4" <?php if ($obj['Diagnosis']=="4 neurological diagnosis") echo " SELECTED"; ?>>4 neurological diagnosis</option>
+								    <option value="3" <?php if ($obj['Diagnosis']=="3 alterations in oxygenation - respiratory issue") echo " SELECTED"; ?>>3 alterations in oxygenation - respiratory issue</option>
+								    <option value="2" <?php if ($obj['Diagnosis']=="2 psych/behavioral disorders") echo " SELECTED"; ?>>2 psych/behavioral disorders</option>
+								    <option value="1" <?php if ($obj['Diagnosis']=="1 other diagnosis") echo " SELECTED"; ?>>1 other diagnosis</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -194,10 +193,10 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Cognitive_impairments">Cognitive impairments</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Cognitive_impairments" name="Cognitive_impairments">
-					    			<option></option>
-								    <option <?php if ($obj['Cognitive_impairments']=="3 not aware of own limitations") echo " SELECTED"; ?>>3 not aware of own limitations</option>
-								    <option <?php if ($obj['Cognitive_impairments']=="2 forgets limitations") echo " SELECTED"; ?>>2 forgets limitations</option>
-								    <option <?php if ($obj['Cognitive_impairments']=="1 oriented to own ability") echo " SELECTED"; ?>>1 oriented to own ability</option>
+					    			<option value="0"></option>
+								    <option value="3" <?php if ($obj['Cognitive_impairments']=="3 not aware of own limitations") echo " SELECTED"; ?>>3 not aware of own limitations</option>
+								    <option value="2" <?php if ($obj['Cognitive_impairments']=="2 forgets limitations") echo " SELECTED"; ?>>2 forgets limitations</option>
+								    <option value="1" <?php if ($obj['Cognitive_impairments']=="1 oriented to own ability") echo " SELECTED"; ?>>1 oriented to own ability</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -205,11 +204,11 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Environmental_factors">Environmental factors</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Environmental_factors" name="Environmental_factors">
-					    			<option></option>
-								    <option <?php if ($obj['Environmental_factors']=="4 hx of falls") echo " SELECTED"; ?>>4 hx of falls</option>
-								    <option <?php if ($obj['Environmental_factors']=="3 patient uses assistive devices") echo " SELECTED"; ?>>3 patient uses assistive devices</option>
-								    <option <?php if ($obj['Environmental_factors']=="2 patient placed in bed") echo " SELECTED"; ?>>2 patient placed in bed</option>
-								    <option <?php if ($obj['Environmental_factors']=="1 patient in outpatient area") echo " SELECTED"; ?>>1 patient in outpatient area</option>
+					    			<option value="0"></option>
+								    <option value="4" <?php if ($obj['Environmental_factors']=="4 hx of falls") echo " SELECTED"; ?>>4 hx of falls</option>
+								    <option value="3" <?php if ($obj['Environmental_factors']=="3 patient uses assistive devices") echo " SELECTED"; ?>>3 patient uses assistive devices</option>
+								    <option value="2" <?php if ($obj['Environmental_factors']=="2 patient placed in bed") echo " SELECTED"; ?>>2 patient placed in bed</option>
+								    <option value="1" <?php if ($obj['Environmental_factors']=="1 patient in outpatient area") echo " SELECTED"; ?>>1 patient in outpatient area</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -217,10 +216,10 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Response_to_surgery__sedation__anesthesia">Response to surgery/sedation/anesthesia</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Response_to_surgery__sedation__anesthesia" name="Response_to_surgery__sedation__anesthesia">
-					    			<option></option>
-								    <option <?php if ($obj['Response_to_surgery__sedation__anesthesia']=="3 within 24 hours") echo " SELECTED"; ?>>3 within 24 hours</option>
-								    <option <?php if ($obj['Response_to_surgery__sedation__anesthesia']=="2 within 48 hours") echo " SELECTED"; ?>>2 within 48 hours</option>
-								    <option <?php if ($obj['Response_to_surgery__sedation__anesthesia']=="1 more than 48 hrs/none") echo " SELECTED"; ?>>1 more than 48 hrs/none</option>
+					    			<option value="0"></option>
+								    <option value="3" <?php if ($obj['Response_to_surgery__sedation__anesthesia']=="3 within 24 hours") echo " SELECTED"; ?>>3 within 24 hours</option>
+								    <option value="2" <?php if ($obj['Response_to_surgery__sedation__anesthesia']=="2 within 48 hours") echo " SELECTED"; ?>>2 within 48 hours</option>
+								    <option value="1" <?php if ($obj['Response_to_surgery__sedation__anesthesia']=="1 more than 48 hrs/none") echo " SELECTED"; ?>>1 more than 48 hrs/none</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -228,10 +227,10 @@ $returnurl = 'encounter_top.php';
 					    	<label class="control-label col-sm-4" for="Medication_usage">Medication usage</label>
 					    	<div class="col-sm-6">
 					    		<select class="form-control" id="Medication_usage" name="Medication_usage">
-					    			<option></option>
-								    <option <?php if ($obj['Medication_usage']=="3 multiple usage of sedative medications") echo " SELECTED"; ?> >3 multiple usage of sedative medications</option>
-								    <option <?php if ($obj['Medication_usage']=="2 use of one sedative medication") echo " SELECTED"; ?>>2 use of one sedative medication</option>
-								    <option <?php if ($obj['Medication_usage']=="1 other medications/none") echo " SELECTED"; ?>>1 other medications/none</option>
+					    			<option value="0"></option>
+								    <option value="3" <?php if ($obj['Medication_usage']=="3 multiple usage of sedative medications") echo " SELECTED"; ?> >3 multiple usage of sedative medications</option>
+								    <option value="2" <?php if ($obj['Medication_usage']=="2 use of one sedative medication") echo " SELECTED"; ?>>2 use of one sedative medication</option>
+								    <option value="1" <?php if ($obj['Medication_usage']=="1 other medications/none") echo " SELECTED"; ?>>1 other medications/none</option>
 					    		</select>
 					    	</div>
 						</div>
@@ -451,6 +450,91 @@ $returnurl = 'encounter_top.php';
 		</div>
 	</form>
 	<script>
+		let humpty_dumpty = {
+			Total_score_Risk_level: 0,
+			Age: 0,
+			Gender: 0,
+			Diagnosis: 0, 
+			Cognitive_impairments: 0,
+			Environmental_factors: 0,
+			Response_to_surgery__sedation__anesthesia: 0,
+			Medication_usage: 0,
+		}
+		let braden_q_scale = {
+			Total_score: 0,
+			Mobility: 0,
+			pt_Activity: 0,
+			Sensory_Perception: 0, 
+			Moisture: 0,
+			Friction__Shear: 0,
+			Nutrition: 0,
+			Tissue__Perfusion__Oxygenation: 0,
+		}
+		document.addEventListener('input', function (event) {
+				switch (event.target.id) {
+					case 'Age':
+						humpty_dumpty.Age = Number(event.target.value);
+						break;
+					case 'Gender':
+						humpty_dumpty.Gender = Number(event.target.value);
+						break;
+					case 'Diagnosis':
+						humpty_dumpty.Diagnosis = Number(event.target.value);
+						break;
+					case 'Cognitive_impairments':
+						humpty_dumpty.Cognitive_impairments = Number(event.target.value);
+						break;
+					case 'Environmental_factors':
+						humpty_dumpty.Environmental_factors = Number(event.target.value);
+						break;
+					case 'Mobility':
+						braden_q_scale.Mobility = Number(event.target.value);
+						break;
+					case 'pt_Activity':
+						braden_q_scale.pt_Activity = Number(event.target.value);
+						break;
+					case 'Sensory_Perception':
+						braden_q_scale.Sensory_Perception = Number(event.target.value);
+						break;
+					case 'Moisture':
+						braden_q_scale.Moisture = Number(event.target.value);
+						break;
+					case 'Friction__Shear':
+						braden_q_scale.Friction__Shear = Number(event.target.value);
+						break;
+					case 'Nutrition':
+						braden_q_scale.Nutrition = Number(event.target.value);
+						break;
+					case 'Tissue__Perfusion__Oxygenation':
+						braden_q_scale.Tissue__Perfusion__Oxygenation = Number(event.target.value);
+						break;
+				}
+				if (humpty_dumpty.hasOwnProperty(event.target.id)) {
+					humpty_dumpty.Total_score_Risk_level = 0;
+					for (const key in humpty_dumpty) {
+						if (humpty_dumpty.hasOwnProperty(key)) {
+							humpty_dumpty.Total_score_Risk_level += Number(humpty_dumpty[key]);
+						}
+					}
+					if (humpty_dumpty.Total_score_Risk_level > 0) {
+						document.getElementById('Total_score_Risk_level').value = humpty_dumpty.Total_score_Risk_level;
+					} else {
+						document.getElementById('Total_score_Risk_level').value = '';
+					}
+				} else if (braden_q_scale.hasOwnProperty(event.target.id)) {
+					braden_q_scale.Total_score = 0;
+					for (const key in braden_q_scale) {
+						if (braden_q_scale.hasOwnProperty(key)) {
+							braden_q_scale.Total_score += Number(braden_q_scale[key]);
+						}
+					}
+					if (braden_q_scale.Total_score > 0) {
+						document.getElementById('Total_score').value = braden_q_scale.Total_score;
+					} else {
+						document.getElementById('Total_score').value = '';
+					}
+				}
+			}, false);
 		$(document).ready(function() {
 			$('.form-horizontal').submit(function() {
 				$(this).find(':input').filter(function() { return !this.value; }).attr('disabled', 'disabled');
