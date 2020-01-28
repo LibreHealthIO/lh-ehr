@@ -25,9 +25,9 @@ require_once("../globals.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/vendor/libreehr/Framework/DataTable/DataTable.php");
-require_once "reports_controllers/ClinicalController.php";
+require_once("reports_controllers/ClinicalController.php");
 require_once($GLOBALS['srcdir'].'/headers.inc.php');
-$library_array = array('datatables');
+$library_array = array('jquery-min-3-1-1', 'iziModalToast', 'datatables');
 $DateFormat = DateFormatRead();
 //make sure to get the dates
 if ( ! isset($_POST['form_from_date'])) {
@@ -62,10 +62,6 @@ $age_to = $_POST['age_to'];
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <?php call_required_libraries($library_array) ?>
 <script type="text/javascript" src="../../library/report_validation.js"></script>
-
-<?php
-  call_required_libraries(array("iziModalToast"));
-?>
 
 <script>
 $(document).ready(function() {
