@@ -140,6 +140,7 @@ function call_required_libraries($library_array){
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/datatables/media/js/jquery.js"></script>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/datatables/media/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/jquery-min-3-3-1/index.js"></script>
+        <?php resolveFancyboxCompatibility(); ?> <!-- prevents "Uncaught TypeError: Cannot read property 'msie' of undefined" console error -->
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/tooltip.js"></script>
         <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/assets/js/fancybox-1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
         <script type='text/javascript' src='<?php echo $GLOBALS['webroot'] ?>/library/dialog.js'></script>
