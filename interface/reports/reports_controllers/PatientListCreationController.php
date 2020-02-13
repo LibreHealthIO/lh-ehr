@@ -38,35 +38,47 @@
      $DateFormat=DateFormatRead();
      $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
      $search_options = [
-     "Demographics"  => xl("Demographics"),
-     "Problems"      => xl("Problems"),
-     "Medications"   => xl("Medications"),
-     "Allergies"     => xl("Allergies"),
-     "Lab results"   => xl("Lab Results"),
-     "Communication" => xl("Communication")
- ];
- $comarr = [
-     "allow_sms"   => xl("Allow SMS"),
-     "allow_voice" => xl("Allow Voice Message"),
-     "allow_mail"  => xl("Allow Mail Message"),
-     "allow_email" => xl("Allow Email")
- ];
-     $_POST['form_details'] = true;
- function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
- {
-     $DateFormat = DateFormatRead();
+        "Demographics"  => xl("Demographics"),
+        "Problems"      => xl("Problems"),
+        "Medications"   => xl("Medications"),
+        "Allergies"     => xl("Allergies"),
+        "Lab results"   => xl("Lab Results"),
+        "Communication" => xl("Communication")
+    ];
+    $comarr = [
+        "allow_sms"   => xl("Allow SMS"),
+        "allow_voice" => xl("Allow Voice Message"),
+        "allow_mail"  => xl("Allow Mail Message"),
+        "allow_email" => xl("Allow Email")
+    ];
+        $_POST['form_details'] = true;
+    function add_date($givendate, $day = 0, $mth = 0, $yr = 0)
+    {
+        $DateFormat = DateFormatRead();
          $cd = strtotime($givendate);
          $newdate = date($DateFormat . ' H:i:s', mktime(date('h', $cd),
          date('i',$cd), date('s',$cd), date('m',$cd)+$mth,
          date('d',$cd)+$day, date('Y',$cd)+$yr));
          return $newdate;
-         }
- if ($_POST['form_from_date'] != "") {
-         $from_date = $_POST['form_from_date'];
- }
- if ($_POST['form_to_date'] != "") {
-         $to_date = $_POST['form_to_date'];
- }
+    }
+
+    // gather from and to date input
+    if ($_POST['form_from_date'] != "") {
+        $from_date = $_POST['form_from_date'];
+    }
+    if ($_POST['form_to_date'] != "") {
+            $to_date = $_POST['form_to_date'];
+    }
+
+    // figure out which dates were submitted - both, from, or to - to later create appropriate where clauses
+    $dateCheck = "";
+    if(strlen($from_date) != 0 && strlen($to_date) != 0) {
+        $dateCheck = "both";
+    } else if(strlen($from_date) != 0 && strlen($to_date) == 0) {
+        $dateCheck = "from";
+    } else if(strlen($to_date) != 0 && strlen($from_date) == 0) {
+        $dateCheck = "to";
+    }
 
      //echo "<pre>";print_r($_POST);
      $patient_id = trim($_POST["patient_id"]);
@@ -87,6 +99,8 @@
  * @return: void
  * */
 function prepareAndShowResults() {
+  global $from_date, $to_date, $dateCheck, $patient_id, $age_from, $age_to, $sql_gender, $communication;
+
   $from_date = prepareDateBeforeSave($from_date);
   $to_date   = prepareDateBeforeSave($to_date);
 
@@ -132,16 +146,15 @@ function prepareAndShowResults() {
           //JOINS
           switch ($srch_option) {
               case "Problems":
-                  $sqlstmt = $sqlstmt." left outer join lists as li on (li.pid  = pd.pid AND li.type='medical_problem')";
+                  $sqlstmt = $sqlstmt." join lists as li on (li.pid  = pd.pid AND li.type='medical_problem')";
                   break;
               case "Medications":
-                  $sqlstmt = $sqlstmt." left outer join lists as li on (li.pid  = pd.pid AND (li.type='medication')) ";
+                  $sqlstmt = $sqlstmt." join lists as li on (li.pid  = pd.pid AND li.type='medication')";
                   break;
               case "Allergies":
-                  $sqlstmt = $sqlstmt." left outer join lists as li on (li.pid  = pd.pid AND (li.type='allergy')) ";
+                  $sqlstmt = $sqlstmt." join lists as li on (li.pid  = pd.pid AND li.type='allergy')";
                   break;
               case "Lab results":
-
                   $sqlstmt = $sqlstmt." left outer join procedure_order as po on po.patient_id = pd.pid
                           left outer join procedure_order_code as pc on pc.procedure_order_id = po.procedure_order_id
                           left outer join procedure_report as pp on pp.procedure_order_id = po.procedure_order_id
@@ -152,25 +165,51 @@ function prepareAndShowResults() {
 
           //WHERE Conditions started
           $whr_stmt="where 1=1";
+          // attach the appropriate date clause for each $srch_option
+          switch ($dateCheck) {
+              case "both":
+                if($srch_option == "Medications" || $srch_option == "Allergies" || $srch_option == "Problems") {
+                    $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date < DATE_ADD(?, INTERVAL 1 DAY) AND li.date <= ?";
+                } else if($srch_option == "Lab results") {
+                    $whr_stmt=$whr_stmt." AND pr.date >= ? AND pr.date < DATE_ADD(?, INTERVAL 1 DAY) AND pr.date <= ?";
+                } else { // $srch_option == "Demographics" or $srch_option == "Communication"
+                    $whr_stmt=$whr_stmt." AND pd.date >= ? AND pd.date < DATE_ADD(?, INTERVAL 1 DAY) AND pd.date <= ?";
+                }
+                array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d H:i:s"));
+                break;
+              case "from":
+                if($srch_option == "Medications" || $srch_option == "Allergies" || $srch_option == "Problems") {
+                    $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date <= ?";
+                } else if($srch_option == "Lab results") {
+                    $whr_stmt=$whr_stmt." AND pr.date >= ? AND pr.date <= ?";
+                } else { // $srch_option == "Demographics" or $srch_option == "Communication"
+                    $whr_stmt=$whr_stmt." AND pd.date >= ? AND pd.date <= ?";
+                }
+                array_push($sqlBindArray, $from_date, date("Y-m-d H:i:s"));
+                break;
+              case "to":
+                if($srch_option == "Medications" || $srch_option == "Allergies" || $srch_option == "Problems") {
+                    $whr_stmt=$whr_stmt." AND li.date < DATE_ADD(?, INTERVAL 1 DAY) AND li.date <= ?";
+                } else if($srch_option == "Lab results") {
+                    $whr_stmt=$whr_stmt." AND pr.date < DATE_ADD(?, INTERVAL 1 DAY) AND pr.date <= ?";
+                } else { // $srch_option == "Demographics" or $srch_option == "Communication"
+                    $whr_stmt=$whr_stmt." AND pd.date < DATE_ADD(?, INTERVAL 1 DAY) AND pd.date <= ?";
+                }
+                array_push($sqlBindArray, $to_date, date("Y-m-d H:i:s"));
+                break;
+          }
+
+          // other where clause info
           switch ($srch_option) {
-              case "Medications":
-              case "Allergies":
-                  $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date < DATE_ADD(?, INTERVAL 1 DAY) AND li.date <= ?";
-                  array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d H:i:s"));
-                  break;
-              case "Problems":
-                  $whr_stmt = $whr_stmt." AND li.title != '' ";
-                  $whr_stmt=$whr_stmt." AND li.date >= ? AND li.date < DATE_ADD(?, INTERVAL 1 DAY) AND li.date <= ?";
-                  array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d H:i:s"));
-                  break;
-              case "Lab results":
-                  $whr_stmt=$whr_stmt." AND pr.date >= ? AND pr.date < DATE_ADD(?, INTERVAL 1 DAY) AND pr.date <= ?";
-                  $whr_stmt= $whr_stmt." AND (pr.result != '') ";
-                  array_push($sqlBindArray, $from_date, $to_date, date("Y-m-d H:i:s"));
-                  break;
-              case "Communication":
-                  $whr_stmt .= " AND (pd.hipaa_allowsms = 'YES' OR pd.hipaa_voice = 'YES' OR pd.hipaa_mail  = 'YES' OR pd.hipaa_allowemail  = 'YES') ";
-                  break;
+            case "Problems":
+                $whr_stmt = $whr_stmt." AND li.title != '' ";
+                break;
+            case "Lab results":
+                $whr_stmt= $whr_stmt." AND (pr.result != '') ";
+                break;
+            case "Communication":
+                $whr_stmt .= " AND (pd.hipaa_allowsms = 'YES' OR pd.hipaa_voice = 'YES' OR pd.hipaa_mail  = 'YES' OR pd.hipaa_allowemail  = 'YES') ";
+                break;
           }
 
           if(strlen($patient_id) != 0) {
@@ -466,7 +505,7 @@ function prepareAndShowResults() {
                           foreach($patFinalDataArr as $patKey => $patDetailVal){
                               echo '<tr bgcolor = "#CCCCCC" style="font-size:15px;">';
                         echo '<td>'; if ($patDetailVal['patient_date'] != '') {
-                                  echo date($DateFormat . " H:i:s", strtotime($patDetailVal['patient_date']));
+                                  echo text($patDetailVal['patient_date']);
                               } else {
                                   echo "";
                               }; echo '</td>';
