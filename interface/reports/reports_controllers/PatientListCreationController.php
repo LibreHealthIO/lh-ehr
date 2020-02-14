@@ -120,6 +120,11 @@ function prepareAndShowResults() {
           $srch_option = $_POST['srch_option'];
           switch ($srch_option) {
               case "Medications":
+                  $sqlstmt=$sqlstmt.",li.date AS lists_date,
+                        li.diagnosis AS lists_diagnosis,
+                        li.title AS lists_title,
+                        li.outcome AS lists_outcome,
+                        li.enddate AS lists_enddate";
               case "Allergies":
               case "Problems":
                   $sqlstmt=$sqlstmt.",li.date AS lists_date,
@@ -257,6 +262,11 @@ function prepareAndShowResults() {
            // This is for sorting the records.
            switch ($srch_option) {
               case "Medications":
+                $sort = ["lists_date", "lists_diagnosis", "lists_title", "lists_outcome, lists_enddate"];
+                if ($sortby == "") {
+                    $sortby = $sort[1];
+                }
+                break;
               case "Allergies":
               case "Problems":
               $sort = ["lists_date", "lists_diagnosis", "lists_title"];
@@ -367,6 +377,18 @@ function prepareAndShowResults() {
                           $patInfoArr['lists_date'] = $row['lists_date'];
                           $patInfoArr['lists_diagnosis'] = $row['lists_diagnosis'];
                           $patInfoArr['lists_title'] = $row['lists_title'];
+                          if($srch_option == "Medications") {
+                              //calculate the status
+                              $statusCompute = "";
+                              if ($row['lists_outcome'] == "1" && $row['lists_enddate'] != NULL) { //"Resolved" status
+                                  $statusCompute =  $row['lists_outcome'];
+                              } else if($row['lists_outcome'] != "1" && $row['lists_enddate'] != NULL) {
+                                  $statusCompute = "Inactive";
+                              } else {
+                                  $statusCompute = "Active";
+                              }
+                              $patInfoArr['lists_status'] = $statusCompute;
+                          }
                           $patInfoArr['patient_name'] = $row['patient_name'];
                           $patInfoArr['patient_age'] = $row['patient_age'];
                           $patInfoArr['patient_sex'] = $row['patient_sex'];
@@ -423,6 +445,8 @@ function prepareAndShowResults() {
                           echo '<td width="15%"><b>'; echo xlt('Diagnosis Date'); echo $sortlink[0]; echo '</b></td>';
                           echo '<td width="15%"><b>'; echo xlt('Diagnosis'); echo $sortlink[1]; echo '</b></td>';
                           echo '<td width="15%"><b>'; echo xlt('Diagnosis Name'); echo $sortlink[2]; echo '</b></td>';
+                          if($srch_option == "Medications")
+                                echo '<td width="15%"><b>'; echo xlt('Diagnosis Status'); echo $sortlink[3]; echo '</b></td>';
                           echo '<td width="15%"><b>'; echo xlt('Patient Name'); echo '</b></td>';
                           echo '<td width="5%"><b>'; echo xlt('PID'); echo '</b></td>';
                           echo '<td width="5%"><b>'; echo xlt('Age'); echo '</b></td>';
@@ -434,6 +458,12 @@ function prepareAndShowResults() {
                                   echo '<td >'; echo text($patDetailVal['lists_date']); echo '</td>';
                                   echo '<td >'; echo text($patDetailVal['lists_diagnosis']); echo '</td>';
                                   echo '<td >'; echo text($patDetailVal['lists_title']); echo '</td>';
+                                  if($srch_option == "Medications")
+                                        if($patDetailVal["lists_status"] != "Active" && $patDetailVal["lists_status"] != "Inactive") {
+                                            echo '<td >'; echo generate_display_field(array('data_type'=>'1','list_id'=>'outcome'), $patDetailVal["lists_status"]); echo '</td>';
+                                        } else {
+                                            echo '<td >'; echo text($patDetailVal["lists_status"]); echo '</td>';
+                                        }
                                   echo '<td >'; echo text($patDetailVal['patient_name']); echo '</td>';
                                   echo '<td >'; echo text($patDetailVal['patient_id']); echo '</td>';
                                   echo '<td >'; echo text($patDetailVal['patient_age']); echo '</td>';
