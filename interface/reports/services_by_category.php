@@ -74,6 +74,9 @@ require_once "reports_controllers/ServiceByCategoryController.php";
 
 	<table class='text'>
 		<tr>
+         <td class='label'>
+            <?php echo xlt('Code Category'); ?>:
+         </td>
 			<td>
 			   <select name='filter'>
 				<option value='0'><?php xl('All','e'); ?></option>
