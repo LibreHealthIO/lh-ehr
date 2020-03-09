@@ -539,6 +539,7 @@ $form_inactive = empty($_REQUEST['form_inactive']) ? false : true;
 
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
     <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-ui.js"></script>
+    <style>.iziModal.isFullscreen .iziModal-iframe { height: 100% !important; }</style>
     <script type="text/javascript">
 
         $(document).ready(function(){

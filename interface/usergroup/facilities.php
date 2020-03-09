@@ -110,7 +110,7 @@ if ($_POST["mode"] == "facility" && $_POST["newmode"] == "admin_facility")
   call_required_libraries(array("jquery-min-3-1-1","bootstrap","font-awesome","jquery-ui","iziModalToast"));
 ?>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/common.js"></script>
-
+<style>.iziModal.isFullscreen .iziModal-iframe { height: 100% !important; }</style>
 <script type="text/javascript">
 
 $(document).ready(function(){
