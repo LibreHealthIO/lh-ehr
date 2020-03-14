@@ -1297,8 +1297,12 @@ var weekDays = new Array(
             f = document.forms[0].facility.options[f.selectedIndex].value;
         <?php }?>
         var c = document.forms[0].form_category;
-    var formDate = document.forms[0].form_date;
-        dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_appt_popup.php' +
+        var formDate = document.forms[0].form_date;
+
+        // evdur must be a positive number; if evdur <= 0, it will output an infinite stream of times
+        // If evdur is positive, include it in URL.
+        if (document.forms[0].form_duration.value > 0) {
+            dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_appt_popup.php' +
                 '?providerid=' + s +
                 '&catid=' + c.options[c.selectedIndex].value +
                 '&facility=' + f +
@@ -1307,6 +1311,16 @@ var weekDays = new Array(
                 '&eid=<?php echo 0 + $eid; ?>' +
                 extra,
                 '_blank', 500, 400);
+        } else { // If evdur is zero or negative, do not include it in URL.
+            dlgopen('<?php echo $GLOBALS["web_root"]; ?>/modules/calendar/find_appt_popup.php' +
+                '?providerid=' + s +
+                '&catid=' + c.options[c.selectedIndex].value +
+                '&facility=' + f +
+                '&startdate=' + formDate.value +
+                '&eid=<?php echo 0 + $eid; ?>' +
+                extra,
+                '_blank', 500, 400);
+        }
     }
 
 </script>
