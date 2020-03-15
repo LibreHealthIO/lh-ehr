@@ -996,3 +996,7 @@ font-size:9pt;
 .report_search_bar{
     background-color:#C9DCFF;
 }
+
+.iziModal.isFullscreen .iziModal-iframe {
+  height: 100% !important;
+}

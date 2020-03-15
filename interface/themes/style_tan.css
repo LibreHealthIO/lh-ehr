@@ -1485,3 +1485,7 @@ table.dataTable#therapy_groups_list tbody td{
 .calendar {
     z-index:2;
 }
+
+.iziModal.isFullscreen .iziModal-iframe {
+  height: 100% !important;
+}

@@ -1161,3 +1161,7 @@ div.notab-right {
 .report_search_bar {
   background-color: #EADDB4;
 }
+
+.iziModal.isFullscreen .iziModal-iframe {
+  height: 100% !important;
+}
