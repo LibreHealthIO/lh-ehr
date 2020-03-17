@@ -111,18 +111,26 @@ if ($_POST['formaction']=="generate") {
     $cpstring = $_POST['form_body'];
 
     // attempt to save to the autosaved template
-    $fh = fopen("$template_dir/autosaved", 'w');
-    // translate from definition to the constant
-    $temp_bodytext = $cpstring;
-    foreach ($FIELD_TAG as $key => $value) {
-        $temp_bodytext = str_replace("{".$value."}", "{".$key."}", $temp_bodytext);
+    // the user must be logged in before file manipulation 
+    if (isset($_SESSION['authUserID'])) {
+        $fh = fopen("$template_dir/autosaved", 'w');
+        // translate from definition to the constant
+        $temp_bodytext = $cpstring;
+        foreach ($FIELD_TAG as $key => $value) {
+            $temp_bodytext = str_replace("{".$value."}", "{".$key."}", $temp_bodytext);
+        }
+        if (! fwrite($fh, $temp_bodytext)) {
+            echo xl('Error while saving to the file','','',' ') . $template_dir."/autosaved" .
+                xl('Ensure LibreEHR has write privileges to directory','',' . ',' ') . $template_dir  . "/ ." ;
+            die;
+        }
+        fclose($fh);
     }
-    if (! fwrite($fh, $temp_bodytext)) {
-        echo xl('Error while saving to the file','','',' ') . $template_dir."/autosaved" .
-             xl('Ensure LibreEHR has write privileges to directory','',' . ',' ') . $template_dir  . "/ ." ;
-        die;
+    else { // redirects to landing page 
+        $landingpage = "index.php";
+        header('Location: '.$landingpage);
+        exit; 
     }
-    fclose($fh);
 
     $cpstring = str_replace('{'.$FIELD_TAG['DATE'].'}'            , $datestr, $cpstring);
     $cpstring = str_replace('{'.$FIELD_TAG['FROM_TITLE'].'}'      , $from_title, $cpstring);
@@ -231,9 +239,17 @@ if ($_POST['formaction']=="generate") {
 else if (isset($_GET['template']) && $_GET['template'] != "") {
     // utilized to go back to autosaved template
     $bodytext = "";
-    $fh = fopen("$template_dir/".$_GET['template'], 'r');
-    while (!feof($fh)) $bodytext.= fread($fh, 8192);
-    fclose($fh);
+    // the user must be logged in before file manipulation 
+    if (isset($_SESSION['authUserID'])) {
+        $fh = fopen("$template_dir/".$_GET['template'], 'r');
+        while (!feof($fh)) $bodytext.= fread($fh, 8192);
+        fclose($fh);
+    }
+    else { // redirects to landing page 
+        $landingpage = "index.php";
+        header('Location: '.$landingpage);
+        exit; 
+    }
     // translate from constant to the definition
     foreach ($FIELD_TAG as $key => $value) {
         $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);
@@ -241,9 +257,17 @@ else if (isset($_GET['template']) && $_GET['template'] != "") {
 }
 else if ($_POST['formaction'] == "loadtemplate" && $_POST['form_template'] != "") {
     $bodytext = "";
-    $fh = fopen("$template_dir/".$_POST['form_template'], 'r');
-    while (!feof($fh)) $bodytext.= fread($fh, 8192);
-    fclose($fh);
+    // the user must be logged in before file manipulation 
+    if (isset($_SESSION['authUserID'])) {
+        $fh = fopen("$template_dir/".$_POST['form_template'], 'r');
+        while (!feof($fh)) $bodytext.= fread($fh, 8192);
+        fclose($fh);
+    }
+    else { // redirects to landing page 
+        $landingpage = "index.php";
+        header('Location: '.$landingpage);
+        exit; 
+    }
     // translate from constant to the definition
     foreach ($FIELD_TAG as $key => $value) {
         $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);
@@ -251,23 +275,31 @@ else if ($_POST['formaction'] == "loadtemplate" && $_POST['form_template'] != ""
 }
 else if ($_POST['formaction'] == "newtemplate" && $_POST['newtemplatename'] != "") {
     // attempt to save the template
-    $fh = fopen("$template_dir/".$_POST['newtemplatename'], 'w');
-    // translate from definition to the constant
-    $temp_bodytext = $_POST['form_body'];
-    foreach ($FIELD_TAG as $key => $value) {
-        $temp_bodytext = str_replace("{".$value."}", "{".$key."}", $temp_bodytext);
-    }
-    if (! fwrite($fh, $temp_bodytext)) {
-        echo xl('Error while writing to file','','',' ') . $template_dir."/".$_POST['newtemplatename'];
-        die;
-    }
-    fclose($fh);
+    // the user must be logged in before file manipulation 
+    if (isset($_SESSION['authUserID'])) {
+        $fh = fopen("$template_dir/".$_POST['newtemplatename'], 'w');
+        // translate from definition to the constant
+        $temp_bodytext = $_POST['form_body'];
+        foreach ($FIELD_TAG as $key => $value) {
+            $temp_bodytext = str_replace("{".$value."}", "{".$key."}", $temp_bodytext);
+        }
+        if (! fwrite($fh, $temp_bodytext)) {
+            echo xl('Error while writing to file','','',' ') . $template_dir."/".$_POST['newtemplatename'];
+            die;
+        }
+        fclose($fh);
 
-    // read the saved file back
-    $_POST['form_template'] = $_POST['newtemplatename'];
-    $fh = fopen("$template_dir/".$_POST['form_template'], 'r');
-    while (!feof($fh)) $bodytext.= fread($fh, 8192);
-    fclose($fh);
+        // read the saved file back
+        $_POST['form_template'] = $_POST['newtemplatename'];
+        $fh = fopen("$template_dir/".$_POST['form_template'], 'r');
+        while (!feof($fh)) $bodytext.= fread($fh, 8192);
+        fclose($fh);
+    }
+    else { // redirects to landing page 
+        $landingpage = "index.php";
+        header('Location: '.$landingpage);
+        exit; 
+    }
     // translate from constant to the definition
     foreach ($FIELD_TAG as $key => $value) {
         $bodytext = str_replace("{".$key."}", "{".$value."}" , $bodytext);
@@ -275,22 +307,30 @@ else if ($_POST['formaction'] == "newtemplate" && $_POST['newtemplatename'] != "
 }
 else if ($_POST['formaction'] == "savetemplate" && $_POST['form_template'] != "") {
     // attempt to save the template
-    $fh = fopen("$template_dir/".$_POST['form_template'], 'w');
-    // translate from definition to the constant
-    $temp_bodytext = $_POST['form_body'];
-    foreach ($FIELD_TAG as $key => $value) {
-        $temp_bodytext = str_replace("{".$value."}", "{".$key."}", $temp_bodytext);
-    }
-    if (! fwrite($fh, $temp_bodytext)) {
-        echo xl('Error while writing to file','','',' ') . $template_dir."/".$_POST['form_template'];
-        die;
-    }
-    fclose($fh);
+    // the user must be logged in before file manipulation 
+    if (isset($_SESSION['authUserID'])) {
+        $fh = fopen("$template_dir/".$_POST['form_template'], 'w');
+        // translate from definition to the constant
+        $temp_bodytext = $_POST['form_body'];
+        foreach ($FIELD_TAG as $key => $value) {
+            $temp_bodytext = str_replace("{".$value."}", "{".$key."}", $temp_bodytext);
+        }
+        if (! fwrite($fh, $temp_bodytext)) {
+            echo xl('Error while writing to file','','',' ') . $template_dir."/".$_POST['form_template'];
+            die;
+        }
+        fclose($fh);
 
-    // read the saved file back
-    $fh = fopen("$template_dir/".$_POST['form_template'], 'r');
-    while (!feof($fh)) $bodytext.= fread($fh, 8192);
-    fclose($fh);
+        // read the saved file back
+        $fh = fopen("$template_dir/".$_POST['form_template'], 'r');
+        while (!feof($fh)) $bodytext.= fread($fh, 8192);
+        fclose($fh);
+    }
+    else { // redirects to landing page 
+        $landingpage = "index.php";
+        header('Location: '.$landingpage);
+        exit; 
+    }
     // translate from constant to the definition
     foreach ($FIELD_TAG as $key => $value) {
         $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);
