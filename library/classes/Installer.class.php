@@ -146,7 +146,16 @@ class Installer
   }
 
   public function grant_privileges() {
+	$version =  mysqli_get_server_version($this->dbh);
+	if($version >= 80000){
+		$this->execute_sql("drop user $this->login@$this->loginhost");
+		$this->execute_sql("FLUSH PRIVILEDGES");
+		return ( ($this->execute_sql("CREATE USER '$this->login'@'$this->loginhost' IDENTIFIED with mysql_native_password  by '$this->pass'"))
+		&&($this->execute_sql("GRANT ALL PRIVILEGES ON $this->dbname.* TO '$this->login'@'$this->loginhost'")));
+	}
+	else{
     return $this->execute_sql( "GRANT ALL PRIVILEGES ON $this->dbname.* TO '$this->login'@'$this->loginhost' IDENTIFIED BY '$this->pass'" );
+		}
   }
 
   public function disconnect() {
