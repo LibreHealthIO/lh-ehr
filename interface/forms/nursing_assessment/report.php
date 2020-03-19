@@ -13,7 +13,6 @@ if ($key == "id" || $key == "pid" || $key == "user" || $key == "groupname" || $k
 	$value == "" || $value == " " || $value == "0000-00-00 00:00:00") {
 	continue;
 }
-
 $key=ucwords(str_replace("ass_comments","Assessment Comments",$key));
 $key=ucwords(str_replace("PN_reason","Reason for  Communication",$key));
 $key=ucwords(str_replace("PN_role","Provider Name/role",$key));
