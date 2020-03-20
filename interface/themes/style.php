@@ -65,14 +65,14 @@ else {
 }
 
 echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar, .dropdown-menu>li>a, .dropdown-toggle, #menu, .dropdown, .nav>li>a, .glyphicon, #userdata .dropdown-menu>li, #userdata{
-  background-color:  #$primary_color;
+  background-color:  transparent;
   color: #$primary_font_color;
 
 }
 
 .table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, ul.tabNav a, .navbar-collapse{
 
-  background-color: #$secondary_color;
+  background-color: transparent;
   color: #$secondary_font_color;
 }
 
