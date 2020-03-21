@@ -1,4 +1,5 @@
 <?php
+
 /* Copyright © 2010 by Andrew Moore */
 /* Licensing information appears at the end of this file. */
 
@@ -123,7 +124,7 @@ class Installer
     if ( ! $this->set_collation() ) {
       return FALSE;
     }
-    if ( ! mysqli_select_db($this->dbh, $this->dbname) ) {
+    if ( ! $this->dbh->select_db($this->dbname)) {
       $this->error_message = "unable to select database: '$this->dbname'";
       return FALSE;
     }
@@ -133,7 +134,7 @@ class Installer
   public function create_database() {
     $sql = "create database $this->dbname";
     if ($this->collate) {
-      $sql .= " character set utf8 collate $this->collate";
+      $sql .= " character set utf8mb4 collate $this->collate";
       $this->set_collation();
     }
 
@@ -146,20 +147,15 @@ class Installer
   }
 
   public function grant_privileges() {
-	$version =  mysqli_get_server_version($this->dbh);
-	if($version >= 80000){
-		$this->execute_sql("drop user $this->login@$this->loginhost");
-		$this->execute_sql("FLUSH PRIVILEDGES");
-		return ( ($this->execute_sql("CREATE USER '$this->login'@'$this->loginhost' IDENTIFIED with mysql_native_password  by '$this->pass'"))
-		&&($this->execute_sql("GRANT ALL PRIVILEGES ON $this->dbname.* TO '$this->login'@'$this->loginhost'")));
-	}
-	else{
-    return $this->execute_sql( "GRANT ALL PRIVILEGES ON $this->dbname.* TO '$this->login'@'$this->loginhost' IDENTIFIED BY '$this->pass'" );
-		}
+      $create_query ="INSERT INTO mysql.user (Host,User,authentication_string,plugin)VALUES (?,?,PASSWORD(?),'mysql_native_password')";
+      $grant_query ="INSERT INTO mysql.db (Host,Db,User,Select_priv,Insert_priv , Update_priv , Delete_priv , Create_priv , Drop_priv , Grant_priv , References_priv , Index_priv , Alter_priv , Create_tmp_table_priv , Lock_tables_priv , Create_view_priv , Show_view_priv , Create_routine_priv , Alter_routine_priv , Execute_priv , Event_priv , Trigger_priv )VALUES (?,?,?,'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y')";
+      $flush_query ="FLUSH PRIVILEGES";
+      return (($this->execute_sql($create_query,array($this->loginhost,$this->login,$this->pass),'sss',3))&&($this->execute_sql($grant_query,array($this->loginhost,$this->dbname,$this->login),'sss',3))&&($this->execute_sql($flush_query)));
+
   }
 
   public function disconnect() {
-    return mysqli_close($this->dbh);
+    return $this->dbh->close();
   }
 
   /**
@@ -174,12 +170,17 @@ class Installer
 
   public function load_dumpfiles() {
     $sql_results = ''; // information string which is returned
+      error_log("Mathurin: Inside load_dumpfiles()");
     foreach ($this->dumpfiles as $filename => $title) {
+        error_log("Mathurin: Dumpfiles file: $filename and title: $title");
         $sql_results_temp = '';
         $sql_results_temp = $this->load_file($filename,$title);
+        error_log("Mathurin: Dumpfiles temp:$sql_results_temp");
         if ($sql_results_temp == FALSE) return FALSE;
         $sql_results .= $sql_results_temp;
+        error_log("Mathurin: query-loop: $sql_results");
     }
+    error_log("Mathurin: query $sql_results");
     return $sql_results;
   }
 
@@ -223,32 +224,32 @@ class Installer
     include dirname(__FILE__) . "/../../version.php";
     if ($this->execute_sql("UPDATE version SET v_major = '$v_major', v_minor = '$v_minor', v_patch = '$v_patch', v_realpatch = '$v_realpatch', v_tag = '$v_tag', v_database = '$v_database', v_acl = '$v_acl'") == FALSE) {
       $this->error_message = "ERROR. Unable insert version information into database\n" .
-        "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
+        "<p>".$this->dbh->error." (#".$this->dbh->errno.")\n";
       return FALSE;
     }
     return TRUE;
   }
 
   public function add_initial_user() {
-    if ($this->execute_sql("INSERT INTO groups (id, name, user) VALUES (1,'$this->igroup','$this->iuser')") == FALSE) {
+    if ($this->execute_sql("INSERT INTO groups (id, name, user) VALUES (1,?,?)",array($this->igroup,$this->iuser),"ss",2) == FALSE) {
       $this->error_message = "ERROR. Unable to add initial user group\n" .
-        "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
+        "<p>".$this->dbh->error." (#".$this->dbh->errno.")\n";
       return FALSE;
     }
     $password_hash = "NoLongerUsed";  // This is the value to insert into the password column in the "users" table. password details are now being stored in users_secure instead.
     $salt=oemr_password_salt();     // Uses the functions defined in library/authentication/password_hashing.php
     $hash=oemr_password_hash($this->iuserpass,$salt);
-    if ($this->execute_sql("INSERT INTO users (id, username, password, authorized, lname, fname, facility_id, calendar, cal_ui) VALUES (1,'$this->iuser','$password_hash',1,'$this->iuname','$this->iufname',3,1,3)") == FALSE) {
+    if ($this->execute_sql("INSERT INTO users (id, username, password, authorized, lname, fname, facility_id, calendar, cal_ui) VALUES (1,?,?,1,?,?,3,1,3)",array($this->iuser,$password_hash,$this->iuname,$this->iufname),'ssss',4) == FALSE) {
       $this->error_message = "ERROR. Unable to add initial user\n" .
-        "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
+        "<p>".$this->dbh->error." (#".$this->dbh->errno.")\n";
       return FALSE;
 
     }
 
     // Create the new style login credentials with blowfish and salt
-    if ($this->execute_sql("INSERT INTO users_secure (id, username, password, salt) VALUES (1,'$this->iuser','$hash','$salt')") == FALSE) {
+    if ($this->execute_sql("INSERT INTO users_secure (id, username, password, salt) VALUES (1, ?, ?, ?)", array($this->iuser,$hash,$salt),'sss',3) == FALSE) {
       $this->error_message = "ERROR. Unable to add initial user login credentials\n" .
-        "<p>".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")\n";
+        "<p>".$this->dbh->error." (#".$this->dbh->errno.")\n";
       return FALSE;
     }
     // Add the official libreehr users (services)
@@ -514,7 +515,7 @@ $config = 1; /////////////
         list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
         if (is_array($fldtype) || substr($fldtype, 0, 2) !== 'm_') {
           $res = $this->execute_sql("SELECT count(*) AS count FROM globals WHERE gl_name = '$fldid'");
-          $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
+          $row = $res->fetch_array(MYSQLI_ASSOC);
           if (empty($row['count'])) {
             $this->execute_sql("INSERT INTO globals ( gl_name, gl_index, gl_value ) " .
                            "VALUES ( '$fldid', '0', '$flddef' )");
@@ -629,16 +630,38 @@ $config = 1; /////////////
     return True;
   }
 
-  private function execute_sql( $sql ) {
+  private function execute_sql( $sql, array $value = null , $str='', $count=0) {
+      error_log("Mathurin: query---$sql");
     $this->error_message = '';
     if ( ! $this->dbh ) {
       $this->user_database_connection();
     }
-    $results = mysqli_query($this->dbh, $sql);
+    if($count == 0){
+        $results = $this->dbh->query($sql);
+    }else{
+        $stmt = $this->dbh->prepare($sql);
+        if($count == 1){
+            $stmt->bind_param($str,$value[0]);
+        }
+        if($count == 2){
+            $stmt->bind_param($str,$value[0],$value[1]);
+        }
+        if($count == 3){
+            $stmt->bind_param($str,$value[0],$value[1],$value[2]);
+        }
+        if($count == 4){
+            $stmt->bind_param($str,$value[0],$value[1],$value[2],$value[3]);
+        }
+        if($count == 5){
+            $stmt->bind_param($str,$value[0],$value[1],$value[2],$value[3],$value[4]);
+        }
+
+        $results = $stmt->execute();
+    }
     if ( $results ) {
       return $results;
     } else {
-      $this->error_message = "unable to execute SQL: '$sql' due to: " . mysqli_error($this->dbh);
+      $this->error_message = "unable to execute SQL: '$sql' due to: " . $this->dbh->error;
       return False;
     }
   }
@@ -646,9 +669,9 @@ $config = 1; /////////////
   private function connect_to_database( $server, $user, $password, $port, $dbname='' )
   {
     if ($server == "localhost")
-      $dbh = mysqli_connect($server, $user, $password, $dbname);
+      $dbh = new mysqli($server, $user, $password, $dbname);
     else
-      $dbh = mysqli_connect($server, $user, $password, $dbname, $port);
+      $dbh = new mysqli($server, $user, $password, $dbname, $port);
     return $dbh;
   }
 
@@ -661,7 +684,7 @@ $config = 1; /////////////
   private function set_collation()
   {
    if ($this->collate) {
-     return $this->execute_sql("SET NAMES 'utf8'");
+     return $this->execute_sql("SET NAMES utf8mb4");
    }
    return TRUE;
   }
@@ -677,6 +700,7 @@ $config = 1; /////////////
     if ( $this->clone_database ) {
       $this->dumpfiles = array( $this->get_backup_filename() => 'clone database' );
     } else {
+        error_log("initialize dumpfile so clone database is null");
       $dumpfiles = array( $this->main_sql => 'Main' );
       if (! empty($this->development_translations)) {
         // Use the online development translation set
@@ -756,12 +780,13 @@ $config = 1; /////////////
     if (empty($config)) die("Source site $source_site_id has not been set up!");
 
     $backup_file = $this->get_backup_filename();
+    error_log("Mathurin: backupfile : $backup_file");
     $cmd = "mysqldump -u " . escapeshellarg($login) .
       " -p" . escapeshellarg($pass) .
       " --opt --quote-names -r $backup_file " .
       //" --opt --skip-extended-insert --quote-names -r $backup_file " .  Comment out above line and enable this to have really slow DB duplication.
       escapeshellarg($dbase);
-
+    error_log("Mathurin: command '$cmd'");
     $tmp0 = exec($cmd, $tmp1=array(), $tmp2);
     if ($tmp2) die("Error $tmp2 running \"$cmd\": $tmp0 " . implode(' ', $tmp1));
 
@@ -778,6 +803,7 @@ $config = 1; /////////////
     else {
       $backup_file = '/tmp/setup_dump.sql';
     }
+    error_log("Mathurin: get_backup_filename() : Name of file $backup_file");
     return $backup_file;
   }
 

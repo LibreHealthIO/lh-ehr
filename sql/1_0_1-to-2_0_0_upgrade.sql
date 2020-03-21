@@ -400,7 +400,7 @@ CREATE TABLE `menu_entries` (
   `acl_reqs` varchar(255) DEFAULT NULL,
   `global_reqs` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO `menu_entries` (`id`, `label`, `icon`, `class`, `helperText`, `target`, `url`, `requirement`, `acl_reqs`, `global_reqs`) VALUES
 ('About|/interface/main/about_page.php', 'About', '', '', '', 'msc', '/interface/main/about_page.php', NULL, NULL, NULL),
 ('ACL|/interface/usergroup/adminacl.php', 'ACL', '', '', '', 'adm', '/interface/usergroup/adminacl.php', 0, '["admin","acl"]', 'null'),
@@ -556,7 +556,7 @@ CREATE TABLE `menu_trees` (
   `seq` int(11) DEFAULT NULL,
   `label` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`menu_set`,`entry_id`,`parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `menu_trees` (`menu_set`, `entry_id`, `icon`, `helperText`, `parent`, `seq`, `label`) VALUES
 ('Administrators', 'Calendar|/interface/main/main_info.php', '', '', '', 0, NULL),
@@ -954,5 +954,5 @@ CREATE TABLE `lims_analysisrequests` (
  `status` text NOT NULL COMMENT 'received, processing, complete',
  PRIMARY KEY (`id`),
  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4
 #EndIf

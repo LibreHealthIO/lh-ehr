@@ -210,27 +210,27 @@ else {
       echo "<TR VALIGN='TOP'><TD><span class='text'>User Hostname: </span></TD><TD><INPUT TYPE='TEXT' VALUE='localhost' NAME='loginhost' SIZE='30'></TD><TD><span class='text'>(If you run Apache/PHP and MySQL on the same computer, then leave this as 'localhost'. If they are on separate computers, then enter the IP address of the computer running Apache/PHP.)</span><br></TD></TR>";
       echo "<TR VALIGN='TOP'><TD><span class='text'>UTF-8 Collation: </span></TD><TD colspan='2'>" .
   "<select name='collate'>" .
-  "<option value='utf8_bin'          >Bin</option>" .
-  "<option value='utf8_czech_ci'     >Czech</option>" .
-  "<option value='utf8_danish_ci'    >Danish</option>" .
-  "<option value='utf8_esperanto_ci' >Esperanto</option>" .
-  "<option value='utf8_estonian_ci'  >Estonian</option>" .
-  "<option value='utf8_general_ci' selected>General</option>" .
-  "<option value='utf8_hungarian_ci' >Hungarian</option>" .
-  "<option value='utf8_icelandic_ci' >Icelandic</option>" .
-  "<option value='utf8_latvian_ci'   >Latvian</option>" .
-  "<option value='utf8_lithuanian_ci'>Lithuanian</option>" .
-  "<option value='utf8_persian_ci'   >Persian</option>" .
-  "<option value='utf8_polish_ci'    >Polish</option>" .
-  "<option value='utf8_roman_ci'     >Roman</option>" .
-  "<option value='utf8_romanian_ci'  >Romanian</option>" .
-  "<option value='utf8_slovak_ci'    >Slovak</option>" .
-  "<option value='utf8_slovenian_ci' >Slovenian</option>" .
-  "<option value='utf8_spanish2_ci'  >Spanish2 (Traditional)</option>" .
-  "<option value='utf8_spanish_ci'   >Spanish (Modern)</option>" .
-  "<option value='utf8_swedish_ci'   >Swedish</option>" .
-  "<option value='utf8_turkish_ci'   >Turkish</option>" .
-  "<option value='utf8_unicode_ci'   >Unicode (German, French, Russian, Armenian, Greek)</option>" .
+  "<option value='utf8mb4_bin'          >Bin</option>" .
+  "<option value='utf8mb4_czech_ci'     >Czech</option>" .
+  "<option value='utf8mb4_danish_ci'    >Danish</option>" .
+  "<option value='utf8mb4_esperanto_ci' >Esperanto</option>" .
+  "<option value='utf8mb4_estonian_ci'  >Estonian</option>" .
+  "<option value='utf8mb4_general_ci' selected>General</option>" .
+  "<option value='utf8mb4_hungarian_ci' >Hungarian</option>" .
+  "<option value='utf8mb4_icelandic_ci' >Icelandic</option>" .
+  "<option value='utf8mb4_latvian_ci'   >Latvian</option>" .
+  "<option value='utf8mb4_lithuanian_ci'>Lithuanian</option>" .
+  "<option value='utf8mb4_persian_ci'   >Persian</option>" .
+  "<option value='utf8mb4_polish_ci'    >Polish</option>" .
+  "<option value='utf8mb4_roman_ci'     >Roman</option>" .
+  "<option value='utf8mb4_romanian_ci'  >Romanian</option>" .
+  "<option value='utf8mb4_slovak_ci'    >Slovak</option>" .
+  "<option value='utf8mb4_slovenian_ci' >Slovenian</option>" .
+  "<option value='utf8mb4_spanish2_ci'  >Spanish2 (Traditional)</option>" .
+  "<option value='utf8mb4_spanish_ci'   >Spanish (Modern)</option>" .
+  "<option value='utf8mb4_swedish_ci'   >Swedish</option>" .
+  "<option value='utf8mb4_turkish_ci'   >Turkish</option>" .
+  "<option value='utf8mb4_unicode_ci'   >Unicode (German, French, Russian, Armenian, Greek)</option>" .
   "<option value=''                  >None (Do not force UTF-8)</option>" .
   "</select>" .
   "</TD></TR><TR VALIGN='TOP'><TD>&nbsp;</TD><TD colspan='2'><span class='text'>(This is the collation setting for mysql. Leave as 'General' if you are not sure. If the language you are planning to use in LibreHealth EHR is in the menu, then you can select it. Otherwise, just select 'General'.)</span><br></TD></TR>";
@@ -336,7 +336,7 @@ else {
 
     // Only pertinent if cloning another installation database
     if ( ! empty($installer->clone_database)) {
-
+        error_log("Mathurin: dumping source database...\n");
       echo "Dumping source database...";
       flush();
       if ( ! $installer->create_dumpfiles() ) {
@@ -351,7 +351,7 @@ else {
 
     // Only pertinent if mirroring another installation directory
     if ( ! empty($installer->source_site_id)) {
-
+	error_log("Mathurin: site directory...\n");
       echo "Creating site directory...";
       if ( ! $installer->create_site_directory() ) {
         echo $installer->error_message;
@@ -368,6 +368,7 @@ else {
     // Skip below if database shell has already been created.
     if ($inst != 2) {
       echo "Creating database...\n";
+	error_log("Mathurin: Creating database...\n");
       flush();
       if ( ! $installer->create_database() ) {
         echo "ERROR.  Check your login credentials.\n";
@@ -390,13 +391,19 @@ else {
       }
 
       echo "Reconnecting as new user...\n";
+	error_log("Mathurin: reconnecting as new ..\n");
       flush();
+      error_log("Mathurin: flushed...\n");
       $installer->disconnect();
+        error_log("Mathurin: disconnected...\n");
     } else {
 
       echo "Connecting to MySQL Server...\n";
+	error_log("Mathurin: Connecting to Mysql server...\n");
     }
+    error_log("Mathurin: Checking the database connection...\n");
     if ( ! $installer->user_database_connection() ) {
+        error_log("Mathurin: can't connect...\n");
       echo "ERROR.  Check your login credentials.\n";
       echo $installer->error_message;
       break;
@@ -407,15 +414,19 @@ else {
     }
 
     // Load the database files
+      error_log("Mathurin: Loading dumpfiles...\n");
     $dump_results = $installer->load_dumpfiles();
+      error_log("Mathurin: dumpfiles Loaded ...\n");
     if ( ! $dump_results ) {
+	error_log("Mathrin: $installer->error_message");
       echo $installer->error_message;
       break;
     } else {
+        error_log("Mathurin: dump success... $dump_results\n");
       echo $dump_results;
       flush();
     }
-
+	error_log("Mathurin: Writing Sql configuration...\n");
     echo "Writing SQL configuration...\n";
     flush();
     if ( ! $installer->write_configuration_file() ) {
@@ -429,7 +440,7 @@ else {
 
     // Only pertinent if not cloning another installation database
     if (empty($installer->clone_database)) {
-
+	error_log("Mathurin: Setting version indicators...\n");
       echo "Setting version indicators...\n";
       flush();
       if ( ! $installer->add_version_info() ) {
@@ -443,6 +454,7 @@ else {
       }
 
       echo "Writing global configuration defaults...\n";
+	error_log("Mathrin: Writing global configuration defaults...");
       flush();
       if ( ! $installer->insert_globals() ) {
         echo "ERROR.\n";
@@ -453,7 +465,7 @@ else {
         echo "OK<br>\n";
         flush();
       }
-
+	error_log("Mathurin: Adding Initial user...\n");
       echo "Adding Initial User...\n";
       flush();
       if ( ! $installer->add_initial_user() ) {
