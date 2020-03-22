@@ -170,17 +170,17 @@ class Installer
 
   public function load_dumpfiles() {
     $sql_results = ''; // information string which is returned
-      error_log("Mathurin: Inside load_dumpfiles()");
+
     foreach ($this->dumpfiles as $filename => $title) {
-        error_log("Mathurin: Dumpfiles file: $filename and title: $title");
+
         $sql_results_temp = '';
         $sql_results_temp = $this->load_file($filename,$title);
-        error_log("Mathurin: Dumpfiles temp:$sql_results_temp");
+
         if ($sql_results_temp == FALSE) return FALSE;
         $sql_results .= $sql_results_temp;
-        error_log("Mathurin: query-loop: $sql_results");
+
     }
-    error_log("Mathurin: query $sql_results");
+
     return $sql_results;
   }
 
@@ -631,7 +631,6 @@ $config = 1; /////////////
   }
 
   private function execute_sql( $sql, array $value = null , $str='', $count=0) {
-      error_log("Mathurin: query---$sql");
     $this->error_message = '';
     if ( ! $this->dbh ) {
       $this->user_database_connection();
@@ -780,13 +779,13 @@ $config = 1; /////////////
     if (empty($config)) die("Source site $source_site_id has not been set up!");
 
     $backup_file = $this->get_backup_filename();
-    error_log("Mathurin: backupfile : $backup_file");
+
     $cmd = "mysqldump -u " . escapeshellarg($login) .
       " -p" . escapeshellarg($pass) .
       " --opt --quote-names -r $backup_file " .
       //" --opt --skip-extended-insert --quote-names -r $backup_file " .  Comment out above line and enable this to have really slow DB duplication.
       escapeshellarg($dbase);
-    error_log("Mathurin: command '$cmd'");
+
     $tmp0 = exec($cmd, $tmp1=array(), $tmp2);
     if ($tmp2) die("Error $tmp2 running \"$cmd\": $tmp0 " . implode(' ', $tmp1));
 
@@ -803,7 +802,7 @@ $config = 1; /////////////
     else {
       $backup_file = '/tmp/setup_dump.sql';
     }
-    error_log("Mathurin: get_backup_filename() : Name of file $backup_file");
+
     return $backup_file;
   }
 

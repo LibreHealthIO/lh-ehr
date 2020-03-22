@@ -336,7 +336,7 @@ else {
 
     // Only pertinent if cloning another installation database
     if ( ! empty($installer->clone_database)) {
-        error_log("Mathurin: dumping source database...\n");
+
       echo "Dumping source database...";
       flush();
       if ( ! $installer->create_dumpfiles() ) {
@@ -351,7 +351,7 @@ else {
 
     // Only pertinent if mirroring another installation directory
     if ( ! empty($installer->source_site_id)) {
-	error_log("Mathurin: site directory...\n");
+
       echo "Creating site directory...";
       if ( ! $installer->create_site_directory() ) {
         echo $installer->error_message;
@@ -368,7 +368,7 @@ else {
     // Skip below if database shell has already been created.
     if ($inst != 2) {
       echo "Creating database...\n";
-	error_log("Mathurin: Creating database...\n");
+
       flush();
       if ( ! $installer->create_database() ) {
         echo "ERROR.  Check your login credentials.\n";
@@ -391,19 +391,16 @@ else {
       }
 
       echo "Reconnecting as new user...\n";
-	error_log("Mathurin: reconnecting as new ..\n");
       flush();
-      error_log("Mathurin: flushed...\n");
       $installer->disconnect();
-        error_log("Mathurin: disconnected...\n");
+
     } else {
 
       echo "Connecting to MySQL Server...\n";
-	error_log("Mathurin: Connecting to Mysql server...\n");
+
     }
-    error_log("Mathurin: Checking the database connection...\n");
     if ( ! $installer->user_database_connection() ) {
-        error_log("Mathurin: can't connect...\n");
+
       echo "ERROR.  Check your login credentials.\n";
       echo $installer->error_message;
       break;
@@ -414,19 +411,19 @@ else {
     }
 
     // Load the database files
-      error_log("Mathurin: Loading dumpfiles...\n");
+
     $dump_results = $installer->load_dumpfiles();
-      error_log("Mathurin: dumpfiles Loaded ...\n");
+
     if ( ! $dump_results ) {
-	error_log("Mathrin: $installer->error_message");
+
       echo $installer->error_message;
       break;
     } else {
-        error_log("Mathurin: dump success... $dump_results\n");
+
       echo $dump_results;
       flush();
     }
-	error_log("Mathurin: Writing Sql configuration...\n");
+
     echo "Writing SQL configuration...\n";
     flush();
     if ( ! $installer->write_configuration_file() ) {
@@ -440,7 +437,7 @@ else {
 
     // Only pertinent if not cloning another installation database
     if (empty($installer->clone_database)) {
-	error_log("Mathurin: Setting version indicators...\n");
+
       echo "Setting version indicators...\n";
       flush();
       if ( ! $installer->add_version_info() ) {
@@ -454,7 +451,7 @@ else {
       }
 
       echo "Writing global configuration defaults...\n";
-	error_log("Mathrin: Writing global configuration defaults...");
+
       flush();
       if ( ! $installer->insert_globals() ) {
         echo "ERROR.\n";
@@ -465,7 +462,7 @@ else {
         echo "OK<br>\n";
         flush();
       }
-	error_log("Mathurin: Adding Initial user...\n");
+
       echo "Adding Initial User...\n";
       flush();
       if ( ! $installer->add_initial_user() ) {
