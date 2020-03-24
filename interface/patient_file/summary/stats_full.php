@@ -102,10 +102,14 @@ $language = $tmp['language'];
         var newstr = str.replace('/_/g', " ");
         return newstr;
     }
+    function titleFormat(str){
+        var newstr = str.replace('/_/g', " ");
+        return newstr.toUpperCase();
+    }
     // function to open izi-modal
     function  initIziLink(link , width , height, category, type) {
 
-        category = strReplace(category);
+        category = titleFormat(category);
         
         $("#izi-iframe").iziModal({
             title: '<b style="color: white">'+category+'</b>',
