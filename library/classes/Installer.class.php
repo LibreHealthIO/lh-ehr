@@ -150,7 +150,7 @@ class Installer
         $create_query ="INSERT INTO mysql.user (Host,User,authentication_string,plugin)VALUES (?,?,PASSWORD(?),'mysql_native_password')";
         $grant_query ="INSERT INTO mysql.db (Host,Db,User,Select_priv,Insert_priv , Update_priv , Delete_priv , Create_priv , Drop_priv , Grant_priv , References_priv , Index_priv , Alter_priv , Create_tmp_table_priv , Lock_tables_priv , Create_view_priv , Show_view_priv , Create_routine_priv , Alter_routine_priv , Execute_priv , Event_priv , Trigger_priv )VALUES (?,?,?,'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y')";
         $flush_query ="FLUSH PRIVILEGES";
-        return (($this->execute_sql($create_query,array($this->loginhost,$this->login,$this->pass),'sss',3))&&($this->execute_sql($grant_query,array($this->loginhost,$this->dbname,$this->login),'sss',3))&&($this->execute_sql($flush_query)));
+        return (($this->execute_sql($create_query,array('sss',$this->loginhost,$this->login,$this->pass)))&&($this->execute_sql($grant_query,array('sss',$this->loginhost,$this->dbname,$this->login)))&&($this->execute_sql($flush_query)));
 
     }
 
@@ -231,7 +231,7 @@ class Installer
     }
 
     public function add_initial_user() {
-        if ($this->execute_sql("INSERT INTO groups (id, name, user) VALUES (1,?,?)",array($this->igroup,$this->iuser),"ss",2) == FALSE) {
+        if ($this->execute_sql("INSERT INTO groups (id, name, user) VALUES (1,?,?)",array('ss',$this->igroup,$this->iuser)) == FALSE) {
             $this->error_message = "ERROR. Unable to add initial user group\n" .
                 "<p>".$this->dbh->error." (#".$this->dbh->errno.")\n";
             return FALSE;
@@ -239,7 +239,7 @@ class Installer
         $password_hash = "NoLongerUsed";  // This is the value to insert into the password column in the "users" table. password details are now being stored in users_secure instead.
         $salt=oemr_password_salt();     // Uses the functions defined in library/authentication/password_hashing.php
         $hash=oemr_password_hash($this->iuserpass,$salt);
-        if ($this->execute_sql("INSERT INTO users (id, username, password, authorized, lname, fname, facility_id, calendar, cal_ui) VALUES (1,?,?,1,?,?,3,1,3)",array($this->iuser,$password_hash,$this->iuname,$this->iufname),'ssss',4) == FALSE) {
+        if ($this->execute_sql("INSERT INTO users (id, username, password, authorized, lname, fname, facility_id, calendar, cal_ui) VALUES (1,?,?,1,?,?,3,1,3)",array('ssss',$this->iuser,$password_hash,$this->iuname,$this->iufname)) == FALSE) {
             $this->error_message = "ERROR. Unable to add initial user\n" .
                 "<p>".$this->dbh->error." (#".$this->dbh->errno.")\n";
             return FALSE;
@@ -247,7 +247,7 @@ class Installer
         }
 
         // Create the new style login credentials with blowfish and salt
-        if ($this->execute_sql("INSERT INTO users_secure (id, username, password, salt) VALUES (1, ?, ?, ?)", array($this->iuser,$hash,$salt),'sss',3) == FALSE) {
+        if ($this->execute_sql("INSERT INTO users_secure (id, username, password, salt) VALUES (1, ?, ?, ?)", array('sss',$this->iuser,$hash,$salt)) == FALSE) {
             $this->error_message = "ERROR. Unable to add initial user login credentials\n" .
                 "<p>".$this->dbh->error." (#".$this->dbh->errno.")\n";
             return FALSE;
@@ -630,32 +630,19 @@ $config = 1; /////////////
         return True;
     }
 
-    private function execute_sql( $sql, array $value = null , $str='', $count=0) {
+    private function execute_sql( $sql, array $value = null ) {
 
         $this->error_message = '';
         if ( ! $this->dbh ) {
             $this->user_database_connection();
         }
-        if($count == 0){
+        if($value == null){
             $results = $this->dbh->query($sql);
         }else{
             $stmt = $this->dbh->prepare($sql);
-            if($count == 1){
-                $stmt->bind_param($str,$value[0]);
-            }
-            if($count == 2){
-                $stmt->bind_param($str,$value[0],$value[1]);
-            }
-            if($count == 3){
-                $stmt->bind_param($str,$value[0],$value[1],$value[2]);
-            }
-            if($count == 4){
-                $stmt->bind_param($str,$value[0],$value[1],$value[2],$value[3]);
-            }
-            if($count == 5){
-                $stmt->bind_param($str,$value[0],$value[1],$value[2],$value[3],$value[4]);
-            }
-
+            $ref    = new ReflectionClass('mysqli_stmt');
+            $method = $ref->getMethod("bind_param");
+            $method->invokeArgs($stmt,$value);
             $results = $stmt->execute();
         }
         if ( $results ) {
