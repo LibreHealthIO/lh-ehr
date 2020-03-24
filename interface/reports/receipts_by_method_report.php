@@ -122,7 +122,7 @@ function sel_procedure() {
     <div style='float:left'>
 
     <table class='text'>
-        <tr>
+        <tr style="display: flex;">
             <td class='label'>
                <?php xl('Report by','e'); ?>
             </td>
@@ -152,7 +152,7 @@ function sel_procedure() {
                &nbsp;<input type='checkbox' name='form_details' value='1'<?php if ($_POST['form_details']) echo " checked"; ?> /><?xl('Details','e')?>
             </td>
         </tr>
-        <tr>
+        <tr style="display: flex;">
             <td>&nbsp;</td>
             <td>
                <select name='form_use_edate'>
