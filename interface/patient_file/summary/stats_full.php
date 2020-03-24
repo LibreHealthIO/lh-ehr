@@ -97,12 +97,16 @@ $language = $tmp['language'];
         alert("<?php echo addslashes(xl('You are not authorized to add/edit issues')); ?>");
         <?php endif; ?>
     }
-
+    //function to remove a character
+    function strReplace(str){
+        var newstr = str.replace('/_/g', " ");
+        return newstr;
+    }
     // function to open izi-modal
     function  initIziLink(link , width , height, category, type) {
-        if(category == "medical_problem"){
-            category = "medical problem";
-        }
+
+        category = strReplace(category);
+        
         $("#izi-iframe").iziModal({
             title: '<b style="color: white">'+category+'</b>',
             subtitle: type+ " Issue",
