@@ -237,6 +237,7 @@ else {
 }
     echo "<TR VALIGN='TOP'><TD>&nbsp;</TD></TR>";
 
+    
     // Include a "source" site ID drop-list and a checkbox to indicate
     // if cloning its database.  When checked, do not display initial user
     // and group stuff below.
