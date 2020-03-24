@@ -140,10 +140,10 @@ function showPatientAgeRange() {
 function showSubmitPrintButtons($form_csvexport='') {
     echo "<td align='left' valign='middle' height='100%'>
         <table style='border-left:1px solid; width:80%; height:100%; margin-left:3%;'>
-            <tr>
+            <tr style='display: flex; justify-content: center;'>
                 <td>
-                    <div style='margin-left:5px'>
-                        <a href='#' class='css_button cp-submit' onclick='$(\"#form_refresh\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
+                    <div>
+                        <a href='#' class='css_button cp-submit' onclick='$(\"#form_refresh\").attr(\"value\",\"true\"); $(\"#theform\").submit();' style='margin-top: 30px;'>
                             <span>";
                          echo xlt('Submit');
                             echo "</span>
