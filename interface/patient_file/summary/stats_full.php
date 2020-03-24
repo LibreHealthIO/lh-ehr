@@ -100,6 +100,10 @@ $language = $tmp['language'];
 
     // function to open izi-modal
     function  initIziLink(link , width , height, category, type) {
+        
+        if(category == "medical_problem"){
+            category = "medical problem";
+        }
         $("#izi-iframe").iziModal({
             title: '<b style="color: white">'+category+'</b>',
             subtitle: type+ " Issue",
