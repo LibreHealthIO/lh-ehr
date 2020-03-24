@@ -98,10 +98,6 @@ $language = $tmp['language'];
         <?php endif; ?>
     }
     //function to remove a character
-    function strReplace(str){
-        var newstr = str.replace('/_/g', " ");
-        return newstr;
-    }
     function titleFormat(str){
         var newstr = str.replace('/_/g', " ");
         return newstr.toUpperCase();
