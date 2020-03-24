@@ -97,14 +97,14 @@ $language = $tmp['language'];
         alert("<?php echo addslashes(xl('You are not authorized to add/edit issues')); ?>");
         <?php endif; ?>
     }
-        //functio to remove underscore
-    function strReplace(str){
-        var newstr = str.replace(/_/g,'');
-        return newstr;
+        //function to remove underscore
+    function titleFormat(str){
+        var newstr = str.replace('/_/g', " ");
+        return newstr.toUpperCase();
     }
     // function to open izi-modal
     function  initIziLink(link , width , height, category, type) {
-        category = strReplace(category);
+        category = titleFormat(category);
         $("#izi-iframe").iziModal({
             title: '<b style="color: white">'+category+'</b>',
             subtitle: type+ " Issue",
