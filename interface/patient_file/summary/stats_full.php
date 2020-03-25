@@ -97,7 +97,8 @@ $language = $tmp['language'];
         alert("<?php echo addslashes(xl('You are not authorized to add/edit issues')); ?>");
         <?php endif; ?>
     }
-    //function to remove a character
+  
+        //function to remove underscore
     function titleFormat(str){
         var newstr = str.replace('/_/g', " ");
         return newstr.toUpperCase();
@@ -106,7 +107,7 @@ $language = $tmp['language'];
     function  initIziLink(link , width , height, category, type) {
 
         category = titleFormat(category);
-        
+      
         $("#izi-iframe").iziModal({
             title: '<b style="color: white">'+category+'</b>',
             subtitle: type+ " Issue",
