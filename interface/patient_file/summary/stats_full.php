@@ -100,7 +100,7 @@ $language = $tmp['language'];
   
         //function to remove underscore
     function titleFormat(str){
-        var newstr = str.replace('/_/g', " ");
+        var newstr = str.replace(/_/g, " ");
         return newstr.toUpperCase();
     }
     // function to open izi-modal
