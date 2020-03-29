@@ -244,6 +244,7 @@
     margin: 0 0 -6px 0;
     width: 100%;
     transition: height 0.3s ease;
+    height: 95% !important;
 }
 .iziModal-overlay{
     display: block;
