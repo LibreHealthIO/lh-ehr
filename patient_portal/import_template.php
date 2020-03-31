@@ -27,9 +27,17 @@ if($_POST['mode'] == 'get'){
     file_put_contents($_POST['docid'], $_POST['content']);
     exit(true);
 } else if ($_POST['mode'] == 'delete') {
+
+    // authenticate
+    $userAuthorized = $_SESSION['userauthorized'];
+    if ($userAuthorized) {
+        //allow 
         unlink($_POST['docid']);
         exit(true);
+    }
+
 }
+
 // so it is an import
 if(!isset($_POST['up_dir'])){
 
