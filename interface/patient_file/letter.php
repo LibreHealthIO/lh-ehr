@@ -274,27 +274,32 @@ else if ($_POST['formaction'] == "newtemplate" && $_POST['newtemplatename'] != "
     }
 }
 else if ($_POST['formaction'] == "savetemplate" && $_POST['form_template'] != "") {
-    // attempt to save the template
-    $fh = fopen("$template_dir/".$_POST['form_template'], 'w');
-    // translate from definition to the constant
-    $temp_bodytext = $_POST['form_body'];
-    foreach ($FIELD_TAG as $key => $value) {
-        $temp_bodytext = str_replace("{".$value."}", "{".$key."}", $temp_bodytext);
-    }
-    if (! fwrite($fh, $temp_bodytext)) {
-        echo xl('Error while writing to file','','',' ') . $template_dir."/".$_POST['form_template'];
-        die;
-    }
-    fclose($fh);
+    // authenticate
+    $userAuthorized = $_SESSION['userauthorized'];
+    if ($userAuthorized) {
+        // attempt to save the template
+        $fh = fopen("$template_dir/".$_POST['form_template'], 'w');
+        // translate from definition to the constant
+        $temp_bodytext = $_POST['form_body'];
+        foreach ($FIELD_TAG as $key => $value) {
+            $temp_bodytext = str_replace("{".$value."}", "{".$key."}", $temp_bodytext);
+        }
+        if (! fwrite($fh, $temp_bodytext)) {
+            echo xl('Error while writing to file','','',' ') . $template_dir."/".$_POST['form_template'];
+            die;
+        }
+        fclose($fh);
 
-    // read the saved file back
-    $fh = fopen("$template_dir/".$_POST['form_template'], 'r');
-    while (!feof($fh)) $bodytext.= fread($fh, 8192);
-    fclose($fh);
-    // translate from constant to the definition
-    foreach ($FIELD_TAG as $key => $value) {
-        $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);
+        // read the saved file back
+        $fh = fopen("$template_dir/".$_POST['form_template'], 'r');
+        while (!feof($fh)) $bodytext.= fread($fh, 8192);
+        fclose($fh);
+        // translate from constant to the definition
+        foreach ($FIELD_TAG as $key => $value) {
+            $bodytext = str_replace("{".$key."}", "{".$value."}", $bodytext);
+        }
     }
+
 }
 
 // This is the case where we display the form for data entry.
