@@ -4,5 +4,5 @@
 sites/**
 !sites/default
 sites/default/sqlconf.php
-
+**/node_modules/**
 backups/
