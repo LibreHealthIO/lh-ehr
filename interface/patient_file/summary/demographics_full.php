@@ -87,10 +87,6 @@
     <?php html_header_show();?>
     <link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
     <link rel="stylesheet" href="../../../library/css/jquery.datetimepicker.css">
-    <script type="text/javascript" src="../../../library/dialog.js"></script>
-    <script type="text/javascript" src="../../../library/textformat.js"></script>
-    <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
-    <script type="text/javascript" src="../../../library/js/common.js"></script>
     
     <?php 
 
@@ -98,6 +94,11 @@
       call_required_libraries(array('fancybox', 'jquery-min-1-7-2', 'jquery-ui'));
 
     ?>
+    
+    <script type="text/javascript" src="../../../library/dialog.js"></script>
+    <script type="text/javascript" src="../../../library/textformat.js"></script>
+    <script type="text/javascript" src="../../../library/js/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript" src="../../../library/js/common.js"></script>
 
     <script type="text/javascript">
       $(document).ready(function(){
