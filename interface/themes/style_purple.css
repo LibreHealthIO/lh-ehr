@@ -652,10 +652,7 @@ font-weight: bold;
   background: red !important;
 }
 .css_button span {
-    background: transparent url( 'theme_assets/bg_button_span.gif' ) no-repeat;
-    display: block;
-    line-height: 14px;
-    padding: 5px 0 5px 10px;
+    display: inline-block;
 }
 .sellistclass {
 float:left;
