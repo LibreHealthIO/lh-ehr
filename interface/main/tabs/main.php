@@ -88,24 +88,12 @@ var webroot_url="<?php echo $web_root; ?>";
             "/interface/main/messages/messages.php?form_active=1" => "pat"
         );
         
-        if(isset($_REQUEST['url']))
+        if(isset($GLOBALS['default_tab_1']))
         {
-
-            $tab_one_default=$web_root.$GLOBALS['default_tab_1'];
-            if($_REQUEST['url']==='TAB_ONE_DEFAULT')
-            {
-                $tab_one_contents=$tab_one_default;
-            }
-            else
-            {
-                $tab_one_contents="../".urldecode($_REQUEST['url']);
-            }
-            $tab_one_contents=json_encode($tab_one_contents);
-            $tab_one_default=json_encode($tab_one_default);
         ?>
             tab_defaults=[];
-            tab_defaults[0]=<?php echo $tab_one_default; ?>;
-            app_view_model.application_data.tabs.tabsList()[0].url(<?php echo $tab_one_contents; ?>);
+            tab_defaults[0]=<?php echo json_encode($web_root.$GLOBALS['default_tab_1']); ?>;
+            app_view_model.application_data.tabs.tabsList()[0].url(tab_defaults[0]);
             app_view_model.application_data.tabs.tabsList()[0].name(<?php echo json_encode($default_tabs_info[$GLOBALS['default_tab_1']]); ?>);
         <?php
         }

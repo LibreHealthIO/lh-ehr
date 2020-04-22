@@ -21,7 +21,7 @@ if(isset($_REQUEST['tabs']))
 }
 if ($tabs===true)
 {
-    $tabs_base_url=$web_root."/interface/main/tabs/main.php?url=".urlencode($frame1url);
+    $tabs_base_url=$web_root."/interface/main/tabs/main.php";
     header('Location: '.$tabs_base_url);
     exit();
 }
