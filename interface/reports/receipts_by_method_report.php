@@ -124,7 +124,7 @@ function sel_procedure() {
     <table class='text'>
         <tr>
             <td class='label'>
-               <?php xl('Report by','e'); ?>
+               <?php echo xl('Report By','e'); ?>:
             </td>
             <td>
                 <?php
@@ -134,26 +134,33 @@ function sel_procedure() {
                   if ($key == $form_report_by) echo ' selected';
                   echo ">" . xl($value) . "</option>\n";
                 }
-                echo "   </select>&nbsp;\n"; ?>
+                echo "   </select>\n"; ?>
             </td>
 
+            <td class='label'>
+              <?php echo xlt('Facility'); ?>:
+            </td>
             <td>
             <?php dropdown_facility(strip_escape_custom($form_facility), 'form_facility', false); ?>
             </td>
 
-            <td>
+            <td class='label'>
                <?php if (!$GLOBALS['simplified_demographics']) echo '&nbsp;' . xl('Procedure/Service') . ':'; ?>
             </td>
             <td>
                <input type='text' name='form_proc_codefull' size='12' value='<?php echo $form_proc_codefull; ?>' onclick='sel_procedure()'
                 title='<?php xl('Click to select optional procedure code','e'); ?>'
                 <?php if ($GLOBALS['simplified_demographics']) echo "style='display:none'"; ?> />
-                                <br>
-               &nbsp;<input type='checkbox' name='form_details' value='1'<?php if ($_POST['form_details']) echo " checked"; ?> /><?xl('Details','e')?>
+            </td>
+            <td>
+              &nbsp;<label><input type='checkbox' name='form_details' value='1'<?php if ($_POST['form_details']) echo " checked"; ?> />
+              <?php echo xl('Details','e'); ?></label>
             </td>
         </tr>
         <tr>
-            <td>&nbsp;</td>
+            <td class='label'>
+              <?php echo xlt('Sort By Date'); ?>:
+            </td>
             <td>
                <select name='form_use_edate'>
                 <option value='0'><?php xl('Payment Date','e'); ?></option>
@@ -162,6 +169,7 @@ function sel_procedure() {
             </td>
             <?php // Show From and To dates fields. (TRK)
               showFromAndToDates(); ?>
+            <td>&nbsp;</td>
         </tr>
     </table>
 
