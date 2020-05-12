@@ -76,9 +76,19 @@ The `docker/.env.mysql` contains the mysql root password and the initial databas
 
 We have created a bash script, which is geared towards production use currently that handles prompting for the credentials and creating the `docker/.env.ehr` and `docker/.env.mysql`.
 
-We created a separate script for development use and that use is documented in this README. Both scripts have a `help` command, or by calling `docker/dev` or `docker/run` with no arguments.
+We created a separate script for development use and that use is documented in this README. Both scripts have a `help` command, or by calling `docker/dev` or `docker/run** with no arguments.
 
 It allows you manage the lifecycle of the containers for LibreHealth EHR.
+
+**Note**: You need to have [GNU awk (gawk)](https://www.gnu.org/software/gawk/) installed.
+
+For Debian derivatives (Ubuntu, Linux Mint, etc), you need to install, otherwise you should be okay:
+
+```bash
+$ sudo apt update ; sudo apt install gawk
+```
+
+
 
 
 **Note**: This is geared towards Linux users. You should install the [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10) if you are using Windows 10.

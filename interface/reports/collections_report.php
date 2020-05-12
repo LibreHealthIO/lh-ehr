@@ -173,6 +173,9 @@ function checkAll(checked) {
               <tr>
                 <?php // Show from and to dates. (TRK)  
                   showFromAndToDates(); ?>
+                <td class='label'>
+                  <?php echo xlt('Account Type'); ?>:
+                </td>
                 <td>
                   <select name='form_category'>
                   <?php

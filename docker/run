@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#
+# shellcheck disable=SC1091
 # Docker Helper Script
 #
 # LICENSE: This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0
@@ -10,7 +10,7 @@
 # @author Robby O'Connor <rob@librehealth.io>
 # @link http://librehealth.io
 #
-# Please help the overall project by sending changes you make to the author and to the LibreEHR community.
+# Please help the overall project by sending changes you make to the author and to the LibreHalth EHR community.
 #
 
 set -euo pipefail
