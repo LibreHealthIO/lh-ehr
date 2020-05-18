@@ -220,19 +220,19 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
       $invnumber = $row['pid'] . "." . $row['encounter'];
         $inv_duedate = '';
         $arow = sqlQuery("SELECT SUM(fee) AS amount FROM drug_sales WHERE " .
-          "pid = '$patient_id' AND encounter = '$encounter_id'");
+          "pid = ? AND encounter = ?", array($patient_id, $encounter_id));
         $inv_amount = $arow['amount'];
         $arow = sqlQuery("SELECT SUM(fee) AS amount FROM billing WHERE " .
-          "pid = '$patient_id' AND encounter = '$encounter_id' AND " .
-          "activity = 1 AND code_type != 'COPAY'");
+          "pid = ? AND encounter = ? AND " .
+          "activity = 1 AND code_type != 'COPAY'", array($patient_id, $encounter_id));
         $inv_amount += $arow['amount'];
         $arow = sqlQuery("SELECT SUM(fee) AS amount FROM billing WHERE " .
-          "pid = '$patient_id' AND encounter = '$encounter_id' AND " .
-          "activity = 1 AND code_type = 'COPAY'");
+          "pid = ? AND encounter = ? AND " .
+          "activity = 1 AND code_type = 'COPAY'", array($patient_id, $encounter_id));
         $inv_paid = 0 - $arow['amount'];
         $arow = sqlQuery("SELECT SUM(pay_amount) AS pay, " .
           "sum(adj_amount) AS adj FROM ar_activity WHERE " .
-          "pid = '$patient_id' AND encounter = '$encounter_id'");
+          "pid = ? AND encounter = ?", array($patient_id, $encounter_id));
         $inv_paid   += $arow['pay'];
         $inv_amount -= $arow['adj'];
       $total_amount += bucks($inv_amount);

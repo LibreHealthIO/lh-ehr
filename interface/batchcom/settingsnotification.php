@@ -28,10 +28,12 @@ if ($_POST['form_action']=='Save')
     if (!$form_err) 
     {
         $sql_text=" ( `SettingsId` , `Send_SMS_Before_Hours` , `Send_Email_Before_Hours` , `SMS_gateway_password` , `SMS_gateway_apikey` , `SMS_gateway_username` , `type` ) ";
-        $sql_value=" ( '".$_POST[SettingsId]."' , '".$_POST[Send_SMS_Before_Hours]."' , '".$_POST[Send_Email_Before_Hours]."' , '".$_POST[SMS_gateway_password]."' , '".$_POST[SMS_gateway_apikey]."' , '".$_POST[SMS_gateway_username]."' , '".$type."' ) ";
+        $sql_value = " (?, ?, ?, ?, ?, ?, ?) ";
+        $values = array($_POST['SettingsId'], $_POST['Send_SMS_Before_Hours'], $_POST['Send_Email_Before_Hours'], $_POST['SMS_gateway_password'], 
+        $_POST['SMS_gateway_apikey'], $_POST['SMS_gateway_username'],$type);
         $query = "REPLACE INTO `notification_settings` $sql_text VALUES $sql_value";
         //echo $query;
-        $id = sqlInsert($query);
+        $id = sqlInsert($query, $values);
         $sql_msg="ERROR!... in Update";
         if($id)    $sql_msg="SMS/Email Alert Settings Updated Successfully";
     } 

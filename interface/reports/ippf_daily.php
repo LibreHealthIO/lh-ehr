@@ -204,10 +204,10 @@ if ($_POST['form_submit']) {
 
         $crow = sqlQuery("SELECT lc.new_method " .
           "FROM lists AS l, lists_ippf_con AS lc WHERE " .
-          "l.pid = '$last_pid' AND l.begdate <= '$from_date' AND " .
-          "( l.enddate IS NULL OR l.enddate > '$from_date' ) AND " .
+          "l.pid = ? AND l.begdate <= ? AND " .
+          "( l.enddate IS NULL OR l.enddate > ? ) AND " .
           "l.activity = 1 AND l.type = 'contraceptive' AND lc.id = l.id " .
-          "ORDER BY l.begdate DESC LIMIT 1");
+          "ORDER BY l.begdate DESC LIMIT 1", array($last_pid, $from_date, $from_date));
         $amethods = explode('|', empty($crow) ? 'zzz' : $crow['new_method']);
 
         // TBD: We probably want to select the method with highest CYP here,

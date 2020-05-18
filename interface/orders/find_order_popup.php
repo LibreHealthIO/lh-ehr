@@ -34,7 +34,7 @@ if (isset($_GET['typeid'])) {
   $name = '';
   if ($typeid) {
     $ptrow = sqlQuery("SELECT name FROM procedure_type WHERE " .
-      "procedure_type_id = '$typeid'");
+      "procedure_type_id = ?", array($typeid));
     $name = addslashes($ptrow['name']);
   }
 ?>

@@ -188,8 +188,8 @@ require_once("$srcdir/billing.inc");
             // Get invoice data into $arrow or $ferow.
         $ferow = sqlQuery("SELECT e.*, p.fname, p.mname, p.lname " .
           "FROM form_encounter AS e, patient_data AS p WHERE " .
-          "e.pid = '$pid' AND e.encounter = '$encounter' AND ".
-          "p.pid = e.pid");
+          "e.pid = ? AND e.encounter = ? AND ".
+          "p.pid = e.pid", array($pid, $encounter));
         if (empty($ferow)) {
           $pid = $encounter = 0;
           $invnumber = $out['our_claim_id'];

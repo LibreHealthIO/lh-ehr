@@ -42,15 +42,15 @@ $bigdata = getRegistered("%") or $bigdata = false;
     foreach($_POST as $key=>$val) {
            if (preg_match('/nickname_(\d+)/', $key, $matches)) {
                     $nickname_id = $matches[1];
-            sqlQuery("update registry set nickname='".$val."' where id=".$nickname_id);
+            sqlQuery("update registry set nickname= ? where id= ?", array($val, $nickname_id));
         }
            if (preg_match('/category_(\d+)/', $key, $matches)) {
                     $category_id = $matches[1];
-            sqlQuery("update registry set category='".$val."' where id=".$category_id);
+            sqlQuery("update registry set category=? where id=?", array($val, $category_id));
         }
            if (preg_match('/priority_(\d+)/', $key, $matches)) {
                     $priority_id = $matches[1];
-            sqlQuery("update registry set priority='".$val."' where id=".$priority_id);
+            sqlQuery("update registry set priority=? where id=?", array($val, $priority_id));
         }
         }   
 ?>
@@ -94,7 +94,7 @@ if ($err)
     if ($bigdata != false)
     foreach($bigdata as $registry)
     {
-        $priority_category = sqlQuery("select priority, category, nickname from registry where id=".$registry['id']); 
+        $priority_category = sqlQuery("select priority, category, nickname from registry where id=?", array($registry['id'])); 
         ?>
         <tr td bgcolor="<?php echo $color?>">
             <td width="2%">

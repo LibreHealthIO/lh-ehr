@@ -193,16 +193,17 @@ function displayResult($res) {
       // Custom logic for IPPF to determine if a GCAC issue applies.
       if ($GLOBALS['ippf_specific']) {
         if (!empty($code_types[$code_type]['fee'])) {
-          $query = "SELECT related_code FROM codes WHERE code_type = '" .
-                    $code_types[$code_type]['id'] . "' AND " .
-                    "code = '" . $brow['code'] . "' AND ";
+          $sqlBindArray = array();
+          $query = "SELECT related_code FROM codes WHERE code_type = ? AND code = ? AND "; 
+                    array_push($sqlBindArray, $code_types[$code_type]['id'], $brow['code']);
           if ($brow['modifier']) {
-            $query .= "modifier = '" . $brow['modifier'] . "'";
+            $query .= "modifier = ?";
+            array_push($sqlBindArray, $brow['modifier']);
           } else {
             $query .= "(modifier IS NULL OR modifier = '')";
           }
           $query .= " LIMIT 1";
-          $tmp = sqlQuery($query);
+          $tmp = sqlQuery($query, $sqlBindArray);
           $relcodes = explode(';', $tmp['related_code']);
           foreach ($relcodes as $codestring) {
             if ($codestring === '') continue;
@@ -242,8 +243,8 @@ function displayResult($res) {
     ******************************************************************/
     if ($gcac_related_visit) {
       $grow = sqlQuery("SELECT COUNT(*) AS count FROM forms " .
-              "WHERE pid = '$patient_id' AND encounter = '$encounter' AND " .
-              "deleted = 0 AND formdir = 'LBFgcac'");
+              "WHERE pid = ? AND encounter = ? AND " .
+              "deleted = 0 AND formdir = 'LBFgcac'", array($patient_id, $encounter));
       if (empty($grow['count'])) { // if there is no gcac form
         postError(xl('GCAC visit form is missing'));
       }

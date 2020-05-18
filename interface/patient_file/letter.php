@@ -86,7 +86,7 @@ $patdata = sqlQuery("SELECT " .
   "p.fname, p.mname, p.lname, p.pid, p.DOB, " .
   "p.street, p.city, p.state, p.phone_home, p.phone_cell, p.ss, p.email, p.postal_code " .
   "FROM patient_data AS p " .
-  "WHERE p.pid = '$pid' LIMIT 1");
+  "WHERE p.pid = ? LIMIT 1", array($pid));
 
 $alertmsg = ''; // anything here pops up in an alert box
 
@@ -101,8 +101,8 @@ if ($_POST['formaction']=="generate") {
     $form_format   = $_POST['form_format'];
     $form_body     = $_POST['form_body'];
 
-    $frow = sqlQuery("SELECT * FROM users WHERE id = '$form_from'");
-    $trow = sqlQuery("SELECT * FROM users WHERE id = '$form_to'");
+    $frow = sqlQuery("SELECT * FROM users WHERE id = ?", array($form_from));
+    $trow = sqlQuery("SELECT * FROM users WHERE id = ?", array($form_to));
 
     $datestr = date('j F Y', strtotime($form_date));
     $from_title = $frow['title'] ? $frow['title'] . ' ' : '';

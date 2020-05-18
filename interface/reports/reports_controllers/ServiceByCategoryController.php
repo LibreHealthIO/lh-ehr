@@ -74,7 +74,7 @@ function prepareAndShowResults() {
         list($reltype, $relcode) = explode(':', $tmp);
         $reltype = $code_types[$reltype]['id'];
         $relrow = sqlQuery("SELECT code_text FROM codes WHERE " .
-          "code_type = '$reltype' AND code = '$relcode' LIMIT 1");
+          "code_type = ? AND code = ? LIMIT 1", array($reltype, $relcode));
         echo $relcode . ' ' . trim($relrow['code_text']) . '<br />';
       }
       echo "</td>\n";

@@ -400,9 +400,9 @@ foreach ($pid_list as $pid) {
                         "FROM forms AS f " .
                         "JOIN form_encounter AS fe ON fe.id = f.form_id " .
                         "LEFT JOIN users AS u ON u.username = f.user " .
-                        "WHERE f.pid = '$pid' AND f.encounter = '$encounter' AND f.formdir = 'patient_encounter' AND f.deleted = 0 " .
+                        "WHERE f.pid = ? AND f.encounter = ? AND f.formdir = 'patient_encounter' AND f.deleted = 0 " .
                         "ORDER BY f.id LIMIT 1";
-                $encdata = sqlQuery($query);
+                $encdata = sqlQuery($query, array($pid, $encounter));
                 if (!empty($encdata['username'])) {
                     $html .= $encdata['fname'] . ' ' . $encdata['mname'] . ' ' . $encdata['lname'];
                 }
@@ -427,9 +427,9 @@ foreach ($pid_list as $pid) {
                 if ($form_fill) {
                     foreach (array('primary', 'secondary', 'tertiary') as $instype) {
                         $query = "SELECT * FROM insurance_data WHERE " .
-                                "pid = '$pid' AND type = '$instype' " .
+                                "pid = '?' AND type = '?' " .
                                 "ORDER BY date DESC LIMIT 1";
-                        $row = sqlQuery($query);
+                        $row = sqlQuery($query, array($pid, $instype));
                         if ($row['provider']) {
                             $icobj = new InsuranceCompany($row['provider']);
                             $adobj = $icobj->get_address();

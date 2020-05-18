@@ -344,7 +344,7 @@ if ($_POST['form_portalnotify']) {
 
          if ($payerid) {
 
-          $tmp = sqlQuery("SELECT name, allow_print_statement FROM insurance_companies WHERE id = $payerid");
+          $tmp = sqlQuery("SELECT name, allow_print_statement FROM insurance_companies WHERE id = ?", array($payerid));
           if ($i == 1) {
           $stmt['insconum1'] = $tmp['name'];
           $stmt['insurance_no_statement_print_pri'] = $tmp['allow_print_statement'];

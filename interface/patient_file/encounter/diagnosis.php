@@ -41,9 +41,9 @@ if (isset($mode)) {
         // Get the provider ID from the new encounter form if possible, otherwise
         // it's the logged-in user.
         $tmp = sqlQuery("SELECT users.id FROM forms, users WHERE " .
-            "forms.pid = '$pid' AND forms.encounter = '$encounter' AND " .
+            "forms.pid = ? AND forms.encounter = ? AND " .
             "forms.formdir='patient_encounter' AND users.username = forms.user AND " .
-            "users.authorized = 1");
+            "users.authorized = 1", array($pid, $encounter));
         $provid = $tmp['id'] ? $tmp['id'] : $_SESSION["authUserID"];
 
         if (strtolower($type) == "copay") {
@@ -60,8 +60,8 @@ if (isset($mode)) {
       // If HCPCS, get and save default NDC data.
       if (strtolower($type) == "hcpcs") {
         $tmp = sqlQuery("SELECT ndc_info FROM billing WHERE " .
-          "code_type = 'HCPCS' AND code = '$code' AND ndc_info LIKE 'N4%' " .
-          "ORDER BY date DESC LIMIT 1");
+          "code_type = 'HCPCS' AND code = ? AND ndc_info LIKE 'N4%' " .
+          "ORDER BY date DESC LIMIT 1", array($code));
         if (!empty($tmp)) $ndc_info = $tmp['ndc_info'];
       }
       addBilling($encounter, $type, $code, strip_escape_custom($text), $pid, $userauthorized,
@@ -168,7 +168,7 @@ function validate(f) {
  $thisauth = acl_check('encounters', 'coding_a');
  if (!$thisauth) {
   $erow = sqlQuery("SELECT user FROM forms WHERE " .
-   "encounter = '$encounter' AND formdir = 'patient_encounter' LIMIT 1");
+   "encounter = ? AND formdir = 'patient_encounter' LIMIT 1", array($encounter));
   if ($erow['user'] == $_SESSION['authUser'])
    $thisauth = acl_check('encounters', 'coding');
  }

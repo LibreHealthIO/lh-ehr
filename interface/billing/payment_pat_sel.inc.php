@@ -151,7 +151,7 @@ if (isset($_POST["mode"]))
 					// Determine the next insurance level to be billed.
 					$ferow = sqlQuery("SELECT date, last_level_closed " .
 					  "FROM form_encounter WHERE " .
-					  "pid = '$hidden_patient_code' AND encounter = '".$RowSearch['encounter']."'");
+					  "pid = ? AND encounter = ?", array($hidden_patient_code, $RowSearch['encounter']));
 					$date_of_service = substr($ferow['date'], 0, 10);
 					$new_payer_type = 0 + $ferow['last_level_closed'];
 					if ($new_payer_type <= 3 && !empty($ferow['last_level_closed']) || $new_payer_type == 0)
