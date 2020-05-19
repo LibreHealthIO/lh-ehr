@@ -148,7 +148,7 @@ var webroot_url="<?php echo $web_root; ?>";
 </style>
 <div id="mainBox">
     <div id="dialogDiv"></div>
-    <div class="navbar-header">
+    <div class="navbar-header" id="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
         <span class="sr-only"><?php echo xlt("Toggle navigation"); ?></span>
         <span class="icon-bar"></span>

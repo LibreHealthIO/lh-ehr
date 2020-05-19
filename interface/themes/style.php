@@ -64,10 +64,9 @@ else {
 	$button_font_color = $secondary_font_color;
 }
 
-echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar, .dropdown-menu>li>a, .dropdown-toggle, #menu, .dropdown, .nav>li>a, .glyphicon, #userdata .dropdown-menu>li, #userdata{
+echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar, .dropdown-menu>li>a, .dropdown-toggle, #menu, .dropdown, .nav>li>a, .glyphicon, #userdata .dropdown-menu>li, #navbar-collapse, #navbar-header, #menu>ul, #userdata>li>a>h4 {
   background-color:  #$primary_color;
   color: #$primary_font_color;
-
 }
 
 .table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, ul.tabNav a, .navbar-collapse{
