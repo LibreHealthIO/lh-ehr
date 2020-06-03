@@ -636,11 +636,12 @@ font-weight: bold;
 }
 
 .css_button, a[role="button"] {
-    background: transparent url( 'theme_assets/bg_button_a.gif' ) no-repeat scroll top right;
+    border-radius:15px ;
+    padding: 7px 45px 20px 17px;
     color: #444;
     display: block;
     float: left;
-    font: bold 10px arial, sans-serif;
+    font: bold 12px arial, sans-serif;
     height: 24px;
     margin-right: 3px;
     padding-right: 10px; /* sliding doors padding */
