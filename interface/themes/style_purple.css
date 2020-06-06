@@ -617,7 +617,7 @@ font-weight: bold;
  * CSS BUTTONS
 */
 .css_button_small {
-    background: transparent url( 'theme_assets/bg_button_a_small.gif' ) no-repeat scroll top right;
+    /* background: transparent url( 'theme_assets/bg_button_a_small.gif' ) no-repeat scroll top right; */
     color: #444;
     display: block;
     float: left;
@@ -629,18 +629,21 @@ font-weight: bold;
 }
 
 .css_button_small span {
-    background: transparent url( 'theme_assets/bg_button_span_small.gif' ) no-repeat;
+    /* background: transparent url( 'theme_assets/bg_button_span_small.gif' ) no-repeat; */
     display: block;
     line-height: 20px;
     padding: 0px 0px 0px 10px;
 }
 
 .css_button, a[role="button"] {
-    background: transparent url( 'theme_assets/bg_button_a.gif' ) no-repeat scroll top right;
+    /* background: transparent url( 'theme_assets/bg_button_a.gif' ) no-repeat scroll top right; */
     color: #444;
-    display: block;
+    display: flex;
+    align-items: center;
+    border-radius:7px;
+    padding-left: 5px;
     float: left;
-    font: bold 10px arial, sans-serif;
+    font: bold 12px arial, sans-serif;
     height: 24px;
     margin-right: 3px;
     padding-right: 10px; /* sliding doors padding */
@@ -650,7 +653,7 @@ font-weight: bold;
   background: red !important;
 }
 .css_button span {
-    background: transparent url( 'theme_assets/bg_button_span.gif' ) no-repeat;
+    /* background: transparent url( 'theme_assets/bg_button_span.gif' ) no-repeat; */
     display: block;
     line-height: 14px;
     padding: 5px 0 5px 10px;
