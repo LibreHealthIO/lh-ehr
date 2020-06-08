@@ -620,6 +620,7 @@ font-weight: bold;
     /* background: transparent url( 'theme_assets/bg_button_a_small.gif' ) no-repeat scroll top right; */
     color: #444;
     display: block;
+    color: white;
     float: left;
     font: bold 9px arial, sans-serif;
     height: 19px;
@@ -633,11 +634,13 @@ font-weight: bold;
     display: block;
     line-height: 20px;
     padding: 0px 0px 0px 10px;
+    color: white;
 }
 
 .css_button, a[role="button"] {
     /* background: transparent url( 'theme_assets/bg_button_a.gif' ) no-repeat scroll top right; */
     color: #444;
+    color: white;
     display: flex;
     align-items: center;
     border-radius:7px;
@@ -648,6 +651,7 @@ font-weight: bold;
     margin-right: 3px;
     padding-right: 10px; /* sliding doors padding */
     text-decoration: none;
+    text
 }
 .css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
   background: red !important;
@@ -657,6 +661,7 @@ font-weight: bold;
     display: block;
     line-height: 14px;
     padding: 5px 0 5px 10px;
+    color: white;
 }
 .sellistclass {
 float:left;
