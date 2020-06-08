@@ -3,6 +3,9 @@
   require_once($GLOBALS['srcdir']."/formatting.inc.php");
   require_once($GLOBALS['srcdir']."/headers.inc.php");
   $DateFormat = DateFormatRead();
+
+  // This is required to display user info in notes
+  require_once($GLOBALS['srcdir']."/user.inc");
 ?>
 <head>
 
@@ -255,18 +258,15 @@
             <div style="margin-top:7px">
               <?php foreach ($this->notes as $note) { ?>
               <div>
-                ?
-                Note # <?php echo $note->get_id();?>
-                Date: <?php echo $note->get_date();?>
-                <?php echo $note->get_note();?>
-                <!--
-                  {if $note->get_owner()}
-                      &nbsp;-{user_info id=$note->get_owner()}
-                  {/if}
-                  -->
+                <?php echo xlt("Note"); ?> #: <?php echo text($note->get_id());?>
+                <?php echo xlt("Date"); ?>: <?php echo text($note->get_date());?>
+                <?php echo text($note->get_note());?>
                 <?php if($note->get_owner()) { ?>
-                &nbsp;-{user_info id=$note->get_owner()}
-                <?php }?>
+                  &nbsp;-
+                  <?php
+                    $user_info = getUserIDInfo($note->get_owner());
+                    echo text($user_info['fname']) . " " . text($user_info['lname']);
+                }?>
               </div>
               <?php } 
                 }?>
