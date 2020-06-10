@@ -617,7 +617,6 @@ font-weight: bold;
  * CSS BUTTONS
 */
 .css_button_small {
-    /* background: transparent url( 'theme_assets/bg_button_a_small.gif' ) no-repeat scroll top right; */
     color: #444;
     display: block;
     color: white;
@@ -630,7 +629,6 @@ font-weight: bold;
 }
 
 .css_button_small span {
-    /* background: transparent url( 'theme_assets/bg_button_span_small.gif' ) no-repeat; */
     display: block;
     line-height: 20px;
     padding: 0px 0px 0px 10px;
@@ -638,7 +636,6 @@ font-weight: bold;
 }
 
 .css_button, a[role="button"] {
-    /* background: transparent url( 'theme_assets/bg_button_a.gif' ) no-repeat scroll top right; */
     color: #444;
     color: white;
     display: flex;
@@ -656,7 +653,6 @@ font-weight: bold;
   background: red !important;
 }
 .css_button span {
-    /* background: transparent url( 'theme_assets/bg_button_span.gif' ) no-repeat; */
     display: block;
     line-height: 14px;
     padding: 5px 0 5px 10px;
@@ -1006,4 +1002,8 @@ font-size:9pt;
 
 .iziModal.isFullscreen .iziModal-iframe {
   height: 100% !important;
+}
+
+.cp-positive span,  .cp-submit span, .cp-negative span, .cp-misc span,  .cp-output  span{
+    background-color:  unset;
 }

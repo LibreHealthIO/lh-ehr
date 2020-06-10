@@ -1174,7 +1174,7 @@
       $widgetLabel = "amendments";
       $widgetButtonLabel = xlt("Edit");
       $widgetButtonLink = $GLOBALS['webroot'] . "/interface/patient_file/summary/main_frameset.php?feature=amendment";
-      $widgetButtonClass = "iframe rx_modal";
+      $widgetButtonClass = " iframe rx_modal";
       $linkMethod = "html";
       $bodyClass = "summary_item small";
       $widgetAuth = true;

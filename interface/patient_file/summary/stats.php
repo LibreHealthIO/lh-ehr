@@ -430,7 +430,7 @@ while($row_currentMed=sqlFetchArray($res))
     $widgetTitle = xl('Prescription');
     $widgetButtonLabel = xl("Edit");
     $widgetButtonLink = $GLOBALS['webroot'] . "/interface/patient_file/summary/rx_frameset.php";
-    $widgetButtonClass = "iframe rx_modal";
+    $widgetButtonClass = " iframe rx_modal";
     }
     $bodyClass = "summary_item small";
     $widgetAuth = true;
