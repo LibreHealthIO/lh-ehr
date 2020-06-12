@@ -37,9 +37,9 @@ require_once("$srcdir/classes/Pharmacy.class.php");
  }
 
  //escape variables for output (to prevent xss attacks)
- $patient_esc = htmlspecialchars( $result{"fname"} . " " . $result{"lname"}, ENT_NOQUOTES);
- $info_esc = htmlspecialchars( $info, ENT_NOQUOTES);
- $provider_esc = htmlspecialchars( $provider_results{"fname"}.' '.$provider_results{"lname"}, ENT_NOQUOTES);
+ $patient_esc = text($result{"fname"} . " " . $result{"lname"});
+ $info_esc = text($info);
+ $provider_esc = text($provider_results{"fname"}.' '.$provider_results{"lname"});
 ?>
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
@@ -49,7 +49,7 @@ require_once("$srcdir/classes/Pharmacy.class.php");
    <span style="font-size:0.7em;">(<?php echo $info_esc; ?>)</span>
   </td>
   <td style="width:35%; vertical-align:middle; white-space: nowrap; text-align:center">
-   <span class="title_bar_top"><?php htmlspecialchars( xl('Logged in as','e'), ENT_NOQUOTES); ?>: <?php echo $provider_esc; ?></span>
+   <span class="title_bar_top"><?php echo xlt('Logged in as'); ?>: <?php echo $provider_esc; ?></span>
   </td>
   <td style="width:20%; vertical-align:middle; white-space: nowrap; text-align:right">
    &nbsp;

@@ -40,10 +40,10 @@ $CPR = 4; // cells per row
 if (acl_check('patients','med')) {
   $tmp = getPatientData($pid, "squad");
   if ($tmp['squad'] && ! acl_check('squads', $tmp['squad']))
-   die(htmlspecialchars(xl("Not authorized for this squad."),ENT_NOQUOTES));
+   die(xlt("Not authorized for this squad."));
 }
 if ( !acl_check('patients','med','',array('write','addonly') ))
-  die(htmlspecialchars(xl("Not authorized"),ENT_NOQUOTES));
+  die(xlt("Not authorized"));
 ?>
 <html>
 <head>
@@ -237,17 +237,17 @@ $fres = sqlStatement("SELECT * FROM layout_options " .
     <input type='hidden' name='mode' value='save'>
 
     <div>
-        <span class="title"><?php echo htmlspecialchars(xl('Patient History / Lifestyle'),ENT_NOQUOTES); ?></span>
+        <span class="title"><?php echo xlt('Patient History / Lifestyle'); ?></span>
     </div>
     <div style='float:left;margin-right:10px'>
-  <?php echo htmlspecialchars(xl('for'),ENT_NOQUOTES);?>&nbsp;<span class="title"><a href="../summary/demographics.php" onclick='top.restoreSession()'><?php echo htmlspecialchars(getPatientName($pid),ENT_NOQUOTES); ?></a></span>
+  <?php echo xlt('for');?>&nbsp;<span class="title"><a href="../summary/demographics.php" onclick='top.restoreSession()'><?php echo text(getPatientName($pid)); ?></a></span>
     </div>
     <div>
         <a href="javascript:submit_history();" class='css_button'>
-            <span><?php echo htmlspecialchars(xl('Save'),ENT_NOQUOTES); ?></span>
+            <span><?php echo xlt('Save'); ?></span>
         </a>
         <a href="history.php" class="css_button" onclick="top.restoreSession()">
-            <span><?php echo htmlspecialchars(xl('Back To View'),ENT_NOQUOTES); ?></span>
+            <span><?php echo xlt('Back To View'); ?></span>
         </a>
     </div>
 

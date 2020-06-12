@@ -15,7 +15,7 @@ include_once("../../globals.php");
 <head>
 <?php html_header_show();?>
 <TITLE>
-<?php echo htmlspecialchars(xl('Patient History'),ENT_NOQUOTES); ?>
+<?php echo xlt('Patient History'); ?>
 </TITLE>
 </HEAD>
 <frameset rows="50%,50%" cols="*">

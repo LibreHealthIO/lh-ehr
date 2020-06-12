@@ -39,13 +39,13 @@ $(document).ready(function(){
  if (acl_check('patients','med')) {
   $tmp = getPatientData($pid, "squad");
   if ($tmp['squad'] && ! acl_check('squads', $tmp['squad'])) {
-   echo "<p>(".htmlspecialchars(xl('History not authorized'),ENT_NOQUOTES).")</p>\n";
+   echo "<p>(".xlt('History not authorized').")</p>\n";
    echo "</body>\n</html>\n";
    exit();
   }
  }
  else {  
-  echo "<p>(".htmlspecialchars(xl('History not authorized'),ENT_NOQUOTES).")</p>\n";
+  echo "<p>(".xlt('History not authorized').")</p>\n";
   echo "</body>\n</html>\n";
   exit();
  }
@@ -59,19 +59,19 @@ $(document).ready(function(){
 
 <?php if (acl_check('patients','med','',array('write','addonly') )) { ?>
 <div>
-    <span class="title"><?php echo htmlspecialchars(xl('Patient History / Lifestyle'),ENT_NOQUOTES); ?></span>
+    <span class="title"><?php echo xlt('Patient History / Lifestyle'); ?></span>
 </div>
 <div style='float:left;margin-right:10px'>
-<?php echo htmlspecialchars(xl('for'),ENT_NOQUOTES);?>&nbsp;<span class="title"><a href="../summary/demographics.php" onclick="top.restoreSession()"><?php echo htmlspecialchars(getPatientName($pid),ENT_NOQUOTES) ?></a></span>
+<?php echo xlt('for');?>&nbsp;<span class="title"><a href="../summary/demographics.php" onclick="top.restoreSession()"><?php echo text(getPatientName($pid)) ?></a></span>
 </div>
 <div>
     <a href="history_full.php"
      class="css_button"
      onclick="top.restoreSession()">
-    <span><?php echo htmlspecialchars(xl("Edit"),ENT_NOQUOTES);?></span>
+    <span><?php echo xlt("Edit");?></span>
     </a>
     <a href="../summary/demographics.php" class="css_button" onclick="top.restoreSession()">
-        <span><?php echo htmlspecialchars(xl('Back To Patient'),ENT_NOQUOTES);?></span>
+        <span><?php echo xlt('Back To Patient');?></span>
     </a>
 </div>
 <br/>

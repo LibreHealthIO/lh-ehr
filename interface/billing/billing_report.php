@@ -294,7 +294,7 @@ function expandcollapse(atr){
                 var ele = document.getElementById(mydivid);    var text = document.getElementById(myspanid);
                 if(ele)
                  {
-                    ele.style.display = "inline";text.innerHTML = "<?php echo htmlspecialchars(xl('Collapse'), ENT_QUOTES); ?>";
+                    ele.style.display = "inline";text.innerHTML = "<?php echo xla('Collapse'); ?>";
                  }
         }
       }
@@ -304,7 +304,7 @@ function expandcollapse(atr){
                 var ele = document.getElementById(mydivid);    var text = document.getElementById(myspanid);
                 if(ele)
                  {
-                    ele.style.display = "none";    text.innerHTML = "<?php echo htmlspecialchars(xl('Expand'), ENT_QUOTES); ?>";
+                    ele.style.display = "none";    text.innerHTML = "<?php echo xla('Expand'); ?>";
                  }
         }
     }
@@ -317,11 +317,11 @@ function divtoggle(spanid, divid) {//Called in the Expand, Collapse links(This i
         var text = document.getElementById(spanid);
         if(ele.style.display == "inline") {
             ele.style.display = "none";
-            text.innerHTML = "<?php echo htmlspecialchars(xl('Expand'), ENT_QUOTES); ?>";
+            text.innerHTML = "<?php echo xla('Expand'); ?>";
         }
         else {
             ele.style.display = "inline";
-            text.innerHTML = "<?php echo htmlspecialchars(xl('Collapse'), ENT_QUOTES); ?>";
+            text.innerHTML = "<?php echo xla('Collapse'); ?>";
         }
      }
 }
@@ -340,15 +340,15 @@ function MarkAsCleared(Type)
    }
    if(Type==1)
     {
-     Message='<?php echo htmlspecialchars( xl('After saving your batch, click [View Log] to check for errors.'), ENT_QUOTES); ?>';
+     Message='<?php echo xla('After saving your batch, click [View Log] to check for errors.'); ?>';
     }
    if(Type==2)
     {
-     Message='<?php echo htmlspecialchars( xl('After saving the PDF, click [View Log] to check for errors.'), ENT_QUOTES); ?>';
+     Message='<?php echo xla('After saving the PDF, click [View Log] to check for errors.'); ?>';
     }
    if(Type==3)
     {
-     Message='<?php echo htmlspecialchars( xl('After saving the TEXT file(s), click [View Log] to check for errors.'), ENT_QUOTES); ?>';
+     Message='<?php echo xla('After saving the TEXT file(s), click [View Log] to check for errors.'); ?>';
     }
   if(confirm(Message + "\n\n\n<?php echo addslashes( xl('Total') ); ?>" + ' ' + CheckBoxBillingCount + ' ' +  "<?php echo addslashes( xl('Selected') ); ?>\n" +
   "<?php echo addslashes( xl('Would You Like them to be Marked as Cleared.') ); ?>"))
@@ -746,8 +746,8 @@ if(is_array($ret))
 ?>
 <tr ><td colspan='9' align="right" ><table width="250" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td width="100" id='ExpandAll'><a  onclick="expandcollapse('expand');" class='small'  href="JavaScript:void(0);"><?php echo '('.htmlspecialchars( xl('Expand All'), ENT_QUOTES).')' ?></a></td>
-    <td width="100" id='CollapseAll'><a  onclick="expandcollapse('collapse');" class='small'  href="JavaScript:void(0);"><?php echo '('.htmlspecialchars( xl('Collapse All'), ENT_QUOTES).')' ?></a></td>
+    <td width="100" id='ExpandAll'><a  onclick="expandcollapse('expand');" class='small'  href="JavaScript:void(0);"><?php echo '('.xla('Expand All').')' ?></a></td>
+    <td width="100" id='CollapseAll'><a  onclick="expandcollapse('collapse');" class='small'  href="JavaScript:void(0);"><?php echo '('.xla('Collapse All').')' ?></a></td>
     <td width="50">&nbsp;</td>
   </tr>
 </table>
@@ -891,9 +891,9 @@ if(is_array($ret))
             while($rowresult4 = sqlFetchArray($result4))
              {
             ?>
-                EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars($rowresult4['encounter'], ENT_QUOTES); ?>';
-                EncounterDateArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date']))), ENT_QUOTES); ?>';
-                CalendarCategoryArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo htmlspecialchars( xl_appt_category($rowresult4['pc_catname']), ENT_QUOTES); ?>';
+                EncounterIdArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo attr($rowresult4['encounter']); ?>';
+                EncounterDateArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo attr(oeFormatShortDate(date("Y-m-d", strtotime($rowresult4['date'])))); ?>';
+                CalendarCategoryArray[<?php echo attr($iter['enc_pid']); ?>][Count]='<?php echo attr(xl_appt_category($rowresult4['pc_catname'])); ?>';
                 Count++;
          <?php
              }
@@ -923,7 +923,7 @@ if(is_array($ret))
                  "], CalendarCategoryArray[" . $iter['enc_pid'] . "])\">[" . xlt('To Dems') . "]</a>";
         $divnos=$divnos+1;
       $lhtml .= "&nbsp;&nbsp;&nbsp;<a  onclick='divtoggle(\"spanid_$divnos\",\"divid_$divnos\");' class='small' id='aid_$divnos' href=\"JavaScript:void(0);".
-        "\">(<span id=spanid_$divnos class=\"indicator\">" . htmlspecialchars( xl('Expand'), ENT_QUOTES) . '</span>)<br></a>';
+        "\">(<span id=spanid_$divnos class=\"indicator\">" . xla('Expand') . '</span>)<br></a>';
       if($GLOBALS['notes_to_display_in_Billing'] == 2 || $GLOBALS['notes_to_display_in_Billing'] == 3){
       $lhtml .= '<span style="margin-left: 20px; font-weight bold; color: red">'.text($billing_note).'</span>';
       }
@@ -1017,14 +1017,14 @@ if(is_array($ret))
                 $lhtml .= "<br>\n&nbsp;" .
                   text(oeFormatShortDate(substr($crow['bill_time'], 0, 10))) .
                   text(substr($crow['bill_time'], 10, 6)) . " " .
-                  htmlspecialchars( xl("Marked as cleared"), ENT_QUOTES);
+                  xla("Marked as cleared");
                 ++$lcount;
               }
               else {
                 $lhtml .= "<br>\n&nbsp;" .
                   text(oeFormatShortDate(substr($crow['bill_time'], 0, 10))) .
                   text(substr($crow['bill_time'], 10, 6)) . " " .
-                  htmlspecialchars( xl("Re-opened"), ENT_QUOTES);
+                  xla("Re-opened");
                 ++$lcount;
               }
           }
@@ -1032,14 +1032,14 @@ if(is_array($ret))
             $lhtml .= "<br>\n&nbsp;" .
               text(oeFormatShortDate(substr($crow['bill_time'], 0, 10))) .
               text(substr($crow['bill_time'], 10, 6)) . " " .
-              htmlspecialchars( xl("This claim has been forwarded to next level."), ENT_QUOTES);
+              xla("This claim has been forwarded to next level.");
             ++$lcount;
           }
           else if ($crow['status'] == 7) {
             $lhtml .= "<br>\n&nbsp;" .
               text(oeFormatShortDate(substr($crow['bill_time'], 0, 10))) .
               text(substr($crow['bill_time'], 10, 6)) . " " .
-              htmlspecialchars( xl("This claim has been denied.Reason:-"), ENT_QUOTES);
+              xla("This claim has been denied.Reason:-");
               if($crow['process_file'])
                {
                 $code_array=explode(',',$crow['process_file']);
@@ -1049,17 +1049,17 @@ if(is_array($ret))
                     $reason_array=explode('_',$code_value);
                     if(!isset($adjustment_reasons[$reason_array[3]]))
                      {
-                        $lhtml .=htmlspecialchars( xl("For code"), ENT_QUOTES).' ['.text($reason_array[0]).'] '.htmlspecialchars( xl("and modifier"), ENT_QUOTES).' ['.text($reason_array[1]).'] '.htmlspecialchars( xl("the Denial code is"), ENT_QUOTES).' ['.text($reason_array[2]).' '.text($reason_array[3]).']';
+                        $lhtml .=xla("For code").' ['.text($reason_array[0]).'] '.xla("and modifier").' ['.text($reason_array[1]).'] '.xla("the Denial code is").' ['.text($reason_array[2]).' '.text($reason_array[3]).']';
                      }
                     else
                      {
-                        $lhtml .=htmlspecialchars( xl("For code"), ENT_QUOTES).' ['.text($reason_array[0]).'] '.htmlspecialchars( xl("and modifier"), ENT_QUOTES).' ['.text($reason_array[1]).'] '.htmlspecialchars( xl("the Denial Group code is"), ENT_QUOTES).' ['.text($reason_array[2]).'] '.htmlspecialchars( xl("and the Reason is"), ENT_QUOTES).':- '.text($adjustment_reasons[$reason_array[3]]);
+                        $lhtml .=xla("For code").' ['.text($reason_array[0]).'] '.xla("and modifier").' ['.text($reason_array[1]).'] '.xla("the Denial Group code is").' ['.text($reason_array[2]).'] '.xla("and the Reason is").':- '.text($adjustment_reasons[$reason_array[3]]);
                      }
                  }
                }
               else
                {
-                $lhtml .=htmlspecialchars( xl("Not Specified."), ENT_QUOTES);
+                $lhtml .=xla("Not Specified.");
                }
             ++$lcount;
           }
