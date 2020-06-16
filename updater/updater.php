@@ -293,7 +293,7 @@ if (isset($_POST)) {
 			$title = $_GET['toast_title'];
 			$type = $_GET['toast_type'];
 			$message = $_GET['toast_message'];
-			echo "<div class='col-xs-12'><br/></div><div class='alert alert-$type col-xs-12 text-left'><h4>$title</h4><p>$message</p></div>";
+			echo "<div class='col-xs-12'><br/></div><div class='alert alert-" . attr($type) . "col-xs-12 text-left'><h4>" . text($title) ."</h4><p>" . text($message) . "</p></div>";
 		}
 	}
 ?>	

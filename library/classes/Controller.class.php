@@ -70,7 +70,7 @@ class Controller {
 
        function act($qarray) {           
           
-               if (isset($_GET['process'])){
+        if (isset($_GET['process'])){
          unset($_GET['process']);
          unset($qarray['process']);
          $_POST['process'] = "true";
@@ -89,7 +89,7 @@ class Controller {
                $args = array_reverse($args);              
 
                if(!call_user_func(array(Controller,"i_once"),$GLOBALS['fileroot'] ."/controllers/C_" . $c_name . ".class.php")) {
-                       echo "Unable to load controller $name\n, please check the first argument supplied in the URL and try again";
+                       echo "Unable to load controller" . text($name) . "\n, please check the first argument supplied in the URL and try again";
                        exit;
                }
 
@@ -137,7 +137,7 @@ class Controller {
                                        $output .=  call_user_func_array(array(&$c_obj,$c_action . "_action"),$args_array);
                                }
                                else {
-                                       echo "The action trying to be performed: " . $c_action ." does not exist controller: ". $name;
+                                       echo "The action trying to be performed: " . text($c_action) ." does not exist controller: ". text($name);
                                }
                }
 
