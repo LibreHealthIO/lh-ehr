@@ -160,9 +160,9 @@ class Claim {
 
     // We need the encounter date before we can identify the payers.
     $sql = "SELECT * FROM form_encounter WHERE " .
-      "pid = '{$this->pid}' AND " .
-      "encounter = '{$this->encounter_id}'";
-    $this->encounter = sqlQuery($sql);
+      "pid = ? AND " .
+      "encounter = ?";
+    $this->encounter = sqlQuery($sql, array($this->pid, $this->encounter_id));
 
     // Sort by procedure timestamp in order to get some consistency.
     $sql = "SELECT b.id, b.date, b.code_type, b.code, b.pid, b.provider_id, " .
@@ -173,9 +173,9 @@ class Claim {
       "FROM billing as b INNER JOIN code_types as ct " .
       "ON b.code_type = ct.ct_key " .
       "WHERE ct.ct_claim = '1' AND ct.ct_active = '1' AND " .
-      "b.encounter = '{$this->encounter_id}' AND b.pid = '{$this->pid}' AND " .
+      "b.encounter = ? AND b.pid = ? AND " .
       "b.activity = '1' ORDER BY b.date, b.id";
-    $res = sqlStatement($sql);
+    $res = sqlStatement($sql, array($this->encounter_id, $this->pid));
     while ($row = sqlFetchArray($res)) {
       // Save all diagnosis codes.
       if ($row['ct_diag'] == '1') {
@@ -210,8 +210,8 @@ class Claim {
     }
     
     $resMoneyGot = sqlStatement("SELECT pay_amount as PatientPay,session_id as id,".
-      "date(post_time) as date FROM ar_activity where pid ='{$this->pid}' and encounter ='{$this->encounter_id}' ".
-      "and payer_type=0 and account_code='PCP'");
+      "date(post_time) as date FROM ar_activity where pid = ? and encounter =? ".
+      "and payer_type=0 and account_code='PCP'", array($this->pid, $this->encounter_id));
       //new fees screen copay gives account_code='PCP'
     while($rowMoneyGot = sqlFetchArray($resMoneyGot)){
       $PatientPay=$rowMoneyGot['PatientPay']*-1;

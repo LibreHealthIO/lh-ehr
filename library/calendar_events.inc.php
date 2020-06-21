@@ -9,12 +9,12 @@ function getSquadEvents($date, $squad, $plid) {
     "p.pid, p.minutes, p.fitness_related " .
     "FROM libreehr_postcalendar_events AS e " .
     "JOIN libreehr_postcalendar_categories AS c ON " .
-    "c.pc_catdesc LIKE 'Squad=$squad' AND c.pc_catid = e.pc_catid " .
+    "c.pc_catdesc LIKE 'Squad=?' AND c.pc_catid = e.pc_catid " .
     "LEFT JOIN player_event AS p ON " .
-    "p.pid = '$plid' AND p.date = '$date' AND p.pc_eid = e.pc_eid " .
-    "WHERE ((e.pc_endDate >= '$date' AND e.pc_eventDate <= '$date') OR " .
-    "(e.pc_endDate = '0000-00-00' AND e.pc_eventDate = '$date')) " .
-    "ORDER BY e.pc_startTime, e.pc_eid");
+    "p.pid = ? AND p.date = ? AND p.pc_eid = e.pc_eid " .
+    "WHERE ((e.pc_endDate >= ? AND e.pc_eventDate <= ?) OR " .
+    "(e.pc_endDate = '0000-00-00' AND e.pc_eventDate = ?)) " .
+    "ORDER BY e.pc_startTime, e.pc_eid", array($squad, $plid, $date, $date, $date, $date));
 }
 
 // Determine if the specified event applies to the specified date (YYYY-MM-DD).

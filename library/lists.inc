@@ -90,15 +90,22 @@ function getListById ($id, $cols = "*")
 
 function getListByType ($pid, $type, $cols = "*", $active = "all", $limit = "all", $offset="0")
 {
-	if($active == "all")
-		$sql = "select $cols from lists where pid='$pid' and type='$type' order by date DESC";
-	else
-		$sql = "select $cols from lists where pid='$pid' and type='$type' and activity='$active' order by date DESC";
-	if ($limit != "all")
-		$sql .= " limit $offset,$limit";
+	$sqlBindArray = array();
+	if($active == "all") {
+		$sql = "select '" . add_escape_custom($cols) . "'  from lists where pid=? and type=? order by date DESC";
+		array_push($sqlBindArray, $pid, $type);
+	}
+	else {
+		$sql = "select '" . add_escape_custom($cols) . "' from lists where pid=? and type=? and activity=? order by date DESC";
+		array_push($sqlBindArray, $pid, $type, $active);
+	}
+	if ($limit != "all") {
+		$sql .= " limit ? , ?";
+		array_push($sqlBindArray, $offset, $limit);
+	}
 	
 
-	$res = sqlStatement($sql);
+	$res = sqlStatement($sql, array($sqlBindArray));
 	for($iter =0;$row = sqlFetchArray($res);$iter++)
 		$all[$iter] = $row;
 	return $all;
@@ -112,13 +119,13 @@ function addList ($pid, $type, $title, $comments, $activity = "1")
 
 function disappearList ($id)
 {
-	sqlStatement("update lists set activity = '0' where id='$id'");
+	sqlStatement("update lists set activity = '0' where id=?", array($id));
 	return true;
 }
 
 function reappearList ($id)
 {
-	sqlStatement("update lists set activity = '1' where id='$id'");
+	sqlStatement("update lists set activity = '1' where id=?", array($id));
 	return true;
 }
 

@@ -83,14 +83,14 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
   if($nextX) {
 
     $where =
-      "((e.pc_endDate >= '$from_date' AND e.pc_recurrtype > '0') OR " .
-      "(e.pc_eventDate >= '$from_date'))";
+      "((e.pc_endDate >= '" . add_escape_custom($from_date) . "' AND e.pc_recurrtype > '0') OR " .
+      "(e.pc_eventDate >= '" . add_escape_custom($from_date) . "' ))";
 
   } else {
   //////
     $where =
-      "((e.pc_endDate >= '$from_date' AND e.pc_eventDate <= '$to_date' AND e.pc_recurrtype > '0') OR " .
-      "(e.pc_eventDate >= '$from_date' AND e.pc_eventDate <= '$to_date'))";
+      "((e.pc_endDate >= '" . add_escape_custom($from_date) . "' AND e.pc_eventDate <= '" . add_escape_custom($to_date) . "' AND e.pc_recurrtype > '0') OR " .
+      "(e.pc_eventDate >= '" . add_escape_custom($from_date) . "' AND e.pc_eventDate <= '" . add_escape_custom($to_date) . "'))";
 
   }
 
@@ -127,7 +127,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
     "LEFT OUTER JOIN users AS u ON u.id = e.pc_aid " .
     "LEFT OUTER JOIN libreehr_postcalendar_categories AS c ON c.pc_catid = e.pc_catid " .
     "WHERE $where " .
-    "ORDER BY $order_by";
+    "ORDER BY ?";
 
 
   ///////////////////////////////////////////////////////////////////////
@@ -135,8 +135,7 @@ function fetchEvents( $from_date, $to_date, $where_param = null, $orderby_param 
   // PostCalendar Module modified and inserted here by epsdky
 
   $events2 = array();
-  $res = sqlStatement($query);
-  ////////
+  $res = sqlStatement($query, array($order_by));  ////////
   if($nextX) {
   global $resNotNull;
   $resNotNull = (isset($res) && $res != null);
@@ -597,9 +596,9 @@ function fetchAppointmentCategories( $appt_prov_inc = false )
 
      $catSQL= " SELECT pc_catid as id, pc_catname as category, pc_catid, pc_catname, pc_cattype, pc_recurrtype, pc_duration, pc_end_all_day "
             . " FROM libreehr_postcalendar_categories " .
-              "WHERE " . $where .
-              "ORDER BY " . $order;
-     return sqlStatement($catSQL);
+              "WHERE ?" .
+              "ORDER BY ?";
+     return sqlStatement($catSQL, array($where, $order));
 }
 
 function getPatientPictureUrl($pid) {
