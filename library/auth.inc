@@ -201,9 +201,9 @@ function getUserList ($cols = '*', $limit = 'all', $start = '0')
 function getProviderList ($cols = '*', $limit= 'all', $start = '0')
 {
     if ($limit = "all")
-        $rez = sqlStatement("select $cols from groups order by date DESC");
+        $rez = sqlStatement("select ? from groups order by date DESC", array($cols));
     else
-        $rez = sqlStatement("select $cols from groups order by date DESC limit $limit, $start");
+        $rez = sqlStatement("select ? from groups order by date DESC limit ?, ?", array($cols, $limit, $start));
     for ($iter = 0; $row = sqlFetchArray($rez); $iter++)
         $tbl[$iter] = $row;
     return $tbl;

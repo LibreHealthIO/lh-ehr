@@ -191,9 +191,9 @@
             return;
 
         if ($skip == "()")
-            sqlStatement("update billing set billed=1 where id in $list");
+            sqlStatement("update billing set billed=1 where id in ?", array($list));
         else
-            sqlStatement("update billing set billed=1 where id in $list and id not in $skip");
+            sqlStatement("update billing set billed=1 where id in ? and id not in ?", array($list, $skip));
 
         return;
     }
