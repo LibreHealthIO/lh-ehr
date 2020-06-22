@@ -98,8 +98,8 @@ var webroot_url="<?php echo $web_root; ?>";
             else
             {
                 /*
-                To prevent local file inclusion (LFI) attacks and directory traversals, use a whitelist of acceptable urls that will be compared against.
-                The current list of whitelisted urls (and their required and optional parameters) come from interface/main/main_screen.php.
+                To prevent local file inclusion (LFI) attacks and directory traversals, compare the input to a list of accepted urls.
+                The current list of accepted urls (and their required and optional parameters) come from interface/main/main_screen.php.
                 */
                 $inputURL = $_REQUEST['url'];
                 $allowedURLs = array(
@@ -115,12 +115,12 @@ var webroot_url="<?php echo $web_root; ?>";
                 );
                 // regex patterns for query string parameter values
                 $queryPatterns = array(
-                    "set_pid" => "/\d+/",
-                    "set_encounterid" => "/\d+/",
-                    "pid" => "/\d+/",
+                    "set_pid" => "/^\d+$/",
+                    "set_encounterid" => "/^\d+$/",
+                    "pid" => "/^\d+$/"
                 );
 
-                // check if exact query url is in whitelist
+                // check if exact query url is in the accepted list of urls
                 if(in_array($inputURL, $allowedURLs)) {
                     $tab_one_contents="../".urldecode($inputURL);
                 }
@@ -152,13 +152,13 @@ var webroot_url="<?php echo $web_root; ?>";
                         }
                     }
 
-                    // check if each parsed component of input url is in whitelist
-                    $check = true;
+                    // check if each parsed component of input url is in the accepted list of urls
+                    $validURLCheck = true;
                     if(array_key_exists($inputURLStr, $allowedURLs)) {
                         $paramsList = $allowedURLs[$inputURLStr];
                         // make sure input url include required params
                         if(!array_key_exists($paramsList["required"], $inputParamsList)) {
-                            $check = false;
+                            $validURLCheck = false;
                         } else {
                             foreach($inputParamsList as $inputParamName => $inputParamVal) {
                                 // validate param names
@@ -169,32 +169,29 @@ var webroot_url="<?php echo $web_root; ?>";
                                         $year = substr($inputParamVal, 0, 4);
                                         $month = substr($inputParamVal, 4, 2);
                                         $day = substr($inputParamVal, 6, 2);
-                                        if(!checkdate($month, $day, $year)) {
-                                            $check = false;
+                                        if(strlen($inputParamVal) != 8 || !checkdate($month, $day, $year)) {
+                                            $validURLCheck = false;
                                             break;
                                         }
                                     } else if(!preg_match($queryPatterns[$inputParamName], $inputParamVal)) {
-                                        $check = false;
+                                        $validURLCheck = false;
                                         break;
                                     }
                                 } else {
-                                    $check = false;
+                                    $validURLCheck = false;
                                     break;
                                 }
                             }
                         }
-
-                        if($check) {
-                            $tab_one_contents="../".urldecode($inputURL);
-                        } else {
-                            // redirect to error message
-                            $tab_one_contents=urldecode("tab_redirect_error_message.php");
-                        }
-                    } else {
-                        $tab_one_contents=urldecode("tab_redirect_error_message.php");
                     }
+                    if($validURLCheck) {
+                        $tab_one_contents="../".urldecode($inputURL);
+                    } else {
+                        $tab_one_contents=urldecode("404.php");
+                    }
+                // url is not in the accepted list of urls && does not include "?"
                 } else {
-                    $tab_one_contents=urldecode("tab_redirect_error_message.php");
+                    $tab_one_contents=urldecode("404.php");
                 }
             }
             $tab_one_contents=json_encode($tab_one_contents);
