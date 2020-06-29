@@ -41,6 +41,9 @@ else {
   session_regenerate_id(false);
 }
 
+//generate csrf token
+$_SESSION['token'] = generateCsrfToken();
+
 $_SESSION["encounter"] = '';
 
 // Fetch the password expiration date

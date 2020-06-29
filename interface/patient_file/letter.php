@@ -90,6 +90,14 @@ $patdata = sqlQuery("SELECT " .
 
 $alertmsg = ''; // anything here pops up in an alert box
 
+if (!empty($_POST)) {
+    if (!isset($_POST['token'])) {
+        error_log('WARNING: A Post detected with not csrf token found');
+        die('Authentication failed.');
+    } else if (!hash_equals(hash_hmac('sha256', '/letter.php.theform', $_SESSION['token']), $_POST['token'])) {
+        die('Authentication failed.');
+    }
+}
 // If the Generate button was clicked...
 if ($_POST['formaction']=="generate") {
 
@@ -430,6 +438,7 @@ function insertAtCursor(myField, myValue) {
 <form method='post' action='letter.php' id="theform" name="theform">
 <input type="hidden" name="formaction" id="formaction" value="">
 <input type='hidden' name='form_pid' value='<?php echo $pid ?>' />
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/letter.php.theform', $_SESSION['token']);?>" />
 
 <center>
 <p>
