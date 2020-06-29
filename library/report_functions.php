@@ -64,7 +64,7 @@ function dropDownFacilities() {
 
     echo "    <option value='0'";
     if ($form_facility === '0') echo " selected";
-    echo ">-- " . xl('Unspecified') . " --\n";
+    echo ">-- " . xlt('Unspecified') . " --\n";
     echo "   </select>\n";
 }
 
@@ -98,7 +98,7 @@ function showFromAndToDates() {
         </td>
          <td>
             <input type='text' name='form_from_date' id='form_from_date' size='10'
-                value='"; echo htmlspecialchars(oeFormatShortDate(attr($_POST['form_from_date'])));
+                value='"; echo attr($_POST['form_from_date']);
     echo "' />
          </td>
          <td class='label'> ";
@@ -107,7 +107,7 @@ function showFromAndToDates() {
          </td>
          <td>
             <input type='text' name='form_to_date' id='form_to_date' size='10'
-                value='"; echo htmlspecialchars(oeFormatShortDate(attr($_POST['form_to_date'])));
+                value='"; echo attr($_POST['form_to_date']);
     echo "' />
          </td>";
 }
@@ -164,7 +164,7 @@ function showSubmitPrintButtons($form_csvexport='') {
                             if ($form_csvexport == 'form_labels') { // This is for Unique-seen-patients report
                                 echo "<a href='#' class='css_button cp-misc' onclick='$(\"#form_labels\").attr(\"value\",\"true\"); $(\"#theform\").submit();'>
                                     <span>";
-                                        echo xl('Labels','e');
+                                        echo xlt('Labels');
                                     echo "</span>
                                 </a>";
                             }

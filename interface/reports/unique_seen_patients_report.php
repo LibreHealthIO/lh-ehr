@@ -61,7 +61,7 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
     }
 }
 </style>
-<title><?php xl('Front Office Receipts','e'); ?></title>
+<title><?php echo xlt('Front Office Receipts'); ?></title>
 
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
@@ -121,7 +121,7 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<span class='title'><?php xl('Report','e'); ?> - <?php xl('Unique Seen Patients','e'); ?></span>
+<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Unique Seen Patients'); ?></span>
 
 <?php reportParametersDaterange(); #TRK ?>
 
@@ -172,14 +172,14 @@ require_once "reports_controllers/UniqueSeenPatientsController.php";
 <table>
 
  <thead>
-  <th> <?php xl('Last Visit','e'); ?> </th>
-  <th> <?php xl('Patient','e'); ?> </th>
-  <th align='right'> <?php xl('Visits','e'); ?> </th>
-  <th align='right'> <?php xl('Age','e'); ?> </th>
-  <th> <?php xl('Sex','e'); ?> </th>
-  <th> <?php xl('Race','e'); ?> </th>
-  <th> <?php xl('Primary Insurance','e'); ?> </th>
-  <th> <?php xl('Secondary Insurance','e'); ?> </th>
+  <th> <?php echo xlt('Last Visit'); ?> </th>
+  <th> <?php echo xlt('Patient'); ?> </th>
+  <th align='right'> <?php echo xlt('Visits'); ?> </th>
+  <th align='right'> <?php echo xlt('Age'); ?> </th>
+  <th> <?php echo xlt('Sex'); ?> </th>
+  <th> <?php echo xlt('Race'); ?> </th>
+  <th> <?php echo xlt('Primary Insurance'); ?> </th>
+  <th> <?php echo xlt('Secondary Insurance'); ?> </th>
  </thead>
  <tbody>
 <?php

@@ -39,7 +39,7 @@ if ($_POST['form_csvexport'] && !$_POST['form_refresh']) {
 <html>
 <head>
 <?php html_header_show();?>
-<title><?php xl('Patient List','e'); ?></title>
+<title><?php echo xlt('Patient List'); ?></title>
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <script type="text/javascript" src="../../library/dialog.js"></script>
@@ -100,7 +100,7 @@ if ($_POST['form_csvexport'] && !$_POST['form_refresh']) {
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<span class='title'><?php xl('Report','e'); ?> - <?php xl('Patient List','e'); ?></span>
+<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient List'); ?></span>
 
 
 
@@ -115,7 +115,7 @@ if ($_POST['form_csvexport'] && !$_POST['form_refresh']) {
             <table class='text'>
               <tr>
                 <td class='label'>
-                  <?php xl('Provider','e'); ?>:
+                  <?php echo xlt('Provider'); ?>:
                 </td>
                 <td>
                   <?php
@@ -156,15 +156,15 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
       <div id="report_results">
         <table>
           <thead>
-            <th> <?php xl('Last Visit','e'); ?> </th>
-            <th> <?php xl('Patient','e'); ?> </th>
-            <th> <?php xl('ID','e'); ?> </th>
-            <th> <?php xl('Street','e'); ?> </th>
-            <th> <?php xl('City','e'); ?> </th>
-            <th> <?php xl('State','e'); ?> </th>
-            <th> <?php xl('Zip','e'); ?> </th>
-            <th> <?php xl('Primary Insurance','e'); ?> </th>
-            <th> <?php xl('Secondary Insurance','e'); ?> </th>
+            <th> <?php echo xlt('Last Visit'); ?> </th>
+            <th> <?php echo xlt('Patient'); ?> </th>
+            <th> <?php echo xlt('ID'); ?> </th>
+            <th> <?php echo xlt('Street'); ?> </th>
+            <th> <?php echo xlt('City'); ?> </th>
+            <th> <?php echo xlt('State'); ?> </th>
+            <th> <?php echo xlt('Zip'); ?> </th>
+            <th> <?php echo xlt('Primary Insurance'); ?> </th>
+            <th> <?php echo xlt('Secondary Insurance'); ?> </th>
           </thead>
           <tbody>
         <?php
@@ -175,9 +175,9 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
     ?>
     <tr class="report_totals">
         <td colspan="9">
-          <?php xl('Total Number of Patients','e');
+          <?php echo xlt('Total Number of Patients');
           echo ':';
-          echo $totalpts; ?>
+          echo total($totalpts); ?>
         </td>
     </tr>
 
@@ -191,7 +191,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
 if (!$_POST['form_refresh'] && !$_POST['form_csvexport']) {
   ?>
   <div class='text'>
-      <?php echo xl('Please input search criteria above, and click Submit to view results.', 'e' ); ?>
+      <?php echo xlt('Please input search criteria above, and click Submit to view results.'); ?>
   </div>
   <?php
 }

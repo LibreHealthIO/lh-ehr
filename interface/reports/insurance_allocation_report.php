@@ -49,7 +49,7 @@ else {
 <html>
 <head>
 <?php html_header_show();?>
-<title><?php xl('Patient Insurance Distribution','e'); ?></title>
+<title><?php echo xlt('Patient Insurance Distribution'); ?></title>
 <script type="text/javascript" src="../../library/overlib_mini.js"></script>
 <script type="text/javascript" src="../../library/calendar.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
@@ -104,7 +104,7 @@ else {
 <!-- Required for the popup date selectors -->
 <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
 
-<span class='title'><?php xl('Report','e'); ?> - <?php xl('Patient Insurance Distribution','e'); ?></span>
+<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Patient Insurance Distribution'); ?></span>
 
 <?php reportParametersDaterange(); #TRK ?>
 
@@ -136,16 +136,16 @@ else {
 <div id="report_results">
 <?php
 } // end not export
-if ($_POST['form_refresh'] || $_POST['form_csvexport']) { ?>
+if ($_POST['form_refresh']) { ?>
 <table>
   <thead>
-    <th align='left'> <?php xl('Primary Insurance','e'); ?> </th>
-    <th align='right'> <?php xl('Charges','e'); ?> </th>
-    <th align='right'> <?php xl('Adjustments','e'); ?> </th>
-    <th align='right'> <?php xl('Payments','e'); ?> </th>
-    <th align='right'> <?php xl('Visits','e'); ?> </th>
-    <th align='right'> <?php xl('Patients','e'); ?> </th>
-    <th align='right'> <?php xl('Pt %','e'); ?> </th>
+    <th align='left'> <?php echo xlt('Primary Insurance'); ?> </th>
+    <th align='right'> <?php echo xlt('Charges'); ?> </th>
+    <th align='right'> <?php echo xlt('Adjustments'); ?> </th>
+    <th align='right'> <?php echo xlt('Payments'); ?> </th>
+    <th align='right'> <?php echo xlt('Visits'); ?> </th>
+    <th align='right'> <?php echo xlt('Patients'); ?> </th>
+    <th align='right'> <?php echo xlt('Pt %'); ?> </th>
   </thead>
   <tbody>
     <?php // Prepare and show results. (TRK)
