@@ -285,8 +285,8 @@ foreach ($ISSUE_TYPES as $focustype => $focustitles) {
 
     echo " <tr class='$bgclass detail' $colorstyle>\n";
     echo "  <td style='text-align:left' data-text='$disptitle' class='$click_class' id='$rowid'>" . text($disptitle) . "</td>\n";
-    echo "  <td>" . text($row['begdate']) . "&nbsp;</td>\n";
-    echo "  <td>" . text($row['enddate']) . "&nbsp;</td>\n";
+    echo "  <td>" . text(date(DateFormatRead(true), date($row['begdate']))) . "&nbsp;</td>\n";
+    echo "  <td>" . text(date(DateFormatRead(true), date($row['enddate']))) . "&nbsp;</td>\n";
     // both codetext and statusCompute have already been escaped above with htmlspecialchars)
     echo "  <td>" . $codetext . "</td>\n";
     echo "  <td>" . $statusCompute . "&nbsp;</td>\n";
