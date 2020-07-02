@@ -92,7 +92,7 @@ $alertmsg = ''; // anything here pops up in an alert box
 
 if (!empty($_POST)) {
     if (!isset($_POST['token'])) {
-        error_log('WARNING: A Post detected with not csrf token found');
+        error_log('WARNING: A POST request detected with no csrf token found');
         die('Authentication failed.');
     } else if (!hash_equals(hash_hmac('sha256', '/letter.php.theform', $_SESSION['token']), $_POST['token'])) {
         die('Authentication failed.');
