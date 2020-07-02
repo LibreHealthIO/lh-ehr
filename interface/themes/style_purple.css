@@ -634,10 +634,9 @@ font-weight: bold;
     padding: 0px 0px 0px 10px;
     color: white;
 }
-
 .css_button, a[role="button"] {
     color: #444;
-    color: white;
+    color:white;
     display: flex;
     align-items: center;
     border-radius:7px;
@@ -647,7 +646,7 @@ font-weight: bold;
     height: 24px;
     margin-right: 3px;
     padding-right: 10px; /* sliding doors padding */
-    text-decoration: none;
+    text-decoration: none; 
 }
 .css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
   background: red !important;
@@ -656,7 +655,7 @@ font-weight: bold;
     display: block;
     line-height: 14px;
     padding: 5px 0 5px 10px;
-    color: white;
+    color:black;
 }
 .sellistclass {
 float:left;
@@ -760,7 +759,7 @@ div.notab-right {
 
 #report_results table {
    border-top: 1px solid black;
-   border-bottom: 1px solid black;
+   border-bottom: 1px solid black
    border-left: 1px solid black;
    border-right: 1px solid black;
    width: 100%;
@@ -1002,6 +1001,12 @@ font-size:9pt;
 
 .iziModal.isFullscreen .iziModal-iframe {
   height: 100% !important;
+}
+.css_button{
+    background-color:#ccc;
+}
+.cp-positive{
+    background-color: green !important;
 }
 
 .cp-positive span,  .cp-submit span, .cp-negative span, .cp-misc span,  .cp-output  span{
