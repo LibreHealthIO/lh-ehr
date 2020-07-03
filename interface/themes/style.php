@@ -64,13 +64,12 @@ else {
 	$button_font_color = $secondary_font_color;
 }
 
-echo " .body_title, .body_top, .body_nav, .body_filler, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar, .dropdown-menu>li>a, .dropdown-toggle, #menu, .dropdown, .nav>li>a, .glyphicon, #userdata .dropdown-menu>li, #userdata{
+echo " .body_title, .body_top, .body_nav, .navbar-collapse, .dropdown-toggle>h4, .body_login, .table_bg, .bgcolor2, .textcolor1, .highlightcolor, .logobar, .dropdown-menu>li>a, .dropdown-toggle, #menu, .dropdown, .nav>li>a, .glyphicon, #userdata .dropdown-menu>li, #userdata{
   background-color:  #$primary_color;
   color: #$primary_font_color;
-
 }
 
-.table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, ul.tabNav a, .navbar-collapse{
+.table, .bgcolor1,  ul.tabNav, .navbar, .nav, .dropdown, .navbar-header, ul.tabNav a{
 
   background-color: #$secondary_color;
   color: #$secondary_font_color;
