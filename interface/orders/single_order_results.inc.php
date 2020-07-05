@@ -212,7 +212,7 @@ function generate_result_row(&$ctx, &$row, &$rrow, $priors_omitted=false) {
       echo "  <td colspan='3'>";
       if (empty($GLOBALS['PATIENT_REPORT_ACTIVE'])) {
         echo "<a href='" . $GLOBALS['webroot'] . "/controller.php?document";
-        echo "&retrieve&patient_id=$patient_id&document_id=$result_document_id' ";
+        echo "&retrieve&patient_id=".attr($patient_id)."&document_id=".attr($result_document_id)."' ";
         echo "onclick='top.restoreSession()'>";
       }
       echo $d->get_url_file();
@@ -367,7 +367,7 @@ function educlick(codetype, codevalue) {
 <?php } // end if not patient report ?>
 
 <?php if ($input_form) { ?>
-<form method='post' action='single_order_results.php?orderid=<?php echo $orderid; ?>'>
+<form method='post' action='single_order_results.php?orderid=<?php echo attr($orderid); ?>'>
 <?php } // end if input form ?>
 
 <div class='labres'>
@@ -405,7 +405,7 @@ function educlick(codetype, codevalue) {
   <td class="td-label" nowrap><?php echo xlt('Order Date'); ?></td>
   <td><?php echo myCellText(oeFormatShortDate($orow['date_ordered'])); ?></td>
   <td class="td-label" nowrap><?php echo xlt('Print Date'); ?></td>
-  <td><?php echo oeFormatShortDate(date('Y-m-d')); ?></td>
+  <td><?php echo myCellText(oeFormatShortDate(date('Y-m-d'))); ?></td>
  </tr>
  <tr>
   <td class="td-label" nowrap><?php echo xlt('Order Status'); ?></td>
@@ -558,7 +558,7 @@ function educlick(codetype, codevalue) {
     echo " </tr>\n";
     foreach ($aNotes as $key => $value) {
       echo " <tr>\n";
-      echo "  <td valign='top'>" . ($key + 1) . "</td>\n";
+      echo "  <td valign='top'>" . text(($key + 1)) . "</td>\n";
       // <pre> tag because white space and a fixed font are often used to line things up.
       echo "  <td><pre>" . text($value) . "</pre></td>\n";
       echo " </tr>\n";
@@ -578,7 +578,7 @@ function educlick(codetype, codevalue) {
 <?php if (empty($GLOBALS['PATIENT_REPORT_ACTIVE'])) { ?>
    &nbsp;
    <input type='button' value='<?php echo xla('Related Patient Notes'); ?>' 
-    onclick='showpnotes(<?php echo $orderid; ?>)' />
+    onclick='showpnotes(<?php echo attr($orderid); ?>)' />
 <?php } ?>
 <?php if ($input_form && $ctx['sign_list']) { ?>
    &nbsp;

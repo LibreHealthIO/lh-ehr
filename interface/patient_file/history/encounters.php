@@ -113,7 +113,7 @@ function getDocListByEncID($encounter,$raw_encounter_date,$pid){
             $docTitle = ( $note ) ? $note : xla("View document");
 
             $docHref = $GLOBALS['webroot']."/controller.php?document&view&patient_id=".attr($pid)."&doc_id=".attr($documentrow['id']);
-            echo "<div class='text docrow' id='" . attr($documentrow['id'])."' title='". $docTitle . "'>\n";
+            echo "<div class='text docrow' id='" . attr($documentrow['id'])."' title='". attr($docTitle) . "'>\n";
             echo "<a href='$docHref' onclick='top.restoreSession()' >". xlt('Document') . ": " . text(basename($documentrow['url'])) . ' (' . text(xl_document_category($documentrow['name'])) . ')' . "</a>";
             echo "</div>";
         }
@@ -195,7 +195,7 @@ function toencounter(rawdata) {
 }
 
 function todocument(docid) {
-  h = '<?php echo $GLOBALS['webroot'] ?>/controller.php?document&view&patient_id=<?php echo $pid ?>&doc_id=' + docid;
+  h = '<?php echo $GLOBALS['webroot'] ?>/controller.php?document&view&patient_id=<?php echo attr($pid); ?>&doc_id=' + <?php echo attr(docid); ?>;
   top.restoreSession();
   location.href = h;
 }
@@ -293,9 +293,9 @@ $getStringForPage="&pagesize=".attr($pagesize)."&pagestart=".attr($pagestart);
 
 ?>
 <?php if ($billing_view) { ?>
-<a href='encounters.php?billing=0&issue=<?php echo $issue.$getStringForPage; ?>' onclick='top.restoreSession()' style='font-size:8pt'>(<?php echo htmlspecialchars( xl('To Clinical View'), ENT_NOQUOTES); ?>)</a>
+<a href='encounters.php?billing=0&issue=<?php echo attr($issue.$getStringForPage); ?>' onclick='top.restoreSession()' style='font-size:8pt'>(<?php echo htmlspecialchars( xl('To Clinical View'), ENT_NOQUOTES); ?>)</a>
 <?php } else { ?>
-<a href='encounters.php?billing=1&issue=<?php echo $issue.$getStringForPage; ?>' onclick='top.restoreSession()' style='font-size:8pt'>(<?php echo htmlspecialchars( xl('To Billing View'), ENT_NOQUOTES); ?>)</a>
+<a href='encounters.php?billing=1&issue=<?php echo attr($issue.$getStringForPage); ?>' onclick='top.restoreSession()' style='font-size:8pt'>(<?php echo htmlspecialchars( xl('To Billing View'), ENT_NOQUOTES); ?>)</a>
 <?php } ?>
 
 <span style="float:right">
@@ -305,7 +305,7 @@ $getStringForPage="&pagesize=".attr($pagesize)."&pagestart=".attr($pagestart);
     $pagesizes=array(5,10,15,20,25,50,0);
     for($idx=0;$idx<count($pagesizes);$idx++)
     {
-        echo "<OPTION value='" . $pagesizes[$idx] . "'";
+        echo "<OPTION value='" . attr($pagesizes[$idx]) . "'";
         if($pagesize==$pagesizes[$idx])
         {
             echo " SELECTED='true'>";
@@ -320,7 +320,7 @@ $getStringForPage="&pagesize=".attr($pagesize)."&pagestart=".attr($pagestart);
         }
         else
         {
-            echo $pagesizes[$idx];
+            echo text($pagesizes[$idx]);
         }
         echo "</OPTION>";
         
@@ -347,7 +347,7 @@ $getStringForPage="&pagesize=".attr($pagesize)."&pagestart=".attr($pagestart);
 <?php } ?>
 
 <?php if ($billing_view) { ?>
-  <th><?php echo xl('Code','e'); ?></th>
+  <th><?php echo xlt('Code'); ?></th>
   <th><?php echo htmlspecialchars( xl('Chg'), ENT_NOQUOTES); ?></th>
   <th><?php echo htmlspecialchars( xl('Paid'), ENT_NOQUOTES); ?></th>
   <th><?php echo htmlspecialchars( xl('Adj'), ENT_NOQUOTES); ?></th>
@@ -421,7 +421,7 @@ if(($pagesize > 0) && ($pagestart>0))
 {
     generatePageElement($pagestart-$pagesize,$pagesize,$billing_view,$issue,"&lArr;" . htmlspecialchars( xl("Prev"), ENT_NOQUOTES) . " ");
 }
-echo ($pagestart + 1)."-".$upper." " . htmlspecialchars( xl('of'), ENT_NOQUOTES) . " " .$numRes;
+echo text(($pagestart + 1))."-".text($upper)." " . htmlspecialchars( xl('of'), ENT_NOQUOTES) . " " .text($numRes);
 if(($pagesize>0) && ($pagestart+$pagesize <= $numRes))
 {
     generatePageElement($pagestart+$pagesize,$pagesize,$billing_view,$issue," " . htmlspecialchars( xl("Next"), ENT_NOQUOTES) . "&rArr;");
@@ -486,9 +486,9 @@ while ($result4 = sqlFetchArray($res4)) {
             // Show billing note that you can click on to edit.
             $feid = $result4['id'] ? htmlspecialchars( $result4['id'], ENT_QUOTES) : 0; // form_encounter id
             echo "<td valign='top'>";
-            echo "<div id='note_$feid'>";
+            echo "<div id='note_".attr($feid)."'>";
             //echo "<div onclick='editNote($feid)' title='Click to edit' class='text billing_note_text'>";
-            echo "<div id='$feid' title='". htmlspecialchars( xl('Click to edit'), ENT_QUOTES) . "' class='text billing_note_text'>";
+            echo "<div id='".attr($feid)."' title='". htmlspecialchars( xl('Click to edit'), ENT_QUOTES) . "' class='text billing_note_text'>";
             echo $result4['billing_note'] ? nl2br(htmlspecialchars( $result4['billing_note'], ENT_NOQUOTES)) : htmlspecialchars( xl('Add','','[',']'), ENT_NOQUOTES);
             echo "</div>";
             echo "</div>";
@@ -704,7 +704,7 @@ while ($result4 = sqlFetchArray($res4)) {
         } // end if authorized
 
         else {
-            echo "<td class='text' valign='top' colspan='5' rowspan='$encounter_rows'>(".htmlspecialchars( xl("No access"), ENT_NOQUOTES).")</td>\n";
+            echo "<td class='text' valign='top' colspan='5' rowspan='".attr($encounter_rows)."'>(".htmlspecialchars( xl("No access"), ENT_NOQUOTES).")</td>\n";
         }
 
         // show insurance

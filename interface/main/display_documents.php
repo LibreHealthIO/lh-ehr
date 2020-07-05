@@ -95,7 +95,7 @@ $display_collapse_msg = "display:inline;";
         var todate = $("#" + toDate).val();
         if ( (frmdate.length > 0) && (todate.length > 0) ) {
             if ( DateCheckGreater(frmdate, todate, global_date_format) == false ){
-                alert("<?php xl('To date must be later than From date!','e'); ?>");
+                alert("<?php echo xlt('To date must be later than From date!'); ?>");
                 return false;
             }
         }
@@ -148,8 +148,8 @@ $display_collapse_msg = "display:inline;";
 
 <div>
     <span class='title'><?php echo text('Lab Documents'); ?></span>
-    <span id='docexpand' onclick='expandOrCollapse(1,"doc")' style='cursor:pointer;<?php echo $display_expand_msg ?>'>(expand)</span>
-    <span id='doccollapse' onclick='expandOrCollapse(2,"doc")' style='cursor:pointer;<?php echo $display_collapse_msg ?>'>(collapse)</span>
+    <span id='docexpand' onclick='expandOrCollapse(1,"doc")' style='cursor:pointer;<?php echo $display_expand_msg ?>'>(<?php echo xlt("expand"); ?>)</span>
+    <span id='doccollapse' onclick='expandOrCollapse(2,"doc")' style='cursor:pointer;<?php echo $display_collapse_msg ?>'>(<?php echo xlt("collapse"); ?>)</span>
     <br><br>
     <div id='docfilterdiv'<?php echo $display_div; ?>>
     <table style="margin-left:10px; " width='40%'>
@@ -223,10 +223,10 @@ $display_collapse_msg = "display:inline;";
                 $dates = explode("|", $row['docDates']);
             }
             for ( $i = 0 ; $i < count($notes) ; $i++ )
-                $note .= oeFormatShortDate(date('Y-m-d', strtotime($dates[$i]))) . " : " . text($notes[$i]) . "<br />";
+                $note .= text(oeFormatShortDate(date('Y-m-d', strtotime($dates[$i])))) . " : " . text($notes[$i]) . "<br />";
             ?>
             <tr class="text">
-                <td><?php echo oeFormatShortDate(date('Y-m-d', strtotime($row['date']))); ?> </td>
+                <td><?php echo text(oeFormatShortDate(date('Y-m-d', strtotime($row['date'])))); ?> </td>
                 <td class="linkcell">
                     <a id="<?php echo attr($row['id']); ?>" title='<?php echo $url; ?>' onclick='top.restoreSession()'><?php echo text(basename($row['url'])); ?></a>
                 </td>

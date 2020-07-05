@@ -58,17 +58,17 @@ require_once("$srcdir/formatting.inc.php");
   echo "<img src='$practice_logo' align='left'>\n";
  }
 ?>
-<h2><?php echo $facility['name']?></h2>
-<?php echo $facility['street']?><br>
-<?php echo $facility['city']?>, <?php echo $facility['state']?> <?php echo $facility['postal_code']?><br clear='all'>
-<?php echo $facility['phone']?><br>
+<h2><?php echo text($facility['name']); ?></h2>
+<?php echo text($facility['street']); ?><br>
+<?php echo text($facility['city']); ?>, <?php echo text($facility['state']); ?> <?php echo text($facility['postal_code']); ?><br clear='all'>
+<?php echo text($facility['phone']); ?><br>
 
 </p>
 
-<a href="javascript:window.close();"><font class=title><?php print $titleres{"fname"} . " " . $titleres{"lname"};?></font></a><br><br>
+<a href="javascript:window.close();"><font class=title><?php print text($titleres{"fname"}) . " " . text($titleres{"lname"});?></font></a><br><br>
 
 <table>
-<tr><td><?php xl('Generated on','e'); ?>:</td><td> <?php print oeFormatShortDate(date("Y-m-d"));?></td></tr>
+<tr><td><?php echo xlt('Generated on'); ?>:</td><td> <?php print text(oeFormatShortDate(date("Y-m-d")));?></td></tr>
 <?php
 if ($date_result = sqlQuery("select date from form_encounter where encounter='" .
 $encounter . "' and pid='$pid'"))
@@ -78,7 +78,7 @@ $encounter . "' and pid='$pid'"))
 
 }
 ?>
-<tr><td><?php xl('Date Of Service','e'); ?>: </td><td> <?php print oeFormatShortDate($raw_encounter_date);?></td></tr>
+<tr><td><?php echo xlt('Date Of Service'); ?>: </td><td> <?php print text(oeFormatShortDate($raw_encounter_date));?></td></tr>
 </table>
 <br><br>
 <?php
@@ -98,7 +98,7 @@ $encounter . "' and pid='$pid'"))
    $billing = getPatientBillingEncounter($pid, $val);
    foreach ($billing as $b) {
     if(!empty($b['provider_name'])) {
-     echo "Provider: " . $b['provider_name'] . "<br>";
+     echo xlt('Provider') . ": " . text($b['provider_name']) . "<br>";
      $printed = true;
      break;
     }
@@ -132,35 +132,35 @@ $encounter . "' and pid='$pid'"))
 
    if ($val == "demographics") {
 
-    print "<br><font class=bold>".xl('Patient Data').":</font><br>";
+    print "<br><font class=bold>".xlt('Patient Data').":</font><br>";
     printRecDataOne($patient_data_array, getRecPatientData ($pid), $N);
 
    } elseif ($val == "history") {
 
-    print "<br><font class=bold>".xl('History Data').":</font><br>";
+    print "<br><font class=bold>".xlt('History Data').":</font><br>";
     printRecDataOne($history_data_array, getRecHistoryData ($pid), $N);
 
    } elseif ($val == "employer") {
 
-    print "<br><font class=bold>".xl('Employer Data').":</font><br>";
+    print "<br><font class=bold>".xlt('Employer Data').":</font><br>";
     printRecDataOne($employer_data_array, getRecEmployerData ($pid), $N);
 
    } elseif ($val == "insurance") {
 
-    print "<br><font class=bold>".xl('Primary Insurance Data').":</font><br>";
+    print "<br><font class=bold>".xlt('Primary Insurance Data').":</font><br>";
     printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"primary"), $N);		
-    print "<font class=bold>".xl('Secondary Insurance Data').":</font><br>";	
+    print "<font class=bold>".xlt('Secondary Insurance Data').":</font><br>";
     printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"secondary"), $N);
-    print "<font class=bold>".xl('Tertiary Insurance Data').":</font><br>";
+    print "<font class=bold>".xlt('Tertiary Insurance Data').":</font><br>";
     printRecDataOne($insurance_data_array, getRecInsuranceData ($pid,"tertiary"), $N);
 
    } elseif ($val == "billing") {
 
-    print "<br><font class=bold>".xl('Billing Information').":</font><br>";
+    print "<br><font class=bold>".xlt('Billing Information').":</font><br>";
     if (count($ar['patient_encounter']) > 0) {
      $billings = array();
      echo "<table>";
-     echo "<tr><td width=\"400\" class=bold>Code</td><td class=bold>".xl('Fee')."</td></tr>\n";
+     echo "<tr><td width=\"400\" class=bold>Code</td><td class=bold>".xlt('Fee')."</td></tr>\n";
      $total = 0.00;
      $copays = 0.00;
      foreach ($ar['patient_encounter'] as $be) {
@@ -170,10 +170,10 @@ $encounter . "' and pid='$pid'"))
       foreach ($billing as $b) {
        echo "<tr>\n";
        echo "<td class=text>";
-       echo $b['code_type'] . ":\t" . $b['code'] . "&nbsp;&nbsp;&nbsp;" . $b['code_text'] . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+       echo text($b['code_type']) . ":\t" . text($b['code']) . "&nbsp;&nbsp;&nbsp;" . text($b['code_text']) . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
        echo "</td>\n";
        echo "<td class=text>";
-       echo oeFormatMoney($b['fee']);
+       echo text(oeFormatMoney($b['fee']));
        echo "</td>\n";
        echo "</tr>\n";
        $total += $b['fee'];
@@ -183,9 +183,9 @@ $encounter . "' and pid='$pid'"))
       }
      }
      echo "<tr><td>&nbsp;</td></tr>";
-     echo "<tr><td class=bold>Sub-Total</td><td class=text>" . oeFormatMoney($total) . "</td></tr>";
-     echo "<tr><td class=bold>Paid</td><td class=text>" . oeFormatMoney($copays) . "</td></tr>";
-     echo "<tr><td class=bold>Total</td><td class=text>" . oeFormatMoney($total - $copays) . "</td></tr>";
+     echo "<tr><td class=bold>".xlt('Sub-Total')."</td><td class=text>" . text(oeFormatMoney($total)) . "</td></tr>";
+     echo "<tr><td class=bold>".xlt('Paid')."</td><td class=text>" . text(oeFormatMoney($copays)) . "</td></tr>";
+     echo "<tr><td class=bold>".xlt('Total')."</td><td class=text>" . text(oeFormatMoney($total - $copays)) . "</td></tr>";
      echo "</table>";
      echo "<pre>";
      //print_r($billings);
@@ -209,23 +209,23 @@ $encounter . "' and pid='$pid'"))
     ****/
 
    } elseif ($val == "immunizations") {
-    print "<font class=bold>".xl('Patient Immunization').":</font><br>";
+    print "<font class=bold>".xlt('Patient Immunization').":</font><br>";
     $sql = "select i1.immunization_id as immunization_id, if(i1.administered_date,concat(i1.administered_date,' - ') ,substring(i1.note,1,20) ) as immunization_data from immunizations i1 where i1.patient_id = $pid order by administered_date desc";
     $result = sqlStatement($sql);
     while ($row=sqlFetchArray($result)) {
-     echo "<span class=text> " . $row{'immunization_data'} .
+     echo "<span class=text> " . text($row{'immunization_data'}) .
 	  generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']) .
 	  "</span><br>\n";
     }
 
    } elseif ($val == "notes") {
 
-    print "<font class=bold>".xl('Patient Notes').":</font><br>";
+    print "<font class=bold>".xlt('Patient Notes').":</font><br>";
     printPatientNotes($pid);
 
    } elseif ($val == "transactions") {
 
-    print "<font class=bold>".xl('Patient Transactions').":</font><br>";
+    print "<font class=bold>".xlt('Patient Transactions').":</font><br>";
     printPatientTransactions($pid);
 
    }
@@ -240,27 +240,27 @@ $encounter . "' and pid='$pid'"))
      $d = new Document($document_id);
      $fname = basename($d->get_url());
      $extension = substr($fname, strrpos($fname,"."));
-     echo "Document '" . $fname ."'<br>";
+     echo xlt('Document') . " '" . text($fname). "'<br>";
      $n = new Note();
      $notes = $n->notes_factory($d->get_id());
      echo "<table>";
      foreach ($notes as $note) {
       echo '<tr>';
-      echo '<td>'.xl('Note').' #' . $note->get_id() . '</td>';
+      echo '<td>'.xlt('Note').' #' . text($note->get_id()) . '</td>';
       echo '</tr>';
       echo '<tr>';
-      echo '<td>' . xl('Date') . ': ' . oeFormatShortDate($note->get_date()) . '</td>';
+      echo '<td>' . xlt('Date') . ': ' . text(oeFormatShortDate($note->get_date())) . '</td>';
       echo '</tr>';
       echo '<tr>';
-      echo '<td>'.$note->get_note().'<br><br></td>';
+      echo '<td>'.text($note->get_note()).'<br><br></td>';
       echo '</tr>';
      }
      echo "</table>";
      if ($extension == ".png" || $extension == ".jpg" || $extension == ".jpeg" || $extension == ".gif") {
-      echo '<img src="' . $GLOBALS['webroot'] . "/controller.php?document&retrieve&patient_id=&document_id=" . $document_id . '"><br><br>';
+      echo '<img src="' . $GLOBALS['webroot'] . "/controller.php?document&retrieve&patient_id=&document_id=" . attr($document_id) . '"><br><br>';
      }
      else {
-      echo "<b>NOTE</b>: ".xl('Document')." '" . $fname ."' ".xl('cannot be displayed inline because its type is not supported by the browser').".<br><br>";	
+      echo "<b>".xlt('NOTE')."</b>: ".xlt('Document')." '" . text($fname) ."' ".xlt('cannot be displayed inline because its type is not supported by the browser').".<br><br>";
      }
     }
    }
@@ -276,7 +276,7 @@ $encounter . "' and pid='$pid'"))
     $irow = sqlQuery("SELECT type, title, comments, diagnosis " .
      "FROM lists WHERE id = '$rowid'");
     $diagnosis = $irow['diagnosis'];
-    echo "<span class='bold'>" . $irow['title'] . ":</span><span class='text'> " .
+    echo "<span class='bold'>" . text($irow['title']) . ":</span><span class='text'> " .
      $irow['comments'] . "</span><br>\n";
     // Show issue's chief diagnosis and its description:
     if ($diagnosis) {
@@ -285,7 +285,7 @@ $encounter . "' and pid='$pid'"))
       "(code_type = 2 OR code_type = 4 OR code_type = 5)" .
       "LIMIT 1");
      echo "<span class='bold'>&nbsp;Diagnosis: </span><span class='text'>" .
-      $irow['diagnosis'] . " " . $crow['code_text'] . "</span><br>\n";
+      text($irow['diagnosis']) . " " . text($crow['code_text']) . "</span><br>\n";
     }
 
    }
@@ -301,8 +301,8 @@ $encounter . "' and pid='$pid'"))
     $formres = getFormNameByFormdir($res[1]);
     $dateres = getEncounterDateByEncounter($form_encounter);
     if ($res[1] == 'patient_encounter') print "<br>\n";
-    print "<span class='bold'>" . $formres{"form_name"} .
-     "</span><span class=text>(" . oeFormatShortDate(strtotime($dateres{"date"})) .
+    print "<span class='bold'>" . text($formres{"form_name"}) .
+     "</span><span class=text>(" . text(oeFormatShortDate(strtotime($dateres{"date"}))) .
      ")" . "</span><br>\n";
     call_user_func($res[1] . "_report", $pid, $form_encounter, $N, $form_id);
     if ($res[1] == 'patient_encounter') {
@@ -312,7 +312,7 @@ $encounter . "' and pid='$pid'"))
       "ORDER BY date");
      while ($brow=sqlFetchArray($bres)) {
       echo "<span class='bold'>&nbsp;Procedure: </span><span class='text'>" .
-        $brow['code'] . " " . $brow['code_text'] . "</span><br>\n";
+        text($brow['code']) . " " . text($brow['code_text']) . "</span><br>\n";
      }
     }
 
@@ -342,26 +342,26 @@ if ($result = getBillingByEncounter($pid,$encounter,"*") ) {
 	foreach ($result as $iter) {
 		$html = '';
 		if ($iter["code_type"] == "ICD9") {
-			$html .= "<tr><td>".$iter[code_type].
-				"</td><td>".$iter[code]."</td><td>"
-				.$iter["code_text"]."</td></tr>\n";
+			$html .= "<tr><td>".text($iter[code_type]).
+				"</td><td>".text($iter[code])."</td><td>"
+				.text($iter["code_text"])."</td></tr>\n";
 			$billing_html[$iter["code_type"]] .= $html;
 			$counter++;
 		}
 		elseif ($iter["code_type"] == "COPAY") { 
-			$html .= "<tr><td>".xl('Payment').":</td><td>".xl('Thank You')."!</td><td>"
-				.$iter["code_text"]."</td><td>"
-				. oeFormatMoney($iter["code"]) . "</td></tr>\n";
+			$html .= "<tr><td>".xlt('Payment').":</td><td>".xlt('Thank You')."!</td><td>"
+				.text($iter["code_text"])."</td><td>"
+				. text(oeFormatMoney($iter["code"])) . "</td></tr>\n";
 			if ($iter["code"] > 0.00) {
 				$copay += $iter["code"];
 				$billing_html[$iter["code_type"]] .= $html;
 			}
 		}
 		else {
-			$html .= "<tr><td>".$iter[code_type].
-				"</td><td>".$iter[code]."</td><td>"
-				.$iter["code_text"].' '.$iter['modifier']
-				."</td><td>" . oeFormatMoney($iter['fee']) . "</td></tr>\n";
+			$html .= "<tr><td>".text($iter[code_type]).
+				"</td><td>".text($iter[code])."</td><td>"
+				.text($iter["code_text"]).' '.text($iter['modifier'])
+				."</td><td>" . text(oeFormatMoney($iter['fee'])) . "</td></tr>\n";
 			$billing_html[$iter["code_type"]] .= $html;
 			$total += $iter['fee'];
 			$js = explode(":",$iter['justify']);
@@ -369,10 +369,10 @@ if ($result = getBillingByEncounter($pid,$encounter,"*") ) {
 			foreach ($js as $j) {
 				if(!empty($j)) {
 					if ($counter == 0) {
-						$billing_html[$iter["code_type"]] .= " (<b>$j</b>)";
+						$billing_html[$iter["code_type"]] .= " (<b>".text($j)."</b>)";
 					}
 					else {
-						$billing_html[$iter["code_type"]] .= " ($j)";
+						$billing_html[$iter["code_type"]] .= " (".text($j).")";
 					}
 					$counter++;
 				}		
@@ -384,19 +384,19 @@ if ($result = getBillingByEncounter($pid,$encounter,"*") ) {
 			
 	}
 	
-$billing_html["CPT4"] .= "<tr><td>".xl('total')."</td><td></td><td></td><td>" . oeFormatMoney($total) . "</td></tr>\n";
+$billing_html["CPT4"] .= "<tr><td>".xlt('total')."</td><td></td><td></td><td>" . text(oeFormatMoney($total)) . "</td></tr>\n";
 ?>
-<tr><td><?php xl('code type','e'); ?></td><td><?php xl('code','e'); ?></td><td><?php xl('description','e'); ?></td><td><?php xl('fee','e'); ?></td></tr>
+<tr><td><?php echo xlt('code type'); ?></td><td><?php echo xlt('code'); ?></td><td><?php echo xlt('description'); ?></td><td><?php echo xlt('fee'); ?></td></tr>
 <?php
 	$key = "ICD9"; $val = $billing_html[$key];
-		print $val;
+		print text($val);
 	$key = "CPT4"; $val = $billing_html[$key];
-		print $val;
+		print text($val);
 	$key = "COPAY"; $val = $billing_html[$key];
-		print $val;
+		print text($val);
 $balance = $total-$copay;
 if ($balance != 0.00) {
-	print "<tr><td>".xl('balance')."</td><td></td><td>".xl('Please pay this amount').":</td><td>" . oeFormatMoney($balance) . "</td></tr>\n";
+	print "<tr><td>".xlt('balance')."</td><td></td><td>".xlt('Please pay this amount').":</td><td>" . text(oeFormatMoney($balance)) . "</td></tr>\n";
 }
 
 }

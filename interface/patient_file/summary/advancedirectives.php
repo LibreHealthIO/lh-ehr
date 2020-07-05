@@ -21,7 +21,7 @@ var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 function validate(f) {
 if (f.form_adreviewed.value == "")
 {
-	alert("<?php xl('Please enter a date for Last Reviewed.','e'); ?>");
+	alert("<?php echo xlt('Please enter a date for Last Reviewed.'); ?>");
 	f.form_adreviewed.focus();
 	return false;
 }
@@ -53,22 +53,22 @@ if ($myrow)
 	$form_adreviewed = $myrow['ad_reviewed'];
 }
 ?>
-<span class="title"><?php xl('Advance Directives','e'); ?></span>
+<span class="title"><?php echo xlt('Advance Directives'); ?></span>
 <br><br>
 <form action='advancedirectives.php' method='post' onsubmit='return validate(this)' enctype="multipart/form-data">
       <table border=0 cellpadding=1 cellspacing=1>
       <?php
 	echo "<tr><td class='required'>";
-	xl('Completed','e');
+	echo xlt('Completed');
 	echo ":</td><td width=10></td><td class='text'>";
 	generate_form_field(array('data_type'=>1,'field_id'=>'yesno','list_id'=>'yesno','empty_title'=>'SKIP'), $form_completedad);
 	echo "</td></tr><tr><td class='required'>";
-	xl('Last Reviewed','e');
+	echo xlt('Last Reviewed');
 	echo ":</td><td width=10></td><td class='text'>";
         generate_form_field(array('data_type'=>4,'field_id'=>'adreviewed'), $form_adreviewed);
         echo "<script language='JavaScript'>Calendar.setup({inputField:'form_adreviewed', ifFormat:'%Y-%m-%d', button:'img_adreviewed'});</script>";
 	echo "</td></tr>";
-	echo "<tr><td class=text colspan=2><br><input type=submit id=create value='" . xl('Save') . "' /> &nbsp; <input type=button id=cancel value='" . xl('Cancel') . "' /></td></tr>";
+	echo "<tr><td class=text colspan=2><br><input type=submit id=create value='" . xlt('Save') . "' /> &nbsp; <input type=button id=cancel value='" . xlt('Cancel') . "' /></td></tr>";
       ?>
       </table></form>
 <div>
@@ -95,13 +95,13 @@ if ($myrow2) {
                 $dateTimeDoc = $myrows4['date'];
                 $idDoc = $myrows4['id'];
                 echo "<br>";
-                echo "<a href='$web_root/controller.php?document&retrieve&patient_id=$pid&document_id=".$idDoc."&as_file=true'>".xl_document_category($nameDoc)."</a> ".$dateTimeDoc;
+                echo "<a href='$web_root/controller.php?document&retrieve&patient_id=".attr($pid)."&document_id=".attr($idDoc)."&as_file=true'>".text(xl_document_category($nameDoc))."</a> ".text($dateTimeDoc);
 		$counterFlag = true;
             }
 	    // if no associated docs with category then show it's empty
 	    if (!$counterFlag) {
 	        echo "<br>";
-		echo $nameDoc . " <span style='color:red;'>[" . xl('EMPTY') . "]</span>";
+		echo $nameDoc . " <span style='color:red;'>[" . xlt('EMPTY') . "]</span>";
 	    }
         }
 }
