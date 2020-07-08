@@ -241,7 +241,7 @@ class C_Document extends Controller {
         } elseif ($_POST['identifier'] == "yes") {
 
             // send the document via email
-            $d = new Document($_POST['foreign_id']);
+            $d = preg_match("/^\d+$/", $_POST['foreign_id']) ? new Document($_POST['foreign_id']) : new Document();
             $url = $d->get_url();
             $storagemethod = $d->get_storagemethod();
             $couch_docid = $d->get_couch_docid();
