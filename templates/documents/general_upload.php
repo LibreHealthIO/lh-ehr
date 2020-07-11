@@ -48,19 +48,6 @@
 <input type="hidden" name="process" value="<?php echo self::PROCESS;?>" />
 </form>
 
-<!-- Section for document template download -->
-<form method='post' action='interface/patient_file/download_template.php' onsubmit='return top.restoreSession()'>
-    <input type='hidden' name='patient_id' value='<?php echo $this->patient_id;?>' />
-<p class='text bold'>
-    <?php echo xlt("Download document template for this patient and visit");?> 
-</p>
-<p class='text'>
- <select name='form_filename'><?php echo $this->templates_list;?></select> &nbsp;
- <input type='submit' value='Fetch' />
-</p>
-</form>
-<!-- End document template download section -->
-
 <?php if(!empty($this->file)) {?>
 <div class="text bold">
 		<br/>

@@ -15,7 +15,11 @@ class Controller_browse extends BaseController {
     }
     
     function _action_plans_config() {
-    	$this->set_view( "plans_config.php" );
+        // This file isn't currently being used and plans_config.php has security vulnerabilities.
+        // Thus, the original code has been commented out and an error message is displayed instead.
+
+        // $this->set_view( "plans_config.php" );
+        $this->_action_error();
     }
 
     function _action_getrows() {
