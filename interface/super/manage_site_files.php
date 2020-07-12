@@ -22,42 +22,10 @@ require_once("$srcdir/headers.inc.php");
 
 if (!acl_check('admin', 'super')) die(htmlspecialchars(xl('Not authorized')));
 
-// Prepare array of names of editable files, relative to the site directory.
-$my_files = array(
-  'config.php',
-  'faxcover.txt',
-  'faxtitle.eps',
-  'referral_template.html',
-  'statement.inc.php',
-  'letter_templates/custom_pdf.php',
-  'menu_data.json',
-);
-// Append LBF plugin filenames to the array.
-$lres = sqlStatement('SELECT * FROM list_options ' .
-  "WHERE list_id = 'lbfnames' ORDER BY seq, title");
-while ($lrow = sqlFetchArray($lres)) {
-  $option_id = $lrow['option_id']; // should start with LBF
-  $title = $lrow['title'];
-  $my_files[] = "LBF/$option_id.plugin.php";
-}
-
-$form_filename = strip_escape_custom($_REQUEST['form_filename']);
-// Sanity check to prevent evildoing.
-if (!in_array($form_filename, $my_files)) $form_filename = '';
-$filepath = "$OE_SITE_DIR/$form_filename";
-
 $imagedir     = "$OE_SITE_DIR/images";
 $educationdir = "$OE_SITE_DIR/filemanager/files/education";
 
 if (!empty($_POST['bn_save'])) {
-  if ($form_filename) {
-    // Textareas, at least in Firefox, return a \r\n at the end of each line
-    // even though only \n was originally there.  For consistency with
-    // normal LibreEHR usage we translate those back.
-    file_put_contents($filepath, str_replace("\r\n", "\n",
-      $_POST['form_filedata']));
-    $form_filename = '';
-  }
 
   $number_of_files = count($_FILES['form_image']['name']);
   for ($i=0; $i <$number_of_files ; $i++) { 
@@ -149,31 +117,6 @@ function msfFileChanged() {
 
 <p>
 <table border='1' width='95%'>
-
- <tr bgcolor='#dddddd' class='dehead'>
-  <td colspan='2' align='center'><?php echo htmlspecialchars(xl('Edit File in') . " $OE_SITE_DIR"); ?></td>
- </tr>
-
- <tr>
-  <td valign='top' class='detail' nowrap>
-   <select name='form_filename' onchange='msfFileChanged()'>
-    <option value=''></option>
-<?php
-  foreach ($my_files as $filename) {
-    echo "    <option value='" . htmlspecialchars($filename, ENT_QUOTES) . "'";
-    if ($filename == $form_filename) echo " selected";
-    echo ">" . htmlspecialchars($filename) . "</option>\n";
-  }
-?>
-   </select>
-   <br />
-   <textarea name='form_filedata' rows='25' style='width:100%'><?php
-  if ($form_filename) {
-    echo htmlspecialchars(@file_get_contents($filepath));
-  }
-?></textarea>
-  </td>
- </tr>
 
  <tr bgcolor='#dddddd' class='dehead'>
   <td colspan='2' align='center'><?php echo htmlspecialchars(xl('Upload Image to') . " $imagedir"); ?></td>
