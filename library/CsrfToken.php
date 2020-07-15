@@ -30,6 +30,16 @@ class CsrfToken {
             return false;
         }
     }
+    // Function to verify a csrf token using with second token
+    function verifyCsrfTokenAndCompareHash($secondToken)
+    {
+        if (hash_equals(hash_hmac('sha256', '/letter.php.theform', $_SESSION['token']), $_POST['token'])) {
+            return true;
+        } else {
+            error_log("WARNING : Malicious attempt encountered");
+            return false;
+        }
+    }
 }
 
 ?>

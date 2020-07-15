@@ -120,7 +120,7 @@ var tdelete = function(docname) {
             $.ajax({
                 type: "POST",
                 url: liburl,
-                data: {docid: docname, mode: mode,content: content},
+                data: {docid: docname, mode: mode,content: content, token: <?php echo $_SESSION['token'];?>},
                 beforeSend: function(xhr){
                     console.log("Please wait..."+content);
                 },
@@ -192,6 +192,7 @@ var tdelete = function(docname) {
 <button class="btn btn-primary" type="button" onclick="location.href='./patient/provider'"><?php echo xlt('Home'); ?></button>
 <input type='hidden' name="up_dir" value='<?php global $getdir;
 echo $getdir;?>' />
+<input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
 <button class="btn btn-success" type="submit" name="upload_submit" id="upload_submit"><?php echo xlt('Upload Template for'); ?> <span style="font-size:14px;" class="label label-default" id='ptstatus'></span></button>
 
 </form>

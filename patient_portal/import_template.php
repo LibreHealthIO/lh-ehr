@@ -19,7 +19,16 @@
 $sanitize_all_escapes=true;
 $fake_register_globals=false;
 require_once("../interface/globals.php"); 
+require_once("../library/CsrfToken.php");
 
+if (!empty($_POST)) {
+    if (!isset($_POST['token'])) {
+        error_log('WARNING: A POST request detected with no csrf token found');
+        die('Authentication failed.');
+    } else if (!(CsrfToken::verifyCsrfToken($_POST['token'])) {
+        die('Authentication failed.');
+    }
+}
 if($_POST['mode'] == 'get'){
     echo file_get_contents($_POST['docid']);
     exit;
