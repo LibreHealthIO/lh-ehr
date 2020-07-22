@@ -431,16 +431,9 @@ $GLOBALS_METADATA = array(
       ),
        '1',
       xl('Applies to Vitals form')
-    )
-      ,
-    'disable_deprecated_metrics_form' => array(
-      xl('Disable Old Metric Vitals Form'),
-       'bool',                          // data type
-       '1',                             // default = true
-      xl('This was the older metric-only Vitals form, now deprecated.')
-    ),
-
-    'phone_country_code' => array(
+    ) ,
+    
+   'phone_country_code' => array(
       xl('Telephone Country Code'),
        'num',
        '1',                             // default = North America
