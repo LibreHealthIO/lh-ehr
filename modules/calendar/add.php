@@ -506,6 +506,10 @@ if ($_POST['form_action'] == "vacation_submit" || $_POST['form_action'] == "holi
       if (!f.startDate.value || !f.endDate.value) {
         alert('<?php echo addslashes( xl("A start date and an end date are both required for the range of vacation.") ); ?>');
         return false;
+      } else if(new Date(f.startDate.value).getTime() > new Date(f.endDate.value).getTime()){
+        alert('<?php echo addslashes( xl(" End Date Must Be Greater Than Start Date") ); ?>');
+        return false;
+        
       }
       // if provider is not chosen
       var selected_option = $("#provider_id option:selected").val();
