@@ -27,6 +27,7 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/log.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/headers.inc.php");
+require_once("../../library/CsrfToken.php");
 
 $layouts = array(
   'DEM' => xl('Demographics'),
@@ -136,6 +137,15 @@ function addOrDeleteColumn($layout_id, $field_id, $add=TRUE) {
 // Check authorization.
 $thisauth = acl_check('admin', 'super');
 if (!$thisauth) die(xl('Not authorized'));
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+      error_log('WARNING: A POST request detected with no csrf token found');
+      die('Authentication failed.');
+  } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/edit_layout.php.theform'))) {
+      die('Authentication failed.');
+  }
+}
 
 // The layout ID identifies the layout to be edited.
 $layout_id = empty($_REQUEST['layout_id']) ? '' : $_REQUEST['layout_id'];
@@ -975,6 +985,7 @@ function cidChanged(lino, seq) {
 <!-- elements used to select more than one field -->
 <input type="hidden" name="selectedfields" id="selectedfields" value="">
 <input type="hidden" id="targetgroup" name="targetgroup" value="">
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/edit_layout.php.theform', $_SESSION['token']);?>" />
 
 <p><b><?php xl('Edit layout','e'); ?>:</b>&nbsp;
 <select name='layout_id' id='layout_id'>

@@ -31,12 +31,22 @@ require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/lists.inc");
 require_once("../../custom/code_types.inc.php");
 require_once("$srcdir/options.inc.php");
+require_once("../../library/CsrfToken.php");
 
 $list_id = empty($_REQUEST['list_id']) ? ' ' : $_REQUEST['list_id'];
 
 // Check authorization.
 $thisauth = acl_check('admin', 'super');
 if (!$thisauth) die(xl('Not authorized'));
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+      error_log('WARNING: A POST request detected with no csrf token found');
+      die('Authentication failed.');
+  } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/edit_list.php.theform'))) {
+      die('Authentication failed.');
+  }
+}
 
 // If we are saving, then save.
 //
@@ -819,6 +829,7 @@ function mysubmit() {
 
 <form method='post' name='theform' id='theform' action='edit_list.php'>
 <input type="hidden" name="formaction" id="formaction">
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/edit_list.php.theform', $_SESSION['token']);?>" />
 
 <p><b><?php xl('Edit list','e'); ?>:</b>&nbsp;
 <select name='list_id' id="list_id" placeholder="Select a list..">

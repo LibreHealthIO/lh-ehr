@@ -32,8 +32,19 @@ require_once($GLOBALS['srcdir'] . '/htmlspecialchars.inc.php');
 require_once($GLOBALS['srcdir'] . '/formdata.inc.php');
 require_once($GLOBALS['fileroot'] . '/custom/code_types.inc.php');
 require_once("$srcdir/headers.inc.php");
+require_once("../../library/CsrfToken.php");
 
 if (!acl_check('admin', 'super')) die(xlt('Not authorized'));
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+      error_log('WARNING: A POST request detected with no csrf token found');
+      die('Authentication failed.');
+  } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/load_codes.php.theform'))) {
+
+      die('Authentication failed.');
+  }
+}
 
 $form_replace = !empty($_POST['form_replace']);
 $code_type = empty($_POST['form_code_type']) ? '' : $_POST['form_code_type'];
@@ -130,7 +141,8 @@ if (!empty($_POST['bn_upload'])) {
 
 ?>
 <form method='post' action='load_codes.php' enctype='multipart/form-data'
- onsubmit='return top.restoreSession()'>
+ id="theform" name="theform" onsubmit='return top.restoreSession()'>
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/load_codes.php.theform', $_SESSION['token']);?>" />
 
 <center>
 
