@@ -966,7 +966,7 @@ foreach ($ar as $key => $val) {
             preg_match('/^(.*)_(\d+)$/', $key, $res);
             $rowid = $res[2];
             $irow = sqlQuery("SELECT type, title, comments, diagnosis " .
-                            "FROM lists WHERE id = '$rowid'");
+                            "FROM lists WHERE id = ?", array($rowid));
             $diagnosis = $irow['diagnosis'];
             if ($prevIssueType != $irow['type']) {
                 // output a header for each Issue Type we encounter
@@ -993,12 +993,12 @@ foreach ($ar as $key => $val) {
             // Supplemental data for GCAC or Contraception issues.
             if ($irow['type'] == 'ippf_gcac') {
                 echo "   <table>\n";
-                display_layout_rows('GCA', sqlQuery("SELECT * FROM lists_ippf_gcac WHERE id = '$rowid'"));
+                display_layout_rows('GCA', sqlQuery("SELECT * FROM lists_ippf_gcac WHERE id = ?", array($rowid)));
                 echo "   </table>\n";
             }
             else if ($irow['type'] == 'contraceptive') {
                 echo "   <table>\n";
-                display_layout_rows('CON', sqlQuery("SELECT * FROM lists_ippf_con WHERE id = '$rowid'"));
+                display_layout_rows('CON', sqlQuery("SELECT * FROM lists_ippf_con WHERE id = ?", array($rowid)));
                 echo "   </table>\n";
             }
 
