@@ -25,7 +25,7 @@ if (!empty($_POST)) {
     if (!isset($_POST['token'])) {
         error_log('WARNING: A POST request detected with no csrf token found');
         die('Authentication failed.');
-    } else if (!(CsrfToken::verifyCsrfToken($_POST['token'])) {
+    } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
         die('Authentication failed.');
     }
 }

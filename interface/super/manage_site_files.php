@@ -154,7 +154,7 @@ function msfFileChanged() {
 <body class="body_top">
 <form method='post' action='manage_site_files.php' enctype='multipart/form-data'
  id="theform" name="theform" onsubmit='return top.restoreSession()'>
-<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/manage_site_files.php.theform', $_SESSION['token']);?>" />
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/manage_site_files.php.theform', (string) $_SESSION['token']);?>" />
 
 <center>
 

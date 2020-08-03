@@ -985,7 +985,7 @@ function cidChanged(lino, seq) {
 <!-- elements used to select more than one field -->
 <input type="hidden" name="selectedfields" id="selectedfields" value="">
 <input type="hidden" id="targetgroup" name="targetgroup" value="">
-<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/edit_layout.php.theform', $_SESSION['token']);?>" />
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/edit_layout.php.theform', (string) $_SESSION['token']);?>" />
 
 <p><b><?php xl('Edit layout','e'); ?>:</b>&nbsp;
 <select name='layout_id' id='layout_id'>

@@ -33,7 +33,7 @@ class CsrfToken {
     // Function to verify a csrf token using with second token
     function verifyCsrfTokenAndCompareHash($token, $secondToken)
     {
-        if (hash_equals(hash_hmac('sha256', $secondToken, $_SESSION['token']), $token)) {
+        if (hash_equals(hash_hmac('sha256', (string) $secondToken, (string) $_SESSION['token']), $token)) {
             return true;
         } else {
             error_log("WARNING : Malicious attempt encountered");

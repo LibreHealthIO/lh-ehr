@@ -41,7 +41,6 @@ if (!empty($_POST)) {
       error_log('WARNING: A POST request detected with no csrf token found');
       die('Authentication failed.');
   } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/load_codes.php.theform'))) {
-
       die('Authentication failed.');
   }
 }
@@ -142,7 +141,7 @@ if (!empty($_POST['bn_upload'])) {
 ?>
 <form method='post' action='load_codes.php' enctype='multipart/form-data'
  id="theform" name="theform" onsubmit='return top.restoreSession()'>
-<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/load_codes.php.theform', $_SESSION['token']);?>" />
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/load_codes.php.theform', (string) $_SESSION['token']);?>" />
 
 <center>
 

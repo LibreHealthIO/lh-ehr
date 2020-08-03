@@ -116,7 +116,7 @@ if (!empty($_POST['bn_upload'])) {
 <body class="body_top">
 <form method='post' action='manage_document_templates.php' enctype='multipart/form-data'
  id="theform" name="theform" onsubmit='return top.restoreSession()'>
- <input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/manage_document_templates.php.theform', $_SESSION['token']);?>" />
+ <input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/manage_document_templates.php.theform', (string) $_SESSION['token']);?>" />
 
 <center>
 

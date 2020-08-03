@@ -829,7 +829,7 @@ function mysubmit() {
 
 <form method='post' name='theform' id='theform' action='edit_list.php'>
 <input type="hidden" name="formaction" id="formaction">
-<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/edit_list.php.theform', $_SESSION['token']);?>" />
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/edit_list.php.theform', (string) $_SESSION['token']);?>" />
 
 <p><b><?php xl('Edit list','e'); ?>:</b>&nbsp;
 <select name='list_id' id="list_id" placeholder="Select a list..">

@@ -403,7 +403,7 @@ input     { font-size:10pt; }
   <form method='post' name='theform' id='theform' action='edit_globals.php' onsubmit='return top.restoreSession()'>
 <?php } ?>
 
-<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', '/edit_globals.php.theform', $_SESSION['token']);?>" />
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/edit_globals.php.theform', (string) $_SESSION['token']);?>" />
 
 <div style="display:none">
   <?php if ($_GET['mode'] == "user") { ?>
