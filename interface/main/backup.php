@@ -575,7 +575,7 @@ if ($cmd) {
          $res=sqlStatement("drop table if exists log");
          $res=sqlStatement("rename table log_backup to log");
      }
-    die("\"$cmd\" returned $tmp2: $tmp0");
+    die("Return Status: $tmp2, Output: $tmp0");
   }
   //  ViSolve:  If the Eventlog is set, then clear the temporary table  -- Start here
   if ($eventlog==1)       {
@@ -639,7 +639,7 @@ function create_tar_archive($archiveName, $compressMethod, $itemArray) {
     $command = "tar -cpf $archiveName $files";
    }
    $temp0 = exec($command, $temp1, $temp2);
-   if ($temp2) die("\"$command\" returned $temp2: $temp0");
+   if ($temp2) die("Return Status: $temp2, Output: $temp0");
    return true;
   }
   return false;
