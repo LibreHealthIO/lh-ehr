@@ -470,7 +470,7 @@ if ($_POST['form_portalnotify']) {
       if ($DEBUG) {
         $alertmsg = xl("Printing skipped; see test output in") .' '. $STMT_TEMP_FILE;
       } else {
-        exec("$STMT_PRINT_CMD $STMT_TEMP_FILE");
+        exec(escapeshellcmd($STMT_PRINT_CMD) . " " . escapeshellarg($STMT_TEMP_FILE));
         if ($_POST['form_without']) {
           $alertmsg = xl('Now printing') .' '. $stmt_count .' '. xl('statements; invoices will not be updated.');
         } else {
@@ -665,7 +665,7 @@ if ($_POST['form_search'] || $_POST['form_print']) {
     // Handle .zip extension if present.  Probably won't work on Windows.
     if (strtolower(substr($_FILES['form_erafile']['name'], -4)) == '.zip') {
       rename($tmp_name, "$tmp_name.zip");
-      exec("unzip -p $tmp_name.zip > $tmp_name");
+      exec("unzip -p " . escapeshellarg($tmp_name . ".zip") . " > " . escapeshellarg($tmp_name));
       unlink("$tmp_name.zip");
     }
 

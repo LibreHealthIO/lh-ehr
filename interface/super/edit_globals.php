@@ -36,7 +36,7 @@ require_once("$srcdir/globals.inc.php");
 require_once("$srcdir/user.inc");
 require_once("$srcdir/classes/CouchDB.class.php");
 require_once("$srcdir/calendar.inc");
-require_once("../../library/CsrfToken.php");
+require_once("$srcdir/CsrfToken.php");
 
 if ($_GET['mode'] != "user") {
   // Check authorization.
