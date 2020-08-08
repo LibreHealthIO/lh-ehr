@@ -106,6 +106,7 @@ jQuery(document).ready( function($) {
             { amc_id: "patient_edu_amc",
               complete: true,
               mode: mode,
+              token: <?php echo $_SESSION['token'];?>,
               patient_id: <?php echo htmlspecialchars($pid,ENT_NOQUOTES); ?>,
               object_category: "form_encounter",
               object_id: <?php echo htmlspecialchars($encounter,ENT_NOQUOTES); ?>
@@ -125,6 +126,7 @@ jQuery(document).ready( function($) {
             { amc_id: "provide_sum_pat_amc",
               complete: true,
               mode: mode,
+              token: <?php echo $_SESSION['token'];?>,
               patient_id: <?php echo htmlspecialchars($pid,ENT_NOQUOTES); ?>,
               object_category: "form_encounter",
               object_id: <?php echo htmlspecialchars($encounter,ENT_NOQUOTES); ?>
@@ -149,6 +151,7 @@ jQuery(document).ready( function($) {
             { amc_id: "med_reconc_amc",
               complete: false,
               mode: mode,
+              token: <?php echo $_SESSION['token'];?>,
               patient_id: <?php echo htmlspecialchars($pid,ENT_NOQUOTES); ?>,
               object_category: "form_encounter",
               object_id: <?php echo htmlspecialchars($encounter,ENT_NOQUOTES); ?>
@@ -168,6 +171,7 @@ jQuery(document).ready( function($) {
             { amc_id: "med_reconc_amc",
               complete: true,
               mode: mode,
+              token: <?php echo $_SESSION['token'];?>,
               patient_id: <?php echo htmlspecialchars($pid,ENT_NOQUOTES); ?>,
               object_category: "form_encounter",
               object_id: <?php echo htmlspecialchars($encounter,ENT_NOQUOTES); ?>

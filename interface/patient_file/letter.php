@@ -33,6 +33,7 @@ include_once("../globals.php");
 include_once($GLOBALS['srcdir'] . "/patient.inc");
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
 require_once("$srcdir/headers.inc.php");
+require_once("$srcdir/CsrfToken.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -94,7 +95,7 @@ if (!empty($_POST)) {
     if (!isset($_POST['token'])) {
         error_log('WARNING: A POST request detected with no csrf token found');
         die('Authentication failed.');
-    } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/letter.php.theform'))) {
+    } else if (!(  CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/letter.php.theform'))) {
         die('Authentication failed.');
     }
 }

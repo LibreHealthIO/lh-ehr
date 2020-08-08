@@ -16,6 +16,18 @@
 
 include_once("../../interface/globals.php");
 include_once("{$GLOBALS['srcdir']}/sql.inc");
+include_once("{$GLOBALS['srcdir']}/sql.inc");
+require_once("{$GLOBALS['srcdir']}/CsrfToken.php");
+
+//verify csrf token
+if (!empty($_GET)) {
+    if (!isset($_GET['token'])) {
+        error_log('WARNING: A POST request detected with no csrf token found');
+        die('Authentication failed.');
+    } else if (!(CsrfToken::verifyCsrfToken($_GET['token']))) {
+        die('Authentication failed.');
+    }
+  }
 
 // check for required values
 if ($_GET['listid'] == "" || trim($_GET['newitem']) == "" || trim($_GET['newitem_abbr']) == "") exit;

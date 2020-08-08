@@ -159,6 +159,7 @@ $(document).ready(function(){
         $.getJSON("<?php echo $GLOBALS['webroot']; ?>/library/ajax/addlistitem.php",
                     {listid: listid,
 		     newitem: newitem,
+             token: <?php echo $_SESSION['token'];?>,
 		     newitem_abbr: newitem_abbr},
                     function(jsondata, txtresponse) {
 		    	 if( jsondata.error == '' ){

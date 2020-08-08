@@ -17,7 +17,7 @@ include_once("../../interface/globals.php");
 include_once("$srcdir/acl.inc");
 include_once("$srcdir/user.inc");
 include_once("$srcdir/calendar.inc");
-
+require_once("$srcdir/CsrfToken.php");
 header("Content-type: text/xml");
 header("Cache-Control: no-cache");
 
@@ -35,7 +35,13 @@ if (!isset($phpgacl_location)) {
 echo error_xml(xl('PHP-gacl is not installed'));
 exit;
 }
-
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      die('Authentication failed.');
+  }
+}
 //Display red alert if Emergency Login ACL is activated for a user.
 if($_POST["action"] == "add"){
   if (in_array("Emergency Login",$_POST["selection"])) {

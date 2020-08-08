@@ -91,7 +91,8 @@ function show_session_times(){
             data: {
                 func:"show_session_times",
                 to_date:   "<?php echo $to_date; ?>",
-                from_date:" <?php echo $from_date; ?> "
+                from_date:" <?php echo $from_date; ?> ",
+                token: <?php echo $_SESSION['token'];?>,
             }, complete: function(){
                 $('#image').hide();
             }},
@@ -160,7 +161,8 @@ function show_session_sums()
             data: {
                 func:"show_session_sums",
                 to_date:   "<?php echo $to_date; ?>",
-                from_date:" <?php echo $from_date; ?> "
+                from_date:" <?php echo $from_date; ?> ",
+                token: <?php echo $_SESSION['token'];?>,
             },
         complete: function(){
             $('#image').hide();
@@ -230,7 +232,8 @@ function show_session_details()
             data: {
                 func:"show_session_details",
                 to_date:   "<?php echo $to_date; ?>",
-                from_date:" <?php echo $from_date; ?> "
+                from_date:" <?php echo $from_date; ?> ",
+                token: <?php echo $_SESSION['token'];?>,
             },
             complete: function(){
                 $('#image').hide();
@@ -298,6 +301,8 @@ function show_session_details()
     <input hidden id = 'show_session_sums_button' value = '<?php echo isset($_POST['show_session_sums']) ? $_POST['show_session_sums'] : null ?>'>
     <input hidden id = 'show_session_times_button' value = '<?php echo isset($_POST['show_session_times']) ? $_POST['show_session_times'] : null  ?>'>
     <input hidden id = 'show_session_details_button' value = '<?php echo isset($_POST['show_session_details']) ? $_POST['show_session_details']  : null  ?>'>
+    <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
+
 
 </form>
 

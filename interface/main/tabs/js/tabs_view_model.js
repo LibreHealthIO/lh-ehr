@@ -249,7 +249,7 @@ function clearPatient()
     $.ajax({
         type: "POST",
         url: webroot_url+"/library/ajax/unset_session_ajax.php",
-	  data: { func: "unset_pid"},
+	  data: { func: "unset_pid", token: jsCsrfToken},
 	  success:function( msg ) {
 
     

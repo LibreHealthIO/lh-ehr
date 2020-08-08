@@ -89,6 +89,7 @@ if (!isset($phpgacl_location)) {
     data: {
      control: "acl",
      action: "add",
+     token: <?php echo $_SESSION['token'];?>,
      title: title,
      identifier: identifier,    
      return_value: return_value,
@@ -160,6 +161,7 @@ if (!isset($phpgacl_location)) {
     data: {
      control: "acl",
      action: "remove",
+     token: <?php echo $_SESSION['token'];?>,
      title: title,
      return_value: return_value
     },
@@ -208,6 +210,7 @@ if (!isset($phpgacl_location)) {
     dataType: "xml",
     data: {
      control: "username",
+     token: <?php echo $_SESSION['token'];?>,
      action: "list"
     },
     success: function(xml){
@@ -257,6 +260,7 @@ if (!isset($phpgacl_location)) {
     dataType: "xml",
     data: {
      control: "acl",
+     token: <?php echo $_SESSION['token'];?>,
      action: "list"
     },
     success: function(xml){     
@@ -371,6 +375,7 @@ if (!isset($phpgacl_location)) {
     data: {
      name: identityFormatted,
      control: control,
+     token: <?php echo $_SESSION['token'];?>,
      action: action,
      'selection[]': selected,
      return_value: return_value

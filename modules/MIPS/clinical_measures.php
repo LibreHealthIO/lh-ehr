@@ -116,6 +116,7 @@ function runReport() {
   top.restoreSession();
   $.get(
     "ajax/collect_new_report_id.php",
+    { token: <?php echo $_SESSION['token'];?>},
     function(data) {
       // Set the report id in page form
       $("#form_new_report_id").attr("value", data);
@@ -145,7 +146,7 @@ function collectStatus(report_id) {
   // Do not send the skip_timeout_reset parameter, so don't close window before report is done.
   $.post(
     "ajax/status_report.php",
-    { status_report_id: report_id },
+    { status_report_id: report_id, token: <?php echo $_SESSION['token'];?>  },
     function(data) {
       if(data == "PENDING") {
         // Place the pending string in the DOM

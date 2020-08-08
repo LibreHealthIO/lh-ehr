@@ -24,6 +24,7 @@ $sanitize_all_escapes  = true;
 $fake_register_globals = false;
 
 include_once("../globals.php");
+require_once("$srcdir/CsrfToken.php");
 
 $form_encounter_layout = array(
   array('field_id'     => 'date',
@@ -90,7 +91,14 @@ $form_encounter_layout = array(
         'edit_options' => '',
        ),
 );
-
+//verify csrf token
+if (!empty($_GET)) {
+  if (!isset($_GET['token'])) {
+      CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_GET['token']))) {
+      die('Authentication failed.');
+  }
+}
 $source = empty($_REQUEST['source']) ? 'D' : $_REQUEST['source'];
 
 function gsr_fixup(&$row, $fldid, $default='') {

@@ -346,7 +346,8 @@ $(document).ready(function(){
       rule: this.name,
       type: 'patient_reminder',
       setting: this.value,
-      patient_id: '<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>'
+      patient_id: '<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>',
+      token: <?php echo $_SESSION['token'];?> 
     });
   });
 
@@ -361,6 +362,7 @@ $(document).ready(function(){
 
    top.restoreSession();
    $.get("../../../library/ajax/collect_new_report_id.php",
+     {token: <?php echo $_SESSION['token'];?>},
      function(data){
        // Set the report id in page form
        $("#form_new_report_id").attr("value",data);
@@ -384,7 +386,7 @@ $(document).ready(function(){
    top.restoreSession();
    // Do not send the skip_timeout_reset parameter, so don't close window before report is done.
    $.post("../../../library/ajax/status_report.php",
-     {status_report_id: report_id},
+     {status_report_id: report_id, token: <?php echo $_SESSION['token'];?> },
      function(data){
        if (data == "PENDING") {
          // Place the pending string in the DOM

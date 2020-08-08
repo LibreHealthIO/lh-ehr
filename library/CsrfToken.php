@@ -30,6 +30,12 @@ class CsrfToken {
             return false;
         }
     }
+
+    //log error and kill the page
+    function noTokenFoundError() {
+        error_log('WARNING: A POST request detected with no csrf token found');
+        die('Authentication failed.');
+    }
     // Function to verify a csrf token using with second token
     function verifyCsrfTokenAndCompareHash($token, $secondToken)
     {

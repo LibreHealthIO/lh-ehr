@@ -32,6 +32,16 @@ require_once("../../interface/globals.php");
 require_once("$srcdir/htmlspecialchars.inc.php");  
 require_once("$srcdir/dated_reminder_functions.php"); 
 require_once("$srcdir/pnotes.inc");
+require_once("$srcdir/CsrfToken.php");
+
+//verify csrf token
+if (!empty($_POST)) {
+    if (!isset($_POST['token'])) {
+        CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+        die('Authentication failed.');
+    }
+  }
 
 //Collect number of due reminders
 $dueReminders = GetDueReminderCount(5,strtotime(date('Y/m/d')));

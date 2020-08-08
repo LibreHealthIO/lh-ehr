@@ -915,6 +915,7 @@ function setListItemOptions(lino, seq, init) {
   $.getScript('layout_listitems_ajax.php' +
     '?listid='  + encodeURIComponent(list_id) +
     '&target='  + encodeURIComponent(target)  +
+    '&token='   + <?php echo $_SESSION['token'];?>  +
     '&current=' + encodeURIComponent(current));
 }
 
@@ -1546,13 +1547,13 @@ $(document).ready(function(){
 
     // show the popup choice of lists
     var ShowLists = function(btnObj) {
-        window.open("./show_lists_popup.php", "lists", "width=300,height=500,scrollbars=yes");
+        window.open("./show_lists_popup.php?token=<?php echo $_SESSION['token'];?>", "lists", "width=300,height=500,scrollbars=yes");
         selectedfield = btnObj;
     };
     
     // show the popup choice of groups
     var ShowGroups = function(btnObj) {
-        window.open("./show_groups_popup.php?layout_id=<?php echo $layout_id;?>", "groups", "width=300,height=300,scrollbars=yes");
+        window.open("./show_groups_popup.php?layout_id=<?php echo $layout_id;?>&token=<?php echo $_SESSION['token'];?>", "groups", "width=300,height=300,scrollbars=yes");
     };
     
     // Show context DD for NationNotes
@@ -1629,7 +1630,7 @@ function FieldIDClicked(elem) {
   // If the field ID is for the local form, allow direct entry.
   if (srcval == 'F') return;
   // Otherwise pop up the selection window.
-  window.open('./field_id_popup.php?source=' + srcval, 'fields',
+  window.open('./field_id_popup.php?source=' + srcval + '&token=' + <?php echo $_SESSION['token'];?>, 'fields',
     'width=600,height=600,scrollbars=yes');
 <?php } ?>
 }

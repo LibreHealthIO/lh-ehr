@@ -122,6 +122,8 @@ var webroot_url="<?php echo $web_root; ?>";
                                                                   .',' . json_encode($userQuery['fname'])
                                                                   .',' . json_encode($userQuery['lname'])
                                                                   .',' . json_encode($_SESSION['authGroup']); ?>));
+    // Set the csrf token used in js/tabs_view_model.js script
+    var jsCsrfToken = <?php echo $_SESSION['token'];?>;
 </script>
 
 <style type="text/css">
