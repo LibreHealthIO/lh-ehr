@@ -33,6 +33,15 @@ $fake_register_globals=false;
 //
 require_once("../../interface/globals.php");
 require_once("$srcdir/sql.inc");
+require_once("$srcdir/CsrfToken.php");
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      die('Authentication failed.');
+  }
+}
 
 $fQuery = sqlStatement("select entry_id from menu_trees where menu_set= ?", array($_POST['role_name']));
 

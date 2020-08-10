@@ -17,7 +17,15 @@
 require_once("../../interface/globals.php");
 require_once("{$GLOBALS['srcdir']}/sql.inc");
 require_once("{$GLOBALS['srcdir']}/formdata.inc.php");
+require_once("$srcdir/CsrfToken.php");
 
+if (!empty($_REQUEST)) {
+  if (!isset($_REQUEST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_REQUEST['token']))) {
+      die('Authentication failed.');
+  }
+}
 function myGetValue($fldname) {
   $val = formData($fldname, 'G', true);
   if ($val == 'undefined') $val = '';

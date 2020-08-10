@@ -21,7 +21,15 @@ $fake_register_globals=false;
 
 require_once(dirname(__FILE__) . "/../../interface/globals.php");
 require_once(dirname(__FILE__) . "/../lists.inc");
+require_once("$srcdir/CsrfToken.php");
 
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+      CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+        die('Authentication failed.');
+    }
+}
 //  IF there is a pid and type then will set the entry in lists_touch table
 if ( !(empty($_POST['patient_id'])) && !(empty($_POST['type'])) ) {
 

@@ -69,7 +69,7 @@ function printLogPrint(elem) {
  comments = win.printlogdata || win.document.body.innerHTML;
  top.restoreSession();
  $.post("<?php echo $GLOBALS['webroot']; ?>/library/ajax/log_print_action_ajax.php",
-  { comments: comments }
+  { comments: comments,  token: <?php echo $_SESSION['token'];?> }
  );
 <?php } ?>
  return true;

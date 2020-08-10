@@ -32,10 +32,10 @@ require_once("$srcdir/sql.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/CsrfToken.php");
 
-if (!empty($_POST)) {
-  if (!isset($_POST['token'])) {
+if (!empty($_REQUEST)) {
+  if (!isset($_REQUEST['token'])) {
     CsrfToken::noTokenFoundError();
-  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+  } else if (!(CsrfToken::verifyCsrfToken($_REQUEST['token']))) {
       die('Authentication failed.');
   }
 }
