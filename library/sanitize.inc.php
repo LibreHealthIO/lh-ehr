@@ -43,6 +43,41 @@ function image_has_right_mime($image_properties) {
    
    return in_array($mime, $mime_types);
 }
+ 
+/**
+ * This function detects a MIME type for a file and check if it in the safe list of the allowed mime types.
+ * @param string $file - file location.
+ * @param array|null $accepted_files - array of mime types that allowed to upload.
+ */
+
+function isSafeFile($file)
+{
+  $safe_files =  array(
+  'application/pdf',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'application/msword',
+  'application/vnd.oasis.opendocument.spreadsheet',
+  'text/plain',
+  'image/*',
+  'text/*',
+  'audio/*',
+  'video/*'
+);
+    $mimetype  = mime_content_type($file);
+    if (in_array($mimetype, $safe_files)) {
+        return true;
+    } else {
+        $splitMimeType = explode('/', $mimetype);
+        $categoryType = $splitMimeType[0];
+        if (in_array($categoryType . '/*', $safe_files)) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 //image file extension check
 function image_has_right_extension($image_file_type, $extensions) {
