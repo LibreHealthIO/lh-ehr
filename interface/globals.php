@@ -148,8 +148,19 @@ if (empty($_SESSION['site_id']) || !empty($_GET['site'])) {
       header('Location: index.php?site='.$tmp);
     }
     else {
-      // Main LibreHealth EHR use
-      header('Location: ../login/login.php?site='.$tmp); // Assuming in the interface/main directory
+      if (isset($sqlUpgradeConfig) && $sqlUpgradeConfig) {
+        header('Location: ../interface/login/login.php?loginfirst&site='.$tmp);
+        die();
+      }
+      else if ((isset($aclUpgradeConfig) && $aclUpgradeConfig) ||
+        (isset($sqlPatchConfig) && $sqlPatchConfig)) {
+        header('Location: interface/login/login.php?loginfirst&site='.$tmp);
+        die();
+      }
+      else {
+        // Main LibreHealth EHR use
+        header('Location: ../login/login.php?site='.$tmp); // Assuming in the interface/main directory
+      }
     }
     exit;
   }

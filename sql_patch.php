@@ -13,6 +13,7 @@
 
 // Disable PHP timeout.  This will not work in safe mode.
 ini_set('max_execution_time', '0');
+$sqlPatchConfig = true; // to correctly redirect to login page if needed
 
 $ignoreAuth = true; // no login required
 

@@ -15,10 +15,11 @@
 ini_set('max_execution_time', '0');
 
 $ignoreAuth = true; // no login required
+$sqlUpgradeConfig = true; // to correctly redirect to login page if needed
 
-require_once('interface/globals.php');
-require_once('library/sql.inc');
-require_once('library/sql_upgrade_fx.php');
+require_once('../interface/globals.php');
+require_once('../library/sql.inc');
+require_once('../library/sql_upgrade_fx.php');
 
 
 // Force logging off
@@ -41,8 +42,8 @@ ksort($versions);
 <html>
 <head>
 <title>LibreHealth EHR Database Upgrade</title>
-<link rel='STYLESHEET' href='interface/themes/style_setup.css'>
-<link rel="shortcut icon" href="favicon.ico" />
+<link rel='STYLESHEET' href='../interface/themes/style_setup.css'>
+<link rel="shortcut icon" href="../favicon.ico" />
 </head>
 <body>
 <center>
@@ -60,13 +61,13 @@ if (!empty($_POST['form_submit'])) {
 
   if ( (!empty($v_realpatch)) && ($v_realpatch != "") && ($v_realpatch > 0) ) {
     // This release contains a patch file, so process it.
-    upgradeFromSqlFile('patch.sql');
+    upgradeFromSqlFile('../patch.sql');
   }
 
   flush();
 
   echo "<font color='green'>Updating global configuration defaults...</font><br />\n";
-  require_once("library/globals.inc.php");
+  require_once("../library/globals.inc.php");
   foreach ($GLOBALS_METADATA as $grpname => $grparr) {
     foreach ($grparr as $fldid => $fldarr) {
       list($fldname, $fldtype, $flddef, $flddesc) = $fldarr;
@@ -81,7 +82,7 @@ if (!empty($_POST['form_submit'])) {
   }
 
   echo "<font color='green'>Updating Access Controls...</font><br />\n";
-  require("acl_upgrade.php");
+  require("../acl_upgrade.php");
   echo "<br />\n";
 
   echo "<font color='green'>Updating version indicators...</font><br />\n";

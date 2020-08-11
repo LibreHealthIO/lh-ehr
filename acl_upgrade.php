@@ -107,6 +107,7 @@
 */
 
 $ignoreAuth = true; // no login required
+$aclUpgradeConfig = true; // to correctly redirect to login page if needed
 
 require_once('interface/globals.php');
 require_once("$srcdir/acl_upgrade_fx.php");
