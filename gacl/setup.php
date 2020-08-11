@@ -5,6 +5,8 @@ $config_file = dirname(__FILE__).'/gacl.ini.php';
 require_once(dirname(__FILE__).'/admin/gacl_admin.inc.php');
 require_once(ADODB_DIR .'/adodb-xmlschema.inc.php');
 
+// check if user is authenticated before displaying setup info
+require_once('../interface/globals.php');
 
 $db_table_prefix = $gacl->_db_table_prefix;
 $db_type = $gacl->_db_type;
