@@ -106,7 +106,6 @@
 * @link      http://librehealth.io
 */
 
-$ignoreAuth = true; // no login required
 $aclUpgradeConfig = true; // to correctly redirect to login page if needed
 
 require_once('interface/globals.php');

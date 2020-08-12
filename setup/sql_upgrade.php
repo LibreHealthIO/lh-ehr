@@ -14,7 +14,6 @@
 // Disable PHP timeout.  This will not work in safe mode.
 ini_set('max_execution_time', '0');
 
-$ignoreAuth = true; // no login required
 $sqlUpgradeConfig = true; // to correctly redirect to login page if needed
 
 require_once('../interface/globals.php');
