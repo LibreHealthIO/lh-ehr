@@ -251,7 +251,7 @@ else if ($_POST['formaction'] == "loadtemplate" && $_POST['form_template'] != ""
 }
 else if ($_POST['formaction'] == "newtemplate" && $_POST['newtemplatename'] != "") {
     // attempt to save the template
-    $fh = fopen("$template_dir/".$_POST['newtemplatename'], 'w');
+    $fh = fopen("$template_dir/". preg_replace('/[^A-Za-z0-9]/', '_', $_POST['newtemplatename']), 'w');
     // translate from definition to the constant
     $temp_bodytext = $_POST['form_body'];
     foreach ($FIELD_TAG as $key => $value) {
@@ -275,7 +275,7 @@ else if ($_POST['formaction'] == "newtemplate" && $_POST['newtemplatename'] != "
 }
 else if ($_POST['formaction'] == "savetemplate" && $_POST['form_template'] != "") {
     // attempt to save the template
-    $fh = fopen("$template_dir/".$_POST['form_template'], 'w');
+    $fh = fopen("$template_dir/". preg_replace('/[^A-Za-z0-9]/', '_', $_POST['form_template']), 'w');
     // translate from definition to the constant
     $temp_bodytext = $_POST['form_body'];
     foreach ($FIELD_TAG as $key => $value) {
