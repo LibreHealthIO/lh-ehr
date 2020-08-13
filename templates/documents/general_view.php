@@ -85,7 +85,7 @@
        data:
        {
          ccr_ajax : "yes",
-         token: <?php echo $_SESSION['token'];?>,
+         token: "<?php echo $_SESSION['token'];?>",
          document_id : docid,
        },
        success: function(data){

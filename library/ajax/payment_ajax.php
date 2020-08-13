@@ -35,8 +35,8 @@ require_once("$srcdir/CsrfToken.php");
 if (!empty($_REQUEST)) {
   if (!isset($_REQUEST['token'])) {
     CsrfToken::noTokenFoundError();
-  } else if (!(CsrfToken::verifyCsrfToken($_REQUEST['token']))) {
-      die('Authentication failed.');
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      CsrfToken::incorrectToken();
   }
 }
 //=================================

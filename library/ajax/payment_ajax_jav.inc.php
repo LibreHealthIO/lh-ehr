@@ -109,7 +109,7 @@ $(document).ready(function(){
     insurance_text_ajax: document.getElementById('type_code') ? document.getElementById('type_code').value : '',
 	encounter_patient_code:Source=='encounter' ? document.getElementById('hidden_patient_code').value : '',
 	submit_or_simple_type:SubmitOrSimple,
-	token: <?php echo $_SESSION['token'];?>
+	token: "<?php echo $_SESSION['token'];?>",
    },
    //async: false,
     success: function(thedata){

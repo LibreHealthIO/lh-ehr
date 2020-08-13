@@ -27,7 +27,7 @@ if (!empty($_POST)) {
   if (!isset($_POST['token'])) {
     CsrfToken::noTokenFoundError();
   } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
-      die('Authentication failed.');
+      CsrfToken::incorrectToken();
   }
 }
 //set the rule setting for patient (ensure all variables exist)

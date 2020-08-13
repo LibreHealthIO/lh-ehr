@@ -41,10 +41,9 @@ if (!$thisauth) die(xl('Not authorized'));
 
 if (!empty($_POST)) {
   if (!isset($_POST['token'])) {
-      error_log('WARNING: A POST request detected with no csrf token found');
-      die('Authentication failed.');
+      CsrfToken::noTokenFoundError();
   } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/edit_list.php.theform'))) {
-      die('Authentication failed.');
+      CsrfToken::incorrectToken();
   }
 }
 

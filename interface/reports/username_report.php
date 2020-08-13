@@ -92,7 +92,7 @@ function show_session_times(){
                 func:"show_session_times",
                 to_date:   "<?php echo $to_date; ?>",
                 from_date:" <?php echo $from_date; ?> ",
-                token: <?php echo $_SESSION['token'];?>,
+                token: "<?php echo $_SESSION['token'];?>",
             }, complete: function(){
                 $('#image').hide();
             }},
@@ -162,7 +162,7 @@ function show_session_sums()
                 func:"show_session_sums",
                 to_date:   "<?php echo $to_date; ?>",
                 from_date:" <?php echo $from_date; ?> ",
-                token: <?php echo $_SESSION['token'];?>,
+                token: "<?php echo $_SESSION['token'];?>",
             },
         complete: function(){
             $('#image').hide();
@@ -233,7 +233,7 @@ function show_session_details()
                 func:"show_session_details",
                 to_date:   "<?php echo $to_date; ?>",
                 from_date:" <?php echo $from_date; ?> ",
-                token: <?php echo $_SESSION['token'];?>,
+                token: "<?php echo $_SESSION['token'];?>",
             },
             complete: function(){
                 $('#image').hide();

@@ -96,7 +96,7 @@ if (!empty($_GET)) {
   if (!isset($_GET['token'])) {
       CsrfToken::noTokenFoundError();
   } else if (!(CsrfToken::verifyCsrfToken($_GET['token']))) {
-      die('Authentication failed.');
+      CsrfToken::incorrectToken();
   }
 }
 $source = empty($_REQUEST['source']) ? 'D' : $_REQUEST['source'];

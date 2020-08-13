@@ -39,7 +39,7 @@ if (!empty($_POST)) {
   if (!isset($_POST['token'])) {
     CsrfToken::noTokenFoundError();
   } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
-      die('Authentication failed.');
+      CsrfToken::incorrectToken();
   }
 }
 //Display red alert if Emergency Login ACL is activated for a user.

@@ -176,7 +176,7 @@ function availablePages($totalRows, $interval) {
                         age_to:"<?php echo $_POST['age_to']  ; ?>",
                         results_per_page: $('#rpp').val(),
                         page_number: $('#nof').val(),
-                        token: <?php echo $_SESSION['token'];?>
+                        token: "<?php echo $_SESSION['token'];?>"
 
                     }, complete: function(){
                         $('#image').hide();

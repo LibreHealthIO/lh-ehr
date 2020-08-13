@@ -777,7 +777,7 @@ if(!is_null($_POST['form_to_date']) ){
     }
       $.post( "../../library/ajax/drug_screen_completed.php", {
         trackerid: this.id,
-        token: <?php echo $_SESSION['token'];?>,
+        token: "<?php echo $_SESSION['token'];?>",
         testcomplete: testcomplete_toggle
       });
     });

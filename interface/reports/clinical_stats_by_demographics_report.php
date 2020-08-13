@@ -149,7 +149,7 @@ function show_all_diags(){
                 ethnicity:"<?php echo $_POST['ethnicity']; ?>",
                 age_from:"<?php echo $_POST['age_from']  ; ?>",
                 age_to:"<?php echo $_POST['age_to']  ; ?>",
-                token: <?php echo $_SESSION['token'];?>
+                token: "<?php echo $_SESSION['token'];?>"
 
             }, complete: function(){
                 $('#image').hide();

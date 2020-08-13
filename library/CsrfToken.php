@@ -34,6 +34,11 @@ class CsrfToken {
     //log error and kill the page
     function noTokenFoundError() {
         error_log('WARNING: A POST request detected with no csrf token found');
+        header('HTTP/1.1 401 Unauthorized');
+        die('Authentication failed.');
+    }
+    function incorrectToken() {
+        header('HTTP/1.1 401 Unauthorized');
         die('Authentication failed.');
     }
     // Function to verify a csrf token using with second token

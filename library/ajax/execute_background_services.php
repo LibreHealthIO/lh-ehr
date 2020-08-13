@@ -83,7 +83,7 @@ require_once("$srcdir/CsrfToken.php");
   if (!isset($_POST['token'])) {
     CsrfToken::noTokenFoundError();
   } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
-      die('Authentication failed.');
+      CsrfToken::incorrectToken();
   }
 }
 
