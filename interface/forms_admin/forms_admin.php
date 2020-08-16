@@ -179,8 +179,6 @@ if ($err)
 
     foreach ( $inDir as $fname )
     {
-            // added 8-2009 by BM - do not show the metric vitals form as option since deprecated
-        //  also added a toggle in globals.php in case user wants the option to add this deprecated form
         if (stristr($fname, ".tar.gz") || stristr($fname, ".tar") || stristr($fname, ".zip") || stristr($fname, ".gz"))
             $phpState = "PHP compressed";
         else
