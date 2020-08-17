@@ -110,8 +110,8 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
 
 </head>
 <body ><!-- style='background:#f1f2f7;' -->
-<div class='title'>
-        <h2><img style='width:25%;height:auto; margin-left: 60px;' class='logo' src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/>  <?php echo xlt('Patient Messaging'); ?></h2>
+<div class='title container'>
+        <h2><img style='width:25%;height:auto; class='logo' src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/>  <?php echo xlt('Patient Messaging'); ?></h2>
         </div>
 <script>
 (function() {
