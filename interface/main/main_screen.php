@@ -85,7 +85,7 @@ else if (!empty($_POST['patientID'])) {
 }
 
 else if (isset($_GET['mode']) && $_GET['mode'] == "loadcalendar") {
-  $frame1url = "calendar/index.php?pid=" . attr($_GET['pid']);
+  $frame1url = "../../modules/calendar/index.php?pid=" . attr($_GET['pid']);
   if (isset($_GET['date'])) $frame1url .= "&date=" . attr($_GET['date']);
 }
 else {
