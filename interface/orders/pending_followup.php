@@ -44,8 +44,8 @@ function thisLineItem($row, $codetype, $code) {
   }
 
   $crow = sqlQuery("SELECT code_text FROM codes WHERE " .
-    "code_type = '" . $code_types[$codetype]['id'] . "' AND " .
-    "code = '$code' LIMIT 1");
+    "code_type = ? AND " .
+    "code = ? LIMIT 1", array($code_types[$codetype]['id'], $code));
   $code_text = $crow['code_text'];
 
   if ($_POST['form_csvexport']) {
@@ -214,12 +214,12 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
 
       $brow = sqlQuery("SELECT count(*) AS count " .
         "FROM billing AS b, form_encounter AS fe WHERE " .
-        "b.pid = '$patient_id' AND " .
-        "b.code_type = '$codetype' AND " .
-        "b.code = '$code' AND " .
+        "b.pid = ? AND " .
+        "b.code_type = ? AND " .
+        "b.code = ? AND " .
         "b.activity = 1 AND " .
         "fe.pid = b.pid AND fe.encounter = b.encounter AND " .
-        "fe.date >= '$date_ordered 00:00:00'");
+        "fe.date >= ?", array($patient_id, $codetype, $code, $date_ordered . ' 00:00:00'));
 
       // If there was such a service, then this followup is not pending.
       if (!empty($brow['count'])) continue;

@@ -14,7 +14,7 @@
   if (!empty($_POST["form_pubpid"])) {
     $form_pubpid = trim($_POST["form_pubpid"]);
     $result = sqlQuery("SELECT count(*) AS count FROM patient_data WHERE " .
-      "pubpid = '" . formDataCore($form_pubpid) . "'");
+      "pubpid = ?", array($form_pubpid));
     if ($result['count']) {
       // Error, not unique.
       $alertmsg = xl('Warning: Patient ID is not unique!');

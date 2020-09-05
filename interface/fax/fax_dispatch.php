@@ -165,7 +165,7 @@ if ($_POST['form_save']) {
         // See pnotes_full.php which uses this to auto-display the document.
         $note = "$ffname$ffmod$ffsuff";
         for ($tmp = $catid; $tmp;) {
-          $catrow = sqlQuery("SELECT name, parent FROM categories WHERE id = '$tmp'");
+          $catrow = sqlQuery("SELECT name, parent FROM categories WHERE id = ?", array($tmp));
           $note = $catrow['name'] . "/$note";
           $tmp = $catrow['parent'];
         }

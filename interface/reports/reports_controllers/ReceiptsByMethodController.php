@@ -111,8 +111,8 @@
      if ($showing_ppd) {
        $pferow = sqlQuery("SELECT p.fname, p.mname, p.lname, fe.date " .
          "FROM patient_data AS p, form_encounter AS fe WHERE " .
-         "p.pid = '$patient_id' AND fe.pid = p.pid AND " .
-         "fe.encounter = '$encounter_id' LIMIT 1");
+         "p.pid = ? AND fe.pid = p.pid AND " .
+         "fe.encounter = ? LIMIT 1", array($patient_id, $encounter_id));
        $dos = substr($pferow['date'], 0, 10);
 
        echo "  <td class='dehead'>\n";

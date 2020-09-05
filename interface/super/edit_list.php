@@ -259,13 +259,13 @@ function getCodeDescriptions($codes) {
     $selector  = $arrcode[2];
     $desc = '';
     if ($code_type == 'PROD') {
-      $row = sqlQuery("SELECT name FROM drugs WHERE drug_id = '$code' ");
+      $row = sqlQuery("SELECT name FROM drugs WHERE drug_id = ? ", array($code));
       $desc = "$code:$selector " . $row['name'];
     }
     else {
       $row = sqlQuery("SELECT code_text FROM codes WHERE " .
-        "code_type = '" . $code_types[$code_type]['id'] . "' AND " .
-        "code = '$code' ORDER BY modifier LIMIT 1");
+        "code_type = ? AND " .
+        "code = ? ORDER BY modifier LIMIT 1", array($code_types[$code_type]['id'], $code));
       $desc = "$code_type:$code " . ucfirst(strtolower($row['code_text']));
     }
     $desc = str_replace('~', ' ', $desc);

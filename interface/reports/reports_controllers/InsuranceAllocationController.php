@@ -62,11 +62,11 @@ function prepareAndShowResults() {
 	    $encounter_date = $row['date'];
 	    $irow = sqlQuery("SELECT insurance_companies.name " .
 	      "FROM insurance_data, insurance_companies WHERE " .
-	      "insurance_data.pid = $patient_id AND " .
+	      "insurance_data.pid = ? AND " .
 	      "insurance_data.type = 'primary' AND " .
-	      "insurance_data.date <= '$encounter_date' AND " .
+	      "insurance_data.date <= ? AND " .
 	      "insurance_companies.id = insurance_data.provider " .
-	      "ORDER BY insurance_data.date DESC LIMIT 1");
+	      "ORDER BY insurance_data.date DESC LIMIT 1", array($patient_id, $encounter_date));
 	    $plan = $irow['name'] ? $irow['name'] : '-- No Insurance --';
 	    $insarr[$plan]['visits'] += 1;
 	    $insarr[$plan]['charges'] += sprintf('%0.2f', $row['charges']);

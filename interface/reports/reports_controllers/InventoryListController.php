@@ -75,9 +75,9 @@ function prepareAndShowResults() {
     $srow = sqlQuery("SELECT " .
       "SUM(quantity) AS sale_quantity " .
       "FROM drug_sales WHERE " .
-      "drug_id = '$drug_id' AND " .
-      "sale_date > DATE_SUB(NOW(), INTERVAL $form_days DAY) " .
-      "AND pid != 0");
+      "drug_id = ? AND " .
+      "sale_date > DATE_SUB(NOW(), INTERVAL" . escape_limit($form_days) . "DAY) " .
+      "AND pid != 0", array($drug_id));
 
     ++$encount;
     $bgcolor = "#" . (($encount & 1) ? "ddddff" : "ffdddd");
@@ -108,10 +108,10 @@ function prepareAndShowResults() {
       $sminrow = sqlQuery("SELECT " .
         "MIN(quantity) AS min_sale " .
         "FROM drug_sales WHERE " .
-        "drug_id = '$drug_id' AND " .
-        "sale_date > DATE_SUB(NOW(), INTERVAL $form_days DAY) " .
+        "drug_id = ? AND " .
+        "sale_date > DATE_SUB(NOW(), INTERVAL" . escape_limit($form_days) . "DAY) " .
         "AND pid != 0 " .
-        "AND quantity > 0");
+        "AND quantity > 0", array($drug_id));
       $min_sale = 0 + $sminrow['min_sale'];
     }
 

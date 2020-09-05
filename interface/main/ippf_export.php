@@ -106,7 +106,7 @@ function getTextListValue($string, $key) {
 function mappedOption($list_id, $option_id, $default='9') {
   if ($option_id === '') return $default;
   $row = sqlQuery("SELECT mapping FROM list_options WHERE " .
-    "list_id = '$list_id' AND option_id = '$option_id' LIMIT 1");
+    "list_id = ? AND option_id = ? LIMIT 1", array($list_id, $option_id));
   if (empty($row)) return $option_id; // should not happen
   // return ($row['mapping'] === '') ? $option_id : $row['mapping'];
   $maparr = explode(':', $row['mapping']);
@@ -119,18 +119,18 @@ function mappedOption($list_id, $option_id, $default='9') {
 function mappedFieldOption($form_id, $field_id, $option_id) {
   $row = sqlQuery("SELECT list_id FROM " .
     "layout_options WHERE " .
-    "form_id = '$form_id' AND " .
-    "field_id = '$field_id' " .
-    "LIMIT 1");
+    "form_id = ? AND " .
+    "field_id = ? " .
+    "LIMIT 1", array($form_id . '', $field_id . ''));
   if (empty($row)) return $option_id; // should not happen
   $list_id = $row['list_id'];
   if ($list_id === '') return $option_id;
   if ($option_id === '') return '9';
   $row = sqlQuery("SELECT mapping FROM " .
     "list_options WHERE " .
-    "list_id = '$list_id' AND " .
-    "option_id = '$option_id' " .
-    "LIMIT 1");
+    "list_id = ? AND " .
+    "option_id = ? " .
+    "LIMIT 1", array($list_id . "", $option_id . ""));
   if (empty($row)) return $option_id; // should not happen
   // return ($row['mapping'] === '') ? $option_id : $row['mapping'];
   $maparr = explode(':', $row['mapping']);
@@ -214,8 +214,8 @@ function exportEncounter($pid, $encounter, $date) {
       if ($codetype == 'REF') {
         // This is the expected case; a direct IPPF code is obsolete.
         $rrow = sqlQuery("SELECT related_code FROM codes WHERE " .
-          "code_type = '16' AND code = '$code' AND active = 1 " .
-          "ORDER BY id LIMIT 1");
+          "code_type = '16' AND code = ? AND active = 1 " .
+          "ORDER BY id LIMIT 1", array($code . ""));
         if (!empty($rrow['related_code'])) {
           list($codetype, $code) = explode(':', $rrow['related_code']);
         }
@@ -461,15 +461,15 @@ if (!empty($form_submit)) {
     // Get most recent contraceptive issue.
     $crow = sqlQuery("SELECT l.begdate, c.new_method " .
       "FROM lists AS l, lists_ippf_con AS c WHERE " .
-      "l.pid = '$last_pid' AND c.id = l.id " .
-      "ORDER BY l.begdate DESC LIMIT 1");
+      "l.pid = ? AND c.id = l.id " .
+      "ORDER BY l.begdate DESC LIMIT 1", array($last_pid . ""));
 
     // Get obstetric and abortion data from most recent static history.
     $hrow = sqlQuery("SELECT date, " .
       "usertext16 AS genobshist, " .
       "usertext17 AS genabohist " .
-      "FROM history_data WHERE pid = '$last_pid' " .
-      "ORDER BY date DESC LIMIT 1");
+      "FROM history_data WHERE pid = ? " .
+      "ORDER BY date DESC LIMIT 1", array($last_pid . ""));
 
     // Starting a new client (patient).
     OpenTag('IMS_eMRUpload_Client');

@@ -205,7 +205,7 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
     // A/R case, $trans_id matches form_encounter.id.
     $ferow = sqlQuery("SELECT e.*, p.fname, p.mname, p.lname " .
       "FROM form_encounter AS e, patient_data AS p WHERE " .
-      "e.id = '$trans_id' AND p.pid = e.pid");
+      "e.id = ? AND p.pid = e.pid", array($trans_id));
     if (empty($ferow)) die("There is no encounter with form_encounter.id = '$trans_id'.");
     $patient_id        = 0 + $ferow['pid'];
     $encounter_id      = 0 + $ferow['encounter'];
@@ -266,7 +266,7 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
         if ($reason) {
           $tmp = sqlQuery("SELECT option_value FROM list_options WHERE " .
             "list_id = 'adjreason' AND " .
-            "option_id = '" . add_escape_custom($reason) . "'");
+            "option_id = ?", array(add_escape_custom($reason) . ""));
           if (empty($tmp['option_value'])) {
             // This should not happen but if it does, apply old logic.
             if (preg_match("/To copay/", $reason)) {
@@ -359,7 +359,7 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
     $codes = ar_get_invoice_summary($patient_id, $encounter_id, true);
 
   $pdrow = sqlQuery("select billing_note " .
-    "from patient_data where pid = '$patient_id' limit 1");
+    "from patient_data where pid = ? limit 1", array($patient_id));
 ?>
 <center>
 
@@ -381,7 +381,7 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
     for ($i = 1; $i <= 3; ++$i) {
       $payerid = arGetPayerID($patient_id, $svcdate, $i);
       if ($payerid) {
-        $tmp = sqlQuery("SELECT name FROM insurance_companies WHERE id = $payerid");
+        $tmp = sqlQuery("SELECT name FROM insurance_companies WHERE id = ?", array($payerid));
         echo "Ins$i: " . $tmp['name'] . "<br />";
       }
     }
@@ -411,11 +411,11 @@ function updateFields(payField, adjField, balField, coPayField, isFirstProcCode)
   <td>
    <?php
     $tmp = sqlQuery("SELECT fname, mname, lname " .
-      "FROM users WHERE id = " . $ferow['provider_id']);
+      "FROM users WHERE id = ?", array($ferow['provider_id']));
     echo text($tmp['fname']) . ' ' . text($tmp['mname']) . ' ' . text($tmp['lname']);
     $tmp = sqlQuery("SELECT bill_date FROM billing WHERE " .
-      "pid = '$patient_id' AND encounter = '$encounter_id' AND " .
-      "activity = 1 ORDER BY fee DESC, id ASC LIMIT 1");
+      "pid = '?' AND encounter = '?' AND " .
+      "activity = 1 ORDER BY fee DESC, id ASC LIMIT 1", array($patient_id));
     $billdate = substr(($tmp['bill_date'] . "Not Billed"), 0, 10);
 ?>
   </td>

@@ -56,7 +56,7 @@ function toencounter(rawdata) {
 </head>
 <body class="body_title">
 <?php
-$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
+$res = sqlQuery("select * from users where username=?", array($_SESSION{"authUser"}));
 ?>
 
 <table id="main-title" cellspacing="0" cellpadding="0" width="100%" height="100%">

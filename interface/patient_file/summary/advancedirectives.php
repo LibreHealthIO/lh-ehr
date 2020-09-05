@@ -37,7 +37,7 @@ $(document).ready(function(){
 <?php
 if ($_POST['form_yesno'])
 {
-	sqlQuery("UPDATE patient_data SET completed_ad='".formData('form_yesno','P',true)."', ad_reviewed='".formData('form_adreviewed','P',true)."' where pid='$pid'");
+	sqlQuery("UPDATE patient_data SET completed_ad='".formData('form_yesno','P',true)."', ad_reviewed='".formData('form_adreviewed','P',true)."' where pid=?", array($pid));
   // Close this window and refresh the calendar display.
   echo "<html>\n<body>\n<script language='JavaScript'>\n";
   echo " if (!opener.closed && opener.refreshme) opener.refreshme();\n";
@@ -45,8 +45,8 @@ if ($_POST['form_yesno'])
   echo "</script>\n</body>\n</html>\n";
   exit();
 }
-	$sql = "select completed_ad, ad_reviewed from patient_data where pid='$pid'";
-	$myrow = sqlQuery($sql);
+	$sql = "select completed_ad, ad_reviewed from patient_data where pid= ?";
+	$myrow = sqlQuery($sql, array($pid));
 if ($myrow)
 {
 	$form_completedad = $myrow['completed_ad'];

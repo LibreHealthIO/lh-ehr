@@ -338,7 +338,7 @@ if ($form_batch) {
   $form_proc_type_desc = '';
   if ($form_proc_type > 0) {
     $ptrow = sqlQuery("SELECT name FROM procedure_type WHERE " .
-      "procedure_type_id = '$form_proc_type'");
+      "procedure_type_id = ?", array($form_proc_type));
     $form_proc_type_desc = $ptrow['name'];
   }
 ?>

@@ -53,7 +53,7 @@
   }
 
   $row = sqlQuery("select fname, lname, billing_note " .
-    "from patient_data where pid = '$patient_id' limit 1");
+    "from patient_data where pid = ? limit 1", array($patient_id));
 ?>
 <center>
 
