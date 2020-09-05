@@ -140,8 +140,8 @@ subscriber_employer_country => xl('Subscriber Employer Country') . ": "
 
 function getPatientReport($pid)
 {
-    $sql = "select * from patient_data where pid='$pid' order by date ASC";
-    $res = sqlStatement("$sql");
+    $sql = "select * from patient_data where pid=? order by date ASC";
+    $res = sqlStatement($sql, array($pid));
     while($list = sqlFetchArray($res))
     {
         while(list($key, $value) = each($list))
@@ -159,8 +159,8 @@ function getPatientReport($pid)
 
 function getHistoryReport($pid)
 {
-        $sql = "select * from history_data where pid='$pid' order by date ASC";
-        $res = sqlStatement("$sql");
+        $sql = "select * from history_data where pid=? order by date ASC";
+        $res = sqlStatement($sql, array($pid));
         while($list = sqlFetchArray($res))
         {
                 while(list($key, $value) = each($list))
@@ -177,8 +177,8 @@ function getHistoryReport($pid)
 
 function getInsuranceReport($pid, $type = "primary")
 {
-        $sql = "select * from insurance_data where pid='$pid' and type='$type' order by date ASC";
-        $res = sqlStatement("$sql");
+        $sql = "select * from insurance_data where pid=? and type=? order by date ASC";
+        $res = sqlStatement($sql, array($pid, $type));
         while($list = sqlFetchArray($res))
         {
                 while(list($key, $value) = each($list))
@@ -195,8 +195,8 @@ function getInsuranceReport($pid, $type = "primary")
 
 function getEmployerReport($pid)
 {
-        $sql = "select * from employer_data where pid='$pid' order by date ASC";
-        $res = sqlStatement("$sql");
+        $sql = "select * from employer_data where pid=? order by date ASC";
+        $res = sqlStatement($sql, array($pid));
         while($list = sqlFetchArray($res))
         {
                 while(list($key, $value) = each($list))
@@ -213,8 +213,8 @@ function getEmployerReport($pid)
 
 function getListsReport($pid)
 {
-        $sql = "select * from lists where id='$id' order by date ASC";
-        $res = sqlStatement("$sql");
+        $sql = "select * from lists where id=? order by date ASC";
+        $res = sqlStatement($sql, array($id));
         while($list = sqlFetchArray($res))
         {
                 while(list($key, $value) = each($list))
@@ -230,7 +230,7 @@ function getListsReport($pid)
 }
 
 function printListData($pid, $list_type, $list_activity = "%") {
-    $res = sqlStatement("select * from lists where pid='$pid' and type='$list_type' and activity like '$list_activity' order by date");
+    $res = sqlStatement("select * from lists where pid=? and type=? and activity like ? order by date", array($pid, $list_activity, $list_activity));
     while($result = sqlFetchArray($res)) {
         print "<span class=bold>" . $result{"title"} . ":</span><span class=text> " . $result{"comments"} . "</span><br>\n";
     }
@@ -238,7 +238,7 @@ function printListData($pid, $list_type, $list_activity = "%") {
 
 function printPatientNotes($pid) {
   // exclude ALL deleted notes
-  $res = sqlStatement("select * from pnotes where pid = '$pid' and deleted != 1 and activity = 1 order by date");
+  $res = sqlStatement("select * from pnotes where pid = ? and deleted != 1 and activity = 1 order by date", array($pid));
   while($result = sqlFetchArray($res)) {
     print "<span class=bold>" . oeFormatSDFT(strtotime($result{"date"})) .
       ":</span><span class=text> " .
@@ -295,7 +295,7 @@ function printPatientTransactions($pid) {
 }
 
 function printPatientBilling($pid) {
-  $res = sqlStatement("select * from billing where pid='$pid' order by date");
+  $res = sqlStatement("select * from billing where pid=? order by date", array($pid));
   while($result = sqlFetchArray($res)) {
     echo "<span class=bold>" . oeFormatSDFT(strtotime($result{"date"})) . " : </span>";
     echo "<span class=text>(".$result{"code_type"}.") ";
@@ -315,20 +315,20 @@ function getPatientBillingEncounter($pid, $encounter) {
     "' AND activity='1' ORDER BY date";
   *******************************************************************/
   $erow = sqlQuery("SELECT provider_id FROM form_encounter WHERE " .
-    "pid = '$pid' AND encounter = '$encounter' " .
-    "ORDER BY id DESC LIMIT 1");
+    "pid = ? AND encounter = ? " .
+    "ORDER BY id DESC LIMIT 1", array($pid, $encounter));
   $inv_provider = $erow['provider_id'] + 0;
     $sql = "SELECT b.*, u.id, u.fname, u.mname, u.lname, " .
     "CONCAT(u.fname,' ', u.lname) AS provider_name, u.federaltaxid " .
     "FROM billing AS b " .
     "LEFT JOIN users AS u ON " .
     "( b.provider_id != 0 AND u.id = b.provider_id ) OR " .
-    "( b.provider_id  = 0 AND u.id = $inv_provider ) " .
+    "( b.provider_id  = 0 AND u.id = ? ) " .
     "WHERE pid='" . add_escape_custom($pid) . "' AND " .
     "encounter = '" . add_escape_custom($encounter) .
     "' AND activity = '1' ORDER BY date";
   /******************************************************************/
-    $res = sqlStatement($sql);
+    $res = sqlStatement($, array($inv_provider));
     $billings = array();
     while($result = sqlFetchArray($res)) {
         $billings[] = $result;
@@ -338,12 +338,12 @@ function getPatientBillingEncounter($pid, $encounter) {
 
 function printPatientForms($pid, $cols) {
     //this function takes a $pid
-    $inclookupres = sqlStatement("select distinct formdir from forms where pid='$pid' AND deleted=0");
+    $inclookupres = sqlStatement("select distinct formdir from forms where pid=? AND deleted=0", array($pid));
     while($result = sqlFetchArray($inclookupres)) {
         include_once("{$GLOBALS['incdir']}/forms/" . $result{"formdir"} . "/report.php");
     }
     
-    $res = sqlStatement("select * from forms where pid='$pid' AND deleted=0 order by date");
+    $res = sqlStatement("select * from forms where pid=? AND deleted=0 order by date", array($pid));
     while($result = sqlFetchArray($res)) {
         if ($result{"form_name"} == "Patient Encounter") {
             echo "<div class='text encounter'>\n";
@@ -352,10 +352,10 @@ function printPatientForms($pid, $cols) {
             // display the provider info
             $tmp = sqlQuery("SELECT u.title, u.fname, u.mname, u.lname " .
                                     "FROM forms AS f, users AS u WHERE " .
-                                    "f.pid = '$pid' AND f.encounter = ".$result['encounter']." AND " .
+                                    "f.pid = ? AND f.encounter = ? AND " .
                                     "f.formdir = 'patient_encounter' AND u.username = f.user " .
                                     " AND f.deleted=0 ". //--JRM--
-                                    "ORDER BY f.id LIMIT 1");
+                                    "ORDER BY f.id LIMIT 1", array($pid, $$result['encounter']));
             echo " ".xl('Provider').": ".$tmp['title']." ".
                 $tmp['fname']." ".$tmp['mname']." ".$tmp['lname'];
             echo "<br/>";

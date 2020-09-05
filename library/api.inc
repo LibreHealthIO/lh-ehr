@@ -111,24 +111,32 @@ function formFetch ($tableName, $id, $cols="*", $activity="1")
 
 function formGetIds ($tableName, $cols = "*", $limit='all', $start=0, $activity = "1")
 {
+    $sqlBindArray = array();
     if($limit == "all")
         {
-                // Run through escape_table_name() function to support dynamic form names in addition to mitigate sql table casing issues.
-                $sql = "select $cols from `" . escape_table_name($tableName) . "` where pid like '$pid' ";
-                if ($activity != "all")
-                        $sql .= "and activity like '$activity' ";
-                $sql .= "order by date DESC";
+            // Run through escape_table_name() function to support dynamic form names in addition to mitigate sql table casing issues.
+            $sql = "select ? from `" . escape_table_name($tableName) . "` where pid like ? ";
+            array_push($sqlBindArray, $cols, $pid);
+            if ($activity != "all"){
+                $sql .= "and activity like ? ";
+                array_push($sqlBindArray, $activity);
+            }
+            $sql .= "order by date DESC";
         }
         else
         {
-                $sql = "select $cols from pnotes where pid like '$pid' ";
-                $sql .= " AND deleted != 1 "; // exclude ALL deleted notes
-                if ($activity != "all")
-                        $sql .= "and activity like '$activity' ";
-                $sql .= "order by date DESC LIMIT $start, $limit";
+            $sql = "select ? from pnotes where pid like ? ";
+            array_push($sqlBindArray, $cols, $pid);
+            $sql .= " AND deleted != 1 "; // exclude ALL deleted notes
+            if ($activity != "all") {
+                $sql .= "and activity like ? ";
+                array_push($sqlBindArray, $activity);
+            }
+            $sql .= "order by date DESC LIMIT ?, ?";
+            array_push($sqlBindArray, $start, $limit);
         }
 
-        $res = sqlStatement($sql);
+        $res = sqlStatement($sql, $sqlBindArray);
 
         for ($iter = 0;$row = sqlFetchArray($res);$iter++)
                 $all[$iter] = $row;
@@ -138,14 +146,14 @@ function formGetIds ($tableName, $cols = "*", $limit='all', $start=0, $activity 
 function formDisappear ($tableName, $id)
 {
         // Run through escape_table_name() function to support dynamic form names in addition to mitigate sql table casing issues.
-    if (sqlStatement("update `" . escape_table_name($tableName) . "` set activity = '0' where id='$id' and pid='$pid'")) return true;
+    if (sqlStatement("update `" . escape_table_name($tableName) . "` set activity = '0' where id= ? and pid= ?", array($id, $pid))) return true;
     return false;
 }
 
 function formReappear ($tableName, $id)
 {
-        // Run through escape_table_name() function to support dynamic form names in addition to mitigate sql table casing issues.
-        if (sqlStatement("update `" . escape_table_name($tableName) . "` set activity = '1' where id='$id' and pid='$pid'")) return true;
+    // Run through escape_table_name() function to support dynamic form names in addition to mitigate sql table casing issues.
+    if (sqlStatement("update `" . escape_table_name($tableName) . "` set activity = '1' where id= ? and pid= ?", array($id, $pid))) return true;
     return false;
 }
 ?>

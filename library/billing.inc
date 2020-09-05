@@ -77,12 +77,12 @@ function authorizeBilling($id, $authorized = "1")
 
 function deleteBilling($id)
 {
-    sqlStatement("update billing set activity = 0 where id = '$id'");
+    sqlStatement("update billing set activity = 0 where id = ?", array($id));
 }
 
 function clearBilling($id)
 {
-    sqlStatement("update billing set justify = '' where id = '$id'");
+    sqlStatement("update billing set justify = '' where id = ?", array($id));
 }
 
 // This function supports the Billing page (billing_process.php and initiation of secondary processing
@@ -174,8 +174,8 @@ function updateClaim($newversion, $patient_id, $encounter_id, $payer_id=-1, $pay
 
   if ($billset) {
     $billset = substr($billset, 2);
-    sqlStatement("UPDATE billing SET $billset WHERE " .
-      "encounter = '$encounter_id' AND pid='$patient_id' AND activity = 1");
+    sqlStatement("UPDATE billing SET ? WHERE " .
+      "encounter = ? AND pid=? AND activity = 1", array($billset, $encounter_id, $patient_id));
   }
 
   // If a new claim version is requested, insert its row.
@@ -204,24 +204,28 @@ function updateClaim($newversion, $patient_id, $encounter_id, $payer_id=-1, $pay
     $version = sqlQuery( "SELECT IFNULL(MAX(version),0) + 1 AS increment FROM claims WHERE patient_id = ? AND encounter_id = ?", array( $patient_id, $encounter_id ) );
     if($crossover<>1)
     {
+      $sqlBindArray = array();
       $sql .= "INSERT INTO claims SET " .
-          "patient_id = $patient_id, " .
-          "encounter_id = $encounter_id, " .
-          "bill_time = NOW() $claimset ," .
-          "version = " . $version['increment'];
+          "patient_id = ?, " .
+          "encounter_id = ?, " .
+          "bill_time = NOW() ? ," .
+          "version = ?";
+
+      array_push($sqlBindArray, $patient_id, $encounter_id, $claimset, $version['increment']);
       }
      else
      {//Claim automatic forward case.
-     
+      $sqlBindArray = array();
      $sql = "INSERT INTO claims SET " .
-          "patient_id = $patient_id, " .
-          "encounter_id = $encounter_id, " .
-          "bill_time = NOW(), status=$status ," .
-          "version = " . $version['increment'];
-     
+          "patient_id = ?, " .
+          "encounter_id = ?, " .
+          "bill_time = NOW(), status=? ," .
+          "version = ?";
+
+      array_push($sqlBindArray, $patient_id, $encounter_id, $status, $version['increment']); 
      }
     
-    sqlStatement($sql);
+    sqlStatement($sql, $sqlBindArray);
     sqlCommitTrans();
   }
 
@@ -229,10 +233,10 @@ function updateClaim($newversion, $patient_id, $encounter_id, $payer_id=-1, $pay
   //
   else if ($claimset) {
     $claimset = substr($claimset, 2);
-    sqlStatement("UPDATE claims SET $claimset WHERE " .
-      "patient_id = '$patient_id' AND encounter_id = '$encounter_id' AND " .
+    sqlStatement("UPDATE claims SET ? WHERE " .
+      "patient_id = ? AND encounter_id = ? AND " .
       // "payer_id = '" . $row['payer_id'] . "' AND " .
-      "version = '" . $row['version'] . "'");
+      "version = ?", array($claimset, $patient_id, $encounter_id, $row['version']));
   }
 
   // Whenever a claim is marked billed, update A/R accordingly.
@@ -240,8 +244,8 @@ function updateClaim($newversion, $patient_id, $encounter_id, $payer_id=-1, $pay
   if ($status == 2) {
       if ($payer_type > 0) {
         sqlStatement("UPDATE form_encounter SET " .
-          "last_level_billed = '$payer_type' WHERE " .
-          "pid = '$patient_id' AND encounter = '$encounter_id'");
+          "last_level_billed = ? WHERE " .
+          "pid = ? AND encounter = ?", array($payer_type, $patient_id, $encounter_id));
       }
   }
 
@@ -252,12 +256,12 @@ function updateClaim($newversion, $patient_id, $encounter_id, $payer_id=-1, $pay
 //
 function isEncounterBilled($pid, $encounter) {
   $row = sqlQuery("SELECT count(*) AS count FROM billing WHERE " .
-    "pid = '$pid' AND encounter = '$encounter' AND activity = 1 AND " .
-    "billed = 1");
+    "pid = ? AND encounter = ? AND activity = 1 AND " .
+    "billed = 1", array($pid, $encounter_id));
   $count = $row['count'];
   if (!$count) {
     $row = sqlQuery("SELECT count(*) AS count FROM drug_sales WHERE " .
-      "pid = '$pid' AND encounter = '$encounter' AND billed = 1");
+      "pid = ? AND encounter = ? AND billed = 1", array($pid, $encounter_id));
     $count = $row['count'];
   }
   return $count ? true : false;
@@ -268,8 +272,8 @@ function isEncounterBilled($pid, $encounter) {
 //
 function getCopay($patient_id, $encdate) {
  $tmp = sqlQuery("SELECT provider, copay FROM insurance_data " .
-   "WHERE pid = '$patient_id' AND type = 'primary' " .
-   "AND date <= '$encdate' ORDER BY date DESC LIMIT 1");
+   "WHERE pid = ? AND type = 'primary' " .
+   "AND date <= ? ORDER BY date DESC LIMIT 1", array($patient_id, $encdate));
  if ($tmp['provider']) return sprintf('%01.2f', 0 + $tmp['copay']);
  return 0;
 }

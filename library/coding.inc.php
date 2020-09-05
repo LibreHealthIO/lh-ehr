@@ -143,11 +143,11 @@ echo "  <td colspan='$FEE_SHEET_COLUMNS' align='center' nowrap>\n";
 $numrows = 0;
 if ($_POST['bn_search'] && $_POST['search_term']) {
 	$query = "select code, modifier, code_text from codes where " .
-		"(code_text like '%" . $_POST['search_term'] . "%' or " .
-		"code like '%" . $_POST['search_term'] . "%') and " .
-		"code_type = '" . $code_types[$search_type]['id'] . "' " .
+		"(code_text like ? or " .
+		"code like ? ) and " .
+		"code_type = ? " .
 		"order by code";
-	$res = sqlStatement($query);
+	$res = sqlStatement($query, array("%" . $_POST['search_term'] . "%", "%" . $_POST['search_term'] . "%", $code_types[$search_type]['id'] ));
 	$numrows = sqlNumRows($res); // FIXME - not portable!
 }
 

@@ -228,8 +228,7 @@ if (!is_array($_POST['form_provider'])) {
   // Save new DOB if it's there.
   $patient_dob = trim($_POST['form_dob']);
   if ($patient_dob && $_POST['form_pid']) {
-   sqlStatement("UPDATE patient_data SET DOB = '$patient_dob' WHERE " .
-    "pid = '" . $_POST['form_pid'] . "'");
+   sqlStatement("UPDATE patient_data SET DOB = ? WHERE pid = ?", array($patient_dob, $_POST['form_pid']));
   }
 
  //}

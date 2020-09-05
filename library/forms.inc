@@ -6,29 +6,29 @@ $GLOBALS['form_exit_url'] = "$rootdir/patient_file/encounter/encounter_top.php";
 
 function getFormById ($id, $cols = "*")
 {
-    $sql = "select $cols from forms where id='$id' order by date DESC limit 0,1";
+    $sql = "select $cols from forms where id=? order by date DESC limit 0,1";
     //echo $sql . "<br />";
-    return sqlQuery($sql);
+    return sqlQuery($sql, array($id));
 }
 
 function getFormInfoById ($id, $cols = "*")
 {
-    $sql = "select $cols from forms where id='$id' order by date DESC limit 0,1";
+    $sql = "select $cols from forms where id=? order by date DESC limit 0,1";
     //echo $sql . "<br />";
-    $result =  sqlQuery($sql);
+    $result =  sqlQuery($sql, array($id));
     if ($result['formdir'] == "patient_encounter") {
         $result['formdir'] = "encounter";
     }
-    $sql = "select * from form_" . $result['formdir'] . " where id='" . $result['form_id']  . "'";
+    $sql = "select * from form_" . $result['formdir'] . " where id=?";
     //echo $sql . "<br />";
-    $result =  sqlQuery($sql);
+    $result =  sqlQuery($sql, array($result['form_id']));
     //print_r($result);
     return $result;
 }
 
 function getFormsByPid ($pid, $cols = "*")
 {
-    return sqlQuery("select $cols from forms where pid ='$pid'");
+    return sqlQuery("select $cols from forms where pid =?", array($pid));
 }
 
 function getFormByEncounter($pid,$encounter, $cols="form_id, form_name", $name="")
@@ -123,20 +123,20 @@ function getEncounters($pid,$dateStart='',$dateEnd='',$encounterRuleType='')
 function getEncounterDateByEncounter($encounter)
 {
     // $sql = "select date from forms where encounter='$encounter' order by date";
-    $sql = "select date from form_encounter where encounter='$encounter' order by date";
-    return sqlQuery($sql);
+    $sql = "select date from form_encounter where encounter=? order by date";
+    return sqlQuery($sql, array($encounter));
 }
 
 function getProviderIdOfEncounter($encounter)
 {
-        $sql = "select provider_id from form_encounter where encounter='$encounter' order by date";
-        $res = sqlQuery($sql);
+        $sql = "select provider_id from form_encounter where encounter = ? order by date";
+        $res = sqlQuery($sql, array($encounter));
         return $res['provider_id'];
 }
 
 function getFormNameByFormdirAndFormid ($formdir,$form_id)
 {
-        return sqlQuery("select form_name from forms where formdir='$formdir' and form_id='$form_id'");
+        return sqlQuery("select form_name from forms where formdir=? and form_id=?", array($formdir, $form_id));
 }
 
 function getFormIdByFormdirAndFormid ($formdir,$form_id)
@@ -147,7 +147,7 @@ function getFormIdByFormdirAndFormid ($formdir,$form_id)
 
 function getFormNameByFormdir ($formdir)
 {
-    return sqlQuery("select form_name from forms where formdir='$formdir'");
+    return sqlQuery("select form_name from forms where formdir=?", array($formdir));
 }
 
 function getDocumentsByEncounter($patientID = null,$encounterID = null) {
