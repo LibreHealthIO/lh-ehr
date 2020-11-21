@@ -433,19 +433,6 @@ $GLOBALS_METADATA = array(
       xl('Applies to Vitals form')
     )
       ,
-    'disable_deprecated_metrics_form' => array(
-      xl('Disable Old Metric Vitals Form'),
-       'bool',                          // data type
-       '1',                             // default = true
-      xl('This was the older metric-only Vitals form, now deprecated.')
-    ),
-
-    'phone_country_code' => array(
-      xl('Telephone Country Code'),
-       'num',
-       '1',                             // default = North America
-      xl('1 = North America. See http://www.wtng.info/ for a list of other country codes.')
-    ),
 
     'date_display_format' => array(
       xl('Date Display Format'),
@@ -3278,7 +3265,7 @@ $GLOBALS_METADATA = array(
     ),
   ),
 
-  'LIMS' => array( 
+  'LIMS' => array(
     'lims_enabled' => array(
       xl('LIMS Enabled/Disabled'),
       'bool',

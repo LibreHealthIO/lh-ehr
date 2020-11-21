@@ -1,4 +1,4 @@
-<?php 
+<?php
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
@@ -52,7 +52,7 @@ $bigdata = getRegistered("%") or $bigdata = false;
                     $priority_id = $matches[1];
             sqlQuery("update registry set priority=? where id=?", array($val, $priority_id));
         }
-        }   
+        }
 ?>
 
 
@@ -76,7 +76,7 @@ if ($err)
     <div class="panel-heading"><?php xl('Registered','e');?></div>
     <div class="panel-body">
         <i><?php xl('click here to update priority, category and nickname settings','e'); ?></i>&nbsp
-        <input type=submit name=update class='cp-positive btn' value='<?php xl('Update','e'); ?>'><br> 
+        <input type=submit name=update class='cp-positive btn' value='<?php xl('Update','e'); ?>'><br>
     </div>
     <table class="table table-bordered" cellpadding=1 cellspacing=2>
         <tr>
@@ -94,14 +94,14 @@ if ($err)
     if ($bigdata != false)
     foreach($bigdata as $registry)
     {
-        $priority_category = sqlQuery("select priority, category, nickname from registry where id=?", array($registry['id'])); 
+        $priority_category = sqlQuery("select priority, category, nickname from registry where id=?", array($registry['id']));
         ?>
         <tr td bgcolor="<?php echo $color?>">
             <td width="2%">
-                <span class=text><?php echo $registry['id'];?></span> 
+                <span class=text><?php echo $registry['id'];?></span>
             </td>
             <td width="30%">
-                <span class=bold><?php echo xl_form_title($registry['name']); ?></span> 
+                <span class=bold><?php echo xl_form_title($registry['name']); ?></span>
             </td>
             <?php
                 if ($registry['sql_run'] == 0)
@@ -113,13 +113,13 @@ if ($err)
             ?></td>
             <td width="10%">
                 <span class=text><?php
-                
+
                 if ($registry['unpackaged'])
                     echo xl('PHP extracted','e');
                 else
                     echo xl('PHP compressed','e');
-                
-                ?></span> 
+
+                ?></span>
             </td>
             <td width="10%">
                 <?php
@@ -127,7 +127,7 @@ if ($err)
                     echo "<span class=text>".xl('DB installed')."</span>";
                 else
                     echo "<a class=link_submit href='./forms_admin.php?id={$registry['id']}&method=install_db'>".xl('install DB')."</a>";
-                ?> 
+                ?>
             </td>
             <?php
                 echo "<td><input class='form-control' type=text size=4 name=priority_".$registry['id']." value='".$priority_category['priority']."'></td>";
@@ -181,8 +181,8 @@ if ($err)
     {
             // added 8-2009 by BM - do not show the metric vitals form as option since deprecated
         //  also added a toggle in globals.php in case user wants the option to add this deprecated form
-            if (($fname == "vitalsM") && ($GLOBALS['disable_deprecated_metrics_form'])) continue;   
-        
+            if (($fname == "vitalsM")) continue;   
+
         if (stristr($fname, ".tar.gz") || stristr($fname, ".tar") || stristr($fname, ".zip") || stristr($fname, ".gz"))
             $phpState = "PHP compressed";
         else
@@ -197,7 +197,7 @@ if ($err)
                             else
                                     $form_title = $fname;
                     ?>
-                <span class=bold><?php echo xl_form_title($form_title); ?></span> 
+                <span class=bold><?php echo xl_form_title($form_title); ?></span>
             </td>
             <td width="10%"><?php
                 if ($phpState == "PHP extracted")
@@ -206,10 +206,10 @@ if ($err)
                     echo '<span class=text>' . xl('n/a') . '</span>';
             ?></td>
             <td width="20%">
-                <span class=text><?php echo xl($phpState); ?></span> 
+                <span class=text><?php echo xl($phpState); ?></span>
             </td>
             <td width="10%">
-                <span class=text><?php xl('n/a','e'); ?></span> 
+                <span class=text><?php xl('n/a','e'); ?></span>
             </td>
         </tr>
         <?php
