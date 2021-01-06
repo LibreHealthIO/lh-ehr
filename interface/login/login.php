@@ -179,13 +179,13 @@ include_once("$srcdir/headers.inc.php");
                             <tr>
                                 <td><span class="text"><?php echo xlt('Username'); ?></span></td>
                                 <td>
-                                    <input class="entryfield" type="text" size="35" name="authUser" style = "height : 28px; width : 100%; margin-left : 0px; border : 1px solid black">
+                                    <input class="entryfield" type="text" size="35" name="authUser" style = "height : 30px; width : 100%; margin-left : 0px; border : 1px solid black">
                                 </td>
                             </tr>
                             <tr>
                                 <td><span class="text"><?php echo xlt('Pass Phrase'); ?></span></td>
                                 <td>
-                                    <input class="entryfield" type="password" size="35" name="clearPass" style = "height : 28px; width : 100%; margin-left : 0px; border : 1px solid black">
+                                    <input class="entryfield" type="password" size="35" name="clearPass" style = "height : 30px; width : 100%; margin-left : 0px; border : 1px solid black">
                                 </td>
                             </tr>
 
@@ -195,7 +195,7 @@ include_once("$srcdir/headers.inc.php");
                                     <tr>
                                         <td><span class="text"><?php echo xlt('Language'); ?></span></td>
                                         <td>
-                                            <select class="entryfield" name=languageChoice size="1" style = "height : 28px">
+                                            <select class="entryfield" name=languageChoice size="1" style = "height : 30px; border : 1px solid black ">
                                                 <?php
                                                 echo "<option selected='selected' value='" . attr($defaultLangID) . "'>" . xlt('Default') . " - " . xlt($defaultLangName) . "</option>\n";
                                                 foreach ($result3 as $iter) {
