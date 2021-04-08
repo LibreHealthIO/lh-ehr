@@ -279,30 +279,36 @@ var page = {
             restoreDocumentEdits();
         }
         else{
-            var liburl = webRoot+'/patient_portal/lib/download_template.php';
-            $.ajax({
-                type: "POST",
-                url: liburl,
-                data: {docid: docname, pid: pid},
-                beforeSend: function(xhr){
-                    console.log("Please wait...");
-                },
-                error: function(qXHR, textStatus, errorThrow){
-                    console.log("There was an error");
-                },
-                success: function(templateHtml, textStatus, jqXHR){
-                    $("#docid").val(docname);
-                    $('#templatecontent').empty().append(templateHtml);
-                    if( isNewDoc ){
-                        isNewDoc = false;
-                        page.isSaved = false;
-                        $("#printTemplate").hide();
-                        $("#submitTemplate").hide();
-                        $("#sendTemplate").hide();
-                        page.onsiteDocument.set('fullDocument',templateHtml);        
-                    }
-                }
-            });
+            // This file isn't currently being used and download_template.php includes security vulnerabilites.
+            // Thus, the original code has been commented out and an error message is displayed instead.
+
+            // var liburl = webRoot+'/patient_portal/lib/download_template.php';
+            // $.ajax({
+            //     type: "POST",
+            //     url: liburl,
+            //     data: {docid: docname, pid: pid},
+            //     beforeSend: function(xhr){
+            //         console.log("Please wait...");
+            //     },
+            //     error: function(qXHR, textStatus, errorThrow){
+            //         console.log("There was an error");
+            //     },
+            //     success: function(templateHtml, textStatus, jqXHR){
+            //         $("#docid").val(docname);
+            //         $('#templatecontent').empty().append(templateHtml);
+            //         if( isNewDoc ){
+            //             isNewDoc = false;
+            //             page.isSaved = false;
+            //             $("#printTemplate").hide();
+            //             $("#submitTemplate").hide();
+            //             $("#sendTemplate").hide();
+            //             page.onsiteDocument.set('fullDocument',templateHtml);
+            //         }
+            //     }
+            // });
+
+            app.appendAlert('An unexpected error has occurred.', 'alert-error',0,'modelAlert');
+            app.hideProgress('modelLoader');
         }
         var cdate = page.onsiteDocument.get('createDate')
         var s = page.onsiteDocument.get('denialReason')
