@@ -75,6 +75,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                 <legend><?php echo xlt("Select one or more files to upload"); ?></legend>
                 <input id="upload_file" type="file" name="fileUplMulti[]" class="cp-positive" multiple />
                 <input type="submit" name="uplsubmt" class="cp-submit" value="<?php echo xla("Submit"); ?>" />
+                <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
                 </fieldset>
             </form>
          </td>
@@ -87,6 +88,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                 <input type="hidden" name="NewFiles" value="ProcessNew">
                 <label for="New-Files">Process New Files:</label>
                 <input id="processfiles"  name="Process" class="cp-output" type="button" value="<?php echo xla("Process"); ?>" />
+                <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
                 </fieldset>
             </form>
          </td>
@@ -159,6 +161,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                         -->
                         <td align='center'>
                             <input type="hidden" name="csvshowtable" value="gettable">
+                            <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
                             <input id="showtable" type="button" class="cp-submit" value="<?php echo xla("Submit"); ?>" />
                         </td>
 
@@ -220,6 +223,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                 <label for="era_file"><?php echo xlt("Filename"); ?>:</label>
                 <input id="era_file" type="file" size=20 name="fileUplEra" class="cp-positive" />
                 <input type="submit" name="fileERA" class="cp-submit" value="<?php echo xla("Submit"); ?>" />
+                <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
             </fieldset>
             </form>
         </td>
@@ -236,6 +240,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
             <label for="trace835"><?php echo xlt("Check No"); ?>:</label>
             <input type="text" size=10 name="trace835" value="" />
             <input type="submit" name="subtrace835" class="cp-submit" value="<?php echo xla("Submit"); ?>" />
+            <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
         </fieldset>
         </form>
         </td>
@@ -253,6 +258,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                         <label for="enctr"><?php echo xlt("Enter Encounter"); ?>:</label>
                         <input type="text" name="enctrbatch" size=10 value="" />
                         <input type="submit" name="Batch-enctr" class="cp-submit" value="<?php echo xla("Submit"); ?>" />
+                        <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
                     </fieldset>
                 </form>
               </td>
@@ -263,6 +269,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                     <label for="enctrERA"><?php echo xlt("Enter Encounter"); ?>:</label>
                     <input type="text" name="enctrEra" size=10 value="" />
                     <input type="submit" name="eraText" class="cp-submit" value="<?php echo xla("Submit"); ?>" />
+                    <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
                 </fieldset>
                 </form>
               </td>
@@ -275,6 +282,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                     <label for="x12file"><?php echo xlt("Choose File"); ?>:</label>
                     <input id="x12file" type="file" name="fileUplx12" class="cp-positive" />
                     <input type="submit" name="fileX12" class="cp-submit" value="<?php echo xla("Submit"); ?>" />
+                    <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
                 </fieldset>
                 </form>
             </td>
@@ -309,6 +317,7 @@ $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
                     <input id="savenotes" type="button" class="cp-submit" value="<?php echo xla("Save"); ?>" />
                     <label for="closenotes"><?php echo xlt("Close"); ?></label>
                     <input id="closenotes" type="button" class="cp-negative" value="<?php echo xla("Close"); ?>" />
+                    <input type='hidden' name='token' value="<?php echo $_SESSION['token'];?>" />
                     </fieldset>
                     </form>
                 </td>

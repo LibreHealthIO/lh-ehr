@@ -55,5 +55,4 @@ function image_has_right_size($size) {
   return $size < 20971520;
 }
 
-
 ?>

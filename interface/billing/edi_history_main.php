@@ -70,6 +70,7 @@ require_once("$srcdir/edihistory/ibr_batch_read.php");        //dirname(__FILE__
 require_once("$srcdir/edihistory/ibr_ack_read.php");          //dirname(__FILE__) . "/edihist/ibr_ack_read.php");
 require_once("$srcdir/edihistory/ibr_uploads.php");           //dirname(__FILE__) . "/edihist/ibr_uploads.php");
 require_once("$srcdir/edihistory/ibr_io.php");                //dirname(__FILE__) . "/edihist/ibr_io.php");
+require_once("../../library/CsrfToken.php");
 //
 // php may output line endings if include files are utf-8
 ob_clean();
@@ -100,6 +101,14 @@ if (!is_dir($ibr_upldir)) {
  */
 
 if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+    if (!empty($_POST)) {
+        if (!isset($_POST['token'])) {
+            error_log('WARNING: A POST request detected with no csrf token found');
+            die('Authentication failed.');
+        } else if (!(CsrfToken::verifyCsrfToken($_POST['token'])) {
+            die('Authentication failed.');
+        }
+    }
     //
     if ( isset($_POST['NewFiles']) ) {
         // process new files button clicked
