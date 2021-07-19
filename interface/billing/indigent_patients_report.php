@@ -76,7 +76,7 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
     }
 }
 </style><link rel="stylesheet" href="<?php echo $css_header; ?>" type="text/css">
-<title><?php xl('Indigent Patients Report','e')?></title>
+<title><?php echo xlt('Indigent Patients Report'); ?></title>
 
 <script type="text/javascript" src="../../library/report_validation.js"></script>
 
@@ -99,7 +99,7 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
 
 <body class="body_top">
 
-<span class='title'><?php xl('Report','e'); ?> - <?php xl('Indigent Patients','e'); ?></span>
+<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Indigent Patients'); ?></span>
 
 <form method='post' action='indigent_patients_report.php' id='theform' onsubmit='return validateInput()'>
 
@@ -115,14 +115,14 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
     <table class='text'>
         <tr>
             <td class='label'>
-               <?php xl('Visits From','e'); ?>:
+               <?php echo xlt('Visits From'); ?>:
             </td>
             <td>
                <input type='text' name='form_from_date' id="form_from_date" size='10'
                       value='<?php echo htmlspecialchars(oeFormatShortDate($form_from_date)) ?>'>
             </td>
             <td class='label'>
-               <?php xl('To','e'); ?>:
+               <?php echo xlt('To'); ?>:
             </td>
             <td>
                <input type='text' name='form_to_date' id="form_to_date" size='10'
@@ -141,14 +141,14 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
                 <div style='margin-left:15px'>
                     <a href='#' class='css_button cp-submit' onclick='$("#form_refresh").attr("value","true"); $("#theform").submit();'>
                     <span>
-                        <?php xl('Submit','e'); ?>
+                        <?php echo xlt('Submit'); ?>
                     </span>
                     </a>
 
                     <?php if ($_POST['form_refresh']) { ?>
                     <a href='#' class='css_button cp-output' id='printbutton'>
                         <span>
-                            <?php xl('Print','e'); ?>
+                            <?php echo xlt('Print'); ?>
                         </span>
                     </a>
                     <?php } ?>
@@ -166,28 +166,28 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
 
  <thead bgcolor="#dddddd">
   <th>
-   &nbsp;<?php xl('Patient','e')?>
+   &nbsp;<?php echo xlt('Patient'); ?>
   </th>
   <th>
-   &nbsp;<?php xl('SSN','e')?>
+   &nbsp;<?php echo xlt('SSN'); ?>
   </th>
   <th>
-   &nbsp;<?php xl('Invoice','e')?>
+   &nbsp;<?php echo xlt('Invoice'); ?>
   </th>
   <th>
-   &nbsp;<?php xl('Svc Date','e')?>
+   &nbsp;<?php echo xlt('Svc Date'); ?>
   </th>
   <th>
-   &nbsp;<?php xl('Due Date','e')?>
+   &nbsp;<?php echo xlt('Due Date')?>
   </th>
   <th align="right">
-   <?php xl('Amount','e')?>&nbsp;
+   <?php echo xlt('Amount'); ?>&nbsp;
   </th>
   <th align="right">
-   <?php xl('Paid','e')?>&nbsp;
+   <?php echo xlt('Paid'); ?>&nbsp;
   </th>
   <th align="right">
-   <?php xl('Balance','e')?>&nbsp;
+   <?php echo xlt('Balance'); ?>&nbsp;
   </th>
  </thead>
 
@@ -240,30 +240,30 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
 
       $bgcolor = (($irow & 1) ? "#ffdddd" : "#ddddff");
 ?>
- <tr bgcolor='<?php  echo $bgcolor ?>'>
+ <tr bgcolor='<?php  echo attr($bgcolor); ?>'>
   <td class="detail">
-   &nbsp;<?php  echo $row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname'] ?>
+   &nbsp;<?php  echo text($row['lname'] . ', ' . $row['fname'] . ' ' . $row['mname']); ?>
   </td>
   <td class="detail">
-   &nbsp;<?php  echo $row['ss'] ?>
+   &nbsp;<?php  echo text($row['ss']); ?>
   </td>
   <td class="detail">
-   &nbsp;<?php  echo $invnumber ?></a>
+   &nbsp;<?php  echo text($invnumber); ?></a>
   </td>
   <td class="detail">
-   &nbsp;<?php date(DateFormatRead(true), strtotime(substr($row['date'], 0, 10))); ?>
+   &nbsp;<?php text(date(DateFormatRead(true), strtotime(substr($row['date'], 0, 10)))); ?>
   </td>
   <td class="detail">
-   &nbsp;<?php date(DateFormatRead(true), strtotime($inv_duedate)); ?>
+   &nbsp;<?php text(date(DateFormatRead(true), strtotime($inv_duedate))); ?>
   </td>
   <td class="detail" align="right">
-   <?php  echo bucks($inv_amount) ?>&nbsp;
+   <?php  echo text(bucks($inv_amount)); ?>&nbsp;
   </td>
   <td class="detail" align="right">
-   <?php  echo bucks($inv_paid) ?>&nbsp;
+   <?php  echo text(bucks($inv_paid)); ?>&nbsp;
   </td>
   <td class="detail" align="right">
-   <?php  echo bucks($inv_amount - $inv_paid) ?>&nbsp;
+   <?php  echo text(bucks($inv_amount - $inv_paid)); ?>&nbsp;
   </td>
  </tr>
 <?php
@@ -271,7 +271,7 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
 ?>
  <tr bgcolor='#dddddd'>
   <td class="detail">
-   &nbsp;<?php xl('Totals','e'); ?>
+   &nbsp;<?php echo xlt('Totals'); ?>
   </td>
   <td class="detail">
    &nbsp;
@@ -286,13 +286,13 @@ $form_to_date   = fixDate($_POST['form_to_date'], date("Y-m-d"));
    &nbsp;
   </td>
   <td class="detail" align="right">
-   <?php  echo bucks($total_amount) ?>&nbsp;
+   <?php  echo text(bucks($total_amount)); ?>&nbsp;
   </td>
   <td class="detail" align="right">
-   <?php  echo bucks($total_paid) ?>&nbsp;
+   <?php  echo text(bucks($total_paid)); ?>&nbsp;
   </td>
   <td class="detail" align="right">
-   <?php  echo bucks($total_amount - $total_paid) ?>&nbsp;
+   <?php  echo text(bucks($total_amount - $total_paid)); ?>&nbsp;
   </td>
  </tr>
 <?php

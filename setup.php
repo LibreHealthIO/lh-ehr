@@ -140,7 +140,7 @@ function cloneClicked() {
 <ul>
  <li>Access controls (php-GACL) are installed for fine-grained security, and can be administered in
      LibreHealth EHR's admin->acl menu.</li>
- <li>Reviewing <?php echo $OE_SITE_DIR; ?>/config.php is a good idea. This file
+ <li>Reviewing <?php echo text($OE_SITE_DIR); ?>/config.php is a good idea. This file
      contains some settings that you may want to change.</li>
  <li>There's much information and many extra tools bundled within the LibreHealth EHR installation directory.
      Please refer to LibreHealth EHR/Documentation. Many forms and other useful scripts can be found at LibreHealth EHR/contrib.</li>
@@ -157,7 +157,7 @@ We recommend you print these instructions for future reference.
   echo "<p>If you edited the PHP or Apache configuration files during this installation process, then we recommend you restart your Apache server before following below LibreHealth EHR link.</p>";
 } ?>
 <p>
- <a href='./?site=<?php echo $site_id; ?>'>Click here to start using LibreHealth EHR. </a>
+ <a href='./?site=<?php echo attr($site_id); ?>'>Click here to start using LibreHealth EHR. </a>
 </p>
 
 <?php

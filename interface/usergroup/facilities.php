@@ -142,7 +142,11 @@ $(document).ready(function(){
     $(".editFacilities").on("click", function (event) {
       event.preventDefault();
       var dyn_link = parseInt($(this).attr("data-text"));
-      initIziLink(dyn_link);
+
+      // prevent invalid or harmful input - dyn_link must be a positive int
+      if(!isNaN(dyn_link) && dyn_link > 0) {
+        initIziLink(dyn_link);
+      }
     });
 
     function initIziLink(link) {

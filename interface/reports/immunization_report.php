@@ -32,8 +32,8 @@ require_once "reports_controllers/ImmunizationController.php";
 <html>
 <head>
 <?php html_header_show();?>
-<title><?php xl('Immunization Registry','e'); ?></title>
-<style type="text/css">@import url(../../library/dynarch_calendar.css);</style>
+<title><?php echo xlt('Immunization Registry'); ?></title>
+<style type="text/css">@import url("../../library/dynarch_calendar.css");</style>
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script type="text/javascript" src="../../library/textformat.js"></script>
 <link rel="stylesheet" href="../../library/css/jquery.datetimepicker.css">
@@ -88,7 +88,7 @@ require_once "reports_controllers/ImmunizationController.php";
 
 <body class="body_top">
 
-<span class='title'><?php xl('Report','e'); ?> - <?php xl('Immunization Registry','e'); ?></span>
+<span class='title'><?php echo xlt('Report'); ?> - <?php echo xlt('Immunization Registry'); ?></span>
 
 <?php reportParametersDaterange(); #TRK ?>
 
@@ -103,7 +103,7 @@ require_once "reports_controllers/ImmunizationController.php";
       <table class='text'>
         <tr>
           <td class='label'>
-            <?php xl('Codes','e'); ?>:
+            <?php echo xlt('Codes'); ?>:
           </td>
           <td>
             <?php
@@ -117,9 +117,9 @@ require_once "reports_controllers/ImmunizationController.php";
              //echo "    <option value=''>-- " . xl('All Codes') . " --\n";
              while ($crow = sqlFetchArray($cres)) {
               $codeid = $crow['id'];
-              echo "    <option value='$codeid'";
+              echo "    <option value='".attr($codeid)."'";
               if (in_array($codeid, $form_code)) echo " selected";
-              echo ">" . $crow['name'] . "\n";
+              echo ">" . text($crow['name']) . "\n";
              }
              echo "   </select>\n";
             ?>
@@ -142,13 +142,13 @@ require_once "reports_controllers/ImmunizationController.php";
             $("#theform").submit();
             '>
             <span>
-              <?php xl('Refresh','e'); ?>
+              <?php echo xlt('Refresh'); ?>
             </span>
             </a>
             <?php if ($_POST['form_refresh']) { ?>
               <a href='#' class='css_button cp-output' id='printbutton'>
                 <span>
-                  <?php xl('Print','e'); ?>
+                  <?php echo xlt('Print'); ?>
                 </span>
               </a>
               <a href='#' class='css_button cp-output' onclick=
@@ -157,7 +157,7 @@ require_once "reports_controllers/ImmunizationController.php";
                      $('#theform').submit();
               }">
                 <span>
-                  <?php xl('Get HL7','e'); ?>
+                  <?php echo xlt('Get HL7'); ?>
                 </span>
               </a>
             <?php } ?>
@@ -177,11 +177,11 @@ require_once "reports_controllers/ImmunizationController.php";
 <div id="report_results">
 <table>
  <thead align="left">
-  <th> <?php xl('Patient ID','e'); ?> </th>
-  <th> <?php xl('Patient Name','e'); ?> </th>
-  <th> <?php xl('Immunization Code','e'); ?> </th>
-  <th> <?php xl('Immunization Title','e'); ?> </th>
-  <th> <?php xl('Immunization Date','e'); ?> </th>
+  <th> <?php echo xlt('Patient ID'); ?> </th>
+  <th> <?php echo xlt('Patient Name'); ?> </th>
+  <th> <?php echo xlt('Immunization Code'); ?> </th>
+  <th> <?php echo xlt('Immunization Title'); ?> </th>
+  <th> <?php echo xlt('Immunization Date'); ?> </th>
  </thead>
  <tbody>
 <?php
@@ -206,7 +206,7 @@ require_once "reports_controllers/ImmunizationController.php";
    <?php echo htmlspecialchars($row['immunizationtitle']) ?>
   </td>
   <td>
-   <?= date(DateFormatRead(true), strtotime(htmlspecialchars($row['immunizationdate']))); ?>
+   <?php date(DateFormatRead(true), strtotime(htmlspecialchars($row['immunizationdate']))); ?>
   </td>
  </tr>
 <?php
@@ -215,9 +215,9 @@ require_once "reports_controllers/ImmunizationController.php";
 ?>
  <tr class="report_totals">
   <td colspan='9'>
-   <?php xl('Total Number of Immunizations','e'); ?>
+   <?php echo xlt('Total Number of Immunizations'); ?>
    :
-   <?php echo $total ?>
+   <?php echo text($total); ?>
   </td>
  </tr>
 
@@ -226,7 +226,7 @@ require_once "reports_controllers/ImmunizationController.php";
 </div> <!-- end of results -->
 <?php } else { ?>
 <div class='text'>
-  <?php echo xl('Click Refresh to view all results, or please input search criteria above to view specific results.', 'e' ); ?>
+  <?php echo xlt('Click Refresh to view all results, or please input search criteria above to view specific results.'); ?>
 </div>
 <?php } ?>
 </form>

@@ -9,7 +9,7 @@
 <html>
 <head>
 <?php html_header_show();?>
-<title><?php xl('Navigation','e'); ?></title>
+<title><?php echo xlt('Navigation'); ?></title>
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
 <script type="text/javascript" src="../../library/dialog.js"></script>
 <script language="JavaScript">
@@ -42,49 +42,49 @@ function selpopup(selobj) {
 <table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
  <tr>
   <td align="center" valign="middle">
-   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/summary/summary_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/summary/patient_summary.php'" target="Main" class="menu"><?php xl('Summary','e'); ?></a>
+   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/summary/summary_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/summary/patient_summary.php'" target="Main" class="menu"><?php echo xlt('Summary'); ?></a>
   </td>
   <td align="center" valign="middle">
-   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/history/history_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/history/patient_history.php'" target="Main" class="menu"><?php xl('History','e'); ?></a>
+   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/history/history_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/history/patient_history.php'" target="Main" class="menu"><?php echo xlt('History'); ?></a>
   </td>
   <td align="center" valign="middle">
-   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/encounter/encounter_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/encounter/patient_encounter.php?mode=new'" target="Main" class="menu"><?php xl('Encounter','e'); ?></a>
+   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/encounter/encounter_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/encounter/patient_encounter.php?mode=new'" target="Main" class="menu"><?php echo xlt('Encounter'); ?></a>
   </td>
   <td align="center" valign="middle">
-   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/transaction/transaction_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/transaction/patient_transaction.php'" target="Main" class="menu"><?php xl('Transaction','e'); ?></a>
+   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/transaction/transaction_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/transaction/patient_transaction.php'" target="Main" class="menu"><?php echo xlt('Transaction'); ?></a>
   </td>
   <td align="center" valign="middle">
-   <a href="<?php echo $GLOBALS['web_root'];?>/controller.php?document&list&patient_id=<?php echo $pid?>"
-    target="Main" class="menu" onclick="top.restoreSession()"><?php xl('Documents','e'); ?></a>
+   <a href="<?php echo $GLOBALS['web_root'];?>/controller.php?document&list&patient_id=<?php echo attr($pid); ?>"
+    target="Main" class="menu" onclick="top.restoreSession()"><?php echo xlt('Documents'); ?></a>
   </td>
   <td align="center" valign="middle">
-   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/report/report_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/report/patient_report.php'" target="Main" class="menu"><?php xl('Report','e'); ?></a>
+   <a href="javascript:top.restoreSession();parent.Title.location.href='<?php echo $rootdir;?>/patient_file/report/report_title.php';parent.Main.location.href='<?php echo $rootdir;?>/patient_file/report/patient_report.php'" target="Main" class="menu"><?php echo xlt('Report'); ?></a>
   </td>
   <td align="center" align="right" valign="middle">
-   <a href="../main/main_screen.php" target="_top" class="logout" onclick="top.restoreSession()"><?php xl('Close','e'); ?></a>&nbsp;&nbsp;
+   <a href="../main/main_screen.php" target="_top" class="logout" onclick="top.restoreSession()"><?php echo xlt('Close'); ?></a>&nbsp;&nbsp;
   </td>
   <td align="right" valign="middle">
     <select onchange='selpopup(this)'>
-     <option value=''><?php xl('Popups','e'); ?></option>
+     <option value=''><?php echo xlt('Popups'); ?></option>
 <?php if ($ie_auth) { ?>
-     <option value='problem_encounter.php'><?php xl('Issues','e'); ?></option>
+     <option value='problem_encounter.php'><?php echo xlt('Issues'); ?></option>
 <?php } ?>
-     <option value='../../custom/export_xml.php'><?php xl('Export','e'); ?></option>
-     <option value='../../custom/import_xml.php'><?php xl('Import','e'); ?></option>
-     <option value='../reports/appointments_report.php?patient=<?php echo $pid ?>'><?php xl('Appts','e'); ?></option>
+     <option value='../../custom/export_xml.php'><?php echo xlt('Export'); ?></option>
+     <option value='../../custom/import_xml.php'><?php echo xlt('Import'); ?></option>
+     <option value='../reports/appointments_report.php?patient=<?php echo attr($pid); ?>'><?php echo xlt('Appts'); ?></option>
 <?php if (file_exists("$webserver_root/custom/refer.php")) { ?>
-     <option value='../../custom/refer.php'><?php xl('Refer','e'); ?></option>
+     <option value='../../custom/refer.php'><?php echo xlt('Refer'); ?></option>
 <?php } ?>
 <?php if (file_exists("$webserver_root/custom/fee_sheet_codes.php")) { ?>
- <option value='printed_fee_sheet.php'><?php xl('Superbill','e'); ?></option>
+ <option value='printed_fee_sheet.php'><?php echo xlt('Superbill'); ?></option>
 <?php } ?>
 <?php if ($GLOBALS['inhouse_pharmacy']) { ?>
-     <option value='front_payment.php'><?php xl('Prepay','e'); ?></option>
-     <option value='pos_checkout.php'><?php xl('Checkout','e'); ?></option>
+     <option value='front_payment.php'><?php echo xlt('Prepay'); ?></option>
+     <option value='pos_checkout.php'><?php echo xlt('Checkout'); ?></option>
 <?php } else { ?>
-     <option value='front_payment.php'><?php xl('Payment','e'); ?></option>
+     <option value='front_payment.php'><?php echo xlt('Payment'); ?></option>
 <?php } ?>
-     <option value='letter.php'><?php xl('Letter','e'); ?></option>
+     <option value='letter.php'><?php echo xlt('Letter'); ?></option>
     </select>
   </td>
  </tr>

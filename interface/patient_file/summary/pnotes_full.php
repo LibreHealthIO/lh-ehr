@@ -234,11 +234,11 @@ if ($orderid) {
   $title_docname .= " " . xl("linked to procedure order") . " $orderid";
 }
 
-$urlparms = "docid=$docid&orderid=$orderid";
+$urlparms = "docid=".attr($docid)."&orderid=".attr($orderid);
 ?>
 
     <div>
-        <span class="title"><?php echo xlt('Patient Notes') . $title_docname; ?></span>
+        <span class="title"><?php echo xlt('Patient Notes') . text($title_docname); ?></span>
     </div>
     <div style='float:left;margin-right:10px'>
         <?php echo htmlspecialchars( xl('for'), ENT_NOQUOTES);?>&nbsp;<span class="title">
@@ -273,8 +273,8 @@ $urlparms = "docid=$docid&orderid=$orderid";
     </div>
 
     <input type='hidden' name='mode' id="mode" value="new">
-    <input type='hidden' name='offset' id="offset" value="<?php echo $offset; ?>">
-    <input type='hidden' name='offset_sent' id="offset_sent" value="<?php echo $offset_sent; ?>">
+    <input type='hidden' name='offset' id="offset" value="<?php echo attr($offset); ?>">
+    <input type='hidden' name='offset_sent' id="offset_sent" value="<?php echo attr($offset_sent); ?>">
     <input type='hidden' name='form_active' id="form_active" value="<?php echo htmlspecialchars( $form_active, ENT_QUOTES); ?>">
     <input type='hidden' name='form_inactive' id="form_inactive" value="<?php echo htmlspecialchars( $form_inactive, ENT_QUOTES); ?>">
     <input type='hidden' name='noteid' id="noteid" value="<?php echo htmlspecialchars( $noteid, ENT_QUOTES); ?>">
@@ -326,8 +326,8 @@ if ($billing_note) {
 <br>
 <?php } ?>
 <ul class="tabNav">
-  <li class="<?php echo $inbox; ?>" ><a onclick="show_div('inbox')" href="#"><?php echo htmlspecialchars(xl('Inbox'),ENT_NOQUOTES); ?></a></li>
-  <li class="<?php echo $outbox; ?>" ><a onclick="show_div('outbox')" href="#"><?php echo htmlspecialchars(xl('Sent Items'),ENT_NOQUOTES); ?></a></li>
+  <li class="<?php echo attr($inbox); ?>" ><a onclick="show_div('inbox')" href="#"><?php echo htmlspecialchars(xl('Inbox'),ENT_NOQUOTES); ?></a></li>
+  <li class="<?php echo attr($outbox); ?>" ><a onclick="show_div('outbox')" href="#"><?php echo htmlspecialchars(xl('Sent Items'),ENT_NOQUOTES); ?></a></li>
 </ul>
 <div class='tabContainer' >
   <div id='inbox_div' <?php echo $inbox_style; ?> >
@@ -336,8 +336,8 @@ if ($billing_note) {
 <!-- start of previous notes DIV -->
 <div class=pat_notes>
 <input type='hidden' name='mode' value="update">
-<input type='hidden' name='offset' id='offset' value="<?php echo $offset; ?>">
-<input type='hidden' name='offset_sent' id='offset_sent' value="<?php echo $offset_sent; ?>">
+<input type='hidden' name='offset' id='offset' value="<?php echo attr($offset); ?>">
+<input type='hidden' name='offset_sent' id='offset_sent' value="<?php echo attr($offset_sent); ?>">
 <input type='hidden' name='noteid' id='noteid' value="0">
 <table border='0' cellpadding="1" class="text">
 <?php if ($result != ""): ?>
@@ -427,12 +427,12 @@ if ($result != "") {
 
     echo "  <td class='text bold'>\n";
     echo "   <input type='hidden' name='act".htmlspecialchars( $row_note_id, ENT_QUOTES)."' value='1' />\n";
-    echo "   <input type='checkbox' name='chk".htmlspecialchars( $row_note_id, ENT_QUOTES)."' $checked />\n";
+    echo "   <input type='checkbox' name='chk".htmlspecialchars( $row_note_id, ENT_QUOTES)."' ".attr($checked)." />\n";
     echo "  </td>\n";
 
     echo "  <td class='text bold'>\n";
     if ($docid || $orderid) {
-      echo "   <input type='checkbox' name='lnk" . htmlspecialchars($row_note_id, ENT_QUOTES) . "' $linked />\n";
+      echo "   <input type='checkbox' name='lnk" . htmlspecialchars($row_note_id, ENT_QUOTES) . "' ".attr($linked)." />\n";
     }
     echo "  </td>\n";
 
@@ -470,7 +470,7 @@ if ($offset > ($N-1)) {
     "&form_active=" . htmlspecialchars( $form_active, ENT_QUOTES) .
     "&form_inactive=" . htmlspecialchars( $form_inactive, ENT_QUOTES) .
     "&form_doc_only=" . htmlspecialchars( $form_doc_only, ENT_QUOTES) .
-    "&offset=" . ($offset-$N) . "&" . attr($activity_string_html) . "' onclick='top.restoreSession()'>[" .
+    "&offset=" . attr(($offset-$N)) . "&" . attr($activity_string_html) . "' onclick='top.restoreSession()'>[" .
     htmlspecialchars( xl('Previous'), ENT_NOQUOTES) . "]</a>\n";
 }
 ?>
@@ -580,12 +580,12 @@ if ($result_sent != "") {
 
     echo "  <td class='text bold'>\n";
     echo "   <input type='hidden' name='act".htmlspecialchars( $row_note_id, ENT_QUOTES)."' value='1' />\n";
-    echo "   <input type='checkbox' name='chk".htmlspecialchars( $row_note_id, ENT_QUOTES)."' $checked />\n";
+    echo "   <input type='checkbox' name='chk".htmlspecialchars( $row_note_id, ENT_QUOTES)."' ".attr($checked)." />\n";
     echo "  </td>\n";
 
     echo "  <td class='text bold'>\n";
     if ($docid || $orderid) {
-      echo "   <input type='checkbox' name='lnk" . htmlspecialchars($row_note_id, ENT_QUOTES) . "' $linked />\n";
+      echo "   <input type='checkbox' name='lnk" . htmlspecialchars($row_note_id, ENT_QUOTES) . "' ".attr($linked)." />\n";
     }
     echo "  </td>\n";
 
@@ -622,7 +622,7 @@ if ($offset_sent > ($M-1)) {
     "&form_active=" . htmlspecialchars( $form_active, ENT_QUOTES) .
     "&form_inactive=" . htmlspecialchars( $form_inactive, ENT_QUOTES) .
     "&form_doc_only=" . htmlspecialchars( $form_doc_only, ENT_QUOTES) .
-    "&offset_sent=" . ($offset_sent-$M) . "&" . attr($activity_string_html) . "' onclick='top.restoreSession()'>[" .
+    "&offset_sent=" . attr(($offset_sent-$M)) . "&" . attr($activity_string_html) . "' onclick='top.restoreSession()'>[" .
     htmlspecialchars( xl('Previous'), ENT_NOQUOTES) . "]</a>\n";
 }
 ?>
@@ -636,7 +636,7 @@ if ($result_sent_count == $M) {
     "&form_active=" . htmlspecialchars( $form_active, ENT_QUOTES) .
     "&form_inactive=" . htmlspecialchars( $form_inactive, ENT_QUOTES) .
     "&form_doc_only=" . htmlspecialchars( $form_doc_only, ENT_QUOTES) .
-    "&offset_sent=" . ($offset_sent+$M) . "&" . attr($activity_string_html) . "' onclick='top.restoreSession()'>[" .
+    "&offset_sent=" . attr(($offset_sent+$M)) . "&" . attr($activity_string_html) . "' onclick='top.restoreSession()'>[" .
     htmlspecialchars( xl('Next'), ENT_NOQUOTES) . "]</a>\n";
 }
 ?>

@@ -195,23 +195,23 @@ tr.appt-hover{
     <!-- to initialize the iziModal -->
     <div id="appointmentLog-iframe"></div>
     <div>
-        <span class="title"><?php echo htmlspecialchars(xl('Track Appointments'),ENT_NOQUOTES); ?></span>
+        <span class="title"><?php echo xlt('Track Appointments'); ?></span>
         &nbsp;
         <span>
             <?php if (isset($_GET['set_pid'])): ?>
                 <!--if came here from select patient tab, go back to it-->
-                <a href="../../main/finder/select_patient.php" class="css_button" onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Back To Select Patient'),ENT_NOQUOTES);?></a>
+                <a href="../../main/finder/select_patient.php" class="css_button" onclick="top.restoreSession()"><?php echo xlt('Back To Select Patient');?></a>
             <?php else: ?>
                 <!--if came here from demographics tab, go back to it-->
-                <a href="../summary/demographics.php" class="css_button" onclick="top.restoreSession()"><?php echo htmlspecialchars(xl('Back To Patient'),ENT_NOQUOTES);?></a>
+                <a href="../summary/demographics.php" class="css_button" onclick="top.restoreSession()"><?php echo xlt('Back To Patient');?></a>
             <?php endif; ?>
         </span>
     </div>
     <div style="margin-left: 30px;">
-        <?php echo htmlspecialchars(xl('Selected Patient:'),ENT_NOQUOTES);?>
+        <?php echo xlt('Selected Patient:');?>
         &nbsp;
         <span class="title">
-            <?php echo htmlspecialchars(getPatientName($pid),ENT_NOQUOTES) ?>
+            <?php echo text(getPatientName($pid));?>
         </span>
     </div>
     <hr>

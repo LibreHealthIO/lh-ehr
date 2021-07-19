@@ -184,7 +184,7 @@ if ($_POST['form_refresh'] || $_POST['form_csvexport']) {
   <td colspan='11'>
    <?php echo xlt('Total Number of Patients'); ?>
    :
-   <?php echo $totalpts ?>
+   <?php echo text($totalpts); ?>
   </td>
  </tr>
 

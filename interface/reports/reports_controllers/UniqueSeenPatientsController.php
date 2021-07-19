@@ -80,28 +80,28 @@ function prepareAndShowResults() {
    else { // not labels
  echo '<tr>';
   echo '<td>';
-   echo oeFormatShortDate(substr($row['edate'], 0, 10));
+   echo text(oeFormatShortDate(substr($row['edate'], 0, 10)));
   echo '</td>';
   echo '<td>';
-   echo $row['lname'] . ',' . $row['fname'] . ' ' . $row['mname'];
+   echo text($row['lname'] . ',' . $row['fname'] . ' ' . $row['mname']);
   echo '</td>';
   echo '<td style="text-align:center">';
-    echo $row['ecount'];
+    echo text($row['ecount']);
   echo '</td>';
   echo '<td>';
-   echo $age;
+   echo text($age);
   echo '</td>';
   echo '<td>';
-    echo $row['sex'];
+    echo text($row['sex']);
   echo '</td>';
   echo '<td>';
-    echo $row['ethnoracial'];
+    echo text($row['ethnoracial']);
   echo '</td>';
   echo '<td>';
-   echo $row['cname1'];
+   echo text($row['cname1']);
   echo '</td>';
   echo '<td>';
-   echo $row['cname2'];
+   echo text($row['cname2']);
   echo '</td>';
  echo '</tr>';
    } // end not labels
@@ -111,10 +111,10 @@ function prepareAndShowResults() {
   if (!$_POST['form_labels']) {
  echo '<tr class="report_totals">';
   echo '<td colspan="2">';
-    xl('Total Number of Patients','e');
+    echo xlt('Total Number of Patients');
   echo '</td>';
   echo '<td style="padding-left: 20px;">';
-   echo $totalpts;
+   echo text($totalpts);
   echo '</td>';
   echo '<td colspan="5">&nbsp;</td>';
  echo '</tr>';

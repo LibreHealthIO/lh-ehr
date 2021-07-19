@@ -409,7 +409,7 @@ if($fromencounter == 0) {
     echo "<td>&nbsp;&nbsp;&nbsp;<a href='../../patient_file/summary/demographics.php' ";
     echo "target='Main'";
     echo " class='css_button' onclick='top.restoreSession()'>";
-    echo "<span>" . htmlspecialchars(xl('Back to Patient'),ENT_NOQUOTES) . "</span></a></td>";
+    echo "<span>" . xlt('Back to Patient') . "</span></a></td>";
     }
 //---------------------------------------------
 echo "</tr></table>";

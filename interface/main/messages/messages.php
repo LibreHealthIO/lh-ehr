@@ -98,11 +98,11 @@ $task= isset($_REQUEST['task']) ? $_REQUEST['task'] : "";
 if (acl_check('admin', 'super'    )) {
     if ($show_all=='yes') {
         $showall = "yes";
-        $lnkvar="<a class='more' href='messages.php?show_all=no&$activity_string_html' name='Just Mine' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('Just Mine'), ENT_NOQUOTES).")</a>";
+        $lnkvar="<a class='more' href='messages.php?show_all=no&".attr($activity_string_html)."' name='Just Mine' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('Just Mine'), ENT_NOQUOTES).")</a>";
     }
     else {
         $showall = "no";
-        $lnkvar="<a class='more' href='messages.php?show_all=yes&$activity_string_html' name='See All' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('See All'), ENT_NOQUOTES).")</a>";
+        $lnkvar="<a class='more' href='messages.php?show_all=yes&".attr($activity_string_html)."' name='See All' onclick=\"top.restoreSession()\"> (".htmlspecialchars( xl('See All'), ENT_NOQUOTES).")</a>";
     }
 }
 ?>
@@ -221,7 +221,7 @@ switch($task) {
 if($task == "addnew" or $task == "edit") {
     // Display the Messages page layout.
     echo "
-<form name=new_note id=new_note action=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&$activity_string_html\" method=post>
+<form name=new_note id=new_note action=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&".attr($activity_string_html)."\" method=post>
 <input type=hidden name=noteid id=noteid value='".attr($noteid)."'>
 <input type=hidden name=task id=task value=add>";
     ?>
@@ -241,7 +241,7 @@ if($task == "addnew" or $task == "edit") {
                         <?php if ($task != "addnew" && $result['pid'] != 0) { ?>
                             <a class="patLink" onclick="goPid('<?php echo attr($result['pid']);?>')"><?php echo htmlspecialchars( xl('Patient'), ENT_NOQUOTES); ?>:</a>
                         <?php } else { ?>
-                            <b class='<?php echo ($task=="addnew"?"required":"") ?>'><?php echo htmlspecialchars( xl('Patient'), ENT_NOQUOTES); ?>:</b>
+                            <b class='<?php echo ($task=="addnew"? attr("required"):""); ?>'><?php echo htmlspecialchars( xl('Patient'), ENT_NOQUOTES); ?>:</b>
                             <?php
                         }
                         if ($reply_to) {
@@ -253,7 +253,7 @@ if($task == "addnew" or $task == "edit") {
                             $patientname = xl('Click to select');
                         } ?>
                         <input type='text' size='10' name='form_patient' style='<?php
-                        echo ($task=="addnew"?"cursor:pointer;cursor:hand;":"") ?>' value='<?php
+                        echo ($task=="addnew"? attr("cursor:pointer;cursor:hand;"):"") ?>' value='<?php
                         echo htmlspecialchars($patientname, ENT_QUOTES); ?>' <?php
                         echo (($task=="addnew" || $result['pid']==0) ? "onclick='sel_patient()' readonly":"disabled") ?> title='<?php
                         echo ($task=="addnew"?(htmlspecialchars( xl('Click to select patient'), ENT_QUOTES)):"") ?>'  />
@@ -310,8 +310,8 @@ if($task == "addnew" or $task == "edit") {
                             $d = new Document($gprow['id1']);
                             echo "   <a href='";
                             echo $GLOBALS['webroot'] . "/controller.php?document&retrieve";
-                            echo "&patient_id="  . $d->get_foreign_id();
-                            echo "&document_id=" . $d->get_id();
+                            echo "&patient_id="  . attr($d->get_foreign_id());
+                            echo "&document_id=" . attr($d->get_id());
                             echo "&as_file=true' target='_blank' onclick='top.restoreSession()'>";
                             echo text($d->get_url_file());
                             echo "</a>\n";
@@ -330,9 +330,9 @@ if($task == "addnew" or $task == "edit") {
                         while ($gprow = sqlFetchArray($tmp)) {
                             echo "   <a href='";
                             echo $GLOBALS['webroot'] . "/interface/orders/single_order_results.php?orderid=";
-                            echo $gprow['id1'];
+                            echo attr($gprow['id1']);
                             echo "' target='_blank' onclick='top.restoreSession()'>";
-                            echo $gprow['id1'];
+                            echo text($gprow['id1']);
                             echo "</a>\n";
                         }
                         echo "  </td>\n";
@@ -495,13 +495,13 @@ $sortorder = (isset($_REQUEST['sortorder'])  && ($_REQUEST['sortorder']!="")) ? 
 $begin = isset($_REQUEST['begin']) ? $_REQUEST['begin'] : 0;
 
 for($i = 0; $i < count($sort); $i++) {
-    $sortlink[$i] = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sort[$i])."&sortorder=asc&$activity_string_html\" onclick=\"top.restoreSession()\"><img src=\"../../../images/sortdown.gif\" border=0 alt=\"".htmlspecialchars( xl('Sort Up'), ENT_QUOTES)."\"></a>";
+    $sortlink[$i] = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sort[$i])."&sortorder=asc&".attr($activity_string_html)."\" onclick=\"top.restoreSession()\"><img src=\"../../../images/sortdown.gif\" border=0 alt=\"".htmlspecialchars( xl('Sort Up'), ENT_QUOTES)."\"></a>";
 }
 for($i = 0; $i < count($sort); $i++) {
     if($sortby == $sort[$i]) {
         switch($sortorder) {
-            case "asc"      : $sortlink[$i] = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sortby)."&sortorder=desc&$activity_string_html\" onclick=\"top.restoreSession()\"><img src=\"../../../images/sortup.gif\" border=0 alt=\"".htmlspecialchars( xl('Sort Up'), ENT_QUOTES)."\"></a>"; break;
-            case "desc"     : $sortlink[$i] = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sortby)."&sortorder=asc&$activity_string_html\" onclick=\"top.restoreSession()\"><img src=\"../../../images/sortdown.gif\" border=0 alt=\"".htmlspecialchars( xl('Sort Down'), ENT_QUOTES)."\"></a>"; break;
+            case "asc"      : $sortlink[$i] = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sortby)."&sortorder=desc&".attr($activity_string_html)."\" onclick=\"top.restoreSession()\"><img src=\"../../../images/sortup.gif\" border=0 alt=\"".htmlspecialchars( xl('Sort Up'), ENT_QUOTES)."\"></a>"; break;
+            case "desc"     : $sortlink[$i] = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sortby)."&sortorder=asc&".attr($activity_string_html)."\" onclick=\"top.restoreSession()\"><img src=\"../../../images/sortdown.gif\" border=0 alt=\"".htmlspecialchars( xl('Sort Down'), ENT_QUOTES)."\"></a>"; break;
         } break;
     }
 }
@@ -522,14 +522,14 @@ if($end < $start) {
     $start = 0;
 }
 if($prev >= 0) {
-    $prevlink = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($prev)."&$activity_string_html\" onclick=\"top.restoreSession()\"><<</a>";
+    $prevlink = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($prev)."&".attr($activity_string_html)."\" onclick=\"top.restoreSession()\"><<</a>";
 }
 else {
     $prevlink = "<<";
 }
 
 if($next < $total) {
-    $nextlink = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($next)."&$activity_string_html\" onclick=\"top.restoreSession()\">>></a>";
+    $nextlink = "<a href=\"messages.php?show_all=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($next)."&".attr($activity_string_html)."\" onclick=\"top.restoreSession()\">>></a>";
 }
 else {
     $nextlink = ">>";
@@ -537,7 +537,7 @@ else {
 // Display the Messages table header.
 echo "
     <table class='table well'><tr><td><table class='table table-bordered table-hover'>
-    <form name=MessageList action=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&$activity_string_html\" method=post>
+    <form name=MessageList action=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&".attr($activity_string_html)."\" method=post>
     <input type=hidden name=task value=delete>
         <tr height=\"24\">
             <td align=\"center\" width=\"25\"><input type=checkbox id=\"checkAll\" onclick=\"selectAll()\"></td>
@@ -572,13 +572,13 @@ while ($myrow = sqlFetchArray($result)) {
     }
     $count++;
     echo "
-            <tr id=\"row$count\" style=\"background:white\" height=\"24\">
-                <td align=\"center\" style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><input type=checkbox id=\"check$count\" name=\"delete_id[]\" value=\"" .
-        htmlspecialchars( $myrow['id'], ENT_QUOTES) . "\" onclick=\"if(this.checked==true){ selectRow('row$count'); }else{ deselectRow('row$count'); }\"></td>
+            <tr id=\"row".attr($count)."\" style=\"background:white\" height=\"24\">
+                <td align=\"center\" style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><input type=checkbox id=\"check".attr($count)."\" name=\"delete_id[]\" value=\"" .
+        htmlspecialchars( $myrow['id'], ENT_QUOTES) . "\" onclick=\"if(this.checked==true){ selectRow('row".attr($count)."'); }else{ deselectRow('row".attr($count)."'); }\"></td>
                 <td style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><table cellspacing=0 cellpadding=0 width=100%><tr><td width=5></td><td class=\"text\">" .
         htmlspecialchars( $name, ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
                 <td style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><table cellspacing=0 cellpadding=0 width=100%><tr><td width=5></td><td class=\"text\"><a href=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&task=edit&noteid=" .
-        htmlspecialchars( $myrow['id'], ENT_QUOTES) . "&$activity_string_html\" onclick=\"top.restoreSession()\">" .
+        htmlspecialchars( $myrow['id'], ENT_QUOTES) . "&".attr($activity_string_html)."\" onclick=\"top.restoreSession()\">" .
         htmlspecialchars( $patient, ENT_NOQUOTES) . "</a></td><td width=5></td></tr></table></td>
                 <td style=\"border-bottom: 1px #000000 solid; border-right: 1px #000000 solid;\"><table cellspacing=0 cellpadding=0 width=100%><tr><td width=5></td><td class=\"text\">" .
         htmlspecialchars( $myrow['title'], ENT_NOQUOTES) . "</td><td width=5></td></tr></table></td>
@@ -593,10 +593,10 @@ echo "
     </form></table>
     <table class='table well'>
         <tr>
-            <td class=\"text\"><a role='button' class='cp-positive' href=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&task=addnew&$activity_string_html\" onclick=\"top.restoreSession()\">" .
+            <td class=\"text\"><a role='button' class='cp-positive' href=\"messages.php?showall=".attr($showall)."&sortby=".attr($sortby)."&sortorder=".attr($sortorder)."&begin=".attr($begin)."&task=addnew&".attr($activity_string_html)."\" onclick=\"top.restoreSession()\">" .
     htmlspecialchars( xl('Add New'), ENT_NOQUOTES) . "</a> &nbsp; <a role='button' class='deleter cp-negative' href=\"javascript:confirmDeleteSelected()\" onclick=\"top.restoreSession()\">" .
     htmlspecialchars( xl('Delete'), ENT_NOQUOTES) . "</a></td>
-            <td align=right class=\"text amount-msg\">$prevlink &nbsp; $end of $total &nbsp; $nextlink</td>
+            <td align=right class=\"text amount-msg\">$prevlink &nbsp; ".text($end)." of ".text($total)." &nbsp; $nextlink</td>
         </tr>
     </table></td></tr></table><br>";
 ?>
@@ -612,13 +612,13 @@ echo "
             if(document.getElementById("checkAll").checked==true) {
                 document.getElementById("checkAll").checked=true;<?php
                 for($i = 1; $i <= $count; $i++) {
-                    echo "document.getElementById(\"check$i\").checked=true; document.getElementById(\"row$i\").style.background='#E7E7E7';  ";
+                    echo "document.getElementById(\"check".attr($i)."\").checked=true; document.getElementById(\"row".attr($i)."\").style.background='#E7E7E7';  ";
                 } ?>
             }
             else {
                 document.getElementById("checkAll").checked=false;<?php
                 for($i = 1; $i <= $count; $i++) {
-                    echo "document.getElementById(\"check$i\").checked=false; document.getElementById(\"row$i\").style.background='#F7F7F7';  ";
+                    echo "document.getElementById(\"check".attr($i)."\").checked=false; document.getElementById(\"row".attr($i)."\").style.background='#F7F7F7';  ";
                 } ?>
             }
         }

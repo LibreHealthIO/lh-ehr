@@ -147,18 +147,18 @@
           $viewable_types = array('.png','.jpg','.jpeg','.png','.bmp','.PNG','.JPG','.JPEG','.PNG','.BMP'); // image ext supported by fancybox viewer
           if ( in_array($extension,$viewable_types) ) { // extention matches list
                   $to_url = "<td> <a href = $web_root" .
-                  "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
-                  "/tmp$extension" .  // Force image type URL for fancybox
+                  "/controller.php?document&retrieve&patient_id=".attr($pid)."&document_id=".attr($doc_id) .
+                  "/tmp".attr($extension) .  // Force image type URL for fancybox
                   " class ='view_image_modal'>" .
                   " <img src = $web_root" .
-                  "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
-                  " width=100 alt='$doc_catg:$image_file'> </a> </td> <td valign='center'>".
+                  "/controller.php?document&retrieve&patient_id=".attr($pid)."&document_id=".attr($doc_id) .
+                  " width=100 alt='".attr($doc_catg).":".attr($image_file)."'> </a> </td> <td valign='center'>".
                   htmlspecialchars($doc_catg) .
                   "</td>";
           }
            else {
                   $to_url = "<td> <a href='" . $web_root . "/controller.php?document&retrieve" .
-                      "&patient_id=$pid&document_id=$doc_id'" .
+                      "&patient_id=".attr($pid)."&document_id=".attr($doc_id)."'" .
                       " onclick='top.restoreSession()' class='css_button_small'>" .
                       "<span>" .
                       htmlspecialchars( xl("View"), ENT_QUOTES )."</a> &nbsp;" .
@@ -167,9 +167,9 @@
           }
           //initialise izi modal
           echo "<div id='view_photo_modal' data-izimodal-title='". htmlspecialchars(getPatientName($pid),ENT_NOQUOTES) 
-          ."' data-izimodal-subtitle='PID: $pid' style='display: none; '><img src = $web_root" .
-                  "/controller.php?document&retrieve&patient_id=$pid&document_id=$doc_id" .
-                  " style='width:80%;margin: 0 10% 0 10%;' alt='$doc_catg:$image_file'></div>";
+          ."' data-izimodal-subtitle='PID: ".attr($pid)."' style='display: none; '><img src = $web_root" .
+                  "/controller.php?document&retrieve&patient_id=".attr($pid)."&document_id=".attr($doc_id) .
+                  " style='width:80%;margin: 0 10% 0 10%;' alt='".attr($doc_catg).":".attr($image_file)."'></div>";
           //
           echo "<table><tr>";
           echo $to_url;
@@ -458,7 +458,7 @@
       <?php if (isset($_GET['set_pid'])) { ?>
        parent.left_nav.setPatient(<?php echo "'" . htmlspecialchars(($result['fname']) . " " . ($result['lname']),ENT_QUOTES) .
         "'," . htmlspecialchars($pid,ENT_QUOTES) . ",'" . htmlspecialchars(($result['pid']),ENT_QUOTES) .
-        "','', ' " . htmlspecialchars(xl('DOB') . ": " . oeFormatShortDate($result['DOB_YMD']) . " " . xl('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
+        "','', ' " . htmlspecialchars(xl('DOB') . ": " . text(oeFormatShortDate($result['DOB_YMD'])) . " " . xlt('Age') . ": " . getPatientAgeDisplay($result['DOB_YMD']), ENT_QUOTES) . "'"; ?>);
        var EncounterDateArray = new Array;
        var CalendarCategoryArray = new Array;
        var EncounterIdArray = new Array;
@@ -487,7 +487,7 @@
         $_SESSION['encounter'] = $encounter;
         $query_result = sqlQuery("SELECT `date` FROM `form_encounter` WHERE `encounter` = ?", array($encounter)); ?>
        var othername = (window.name == 'RTop') ? 'RBot' : 'RTop';
-       parent.left_nav.setEncounter('<?php echo oeFormatShortDate(date("Y-m-d", strtotime($query_result['date']))); ?>', '<?php echo attr($encounter); ?>', othername);
+       parent.left_nav.setEncounter('<?php echo text(oeFormatShortDate(date("Y-m-d", strtotime($query_result['date'])))); ?>', '<?php echo attr($encounter); ?>', othername);
        parent.left_nav.setRadio(othername, 'enc');
        parent.frames[othername].location.href = '../encounter/encounter_top.php?set_encounter=' + <?php echo attr($encounter);?> + '&pid=' + <?php echo attr($pid);?>;
       <?php } // end setting new encounter id (only if new pid is also set) ?>
@@ -614,7 +614,7 @@
           <?php echo htmlspecialchars(xl('Report'),ENT_NOQUOTES); ?></a>
           |
           <?php //note that we have temporarily removed document screen from the modal view ?>
-          <a href="../../../controller.php?document&list&patient_id=<?php echo $pid;?>" id="documents_link" onclick='top.restoreSession()'>
+          <a href="../../../controller.php?document&list&patient_id=<?php echo attr($pid);?>" id="documents_link" onclick='top.restoreSession()'>
           <?php echo htmlspecialchars(xl('Documents'),ENT_NOQUOTES); ?></a>
           |
           <a href="../transaction/transactions.php" class='iframe large_modal' id="transactions_link" onclick='top.restoreSession()'>
