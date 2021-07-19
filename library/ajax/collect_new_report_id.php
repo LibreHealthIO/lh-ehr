@@ -30,7 +30,16 @@ $fake_register_globals=false;
 
 require_once(dirname(__FILE__) . "/../../interface/globals.php");
 require_once(dirname(__FILE__) . "/../report_database.inc");
+require_once("$srcdir/CsrfToken.php");
 
+//verify csrf token
+if (!empty($_GET)) {
+    if (!isset($_GET['token'])) {
+        CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_GET['token']))) {
+        die('Authentication failed.');
+    }
+  }
 //  Collect/bookmark a new report id in report_results sql table and send it back.
 echo bookmarkReportDatabase();
 ?>

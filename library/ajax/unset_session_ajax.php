@@ -24,7 +24,15 @@ $sanitize_all_escapes=true;
 
 require_once("../../interface/globals.php");
 require_once("../pid.inc");
+require_once("$srcdir/CsrfToken.php");
 
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      CsrfToken::incorrectToken();
+  }
+}
 //Setpid function is called on receiving an ajax request.
 if(($_POST['func']=="unset_pid"))
 {

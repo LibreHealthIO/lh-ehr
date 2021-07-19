@@ -399,7 +399,7 @@ function cancelParlookup () {
 }
 
 $().ready(function() {
-    $("#drug").autocomplete('library/ajax/prescription_drugname_lookup.php',
+    $("#drug").autocomplete('library/ajax/prescription_drugname_lookup.php?token=<?php echo $_SESSION['token'];?> ',
                             {
                             width: 200,
                             scrollHeight: 100,

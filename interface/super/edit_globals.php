@@ -36,11 +36,20 @@ require_once("$srcdir/globals.inc.php");
 require_once("$srcdir/user.inc");
 require_once("$srcdir/classes/CouchDB.class.php");
 require_once("$srcdir/calendar.inc");
+require_once("$srcdir/CsrfToken.php");
 
 if ($_GET['mode'] != "user") {
   // Check authorization.
   $thisauth = acl_check('admin', 'super');
   if (!$thisauth) die(xlt('Not authorized'));
+}
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+      CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/edit_globals.php.theform'))) {
+      CsrfToken::incorrectToken();
+  }
 }
 
 function checkCreateCDB(){
@@ -392,6 +401,8 @@ input     { font-size:10pt; }
 <?php } else { ?>
   <form method='post' name='theform' id='theform' action='edit_globals.php' onsubmit='return top.restoreSession()'>
 <?php } ?>
+
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/edit_globals.php.theform', (string) $_SESSION['token']);?>" />
 
 <div style="display:none">
   <?php if ($_GET['mode'] == "user") { ?>

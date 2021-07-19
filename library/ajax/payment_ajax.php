@@ -30,6 +30,15 @@
 require_once("../../interface/globals.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formatting.inc.php");
+require_once("$srcdir/CsrfToken.php");
+
+if (!empty($_REQUEST)) {
+  if (!isset($_REQUEST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      CsrfToken::incorrectToken();
+  }
+}
 //=================================
 if (isset($_REQUEST["ajax_mode"]))
  {

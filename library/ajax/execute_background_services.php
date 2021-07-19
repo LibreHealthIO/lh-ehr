@@ -68,11 +68,24 @@ if (!$isAjaxCall) {
    $_GET['site'] = (isset($argv[1])) ? $argv[1] : 'default';
    if (isset($argv[2]) && $argv[2]!='all') $_GET['background_service'] = $argv[2];
    if (isset($argv[3]) && $argv[3]=='1') $_GET['background_force'] = 1;
-}
 
+   
 //an additional require file can be specified for each service in the background_services table
 require_once(dirname(__FILE__) . "/../../interface/globals.php");
 require_once(dirname(__FILE__) . "/../sql.inc");
+
+} else {
+//an additional require file can be specified for each service in the background_services table
+require_once(dirname(__FILE__) . "/../../interface/globals.php");
+require_once(dirname(__FILE__) . "/../sql.inc");
+require_once("$srcdir/CsrfToken.php");
+
+  if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      CsrfToken::incorrectToken();
+  }
+}
 
 //Remove time limit so script doesn't time out
 set_time_limit(0);

@@ -19,8 +19,17 @@ require_once($GLOBALS['srcdir'].'/htmlspecialchars.inc.php');
 /* for formData() */
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 require_once("$srcdir/headers.inc.php");
+require_once("../../library/CsrfToken.php");
 
 if (!acl_check('admin', 'super')) die(htmlspecialchars(xl('Not authorized')));
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+      CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/manage_site_files.php.theform'))) {
+      CsrfToken::incorrectToken();
+  }
+}
 
 // Prepare array of names of editable files, relative to the site directory.
 $my_files = array(
@@ -143,7 +152,8 @@ function msfFileChanged() {
 
 <body class="body_top">
 <form method='post' action='manage_site_files.php' enctype='multipart/form-data'
- onsubmit='return top.restoreSession()'>
+ id="theform" name="theform" onsubmit='return top.restoreSession()'>
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/manage_site_files.php.theform', (string) $_SESSION['token']);?>" />
 
 <center>
 

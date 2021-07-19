@@ -242,7 +242,8 @@ $patient_id = ($_GET['patient_id']) ? $_GET['patient_id'] : "";
         rule: this.name,
         type: 'passive_alert',
         setting: this.value,
-        patient_id: '<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>'
+        patient_id: '<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>',
+        token: "<?php echo $_SESSION['token'];?>" 
       });
     });
 
@@ -252,7 +253,8 @@ $patient_id = ($_GET['patient_id']) ? $_GET['patient_id'] : "";
         rule: this.name,
         type: 'active_alert',
         setting: this.value,
-        patient_id: '<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>'
+        patient_id: '<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>',
+        token: "<?php echo $_SESSION['token'];?>" 
       });
     });
 
@@ -262,7 +264,8 @@ $patient_id = ($_GET['patient_id']) ? $_GET['patient_id'] : "";
         plan: this.name,
         type: 'normal',
         setting: this.value,
-        patient_id: '<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>'
+        patient_id: '<?php echo htmlspecialchars($patient_id, ENT_QUOTES); ?>',
+        token: "<?php echo $_SESSION['token'];?>" 
       });
     });
 

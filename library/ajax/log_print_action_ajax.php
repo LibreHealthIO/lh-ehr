@@ -26,7 +26,15 @@ $sanitize_all_escapes  = true;
 require_once("../../interface/globals.php");
 require_once("$srcdir/log.inc");
 require_once("$srcdir/classes/html2text.class.php");
+require_once("$srcdir/CsrfToken.php");
 
+if (!empty($_POST)) {
+    if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+        die('Authentication failed.');
+    }
+}
 $h2t = new html2text($_POST['comments']);
 $h2t->width = 0;
 $h2t->_convert(false);

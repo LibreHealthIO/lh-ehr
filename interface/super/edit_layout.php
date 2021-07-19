@@ -27,6 +27,7 @@ require_once("$srcdir/acl.inc");
 require_once("$srcdir/log.inc");
 require_once("$srcdir/formdata.inc.php");
 require_once("$srcdir/headers.inc.php");
+require_once("../../library/CsrfToken.php");
 
 $layouts = array(
   'DEM' => xl('Demographics'),
@@ -136,6 +137,14 @@ function addOrDeleteColumn($layout_id, $field_id, $add=TRUE) {
 // Check authorization.
 $thisauth = acl_check('admin', 'super');
 if (!$thisauth) die(xl('Not authorized'));
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+      CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/edit_layout.php.theform'))) {
+      CsrfToken::incorrectToken();
+  }
+}
 
 // The layout ID identifies the layout to be edited.
 $layout_id = empty($_REQUEST['layout_id']) ? '' : $_REQUEST['layout_id'];
@@ -945,6 +954,7 @@ function setListItemOptions(lino, seq, init) {
   $.getScript('layout_listitems_ajax.php' +
     '?listid='  + encodeURIComponent(list_id) +
     '&target='  + encodeURIComponent(target)  +
+    '&token='   + <?php echo $_SESSION['token'];?>  +
     '&current=' + encodeURIComponent(current));
 }
 
@@ -975,6 +985,7 @@ function cidChanged(lino, seq) {
 <!-- elements used to select more than one field -->
 <input type="hidden" name="selectedfields" id="selectedfields" value="">
 <input type="hidden" id="targetgroup" name="targetgroup" value="">
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/edit_layout.php.theform', (string) $_SESSION['token']);?>" />
 
 <p><b><?php xl('Edit layout','e'); ?>:</b>&nbsp;
 <select name='layout_id' id='layout_id'>
@@ -1553,13 +1564,13 @@ $(document).ready(function(){
 
     // show the popup choice of lists
     var ShowLists = function(btnObj) {
-        window.open("./show_lists_popup.php", "lists", "width=300,height=500,scrollbars=yes");
+        window.open("./show_lists_popup.php?token=<?php echo $_SESSION['token'];?>", "lists", "width=300,height=500,scrollbars=yes");
         selectedfield = btnObj;
     };
     
     // show the popup choice of groups
     var ShowGroups = function(btnObj) {
-        window.open("./show_groups_popup.php?layout_id=<?php echo $layout_id;?>", "groups", "width=300,height=300,scrollbars=yes");
+        window.open("./show_groups_popup.php?layout_id=<?php echo $layout_id;?>&token=<?php echo $_SESSION['token'];?>", "groups", "width=300,height=300,scrollbars=yes");
     };
     
 
@@ -1604,7 +1615,7 @@ function FieldIDClicked(elem) {
   // If the field ID is for the local form, allow direct entry.
   if (srcval == 'F') return;
   // Otherwise pop up the selection window.
-  window.open('./field_id_popup.php?source=' + srcval, 'fields',
+  window.open('./field_id_popup.php?source=' + srcval + '&token=' + <?php echo $_SESSION['token'];?>, 'fields',
     'width=600,height=600,scrollbars=yes');
 <?php } ?>
 }

@@ -30,6 +30,7 @@ $fake_register_globals=false;
 
 require_once(dirname(__FILE__) . "/../../interface/globals.php");
 require_once(dirname(__FILE__) . "/../clinical_rules.php");
+require_once("$srcdir/CsrfToken.php");
 
 //To improve performance and not freeze the session when running this
 // report, turn off session writing. Note that php session variables
@@ -50,7 +51,11 @@ if (!empty($GLOBALS['cdr_report_nice'])) {
 
 //  Start a report, which will be stored in the report_results sql table..
 if (!empty($_POST['execute_report_id'])) {
-
+  if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      die('Authentication failed.');
+  }
   $target_date = (!empty($_POST['date_target'])) ? $_POST['date_target'] : date('Y-m-d H:i:s');
   $rule_filter = (!empty($_POST['type'])) ? $_POST['type'] : "";
   $plan_filter = (!empty($_POST['plan'])) ? $_POST['plan'] : "";

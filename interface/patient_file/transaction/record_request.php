@@ -45,6 +45,7 @@ $(document).ready(function(){
       { amc_id: "provide_rec_pat_amc",
         complete: false,
         mode: "add_force",
+        token: "<?php echo $_SESSION['token'];?>",
         patient_id: <?php echo htmlspecialchars($pid,ENT_NOQUOTES); ?>
       }
     );

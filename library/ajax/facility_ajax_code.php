@@ -42,7 +42,15 @@ require_once("../../interface/globals.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/options.inc.php");
+require_once("$srcdir/CsrfToken.php");
 
+if (!empty($_REQUEST)) {
+  if (!isset($_REQUEST['token'])) {
+      CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_REQUEST['token']))) {
+        die('Authentication failed.');
+    }
+}
 $pid=$_REQUEST['pid'];
 $facility=$_REQUEST['facility'];
 $date=$_REQUEST['date'];

@@ -261,11 +261,11 @@
           if ( $mode == "<?php echo htmlspecialchars(xl('collapse'),ENT_QUOTES); ?>" ) {
               $(target).find(".indicator").text( "<?php echo htmlspecialchars(xl('expand'),ENT_QUOTES); ?>" );
               $("#"+div).hide();
-          $.post( "../../../library/ajax/user_settings.php", { target: div, mode: 0 });
+          $.post( "../../../library/ajax/user_settings.php", { target: div, mode: 0 , token: "<?php echo $_SESSION['token'];?>" });
           } else {
               $(target).find(".indicator").text( "<?php echo htmlspecialchars(xl('collapse'),ENT_QUOTES); ?>" );
               $("#"+div).show();
-          $.post( "../../../library/ajax/user_settings.php", { target: div, mode: 1 });
+          $.post( "../../../library/ajax/user_settings.php", { target: div, mode: 1 , token: "<?php echo $_SESSION['token'];?>"});
           }
       }
 

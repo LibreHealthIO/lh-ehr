@@ -333,7 +333,7 @@ $(document).ready(function(){
 
     $(".noneCheck").click(function() {
       top.restoreSession();
-      $.post( "../../../library/ajax/lists_touch.php", { type: this.name, patient_id: <?php echo htmlspecialchars($pid,ENT_QUOTES); ?> });
+      $.post( "../../../library/ajax/lists_touch.php", { type: this.name, patient_id: <?php echo htmlspecialchars($pid,ENT_QUOTES); ?>, token: "<?php echo $_SESSION['token'];?>" });
       $(this).hide();
     });
 });

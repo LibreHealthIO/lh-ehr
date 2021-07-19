@@ -30,7 +30,15 @@ $fake_register_globals=false;
 
 require_once(dirname(__FILE__) . "/../../interface/globals.php");
 require_once(dirname(__FILE__) . "/../reminders.php");
+require_once("$srcdir/CsrfToken.php");
 
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      die('Authentication failed.');
+  }
+}
 //To improve performance and not freeze the session when running this
 // report, turn off session writing. Note that php session variables
 // can not be modified after the line below. So, if need to do any php

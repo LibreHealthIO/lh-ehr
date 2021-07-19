@@ -29,7 +29,17 @@ require_once($GLOBALS['srcdir'].'/acl.inc');
 require_once($GLOBALS['srcdir'].'/htmlspecialchars.inc.php');
 require_once($GLOBALS['srcdir'].'/formdata.inc.php');
 require_once("$srcdir/headers.inc.php");
+require_once("../../library/CsrfToken.php");
+
 if (!acl_check('admin', 'super')) die(htmlspecialchars(xl('Not authorized')));
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+      CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/manage_document_templates.php.theform'))) {
+      CsrfToken::incorrectToken();
+  }
+}
 
 $form_filename = strip_escape_custom($_REQUEST['form_filename']);
 
@@ -104,7 +114,8 @@ if (!empty($_POST['bn_upload'])) {
 
 <body class="body_top">
 <form method='post' action='manage_document_templates.php' enctype='multipart/form-data'
- onsubmit='return top.restoreSession()'>
+ id="theform" name="theform" onsubmit='return top.restoreSession()'>
+ <input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/manage_document_templates.php.theform', (string) $_SESSION['token']);?>" />
 
 <center>
 

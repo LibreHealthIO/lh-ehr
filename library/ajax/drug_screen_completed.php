@@ -22,7 +22,16 @@ $sanitize_all_escapes = true;
 $fake_register_globals = false;
 
 require_once("../../interface/globals.php");
+require_once("$srcdir/CsrfToken.php");
 
+//verify csrf token
+if (!empty($_POST)) {
+    if (!isset($_POST['token'])) {
+        CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+        die('Authentication failed.');
+    }
+}
 $drugval = '0';
 if ($_POST['testcomplete'] =='true') {
 	$drugval = '1';

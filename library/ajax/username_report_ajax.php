@@ -25,8 +25,18 @@ require_once("../../interface/globals.php");
 require_once("$srcdir/sql.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/acl.inc");
+require_once("$srcdir/CsrfToken.php");
 require_once("$srcdir/patient.inc");
 $DateFormat = DateFormatRead();
+
+if (!empty($_POST)) {
+    if (!isset($_POST['token'])) {
+      CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+        die('Authentication failed.');
+    }
+}
+
 //make sure to get the dates
 if ( ! isset($_POST['from_date'])) {
 

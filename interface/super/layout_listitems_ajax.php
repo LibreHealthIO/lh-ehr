@@ -25,8 +25,17 @@ $fake_register_globals = false;
 $sanitize_all_escapes  = true;
 
 require_once("../globals.php");
+require_once("$srcdir/CsrfToken.php");
 require_once("$srcdir/formdata.inc.php");
 
+//verify csrf token
+if (!empty($_GET)) {
+  if (!isset($_GET['token'])) {
+      CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_GET['token']))) {
+      CsrfToken::incorrectToken();
+  }
+}
 $listid  = $_GET['listid'];
 $target  = $_GET['target'];
 $current = $_GET['current'];

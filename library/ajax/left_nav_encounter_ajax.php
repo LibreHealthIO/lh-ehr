@@ -20,7 +20,15 @@ require_once("$srcdir/forms.inc");
 require_once("$srcdir/patient.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/encounter_events.inc.php");
+require_once("$srcdir/CsrfToken.php");
 
+if (!empty($_REQUEST)) {
+  if (!isset($_REQUEST['token'])) {
+      CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_REQUEST['token']))) {
+        die('Authentication failed.');
+    }
+}
 $issue = $_GET['issue'];
 $createvisit = !empty($_GET['createvisit']);
 $today = date('Y-m-d');

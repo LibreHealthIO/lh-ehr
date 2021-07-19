@@ -27,7 +27,7 @@ require_once("$srcdir/sql.inc");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/acl.inc");
 require_once("$srcdir/patient.inc");
-
+require_once("$srcdir/CsrfToken.php");
 
 
 //Enter false if searching for users that aren't active
@@ -52,7 +52,13 @@ function ifTestingTrue($testing){
     else return "";
 
 }
-
+if (!empty($_POST)) {
+    if (!isset($_POST['token'])) {
+        CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+        die('Authentication failed.');
+    }
+}
 
 if($_POST['func']=="get_all_diags_data")
 {

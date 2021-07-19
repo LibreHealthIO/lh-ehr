@@ -14,6 +14,7 @@ require_once(dirname(__FILE__) . "/../library/classes/CouchDB.class.php");
 require_once(dirname(__FILE__) . "/../library/forms.inc");
 require_once(dirname(__FILE__) . "/../library/formatting.inc.php");
 require_once(dirname(__FILE__) . "/../library/classes/postmaster.php" );
+require_once(dirname(__FILE__) . "/../library/sanitize.inc.php" );
 
 class C_Document extends Controller {
 
@@ -170,6 +171,8 @@ class C_Document extends Controller {
                     if ($_FILES['file']['size'][$key] == 0) {
                         $error .= "The system does not permit uploading files of with size 0.\n";
                     }
+                } elseif (!isSafeFile($_FILES['file']['tmp_name'][$key])) {
+                    $error = xl("The system does not permit uploading files with MIME content type") . " - " . mime_content_type($_FILES['file']['tmp_name'][$key]) . ".\n";
                 } else {
                     $tmpfile = fopen($_FILES['file']['tmp_name'][$key], "r");
                     $filetext = fread($tmpfile, $_FILES['file']['size'][$key]);

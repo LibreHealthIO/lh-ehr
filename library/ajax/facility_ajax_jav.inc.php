@@ -38,7 +38,8 @@ dataType: "html",
 data: {
 pid: pid,
 date: date,
-facility: facility
+facility: facility,
+token: <?php echo $_SESSION['token'];?>
 },
 success: function(thedata){//alert(thedata)
 $("#ajaxdiv").html(thedata);

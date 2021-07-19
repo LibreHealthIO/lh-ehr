@@ -21,6 +21,15 @@ $fake_register_globals=false;
 
 require_once(dirname(__FILE__) . "/../../interface/globals.php");
 require_once(dirname(__FILE__) . "/../clinical_rules.php");
+require_once("$srcdir/CsrfToken.php");
+
+if (!empty($_POST)) {
+  if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+      CsrfToken::incorrectToken();
+  }
+}
 
 //set the rule setting for patient (ensure all variables exist)
 if ($_POST['rule'] && $_POST['type'] && $_POST['setting'] && $_POST['patient_id']) {

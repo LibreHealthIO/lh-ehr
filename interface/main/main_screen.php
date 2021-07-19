@@ -24,6 +24,7 @@ $sanitize_all_escapes=true;
 /* Include our required headers */
 require_once('../globals.php');
 require_once("$srcdir/formdata.inc.php");
+require_once("../../library/CsrfToken.php");
 
 // Creates a new session id when load this outer frame
 // (allows creations of separate LibreHealth EHR frames to view patients concurrently
@@ -40,6 +41,9 @@ else {
   // This is not a new login, so create a new session id and do NOT remove the old session
   session_regenerate_id(false);
 }
+
+//generate csrf token
+$_SESSION['token'] = CsrfToken::generateCsrfToken();
 
 $_SESSION["encounter"] = '';
 

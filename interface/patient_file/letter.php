@@ -33,6 +33,7 @@ include_once("../globals.php");
 include_once($GLOBALS['srcdir'] . "/patient.inc");
 require_once($GLOBALS['srcdir']."/formatting.inc.php");
 require_once("$srcdir/headers.inc.php");
+require_once("$srcdir/CsrfToken.php");
 $DateFormat = DateFormatRead();
 $DateLocale = getLocaleCodeForDisplayLanguage($GLOBALS['language_default']);
 
@@ -90,6 +91,14 @@ $patdata = sqlQuery("SELECT " .
 
 $alertmsg = ''; // anything here pops up in an alert box
 
+if (!empty($_POST)) {
+    if (!isset($_POST['token'])) {
+        error_log('WARNING: A POST request detected with no csrf token found');
+        die('Authentication failed.');
+    } else if (!(  CsrfToken::verifyCsrfTokenAndCompareHash($_POST['token'], '/letter.php.theform'))) {
+        die('Authentication failed.');
+    }
+}
 // If the Generate button was clicked...
 if ($_POST['formaction']=="generate") {
 
@@ -430,6 +439,7 @@ function insertAtCursor(myField, myValue) {
 <form method='post' action='letter.php' id="theform" name="theform">
 <input type="hidden" name="formaction" id="formaction" value="">
 <input type='hidden' name='form_pid' value='<?php echo $pid ?>' />
+<input type='hidden' name='token' value="<?php echo hash_hmac('sha256', (string) '/letter.php.theform', (string) $_SESSION['token']);?>" />
 
 <center>
 <p>

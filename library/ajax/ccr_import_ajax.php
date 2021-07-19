@@ -35,8 +35,14 @@ require_once(dirname(__FILE__) . "/../../interface/globals.php");
 require_once(dirname(__FILE__) . "/../parse_patient_xml.php");
 require_once(dirname(__FILE__) . "/../classes/Document.class.php");
 require_once(dirname(__FILE__) . "/../classes/CouchDB.class.php");
+require_once("$srcdir/CsrfToken.php");
 
 if($_REQUEST["ccr_ajax"] == "yes"){
+  if (!isset($_POST['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_POST['token']))) {
+    die('Authentication failed.');
+  }
   $doc_id = $_REQUEST["document_id"];
   $d = new Document($doc_id);
   $url =  $d->get_url();

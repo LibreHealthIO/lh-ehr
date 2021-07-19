@@ -4,6 +4,16 @@
   */
 
 include_once("../globals.php");
+require_once("$srcdir/CsrfToken.php");
+
+//verify csrf token
+if (!empty($_GET)) {
+    if (!isset($_GET['token'])) {
+        CsrfToken::noTokenFoundError();
+    } else if (!(CsrfToken::verifyCsrfToken($_GET['token']))) {
+        die('Authentication failed.');
+    }
+  }
 
 ?>
 

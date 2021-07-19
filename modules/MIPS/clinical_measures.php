@@ -116,6 +116,7 @@ function runReport() {
   top.restoreSession();
   $.get(
     "ajax/collect_new_report_id.php",
+    { token: "<?php echo $_SESSION['token'];?>"},
     function(data) {
       // Set the report id in page form
       $("#form_new_report_id").attr("value", data);
@@ -133,7 +134,8 @@ function runReport() {
           plan: $("#form_plan_filter").val(),
           labs: $("#labs_manual_entry").val(),
           pat_prov_rel: $("#form_pat_prov_rel").val(),
-          execute_report_id: $("#form_new_report_id").val()
+          execute_report_id: $("#form_new_report_id").val(),
+          token: "<?php echo $_SESSION['token'];?>"
         }
       );
     }
@@ -145,7 +147,7 @@ function collectStatus(report_id) {
   // Do not send the skip_timeout_reset parameter, so don't close window before report is done.
   $.post(
     "ajax/status_report.php",
-    { status_report_id: report_id },
+    { status_report_id: report_id, token: "<?php echo $_SESSION['token'];?>"  },
     function(data) {
       if(data == "PENDING") {
         // Place the pending string in the DOM

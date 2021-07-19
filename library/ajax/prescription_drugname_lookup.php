@@ -16,6 +16,15 @@
 include_once("../../interface/globals.php");
 include_once("{$GLOBALS['srcdir']}/sql.inc");
 include_once("{$GLOBALS['srcdir']}/formdata.inc.php");
+require_once("$srcdir/CsrfToken.php");
+
+if (!empty($_GET)) {
+  if (!isset($_GET['token'])) {
+    CsrfToken::noTokenFoundError();
+  } else if (!(CsrfToken::verifyCsrfToken($_GET['token']))) {
+      CsrfToken::incorrectToken();
+  }
+}
 
 $q = formData("q","G",true);
 if (!$q) return;
