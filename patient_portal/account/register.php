@@ -14,7 +14,6 @@ session_regenerate_id(true);
 
 unset($_SESSION['itsme']);
 
-$_SESSION['patient_portal_onsite'] = true;
 $_SESSION['authUser'] = 'portal-user';
 $_SESSION['pid'] = true;
 $_SESSION['register'] = true;
@@ -26,7 +25,6 @@ $landingpage = "index.php?site=" . $_SESSION['site_id'];
 $ignoreAuth_onsite_portal = true;
 
 require_once("../../interface/globals.php");
-
 
 $res2 = sqlStatement("select * from lang_languages where lang_description = ?", array(
     $GLOBALS['language_default']
