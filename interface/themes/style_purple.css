@@ -617,9 +617,9 @@ font-weight: bold;
  * CSS BUTTONS
 */
 .css_button_small {
-    background: transparent url( 'theme_assets/bg_button_a_small.gif' ) no-repeat scroll top right;
     color: #444;
     display: block;
+    color: white;
     float: left;
     font: bold 9px arial, sans-serif;
     height: 19px;
@@ -629,31 +629,33 @@ font-weight: bold;
 }
 
 .css_button_small span {
-    background: transparent url( 'theme_assets/bg_button_span_small.gif' ) no-repeat;
     display: block;
     line-height: 20px;
     padding: 0px 0px 0px 10px;
+    color: white;
 }
-
 .css_button, a[role="button"] {
-    background: transparent url( 'theme_assets/bg_button_a.gif' ) no-repeat scroll top right;
     color: #444;
-    display: block;
+    color:white;
+    display: flex;
+    align-items: center;
+    border-radius:7px;
+    padding-left: 5px;
     float: left;
-    font: bold 10px arial, sans-serif;
+    font: bold 12px arial, sans-serif;
     height: 24px;
     margin-right: 3px;
     padding-right: 10px; /* sliding doors padding */
-    text-decoration: none;
+    text-decoration: none; 
 }
 .css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
   background: red !important;
 }
 .css_button span {
-    background: transparent url( 'theme_assets/bg_button_span.gif' ) no-repeat;
     display: block;
     line-height: 14px;
     padding: 5px 0 5px 10px;
+    color:black;
 }
 .sellistclass {
 float:left;
@@ -757,7 +759,7 @@ div.notab-right {
 
 #report_results table {
    border-top: 1px solid black;
-   border-bottom: 1px solid black;
+   border-bottom: 1px solid black
    border-left: 1px solid black;
    border-right: 1px solid black;
    width: 100%;
@@ -999,4 +1001,14 @@ font-size:9pt;
 
 .iziModal.isFullscreen .iziModal-iframe {
   height: 100% !important;
+}
+.css_button{
+    background-color:#ccc;
+}
+.cp-positive{
+    background-color: green !important;
+}
+
+.cp-positive span,  .cp-submit span, .cp-negative span, .cp-misc span,  .cp-output  span{
+    background-color:  unset;
 }
