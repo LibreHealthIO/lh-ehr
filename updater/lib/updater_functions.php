@@ -1,4 +1,5 @@
 <?php
+require 'dumper.php';
 /**
  * list of updater functions used by updater
  *
@@ -306,4 +307,72 @@ function checkDir($location) {
 		}
 	}
 }
+
+
+function get_string_between($string, $start, $end){
+    $string = ' ' . $string;
+    $ini = strpos($string, $start);
+    if ($ini == 0) return false;
+    $ini += strlen($start);
+    $len = strpos($string, $end, $ini) - $ini;
+    return substr($string, $ini, $len);
+}
+
+function getTableNamesFromFile($filename) {
+    $filename = "../".$filename;
+
+    $handle = fopen($filename, "r");
+    $tables = array();
+    if ($handle) {
+        while (($line = fgets($handle)) !== false) {
+            // process the line read.
+            $bool = get_string_between($line, "TABLE `", "`");
+            
+            if ($bool) {
+                if (in_array($bool, $tables)) {
+
+                }
+                else {
+                    array_push($tables, $bool);
+                }
+            }
+            elseif ($second = get_string_between($line, "IF EXISTS `", "`")) {
+                if (in_array($second, $tables)) {
+
+                }
+                else {
+                    array_push($tables, $second);
+                }
+            }
+            elseif ($string = get_string_between($line, "INSERT INTO", "(")) {
+                $third = str_replace("`", "", $string);
+                if (in_array($third, $tables)) {
+
+                }
+                else {
+                    array_push($tables, $third);
+                }
+            }
+        }
+        
+        fclose($handle);
+
+    }
+
+    return $tables;
+
+}
+
+function backupDB($hostname, $username, $password, $dbname, $list_of_tables, $sitename) {
+	$tables_dumper = Shuttle_Dumper::create(array(
+	    'host' => $hostname,
+	    'username' => $username,
+	    'password' => $password,
+	    'db_name' => $password,
+	    'include_tables' => $list_of_tables,
+	));
+	$tables_dumper->dump('../backup/'.$sitename.'.sql');
+
+}
+
 ?>

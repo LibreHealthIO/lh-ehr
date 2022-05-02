@@ -23,6 +23,8 @@ require '../interface/globals.php';
 require '../library/user.inc';
 require 'template_handler.php';
 require 'lib/updater_functions.php';
+require "../sites/".$_SESSION['site_id']."/sqlconf.php";
+
 $userAuthorized = $_SESSION['userauthorized'];
 $authUserId = $_SESSION['authUserID'];
 if (checkAdmin($userAuthorized, $authUserId)) {
@@ -54,6 +56,7 @@ $updater_host = $settings_array['host'];
 $repository_owner = $settings_array['owner'];
 $repository_name = $settings_array['repository_name'];
 $issue_number = $settings_array['feedback_issue_number'];
+$database_file = $settings_array['db_backup_file'];
 
 if ($updater_host == "github") {
 	//if host=github then load rhwm
@@ -129,19 +132,34 @@ if (isset($_GET)) {
 						//it means the file is not renamed
 						$old_name = "empty";
 					}
-					downloadFile($url, "downloads", $filename, $status);
-					//Make Downloaded File DB entry
-					downloadFileDbEntry($filename, $status, $original_name, $old_name);
-					if (isExistInBackupTable($filename)) {
-						backupFile("backup", $filename, $original_name, $status, $old_name);
+
+					if ($original_name != $database_file) {
+						downloadFile($url, "downloads", $filename, $status);
+						//Make Downloaded File DB entry
+						downloadFileDbEntry($filename, $status, $original_name, $old_name);
+						
+						if (isExistInBackupTable($filename)) {
+							backupFile("backup", $filename, $original_name, $status, $old_name);
+						}
+
+						backupFileDbEntry($filename, $status, $original_name, $old_name);
+						replaceFile($filename, $original_name, $status, $old_name);
 					}
 					else {
-					  echo $filename;
-					  echo "<br/><br/>";
+
+						downloadFile($url, "downloads", $filename, $status);
+
+						replaceFile($filename, $original_name, $status, $old_name);
+						$list_of_tables = getTableNamesFromFile($originalname);
+
+						$sitename = $_SESSION['site_id'];
+						//Initiate db backup
+						backupDB($host, $login, $pass, $dbase, $list_of_tables, $sitename);
+
+						//upgrade the database
 					}
 
-					backupFileDbEntry($filename, $status, $original_name, $old_name);
-					replaceFile($filename, $original_name, $status, $old_name);
+
 				}
 			}
 			//prepare the updater for showing next PR
@@ -177,6 +195,7 @@ if (isset($_GET['start_recovery'])) {
 			$old_name = $r['old_name'];
 			restoreBackupFile($filename, $original_name, $status, $old_name);
 		}
+		//RESTORE THE sitename.sql file from the backup
 		$pr_backup_number = getUpdaterSetting("github_backup");
 		setUpdaterSetting("github_current", $pr_backup_number);
 	}

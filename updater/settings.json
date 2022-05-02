@@ -3,5 +3,6 @@
 "owner":"LibreHealthIO",
 "repository_name":"lh-ehr",
 "github_current":"#1122",
-"feedback_issue_number":"1182"
+"feedback_issue_number":"1182",
+"db_backup_file": "sql/2_0_0-to-2_0_1_upgrade.sql"
 }

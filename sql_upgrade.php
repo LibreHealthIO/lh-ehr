@@ -14,6 +14,9 @@
 // Disable PHP timeout.  This will not work in safe mode.
 ini_set('max_execution_time', '0');
 
+//setting script to run even if the user close the browser
+ignore_user_abort(true);
+
 $ignoreAuth = true; // no login required
 
 require_once('interface/globals.php');
