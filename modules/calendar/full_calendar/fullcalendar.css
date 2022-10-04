@@ -81,7 +81,7 @@ body .fc {
   borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
 */
 .fc-state-default {
-  background-color: #f5f5f5;
+  background-color: #bcebce; /*changed the color to blue from white */
   background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
   background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
