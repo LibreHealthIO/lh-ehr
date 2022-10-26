@@ -98,7 +98,9 @@ tr.selected {
 	if ( sqlNumRows($resultSet)) { ?>
 			<table cellspacing="0" cellpadding="0" style="width:100%">
 				<tr>
-					<td><a href="javascript:checkForAmendments();" class="css_button"><span><?php echo xlt("Print Amendments"); ?></span></a></td>
+					<td><a href="javascript:checkForAmendments();" class="css_button"><span><?php echo xlt("Print Amendments"); ?></span></a>
+					    <a href="../summary/demographics.php" class="css_button" onclick="top.restoreSession()"><span>Back To Patient</span></a>
+					</td>
 					<td align="right">
 						<a href="#" class="small" onClick="checkUncheck(1);"><span><?php echo xlt('Check All');?></span></a> |
 						<a href="#" class="small" onClick="checkUncheck(0);"><span><?php echo xlt('Clear All');?></span></a>
