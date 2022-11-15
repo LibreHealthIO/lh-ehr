@@ -60,6 +60,7 @@ include_once("$srcdir/transactions.inc");
         <td>
             <a href="print_referral.php" onclick="top.restoreSession()" class="css_button" >
             <span><?php echo htmlspecialchars( xl('View Blank Referral Form'), ENT_NOQUOTES); ?></span></a>
+            <a href="../summary/demographics.php" class="css_button" onclick="top.restoreSession()"><span>Back To Patient</span></a>
         </td>
     </tr>
     </table>
