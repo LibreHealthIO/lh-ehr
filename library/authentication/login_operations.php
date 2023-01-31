@@ -101,7 +101,7 @@ function validate_user_password($username,&$password,$provider)
     $password='';
     if($valid)
     {
-        if ($authGroup = privQuery("select * from groups where user=? and name=?",array($username,$provider)))
+        if ($authGroup = privQuery("select * from `groups` where user=? and name=?",array($username,$provider)))
         {
             $_SESSION['authUser'] = $username;
             $_SESSION['authPass'] = $phash;

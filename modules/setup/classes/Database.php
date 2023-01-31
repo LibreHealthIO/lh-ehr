@@ -246,7 +246,7 @@ class Database
 
     public function add_initial_user() {
 
-        if ($this->execute_sql("INSERT INTO groups (id, name, user) VALUES (1,'$this->igroup','$this->iuser')") == FALSE) {
+        if ($this->execute_sql("INSERT INTO `groups` VALUES (1,'$this->igroup','$this->iuser')") == FALSE) {
             $this->error_message = "ERROR. Unable to add initial user group "." ".mysqli_error($this->dbh)." (#".mysqli_errno($this->dbh).")";
             return false;
         }

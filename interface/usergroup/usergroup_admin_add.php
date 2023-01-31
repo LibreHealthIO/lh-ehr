@@ -241,7 +241,7 @@ function authorized_clicked() {
 <td>
 <select name=groupname<?php if ($GLOBALS['disable_non_default_groups']) echo " style='display:none'"; ?>>
 <?php
-$res = sqlStatement("select distinct name from groups");
+$res = sqlStatement("select distinct name from `groups`");
 $result2 = array();
 for ($iter = 0;$row = sqlFetchArray($res);$iter++)
   $result2[$iter] = $row;
@@ -484,7 +484,7 @@ foreach ($result3 as $iter) {
 <span class="text"><?php echo xlt('Groupname'); ?>: </span>
 <select name=groupname>
 <?php
-$res = sqlStatement("select distinct name from groups");
+$res = sqlStatement("select distinct name from `groups`");
 $result2 = array();
 for ($iter = 0;$row = sqlFetchArray($res);$iter++)
   $result2[$iter] = $row;
@@ -503,7 +503,7 @@ foreach ($result2 as $iter) {
 
 <?php
 if (empty($GLOBALS['disable_non_default_groups'])) {
-  $res = sqlStatement("select * from groups order by name");
+  $res = sqlStatement("select * from `groups` order by name");
   for ($iter = 0;$row = sqlFetchArray($res);$iter++)
     $result5[$iter] = $row;
 

@@ -29,7 +29,7 @@ if (isset($_POST["mode"]) && ($_POST["mode"] == "editappt")) {
   }
   $timesave = "$year-$month-$day $hour:$minute";
   //echo $timesave;
-  $providerres = sqlQuery("select name from groups where user=? limit 1", array($_POST["provider"]) );
+  $providerres = sqlQuery("select name from `groups` where user=? limit 1", array($_POST["provider"]) );
 
   saveCalendarUpdate($_POST["calid"],$_POST["pid"],$timesave,$_POST["reason"],$_POST["provider"],$providerres{"name"});
 }
@@ -49,7 +49,7 @@ elseif (isset($_POST["mode"]) && ($_POST["mode"] == "saveappt")) {
     $hour += 12;
   }
   $timesave = "$year-$month-$day $hour:$minute";
-  $providerres = sqlQuery("select name from groups where user=? limit 1", array($_POST["provider"]) );
+  $providerres = sqlQuery("select name from `groups` where user=? limit 1", array($_POST["provider"]) );
   newCalendarItem($_POST["pid"],$timesave,$_POST["reason"],$_POST["provider"],$providerres{"name"});
 } else {
   $body_code = "";
