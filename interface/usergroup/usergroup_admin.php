@@ -442,7 +442,7 @@ if (isset($_FILES)) {
       //set the facility name from the selected facility_id
       sqlStatement("UPDATE users, facility SET users.facility = facility.name WHERE facility.id = '" . trim(formData('facility_id')) . "' AND users.username = '" . trim(formData('rumple')) . "'");
 
-      sqlStatement("insert into groups set name = '" . trim(formData('groupname')) .
+      sqlStatement("insert into `groups` set name = '" . trim(formData('groupname')) .
         "', user = '" . trim(formData('rumple')) . "'");
 
       if (isset($phpgacl_location) && acl_check('admin', 'acl') && trim(formData('rumple'))) {
@@ -470,7 +470,7 @@ if (isset($_FILES)) {
       refreshCalendar(); //after "Add User" process is complete
   }
   else if ($_POST["mode"] == "new_group") {
-    $res = sqlStatement("select distinct name, user from groups");
+    $res = sqlStatement("select distinct name, user from `groups`");
     for ($iter = 0; $row = sqlFetchArray($res); $iter++)
       $result[$iter] = $row;
     $doit = 1;
@@ -479,7 +479,7 @@ if (isset($_FILES)) {
         $doit--;
     }
     if ($doit == 1) {
-      sqlStatement("insert into groups set name = '" . trim(formData('groupname')) .
+      sqlStatement("insert into `groups` set name = '" . trim(formData('groupname')) .
         "', user = '" . trim(formData('rumple')) . "'");
     } else {
       $alertmsg .= "User " . trim(formData('rumple')) .
@@ -504,25 +504,25 @@ if (isset($_GET["mode"])) {
     // reference users to make sure this user is not referenced!
 
     foreach($result as $iter) {
-      sqlStatement("delete from groups where user = '" . $iter{"username"} . "'");
+      sqlStatement("delete from `groups` where user = '" . $iter{"username"} . "'");
     }
     sqlStatement("delete from users where iid = ?", array($_GET["id"]))
   }
   *******************************************************************/
 
   if ($_GET["mode"] == "delete_group") {
-    $res = sqlStatement("select distinct user from groups where id = ?", array($_GET["id"]));
+    $res = sqlStatement("select distinct user from `groups` where id = ?", array($_GET["id"]));
     for ($iter = 0; $row = sqlFetchArray($res); $iter++)
       $result[$iter] = $row;
     foreach($result as $iter)
       $un = $iter{"user"};
-    $res = sqlStatement("select name, user from groups where user = '$un' " .
+    $res = sqlStatement("select name, user from `groups` where user = '$un' " .
       "and id != ?", array($_GET["id"]));
 
     // Remove the user only if they are also in some other group.  I.e. every
     // user must be a member of at least one group.
     if (sqlFetchArray($res) != FALSE) {
-      sqlStatement("delete from groups where id = ?", array($_GET["id"]));
+      sqlStatement("delete from `groups` where id = ?", array($_GET["id"]));
     } else {
       $alertmsg .= "You must add this user to some other group before " .
         "removing them from this group. ";
@@ -684,7 +684,7 @@ foreach ($result4 as $iter) {
     </div>
 <?php
 if (empty($GLOBALS['disable_non_default_groups'])) {
-  $res = sqlStatement("select * from groups order by name");
+  $res = sqlStatement("select * from `groups` order by name");
   for ($iter = 0;$row = sqlFetchArray($res);$iter++)
     $result5[$iter] = $row;
 

@@ -201,9 +201,9 @@ function getUserList ($cols = '*', $limit = 'all', $start = '0')
 function getProviderList ($cols = '*', $limit= 'all', $start = '0')
 {
     if ($limit = "all")
-        $rez = sqlStatement("select ? from groups order by date DESC", array($cols));
+        $rez = sqlStatement("select ? from `groups` order by date DESC", array($cols));
     else
-        $rez = sqlStatement("select ? from groups order by date DESC limit ?, ?", array($cols, $limit, $start));
+        $rez = sqlStatement("select ? from `groups` order by date DESC limit ?, ?", array($cols, $limit, $start));
     for ($iter = 0; $row = sqlFetchArray($rez); $iter++)
         $tbl[$iter] = $row;
     return $tbl;
@@ -211,12 +211,12 @@ function getProviderList ($cols = '*', $limit= 'all', $start = '0')
 
 function addGroup ($groupname)
 {
-    return sqlInsert("insert into groups (name) values (?)", array($groupname));
+    return sqlInsert("insert into `groups` (name) values (?)", array($groupname));
 }
 
 function delGroup ($group_id)
 {
-    return sqlQuery("delete from groups where id = ? limit 0,1", array($group_id));
+    return sqlQuery("delete from `groups` where id = ? limit 0,1", array($group_id));
 }
 
 /***************************************************************
