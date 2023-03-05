@@ -86,7 +86,6 @@ function getAuthPortalUsers()
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <title><?php echo xlt("Secure Messaging"); ?></title>
 <meta name="viewport"
@@ -111,6 +110,9 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
 
 </head>
 <body ><!-- style='background:#f1f2f7;' -->
+<div class='title container'>
+        <h2><img style='width:25%;height:auto; class='logo' src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/>  <?php echo xlt('Patient Messaging'); ?></h2>
+        </div>
 <script>
 (function() {
     var app = angular.module("emrMessageApp",['ngSanitize','summernote',"checklist-model"]);
@@ -513,9 +515,6 @@ content="width=device-width, initial-scale=1, maximum-scale=1">
 </script>
     <ng ng-app="emrMessageApp">
     <div class="container" id='main' style="display:none">
-        <div class='header logo'>
-        <h2><img style='width:25%;height:auto;' class='logo' src='<?php echo $GLOBALS['images_path']; ?>/logo-full-con.png'/>  <?php echo xlt('Patient Messaging'); ?></h2>
-        </div>
         <div class="row" ng-controller="inboxCtrl">
             <aside class="col-md-1"
                 style='padding: 0 0; margin: 0 0; text-align: left;'>
