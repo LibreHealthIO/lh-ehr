@@ -636,24 +636,23 @@ font-weight: bold;
 }
 
 .css_button, a[role="button"] {
-    background: transparent url( 'theme_assets/bg_button_a.gif' ) no-repeat scroll top right;
-    color: #444;
-    display: block;
-    float: left;
-    font: bold 10px arial, sans-serif;
-    height: 24px;
-    margin-right: 3px;
-    padding-right: 10px; /* sliding doors padding */
+    display: inline-block;
+    font-weight: 300;
+    margin: 4px;
+    vertical-align: middle;
+    /* sliding doors padding */
     text-decoration: none;
+    padding: 4px 6px 4px;
+    border: none;
+    border-radius: 5px;
+    font-size:0.8em;
+    box-shadow: 2px 1px 4px #88888B;
 }
 .css_button[href*="deleter"], input[type="button"][href*="deleter"], button[href*="deleter"], input[type="button"][class="deleter"], button[href*="deleter"], a[class="deleter"] {
   background: red !important;
 }
 .css_button span {
-    background: transparent url( 'theme_assets/bg_button_span.gif' ) no-repeat;
-    display: block;
-    line-height: 14px;
-    padding: 5px 0 5px 10px;
+    display: inline-block;
 }
 .sellistclass {
 float:left;
