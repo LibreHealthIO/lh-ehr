@@ -467,7 +467,7 @@ Clone the forked repository to a local directory with:
 #### Installation
 Launch MAMP Control Panel and start your server.
 
-Go to the LibreEHR Setup page in your browser: `localhost/librehealthehr/setup.php` (If there is an Site can't be reached error, sure that you are on the right port, this can be found in the preference of your MAMP. Also ensure that your MAMP server has successfully started, this can be seen on the control panel)
+Go to the LibreEHR Setup page in your browser: `localhost/lh-ehr/setup.php` (If there is an Site can't be reached error, sure that you are on the right port, this can be found in the preference of your MAMP. Also ensure that your MAMP server has successfully started, this can be seen on the control panel)
 
  Leave default as the "Site ID:" and press continue.
 
