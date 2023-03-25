@@ -597,18 +597,16 @@ $config = '.$flag.'; /////
      */
     private function dumpSourceDatabase() {
         global $OE_SITES_BASE;
-        $source_site_id = $this->source_site_id;
+        require("$OE_SITES_BASE/$this->source_site_id/sqlconf.php");
 
-        require("$OE_SITES_BASE/$source_site_id/sqlconf.php");
-
-        if (empty($config)) die("Source site $source_site_id has not been set up!");
+        if (empty($config)) die("Source site $this->source_site_id has not been set up!");
 
         $backup_file = $this->get_backup_filename();
-        $cmd = "mysqldump -u " . escapeshellarg($login) .
-            " -p" . escapeshellarg($pass) .
+        $cmd = "mysqldump -u " . escapeshellarg($this->login) .
+            " -p" . escapeshellarg($this->pass) .
             " --opt --quote-names -r $backup_file " .
             //" --opt --skip-extended-insert --quote-names -r $backup_file " .  Comment out above line and enable this to have really slow DB duplication.
-            escapeshellarg($dbase);
+            escapeshellarg($this->dbname);
 
         $tmp0 = exec($cmd, $tmp1=array(), $tmp2);
         if ($tmp2) die("Error $tmp2 running \"$cmd\": $tmp0 " . implode(' ', $tmp1));
