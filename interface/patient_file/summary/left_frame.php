@@ -40,17 +40,24 @@ $featureData['amendment']['listLink'] = "list_amendments.php";
 
 <span class="title"><?php echo text($featureData[$feature]['title']); ?></span>
 <table>
-<tr height="20px">
-<td>
+	<tr height="20px">
+		<td>
 
-<a href="<?php echo $GLOBALS['webroot']?>/interface/patient_file/summary/<?php echo attr($featureData[$feature]['listLink']); ?>?id=<?php echo attr($pid); ?>" target='rightFrame' class="css_button" onclick="top.restoreSession()">
-<span><?php echo xlt('List');?></span></a>
-<?php if ( acl_check('patients', 'trans') ) { ?>
-	<a href="<?php echo $GLOBALS['webroot']?>/interface/patient_file/summary/<?php echo attr($featureData[$feature]['addLink']); ?>" target='rightFrame' class="css_button" onclick="top.restoreSession()">
-	<span><?php echo xlt('Add');?></span></a>
-<?php } ?>
-</td>
-</tr>
+			<a href="<?php echo $GLOBALS['webroot']?>/interface/patient_file/summary/<?php echo attr($featureData[$feature]['listLink']); ?>?id=<?php echo attr($pid); ?>" target='rightFrame' class="css_button" onclick="top.restoreSession()">
+			<span><?php echo xlt('List');?></span></a>
+			<?php if ( acl_check('patients', 'trans') ) { ?>
+				<a href="<?php echo $GLOBALS['webroot']?>/interface/patient_file/summary/<?php echo attr($featureData[$feature]['addLink']); ?>" target='rightFrame' class="css_button" onclick="top.restoreSession()">
+				<span><?php echo xlt('Add');?></span></a>
+			<?php } ?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a class="css_button large_button" href="demographics.php" target="pat" onclick="top.restoreSession()">
+				<span class="css_button_span large_button_span"><?php echo xlt('Back to Patient');?></span>
+			</a>
+		</td>
+	</tr>
 </table>
 </body>
 </html>

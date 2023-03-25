@@ -21,6 +21,13 @@ include_once("../../globals.php");
 </a>
 </td>
 </tr>
+<tr>
+		<td>
+			<a class="css_button large_button" href="demographics.php" target="pat" onclick="top.restoreSession()">
+				<span class="css_button_span large_button_span"><?php echo xlt('Back to Patient');?></span>
+			</a>
+		</td>
+</tr>
 </table>
 
 </body>
