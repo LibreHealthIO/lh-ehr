@@ -264,6 +264,12 @@ function collectApptStatusSettings($option) {
   return $color_settings;
 }
 
+# This is used to get title of passed status
+function getApptStatusTitle($option) {
+  $row = sqlQuery("SELECT title FROM list_options WHERE list_id = 'apptstat' AND option_id = ?", array($option));
+  return $row['title'];
+}
+
 # This is used to collect the tracker elements for the Patient Flow Board Report
 # returns the elements in an array
 function collect_Tracker_Elements($trackerid)

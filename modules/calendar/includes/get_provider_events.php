@@ -80,9 +80,11 @@ foreach($fetchedEvents as $event) {
   }
   $status = $event['pc_apptstatus'];
   $colorevents = (collectApptStatusSettings($status));
+  $statusTitle = getApptStatusTitle($status);
 
   $e = array();
   $e = $event;
+  $e['statusTitle'] = $statusTitle;
   $e['id'] = $event['pc_eid'];
   $e['resourceId'] = $event['pc_aid'];
   $e['title'] = $event['pc_title'];
@@ -97,14 +99,12 @@ foreach($fetchedEvents as $event) {
   }else{
   $e['color'] = $event['pc_catcolor'];
   }
-  $e['e_info'] = " (" . $event['pc_title'] . ")";
+  // array to determine what to display in event's tooltip - last name, first name, category title, comment/description
+  $e['tooltip'] = array('lname' => false, 'fname' => false, 'category' => false, 'comment' => false);
   if($event["pc_pid"] > 0) {
+    // when event is a patient event (appointment)
     $e['picture_url'] = getPatientPictureUrl($event["pc_pid"]);
-    $e['description'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'];
-    if(!empty($event["pc_hometext"])) {
-      $e['description'] = $e['description'] . ": " . $event["pc_hometext"];
-    }
-    $e['description'] = $e['description'] . ")";
+    // this global decides display style of an appointment's slot text
     switch($GLOBALS['calendar_appt_style']) {
       case 1:
         $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'];
@@ -113,16 +113,55 @@ foreach($fetchedEvents as $event) {
         $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
         break;
       case 3:
-        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'] . " (" . $event['pc_title'] . ")";
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
+        $e['e_info'] = " (" . $event['pc_title'] . ")";
         break;
       case 4:
-        $e['title'] = $e['description'];  // Case 4 is exactly the same as the event tooltip
+        $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
+        $e['e_info'] = $e['e_info'] . " (" . $event['pc_title'];
+        if(!empty($event["pc_hometext"])) {
+          // if there's a valid comment, include it in event's title
+          $e['e_info'] = $e['e_info'] . ": " . $event["pc_hometext"];
+        }
+        $e['e_info'] = $e['e_info'] . ")";
         break;
       default:
         $e['title'] = $event['pc_apptstatus'] . " " . $event['lname'] . ", " . $event['fname'];
     }
+    // this global decides display style of an appointment's tooltip
+    switch($GLOBALS['appt_tooltip_style']) {
+      case 1:
+        $e['tooltip']['lname'] = true;
+        break;
+      case 2:
+        $e['tooltip']['lname'] = true;
+        $e['tooltip']['fname'] = true;
+        break;
+      case 3:
+        $e['tooltip']['lname'] = true;
+        $e['tooltip']['fname'] = true;
+        $e['tooltip']['category'] = true;
+        break;
+      case 4:
+        $e['tooltip']['lname'] = true;
+        $e['tooltip']['fname'] = true;
+        $e['tooltip']['category'] = true;
+        if(!empty($event["pc_hometext"])) {
+          // if there's a non-empty comment, include it in event's tooltip
+          $e['tooltip']['comment'] = true;
+        }
+        break;
+      default:
+        $e['tooltip']['lname'] = true;
+        $e['tooltip']['fname'] = true;
+    }
   } else {
-    $e['description'] = $event['pc_title'];
+    // when event is a provider event
+    $e['tooltip']['category'] = true;
+    if(!empty($event["pc_hometext"])) {
+      // if there's a non-empty comment, include it in event's tooltip
+      $e['tooltip']['comment'] = true;
+    }
   }
   // Merge the event array into the return array
   array_push($events, $e);
