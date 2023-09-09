@@ -22,7 +22,7 @@ if (strtolower(substr($fname,(strlen($fname)-4))) == ".pdf") {
 $fname = $claim_file_dir . $fname;
 
 if (!file_exists($fname)) {
-   echo xl("The claim file: ") . $_GET['key'] . xl(" could not be accessed.");
+   echo xl("The claim file: ") . htmlspecialchars($_GET['key']) . xl(" could not be accessed.");
 }
 elseif ($_GET['action'] == "print") {
 ?>
