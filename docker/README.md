@@ -324,7 +324,7 @@ This is only applicable to production.
 $ docker/run update
 ```
 
-Do not forget to run http://localhost:8000/sql_upgrade.php
+Do not forget to run http://localhost:8000/setup/sql_upgrade.php
 
 **Replace `localhost:8000` with the port and, IP address or hostname of your server.**
 
