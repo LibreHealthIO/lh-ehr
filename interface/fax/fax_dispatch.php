@@ -47,6 +47,8 @@ if ($_GET['file']) {
 else if ($_GET['scan']) {
   $mode = 'scan';
   $filename = $_GET['scan'];
+  // ensure the file variable has no illegal characters
+  check_file_dir_name($filename);
   $filepath = $GLOBALS['scanner_output_directory'] . '/' . $filename;
 }
 else {
