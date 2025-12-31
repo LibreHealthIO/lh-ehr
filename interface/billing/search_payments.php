@@ -70,10 +70,6 @@ if (isset($_POST["mode"]))
 //===============================================================================
   if ($_POST["mode"] == "SearchPayment")
    {
-
-   
-
-
     $FromDate=trim(formData('FromDate' ));
     $ToDate=trim(formData('ToDate' ));
     $PaymentMethod=trim(formData('payment_method' ));
