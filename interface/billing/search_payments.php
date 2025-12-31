@@ -81,8 +81,8 @@ if (isset($_POST["mode"]))
     $PaymentStatus=trim(formData('PaymentStatus' ));
     $PaymentSortBy=trim(formData('PaymentSortBy' ));
     $PaymentDate=trim(formData('payment_date' ));
-    $QueryString.="Select * from  ar_session where  ";
-    $And='';
+    $QueryString = "SELECT * FROM ar_session WHERE 1=1";
+    $And='AND';
     
     if($PaymentDate=='date_val')
      {
