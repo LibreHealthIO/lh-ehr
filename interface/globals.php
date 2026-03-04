@@ -53,6 +53,10 @@ if (!defined('IS_WINDOWS'))
 //
 ini_set('session.gc_maxlifetime', '14400');
 
+// Hide deprecated and notice warnings from UI 
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+ini_set('display_errors', 'Off');
+
 // This is for sanitization of all escapes.
 //  (ie. reversing magic quotes if it's set)
 if (isset($sanitize_all_escapes) && $sanitize_all_escapes) {
