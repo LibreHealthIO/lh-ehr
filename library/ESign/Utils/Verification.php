@@ -35,7 +35,7 @@ class Utils_Verification implements VerificationIF
         } else {
             $string = $data;
         }
-        $hash = sha1( $string );
+        $hash = hash( 'sha256', $string );
         return $hash;
     }    
 
@@ -56,8 +56,16 @@ class Utils_Verification implements VerificationIF
     public function verify( $data, $hash )
     {
         $currentHash = $this->hash( $data );
-        if ( $currentHash == $hash ) {
+        if ( hash_equals( (string)$hash, (string)$currentHash ) ) {
             return true;
+        }
+        // Backward compatibility: If stored signature hash is 40 characters (legacy SHA-1), verify using SHA-1
+        if ( strlen( (string)$hash ) === 40 ) {
+            $string = is_array( $data ) ? $this->stringifyArray( $data ) : $data;
+            $legacyHash = sha1( $string );
+            if ( hash_equals( (string)$hash, (string)$legacyHash ) ) {
+                return true;
+            }
         }
         
         return false;

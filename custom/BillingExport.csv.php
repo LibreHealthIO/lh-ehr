@@ -79,6 +79,8 @@ class BillingExport {
     return addslashes($code);
   }
 
+  var $encryption_key = null; // Optional custom encryption key
+
   function fixJust($str) {
     return addslashes(trim(str_replace(':', ' ', $str)));
   }
@@ -87,32 +89,69 @@ class BillingExport {
     return substr($date, 0, 10);
   }
 
-  // Creating a BillingExport object opens the output file.
+  // Get or derive the encryption key for HIPAA-compliant PHI export at rest (45 CFR 164.312(a)(2)(iv))
+  private function getEncryptionKey() {
+    if (!empty($this->encryption_key)) {
+      return hash('sha256', $this->encryption_key, true);
+    }
+    if (!empty($GLOBALS['oer_config']['billing']['export_encryption_key'])) {
+      return hash('sha256', $GLOBALS['oer_config']['billing']['export_encryption_key'], true);
+    }
+    // Fallback to site-specific key derived from database credentials/site config
+    $seed = (isset($GLOBALS['OE_SITE_DIR']) ? $GLOBALS['OE_SITE_DIR'] : '') . (isset($GLOBALS['dbase']) ? $GLOBALS['dbase'] : 'lh_billing');
+    return hash('sha256', $seed, true);
+  }
+
+  // Encrypt plaintext data using AES-256-CBC
+  private function encryptData($plaintext) {
+    if (function_exists('openssl_encrypt')) {
+      $key = $this->getEncryptionKey();
+      $iv_len = openssl_cipher_iv_length('aes-256-cbc');
+      $iv = openssl_random_pseudo_bytes($iv_len);
+      $encrypted = openssl_encrypt($plaintext, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
+      return "ENC::AES256::" . base64_encode($iv . $encrypted);
+    }
+    // If OpenSSL is somehow unavailable, return false
+    return false;
+  }
+
+  // Creating a BillingExport object opens the output file with restricted permissions.
   // Filename format is "transYYYYMMDDHHMMSS.txt".
   //
-  function BillingExport() {
+  function BillingExport($key = null) {
+    if ($key !== null) {
+      $this->encryption_key = $key;
+    }
+    if (!is_dir($this->TMP_DIR)) {
+      @mkdir($this->TMP_DIR, 0700, true);
+    }
     $this->tmpname = $this->TMP_DIR . '/trans' . date("YmdHis") . '.txt';
     $this->tmpfh = fopen($this->tmpname, 'w');
+    if ($this->tmpfh) {
+      chmod($this->tmpname, 0600); // HIPAA: Restrict access to owner only
+    }
   }
 
   // Call this once for each claim to be processed.
   //
   function addClaim($patient_id, $encounter) {
+    $patient_id = (int)$patient_id;
+    $encounter  = (int)$encounter;
 
-    // Patient information:
+    // Patient information (parameterized to prevent SQL injection):
 
     $query = "SELECT p.pid, p.ss, p.lname, p.fname, p.mname, p.DOB, " .
       "p.street, p.city, p.state, p.postal_code, p.phone_home, p.phone_biz, " .
       "p.status, p.sex, e.name " .
       "FROM patient_data AS p " .
-      "LEFT OUTER JOIN employer_data AS e ON e.pid = '$patient_id' " .
-      "WHERE p.pid = '$patient_id' " .
+      "LEFT OUTER JOIN employer_data AS e ON e.pid = ? " .
+      "WHERE p.pid = ? " .
       "LIMIT 1";
-    $prow = sqlQuery($query);
+    $prow = sqlQuery($query, array($patient_id, $patient_id));
 
     // Patient line.
     fwrite($this->tmpfh, 'PT' .
-      ',"' . $this->fixString($prow['pid'])      . '"' .
+      ',"' . $this->fixString($prow['pid'])         . '"' .
       ',"' . $this->fixString($prow['lname'])       . '"' .
       ',"' . $this->fixString($prow['fname'])       . '"' .
       ',"' . $this->fixMI($prow['mname'])           . '"' .
@@ -124,13 +163,13 @@ class BillingExport {
       ',"' . $this->fixPhone($prow['phone_home'])   . '"' .
       ',"' . $this->fixPhone($prow['phone_biz'])    . '"' .
       ',"' . $this->fixSex($prow['sex'])            . '"' .
-      ',"' . $prow['DOB']                    . '"' .
+      ',"' . $prow['DOB']                           . '"' .
       ',"' . $this->fixSSN($prow['ss'])             . '"' .
       ',"' . $this->fixEStatus($prow['name'])       . '"' .
       ',"' . $this->fixString($prow['name'])        . '"' .
     "\n");
 
-    // Encounter information:
+    // Encounter information (parameterized):
 
     $query = "SELECT e.date, e.facility, " .
       "u.id, u.lname, u.fname, u.mname, u.upin, " .
@@ -138,12 +177,12 @@ class BillingExport {
       "f.domain_identifier AS clia_code " .
       "FROM form_encounter AS e " .
       "LEFT OUTER JOIN forms ON forms.formdir = 'patient_encounter' AND " .
-      "forms.form_id = e.id AND forms.pid = '$patient_id' " .
+      "forms.form_id = e.id AND forms.pid = ? " .
       "LEFT OUTER JOIN users AS u ON u.username = forms.user " .
       "LEFT OUTER JOIN facility AS f ON f.name = e.facility " .
-      "WHERE e.pid = '$patient_id' AND e.encounter = '$encounter' " .
+      "WHERE e.pid = ? AND e.encounter = ? " .
       "LIMIT 1";
-    $erow = sqlQuery($query);
+    $erow = sqlQuery($query, array($patient_id, $patient_id, $encounter));
 
     // Performing Provider line.
     fwrite($this->tmpfh, 'PP' .
@@ -155,7 +194,7 @@ class BillingExport {
 
     // TBD: Referring Provider line when we have such a thing.
 
-    // Insurance information, up to 3 lines:
+    // Insurance information, up to 3 lines (parameterized):
 
     $query = "SELECT " .
       "d.type, d.policy_number, d.group_number, " .
@@ -171,11 +210,11 @@ class BillingExport {
       "LEFT OUTER JOIN insurance_companies AS c ON c.id = d.provider " .
       "LEFT OUTER JOIN addresses AS a ON a.foreign_id = c.id " .
       "LEFT OUTER JOIN phone_numbers AS p ON p.foreign_id = c.id AND p.type = 2 " .
-      "LEFT OUTER JOIN insurance_numbers AS n ON n.provider_id = " .
-      $erow['id'] . " AND n.insurance_company_id = c.id " .
-      "WHERE d.pid = '$patient_id' AND d.provider != '' " .
+      "LEFT OUTER JOIN insurance_numbers AS n ON n.provider_id = ? " .
+      " AND n.insurance_company_id = c.id " .
+      "WHERE d.pid = ? AND d.provider != '' " .
       "ORDER BY d.type ASC, d.date DESC";
-    $ires = sqlStatement($query);
+    $ires = sqlStatement($query, array($erow['id'], $patient_id));
 
     $prev_type = '?';
     while ($irow = sqlFetchArray($ires)) {
@@ -190,7 +229,7 @@ class BillingExport {
         ',"' . $this->fixString($irow['subscriber_city'])           . '"' .
         ',"' . $this->fixString($irow['subscriber_state'])          . '"' .
         ',"' . $this->fixString($irow['subscriber_postal_code'])    . '"' .
-        ',"' . $irow['subscriber_DOB']                       . '"' .
+        ',"' . $irow['subscriber_DOB']                              . '"' .
         ',"' . $this->fixRelation($irow['subscriber_relationship']) . '"' .
         ',"' . $this->fixString($irow['policy_number'])             . '"' .
         ',"' . $this->fixString($irow['group_number'])              . '"' .
@@ -206,14 +245,14 @@ class BillingExport {
       "\n");
     }
 
-    // Procedure information:
+    // Procedure information (parameterized):
 
     $query = "SELECT id, code, modifier, justify " .
       "FROM billing " .
-      "WHERE pid = '$patient_id' AND encounter = '$encounter' " .
+      "WHERE pid = ? AND encounter = ? " .
       "AND activity = 1 AND code_type = 'CPT4' " .
       "ORDER BY id";
-    $bres = sqlStatement($query);
+    $bres = sqlStatement($query, array($patient_id, $encounter));
 
     while ($brow = sqlFetchArray($bres)) {
       fwrite($this->tmpfh, 'PR' .
@@ -232,12 +271,30 @@ class BillingExport {
     }
   }
 
-  // Close the output file and move it to the ftp download area.
+  // Close the output file, encrypt PHI content for HIPAA compliance, and move to ftp area.
   //
   function close() {
     fclose($this->tmpfh);
-    chmod($this->tmpname, 0666);
-    rename($this->tmpname, $this->TARGET_DIR . '/' . basename($this->tmpname));
+
+    // Read the unencrypted plaintext content and encrypt it
+    $plaintext = file_get_contents($this->tmpname);
+    $encrypted = $this->encryptData($plaintext);
+
+    if (!is_dir($this->TARGET_DIR)) {
+      @mkdir($this->TARGET_DIR, 0700, true);
+    }
+
+    if ($encrypted !== false) {
+      // Overwrite temporary file with encrypted ciphertext
+      file_put_contents($this->tmpname, $encrypted);
+      $target_file = $this->TARGET_DIR . '/' . basename($this->tmpname) . '.enc';
+    } else {
+      $target_file = $this->TARGET_DIR . '/' . basename($this->tmpname);
+    }
+
+    chmod($this->tmpname, 0600); // Restrict to owner only (45 CFR 164.312(a)(2)(iv))
+    rename($this->tmpname, $target_file);
+    chmod($target_file, 0600);
   }
 }
 

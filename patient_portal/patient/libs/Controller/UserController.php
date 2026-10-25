@@ -39,10 +39,15 @@ class UserController extends AppBaseController
     {
         parent::Init();
 
-        // TODO: add controller-wide bootstrap code
-
-        // TODO: if authentiation is required for this entire controller, for example:
-        // $this->RequirePermission(SecureApp::$PERMISSION_USER,'SecureApp.LoginForm');
+        // Portal users are not authorized to query or manage system users
+        if ($this->IsPortalUser()) {
+            header('HTTP/1.1 403 Forbidden');
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                echo json_encode(array('success' => false, 'message' => 'Access denied: unauthorized access to system user management.'));
+                exit;
+            }
+            die('Access denied: unauthorized access to system user management.');
+        }
     }
 
     /**

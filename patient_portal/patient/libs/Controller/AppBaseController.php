@@ -28,15 +28,77 @@ class AppBaseController extends Controller
      * for all application actions.  This is a good place for authentication
      * code.
      */
+    /**
+     * Init is called by the base controller before the action method
+     * is called. Enforces authentication for all controller actions.
+     * HIPAA 45 CFR 164.312(a)(1) Access Control
+     */
     protected function Init()
     {
+        parent::Init();
 
-    /*  if ( !in_array($this->GetRouter()->GetUri(),array('login','loginform','logout')) )
-        {
-            require_once("App/SecureApp.php");
-            $this->RequirePermission(SecureApp::$PERMISSION_ADMIN,'SecureApp.LoginForm');
-        }*/
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
+        $isPortalUser = (isset($_SESSION['pid']) && !empty($_SESSION['patient_portal_onsite']));
+        $isEHRUser    = (isset($_SESSION['authUserID']) && !empty($_SESSION['authUserID']));
+
+        // Exempt public login endpoints if router is available
+        $uri = '';
+        if ($this->GetRouter()) {
+            $uri = strtolower($this->GetRouter()->GetUri());
+        }
+        $exemptUris = array('login', 'loginform', 'logout', 'default.login', 'default.loginform');
+
+        if (!in_array($uri, $exemptUris)) {
+            if (!$isPortalUser && !$isEHRUser) {
+                $landingpage = (isset($GLOBALS['web_root']) ? $GLOBALS['web_root'] : '') . "/patient_portal/index.php";
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    header('HTTP/1.1 401 Unauthorized');
+                    echo json_encode(array('success' => false, 'message' => 'Authentication required to access PHI.'));
+                    exit;
+                }
+                header('Location: ' . $landingpage);
+                exit;
+            }
+        }
+    }
+
+    /**
+     * Enforce patient-level authorization for PHI access.
+     * Prevents Insecure Direct Object References (IDOR) where a patient could access another patient's records.
+     * HIPAA 45 CFR 164.312(a)(1) Access Control
+     *
+     * @param int $requestedPid
+     * @return int Authorized patient ID
+     */
+    public function EnforcePatientAccess($requestedPid = 0)
+    {
+        $isPortalUser = (isset($_SESSION['pid']) && !empty($_SESSION['patient_portal_onsite']));
+        if ($isPortalUser) {
+            $sessionPid = (int)$_SESSION['pid'];
+            if (!empty($requestedPid) && (int)$requestedPid !== $sessionPid) {
+                header('HTTP/1.1 403 Forbidden');
+                if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    echo json_encode(array('success' => false, 'message' => 'Access denied: unauthorized access to patient record.'));
+                    exit;
+                }
+                die('Access denied: unauthorized access to patient record.');
+            }
+            return $sessionPid;
+        }
+        return (int)$requestedPid;
+    }
+
+    /**
+     * Check if the current active session is a patient portal user.
+     *
+     * @return bool
+     */
+    public function IsPortalUser()
+    {
+        return (isset($_SESSION['pid']) && !empty($_SESSION['patient_portal_onsite']));
     }
 
     /**

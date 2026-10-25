@@ -53,6 +53,7 @@ class OnsiteDocumentController extends AppBaseController
         if (isset($_GET['pid'])) {
             $pid = ( int ) $_GET['pid'];
         }
+        $pid = $this->EnforcePatientAccess($pid);
 
         if (isset($_GET['user'])) {
             $user = $_GET['user'];
@@ -88,6 +89,10 @@ class OnsiteDocumentController extends AppBaseController
         {
             $criteria = new OnsiteDocumentCriteria();
             $pid = RequestUtil::Get( 'patientId' );
+            if (!$pid) {
+                $pid = RequestUtil::Get('pid');
+            }
+            $pid = $this->EnforcePatientAccess($pid);
             $criteria->Pid_Equals = $pid;
             $recid = RequestUtil::Get( 'recid' );
             if( $recid > 0 ){
@@ -116,6 +121,11 @@ class OnsiteDocumentController extends AppBaseController
                     // this is a convenience so that the _Equals suffix is not needed
                     $criteria->$prop_equals = RequestUtil::Get($prop);
                 }
+            }
+
+            // Enforce patient ID restriction if portal user or pid filter was specified
+            if ($pid) {
+                $criteria->Pid_Equals = $pid;
             }
 
             $output = new stdClass();
@@ -168,6 +178,7 @@ class OnsiteDocumentController extends AppBaseController
         if (isset($_GET['pid'])) {
             $pid = ( int ) $_GET['pid'];
         }
+        $pid = $this->EnforcePatientAccess($pid);
 
         if (isset($_GET['user'])) {
             $user = $_GET['user'];
@@ -192,6 +203,7 @@ class OnsiteDocumentController extends AppBaseController
         {
             $pk = $this->GetRouter()->GetUrlParam('id');
             $onsitedocument = $this->Phreezer->Get('OnsiteDocument',$pk);
+            $this->EnforcePatientAccess($onsitedocument->Pid);
             $this->RenderJSON($onsitedocument, $this->JSONPCallback(), true, $this->SimpleObjectParams());
         }
         catch (Exception $ex)
@@ -222,7 +234,7 @@ class OnsiteDocumentController extends AppBaseController
             // this is an auto-increment.  uncomment if updating is allowed
             // $onsitedocument->Id = $this->SafeGetVal($json, 'id');
 
-            $onsitedocument->Pid = $this->SafeGetVal($json, 'pid');
+            $onsitedocument->Pid = $this->EnforcePatientAccess($this->SafeGetVal($json, 'pid'));
             $onsitedocument->Facility = $this->SafeGetVal($json, 'facility');
             $onsitedocument->Provider = $this->SafeGetVal($json, 'provider');
             $onsitedocument->Encounter = $this->SafeGetVal($json, 'encounter');
@@ -276,13 +288,14 @@ class OnsiteDocumentController extends AppBaseController
 
             $pk = $this->GetRouter()->GetUrlParam('id');
             $onsitedocument = $this->Phreezer->Get('OnsiteDocument',$pk);
+            $this->EnforcePatientAccess($onsitedocument->Pid);
 
             // TODO: any fields that should not be updated by the user should be commented out
 
             // this is a primary key.  uncomment if updating is allowed
             // $onsitedocument->Id = $this->SafeGetVal($json, 'id', $onsitedocument->Id);
 
-            $onsitedocument->Pid = $this->SafeGetVal($json, 'pid', $onsitedocument->Pid);
+            $onsitedocument->Pid = $this->EnforcePatientAccess($this->SafeGetVal($json, 'pid', $onsitedocument->Pid));
             $onsitedocument->Facility = $this->SafeGetVal($json, 'facility', $onsitedocument->Facility);
             $onsitedocument->Provider = $this->SafeGetVal($json, 'provider', $onsitedocument->Provider);
             $onsitedocument->Encounter = $this->SafeGetVal($json, 'encounter', $onsitedocument->Encounter);
@@ -334,6 +347,7 @@ class OnsiteDocumentController extends AppBaseController
 
             $pk = $this->GetRouter()->GetUrlParam('id');
             $onsitedocument = $this->Phreezer->Get('OnsiteDocument',$pk);
+            $this->EnforcePatientAccess($onsitedocument->Pid);
 
             $onsitedocument->Delete();
 

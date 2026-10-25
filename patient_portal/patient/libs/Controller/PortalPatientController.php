@@ -55,6 +55,7 @@ class PortalPatientController extends AppBaseController{
         if (isset($_GET['pid'])) {
             $pid = ( int ) $_GET['pid'];
         }
+        $pid = $this->EnforcePatientAccess($pid);
 
         if (isset($_GET['user'])) {
             $user = $_GET['user'];
@@ -78,6 +79,10 @@ class PortalPatientController extends AppBaseController{
         try{
             $criteria = new PatientCriteria();
             $recnum = RequestUtil::Get( 'patientId' );
+            if (!$recnum) {
+                $recnum = RequestUtil::Get('pid');
+            }
+            $recnum = $this->EnforcePatientAccess($recnum);
             $criteria->Pid_Equals = $recnum;
 
             $output = new stdClass();
@@ -112,6 +117,10 @@ class PortalPatientController extends AppBaseController{
         try{
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $ppid = RequestUtil::Get( 'patientId' );
+            if (!$ppid) {
+                $ppid = RequestUtil::Get('pid');
+            }
+            $ppid = $this->EnforcePatientAccess($ppid);
             // $patient = $this->Phreezer->Get( 'Patient', $pk );
             $appsql = new ApplicationTable();
             $edata = $appsql->getPortalAudit( $ppid, 'review' );
@@ -140,6 +149,7 @@ class PortalPatientController extends AppBaseController{
 
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $patient = $this->Phreezer->Get( 'Patient', $pk );
+            $this->EnforcePatientAccess($patient->Pid);
 
             $patient->Title = $this->SafeGetVal( $json, 'title', $patient->Title );
             $patient->Language = $this->SafeGetVal( $json, 'language', $patient->Language );
@@ -183,7 +193,7 @@ class PortalPatientController extends AppBaseController{
             $patient->Homeless = $this->SafeGetVal( $json, 'homeless', $patient->Homeless );
             $patient->FinancialReview = date( 'Y-m-d H:i:s', strtotime( $this->SafeGetVal( $json, 'financialReview', $patient->FinancialReview ) ) );
             $patient->Pubpid = $this->SafeGetVal( $json, 'pubpid', $patient->Pubpid );
-            $patient->Pid = $this->SafeGetVal( $json, 'pid', $patient->Pid );
+            $patient->Pid = $this->EnforcePatientAccess($this->SafeGetVal( $json, 'pid', $patient->Pid ));
             $patient->HipaaMail = $this->SafeGetVal( $json, 'hipaaMail', $patient->HipaaMail );
             $patient->HipaaVoice = $this->SafeGetVal( $json, 'hipaaVoice', $patient->HipaaVoice );
             $patient->HipaaNotice = $this->SafeGetVal( $json, 'hipaaNotice', $patient->HipaaNotice );
@@ -260,10 +270,10 @@ class PortalPatientController extends AppBaseController{
     public function Delete(){
         try{
 
-            // TODO: if a soft delete is prefered, change this to update the deleted flag instead of hard-deleting
-
+            // TODO: if a soft delete is prefered, change this to update the deleted flag instead of hard-delete
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $patient = $this->Phreezer->Get( 'Patient', $pk );
+            $this->EnforcePatientAccess($patient->Pid);
 
             $patient->Delete();
 

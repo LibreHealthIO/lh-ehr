@@ -91,6 +91,11 @@ class OnsiteActivityViewController extends AppBaseController
                 }
             }
 
+            // If called by a patient portal user, restrict strictly to their own patient ID
+            if ($this->IsPortalUser()) {
+                $criteria->PatientId_Equals = (int)$_SESSION['pid'];
+            }
+
             $output = new stdClass();
 
             // if a sort order was specified then specify in the criteria
@@ -136,6 +141,7 @@ class OnsiteActivityViewController extends AppBaseController
         try{
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $onsiteactivityview = $this->Phreezer->Get( 'OnsiteActivityView', $pk );
+            $this->EnforcePatientAccess($onsiteactivityview->PatientId);
             $this->RenderJSON( $onsiteactivityview, $this->JSONPCallback(), true, $this->SimpleObjectParams() );
         } catch( Exception $ex ){
             $this->RenderExceptionJSON( $ex );

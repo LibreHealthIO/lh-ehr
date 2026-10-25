@@ -432,7 +432,7 @@ class Controller extends SMA_Common\Controller
         $unique .= $this->getServer('HTTP_USER_AGENT');
         $unique .= $this->getServer('HTTP_ACCEPT_LANGUAGE');
         $unique .= C_USER;
-        return md5($unique);
+        return hash('sha256', $unique);
     }
 
     public function pingAction()

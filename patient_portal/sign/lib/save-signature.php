@@ -90,7 +90,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ){
     // No validation errors exist, so we can start the database stuff
     if( empty( $errors ) ){
 
-        $sig_hash = sha1( $output );
+        $sig_hash = hash( 'sha256', $output );
         $created = time();
         $ip = $_SERVER['REMOTE_ADDR'];
         $status = 'filed';

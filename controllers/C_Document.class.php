@@ -264,11 +264,12 @@ class C_Document extends Controller {
                     $this->document_upload_download_log($d->get_foreign_id(), $log_content);
                     die(xlt("File retrieval from CouchDB failed"));
                 }
-                // place it in a temporary file and will remove the file below after emailed
+                // place it in a temporary file with restricted permissions and remove after emailed
                 $temp_couchdb_url = $GLOBALS['OE_SITE_DIR'] . '/documents/temp/couch_' . date("YmdHis") . $d->get_url_file();
                 $fh = fopen($temp_couchdb_url, "w");
                 fwrite($fh, base64_decode($content));
                 fclose($fh);
+                @chmod($temp_couchdb_url, 0600); // HIPAA: Restrict access to owner only
                 $temp_url = $temp_couchdb_url; // doing this ensure hard drive file never deleted in case something weird happens
             } else {
                 $url = preg_replace("|^(.*)://|", "", $url);
@@ -408,26 +409,59 @@ class C_Document extends Controller {
         return $this->list_action($patient_id);
     }
 
-    function encrypt($plaintext, $key, $cypher = 'tripledes', $mode = 'cfb') {
-        $td = mcrypt_module_open($cypher, '', $mode, '');
-        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
-        mcrypt_generic_init($td, $key, $iv);
-        $crypttext = mcrypt_generic($td, $plaintext);
-        mcrypt_generic_deinit($td);
-        return $iv . $crypttext;
+    function encrypt($plaintext, $key, $cypher = 'aes-256-cbc', $mode = '') {
+        if (function_exists('openssl_encrypt')) {
+            $key_hash = hash('sha256', $key, true);
+            $iv_len = openssl_cipher_iv_length('aes-256-cbc');
+            $iv = openssl_random_pseudo_bytes($iv_len);
+            $ciphertext = openssl_encrypt($plaintext, 'aes-256-cbc', $key_hash, OPENSSL_RAW_DATA, $iv);
+            return "ENC::AES256::" . $iv . $ciphertext;
+        }
+        if (function_exists('mcrypt_module_open')) {
+            $td = mcrypt_module_open('tripledes', '', 'cfb', '');
+            $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+            mcrypt_generic_init($td, $key, $iv);
+            $crypttext = mcrypt_generic($td, $plaintext);
+            mcrypt_generic_deinit($td);
+            return $iv . $crypttext;
+        }
+        return false;
     }
 
-    function decrypt($crypttext, $key, $cypher = 'tripledes', $mode = 'cfb') {
-        $plaintext = '';
-        $td = mcrypt_module_open($cypher, '', $mode, '');
-        $ivsize = mcrypt_enc_get_iv_size($td);
-        $iv = substr($crypttext, 0, $ivsize);
-        $crypttext = substr($crypttext, $ivsize);
-        if ($iv) {
-            mcrypt_generic_init($td, $key, $iv);
-            $plaintext = mdecrypt_generic($td, $crypttext);
+    function decrypt($crypttext, $key, $cypher = 'aes-256-cbc', $mode = '') {
+        if (strpos($crypttext, "ENC::AES256::") === 0) {
+            $raw = substr($crypttext, 13);
+            $key_hash = hash('sha256', $key, true);
+            $iv_len = openssl_cipher_iv_length('aes-256-cbc');
+            $iv = substr($raw, 0, $iv_len);
+            $ciphertext = substr($raw, $iv_len);
+            return openssl_decrypt($ciphertext, 'aes-256-cbc', $key_hash, OPENSSL_RAW_DATA, $iv);
         }
-        return $plaintext;
+        if (function_exists('openssl_decrypt')) {
+            $key_hash = hash('sha256', $key, true);
+            $iv_len = openssl_cipher_iv_length('aes-256-cbc');
+            if (strlen($crypttext) > $iv_len) {
+                $iv = substr($crypttext, 0, $iv_len);
+                $ciphertext = substr($crypttext, $iv_len);
+                $result = openssl_decrypt($ciphertext, 'aes-256-cbc', $key_hash, OPENSSL_RAW_DATA, $iv);
+                if ($result !== false) {
+                    return $result;
+                }
+            }
+        }
+        if (function_exists('mcrypt_module_open')) {
+            $plaintext = '';
+            $td = mcrypt_module_open('tripledes', '', 'cfb', '');
+            $ivsize = mcrypt_enc_get_iv_size($td);
+            $iv = substr($crypttext, 0, $ivsize);
+            $crypttext = substr($crypttext, $ivsize);
+            if ($iv) {
+                mcrypt_generic_init($td, $key, $iv);
+                $plaintext = mdecrypt_generic($td, $crypttext);
+            }
+            return $plaintext;
+        }
+        return false;
     }
 
     function retrieve_action($patient_id = "", $document_id, $as_file = true, $original_file = true, $disable_exit = false) {
@@ -491,6 +525,7 @@ class C_Document extends Controller {
             $fh = fopen($tmpcouchpath, "w");
             fwrite($fh, base64_decode($content));
             fclose($fh);
+            @chmod($tmpcouchpath, 0600); // HIPAA: Restrict access to owner only
             $f = fopen($tmpcouchpath, "r");
             if ($doEncryption) {
                 $filetext = fread($f, filesize($tmpcouchpath));
@@ -697,10 +732,10 @@ class C_Document extends Controller {
                 continue;
             }
 
-            //validate that the pod exists
+            //validate that the pod exists (parameterized)
             $d = new Document($doc_id);
-            $sql = "SELECT pid from patient_data where pid = '" . $file['patient_id'] . "'";
-            $result = $d->_db->Execute($sql);
+            $sql = "SELECT pid from patient_data where pid = ?";
+            $result = $d->_db->Execute($sql, array((int)$file['patient_id']));
 
             if (!$result || $result->EOF) {
                 //patient id does not exist
@@ -754,8 +789,8 @@ class C_Document extends Controller {
                 $d->populate();
 
                 if (is_numeric($d->get_id()) && is_numeric($file['category_id'])) {
-                    $sql = "REPLACE INTO categories_to_documents set category_id = '" . $file['category_id'] . "', document_id = '" . $d->get_id() . "'";
-                    $d->_db->Execute($sql);
+                    $sql = "REPLACE INTO categories_to_documents set category_id = ?, document_id = ?";
+                    $d->_db->Execute($sql, array((int)$file['category_id'], (int)$d->get_id()));
                 }
             } else {
                 $error .= "The file could not be succesfully stored, this error is usually related to permissions problems on the storage system.\n";
@@ -773,19 +808,18 @@ class C_Document extends Controller {
         $new_category_id = $_POST['new_category_id'];
         $new_patient_id = $_POST['new_patient_id'];
 
-        //move to new category
+        //move to new category (parameterized)
         if (is_numeric($new_category_id) && is_numeric($document_id)) {
-            $sql = "UPDATE categories_to_documents set category_id = '" . $new_category_id . "' where document_id = '" . $document_id . "'";
+            $sql = "UPDATE categories_to_documents set category_id = ? where document_id = ?";
             $messages .= xl('Document moved to new category', '', '', ' \'') . $this->tree->_id_name[$new_category_id]['name'] . xl('successfully.', '', '\' ') . "\n";
-            //echo $sql;
-            $this->tree->_db->Execute($sql);
+            $this->tree->_db->Execute($sql, array((int)$new_category_id, (int)$document_id));
         }
 
-        //move to new patient
+        //move to new patient (parameterized)
         if (is_numeric($new_patient_id) && is_numeric($document_id)) {
             $d = new Document($document_id);
-            $sql = "SELECT pid from patient_data where pid = '" . $new_patient_id . "'";
-            $result = $d->_db->Execute($sql);
+            $sql = "SELECT pid from patient_data where pid = ?";
+            $result = $d->_db->Execute($sql, array((int)$new_patient_id));
 
             if (!$result || $result->EOF) {
                 //patient id does not exist
@@ -849,33 +883,20 @@ class C_Document extends Controller {
     function validate_action_process($patient_id = "", $document_id) {
 
         $d = new Document($document_id);
+        $current_hash = '';
         if ($d->couch_docid && $d->couch_revid) {
-            $file_path = $GLOBALS['OE_SITE_DIR'] . '/documents/temp/';
-            $url = $file_path . $d->get_url();
             $couch = new CouchDB();
             $data = array($GLOBALS['couchdb_dbase'], $d->couch_docid);
             $resp = $couch->retrieve_doc($data);
             $content = $resp->data;
-            //--------Temporarily writing the file for calculating the hash--------//
-            //-----------Will be removed after calculating the hash value----------//
-            $temp_file = fopen($url, "w");
-            fwrite($temp_file, base64_decode($content));
-            fclose($temp_file);
+            // HIPAA 45 CFR 164.312: Calculate hash directly in-memory without storing unencrypted PHI file to disk
+            $current_hash = hash('sha256', base64_decode($content));
         } else {
             $url = $d->get_url();
 
             //strip url of protocol handler
             $url = preg_replace("|^(.*)://|", "", $url);
 
-            //change full path to current webroot.  this is for documents that may have
-            //been moved from a different filesystem and the full path in the database
-            //is not current.  this is also for documents that may of been moved to
-            //different patients. Note that the path_depth is used to see how far down
-            //the path to go. For example, originally the path_depth was always 1, which
-            //only allowed things like documents/1/<file>, but now can have more structured
-            //directories. For example a path_depth of 2 can give documents/encounters/1/<file>
-            // etc.
-            // NOTE that $from_filename and basename($url) are the same thing
             $from_all = explode("/", $url);
             $from_filename = array_pop($from_all);
             $from_pathname_array = array();
@@ -893,28 +914,49 @@ class C_Document extends Controller {
                 die("process is '" . $_POST['process'] . "', expected 'true'");
                 return;
             }
+            if (file_exists($url)) {
+                $current_hash = hash_file('sha256', $url);
+            }
         }
         $d = new Document($document_id);
-        $current_hash = sha1_file($url);
-        $messages = xl('Current Hash') . ": " . $current_hash . "<br>";
-        $messages .= xl('Stored Hash') . ": " . $d->get_hash() . "<br>";
-        if ($d->get_hash() == '') {
+        $stored_hash = $d->get_hash();
+        $messages = xl('Current Hash (SHA-256)') . ": " . htmlspecialchars($current_hash) . "<br>";
+        $messages .= xl('Stored Hash') . ": " . htmlspecialchars($stored_hash) . "<br>";
+
+        if (empty($stored_hash)) {
             $d->hash = $current_hash;
             $d->persist();
             $d->populate();
-            $messages .= xl('Hash did not exist for this file. A new hash was generated.');
-        } else if ($current_hash != $d->get_hash()) {
-            $messages .= xl('Hash does not match. Data integrity has been compromised.');
+            $messages .= xl('Hash did not exist for this file. A new SHA-256 hash was generated.');
         } else {
-            $messages .= xl('Document passed integrity check.');
+            // Constant-time hash verification (HIPAA 45 CFR 164.312(d))
+            $verified = hash_equals($stored_hash, $current_hash);
+            if (!$verified && strlen($stored_hash) === 40) {
+                // Backwards-compatibility for existing SHA-1 hashes
+                $legacy_hash = '';
+                if ($d->couch_docid && $d->couch_revid) {
+                    $legacy_hash = sha1(base64_decode($content));
+                } elseif (file_exists($url)) {
+                    $legacy_hash = sha1_file($url);
+                }
+                if ($legacy_hash !== '' && hash_equals($stored_hash, $legacy_hash)) {
+                    $verified = true;
+                    // Upgrade stored hash to SHA-256
+                    $d->hash = $current_hash;
+                    $d->persist();
+                    $d->populate();
+                    $messages .= xl('Document passed integrity check (legacy SHA-1 upgraded to SHA-256).');
+                }
+            }
+            if ($verified) {
+                $messages .= xl('Document passed integrity check.');
+            } else {
+                $messages .= xl('Hash does not match. Data integrity has been compromised.');
+            }
         }
         $this->_state = false;
 
         $this->messages = $messages;
-        if ($d->couch_docid && $d->couch_revid) {
-            //Removing the temporary file which is used to create the hash
-            unlink($GLOBALS['OE_SITE_DIR'] . '/documents/temp/' . $d->get_url());
-        }
         return $this->view_action($patient_id, $document_id);
     }
 
@@ -967,16 +1009,13 @@ class C_Document extends Controller {
             }
             $couch_docid = $d->get_couch_docid();
             $couch_revid = $d->get_couch_revid();
+            $parsed_docdate = ($docdate !== "NULL") ? str_replace("'", "", $docdate) : null;
             if ($couch_docid && $couch_revid) {
-                $sql = "UPDATE documents SET docdate = $docdate, url = '" . $_POST['docname'] . "', " .
-                        "list_id = '$issue_id' " .
-                        "WHERE id = '$document_id'";
-                $this->tree->_db->Execute($sql);
+                $sql = "UPDATE documents SET docdate = ?, url = ?, list_id = ? WHERE id = ?";
+                $this->tree->_db->Execute($sql, array($parsed_docdate, $_POST['docname'], (int)$issue_id, (int)$document_id));
             } else {
-                $sql = "UPDATE documents SET docdate = $docdate, " .
-                        "list_id = '$issue_id' " .
-                        "WHERE id = '$document_id'";
-                $this->tree->_db->Execute($sql);
+                $sql = "UPDATE documents SET docdate = ?, list_id = ? WHERE id = ?";
+                $this->tree->_db->Execute($sql, array($parsed_docdate, (int)$issue_id, (int)$document_id));
             }
             $messages .= xl('Document date and issue updated successfully') . "<br>";
         }
@@ -1124,15 +1163,18 @@ class C_Document extends Controller {
         return $node;
     }
 
-    //function for logging  the errors in writing file to CouchDB/Hard Disk
+    //function for logging the errors in writing file to CouchDB/Hard Disk
     function document_upload_download_log($patientid, $content) {
         $log_path = $GLOBALS['OE_SITE_DIR'] . "/documents/couchdb/";
         $log_file = 'log.txt';
         if (!is_dir($log_path))
-            mkdir($log_path, 0777, true);
+            mkdir($log_path, 0700, true); // Restrict directory permissions
         $LOG = fopen($log_path . $log_file, 'a');
-        fwrite($LOG, $content);
-        fclose($LOG);
+        if ($LOG) {
+            fwrite($LOG, $content);
+            fclose($LOG);
+            @chmod($log_path . $log_file, 0600); // Restrict log file permissions
+        }
     }
 
     function document_send($email, $body, $attfile, $pname) {
