@@ -58,6 +58,10 @@ class OnsitePortalActivityController extends AppBaseController
         {
             $criteria = new OnsitePortalActivityCriteria();
             $pid = RequestUtil::Get( 'patientId' );
+            if (!$pid) {
+                $pid = RequestUtil::Get('pid');
+            }
+            $pid = $this->EnforcePatientAccess($pid);
             $activity = RequestUtil::Get( 'activity' );
             $doc = RequestUtil::Get( 'doc' );
             $doc = $doc ? $doc : 0;
@@ -115,6 +119,7 @@ class OnsitePortalActivityController extends AppBaseController
         {
             $pk = $this->GetRouter()->GetUrlParam('id');
             $onsiteportalactivity = $this->Phreezer->Get('OnsitePortalActivity',$pk);
+            $this->EnforcePatientAccess($onsiteportalactivity->PatientId);
             $this->RenderJSON($onsiteportalactivity, $this->JSONPCallback(), true, $this->SimpleObjectParams());
         }
         catch (Exception $ex)
@@ -146,7 +151,7 @@ class OnsitePortalActivityController extends AppBaseController
             // $onsiteportalactivity->Id = $this->SafeGetVal($json, 'id');
 
             $onsiteportalactivity->Date = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'date')));
-            $onsiteportalactivity->PatientId = $this->SafeGetVal($json, 'patientId');
+            $onsiteportalactivity->PatientId = $this->EnforcePatientAccess($this->SafeGetVal($json, 'patientId'));
             $onsiteportalactivity->Activity = $this->SafeGetVal($json, 'activity');
             $onsiteportalactivity->RequireAudit = $this->SafeGetVal($json, 'requireAudit');
             $onsiteportalactivity->PendingAction = $this->SafeGetVal($json, 'pendingAction');
@@ -194,6 +199,7 @@ class OnsitePortalActivityController extends AppBaseController
 
             $pk = $this->GetRouter()->GetUrlParam('id');
             $onsiteportalactivity = $this->Phreezer->Get('OnsitePortalActivity',$pk);
+            $this->EnforcePatientAccess($onsiteportalactivity->PatientId);
 
             // TODO: any fields that should not be updated by the user should be commented out
 
@@ -201,7 +207,7 @@ class OnsitePortalActivityController extends AppBaseController
             // $onsiteportalactivity->Id = $this->SafeGetVal($json, 'id', $onsiteportalactivity->Id);
 
             $onsiteportalactivity->Date = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'date', $onsiteportalactivity->Date)));
-            $onsiteportalactivity->PatientId = $this->SafeGetVal($json, 'patientId', $onsiteportalactivity->PatientId);
+            $onsiteportalactivity->PatientId = $this->EnforcePatientAccess($this->SafeGetVal($json, 'patientId', $onsiteportalactivity->PatientId));
             $onsiteportalactivity->Activity = $this->SafeGetVal($json, 'activity', $onsiteportalactivity->Activity);
             $onsiteportalactivity->RequireAudit = $this->SafeGetVal($json, 'requireAudit', $onsiteportalactivity->RequireAudit);
             $onsiteportalactivity->PendingAction = $this->SafeGetVal($json, 'pendingAction', $onsiteportalactivity->PendingAction);
@@ -247,6 +253,7 @@ class OnsitePortalActivityController extends AppBaseController
 
             $pk = $this->GetRouter()->GetUrlParam('id');
             $onsiteportalactivity = $this->Phreezer->Get('OnsitePortalActivity',$pk);
+            $this->EnforcePatientAccess($onsiteportalactivity->PatientId);
 
             $onsiteportalactivity->Delete();
 

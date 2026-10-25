@@ -48,57 +48,55 @@ define("SALT_PREFIX_SHA1",'$SHA1$');
  */
 function oemr_password_salt()
 {
-    $Allowed_Chars ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./';
+    $Allowed_Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./';
     $Chars_Len = 63;
-
     $Salt_Length = 22;
-
     $salt = "";
-    
-    for($i=0; $i<$Salt_Length; $i++)
-    {
-        $salt .= $Allowed_Chars[mt_rand(0,$Chars_Len)];
-    }    
 
-    // This is the preferred hashing mechanism
-    if(CRYPT_BLOWFISH===1)
-    {
-        $rounds='05';
-        //This string tells crypt to apply blowfish $rounds times.
-        $Blowfish_Pre = '$2a$'.$rounds.'$';
-        $Blowfish_End = '$';
-
-        return $Blowfish_Pre.$salt.$Blowfish_End;        
+    // Use cryptographically secure pseudo-random bytes
+    if (function_exists('random_bytes')) {
+        $bytes = random_bytes($Salt_Length);
+        for ($i = 0; $i < $Salt_Length; $i++) {
+            $salt .= $Allowed_Chars[ord($bytes[$i]) % 64];
+        }
+    } elseif (function_exists('openssl_random_pseudo_bytes')) {
+        $bytes = openssl_random_pseudo_bytes($Salt_Length);
+        for ($i = 0; $i < $Salt_Length; $i++) {
+            $salt .= $Allowed_Chars[ord($bytes[$i]) % 64];
+        }
+    } else {
+        for ($i = 0; $i < $Salt_Length; $i++) {
+            $salt .= $Allowed_Chars[mt_rand(0, $Chars_Len)];
+        }
     }
-    error_log("Blowfish hashing algorithm not available.  Upgrading to PHP 5.3.x or newer is strongly recommended");
-    
-    return SALT_PREFIX_SHA1.$salt;
-    
-    
+
+    // Preferred hashing mechanism: Blowfish with 10 rounds (HIPAA 45 CFR 164.312(d))
+    $rounds = '10';
+    $prefix = (defined('CRYPT_BLOWFISH') && CRYPT_BLOWFISH === 1) ? '$2y$' : '$2a$';
+    return $prefix . $rounds . '$' . $salt . '$';
 }
 
 /**
  * Hash a plaintext password for comparison or initial storage.
  * 
  * <pre>
- * This function either uses the built in PHP crypt() function, or sha1() depending
- * on a prefix in the salt.  This on systems without a strong enough built in algorithm
- * for crypt(), sha1() can be used as a fallback.
- * If the crypt function returns an error or illegal hash, then will die.
+ * This function uses PHP crypt() with Blowfish ($2y$ or $2a$).
+ * Legacy SHA-1 salts are maintained solely for migration verification.
  * </pre>
  * 
- * @param type $plaintext
- * @param type $salt
- * @return type
+ * @param string $plaintext
+ * @param string $salt
+ * @return string
  */
 function oemr_password_hash($plaintext,$salt)
 {
-    // if this is a SHA1 salt, the use prepended salt
+    // If this is a legacy SHA1 salt, calculate for backward-compatibility verification
     if(strpos($salt,SALT_PREFIX_SHA1)===0)
     {
-        return SALT_PREFIX_SHA1 . sha1($salt.$plaintext);
+        error_log("SECURITY WARNING: Verifying password with legacy SHA-1 salt. Password should be updated to Blowfish/bcrypt.");
+        return SALT_PREFIX_SHA1 . hash('sha1', $salt . $plaintext);
     }
-    else { // Otherwise use PHP crypt()
+    else { // Otherwise use PHP crypt() with Blowfish
         $crypt_return = crypt($plaintext,$salt);
         if ( ($crypt_return == '*0') || ($crypt_return == '*1') || (strlen($crypt_return) < 6) ) {
             // Error code returned by crypt or not hash, so die

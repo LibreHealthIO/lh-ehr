@@ -60,6 +60,9 @@ class PatientController extends AppBaseController{
             $pid = ( int ) $_GET['pid'];
         }
 
+        // HIPAA 45 CFR 164.312(a)(1) Access Control: Enforce patient access boundary
+        $pid = $this->EnforcePatientAccess($pid);
+
         if (isset($_GET['user'])) {
             $user = $_GET['user'];
         }
@@ -91,6 +94,8 @@ class PatientController extends AppBaseController{
      */
     public function startupQuery($pid){
         try{
+            // Enforce access control on PID
+            $pid = $this->EnforcePatientAccess($pid);
             $criteria = new PatientCriteria();
             $recnum = ( int ) $pid;
             $criteria->Pid_Equals = $recnum;
@@ -113,6 +118,7 @@ class PatientController extends AppBaseController{
         try{
             $criteria = new PatientCriteria();
             $pid = RequestUtil::Get( 'patientId' );
+            $pid = $this->EnforcePatientAccess($pid);
             $criteria->Pid_Equals = $pid;
 
             $output = new stdClass();
@@ -147,6 +153,9 @@ class PatientController extends AppBaseController{
         try{
             $pk = $this->GetRouter()->GetUrlParam( 'id' );
             $patient = $this->Phreezer->Get( 'Patient', $pk );
+            if ($patient && $this->IsPortalUser()) {
+                $this->EnforcePatientAccess($patient->Pid);
+            }
             $this->RenderJSON( $patient, $this->JSONPCallback(), true, $this->SimpleObjectParams() );
         } catch( Exception $ex ){
             $this->RenderExceptionJSON( $ex );

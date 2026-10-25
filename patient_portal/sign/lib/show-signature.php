@@ -46,7 +46,7 @@ if ( $pid == 0 || empty($user) ){
     }
 }
 
-$sig_hash = sha1 ( $output );
+$sig_hash = hash( 'sha256', $output );
 $created = time();
 $ip = $_SERVER ['REMOTE_ADDR'];
 $status = 'filed';

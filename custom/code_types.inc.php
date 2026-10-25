@@ -441,11 +441,13 @@ function code_set_search($form_code_type,$search_term="",$count=false,$active=tr
   // Figure out the appropriate limit clause
   $limit_query = limit_query_string($limit,$start,$number,$return_only_one);
   
-  // build the filter_elements sql code
+  // build the filter_elements sql code (validate column names to prevent SQL injection)
   $query_filter_elements="";
   if (!empty($filter_elements)) {
    foreach ($filter_elements as $key => $element) {
-    $query_filter_elements .= " AND codes." . add_escape_custom($key) . "=" . "'" . add_escape_custom($element)  . "' ";
+    if (preg_match('/^[a-zA-Z0-9_]+$/', $key)) {
+     $query_filter_elements .= " AND codes.`" . $key . "`=" . "'" . add_escape_custom($element)  . "' ";
+    }
    }
   }
 
@@ -517,8 +519,8 @@ function code_set_search($form_code_type,$search_term="",$count=false,$active=tr
                 $display_description=$table_dot.$code_text_col;
                 $display_description_brief=$table_dot.$code_text_short_col;
             }
-            // Ensure the external table exists
-            $check_table = sqlQuery("SHOW TABLES LIKE '".$table."'");
+            // Ensure the external table exists (parameterized query)
+            $check_table = sqlQuery("SHOW TABLES LIKE ?", array($table));
             if ( (empty($check_table)) ) {HelpfulDie("Missing table in code set search:".$table);}
             
             $sql_bind_array = array();
@@ -548,7 +550,7 @@ function code_set_search($form_code_type,$search_term="",$count=false,$active=tr
             foreach($table_info[EXT_JOINS] as $join_info)
             {
               $join_table=$join_info[JOIN_TABLE];
-              $check_table = sqlQuery("SHOW TABLES LIKE '".$join_table."'");
+              $check_table = sqlQuery("SHOW TABLES LIKE ?", array($join_table));
               if ( (empty($check_table)) ) {HelpfulDie("Missing join table in code set search:".$join_table);}
               $query.=" INNER JOIN ". $join_table;
               $query.=" ON ";
@@ -678,7 +680,7 @@ function lookup_code_descriptions($codes,$desc_detail="code_text") {
         foreach($table_info[EXT_JOINS] as $join_info)
         {
           $join_table=$join_info[JOIN_TABLE];
-          $check_table = sqlQuery("SHOW TABLES LIKE '".$join_table."'");
+          $check_table = sqlQuery("SHOW TABLES LIKE ?", array($join_table));
           if ( (empty($check_table)) ) {HelpfulDie("Missing join table in code set search:".$join_table);}
           $sql.=" INNER JOIN ". $join_table;
           $sql.=" ON ";
@@ -699,8 +701,11 @@ function lookup_code_descriptions($codes,$desc_detail="code_text") {
         
         // Start building up the WHERE clause
 
-        // When using the external codes table, we have to filter by the code_type.  (All the other tables only contain one type)  
-        if ($table_id==0) { $sql .= " code_type = '".add_escape_custom($code_types[$codetype]['id'])."' AND ";   }      
+        // When using the external codes table, we have to filter by the code_type (parameterized)
+        if ($table_id==0) { 
+            $sql .= " code_type = ? AND ";
+            array_push($sqlArray, $code_types[$codetype]['id']);
+        }      
 
         // Specify the code in the query.
         $sql .= $table_name.".".$code_col."=? ";
@@ -876,11 +881,14 @@ function multiple_code_set_search($form_code_types=array(),$search_term,$limit=N
 */
 function limit_query_string($limit=NULL,$start=NULL,$number=NULL,$return_only_one=false) {
   if ( !is_null($start) && !is_null($number) ) {
-    // For pagination of results
-    $limit_query = " LIMIT $start, $number ";
+    // For pagination of results - force integer sanitization to prevent SQL injection
+    $start_clean = (int)$start;
+    $number_clean = (int)$number;
+    $limit_query = " LIMIT $start_clean, $number_clean ";
   }
   else if (!is_null($limit)) {
-    $limit_query = " LIMIT $limit ";
+    $limit_clean = (int)$limit;
+    $limit_query = " LIMIT $limit_clean ";
   }
   else {
     // No pagination and no limit

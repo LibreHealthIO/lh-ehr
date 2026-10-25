@@ -63,11 +63,13 @@
             $path .= convert_safe_file_dir_name($parent['name'])."/";
         }
         $path .= convert_safe_file_dir_name($cat['name'])."/";
-        // create the folder structure at the temporary dir
+        // create the folder structure at the temporary dir with restricted permissions
         if (!is_dir($tmp."/".$pid."/".$path)) {
-            if (!mkdir($tmp."/".$pid."/".$path, 0777, true )){
+            if (!mkdir($tmp."/".$pid."/".$path, 0700, true )){
                 echo xlt("Error creating directory!")."<br />";
             }
+            @chmod($tmp."/".$pid, 0700);
+            @chmod($tmp."/".$pid."/".$path, 0700);
         }
 
         // copy the document
@@ -89,6 +91,7 @@
                 } while (file_exists($dest));
             }
             file_put_contents($dest,$document);
+            @chmod($dest, 0600);
         }
         else {
             echo xlt("Can't find file!")."<br />";
@@ -97,6 +100,7 @@
     
     // zip the folder
     Zip($tmp."/".$pid."/", $tmp."/".$pid.'.zip');
+    @chmod($tmp."/".$pid.'.zip', 0600);
     
     // serve it to the patient
     header('Content-type: application/zip');

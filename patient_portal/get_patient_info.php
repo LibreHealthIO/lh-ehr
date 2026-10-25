@@ -118,31 +118,30 @@ $logit = new ApplicationTable();
             }
             if(empty($auth[COL_POR_SALT]))
             {
-                if(SHA1($plain_code)!=$auth[COL_POR_PWD])
+                if(!hash_equals((string)$auth[COL_POR_PWD], hash('sha1', (string)$plain_code)))
                 {
                     $logit->portalLog('login attempt','',($_POST['uname'].':pass not salted'),'','0');
                     session_destroy();
                     header('Location: ' . $landingpage . '&w&p');
                     exit();
                 }
+                // Immediately upgrade legacy unsalted password to modern Blowfish/bcrypt
                 $new_salt=oemr_password_salt();
                 $new_hash=oemr_password_hash($plain_code,$new_salt);
-    $sqlUpdatePwd = " UPDATE " . TBL_PAT_ACC_ON . " SET " . COL_POR_PWD . "=?, " . COL_POR_SALT . "=? " . " WHERE " . COL_ID . "=?";
-    privStatement($sqlUpdatePwd, array(
-        $new_hash,
-        $new_salt,
-        $auth[COL_ID]
-    ));
-} else {
-    $tmp = oemr_password_hash($plain_code, $auth[COL_POR_SALT]);
-    if ($tmp != $auth[COL_POR_PWD]) {
+                $sqlUpdatePwd = " UPDATE " . TBL_PAT_ACC_ON . " SET " . COL_POR_PWD . "=?, " . COL_POR_SALT . "=? " . " WHERE " . COL_ID . "=?";
+                privStatement($sqlUpdatePwd, array(
+                    $new_hash,
+                    $new_salt,
+                    $auth[COL_ID]
+                ));
+            } else {
+                $tmp = oemr_password_hash($plain_code, $auth[COL_POR_SALT]);
+                if (!hash_equals((string)$auth[COL_POR_PWD], (string)$tmp)) {
                     $logit->portalLog('login attempt','',($_POST['uname'].':invalid password'),'','0');
                     session_destroy();
-        header('Location: ' . $landingpage . '&w&p');
-        exit();
-
+                    header('Location: ' . $landingpage . '&w&p');
+                    exit();
                 }
-
             }
             $_SESSION['portal_username']=$_POST['uname'];
     $sql = "SELECT * FROM `patient_data` WHERE `pid` = ?";

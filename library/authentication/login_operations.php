@@ -44,16 +44,19 @@ function validate_user_password($username,&$password,$provider)
     if(is_array($userSecure))
     {
         $phash=oemr_password_hash($password,$userSecure[COL_SALT]);
-        if($phash!=$userSecure[COL_PWD])
+        // Constant-time password comparison to prevent timing attacks (45 CFR 164.312(d))
+        if(!hash_equals($userSecure[COL_PWD], $phash))
         {
-            
             return false;
         }
         $valid=true;
     }
     else
     {  
-        if((!isset($GLOBALS['password_compatibility'])||$GLOBALS['password_compatibility']))           // use old password scheme if allowed.
+        // Legacy password compatibility check (MD5/SHA1)
+        // Weak hashing algorithms (MD5/SHA1) are prohibited by HIPAA 45 CFR 164.312(d).
+        // Only allow migration if explicitly enabled, and require immediate password upgrade.
+        if(!empty($GLOBALS['password_compatibility']))
         {
             $getUserSQL="select username,id, password from users where BINARY username = ?";
             $userInfo = privQuery($getUserSQL,array($username));
@@ -64,18 +67,26 @@ function validate_user_password($username,&$password,$provider)
                 
             $username=$userInfo['username'];
             $dbPasswordLen=strlen($userInfo['password']);
+            $valid = false;
             if($dbPasswordLen==32)
             {
                 $phash=md5($password);
-                $valid=$phash==$userInfo['password'];
+                $valid=hash_equals($userInfo['password'], $phash);
+                if ($valid) {
+                    error_log("SECURITY WARNING: User '$username' authenticated using legacy MD5. Upgrading to strong password hash.");
+                }
             }
             else if($dbPasswordLen==40)
             {
                 $phash=sha1($password);
-                $valid=$phash==$userInfo['password'];
+                $valid=hash_equals($userInfo['password'], $phash);
+                if ($valid) {
+                    error_log("SECURITY WARNING: User '$username' authenticated using legacy SHA-1. Upgrading to strong password hash.");
+                }
             }
             if($valid)
             {
+                // Immediately migrate to modern Blowfish/bcrypt password hash and purge legacy weak hash
                 $phash=initializePassword($username,$userInfo['id'],$password);
                 purgeCompatabilityPassword($username,$userInfo['id']);
                 $_SESSION['relogin'] = 1;
@@ -85,7 +96,12 @@ function validate_user_password($username,&$password,$provider)
                 return false;
             }
         }
-        
+        else
+        {
+            // Legacy weak passwords disabled for HIPAA compliance
+            error_log("SECURITY: User '$username' attempted authentication without modern password hash in users_secure");
+            return false;
+        }
     }
     $getUserSQL="select id, authorized, see_auth".
                         ", cal_ui, active ".

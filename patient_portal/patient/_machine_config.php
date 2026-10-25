@@ -16,24 +16,33 @@
  */
 /* */
 
-    session_start();
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
     if ( isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite']) ) {
         $pid = $_SESSION['pid'];
         $ignoreAuth = true;
-         GlobalConfig::$PORTAL = true;
-         require_once ( dirname( __FILE__ ) . "/../../interface/globals.php" );
-    } else {
-        session_destroy();
+        GlobalConfig::$PORTAL = true;
+        require_once ( dirname( __FILE__ ) . "/../../interface/globals.php" );
+    } elseif ( isset($_SESSION['authUserID']) && !empty($_SESSION['authUserID']) ) {
         GlobalConfig::$PORTAL = false;
         $ignoreAuth = false;
         $sanitize_all_escapes = true;
         $fake_register_globals = false;
         require_once ( dirname( __FILE__ ) . "/../../interface/globals.php" );
-        if ( ! isset($_SESSION['authUserID']) ){
-            $landingpage = "index.php";
-            header('Location: '.$landingpage);
-            exit;
+    } else {
+        GlobalConfig::$PORTAL = false;
+        $ignoreAuth = false;
+        $sanitize_all_escapes = true;
+        $fake_register_globals = false;
+        require_once ( dirname( __FILE__ ) . "/../../interface/globals.php" );
+        $landingpage = (isset($GLOBALS['web_root']) ? $GLOBALS['web_root'] : '') . "/patient_portal/index.php";
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            header('HTTP/1.1 401 Unauthorized');
+            die(json_encode(array('success' => false, 'message' => 'Authentication required.')));
         }
+        header('Location: ' . $landingpage);
+        exit;
     }
 
 require_once 'verysimple/Phreeze/ConnectionSetting.php';
